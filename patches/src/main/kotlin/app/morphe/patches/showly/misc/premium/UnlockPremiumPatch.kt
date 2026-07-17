@@ -19,6 +19,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -27,7 +28,7 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets.",
 ) {
-    compatibleWith("com.michaldrabik.showly2")
+    compatibleWith(AppCompatibilities.SHOWLY)
 
     dependsOn(resourceMappingPatch)
 
