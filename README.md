@@ -13,9 +13,9 @@ modifications made here, along with their dates, can be found in the Git history
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.0.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.0.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
+> **[v1.0.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.0.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
 <details open>
-<summary>📦 com.spocky.projengmenu&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary>📦 Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
@@ -26,7 +26,7 @@ modifications made here, along with their dates, can be found in the Git history
 </details>
 
 <details open>
-<summary>📦 com.myvitale.forus&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary>📦 ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
@@ -36,7 +36,7 @@ modifications made here, along with their dates, can be found in the Git history
 </details>
 
 <details open>
-<summary>📦 com.michaldrabik.showly2&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary>📦 Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
