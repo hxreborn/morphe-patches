@@ -1,14 +1,13 @@
-group = "app.template"
+group = "app.hxreborn"
 
 patches {
-    // TODO: Update this section with your project details.
     about {
-        name = "UserXYZ Patches"
-        description = "Patches for apps I like"
-        source = "git@github.com:UserXYZ/morphe-patches.git"
-        author = "Awesome dev"
-        contact = "na"
-        website = "na"
+        name = "hxreborn Patches"
+        description = "Patches for the apps I actually use"
+        source = "git@github.com:hxreborn/morphe-patches.git"
+        author = "hxreborn"
+        contact = "https://github.com/hxreborn/morphe-patches/issues"
+        website = "https://github.com/hxreborn/morphe-patches"
         license = "GPLv3"
     }
 }
