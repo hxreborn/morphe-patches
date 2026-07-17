@@ -15,10 +15,10 @@ modifications made here, along with their dates, can be found in the Git history
 <!-- PATCHES_START EXPANDED -->
 > **[v1.0.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.0.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
 <details open>
-<summary>📦 Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary>Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
-| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+| Patch | Description | Options |
 |----------|----------------|-----------|
 | [Disable tracking](#disable-tracking) | Disables analytics and crash reporting. |  |
 | [Unlock premium](#unlock-premium) | Unlocks premium features. |  |
@@ -26,20 +26,20 @@ modifications made here, along with their dates, can be found in the Git history
 </details>
 
 <details open>
-<summary>📦 ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary>ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+| Patch | Description | Options |
 |----------|----------------|-----------|
 | [Unlock premium](#unlock-premium) | Unlocks premium features. |  |
 
 </details>
 
 <details open>
-<summary>📦 Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary>Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+| Patch | Description | Options |
 |----------|----------------|-----------|
 | [Unlock premium](#unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |  |
 
