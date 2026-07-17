@@ -70,21 +70,29 @@ def anchor(name):
 
 
 def patches_table(patches):
-    """Render a sorted markdown table of patches with name, description, and options."""
-    rows = [
-        "| Patch | Description | Options |",
-        "|----------|----------------|-----------|",
-    ]
-    for p in sorted(patches, key=lambda x: x["name"]):
+    """Render a sorted markdown table of patches with name, description, and options.
+
+    The Options column is omitted entirely when no patch in the table has options,
+    so it never renders as an empty column that looks broken.
+    """
+    patches = sorted(patches, key=lambda x: x["name"])
+    has_options = any(p.get("options") for p in patches)
+
+    if has_options:
+        rows = ["| Patch | Description | Options |", "|----------|----------------|-----------|"]
+    else:
+        rows = ["| Patch | Description |", "|----------|----------------|"]
+
+    for p in patches:
         a = anchor(p["name"])
-        options = p.get("options") or []
-        if options:
-            # Show only option titles as a bullet list
-            parts = [opt.get("title") or opt.get("key") or "" for opt in options]
-            opts_cell = "<br>".join(f"• {t}" for t in parts)
-        else:
-            opts_cell = ""
         desc = (p.get("description") or "").replace("\n", "<br>")
+        if not has_options:
+            rows.append(f"| [{p['name']}](#{a}) | {desc} |")
+            continue
+        options = p.get("options") or []
+        # Show only option titles as a bullet list
+        parts = [opt.get("title") or opt.get("key") or "" for opt in options]
+        opts_cell = "<br>".join(f"• {t}" for t in parts)
         rows.append(f"| [{p['name']}](#{a}) | {desc} | {opts_cell} |")
     return "\n".join(rows)
 
