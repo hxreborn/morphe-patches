@@ -1,3 +1,9 @@
+## [1.0.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.0.0...v1.0.1-dev.1) (2026-07-17)
+
+### Bug Fixes
+
+* **compat:** add app metadata, drop template patches ([faf5a83](https://github.com/hxreborn/morphe-patches/commit/faf5a83a0e7295feaaa5254ded0ff0a9493fcebc))
+
 ## 1.0.0 (2026-07-17)
 
 ### Bug Fixes

@@ -9,6 +9,7 @@
 package app.morphe.patches.forus.misc.premium
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly
 
 @Suppress("unused")
@@ -16,7 +17,7 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks premium features.",
 ) {
-    compatibleWith("com.myvitale.forus")
+    compatibleWith(AppCompatibilities.FORUS)
 
     execute {
         AppModuleHasAccessFingerprint.method.returnEarly(true)

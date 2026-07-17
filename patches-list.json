@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.0.1-dev.1",
   "patches": [
     {
       "name": "Disable tracking",
@@ -10,10 +10,10 @@
       "compatiblePackages": [
         {
           "packageName": "com.spocky.projengmenu",
-          "name": null,
+          "name": "Projectivy Launcher",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F08029",
           "signatures": null,
           "targets": [
             {
@@ -36,10 +36,10 @@
       "compatiblePackages": [
         {
           "packageName": "com.myvitale.forus",
-          "name": null,
+          "name": "ForusApp",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#0772BA",
           "signatures": null,
           "targets": [
             {
@@ -62,10 +62,10 @@
       "compatiblePackages": [
         {
           "packageName": "com.spocky.projengmenu",
-          "name": null,
+          "name": "Projectivy Launcher",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F08029",
           "signatures": null,
           "targets": [
             {
@@ -90,10 +90,10 @@
       "compatiblePackages": [
         {
           "packageName": "com.michaldrabik.showly2",
-          "name": null,
+          "name": "Showly",
           "description": null,
-          "apkFileType": null,
-          "appIconColor": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F44336",
           "signatures": null,
           "targets": [
             {

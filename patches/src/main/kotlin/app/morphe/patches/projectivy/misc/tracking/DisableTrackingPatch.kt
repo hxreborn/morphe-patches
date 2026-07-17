@@ -17,6 +17,7 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
 import app.morphe.util.getReference
 import app.morphe.util.returnEarly
@@ -34,7 +35,7 @@ val disableTrackingPatch = bytecodePatch(
     name = "Disable tracking",
     description = "Disables analytics and crash reporting.",
 ) {
-    compatibleWith("com.spocky.projengmenu")
+    compatibleWith(AppCompatibilities.PROJECTIVY)
 
     execute {
         AnalyticsEventFingerprint.method.returnEarly()
