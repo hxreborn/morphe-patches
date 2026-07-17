@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-07-17T10:16:14",
-  "description": "## 1.0.0-dev.1 (2026-07-17)\n\n### ✨ New Features\n\n* **Forus - Unlock premium:** add unlock premium patch ([2a80e5a](https://github.com/hxreborn/morphe-patches/commit/2a80e5a8d0f9a40f5d2756e689948b9940120aa2))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.0.0-dev.1/patches-1.0.0-dev.1.mpp",
+  "created_at": "2026-07-17T11:42:35",
+  "description": "## [1.0.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2026-07-17)\n\n### ✨ New Features\n\n* **Showly - Unlock premium:** add unlock premium patch ([d4fe919](https://github.com/hxreborn/morphe-patches/commit/d4fe9196bb7afb6b740c36843d9628e83a5af537))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.0.0-dev.2/patches-1.0.0-dev.2.mpp",
   "signature_download_url": "",
-  "version": "1.0.0-dev.1"
+  "version": "1.0.0-dev.2"
 }
