@@ -140,6 +140,7 @@ ICONS = {
     "com.spocky.projengmenu": "projectivy.png",
     "com.myvitale.forus": "forus.png",
     "com.michaldrabik.showly2": "showly.png",
+    "com.zhiliaoapp.musically": "tiktok.png",
 }
 
 
@@ -183,6 +184,19 @@ def build_content(expanded=False):
         label   = entry["name"]
         lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches, slug(label)), expanded, pkg))
         lines.append("")
+
+    # TikTok ships as its own bundle, so it has no entry in patches-list.json.
+    # Rendered here so the catalog lists it alongside the apps in this bundle.
+    lines.append(f"""{"<details open>" if expanded else "<details>"}
+<summary>{icon_img("com.zhiliaoapp.musically")}TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
+<br>
+
+| Bundle | Description |
+|----------|----------------|
+| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe) |
+
+</details>""")
+    lines.append("")
 
     # Universal patches (no specific app)
     if universal:

@@ -21,6 +21,7 @@ Every icon was taken from the developer's own published listing or source reposi
 | `projectivy.png` | Projectivy Launcher (`com.spocky.projengmenu`) | Spocky | [Google Play listing](https://play.google.com/store/apps/details?id=com.spocky.projengmenu) (`og:image`) |
 | `forus.png` | ForusApp (`com.myvitale.forus`) | MyVitale | [Google Play listing](https://play.google.com/store/apps/details?id=com.myvitale.forus) (`og:image`) |
 | `showly.png` | Showly (`com.michaldrabik.showly2`) | Michał Drabik / Trakt | [`trakt/showly`](https://github.com/trakt/showly), `fastlane/metadata/android/en-US/images/icon.png` |
+| `tiktok.png` | TikTok (`com.zhiliaoapp.musically`) | TikTok Pte. Ltd. | [Google Play listing](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The other two are used under nominative fair use only, with no
