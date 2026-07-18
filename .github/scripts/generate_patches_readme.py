@@ -120,7 +120,7 @@ def versions_table(targets):
     sep = "| " + " | ".join(":---:" for _ in cells) + " |"
     rows = [header, sep]
 
-    # Optional description row — only rendered if at least one target has one
+    # Optional description row, only rendered if at least one target has one
     descs = [(t.get("description") or "").replace("\n", "<br>") for t in targets]
     if any(descs):
         rows.append("| " + " | ".join(descs) + " |")
@@ -128,7 +128,25 @@ def versions_table(targets):
     return "\n".join(rows)
 
 
-def spoiler(label, count, targets, tbl, expanded=False):
+# Package name -> icon file in .github/assets/icons/. Apps with no entry render
+# without an icon, so adding a new app does not require touching this map.
+ICONS = {
+    "com.spocky.projengmenu": "projectivy.png",
+    "com.myvitale.forus": "forus.png",
+    "com.michaldrabik.showly2": "showly.png",
+}
+
+
+def icon_img(pkg):
+    """Inline <img> for an app, or empty string if we have no icon for it.
+    Relative path so it resolves on any branch and in forks."""
+    filename = ICONS.get(pkg)
+    if not filename:
+        return ""
+    return f'<img src=".github/assets/icons/{filename}" width="18" align="top">&nbsp;&nbsp;'
+
+
+def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     """Wrap a patches table in a <details> spoiler with a versions sub-table.
     If expanded=True, the spoiler is open by default (for repos with few patches).
     """
@@ -137,7 +155,7 @@ def spoiler(label, count, targets, tbl, expanded=False):
     versions_section = f"**Supported versions:**\n\n{vtbl}\n\n" if vtbl else ""
     tag = "<details open>" if expanded else "<details>"
     return f"""{tag}
-<summary>{label}&nbsp;&nbsp;•&nbsp;&nbsp;{count} {noun}</summary>
+<summary>{icon_img(pkg)}{label}&nbsp;&nbsp;•&nbsp;&nbsp;{count} {noun}</summary>
 <br>
 
 {versions_section}{tbl}
@@ -157,7 +175,7 @@ def build_content(expanded=False):
     for pkg, entry in by_pkg.items():
         patches = list(entry["patches"].values())
         label   = entry["name"]
-        lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches), expanded))
+        lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches), expanded, pkg))
         lines.append("")
 
     # Universal patches (no specific app)
@@ -185,7 +203,7 @@ total = sum(len(e["patches"]) for e in by_pkg.values()) + len(universal)
 
 readme = readme_path.read_text(encoding="utf-8")
 
-# Marker pattern — matches both <!-- PATCHES_START --> and <!-- PATCHES_START EXPANDED -->
+# Marker pattern, matches both <!-- PATCHES_START --> and <!-- PATCHES_START EXPANDED -->
 START_PATTERN = r"<!-- PATCHES_START(?:\s+EXPANDED)?\s*-->"
 END_MARKER    = "<!-- PATCHES_END -->"
 

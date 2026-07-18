@@ -4,18 +4,22 @@ Morphe patches for the apps I actually use.
 
 ## ❓ About
 
-A personal patch bundle. Small on purpose: only apps I run daily, only patches I
-keep working. Built with [Morphe](https://morphe.software).
+I maintain these because I use them.
+Built with [Morphe](https://morphe.software).
 
 Based off the prior work of [ReVanced](https://github.com/ReVanced). All
 modifications made here, along with their dates, can be found in the Git history.
+
+App icons in the patches list belong to their respective developers and are used only to
+identify each app. They are not covered by this repository's licence. See
+[the icon notice](.github/assets/icons/README.md).
 
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
 > **[v1.0.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.0.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
 <details open>
-<summary>Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 | Patch | Description |
@@ -26,7 +30,7 @@ modifications made here, along with their dates, can be found in the Git history
 </details>
 
 <details open>
-<summary>ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/forus.png" width="18" align="top">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | Patch | Description |
@@ -36,7 +40,7 @@ modifications made here, along with their dates, can be found in the Git history
 </details>
 
 <details open>
-<summary>Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | Patch | Description |
