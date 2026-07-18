@@ -64,13 +64,18 @@ for patch in data["patches"]:
             by_pkg[pkg]["patches"][patch["name"]] = patch
 
 
-def anchor(name):
-    """Convert a patch name to a GitHub-compatible anchor slug."""
-    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", name.lower())).strip("-")
+def slug(text):
+    """Convert text to a GitHub-compatible anchor slug."""
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", text.lower())).strip("-")
 
 
-def patches_table(patches):
+def patches_table(patches, app_slug):
     """Render a sorted markdown table of patches with name, description, and options.
+
+    Each patch name carries an explicit <a id="app-patch"> anchor. The app slug is
+    part of the id because patch names repeat across apps (three "Unlock premium"
+    patches here), and GitHub's heading-derived ids would collide and get -1/-2
+    suffixes that shift whenever the list changes.
 
     The Options column is omitted entirely when no patch in the table has options,
     so it never renders as an empty column that looks broken.
@@ -84,16 +89,17 @@ def patches_table(patches):
         rows = ["| Patch | Description |", "|----------|----------------|"]
 
     for p in patches:
-        a = anchor(p["name"])
+        pid = f"{app_slug}-{slug(p['name'])}"
+        cell = f'<a id="{pid}"></a>[{p["name"]}](#{pid})'
         desc = (p.get("description") or "").replace("\n", "<br>")
         if not has_options:
-            rows.append(f"| [{p['name']}](#{a}) | {desc} |")
+            rows.append(f"| {cell} | {desc} |")
             continue
         options = p.get("options") or []
         # Show only option titles as a bullet list
         parts = [opt.get("title") or opt.get("key") or "" for opt in options]
         opts_cell = "<br>".join(f"• {t}" for t in parts)
-        rows.append(f"| [{p['name']}](#{a}) | {desc} | {opts_cell} |")
+        rows.append(f"| {cell} | {desc} | {opts_cell} |")
     return "\n".join(rows)
 
 
@@ -175,7 +181,7 @@ def build_content(expanded=False):
     for pkg, entry in by_pkg.items():
         patches = list(entry["patches"].values())
         label   = entry["name"]
-        lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches), expanded, pkg))
+        lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches, slug(label)), expanded, pkg))
         lines.append("")
 
     # Universal patches (no specific app)
@@ -187,7 +193,7 @@ def build_content(expanded=False):
 <summary>Universal&nbsp;&nbsp;•&nbsp;&nbsp;{len(uni_patches)} {noun}</summary>
 <br>
 
-{patches_table(uni_patches)}
+{patches_table(uni_patches, "universal")}
 
 </details>""")
         lines.append("")

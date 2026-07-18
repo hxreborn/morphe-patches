@@ -24,8 +24,8 @@ identify each app. They are not covered by this repository's licence. See
 
 | Patch | Description |
 |----------|----------------|
-| [Disable tracking](#disable-tracking) | Disables analytics and crash reporting. |
-| [Unlock premium](#unlock-premium) | Unlocks premium features. |
+| <a id="projectivy-launcher-disable-tracking"></a>[Disable tracking](#projectivy-launcher-disable-tracking) | Disables analytics and crash reporting. |
+| <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](#projectivy-launcher-unlock-premium) | Unlocks premium features. |
 
 </details>
 
@@ -35,7 +35,7 @@ identify each app. They are not covered by this repository's licence. See
 
 | Patch | Description |
 |----------|----------------|
-| [Unlock premium](#unlock-premium) | Unlocks premium features. |
+| <a id="forusapp-unlock-premium"></a>[Unlock premium](#forusapp-unlock-premium) | Unlocks premium features. |
 
 </details>
 
@@ -45,7 +45,7 @@ identify each app. They are not covered by this repository's licence. See
 
 | Patch | Description |
 |----------|----------------|
-| [Unlock premium](#unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |
+| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |
 
 </details>
 
