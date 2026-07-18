@@ -1,6 +1,6 @@
 # 🧩 hxreborn Patches
 
-Morphe patches for the apps I actually use.
+Patches for Android apps I use, built for Morphe.
 
 ## ❓ About
 
