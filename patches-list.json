@@ -30,7 +30,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks premium features.",
+      "description": "Unlocks all premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [
@@ -56,7 +56,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks premium features.",
+      "description": "Unlocks all premium features.",
       "default": true,
       "dependencies": [],
       "compatiblePackages": [

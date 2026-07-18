@@ -20,7 +20,7 @@ import app.morphe.util.returnEarly
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks premium features.",
+    description = "Unlocks all premium features.",
 ) {
     compatibleWith(AppCompatibilities.FORUS)
 

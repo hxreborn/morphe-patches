@@ -25,7 +25,7 @@ identify each app. They are not covered by this repository's licence. See
 | Patch | Description |
 |----------|----------------|
 | <a id="projectivy-launcher-disable-tracking"></a>[Disable tracking](#projectivy-launcher-disable-tracking) | Disables analytics and crash reporting. |
-| <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](#projectivy-launcher-unlock-premium) | Unlocks premium features. |
+| <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](#projectivy-launcher-unlock-premium) | Unlocks all premium features. |
 
 </details>
 
@@ -35,7 +35,7 @@ identify each app. They are not covered by this repository's licence. See
 
 | Patch | Description |
 |----------|----------------|
-| <a id="forusapp-unlock-premium"></a>[Unlock premium](#forusapp-unlock-premium) | Unlocks premium features. |
+| <a id="forusapp-unlock-premium"></a>[Unlock premium](#forusapp-unlock-premium) | Unlocks all premium features. |
 
 </details>
 

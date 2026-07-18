@@ -22,7 +22,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks premium features.",
+    description = "Unlocks all premium features.",
 ) {
     compatibleWith(AppCompatibilities.PROJECTIVY)
 
