@@ -7,3 +7,6 @@
 # These are Windows script files and should use crlf
 *.bat           text eol=crlf
 
+# Unmodified build tooling from morphe-patches-template, not our code
+patches/src/main/kotlin/util/PatchListGenerator.kt      linguist-vendored
+
