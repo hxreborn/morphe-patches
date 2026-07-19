@@ -19,6 +19,7 @@ updates:
       - dependency-name: "conventional-changelog-conventionalcommits"
 
   - package-ecosystem: gradle
+    # scan needs the root build.gradle.kts; dependabot aborts without one
     labels: []
     directory: /
     target-branch: dev
