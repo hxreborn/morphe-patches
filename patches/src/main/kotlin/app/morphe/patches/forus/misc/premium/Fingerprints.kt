@@ -15,8 +15,6 @@ package app.morphe.patches.forus.misc.premium
 
 import app.morphe.patcher.Fingerprint
 
-// Per-module access flag, deserialized from the server's module options. Every dashboard
-// module card ("Exclusivo para socios Plus") gates on this getter.
 internal object AppModuleHasAccessFingerprint : Fingerprint(
     definingClass = "Lcom/vitale/coredata/data/models/AppModule;",
     name = "getHasAccess",
