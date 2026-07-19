@@ -1,3 +1,11 @@
+## [1.1.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.0.1...v1.1.0-dev.1) (2026-07-19)
+
+### New Features
+
+* **Proton Mail - Hide sidebar upselling:** add patch ([799b985](https://github.com/hxreborn/morphe-patches/commit/799b985465528fae922be42f8e39dec99f716497))
+* **Proton Mail - Remove 'Sent from' signature:** port patch ([56009c8](https://github.com/hxreborn/morphe-patches/commit/56009c8d280333a31bc363b063fc2b74da524495))
+* **Proton Mail - Remove free accounts limit:** port patch ([fe78a8f](https://github.com/hxreborn/morphe-patches/commit/fe78a8fd4e9ae59b0a2b05bd9b99b87bcca53da1))
+
 ## [1.0.1](https://github.com/hxreborn/morphe-patches/compare/v1.0.0...v1.0.1) (2026-07-17)
 
 ### Bug Fixes
