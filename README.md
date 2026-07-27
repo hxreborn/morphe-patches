@@ -82,8 +82,6 @@ identify each app. They are not covered by this repository's licence. See
 
 <a href="https://morphe.software/add-source?github=hxreborn/morphe-patches"><img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20Source-00A8FF?style=for-the-badge"></a>
 
-Or manually add this repository url as a patch source in Morphe: https://github.com/hxreborn/morphe-patches
-
 ### 🛠️ Building
 
 To build hxreborn Patches,
