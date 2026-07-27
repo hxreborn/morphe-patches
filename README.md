@@ -72,7 +72,7 @@ identify each app. They are not covered by this repository's licence. See
 
 | Bundle | Description |
 |----------|----------------|
-| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe) |
+| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). <a href="https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe"><img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20Source-00A8FF?style=for-the-badge"></a> |
 
 </details>
 
@@ -80,7 +80,7 @@ identify each app. They are not covered by this repository's licence. See
 
 #### How to use these patches
 
-Click here to add these patches to Morphe: https://morphe.software/add-source?github=hxreborn/morphe-patches
+<a href="https://morphe.software/add-source?github=hxreborn/morphe-patches"><img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20Source-00A8FF?style=for-the-badge"></a>
 
 Or manually add this repository url as a patch source in Morphe: https://github.com/hxreborn/morphe-patches
 
