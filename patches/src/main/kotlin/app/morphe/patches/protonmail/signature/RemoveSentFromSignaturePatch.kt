@@ -12,33 +12,27 @@ package app.morphe.patches.protonmail.signature
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patches.protonmail.shared.RUST_CORE
+import app.morphe.patches.protonmail.shared.replaceAsciiInPlace
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.findElementByAttributeValue
+
+private const val DEFAULT_SIGNATURE =
+    """Sent from <a target="_blank" href="https://proton.me/mail/home">Proton Mail</a> for Android."""
+
+private val COMMENTED_OUT_SIGNATURE = "<!--".padEnd(DEFAULT_SIGNATURE.length - 3) + "-->"
 
 @Suppress("unused")
 val removeSentFromSignaturePatch = resourcePatch(
     name = "Remove 'Sent from' signature",
-    description = "Removes the 'Sent from Proton Mail mobile' signature from emails.",
+    description = "Removes the 'Sent from Proton Mail' signature from emails.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
 
     execute {
-        val resourceDirectory = get("res")
+        val nativeCores = get("lib").walk().filter { it.name == RUST_CORE }
 
-        val blankedStrings = resourceDirectory.walk()
-            .filter { it.isFile && it.name.equals("strings.xml", ignoreCase = true) }
-            .count { stringsFile ->
-                val path = "res/${stringsFile.relativeTo(resourceDirectory).invariantSeparatorsPath}"
-
-                document(path).use { document ->
-                    // Not localized in all languages
-                    document.documentElement.childNodes.findElementByAttributeValue(
-                        "name",
-                        "mail_settings_identity_mobile_footer_default_free",
-                    )?.apply { textContent = "" } != null
-                }
-            }
-
-        if (blankedStrings == 0) throw PatchException("Could not find 'sent from' string in resources")
+        if (nativeCores.count { it.replaceAsciiInPlace(DEFAULT_SIGNATURE, COMMENTED_OUT_SIGNATURE) } == 0) {
+            throw PatchException("Could not find the default mobile signature")
+        }
     }
 }
