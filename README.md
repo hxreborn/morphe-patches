@@ -17,7 +17,25 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.1.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.1.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;7 patches total
+> **[v1.1.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;8 patches total
+<details open>
+<summary>Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<br>
+
+**Supported versions:**
+
+| 7.10.4 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="proton-mail-amoled-dark-theme"></a>[AMOLED dark theme](#proton-mail-amoled-dark-theme) | Replaces the dark theme background with pure black. |
+| <a id="proton-mail-hide-upgrade-upselling"></a>[Hide upgrade upselling](#proton-mail-hide-upgrade-upselling) | Hides the top-bar upgrade button and promotional sidebar rows. |
+| <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](#proton-mail-remove-sent-from-signature) | Removes the 'Sent from Proton Mail' signature from emails. |
+| <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](#proton-mail-remove-free-accounts-limit) | Removes the limit for maximum free accounts logged in. |
+
+</details>
+
 <details open>
 <summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
@@ -26,23 +44,6 @@ identify each app. They are not covered by this repository's licence. See
 |----------|----------------|
 | <a id="projectivy-launcher-disable-tracking"></a>[Disable tracking](#projectivy-launcher-disable-tracking) | Disables analytics and crash reporting. |
 | <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](#projectivy-launcher-unlock-premium) | Unlocks all premium features. |
-
-</details>
-
-<details open>
-<summary>Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
-
-**Supported versions:**
-
-| 4.15.0 |
-| :---: |
-
-| Patch | Description |
-|----------|----------------|
-| <a id="proton-mail-hide-sidebar-upselling"></a>[Hide sidebar upselling](#proton-mail-hide-sidebar-upselling) | Hides the 'Upgrade to Mail Plus' entry from the sidebar. |
-| <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](#proton-mail-remove-sent-from-signature) | Removes the 'Sent from Proton Mail mobile' signature from emails. |
-| <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](#proton-mail-remove-free-accounts-limit) | Removes the limit for maximum free accounts logged in. |
 
 </details>
 
@@ -72,7 +73,7 @@ identify each app. They are not covered by this repository's licence. See
 
 | Bundle | Description |
 |----------|----------------|
-| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe).<br><br><a href="https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe"><img alt="add tiktok" src="https://img.shields.io/badge/Morphe-Add%20TikTok-00a8ff?style=flat-square" /></a> |
+| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe) |
 
 </details>
 
