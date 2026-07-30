@@ -27,13 +27,12 @@ internal object AppCompatibilities {
         appIconColor = 0xF08029,
     )
 
-    // Pinned to the last version ReVanced verified these patches against
     val PROTON_MAIL = Compatibility(
         name = "Proton Mail",
         packageName = "ch.protonmail.android",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x6D4AFF,
-        targets = listOf(AppTarget(version = "4.15.0", versionCode = 11782, minSdk = 28)),
+        targets = listOf(AppTarget(version = "7.10.4", versionCode = 17667, minSdk = 29)),
     )
 
     val SHOWLY = Compatibility(
