@@ -141,6 +141,7 @@ ICONS = {
     "com.myvitale.forus": "forus.png",
     "com.michaldrabik.showly2": "showly.png",
     "com.zhiliaoapp.musically": "tiktok.png",
+    "ch.protonmail.android": "protonmail.png",
 }
 
 
