@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/hxreborn/morphe-patches/compare/v1.1.0...v1.1.1) (2026-08-01)
+
+### Bug Fixes
+
+* **Proton Mail - Remove free accounts limit:** bypass the native post-login check ([e5e91d2](https://github.com/hxreborn/morphe-patches/commit/e5e91d2e84a5e698e8788db3b7198d7ad45caccc))
+
 ## [1.1.0](https://github.com/hxreborn/morphe-patches/compare/v1.0.1...v1.1.0) (2026-07-30)
 
 ### Bug Fixes
