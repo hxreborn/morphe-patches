@@ -152,10 +152,6 @@ TIKTOK_LIST = f"https://raw.githubusercontent.com/{TIKTOK_REPO}/main/patches-lis
 
 
 def sibling_targets(url, pkg):
-    """Versions another bundle declares for pkg, shaped for versions_table().
-    Returns [] when the bundle cannot be read, so a release never depends on it.
-    Handles both patches-list schemas: compatiblePackages as a package -> versions
-    map, and as a list of objects carrying their own targets."""
     try:
         with urllib.request.urlopen(url, timeout=10) as response:
             data = json.load(response)
