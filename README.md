@@ -17,7 +17,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.1.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.1.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;8 patches total
+> **[v1.2.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.2.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;9 patches total
 <details open>
 <summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
@@ -33,6 +33,17 @@ identify each app. They are not covered by this repository's licence. See
 | <a id="proton-mail-hide-upgrade-upselling"></a>[Hide upgrade upselling](#proton-mail-hide-upgrade-upselling) | Hides the top-bar upgrade button and promotional sidebar rows. |
 | <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](#proton-mail-remove-sent-from-signature) | Removes the 'Sent from Proton Mail' signature from emails. |
 | <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](#proton-mail-remove-free-accounts-limit) | Removes the limit for maximum free accounts logged in. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](#showly-amoled-dark-theme) | Replaces the dark theme background with pure black. |
+| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |
 
 </details>
 
@@ -54,16 +65,6 @@ identify each app. They are not covered by this repository's licence. See
 | Patch | Description |
 |----------|----------------|
 | <a id="forusapp-unlock-premium"></a>[Unlock premium](#forusapp-unlock-premium) | Unlocks all premium features. |
-
-</details>
-
-<details open>
-<summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-| Patch | Description |
-|----------|----------------|
-| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |
 
 </details>
 

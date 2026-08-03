@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/hxreborn/morphe-patches/compare/v1.1.1...v1.2.0) (2026-08-03)
+
+### New Features
+
+* **Showly - AMOLED dark theme:** add patch ([#16](https://github.com/hxreborn/morphe-patches/issues/16)) ([794378d](https://github.com/hxreborn/morphe-patches/commit/794378de8e2d71feb6d02b79af8ca26c2832714c))
+
 ## [1.1.1](https://github.com/hxreborn/morphe-patches/compare/v1.1.0...v1.1.1) (2026-08-01)
 
 ### Bug Fixes
