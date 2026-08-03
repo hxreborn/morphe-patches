@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.showly.misc.theme
 
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.childElementsSequence
@@ -31,11 +32,14 @@ val amoledThemePatch = resourcePatch(
     compatibleWith(AppCompatibilities.SHOWLY)
 
     execute {
+        var matched = 0
+
         document("res/values/colors.xml").use { document ->
             val resources = document.getElementsByTagName("resources").item(0) as Element
             resources.childElementsSequence().forEach { node ->
                 if (node.getAttribute("name") in COLOR_RESOURCE_NAMES) {
                     node.textContent = BLACK
+                    matched++
                 }
             }
         }
@@ -48,9 +52,14 @@ val amoledThemePatch = resourcePatch(
                 style.forEachChildElement { item ->
                     if (item.getAttribute("name") in APP_THEME_ITEM_NAMES) {
                         item.textContent = BLACK
+                        matched++
                     }
                 }
             }
+        }
+
+        if (matched == 0) {
+            throw PatchException("No AMOLED theme color resources matched")
         }
     }
 }
