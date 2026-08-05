@@ -1,3 +1,10 @@
+## [1.3.0](https://github.com/hxreborn/morphe-patches/compare/v1.2.0...v1.3.0) (2026-08-05)
+
+### New Features
+
+* **Proton Mail - Spoof signature:** restore push notifications on patched installs ([28ab0f9](https://github.com/hxreborn/morphe-patches/commit/28ab0f97eb618e1b18dac7e00b3f1bab3f9c7cac))
+* **Proton Mail - Unlock custom time picker:** add patch ([83657d5](https://github.com/hxreborn/morphe-patches/commit/83657d5d67fe7036d39e699690233c33db1ca001))
+
 ## [1.2.0](https://github.com/hxreborn/morphe-patches/compare/v1.1.1...v1.2.0) (2026-08-03)
 
 ### New Features

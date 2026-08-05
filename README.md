@@ -17,9 +17,9 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.2.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.2.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;9 patches total
+> **[v1.3.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.3.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;11 patches total
 <details open>
-<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **Supported versions:**
@@ -33,6 +33,8 @@ identify each app. They are not covered by this repository's licence. See
 | <a id="proton-mail-hide-upgrade-upselling"></a>[Hide upgrade upselling](#proton-mail-hide-upgrade-upselling) | Hides the top-bar upgrade button and promotional sidebar rows. |
 | <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](#proton-mail-remove-sent-from-signature) | Removes the 'Sent from Proton Mail' signature from emails. |
 | <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](#proton-mail-remove-free-accounts-limit) | Removes the limit for maximum free accounts logged in. |
+| <a id="proton-mail-spoof-signature"></a>[Spoof signature](#proton-mail-spoof-signature) | Restores push notifications by spoofing the original app signature. |
+| <a id="proton-mail-unlock-custom-time-picker"></a>[Unlock custom time picker](#proton-mail-unlock-custom-time-picker) | Enables picking a custom date and time when snoozing conversations and scheduling messages. |
 
 </details>
 
