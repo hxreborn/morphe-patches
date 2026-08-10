@@ -31,9 +31,11 @@ internal object AdvertisingIdClientConnectFingerprint : Fingerprint(
 )
 
 internal object FirebaseInstallationsUrlFingerprint : Fingerprint(
+    returnType = "Ljava/net/URL;",
     strings = listOf("https://firebaseinstallations.googleapis.com/v1/"),
 )
 
 internal object CrashlyticsSettingsUrlFingerprint : Fingerprint(
+    returnType = "Ljava/net/URL;",
     strings = listOf("firebase-settings.crashlytics.com"),
 )
