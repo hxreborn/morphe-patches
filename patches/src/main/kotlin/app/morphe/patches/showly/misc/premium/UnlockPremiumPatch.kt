@@ -27,7 +27,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets.",
+    description = "Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included.",
 ) {
     compatibleWith(AppCompatibilities.SHOWLY_3_70)
 
