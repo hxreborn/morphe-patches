@@ -41,4 +41,12 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APK,
         appIconColor = 0xF44336,
     )
+
+    val SHOWLY_3_70 = Compatibility(
+        name = "Showly",
+        packageName = "com.michaldrabik.showly2",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xF44336,
+        targets = listOf(AppTarget(version = "3.70.0", versionCode = 840, minSdk = 23)),
+    )
 }

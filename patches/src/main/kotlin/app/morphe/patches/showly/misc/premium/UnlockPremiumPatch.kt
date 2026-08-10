@@ -15,31 +15,21 @@ package app.morphe.patches.showly.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.ApkFileType
-import app.morphe.patcher.patch.AppTarget
-import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-
-private val COMPATIBILITY_SHOWLY_3_70 = Compatibility(
-    name = "Showly",
-    packageName = "com.michaldrabik.showly2",
-    apkFileType = ApkFileType.APK,
-    appIconColor = 0xF44336,
-    targets = listOf(AppTarget(version = "3.70.0", versionCode = 840, minSdk = 23)),
-)
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets.",
 ) {
-    compatibleWith(COMPATIBILITY_SHOWLY_3_70)
+    compatibleWith(AppCompatibilities.SHOWLY_3_70)
 
     dependsOn(resourceMappingPatch)
 
