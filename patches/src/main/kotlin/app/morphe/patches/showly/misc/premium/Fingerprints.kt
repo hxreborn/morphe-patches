@@ -14,10 +14,8 @@
 package app.morphe.patches.showly.misc.premium
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.opcode
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.resourceLiteral
-import com.android.tools.smali.dexlib2.Opcode
 
 private const val QONVERSION_INTERNAL = "Lcom/qonversion/android/sdk/internal/QonversionInternal;"
 
@@ -33,6 +31,10 @@ internal object QonversionCheckEntitlementsFingerprint : Fingerprint(
 internal object TraktLoginPaywallNavigationFingerprint : Fingerprint(
     filters = listOf(
         resourceLiteral(ResourceType.ID, "actionTraktLoginToPaywall"),
-        opcode(Opcode.INVOKE_STATIC),
     ),
+)
+
+internal object TraktUserVipFingerprint : Fingerprint(
+    definingClass = "Lcom/michaldrabik/data_remote/trakt/model/User;",
+    name = "getVip",
 )

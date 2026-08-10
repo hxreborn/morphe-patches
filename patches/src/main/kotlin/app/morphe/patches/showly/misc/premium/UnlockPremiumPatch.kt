@@ -18,6 +18,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.ApkFileType
 import app.morphe.patcher.patch.AppTarget
 import app.morphe.patcher.patch.Compatibility
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
@@ -51,11 +52,14 @@ val unlockPremiumPatch = bytecodePatch(
         // Prevent revocation
         QonversionCheckEntitlementsFingerprint.method.returnEarly()
 
-        // Onboarding paywall
+        TraktUserVipFingerprint.method.returnEarly(true)
+
+        // Fallback for paywall routes not gated by VIP
         TraktLoginPaywallNavigationFingerprint.method.apply {
             val actionIdConstIndex = TraktLoginPaywallNavigationFingerprint.instructionMatches[0].index
             val actionIdRegister = getInstruction<OneRegisterInstruction>(actionIdConstIndex).registerA
-            val actionId = getResourceId(ResourceType.ID, "actionNavigateProgressFragment")!!
+            val actionId = getResourceId(ResourceType.ID, "actionNavigateProgressFragment")
+                ?: throw PatchException("Could not find the progress fragment navigation action")
 
             replaceInstruction(actionIdConstIndex, "const v$actionIdRegister, 0x${actionId.toString(16)}")
         }
