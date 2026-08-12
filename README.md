@@ -17,7 +17,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.3.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.3.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;11 patches total
+> **[v1.4.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.4.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;12 patches total
 <details open>
 <summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
@@ -45,7 +45,7 @@ identify each app. They are not covered by this repository's licence. See
 | Patch | Description |
 |----------|----------------|
 | <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](#showly-amoled-dark-theme) | Replaces the dark theme background with pure black. |
-| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |
+| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included. |
 
 </details>
 
@@ -57,6 +57,16 @@ identify each app. They are not covered by this repository's licence. See
 |----------|----------------|
 | <a id="projectivy-launcher-disable-tracking"></a>[Disable tracking](#projectivy-launcher-disable-tracking) | Disables analytics and crash reporting. |
 | <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](#projectivy-launcher-unlock-premium) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary>Audible&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="audible-open-library-on-launch"></a>[Open Library on launch](#audible-open-library-on-launch) | Opens the Library tab instead of Home on launch. Applies only while signed in. |
 
 </details>
 
@@ -76,7 +86,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **Supported versions:**
 
-| 43.8.3 |
+| 46.2.3 |
 | :---: |
 
 | Bundle | Description |

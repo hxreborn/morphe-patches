@@ -1,3 +1,14 @@
+## [1.4.0](https://github.com/hxreborn/morphe-patches/compare/v1.3.0...v1.4.0) (2026-08-12)
+
+### Bug Fixes
+
+* **Projectivy - Disable tracking:** pin the crashlytics URL builder for the host redirect ([f3e1d90](https://github.com/hxreborn/morphe-patches/commit/f3e1d9006946882818a21900627c426159321994))
+
+### New Features
+
+* **Audible - Open Library on launch:** add patch ([50d9870](https://github.com/hxreborn/morphe-patches/commit/50d9870841542e8c487296eca61a9f0e92522bf8))
+* **Showly - Unlock premium:** force Trakt VIP to skip the paywall ([a7ec4fc](https://github.com/hxreborn/morphe-patches/commit/a7ec4fcb4c149a2e2e2f9bedfb7295f6d43ea47a))
+
 ## [1.3.0](https://github.com/hxreborn/morphe-patches/compare/v1.2.0...v1.3.0) (2026-08-05)
 
 ### New Features
