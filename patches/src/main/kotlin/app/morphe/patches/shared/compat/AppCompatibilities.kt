@@ -27,6 +27,13 @@ internal object AppCompatibilities {
         appIconColor = 0x0772BA,
     )
 
+    val PERPLEXITY = Compatibility(
+        name = "Perplexity",
+        packageName = "ai.perplexity.app.android",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x20808D,
+    )
+
     val PROJECTIVY = Compatibility(
         name = "Projectivy Launcher",
         packageName = "com.spocky.projengmenu",
