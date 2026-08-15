@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/hxreborn/morphe-patches/compare/v1.5.0...v1.5.1) (2026-08-15)
+
+### Bug Fixes
+
+* **Symfonium - Unlock premium:** force the native key check that halts playback ([f35b796](https://github.com/hxreborn/morphe-patches/commit/f35b796d57999dc69b3d7cbaf059cebb3aa2f1a1))
+
 ## [1.5.0](https://github.com/hxreborn/morphe-patches/compare/v1.4.0...v1.5.0) (2026-08-15)
 
 ### New Features
