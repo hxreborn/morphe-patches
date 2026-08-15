@@ -21,7 +21,8 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.SYMFONIUM)
 
     execute {
-        val licenseManager = LicenseKeyCheckFingerprint.matchSingle().classDef
+        val keyCheck = LicenseKeyCheckFingerprint.matchSingle()
+        val licenseManager = keyCheck.classDef
 
         val isLicensed = licenseManager.methods.single {
             it.returnType == "Z" && it.parameters.isEmpty()
@@ -35,6 +36,14 @@ val unlockPremiumPatch = bytecodePatch(
         licenseManager.methods
             .single { it.returnType == "V" && it.parameters.singleOrNull()?.type == "J" }
             .addInstructions(0, "const-wide p1, ${licensedState}L")
+
+        keyCheck.method.addInstructions(
+            0,
+            """
+                sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
+                return-object v0
+            """,
+        )
 
         NativeVerdictHandlerFingerprint.matchSingle().method.returnEarly()
     }
