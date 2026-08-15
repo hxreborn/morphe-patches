@@ -56,4 +56,15 @@ internal object AppCompatibilities {
         appIconColor = 0xF44336,
         targets = listOf(AppTarget(version = "3.70.0", versionCode = 840, minSdk = 23)),
     )
+
+    val SYMFONIUM = Compatibility(
+        name = "Symfonium",
+        packageName = "app.symfonik.music.player",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0xE22728,
+        targets = listOf(
+            AppTarget(version = "14.0.0", versionCode = 127708, minSdk = 28),
+            AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 32),
+        ),
+    )
 }
