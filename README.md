@@ -61,7 +61,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>Audible&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | Patch | Description |
@@ -81,7 +81,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/symfonium.png" width="18" align="top">&nbsp;&nbsp;Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **Supported versions:**

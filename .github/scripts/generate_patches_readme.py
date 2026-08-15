@@ -143,6 +143,8 @@ ICONS = {
     "com.michaldrabik.showly2": "showly.png",
     "com.zhiliaoapp.musically": "tiktok.png",
     "ch.protonmail.android": "protonmail.png",
+    "com.audible.application": "audible.png",
+    "app.symfonik.music.player": "symfonium.png",
 }
 
 
