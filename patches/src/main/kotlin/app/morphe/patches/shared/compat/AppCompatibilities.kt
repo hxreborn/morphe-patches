@@ -74,4 +74,12 @@ internal object AppCompatibilities {
             AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 32),
         ),
     )
+
+    val TRAINLINE = Compatibility(
+        name = "Trainline",
+        packageName = "com.thetrainline",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x00A88F,
+        targets = listOf(AppTarget(version = "407.0.0.178994", versionCode = 1278994, minSdk = 26)),
+    )
 }
