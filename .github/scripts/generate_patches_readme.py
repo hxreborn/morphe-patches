@@ -148,7 +148,7 @@ ICONS = {
 }
 
 
-TIKTOK_REPO = "hxreborn/tiktok-patches-for-morphe"
+TIKTOK_REPO = "hxreborn/hxreborn-tiktok-patches"
 TIKTOK_PKG = "com.zhiliaoapp.musically"
 TIKTOK_LIST = f"https://raw.githubusercontent.com/{TIKTOK_REPO}/main/patches-list.json"
 
@@ -234,7 +234,7 @@ def build_content(expanded=False):
 
 {tiktok_section}| Bundle | Description |
 |----------|----------------|
-| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe) |
+| [hxreborn-tiktok-patches](https://github.com/{TIKTOK_REPO}) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github={TIKTOK_REPO}) |
 
 </details>""")
     lines.append("")
