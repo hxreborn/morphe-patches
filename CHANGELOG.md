@@ -1,3 +1,10 @@
+## [1.6.0](https://github.com/hxreborn/morphe-patches/compare/v1.5.1...v1.6.0) (2026-08-16)
+
+### New Features
+
+* **Audible - Hide membership upselling:** add patch ([7898c5f](https://github.com/hxreborn/morphe-patches/commit/7898c5fc603a0455641d3eff17dc107582c45ea5))
+* **Perplexity - AMOLED dark theme:** add patch ([279ce08](https://github.com/hxreborn/morphe-patches/commit/279ce0849ddec8ffbab58b3add0a4fdaea787528))
+
 ## [1.5.1](https://github.com/hxreborn/morphe-patches/compare/v1.5.0...v1.5.1) (2026-08-15)
 
 ### Bug Fixes

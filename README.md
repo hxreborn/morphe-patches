@@ -17,7 +17,17 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.5.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;13 patches total
+> **[v1.6.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.6.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;15 patches total
+<details open>
+<summary>Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="perplexity-amoled-dark-theme"></a>[AMOLED dark theme](#perplexity-amoled-dark-theme) | Replaces the dark theme background with pure black. |
+
+</details>
+
 <details open>
 <summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
@@ -61,11 +71,12 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 | Patch | Description |
 |----------|----------------|
+| <a id="audible-hide-membership-upselling"></a>[Hide membership upselling](#audible-hide-membership-upselling) | Hides the membership promotion on the Home screen and the free trial bottom sheet. |
 | <a id="audible-open-library-on-launch"></a>[Open Library on launch](#audible-open-library-on-launch) | Opens the Library tab instead of Home on launch. Applies only while signed in. |
 
 </details>
