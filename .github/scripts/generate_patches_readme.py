@@ -145,6 +145,8 @@ ICONS = {
     "ch.protonmail.android": "protonmail.png",
     "com.audible.application": "audible.png",
     "app.symfonik.music.player": "symfonium.png",
+    "ai.perplexity.app.android": "perplexity.png",
+    "com.thetrainline": "trainline.png",
 }
 
 

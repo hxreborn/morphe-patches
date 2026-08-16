@@ -25,6 +25,8 @@ Every icon was taken from the developer's own published listing or source reposi
 | `protonmail.png` | Proton Mail (`ch.protonmail.android`) | Proton AG | [Google Play listing](https://play.google.com/store/apps/details?id=ch.protonmail.android) (`og:image`) |
 | `audible.png` | Audible (`com.audible.application`) | Audible, Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=com.audible.application) (`og:image`) |
 | `symfonium.png` | Symfonium (`app.symfonik.music.player`) | Tolriq | [Google Play listing](https://play.google.com/store/apps/details?id=app.symfonik.music.player) (`og:image`) |
+| `perplexity.png` | Perplexity (`ai.perplexity.app.android`) | PerplexityAI | [Google Play listing](https://play.google.com/store/apps/details?id=ai.perplexity.app.android) (`og:image`) |
+| `trainline.png` | Trainline (`com.thetrainline`) | trainline | [Google Play listing](https://play.google.com/store/apps/details?id=com.thetrainline) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The rest are used under nominative fair use only, with no
