@@ -147,6 +147,7 @@ ICONS = {
     "app.symfonik.music.player": "symfonium.png",
     "ai.perplexity.app.android": "perplexity.png",
     "com.thetrainline": "trainline.png",
+    "org.readera": "readera.png",
 }
 
 
