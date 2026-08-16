@@ -22,9 +22,15 @@ Every icon was taken from the developer's own published listing or source reposi
 | `forus.png` | ForusApp (`com.myvitale.forus`) | MyVitale | [Google Play listing](https://play.google.com/store/apps/details?id=com.myvitale.forus) (`og:image`) |
 | `showly.png` | Showly (`com.michaldrabik.showly2`) | Michał Drabik / Trakt | [`trakt/showly`](https://github.com/trakt/showly), `fastlane/metadata/android/en-US/images/icon.png` |
 | `tiktok.png` | TikTok (`com.zhiliaoapp.musically`) | TikTok Pte. Ltd. | [Google Play listing](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically) (`og:image`) |
+| `protonmail.png` | Proton Mail (`ch.protonmail.android`) | Proton AG | [Google Play listing](https://play.google.com/store/apps/details?id=ch.protonmail.android) (`og:image`) |
+| `audible.png` | Audible (`com.audible.application`) | Audible, Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=com.audible.application) (`og:image`) |
+| `symfonium.png` | Symfonium (`app.symfonik.music.player`) | Tolriq | [Google Play listing](https://play.google.com/store/apps/details?id=app.symfonik.music.player) (`og:image`) |
+| `perplexity.png` | Perplexity (`ai.perplexity.app.android`) | PerplexityAI | [Google Play listing](https://play.google.com/store/apps/details?id=ai.perplexity.app.android) (`og:image`) |
+| `trainline.png` | Trainline (`com.thetrainline`) | trainline | [Google Play listing](https://play.google.com/store/apps/details?id=com.thetrainline) (`og:image`) |
+| `readera.png` | ReadEra (`org.readera`) | READERA LLC | [Google Play listing](https://play.google.com/store/apps/details?id=org.readera) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
-compatible with this one. The other two are used under nominative fair use only, with no
+compatible with this one. The rest are used under nominative fair use only, with no
 licence claimed.
 
 ## Removal

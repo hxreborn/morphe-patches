@@ -131,3 +131,9 @@ local.properties
 
 # Ignore Dolphin folder metadata
 .directory
+
+# Ignore local Gradle daemon toolchain pin
+gradle/gradle-daemon-jvm.properties
+
+# Ignore Kotlin language server index
+kls_database.db

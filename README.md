@@ -17,9 +17,19 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.1.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.1.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;8 patches total
+> **[v1.7.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.7.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;17 patches total
 <details open>
-<summary>Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="perplexity-amoled-dark-theme"></a>[AMOLED dark theme](#perplexity-amoled-dark-theme) | Replaces the dark theme background with pure black. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **Supported versions:**
@@ -33,6 +43,19 @@ identify each app. They are not covered by this repository's licence. See
 | <a id="proton-mail-hide-upgrade-upselling"></a>[Hide upgrade upselling](#proton-mail-hide-upgrade-upselling) | Hides the top-bar upgrade button and promotional sidebar rows. |
 | <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](#proton-mail-remove-sent-from-signature) | Removes the 'Sent from Proton Mail' signature from emails. |
 | <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](#proton-mail-remove-free-accounts-limit) | Removes the limit for maximum free accounts logged in. |
+| <a id="proton-mail-spoof-signature"></a>[Spoof signature](#proton-mail-spoof-signature) | Restores push notifications by spoofing the original app signature. |
+| <a id="proton-mail-unlock-custom-time-picker"></a>[Unlock custom time picker](#proton-mail-unlock-custom-time-picker) | Enables picking a custom date and time when snoozing conversations and scheduling messages. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](#showly-amoled-dark-theme) | Replaces the dark theme background with pure black. |
+| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included. |
 
 </details>
 
@@ -48,6 +71,47 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/trainline.png" width="18" align="top">&nbsp;&nbsp;Trainline&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported versions:**
+
+| 407.0.0.178994 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="trainline-hide-ads"></a>[Hide ads](#trainline-hide-ads) | Removes the adverts shown between search results. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="audible-hide-membership-upselling"></a>[Hide membership upselling](#audible-hide-membership-upselling) | Hides the membership promotion on the Home screen and the free trial bottom sheet. |
+| <a id="audible-open-library-on-launch"></a>[Open Library on launch](#audible-open-library-on-launch) | Opens the Library tab instead of Home on launch. Applies only while signed in. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported versions:**
+
+| 26.05.20+2300 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="readera-remove-nags"></a>[Remove nags](#readera-remove-nags) | Removes the rate this app dialog and the promotional dialogs shown on startup. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/forus.png" width="18" align="top">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -58,12 +122,17 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/symfonium.png" width="18" align="top">&nbsp;&nbsp;Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
+
+**Supported versions:**
+
+| 14.0.0 | 14.1.0 |
+| :---: | :---: |
 
 | Patch | Description |
 |----------|----------------|
-| <a id="showly-unlock-premium"></a>[Unlock premium](#showly-unlock-premium) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. |
+| <a id="symfonium-unlock-premium"></a>[Unlock premium](#symfonium-unlock-premium) | Unlocks all premium features. |
 
 </details>
 
@@ -71,9 +140,14 @@ identify each app. They are not covered by this repository's licence. See
 <summary><img src=".github/assets/icons/tiktok.png" width="18" align="top">&nbsp;&nbsp;TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
 <br>
 
+**Supported versions:**
+
+| 46.2.3 |
+| :---: |
+
 | Bundle | Description |
 |----------|----------------|
-| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe) |
+| [hxreborn-tiktok-patches](https://github.com/hxreborn/hxreborn-tiktok-patches) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/hxreborn-tiktok-patches) |
 
 </details>
 

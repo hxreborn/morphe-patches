@@ -1,3 +1,53 @@
+## [1.7.0](https://github.com/hxreborn/morphe-patches/compare/v1.6.0...v1.7.0) (2026-08-16)
+
+### New Features
+
+* **ReadEra - Remove nags:** add patch ([dbd52e3](https://github.com/hxreborn/morphe-patches/commit/dbd52e341cdc9b4a79da86624e4994279963bc2b))
+* **Trainline - Hide ads:** add patch ([9903161](https://github.com/hxreborn/morphe-patches/commit/9903161c8a416c641ee46d8147c8f8a5a707f54b))
+
+## [1.6.0](https://github.com/hxreborn/morphe-patches/compare/v1.5.1...v1.6.0) (2026-08-16)
+
+### New Features
+
+* **Audible - Hide membership upselling:** add patch ([7898c5f](https://github.com/hxreborn/morphe-patches/commit/7898c5fc603a0455641d3eff17dc107582c45ea5))
+* **Perplexity - AMOLED dark theme:** add patch ([279ce08](https://github.com/hxreborn/morphe-patches/commit/279ce0849ddec8ffbab58b3add0a4fdaea787528))
+
+## [1.5.1](https://github.com/hxreborn/morphe-patches/compare/v1.5.0...v1.5.1) (2026-08-15)
+
+### Bug Fixes
+
+* **Symfonium - Unlock premium:** force the native key check that halts playback ([f35b796](https://github.com/hxreborn/morphe-patches/commit/f35b796d57999dc69b3d7cbaf059cebb3aa2f1a1))
+
+## [1.5.0](https://github.com/hxreborn/morphe-patches/compare/v1.4.0...v1.5.0) (2026-08-15)
+
+### New Features
+
+* **Symfonium - Unlock premium:** add patch ([52dcd24](https://github.com/hxreborn/morphe-patches/commit/52dcd24a62042f59f0339d67e3c1d556b499644c))
+
+## [1.4.0](https://github.com/hxreborn/morphe-patches/compare/v1.3.0...v1.4.0) (2026-08-12)
+
+### Bug Fixes
+
+* **Projectivy - Disable tracking:** pin the crashlytics URL builder for the host redirect ([f3e1d90](https://github.com/hxreborn/morphe-patches/commit/f3e1d9006946882818a21900627c426159321994))
+
+### New Features
+
+* **Audible - Open Library on launch:** add patch ([50d9870](https://github.com/hxreborn/morphe-patches/commit/50d9870841542e8c487296eca61a9f0e92522bf8))
+* **Showly - Unlock premium:** force Trakt VIP to skip the paywall ([a7ec4fc](https://github.com/hxreborn/morphe-patches/commit/a7ec4fcb4c149a2e2e2f9bedfb7295f6d43ea47a))
+
+## [1.3.0](https://github.com/hxreborn/morphe-patches/compare/v1.2.0...v1.3.0) (2026-08-05)
+
+### New Features
+
+* **Proton Mail - Spoof signature:** restore push notifications on patched installs ([28ab0f9](https://github.com/hxreborn/morphe-patches/commit/28ab0f97eb618e1b18dac7e00b3f1bab3f9c7cac))
+* **Proton Mail - Unlock custom time picker:** add patch ([83657d5](https://github.com/hxreborn/morphe-patches/commit/83657d5d67fe7036d39e699690233c33db1ca001))
+
+## [1.2.0](https://github.com/hxreborn/morphe-patches/compare/v1.1.1...v1.2.0) (2026-08-03)
+
+### New Features
+
+* **Showly - AMOLED dark theme:** add patch ([#16](https://github.com/hxreborn/morphe-patches/issues/16)) ([794378d](https://github.com/hxreborn/morphe-patches/commit/794378de8e2d71feb6d02b79af8ca26c2832714c))
+
 ## [1.1.1](https://github.com/hxreborn/morphe-patches/compare/v1.1.0...v1.1.1) (2026-08-01)
 
 ### Bug Fixes

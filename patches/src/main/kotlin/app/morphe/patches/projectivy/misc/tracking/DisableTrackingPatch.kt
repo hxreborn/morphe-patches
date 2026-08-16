@@ -20,6 +20,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
 import app.morphe.util.getReference
+import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -38,14 +39,14 @@ val disableTrackingPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PROJECTIVY)
 
     execute {
-        AnalyticsEventFingerprint.method.returnEarly()
+        AnalyticsEventFingerprint.matchSingle().method.returnEarly()
 
-        FirebaseConfigFingerprint.method.returnEarly()
+        FirebaseConfigFingerprint.matchSingle().method.returnEarly()
 
-        AdvertisingIdClientConnectFingerprint.method.returnEarly()
+        AdvertisingIdClientConnectFingerprint.matchSingle().method.returnEarly()
 
         redirectedHosts.forEach { (fingerprint: Fingerprint, host: String) ->
-            fingerprint.method.apply {
+            fingerprint.matchSingle().method.apply {
                 findInstructionIndicesReversed {
                     opcode == Opcode.CONST_STRING &&
                         getReference<StringReference>()?.string?.contains(host) == true

@@ -14,6 +14,7 @@ import json
 import re
 import sys
 import os
+import urllib.request
 from pathlib import Path
 
 
@@ -141,7 +142,47 @@ ICONS = {
     "com.myvitale.forus": "forus.png",
     "com.michaldrabik.showly2": "showly.png",
     "com.zhiliaoapp.musically": "tiktok.png",
+    "ch.protonmail.android": "protonmail.png",
+    "com.audible.application": "audible.png",
+    "app.symfonik.music.player": "symfonium.png",
+    "ai.perplexity.app.android": "perplexity.png",
+    "com.thetrainline": "trainline.png",
+    "org.readera": "readera.png",
 }
+
+
+TIKTOK_REPO = "hxreborn/hxreborn-tiktok-patches"
+TIKTOK_PKG = "com.zhiliaoapp.musically"
+TIKTOK_LIST = f"https://raw.githubusercontent.com/{TIKTOK_REPO}/main/patches-list.json"
+
+
+def sibling_targets(url, pkg):
+    try:
+        with urllib.request.urlopen(url, timeout=10) as response:
+            data = json.load(response)
+    except Exception:
+        return []
+
+    versions = []
+    for patch in data.get("patches", []):
+        compatible = patch.get("compatiblePackages")
+        if isinstance(compatible, dict):
+            found = compatible.get(pkg) or []
+        elif isinstance(compatible, list):
+            found = [
+                t.get("version")
+                for entry in compatible
+                if entry.get("packageName") == pkg
+                for t in entry.get("targets") or []
+            ]
+        else:
+            continue
+
+        for version in found:
+            if version and version not in versions:
+                versions.append(version)
+
+    return [{"version": version} for version in versions]
 
 
 def icon_img(pkg):
@@ -187,13 +228,16 @@ def build_content(expanded=False):
 
     # TikTok ships as its own bundle, so it has no entry in patches-list.json.
     # Rendered here so the catalog lists it alongside the apps in this bundle.
+    tiktok_versions = versions_table(sibling_targets(TIKTOK_LIST, TIKTOK_PKG))
+    tiktok_section = f"**Supported versions:**\n\n{tiktok_versions}\n\n" if tiktok_versions else ""
+
     lines.append(f"""{"<details open>" if expanded else "<details>"}
-<summary>{icon_img("com.zhiliaoapp.musically")}TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
+<summary>{icon_img(TIKTOK_PKG)}TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
 <br>
 
-| Bundle | Description |
+{tiktok_section}| Bundle | Description |
 |----------|----------------|
-| [tiktok-patches-for-morphe](https://github.com/hxreborn/tiktok-patches-for-morphe) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github=hxreborn/tiktok-patches-for-morphe) |
+| [hxreborn-tiktok-patches](https://github.com/{TIKTOK_REPO}) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github={TIKTOK_REPO}) |
 
 </details>""")
     lines.append("")
