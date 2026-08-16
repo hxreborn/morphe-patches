@@ -17,9 +17,9 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.6.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.6.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;15 patches total
+> **[v1.7.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.7.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;17 patches total
 <details open>
-<summary>Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | Patch | Description |
@@ -71,6 +71,21 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/trainline.png" width="18" align="top">&nbsp;&nbsp;Trainline&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported versions:**
+
+| 407.0.0.178994 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="trainline-hide-ads"></a>[Hide ads](#trainline-hide-ads) | Removes the adverts shown between search results. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -78,6 +93,21 @@ identify each app. They are not covered by this repository's licence. See
 |----------|----------------|
 | <a id="audible-hide-membership-upselling"></a>[Hide membership upselling](#audible-hide-membership-upselling) | Hides the membership promotion on the Home screen and the free trial bottom sheet. |
 | <a id="audible-open-library-on-launch"></a>[Open Library on launch](#audible-open-library-on-launch) | Opens the Library tab instead of Home on launch. Applies only while signed in. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported versions:**
+
+| 26.05.20+2300 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="readera-remove-nags"></a>[Remove nags](#readera-remove-nags) | Removes the rate this app dialog and the promotional dialogs shown on startup. |
 
 </details>
 

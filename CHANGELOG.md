@@ -1,3 +1,10 @@
+## [1.7.0](https://github.com/hxreborn/morphe-patches/compare/v1.6.0...v1.7.0) (2026-08-16)
+
+### New Features
+
+* **ReadEra - Remove nags:** add patch ([dbd52e3](https://github.com/hxreborn/morphe-patches/commit/dbd52e341cdc9b4a79da86624e4994279963bc2b))
+* **Trainline - Hide ads:** add patch ([9903161](https://github.com/hxreborn/morphe-patches/commit/9903161c8a416c641ee46d8147c8f8a5a707f54b))
+
 ## [1.6.0](https://github.com/hxreborn/morphe-patches/compare/v1.5.1...v1.6.0) (2026-08-16)
 
 ### New Features
