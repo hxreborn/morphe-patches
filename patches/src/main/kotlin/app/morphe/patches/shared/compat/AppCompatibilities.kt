@@ -49,6 +49,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.10.4", versionCode = 17667, minSdk = 29)),
     )
 
+    val READERA = Compatibility(
+        name = "ReadEra",
+        packageName = "org.readera",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x0061BD,
+        targets = listOf(AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16)),
+    )
+
     val SHOWLY = Compatibility(
         name = "Showly",
         packageName = "com.michaldrabik.showly2",
