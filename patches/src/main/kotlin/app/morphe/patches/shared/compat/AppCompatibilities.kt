@@ -35,6 +35,14 @@ internal object AppCompatibilities {
         appIconColor = 0x0772BA,
     )
 
+    val GAMMA_SCAN = Compatibility(
+        name = "QR & Barcode Scanner",
+        packageName = "com.gamma.scan",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x2196F3,
+        targets = listOf(AppTarget(version = "2.2.221", versionCode = 221, minSdk = 24)),
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",
