@@ -20,6 +20,14 @@ internal object AppCompatibilities {
         appIconColor = 0xF8991C,
     )
 
+    val ETSY = Compatibility(
+        name = "Etsy",
+        packageName = "com.etsy.android",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0xF1641E,
+        targets = listOf(AppTarget(version = "7.90.0", versionCode = 79000153, minSdk = 32)),
+    )
+
     val FORUS = Compatibility(
         name = "ForusApp",
         packageName = "com.myvitale.forus",
