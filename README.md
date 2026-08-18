@@ -17,7 +17,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.7.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.7.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;17 patches total
+> **[v1.8.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.8.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;19 patches total
 <details open>
 <summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
@@ -67,6 +67,36 @@ identify each app. They are not covered by this repository's licence. See
 |----------|----------------|
 | <a id="projectivy-launcher-disable-tracking"></a>[Disable tracking](#projectivy-launcher-disable-tracking) | Disables analytics and crash reporting. |
 | <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](#projectivy-launcher-unlock-premium) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary>Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported versions:**
+
+| 7.90.0 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="etsy-hide-ads"></a>[Hide ads](#etsy-hide-ads) | Removes promoted listings and the "with Ads" label from search results. |
+
+</details>
+
+<details open>
+<summary>QR & Barcode Scanner&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported versions:**
+
+| 2.2.221 |
+| :---: |
+
+| Patch | Description |
+|----------|----------------|
+| <a id="qr-barcode-scanner-hide-ads"></a>[Hide ads](#qr-barcode-scanner-hide-ads) | Disables banner, interstitial, and native ads. |
 
 </details>
 

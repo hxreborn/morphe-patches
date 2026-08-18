@@ -1,3 +1,10 @@
+## [1.8.0](https://github.com/hxreborn/morphe-patches/compare/v1.7.0...v1.8.0) (2026-08-18)
+
+### New Features
+
+* **Etsy - Hide ads:** drop promoted listings from search results ([856b590](https://github.com/hxreborn/morphe-patches/commit/856b590fe7cbe7165ae4fb2a0563f4f9cd98de5b))
+* **QR & Barcode Scanner - Hide ads:** disable all AdMob ad loads ([337350a](https://github.com/hxreborn/morphe-patches/commit/337350a1d3775652bb40f869a07149f5ea59c5be))
+
 ## [1.7.0](https://github.com/hxreborn/morphe-patches/compare/v1.6.0...v1.7.0) (2026-08-16)
 
 ### New Features
