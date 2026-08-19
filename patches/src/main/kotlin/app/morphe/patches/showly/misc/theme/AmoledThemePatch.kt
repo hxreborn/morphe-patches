@@ -15,7 +15,6 @@ private const val BLACK = "#000000"
 
 private val COLOR_RESOURCE_NAMES = setOf(
     "colorBackground",
-    "colorPrimary",
     "colorPrimaryDark",
 )
 
