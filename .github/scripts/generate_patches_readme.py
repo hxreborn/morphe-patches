@@ -148,6 +148,9 @@ ICONS = {
     "ai.perplexity.app.android": "perplexity.png",
     "com.thetrainline": "trainline.png",
     "org.readera": "readera.png",
+    "com.kick.mobile": "kick.png",
+    "com.etsy.android": "etsy.png",
+    "com.gamma.scan": "qrscanner.png",
 }
 
 

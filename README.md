@@ -19,7 +19,7 @@ identify each app. They are not covered by this repository's licence. See
 <!-- PATCHES_START EXPANDED -->
 > **[v1.9.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.9.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;20 patches total
 <details open>
-<summary>Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/kick.png" width="18" align="top">&nbsp;&nbsp;Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 | Patch | Description |
@@ -81,7 +81,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/etsy.png" width="18" align="top">&nbsp;&nbsp;Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **Supported versions:**
@@ -96,7 +96,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>QR & Barcode Scanner&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/qrscanner.png" width="18" align="top">&nbsp;&nbsp;QR & Barcode Scanner&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **Supported versions:**
