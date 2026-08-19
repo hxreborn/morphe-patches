@@ -1,3 +1,13 @@
+## [1.9.0](https://github.com/hxreborn/morphe-patches/compare/v1.8.0...v1.9.0) (2026-08-19)
+
+### Bug Fixes
+
+* **Perplexity - AMOLED dark theme:** stop blackening the raised surface ([288a1ea](https://github.com/hxreborn/morphe-patches/commit/288a1eab9249cc424c9000d9825ea5b72b94df0f))
+
+### New Features
+
+* **Kick - AMOLED dark theme:** add patch ([3f35f90](https://github.com/hxreborn/morphe-patches/commit/3f35f90bc83642f208b2614b70eb84ed0c1d7d11))
+
 ## [1.8.0](https://github.com/hxreborn/morphe-patches/compare/v1.7.0...v1.8.0) (2026-08-18)
 
 ### New Features

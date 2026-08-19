@@ -17,7 +17,17 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.8.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.8.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;19 patches total
+> **[v1.9.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.9.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;20 patches total
+<details open>
+<summary>Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| Patch | Description |
+|----------|----------------|
+| <a id="kick-amoled-dark-theme"></a>[AMOLED dark theme](#kick-amoled-dark-theme) | Replaces the dark theme background with pure black. Disables over-the-air updates that would restore the original background. |
+
+</details>
+
 <details open>
 <summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
