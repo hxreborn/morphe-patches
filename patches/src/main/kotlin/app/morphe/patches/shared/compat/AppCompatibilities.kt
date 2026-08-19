@@ -43,6 +43,13 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.2.221", versionCode = 221, minSdk = 24)),
     )
 
+    val KICK = Compatibility(
+        name = "Kick",
+        packageName = "com.kick.mobile",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x53FC18,
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",
