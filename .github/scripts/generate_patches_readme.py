@@ -70,13 +70,56 @@ def slug(text):
     return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", text.lower())).strip("-")
 
 
-def patches_table(patches, app_slug):
+PATCHES_SRC  = Path("patches/src/main/kotlin")
+COMPAT_FILE  = PATCHES_SRC / "app/morphe/patches/shared/compat/AppCompatibilities.kt"
+
+
+def build_source_index():
+    """Map (patch name, packageName) -> source file. Patch names repeat across apps,
+    so the compatibility constant is what tells three "Unlock premium" patches apart."""
+    if not PATCHES_SRC.is_dir():
+        return {}
+
+    compat = {}
+    if COMPAT_FILE.is_file():
+        text = COMPAT_FILE.read_text(encoding="utf-8")
+        for const, body in re.findall(r"val (\w+) = Compatibility\((.*?)\n    \)", text, re.DOTALL):
+            pkg = re.search(r'packageName = "([^"]+)"', body)
+            if pkg:
+                compat[const] = pkg.group(1)
+
+    index = {}
+    for path in PATCHES_SRC.rglob("*.kt"):
+        if path == COMPAT_FILE:
+            continue
+        text = path.read_text(encoding="utf-8")
+        names = re.findall(r'^\s{4}name = "([^"]+)"', text, re.MULTILINE)
+        if not names:
+            continue
+        consts = re.findall(r"compatibleWith\(\s*AppCompatibilities\.(\w+)", text)
+        pkgs = [compat.get(c) for c in consts] or [None]
+        for name in names:
+            for pkg in pkgs:
+                index.setdefault((name, pkg), path.as_posix())
+    return index
+
+
+SOURCES = build_source_index()
+
+
+def patch_cell(patch, pkg, pid):
+    source = SOURCES.get((patch["name"], pkg))
+    label = f'[{patch["name"]}]({source})' if source else patch["name"]
+    return f'<a id="{pid}"></a>{label}'
+
+
+def patches_table(patches, app_slug, pkg=None):
     """Render a sorted markdown table of patches with name, description, and options.
 
-    Each patch name carries an explicit <a id="app-patch"> anchor. The app slug is
-    part of the id because patch names repeat across apps (three "Unlock premium"
-    patches here), and GitHub's heading-derived ids would collide and get -1/-2
-    suffixes that shift whenever the list changes.
+    Each patch name links to its source file and carries an explicit <a id="app-patch">
+    anchor for deep links. The app slug is part of the id because patch names repeat
+    across apps (three "Unlock premium" patches here), and GitHub's heading-derived ids
+    would collide and get -1/-2 suffixes that shift whenever the list changes.
 
     The Options column is omitted entirely when no patch in the table has options,
     so it never renders as an empty column that looks broken.
@@ -85,13 +128,13 @@ def patches_table(patches, app_slug):
     has_options = any(p.get("options") for p in patches)
 
     if has_options:
-        rows = ["| Patch | Description | Options |", "|----------|----------------|-----------|"]
+        rows = ["| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |", "|----------|----------------|-----------|"]
     else:
-        rows = ["| Patch | Description |", "|----------|----------------|"]
+        rows = ["| 💊&nbsp;Patch | 📜&nbsp;Description |", "|----------|----------------|"]
 
     for p in patches:
         pid = f"{app_slug}-{slug(p['name'])}"
-        cell = f'<a id="{pid}"></a>[{p["name"]}](#{pid})'
+        cell = patch_cell(p, pkg, pid)
         desc = (p.get("description") or "").replace("\n", "<br>")
         if not has_options:
             rows.append(f"| {cell} | {desc} |")
@@ -117,7 +160,7 @@ def versions_table(targets):
         ver   = t["version"]
         if ver is None:
             continue
-        label = f"{ver} (experimental)" if t.get("isExperimental") else ver
+        label = f"🧪&nbsp;{ver}" if t.get("isExperimental") else ver
         cells.append(label)
 
     if not cells:
@@ -189,11 +232,11 @@ def sibling_targets(url, pkg):
 
 
 def icon_img(pkg):
-    """Inline <img> for an app, or empty string if we have no icon for it.
+    """Inline <img> for an app, or a generic package emoji when it has no icon.
     Relative path so it resolves on any branch and in forks."""
     filename = ICONS.get(pkg)
     if not filename:
-        return ""
+        return "📦&nbsp;"
     return f'<img src=".github/assets/icons/{filename}" width="18" align="top">&nbsp;&nbsp;'
 
 
@@ -203,7 +246,7 @@ def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     """
     noun = "patch" if count == 1 else "patches"
     vtbl = versions_table(targets)
-    versions_section = f"**Supported versions:**\n\n{vtbl}\n\n" if vtbl else ""
+    versions_section = f"**🎯 Supported versions:**\n\n{vtbl}\n\n" if vtbl else ""
     tag = "<details open>" if expanded else "<details>"
     return f"""{tag}
 <summary>{icon_img(pkg)}{label}&nbsp;&nbsp;•&nbsp;&nbsp;{count} {noun}</summary>
@@ -226,19 +269,19 @@ def build_content(expanded=False):
     for pkg, entry in by_pkg.items():
         patches = list(entry["patches"].values())
         label   = entry["name"]
-        lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches, slug(label)), expanded, pkg))
+        lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches, slug(label), pkg), expanded, pkg))
         lines.append("")
 
     # TikTok ships as its own bundle, so it has no entry in patches-list.json.
     # Rendered here so the catalog lists it alongside the apps in this bundle.
     tiktok_versions = versions_table(sibling_targets(TIKTOK_LIST, TIKTOK_PKG))
-    tiktok_section = f"**Supported versions:**\n\n{tiktok_versions}\n\n" if tiktok_versions else ""
+    tiktok_section = f"**🎯 Supported versions:**\n\n{tiktok_versions}\n\n" if tiktok_versions else ""
 
     lines.append(f"""{"<details open>" if expanded else "<details>"}
 <summary>{icon_img(TIKTOK_PKG)}TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
 <br>
 
-{tiktok_section}| Bundle | Description |
+{tiktok_section}| 📦&nbsp;Bundle | 📜&nbsp;Description |
 |----------|----------------|
 | [hxreborn-tiktok-patches](https://github.com/{TIKTOK_REPO}) | Not part of this bundle, so it has to be added to Morphe as its own patch source. Forked from [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe). [Add to Morphe](https://morphe.software/add-source?github={TIKTOK_REPO}) |
 
@@ -251,7 +294,7 @@ def build_content(expanded=False):
         noun = "patch" if len(uni_patches) == 1 else "patches"
         tag  = "<details open>" if expanded else "<details>"
         lines.append(f"""{tag}
-<summary>Universal&nbsp;&nbsp;•&nbsp;&nbsp;{len(uni_patches)} {noun}</summary>
+<summary>🌐&nbsp;Universal&nbsp;&nbsp;•&nbsp;&nbsp;{len(uni_patches)} {noun}</summary>
 <br>
 
 {patches_table(uni_patches, "universal")}
