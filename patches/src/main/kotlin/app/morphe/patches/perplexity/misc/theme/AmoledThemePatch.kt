@@ -15,6 +15,10 @@ import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val ALPHA_MASK = 0xFF000000L
+private const val RGB_MASK = 0x00FFFFFFL
+private const val OPAQUE = 0xFFL
+private const val BACKGROUND_CHANNEL = 0x17L
+private const val TINT_CHANNEL = 0xD6L
 private const val BLACK = "#000000"
 private const val SPLASH_COLOR_NAME = "background"
 
@@ -24,6 +28,17 @@ private fun MutableMethod.replaceColorWithBlack(color: Long) {
     val black = color and ALPHA_MASK
 
     replaceInstruction(index, "const-wide v$register, 0x${black.toString(16)}L")
+}
+
+private fun MutableMethod.matchTintToBlack(color: Long) {
+    val index = indexOfFirstLiteralInstructionOrThrow(color)
+    val register = getInstruction<OneRegisterInstruction>(index).registerA
+    val alpha = color ushr 24
+    val blended = BACKGROUND_CHANNEL + (TINT_CHANNEL - BACKGROUND_CHANNEL) * alpha / OPAQUE
+    val matched = (blended * OPAQUE + TINT_CHANNEL / 2) / TINT_CHANNEL
+    val tint = (matched shl 24) or (color and RGB_MASK)
+
+    replaceInstruction(index, "const v$register, 0x${tint.toString(16)}")
 }
 
 private val splashBackgroundPatch = resourcePatch {
@@ -47,6 +62,7 @@ val amoledThemePatch = bytecodePatch(
     execute {
         DarkColorSchemeFingerprint.method.apply {
             DARK_BACKGROUND_COLORS.forEach(::replaceColorWithBlack)
+            TRANSLUCENT_SURFACE_COLORS.forEach(::matchTintToBlack)
         }
     }
 }
