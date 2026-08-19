@@ -137,3 +137,9 @@ gradle/gradle-daemon-jvm.properties
 
 # Ignore Kotlin language server index
 kls_database.db
+
+### Eclipse template
+.project
+.classpath
+.settings/
+bin/
