@@ -6,15 +6,35 @@ package app.morphe.patches.protonmail.misc.theme
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.literal
+import app.morphe.patcher.methodCall
+import com.android.tools.smali.dexlib2.Opcode
 
 internal val DARK_BACKGROUND_COLORS = listOf(
     0xFF191927L, // mailbox, message and composer
     0xFF222230L, // settings and bottom sheets
 )
 
+internal val SIDEBAR_STRUCTURE_COLOR = DARK_BACKGROUND_COLORS.last()
+
+private const val COLOR_PARAMETER_COUNT = 45
+
+internal val PROTON_COLORS_PARAMETERS = listOf("Z") + List(COLOR_PARAMETER_COUNT) { "J" }
+
 internal object DarkPaletteFingerprint : Fingerprint(
     name = "<clinit>",
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
+)
+
+internal object ColorSchemeFingerprint : Fingerprint(
+    name = "<clinit>",
+    filters = listOf(
+        methodCall(
+            name = "<init>",
+            parameters = PROTON_COLORS_PARAMETERS,
+            returnType = "V",
+            opcode = Opcode.INVOKE_DIRECT_RANGE,
+        ),
+    ),
 )
 
 internal object UpsellingDarkBackgroundFingerprint : Fingerprint(
