@@ -13,8 +13,8 @@ package app.morphe.patches.protonmail.signature
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.protonmail.shared.RUST_CORE
-import app.morphe.patches.protonmail.shared.replaceAsciiInPlace
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.replaceAsciiInPlace
 
 private const val DEFAULT_SIGNATURE =
     """Sent from <a target="_blank" href="https://proton.me/mail/home">Proton Mail</a> for Android."""

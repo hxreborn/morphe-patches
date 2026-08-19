@@ -48,15 +48,3 @@ private fun ByteArray.indexOfMasked(pattern: ByteArray, mask: ByteArray, startIn
     }
     return -1
 }
-
-internal fun File.replaceAsciiInPlace(old: String, new: String): Boolean {
-    require(old.length == new.length) { "Replacement must keep the byte length" }
-
-    val original = readBytes().toString(Charsets.ISO_8859_1)
-    val patched = original.replace(old, new)
-
-    if (patched == original) return false
-
-    writeBytes(patched.toByteArray(Charsets.ISO_8859_1))
-    return true
-}

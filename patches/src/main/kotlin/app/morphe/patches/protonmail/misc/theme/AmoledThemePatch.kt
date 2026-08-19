@@ -12,8 +12,8 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonmail.shared.RUST_CORE
-import app.morphe.patches.protonmail.shared.replaceAsciiInPlace
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.replaceAsciiInPlace
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
