@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/hxreborn/morphe-patches/compare/v1.9.0...v1.9.1) (2026-08-19)
+
+### Bug Fixes
+
+* **Showly - AMOLED dark theme:** keep the search bar and bottom menu tone ([db46e3a](https://github.com/hxreborn/morphe-patches/commit/db46e3a48e7f1ea5ec321a5a2b3c188a05564b20))
+
 ## [1.9.0](https://github.com/hxreborn/morphe-patches/compare/v1.8.0...v1.9.0) (2026-08-19)
 
 ### Bug Fixes
