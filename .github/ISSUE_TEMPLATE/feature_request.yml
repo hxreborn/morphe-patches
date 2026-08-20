@@ -11,7 +11,7 @@ body:
         Before creating a new feature request, please keep the following in mind:
 
         - **Do not submit a duplicate feature request**: Search for existing feature requests [here](https://github.com/hxreborn/morphe-patches/issues?q=label%3A%22Feature+request%22).
-        - **This is a personal bundle**: It covers the apps I use. Requests for other apps will likely be declined.
+        - **Requests for other apps are welcome**: You aren't limited to the apps already here. Link the app and say what you want patched.
   - type: textarea
     attributes:
       label: Feature description
