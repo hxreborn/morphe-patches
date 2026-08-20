@@ -10,14 +10,16 @@ endorsement by any of these developers is claimed or implied, and none of them h
 reviewed or approved this patch bundle.
 
 Nothing here is a modification of any app's branding. The files are unaltered copies of
-each developer's own published icon, downscaled to 96x96 for display.
+each developer's own published icon, downscaled to 96x96 for display where the
+source was larger.
 
 ## Sources
 
-Every icon was taken from the developer's own published listing or source repository. None were extracted from an APK.
+Every icon was taken from the developer's own published listing, website, or source repository. None were extracted from an APK.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | [alpinequest.net](https://www.alpinequest.net/) (`shortcut icon`, 32x32) |
 | `projectivy.png` | Projectivy Launcher (`com.spocky.projengmenu`) | Spocky | [Google Play listing](https://play.google.com/store/apps/details?id=com.spocky.projengmenu) (`og:image`) |
 | `forus.png` | ForusApp (`com.myvitale.forus`) | MyVitale | [Google Play listing](https://play.google.com/store/apps/details?id=com.myvitale.forus) (`og:image`) |
 | `showly.png` | Showly (`com.michaldrabik.showly2`) | Michał Drabik / Trakt | [`trakt/showly`](https://github.com/trakt/showly), `fastlane/metadata/android/en-US/images/icon.png` |

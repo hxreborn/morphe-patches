@@ -13,6 +13,13 @@ import app.morphe.patcher.patch.Compatibility
 
 @Suppress("MemberVisibilityCanBePrivate")
 internal object AppCompatibilities {
+    val ALPINEQUEST = Compatibility(
+        name = "AlpineQuest",
+        packageName = "psyberia.alpinequest.free",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x0057BD,
+    )
+
     val AUDIBLE = Compatibility(
         name = "Audible",
         packageName = "com.audible.application",

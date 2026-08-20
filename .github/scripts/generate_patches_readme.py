@@ -181,6 +181,7 @@ def versions_table(targets):
 # Package name -> icon file in .github/assets/icons/. Apps with no entry render
 # without an icon, so adding a new app does not require touching this map.
 ICONS = {
+    "psyberia.alpinequest.free": "alpinequest.png",
     "com.spocky.projengmenu": "projectivy.png",
     "com.myvitale.forus": "forus.png",
     "com.michaldrabik.showly2": "showly.png",
