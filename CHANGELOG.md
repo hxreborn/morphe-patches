@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/hxreborn/morphe-patches/compare/v1.9.1...v1.9.2) (2026-08-20)
+
+### Bug Fixes
+
+* **Perplexity - AMOLED dark theme:** keep the tinted surfaces at stock tone ([00d4af1](https://github.com/hxreborn/morphe-patches/commit/00d4af12851c31edc7e9b97658a7bec6567f319d))
+* **Proton Mail - AMOLED dark theme:** keep the sidebar selected row and separators ([98a511f](https://github.com/hxreborn/morphe-patches/commit/98a511ff290d5607c24271d5c35ad4f6b42eaa76))
+
 ## [1.9.1](https://github.com/hxreborn/morphe-patches/compare/v1.9.0...v1.9.1) (2026-08-19)
 
 ### Bug Fixes
