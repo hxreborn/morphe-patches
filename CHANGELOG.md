@@ -1,3 +1,10 @@
+## [1.10.0](https://github.com/hxreborn/morphe-patches/compare/v1.9.2...v1.10.0) (2026-08-21)
+
+### New Features
+
+* **AlpineQuest - Bypass signature check:** restore search and auto-routing on re-signed builds ([db4dcc9](https://github.com/hxreborn/morphe-patches/commit/db4dcc94e128372c1f0a422db62b043187cc4651))
+* **AlpineQuest - Unlock full version:** unlock the Off-Road Explorer features ([03ab456](https://github.com/hxreborn/morphe-patches/commit/03ab456fd6791c19055d6df132b17d32b4a169f9))
+
 ## [1.9.2](https://github.com/hxreborn/morphe-patches/compare/v1.9.1...v1.9.2) (2026-08-20)
 
 ### Bug Fixes
