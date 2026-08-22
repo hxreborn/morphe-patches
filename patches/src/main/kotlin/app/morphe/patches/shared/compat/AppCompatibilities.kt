@@ -110,6 +110,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "14.0.0", versionCode = 127708, minSdk = 28),
             AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 32),
+            AppTarget(version = "14.0.0 TV", versionCode = 227708, minSdk = 32),
         ),
     )
 
