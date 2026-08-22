@@ -57,6 +57,13 @@ internal object AppCompatibilities {
         appIconColor = 0x53FC18,
     )
 
+    val NOTESNOOK = Compatibility(
+        name = "Notesnook",
+        packageName = "com.streetwriters.notesnook",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x008837,
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",
