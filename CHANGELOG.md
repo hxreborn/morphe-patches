@@ -1,3 +1,15 @@
+## [1.11.0](https://github.com/hxreborn/morphe-patches/compare/v1.10.0...v1.11.0) (2026-08-23)
+
+### New Features
+
+* **Cx File Explorer - AMOLED dark theme:** add a pure black option to the dark theme ([c90c1d3](https://github.com/hxreborn/morphe-patches/commit/c90c1d34cfd143692852848832a11449755acd89))
+* **Cx File Explorer - Dark theme:** render the dark theme and add it to the settings ([933bc15](https://github.com/hxreborn/morphe-patches/commit/933bc15841100f51c5a5434f80cf403d77814d02))
+* **Cx File Explorer - Unlock premium:** unlock premium and remove ads ([f373beb](https://github.com/hxreborn/morphe-patches/commit/f373beb9ded78b84bec8a1ecfe3a2a0352de63af))
+* **Notesnook - Unlock pro:** unlock the on-device pro features ([5cc8777](https://github.com/hxreborn/morphe-patches/commit/5cc8777b6b9c14931819539f9937280270640952))
+* **Proton Mail:** extend patch support to 7.11.4 ([230b7e7](https://github.com/hxreborn/morphe-patches/commit/230b7e72925882c4a5e7e731ec5b4926e8268192))
+* **Rubber Bands - Unlock premium:** unlock the paywalled Pro features ([0058964](https://github.com/hxreborn/morphe-patches/commit/0058964775f1f7e3ecdabb740d354fe1f4e5498f))
+* **Symfonium - Unlock premium:** support the 14.0.0 TV build ([a8ee80d](https://github.com/hxreborn/morphe-patches/commit/a8ee80d0b4b6976b7d032c9de45c0b0b51497533))
+
 ## [1.10.0](https://github.com/hxreborn/morphe-patches/compare/v1.9.2...v1.10.0) (2026-08-21)
 
 ### New Features

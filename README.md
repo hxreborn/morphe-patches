@@ -31,7 +31,24 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.10.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.10.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;22 patches total
+> **[v1.11.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.11.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;27 patches total
+<details open>
+<summary>📦&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.7.8 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="cx-file-explorer-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/cx/misc/theme/AmoledThemePatch.kt) | Adds a pure black option to the dark theme. |
+| <a id="cx-file-explorer-dark-theme"></a>[Dark theme](patches/src/main/kotlin/app/morphe/patches/cx/misc/theme/DarkThemePatch.kt) | Renders the app's dark theme and adds it to the settings. |
+| <a id="cx-file-explorer-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/cx/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium and removes ads. |
+
+</details>
+
 <details open>
 <summary><img src=".github/assets/icons/kick.png" width="18" align="top">&nbsp;&nbsp;Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
@@ -58,8 +75,8 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| 7.10.4 |
-| :---: |
+| 7.11.4 | 7.10.4 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -187,17 +204,37 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary>📦&nbsp;Rubber Bands&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="rubber-bands-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rubberbands/misc/premium/UnlockPremiumPatch.kt) | Unlocks running and logging workouts, progress tracking and personal records (AI workout generation is not included). |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/symfonium.png" width="18" align="top">&nbsp;&nbsp;Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 14.0.0 | 14.1.0 |
-| :---: | :---: |
+| 14.0.0 | 14.1.0 | 14.0.0 TV |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="symfonium-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/symfonium/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;Notesnook&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="notesnook-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/notesnook/misc/premium/UnlockProPatch.kt) | Unlocks task lists, callouts, app lock, and the notebook, tag, colour and reminder limits. Requires a signed-in account. The server still enforces storage, attachment size, monographs and SMS 2FA. |
 
 </details>
 
