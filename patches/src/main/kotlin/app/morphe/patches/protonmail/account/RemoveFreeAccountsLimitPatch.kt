@@ -54,7 +54,7 @@ val removeFreeAccountsLimitPatch = resourcePatch(
     name = "Remove free accounts limit",
     description = "Removes the limit for maximum free accounts logged in.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_MAIL)
+    compatibleWith(AppCompatibilities.PROTON_MAIL_7_10_4)
 
     execute {
         var foundNativeCore = false
