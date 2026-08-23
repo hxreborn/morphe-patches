@@ -87,6 +87,13 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16)),
     )
 
+    val RUBBER_BANDS = Compatibility(
+        name = "Rubber Bands",
+        packageName = "app.rubberbands.fit",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0xFD8700,
+    )
+
     val SHOWLY = Compatibility(
         name = "Showly",
         packageName = "com.michaldrabik.showly2",
