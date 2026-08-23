@@ -27,6 +27,14 @@ internal object AppCompatibilities {
         appIconColor = 0xF8991C,
     )
 
+    val CX_FILE_EXPLORER = Compatibility(
+        name = "Cx File Explorer",
+        packageName = "com.cxinventor.file.explorer",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x5167F6,
+        targets = listOf(AppTarget(version = "2.7.8", versionCode = 278, minSdk = 21)),
+    )
+
     val ETSY = Compatibility(
         name = "Etsy",
         packageName = "com.etsy.android",
