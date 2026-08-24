@@ -1,5 +1,1 @@
 blank_issues_enabled: false
-contact_links:
-  - name: 📱 App request
-    url: https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests
-    about: Request patches for an app not supported yet. Upvote an existing request instead of opening a duplicate.

@@ -1,6 +1,6 @@
 name: ⭐ Feature request
 description: Request a new feature or enhancement for an app already supported here.
-title: "feat: "
+title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
@@ -10,7 +10,7 @@ body:
 
         Before creating a new feature request, please keep the following in mind:
 
-        - 🚨 **Requesting a patch for an app not supported yet? You're in the wrong place**: open an [app request discussion](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests) instead, or upvote the existing one.
+        - 🚨 **Requesting a patch for an app not supported yet? You're in the wrong place**: open an [app request](https://github.com/hxreborn/morphe-patches/issues/new?template=app_request.yml) instead, or upvote the [existing one](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+state%3Aopen+label%3A%22app+request%22+sort%3Areactions-%2B1-desc) with a 👍 reaction.
         - **Do not submit a duplicate feature request**: Search for existing feature requests [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+label%3Aenhancement).
   - type: input
     attributes:
