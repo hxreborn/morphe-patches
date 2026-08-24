@@ -19,9 +19,16 @@ private const val DARK_COLOR_PREFIX = "dark_"
 private const val APPEARANCE_CATEGORY_TITLE = "Appearance"
 
 private val NIGHT_STYLES = mapOf(
+    "App.Theme.BottomSheetDialog.DayNight" to "@style/Theme.Design.BottomSheetDialog",
     "ToolbarStyle.Default" to "@style/ToolbarStyle.Dark",
     "ToolbarSubtitleStyle.Default" to "@style/ToolbarSubtitleStyle.Dark",
     "ToolbarTitleStyle.Default" to "@style/ToolbarTitleStyle.Dark",
+)
+
+private val NIGHT_STYLE_ITEMS = mapOf(
+    "App.Theme.BottomSheetDialog.DayNight" to mapOf(
+        "android:colorBackground" to "@color/dark_color_surface_container_high",
+    ),
 )
 
 private val CHROME_COLORS = mapOf(
@@ -116,6 +123,13 @@ internal val darkThemeResourcesPatch = resourcePatch {
                 resources.adoptChild("style") {
                     setAttribute("name", name)
                     setAttribute("parent", parent)
+
+                    NIGHT_STYLE_ITEMS[name]?.forEach { (item, value) ->
+                        adoptChild("item") {
+                            setAttribute("name", item)
+                            textContent = value
+                        }
+                    }
                 }
             }
         }
