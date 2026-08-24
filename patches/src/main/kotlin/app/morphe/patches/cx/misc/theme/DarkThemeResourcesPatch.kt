@@ -73,6 +73,7 @@ private val CHROME_COLORS = mapOf(
     "pathbar_separator" to "#bbffffff",
     "pathbar_text_selected" to "@color/dark_primary_text",
     "plain_text_background" to "#88000000",
+    "selection_background" to "@color/dark_color_surface_container_highest",
     "statusbar_color" to "@color/dark_actionbar_color",
     "statusbar_color_before_23" to "@color/dark_actionbar_color",
     "view_setting_icon" to "@color/dark_primary_text",
