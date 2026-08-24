@@ -33,6 +33,9 @@ Every icon was taken from the developer's own published listing, website, or sou
 | `kick.png` | Kick (`com.kick.mobile`) | KICK - Live Streaming | [Google Play listing](https://play.google.com/store/apps/details?id=com.kick.mobile) (`og:image`) |
 | `etsy.png` | Etsy (`com.etsy.android`) | Etsy, Inc | [Google Play listing](https://play.google.com/store/apps/details?id=com.etsy.android) (`og:image`) |
 | `qrscanner.png` | QR & Barcode Scanner (`com.gamma.scan`) | Gamma Play | [Google Play listing](https://play.google.com/store/apps/details?id=com.gamma.scan) (`og:image`) |
+| `cx.png` | Cx File Explorer (`com.cxinventor.file.explorer`) | Cx File Explorer | [Google Play listing](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer) (`og:image`) |
+| `notesnook.png` | Notesnook (`com.streetwriters.notesnook`) | Streetwriters (Private) Limited | [Google Play listing](https://play.google.com/store/apps/details?id=com.streetwriters.notesnook) (`og:image`) |
+| `rubberbands.png` | Rubber Bands (`app.rubberbands.fit`) | Rubber Bands LLC | [Google Play listing](https://play.google.com/store/apps/details?id=app.rubberbands.fit) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The rest are used under nominative fair use only, with no

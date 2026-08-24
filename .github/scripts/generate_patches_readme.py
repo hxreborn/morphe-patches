@@ -195,6 +195,9 @@ ICONS = {
     "com.kick.mobile": "kick.png",
     "com.etsy.android": "etsy.png",
     "com.gamma.scan": "qrscanner.png",
+    "com.cxinventor.file.explorer": "cx.png",
+    "com.streetwriters.notesnook": "notesnook.png",
+    "app.rubberbands.fit": "rubberbands.png",
 }
 
 
