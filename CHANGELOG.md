@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/hxreborn/morphe-patches/compare/v1.11.0...v1.11.1) (2026-08-24)
+
+### Bug Fixes
+
+* **Cx File Explorer - Dark theme:** darken the selection mode toolbar and bottom bar ([2575fbf](https://github.com/hxreborn/morphe-patches/commit/2575fbf27ba9d19b7948c0912f8e6bae2eda2ae8))
+* **Cx File Explorer - Dark theme:** render the bottom sheet dialogs dark ([5fefefc](https://github.com/hxreborn/morphe-patches/commit/5fefefce1e9a7cce18d73d1c0b444633e699cb32))
+
 ## [1.11.0](https://github.com/hxreborn/morphe-patches/compare/v1.10.0...v1.11.0) (2026-08-23)
 
 ### New Features
