@@ -1,0 +1,57 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > [!IMPORTANT]
+        > Check the [existing app requests](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests) first. If the app already has a discussion, upvote it instead of opening a new one. :arrow_up:
+
+        Set the app name as the title of the discussion.
+  - type: input
+    id: app_name
+    attributes:
+      label: App name
+      description: Full name of the app as shown on the Play Store, with a link.
+      placeholder: Duolingo, https://play.google.com/store/apps/details?id=com.duolingo
+    validations:
+      required: true
+
+  - type: input
+    id: package_name
+    attributes:
+      label: Package name
+      description: The Android package name.
+      placeholder: com.duolingo
+    validations:
+      required: true
+
+  - type: textarea
+    id: features
+    attributes:
+      label: Requested features
+      description: List the specific features you want patched.
+      placeholder: |
+        - Unlock premium
+        - Remove ads
+        - Block telemetry
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional info
+      description: Anything else that may help patch development.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have checked that a suitable patch does not already exist on [another community bundle](https://morphe-patches.software/#apps).
+          required: true
+        - label: I understand that server-side features (AI, cloud sync, streaming quality) cannot be patched.
+          required: true
+        - label: This request is not for bypassing a region lock.
+          required: true

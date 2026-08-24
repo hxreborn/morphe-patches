@@ -1,5 +1,5 @@
 name: ⭐ Feature request
-description: Create a detailed request for a new feature.
+description: Request a new feature or enhancement for an app already supported here.
 title: "feat: "
 labels: ["enhancement"]
 body:
@@ -10,13 +10,13 @@ body:
 
         Before creating a new feature request, please keep the following in mind:
 
-        - **Do not submit a duplicate feature request**: Search for existing feature requests, including closed issues, [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
-        - **Requests for other apps are welcome**: You aren't limited to the apps already here. Link the app and say what you want patched.
+        - 🚨 **Requesting a patch for an app not supported yet? You're in the wrong place**: open an [app request discussion](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests) instead, or upvote the existing one.
+        - **Do not submit a duplicate feature request**: Search for existing feature requests [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+label%3Aenhancement).
   - type: input
     attributes:
       label: App
-      description: The app you want patched, with a store link.
-      placeholder: Duolingo, https://play.google.com/store/apps/details?id=com.duolingo
+      description: The supported app this feature is for.
+      placeholder: Proton Mail
     validations:
       required: true
   - type: textarea
@@ -36,7 +36,6 @@ body:
         - Why should this feature be implemented?
         - What is the explicit use case?
         - What are the benefits?
-        - What makes this feature important?
     validations:
       required: true
   - type: checkboxes
@@ -45,6 +44,8 @@ body:
       label: Acknowledgements
       description: Your feature request will be closed if you don't follow the checklist below.
       options:
+        - label: I am not requesting patches for a new app.
+          required: true
         - label: I have checked all open and closed feature requests and this is not a duplicate.
           required: true
         - label: All requested information has been provided properly.

@@ -18,7 +18,7 @@
 &nbsp;
 ## ❓ About
 
-I maintain these because I use them, but [requests](https://github.com/hxreborn/morphe-patches/issues/new?template=feature_request.yml) for other apps are welcome.
+I maintain these because I use them, but [requests](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests) for other apps are welcome. Upvote an existing request or open a new one.
 
 Based off the prior work of [ReVanced](https://github.com/ReVanced). All modifications made
 here, along with their dates, can be found in the Git history.
