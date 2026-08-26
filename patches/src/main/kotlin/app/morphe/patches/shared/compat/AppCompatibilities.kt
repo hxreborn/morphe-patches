@@ -79,6 +79,14 @@ internal object AppCompatibilities {
         appIconColor = 0x20808D,
     )
 
+    val PHOTO_EDITOR_PRO = Compatibility(
+        name = "Photo Editor Pro",
+        packageName = "photo.editor.photoeditor.photoeditorpro",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFA2A80,
+        targets = listOf(AppTarget(version = "1.791.265", versionCode = 265100, minSdk = 28)),
+    )
+
     val PROJECTIVY = Compatibility(
         name = "Projectivy Launcher",
         packageName = "com.spocky.projengmenu",

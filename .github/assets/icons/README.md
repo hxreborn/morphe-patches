@@ -36,6 +36,7 @@ Every icon was taken from the developer's own published listing, website, or sou
 | `cx.png` | Cx File Explorer (`com.cxinventor.file.explorer`) | Cx File Explorer | [Google Play listing](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer) (`og:image`) |
 | `notesnook.png` | Notesnook (`com.streetwriters.notesnook`) | Streetwriters (Private) Limited | [Google Play listing](https://play.google.com/store/apps/details?id=com.streetwriters.notesnook) (`og:image`) |
 | `rubberbands.png` | Rubber Bands (`app.rubberbands.fit`) | Rubber Bands LLC | [Google Play listing](https://play.google.com/store/apps/details?id=app.rubberbands.fit) (`og:image`) |
+| `photoeditorpro.png` | Photo Editor Pro (`photo.editor.photoeditor.photoeditorpro`) | InShot Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=photo.editor.photoeditor.photoeditorpro) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The rest are used under nominative fair use only, with no

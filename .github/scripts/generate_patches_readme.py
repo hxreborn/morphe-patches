@@ -198,6 +198,7 @@ ICONS = {
     "com.cxinventor.file.explorer": "cx.png",
     "com.streetwriters.notesnook": "notesnook.png",
     "app.rubberbands.fit": "rubberbands.png",
+    "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
 }
 
 
