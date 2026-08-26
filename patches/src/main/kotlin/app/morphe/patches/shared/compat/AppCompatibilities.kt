@@ -13,6 +13,14 @@ import app.morphe.patcher.patch.Compatibility
 
 @Suppress("MemberVisibilityCanBePrivate")
 internal object AppCompatibilities {
+    val ALL_IN_ONE_CALCULATOR = Compatibility(
+        name = "All-In-One Calculator",
+        packageName = "all.in.one.calculator",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x455A64,
+        targets = listOf(AppTarget(version = "3.4.0", versionCode = 340, minSdk = 24)),
+    )
+
     val ALPINEQUEST = Compatibility(
         name = "AlpineQuest",
         packageName = "psyberia.alpinequest.free",
