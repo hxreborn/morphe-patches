@@ -15,6 +15,7 @@ package app.hxreborn.extension.protonmail;
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Base64;
@@ -81,7 +82,7 @@ public class SpoofSignature extends Application {
 
         replaceFirst(packageInfo.signatures, spoofed);
 
-        if (packageInfo.signingInfo != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && packageInfo.signingInfo != null) {
             replaceFirst(packageInfo.signingInfo.getApkContentsSigners(), spoofed);
         }
     }
