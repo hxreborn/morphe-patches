@@ -1,3 +1,18 @@
+## [1.12.0](https://github.com/hxreborn/morphe-patches/compare/v1.11.1...v1.12.0) (2026-08-26)
+
+### Bug Fixes
+
+* **Kick - AMOLED dark theme:** support older builds that have no React Native bundle ([8f50e51](https://github.com/hxreborn/morphe-patches/commit/8f50e51a0486cf3548cd81a0bf478f216adfb62e))
+
+### New Features
+
+* **Photo Editor Pro:** add `Hide ads` patch ([e49c9bd](https://github.com/hxreborn/morphe-patches/commit/e49c9bd1d33c79462761a9f2a64aa544000a03ad))
+* **Photo Editor Pro:** add `Inspect AI requests` patch ([886bca1](https://github.com/hxreborn/morphe-patches/commit/886bca1e042e8b8aaf779323bbf0cb512b05cd0f))
+* **Photo Editor Pro:** add `Show AI progress` patch ([1e51b7a](https://github.com/hxreborn/morphe-patches/commit/1e51b7adaf2fdd1d5107d27b45bcb3a10bcab685))
+* **Photo Editor Pro:** add `Speed up AI tools` patch ([73c868b](https://github.com/hxreborn/morphe-patches/commit/73c868b2762e4767c233216716161a111cebb5b3))
+* **Photo Editor Pro:** add `Spoof signature` patch ([8dea264](https://github.com/hxreborn/morphe-patches/commit/8dea2642e5ff2ff5a4ec3167144c4bae21ec89d2))
+* **Photo Editor Pro:** add `Unlock premium` patch ([bbd30c9](https://github.com/hxreborn/morphe-patches/commit/bbd30c918833ffd11ee89137d48631e710f1c243))
+
 ## [1.11.1](https://github.com/hxreborn/morphe-patches/compare/v1.11.0...v1.11.1) (2026-08-24)
 
 ### Bug Fixes
