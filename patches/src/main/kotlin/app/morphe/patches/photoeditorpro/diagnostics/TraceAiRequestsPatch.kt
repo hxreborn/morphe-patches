@@ -28,7 +28,6 @@ val traceAiRequestsPatch = bytecodePatch(
     name = "Inspect AI requests",
     description = "Tails every AI request live and keeps the log, so you can watch your photo " +
         "fly to China or the US.",
-    default = false,
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
