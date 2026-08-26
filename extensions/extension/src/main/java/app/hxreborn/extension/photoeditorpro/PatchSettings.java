@@ -5,6 +5,7 @@
 package app.hxreborn.extension.photoeditorpro;
 
 import app.morphe.extension.shared.settings.BooleanSetting;
+import app.morphe.extension.shared.settings.IntegerSetting;
 
 public final class PatchSettings {
 
@@ -13,6 +14,9 @@ public final class PatchSettings {
 
     public static final BooleanSetting UNLOCK_PREMIUM =
             new BooleanSetting("pep_unlock_premium", true, true);
+
+    public static final IntegerSetting UPLOAD_MAX_DIMENSION =
+            new IntegerSetting("pep_upload_max_dimension", 3600);
 
     private PatchSettings() {
     }

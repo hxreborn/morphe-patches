@@ -40,6 +40,7 @@ import java.util.Set;
 import app.hxreborn.extension.BuildConfig;
 import app.morphe.extension.shared.settings.BooleanSetting;
 import app.morphe.extension.shared.settings.IntegerSetting;
+import app.morphe.extension.shared.settings.IntegerSetting;
 import app.morphe.extension.shared.settings.Setting;
 
 public final class PatchPanel {
@@ -92,7 +93,9 @@ public final class PatchPanel {
             new Entry(PatchSettings.HIDE_ADS, "General", "Hide ads",
                     "Hides banner, interstitial, app-open and rewarded ads"),
             new Entry(PatchSettings.UNLOCK_PREMIUM, "General", "Unlock premium",
-                    "Unlocks the pro tools and removes the export watermark"));
+                    "Unlocks the pro tools and removes the export watermark"),
+            new Entry(PatchSettings.UPLOAD_MAX_DIMENSION, "AI tools", "Upload size limit",
+                    "Longest edge of the photo sent for processing", 512, 8192));
 
     public static void markInstalled(String key) {
         INSTALLED.add(key);
