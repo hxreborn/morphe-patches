@@ -26,8 +26,8 @@ private const val OK_HTTP_BUILD = "$OK_HTTP_BUILDER_CLASS->build()Lokhttp3/OkHtt
 @Suppress("unused")
 val traceAiRequestsPatch = bytecodePatch(
     name = "Inspect AI requests",
-    description = "Tails every AI request live and keeps the log, so you can watch your photo " +
-        "fly to China or the US.",
+    description = "Shows the network calls an AI tool makes, such as HTTP requests and " +
+        "Firebase uploads, and keeps a log, so you can watch your photo fly to China or the US.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)

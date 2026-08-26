@@ -100,11 +100,11 @@ public final class PatchPanel {
                             + "fake progress bar"),
             new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS,
                     "Inspect AI requests",
-                    "Shows the network calls an AI tool makes (GET, POST, Firebase uploads) "
-                            + "and keeps a log in memory"),
+                    "Shows the network calls an AI tool makes, such as HTTP requests "
+                            + "(GET, POST) or Firebase uploads, and keeps a log in memory"),
             new Entry(PatchSettings.OVERLAY_POSITION, DIAGNOSTICS,
                     "Live overlay position",
-                    "Screen position of the live call list",
+                    "Screen position of the live network request list",
                     PatchSettings.LOG_ENDPOINTS),
             new Entry(PatchSettings.OVERLAY_LINGER, DIAGNOSTICS,
                     "Live overlay hold time",
