@@ -31,7 +31,7 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +88,9 @@ public final class PatchPanel {
         }
     }
 
-    private static final List<Entry> ENTRIES = Collections.emptyList();
+    private static final List<Entry> ENTRIES = Arrays.asList(
+            new Entry(PatchSettings.HIDE_ADS, "General", "Hide ads",
+                    "Hides banner, interstitial, app-open and rewarded ads"));
 
     public static void markInstalled(String key) {
         INSTALLED.add(key);
