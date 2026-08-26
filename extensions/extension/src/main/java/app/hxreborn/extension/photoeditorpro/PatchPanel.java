@@ -95,7 +95,10 @@ public final class PatchPanel {
             new Entry(PatchSettings.UNLOCK_PREMIUM, "General", "Unlock premium",
                     "Unlocks the pro tools and removes the export watermark"),
             new Entry(PatchSettings.UPLOAD_MAX_DIMENSION, "AI tools", "Upload size limit",
-                    "Longest edge of the photo sent for processing", 512, 8192));
+                    "Longest edge of the photo sent for processing", 512, 8192),
+            new Entry(PatchSettings.LOG_ENDPOINTS, "Diagnostics",
+                    "Enable AI request logging",
+                    "Writes AI request details to the system log"));
 
     public static void markInstalled(String key) {
         INSTALLED.add(key);
@@ -267,6 +270,12 @@ public final class PatchPanel {
             } else if (entry.setting instanceof IntegerSetting) {
                 content.addView(integerRow(activity, entry));
             }
+        }
+
+        if (installed(PatchSettings.LOG_ENDPOINTS)) {
+            content.addView(divider(activity));
+            content.addView(traceRow(activity, "Last AI request", AiTrace.headline(),
+                    () -> showRequests(activity)));
         }
 
         content.addView(sectionHeader(activity, "About"));

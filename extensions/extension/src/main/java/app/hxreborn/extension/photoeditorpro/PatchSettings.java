@@ -18,6 +18,9 @@ public final class PatchSettings {
     public static final IntegerSetting UPLOAD_MAX_DIMENSION =
             new IntegerSetting("pep_upload_max_dimension", 3600);
 
+    public static final BooleanSetting LOG_ENDPOINTS =
+            new BooleanSetting("pep_log_endpoints", false);
+
     private PatchSettings() {
     }
 }
