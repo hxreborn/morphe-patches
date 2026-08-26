@@ -90,7 +90,9 @@ public final class PatchPanel {
 
     private static final List<Entry> ENTRIES = Arrays.asList(
             new Entry(PatchSettings.HIDE_ADS, "General", "Hide ads",
-                    "Hides banner, interstitial, app-open and rewarded ads"));
+                    "Hides banner, interstitial, app-open and rewarded ads"),
+            new Entry(PatchSettings.UNLOCK_PREMIUM, "General", "Unlock premium",
+                    "Unlocks the pro tools and removes the export watermark"));
 
     public static void markInstalled(String key) {
         INSTALLED.add(key);

@@ -10,6 +10,10 @@ public final class PatchGates {
         return PatchSettings.HIDE_ADS.get();
     }
 
+    public static boolean unlockPremium() {
+        return PatchSettings.UNLOCK_PREMIUM.get();
+    }
+
     private PatchGates() {
     }
 }

@@ -11,6 +11,9 @@ public final class PatchSettings {
     public static final BooleanSetting HIDE_ADS =
             new BooleanSetting("pep_hide_ads", true, true);
 
+    public static final BooleanSetting UNLOCK_PREMIUM =
+            new BooleanSetting("pep_unlock_premium", true, true);
+
     private PatchSettings() {
     }
 }
