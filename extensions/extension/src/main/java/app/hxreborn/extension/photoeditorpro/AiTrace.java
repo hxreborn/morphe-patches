@@ -37,6 +37,8 @@ public final class AiTrace {
     private static final int MAX_HEADERS = 32;
     private static final int MAX_PAYLOAD_FIELDS = 24;
     private static final int MAX_VALUE_CHARS = 512;
+    private static final int MAX_BODY_BYTES = 8192;
+    private static final int MAX_BODY_CHARS = 2048;
 
     private static final String[] ROUTING_SEGMENTS = {
             "api", "new", "predict", "query", "result", "results", "revoke", "task", "upload",
@@ -144,6 +146,9 @@ public final class AiTrace {
                     iso(attempt.startedAtMs), response.request().method(),
                     path(response.request().url().toString()), attempt.statusLine(),
                     attempt.durationMs()));
+            if (!attempt.body.isEmpty()) {
+                Log.i(TAG, "    body: " + attempt.body);
+            }
             ProgressTrace.refreshLive();
         } catch (Exception ex) {
             Log.w(TAG, "close", ex);
@@ -201,6 +206,19 @@ public final class AiTrace {
             attempt.contentLength = body.contentLength();
             MediaType type = body.contentType();
             attempt.contentType = type == null ? "" : type.toString();
+        }
+
+        attempt.body = peek(response);
+    }
+
+    private static String peek(Response response) {
+        try {
+            String text = response.peekBody(MAX_BODY_BYTES).string().replace('\n', ' ');
+            return text.length() <= MAX_BODY_CHARS
+                    ? text
+                    : text.substring(0, MAX_BODY_CHARS) + "\u2026";
+        } catch (Exception ex) {
+            return "";
         }
     }
 
@@ -546,6 +564,7 @@ public final class AiTrace {
         String message = "";
         String protocol = "";
         String contentType = "";
+        String body = "";
         long contentLength = -1;
         List<String[]> requestHeaders = new ArrayList<>();
         List<String[]> responseHeaders = new ArrayList<>();
