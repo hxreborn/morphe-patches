@@ -6,6 +6,7 @@ package app.morphe.patches.photoeditorpro.misc.fix.signature
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
@@ -43,5 +44,7 @@ val spoofSignaturePatch = bytecodePatch(
         applicationClass.setSuperClass(EXTENSION_CLASS)
 
         InitializeLicenseCheckFingerprint.matchSingle().method.returnEarly()
+
+        markPatchInstalled("pep_spoof_signature")
     }
 }

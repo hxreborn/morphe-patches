@@ -84,6 +84,16 @@ public final class PatchPanel {
     private static final String DIAGNOSTICS = "Diagnostics";
 
     private static final Set<String> INSTALLED = new HashSet<>();
+    private static final String SPOOF_SIGNATURE_KEY = "pep_spoof_signature";
+    private static final String SPOOF_IOS_PLATFORM_KEY = "pep_spoof_ios_platform";
+    private static final String[][] ALWAYS_ON = {
+            {SPOOF_SIGNATURE_KEY, "Spoof signature",
+                    "Spoofs the original app signature and disables the pairip client-side "
+                            + "license check"},
+            {SPOOF_IOS_PLATFORM_KEY, "Spoof iOS platform",
+                    "Reports the AI requests as coming from the iOS app, so the server does "
+                            + "not ask for a Play Integrity token"},
+    };
     private static final Set<String> SAFE_METHODS = Set.of("GET", "HEAD", "OPTIONS", "TRACE");
     private static final Set<String> HTTP_METHODS = Set.of(
             "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE", "CONNECT");
@@ -113,6 +123,10 @@ public final class PatchPanel {
 
     static boolean installed(Setting<?> setting) {
         return INSTALLED.contains(setting.key);
+    }
+
+    static boolean installed(String key) {
+        return INSTALLED.contains(key);
     }
 
     public static void markInstalled(String key) {
@@ -312,6 +326,19 @@ public final class PatchPanel {
             content.addView(divider(activity));
             content.addView(traceRow(activity, "AI requests", RequestLog.summary(),
                     () -> RequestLog.show(activity)));
+        }
+
+        boolean anyAlwaysOn = false;
+        for (String[] item : ALWAYS_ON) {
+            if (!installed(item[0])) {
+                continue;
+            }
+            if (!anyAlwaysOn) {
+                content.addView(sectionHeader(activity, "Always on"));
+                anyAlwaysOn = true;
+            }
+            content.addView(divider(activity));
+            content.addView(staticRow(activity, item[1], item[2]));
         }
 
         content.addView(sectionHeader(activity, "About"));
