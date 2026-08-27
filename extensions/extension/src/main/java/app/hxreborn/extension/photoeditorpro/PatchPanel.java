@@ -103,15 +103,17 @@ public final class PatchPanel {
             new Entry(PatchSettings.HIDE_ADS, GENERAL, "Hide ads",
                     "Hides banner, interstitial, app-open and rewarded ads"),
             new Entry(PatchSettings.UNLOCK_PREMIUM, GENERAL, "Unlock premium",
-                    "Unlocks the pro tools and removes the export watermark"),
+                    "Unlocks the pro tools, removes the export watermark and hides the "
+                            + "upgrade prompts"),
             new Entry(PatchSettings.SHOW_AI_PROGRESS, AI_TOOLS,
                     "Show AI progress",
-                    "Reads the stage off the real network activity instead of InShot's "
-                            + "fake progress bar"),
+                    "Reads the current stage off the real network activity instead of the "
+                            + "fake progress bar InShot ships"),
             new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS,
                     "Inspect AI requests",
-                    "Shows the network calls an AI tool makes, such as HTTP requests "
-                            + "(GET, POST) or Firebase uploads, and keeps a log in memory"),
+                    "Shows the network calls an AI tool makes, such as HTTP requests and "
+                            + "Firebase uploads, and keeps a log, so you can watch your photo "
+                            + "fly to China or the US"),
             new Entry(PatchSettings.OVERLAY_POSITION, DIAGNOSTICS,
                     "Live overlay position",
                     "Screen position of the live network request list",
