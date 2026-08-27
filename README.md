@@ -31,7 +31,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.12.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.12.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;33 patches total
+> **[v1.13.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.13.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;36 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -153,7 +153,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -164,10 +164,11 @@ identify each app. They are not covered by this repository's licence. See
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="photo-editor-pro-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/ads/HideAdsPatch.kt) | Adds an option to hide banner, interstitial, app-open and rewarded ads. |
-| <a id="photo-editor-pro-inspect-ai-requests"></a>[Inspect AI requests](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/diagnostics/TraceAiRequestsPatch.kt) | Tails every AI request live and keeps the log, so you can watch your photo fly to China or the US. |
+| <a id="photo-editor-pro-inspect-ai-requests"></a>[Inspect AI requests](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/diagnostics/TraceAiRequestsPatch.kt) | Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads, and keeps a log, so you can watch your photo fly to China or the US. |
 | <a id="photo-editor-pro-show-ai-progress"></a>[Show AI progress](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/ShowAiProgressPatch.kt) | Reads the current stage off the real network activity instead of the fake progress bar InShot ships. |
 | <a id="photo-editor-pro-speed-up-ai-tools"></a>[Speed up AI tools](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/SpeedUpAiToolsPatch.kt) | Shortens the AI tool wait by polling for the result more often and uploading the photo in larger chunks. |
-| <a id="photo-editor-pro-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/fix/signature/SpoofSignaturePatch.kt) | Restores the AI tools and stops the app killing itself by spoofing the original app signature. |
+| <a id="photo-editor-pro-spoof-ios-platform"></a>[Spoof iOS platform](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/fix/platform/SpoofIosPlatformPatch.kt) | Reports the AI requests as coming from the iOS app, so the server does not ask for a Play Integrity token. Required for the AI tools on any device that passes Play Integrity. |
+| <a id="photo-editor-pro-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/fix/signature/SpoofSignaturePatch.kt) | Spoofs the original app signature and disables the pairip client-side license check. Required: the app does not start without it. |
 | <a id="photo-editor-pro-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/premium/UnlockPremiumPatch.kt) | Adds an option to unlock the pro tools, remove the export watermark and hide the upgrade prompts. |
 
 </details>
@@ -210,6 +211,22 @@ identify each app. They are not covered by this repository's licence. See
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog and the promotional dialogs shown on startup. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 3.4.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="all-in-one-calculator-remove-pairip-protection"></a>[Remove pairip protection](patches/src/main/kotlin/app/morphe/patches/allinonecalculator/misc/pairip/RemovePairipProtectionPatch.kt) | Removes the Play Integrity protection that crashes a patched install on startup and sends it to Google Play. Background receivers the protection virtualized stop running. |
+| <a id="all-in-one-calculator-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/allinonecalculator/misc/premium/UnlockPremiumPatch.kt) | Grants the pro entitlement, which removes the ads and the paywalled tools. |
 
 </details>
 

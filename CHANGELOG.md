@@ -1,3 +1,18 @@
+## [1.13.0](https://github.com/hxreborn/morphe-patches/compare/v1.12.0...v1.13.0) (2026-08-27)
+
+### Bug Fixes
+
+* **Photo Editor Pro - Inspect AI requests:** apply by default and let the runtime toggle decide ([c961e75](https://github.com/hxreborn/morphe-patches/commit/c961e75f18f5ed6ecce77d0b811ddaf3dd508d15))
+* **Photo Editor Pro:** align the panel summaries with the patch descriptions ([b489e8b](https://github.com/hxreborn/morphe-patches/commit/b489e8b52fda416856a93314d2776a117df40ca6))
+
+### New Features
+
+* **All-In-One Calculator:** add `Unlock premium` and `Remove pairip protection` ([6511bcc](https://github.com/hxreborn/morphe-patches/commit/6511bccd3693f23ad4fb617c6f377a9eef3f30e5))
+* **Kick - AMOLED dark theme:** support the Android TV app ([5e7b9bc](https://github.com/hxreborn/morphe-patches/commit/5e7b9bc08d0db3d3120ee3f44a9ab5163c5e4dea))
+* **Photo Editor Pro - Inspect AI requests:** log the response body of each AI request ([5fea9a7](https://github.com/hxreborn/morphe-patches/commit/5fea9a7d9d5d96b6c0f0dc0ec409570295ad9a69))
+* **Photo Editor Pro - Spoof iOS platform:** restore the AI tools on certified devices ([f973d5f](https://github.com/hxreborn/morphe-patches/commit/f973d5fec5c5ebabe5c1612a2793059d263d4f9b))
+* **Photo Editor Pro:** list the always-on patches in the settings panel ([92f1b0b](https://github.com/hxreborn/morphe-patches/commit/92f1b0bc138ec0aa5f49d6f8a2fa9f3deda96ae0))
+
 ## [1.12.0](https://github.com/hxreborn/morphe-patches/compare/v1.11.1...v1.12.0) (2026-08-26)
 
 ### Bug Fixes
