@@ -19,6 +19,7 @@ Every icon was taken from the developer's own published listing, website, or sou
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `allinonecalculator.png` | All-In-One Calculator (`all.in.one.calculator`) | allinonecalculator.com | [Google Play listing](https://play.google.com/store/apps/details?id=all.in.one.calculator) (`og:image`) |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | [alpinequest.net](https://www.alpinequest.net/) (`shortcut icon`, 32x32) |
 | `projectivy.png` | Projectivy Launcher (`com.spocky.projengmenu`) | Spocky | [Google Play listing](https://play.google.com/store/apps/details?id=com.spocky.projengmenu) (`og:image`) |
 | `forus.png` | ForusApp (`com.myvitale.forus`) | MyVitale | [Google Play listing](https://play.google.com/store/apps/details?id=com.myvitale.forus) (`og:image`) |
