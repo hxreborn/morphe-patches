@@ -53,6 +53,11 @@ identify each app. They are not covered by this repository's licence. See
 <summary><img src=".github/assets/icons/kick.png" width="18" align="top">&nbsp;&nbsp;Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
+
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="kick-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/kick/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black. Disables over-the-air updates that would restore the original background. |
@@ -62,6 +67,11 @@ identify each app. They are not covered by this repository's licence. See
 <details open>
 <summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
+
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -93,6 +103,11 @@ identify each app. They are not covered by this repository's licence. See
 <summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
+**🎯 Supported versions:**
+
+| 3.70.0 |
+| :---: |
+
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/showly/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black. |
@@ -104,6 +119,11 @@ identify each app. They are not covered by this repository's licence. See
 <summary><img src=".github/assets/icons/alpinequest.png" width="18" align="top">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
+
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="alpinequest-bypass-signature-check"></a>[Bypass signature check](patches/src/main/kotlin/app/morphe/patches/alpinequest/misc/fix/signature/BypassSignatureCheckPatch.kt) | Removes the modified-version warning and restores address search and auto-routing. |
@@ -114,6 +134,11 @@ identify each app. They are not covered by this repository's licence. See
 <details open>
 <summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
+
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -192,6 +217,11 @@ identify each app. They are not covered by this repository's licence. See
 <summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
+
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="audible-hide-membership-upselling"></a>[Hide membership upselling](patches/src/main/kotlin/app/morphe/patches/audible/misc/upselling/HideMembershipUpsellingPatch.kt) | Hides the membership promotion on the Home screen and the free trial bottom sheet. |
@@ -234,6 +264,11 @@ identify each app. They are not covered by this repository's licence. See
 <summary><img src=".github/assets/icons/forus.png" width="18" align="top">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
+
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="forusapp-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/forus/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
@@ -243,6 +278,11 @@ identify each app. They are not covered by this repository's licence. See
 <details open>
 <summary><img src=".github/assets/icons/rubberbands.png" width="18" align="top">&nbsp;&nbsp;Rubber Bands&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
+
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -268,6 +308,11 @@ identify each app. They are not covered by this repository's licence. See
 <details open>
 <summary><img src=".github/assets/icons/notesnook.png" width="18" align="top">&nbsp;&nbsp;Notesnook&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
+
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|

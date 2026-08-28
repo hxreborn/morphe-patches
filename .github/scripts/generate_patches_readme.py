@@ -55,11 +55,11 @@ for patch in data["patches"]:
         pkg  = pkg_entry["packageName"]
         name = pkg_entry.get("name") or pkg  # fall back to package name if no label
         if pkg not in by_pkg:
-            by_pkg[pkg] = {
-                "name":    name,
-                "patches": {},
-                "targets": pkg_entry.get("targets", []),
-            }
+            by_pkg[pkg] = {"name": name, "patches": {}, "targets": []}
+        # An app's row is the union of its patches' targets
+        for target in pkg_entry.get("targets") or []:
+            if target not in by_pkg[pkg]["targets"]:
+                by_pkg[pkg]["targets"].append(target)
         # Deduplicate patches that appear across multiple packages
         if patch["name"] not in by_pkg[pkg]["patches"]:
             by_pkg[pkg]["patches"][patch["name"]] = patch
@@ -147,33 +147,35 @@ def patches_table(patches, app_slug, pkg=None):
     return "\n".join(rows)
 
 
+ANY_VERSION = "Any version"
+
+
 def versions_table(targets):
     """Render a markdown table of supported versions.
     Experimental versions get an "(experimental)" suffix.
     Versions with a description get it shown in a second row below.
+    A target with no pinned version reads as "Any version", dropped once a
+    pinned one exists.
     """
-    if not targets:
-        return ""
-
-    cells = []
+    columns = []
     for t in targets:
-        ver   = t["version"]
-        if ver is None:
-            continue
+        ver = t["version"] or ANY_VERSION
         label = f"🧪&nbsp;{ver}" if t.get("isExperimental") else ver
-        cells.append(label)
+        if label not in [c[0] for c in columns]:
+            columns.append((label, (t.get("description") or "").replace("\n", "<br>")))
 
-    if not cells:
+    if len(columns) > 1:
+        columns = [c for c in columns if c[0] != ANY_VERSION]
+
+    if not columns:
         return ""
 
-    header = "| " + " | ".join(cells) + " |"
-    sep = "| " + " | ".join(":---:" for _ in cells) + " |"
-    rows = [header, sep]
-
-    # Optional description row, only rendered if at least one target has one
-    descs = [(t.get("description") or "").replace("\n", "<br>") for t in targets]
-    if any(descs):
-        rows.append("| " + " | ".join(descs) + " |")
+    rows = [
+        "| " + " | ".join(label for label, _ in columns) + " |",
+        "| " + " | ".join(":---:" for _ in columns) + " |",
+    ]
+    if any(desc for _, desc in columns):
+        rows.append("| " + " | ".join(desc for _, desc in columns) + " |")
 
     return "\n".join(rows)
 
