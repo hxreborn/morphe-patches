@@ -11,8 +11,11 @@ import app.morphe.util.childElementsSequence
 import app.morphe.util.findElementByAttributeValueOrThrow
 import app.morphe.util.getNode
 import app.morphe.util.insertFirst
+import org.w3c.dom.Element
 
 private const val THEME_PREFERENCE_KEY = "night_mode"
+private const val DIALOG_BACKGROUND_DRAWABLE = "res/drawable/fullscreen_dialog_background.xml"
+private const val DIALOG_BACKGROUND_COLOR = "@color/color_surface_container_lowest"
 private const val DARK_COLOR_PREFIX = "dark_"
 
 // Not localized in all languages
@@ -133,6 +136,13 @@ internal val darkThemeResourcesPatch = resourcePatch {
                     }
                 }
             }
+        }
+
+        document(DIALOG_BACKGROUND_DRAWABLE).use { document ->
+            val solid = document.getNode("solid") as? Element
+                ?: throw PatchException("Could not find the dialog background shape")
+
+            solid.setAttribute("android:color", DIALOG_BACKGROUND_COLOR)
         }
 
         document("res/xml/settings.xml").use { document ->
