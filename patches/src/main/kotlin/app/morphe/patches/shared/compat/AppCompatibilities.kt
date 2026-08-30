@@ -121,6 +121,13 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.10.4", versionCode = 17667, minSdk = 29)),
     )
 
+    val RATEGLANCE = Compatibility(
+        name = "RateGlance",
+        packageName = "com.sry.rateglance",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x0D192C,
+    )
+
     val READERA = Compatibility(
         name = "ReadEra",
         packageName = "org.readera",
