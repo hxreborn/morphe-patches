@@ -1,3 +1,15 @@
+## [1.14.0](https://github.com/hxreborn/morphe-patches/compare/v1.13.0...v1.14.0) (2026-08-30)
+
+### Bug Fixes
+
+* **Cx File Explorer - Dark theme:** darken the file operation progress dialog ([f072429](https://github.com/hxreborn/morphe-patches/commit/f072429435c5d77774e4d5a0cd6eaaecf2104bff))
+
+### New Features
+
+* **All-In-One Calculator - GmsCore support:** sign in through GmsCore ([29267f9](https://github.com/hxreborn/morphe-patches/commit/29267f9bd56162f920bd858a15da0bf296a7f11b))
+* **RateGlance - Remove pairip protection:** drop the Play Integrity license check ([401f975](https://github.com/hxreborn/morphe-patches/commit/401f975e428c56a1ebe6b8cfa61a9a91cecc9339))
+* **RateGlance - Unlock premium:** unlock alerts widgets and full rate history ([366a1f3](https://github.com/hxreborn/morphe-patches/commit/366a1f3d92560f23b5692c6bc7ec29271030007f))
+
 ## [1.13.0](https://github.com/hxreborn/morphe-patches/compare/v1.12.0...v1.13.0) (2026-08-27)
 
 ### Bug Fixes
