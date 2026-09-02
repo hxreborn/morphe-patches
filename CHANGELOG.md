@@ -1,3 +1,9 @@
+## [1.14.1](https://github.com/hxreborn/morphe-patches/compare/v1.14.0...v1.14.1) (2026-09-02)
+
+### Bug Fixes
+
+* **Proton Mail:** apply the patches on any app version ([a30d68d](https://github.com/hxreborn/morphe-patches/commit/a30d68d47da5356b4c0d4f76dcf6137aa60dbe98))
+
 ## [1.14.0](https://github.com/hxreborn/morphe-patches/compare/v1.13.0...v1.14.0) (2026-08-30)
 
 ### Bug Fixes
