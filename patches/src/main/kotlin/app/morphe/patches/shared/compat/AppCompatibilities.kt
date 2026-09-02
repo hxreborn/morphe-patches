@@ -107,10 +107,7 @@ internal object AppCompatibilities {
         packageName = "ch.protonmail.android",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x6D4AFF,
-        targets = listOf(
-            AppTarget(version = "7.11.4", versionCode = 18315, minSdk = 29),
-            AppTarget(version = "7.10.4", versionCode = 17667, minSdk = 29),
-        ),
+        targets = listOf(AppTarget(version = null, minSdk = 29)),
     )
 
     val PROTON_MAIL_7_10_4 = Compatibility(
