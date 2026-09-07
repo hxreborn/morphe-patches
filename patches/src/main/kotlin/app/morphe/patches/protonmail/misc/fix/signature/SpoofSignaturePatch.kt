@@ -11,9 +11,9 @@ package app.morphe.patches.protonmail.misc.fix.signature
 
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.signature.spoofSignature
 
 private const val APPLICATION_CLASS = "Lch/protonmail/android/App;"
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/SpoofSignature;"
 
 @Suppress("unused")
 val spoofSignaturePatch = bytecodePatch(
@@ -24,6 +24,6 @@ val spoofSignaturePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        mutableClassDefBy(APPLICATION_CLASS).setSuperClass(EXTENSION_CLASS)
+        spoofSignature(APPLICATION_CLASS)
     }
 }
