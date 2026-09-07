@@ -1,6 +1,8 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
+    commit-message:
+      prefix: "ci(deps)"
     labels: []
     directory: /
     target-branch: dev
@@ -8,6 +10,8 @@ updates:
       interval: weekly
 
   - package-ecosystem: npm
+    commit-message:
+      prefix: "ci(deps)"
     labels: []
     directory: /
     target-branch: dev
@@ -19,6 +23,8 @@ updates:
       - dependency-name: "conventional-changelog-conventionalcommits"
 
   - package-ecosystem: gradle
+    commit-message:
+      prefix: "ci(deps)"
     # scan needs the root build.gradle.kts; dependabot aborts without one
     labels: []
     directory: /
