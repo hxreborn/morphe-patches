@@ -5,12 +5,10 @@
 package app.morphe.patches.shared.misc.pairip
 
 import app.morphe.patcher.Fingerprint
-import com.android.tools.smali.dexlib2.AccessFlags
 
-internal object CheckLicenseFingerprint : Fingerprint(
+internal object InitializeLicenseCheckFingerprint : Fingerprint(
     definingClass = "Lcom/pairip/licensecheck/LicenseClient;",
-    name = "checkLicense",
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    name = "initializeLicenseCheck",
     returnType = "V",
-    parameters = listOf("Landroid/content/Context;"),
+    parameters = emptyList(),
 )

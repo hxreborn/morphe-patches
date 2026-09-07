@@ -12,13 +12,13 @@ import app.morphe.util.returnEarly
 @Suppress("unused")
 val removePairipProtectionPatch = bytecodePatch(
     name = "Remove pairip protection",
-    description = "Removes the Play Integrity license check.",
+    description = "Removes the Play licensing check that sends a patched install to Google Play.",
 ) {
     compatibleWith(
         AppCompatibilities.RATEGLANCE,
     )
 
     execute {
-        CheckLicenseFingerprint.matchSingle().method.returnEarly()
+        InitializeLicenseCheckFingerprint.matchSingle().method.returnEarly()
     }
 }
