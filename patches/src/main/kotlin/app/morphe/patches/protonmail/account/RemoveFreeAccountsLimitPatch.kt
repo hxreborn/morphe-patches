@@ -33,19 +33,19 @@ private class LimitCheck(pattern: String, mask: String, bypass: String) {
 
 private val LIMIT_CHECKS = mapOf(
     ARM64 to LimitCheck(
-        pattern = "090540f93f0118ebc9000054",
-        mask = "00fcffff1ffce0ffffffffff",
+        pattern = "090140b93f05007181000054090540f93f0118ebc9000054",
+        mask = "00fcffbf1ffcff7f0f0000ff00fcffff1ffce0ff0f0000ff",
         bypass = "1f2003d5",
     ),
     ARM32 to LimitCheck(
-        pattern = "d0e902013a1a76eb010249d3",
-        mask = "ffffffffffffffffffffffff",
-        bypass = "49e0",
+        pattern = "d0e902013a1a76eb0102",
+        mask = "ffffffffffffffffffff",
+        bypass = "0022013a",
     ),
     X86_64 to LimitCheck(
-        pattern = "488b50084839ea761e",
-        mask = "ffffffffffffffffff",
-        bypass = "6690",
+        pattern = "488b43408338017500488b5008",
+        mask = "ffff00ffff38ffff00ffffffff",
+        bypass = "4883caff",
     ),
 )
 
@@ -54,24 +54,22 @@ val removeFreeAccountsLimitPatch = resourcePatch(
     name = "Remove free accounts limit",
     description = "Removes the limit for maximum free accounts logged in.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_MAIL_7_10_4)
+    compatibleWith(AppCompatibilities.PROTON_MAIL)
 
     execute {
-        var foundNativeCore = false
+        var patchedArchitectures = 0
 
         for ((architecture, check) in LIMIT_CHECKS) {
             val nativeCore = get("lib/$architecture/$RUST_CORE")
             if (!nativeCore.exists()) continue
 
-            foundNativeCore = true
-
-            if (!nativeCore.replaceTrailingMasked(check.pattern, check.mask, check.bypass)) {
-                throw PatchException("Could not find the free accounts limit check for $architecture")
+            if (nativeCore.replaceTrailingMasked(check.pattern, check.mask, check.bypass)) {
+                patchedArchitectures++
             }
         }
 
-        if (!foundNativeCore) {
-            throw PatchException("Found no $RUST_CORE to patch")
+        if (patchedArchitectures == 0) {
+            throw PatchException("Could not find the free accounts limit check in any $RUST_CORE")
         }
     }
 }
