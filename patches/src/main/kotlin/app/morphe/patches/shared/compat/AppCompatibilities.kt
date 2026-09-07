@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Central Morphe `Compatibility` metadata so Morphe Manager shows human-readable
- * app names and icons. Targets are set only where patches break on newer versions.
+ * app names and icons. Targets gate patching. An unlisted app version is refused.
  */
 package app.morphe.patches.shared.compat
 
@@ -107,15 +107,10 @@ internal object AppCompatibilities {
         packageName = "ch.protonmail.android",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x6D4AFF,
-        targets = listOf(AppTarget(version = null, minSdk = 29)),
-    )
-
-    val PROTON_MAIL_7_10_4 = Compatibility(
-        name = "Proton Mail",
-        packageName = "ch.protonmail.android",
-        apkFileType = ApkFileType.APK,
-        appIconColor = 0x6D4AFF,
-        targets = listOf(AppTarget(version = "7.10.4", versionCode = 17667, minSdk = 29)),
+        targets = listOf(
+            AppTarget(version = "7.11.5", versionCode = 18317, minSdk = 29),
+            AppTarget(version = "7.10.4", versionCode = 17667, minSdk = 29),
+        ),
     )
 
     val RATEGLANCE = Compatibility(
