@@ -4,16 +4,15 @@
  */
 package app.morphe.patches.photoeditorpro.misc.fix.signature
 
-import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.photoeditorpro.shared.PATCH_APPLICATION_CLASS
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/photoeditorpro/SpoofSignature;"
 private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Application;"
-private const val ANDROID_APPLICATION_CLASS = "Landroid/app/Application;"
 
 @Suppress("unused")
 val spoofSignaturePatch = bytecodePatch(
@@ -25,23 +24,7 @@ val spoofSignaturePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        var applicationClass = mutableClassDefBy(PAIRIP_APPLICATION_CLASS)
-        val walked = mutableSetOf(applicationClass.type)
-
-        while (applicationClass.superclass != ANDROID_APPLICATION_CLASS) {
-            val superclass = applicationClass.superclass
-                ?: throw PatchException("Application hierarchy ended before android.app.Application")
-            if (!walked.add(superclass)) {
-                throw PatchException("Application hierarchy loops at $superclass")
-            }
-            applicationClass = mutableClassDefBy(superclass)
-        }
-
-        if (applicationClass.type == EXTENSION_CLASS) {
-            throw PatchException("Application hierarchy already extends $EXTENSION_CLASS")
-        }
-
-        applicationClass.setSuperClass(EXTENSION_CLASS)
+        spoofSignature(PAIRIP_APPLICATION_CLASS, hostClass = PATCH_APPLICATION_CLASS)
 
         InitializeLicenseCheckFingerprint.matchSingle().method.returnEarly()
 

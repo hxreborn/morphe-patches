@@ -16,6 +16,7 @@ internal const val STRING = "Ljava/lang/String;"
 internal const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/photoeditorpro"
 internal const val PATCH_GATES_CLASS = "$EXTENSION_PACKAGE/PatchGates;"
 internal const val PATCH_PANEL_CLASS = "$EXTENSION_PACKAGE/PatchPanel;"
+internal const val PATCH_APPLICATION_CLASS = "$EXTENSION_PACKAGE/PatchApplication;"
 internal const val OK_HTTP_UTILS_CLASS =
     "Lcom/camerasideas/collagemaker/network/OkHttpUtils;"
 internal const val REMOVAL_TASK_CLASS =
