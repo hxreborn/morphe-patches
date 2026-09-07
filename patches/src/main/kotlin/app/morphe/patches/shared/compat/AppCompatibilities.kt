@@ -116,6 +116,14 @@ internal object AppCompatibilities {
         ),
     )
 
+    val QURANIFY = Compatibility(
+        name = "Quranify",
+        packageName = "com.mchutov.Quranify",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x141414,
+        targets = listOf(AppTarget(version = "2.2.8", versionCode = 77, minSdk = 33)),
+    )
+
     val RATEGLANCE = Compatibility(
         name = "RateGlance",
         packageName = "com.sry.rateglance",

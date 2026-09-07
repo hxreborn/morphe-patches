@@ -15,6 +15,7 @@ val removePairipProtectionPatch = bytecodePatch(
     description = "Removes the Play licensing check that sends a patched install to Google Play.",
 ) {
     compatibleWith(
+        AppCompatibilities.QURANIFY,
         AppCompatibilities.RATEGLANCE,
     )
 
