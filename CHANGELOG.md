@@ -1,3 +1,20 @@
+## [1.15.0](https://github.com/hxreborn/morphe-patches/compare/v1.14.1...v1.15.0) (2026-09-07)
+
+### Bug Fixes
+
+* **Proton Mail - Hide upgrade upselling:** hide special offer sidebar row ([3642fbd](https://github.com/hxreborn/morphe-patches/commit/3642fbd241656adbf04c916a0b042815b258eea4))
+* **Remove pairip protection:** return early from initializeLicenseCheck ([4677d7f](https://github.com/hxreborn/morphe-patches/commit/4677d7f778f4a419e456b1c99058c73ede820f24))
+
+### New Features
+
+* **Photo Editor Pro:** warn on an APK that is not the stock build ([e3f3a18](https://github.com/hxreborn/morphe-patches/commit/e3f3a18e2505fa1f6cc91a8891e2f78c0870ea6b))
+* **Proton Mail - Remove free accounts limit:** apply on 7.11.5 ([5e39b74](https://github.com/hxreborn/morphe-patches/commit/5e39b74a08693a928b278cbac9e0ea5008299797))
+* **Proton Mail:** support 7.11.5 ([528d9a7](https://github.com/hxreborn/morphe-patches/commit/528d9a7b751cb3ff14992256d7d00cf91638c466))
+* **Proton Mail:** warn on an APK that is not the stock build ([1d030a6](https://github.com/hxreborn/morphe-patches/commit/1d030a61439ca37eb91b33b0925b89410cd2473b))
+* **Quranify - Bypass integrity check:** load reciters without a Google Play check ([8a89e66](https://github.com/hxreborn/morphe-patches/commit/8a89e66e26ce3135b56b69cac053902cb786f980))
+* **Quranify - Unlock premium:** unlock the premium surah downloads and insights ([2c0aa72](https://github.com/hxreborn/morphe-patches/commit/2c0aa72c01ddc02cf3e40dd4a4408f0cee4d70fe))
+* **Spoof signature:** read the certificate from the APK being patched ([b20cf21](https://github.com/hxreborn/morphe-patches/commit/b20cf21025568d67efb51d2e92c8260abacc117d))
+
 ## [1.14.1](https://github.com/hxreborn/morphe-patches/compare/v1.14.0...v1.14.1) (2026-09-02)
 
 ### Bug Fixes

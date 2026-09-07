@@ -31,7 +31,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.14.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.14.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;39 patches total
+> **[v1.15.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.15.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;42 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -85,8 +85,8 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| 7.10.4 |
-| :---: |
+| 7.11.5 | 7.10.4 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -112,6 +112,23 @@ identify each app. They are not covered by this repository's licence. See
 |----------|----------------|
 | <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/showly/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black. |
 | <a id="showly-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/showly/misc/premium/UnlockPremiumPatch.kt) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;Quranify&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.2.8 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="quranify-bypass-integrity-check"></a>[Bypass integrity check](patches/src/main/kotlin/app/morphe/patches/quranify/misc/integrity/BypassIntegrityCheckPatch.kt) | Loads the reciter catalogue on a patched install. |
+| <a id="quranify-remove-pairip-protection"></a>[Remove pairip protection](patches/src/main/kotlin/app/morphe/patches/shared/misc/pairip/RemovePairipProtectionPatch.kt) | Removes the Play licensing check that sends a patched install to Google Play. |
+| <a id="quranify-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/quranify/misc/premium/UnlockPremiumPatch.kt) | Unlocks downloading every surah, lyrics and tafsir, Android Auto, background playback controls, and insights. |
 
 </details>
 
@@ -272,7 +289,7 @@ identify each app. They are not covered by this repository's licence. See
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="rateglance-remove-pairip-protection"></a>[Remove pairip protection](patches/src/main/kotlin/app/morphe/patches/shared/misc/pairip/RemovePairipProtectionPatch.kt) | Removes the Play Integrity license check. |
+| <a id="rateglance-remove-pairip-protection"></a>Remove pairip protection | Removes the Play licensing check that sends a patched install to Google Play. |
 | <a id="rateglance-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rateglance/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
 
 </details>
