@@ -8,10 +8,13 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.resourceLiteral
 
-private val SIDEBAR_UPSELLING_LABELS = listOf(
+internal const val SIDEBAR_UPSELLING_LABEL_PREFIX = "drawer_upgrade"
+
+internal val SIDEBAR_UPSELLING_LABELS = listOf(
     "drawer_upgrade_plus",
     "drawer_upgrade_unlimited",
     "drawer_upgrade_plus_black_friday",
+    "drawer_upgrade_plus_special_offer",
     "drawer_upgrade_plus_spring_sale",
     "drawer_upgrade_plus_summer_sale",
 )
