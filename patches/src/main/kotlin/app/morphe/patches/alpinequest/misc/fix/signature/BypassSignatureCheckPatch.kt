@@ -9,11 +9,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 
-@Suppress("unused")
-val bypassSignatureCheckPatch = bytecodePatch(
-    name = "Bypass signature check",
-    description = "Removes the modified-version warning and restores address search and auto-routing.",
-) {
+val bypassSignatureCheckPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.ALPINEQUEST)
 
     execute {
