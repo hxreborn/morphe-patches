@@ -14,12 +14,7 @@ import app.morphe.util.returnEarly
 
 private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Application;"
 
-@Suppress("unused")
-val spoofSignaturePatch = bytecodePatch(
-    name = "Spoof signature",
-    description = "Spoofs the original app signature and disables the pairip client-side " +
-        "license check. Required: the app does not start without it.",
-) {
+val spoofSignaturePatch = bytecodePatch {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     extendWith("extensions/extension.mpe")
 
