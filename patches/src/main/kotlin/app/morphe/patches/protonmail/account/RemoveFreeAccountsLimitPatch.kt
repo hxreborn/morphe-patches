@@ -12,6 +12,7 @@ package app.morphe.patches.protonmail.account
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64
 import app.morphe.patches.protonmail.shared.RUST_CORE
@@ -54,6 +55,7 @@ val removeFreeAccountsLimitPatch = resourcePatch(
     name = "Remove free accounts limit",
     description = "Removes the limit for maximum free accounts logged in.",
 ) {
+    dependsOn(spoofSignaturePatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
 
     execute {

@@ -15,11 +15,7 @@ import app.morphe.patches.shared.misc.signature.spoofSignature
 
 private const val APPLICATION_CLASS = "Lch/protonmail/android/App;"
 
-@Suppress("unused")
-val spoofSignaturePatch = bytecodePatch(
-    name = "Spoof signature",
-    description = "Restores push notifications by spoofing the original app signature.",
-) {
+val spoofSignaturePatch = bytecodePatch {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     extendWith("extensions/extension.mpe")
 

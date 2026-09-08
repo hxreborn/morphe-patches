@@ -12,6 +12,7 @@ package app.morphe.patches.protonmail.signature
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.protonmail.shared.RUST_CORE
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.replaceAsciiInPlace
@@ -26,6 +27,7 @@ val removeSentFromSignaturePatch = resourcePatch(
     name = "Remove 'Sent from' signature",
     description = "Removes the 'Sent from Proton Mail' signature from emails.",
 ) {
+    dependsOn(spoofSignaturePatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
 
     execute {

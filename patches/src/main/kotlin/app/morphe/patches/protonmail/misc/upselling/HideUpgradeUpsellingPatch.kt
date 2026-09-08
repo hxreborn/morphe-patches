@@ -12,6 +12,7 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import org.w3c.dom.Element
@@ -42,7 +43,7 @@ val hideUpgradeUpsellingPatch = bytecodePatch(
     description = "Hides the top-bar upgrade button and promotional sidebar rows.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
-    dependsOn(resourceMappingPatch, unhandledSidebarUpsellingPatch)
+    dependsOn(spoofSignaturePatch, resourceMappingPatch, unhandledSidebarUpsellingPatch)
 
     execute {
         val rows = sidebarUpsellingRowFingerprints.mapNotNull { it.methodOrNull }
