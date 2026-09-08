@@ -43,6 +43,7 @@ private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Applicatio
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/PairipMethods;"
 private const val STRING_TYPE = "Ljava/lang/String;"
 private const val METHOD_TYPE = "Ljava/lang/reflect/Method;"
+private val HOISTED_TYPES = setOf(STRING_TYPE, METHOD_TYPE)
 
 private val PAIRIP_ASSET_MAGIC = byteArrayOf(0x00, 0x49, 0x41, 0x50, 0x02)
 private val DEX_MAGIC = byteArrayOf(0x64, 0x65, 0x78, 0x0a)
@@ -163,7 +164,7 @@ private val removePairipResourcesPatch = rawResourcePatch {
 }
 
 private class HoistedField(
-    val isMethod: Boolean,
+    val type: String,
     val className: String,
     val fieldName: String,
     val value: String,
@@ -197,7 +198,13 @@ private fun readHoistedFields(packageName: String): List<HoistedField> {
         lines.filter { it.isNotEmpty() }.map { line ->
             val (kind, className, fieldName, value) = line.split('\t', limit = 4)
 
-            HoistedField(kind == "method", className, fieldName, value.unescape())
+            val type = when (kind) {
+                "string" -> STRING_TYPE
+                "method" -> METHOD_TYPE
+                else -> throw IllegalStateException("Unknown kind $kind in pairip/$packageName.tsv")
+            }
+
+            HoistedField(type, className, fieldName, value.unescape())
         }.toList()
     }
 }
@@ -220,13 +227,37 @@ val removePairipVirtualizationPatch = bytecodePatch {
                 .virtualMethods.removeIf { it.name == "attachBaseContext" }
         ) { "attachBaseContext not found on $PAIRIP_APPLICATION_CLASS" }
 
-        readHoistedFields(packageMetadata.packageName).groupBy { it.className }.forEach { (className, records) ->
-            val classDescriptor = className.toClassDescriptor()
+        val tableName = "pairip/${packageMetadata.packageName}.tsv"
+        val table = readHoistedFields(packageMetadata.packageName).groupBy { it.className.toClassDescriptor() }
+
+        val holders = mutableSetOf<String>()
+        classDefForEach { classDef ->
+            val onlyStaticFields = classDef.methods.none() &&
+                classDef.fields.all { AccessFlags.STATIC.isSet(it.accessFlags) }
+            if (onlyStaticFields && classDef.staticFields.any { it.initialValue == null && it.type in HOISTED_TYPES }) {
+                holders += classDef.type
+            }
+        }
+        check(table.keys.containsAll(holders)) { "Holder classes missing from $tableName: ${holders - table.keys}" }
+
+        table.forEach { (classDescriptor, records) ->
             val classDef = mutableClassDefBy(classDescriptor)
 
-            val fields = records.filter { record ->
-                classDef.staticFields.any { it.name == record.fieldName && it.initialValue == null }
+            val staticFields = classDef.staticFields.map { it.name }.toSet()
+            val hoistedFields = classDef.staticFields
+                .filter { it.initialValue == null && it.type in HOISTED_TYPES }
+                .associate { it.name to it.type }
+            val recordedFields = records.associate { it.fieldName to it.type }
+            check(recordedFields.size == records.size) { "$classDescriptor has duplicate rows in $tableName" }
+            check(recordedFields.keys.containsAll(hoistedFields.keys) && staticFields.containsAll(recordedFields.keys)) {
+                "$classDescriptor does not match $tableName: " +
+                    "not in the table ${hoistedFields.keys - recordedFields.keys}, not in the app ${recordedFields.keys - staticFields}"
             }
+            check(hoistedFields.all { (name, type) -> recordedFields[name] == type }) {
+                "$classDescriptor field kinds differ from $tableName"
+            }
+
+            val fields = records.filter { it.fieldName in hoistedFields }
             if (fields.isEmpty()) return@forEach
 
             check(classDef.directMethods.none { it.name == "<clinit>" }) {
@@ -235,7 +266,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
 
             val implementation = MutableMethodImplementation(4)
             fields.forEach { field ->
-                if (field.isMethod) {
+                if (field.type == METHOD_TYPE) {
                     implementation.addMethodBinding(classDescriptor, field)
                 } else {
                     implementation.addStringAssignment(classDescriptor, field)
