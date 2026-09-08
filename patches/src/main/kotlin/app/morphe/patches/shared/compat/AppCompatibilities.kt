@@ -51,6 +51,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.7.8", versionCode = 278, minSdk = 21)),
     )
 
+    val DWG_FASTVIEW = Compatibility(
+        name = "DWG FastView",
+        packageName = "com.gstarmc.android",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x1AACAC,
+        targets = listOf(AppTarget(version = "5.19.6", versionCode = 616, minSdk = 26)),
+    )
+
     val ETSY = Compatibility(
         name = "Etsy",
         packageName = "com.etsy.android",
