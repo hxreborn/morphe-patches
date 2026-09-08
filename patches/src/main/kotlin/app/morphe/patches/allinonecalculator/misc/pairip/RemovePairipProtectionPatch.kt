@@ -201,13 +201,7 @@ private fun readHoistedFields(): List<HoistedField> {
 
 private operator fun <T> List<T>.component4() = this[3]
 
-@Suppress("unused")
-val removePairipProtectionPatch = bytecodePatch(
-    name = "Remove pairip protection",
-    description = "Removes the Play Integrity protection that crashes a patched install on " +
-        "startup and sends it to Google Play. Background receivers the protection virtualized " +
-        "stop running.",
-) {
+val removePairipProtectionPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.ALL_IN_ONE_CALCULATOR)
 
     dependsOn(removePairipResourcesPatch)
