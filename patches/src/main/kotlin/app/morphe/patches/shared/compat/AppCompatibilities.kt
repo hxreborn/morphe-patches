@@ -35,6 +35,14 @@ internal object AppCompatibilities {
         appIconColor = 0xF8991C,
     )
 
+    val BETTERSLEEP = Compatibility(
+        name = "BetterSleep",
+        packageName = "ipnossoft.rma.free",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x1D204B,
+        targets = listOf(AppTarget(version = "26.15", versionCode = 26799, minSdk = 26)),
+    )
+
     val CX_FILE_EXPLORER = Compatibility(
         name = "Cx File Explorer",
         packageName = "com.cxinventor.file.explorer",

@@ -203,7 +203,10 @@ private fun readHoistedFields(packageName: String): List<HoistedField> {
 }
 
 val removePairipVirtualizationPatch = bytecodePatch {
-    compatibleWith(AppCompatibilities.ALL_IN_ONE_CALCULATOR)
+    compatibleWith(
+        AppCompatibilities.ALL_IN_ONE_CALCULATOR,
+        AppCompatibilities.BETTERSLEEP,
+    )
 
     dependsOn(removePairipResourcesPatch)
     extendWith("extensions/extension.mpe")
