@@ -81,6 +81,16 @@ internal object AppCompatibilities {
         appIconColor = 0x53FC18,
     )
 
+    val MOVIEBOX = Compatibility(
+        name = "MovieBox",
+        packageName = "com.community.oneroom",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x30E66D,
+        targets = listOf(
+            AppTarget(version = "3.0.14.0423.sport_official", versionCode = 50020099, minSdk = 23),
+        ),
+    )
+
     val NOTESNOOK = Compatibility(
         name = "Notesnook",
         packageName = "com.streetwriters.notesnook",
