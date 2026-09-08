@@ -6,7 +6,9 @@ package app.morphe.patches.quranify.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.quranify.misc.integrity.bypassIntegrityCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.matchSingle
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/quranify/PremiumUnlock;"
@@ -17,6 +19,7 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks downloading every surah, lyrics and tafsir, Android Auto, " +
         "background playback controls, and insights.",
 ) {
+    dependsOn(bypassIntegrityCheckPatch, removePairipProtectionPatch)
     compatibleWith(AppCompatibilities.QURANIFY)
     extendWith("extensions/extension.mpe")
 

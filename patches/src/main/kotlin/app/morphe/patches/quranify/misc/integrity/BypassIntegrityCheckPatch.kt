@@ -33,11 +33,7 @@ private fun String.obfuscate() = encodeToByteArray().xorWithKey().joinToString("
 
 private val HEX_LITERAL = Regex("^(?:[0-9a-f]{2})+$")
 
-@Suppress("unused")
-val bypassIntegrityCheckPatch = bytecodePatch(
-    name = "Bypass integrity check",
-    description = "Loads the reciter catalogue on a patched install.",
-) {
+val bypassIntegrityCheckPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.QURANIFY)
 
     execute {
