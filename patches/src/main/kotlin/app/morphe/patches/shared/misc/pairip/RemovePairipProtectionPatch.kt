@@ -9,11 +9,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 
-@Suppress("unused")
-val removePairipProtectionPatch = bytecodePatch(
-    name = "Remove pairip protection",
-    description = "Removes the Play licensing check that sends a patched install to Google Play.",
-) {
+val removePairipProtectionPatch = bytecodePatch {
     compatibleWith(
         AppCompatibilities.QURANIFY,
         AppCompatibilities.RATEGLANCE,
