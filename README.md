@@ -31,7 +31,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.15.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.15.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;42 patches total
+> **[v1.16.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.16.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;36 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -80,7 +80,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -94,7 +94,6 @@ identify each app. They are not covered by this repository's licence. See
 | <a id="proton-mail-hide-upgrade-upselling"></a>[Hide upgrade upselling](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/upselling/HideUpgradeUpsellingPatch.kt) | Hides the top-bar upgrade button and promotional sidebar rows. |
 | <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](patches/src/main/kotlin/app/morphe/patches/protonmail/signature/RemoveSentFromSignaturePatch.kt) | Removes the 'Sent from Proton Mail' signature from emails. |
 | <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](patches/src/main/kotlin/app/morphe/patches/protonmail/account/RemoveFreeAccountsLimitPatch.kt) | Removes the limit for maximum free accounts logged in. |
-| <a id="proton-mail-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/fix/signature/SpoofSignaturePatch.kt) | Restores push notifications by spoofing the original app signature. |
 | <a id="proton-mail-unlock-custom-time-picker"></a>[Unlock custom time picker](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/scheduling/UnlockCustomTimePickerPatch.kt) | Enables picking a custom date and time when snoozing conversations and scheduling messages. |
 
 </details>
@@ -116,39 +115,6 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;Quranify&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 2.2.8 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="quranify-bypass-integrity-check"></a>[Bypass integrity check](patches/src/main/kotlin/app/morphe/patches/quranify/misc/integrity/BypassIntegrityCheckPatch.kt) | Loads the reciter catalogue on a patched install. |
-| <a id="quranify-remove-pairip-protection"></a>[Remove pairip protection](patches/src/main/kotlin/app/morphe/patches/shared/misc/pairip/RemovePairipProtectionPatch.kt) | Removes the Play licensing check that sends a patched install to Google Play. |
-| <a id="quranify-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/quranify/misc/premium/UnlockPremiumPatch.kt) | Unlocks downloading every surah, lyrics and tafsir, Android Auto, background playback controls, and insights. |
-
-</details>
-
-<details open>
-<summary><img src=".github/assets/icons/alpinequest.png" width="18" align="top">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| Any version |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="alpinequest-bypass-signature-check"></a>[Bypass signature check](patches/src/main/kotlin/app/morphe/patches/alpinequest/misc/fix/signature/BypassSignatureCheckPatch.kt) | Removes the modified-version warning and restores address search and auto-routing. |
-| <a id="alpinequest-unlock-full-version"></a>[Unlock full version](patches/src/main/kotlin/app/morphe/patches/alpinequest/misc/activation/UnlockFullVersionPatch.kt) | Unlocks the Off-Road Explorer features gated behind activation. |
-
-</details>
-
-<details open>
 <summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -165,7 +131,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/allinonecalculator.png" width="18" align="top">&nbsp;&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/allinonecalculator.png" width="18" align="top">&nbsp;&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -176,7 +142,6 @@ identify each app. They are not covered by this repository's licence. See
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="all-in-one-calculator-gmscore-support"></a>[GmsCore support](patches/src/main/kotlin/app/morphe/patches/allinonecalculator/misc/gms/GmsCoreSupportPatch.kt) | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="all-in-one-calculator-remove-pairip-protection"></a>[Remove pairip protection](patches/src/main/kotlin/app/morphe/patches/allinonecalculator/misc/pairip/RemovePairipProtectionPatch.kt) | Removes the Play Integrity protection that crashes a patched install on startup and sends it to Google Play. Background receivers the protection virtualized stop running. |
 | <a id="all-in-one-calculator-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/allinonecalculator/misc/premium/UnlockPremiumPatch.kt) | Grants the pro entitlement, which removes the ads and the paywalled tools. |
 
 </details>
@@ -212,7 +177,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -226,8 +191,6 @@ identify each app. They are not covered by this repository's licence. See
 | <a id="photo-editor-pro-inspect-ai-requests"></a>[Inspect AI requests](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/diagnostics/TraceAiRequestsPatch.kt) | Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads, and keeps a log, so you can watch your photo fly to China or the US. |
 | <a id="photo-editor-pro-show-ai-progress"></a>[Show AI progress](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/ShowAiProgressPatch.kt) | Reads the current stage off the real network activity instead of the fake progress bar InShot ships. |
 | <a id="photo-editor-pro-speed-up-ai-tools"></a>[Speed up AI tools](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/SpeedUpAiToolsPatch.kt) | Shortens the AI tool wait by polling for the result more often and uploading the photo in larger chunks. |
-| <a id="photo-editor-pro-spoof-ios-platform"></a>[Spoof iOS platform](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/fix/platform/SpoofIosPlatformPatch.kt) | Reports the AI requests as coming from the iOS app, so the server does not ask for a Play Integrity token. Required for the AI tools on any device that passes Play Integrity. |
-| <a id="photo-editor-pro-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/fix/signature/SpoofSignaturePatch.kt) | Spoofs the original app signature and disables the pairip client-side license check. Required: the app does not start without it. |
 | <a id="photo-editor-pro-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/premium/UnlockPremiumPatch.kt) | Adds an option to unlock the pro tools, remove the export watermark and hide the upgrade prompts. |
 
 </details>
@@ -279,7 +242,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;RateGlance&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/alpinequest.png" width="18" align="top">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -289,8 +252,22 @@ identify each app. They are not covered by this repository's licence. See
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="rateglance-remove-pairip-protection"></a>Remove pairip protection | Removes the Play licensing check that sends a patched install to Google Play. |
-| <a id="rateglance-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rateglance/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+| <a id="alpinequest-unlock-full-version"></a>[Unlock full version](patches/src/main/kotlin/app/morphe/patches/alpinequest/misc/activation/UnlockFullVersionPatch.kt) | Unlocks the Off-Road Explorer features gated behind activation. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 26.15 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="bettersleep-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bettersleep/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium content and skips the free trial screen. |
 
 </details>
 
@@ -306,6 +283,51 @@ identify each app. They are not covered by this repository's licence. See
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="forusapp-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/forus/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;Quranify&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.2.8 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="quranify-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/quranify/misc/premium/UnlockPremiumPatch.kt) | Unlocks downloading every surah, lyrics and tafsir, Android Auto, background playback controls, and insights. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;RateGlance&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| Any version |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="rateglance-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rateglance/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;RISE Sleep Tracker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| Android V1.78.49 | Android V1.78.47 |
+| :---: | :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="rise-sleep-tracker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rise/misc/premium/UnlockPremiumPatch.kt) | Unlocks the energy schedule, habit tools, smart alarm and progress insights. Requires a RISE account. |
 
 </details>
 

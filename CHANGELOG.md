@@ -1,3 +1,23 @@
+## [1.16.0](https://github.com/hxreborn/morphe-patches/compare/v1.15.0...v1.16.0) (2026-09-08)
+
+### Bug Fixes
+
+* **All-In-One Calculator:** stop listing the pairip patch that only serves the unlocks ([2f93695](https://github.com/hxreborn/morphe-patches/commit/2f93695904bad66bd4ed1b02f64a92f6e8c7a4e1))
+* **AlpineQuest - Bypass signature check:** stop listing a patch that only serves the unlock ([4959f5e](https://github.com/hxreborn/morphe-patches/commit/4959f5e070d79130977df9b8f73b198945985095))
+* **Photo Editor Pro - Spoof signature:** stop listing a patch the app cannot run without ([0bdb3db](https://github.com/hxreborn/morphe-patches/commit/0bdb3dba66a2e669c6610d02452c65f722621460))
+* **Photo Editor Pro:** stop listing the iOS spoof the AI tools cannot work without ([a44cffd](https://github.com/hxreborn/morphe-patches/commit/a44cffd9a8ded18908277244eabc2054af5bf00f))
+* **Proton Mail:** keep push notifications working whichever patches are selected ([e17ead1](https://github.com/hxreborn/morphe-patches/commit/e17ead1c4fa5d8adfbe7cae759f1d24451fb8969))
+* **Quranify - Unlock premium:** pull in the integrity and pairip patches as dependencies ([06db4dd](https://github.com/hxreborn/morphe-patches/commit/06db4dd2dbebd6ba9cab2b7bf579ceb5ac912353))
+* **RateGlance - Unlock premium:** pull in the pairip patch as a dependency ([5359f91](https://github.com/hxreborn/morphe-patches/commit/5359f913df2c84be9c5bb2c66f001578454fb6b2))
+* **Remove pairip protection:** fail at patch time when the hoisted-field table does not match ([5972cc3](https://github.com/hxreborn/morphe-patches/commit/5972cc3fdd23c81866b42215d558058fb30202ef))
+* **Remove pairip protection:** stop listing a patch that only serves the unlocks ([8d8acf6](https://github.com/hxreborn/morphe-patches/commit/8d8acf6e35833bec3af6875feba4b45ab28a510a))
+
+### New Features
+
+* **BetterSleep - Spoof signature:** keep account sign-up and Firebase working on a re-signed build ([eac36d1](https://github.com/hxreborn/morphe-patches/commit/eac36d1efbee1b5ddec40732cc490121a5ef7267))
+* **BetterSleep - Unlock premium:** unlock all content and skip the free trial screen ([8cac3d5](https://github.com/hxreborn/morphe-patches/commit/8cac3d59efcb71922a8884f00f17962b5f2201ec))
+* **RISE - Unlock premium:** unlock the energy schedule and habit tools without a subscription ([d9df4c1](https://github.com/hxreborn/morphe-patches/commit/d9df4c1ff09a965c5ef365fbc04e648d21249881))
+
 ## [1.15.0](https://github.com/hxreborn/morphe-patches/compare/v1.14.1...v1.15.0) (2026-09-07)
 
 ### Bug Fixes
