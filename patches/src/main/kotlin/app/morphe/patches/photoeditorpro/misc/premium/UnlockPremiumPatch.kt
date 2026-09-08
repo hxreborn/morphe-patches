@@ -6,6 +6,7 @@ package app.morphe.patches.photoeditorpro.misc.premium
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.ProGateFingerprint
 import app.morphe.patches.photoeditorpro.shared.RemoveAdsPurchasedFingerprint
@@ -21,7 +22,7 @@ val unlockPremiumPatch = bytecodePatch(
         "hide the upgrade prompts.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
     extendWith("extensions/extension.mpe")
 
     execute {

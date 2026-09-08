@@ -10,6 +10,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.ENHANCE_TASK_CLASS
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
@@ -61,7 +62,7 @@ val showAiProgressPatch = bytecodePatch(
         "fake progress bar InShot ships.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
     extendWith("extensions/extension.mpe")
 
     execute {

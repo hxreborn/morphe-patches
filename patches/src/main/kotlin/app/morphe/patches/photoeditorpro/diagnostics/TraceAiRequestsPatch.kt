@@ -7,6 +7,7 @@ package app.morphe.patches.photoeditorpro.diagnostics
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.OK_HTTP_UTILS_CLASS
@@ -30,7 +31,7 @@ val traceAiRequestsPatch = bytecodePatch(
         "Firebase uploads, and keeps a log, so you can watch your photo fly to China or the US.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
     extendWith("extensions/extension.mpe")
 
     execute {

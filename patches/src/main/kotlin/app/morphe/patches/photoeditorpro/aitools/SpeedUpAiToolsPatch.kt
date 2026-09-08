@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.AI_TASK_CLASSES
 import app.morphe.patches.photoeditorpro.shared.PATCH_GATES_CLASS
@@ -37,7 +38,7 @@ val speedUpAiToolsPatch = bytecodePatch(
         "uploading the photo in larger chunks.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
     extendWith("extensions/extension.mpe")
 
     execute {

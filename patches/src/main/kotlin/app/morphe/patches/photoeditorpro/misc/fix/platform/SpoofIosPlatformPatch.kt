@@ -18,13 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val IOS_PLATFORM = "iOS"
 
-@Suppress("unused")
-val spoofIosPlatformPatch = bytecodePatch(
-    name = "Spoof iOS platform",
-    description = "Reports the AI requests as coming from the iOS app, so the server does " +
-        "not ask for a Play Integrity token. Required for the AI tools on any device that " +
-        "passes Play Integrity.",
-) {
+val spoofIosPlatformPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
     extendWith("extensions/extension.mpe")
