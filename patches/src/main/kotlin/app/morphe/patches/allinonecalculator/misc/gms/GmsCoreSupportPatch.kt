@@ -15,7 +15,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.allinonecalculator.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
@@ -68,7 +68,7 @@ val gmsCoreSupportPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.ALL_IN_ONE_CALCULATOR)
     extendWith("extensions/extension.mpe")
 
-    dependsOn(removePairipProtectionPatch, spoofSignatureResourcePatch)
+    dependsOn(removePairipVirtualizationPatch, spoofSignatureResourcePatch)
 
     execute {
         GetCredentialFingerprint.matchSingle().method.addInstructions(

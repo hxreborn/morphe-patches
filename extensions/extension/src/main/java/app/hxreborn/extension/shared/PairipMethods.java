@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.allinonecalculator;
+package app.hxreborn.extension.shared;
 
 import java.lang.reflect.Method;
 

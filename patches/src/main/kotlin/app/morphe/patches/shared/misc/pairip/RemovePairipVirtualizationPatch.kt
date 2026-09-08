@@ -14,7 +14,7 @@
  * patches/src/main/kotlin/hoodles/morphe/patches/shared/misc/pairip/resources/ExtractDexPatch.kt
  * patches/src/main/kotlin/hoodles/morphe/patches/shared/misc/pairip/resources/PairipResourcesPatch.kt
  */
-package app.morphe.patches.allinonecalculator.misc.pairip
+package app.morphe.patches.shared.misc.pairip
 
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.rawResourcePatch
@@ -40,7 +40,7 @@ import java.security.MessageDigest
 import java.util.function.Supplier
 
 private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Application;"
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/allinonecalculator/PairipMethods;"
+private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/PairipMethods;"
 private const val STRING_TYPE = "Ljava/lang/String;"
 private const val METHOD_TYPE = "Ljava/lang/reflect/Method;"
 
@@ -94,8 +94,10 @@ private val mergeRecoveredDexPatch = bytecodePatch {
 }
 
 private val PAIRIP_HOOKED_LIBRARIES = mapOf(
-    "libflutter" to "libflutter.so",
-    "libfastdev" to "libfastdev_quickjs_runtime.so",
+    "all.in.one.calculator" to mapOf(
+        "libflutter" to "libflutter.so",
+        "libfastdev" to "libfastdev_quickjs_runtime.so",
+    ),
 )
 
 private fun ByteArray.applyDelta(delta: ByteArray): ByteArray {
@@ -127,11 +129,11 @@ private val removePairipResourcesPatch = rawResourcePatch {
     dependsOn(mergeRecoveredDexPatch)
 
     execute {
-        // Restore the stock Flutter engine and QuickJS runtime, which pairip rewrote to call its
-        // virtual machine for two hundred functions it stripped out.
+        val hookedLibraries = PAIRIP_HOOKED_LIBRARIES[packageMetadata.packageName].orEmpty()
         var restoredLibraries = 0
+        var removedRuntimes = 0
         get("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
-            PAIRIP_HOOKED_LIBRARIES.forEach { (name, fileName) ->
+            hookedLibraries.forEach { (name, fileName) ->
                 val library = architecture.resolve(fileName)
                 if (!library.exists()) return@forEach
 
@@ -144,9 +146,10 @@ private val removePairipResourcesPatch = rawResourcePatch {
                 restoredLibraries++
             }
 
-            architecture.resolve("libpairipcore.so").delete()
+            if (architecture.resolve("libpairipcore.so").delete()) removedRuntimes++
         }
-        check(restoredLibraries > 0) { "No pairip patched library found under lib/" }
+        check(removedRuntimes > 0) { "No libpairipcore.so found under lib/" }
+        if (hookedLibraries.isNotEmpty()) check(restoredLibraries > 0) { "No pairip patched library found under lib/" }
 
         get("assets").listFiles { file -> file.isFile }?.forEach { asset ->
             val header = ByteArray(PAIRIP_ASSET_MAGIC.size)
@@ -186,9 +189,9 @@ private fun String.unescape() = buildString {
 
 private fun String.toClassDescriptor() = "L${replace('.', '/')};"
 
-private fun readHoistedFields(): List<HoistedField> {
-    val stream = inputStreamFromBundledResource("pairip", "all.in.one.calculator.tsv")
-        ?: throw IllegalStateException("Missing pairip/all.in.one.calculator.tsv")
+private fun readHoistedFields(packageName: String): List<HoistedField> {
+    val stream = inputStreamFromBundledResource("pairip", "$packageName.tsv")
+        ?: throw IllegalStateException("Missing pairip/$packageName.tsv")
 
     return stream.bufferedReader().useLines { lines ->
         lines.filter { it.isNotEmpty() }.map { line ->
@@ -199,9 +202,7 @@ private fun readHoistedFields(): List<HoistedField> {
     }
 }
 
-private operator fun <T> List<T>.component4() = this[3]
-
-val removePairipProtectionPatch = bytecodePatch {
+val removePairipVirtualizationPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.ALL_IN_ONE_CALCULATOR)
 
     dependsOn(removePairipResourcesPatch)
@@ -216,11 +217,10 @@ val removePairipProtectionPatch = bytecodePatch {
                 .virtualMethods.removeIf { it.name == "attachBaseContext" }
         ) { "attachBaseContext not found on $PAIRIP_APPLICATION_CLASS" }
 
-        readHoistedFields().groupBy { it.className }.forEach { (className, records) ->
+        readHoistedFields(packageMetadata.packageName).groupBy { it.className }.forEach { (className, records) ->
             val classDescriptor = className.toClassDescriptor()
             val classDef = mutableClassDefBy(classDescriptor)
 
-            // The virtual machine only filled fields the dex leaves without a value.
             val fields = records.filter { record ->
                 classDef.staticFields.any { it.name == record.fieldName && it.initialValue == null }
             }

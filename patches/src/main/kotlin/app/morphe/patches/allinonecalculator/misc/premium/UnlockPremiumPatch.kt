@@ -6,7 +6,7 @@ package app.morphe.patches.allinonecalculator.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.allinonecalculator.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.matchSingle
 
@@ -20,7 +20,7 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.ALL_IN_ONE_CALCULATOR)
     extendWith("extensions/extension.mpe")
 
-    dependsOn(removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch)
 
     execute {
         BuildCustomerInfoFingerprint.matchSingle().method.addInstructions(
