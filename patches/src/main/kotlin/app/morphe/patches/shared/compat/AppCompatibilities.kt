@@ -153,6 +153,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16)),
     )
 
+    val RISE = Compatibility(
+        name = "RISE Sleep Tracker",
+        packageName = "com.risesci.nyx",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x8E58FF,
+        targets = listOf(
+            AppTarget(version = "Android V1.78.49", minSdk = 26),
+            AppTarget(version = "Android V1.78.47", minSdk = 26),
+        ),
+    )
+
     val RUBBER_BANDS = Compatibility(
         name = "Rubber Bands",
         packageName = "app.rubberbands.fit",
