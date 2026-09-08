@@ -7,6 +7,7 @@ package app.morphe.patches.rateglance.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.matchSingle
 
 @Suppress("unused")
@@ -14,6 +15,7 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks all premium features.",
 ) {
+    dependsOn(removePairipProtectionPatch)
     compatibleWith(AppCompatibilities.RATEGLANCE)
 
     execute {
