@@ -87,7 +87,9 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APK,
         appIconColor = 0x30E66D,
         targets = listOf(
-            AppTarget(version = "3.0.14.0423.sport_official", versionCode = 50020099, minSdk = 23),
+            AppTarget(version = "4.0.02.0828.03", versionCode = 50020125, minSdk = 29),
+            AppTarget(version = "4.0.02.0831.03", versionCode = 50020126, minSdk = 29),
+            AppTarget(version = "4.0.02.0903.02", versionCode = 50020128, minSdk = 29),
         ),
     )
 
