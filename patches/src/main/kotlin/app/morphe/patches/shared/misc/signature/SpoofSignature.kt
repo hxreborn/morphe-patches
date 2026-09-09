@@ -54,7 +54,7 @@ internal fun BytecodePatchContext.spoofSignature(
     applicationRoot(applicationClass).setSuperClass(hostClass)
 }
 
-private fun PackageMetadata.stockSigningCertificate(): X509Certificate {
+internal fun PackageMetadata.stockSigningCertificate(): X509Certificate {
     val certificates = signingCertificates.filterValues { it.isNotEmpty() }
     val scheme = certificates.keys.minByOrNull(::schemeOrder)
         ?: throw PatchException("The app being patched is not signed")
