@@ -18,17 +18,20 @@ kotlin {
     }
 }
 
-// Separate configuration so gson is available at runtime for the
-// generatePatchesList task but never bundled into the APK.
 val patchListGeneratorClasspath: Configuration by configurations.creating
 
 dependencies {
     compileOnly(libs.gson)
     implementation(libs.morphe.patches.library)
     patchListGeneratorClasspath(libs.gson)
+    testImplementation(kotlin("test"))
 }
 
 tasks {
+    withType<Test> {
+        useJUnitPlatform()
+    }
+
     register<JavaExec>("generatePatchesList") {
         description = "Build patch with patch list"
 
@@ -38,7 +41,6 @@ tasks {
         mainClass.set("util.PatchListGeneratorKt")
     }
 
-    // Used by gradle-semantic-release-plugin.
     publish {
         dependsOn("generatePatchesList")
     }
