@@ -207,6 +207,7 @@ ICONS = {
     "com.mchutov.Quranify": "quranify.png",
     "com.sry.rateglance": "rateglance.png",
     "com.risesci.nyx": "risesleep.png",
+    "ipnossoft.rma.free": "bettersleep.png",
 }
 
 

@@ -289,7 +289,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/bettersleep.png" width="18" align="top">&nbsp;&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
