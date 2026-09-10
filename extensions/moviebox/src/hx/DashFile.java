@@ -267,6 +267,9 @@ final class DashFile {
         String range = "bytes=" + (piece.prefixBytes + from) + "-" + (piece.prefixBytes + to);
         HttpURLConnection connection = connect(piece.url, range, cookies);
         try {
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_PARTIAL) {
+                throw new IOException("range ignored for " + piece.url);
+            }
             InputStream in = connection.getInputStream();
             byte[] buffer = new byte[COPY_BUFFER_BYTES];
             long position = from;
@@ -390,14 +393,18 @@ final class DashFile {
         return best != null ? best : smallest;
     }
 
-    private static String initializationUrl(Representation representation) {
+    private static String initializationUrl(Representation representation) throws IOException {
         String initialization = representation.template.initialization;
+        if (initialization == null) {
+            throw new IOException("representation " + representation.id + " has no initialization");
+        }
         return representation.baseUrl + initialization.replace(REPRESENTATION_ID, representation.id);
     }
 
     private static List<Segment> segments(Representation representation, double presentationSeconds)
             throws IOException {
         Template template = representation.template;
+        if (template.timescale <= 0) throw new IOException("representation " + representation.id + " has no timescale");
         List<Interval> timeline = template.timeline;
         if (timeline.isEmpty() && template.duration > 0 && presentationSeconds > 0) {
             long count = (long) Math.ceil(presentationSeconds * template.timescale / template.duration);
@@ -409,6 +416,9 @@ final class DashFile {
         long time = 0;
         int number = template.startNumber;
         for (Interval interval : timeline) {
+            if (interval.duration <= 0 || interval.repeats < 0) {
+                throw new IOException("representation " + representation.id + " has an invalid segment timeline");
+            }
             if (interval.startTime >= 0) time = interval.startTime;
             for (long repeat = 0; repeat <= interval.repeats; repeat++) {
                 Segment segment = new Segment();
@@ -479,8 +489,8 @@ final class DashFile {
                 got += count;
             }
             int offset = 0;
-            if (got >= BOX_HEADER && "styp".equals(type(prefix, 0))) offset += size(prefix, 0);
-            if (got >= offset + BOX_HEADER && "sidx".equals(type(prefix, offset))) offset += size(prefix, offset);
+            if (got >= BOX_HEADER && "styp".equals(type(prefix, 0))) offset += boxSize(prefix, 0);
+            if (got >= offset + BOX_HEADER && "sidx".equals(type(prefix, offset))) offset += boxSize(prefix, offset);
             segment.prefixBytes = offset;
             segment.trackIdOffset = trackIdOffset(prefix, offset, got);
         } catch (NumberFormatException malformed) {
@@ -494,15 +504,19 @@ final class DashFile {
         if (moof + BOX_HEADER > end || !"moof".equals(type(prefix, moof))) {
             throw new IOException("segment does not start with moof");
         }
-        int moofEnd = Math.min(moof + size(prefix, moof), end);
-        for (int traf = moof + BOX_HEADER; traf + BOX_HEADER <= moofEnd; traf += size(prefix, traf)) {
-            if (!"traf".equals(type(prefix, traf))) continue;
-            int trafEnd = Math.min(traf + size(prefix, traf), end);
-            int tfhd = traf + BOX_HEADER;
-            while (tfhd + FULL_BOX_HEADER + TRACK_ID_BYTES <= trafEnd) {
-                if ("tfhd".equals(type(prefix, tfhd))) return tfhd + FULL_BOX_HEADER;
-                tfhd += size(prefix, tfhd);
+        int moofEnd = (int) Math.min((long) moof + boxSize(prefix, moof), end);
+        int traf = moof + BOX_HEADER;
+        while (traf + BOX_HEADER <= moofEnd) {
+            int trafSize = boxSize(prefix, traf);
+            if ("traf".equals(type(prefix, traf))) {
+                int trafEnd = (int) Math.min((long) traf + trafSize, end);
+                int tfhd = traf + BOX_HEADER;
+                while (tfhd + FULL_BOX_HEADER + TRACK_ID_BYTES <= trafEnd) {
+                    if ("tfhd".equals(type(prefix, tfhd))) return tfhd + FULL_BOX_HEADER;
+                    tfhd += boxSize(prefix, tfhd);
+                }
             }
+            traf += trafSize;
         }
         throw new IOException("segment lacks a tfhd within " + end + " bytes");
     }
@@ -624,15 +638,20 @@ final class DashFile {
     }
 
     private static Box child(byte[] data, int from, int end, String type) throws IOException {
-        for (int at = from; at + BOX_HEADER <= end; at += size(data, at)) {
-            if (type.equals(type(data, at))) return new Box(at, size(data, at));
-            if (size(data, at) < BOX_HEADER) break;
+        int at = from;
+        while (at + BOX_HEADER <= end) {
+            int size = boxSize(data, at);
+            if ((long) at + size > end) throw new IOException("box " + type(data, at) + " overruns its parent");
+            if (type.equals(type(data, at))) return new Box(at, size);
+            at += size;
         }
         throw new IOException("missing " + type + " box");
     }
 
-    private static int size(byte[] data, int at) {
-        return (int) u32(data, at);
+    private static int boxSize(byte[] data, int at) throws IOException {
+        long size = u32(data, at);
+        if (size < BOX_HEADER || size > Integer.MAX_VALUE) throw new IOException("unsupported box size " + size);
+        return (int) size;
     }
 
     private static String type(byte[] data, int at) {

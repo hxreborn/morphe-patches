@@ -28,6 +28,14 @@ final class DashServer implements Runnable {
                 throws IOException;
     }
 
+    static final class Unavailable extends IOException {
+        private static final long serialVersionUID = 1L;
+
+        Unavailable(String message) {
+            super(message);
+        }
+    }
+
     private static final class Range {
         final long start;
         final long end;
@@ -52,6 +60,7 @@ final class DashServer implements Runnable {
     private static final String RANGE_HEADER = "Range:";
     private static final Pattern PATH = Pattern.compile("^/dash/(\\d{1,19})/(\\d{1,9})/(\\d{1,9})/(\\d{1,9})\\.mp4$");
     private static final Pattern RANGE = Pattern.compile("^bytes=(\\d{1,18})-(\\d{0,18})$");
+    private static final char DEL = 0x7F;
     private static final String ORIGIN_PARAMETER = "origin";
     private static final String ORIGIN_SIZE_PARAMETER = "size";
     private static final String STATUS_OK = "200 OK";
@@ -174,13 +183,17 @@ final class DashServer implements Runnable {
             writeEmpty(out, STATUS_NOT_FOUND, null);
             return;
         }
-        String origin = target.getQueryParameter(ORIGIN_PARAMETER);
+        String origin = validOrigin(target.getQueryParameter(ORIGIN_PARAMETER));
         long originSize = parseSize(target.getQueryParameter(ORIGIN_SIZE_PARAMETER));
 
         DashFile file;
         try {
             file = source.open(path.group(1), Integer.parseInt(path.group(2)),
                     Integer.parseInt(path.group(3)), Integer.parseInt(path.group(4)), origin, originSize);
+        } catch (Unavailable gone) {
+            Log.i(TAG, "unavailable " + request[1] + ": " + gone.getMessage());
+            writeEmpty(out, STATUS_NOT_FOUND, null);
+            return;
         } catch (IOException e) {
             Log.e(TAG, "cannot open " + request[1], e);
             writeEmpty(out, STATUS_UNAVAILABLE, null);
@@ -206,6 +219,15 @@ final class DashServer implements Runnable {
         }
         writeHeaders(out, range, file.length, partial);
         if (!headOnly) file.write(out, range.start, range.end);
+    }
+
+    private static String validOrigin(String origin) {
+        if (origin == null || !(origin.startsWith("http://") || origin.startsWith("https://"))) return null;
+        for (int i = 0; i < origin.length(); i++) {
+            char c = origin.charAt(i);
+            if (c <= ' ' || c >= DEL) return null;
+        }
+        return origin;
     }
 
     private static long parseSize(String value) {

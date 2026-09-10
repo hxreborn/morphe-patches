@@ -44,7 +44,11 @@ public final class AppPatch {
     private static final String BFF = "wefeed-mobile-bff";
     private static final String PLAY_INFO = BFF + "/subject-api/play-info/v2";
     private static final String RESOURCE_LIST = BFF + "/subject-api/resource/v2";
+    private static final String USER_PROFILE = BFF + "/user-api/profile";
+    private static final String MEMBER_DETAIL = BFF + "/vip/member/detail";
     private static final String[] URL_FIELDS = {"url", "resourceLink", "downloadUrl", "playUrl"};
+    private static final int MEMBER_DAYS_LEFT = 9999;
+    private static final String MEMBER_EXPIRY = "2099-12-31";
     private static final int MANAGER_RETRY_LIMIT = 200;
     private static final long MANAGER_RETRY_DELAY_MS = 50L;
 
@@ -117,7 +121,12 @@ public final class AppPatch {
                 if (server != null) server.start();
                 Object wrapped = addInterceptor(client, interceptor(loader, source));
                 clientField.set(instance, wrapped);
-                callFactory.set(retrofit, wrapped);
+                try {
+                    callFactory.set(retrofit, wrapped);
+                } catch (Exception e) {
+                    clientField.set(instance, client);
+                    throw e;
+                }
             } catch (Exception e) {
                 if (server != null) server.close();
                 throw e;
@@ -260,6 +269,7 @@ public final class AppPatch {
         private static final int FILE_RETENTION = 8;
         private static final int RESOURCE_RETENTION = 32;
         private static final int ORIGIN_PROBE_TIMEOUT_MS = 10000;
+        private static final long PLACEHOLDER_SIZE_RATIO = 2;
 
         private final ClassLoader loader;
         private final Object client;
@@ -278,7 +288,6 @@ public final class AppPatch {
             String key = SignedResource.key(Uri.parse(requestUrl));
             SignedResource resource = SignedResource.fromPlayInfo(body);
             Log.i(TAG, "play-info " + key + ": " + (resource == null ? "no signed DASH resource" : "DASH"));
-            if (resource == null) Log.d(TAG, "play-info body " + body);
             if (key == null || resource == null) return null;
             synchronized (resources) {
                 resources.put(key, resource);
@@ -291,17 +300,25 @@ public final class AppPatch {
                              String origin, long originSize) throws IOException {
             String label = SignedResource.key(subjectId, season, episode) + "@" + height;
             if (origin != null && originSize > 0 && originLength(origin) == originSize) {
-                Log.i(TAG, label + ": origin serves the advertised " + originSize + " bytes");
+                Log.i(TAG, label + ": redirect to origin, size " + originSize + " matches");
                 return null;
             }
             try {
                 resource(subjectId, season, episode, null);
             } catch (IOException noResource) {
                 if (origin == null) throw noResource;
-                Log.i(TAG, label + ": falling back to origin, " + noResource.getMessage());
+                if (placeholder(origin, originSize)) {
+                    throw new DashServer.Unavailable(label + ": origin is a placeholder for " + originSize + " bytes");
+                }
+                Log.i(TAG, label + ": redirect to origin, " + noResource.getMessage());
                 return null;
             }
             return getOrCreateFile(subjectId, season, episode, height);
+        }
+
+        private boolean placeholder(String origin, long originSize) {
+            long actual = originLength(origin);
+            return originSize > 0 && actual > 0 && actual * PLACEHOLDER_SIZE_RATIO < originSize;
         }
 
         private long originLength(String origin) {
@@ -353,16 +370,16 @@ public final class AppPatch {
                     task = new FutureTask<>(new Callable<DashFile>() {
                         @Override
                         public DashFile call() throws IOException {
-                            String manifestUrl = resource(subjectId, season, episode, null).manifestUrl;
+                            final String manifestUrl = resource(subjectId, season, episode, null).manifestUrl;
                             return DashFile.open(manifestUrl, height, new DashFile.Cookies() {
                                 @Override
                                 public String current() throws IOException {
-                                    return resource(subjectId, season, episode, null).cookie;
+                                    return cookieFor(key, manifestUrl, subjectId, season, episode, null);
                                 }
 
                                 @Override
                                 public String refresh(String rejected) throws IOException {
-                                    return resource(subjectId, season, episode, rejected).cookie;
+                                    return cookieFor(key, manifestUrl, subjectId, season, episode, rejected);
                                 }
                             });
                         }
@@ -384,6 +401,18 @@ public final class AppPatch {
                 Thread.currentThread().interrupt();
                 throw new IOException(e);
             }
+        }
+
+        private String cookieFor(String fileKey, String manifestUrl, String subjectId, int season, int episode,
+                                 String rejectedCookie) throws IOException {
+            SignedResource resource = resource(subjectId, season, episode, rejectedCookie);
+            if (!resource.manifestUrl.equals(manifestUrl)) {
+                synchronized (files) {
+                    files.remove(fileKey);
+                }
+                throw new IOException("signed DASH resource moved to " + resource.manifestUrl);
+            }
+            return resource.cookie;
         }
 
         private SignedResource resource(String subjectId, int season, int episode, String rejectedCookie)
@@ -460,7 +489,9 @@ public final class AppPatch {
             Object httpUrl = request.getClass().getMethod("url").invoke(request);
             String url = String.valueOf(httpUrl);
             boolean playInfo = url.contains(PLAY_INFO);
-            if (!playInfo && !url.contains(RESOURCE_LIST)) return response;
+            boolean resourceList = url.contains(RESOURCE_LIST);
+            boolean memberInfo = url.contains(USER_PROFILE) || url.contains(MEMBER_DETAIL);
+            if (!playInfo && !resourceList && !memberInfo) return response;
 
             Object body = response.getClass().getMethod("body").invoke(response);
             if (body == null) return response;
@@ -470,9 +501,13 @@ public final class AppPatch {
             String out;
             if (playInfo) {
                 source.observePlayInfo(url, text);
-                out = rewritePlayInfo(text);
-            } else {
+                Uri playInfoUri = Uri.parse(url);
+                out = rewritePlayInfo(text, playInfoUri.getQueryParameter("subjectId"),
+                        queryInt(playInfoUri, "se"), queryInt(playInfoUri, "ep"));
+            } else if (resourceList) {
                 out = rewriteResourceList(text);
+            } else {
+                out = rewriteMemberDays(text);
             }
             byte[] payload = out.equals(text) ? bytes : out.getBytes(StandardCharsets.UTF_8);
             return withBody(response, body, payload);
@@ -507,16 +542,56 @@ public final class AppPatch {
         }
     }
 
-    static String rewritePlayInfo(String body) {
+    static String rewritePlayInfo(String body, String subjectId, int season, int episode) {
         try {
             JSONObject root = new JSONObject(body);
-            return walk(root) ? root.toString() : body;
+            boolean changed = rewritePlaybackUrls(root);
+            changed |= routeProgressiveStreams(root, subjectId, season, episode);
+            return changed ? root.toString() : body;
         } catch (JSONException malformed) {
             return body;
         }
     }
 
-    private static boolean walk(JSONObject node) throws JSONException {
+    private static boolean routeProgressiveStreams(JSONObject root, String subjectId, int season, int episode)
+            throws JSONException {
+        if (subjectId == null || season < 0 || episode < 0) return false;
+        JSONObject data = root.optJSONObject("data");
+        JSONArray streams = data == null ? null : data.optJSONArray("streams");
+        if (streams == null) return false;
+        boolean changed = false;
+        for (int i = 0; i < streams.length(); i++) {
+            JSONObject stream = streams.optJSONObject(i);
+            if (stream == null || !stream.optString("signCookie", "").isEmpty()) continue;
+            String origin = stream.optString("url", "");
+            int height = maxResolution(stream.optString("resolutions", ""));
+            if (origin.isEmpty() || height <= 0) continue;
+            stream.put("url", DashServer.url(subjectId, season, episode, height, origin, stream.optLong("size", 0)));
+            changed = true;
+        }
+        return changed;
+    }
+
+    private static int maxResolution(String resolutions) {
+        int best = 0;
+        for (String part : resolutions.split(",")) {
+            try {
+                best = Math.max(best, Integer.parseInt(part.trim()));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return best;
+    }
+
+    private static int queryInt(Uri uri, String name) {
+        try {
+            return Integer.parseInt(uri.getQueryParameter(name));
+        } catch (NumberFormatException missing) {
+            return -1;
+        }
+    }
+
+    private static boolean rewritePlaybackUrls(JSONObject node) throws JSONException {
         boolean changed = false;
         SignedResource resource = SignedResource.fromCookie(node.optString("signCookie", ""));
         if (resource != null) {
@@ -532,18 +607,18 @@ public final class AppPatch {
         for (Iterator<String> it = node.keys(); it.hasNext(); ) keys.add(it.next());
         for (String key : keys) {
             Object value = node.opt(key);
-            if (value instanceof JSONObject) changed |= walk((JSONObject) value);
-            else if (value instanceof JSONArray) changed |= walk((JSONArray) value);
+            if (value instanceof JSONObject) changed |= rewritePlaybackUrls((JSONObject) value);
+            else if (value instanceof JSONArray) changed |= rewritePlaybackUrls((JSONArray) value);
         }
         return changed;
     }
 
-    private static boolean walk(JSONArray array) throws JSONException {
+    private static boolean rewritePlaybackUrls(JSONArray array) throws JSONException {
         boolean changed = false;
         for (int i = 0; i < array.length(); i++) {
             Object value = array.opt(i);
-            if (value instanceof JSONObject) changed |= walk((JSONObject) value);
-            else if (value instanceof JSONArray) changed |= walk((JSONArray) value);
+            if (value instanceof JSONObject) changed |= rewritePlaybackUrls((JSONObject) value);
+            else if (value instanceof JSONArray) changed |= rewritePlaybackUrls((JSONArray) value);
         }
         return changed;
     }
@@ -579,7 +654,7 @@ public final class AppPatch {
             height = item.getInt("resolution");
             origin = item.getString("resourceLink");
         } catch (JSONException unusable) {
-            Log.w(TAG, "resource item " + item.optString("resourceId") + " kept as is: " + unusable.getMessage());
+            Log.w(TAG, "resource item " + item.optString("resourceId") + " not routed: " + unusable.getMessage());
             return false;
         }
         if (season < 0 || episode < 0 || height <= 0) {
@@ -589,5 +664,41 @@ public final class AppPatch {
         }
         item.put("resourceLink", DashServer.url(subjectId, season, episode, height, origin, item.optLong("size", 0)));
         return true;
+    }
+
+    static String rewriteMemberDays(String body) {
+        try {
+            JSONObject root = new JSONObject(body);
+            return setMemberDays(root) ? root.toString() : body;
+        } catch (JSONException malformed) {
+            return body;
+        }
+    }
+
+    private static boolean setMemberDays(JSONObject node) throws JSONException {
+        boolean changed = false;
+        if (node.has("daysLeft") && node.has("memberType") && node.has("expiryDate")) {
+            node.put("daysLeft", MEMBER_DAYS_LEFT);
+            node.put("expiryDate", MEMBER_EXPIRY);
+            changed = true;
+        }
+        List<String> keys = new ArrayList<>();
+        for (Iterator<String> it = node.keys(); it.hasNext(); ) keys.add(it.next());
+        for (String key : keys) {
+            Object value = node.opt(key);
+            if (value instanceof JSONObject) changed |= setMemberDays((JSONObject) value);
+            else if (value instanceof JSONArray) changed |= setMemberDays((JSONArray) value);
+        }
+        return changed;
+    }
+
+    private static boolean setMemberDays(JSONArray array) throws JSONException {
+        boolean changed = false;
+        for (int i = 0; i < array.length(); i++) {
+            Object value = array.opt(i);
+            if (value instanceof JSONObject) changed |= setMemberDays((JSONObject) value);
+            else if (value instanceof JSONArray) changed |= setMemberDays((JSONArray) value);
+        }
+        return changed;
     }
 }
