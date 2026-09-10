@@ -6,11 +6,35 @@ package app.morphe.patches.gstarmc.misc.premium
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.rawResourcePatch
-import app.morphe.patches.gstarmc.misc.jiagu.bundledResource
+import app.morphe.patches.gstarmc.misc.jiagu.editPayloadDexes
 import app.morphe.patches.gstarmc.misc.jiagu.jiaguRuntimePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.jiagu.asJiaguDex
-import java.security.MessageDigest
+
+private const val PREFERENCES = "Lcom/stone/app/sharedpreferences/AppSharedPreferences;"
+private const val BASE_ACTIVITY = "Lcom/stone/app/ui/base/BaseActivity;"
+private const val ADS = "Lcom/stone/ad/InternalAdsManager;"
+
+private const val ASYNC_CHECK = "checkFunctionPointAvailable"
+
+private val TRUE_METHODS = mapOf(
+    PREFERENCES to listOf(
+        "checkFunctionPointUseable",
+        "checkUserFunctionPoint_VipCode",
+        "isUserVip_AD",
+        "isUserVip_High",
+        "isUserVip_Super",
+        "isUserVip_Company",
+    ),
+    BASE_ACTIVITY to listOf(ASYNC_CHECK),
+)
+
+private val FALSE_METHODS = mapOf(
+    PREFERENCES to listOf("checkAdSettingStatus", "checkAdDataShow", "checkAdSettingValid"),
+)
+
+private val VOID_METHODS = mapOf(ADS to listOf("loadInternalAds"))
+
+private const val CHECK_CALLBACK = "Lcom/stone/app/ui/base/BaseActivity\$FunctionPointCheckCallback;"
 
 @Suppress("unused")
 val unlockPremiumPatch = rawResourcePatch(
@@ -21,31 +45,32 @@ val unlockPremiumPatch = rawResourcePatch(
     dependsOn(jiaguRuntimePatch)
 
     execute {
-        val replacements = String(bundledResource("parts.txt")).trim().lines().associate { line ->
-            val (index, digest) = line.split(' ')
-            index.toInt() to digest
-        }
+        val pending = (TRUE_METHODS.keys + FALSE_METHODS.keys + VOID_METHODS.keys).toMutableSet()
 
-        val classes = get("classes.dex")
-        val packed = classes.readBytes().asJiaguDex()
-
-        val parts = packed.parts().mapIndexed { index, part ->
-            val expected = replacements[index] ?: return@mapIndexed part
-
-            val digest = MessageDigest.getInstance("SHA-256")
-                .digest(part.cipherText)
-                .joinToString("") { "%02x".format(it) }
-
-            if (digest != expected) {
-                throw PatchException(
-                    "Packed dex $index is $digest, but this patch replaces $expected. " +
-                        "The app version does not match the one the bundle was built for.",
-                )
+        editPayloadDexes { editor ->
+            TRUE_METHODS.forEach { (owner, names) ->
+                if (!editor.defines(owner)) return@forEach
+                names.forEach { editor.forceReturn(owner, it, 1) }
+                pending -= owner
+            }
+            FALSE_METHODS.forEach { (owner, names) ->
+                if (!editor.defines(owner)) return@forEach
+                names.forEach { editor.forceReturn(owner, it, 0) }
+                pending -= owner
+            }
+            VOID_METHODS.forEach { (owner, names) ->
+                if (!editor.defines(owner)) return@forEach
+                names.forEach { editor.forceReturnVoid(owner, it) }
+                pending -= owner
             }
 
-            part.withCipherText(bundledResource("part$index.bin"))
+            if (editor.declares(BASE_ACTIVITY, ASYNC_CHECK, "V")) {
+                editor.invokeBooleanCallback(BASE_ACTIVITY, ASYNC_CHECK, CHECK_CALLBACK, "onResult", true)
+            }
         }
 
-        classes.writeBytes(packed.withParts(parts))
+        if (pending.isNotEmpty()) {
+            throw PatchException("Missing class data in payload: ${pending.sorted().joinToString()}")
+        }
     }
 }

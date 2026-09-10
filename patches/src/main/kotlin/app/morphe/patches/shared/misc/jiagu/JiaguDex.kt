@@ -12,7 +12,8 @@ private const val CHECKSUM_OFFSET = 8
 private const val FILE_SIZE_OFFSET = 32
 private const val MAP_OFF_OFFSET = 52
 private const val MAP_ENTRY_SIZE = 12
-private const val PART_HEADER_SIZE = 12
+private const val PART_HEADER_SIZE = 8
+private const val CONFIG_OFFSET = 12
 
 private val DEX_MAGIC = byteArrayOf(0x64, 0x65, 0x78, 0x0a)
 private val SUPPORTED_PAYLOAD_MAGIC = byteArrayOf(0x71, 0x68, 0x00, 0x01)
@@ -35,14 +36,15 @@ private fun ByteArray.sealDex() = apply {
     writeInt(CHECKSUM_OFFSET, Adler32().apply { update(this@sealDex, 12, size - 12) }.value.toInt())
 }
 
-internal class JiaguPart(private val header: ByteArray, val cipherText: ByteArray) {
-    val bytes get() = header + cipherText
+// Cipher region from keystream offset 0, ZSTD magic included
+internal class JiaguPart(private val header: ByteArray, val encrypted: ByteArray) {
+    val bytes get() = header + encrypted
 
-    fun withCipherText(replacement: ByteArray) =
+    fun withEncrypted(replacement: ByteArray) =
         JiaguPart(
             header.copyOf().apply {
-                writeInt(0, replacement.size + 8)
-                writeInt(4, replacement.size + 4)
+                writeInt(0, replacement.size + 4)
+                writeInt(4, replacement.size)
             },
             replacement,
         )
@@ -60,13 +62,14 @@ internal class JiaguDex(private val bytes: ByteArray) {
             val magic = payload.copyOf(SUPPORTED_PAYLOAD_MAGIC.size)
             if (!magic.contentEquals(SUPPORTED_PAYLOAD_MAGIC)) {
                 throw PatchException(
-                    "The jiagu payload starts with ${magic.joinToString("") { "%02x".format(it) }}, " +
-                        "not the ${SUPPORTED_PAYLOAD_MAGIC.joinToString("") { "%02x".format(it) }} " +
-                        "layout this reads",
+                    "Unsupported Jiagu payload magic: ${magic.joinToString("") { "%02x".format(it) }}; " +
+                        "expected ${SUPPORTED_PAYLOAD_MAGIC.joinToString("") { "%02x".format(it) }}",
                 )
             }
-            return PART_HEADER_SIZE + payload.readInt(8)
+            return CONFIG_OFFSET + payload.readInt(8)
         }
+
+    val config: ByteArray get() = payload.copyOfRange(CONFIG_OFFSET, partsOffset)
 
     fun parts(): List<JiaguPart> {
         var offset = partsOffset
@@ -75,8 +78,8 @@ internal class JiaguDex(private val bytes: ByteArray) {
 
         return List(count) {
             val length = payload.readInt(offset)
-            if (length < 8 || offset + 4 + length > payload.size) {
-                throw PatchException("The jiagu payload ends inside a part")
+            if (length < PART_HEADER_SIZE || offset + 4 + length > payload.size) {
+                throw PatchException("Truncated Jiagu part at offset $offset")
             }
 
             JiaguPart(
@@ -89,7 +92,7 @@ internal class JiaguDex(private val bytes: ByteArray) {
     fun withParts(parts: List<JiaguPart>): ByteArray {
         val head = partsOffset + 4
         if (parts.size != payload.readInt(head - 4)) {
-            throw PatchException("The rebuilt payload does not carry the original part count")
+            throw PatchException("Payload part count mismatch: expected ${payload.readInt(head - 4)}, got ${parts.size}")
         }
 
         val rebuilt = ByteArrayOutputStream().apply {
@@ -104,17 +107,21 @@ internal class JiaguDex(private val bytes: ByteArray) {
     fun withStub(replacement: ByteArray): ByteArray {
         if (replacement.size != stubSize) {
             throw PatchException(
-                "The replacement stub is ${replacement.size} bytes, but the packer reads its " +
-                    "payload at $stubSize",
+                "Stub size mismatch: expected $stubSize bytes, got ${replacement.size}",
             )
         }
 
         if (stubSizeOf(replacement) != stubSize) {
-            throw PatchException("The replacement stub does not end where the payload begins")
+            throw PatchException(
+                "Stub payload offset mismatch: expected $stubSize, got ${stubSizeOf(replacement)}",
+            )
         }
 
         if (mapEntryCount(replacement) != mapEntryCount(bytes)) {
-            throw PatchException("The replacement stub does not carry the original map sections")
+            throw PatchException(
+                "Stub map entry count mismatch: expected ${mapEntryCount(bytes)}, " +
+                    "got ${mapEntryCount(replacement)}",
+            )
         }
 
         return (replacement + payload).sealDex()
@@ -142,7 +149,7 @@ internal fun ByteArray.asJiaguDex(): JiaguDex {
     val dex = JiaguDex(this)
 
     if (dex.stubSize >= size) {
-        throw PatchException("The app being patched is not packed with jiagu")
+        throw PatchException("Jiagu payload not found")
     }
 
     return dex
