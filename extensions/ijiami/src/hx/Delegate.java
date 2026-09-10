@@ -43,12 +43,13 @@ public final class Delegate extends AppComponentFactory {
     public ClassLoader instantiateClassLoader(ClassLoader classLoader, ApplicationInfo info) {
         Boot.restoreFactoryName(info);
         Boot.install(info);
-        Boot.runAppHook(classLoader);
 
         AppComponentFactory packer = packer(classLoader, info);
-        if (packer == null) return super.instantiateClassLoader(classLoader, info);
-
-        return packer.instantiateClassLoader(classLoader, info);
+        ClassLoader appLoader = packer == null
+                ? super.instantiateClassLoader(classLoader, info)
+                : packer.instantiateClassLoader(classLoader, info);
+        Boot.runAppHook(appLoader);
+        return appLoader;
     }
 
     @Override
