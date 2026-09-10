@@ -16,10 +16,13 @@ package app.morphe.patches.moviebox.misc.allinone
 
 import app.morphe.patcher.patch.ApkArchitecture
 import app.morphe.patcher.patch.PatchAvailability
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
+import app.morphe.patches.shared.misc.ijiami.freeDexEntry
 import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
+import app.morphe.util.inputStreamFromBundledResource
 
 private const val PREMIUM_MEMBER_TYPE = 2
 private const val PARALLEL_DOWNLOAD_TASKS = 5
@@ -83,8 +86,8 @@ private val MINTEGRAL_LOADERS = listOf(
 @Suppress("unused")
 val allInOnePatch = resourcePatch(
     name = "All-In-One",
-    description = "Unlocks premium, removes ads and upsell prompts, and bypasses the region block. " +
-        "Requires Android 10 or later.",
+    description = "Unlocks premium, enables video playback and downloads, removes ads and upsell prompts, " +
+        "and bypasses the region block. Requires Android 10 or later.",
 ) {
     compatibleWith(AppCompatibilities.MOVIEBOX)
     dependsOn(ijiamiPatch)
@@ -97,6 +100,10 @@ val allInOnePatch = resourcePatch(
     }
 
     execute {
+        val hook = inputStreamFromBundledResource("moviebox", "dashhook.dex")
+            ?: throw PatchException("Missing bundled resource: moviebox/dashhook.dex")
+        get(freeDexEntry(), copy = false).writeBytes(hook.use { it.readBytes() })
+
         editIjiamiPayload {
             MEMBER_CHECK_FLAGS.forEach { method(MEMBER_CHECK_RESULT, it).returnBoxed(true) }
 
