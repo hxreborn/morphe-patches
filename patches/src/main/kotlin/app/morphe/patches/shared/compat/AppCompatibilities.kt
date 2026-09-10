@@ -56,7 +56,12 @@ internal object AppCompatibilities {
         packageName = "com.gstarmc.android",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x1AACAC,
-        targets = listOf(AppTarget(version = "5.19.6", versionCode = 616, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "5.19.4", versionCode = 614, minSdk = 26),
+            AppTarget(version = "5.19.6", versionCode = 616, minSdk = 26),
+            AppTarget(version = "5.20.0", versionCode = 620, minSdk = 26),
+            AppTarget(version = "5.21.0", versionCode = 630, minSdk = 26),
+        ),
     )
 
     val ETSY = Compatibility(
