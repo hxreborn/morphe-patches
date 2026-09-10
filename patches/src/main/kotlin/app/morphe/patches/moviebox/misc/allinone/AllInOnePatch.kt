@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2026 rushiranpise
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2026 rushiranpise
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Additional terms under GPLv3 section 7:

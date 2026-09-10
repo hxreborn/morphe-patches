@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2026 hoo-dles
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2026 hoo-dles
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * VMRunner fingerprints ported from hoo-dles/morphe-patches:

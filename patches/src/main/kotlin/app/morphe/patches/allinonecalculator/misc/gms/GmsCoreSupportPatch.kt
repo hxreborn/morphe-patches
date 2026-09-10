@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2026 Morphe
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2026 Morphe
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Ported from MorpheApp/morphe-patches:

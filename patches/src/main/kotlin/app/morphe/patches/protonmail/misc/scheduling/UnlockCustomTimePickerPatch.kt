@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Gate reported by KaKi87 in https://github.com/hxreborn/morphe-patches/issues/18,

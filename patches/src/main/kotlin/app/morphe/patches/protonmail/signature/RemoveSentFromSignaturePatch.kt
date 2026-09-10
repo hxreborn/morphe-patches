@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2025 Aoife McCullough
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2025 Aoife McCullough
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Ported from hxreborn/revanced-patches:

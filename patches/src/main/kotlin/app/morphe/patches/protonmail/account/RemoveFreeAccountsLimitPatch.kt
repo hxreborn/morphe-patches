@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2025 ByteEVM
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2025 ByteEVM
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Ported from hxreborn/revanced-patches:
