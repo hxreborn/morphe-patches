@@ -107,7 +107,7 @@ private fun resolveComponentName(name: String, packageName: String) = when {
     else -> "$packageName.$name"
 }
 
-private fun ResourcePatchContext.freeDexEntry() =
+internal fun ResourcePatchContext.freeDexEntry() =
     generateSequence(2) { it + 1 }
         .map { "classes$it.dex" }
         .first { !get(it).exists() }
