@@ -122,6 +122,7 @@ internal object AppCompatibilities {
         packageName = "ai.perplexity.app.android",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x20808D,
+        targets = listOf(AppTarget(version = "2.95.0", versionCode = 260642, minSdk = 32)),
     )
 
     val PHOTO_EDITOR_PRO = Compatibility(
