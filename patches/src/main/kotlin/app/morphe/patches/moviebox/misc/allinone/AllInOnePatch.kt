@@ -42,6 +42,7 @@ private const val OBSERVE_LOGIN_ACTION = "Lcom/transsion/member/ObserveLoginActi
 private const val DOWNLOAD_RESOLUTION_ITEM = "Lcom/transsion/moviedetailapi/bean/DownloadResolutionItem;"
 private const val REMOTE_VERSION_INFO = "Lcom/transsion/version/update/RemoteVersionInfo;"
 private const val LIFE_STATUS_INTERCEPTOR = "Lcom/transsion/baselib/net/AppLifeStatusInterceptor;"
+private const val PLAY_MODE = "Lkk/t;"
 private const val AD_SETTINGS = "Lqi/f;"
 private const val AD_SCENE_CONFIG = "Lcom/transsion/ad/scene/a;"
 
@@ -55,6 +56,8 @@ private val PREMIUM_TIER_FLAGS = listOf("b", "j", "u")
 private val PREMIUM_QUOTAS = listOf("f", "t", "w", "x")
 private const val PREMIUM_RESOLUTIONS_PER_DOWNLOAD = "h"
 private const val PREMIUM_DAYS_LEFT = "n"
+
+private const val PLAY_MODE_IS_STREAM = "b"
 
 private const val AD_SETTINGS_ADS_OFF = "c"
 private const val AD_SCENE_TIMEOUT = "t"
@@ -137,6 +140,8 @@ val allInOnePatch = resourcePatch(
             REQUIRE_MEMBER_TYPE_HOLDERS.forEach { method(it, "getRequireMemberType").returnNull() }
             method(DOWNLOAD_RESOLUTION_ITEM, "getRequireMemberType").returnEarly(FREE)
             NEED_PAID_HOLDERS.forEach { method(it, "getNeedPaid").returnEarly(FREE) }
+
+            method(PLAY_MODE, PLAY_MODE_IS_STREAM).returnEarly(true)
 
             method(AD_SETTINGS, AD_SETTINGS_ADS_OFF).returnEarly(true)
             method(AD_SCENE_CONFIG, AD_SCENE_TIMEOUT).returnEarly(0)
