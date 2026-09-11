@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧩 hxreborn Patches
+# 🧩 hxreborn’s patches
 
 **A collection of Android app patches for [Morphe](https://morphe.software).**
 
@@ -448,7 +448,7 @@ The build writes the bundle to `patches/build/libs/`. See the
 &nbsp;
 ## 📜 License
 
-hxreborn Patches are licensed under the [GNU General Public License v3.0](LICENSE), with
+hxreborn’s patches are licensed under the [GNU General Public License v3.0](LICENSE), with
 additional conditions under GPLv3 Section 7 inherited from Morphe:
 
 - **Attribution (7b):** all original notices and disclaimers are preserved.

@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        # hxreborn Patches bug report
+        # hxreborn’s patches bug report
 
         Before creating a new bug report, please keep the following in mind:
 

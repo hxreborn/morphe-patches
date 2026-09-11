@@ -2,7 +2,7 @@ group = "app.hxreborn"
 
 patches {
     about {
-        name = "hxreborn Patches"
+        name = "hxreborn’s patches"
         description = "Patches for the apps I actually use"
         source = "git@github.com:hxreborn/morphe-patches.git"
         author = "hxreborn"
