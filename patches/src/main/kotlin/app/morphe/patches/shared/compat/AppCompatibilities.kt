@@ -79,6 +79,7 @@ internal object AppCompatibilities {
         packageName = "com.myvitale.forus",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x0772BA,
+        targets = listOf(AppTarget(version = "3.0.15", versionCode = 96, minSdk = 26)),
     )
 
     val GAMMA_SCAN = Compatibility(
