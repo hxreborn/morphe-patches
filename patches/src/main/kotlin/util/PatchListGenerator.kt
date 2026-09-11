@@ -1,6 +1,6 @@
 /*
- * Copyright 2025 Morphe.
- * https://github.com/MorpheApp/morphe-patches-template
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
  */
 
 package util
