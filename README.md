@@ -34,7 +34,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.17.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.17.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;40 patches total
+> **[v1.18.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.18.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;42 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -73,7 +73,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| Any version |
+| 2.95.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -150,13 +150,30 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/risesleep.png" width="18" align="top">&nbsp;&nbsp;RISE Sleep Tracker&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| Android V1.78.49 | Android V1.78.47 |
+| :---: | :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="rise-sleep-tracker-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableTelemetryPatch.kt) | Stops crash and error reports from reaching Sentry. |
+| <a id="rise-sleep-tracker-disable-usage-tracking"></a>[Disable usage tracking](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableUsageTrackingPatch.kt) | Stops app usage events from being uploaded. Local usage tracking remains enabled. |
+| <a id="rise-sleep-tracker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rise/misc/premium/UnlockPremiumPatch.kt) | Unlocks the energy schedule, habit tools, smart alarm and progress insights. Requires a RISE account. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| Any version |
-| :---: |
+| 4.71 | 4.70 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -251,7 +268,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| Any version |
+| 26.30.05 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -282,7 +299,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| Any version |
+| 2.4.0e |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -312,7 +329,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| Any version |
+| 3.0.15 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -342,7 +359,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| Any version |
+| 1.14.8 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -352,27 +369,12 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/risesleep.png" width="18" align="top">&nbsp;&nbsp;RISE Sleep Tracker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| Android V1.78.49 | Android V1.78.47 |
-| :---: | :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="rise-sleep-tracker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rise/misc/premium/UnlockPremiumPatch.kt) | Unlocks the energy schedule, habit tools, smart alarm and progress insights. Requires a RISE account. |
-
-</details>
-
-<details open>
 <summary><img src=".github/assets/icons/rubberbands.png" width="18" align="top">&nbsp;&nbsp;Rubber Bands&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| Any version |
+| 3.9 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -387,8 +389,8 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| 14.0.0 | 14.1.0 | 14.0.0 TV |
-| :---: | :---: | :---: |
+| 14.0.0 | 14.1.0 | 15.0.1 | 14.0.0 TV |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -402,7 +404,7 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| Any version |
+| 3.4.12 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |

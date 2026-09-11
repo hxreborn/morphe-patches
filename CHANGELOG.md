@@ -1,3 +1,25 @@
+## [1.18.0](https://github.com/hxreborn/morphe-patches/compare/v1.17.0...v1.18.0) (2026-09-11)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** load content on devices with a region-restricted SIM ([666fa11](https://github.com/hxreborn/morphe-patches/commit/666fa11d1fddccbacfda8f3d82b1d003e59b3812))
+
+### New Features
+
+* **AlpineQuest:** add support for 2.4.0e ([6133b04](https://github.com/hxreborn/morphe-patches/commit/6133b042a15a1ba919b58b608db9ab763375459b))
+* **Audible:** add support for 26.30.05 ([1ad5ed1](https://github.com/hxreborn/morphe-patches/commit/1ad5ed1e426bce42c236383c3bef4d3d62e1185c))
+* **ForusApp:** add support for 3.0.15 ([b9e91b1](https://github.com/hxreborn/morphe-patches/commit/b9e91b194600949ab999418c75f551fb3521f422))
+* **MovieBox - All-In-One:** open titles in streaming mode regardless of region ([3ffd22b](https://github.com/hxreborn/morphe-patches/commit/3ffd22b9fd28ae686696ad789e57acfc0325a442))
+* **Notesnook:** add support for 3.4.12 ([496b6d0](https://github.com/hxreborn/morphe-patches/commit/496b6d08a133ee43c7924fa7f7de8f83be9c0b08))
+* **Perplexity:** add support for 2.95.0 ([53d7a3b](https://github.com/hxreborn/morphe-patches/commit/53d7a3bcb80738b69618e03a2ce4faf07e2e1e48))
+* **Projectivy:** add support for 4.70 and 4.71 ([a73a0c1](https://github.com/hxreborn/morphe-patches/commit/a73a0c1776582fea8b32cc0a7924f1eadcad0eb1))
+* **RateGlance:** add support for 1.14.8 ([b459e41](https://github.com/hxreborn/morphe-patches/commit/b459e41a4e60f8e8720723199ea6099182bd0dc7))
+* **RISE - Disable telemetry:** stop crash and error reports going to Sentry ([8c407fc](https://github.com/hxreborn/morphe-patches/commit/8c407fcd4a77668a3794ecba46f66f5f4d072158))
+* **RISE - Disable usage tracking:** stop app usage events being uploaded ([c6012b8](https://github.com/hxreborn/morphe-patches/commit/c6012b8e1e8a2dd0588ab8aafd330ef466648a8e))
+* **Rubber Bands:** add support for 3.9 ([b752035](https://github.com/hxreborn/morphe-patches/commit/b75203524b307be9e950bbdf8f21a5150f7838ac))
+* **Showly:** add support for 3.70.0 ([290b1ff](https://github.com/hxreborn/morphe-patches/commit/290b1ff1defe694bd810de0d12b25d2f5622da94))
+* **Symfonium:** support 15.0.1 ([b67007c](https://github.com/hxreborn/morphe-patches/commit/b67007c16997d9fccccdaaeb763bc28c89293595))
+
 ## [1.17.0](https://github.com/hxreborn/morphe-patches/compare/v1.16.0...v1.17.0) (2026-09-11)
 
 ### Bug Fixes
