@@ -114,6 +114,7 @@ internal object AppCompatibilities {
         packageName = "com.streetwriters.notesnook",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x008837,
+        targets = listOf(AppTarget(version = "3.4.12", versionCode = 4197422, minSdk = 24)),
     )
 
     val PERPLEXITY = Compatibility(
