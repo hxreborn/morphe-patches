@@ -204,6 +204,7 @@ internal object AppCompatibilities {
         packageName = "app.rubberbands.fit",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xFD8700,
+        targets = listOf(AppTarget(version = "3.9", versionCode = 291, minSdk = 26)),
     )
 
     val SHOWLY = Compatibility(
