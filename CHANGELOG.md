@@ -1,3 +1,28 @@
+## [1.17.0](https://github.com/hxreborn/morphe-patches/compare/v1.16.0...v1.17.0) (2026-09-11)
+
+### Bug Fixes
+
+* **iJiami:** run app hook on loaded app class loader ([84bcb4c](https://github.com/hxreborn/morphe-patches/commit/84bcb4ceaad7e3d100d956f832de50e1b6b21653))
+* **RevenueCat unlock:** keep premium active on accounts with lapsed subscriptions ([b03aa4c](https://github.com/hxreborn/morphe-patches/commit/b03aa4c17615100583a32c240430a88a688b3a84))
+
+### New Features
+
+* **360 Jiagu packer:** add initial support for Jiagu-packed apps with patch-time payload rewriting ([c147073](https://github.com/hxreborn/morphe-patches/commit/c14707335218be96a8c9915e81b88b9dae181fa7))
+* **DWG FastView - Block telemetry:** block analytics and ad network endpoints ([3df50f9](https://github.com/hxreborn/morphe-patches/commit/3df50f97f47784c9c82a57e23e71d57f4638253a))
+* **DWG FastView - Hide rating dialog:** remove prompt asking for store review ([1a4530d](https://github.com/hxreborn/morphe-patches/commit/1a4530ded4024b9636965307526356e60b7e20d3))
+* **DWG FastView - Unlock premium:** unlock paid drawing and measurement tools and remove ads ([135eb68](https://github.com/hxreborn/morphe-patches/commit/135eb68034a3a2b8b0b0d5482f0562b38caedd23))
+* **DWG FastView:** add support for 5.19.4, 5.20.0 and 5.21.0 ([d1c5802](https://github.com/hxreborn/morphe-patches/commit/d1c5802fe84e45253bc7ee1746f103c491fbf5da))
+* **iJiami packer:** add initial profile-based support for apps protected by iJiami ([b38b485](https://github.com/hxreborn/morphe-patches/commit/b38b4859fe4c249b48c570d69d61cada64cd7399))
+* **iJiami packer:** add support for per-app runtime hook dexes in apps protected by iJiami ([508b956](https://github.com/hxreborn/morphe-patches/commit/508b9562a7567729210dd10f67ae67b7ae193f56))
+* **MovieBox - All-In-One:** enable video playback and downloads ([33868b2](https://github.com/hxreborn/morphe-patches/commit/33868b2eef8102eded2526844f78dd176e0664c1))
+* **MovieBox - All-In-One:** mark unhosted titles unavailable and show member days ([3267403](https://github.com/hxreborn/morphe-patches/commit/32674031ad979e269086a3de0d743ec7035d68e1))
+* **MovieBox - All-In-One:** move the port from 3.0.14 to the 4.0.02 builds protected by iJiami ([02dc6f9](https://github.com/hxreborn/morphe-patches/commit/02dc6f9c2f61406c15009ffb6b0a9c911f1c3700))
+* **MovieBox - All-In-One:** port rushiranpise's 3.0.14 unlock, ad removal and region bypass ([0d0c3fa](https://github.com/hxreborn/morphe-patches/commit/0d0c3fa8ca7373260e25a66e2a5e9d5b2c94127d))
+
+### Improvements
+
+* **DWG FastView - Unlock premium:** drop 4 MB of pre-patched ciphertext from bundle ([c8a8b53](https://github.com/hxreborn/morphe-patches/commit/c8a8b537d340c66b354921d5715d3df8a26cd45b))
+
 ## [1.16.0](https://github.com/hxreborn/morphe-patches/compare/v1.15.0...v1.16.0) (2026-09-08)
 
 ### Bug Fixes
