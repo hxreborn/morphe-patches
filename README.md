@@ -13,7 +13,7 @@
 [![License badge](https://img.shields.io/badge/License-GPLv3-3FB950?style=for-the-badge&logo=gnu&logoColor=white)](LICENSE)
 
 <a href="https://morphe.software/add-source?github=hxreborn/morphe-patches" title="Add this source to Morphe">
-  <img alt="Add this source to Morphe" src="https://img.shields.io/badge/Add%20this%20source%20to%20Morphe-00A8FF?style=for-the-badge&labelColor=00A8FF" height="46"/>
+  <img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20this%20source-00A8FF?style=for-the-badge" height="38"/>
 </a>
 
 </div>
