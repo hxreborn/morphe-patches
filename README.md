@@ -4,16 +4,16 @@
 
 **A collection of Android app patches for [Morphe](https://morphe.software).**
 
-[![Release badge](https://img.shields.io/github/v/release/hxreborn/morphe-patches?style=for-the-badge&label=Release&color=D29922)](https://github.com/hxreborn/morphe-patches/releases/latest)
-[![Downloads badge](https://img.shields.io/github/downloads/hxreborn/morphe-patches/total?style=for-the-badge&label=Downloads&color=2F81F7)](https://github.com/hxreborn/morphe-patches/releases/latest)
-[![Updated badge](https://img.shields.io/github/release-date/hxreborn/morphe-patches?style=for-the-badge&label=Updated&color=3FB950)](https://github.com/hxreborn/morphe-patches/releases/latest)
-[![Patches badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhxreborn%2Fmorphe-patches%2Fmain%2Fpatches-list.json&query=%24.patches.length&style=for-the-badge&label=Patches&color=DB61A2)](#-patches-list)
+[![Release badge](https://img.shields.io/github/v/release/hxreborn/morphe-patches?style=for-the-badge&label=Release&color=D29922&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
+[![Downloads badge](https://img.shields.io/github/downloads/hxreborn/morphe-patches/total?style=for-the-badge&label=Downloads&color=2F81F7&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
+[![Updated badge](https://img.shields.io/github/release-date/hxreborn/morphe-patches?style=for-the-badge&label=Updated&color=3FB950&logo=clockify&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
+[![Patches badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhxreborn%2Fmorphe-patches%2Fmain%2Fpatches-list.json&query=%24.patches.length&style=for-the-badge&label=Patches&color=DB61A2&logo=android&logoColor=white)](#-patches-list)
 
-[![Build badge](https://img.shields.io/github/actions/workflow/status/hxreborn/morphe-patches/release.yml?branch=main&style=for-the-badge&label=Build)](https://github.com/hxreborn/morphe-patches/actions/workflows/release.yml)
+[![Build badge](https://img.shields.io/github/actions/workflow/status/hxreborn/morphe-patches/release.yml?branch=main&style=for-the-badge&label=Build&logo=githubactions&logoColor=white)](https://github.com/hxreborn/morphe-patches/actions/workflows/release.yml)
 [![License badge](https://img.shields.io/badge/License-GPLv3-3FB950?style=for-the-badge&logo=gnu&logoColor=white)](LICENSE)
 
 <a href="https://morphe.software/add-source?github=hxreborn/morphe-patches" title="Add this source to Morphe">
-  <img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20this%20source-00A8FF?style=for-the-badge" height="38"/>
+  <img alt="Add this source to Morphe" src="https://img.shields.io/badge/Add%20this%20source%20to%20Morphe-00A8FF?style=for-the-badge&labelColor=00A8FF" height="46"/>
 </a>
 
 </div>
