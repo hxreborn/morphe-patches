@@ -20,6 +20,11 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Run tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew :patches:test --no-daemon
+
       - name: Verify project compiles
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

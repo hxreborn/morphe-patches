@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: 2026 hoo-dles
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2026 hoo-dles
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Certificate selection ported from hoo-dles/morphe-patches:
@@ -54,7 +54,7 @@ internal fun BytecodePatchContext.spoofSignature(
     applicationRoot(applicationClass).setSuperClass(hostClass)
 }
 
-private fun PackageMetadata.stockSigningCertificate(): X509Certificate {
+internal fun PackageMetadata.stockSigningCertificate(): X509Certificate {
     val certificates = signingCertificates.filterValues { it.isNotEmpty() }
     val scheme = certificates.keys.minByOrNull(::schemeOrder)
         ?: throw PatchException("The app being patched is not signed")

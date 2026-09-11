@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2026 hxreborn
+ * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  *
  * Central Morphe `Compatibility` metadata so Morphe Manager shows human-readable
@@ -51,6 +51,19 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.7.8", versionCode = 278, minSdk = 21)),
     )
 
+    val DWG_FASTVIEW = Compatibility(
+        name = "DWG FastView",
+        packageName = "com.gstarmc.android",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x1AACAC,
+        targets = listOf(
+            AppTarget(version = "5.19.4", versionCode = 614, minSdk = 26),
+            AppTarget(version = "5.19.6", versionCode = 616, minSdk = 26),
+            AppTarget(version = "5.20.0", versionCode = 620, minSdk = 26),
+            AppTarget(version = "5.21.0", versionCode = 630, minSdk = 26),
+        ),
+    )
+
     val ETSY = Compatibility(
         name = "Etsy",
         packageName = "com.etsy.android",
@@ -79,6 +92,18 @@ internal object AppCompatibilities {
         packageName = "com.kick.mobile",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x53FC18,
+    )
+
+    val MOVIEBOX = Compatibility(
+        name = "MovieBox",
+        packageName = "com.community.oneroom",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x30E66D,
+        targets = listOf(
+            AppTarget(version = "4.0.02.0828.03", versionCode = 50020125, minSdk = 29),
+            AppTarget(version = "4.0.02.0831.03", versionCode = 50020126, minSdk = 29),
+            AppTarget(version = "4.0.02.0903.02", versionCode = 50020128, minSdk = 29),
+        ),
     )
 
     val NOTESNOOK = Compatibility(

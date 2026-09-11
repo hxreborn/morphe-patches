@@ -202,6 +202,12 @@ ICONS = {
     "com.streetwriters.notesnook": "notesnook.png",
     "app.rubberbands.fit": "rubberbands.png",
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
+    "com.community.oneroom": "moviebox.png",
+    "com.gstarmc.android": "dwgfastview.png",
+    "com.mchutov.Quranify": "quranify.png",
+    "com.sry.rateglance": "rateglance.png",
+    "com.risesci.nyx": "risesleep.png",
+    "ipnossoft.rma.free": "bettersleep.png",
 }
 
 
