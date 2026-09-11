@@ -21,6 +21,7 @@ private const val OP_CONST_4 = 0x12
 private const val OP_CONST_16 = 0x13
 private const val OP_CONST = 0x14
 
+private const val STRING = "Ljava/lang/String;"
 private const val BOXED_BOOLEAN = "Ljava/lang/Boolean;"
 private const val BOXED_INTEGER = "Ljava/lang/Integer;"
 private const val VALUE_OF = "valueOf"
@@ -84,6 +85,8 @@ internal class PayloadMethods(private val bodies: List<MethodBody>) {
 
     fun returnNull() = bodies.forEach { it.returnNull() }
 
+    fun returnDigits(value: Int) = bodies.forEach { it.returnDigits(value) }
+
     fun returnBoxed(value: Boolean) = bodies.forEach { it.returnBoxed(value) }
 
     fun returnBoxed(value: Int) = bodies.forEach { it.returnBoxed(value) }
@@ -113,6 +116,31 @@ internal class MethodBody(
             throw PatchException("Cannot return null from $description: return type is $returnType")
         }
         writeConstant(0, OP_RETURN_OBJECT)
+    }
+
+    fun returnDigits(value: Int) {
+        requireReturnType(STRING)
+        requireRegister()
+        requireOutgoing()
+
+        val method = dex.methodIndexOf(STRING, VALUE_OF, VALUE_OF_INT_SHORTY)
+            ?: throw PatchException("Missing method reference $STRING.$VALUE_OF in dex for $description")
+        requireIndex(method, "$STRING.$VALUE_OF")
+
+        write(
+            constantFor(value) + byteArrayOf(
+                OP_INVOKE_STATIC.toByte(),
+                0x10,
+                method.toByte(),
+                (method shr 8).toByte(),
+                0,
+                0,
+                OP_MOVE_RESULT_OBJECT.toByte(),
+                0,
+                OP_RETURN_OBJECT.toByte(),
+                0,
+            ),
+        )
     }
 
     fun returnBoxed(value: Boolean) {

@@ -75,6 +75,14 @@ private val NEED_PAID_HOLDERS = listOf(
     "Lcom/transsion/shorttv/bean/Subject;",
 )
 
+private const val SIM_OPERATOR = 62130
+
+private val SIM_OPERATOR_READERS = listOf(
+    "Lcom/transsion/api/gateway/utils/DeviceUtils;" to "getSimOperator",
+    "Lcom/transsion/core/deviceinfo/DeviceInfo;" to "f",
+    "Loh/b;" to "o",
+)
+
 private val MINTEGRAL_LOADERS = listOf(
     "Lcom/hisavana/mintegral/executer/MintegralVideo;" to "initVideo",
     "Lcom/hisavana/mintegral/executer/MintegralBanner;" to "showBanner",
@@ -133,6 +141,8 @@ val allInOnePatch = resourcePatch(
             method(AD_SETTINGS, AD_SETTINGS_ADS_OFF).returnEarly(true)
             method(AD_SCENE_CONFIG, AD_SCENE_TIMEOUT).returnEarly(0)
             MINTEGRAL_LOADERS.forEach { (holder, name) -> method(holder, name).returnEarly() }
+
+            SIM_OPERATOR_READERS.forEach { (holder, name) -> method(holder, name).returnDigits(SIM_OPERATOR) }
 
             REGION_BLOCK_HANDLERS.forEach { method(LIFE_STATUS_INTERCEPTOR, it).returnEarly() }
             method(LIFE_STATUS_INTERCEPTOR, BACKGROUND_REQUEST_FREEZE).returnEarly(false)
