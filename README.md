@@ -2,7 +2,7 @@
 
 # 🧩 hxreborn Patches
 
-**Patches for the Android apps I use, built for [Morphe](https://morphe.software).**
+**A collection of Android app patches for [Morphe](https://morphe.software).**
 
 [![Release badge](https://img.shields.io/github/v/release/hxreborn/morphe-patches?style=for-the-badge&label=Release&color=D29922)](https://github.com/hxreborn/morphe-patches/releases/latest)
 [![Downloads badge](https://img.shields.io/github/downloads/hxreborn/morphe-patches/total?style=for-the-badge&label=Downloads&color=2F81F7)](https://github.com/hxreborn/morphe-patches/releases/latest)
@@ -18,10 +18,10 @@
 &nbsp;
 ## ❓ About
 
-I maintain these because I use them, but [requests](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+state%3Aopen+label%3A%22app+request%22+sort%3Areactions-%2B1-desc) for other apps are welcome. Upvote an existing request with a 👍 reaction or [open a new one](https://github.com/hxreborn/morphe-patches/issues/new?template=app_request.yml).
+I also accept [requests for other apps](https://github.com/hxreborn/morphe-patches/issues/new?template=app_request.yml).
 
-Based off the prior work of [ReVanced](https://github.com/ReVanced). All modifications made
-here, along with their dates, can be found in the Git history.
+Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
+recorded in the Git history.
 
 App icons in the patches list belong to their respective developers and are used only to
 identify each app. They are not covered by this repository's licence. See
@@ -439,8 +439,8 @@ You need Java 21 and a GitHub token with `read:packages`:
 ./gradlew buildAndroid
 ```
 
-The bundle lands in `patches/build/libs/`. See the
-[Morphe documentation](https://github.com/MorpheApp/morphe-documentation) for the full setup.
+The build writes the bundle to `patches/build/libs/`. See the
+[Morphe documentation](https://github.com/MorpheApp/morphe-documentation) for setup instructions.
 
 &nbsp;
 ## 📜 License
