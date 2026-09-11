@@ -34,6 +34,7 @@ internal object AppCompatibilities {
         packageName = "com.audible.application",
         apkFileType = ApkFileType.APK,
         appIconColor = 0xF8991C,
+        targets = listOf(AppTarget(version = "26.30.05", versionCode = 2090263005, minSdk = 28)),
     )
 
     val BETTERSLEEP = Compatibility(
