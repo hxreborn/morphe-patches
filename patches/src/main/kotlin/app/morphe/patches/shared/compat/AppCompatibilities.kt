@@ -26,6 +26,7 @@ internal object AppCompatibilities {
         packageName = "psyberia.alpinequest.free",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x0057BD,
+        targets = listOf(AppTarget(version = "2.4.0e", versionCode = 412)),
     )
 
     val AUDIBLE = Compatibility(
