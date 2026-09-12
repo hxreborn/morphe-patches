@@ -122,7 +122,10 @@ internal object AppCompatibilities {
         packageName = "com.handmark.expressweather",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x089AED,
-        targets = listOf(AppTarget(version = "12.9.3", versionCode = 120093, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "13.1.0", versionCode = 130010, minSdk = 26),
+            AppTarget(version = "12.9.3", versionCode = 120093, minSdk = 26),
+        ),
     )
 
     val PERPLEXITY = Compatibility(
