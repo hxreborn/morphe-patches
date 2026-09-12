@@ -41,7 +41,6 @@
 
 #define MOV_W0_0 0x52800000
 #define MOV_W0_1 0x52800020
-#define RET 0xd65f03c0
 #define NOP 0xd503201f
 
 #include HX_PROFILE
@@ -95,16 +94,6 @@ static int read_words(uintptr_t at, uint32_t *words, size_t count) {
     return read(probe_fd[0], words, (size_t)written) == written && (size_t)written == bytes;
 }
 
-static int write_word(uintptr_t at, uint32_t word) {
-    if (write(probe_fd[1], &word, sizeof(word)) != (ssize_t)sizeof(word)) return 0;
-    if (read(probe_fd[0], (void *)at, sizeof(word)) == (ssize_t)sizeof(word)) return 1;
-
-    // A faulted store leaves the word queued
-    uint32_t drain;
-    while (read(probe_fd[0], &drain, sizeof(drain)) > 0) continue;
-    return 0;
-}
-
 static int is_image(uintptr_t base) {
     uint32_t anchor_a[2];
     uint32_t anchor_b;
@@ -137,9 +126,8 @@ static void apply_patches(uint32_t *base) {
         if (!read_words((uintptr_t)at, &word, 1) || word == PATCHES[index].replacement) continue;
         if (word != PATCHES[index].expected || !unprotect(at)) continue;
 
-        if (write_word((uintptr_t)at, PATCHES[index].replacement)) {
-            LOG("disabled %s at +%#x", PATCHES[index].checkName, PATCHES[index].offset);
-        }
+        *(volatile uint32_t *)at = PATCHES[index].replacement;
+        LOG("disabled %s at +%#x", PATCHES[index].checkName, PATCHES[index].offset);
         reprotect(at);
     }
 }
