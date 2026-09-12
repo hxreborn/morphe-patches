@@ -162,7 +162,7 @@ internal class PayloadDexTest {
     @Test
     fun `refuses a name with a truncated multi-byte sequence`() {
         val bytes = Fixtures.payload(copies = 1)
-        bytes[stringData(10)] = 0xC2.toByte()
+        bytes[stringData(descriptorIndex())] = 0xC2.toByte()
 
         val message = assertFailsWith<PatchException> {
             PayloadDex.split(bytes).first().bodiesOf(Fixtures.CLASS, "flag")
@@ -173,7 +173,7 @@ internal class PayloadDexTest {
     @Test
     fun `refuses a name whose declared length disagrees with its bytes`() {
         val bytes = Fixtures.payload(copies = 1)
-        bytes[stringHeader(10)] = 0x0F
+        bytes[stringHeader(descriptorIndex())] = 0x0F
 
         val message = assertFailsWith<PatchException> {
             PayloadDex.split(bytes).first().bodiesOf(Fixtures.CLASS, "flag")
@@ -185,7 +185,7 @@ internal class PayloadDexTest {
     fun `refuses a name whose length overflows 32 bits`() {
         val bytes = Fixtures.payload(copies = 1)
         byteArrayOf(0x80.toByte(), 0x80.toByte(), 0x80.toByte(), 0x80.toByte(), 0x10)
-            .copyInto(bytes, stringHeader(10))
+            .copyInto(bytes, stringHeader(descriptorIndex()))
 
         val message = assertFailsWith<PatchException> {
             PayloadDex.split(bytes).first().bodiesOf(Fixtures.CLASS, "flag")
@@ -257,6 +257,9 @@ internal class PayloadDexTest {
             shift += 7
         }
     }
+
+    private fun descriptorIndex() =
+        (0 until Fixtures.sampleDex.readInt(56)).first { readAsciiString(it) == Fixtures.CLASS }
 
     private fun stringHeader(index: Int) =
         Fixtures.sampleDex.readInt(Fixtures.sampleDex.readInt(60) + 4 * index)

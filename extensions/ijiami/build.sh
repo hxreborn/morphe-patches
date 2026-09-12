@@ -78,6 +78,26 @@ mkdir -p "$work/fixture/sample"
     public Boolean boxed() { return flag() ? Boolean.TRUE : Boolean.FALSE; }
 
     public Integer boxedCount() { return Integer.valueOf(count()); }
+
+    public String typedCatch() {
+        try {
+            return S5.substring(1);
+        } catch (RuntimeException e) {
+            return S6;
+        }
+    }
+
+    public int catchAll() {
+        try {
+            return S7.length();
+        } finally {
+            S8.length();
+        }
+    }
+
+    public String digits(int n) {
+        return String.valueOf(n);
+    }
 }
 JAVA
 } > "$work/fixture/sample/Fixture.java"

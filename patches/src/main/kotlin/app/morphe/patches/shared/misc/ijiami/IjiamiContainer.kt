@@ -39,6 +39,11 @@ internal fun ByteArray.writeInt(offset: Int, value: Int) {
     this[offset + 3] = (value ushr 24).toByte()
 }
 
+internal fun ByteArray.writeShort(offset: Int, value: Int) {
+    this[offset] = value.toByte()
+    this[offset + 1] = (value ushr 8).toByte()
+}
+
 internal fun ByteArray.readShort(offset: Int) =
     (this[offset].toInt() and 0xFF) or ((this[offset + 1].toInt() and 0xFF) shl 8)
 

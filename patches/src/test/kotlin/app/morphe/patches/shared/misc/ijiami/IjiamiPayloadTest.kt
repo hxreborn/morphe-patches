@@ -5,6 +5,10 @@
 package app.morphe.patches.shared.misc.ijiami
 
 import app.morphe.patcher.patch.PatchException
+import com.android.tools.smali.dexlib2.Opcodes
+import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
+import com.android.tools.smali.dexlib2.dexbacked.DexBackedMethodImplementation
+import java.nio.ByteBuffer
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -15,6 +19,24 @@ import kotlin.test.assertTrue
 internal class IjiamiPayloadTest {
     private fun payloadOf(bytes: ByteArray) =
         IjiamiPayload(PayloadDex.split(bytes), IjiamiContainer.of(Fixtures.container(bytes)).opaqueRanges)
+
+    private fun implementationOf(bytes: ByteArray, name: String): DexBackedMethodImplementation {
+        val dex = PayloadDex.split(bytes.copyOf()).first()
+        val dexFile = DexBackedDexFile(
+            Opcodes.getDefault(),
+            ByteBuffer.wrap(bytes.copyOfRange(dex.start, dex.start + dex.size)),
+        )
+        return dexFile.classes.single { it.type == Fixtures.CLASS }
+            .methods.single { it.name == name }
+            .implementation!!
+    }
+
+    private fun instructionBoundaries(implementation: DexBackedMethodImplementation): Set<Int> {
+        val boundaries = mutableSetOf(0)
+        var address = 0
+        implementation.instructions.forEach { address += it.codeUnits; boundaries += address }
+        return boundaries
+    }
 
     private fun firstInstructions(bytes: ByteArray, name: String, count: Int): ByteArray {
         val dex = PayloadDex.split(bytes.copyOf()).first()
@@ -217,6 +239,83 @@ internal class IjiamiPayloadTest {
                 bytes.copyOfRange(it.range.first + 16, it.range.first + 20),
             )
         }
+    }
+
+    @Test
+    fun `relocates typed exception handlers to the nop tail`() {
+        val bytes = Fixtures.payload(copies = 1)
+        payloadOf(bytes).method(Fixtures.CLASS, "typedCatch").returnNull()
+
+        val tryBlock = implementationOf(bytes, "typedCatch").tryBlocks.single()
+        assertEquals(2, tryBlock.startCodeAddress)
+        assertEquals(1, tryBlock.codeUnitCount)
+        val handler = tryBlock.exceptionHandlers.single()
+        assertEquals(2, handler.handlerCodeAddress)
+        assertEquals("Ljava/lang/RuntimeException;", handler.exceptionType)
+    }
+
+    @Test
+    fun `relocates catch-all handlers to the nop tail`() {
+        val bytes = Fixtures.payload(copies = 1)
+        payloadOf(bytes).method(Fixtures.CLASS, "catchAll").returnEarly(100000)
+
+        val tryBlock = implementationOf(bytes, "catchAll").tryBlocks.single()
+        assertEquals(4, tryBlock.startCodeAddress)
+        assertEquals(1, tryBlock.codeUnitCount)
+        val handler = tryBlock.exceptionHandlers.single()
+        assertEquals(4, handler.handlerCodeAddress)
+        assertNull(handler.exceptionType)
+    }
+
+    @Test
+    fun `relocates a typed handler over a returnDigits replacement`() {
+        val bytes = Fixtures.payload(copies = 1)
+        payloadOf(bytes).method(Fixtures.CLASS, "typedCatch").returnDigits(62130)
+
+        val tryBlock = implementationOf(bytes, "typedCatch").tryBlocks.single()
+        assertEquals(8, tryBlock.startCodeAddress)
+        assertEquals(1, tryBlock.codeUnitCount)
+        val handler = tryBlock.exceptionHandlers.single()
+        assertEquals(8, handler.handlerCodeAddress)
+        assertEquals("Ljava/lang/RuntimeException;", handler.exceptionType)
+    }
+
+    @Test
+    fun `keeps relocated try ranges and handlers within instruction bounds`() {
+        val bytes = Fixtures.payload(copies = 1)
+        payloadOf(bytes).method(Fixtures.CLASS, "catchAll").returnEarly(100000)
+
+        val implementation = implementationOf(bytes, "catchAll")
+        val boundaries = instructionBoundaries(implementation)
+        val instructionCodeUnits = boundaries.max()
+        implementation.tryBlocks.forEach { tryBlock ->
+            assertTrue(
+                tryBlock.startCodeAddress in boundaries && tryBlock.startCodeAddress < instructionCodeUnits,
+                "try start ${tryBlock.startCodeAddress}",
+            )
+            assertTrue(
+                tryBlock.startCodeAddress + tryBlock.codeUnitCount in boundaries,
+                "try end ${tryBlock.startCodeAddress + tryBlock.codeUnitCount}",
+            )
+            tryBlock.exceptionHandlers.forEach {
+                assertTrue(
+                    it.handlerCodeAddress in boundaries && it.handlerCodeAddress < instructionCodeUnits,
+                    "handler ${it.handlerCodeAddress}",
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `rejects replacements with insufficient nop space for try blocks`() {
+        val bytes = Fixtures.payload(copies = 1)
+        val body = PayloadDex.split(bytes.copyOf()).first().bodiesOf(Fixtures.CLASS, "catchAll").single()
+        bytes.writeInt(body.range.first + 12, 2)
+
+        val message = assertFailsWith<PatchException> {
+            payloadOf(bytes).method(Fixtures.CLASS, "catchAll").returnEarly(5)
+        }.message
+        assertTrue(message!!.contains("try blocks"), message)
     }
 
     @Test
