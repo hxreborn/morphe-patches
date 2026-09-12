@@ -6,12 +6,12 @@ body:
   - type: markdown
     attributes:
       value: |
-        # hxreborn’s patches app request
+        Before you ask:
 
-        Before requesting an app, please keep the following in mind:
-
-        - **Check the [existing requests](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+state%3Aopen+label%3A%22app+request%22+sort%3Areactions-%2B1-desc) first**: if your app is already there, upvote it with a 👍 reaction instead of opening a duplicate. Requests are ranked by 👍.
-        - **This is a hobby project**: upvotes show me what's wanted, but they aren't a queue and I can't promise anything.
+        - Check [existing requests](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+state%3Aopen+label%3A%22app+request%22+sort%3Areactions-%2B1-desc) first. If yours is there, upvote it.
+        - Hobby project. Upvotes aren't a queue and I can't promise anything.
+        - I can only patch what the app decides on its own, not what the server enforces.
+          MovieBox's SIM check was in the app, so it patched. Ask if you're not sure.
   - type: input
     id: app_name
     attributes:
@@ -28,35 +28,32 @@ body:
       placeholder: com.duolingo
     validations:
       required: true
-  - type: textarea
+  - type: dropdown
     id: features
     attributes:
       label: Requested features
-      description: List the specific features you want patched.
-      placeholder: |
+      multiple: true
+      options:
         - Unlock premium
         - Remove ads
-        - Block telemetry
+        - Disable tracking
+        - Bypass a check the app does locally
+        - Something else, described below
     validations:
       required: true
   - type: textarea
     id: additional
     attributes:
       label: Additional info
-      description: Anything else that may help patch development.
+      description: Anything else useful.
     validations:
       required: false
   - type: checkboxes
     id: acknowledgements
     attributes:
       label: Acknowledgements
-      description: Your app request will be closed if you don't follow the checklist below.
       options:
-        - label: I have checked all open and closed app requests and this is not a duplicate.
+        - label: I searched open and closed requests and this isn't a duplicate.
           required: true
-        - label: I have checked that a suitable patch does not already exist on [another community bundle](https://morphe-patches.software/#apps).
-          required: true
-        - label: I understand that server-side features (AI, cloud sync, streaming quality) cannot be patched.
-          required: true
-        - label: This request is not for bypassing a region lock.
+        - label: I understand that features the server controls (AI, cloud sync, streaming quality) cannot be patched.
           required: true

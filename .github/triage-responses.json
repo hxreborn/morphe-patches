@@ -1,0 +1,37 @@
+{
+  "r: support": {
+    "close": true,
+    "message": "I don't do support here. If a patch is misbehaving, file a bug report."
+  },
+  "r: app-side": {
+    "close": true,
+    "message": "The stock app does this too. Reopen if the patched build behaves differently."
+  },
+  "r: not-this-bundle": {
+    "close": true,
+    "message": "That APK wasn't built from this bundle. Patch it yourself with Morphe Manager or morphe-cli and report again if it still happens."
+  },
+  "r: app-updated": {
+    "close": false,
+    "labels": [
+      "untargeted version"
+    ],
+    "message": "That version isn't targeted yet. Use a listed one, or leave this open and I'll retarget when I can."
+  },
+  "r: server-side": {
+    "close": true,
+    "message": "The server enforces this. Nothing in the APK to patch."
+  },
+  "r: no-repro": {
+    "close": false,
+    "labels": [
+      "needs info"
+    ],
+    "message": "I can't reproduce this. Add exact steps and the patch list from the app's entry in Morphe Manager."
+  },
+  "r: fixed": {
+    "close": true,
+    "message": "Fixed in the next release. Repatch when it lands and reopen if it still happens.",
+    "reason": "completed"
+  }
+}

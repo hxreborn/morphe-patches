@@ -1,60 +1,164 @@
-name: 🐞 Bug report
-description: Report a bug or an issue.
+name: 🐞 Patching or install failed
+description: Patching stopped with an error, or the patched APK would not install.
 title: "[Bug]: "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        # hxreborn’s patches bug report
+        Use this one when patching stopped with an error, or the APK it produced wouldn't install.
 
-        Before creating a new bug report, please keep the following in mind:
-
-        - **Do not submit a duplicate bug report**: Search for existing bug reports, including closed issues, [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
-        - **Include the app and version**: Patches break against specific app builds, so state which app version you patched.
-  - type: input
+        - 🚨 App patched but misbehaves: use
+          [Patched app does not work](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml).
+        - Search open and closed reports [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
+        - A bot reads these fields when you submit and closes reports it can't act on. Edit the
+          issue and it reopens.
+  - type: dropdown
+    id: what-happened
     attributes:
-      label: App version patched
-      description: The app and the exact version you patched.
-      placeholder: Proton Mail 7.10.4
+      label: What happened
+      options:
+        - Patching failed
+        - Patching worked, install failed
+    validations:
+      required: true
+  - type: dropdown
+    id: app
+    attributes:
+      label: App and version
+      description: The version is in the app's About screen.
+      options:
+        # generated:targets
+        - "All-In-One Calculator 3.4.0"
+        - "All-In-One Calculator (another version, type it below)"
+        - "AlpineQuest 2.4.0e"
+        - "AlpineQuest (another version, type it below)"
+        - "Audible 26.30.05"
+        - "Audible (another version, type it below)"
+        - "BetterSleep 26.15"
+        - "BetterSleep (another version, type it below)"
+        - "Cx File Explorer 2.7.8"
+        - "Cx File Explorer (another version, type it below)"
+        - "DWG FastView 5.19.4"
+        - "DWG FastView 5.19.6"
+        - "DWG FastView 5.20.0"
+        - "DWG FastView 5.21.0"
+        - "DWG FastView (another version, type it below)"
+        - "Etsy 7.90.0"
+        - "Etsy (another version, type it below)"
+        - "ForusApp 3.0.15"
+        - "ForusApp (another version, type it below)"
+        - "Kick (another version, type it below)"
+        - "MovieBox 4.0.02.0828.03"
+        - "MovieBox 4.0.02.0831.03"
+        - "MovieBox 4.0.02.0903.02"
+        - "MovieBox (another version, type it below)"
+        - "Notesnook 3.4.12"
+        - "Notesnook (another version, type it below)"
+        - "Perplexity 2.95.0"
+        - "Perplexity (another version, type it below)"
+        - "Photo Editor Pro 1.791.265"
+        - "Photo Editor Pro (another version, type it below)"
+        - "Projectivy Launcher 4.70"
+        - "Projectivy Launcher 4.71"
+        - "Projectivy Launcher (another version, type it below)"
+        - "Proton Mail 7.10.4"
+        - "Proton Mail 7.11.5"
+        - "Proton Mail (another version, type it below)"
+        - "QR & Barcode Scanner 2.2.221"
+        - "QR & Barcode Scanner (another version, type it below)"
+        - "Quranify 2.2.8"
+        - "Quranify (another version, type it below)"
+        - "RateGlance 1.14.8"
+        - "RateGlance (another version, type it below)"
+        - "ReadEra 26.05.20+2300"
+        - "ReadEra (another version, type it below)"
+        - "RISE Sleep Tracker Android V1.78.47"
+        - "RISE Sleep Tracker Android V1.78.49"
+        - "RISE Sleep Tracker (another version, type it below)"
+        - "Rubber Bands 3.9"
+        - "Rubber Bands (another version, type it below)"
+        - "Showly 3.70.0"
+        - "Showly (another version, type it below)"
+        - "Symfonium 14.0.0"
+        - "Symfonium 14.0.0 TV"
+        - "Symfonium 14.1.0"
+        - "Symfonium 15.0.1"
+        - "Symfonium (another version, type it below)"
+        - "Trainline 407.0.0.178994"
+        - "Trainline (another version, type it below)"
+        # /generated
     validations:
       required: true
   - type: input
+    id: app-version
     attributes:
-      label: Patches version
-      description: The bundle version you patched with.
-      placeholder: "1.9.2"
+      label: Other version
+      description: Only if you picked "another version" above.
+      placeholder: "7.12.0"
+  - type: dropdown
+    id: patched-with
+    attributes:
+      label: Patched with
+      options:
+        - Morphe Manager
+        - morphe-cli
+        - A Morphe-AutoBuilds APK
+        - A pre-patched APK from somewhere else
+    validations:
+      required: true
+  - type: input
+    id: apk-source
+    attributes:
+      label: APK source
+      description: |
+        Link to the download if you have it. APKMirror, APKPure, Uptodown or APKCombo. Not
+        apkmod, Softonic, HappyMod or anything else that repackages APKs.
+      placeholder: APKPure, https://apkpure.com/...
+    validations:
+      required: true
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: Architecture
+      options:
+        # generated:abis
+        - "arm64-v8a"
+        - "armeabi-v7a"
+        - "x86"
+        - "x86_64"
+        - "All of them (universal)"
+        - "Don't know"
+        # /generated
     validations:
       required: true
   - type: textarea
+    id: bug-description
     attributes:
       label: Bug description
       description: |
-        - Describe your bug in detail
-        - Add steps to reproduce the bug if possible (Step 1. ... Step 2. ...)
-        - Add images and videos if possible
+        - What you did, what you expected, and what happened instead
+        - Numbered steps that reach the failure
+        - A screenshot or recording of the error
     validations:
       required: true
   - type: textarea
+    id: error-logs
     attributes:
       label: Error logs
-      description: Exceptions can be captured by running `logcat | grep AndroidRuntime` in a shell.
-      render: shell
-  - type: textarea
-    attributes:
-      label: Solution
-      description: If applicable, add a possible solution to the bug.
-  - type: textarea
-    attributes:
-      label: Additional context
-      description: Add additional context here.
+      description: |
+        **Patching failed**: tap **Copy** on Morphe Manager's error dialog and paste it here.
+
+        **Install failed**: paste the error the installer showed, and say whether the stock app
+        was still installed at the time.
+
+        **morphe-cli**: add `-r report.json` to the command and attach the report.
+    validations:
+      required: true
   - type: checkboxes
     id: acknowledgements
     attributes:
       label: Acknowledgements
-      description: Your bug report will be closed if you don't follow the checklist below.
       options:
-        - label: I have checked all open and closed bug reports and this is not a duplicate.
-          required: true
-        - label: All requested information has been provided properly.
+        - label: Nothing personal in my screenshots or logs.
           required: true

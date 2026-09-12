@@ -1,0 +1,37 @@
+name: Triage bug reports
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    if: >-
+      (github.event.action == 'labeled' && startsWith(github.event.label.name, 'r: ')) ||
+      (github.event.action == 'opened' &&
+       contains(github.event.issue.labels.*.name, 'app request')) ||
+      (github.event.action != 'labeled' &&
+       contains(github.event.issue.labels.*.name, 'bug') &&
+       !contains(github.event.issue.labels.*.name, 'bad-triage') &&
+       !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association) &&
+       (github.event.action == 'opened' ||
+        contains(github.event.issue.labels.*.name, 'incomplete') ||
+        contains(github.event.issue.labels.*.name, 'needs info') ||
+        contains(github.event.issue.labels.*.name, 'untargeted version')))
+    permissions:
+      contents: read
+      issues: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/triage
+        with:
+          token: ${{ github.token }}

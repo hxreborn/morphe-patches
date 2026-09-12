@@ -143,3 +143,6 @@ kls_database.db
 .classpath
 .settings/
 bin/
+
+__pycache__/
+*.pyc

@@ -1,0 +1,142 @@
+name: Morphe bundle issue triage
+description: >-
+  Checks a bug report against the bundle's patches-list.json, then comments, labels, closes or
+  reopens the issue. Works with any Morphe patch bundle's issue forms.
+
+inputs:
+  registry:
+    description: URL of the public bundle registry used to spot apps other bundles already patch.
+    default: https://morphe-patches.software/data/bundles.json
+  token:
+    description: Token used to comment, label and close. Needs issues:write.
+    required: true
+  patches-list:
+    description: Path to the bundle's patches-list.json in the checked-out repo.
+    default: patches-list.json
+  responses:
+    description: Path to a JSON map of label name to {message, close} for canned replies.
+    default: .github/triage-responses.json
+
+runs:
+  using: composite
+  steps:
+    - name: Post the canned reply for a triage label
+      if: >-
+        github.event.action == 'labeled' && startsWith(github.event.label.name, 'r: ')
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        ISSUE: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        LABEL: ${{ github.event.label.name }}
+        RESPONSES: ${{ inputs.responses }}
+      run: |
+        [ -f "$RESPONSES" ] || exit 0
+        message=$(jq -r --arg l "$LABEL" '.[$l].message // empty' "$RESPONSES")
+        [ -z "$message" ] && exit 0
+        printf '%s\n' "$message" > "$RUNNER_TEMP/comment.md"
+        gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/comment.md"
+        labels=$(jq -r --arg l "$LABEL" '.[$l].labels // [] | join(",")' "$RESPONSES")
+        [ -n "$labels" ] && gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
+        if [ "$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")" = "true" ]; then
+          reason=$(jq -r --arg l "$LABEL" '.[$l].reason // "not planned"' "$RESPONSES")
+          gh issue close "$ISSUE" --repo "$REPO" --reason "$reason"
+        fi
+
+    - name: Say which bundles already patch the requested app
+      if: >-
+        github.event.action == 'opened' &&
+        contains(github.event.issue.labels.*.name, 'app request')
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        ISSUE: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        REGISTRY: ${{ inputs.registry }}
+      run: |
+        jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > "$RUNNER_TEMP/body.md"
+        curl -sSL --max-time 30 -H "Referer: https://morphe-patches.software/" \
+          -H "Accept: application/json" \
+          -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36" \
+          "$REGISTRY" -o "$RUNNER_TEMP/bundles.json" || exit 0
+        jq -e '.bundles | length > 0' "$RUNNER_TEMP/bundles.json" >/dev/null 2>&1 || exit 0
+        python3 "${{ github.action_path }}/app_request.py" \
+          "$RUNNER_TEMP/body.md" "$RUNNER_TEMP/bundles.json" > "$RUNNER_TEMP/apps.json"
+        jq -r .comment "$RUNNER_TEMP/apps.json" > "$RUNNER_TEMP/apps.md"
+        [ -s "$RUNNER_TEMP/apps.md" ] && [ "$(cat "$RUNNER_TEMP/apps.md")" != "" ] || exit 0
+        gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/apps.md"
+
+    - name: Check the report
+      if: >-
+        github.event.action != 'labeled' &&
+        contains(github.event.issue.labels.*.name, 'bug')
+      shell: bash
+      env:
+        PATCHES_LIST: ${{ inputs.patches-list }}
+      run: |
+        jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > "$RUNNER_TEMP/issue-body.md"
+        python3 "${{ github.action_path }}/triage.py" \
+          "$RUNNER_TEMP/issue-body.md" "$PATCHES_LIST" > "$RUNNER_TEMP/verdict.json"
+
+    - name: Act on the verdict
+      if: >-
+        github.event.action != 'labeled' &&
+        contains(github.event.issue.labels.*.name, 'bug')
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        ISSUE: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        ACTION: ${{ github.event.action }}
+        WAS_CLOSED_BY_BOT: ${{ github.event.issue.state == 'closed' && contains(github.event.issue.labels.*.name, 'incomplete') }}
+      run: |
+        cd "$RUNNER_TEMP"
+        verdict=$(jq -r .verdict verdict.json)
+        jq -r .comment verdict.json > comment.md
+
+        app=$(jq -r .app verdict.json)
+        if [ -n "$app" ] && [ "$verdict" != "pass" ] && [ "$ACTION" = "opened" ]; then
+          dupes=$(gh search issues "$app" --repo "$REPO" --limit 4 --json number,title --jq \
+            "map(select(.number != $ISSUE)) | .[0:3] | map(\"- #\(.number): \(.title)\") | join(\"\n\")")
+          if [ -n "$dupes" ]; then
+            printf '\n---\nThis may overlap with reports that already exist:\n%s\n' "$dupes" >> comment.md
+          fi
+        fi
+
+        existing=$(gh api "repos/$REPO/issues/$ISSUE/comments?per_page=100" \
+          --jq 'map(select(.body | contains("<!-- triage-bot -->"))) | .[0].id // empty')
+
+        upsert_comment() {
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$existing" -F body=@comment.md >/dev/null
+          else
+            gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
+          fi
+        }
+
+        case "$verdict" in
+          close)
+            upsert_comment
+            gh issue edit "$ISSUE" --repo "$REPO" --add-label incomplete
+            gh issue close "$ISSUE" --repo "$REPO" --reason "not planned"
+            ;;
+          flag)
+            upsert_comment
+            labels=$(jq -r '.labels | join(",")' verdict.json)
+            [ -n "$labels" ] && gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
+            ;;
+          pass)
+            gh issue edit "$ISSUE" --repo "$REPO" \
+              --remove-label incomplete \
+              --remove-label "needs info" \
+              --remove-label "untargeted version" || true
+            if [ "$WAS_CLOSED_BY_BOT" = "true" ]; then
+              gh issue reopen "$ISSUE" --repo "$REPO"
+              printf '<!-- triage-bot -->\nReopened: the report now has what it needs.\n' > comment.md
+              upsert_comment
+            elif [ -n "$existing" ]; then
+              printf '<!-- triage-bot -->\nResolved: the report now has what it needs.\n' > comment.md
+              upsert_comment
+            fi
+            ;;
+        esac

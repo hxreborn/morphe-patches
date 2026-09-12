@@ -1,0 +1,283 @@
+name: 🔌 Patched app does not work
+description: The app patched fine, but it will not open, crashes, or the patch changed nothing.
+title: "[Not working]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before you file:
+
+        - Repatch on the newest release.
+        - Install the unpatched APK and repeat the steps.
+        - Search open and closed reports [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
+  - type: dropdown
+    id: app
+    attributes:
+      label: App and version
+      description: The version is in the app's About screen.
+      options:
+        # generated:targets
+        - "All-In-One Calculator 3.4.0"
+        - "All-In-One Calculator (another version, type it below)"
+        - "AlpineQuest 2.4.0e"
+        - "AlpineQuest (another version, type it below)"
+        - "Audible 26.30.05"
+        - "Audible (another version, type it below)"
+        - "BetterSleep 26.15"
+        - "BetterSleep (another version, type it below)"
+        - "Cx File Explorer 2.7.8"
+        - "Cx File Explorer (another version, type it below)"
+        - "DWG FastView 5.19.4"
+        - "DWG FastView 5.19.6"
+        - "DWG FastView 5.20.0"
+        - "DWG FastView 5.21.0"
+        - "DWG FastView (another version, type it below)"
+        - "Etsy 7.90.0"
+        - "Etsy (another version, type it below)"
+        - "ForusApp 3.0.15"
+        - "ForusApp (another version, type it below)"
+        - "Kick (another version, type it below)"
+        - "MovieBox 4.0.02.0828.03"
+        - "MovieBox 4.0.02.0831.03"
+        - "MovieBox 4.0.02.0903.02"
+        - "MovieBox (another version, type it below)"
+        - "Notesnook 3.4.12"
+        - "Notesnook (another version, type it below)"
+        - "Perplexity 2.95.0"
+        - "Perplexity (another version, type it below)"
+        - "Photo Editor Pro 1.791.265"
+        - "Photo Editor Pro (another version, type it below)"
+        - "Projectivy Launcher 4.70"
+        - "Projectivy Launcher 4.71"
+        - "Projectivy Launcher (another version, type it below)"
+        - "Proton Mail 7.10.4"
+        - "Proton Mail 7.11.5"
+        - "Proton Mail (another version, type it below)"
+        - "QR & Barcode Scanner 2.2.221"
+        - "QR & Barcode Scanner (another version, type it below)"
+        - "Quranify 2.2.8"
+        - "Quranify (another version, type it below)"
+        - "RateGlance 1.14.8"
+        - "RateGlance (another version, type it below)"
+        - "ReadEra 26.05.20+2300"
+        - "ReadEra (another version, type it below)"
+        - "RISE Sleep Tracker Android V1.78.47"
+        - "RISE Sleep Tracker Android V1.78.49"
+        - "RISE Sleep Tracker (another version, type it below)"
+        - "Rubber Bands 3.9"
+        - "Rubber Bands (another version, type it below)"
+        - "Showly 3.70.0"
+        - "Showly (another version, type it below)"
+        - "Symfonium 14.0.0"
+        - "Symfonium 14.0.0 TV"
+        - "Symfonium 14.1.0"
+        - "Symfonium 15.0.1"
+        - "Symfonium (another version, type it below)"
+        - "Trainline 407.0.0.178994"
+        - "Trainline (another version, type it below)"
+        # /generated
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: Other version
+      description: Only if you picked "another version" above.
+      placeholder: "15.1.0"
+  - type: dropdown
+    id: patches-version
+    attributes:
+      label: Patches version
+      description: Newest first.
+      options:
+        # generated:versions
+        - "1.18.0"
+        - "1.17.0"
+        - "1.16.0"
+        - "1.15.0"
+        - "1.14.1"
+        - "1.14.0"
+        - "Older than these"
+        # /generated
+    validations:
+      required: true
+  - type: dropdown
+    id: what-does-not-work
+    attributes:
+      label: What does not work
+      options:
+        - The app will not open at all
+        - The app opens, then crashes
+        - The patched feature is still locked or still shows ads
+        - The patch has no visible effect
+        - Something else the app used to do stopped working
+    validations:
+      required: true
+  - type: dropdown
+    id: unpatched-app
+    attributes:
+      label: Does the unpatched app do the same thing
+      description: |
+        Install the stock APK and try the same steps.
+      options:
+        - The unpatched app works fine, only the patched one fails
+        - The unpatched app fails the same way
+        - I have not tried the unpatched app
+    validations:
+      required: true
+  - type: dropdown
+    id: single-patch
+    attributes:
+      label: Does it still happen with only one patch selected
+      description: |
+        Patch again with only that one patch selected. If that build works, turn the others back
+        on one at a time until it breaks.
+      options:
+        - Yes, it happens with only that one patch
+        - No, that build works, and I picked the patch that breaks it below
+        - I have not tried it
+    validations:
+      required: true
+  - type: dropdown
+    id: breaking-patch
+    attributes:
+      label: Patch that breaks it
+      description: Only if you narrowed it down to one.
+      options:
+        # generated:patches
+        - "All-In-One Calculator \u00b7 GmsCore support"
+        - "All-In-One Calculator \u00b7 Unlock premium"
+        - "AlpineQuest \u00b7 Unlock full version"
+        - "Audible \u00b7 Hide membership upselling"
+        - "Audible \u00b7 Open Library on launch"
+        - "BetterSleep \u00b7 Unlock premium"
+        - "Cx File Explorer \u00b7 AMOLED dark theme"
+        - "Cx File Explorer \u00b7 Dark theme"
+        - "Cx File Explorer \u00b7 Unlock premium"
+        - "DWG FastView \u00b7 Block telemetry"
+        - "DWG FastView \u00b7 Hide rating dialog"
+        - "DWG FastView \u00b7 Unlock premium"
+        - "Etsy \u00b7 Hide ads"
+        - "ForusApp \u00b7 Unlock premium"
+        - "Kick \u00b7 AMOLED dark theme"
+        - "MovieBox \u00b7 All-In-One"
+        - "Notesnook \u00b7 Unlock pro"
+        - "Perplexity \u00b7 AMOLED dark theme"
+        - "Photo Editor Pro \u00b7 Hide ads"
+        - "Photo Editor Pro \u00b7 Inspect AI requests"
+        - "Photo Editor Pro \u00b7 Show AI progress"
+        - "Photo Editor Pro \u00b7 Speed up AI tools"
+        - "Photo Editor Pro \u00b7 Unlock premium"
+        - "Projectivy Launcher \u00b7 Disable tracking"
+        - "Projectivy Launcher \u00b7 Unlock premium"
+        - "Proton Mail \u00b7 AMOLED dark theme"
+        - "Proton Mail \u00b7 Hide upgrade upselling"
+        - "Proton Mail \u00b7 Remove 'Sent from' signature"
+        - "Proton Mail \u00b7 Remove free accounts limit"
+        - "Proton Mail \u00b7 Unlock custom time picker"
+        - "QR & Barcode Scanner \u00b7 Hide ads"
+        - "Quranify \u00b7 Unlock premium"
+        - "RateGlance \u00b7 Unlock premium"
+        - "ReadEra \u00b7 Remove nags"
+        - "RISE Sleep Tracker \u00b7 Disable telemetry"
+        - "RISE Sleep Tracker \u00b7 Disable usage tracking"
+        - "RISE Sleep Tracker \u00b7 Unlock premium"
+        - "Rubber Bands \u00b7 Unlock premium"
+        - "Showly \u00b7 AMOLED dark theme"
+        - "Showly \u00b7 Unlock premium"
+        - "Symfonium \u00b7 Unlock premium"
+        - "Trainline \u00b7 Hide ads"
+        - "Not narrowed down yet"
+        # /generated
+  - type: input
+    id: device
+    attributes:
+      label: Device and Android version
+      placeholder: Pixel 6a, Android 14
+    validations:
+      required: true
+  - type: input
+    id: apk-source
+    attributes:
+      label: APK source
+      description: |
+        Link to the download if you have it. APKMirror, APKPure, Uptodown or APKCombo. Not
+        apkmod, Softonic, HappyMod or anything else that repackages APKs.
+      placeholder: APKMirror, https://www.apkmirror.com/...
+    validations:
+      required: true
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: Architecture
+      options:
+        # generated:abis
+        - "arm64-v8a"
+        - "armeabi-v7a"
+        - "x86"
+        - "x86_64"
+        - "All of them (universal)"
+        - "Don't know"
+        # /generated
+    validations:
+      required: true
+  - type: dropdown
+    id: patched-with
+    attributes:
+      label: Patched with
+      options:
+        - Morphe Manager
+        - morphe-cli
+        - A Morphe-AutoBuilds APK
+        - A pre-patched APK from somewhere else
+    validations:
+      required: true
+  - type: dropdown
+    id: optimize-architecture
+    attributes:
+      label: "\"Optimize for device architecture\" in Manager's Advanced settings"
+      description: |
+        Turn it off and repatch before reporting.
+      options:
+        - "Off"
+        - "On"
+        - I do not know
+    validations:
+      required: true
+  - type: input
+    id: other-bundles
+    attributes:
+      label: Other bundles enabled
+      description: |
+        Other patch sources you had enabled. Blank if none.
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug description
+      description: |
+        - What you did, what you expected, and what happened instead
+        - Which screen or action triggers it
+        - Screenshots or a screen recording if the problem is visible
+        - A screenshot of the app's entry in Morphe Manager
+        - Any patch settings you changed inside the app
+    validations:
+      required: true
+  - type: textarea
+    id: error-logs
+    attributes:
+      label: Error logs
+      description: |
+        Optional. A logcat of the app if you can get one.
+      render: shell
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I repatched with the newest release of this bundle and it still happens.
+          required: true
+        - label: I uninstalled the app before installing the patched build.
+          required: true
+        - label: Nothing personal in my screenshots or logs.
+          required: true
