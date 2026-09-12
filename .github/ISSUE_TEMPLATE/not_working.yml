@@ -18,6 +18,9 @@ body:
       description: The version is in the app's About screen.
       options:
         # generated:targets
+        - "1Weather 12.9.3"
+        - "1Weather 13.1.0"
+        - "1Weather (another version, type it below)"
         - "All-In-One Calculator 3.4.0"
         - "All-In-One Calculator (another version, type it below)"
         - "AlpineQuest 2.4.0e"
@@ -92,12 +95,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.19.0"
         - "1.18.0"
         - "1.17.0"
         - "1.16.0"
         - "1.15.0"
         - "1.14.1"
-        - "1.14.0"
         - "Older than these"
         # /generated
     validations:
@@ -146,6 +149,10 @@ body:
       description: Only if you narrowed it down to one.
       options:
         # generated:patches
+        - "1Weather \u00b7 Disable tracking"
+        - "1Weather \u00b7 Hide Shorts"
+        - "1Weather \u00b7 Hide Skyla"
+        - "1Weather \u00b7 Unlock premium"
         - "All-In-One Calculator \u00b7 GmsCore support"
         - "All-In-One Calculator \u00b7 Unlock premium"
         - "AlpineQuest \u00b7 Unlock full version"

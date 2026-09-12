@@ -29,6 +29,9 @@ body:
       description: The version is in the app's About screen.
       options:
         # generated:targets
+        - "1Weather 12.9.3"
+        - "1Weather 13.1.0"
+        - "1Weather (another version, type it below)"
         - "All-In-One Calculator 3.4.0"
         - "All-In-One Calculator (another version, type it below)"
         - "AlpineQuest 2.4.0e"
