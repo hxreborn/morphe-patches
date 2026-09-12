@@ -241,6 +241,7 @@ internal class MethodBody(
                 "Replacement for $description requires ${code.size} bytes, available: ${instructionsSize * 2}",
             )
         }
+        payload.fill(0, instructions, instructions + instructionsSize * 2)
         code.copyInto(payload, instructions)
     }
 }
