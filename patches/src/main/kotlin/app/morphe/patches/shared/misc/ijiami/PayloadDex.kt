@@ -210,6 +210,8 @@ internal class PayloadDex private constructor(
         }
     }
 
+    fun stringIndexOf(value: String) = (0 until stringIdsSize).firstOrNull { stringAt(it) == value }
+
     private fun typeIndexOf(classDescriptor: String) =
         (0 until typeIdsSize).firstOrNull { typeDescriptor(it) == classDescriptor }
 

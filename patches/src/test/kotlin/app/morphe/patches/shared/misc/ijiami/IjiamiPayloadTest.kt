@@ -268,15 +268,15 @@ internal class IjiamiPayloadTest {
     }
 
     @Test
-    fun `relocates a typed handler over a returnDigits replacement`() {
+    fun `relocates a typed handler over a returnString replacement`() {
         val bytes = Fixtures.payload(copies = 1)
-        payloadOf(bytes).method(Fixtures.CLASS, "typedCatch").returnDigits(62130)
+        payloadOf(bytes).method(Fixtures.CLASS, "typedCatch").returnString("S0")
 
         val tryBlock = implementationOf(bytes, "typedCatch").tryBlocks.single()
-        assertEquals(8, tryBlock.startCodeAddress)
+        assertEquals(3, tryBlock.startCodeAddress)
         assertEquals(1, tryBlock.codeUnitCount)
         val handler = tryBlock.exceptionHandlers.single()
-        assertEquals(8, handler.handlerCodeAddress)
+        assertEquals(3, handler.handlerCodeAddress)
         assertEquals("Ljava/lang/RuntimeException;", handler.exceptionType)
     }
 
