@@ -16,12 +16,14 @@
 package hx;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -67,28 +69,77 @@ public final class AppPatch {
     private static final String LABORATORY_PASSWORD_TIME = "lab_enter_password_time";
     private static final int MANAGER_RETRY_LIMIT = 200;
     private static final long MANAGER_RETRY_DELAY_MS = 50L;
+    private static final String INSTALL_FAILED = "Playback patch failed to load";
+    private static final String ACTIVITY_THREAD = "android.app.ActivityThread";
 
     private AppPatch() {
     }
 
     public static void install(ClassLoader preferred) {
-        final Handler main = new Handler(Looper.getMainLooper());
-        main.post(new Runnable() {
-            private int attempts;
+        new Installer(preferred).start();
+    }
 
+    private static final class Installer implements Runnable {
+        private final Handler main = new Handler(Looper.getMainLooper());
+        private final ClassLoader preferred;
+        private int attempts;
+        private boolean laboratoryUnlocked;
+        private Throwable failure;
+
+        Installer(ClassLoader preferred) {
+            this.preferred = preferred;
+        }
+
+        void start() {
+            main.post(this);
+        }
+
+        @Override
+        public void run() {
+            if (tryInstall()) return;
+            if (++attempts < MANAGER_RETRY_LIMIT) {
+                main.postDelayed(this, MANAGER_RETRY_DELAY_MS);
+                return;
+            }
+            reportFailure();
+        }
+
+        private boolean tryInstall() {
+            Class<?> manager = resolve(MANAGER_CLASS, preferred);
+            if (manager == null) return false;
+            if (!laboratoryUnlocked) {
+                unlockLaboratory(manager.getClassLoader());
+                laboratoryUnlocked = true;
+            }
+            try {
+                doInstall(manager);
+                return true;
+            } catch (Throwable t) {
+                failure = t;
+                return false;
+            }
+        }
+
+        private void reportFailure() {
+            if (failure == null) {
+                Log.e(TAG, "network manager class not found");
+            } else {
+                Log.e(TAG, "cannot install DASH interceptor", failure);
+            }
+            notice(INSTALL_FAILED);
+        }
+    }
+
+    private static void notice(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Class<?> manager = resolve(MANAGER_CLASS, preferred);
-                if (manager != null) {
-                    doInstall(manager);
-                    unlockLaboratory(manager.getClassLoader());
-                    return;
+                try {
+                    Object application = Class.forName(ACTIVITY_THREAD).getMethod("currentApplication").invoke(null);
+                    Toast.makeText((Context) application, message, Toast.LENGTH_LONG).show();
+                } catch (Throwable unavailable) {
+                    Log.e(TAG, "cannot show \"" + message + "\"", unavailable);
                 }
-                if (++attempts >= MANAGER_RETRY_LIMIT) {
-                    Log.e(TAG, "network manager class not found");
-                    return;
-                }
-                main.postDelayed(this, MANAGER_RETRY_DELAY_MS);
             }
         });
     }
@@ -109,49 +160,45 @@ public final class AppPatch {
         return null;
     }
 
-    private static void doInstall(Class<?> manager) {
+    private static void doInstall(Class<?> manager) throws Exception {
+        Object instance = singleton(manager);
+        if (instance == null) throw new IllegalStateException("no network manager singleton");
+
+        ClassLoader loader = manager.getClassLoader();
+        Class<?> clientClass = Class.forName(OKHTTP_CLIENT, false, loader);
+        Field clientField = clientHolder(manager, clientClass);
+        if (clientField == null) throw new IllegalStateException("no client field on network manager");
+        Object client = clientField.get(instance);
+        if (!clientClass.isInstance(client)) {
+            throw new IllegalStateException("network manager field is not an OkHttpClient");
+        }
+
+        Field retrofitField = fieldInPackage(manager, "retrofit2.");
+        Object retrofit = retrofitField == null ? null : retrofitField.get(instance);
+        if (retrofit == null) throw new IllegalStateException("no Retrofit instance on network manager");
+        Field callFactory = clientHolder(retrofit.getClass(), clientClass);
+        if (callFactory == null) throw new IllegalStateException("no call factory field on Retrofit");
+        Field baseUrl = fieldInPackage(retrofit.getClass(), OKHTTP_URL);
+        if (baseUrl == null) throw new IllegalStateException("no base URL field on Retrofit");
+        String apiBase = String.valueOf(baseUrl.get(retrofit));
+
+        MovieBoxSource source = new MovieBoxSource(loader, client, apiBase);
+        DashServer server = mainProcess() ? DashServer.bind(source) : null;
         try {
-            Object instance = singleton(manager);
-            if (instance == null) throw new IllegalStateException("no network manager singleton");
-
-            ClassLoader loader = manager.getClassLoader();
-            Class<?> clientClass = Class.forName(OKHTTP_CLIENT, false, loader);
-            Field clientField = clientHolder(manager, clientClass);
-            if (clientField == null) throw new IllegalStateException("no client field on network manager");
-            Object client = clientField.get(instance);
-            if (!clientClass.isInstance(client)) {
-                throw new IllegalStateException("network manager field is not an OkHttpClient");
-            }
-
-            Field retrofitField = fieldInPackage(manager, "retrofit2.");
-            Object retrofit = retrofitField == null ? null : retrofitField.get(instance);
-            if (retrofit == null) throw new IllegalStateException("no Retrofit instance on network manager");
-            Field callFactory = clientHolder(retrofit.getClass(), clientClass);
-            if (callFactory == null) throw new IllegalStateException("no call factory field on Retrofit");
-            Field baseUrl = fieldInPackage(retrofit.getClass(), OKHTTP_URL);
-            if (baseUrl == null) throw new IllegalStateException("no base URL field on Retrofit");
-            String apiBase = String.valueOf(baseUrl.get(retrofit));
-
-            MovieBoxSource source = new MovieBoxSource(loader, client, apiBase);
-            DashServer server = mainProcess() ? DashServer.bind(source) : null;
+            if (server != null) server.start();
+            Object wrapped = addInterceptor(client, interceptor(loader, source));
+            clientField.set(instance, wrapped);
             try {
-                if (server != null) server.start();
-                Object wrapped = addInterceptor(client, interceptor(loader, source));
-                clientField.set(instance, wrapped);
-                try {
-                    callFactory.set(retrofit, wrapped);
-                } catch (Exception e) {
-                    clientField.set(instance, client);
-                    throw e;
-                }
+                callFactory.set(retrofit, wrapped);
             } catch (Exception e) {
-                if (server != null) server.close();
+                clientField.set(instance, client);
                 throw e;
             }
-            Log.i(TAG, "DASH interceptor installed");
         } catch (Exception e) {
-            Log.e(TAG, "cannot install DASH interceptor", e);
+            if (server != null) server.close();
+            throw e;
         }
+        Log.i(TAG, "DASH interceptor installed");
     }
 
     private static void unlockLaboratory(ClassLoader loader) {
