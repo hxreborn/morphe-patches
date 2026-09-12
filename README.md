@@ -448,6 +448,15 @@ identify each app. They are not covered by this repository's licence. See
 
 <!-- PATCHES_END -->
 &nbsp;
+## 🌍 MovieBox region
+
+MovieBox uses your SIM’s country code to choose your home feed and dubs, but rejects some
+countries. The patch blanks it, so MovieBox falls back to your IP address.
+
+To choose a country, open **Me → Settings → About us** and tap the version 7 times quickly. In
+**Laboratory**, choose a country under **National information**.
+
+&nbsp;
 ## 📲 Installing
 
 [Add this source](https://morphe.software/add-source?github=hxreborn/morphe-patches) to Morphe
