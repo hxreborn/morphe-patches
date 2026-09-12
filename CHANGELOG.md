@@ -1,3 +1,9 @@
+## [1.19.1](https://github.com/hxreborn/morphe-patches/compare/v1.19.0...v1.19.1) (2026-09-12)
+
+### Bug Fixes
+
+* **iJiami:** relocate try blocks past replaced instructions to pass ART verification ([0d6edb9](https://github.com/hxreborn/morphe-patches/commit/0d6edb9c1a460b2f8704151a8adb214f9d78eeec))
+
 ## [1.19.0](https://github.com/hxreborn/morphe-patches/compare/v1.18.0...v1.19.0) (2026-09-12)
 
 ### Bug Fixes
