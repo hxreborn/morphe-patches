@@ -199,6 +199,22 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16)),
     )
 
+    val RINGTONE_MAKER = Compatibility(
+        name = "Ringtone Maker",
+        packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x243ECA,
+        targets = listOf(
+            AppTarget(version = "1.01.99.0909", versionCode = 10153, minSdk = 24),
+            AppTarget(version = "1.01.98.0831", versionCode = 10151, minSdk = 24),
+            AppTarget(version = "1.01.98.0824", versionCode = 10146, minSdk = 24),
+            AppTarget(version = "1.01.97.0818", versionCode = 10145, minSdk = 24),
+            AppTarget(version = "1.01.96.0716", versionCode = 10142, minSdk = 24),
+            AppTarget(version = "1.01.94.0602", versionCode = 10139, minSdk = 24),
+            AppTarget(version = "1.01.90.0421", versionCode = 10131, minSdk = 24),
+        ),
+    )
+
     val RISE = Compatibility(
         name = "RISE Sleep Tracker",
         packageName = "com.risesci.nyx",
