@@ -98,7 +98,8 @@ private val MINTEGRAL_LOADERS = listOf(
 val allInOnePatch = resourcePatch(
     name = "All-In-One",
     description = "Enables video playback and downloads, removes ads and upsell prompts, " +
-        "and bypasses the region block. Requires Android 10 or later.",
+        "bypasses the region block, and unlocks the hidden Laboratory menu. " +
+        "Requires Android 10 or later.",
 ) {
     compatibleWith(AppCompatibilities.MOVIEBOX)
     dependsOn(ijiamiPatch)

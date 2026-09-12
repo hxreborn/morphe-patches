@@ -16,6 +16,7 @@
 package hx;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -60,6 +62,9 @@ public final class AppPatch {
     private static final String[] URL_FIELDS = {"url", "resourceLink", "downloadUrl", "playUrl"};
     private static final int MEMBER_DAYS_LEFT = 9999;
     private static final String MEMBER_EXPIRY = "2099-12-31";
+    private static final String MMKV_CLASS = "com.tencent.mmkv.MMKV";
+    private static final String MMKV_APP_ID = "kv_app";
+    private static final String LABORATORY_PASSWORD_TIME = "lab_enter_password_time";
     private static final int MANAGER_RETRY_LIMIT = 200;
     private static final long MANAGER_RETRY_DELAY_MS = 50L;
 
@@ -76,6 +81,7 @@ public final class AppPatch {
                 Class<?> manager = resolve(MANAGER_CLASS, preferred);
                 if (manager != null) {
                     doInstall(manager);
+                    unlockLaboratory(manager.getClassLoader());
                     return;
                 }
                 if (++attempts >= MANAGER_RETRY_LIMIT) {
@@ -145,6 +151,33 @@ public final class AppPatch {
             Log.i(TAG, "DASH interceptor installed");
         } catch (Exception e) {
             Log.e(TAG, "cannot install DASH interceptor", e);
+        }
+    }
+
+    private static void unlockLaboratory(ClassLoader loader) {
+        try {
+            Class<?> mmkvClass = Class.forName(MMKV_CLASS, false, loader);
+            Method mmkvWithId = null;
+            for (Method candidate : mmkvClass.getDeclaredMethods()) {
+                Class<?>[] parameters = candidate.getParameterTypes();
+                if (Modifier.isStatic(candidate.getModifiers())
+                        && candidate.getReturnType() == mmkvClass
+                        && parameters.length == 1
+                        && parameters[0] == String.class) {
+                    mmkvWithId = candidate;
+                    break;
+                }
+            }
+            if (mmkvWithId == null) {
+                throw new IllegalStateException("no mmkvWithID(String) on " + MMKV_CLASS);
+            }
+
+            SharedPreferences.Editor store =
+                    (SharedPreferences.Editor) mmkvWithId.invoke(null, MMKV_APP_ID);
+            store.putLong(LABORATORY_PASSWORD_TIME, Long.MAX_VALUE);
+            Log.i(TAG, "Laboratory unlocked");
+        } catch (Exception e) {
+            Log.e(TAG, "cannot unlock Laboratory", e);
         }
     }
 
