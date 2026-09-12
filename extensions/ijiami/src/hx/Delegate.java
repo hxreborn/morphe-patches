@@ -43,6 +43,7 @@ public final class Delegate extends AppComponentFactory {
             packer = (AppComponentFactory) Class.forName(name, true, classLoader)
                     .getDeclaredConstructor()
                     .newInstance();
+            Log.i(TAG, "packer component factory " + name + " ready");
         } catch (Throwable t) {
             Log.e(TAG, "cannot instantiate component factory " + name, t);
         }
@@ -59,6 +60,7 @@ public final class Delegate extends AppComponentFactory {
         ClassLoader appLoader = packer == null
                 ? super.instantiateClassLoader(classLoader, info)
                 : packer.instantiateClassLoader(classLoader, info);
+        Log.i(TAG, "payload class loader ready");
         Boot.runAppHook(appLoader);
         return appLoader;
     }
@@ -66,8 +68,12 @@ public final class Delegate extends AppComponentFactory {
     @Override
     public Application instantiateApplication(ClassLoader classLoader, String className)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        if (packer == null) return super.instantiateApplication(classLoader, className);
-        return packer.instantiateApplication(classLoader, className);
+        Log.i(TAG, "instantiating application " + className);
+        Application application = packer == null
+                ? super.instantiateApplication(classLoader, className)
+                : packer.instantiateApplication(classLoader, className);
+        Log.i(TAG, "application ready");
+        return application;
     }
 
     @Override
