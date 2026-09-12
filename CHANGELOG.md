@@ -1,3 +1,14 @@
+## [1.20.0](https://github.com/hxreborn/morphe-patches/compare/v1.19.1...v1.20.0) (2026-09-12)
+
+### Bug Fixes
+
+* **iJiami:** disable packer checks at their call sites to close crash race at launch ([b385011](https://github.com/hxreborn/morphe-patches/commit/b385011bc484cc352e1fe0a777da1d662bcadc48))
+* **MovieBox - All-In-One:** report no SIM operator ([d2af9f8](https://github.com/hxreborn/morphe-patches/commit/d2af9f83849376ce918ebd40ef28ce164db20eb0))
+
+### New Features
+
+* **MovieBox - All-In-One:** remove password access to Laboratory under Me → Settings → About us ([3373cce](https://github.com/hxreborn/morphe-patches/commit/3373cce8a95e004fb64e5ef225e7942c09e75d4d))
+
 ## [1.19.1](https://github.com/hxreborn/morphe-patches/compare/v1.19.0...v1.19.1) (2026-09-12)
 
 ### Bug Fixes
