@@ -33,5 +33,10 @@
     "close": true,
     "message": "Fixed in the next release. Repatch when it lands and reopen if it still happens.",
     "reason": "completed"
+  },
+  "r: not-a-bug": {
+    "close": true,
+    "message": "Not a patch bug. Reopen if it comes back.",
+    "reason": "not planned"
   }
 }
