@@ -246,4 +246,12 @@ internal object AppCompatibilities {
         appIconColor = 0x00A88F,
         targets = listOf(AppTarget(version = "407.0.0.178994", versionCode = 1278994, minSdk = 26)),
     )
+
+    val VPN_SUPER = Compatibility(
+        name = "VPN Super Unlimited Proxy",
+        packageName = "com.free.vpn.super.hotspot.open",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x007DFF,
+        targets = listOf(AppTarget(version = "2.32.0", versionCode = 23200, minSdk = 32)),
+    )
 }
