@@ -1,3 +1,9 @@
+## [1.20.4](https://github.com/hxreborn/morphe-patches/compare/v1.20.3...v1.20.4) (2026-09-13)
+
+### Bug Fixes
+
+* **iJiami:** stop patched apps crashing at launch ([a602d48](https://github.com/hxreborn/morphe-patches/commit/a602d48652d9710143fa5f57d15cc9a26d47397b))
+
 ## [1.20.3](https://github.com/hxreborn/morphe-patches/compare/v1.20.2...v1.20.3) (2026-09-13)
 
 ### Bug Fixes

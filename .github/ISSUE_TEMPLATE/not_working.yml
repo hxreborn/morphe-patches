@@ -95,12 +95,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.20.4"
         - "1.20.3"
         - "1.20.2"
         - "1.20.1"
         - "1.20.0"
         - "1.19.1"
-        - "1.19.0"
         - "Older than these"
         # /generated
     validations:
