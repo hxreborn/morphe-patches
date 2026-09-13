@@ -43,6 +43,15 @@
 #define MOV_W0_1 0x52800020
 #define NOP 0xd503201f
 
+#define MOV_W1_9 0x52800121
+#define MOV_W1_0 0x52800001
+#define MOV_X8_KILL 0xd2801028
+#define SVC_0 0xd4000001
+
+#define KILL_LOOKAHEAD 6
+#define KILL_SITE_LIMIT 96
+#define SCAN_CHUNK 512
+
 #include HX_PROFILE
 
 static const struct {
@@ -56,6 +65,9 @@ static const struct {
 
 static uintptr_t page_mask;
 static int probe_fd[2] = {-1, -1};
+static uintptr_t image_limit;
+static uint32_t kill_signal_offsets[KILL_SITE_LIMIT];
+static size_t kill_signal_count;
 
 static uint64_t now_ms(void) {
     struct timespec spec;
@@ -105,7 +117,10 @@ static int is_image(uintptr_t base) {
 
 static uint32_t *find_image_in_region(uintptr_t low, uintptr_t high) {
     for (uintptr_t at = low; at + IMAGE_MIN_SIZE <= high; at += 0x1000) {
-        if (is_image(at)) return (uint32_t *)at;
+        if (is_image(at)) {
+            image_limit = high;
+            return (uint32_t *)at;
+        }
     }
     return NULL;
 }
@@ -129,6 +144,67 @@ static void apply_patches(uint32_t *base) {
         *(volatile uint32_t *)at = PATCHES[index].replacement;
         LOG("disabled %s at +%#x", PATCHES[index].checkName, PATCHES[index].offset);
         reprotect(at);
+    }
+}
+
+static void clear_kill_signals(uint32_t *base) {
+    if (!image_limit || (uintptr_t)base >= image_limit) return;
+
+    static uint32_t window[SCAN_CHUNK + KILL_LOOKAHEAD + 1];
+    size_t total = (image_limit - (uintptr_t)base) / sizeof(*base);
+    size_t at = 0;
+
+    kill_signal_count = 0;
+    while (at < total) {
+        size_t want = total - at;
+        if (want > SCAN_CHUNK + KILL_LOOKAHEAD + 1) want = SCAN_CHUNK + KILL_LOOKAHEAD + 1;
+        if (want <= KILL_LOOKAHEAD + 1) break;
+
+        if (!read_words((uintptr_t)(base + at), window, want)) {
+            at += SCAN_CHUNK;
+            continue;
+        }
+
+        size_t scan = want - KILL_LOOKAHEAD - 1;
+        for (size_t index = 0; index < scan; index++) {
+            if (window[index] != MOV_W1_9) continue;
+
+            int arms_kill = 0;
+            for (size_t ahead = 1; ahead <= KILL_LOOKAHEAD; ahead++) {
+                if (window[index + ahead] == MOV_X8_KILL &&
+                    window[index + ahead + 1] == SVC_0) {
+                    arms_kill = 1;
+                    break;
+                }
+            }
+            if (!arms_kill) continue;
+
+            uint32_t *site = base + at + index;
+            if (!unprotect(site)) continue;
+
+            *(volatile uint32_t *)site = MOV_W1_0;
+            reprotect(site);
+
+            if (kill_signal_count < KILL_SITE_LIMIT) {
+                kill_signal_offsets[kill_signal_count++] = (uint32_t)((at + index) * sizeof(*base));
+            }
+        }
+
+        at += scan;
+    }
+
+    LOG("cleared SIGKILL at %zu call sites", kill_signal_count);
+}
+
+static void reclear_kill_signals(uint32_t *base) {
+    for (size_t index = 0; index < kill_signal_count; index++) {
+        uint32_t *site = base + kill_signal_offsets[index] / sizeof(*base);
+        uint32_t word;
+        if (!read_words((uintptr_t)site, &word, 1) || word != MOV_W1_9) continue;
+        if (!unprotect(site)) continue;
+
+        *(volatile uint32_t *)site = MOV_W1_0;
+        reprotect(site);
     }
 }
 
@@ -221,11 +297,14 @@ static void *patch_image(void *unused) {
 
     LOG("packer image at %p", (void *)image);
     apply_patches(image);
+    clear_kill_signals(image);
 
     deadline = now_ms() + REPATCH_TIMEOUT_MS;
     while (now_ms() < deadline) {
         sleep_us(REPATCH_INTERVAL_US);
-        if (find_image() == image) apply_patches(image);
+        if (find_image() != image) continue;
+        apply_patches(image);
+        reclear_kill_signals(image);
     }
 
     return NULL;
