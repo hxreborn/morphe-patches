@@ -15,14 +15,18 @@
  */
 package hx;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.Signature;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Process;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +36,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -42,8 +49,12 @@ final class Boot {
     private static final String CERTIFICATE_ASSET = "assets/hx.cer";
     private static final String FACTORY_ASSET = "assets/hx.factory";
     private static final String NATIVE_LIBRARY = "libhxpatch.so";
-    private static final String NATIVE_LIBRARY_ENTRY = "lib/arm64-v8a/" + NATIVE_LIBRARY;
+    private static final String ARM64_ABI = "arm64-v8a";
+    private static final String ARM32_ABI = "armeabi-v7a";
+    private static final String NATIVE_LIBRARY_ENTRY = "lib/" + ARM64_ABI + "/" + NATIVE_LIBRARY;
     private static final String APP_HOOK_CLASS = "hx.AppPatch";
+    private static final String STRIP_WARNING =
+            "Disable \"Optimize for device architecture\" & re-patch";
 
     private static boolean installed;
     private static boolean appHookStarted;
@@ -60,6 +71,11 @@ final class Boot {
 
         readAssets(info);
 
+        try {
+            warnIfArchitectureStripped(info);
+        } catch (Throwable t) {
+            Log.e(TAG, "cannot verify native library architectures", t);
+        }
         try {
             loadNativeLibrary(info);
         } catch (Throwable t) {
@@ -142,6 +158,43 @@ final class Boot {
         } catch (Throwable t) {
             Log.e(TAG, "cannot restore bound ApplicationInfo.appComponentFactory", t);
         }
+    }
+
+    private static void warnIfArchitectureStripped(ApplicationInfo info) throws Exception {
+        Set<String> present = new HashSet<>();
+        try (ZipFile archive = new ZipFile(info.sourceDir)) {
+            Enumeration<? extends ZipEntry> entries = archive.entries();
+            while (entries.hasMoreElements()) {
+                String name = entries.nextElement().getName();
+                if (!name.startsWith("lib/")) continue;
+                int slash = name.indexOf('/', 4);
+                if (slash > 4) present.add(name.substring(4, slash));
+            }
+        }
+
+        if (!present.contains(ARM64_ABI) || present.contains(ARM32_ABI)) return;
+
+        Log.e(TAG, ARM32_ABI + " native libraries absent from lib/; present " + present);
+        toast(STRIP_WARNING);
+    }
+
+    private static void toast(final String message) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Object application = Class.forName("android.app.ActivityThread")
+                            .getMethod("currentApplication").invoke(null);
+                    if (application != null) {
+                        Toast.makeText((Context) application, message, Toast.LENGTH_LONG).show();
+                    } else {
+                        Log.e(TAG, "no application context to show \"" + message + "\"");
+                    }
+                } catch (Throwable t) {
+                    Log.e(TAG, "cannot show \"" + message + "\"", t);
+                }
+            }
+        });
     }
 
     private static void loadNativeLibrary(ApplicationInfo info) throws Exception {
