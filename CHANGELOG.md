@@ -1,3 +1,9 @@
+## [1.20.2](https://github.com/hxreborn/morphe-patches/compare/v1.20.1...v1.20.2) (2026-09-13)
+
+### Bug Fixes
+
+* **iJiami:** return from watchdog thread entries and trap kill sites for crash reports ([c1d4b94](https://github.com/hxreborn/morphe-patches/commit/c1d4b94423d447a9e8a1e85cc0eafa6cac92287c))
+
 ## [1.20.1](https://github.com/hxreborn/morphe-patches/compare/v1.20.0...v1.20.1) (2026-09-13)
 
 ### Bug Fixes
