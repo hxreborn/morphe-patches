@@ -29,6 +29,8 @@
     {0x1721c, 0x94001a53, MOV_W0_0, "debugger check"}, \
     {0x10fc4, 0x54ffdb60, 0x17fffedb, "added dex check"}, \
     {0x10f80, 0x350003e0, NOP, "archive digest check"}, \
+    {0x16344, 0x1a89c149, 0x52800329, "watchdog counter check"}, \
+    {0x16380, 0x1a89c149, 0x52800329, "watchdog counter check"}, \
     {0x163c4, 0x94000444, MOV_W0_0, "watchdog integrity check"}, \
     {0x174c0, 0x94000005, MOV_W0_0, "watchdog integrity check"}, \
     {0x1d9ec, 0x97ffe6ba, MOV_W0_0, "watchdog integrity check"}, \
