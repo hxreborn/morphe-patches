@@ -1,3 +1,10 @@
+## [1.20.3](https://github.com/hxreborn/morphe-patches/compare/v1.20.2...v1.20.3) (2026-09-13)
+
+### Bug Fixes
+
+* **iJiami:** stop patched apps crashing when packer watchdog counter trips ([f81ab5d](https://github.com/hxreborn/morphe-patches/commit/f81ab5dd86482ec30055e3b1552acddadf6eb3c7))
+* **MovieBox - All-In-One:** warn when a title has no signed stream to play ([a06ce46](https://github.com/hxreborn/morphe-patches/commit/a06ce4627abc85e3b9615b6581191f3c8103560c))
+
 ## [1.20.2](https://github.com/hxreborn/morphe-patches/compare/v1.20.1...v1.20.2) (2026-09-13)
 
 ### Bug Fixes
