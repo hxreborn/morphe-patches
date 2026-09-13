@@ -36,10 +36,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -71,6 +74,10 @@ public final class AppPatch {
     private static final long MANAGER_RETRY_DELAY_MS = 50L;
     private static final String INSTALL_FAILED = "Playback patch failed to load";
     private static final String ACTIVITY_THREAD = "android.app.ActivityThread";
+    private static final String NO_STREAM = "No signed stream for this title";
+    private static final String NOT_HOSTED = "This title is not hosted";
+
+    private static final Set<String> reported = Collections.synchronizedSet(new HashSet<>());
 
     private AppPatch() {
     }
@@ -128,6 +135,10 @@ public final class AppPatch {
             }
             notice(INSTALL_FAILED);
         }
+    }
+
+    private static void diagnose(String message) {
+        if (reported.add(message)) notice(message);
     }
 
     private static void notice(final String message) {
@@ -378,8 +389,13 @@ public final class AppPatch {
         SignedResource observePlayInfo(String requestUrl, String body) {
             String key = SignedResource.key(Uri.parse(requestUrl));
             SignedResource resource = SignedResource.fromPlayInfo(body);
-            Log.i(TAG, "play-info " + key + ": " + (resource == null ? "no signed DASH resource" : "DASH"));
-            if (key == null || resource == null) return null;
+            if (resource == null) {
+                Log.w(TAG, "play-info " + key + ": no signed DASH resource");
+                diagnose(NO_STREAM);
+                return null;
+            }
+            Log.i(TAG, "play-info " + key + ": DASH");
+            if (key == null) return null;
             synchronized (resources) {
                 resources.put(key, resource);
             }
@@ -399,6 +415,7 @@ public final class AppPatch {
             } catch (IOException noResource) {
                 if (origin == null) throw noResource;
                 if (placeholder(origin, originSize)) {
+                    diagnose(NOT_HOSTED);
                     throw new DashServer.Unavailable(label + ": origin is a placeholder for " + originSize + " bytes");
                 }
                 Log.i(TAG, label + ": redirect to origin, " + noResource.getMessage());
