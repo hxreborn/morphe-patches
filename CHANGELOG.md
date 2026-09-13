@@ -1,3 +1,11 @@
+## [1.20.1](https://github.com/hxreborn/morphe-patches/compare/v1.20.0...v1.20.1) (2026-09-13)
+
+### Bug Fixes
+
+* **iJiami:** log component factory, class loader and application stages at launch ([7f9a757](https://github.com/hxreborn/morphe-patches/commit/7f9a757009d5e9eab227fbcc65d7a9cc67782738))
+* **iJiami:** stop packer watchdogs killing patched apps one second after launch ([55eabcb](https://github.com/hxreborn/morphe-patches/commit/55eabcb726467e0c3580df8db9a66a350a2388c3))
+* **MovieBox - All-In-One:** retry the playback hook and warn when it never installs ([c8f09e1](https://github.com/hxreborn/morphe-patches/commit/c8f09e1d32a39454d8a713952d585dd842ad99c7))
+
 ## [1.20.0](https://github.com/hxreborn/morphe-patches/compare/v1.19.1...v1.20.0) (2026-09-12)
 
 ### Bug Fixes
