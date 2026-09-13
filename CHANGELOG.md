@@ -1,3 +1,9 @@
+## [1.21.0](https://github.com/hxreborn/morphe-patches/compare/v1.20.4...v1.21.0) (2026-09-13)
+
+### New Features
+
+* **iJiami:** warn when device architecture optimization removes native libraries ([c00bc59](https://github.com/hxreborn/morphe-patches/commit/c00bc59dd2d0c1f4d0a31b0355584d70f15ca045))
+
 ## [1.20.4](https://github.com/hxreborn/morphe-patches/compare/v1.20.3...v1.20.4) (2026-09-13)
 
 ### Bug Fixes
