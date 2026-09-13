@@ -13,6 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+#define RET 0xd65f03c0
+
 #define IMAGE_MIN_SIZE 0x39000
 #define ANCHOR_A_OFFSET 0x1218
 #define ANCHOR_A_FIRST 0xf940aae8
@@ -30,5 +32,8 @@
     {0x163c4, 0x94000444, MOV_W0_0, "watchdog integrity check"}, \
     {0x174c0, 0x94000005, MOV_W0_0, "watchdog integrity check"}, \
     {0x1d9ec, 0x97ffe6ba, MOV_W0_0, "watchdog integrity check"}, \
+    {0x1744, 0xd10183ff, RET, "watchdog thread entry"}, \
+    {0x15f68, 0xd10203ff, RET, "watchdog thread entry"}, \
+    {0x16e2c, 0xd10143ff, RET, "watchdog thread entry"}, \
     {0x10898, 0x9400039c, MOV_W0_1, "structure integrity check"}, \
 }
