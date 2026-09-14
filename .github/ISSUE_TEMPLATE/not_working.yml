@@ -79,6 +79,8 @@ body:
         - "Symfonium (another version, type it below)"
         - "Trainline 407.0.0.178994"
         - "Trainline (another version, type it below)"
+        - "VPN Super Unlimited Proxy 2.32.0"
+        - "VPN Super Unlimited Proxy (another version, type it below)"
         # /generated
     validations:
       required: true
@@ -95,12 +97,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.22.0"
         - "1.21.0"
         - "1.20.4"
         - "1.20.3"
         - "1.20.2"
         - "1.20.1"
-        - "1.20.0"
         - "Older than these"
         # /generated
     validations:
@@ -195,6 +197,7 @@ body:
         - "Showly \u00b7 Unlock premium"
         - "Symfonium \u00b7 Unlock premium"
         - "Trainline \u00b7 Hide ads"
+        - "VPN Super Unlimited Proxy \u00b7 Unlock premium"
         - "Not narrowed down yet"
         # /generated
   - type: input

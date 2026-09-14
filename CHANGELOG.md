@@ -1,3 +1,9 @@
+## [1.22.0](https://github.com/hxreborn/morphe-patches/compare/v1.21.0...v1.22.0) (2026-09-14)
+
+### New Features
+
+* **VPN Super Unlimited Proxy - Unlock premium:** unlock all locations and remove ads and upsells ([19c088c](https://github.com/hxreborn/morphe-patches/commit/19c088c9320def996ff6e8bf50c9bece3137c2d1))
+
 ## [1.21.0](https://github.com/hxreborn/morphe-patches/compare/v1.20.4...v1.21.0) (2026-09-13)
 
 ### New Features

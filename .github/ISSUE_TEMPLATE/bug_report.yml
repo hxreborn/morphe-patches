@@ -90,6 +90,8 @@ body:
         - "Symfonium (another version, type it below)"
         - "Trainline 407.0.0.178994"
         - "Trainline (another version, type it below)"
+        - "VPN Super Unlimited Proxy 2.32.0"
+        - "VPN Super Unlimited Proxy (another version, type it below)"
         # /generated
     validations:
       required: true
