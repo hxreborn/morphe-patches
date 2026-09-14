@@ -34,3 +34,11 @@ internal object UpgradeUpsellingButtonFingerprint : Fingerprint(
         resourceLiteral(ResourceType.STRING, "upselling_button_item_content_description"),
     ),
 )
+
+internal object AutoDeleteStatesFingerprint : Fingerprint(
+    strings = listOf("AutoDeleteUpsell", "AutoDeleteDisabled", "AutoDeleteEnabled"),
+)
+
+internal object AutoDeleteBannerFingerprint : Fingerprint(
+    strings = listOf("Getting the auto-delete banner failed."),
+)
