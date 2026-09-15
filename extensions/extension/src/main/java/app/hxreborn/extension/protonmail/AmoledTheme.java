@@ -21,13 +21,34 @@ public final class AmoledTheme {
 
     private AmoledTheme() {}
 
+    private static final String KEY = "amoled_dark_theme";
+    private static final long BLACK = 0xFF000000L;
+
+    public static boolean isPatched() {
+        return false; // stub
+    }
+
+    public static boolean isEnabled() {
+        return PatchSettings.isFeatureEnabled(isPatched(), KEY);
+    }
+
+    static void setEnabled(boolean enabled) {
+        PatchSettings.setEnabled(KEY, enabled);
+    }
+
+    public static long background(long original) {
+        return isEnabled() ? BLACK : original;
+    }
+
     public static String replaceBackground(String html) {
+        if (!isEnabled()) return html;
         return html == null
                 ? null
                 : html.replace(PROTON_DARK_BACKGROUND, AMOLED_BACKGROUND);
     }
 
     public static InputStream replaceBackground(InputStream input) {
+        if (!isEnabled()) return input;
         return input == null ? null : new BackgroundReplacingInputStream(input);
     }
 
