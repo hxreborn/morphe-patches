@@ -14,12 +14,13 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 
 private const val APPLICATION_CLASS = "Lch/protonmail/android/App;"
+private const val PATCH_APPLICATION_CLASS = "Lapp/hxreborn/extension/protonmail/PatchApplication;"
 
 val spoofSignaturePatch = bytecodePatch {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     extendWith("extensions/extension.mpe")
 
     execute {
-        spoofSignature(APPLICATION_CLASS)
+        spoofSignature(APPLICATION_CLASS, hostClass = PATCH_APPLICATION_CLASS)
     }
 }

@@ -5,6 +5,8 @@
 package app.morphe.patches.protonmail.misc.theme
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.opcode
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.Opcode
@@ -54,5 +56,13 @@ internal object InlineMessageBodyFingerprint : Fingerprint(
     strings = listOf(
         "message-webview: setting initial value on webview ",
         "https://ch.proton.local.body.host/body/",
+    ),
+)
+
+internal object ComposerCssFingerprint : Fingerprint(
+    strings = listOf("Raw css resource is not found"),
+    filters = listOf(
+        methodCall("Landroid/content/res/Resources;->openRawResource(I)Ljava/io/InputStream;"),
+        opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),
     ),
 )
