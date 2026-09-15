@@ -97,12 +97,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.23.0"
         - "1.22.0"
         - "1.21.0"
         - "1.20.4"
         - "1.20.3"
         - "1.20.2"
-        - "1.20.1"
         - "Older than these"
         # /generated
     validations:
@@ -181,9 +181,10 @@ body:
         - "Projectivy Launcher \u00b7 Disable tracking"
         - "Projectivy Launcher \u00b7 Unlock premium"
         - "Proton Mail \u00b7 AMOLED dark theme"
-        - "Proton Mail \u00b7 Hide upgrade upselling"
+        - "Proton Mail \u00b7 Hide upgrade promotions"
         - "Proton Mail \u00b7 Remove 'Sent from' signature"
         - "Proton Mail \u00b7 Remove free accounts limit"
+        - "Proton Mail \u00b7 Scheduled Trash and Spam deletion"
         - "Proton Mail \u00b7 Unlock custom time picker"
         - "QR & Barcode Scanner \u00b7 Hide ads"
         - "Quranify \u00b7 Unlock premium"

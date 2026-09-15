@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -102,8 +102,7 @@
       "description": "Replaces the dark theme background with pure black.",
       "default": true,
       "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -838,13 +837,14 @@
       "options": []
     },
     {
-      "name": "Hide upgrade upselling",
-      "description": "Hides the top-bar upgrade button and promotional sidebar rows.",
+      "name": "Hide upgrade promotions",
+      "description": "Hides the top-bar upgrade button, promotional sidebar rows and the auto-delete upgrade banner in Trash and Spam. Keeps the Empty trash and Empty spam buttons.",
       "default": true,
       "dependencies": [
         "BytecodePatch",
         "ResourcePatch",
-        "ResourcePatch"
+        "ResourcePatch",
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -958,6 +958,7 @@
       "description": "Removes the 'Sent from Proton Mail' signature from emails.",
       "default": true,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -1005,6 +1006,7 @@
       "description": "Removes the limit for maximum free accounts logged in.",
       "default": true,
       "dependencies": [
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -1071,6 +1073,56 @@
               },
               "isExperimental": false,
               "minSdk": 16,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Scheduled Trash and Spam deletion",
+      "description": "Deletes all messages in Trash and Spam on a configurable schedule. Deleted messages cannot be recovered.",
+      "default": false,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch",
+        "BytecodePatch",
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonmail.android",
+          "name": "Proton Mail",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": [
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853"
+          ],
+          "targets": [
+            {
+              "version": "7.11.5",
+              "versionCodes": {
+                "ARM64_V8A": 18317,
+                "ARMEABI_V7A": 18317,
+                "X86_64": 18317,
+                "X86": 18317
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "7.10.4",
+              "versionCodes": {
+                "ARM64_V8A": 17667,
+                "ARMEABI_V7A": 17667,
+                "X86_64": 17667,
+                "X86": 17667
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]

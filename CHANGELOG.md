@@ -1,3 +1,13 @@
+## [1.23.0](https://github.com/hxreborn/morphe-patches/compare/v1.22.0...v1.23.0) (2026-09-15)
+
+### New Features
+
+* **Proton Mail - AMOLED dark theme:** add a runtime toggle ([9a821a4](https://github.com/hxreborn/morphe-patches/commit/9a821a4c27ec5bba5eee69aa3080327152892f68))
+* **Proton Mail - Hide upgrade promotions:** add a runtime toggle for the hidden promotions ([5161d22](https://github.com/hxreborn/morphe-patches/commit/5161d22b56207236cc395090f4cbfa0cd00c10c2))
+* **Proton Mail - Hide upgrade upselling:** hide auto-delete upgrade banner in Trash and Spam ([7fd220a](https://github.com/hxreborn/morphe-patches/commit/7fd220ad9854ef14167de6db6f1bed74c48f40f0))
+* **Proton Mail - Scheduled Trash and Spam deletion:** delete Trash and Spam on a schedule ([5020e22](https://github.com/hxreborn/morphe-patches/commit/5020e22e70591eefefd2bfe9482360a645d1e1bb))
+* **Proton Mail:** add an in-app patches menu listing applied patches and their settings ([560fa12](https://github.com/hxreborn/morphe-patches/commit/560fa12e3303d7ef254732bc8b0ff12ee6d4710a))
+
 ## [1.22.0](https://github.com/hxreborn/morphe-patches/compare/v1.21.0...v1.22.0) (2026-09-14)
 
 ### New Features
