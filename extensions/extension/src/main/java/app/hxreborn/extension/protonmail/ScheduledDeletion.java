@@ -12,8 +12,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,19 +26,27 @@ public final class ScheduledDeletion {
 
     private static final String TAG = "ScheduledDeletion";
     private static final String UNIFFI_PACKAGE = "uniffi.mail_uniffi.";
-    static final String[] EMPTIED_LABELS = { "TRASH", "SPAM" };
+    static final String TRASH = "TRASH";
+    static final String SPAM = "SPAM";
+    static final String[] EMPTIED_LABELS = { TRASH, SPAM };
     private static final long SUSPEND_TIMEOUT_SECONDS = 60L;
 
     private static final AtomicBoolean DELETING = new AtomicBoolean();
 
     private static final Map<Object, Object> MAILBOX_SESSIONS = new WeakHashMap<>();
 
+    private static final Map<String, Object> SYSTEM_LABEL_IDS = new ConcurrentHashMap<>();
+
+    private static volatile Object shownLabelId;
+
     private ScheduledDeletion() {}
 
     public static synchronized void captureMailbox(Object result, Object mailUserSession) {
         try {
             final Object mailbox = okValueOrNull(result);
-            if (mailbox != null) MAILBOX_SESSIONS.put(mailbox, mailUserSession);
+            if (mailbox != null) {
+                MAILBOX_SESSIONS.put(mailbox, mailUserSession);
+            }
         } catch (Throwable throwable) {
             Log.e(TAG, "Failed to associate mailbox with account", throwable);
         }
@@ -46,36 +57,45 @@ public final class ScheduledDeletion {
     }
 
     private static void throwOnFailure(Object result) throws Exception {
-        if (result == null || !"Failure".equals(result.getClass().getSimpleName())) return;
+        if (result == null || !"Failure".equals(result.getClass().getSimpleName())) {
+            return;
+        }
 
         final Field cause = result.getClass().getDeclaredField("exception");
         cause.setAccessible(true);
         final Object thrown = cause.get(result);
 
-        if (thrown instanceof Exception) throw (Exception) thrown;
+        if (thrown instanceof Exception) {
+            throw (Exception) thrown;
+        }
         throw new IllegalStateException(String.valueOf(thrown));
     }
 
     public static synchronized void onMailboxShown(Object mailbox) {
         try {
             final Object sessionSnapshot = MAILBOX_SESSIONS.get(mailbox);
-            if (sessionSnapshot == null) return;
-
-            final String account = userIdOf(sessionSnapshot);
-            if (account == null) return;
-
-            final long intervalMs =
-                    ScheduledDeletionSettings.intervalSeconds(Utils.getContext()) * 1000L;
-            if (intervalMs <= 0L) return;
-            if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account, EMPTIED_LABELS,
-                    intervalMs)) {
+            if (sessionSnapshot == null) {
                 return;
             }
-            if (!DELETING.compareAndSet(false, true)) return;
+
+            final String account = userIdOf(sessionSnapshot);
+            if (account == null) {
+                return;
+            }
+
+            shownLabelId = callNoArg(mailbox, "labelId");
+            cacheSystemLabelIds(sessionSnapshot);
+
+            if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account)) {
+                return;
+            }
+            if (!DELETING.compareAndSet(false, true)) {
+                return;
+            }
 
             final Thread worker = new Thread(() -> {
                 try {
-                    emptyDueLabels(sessionSnapshot, account, intervalMs);
+                    emptyDueLabels(sessionSnapshot, account);
                 } catch (Throwable throwable) {
                     Log.e(TAG, "Failed to empty Trash and Spam", throwable);
                 } finally {
@@ -93,16 +113,23 @@ public final class ScheduledDeletion {
         }
     }
 
-    private static void emptyDueLabels(Object mailSession, String account, long intervalMs)
-            throws Exception {
+    private static void emptyDueLabels(Object mailSession, String account) throws Exception {
         final SuspendInvoker suspendInvoker = new SuspendInvoker();
+        final List<String> deletedLabels = new ArrayList<>();
 
         for (String label : EMPTIED_LABELS) {
-            if (ScheduledDeletionSettings.intervalSeconds(Utils.getContext()) * 1000L != intervalMs) return;
-            if (!ScheduledDeletionSettings.due(Utils.getContext(), account, label, intervalMs)) continue;
+            final long intervalMs = intervalMsOf(label);
+            if (intervalMs <= 0L) {
+                continue;
+            }
+            if (!ScheduledDeletionSettings.due(Utils.getContext(), account, label, intervalMs)) {
+                continue;
+            }
 
             final Object labelId = systemLabelId(mailSession, suspendInvoker, label);
-            if (ScheduledDeletionSettings.intervalSeconds(Utils.getContext()) * 1000L != intervalMs) return;
+            if (intervalMsOf(label) != intervalMs) {
+                continue;
+            }
 
             final Object result = suspendInvoker.invoke(
                     uniffiMethod("deleteAllMessagesInLabel"), null, mailSession, labelId);
@@ -115,8 +142,45 @@ public final class ScheduledDeletion {
             }
 
             ScheduledDeletionSettings.recordEmptied(Utils.getContext(), account, label);
-            ScheduledDeletionEditor.showEmptied(label);
+            deletedLabels.add(label);
         }
+        ScheduledDeletionEditor.showDeleted(deletedLabels);
+    }
+
+    static String shownLabel() {
+        final Object shown = shownLabelId;
+        if (shown == null) {
+            return null;
+        }
+
+        for (Map.Entry<String, Object> known : SYSTEM_LABEL_IDS.entrySet()) {
+            if (shown.equals(known.getValue())) {
+                return known.getKey();
+            }
+        }
+        return null;
+    }
+
+    private static void cacheSystemLabelIds(Object mailSession) {
+        if (SYSTEM_LABEL_IDS.size() == EMPTIED_LABELS.length) {
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                final SuspendInvoker suspendInvoker = new SuspendInvoker();
+                for (String label : EMPTIED_LABELS) {
+                    SYSTEM_LABEL_IDS.put(label,
+                            systemLabelId(mailSession, suspendInvoker, label));
+                }
+            } catch (Throwable throwable) {
+                Log.e(TAG, "Failed to resolve the Trash and Spam label IDs", throwable);
+            }
+        }, "hx-label-ids").start();
+    }
+
+    private static long intervalMsOf(String label) {
+        return ScheduledDeletionSettings.intervalSeconds(Utils.getContext(), label) * 1000L;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -160,7 +224,9 @@ public final class ScheduledDeletion {
             withContinuation[args.length] = continuation;
 
             final Object immediate = method.invoke(target, withContinuation);
-            if (!isCoroutineSuspended(immediate)) return immediate;
+            if (!isCoroutineSuspended(immediate)) {
+                return immediate;
+            }
 
             if (!parked.resumed.await(SUSPEND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
                 throw new IllegalStateException(
@@ -184,15 +250,23 @@ public final class ScheduledDeletion {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) {
             final String name = method.getName();
-            if ("getContext".equals(name)) return context;
+            if ("getContext".equals(name)) {
+                return context;
+            }
             if ("resumeWith".equals(name)) {
                 result = args[0];
                 resumed.countDown();
                 return null;
             }
-            if ("toString".equals(name)) return "ScheduledDeletion";
-            if ("hashCode".equals(name)) return System.identityHashCode(proxy);
-            if ("equals".equals(name)) return proxy == args[0];
+            if ("toString".equals(name)) {
+                return "ScheduledDeletion";
+            }
+            if ("hashCode".equals(name)) {
+                return System.identityHashCode(proxy);
+            }
+            if ("equals".equals(name)) {
+                return proxy == args[0];
+            }
             return null;
         }
     }

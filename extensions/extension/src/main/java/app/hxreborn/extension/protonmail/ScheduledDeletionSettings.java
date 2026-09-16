@@ -20,29 +20,50 @@ final class ScheduledDeletionSettings {
     private ScheduledDeletionSettings() {}
 
     static boolean isActive(Context context) {
-        return AppliedPatches.scheduledDeletion() && intervalSeconds(context) > OFF;
+        for (String label : ScheduledDeletion.EMPTIED_LABELS) {
+            if (isActive(context, label)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    static int intervalSeconds(Context context) {
+    static boolean isActive(Context context, String label) {
+        return AppliedPatches.scheduledDeletion() && intervalSeconds(context, label) > OFF;
+    }
+
+    static int intervalSeconds(Context context, String label) {
         final SharedPreferences preferences = preferences(context);
-        return preferences == null ? OFF : clamp(preferences.getInt(INTERVAL_SECONDS, OFF));
+        if (preferences == null) {
+            return OFF;
+        }
+
+        final String key = intervalKey(label);
+        return clamp(preferences.contains(key)
+                ? preferences.getInt(key, OFF)
+                : preferences.getInt(INTERVAL_SECONDS, OFF));
     }
 
-    static boolean saveIntervalSeconds(Context context, int seconds) {
+    static boolean saveIntervalSeconds(Context context, String label, int seconds) {
         if (seconds != OFF && (seconds < MINIMUM_SECONDS || seconds > MAXIMUM_SECONDS)) {
             return false;
         }
         final SharedPreferences preferences = preferences(context);
-        if (preferences == null) return false;
+        if (preferences == null) {
+            return false;
+        }
 
-        final int previousSeconds = clamp(preferences.getInt(INTERVAL_SECONDS, OFF));
+        final int previousSeconds = intervalSeconds(context, label);
         final SharedPreferences.Editor editor =
-                preferences.edit().putInt(INTERVAL_SECONDS, seconds);
+                preferences.edit().putInt(intervalKey(label), seconds);
 
         if (seconds != previousSeconds) {
             final long now = System.currentTimeMillis();
+            final String emptiedPrefix = key(label, "");
             for (String seen : preferences.getAll().keySet()) {
-                if (seen.startsWith(LAST_EMPTIED_MS)) editor.putLong(seen, now);
+                if (seen.startsWith(emptiedPrefix)) {
+                    editor.putLong(seen, now);
+                }
             }
         }
         editor.apply();
@@ -51,7 +72,9 @@ final class ScheduledDeletionSettings {
 
     static boolean due(Context context, String accountId, String label, long intervalMs) {
         final SharedPreferences preferences = preferences(context);
-        if (preferences == null || accountId == null) return false;
+        if (preferences == null || accountId == null) {
+            return false;
+        }
 
         final long lastEmptiedMs = preferences.getLong(key(label, accountId), 0L);
         final long elapsed = System.currentTimeMillis() - lastEmptiedMs;
@@ -62,17 +85,21 @@ final class ScheduledDeletionSettings {
         return elapsed >= intervalMs;
     }
 
-    static boolean anyLabelDue(Context context, String accountId, String[] labels,
-                               long intervalMs) {
-        for (String label : labels) {
-            if (due(context, accountId, label, intervalMs)) return true;
+    static boolean anyLabelDue(Context context, String accountId) {
+        for (String label : ScheduledDeletion.EMPTIED_LABELS) {
+            final long intervalMs = intervalSeconds(context, label) * 1000L;
+            if (intervalMs > 0L && due(context, accountId, label, intervalMs)) {
+                return true;
+            }
         }
         return false;
     }
 
     static void recordEmptied(Context context, String accountId, String label) {
         final SharedPreferences preferences = preferences(context);
-        if (preferences == null || accountId == null) return;
+        if (preferences == null || accountId == null) {
+            return;
+        }
 
         preferences.edit()
                 .putLong(key(label, accountId), System.currentTimeMillis())
@@ -86,9 +113,15 @@ final class ScheduledDeletionSettings {
 
     static void saveShowsToast(Context context, boolean show) {
         final SharedPreferences preferences = preferences(context);
-        if (preferences == null) return;
+        if (preferences == null) {
+            return;
+        }
 
         preferences.edit().putBoolean(SHOW_TOAST, show).apply();
+    }
+
+    private static String intervalKey(String label) {
+        return INTERVAL_SECONDS + "_" + label;
     }
 
     private static String key(String label, String accountId) {
@@ -96,8 +129,12 @@ final class ScheduledDeletionSettings {
     }
 
     private static int clamp(int seconds) {
-        if (seconds <= OFF) return OFF;
-        if (seconds < MINIMUM_SECONDS) return MINIMUM_SECONDS;
+        if (seconds <= OFF) {
+            return OFF;
+        }
+        if (seconds < MINIMUM_SECONDS) {
+            return MINIMUM_SECONDS;
+        }
         return Math.min(seconds, MAXIMUM_SECONDS);
     }
 

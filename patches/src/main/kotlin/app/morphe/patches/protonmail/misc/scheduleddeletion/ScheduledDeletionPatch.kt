@@ -28,12 +28,20 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/Schedule
 private val scheduledDeletionStringsPatch = resourcePatch {
     execute {
         document("res/values/strings.xml").use { document ->
-            val text = document.createElement("string")
-            text.setAttribute("name", "hx_scheduled_deletion_banner")
-            text.setAttribute("translatable", "false")
-            text.textContent =
-                "Trash and Spam are deleted on the schedule set in hxreborn patches."
-            document.documentElement.appendChild(text)
+            mapOf(
+                "hx_scheduled_deletion_banner" to
+                    "Trash and Spam are deleted on the schedules set in hxreborn patches.",
+                "hx_scheduled_deletion_banner_trash" to
+                    "Trash is deleted on the schedule set in hxreborn patches.",
+                "hx_scheduled_deletion_banner_spam" to
+                    "Spam is deleted on the schedule set in hxreborn patches.",
+            ).forEach { (name, value) ->
+                val text = document.createElement("string")
+                text.setAttribute("name", name)
+                text.setAttribute("translatable", "false")
+                text.textContent = value
+                document.documentElement.appendChild(text)
+            }
         }
     }
 }
@@ -41,7 +49,7 @@ private val scheduledDeletionStringsPatch = resourcePatch {
 @Suppress("unused")
 val scheduledDeletionPatch = bytecodePatch(
     name = "Scheduled Trash and Spam deletion",
-    description = "Deletes all messages in Trash and Spam on a configurable schedule. " +
+    description = "Deletes all messages in Trash and Spam on separate configurable schedules. " +
         "Deleted messages cannot be recovered.",
     default = false,
 ) {
