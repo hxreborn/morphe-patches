@@ -69,7 +69,8 @@ private fun ClassDef.hasInstanceFields() =
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks premium servers and removes ads, upgrade banners and the launch paywall.",
+    description = "Unlocks premium servers and removes ads, upgrade banners, the launch paywall and " +
+        "the Android TV sign-in screen.",
 ) {
     compatibleWith(AppCompatibilities.VPN_SUPER)
 
@@ -115,6 +116,13 @@ val unlockPremiumPatch = bytecodePatch(
                 return-object v0
             """,
         )
+
+        TvSplashDestinationFingerprint.matchSingle().method.apply {
+            val index = indexOfFirstInstructionOrThrow(Opcode.IGET_BOOLEAN)
+            val register = getInstruction<TwoRegisterInstruction>(index).registerA
+
+            replaceInstruction(index, "const/4 v$register, 0x1")
+        }
 
         PrivacyPolicyAcceptedFingerprint.matchSingle().method.apply {
             val index = indexOfFirstInstructionOrThrow(Opcode.IGET_BOOLEAN)

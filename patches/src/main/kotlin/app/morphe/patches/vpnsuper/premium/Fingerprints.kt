@@ -50,3 +50,13 @@ internal object UserInfoToStringFingerprint : Fingerprint(
     parameters = emptyList(),
     strings = listOf("UserInfo(email=", ", isPremium=", ", userState=", ", tokenStatus="),
 )
+
+internal object TvEverythingLoadedFingerprint : Fingerprint(
+    strings = listOf("TvOnEverythingIsLoadedMsg"),
+)
+
+internal object TvSplashDestinationFingerprint : Fingerprint(
+    classFingerprint = TvEverythingLoadedFingerprint,
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Ljava/lang/Object;"),
+)
