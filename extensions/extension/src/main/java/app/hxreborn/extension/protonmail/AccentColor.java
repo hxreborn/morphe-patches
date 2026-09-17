@@ -52,7 +52,7 @@ public final class AccentColor {
         return false;
     }
 
-    static boolean isSystemAvailable() {
+    static boolean isSystemAccentAvailable() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
@@ -71,7 +71,7 @@ public final class AccentColor {
 
     static int resolveAccentColor(String preset, boolean dark) {
         final int stockAccent = dark ? STOCK_DARK_ACCENT : STOCK_LIGHT_ACCENT;
-        final double[] adjustment = computeLabAdjustment(preset);
+        final LabAdjustment adjustment = computeLabAdjustment(preset);
         return adjustment == null ? stockAccent : applyLabAdjustment(stockAccent, adjustment);
     }
 
@@ -81,7 +81,7 @@ public final class AccentColor {
 
     public static long applyAccentToArgb(long original) {
         try {
-            final double[] adjustment = computeLabAdjustment(getPreset());
+            final LabAdjustment adjustment = computeLabAdjustment(getPreset());
             if (adjustment == null) return original;
 
             final int source = (int) original;
@@ -101,7 +101,7 @@ public final class AccentColor {
         try {
             if (view == null) return;
 
-            final double[] adjustment = computeLabAdjustment(getPreset());
+            final LabAdjustment adjustment = computeLabAdjustment(getPreset());
             if (adjustment == null) return;
 
             final float[] stockHsl = argbToHsl(STOCK_DARK_ACCENT);
@@ -189,30 +189,30 @@ public final class AccentColor {
         return Color.red(argb) + "," + Color.green(argb) + "," + Color.blue(argb);
     }
 
-    private static double[] computeLabAdjustment(String preset) {
+    private static LabAdjustment computeLabAdjustment(String preset) {
         if (preset == null || preset.isEmpty()) return null;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return null;
 
         final int picked = resolvePresetColor(preset);
         if (picked == 0) return null;
 
-        final float[] labComponents = argbToLab(picked);
+        final float[] pickedLab = argbToLab(picked);
         final float[] stockLab = argbToLab(STOCK_DARK_ACCENT);
-        final double chroma = Math.hypot(labComponents[1], labComponents[2]);
-        if (chroma < MIN_PRESET_CHROMA) return null;
+        final double pickedChroma = Math.hypot(pickedLab[1], pickedLab[2]);
+        if (pickedChroma < MIN_PRESET_CHROMA) return null;
 
-        return new double[] {
-                Math.atan2(labComponents[2], labComponents[1]),
-                Math.min(MAX_CHROMA_SCALE, chroma / Math.hypot(stockLab[1], stockLab[2])),
+        final double stockChroma = Math.hypot(stockLab[1], stockLab[2]);
+        return new LabAdjustment(
+                Math.atan2(pickedLab[2], pickedLab[1]),
+                Math.min(MAX_CHROMA_SCALE, pickedChroma / stockChroma),
                 stockLab[0] == 0 ? 1 : Math.max(MIN_LIGHTNESS_SCALE,
-                        Math.min(MAX_LIGHTNESS_SCALE, labComponents[0] / stockLab[0])),
-                Math.hypot(stockLab[1], stockLab[2]),
-        };
+                        Math.min(MAX_LIGHTNESS_SCALE, pickedLab[0] / stockLab[0])),
+                stockChroma);
     }
 
     @TargetApi(Build.VERSION_CODES.S)
     private static int getSystemAccentColor() {
-        if (!isSystemAvailable()) return 0;
+        if (!isSystemAccentAvailable()) return 0;
 
         final Context context = Utils.getContext();
         return context == null ? 0 : context.getColor(android.R.color.system_accent1_500);
@@ -227,18 +227,18 @@ public final class AccentColor {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    private static int applyLabAdjustment(int argb, double[] adjustment) {
+    private static int applyLabAdjustment(int argb, LabAdjustment adjustment) {
         final float[] labComponents = argbToLab(argb);
         final float lightness = (float) Math.max(0,
-                Math.min(MAX_LIGHTNESS, labComponents[0] * adjustment[2]));
+                Math.min(MAX_LIGHTNESS, labComponents[0] * adjustment.lightnessScale));
         final double sourceChroma = Math.hypot(labComponents[1], labComponents[2]);
-        final double boost = 1 + (adjustment[1] - 1)
-                * Math.min(1, sourceChroma / adjustment[3]);
+        final double boost = 1 + (adjustment.chromaScale - 1)
+                * Math.min(1, sourceChroma / adjustment.stockChroma);
         final double requested = sourceChroma * boost;
         final double chroma =
-                fitChromaToGamut(lightness, requested, adjustment[0], labComponents[3]);
+                fitChromaToGamut(lightness, requested, adjustment.hueRadians, labComponents[3]);
 
-        return labToArgb(lightness, chroma, adjustment[0], labComponents[3]);
+        return labToArgb(lightness, chroma, adjustment.hueRadians, labComponents[3]);
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -284,4 +284,18 @@ public final class AccentColor {
         return ColorSpace.get(ColorSpace.Named.CIE_LAB);
     }
 
+    private static final class LabAdjustment {
+        final double hueRadians;
+        final double chromaScale;
+        final double lightnessScale;
+        final double stockChroma;
+
+        LabAdjustment(double hueRadians, double chromaScale, double lightnessScale,
+                double stockChroma) {
+            this.hueRadians = hueRadians;
+            this.chromaScale = chromaScale;
+            this.lightnessScale = lightnessScale;
+            this.stockChroma = stockChroma;
+        }
+    }
 }

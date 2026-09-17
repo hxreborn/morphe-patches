@@ -8,8 +8,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-
-import app.morphe.extension.shared.Utils;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -29,6 +27,8 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
+
+import app.morphe.extension.shared.Utils;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("deprecation")
@@ -335,7 +335,7 @@ final class ScheduledDeletionEditor {
     }
 
     private static int dp(Context context, int value) {
-        return Math.round(value * context.getResources().getDisplayMetrics().density);
+        return PatchesTheme.dpToPx(context, value);
     }
 
     private static LinearLayout.LayoutParams matchWidth() {

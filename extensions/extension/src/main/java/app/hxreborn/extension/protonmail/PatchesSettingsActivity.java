@@ -27,7 +27,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public final class PatchesSettingsActivity extends Activity {
 
-
     private static final int SCREEN_INSET_DP = 16;
     private static final int SCREEN_TOP_PADDING_DP = 0;
     private static final int SCREEN_BOTTOM_PADDING_DP = 24;
@@ -62,6 +61,7 @@ public final class PatchesSettingsActivity extends Activity {
     private int textNormColor;
     private int textWeakColor;
     private int iconDisabledColor;
+    private ScrollView content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +83,6 @@ public final class PatchesSettingsActivity extends Activity {
         super.onResume();
         recreateContent();
     }
-
-    private ScrollView content;
 
     private View buildScreen() {
         final LinearLayout screen = new LinearLayout(this);
@@ -291,7 +289,7 @@ public final class PatchesSettingsActivity extends Activity {
         return row(title, summary, null, onClick);
     }
 
-    private View row(String title, String summary, Integer swatch, final Runnable onClick) {
+    private View row(String title, String summary, Integer swatchColor, final Runnable onClick) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -323,12 +321,12 @@ public final class PatchesSettingsActivity extends Activity {
         }
         row.addView(text);
 
-        if (swatch != null) {
+        if (swatchColor != null) {
             final LinearLayout.LayoutParams swatchParams = new LinearLayout.LayoutParams(
                     dp(SWATCH_SIZE_DP), dp(SWATCH_SIZE_DP));
             swatchParams.setMarginStart(dp(CHEVRON_START_PADDING_DP));
             final View swatchView = new View(this);
-            swatchView.setBackground(PatchesTheme.createCircle(swatch));
+            swatchView.setBackground(PatchesTheme.createCircle(swatchColor));
             row.addView(swatchView, swatchParams);
         }
 

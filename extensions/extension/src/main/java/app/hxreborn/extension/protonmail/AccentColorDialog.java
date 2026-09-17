@@ -197,7 +197,7 @@ final class AccentColorDialog {
         private View createSwatchGrid() {
             final List<String> presets = new ArrayList<>();
             presets.add(AccentColor.STOCK);
-            if (AccentColor.isSystemAvailable()) {
+            if (AccentColor.isSystemAccentAvailable()) {
                 presets.add(AccentColor.SYSTEM);
             }
             for (int index = 0; index < HUE_VALUES.length; index++) {
@@ -426,7 +426,6 @@ final class AccentColorDialog {
             }
         }
     }
-
 
     private static String hueToHexColor(int hueDegrees) {
         return hsvToHexColor(new float[] {hueDegrees, 1f, 1f});

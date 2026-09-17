@@ -30,7 +30,7 @@ final class PatchesTheme {
     private static final int FALLBACK_ICON_DISABLED = 0xFF5B5966;
 
     private static final int DARK_COLOR_THRESHOLD = 128;
-    private static final int TRACK_ALPHA = 0x80;
+    private static final int HALF_ALPHA = 0x80;
 
     private PatchesTheme() {}
 
@@ -105,7 +105,7 @@ final class PatchesTheme {
         control.setThumbTintList(
                 new ColorStateList(states, new int[] {accentColor, inactiveColor}));
         control.setTrackTintList(
-                new ColorStateList(states, new int[] {withTrackAlpha(accentColor), inactiveColor}));
+                new ColorStateList(states, new int[] {withHalfAlpha(accentColor), inactiveColor}));
     }
 
     static void tintTextInput(EditText input, int accentColor) {
@@ -114,7 +114,7 @@ final class PatchesTheme {
         input.setBackgroundTintList(new ColorStateList(
                 new int[][] {{android.R.attr.state_focused}, {}},
                 new int[] {accentColor, inactiveColor}));
-        input.setHighlightColor(withTrackAlpha(accentColor));
+        input.setHighlightColor(withHalfAlpha(accentColor));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tintTextCursor(input, accentColor);
         }
@@ -129,8 +129,8 @@ final class PatchesTheme {
         input.setTextCursorDrawable(cursor);
     }
 
-    static int withTrackAlpha(int color) {
-        return (color & 0x00FFFFFF) | (TRACK_ALPHA << 24);
+    static int withHalfAlpha(int color) {
+        return (color & 0x00FFFFFF) | (HALF_ALPHA << 24);
     }
 
     static void makeClickable(View view) {
