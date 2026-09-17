@@ -18,6 +18,17 @@ internal val DARK_BACKGROUND_COLORS = listOf(
 
 internal val SIDEBAR_STRUCTURE_COLOR = DARK_BACKGROUND_COLORS.last()
 
+internal val BRAND_COLORS = listOf(
+    0xFF372580L, 0xFF4D34B3L, 0xFF5C3FD9L, 0xFF6D4AFFL,
+    0xFF8A6EFFL, 0xFFC4B7FFL, 0xFFEAE5FFL, 0xFFF5F2FFL,
+    0xFFD0D0FFL, 0xFFADADFBL, 0xFF9292F9L, 0xFF7777F8L,
+    0xFF6464CEL, 0xFF4D4D9CL, 0xFF35356AL, 0xFF282848L,
+    0xFF1B1340L, 0xFF271B54L, 0xFF2E2260L, 0xFF5252CCL,
+    0xFF8080FFL,
+)
+
+private const val BRAND_NORM = 0xFF6D4AFFL
+
 private const val COLOR_PARAMETER_COUNT = 45
 
 internal val PROTON_COLORS_PARAMETERS = listOf("Z") + List(COLOR_PARAMETER_COUNT) { "J" }
@@ -25,6 +36,11 @@ internal val PROTON_COLORS_PARAMETERS = listOf("Z") + List(COLOR_PARAMETER_COUNT
 internal object DarkPaletteFingerprint : Fingerprint(
     name = "<clinit>",
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
+)
+
+internal object BrandPaletteFingerprint : Fingerprint(
+    name = "<clinit>",
+    filters = listOf(literal(BRAND_NORM)),
 )
 
 internal object ColorSchemeFingerprint : Fingerprint(
@@ -44,25 +60,3 @@ internal object UpsellingDarkBackgroundFingerprint : Fingerprint(
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
 )
 
-internal object CachedMessageBodyFingerprint : Fingerprint(
-    name = "shouldInterceptRequest",
-    returnType = "Landroid/webkit/WebResourceResponse;",
-    strings = listOf("text/html", "utf-8"),
-)
-
-internal object InlineMessageBodyFingerprint : Fingerprint(
-    name = "invokeSuspend",
-    returnType = "Ljava/lang/Object;",
-    strings = listOf(
-        "message-webview: setting initial value on webview ",
-        "https://ch.proton.local.body.host/body/",
-    ),
-)
-
-internal object ComposerCssFingerprint : Fingerprint(
-    strings = listOf("Raw css resource is not found"),
-    filters = listOf(
-        methodCall("Landroid/content/res/Resources;->openRawResource(I)Ljava/io/InputStream;"),
-        opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),
-    ),
-)

@@ -12,9 +12,14 @@ public final class AppliedPatches {
 
     static final String SCHEDULED_DELETION = "Scheduled Trash and Spam deletion";
     static final String AMOLED_DARK_THEME = "AMOLED dark theme";
+    static final String ACCENT_COLOR = "Custom accent color";
     static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
 
     private AppliedPatches() {}
+
+    public static boolean accentColor() {
+        return AccentColor.isPatched();
+    }
 
     public static boolean amoledDarkTheme() {
         return AmoledTheme.isPatched();
@@ -42,6 +47,7 @@ public final class AppliedPatches {
 
     static List<String> names() {
         final List<String> names = new ArrayList<>();
+        if (accentColor()) names.add(ACCENT_COLOR);
         if (amoledDarkTheme()) names.add(AMOLED_DARK_THEME);
         if (hideUpgradePromotions()) names.add(HIDE_UPGRADE_PROMOTIONS);
         if (removeSentFromSignature()) names.add("Remove 'Sent from' signature");

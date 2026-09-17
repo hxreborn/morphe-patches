@@ -6,7 +6,7 @@ package app.hxreborn.extension.protonmail;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 
 import app.morphe.extension.shared.Utils;
@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -40,8 +41,6 @@ final class ScheduledDeletionEditor {
     private static final int DEFAULT_SECONDS = 30 * 86400;
 
     private static final int TOUCH_TARGET_DP = 48;
-    private static final int DIALOG_HORIZONTAL_PADDING_DP = 24;
-    private static final int DIALOG_VERTICAL_PADDING_DP = 8;
     private static final int CONTROL_SPACING_DP = 8;
     private static final int SECTION_SPACING_DP = 16;
     private static final int BODY_TEXT_SP = 14;
@@ -97,9 +96,6 @@ final class ScheduledDeletionEditor {
         content.setOrientation(LinearLayout.VERTICAL);
         content.setFocusableInTouchMode(true);
         content.requestFocus();
-        final int horizontalPadding = dp(activity, DIALOG_HORIZONTAL_PADDING_DP);
-        final int verticalPadding = dp(activity, DIALOG_VERTICAL_PADDING_DP);
-        content.setPadding(horizontalPadding, verticalPadding, horizontalPadding, 0);
 
         final String[] labels = ScheduledDeletion.EMPTIED_LABELS;
         final LabelSection[] sections = new LabelSection[labels.length];
@@ -129,40 +125,62 @@ final class ScheduledDeletionEditor {
         content.addView(warningText, warningParams);
 
         final ScrollView scroll = new ScrollView(activity);
+        scroll.setVerticalScrollBarEnabled(false);
         scroll.addView(content);
-        final AlertDialog dialog = new AlertDialog.Builder(activity,
-                android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle(SETTINGS_ROW_TITLE)
-                .setView(scroll)
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Save", null)
-                .create();
-        dialog.setOnShowListener(ignored -> {
-            if (dialog.getWindow() != null) {
-                dialog.getWindow().setSoftInputMode(
-                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            }
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(ignoredButton -> {
-                final int[] seconds = new int[sections.length];
-                for (int index = 0; index < sections.length; index++) {
-                    seconds[index] = sections[index].selectedSeconds();
-                    if (seconds[index] < 0) {
-                        Toast.makeText(activity,
-                                "The interval must be between 1 minute and 365 days",
-                                Toast.LENGTH_LONG).show();
-                        return;
+
+        final LinearLayout surface = PatchesDialog.createContentLayout(activity);
+        surface.addView(PatchesDialog.createTitle(activity, SETTINGS_ROW_TITLE));
+        surface.addView(scroll, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+
+        final Dialog dialog = PatchesDialog.createDialog(activity, surface);
+        final int accentColor = AccentColor.getAccentColor(
+                PatchesTheme.isDark(PatchesTheme.resolveColorAttribute(
+                        activity, PatchesTheme.BACKGROUND_SECONDARY)));
+        final int textWeakColor =
+                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
+
+        final LinearLayout actions = PatchesDialog.createButtonRow(activity);
+        actions.addView(PatchesDialog.configureActionButton(activity,
+                PatchesDialog.createTextView(activity, "Cancel", BODY_TEXT_SP, textWeakColor),
+                dialog::dismiss));
+        actions.addView(PatchesDialog.configureActionButton(activity,
+                PatchesDialog.createTextView(activity, "Save", BODY_TEXT_SP, accentColor),
+                () -> {
+                    final int[] seconds = new int[sections.length];
+                    for (int index = 0; index < sections.length; index++) {
+                        seconds[index] = sections[index].selectedSeconds();
+                        if (seconds[index] < 0) {
+                            Toast.makeText(activity,
+                                    "The interval must be between 1 minute and 365 days",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+                        }
                     }
-                }
-                for (int index = 0; index < sections.length; index++) {
-                    ScheduledDeletionSettings.saveIntervalSeconds(
-                            activity, sections[index].label, seconds[index]);
-                }
-                ScheduledDeletionSettings.saveShowsToast(activity, notificationSwitch.isChecked());
-                Toast.makeText(activity, savedMessage(activity), Toast.LENGTH_SHORT).show();
-                onSettingChanged.run();
-                dialog.dismiss();
-            });
-        });
+                    for (int index = 0; index < sections.length; index++) {
+                        ScheduledDeletionSettings.saveIntervalSeconds(
+                                activity, sections[index].label, seconds[index]);
+                    }
+                    ScheduledDeletionSettings.saveShowsToast(
+                            activity, notificationSwitch.isChecked());
+                    Toast.makeText(activity, savedMessage(activity), Toast.LENGTH_SHORT).show();
+                    onSettingChanged.run();
+                    dialog.dismiss();
+                }));
+        surface.addView(actions, matchWidth());
+
+        PatchesTheme.tintSwitch(notificationSwitch, accentColor);
+        notificationSwitch.setTextColor(
+                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
+        warningText.setTextColor(textWeakColor);
+        for (LabelSection section : sections) {
+            section.applyTheme(accentColor, textWeakColor);
+        }
+
+        final Window window = dialog.getWindow();
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
         dialog.show();
     }
 
@@ -226,6 +244,16 @@ final class ScheduledDeletionEditor {
             setEnabled(settingViews, enabledSwitch.isChecked());
             enabledSwitch.setOnCheckedChangeListener(
                     (button, checked) -> setEnabled(settingViews, checked));
+        }
+
+        void applyTheme(int accentColor, int textWeakColor) {
+            PatchesTheme.tintSwitch(enabledSwitch, accentColor);
+            PatchesTheme.tintTextInput(amountInput, accentColor);
+            enabledSwitch.setTextColor(PatchesTheme.resolveColorAttribute(
+                    enabledSwitch.getContext(), PatchesTheme.TEXT_NORM));
+            periodLabel.setTextColor(textWeakColor);
+            amountInput.setTextColor(PatchesTheme.resolveColorAttribute(
+                    amountInput.getContext(), PatchesTheme.TEXT_NORM));
         }
 
         void addTo(LinearLayout content, boolean separated) {
