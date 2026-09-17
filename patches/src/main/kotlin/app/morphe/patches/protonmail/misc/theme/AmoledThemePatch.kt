@@ -9,6 +9,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patches.protonmail.misc.theme.webview.CachedMessageBodyFingerprint
+import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
+import app.morphe.patches.protonmail.misc.theme.webview.InlineMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly
@@ -34,17 +37,20 @@ private const val LOAD_DATA_WITH_BASE_URL =
     "Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/String;" +
         "Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
 
-private fun MutableMethod.routeColorThroughSetting(index: Int) {
+internal fun MutableMethod.injectColorTransformCall(index: Int, method: String) {
     val register = getInstruction<OneRegisterInstruction>(index).registerA
 
     addInstructions(
         index + 1,
         """
-            invoke-static/range { v$register .. v${register + 1} }, $EXTENSION_CLASS->background(J)J
+            invoke-static/range { v$register .. v${register + 1} }, $method
             move-result-wide v$register
         """,
     )
 }
+
+private fun MutableMethod.injectBackgroundColorCall(index: Int) =
+    injectColorTransformCall(index, "$EXTENSION_CLASS->background(J)J")
 
 private fun Instruction.constructsProtonColors(): Boolean {
     if (opcode != Opcode.INVOKE_DIRECT_RANGE) return false
@@ -127,14 +133,14 @@ val amoledThemePatch = bytecodePatch(
     execute {
         DarkPaletteFingerprint.matchSingle().method.apply {
             DARK_BACKGROUND_COLORS.forEach { color ->
-                routeColorThroughSetting(indexOfFirstLiteralInstructionOrThrow(color))
+                injectBackgroundColorCall(indexOfFirstLiteralInstructionOrThrow(color))
             }
         }
 
         ColorSchemeFingerprint.matchSingle().method.restoreSidebarStructure()
 
         UpsellingDarkBackgroundFingerprint.instructionMatchesOrNull?.first()?.index?.let { index ->
-            UpsellingDarkBackgroundFingerprint.method.routeColorThroughSetting(index)
+            UpsellingDarkBackgroundFingerprint.method.injectBackgroundColorCall(index)
         }
 
         mutableClassDefBy(EXTENSION_CLASS).methods

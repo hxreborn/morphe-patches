@@ -6,12 +6,10 @@ package app.hxreborn.extension.protonmail;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -28,12 +26,6 @@ import java.util.List;
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
 public final class PatchesSettingsActivity extends Activity {
-
-    private static final int FALLBACK_SCREEN_BACKGROUND = 0xFF1C1B24;
-    private static final int FALLBACK_CARD_BACKGROUND = 0xFF292733;
-    private static final int FALLBACK_TEXT_NORM = 0xFFEDEDEE;
-    private static final int FALLBACK_TEXT_WEAK = 0xFFA9A9AF;
-    private static final int FALLBACK_ICON_DISABLED = 0xFF5B5966;
 
     private static final int SCREEN_INSET_DP = 16;
     private static final int SCREEN_TOP_PADDING_DP = 0;
@@ -55,6 +47,7 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int ROW_SUMMARY_SP = 14;
     private static final int CHEVRON_SIZE_DP = 24;
     private static final int CHEVRON_START_PADDING_DP = 16;
+    private static final int SWATCH_SIZE_DP = 26;
 
     private static final int FIELD_VERTICAL_PADDING_DP = 4;
     private static final int FIELD_LABEL_WIDTH_DP = 120;
@@ -68,6 +61,7 @@ public final class PatchesSettingsActivity extends Activity {
     private int textNormColor;
     private int textWeakColor;
     private int iconDisabledColor;
+    private ScrollView content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +69,11 @@ public final class PatchesSettingsActivity extends Activity {
 
         screenBackgroundColor = AmoledTheme.isEnabled()
                 ? Color.BLACK
-                : protonColor("proton_background_norm", FALLBACK_SCREEN_BACKGROUND);
-        cardBackgroundColor =
-                protonColor("proton_background_secondary", FALLBACK_CARD_BACKGROUND);
-        textNormColor = protonColor("proton_text_norm", FALLBACK_TEXT_NORM);
-        textWeakColor = protonColor("proton_text_weak", FALLBACK_TEXT_WEAK);
-        iconDisabledColor = protonColor("proton_icon_disabled", FALLBACK_ICON_DISABLED);
+                : PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_NORM);
+        cardBackgroundColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_SECONDARY);
+        textNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_NORM);
+        textWeakColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_WEAK);
+        iconDisabledColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.ICON_DISABLED);
 
         setContentView(buildScreen());
     }
@@ -90,8 +83,6 @@ public final class PatchesSettingsActivity extends Activity {
         super.onResume();
         recreateContent();
     }
-
-    private ScrollView content;
 
     private View buildScreen() {
         final LinearLayout screen = new LinearLayout(this);
@@ -123,6 +114,15 @@ public final class PatchesSettingsActivity extends Activity {
                     () -> ScheduledDeletionEditor.show(this, this::recreateContent))));
         }
 
+        if (AccentColor.isPatched()) {
+            column.addView(card(row(AppliedPatches.ACCENT_COLOR,
+                    AccentColorDialog.getPresetLabel(AccentColor.getPreset()),
+                    AccentColor.getAccentColor(isDarkTheme()),
+                    () -> AccentColorDialog.show(this, () -> {
+                        recreateContent();
+                        confirmRestart();
+                    }))));
+        }
         if (AmoledTheme.isPatched()) {
             column.addView(card(toggle(AppliedPatches.AMOLED_DARK_THEME,
                     "Pure black backgrounds.",
@@ -166,12 +166,8 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private void confirmRestart() {
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle("Restart required")
-                .setMessage("Proton Mail must restart to apply the theme.")
-                .setNegativeButton("Later", null)
-                .setPositiveButton("Restart", (dialog, which) -> restartApp())
-                .show();
+        PatchesDialog.showConfirmation(this, "Restart required",
+                "Proton Mail must restart to apply the theme.", "Restart", this::restartApp);
     }
 
     private void restartApp() {
@@ -224,12 +220,21 @@ public final class PatchesSettingsActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         controlParams.setMarginStart(dp(CHEVRON_START_PADDING_DP));
         control.setLayoutParams(controlParams);
+        tintSwitch(control);
         control.setOnCheckedChangeListener((button, isChecked) -> onChange.set(isChecked));
         row.addView(control);
 
         row.setOnClickListener(ignored -> control.performClick());
-        applyPressedFeedback(row);
+        PatchesTheme.makeClickable(row);
         return row;
+    }
+
+    private boolean isDarkTheme() {
+        return PatchesTheme.isDark(cardBackgroundColor);
+    }
+
+    private void tintSwitch(Switch control) {
+        PatchesTheme.tintSwitch(control, AccentColor.getAccentColor(isDarkTheme()));
     }
 
     private View header() {
@@ -240,7 +245,7 @@ public final class PatchesSettingsActivity extends Activity {
                 dp(SCREEN_INSET_DP), dp(APP_BAR_VERTICAL_PADDING_DP));
 
         final ImageView back = new ImageView(this);
-        back.setImageDrawable(protonDrawable("ic_proton_arrow_left"));
+        back.setImageDrawable(PatchesTheme.getDrawableByName(this, "ic_proton_arrow_left"));
         back.setColorFilter(textNormColor);
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         back.setPadding(dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP),
@@ -249,7 +254,7 @@ public final class PatchesSettingsActivity extends Activity {
         back.setClickable(true);
         back.setFocusable(true);
         back.setContentDescription("Back");
-        applyPressedFeedback(back);
+        PatchesTheme.makeClickable(back);
         back.setOnClickListener(ignored -> finish());
         header.addView(back);
 
@@ -261,28 +266,6 @@ public final class PatchesSettingsActivity extends Activity {
         title.setPadding(dp(APP_BAR_TITLE_START_DP), 0, 0, 0);
         header.addView(title);
         return header;
-    }
-
-    private int protonColor(String name, int fallback) {
-        try {
-            final int attribute = getResources().getIdentifier(name, "attr", getPackageName());
-            if (attribute == 0) return fallback;
-
-            final TypedValue value = new TypedValue();
-            if (!getTheme().resolveAttribute(attribute, value, true)) return fallback;
-            if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT
-                    && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
-                return value.data;
-            }
-            return value.resourceId == 0 ? fallback : getColor(value.resourceId);
-        } catch (Throwable t) {
-            return fallback;
-        }
-    }
-
-    private Drawable protonDrawable(String name) {
-        final int identifier = getResources().getIdentifier(name, "drawable", getPackageName());
-        return identifier == 0 ? null : getResources().getDrawable(identifier, getTheme());
     }
 
     private View card(View child) {
@@ -303,6 +286,10 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private View row(String title, String summary, final Runnable onClick) {
+        return row(title, summary, null, onClick);
+    }
+
+    private View row(String title, String summary, Integer swatchColor, final Runnable onClick) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -334,8 +321,17 @@ public final class PatchesSettingsActivity extends Activity {
         }
         row.addView(text);
 
+        if (swatchColor != null) {
+            final LinearLayout.LayoutParams swatchParams = new LinearLayout.LayoutParams(
+                    dp(SWATCH_SIZE_DP), dp(SWATCH_SIZE_DP));
+            swatchParams.setMarginStart(dp(CHEVRON_START_PADDING_DP));
+            final View swatchView = new View(this);
+            swatchView.setBackground(PatchesTheme.createCircle(swatchColor));
+            row.addView(swatchView, swatchParams);
+        }
+
         final ImageView chevron = new ImageView(this);
-        chevron.setImageDrawable(protonDrawable("ic_proton_chevron_right"));
+        chevron.setImageDrawable(PatchesTheme.getDrawableByName(this, "ic_proton_chevron_right"));
         chevron.setColorFilter(iconDisabledColor);
         chevron.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         final LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(
@@ -345,22 +341,13 @@ public final class PatchesSettingsActivity extends Activity {
         row.addView(chevron);
 
         row.setOnClickListener(ignored -> onClick.run());
-        applyPressedFeedback(row);
+        PatchesTheme.makeClickable(row);
         return row;
     }
 
     private int systemBarHeight(String name, int fallbackDp) {
         final int identifier = getResources().getIdentifier(name, "dimen", "android");
         return identifier > 0 ? getResources().getDimensionPixelSize(identifier) : dp(fallbackDp);
-    }
-
-    private void applyPressedFeedback(View view) {
-        final TypedValue value = new TypedValue();
-        if (!getTheme().resolveAttribute(
-                android.R.attr.selectableItemBackground, value, true)) {
-            return;
-        }
-        view.setForeground(getDrawable(value.resourceId));
     }
 
     private String appVersion() {
@@ -421,6 +408,6 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private int dp(int value) {
-        return Math.round(value * getResources().getDisplayMetrics().density);
+        return PatchesTheme.dpToPx(this, value);
     }
 }

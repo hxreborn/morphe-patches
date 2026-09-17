@@ -31,6 +31,18 @@ final class PatchSettings {
         preferences.edit().putBoolean(key, enabled).apply();
     }
 
+    static String getString(String key, String fallback) {
+        final SharedPreferences preferences = preferences();
+        return preferences == null ? fallback : preferences.getString(key, fallback);
+    }
+
+    static void setString(String key, String value) {
+        final SharedPreferences preferences = preferences();
+        if (preferences == null) return;
+
+        preferences.edit().putString(key, value).apply();
+    }
+
     private static SharedPreferences preferences() {
         try {
             final Context context = Utils.getContext();
