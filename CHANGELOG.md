@@ -1,3 +1,13 @@
+## [1.24.0](https://github.com/hxreborn/morphe-patches/compare/v1.23.0...v1.24.0) (2026-09-17)
+
+### New Features
+
+* **Proton Mail - Custom accent color:** add custom accent for app and settings webview pages ([8f3013e](https://github.com/hxreborn/morphe-patches/commit/8f3013ef4bda82a7a00421f1b0a0d12736a0b068))
+* **Proton Mail - Scheduled Trash and Spam deletion:** delete Trash and Spam on separate schedules ([925642a](https://github.com/hxreborn/morphe-patches/commit/925642ad7043ec6eb411d41455858e8a287d0685))
+* **Ringtone Maker - Remove rating prompts:** remove the rate us dialogs ([3971b61](https://github.com/hxreborn/morphe-patches/commit/3971b61bf42b023a0045989e868c4f9fe77cdaff))
+* **Ringtone Maker - Unlock premium:** unlock pro features, remove ads and skip upgrade screens ([56a2776](https://github.com/hxreborn/morphe-patches/commit/56a2776d298ea4896e9b10b5cc233776ba2f45de))
+* **VPN Super Unlimited Proxy - Unlock premium:** skip Android TV sign-in screen ([7709a41](https://github.com/hxreborn/morphe-patches/commit/7709a41538a61aee0fa6511839d81fb8aca01443))
+
 ## [1.23.0](https://github.com/hxreborn/morphe-patches/compare/v1.22.0...v1.23.0) (2026-09-15)
 
 ### New Features

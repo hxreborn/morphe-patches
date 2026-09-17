@@ -65,6 +65,14 @@ body:
         - "RateGlance (another version, type it below)"
         - "ReadEra 26.05.20+2300"
         - "ReadEra (another version, type it below)"
+        - "Ringtone Maker 1.01.90.0421"
+        - "Ringtone Maker 1.01.94.0602"
+        - "Ringtone Maker 1.01.96.0716"
+        - "Ringtone Maker 1.01.97.0818"
+        - "Ringtone Maker 1.01.98.0824"
+        - "Ringtone Maker 1.01.98.0831"
+        - "Ringtone Maker 1.01.99.0909"
+        - "Ringtone Maker (another version, type it below)"
         - "RISE Sleep Tracker Android V1.78.47"
         - "RISE Sleep Tracker Android V1.78.49"
         - "RISE Sleep Tracker (another version, type it below)"
@@ -97,12 +105,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.24.0"
         - "1.23.0"
         - "1.22.0"
         - "1.21.0"
         - "1.20.4"
         - "1.20.3"
-        - "1.20.2"
         - "Older than these"
         # /generated
     validations:
@@ -181,6 +189,7 @@ body:
         - "Projectivy Launcher \u00b7 Disable tracking"
         - "Projectivy Launcher \u00b7 Unlock premium"
         - "Proton Mail \u00b7 AMOLED dark theme"
+        - "Proton Mail \u00b7 Custom accent color"
         - "Proton Mail \u00b7 Hide upgrade promotions"
         - "Proton Mail \u00b7 Remove 'Sent from' signature"
         - "Proton Mail \u00b7 Remove free accounts limit"
@@ -190,6 +199,8 @@ body:
         - "Quranify \u00b7 Unlock premium"
         - "RateGlance \u00b7 Unlock premium"
         - "ReadEra \u00b7 Remove nags"
+        - "Ringtone Maker \u00b7 Remove rating prompts"
+        - "Ringtone Maker \u00b7 Unlock premium"
         - "RISE Sleep Tracker \u00b7 Disable telemetry"
         - "RISE Sleep Tracker \u00b7 Disable usage tracking"
         - "RISE Sleep Tracker \u00b7 Unlock premium"
