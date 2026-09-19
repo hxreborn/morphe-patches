@@ -3,6 +3,7 @@
     hueShift = __SHIFT__,
     saturationScale = __SATURATION__,
     styleId = "hx-accent",
+    amoledStyleId = "hx-amoled",
     stylesheetCount = -1,
     updatePending = 0;
   var minHue = 235,
@@ -11,6 +12,9 @@
   var pollIntervalMs = 250,
     pollWindowMs = 5 * 60 * 1000,
     pollDeadline = Date.now() + pollWindowMs;
+  function isInjectedStyle(node) {
+    return node && (node.id === styleId || node.id === amoledStyleId);
+  }
   function channelToHex(channel) {
     channel = Number(channel).toString(16);
     return channel.length < 2 ? "0" + channel : channel;
@@ -178,8 +182,7 @@
       i,
       j;
     for (i = 0; i < stylesheets.length; i++) {
-      if (stylesheets[i].ownerNode && stylesheets[i].ownerNode.id === styleId)
-        continue;
+      if (isInjectedStyle(stylesheets[i].ownerNode)) continue;
       var rules;
       try {
         rules = stylesheets[i].cssRules;
@@ -220,7 +223,7 @@
         if (!tag) continue;
         tag = tag.toUpperCase();
         if (tag !== "LINK" && tag !== "STYLE") continue;
-        if (node.id === styleId) continue;
+        if (isInjectedStyle(node)) continue;
         if (node.addEventListener)
           node.addEventListener("load", scheduleUpdate);
         scheduleUpdate();

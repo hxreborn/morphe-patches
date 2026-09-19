@@ -32,6 +32,7 @@ public final class WebSettingsTheme {
         try {
             if (view == null) return;
 
+            AmoledTheme.injectSettingsWebViewStyle(view);
             AccentColor.injectSettingsWebViewStyle(view);
             if (AccentColor.isSettingsWebViewStyleEnabled()) {
                 showWhenAccentStyled(view);
@@ -44,7 +45,7 @@ public final class WebSettingsTheme {
     }
 
     private static boolean hasEnabledStyle() {
-        return AccentColor.isSettingsWebViewStyleEnabled();
+        return AmoledTheme.isEnabled() || AccentColor.isSettingsWebViewStyleEnabled();
     }
 
     private static void showWhenAccentStyled(WebView view) {

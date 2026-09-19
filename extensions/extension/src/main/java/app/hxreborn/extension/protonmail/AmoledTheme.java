@@ -6,10 +6,14 @@ package app.hxreborn.extension.protonmail;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
+import android.webkit.WebView;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import app.hxreborn.extension.WebAssets;
 
 public final class AmoledTheme {
     private static final String PROTON_DARK_BACKGROUND = "#191927";
@@ -25,7 +29,7 @@ public final class AmoledTheme {
     private static final long BLACK = 0xFF000000L;
 
     public static boolean isPatched() {
-        return false; // stub
+        return false;
     }
 
     public static boolean isEnabled() {
@@ -38,6 +42,11 @@ public final class AmoledTheme {
 
     public static long background(long original) {
         return isEnabled() ? BLACK : original;
+    }
+
+    static void injectSettingsWebViewStyle(WebView view) {
+        if (!isEnabled()) return;
+        view.evaluateJavascript(WebAssets.AMOLED_WEBVIEW, null);
     }
 
     public static String replaceBackground(String html) {

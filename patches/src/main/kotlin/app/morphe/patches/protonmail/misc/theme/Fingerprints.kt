@@ -42,6 +42,7 @@ private object ProtonPalette {
 
 internal const val MAILBOX_BACKGROUND = ProtonPalette.EERIE_BLACK
 internal const val SETTINGS_BACKGROUND = ProtonPalette.MIDNIGHT_BLUE
+internal const val CORE_BACKGROUND_NORM = 0xFF1C1B24L
 
 internal val DARK_BACKGROUND_COLORS = listOf(MAILBOX_BACKGROUND, SETTINGS_BACKGROUND)
 
@@ -90,6 +91,10 @@ internal object DarkPaletteFingerprint : Fingerprint(
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
 )
 
+internal object CoreBackgroundNormFingerprint : Fingerprint(
+    filters = listOf(literal(CORE_BACKGROUND_NORM)),
+)
+
 internal object BrandPaletteFingerprint : Fingerprint(
     name = "<clinit>",
     filters = listOf(literal(BRAND_NORM)),
@@ -111,4 +116,3 @@ internal object UpsellingDarkBackgroundFingerprint : Fingerprint(
     returnType = "Ljava/lang/Object;",
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
 )
-

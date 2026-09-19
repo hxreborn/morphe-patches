@@ -12,7 +12,7 @@ import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonmail.misc.theme.webview.CachedMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.InlineMessageBodyFingerprint
-import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
+import app.morphe.patches.protonmail.misc.theme.webview.webSettingsThemePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly
 import app.morphe.util.matchSingle
@@ -127,14 +127,17 @@ val amoledThemePatch = bytecodePatch(
     description = "Replaces the dark theme background with pure black.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
-    dependsOn(patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(webSettingsThemePatch)
 
     execute {
         DarkPaletteFingerprint.matchSingle().method.apply {
             DARK_BACKGROUND_COLORS.forEach { color ->
                 injectBackgroundColorCall(indexOfFirstLiteralInstructionOrThrow(color))
             }
+        }
+
+        CoreBackgroundNormFingerprint.matchSingle().method.apply {
+            injectBackgroundColorCall(indexOfFirstLiteralInstructionOrThrow(CORE_BACKGROUND_NORM))
         }
 
         ColorSchemeFingerprint.matchSingle().method.restoreSidebarStructure()
@@ -150,10 +153,10 @@ val amoledThemePatch = bytecodePatch(
         CachedMessageBodyFingerprint.matchSingle().method.replaceCachedMessageBackground()
         InlineMessageBodyFingerprint.matchSingle().method.replaceInlineMessageBackground()
         ComposerCssFingerprint.matchSingle().let { match ->
-            val result = match.instructionMatches.last()
-            val register = result.getInstruction<OneRegisterInstruction>().registerA
+            val inputStreamResult = match.instructionMatches.last()
+            val register = inputStreamResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstructions(
-                result.index + 1,
+                inputStreamResult.index + 1,
                 """
                     invoke-static/range { v$register .. v$register }, $EXTENSION_CLASS->replaceBackground(Ljava/io/InputStream;)Ljava/io/InputStream;
                     move-result-object v$register
