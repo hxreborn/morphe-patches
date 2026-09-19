@@ -1,3 +1,10 @@
+## [1.25.0](https://github.com/hxreborn/morphe-patches/compare/v1.24.0...v1.25.0) (2026-09-19)
+
+### New Features
+
+* **vpnify - Disable rating prompt:** stop Google Play rating prompt ([9c0d15f](https://github.com/hxreborn/morphe-patches/commit/9c0d15fce89b1294c6769a06fcb7b94af37d4807))
+* **vpnify - Unlock premium:** unlock premium, remove ads and free session time limit ([f9a67e2](https://github.com/hxreborn/morphe-patches/commit/f9a67e287af249243ab6d4ec7edf43f8bb3cea25))
+
 ## [1.24.0](https://github.com/hxreborn/morphe-patches/compare/v1.23.0...v1.24.0) (2026-09-17)
 
 ### New Features

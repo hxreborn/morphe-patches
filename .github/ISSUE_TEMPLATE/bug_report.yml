@@ -100,6 +100,9 @@ body:
         - "Trainline (another version, type it below)"
         - "VPN Super Unlimited Proxy 2.32.0"
         - "VPN Super Unlimited Proxy (another version, type it below)"
+        - "vpnify 2.2.9.9"
+        - "vpnify 2.3.0"
+        - "vpnify (another version, type it below)"
         # /generated
     validations:
       required: true

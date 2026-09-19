@@ -89,6 +89,9 @@ body:
         - "Trainline (another version, type it below)"
         - "VPN Super Unlimited Proxy 2.32.0"
         - "VPN Super Unlimited Proxy (another version, type it below)"
+        - "vpnify 2.2.9.9"
+        - "vpnify 2.3.0"
+        - "vpnify (another version, type it below)"
         # /generated
     validations:
       required: true
@@ -105,12 +108,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.25.0"
         - "1.24.0"
         - "1.23.0"
         - "1.22.0"
         - "1.21.0"
         - "1.20.4"
-        - "1.20.3"
         - "Older than these"
         # /generated
     validations:
@@ -210,6 +213,8 @@ body:
         - "Symfonium \u00b7 Unlock premium"
         - "Trainline \u00b7 Hide ads"
         - "VPN Super Unlimited Proxy \u00b7 Unlock premium"
+        - "vpnify \u00b7 Disable rating prompt"
+        - "vpnify \u00b7 Unlock premium"
         - "Not narrowed down yet"
         # /generated
   - type: input
