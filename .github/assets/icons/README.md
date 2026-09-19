@@ -40,6 +40,7 @@ Every icon was taken from the developer's own published listing, website, or sou
 | `photoeditorpro.png` | Photo Editor Pro (`photo.editor.photoeditor.photoeditorpro`) | InShot Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=photo.editor.photoeditor.photoeditorpro) (`og:image`) |
 | `oneweather.png` | 1Weather (`com.handmark.expressweather`) | 1Weather LLC | [Google Play listing](https://play.google.com/store/apps/details?id=com.handmark.expressweather) (`og:image`) |
 | `vpnsuper.png` | VPN Super Unlimited Proxy (`com.free.vpn.super.hotspot.open`) | VPN Super Unlimited Proxy Master | [Google Play listing](https://play.google.com/store/apps/details?id=com.free.vpn.super.hotspot.open) (`og:image`) |
+| `klassikradio.png` | Klassik Radio+ (`de.klassikradio.app`) | Klassik Radio AG | [Google Play listing](https://play.google.com/store/apps/details?id=de.klassikradio.app) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The rest are used under nominative fair use only, with no

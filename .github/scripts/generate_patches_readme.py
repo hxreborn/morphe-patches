@@ -210,6 +210,7 @@ ICONS = {
     "ipnossoft.rma.free": "bettersleep.png",
     "com.handmark.expressweather": "oneweather.png",
     "com.free.vpn.super.hotspot.open": "vpnsuper.png",
+    "de.klassikradio.app": "klassikradio.png",
 }
 
 

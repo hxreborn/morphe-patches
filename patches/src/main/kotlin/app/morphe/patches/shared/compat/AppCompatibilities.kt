@@ -97,6 +97,14 @@ internal object AppCompatibilities {
         appIconColor = 0x53FC18,
     )
 
+    val KLASSIK_RADIO = Compatibility(
+        name = "Klassik Radio+",
+        packageName = "de.klassikradio.app",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x000000,
+        targets = listOf(AppTarget(version = "p5.11.1", versionCode = 50126, minSdk = 29)),
+    )
+
     val MOVIEBOX = Compatibility(
         name = "MovieBox",
         packageName = "com.community.oneroom",
