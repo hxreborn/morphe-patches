@@ -9,7 +9,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorSpace;
 import android.os.Build;
-import android.view.View;
 import android.webkit.WebView;
 
 import java.util.Map;
@@ -37,12 +36,6 @@ public final class AccentColor {
     private static final float MAX_LIGHTNESS = 100;
     private static final double GAMUT_TOLERANCE = 2;
     private static final int GAMUT_STEPS = 10;
-
-    private static final int STYLE_CHECK_INTERVAL_MS = 100;
-    private static final int WEBVIEW_VISIBILITY_TIMEOUT_MS = 2500;
-    private static final String HAS_ACCENT_STYLES_SCRIPT =
-            "(function(){var node=document.getElementById('hx-accent');"
-            + "return !!node&&node.textContent.length>0;})()";
 
     private static final Map<Integer, Integer> RECOLORED_COLORS = new ConcurrentHashMap<>();
 
@@ -97,7 +90,7 @@ public final class AccentColor {
         }
     }
 
-    public static void injectAccentStyles(WebView view) {
+    static void injectSettingsWebViewStyle(WebView view) {
         try {
             if (view == null) return;
 
@@ -114,39 +107,13 @@ public final class AccentColor {
                             .replace("__SHIFT__", Float.toString(accentHsl[0] - stockHsl[0]))
                             .replace("__SATURATION__", Float.toString(saturationScale)),
                     null);
-            pollAccentStylesAndShowWebView(view, 0);
         } catch (Throwable t) {
             Logger.printException(() -> "Could not style the settings web view", t);
         }
     }
 
-    public static void hideWebViewWithTimeout(WebView view) {
-        try {
-            if (view == null || computeLabAdjustment(getPreset()) == null) return;
-
-            view.setVisibility(View.INVISIBLE);
-            view.postDelayed(() -> view.setVisibility(View.VISIBLE), WEBVIEW_VISIBILITY_TIMEOUT_MS);
-        } catch (Throwable t) {
-            Logger.printException(() -> "Could not hide the settings web view", t);
-        }
-    }
-
-    private static void pollAccentStylesAndShowWebView(WebView view, int elapsedMs) {
-        if (view.getVisibility() == View.VISIBLE) return;
-
-        if (elapsedMs >= WEBVIEW_VISIBILITY_TIMEOUT_MS) {
-            view.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        view.evaluateJavascript(HAS_ACCENT_STYLES_SCRIPT, applied -> {
-            if (Boolean.parseBoolean(applied)) {
-                view.setVisibility(View.VISIBLE);
-            } else {
-                view.postDelayed(() -> pollAccentStylesAndShowWebView(view, elapsedMs + STYLE_CHECK_INTERVAL_MS),
-                        STYLE_CHECK_INTERVAL_MS);
-            }
-        });
+    static boolean isSettingsWebViewStyleEnabled() {
+        return computeLabAdjustment(getPreset()) != null;
     }
 
     private static float[] argbToHsl(int argb) {
