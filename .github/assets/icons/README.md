@@ -38,6 +38,8 @@ Every icon was taken from the developer's own published listing, website, or sou
 | `notesnook.png` | Notesnook (`com.streetwriters.notesnook`) | Streetwriters (Private) Limited | [Google Play listing](https://play.google.com/store/apps/details?id=com.streetwriters.notesnook) (`og:image`) |
 | `rubberbands.png` | Rubber Bands (`app.rubberbands.fit`) | Rubber Bands LLC | [Google Play listing](https://play.google.com/store/apps/details?id=app.rubberbands.fit) (`og:image`) |
 | `photoeditorpro.png` | Photo Editor Pro (`photo.editor.photoeditor.photoeditorpro`) | InShot Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=photo.editor.photoeditor.photoeditorpro) (`og:image`) |
+| `oneweather.png` | 1Weather (`com.handmark.expressweather`) | 1Weather LLC | [Google Play listing](https://play.google.com/store/apps/details?id=com.handmark.expressweather) (`og:image`) |
+| `vpnsuper.png` | VPN Super Unlimited Proxy (`com.free.vpn.super.hotspot.open`) | VPN Super Unlimited Proxy Master | [Google Play listing](https://play.google.com/store/apps/details?id=com.free.vpn.super.hotspot.open) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The rest are used under nominative fair use only, with no
