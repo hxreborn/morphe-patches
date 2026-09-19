@@ -242,6 +242,69 @@ internal class IjiamiPayloadTest {
     }
 
     @Test
+    fun `selects the one method loading a string`() {
+        val bytes = Fixtures.payload(copies = 1)
+        payloadOf(bytes).methodWithString(Fixtures.CLASS, "fixture string 0003").returnEarly(7)
+
+        assertContentEquals(byteArrayOf(0x12, 0x70, 0x0f, 0x00), firstInstructions(bytes, "count", 4))
+    }
+
+    @Test
+    fun `leaves methods loading a different string alone`() {
+        val bytes = Fixtures.payload(copies = 1)
+        val before = firstInstructions(bytes, "flag", 4)
+        payloadOf(bytes).methodWithString(Fixtures.CLASS, "fixture string 0003").returnEarly(7)
+
+        assertContentEquals(before, firstInstructions(bytes, "flag", 4))
+    }
+
+    @Test
+    fun `refuses a string that selects more than one method`() {
+        val message = assertFailsWith<PatchException> {
+            payloadOf(Fixtures.payload(copies = 3)).methodWithString(Fixtures.CLASS, "fixture string 0000")
+        }.message
+
+        assertTrue(message!!.contains("fixture string 0000"), message)
+    }
+
+    @Test
+    fun `reports a string no method loads`() {
+        val message = assertFailsWith<PatchException> {
+            payloadOf(Fixtures.payload(copies = 1)).methodWithString(Fixtures.CLASS, "absent string")
+        }.message
+
+        assertTrue(message!!.contains("absent string"), message)
+    }
+
+    @Test
+    fun `edits every method calling a callee and returning the declared type`() {
+        val bytes = Fixtures.payload(copies = 1)
+        payloadOf(bytes).methodsCalling(Fixtures.CLASS, "Ljava/lang/String;", "length", "I").returnEarly(7)
+
+        assertContentEquals(byteArrayOf(0x12, 0x70, 0x0f, 0x00), firstInstructions(bytes, "count", 4))
+        assertContentEquals(byteArrayOf(0x12, 0x70, 0x0f, 0x00), firstInstructions(bytes, "catchAll", 4))
+    }
+
+    @Test
+    fun `skips a method calling the callee but returning another type`() {
+        val bytes = Fixtures.payload(copies = 1)
+        val before = firstInstructions(bytes, "flag", 4)
+        payloadOf(bytes).methodsCalling(Fixtures.CLASS, "Ljava/lang/String;", "length", "I").returnEarly(7)
+
+        assertContentEquals(before, firstInstructions(bytes, "flag", 4))
+    }
+
+    @Test
+    fun `reports a callee no method of the declared type calls`() {
+        val message = assertFailsWith<PatchException> {
+            payloadOf(Fixtures.payload(copies = 1))
+                .methodsCalling(Fixtures.CLASS, "Ljava/lang/String;", "length", "Ljava/lang/Boolean;")
+        }.message
+
+        assertTrue(message!!.contains("length"), message)
+    }
+
+    @Test
     fun `relocates typed exception handlers to the nop tail`() {
         val bytes = Fixtures.payload(copies = 1)
         payloadOf(bytes).method(Fixtures.CLASS, "typedCatch").returnNull()
