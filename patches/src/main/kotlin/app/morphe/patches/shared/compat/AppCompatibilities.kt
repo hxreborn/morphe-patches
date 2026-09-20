@@ -29,6 +29,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.4.0e", versionCode = 412)),
     )
 
+    val ATVTOOLS = Compatibility(
+        name = "atvTools",
+        packageName = "dev.vodik7.atvtools",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x2F2F2F,
+        targets = listOf(AppTarget(version = "1.3.2", versionCode = 49, minSdk = 26)),
+    )
+
     val AUDIBLE = Compatibility(
         name = "Audible",
         packageName = "com.audible.application",
