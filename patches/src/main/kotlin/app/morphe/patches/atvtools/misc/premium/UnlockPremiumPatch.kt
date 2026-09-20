@@ -11,9 +11,12 @@ import app.morphe.patches.atvtools.misc.fix.signature.disableSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.getReference
+import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.matchSingle
+import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
@@ -54,6 +57,20 @@ val unlockPremiumPatch = bytecodePatch(
                     """,
                 )
             }
+        }
+
+        PremiumActivityOnCreateFingerprint.matchSingle().method.apply {
+            val superCallIndex = indexOfFirstInstructionOrThrow {
+                opcode == Opcode.INVOKE_SUPER &&
+                    getReference<MethodReference>()?.name == "onCreate"
+            }
+            addInstructions(
+                superCallIndex + 1,
+                """
+                    invoke-virtual { p0 }, Ldev/vodik7/atvtools/PremiumActivity;->finish()V
+                    return-void
+                """,
+            )
         }
     }
 }

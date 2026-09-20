@@ -28,3 +28,10 @@ internal object PurchaseGetProductsFingerprint : Fingerprint(
     returnType = "Ljava/util/ArrayList;",
     strings = listOf("productIds", "productId"),
 )
+
+internal object PremiumActivityOnCreateFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
+    returnType = "V",
+    parameters = listOf("Landroid/os/Bundle;"),
+    custom = { _, classDef -> classDef.type == "Ldev/vodik7/atvtools/PremiumActivity;" },
+)
