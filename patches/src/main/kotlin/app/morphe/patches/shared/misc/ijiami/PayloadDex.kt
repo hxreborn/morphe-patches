@@ -174,7 +174,7 @@ internal class PayloadDex private constructor(
         return stringAt(int(typeIdsOffset + 4 * index))
     }
 
-    private fun nameOf(method: Int): String {
+    fun nameOf(method: Int): String {
         requireMember(method, methodIdsSize, "method")
         return stringAt(int(methodIdsOffset + METHOD_ID_SIZE * method + 4))
     }

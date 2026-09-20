@@ -37,7 +37,7 @@ internal class IjiamiPayload(
 ) {
     fun method(classDescriptor: String, name: String) =
         methodOrNull(classDescriptor, name)
-            ?: throw PatchException("Method not found in payload: $classDescriptor->$name")
+            ?: throw PatchException("No bytecode body in payload: $classDescriptor->$name")
 
     fun methodOrNull(classDescriptor: String, name: String): PayloadMethods? {
         val bodies = bodiesOf(classDescriptor, name)
@@ -54,7 +54,7 @@ internal class IjiamiPayload(
     fun methods(classDescriptor: String, name: String): PayloadMethods {
         val bodies = bodiesOf(classDescriptor, name)
         if (bodies.isEmpty()) {
-            throw PatchException("Method not found in payload: $classDescriptor->$name")
+            throw PatchException("No bytecode body in payload: $classDescriptor->$name")
         }
 
         return PayloadMethods(bodies)
@@ -64,7 +64,7 @@ internal class IjiamiPayload(
         val bodies = bodiesMatching(classDescriptor, LoadsString(value))
         if (bodies.size > 1) {
             throw PatchException(
-                "${bodies.size} methods in $classDescriptor load \"$value\", it does not select one method",
+                "Expected one method in $classDescriptor loading \"$value\", found ${bodies.size}",
             )
         }
 
@@ -77,12 +77,12 @@ internal class IjiamiPayload(
     private fun bodiesMatching(classDescriptor: String, selector: MethodSelector): List<MethodBody> {
         val bodies = dexes.flatMap { it.bodiesMatching(classDescriptor, selector, opaqueRanges) }
         if (bodies.isEmpty()) {
-            throw PatchException("No method in $classDescriptor ${selector.description}")
+            throw PatchException("No method in $classDescriptor ${selector.criterion}")
         }
         if (bodies.any { body -> opaqueRanges.any { body.range.overlaps(it) } }) {
             throw PatchException(
-                "Cannot rewrite the method in $classDescriptor that ${selector.description}: " +
-                    "it overlaps an opaque payload block",
+                "Cannot rewrite $classDescriptor: a method that ${selector.criterion} " +
+                    "overlaps an opaque payload block",
             )
         }
 
