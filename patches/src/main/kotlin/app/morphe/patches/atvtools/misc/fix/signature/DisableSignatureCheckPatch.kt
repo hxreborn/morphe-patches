@@ -9,16 +9,16 @@ import app.morphe.patcher.patch.rawResourcePatch
 
 internal val disableSignatureCheckPatch = rawResourcePatch {
     execute {
-        val library = get(AtvToolsSignatureCheckTarget.ARM32_LIBRARY, true)
+        val library = get(AtvToolsSignatureCheckTarget.ARM32, true)
         if (!library.exists()) {
             throw PatchException(
-                "atvTools de-tamper supports only armeabi-v7a; " +
-                    "${AtvToolsSignatureCheckTarget.ARM32_LIBRARY} is not present in this APK",
+                "atvTools patches only armeabi-v7a: " +
+                    "${AtvToolsSignatureCheckTarget.ARM32} is missing from this APK",
             )
         }
 
         val bytes = library.readBytes()
-        AtvToolsSignatureCheckTarget.disarmArm32(bytes)
+        AtvToolsSignatureCheckTarget.applyArm32(bytes)
         library.writeBytes(bytes)
     }
 }

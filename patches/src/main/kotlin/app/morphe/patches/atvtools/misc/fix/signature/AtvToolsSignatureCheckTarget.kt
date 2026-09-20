@@ -7,34 +7,34 @@ package app.morphe.patches.atvtools.misc.fix.signature
 import app.morphe.patcher.patch.PatchException
 import app.morphe.util.byteArrayOf
 
-internal class NativeCheck(val name: String, locateHex: String, disarmHex: String) {
-    val locate = byteArrayOf(locateHex)
-    val disarm = byteArrayOf(disarmHex)
+internal class NativeCheck(val name: String, patternHex: String, replacementHex: String) {
+    val pattern = byteArrayOf(patternHex)
+    val replacement = byteArrayOf(replacementHex)
 
     init {
-        if (locate.size != disarm.size) {
+        if (pattern.size != replacement.size) {
             throw PatchException(
-                "$name: locate is ${locate.size} bytes but disarm is ${disarm.size}",
+                "$name: pattern is ${pattern.size} bytes but replacement is ${replacement.size}",
             )
         }
     }
 
     fun applyTo(library: ByteArray) {
-        val sites = library.indicesOf(locate)
+        val sites = library.indicesOf(pattern)
         if (sites.size != 1) {
             throw PatchException("$name: expected 1 ARM32 match, found ${sites.size}")
         }
 
         val site = sites.single()
-        disarm.copyInto(library, site)
-        if (!library.regionMatches(site, disarm)) {
-            throw PatchException("$name: disarm did not take at $site")
+        replacement.copyInto(library, site)
+        if (!library.regionMatches(site, replacement)) {
+            throw PatchException("$name: replacement not present at $site after write")
         }
     }
 }
 
 internal object AtvToolsSignatureCheckTarget {
-    const val ARM32_LIBRARY = "lib/armeabi-v7a/liba.so"
+    const val ARM32 = "lib/armeabi-v7a/liba.so"
 
     val arm32Checks = listOf(
         NativeCheck(
@@ -54,7 +54,7 @@ internal object AtvToolsSignatureCheckTarget {
         ),
     )
 
-    fun disarmArm32(library: ByteArray) = arm32Checks.forEach { it.applyTo(library) }
+    fun applyArm32(library: ByteArray) = arm32Checks.forEach { it.applyTo(library) }
 }
 
 private fun ByteArray.regionMatches(at: Int, needle: ByteArray): Boolean {

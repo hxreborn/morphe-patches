@@ -27,13 +27,13 @@ val unlockPremiumPatch = bytecodePatch(
         val purchaseType = PurchaseGetProductsFingerprint.matchSingle().classDef.type
 
         BillingHelperConstructorFingerprint.matchSingle().apply {
-            val purchasesFlow = instructionMatches.last()
-            val purchasesFlowField = purchasesFlow
+            val purchasesFlowStore = instructionMatches.last()
+            val purchasesFlowField = purchasesFlowStore
                 .getInstruction<ReferenceInstruction>()
                 .getReference<FieldReference>()!!
 
             method.apply {
-                val index = purchasesFlow.index + 1
+                val index = purchasesFlowStore.index + 1
                 val registers = getFreeRegisterProvider(index, 3)
                 val purchase = registers.getFreeRegister4Bit()
                 val scratch = registers.getFreeRegister4Bit()
