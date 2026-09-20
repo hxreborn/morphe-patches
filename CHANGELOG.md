@@ -1,3 +1,19 @@
+## [1.26.0](https://github.com/hxreborn/morphe-patches/compare/v1.25.0...v1.26.0) (2026-09-20)
+
+### Bug Fixes
+
+* **iJiami:** stop patched MovieBox 4.0.03 dying at launch on the ffdfe477 packer build ([a3939ba](https://github.com/hxreborn/morphe-patches/commit/a3939bac8bfa4dd176c81b6e4f17cc19ad2ec18f))
+* **MovieBox - All-In-One:** keep unlocking premium when the app renames its member methods ([4373a64](https://github.com/hxreborn/morphe-patches/commit/4373a645bbdd76ce62802533583071e69b8d89ea))
+
+### New Features
+
+* **atvTools - Unlock premium:** hide the purchase screen ([12e2ac3](https://github.com/hxreborn/morphe-patches/commit/12e2ac33994df91d9f9a922bdf82624e28376968))
+* **atvTools - Unlock premium:** unlock all features and remove ads ([4d9a904](https://github.com/hxreborn/morphe-patches/commit/4d9a90406c0378f8e326d30abdff8be85c8de43d))
+* **iJiami:** select payload methods by the strings they load and the methods they call ([fe02322](https://github.com/hxreborn/morphe-patches/commit/fe02322dd23e08f2db1772dc6c90ad4dbe242aaa))
+* **Klassik Radio+ - Unlock premium:** unlock premium channels, on-demand playback and skipping ([2538a4a](https://github.com/hxreborn/morphe-patches/commit/2538a4a15a004ea959dbabf58b2214df746a2ddf))
+* **MovieBox:** support 4.0.03.0918.03 ([672dcac](https://github.com/hxreborn/morphe-patches/commit/672dcacef48c2c13028c2cb5b208b6b833eda0cd))
+* **Proton Mail - AMOLED dark theme:** add AMOLED to web settings and account security screens ([7d5007a](https://github.com/hxreborn/morphe-patches/commit/7d5007ad329962ae7c0ffc21ae795b2504246df2))
+
 ## [1.25.0](https://github.com/hxreborn/morphe-patches/compare/v1.24.0...v1.25.0) (2026-09-19)
 
 ### New Features

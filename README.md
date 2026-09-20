@@ -34,7 +34,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.25.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.25.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;53 patches total
+> **[v1.26.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.26.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;55 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -125,8 +125,8 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| 4.0.02.0828.03 | 4.0.02.0831.03 | 4.0.02.0903.02 |
-| :---: | :---: | :---: |
+| 4.0.02.0828.03 | 4.0.02.0831.03 | 4.0.02.0903.02 | 4.0.03.0918.03 |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -361,6 +361,21 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary>📦&nbsp;atvTools&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.3.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="atvtools-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/atvtools/misc/premium/UnlockPremiumPatch.kt) | Unlocks all features and removes the ads. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/bettersleep.png" width="18" align="top">&nbsp;&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -387,6 +402,21 @@ identify each app. They are not covered by this repository's licence. See
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="forusapp-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/forus/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/klassikradio.png" width="18" align="top">&nbsp;&nbsp;Klassik Radio+&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| p5.11.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="klassik-radio-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/klassikradio/misc/premium/UnlockPremiumPatch.kt) | Unlocks the premium music channels, on-demand playback and track skipping. Requires a signed-in account. |
 
 </details>
 
