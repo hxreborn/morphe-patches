@@ -24,7 +24,7 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(disableSignatureCheckPatch)
 
     execute {
-        val purchaseType = PurchaseGetProductsFingerprint.classDef.type
+        val purchaseType = PurchaseGetProductsFingerprint.matchSingle().classDef.type
 
         BillingHelperConstructorFingerprint.matchSingle().apply {
             val purchasesFlow = instructionMatches.last()
