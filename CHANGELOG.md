@@ -1,3 +1,10 @@
+## [1.27.1](https://github.com/hxreborn/morphe-patches/compare/v1.27.0...v1.27.1) (2026-09-21)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** play streams signed with Edge-Cache cookies ([8ea4012](https://github.com/hxreborn/morphe-patches/commit/8ea401294a2f472eb7a9745789ed0aab866ce7e4))
+* **Realme Link - AMOLED dark theme:** recolour icons without the desktop JDK so Manager can apply it ([c33150a](https://github.com/hxreborn/morphe-patches/commit/c33150ae96eec90be0c0c221a92acae285f5d94c))
+
 ## [1.27.0](https://github.com/hxreborn/morphe-patches/compare/v1.26.0...v1.27.0) (2026-09-21)
 
 ### Bug Fixes
