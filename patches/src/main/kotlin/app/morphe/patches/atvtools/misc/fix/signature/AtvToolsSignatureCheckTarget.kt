@@ -21,11 +21,9 @@ internal class NativeCheck(val name: String, patternHex: String, replacementHex:
 
     fun applyTo(library: ByteArray) {
         val sites = library.indicesOf(pattern)
-        if (sites.size != 1) {
-            throw PatchException("$name: expected 1 match, found ${sites.size}")
-        }
+        val site = sites.singleOrNull()
+            ?: throw PatchException("$name: expected 1 match, found ${sites.size}")
 
-        val site = sites.single()
         replacement.copyInto(library, site)
         if (!library.regionMatches(site, replacement)) {
             throw PatchException("$name: replacement not present at $site after write")
