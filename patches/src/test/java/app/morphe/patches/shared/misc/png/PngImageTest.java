@@ -12,6 +12,7 @@ import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -54,8 +55,8 @@ class PngImageTest {
         String corpus = System.getenv("PNG_CORPUS");
         assumeTrue(corpus != null, "PNG_CORPUS is not set");
 
-        try (Stream<java.nio.file.Path> paths = Files.walk(new File(corpus).toPath())) {
-            List<File> files = paths.map(java.nio.file.Path::toFile)
+        try (Stream<Path> paths = Files.walk(new File(corpus).toPath())) {
+            List<File> files = paths.map(Path::toFile)
                     .filter(file -> file.getName().endsWith(".png") && !file.getName().endsWith(".9.png"))
                     .toList();
             assertFalse(files.isEmpty(), "PNG_CORPUS holds no PNG files");

@@ -8,7 +8,6 @@ import ar.com.hjg.pngj.PngWriter;
 import ar.com.hjg.pngj.chunks.PngChunkPLTE;
 import ar.com.hjg.pngj.chunks.PngChunkTRNS;
 import java.io.File;
-import java.util.Arrays;
 
 public final class PngImage {
     private static final int OPAQUE = 255;
@@ -24,14 +23,6 @@ public final class PngImage {
         this.argb = argb;
     }
 
-    public int get(int x, int y) {
-        return argb[y * width + x];
-    }
-
-    public void set(int x, int y, int value) {
-        argb[y * width + x] = value;
-    }
-
     public static PngImage read(File file) {
         PngReader reader = new PngReader(file);
         try {
@@ -39,12 +30,11 @@ public final class PngImage {
             PngChunkPLTE palette = reader.getMetadata().getPLTE();
             PngChunkTRNS transparency = reader.getMetadata().getTRNS();
             int[] argb = new int[info.cols * info.rows];
-            int[] rgb = new int[3];
             for (int y = 0; y < info.rows; y++) {
                 int[] samples = ((ImageLineInt) reader.readRow()).getScanline();
                 for (int x = 0; x < info.cols; x++) {
                     argb[y * info.cols + x] = info.indexed
-                            ? indexedPixel(samples[x], palette, transparency, rgb)
+                            ? indexedPixel(samples[x], palette, transparency)
                             : pixel(samples, x * info.channels, info, transparency);
                 }
             }
@@ -66,11 +56,10 @@ public final class PngImage {
         writer.end();
     }
 
-    private static int indexedPixel(int index, PngChunkPLTE palette, PngChunkTRNS transparency, int[] rgb) {
-        palette.getEntryRgb(index, rgb);
+    private static int indexedPixel(int index, PngChunkPLTE palette, PngChunkTRNS transparency) {
         int[] alphas = transparency == null ? NO_ALPHA : transparency.getPalletteAlpha();
         int alpha = index < alphas.length ? alphas[index] : OPAQUE;
-        return pack(alpha, rgb[0], rgb[1], rgb[2]);
+        return (alpha << 24) | palette.getEntry(index);
     }
 
     private static int pixel(int[] samples, int offset, ImageInfo info, PngChunkTRNS transparency) {
@@ -87,7 +76,9 @@ public final class PngImage {
 
     private static boolean isColourKey(int[] samples, int offset, ImageInfo info, PngChunkTRNS transparency) {
         if (info.greyscale) return samples[offset] == transparency.getGray();
-        return Arrays.equals(Arrays.copyOfRange(samples, offset, offset + 3), transparency.getRGB());
+
+        int[] key = transparency.getRGB();
+        return samples[offset] == key[0] && samples[offset + 1] == key[1] && samples[offset + 2] == key[2];
     }
 
     private static int scale(int sample, int max) {

@@ -35,13 +35,12 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-val desktopOnlyPackages = listOf("java/awt/", "javax/imageio/", "javax/swing/")
-
 tasks {
     jar {
-        exclude("ar/com/hjg/pngj/pixels/ImageLine*bi*.class", "ar/com/hjg/pngj/pixels/ImageLineBufferedImage*.class")
+        exclude("ar/com/hjg/pngj/pixels/ImageLine*.class")
 
         doLast {
+            val desktopOnlyPackages = listOf("java/awt/", "javax/imageio/", "javax/swing/")
             val offenders = ZipFile(archiveFile.get().asFile).use { zip ->
                 zip.entries().asSequence()
                     .filter { it.name.endsWith(".class") }

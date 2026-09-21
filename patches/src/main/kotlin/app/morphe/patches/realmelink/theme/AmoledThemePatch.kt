@@ -537,21 +537,18 @@ private fun PngImage.isDarkGlyph(): Boolean {
     var saturation = 0L
     val tones = mutableSetOf<Int>()
 
-    for (y in 0 until height) {
-        for (x in 0 until width) {
-            val pixel = get(x, y)
-            if ((pixel ushr 24) <= GLYPH_ALPHA_FLOOR) continue
+    for (pixel in argb) {
+        if ((pixel ushr 24) <= GLYPH_ALPHA_FLOOR) continue
 
-            val red = pixel shr 16 and 0xff
-            val green = pixel shr 8 and 0xff
-            val blue = pixel and 0xff
-            val tone = (299 * red + 587 * green + 114 * blue) / 1000
+        val red = pixel shr 16 and 0xff
+        val green = pixel shr 8 and 0xff
+        val blue = pixel and 0xff
+        val tone = (299 * red + 587 * green + 114 * blue) / 1000
 
-            opaque++
-            luminance += tone
-            saturation += maxOf(red, green, blue) - minOf(red, green, blue)
-            tones += tone
-        }
+        opaque++
+        luminance += tone
+        saturation += maxOf(red, green, blue) - minOf(red, green, blue)
+        tones += tone
     }
 
     if (opaque == 0) return false
@@ -562,11 +559,9 @@ private fun PngImage.isDarkGlyph(): Boolean {
 }
 
 private fun PngImage.whitenOpaquePixels() {
-    for (y in 0 until height) {
-        for (x in 0 until width) {
-            val alpha = get(x, y) and 0xff000000.toInt()
-            if (alpha != 0) set(x, y, alpha or OPAQUE_WHITE_RGB)
-        }
+    for (index in argb.indices) {
+        val alpha = argb[index] and 0xff000000.toInt()
+        if (alpha != 0) argb[index] = alpha or OPAQUE_WHITE_RGB
     }
 }
 
