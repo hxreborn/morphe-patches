@@ -9,16 +9,21 @@ import app.morphe.patcher.patch.rawResourcePatch
 
 internal val disableSignatureCheckPatch = rawResourcePatch {
     execute {
-        val library = get(AtvToolsSignatureCheckTarget.ARM32, true)
-        if (!library.exists()) {
+        val present = AtvToolsSignatureCheckTarget.targets
+            .map { it to get(it.library, true) }
+            .filter { (_, library) -> library.exists() }
+
+        if (present.isEmpty()) {
             throw PatchException(
-                "atvTools patches only armeabi-v7a: " +
-                    "${AtvToolsSignatureCheckTarget.ARM32} is missing from this APK",
+                "no atvTools native library found: expected one of " +
+                    AtvToolsSignatureCheckTarget.targets.joinToString { it.library },
             )
         }
 
-        val bytes = library.readBytes()
-        AtvToolsSignatureCheckTarget.applyArm32(bytes)
-        library.writeBytes(bytes)
+        present.forEach { (target, library) ->
+            val bytes = library.readBytes()
+            target.applyTo(bytes)
+            library.writeBytes(bytes)
+        }
     }
 }

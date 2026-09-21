@@ -17,6 +17,7 @@ import kotlin.test.assertTrue
 
 internal class AtvToolsSignatureCheckTargetTest {
     private val noise: Byte = 0x2A
+    private val allChecks = AtvToolsSignatureCheckTarget.targets.flatMap { it.checks }
 
     private fun libraryWith(pattern: ByteArray, at: Int, size: Int = 8192): ByteArray {
         val library = ByteArray(size) { noise }
@@ -26,7 +27,7 @@ internal class AtvToolsSignatureCheckTargetTest {
 
     @Test
     fun `each check replaces its own site and leaves the rest untouched`() {
-        AtvToolsSignatureCheckTarget.arm32Checks.forEach { check ->
+        allChecks.forEach { check ->
             val at = 2048
             val library = libraryWith(check.pattern, at)
 
@@ -43,14 +44,14 @@ internal class AtvToolsSignatureCheckTargetTest {
 
     @Test
     fun `a missing site fails loudly and names the check`() {
-        val check = AtvToolsSignatureCheckTarget.arm32Checks.first()
+        val check = allChecks.first()
         val message = assertFailsWith<PatchException> { check.applyTo(ByteArray(8192) { noise }) }.message
         assertTrue(message!!.contains(check.name) && message.contains("found 0"), message)
     }
 
     @Test
     fun `an ambiguous site fails loudly with the match count`() {
-        val check = AtvToolsSignatureCheckTarget.arm32Checks.first()
+        val check = allChecks.first()
         val library = ByteArray(8192) { noise }
         check.pattern.copyInto(library, 256)
         check.pattern.copyInto(library, 4096)
@@ -61,7 +62,7 @@ internal class AtvToolsSignatureCheckTargetTest {
 
     @Test
     fun `an already patched library is rejected rather than silently skipped`() {
-        val check = AtvToolsSignatureCheckTarget.arm32Checks.first()
+        val check = allChecks.first()
         val message = assertFailsWith<PatchException> { check.applyTo(libraryWith(check.replacement, 512)) }.message
         assertTrue(message!!.contains(check.name) && message.contains("found 0"), message)
     }
@@ -69,7 +70,7 @@ internal class AtvToolsSignatureCheckTargetTest {
     @Test
     fun `a library that is not the expected atvTools native library is rejected`() {
         val message = assertFailsWith<PatchException> {
-            AtvToolsSignatureCheckTarget.applyArm32(ByteArray(16384) { (it * 31 + 7).toByte() })
+            AtvToolsSignatureCheckTarget.ARM32.applyTo(ByteArray(16384) { (it * 31 + 7).toByte() })
         }.message
         assertTrue(message!!.contains("found 0"), message)
     }
@@ -81,18 +82,20 @@ internal class AtvToolsSignatureCheckTargetTest {
     }
 
     @Test
-    fun `applyArm32 replaces every check pattern on one library`() {
-        val library = ByteArray(16384) { noise }
-        val sites = AtvToolsSignatureCheckTarget.arm32Checks.mapIndexed { index, check ->
-            val at = 1024 + index * 4096
-            check.pattern.copyInto(library, at)
-            check to at
-        }
+    fun `applyTo replaces every check pattern on one library`() {
+        AtvToolsSignatureCheckTarget.targets.forEach { target ->
+            val library = ByteArray(16384) { noise }
+            val sites = target.checks.mapIndexed { index, check ->
+                val at = 1024 + index * 4096
+                check.pattern.copyInto(library, at)
+                check to at
+            }
 
-        AtvToolsSignatureCheckTarget.applyArm32(library)
+            target.applyTo(library)
 
-        sites.forEach { (check, at) ->
-            assertContentEquals(check.replacement, library.copyOfRange(at, at + check.replacement.size), check.name)
+            sites.forEach { (check, at) ->
+                assertContentEquals(check.replacement, library.copyOfRange(at, at + check.replacement.size), check.name)
+            }
         }
     }
 
@@ -104,15 +107,18 @@ internal class AtvToolsSignatureCheckTargetTest {
         configured!!.split(File.pathSeparatorChar).filter { it.isNotBlank() }.forEach { path ->
             val xapk = File(path)
             assertTrue(xapk.isFile, "configured stock XAPK does not exist: $xapk")
-            val library = arm32LibraryOf(xapk)
 
-            val sites = AtvToolsSignatureCheckTarget.arm32Checks.map { check ->
+            val target = AtvToolsSignatureCheckTarget.targets.firstOrNull { nativeLibraryOf(xapk, it.library) != null }
+            assertTrue(target != null, "${xapk.name} has none of ${AtvToolsSignatureCheckTarget.targets.joinToString { it.library }}")
+
+            val library = nativeLibraryOf(xapk, target!!.library)!!
+            val sites = target.checks.map { check ->
                 val hits = indicesOf(library, check.pattern)
                 assertEquals(1, hits.size, "${xapk.name}: ${check.name} matched ${hits.size} sites")
                 check to hits.single()
             }
 
-            AtvToolsSignatureCheckTarget.applyArm32(library)
+            target.applyTo(library)
 
             sites.forEach { (check, at) ->
                 assertTrue(
@@ -123,17 +129,17 @@ internal class AtvToolsSignatureCheckTargetTest {
         }
     }
 
-    private fun arm32LibraryOf(xapk: File): ByteArray {
+    private fun nativeLibraryOf(xapk: File, path: String): ByteArray? {
         ZipFile(xapk).use { outer ->
             outer.entries().asSequence().filter { it.name.endsWith(".apk") }.forEach { split ->
                 ZipInputStream(outer.getInputStream(split)).use { zip ->
                     generateSequence { zip.nextEntry }.forEach { entry ->
-                        if (entry.name == AtvToolsSignatureCheckTarget.ARM32) return zip.readBytes()
+                        if (entry.name == path) return zip.readBytes()
                     }
                 }
             }
         }
-        throw AssertionError("${xapk.name} has no ${AtvToolsSignatureCheckTarget.ARM32}")
+        return null
     }
 
     private fun regionMatches(haystack: ByteArray, at: Int, needle: ByteArray): Boolean {
