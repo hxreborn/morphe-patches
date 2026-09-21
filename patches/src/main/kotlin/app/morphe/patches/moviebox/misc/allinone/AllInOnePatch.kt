@@ -48,15 +48,14 @@ private const val AD_SCENE_CONFIG = "Lcom/transsion/ad/scene/a;"
 
 private val MEMBER_CHECK_FLAGS = listOf("isPassed", "getVipEnable", "getVipPayEnable")
 
-private val MEMBER_FLAG_KEYS = listOf("kv_is_pay_enable_member", "kv_is_skip_ad", "kv_is_enable_member")
-private const val PARALLEL_DOWNLOAD_KEY = "kv_parallel_download_task_num"
-private const val UPSELL_DIALOG_LOG = "checkMemberShipShow data:"
+private val MEMBER_PROVIDER_FLAGS = listOf("b", "g", "h", "B")
+private const val MEMBER_PROVIDER_DOWNLOAD_TASKS = "D"
+private const val MEMBER_PROVIDER_UPSELL_DIALOG = "z"
 
-private val PREMIUM_QUOTA_KEYS = listOf("free_download_count", "max_resolution")
-private const val RESOLUTIONS_PER_DOWNLOAD_KEY = "per_download_resource_count"
-
-private const val BOOLEAN = "Z"
-private const val BOXED_INTEGER = "Ljava/lang/Integer;"
+private val PREMIUM_TIER_FLAGS = listOf("b", "j", "u")
+private val PREMIUM_QUOTAS = listOf("f", "t", "w", "x")
+private const val PREMIUM_RESOLUTIONS_PER_DOWNLOAD = "h"
+private const val PREMIUM_DAYS_LEFT = "n"
 
 private const val PLAY_MODE_IS_STREAM = "b"
 
@@ -125,16 +124,14 @@ val allInOnePatch = resourcePatch(
                 method(it, "getMemberType").returnEarly(PREMIUM_MEMBER_TYPE)
             }
 
-            MEMBER_FLAG_KEYS.forEach { methodWithString(MEMBER_PROVIDER, it).returnEarly(true) }
-            methodsCalling(MEMBER_PROVIDER, MEMBER_INFO, "isActive", BOOLEAN).returnEarly(true)
-            methodWithString(MEMBER_PROVIDER, PARALLEL_DOWNLOAD_KEY).returnEarly(PARALLEL_DOWNLOAD_TASKS)
-            methodWithString(MEMBER_PROVIDER, UPSELL_DIALOG_LOG).returnEarly()
+            MEMBER_PROVIDER_FLAGS.forEach { method(MEMBER_PROVIDER, it).returnEarly(true) }
+            method(MEMBER_PROVIDER, MEMBER_PROVIDER_DOWNLOAD_TASKS).returnEarly(PARALLEL_DOWNLOAD_TASKS)
+            method(MEMBER_PROVIDER, MEMBER_PROVIDER_UPSELL_DIALOG).returnEarly()
 
-            methodsCalling(PREMIUM_PROVIDER, MEMBER_INFO, "isActive", BOOLEAN).returnEarly(true)
-            methodsCalling(PREMIUM_PROVIDER, MEMBER_INFO, "getVipLevel", BOOLEAN).returnEarly(true)
-            PREMIUM_QUOTA_KEYS.forEach { methodWithString(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
-            methodWithString(PREMIUM_PROVIDER, RESOLUTIONS_PER_DOWNLOAD_KEY).returnEarly(DOWNLOAD_RESOLUTIONS)
-            methodsCalling(PREMIUM_PROVIDER, MEMBER_INFO, "getDaysLeft", BOXED_INTEGER).returnBoxed(DAYS_LEFT)
+            PREMIUM_TIER_FLAGS.forEach { method(PREMIUM_PROVIDER, it).returnEarly(true) }
+            PREMIUM_QUOTAS.forEach { method(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
+            method(PREMIUM_PROVIDER, PREMIUM_RESOLUTIONS_PER_DOWNLOAD).returnEarly(DOWNLOAD_RESOLUTIONS)
+            method(PREMIUM_PROVIDER, PREMIUM_DAYS_LEFT).returnBoxed(DAYS_LEFT)
             method(PREMIUM_ACCESS, "getHasAccess").returnBoxed(true)
 
             method(MEMBER_RESOLUTION, "isUnlock").returnBoxed(true)
