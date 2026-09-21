@@ -104,7 +104,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;Realme Link&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/realmelink.png" width="18" align="top">&nbsp;&nbsp;Realme Link&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -168,7 +168,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;vpnify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/vpnify.png" width="18" align="top">&nbsp;&nbsp;vpnify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -201,7 +201,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/mymoveset.png" width="18" align="top">&nbsp;&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -362,7 +362,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;Ringtone Maker&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/ringtonemaker.png" width="18" align="top">&nbsp;&nbsp;Ringtone Maker&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -393,7 +393,7 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
-<summary>📦&nbsp;atvTools&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/atvtools.png" width="18" align="top">&nbsp;&nbsp;atvTools&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**

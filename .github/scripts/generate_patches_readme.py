@@ -211,6 +211,11 @@ ICONS = {
     "com.handmark.expressweather": "oneweather.png",
     "com.free.vpn.super.hotspot.open": "vpnsuper.png",
     "de.klassikradio.app": "klassikradio.png",
+    "dev.vodik7.atvtools": "atvtools.png",
+    "com.soulbreakers.mymoveset": "mymoveset.png",
+    "com.realme.link": "realmelink.png",
+    "ringtonemaker.musiccutter.customringtones.freeringtonemaker": "ringtonemaker.png",
+    "com.vpn.free.hotspot.secure.vpnify": "vpnify.png",
 }
 
 
