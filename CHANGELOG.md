@@ -1,3 +1,19 @@
+## [1.27.0](https://github.com/hxreborn/morphe-patches/compare/v1.26.0...v1.27.0) (2026-09-21)
+
+### Bug Fixes
+
+* **atvTools - Unlock premium:** start native ADB engine on arm64 ([18c1c18](https://github.com/hxreborn/morphe-patches/commit/18c1c18c62ab37ac3814a5c751e1850f277060a9))
+* **atvTools - Unlock premium:** stop the startup crash on 64-bit devices ([7b83018](https://github.com/hxreborn/morphe-patches/commit/7b83018c1b9b8abaede5af04439c574a13638207))
+* **iJiami:** restore 1.25.0 payload method lookup and ffdfe477 native profile ([d465436](https://github.com/hxreborn/morphe-patches/commit/d46543669c68f7b6d5dd4cf056f8bf1523d67459))
+* **MovieBox:** drop support for 4.0.03.0918.03 ([4d6c4a0](https://github.com/hxreborn/morphe-patches/commit/4d6c4a02719803dc99e1f92d249f38182408856b))
+
+### New Features
+
+* **MyMoveset - Disable tracking:** stop install identifier and events reaching Expo and Google ([baa2fab](https://github.com/hxreborn/morphe-patches/commit/baa2fabc0d4b493b58d61514568d13ae4f36e918))
+* **MyMoveset - Unlock premium:** remove free tier limits, unlock manual sync and card customization ([ecf2335](https://github.com/hxreborn/morphe-patches/commit/ecf2335fb27bea261365b4db2a7d9b2b6935b7b1))
+* **Realme Link - AMOLED dark theme:** replace the light theme with pure black ([9a500a6](https://github.com/hxreborn/morphe-patches/commit/9a500a6e074b14b417116a570942ba0587900335))
+* **Realme Link - Bypass session expiry:** stop the security prompt that signs the account out ([d0116f0](https://github.com/hxreborn/morphe-patches/commit/d0116f0b09164f56cd3b51731c311e4755a962b8))
+
 ## [1.26.0](https://github.com/hxreborn/morphe-patches/compare/v1.25.0...v1.26.0) (2026-09-20)
 
 ### Bug Fixes

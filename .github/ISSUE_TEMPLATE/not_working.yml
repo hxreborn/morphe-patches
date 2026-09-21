@@ -48,8 +48,9 @@ body:
         - "MovieBox 4.0.02.0828.03"
         - "MovieBox 4.0.02.0831.03"
         - "MovieBox 4.0.02.0903.02"
-        - "MovieBox 4.0.03.0918.03"
         - "MovieBox (another version, type it below)"
+        - "MyMoveset 1.3.1"
+        - "MyMoveset (another version, type it below)"
         - "Notesnook 3.4.12"
         - "Notesnook (another version, type it below)"
         - "Perplexity 2.95.0"
@@ -70,6 +71,8 @@ body:
         - "RateGlance (another version, type it below)"
         - "ReadEra 26.05.20+2300"
         - "ReadEra (another version, type it below)"
+        - "Realme Link 5.5.514.11421"
+        - "Realme Link (another version, type it below)"
         - "Ringtone Maker 1.01.90.0421"
         - "Ringtone Maker 1.01.94.0602"
         - "Ringtone Maker 1.01.96.0716"
@@ -113,12 +116,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.27.0"
         - "1.26.0"
         - "1.25.0"
         - "1.24.0"
         - "1.23.0"
         - "1.22.0"
-        - "1.21.0"
         - "Older than these"
         # /generated
     validations:
@@ -189,6 +192,8 @@ body:
         - "Kick \u00b7 AMOLED dark theme"
         - "Klassik Radio+ \u00b7 Unlock premium"
         - "MovieBox \u00b7 All-In-One"
+        - "MyMoveset \u00b7 Disable tracking"
+        - "MyMoveset \u00b7 Unlock premium"
         - "Notesnook \u00b7 Unlock pro"
         - "Perplexity \u00b7 AMOLED dark theme"
         - "Photo Editor Pro \u00b7 Hide ads"
@@ -209,6 +214,8 @@ body:
         - "Quranify \u00b7 Unlock premium"
         - "RateGlance \u00b7 Unlock premium"
         - "ReadEra \u00b7 Remove nags"
+        - "Realme Link \u00b7 AMOLED dark theme"
+        - "Realme Link \u00b7 Bypass session expiry"
         - "Ringtone Maker \u00b7 Remove rating prompts"
         - "Ringtone Maker \u00b7 Unlock premium"
         - "RISE Sleep Tracker \u00b7 Disable telemetry"

@@ -34,7 +34,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.26.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.26.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;55 patches total
+> **[v1.27.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.27.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;59 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -104,6 +104,22 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary>📦&nbsp;Realme Link&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 5.5.514.11421 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="realme-link-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/realmelink/theme/AmoledThemePatch.kt) | Replaces the light theme with a pure black dark theme. Requires Android 13 or later. |
+| <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Stops the security prompt that signs the account out. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -125,8 +141,8 @@ identify each app. They are not covered by this repository's licence. See
 
 **🎯 Supported versions:**
 
-| 4.0.02.0828.03 | 4.0.02.0831.03 | 4.0.02.0903.02 | 4.0.03.0918.03 |
-| :---: | :---: | :---: | :---: |
+| 4.0.02.0828.03 | 4.0.02.0831.03 | 4.0.02.0903.02 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -181,6 +197,22 @@ identify each app. They are not covered by this repository's licence. See
 | <a id="rise-sleep-tracker-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableTelemetryPatch.kt) | Stops crash and error reports from reaching Sentry. |
 | <a id="rise-sleep-tracker-disable-usage-tracking"></a>[Disable usage tracking](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableUsageTrackingPatch.kt) | Stops app usage events from being uploaded. Local usage tracking remains enabled. |
 | <a id="rise-sleep-tracker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rise/misc/premium/UnlockPremiumPatch.kt) | Unlocks the energy schedule, habit tools, smart alarm and progress insights. Requires a RISE account. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.3.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="mymoveset-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/mymoveset/misc/tracking/DisableTrackingPatch.kt) | Stops the install identifier from reaching Expo and usage events from reaching Google. Disables OTA updates. |
+| <a id="mymoveset-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/mymoveset/misc/premium/UnlockPremiumPatch.kt) | Unlocks unlimited move views, goals and move cards, manual sync, earlier library updates and card customization. Disables OTA updates. |
 
 </details>
 
