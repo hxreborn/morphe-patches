@@ -295,6 +295,7 @@ public final class AppPatch {
 
     private static final class SignedResource {
         private static final String POLICY_KEY = "CloudFront-Policy=";
+        private static final String EDGE_KEY = "Edge-Cache-Cookie=";
         private static final long EXPIRY_MARGIN_MS = 60_000L;
 
         final String cookie;
@@ -308,10 +309,14 @@ public final class AppPatch {
         }
 
         static SignedResource fromCookie(String cookie) {
-            String policy = cookieValue(cookie, POLICY_KEY);
+            SignedResource cloudFront = fromCloudFront(cookie);
+            return cloudFront != null ? cloudFront : fromEdgeCache(cookie);
+        }
+
+        private static SignedResource fromCloudFront(String cookie) {
+            String policy = fieldValue(cookie, POLICY_KEY, ';');
             if (policy == null) return null;
             try {
-                // CloudFront base64 alphabet
                 String standard = policy.replace('-', '+').replace('_', '=').replace('~', '/');
                 String json = new String(Base64.decode(standard, Base64.DEFAULT), StandardCharsets.UTF_8);
                 JSONObject statement = new JSONObject(json).getJSONArray("Statement").getJSONObject(0);
@@ -322,6 +327,24 @@ public final class AppPatch {
                 String manifestUrl = resource.substring(0, resource.length() - 2) + "/index.mpd";
                 return new SignedResource(cookie, manifestUrl, expiresAt);
             } catch (JSONException | IllegalArgumentException malformed) {
+                return null;
+            }
+        }
+
+        private static SignedResource fromEdgeCache(String cookie) {
+            String value = fieldValue(cookie, EDGE_KEY, ';');
+            if (value == null) return null;
+            String prefixEncoded = fieldValue(value, "urlprefix=", ':');
+            String expiry = fieldValue(value, "t=", ':');
+            if (prefixEncoded == null || expiry == null) return null;
+            try {
+                String urlPrefix = new String(Base64.decode(prefixEncoded, Base64.URL_SAFE), StandardCharsets.UTF_8);
+                if (!urlPrefix.startsWith("https://")) return null;
+                if (!urlPrefix.endsWith("/")) urlPrefix = urlPrefix + "/";
+                long seconds = Long.parseLong(expiry.trim());
+                if (seconds < 0 || seconds > Long.MAX_VALUE / 1000L) return null;
+                return new SignedResource(cookie, urlPrefix + "index.mpd", seconds * 1000L);
+            } catch (IllegalArgumentException malformed) {
                 return null;
             }
         }
@@ -358,12 +381,12 @@ public final class AppPatch {
             return System.currentTimeMillis() + EXPIRY_MARGIN_MS >= expiresAtMs;
         }
 
-        private static String cookieValue(String cookie, String key) {
-            int at = cookie.indexOf(key);
+        private static String fieldValue(String source, String key, char delimiter) {
+            int at = source.indexOf(key);
             if (at < 0) return null;
             int start = at + key.length();
-            int end = cookie.indexOf(';', start);
-            return end < 0 ? cookie.substring(start) : cookie.substring(start, end);
+            int end = source.indexOf(delimiter, start);
+            return end < 0 ? source.substring(start) : source.substring(start, end);
         }
     }
 
