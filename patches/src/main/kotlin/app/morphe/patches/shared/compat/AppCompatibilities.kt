@@ -223,6 +223,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16)),
     )
 
+    val REALME_LINK = Compatibility(
+        name = "Realme Link",
+        packageName = "com.realme.link",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x3575C4,
+        targets = listOf(AppTarget(version = "5.5.514.11421", versionCode = 530121, minSdk = 33)),
+    )
+
     val RINGTONE_MAKER = Compatibility(
         name = "Ringtone Maker",
         packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
