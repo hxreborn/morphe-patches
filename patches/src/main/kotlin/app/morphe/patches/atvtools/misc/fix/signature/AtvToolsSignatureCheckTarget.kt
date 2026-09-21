@@ -63,11 +63,14 @@ internal object AtvToolsSignatureCheckTarget {
         "lib/arm64-v8a/liba.so",
         listOf(
             NativeCheck(
-                "certificateCheck",
-                "fd 7b ba a9 fc 6f 01 a9 fa 67 02 a9 f8 5f 03 a9 " +
-                    "f6 57 04 a9 f4 4f 05 a9 fd 03 00 91 ff 4b 40 d1",
-                "c0 03 5f d6 fc 6f 01 a9 fa 67 02 a9 f8 5f 03 a9 " +
-                    "f6 57 04 a9 f4 4f 05 a9 fd 03 00 91 ff 4b 40 d1",
+                "certificateComparisonFirst",
+                "bf 02 00 72 80 16 9c 9a 58 89 11 94 69 32 40 91",
+                "bf 02 00 72 80 16 9c 9a 00 00 80 52 69 32 40 91",
+            ),
+            NativeCheck(
+                "certificateComparisonSecond",
+                "21 28 00 90 21 40 35 91 fa 03 00 aa 8e 74 11 94 a8 02 40 f9",
+                "21 28 00 90 21 40 35 91 fa 03 00 aa 00 00 80 52 a8 02 40 f9",
             ),
             NativeCheck(
                 "runtimeIntegrityCheck",

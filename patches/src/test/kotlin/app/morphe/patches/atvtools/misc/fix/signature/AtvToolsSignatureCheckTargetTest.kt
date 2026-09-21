@@ -112,6 +112,8 @@ internal class AtvToolsSignatureCheckTargetTest {
             assertTrue(target != null, "${xapk.name} has none of ${AtvToolsSignatureCheckTarget.targets.joinToString { it.library }}")
 
             val library = nativeLibraryOf(xapk, target!!.library)!!
+            val certificateEntry =
+                if (target === AtvToolsSignatureCheckTarget.ARM64) library.copyOfRange(0x721370, 0x721390) else null
             val sites = target.checks.map { check ->
                 val hits = indicesOf(library, check.pattern)
                 assertEquals(1, hits.size, "${xapk.name}: ${check.name} matched ${hits.size} sites")
@@ -119,6 +121,10 @@ internal class AtvToolsSignatureCheckTargetTest {
             }
 
             target.applyTo(library)
+
+            if (certificateEntry != null) {
+                assertContentEquals(certificateEntry, library.copyOfRange(0x721370, 0x721390))
+            }
 
             sites.forEach { (check, at) ->
                 assertTrue(
