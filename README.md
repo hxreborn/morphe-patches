@@ -567,6 +567,9 @@ countries. The patch blanks it, so MovieBox falls back to your IP address.
 To choose a country, open **Me → Settings → About us** and tap the version 7 times quickly. In
 **Laboratory**, choose a country under **National information**.
 
+If playback shows an update notice instead of the video, also set **HttpHost** to
+`api3.aoneroom.com` and pick Greece or Netherlands under **National information**. Both are needed.
+
 &nbsp;
 ## 📲 Installing
 
