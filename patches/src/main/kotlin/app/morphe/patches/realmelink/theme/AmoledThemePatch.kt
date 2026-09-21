@@ -17,6 +17,7 @@ import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.hasResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.png.PngImage
 import app.morphe.util.adoptChild
 import app.morphe.util.childElementsSequence
 import app.morphe.util.doRecursively
@@ -24,9 +25,7 @@ import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.getNode
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import java.awt.image.BufferedImage
 import java.io.File
-import javax.imageio.ImageIO
 import org.w3c.dom.Element
 
 private const val APP_COMPAT_DELEGATE_CLASS = "Landroidx/appcompat/app/AppCompatDelegate;"
@@ -530,7 +529,7 @@ private const val GLYPH_TONE_CEILING = 8
 private const val GLYPH_SIZE_CEILING = 256
 private const val OPAQUE_WHITE_RGB = 0xffffff
 
-private fun BufferedImage.isDarkGlyph(): Boolean {
+private fun PngImage.isDarkGlyph(): Boolean {
     if (maxOf(width, height) > GLYPH_SIZE_CEILING) return false
 
     var opaque = 0
@@ -540,7 +539,7 @@ private fun BufferedImage.isDarkGlyph(): Boolean {
 
     for (y in 0 until height) {
         for (x in 0 until width) {
-            val pixel = getRGB(x, y)
+            val pixel = get(x, y)
             if ((pixel ushr 24) <= GLYPH_ALPHA_FLOOR) continue
 
             val red = pixel shr 16 and 0xff
@@ -562,11 +561,11 @@ private fun BufferedImage.isDarkGlyph(): Boolean {
         tones.size <= GLYPH_TONE_CEILING
 }
 
-private fun BufferedImage.whitenOpaquePixels() {
+private fun PngImage.whitenOpaquePixels() {
     for (y in 0 until height) {
         for (x in 0 until width) {
-            val alpha = getRGB(x, y) and 0xff000000.toInt()
-            if (alpha != 0) setRGB(x, y, alpha or OPAQUE_WHITE_RGB)
+            val alpha = get(x, y) and 0xff000000.toInt()
+            if (alpha != 0) set(x, y, alpha or OPAQUE_WHITE_RGB)
         }
     }
 }
@@ -575,11 +574,11 @@ private fun ResourcePatchContext.whitenDarkGlyphIcons(): Int {
     var whitened = 0
 
     iconImageFiles().forEach icon@{ file ->
-        val image = runCatching { ImageIO.read(file) }.getOrNull() ?: return@icon
+        val image = PngImage.read(file)
         if (!image.isDarkGlyph()) return@icon
 
         image.whitenOpaquePixels()
-        ImageIO.write(image, "png", file)
+        image.write(file)
         whitened++
     }
 
