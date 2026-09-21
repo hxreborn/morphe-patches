@@ -196,6 +196,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val PROTON_PASS = Compatibility(
+        name = "Proton Pass",
+        packageName = "proton.android.pass",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x6D4AFF,
+        signatures = setOf(
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
+        ),
+        targets = listOf(AppTarget(version = "1.40.3", versionCode = 14003373, minSdk = 27)),
+    )
+
     val QURANIFY = Compatibility(
         name = "Quranify",
         packageName = "com.mchutov.Quranify",

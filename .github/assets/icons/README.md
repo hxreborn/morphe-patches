@@ -26,6 +26,7 @@ Every icon was taken from the developer's own published listing, website, or sou
 | `showly.png` | Showly (`com.michaldrabik.showly2`) | Michał Drabik / Trakt | [`trakt/showly`](https://github.com/trakt/showly), `fastlane/metadata/android/en-US/images/icon.png` |
 | `tiktok.png` | TikTok (`com.zhiliaoapp.musically`) | TikTok Pte. Ltd. | [Google Play listing](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically) (`og:image`) |
 | `protonmail.png` | Proton Mail (`ch.protonmail.android`) | Proton AG | [Google Play listing](https://play.google.com/store/apps/details?id=ch.protonmail.android) (`og:image`) |
+| `protonpass.png` | Proton Pass (`proton.android.pass`) | Proton AG | [Google Play listing](https://play.google.com/store/apps/details?id=proton.android.pass) (`og:image`) |
 | `audible.png` | Audible (`com.audible.application`) | Audible, Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=com.audible.application) (`og:image`) |
 | `symfonium.png` | Symfonium (`app.symfonik.music.player`) | Tolriq | [Google Play listing](https://play.google.com/store/apps/details?id=app.symfonik.music.player) (`og:image`) |
 | `perplexity.png` | Perplexity (`ai.perplexity.app.android`) | PerplexityAI | [Google Play listing](https://play.google.com/store/apps/details?id=ai.perplexity.app.android) (`og:image`) |
