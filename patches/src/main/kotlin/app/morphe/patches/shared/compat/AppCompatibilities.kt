@@ -126,6 +126,14 @@ internal object AppCompatibilities {
         ),
     )
 
+    val MYMOVESET = Compatibility(
+        name = "MyMoveset",
+        packageName = "com.soulbreakers.mymoveset",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0x9F1C3B,
+        targets = listOf(AppTarget(version = "1.3.1", versionCode = 14, minSdk = 24)),
+    )
+
     val NOTESNOOK = Compatibility(
         name = "Notesnook",
         packageName = "com.streetwriters.notesnook",
