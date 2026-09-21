@@ -37,7 +37,7 @@ internal class IjiamiPayload(
 ) {
     fun method(classDescriptor: String, name: String) =
         methodOrNull(classDescriptor, name)
-            ?: throw PatchException("No bytecode body in payload: $classDescriptor->$name")
+            ?: throw PatchException("Method not found in payload: $classDescriptor->$name")
 
     fun methodOrNull(classDescriptor: String, name: String): PayloadMethods? {
         val bodies = bodiesOf(classDescriptor, name)
@@ -54,39 +54,10 @@ internal class IjiamiPayload(
     fun methods(classDescriptor: String, name: String): PayloadMethods {
         val bodies = bodiesOf(classDescriptor, name)
         if (bodies.isEmpty()) {
-            throw PatchException("No bytecode body in payload: $classDescriptor->$name")
+            throw PatchException("Method not found in payload: $classDescriptor->$name")
         }
 
         return PayloadMethods(bodies)
-    }
-
-    fun methodWithString(classDescriptor: String, value: String): PayloadMethods {
-        val bodies = bodiesMatching(classDescriptor, LoadsString(value))
-        if (bodies.size > 1) {
-            throw PatchException(
-                "Expected one method in $classDescriptor loading \"$value\", found ${bodies.size}",
-            )
-        }
-
-        return PayloadMethods(bodies)
-    }
-
-    fun methodsCalling(classDescriptor: String, calleeDescriptor: String, name: String, returning: String) =
-        PayloadMethods(bodiesMatching(classDescriptor, CallsMethod(calleeDescriptor, name, returning)))
-
-    private fun bodiesMatching(classDescriptor: String, selector: MethodSelector): List<MethodBody> {
-        val bodies = dexes.flatMap { it.bodiesMatching(classDescriptor, selector, opaqueRanges) }
-        if (bodies.isEmpty()) {
-            throw PatchException("No method in $classDescriptor ${selector.criterion}")
-        }
-        if (bodies.any { body -> opaqueRanges.any { body.range.overlaps(it) } }) {
-            throw PatchException(
-                "Cannot rewrite $classDescriptor: a method that ${selector.criterion} " +
-                    "overlaps an opaque payload block",
-            )
-        }
-
-        return bodies
     }
 
     fun seal() = dexes.forEach { dex ->

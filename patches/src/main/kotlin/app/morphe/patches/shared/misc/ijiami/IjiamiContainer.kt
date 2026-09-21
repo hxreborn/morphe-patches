@@ -106,24 +106,19 @@ internal class IjiamiContainer private constructor(
 
             val mapOffset = classesDex.readInt(MAP_OFF_OFFSET)
             if (mapOffset <= 0 || mapOffset > classesDex.size - 4) {
-                throw PatchException(
-                    "classes.dex map offset $mapOffset is out of bounds (size ${classesDex.size})",
-                )
+                throw PatchException("classes.dex has no readable map section")
             }
 
             val entries = classesDex.readInt(mapOffset)
             val stubSize = mapOffset + 4 + entries.toLong() * MAP_ENTRY_SIZE
             if (entries < 0 || stubSize + CONTAINER_HEADER_SIZE >= classesDex.size) {
-                throw PatchException(
-                    "No room for an Ijiami container in classes.dex: $entries map entries, " +
-                        "stub ends at $stubSize of ${classesDex.size} bytes",
-                )
+                throw PatchException("Ijiami container not found in classes.dex")
             }
 
             val stubEnd = stubSize.toInt()
             val header = classesDex.copyOfRange(stubEnd, stubEnd + CONTAINER_HEADER_SIZE)
             if (!header.startsWith(CONTAINER_NAME)) {
-                throw PatchException("No Ijiami container header at offset $stubEnd in classes.dex")
+                throw PatchException("Ijiami container not found in classes.dex")
             }
 
             val cipherText = classesDex.copyOfRange(stubEnd + CONTAINER_HEADER_SIZE, classesDex.size)

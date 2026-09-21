@@ -174,12 +174,12 @@ internal class PayloadDex private constructor(
         return stringAt(int(typeIdsOffset + 4 * index))
     }
 
-    fun nameOf(method: Int): String {
+    private fun nameOf(method: Int): String {
         requireMember(method, methodIdsSize, "method")
         return stringAt(int(methodIdsOffset + METHOD_ID_SIZE * method + 4))
     }
 
-    fun returnTypeOf(method: Int): String {
+    private fun returnTypeOf(method: Int): String {
         requireMember(method, methodIdsSize, "method")
         val proto = short(methodIdsOffset + METHOD_ID_SIZE * method + 2)
         requireMember(proto, protoIdsSize, "proto")
@@ -212,19 +212,6 @@ internal class PayloadDex private constructor(
 
     fun stringIndexOf(value: String) = (0 until stringIdsSize).firstOrNull { stringAt(it) == value }
 
-    fun methodIndicesOf(classDescriptor: String, name: String): Set<Int> {
-        val type = typeIndexOf(classDescriptor) ?: return emptySet()
-
-        return (0 until methodIdsSize).filterTo(mutableSetOf()) {
-            val item = methodIdsOffset + METHOD_ID_SIZE * it
-            short(item) == type && stringAt(int(item + 4)) == name
-        }
-    }
-
-    fun intAt(offset: Int) = int(offset)
-
-    fun shortAt(offset: Int) = short(offset)
-
     private fun typeIndexOf(classDescriptor: String) =
         (0 until typeIdsSize).firstOrNull { typeDescriptor(it) == classDescriptor }
 
@@ -239,20 +226,6 @@ internal class PayloadDex private constructor(
         classDescriptor: String,
         name: String,
         opaqueRanges: List<IntRange> = emptyList(),
-    ) = bodies(classDescriptor, opaqueRanges) { methodIndex, _ -> nameOf(methodIndex) == name }
-
-    fun bodiesMatching(
-        classDescriptor: String,
-        selector: MethodSelector,
-        opaqueRanges: List<IntRange> = emptyList(),
-    ) = bodies(classDescriptor, opaqueRanges) { methodIndex, codeOffset ->
-        selector.matches(this, methodIndex, codeOffset)
-    }
-
-    private fun bodies(
-        classDescriptor: String,
-        opaqueRanges: List<IntRange>,
-        select: PayloadDex.(Int, Int) -> Boolean,
     ): List<MethodBody> {
         val bodies = mutableListOf<MethodBody>()
 
@@ -294,7 +267,7 @@ internal class PayloadDex private constructor(
                     cursor = afterCode
                     val methodIndex = method.toInt()
 
-                    if (codeOffset != 0 && select(methodIndex, codeOffset)) {
+                    if (codeOffset != 0 && nameOf(methodIndex) == name) {
                         within(codeOffset, CODE_HEADER_SIZE)
                         val insns = int(codeOffset + CODE_INSNS_SIZE_OFFSET)
                         if (insns < 0 || codeOffset.toLong() + CODE_HEADER_SIZE + insns.toLong() * 2 > size) {
@@ -307,7 +280,7 @@ internal class PayloadDex private constructor(
                             payload = payload,
                             codeOffset = start + codeOffset,
                             returnType = returnTypeOf(methodIndex),
-                            description = "$classDescriptor->${nameOf(methodIndex)}",
+                            description = "$classDescriptor->$name",
                             opaqueRanges = opaqueRanges,
                         )
                     }
