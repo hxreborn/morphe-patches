@@ -60,6 +60,44 @@ internal class IjiamiPayload(
         return PayloadMethods(bodies)
     }
 
+    fun methodWithString(classDescriptor: String, value: String) =
+        methodWithStringOrNull(classDescriptor, value)
+            ?: throw PatchException("No method in $classDescriptor loads \"$value\"")
+
+    fun methodWithStringOrNull(classDescriptor: String, value: String): PayloadMethods? {
+        val bodies = bodiesMatching(classDescriptor, LoadsString(value))
+        if (bodies.isEmpty()) return null
+        if (bodies.size > 1) {
+            throw PatchException(
+                "Expected one method in $classDescriptor loading \"$value\", found ${bodies.size}",
+            )
+        }
+
+        return PayloadMethods(bodies)
+    }
+
+    fun methodsCalling(classDescriptor: String, calleeDescriptor: String, name: String, returning: String): PayloadMethods {
+        val selector = CallsMethod(calleeDescriptor, name, returning)
+        val bodies = bodiesMatching(classDescriptor, selector)
+        if (bodies.isEmpty()) {
+            throw PatchException("No method in $classDescriptor ${selector.criterion}")
+        }
+
+        return PayloadMethods(bodies)
+    }
+
+    private fun bodiesMatching(classDescriptor: String, selector: MethodSelector): List<MethodBody> {
+        val bodies = dexes.flatMap { it.bodiesMatching(classDescriptor, selector, opaqueRanges) }
+        if (bodies.any { body -> opaqueRanges.any { body.range.overlaps(it) } }) {
+            throw PatchException(
+                "Cannot rewrite $classDescriptor: a method that ${selector.criterion} " +
+                    "overlaps an opaque payload block",
+            )
+        }
+
+        return bodies
+    }
+
     fun seal() = dexes.forEach { dex ->
         val range = dex.start until dex.start + dex.size
         if (opaqueRanges.none { range.overlaps(it) }) dex.reseal()
