@@ -683,8 +683,12 @@ private val amoledThemeResourcesPatch = resourcePatch {
             "@${app.name}:color/" to palette,
         )
 
+        val overriddenReferences = NIGHT_COLORS.keys.mapTo(mutableSetOf()) { "$COLOR_REFERENCE$it" }
+        val headsetOverriddenReferences = HEADSET_COLORS.keys.map { "$COLOR_REFERENCE$it" } +
+            NIGHT_COLORS.keys.map { "@${app.name}:color/$it" }
+
         val lightSurface = { element: Element, _: String, value: String ->
-            if (element.isHairline()) {
+            if (element.isHairline() || value in overriddenReferences) {
                 null
             } else {
                 appPalettes.resolveColor(value)?.let {
@@ -693,7 +697,7 @@ private val amoledThemeResourcesPatch = resourcePatch {
             }
         }
         val lightHeadsetSurface = { element: Element, _: String, value: String ->
-            if (element.isHairline()) {
+            if (element.isHairline() || value in headsetOverriddenReferences) {
                 null
             } else {
                 headsetPalettes.resolveColor(value)?.let {
@@ -719,7 +723,6 @@ private val amoledThemeResourcesPatch = resourcePatch {
         requireReplaced("black tab animation", invertTabAnimations())
         requireReplaced("dark glyph icon", app.whitenDarkGlyphIcons())
 
-        val overriddenReferences = NIGHT_COLORS.keys.mapTo(mutableSetOf()) { "$COLOR_REFERENCE$it" }
         val ink = { _: Element, _: String, value: String ->
             if (value in overriddenReferences) null else appPalettes.invertedInk(value)
         }
@@ -753,8 +756,6 @@ private val amoledThemeResourcesPatch = resourcePatch {
             replaceStyleItems(app, STYLE_CARD_ATTRIBUTES, CARD_REPLACEMENTS),
         )
 
-        val headsetOverriddenReferences = HEADSET_COLORS.keys.map { "$COLOR_REFERENCE$it" } +
-            NIGHT_COLORS.keys.map { "@${app.name}:color/$it" }
         val headsetInk = { _: Element, _: String, value: String ->
             if (value in headsetOverriddenReferences) null else headsetPalettes.invertedInk(value)
         }
