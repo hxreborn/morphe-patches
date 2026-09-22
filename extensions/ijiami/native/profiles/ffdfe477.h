@@ -28,4 +28,5 @@
     {0x16834, 0x94001bf1, MOV_W0_0, "debugger check"}, \
     {0x10cec, 0x54ffdb60, 0x17fffedb, "added dex check"}, \
     {0x10ca8, 0x350003e0, NOP, "archive digest check"}, \
+    {0x105c0, 0x940003a0, MOV_W0_1, "structure integrity check"}, \
 }
