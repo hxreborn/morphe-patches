@@ -25,6 +25,8 @@ body:
         - "All-In-One Calculator (another version, type it below)"
         - "AlpineQuest 2.4.0e"
         - "AlpineQuest (another version, type it below)"
+        - "AtloMaps 1.0.6"
+        - "AtloMaps (another version, type it below)"
         - "atvTools 1.3.2"
         - "atvTools (another version, type it below)"
         - "Audible 26.30.05"
@@ -48,6 +50,7 @@ body:
         - "MovieBox 4.0.02.0828.03"
         - "MovieBox 4.0.02.0831.03"
         - "MovieBox 4.0.02.0903.02"
+        - "MovieBox 4.0.03.0918.03"
         - "MovieBox (another version, type it below)"
         - "MyMoveset 1.3.1"
         - "MyMoveset (another version, type it below)"
@@ -63,6 +66,8 @@ body:
         - "Proton Mail 7.10.4"
         - "Proton Mail 7.11.5"
         - "Proton Mail (another version, type it below)"
+        - "Proton Pass 1.40.3"
+        - "Proton Pass (another version, type it below)"
         - "QR & Barcode Scanner 2.2.221"
         - "QR & Barcode Scanner (another version, type it below)"
         - "Quranify 2.2.8"
@@ -116,12 +121,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.28.0"
         - "1.27.1"
         - "1.27.0"
         - "1.26.0"
         - "1.25.0"
         - "1.24.0"
-        - "1.23.0"
         - "Older than these"
         # /generated
     validations:
@@ -177,6 +182,7 @@ body:
         - "All-In-One Calculator \u00b7 GmsCore support"
         - "All-In-One Calculator \u00b7 Unlock premium"
         - "AlpineQuest \u00b7 Unlock full version"
+        - "AtloMaps \u00b7 Unlock premium"
         - "atvTools \u00b7 Unlock premium"
         - "Audible \u00b7 Hide membership upselling"
         - "Audible \u00b7 Open Library on launch"
@@ -210,6 +216,9 @@ body:
         - "Proton Mail \u00b7 Remove free accounts limit"
         - "Proton Mail \u00b7 Scheduled Trash and Spam deletion"
         - "Proton Mail \u00b7 Unlock custom time picker"
+        - "Proton Pass \u00b7 AMOLED dark theme"
+        - "Proton Pass \u00b7 Hide promotional messages"
+        - "Proton Pass \u00b7 Hide upgrade promotions"
         - "QR & Barcode Scanner \u00b7 Hide ads"
         - "Quranify \u00b7 Unlock premium"
         - "RateGlance \u00b7 Unlock premium"
