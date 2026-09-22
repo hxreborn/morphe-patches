@@ -29,6 +29,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.4.0e", versionCode = 412)),
     )
 
+    val ATLOMAPS = Compatibility(
+        name = "AtloMaps",
+        packageName = "com.atlogis.atlomaps",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0x0683DF,
+        targets = listOf(AppTarget(version = "1.0.6", versionCode = 153, minSdk = 29)),
+    )
+
     val ATVTOOLS = Compatibility(
         name = "atvTools",
         packageName = "dev.vodik7.atvtools",
