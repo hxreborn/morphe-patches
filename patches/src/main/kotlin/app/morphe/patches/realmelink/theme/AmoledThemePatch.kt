@@ -295,10 +295,14 @@ private const val HEADSET_ON_SURFACE = "#ffffff"
 private val HEADSET_SURFACE_REPLACEMENTS = SURFACE_VALUES.associateWith { HEADSET_SURFACE } +
     PAGE_VALUES.associateWith { HEADSET_PAGE }
 
-private val HEADSET_ON_SURFACE_REPLACEMENTS =
-    (SURFACE_VALUES + BLACK_VALUES).associateWith { HEADSET_ON_SURFACE }
+private val HEADSET_ON_SURFACE_REPLACEMENTS = SURFACE_VALUES.associateWith { HEADSET_ON_SURFACE }
+
+private val HEADSET_LAYOUT_ON_SURFACE_REPLACEMENTS = HEADSET_ON_SURFACE_REPLACEMENTS +
+    BLACK_VALUES.associateWith { HEADSET_ON_SURFACE }
 
 private const val HEADSET_PANEL_BACKGROUND_DRAWABLE = "res/drawable/realme_headset_shape_home_bg.xml"
+
+private val HEADSET_ARTWORK_LAYOUTS = setOf("activity_golden_hearing_previous_detection.xml")
 
 private const val COLOR_REFERENCE = "@color/"
 
@@ -318,35 +322,28 @@ private fun Document.readColors(): Map<String, String> =
         .filter { it.tagName == "color" }
         .associate { it.getAttribute("name") to it.textContent.trim() }
 
-private val TEXT_ATTRIBUTES = setOf(
-    "android:textColor",
-    "android:textColorHint",
-    "android:textColorLink",
-    "app:itemTextColor",
-    "app:tabTextColor",
-    "app:titleTextColor",
-)
-
-private const val MIN_TEXT_INK_ALPHA = 0x80
+private const val MIN_INK_ALPHA = 0x80
+private const val VISIBLE_INK_ALPHA = 0x33
 
 private const val COLOR_ALIAS_DEPTH = 4
 
-private fun Map<String, String>.resolveColor(value: String): String? {
+private typealias ColorPalettes = Map<String, Map<String, String>>
+
+private fun ColorPalettes.resolveColor(value: String): String? {
     var color = value
 
     repeat(COLOR_ALIAS_DEPTH) {
-        if (!color.startsWith(COLOR_REFERENCE)) return color
-        color = this[color.removePrefix(COLOR_REFERENCE)] ?: return null
+        val prefix = keys.firstOrNull { color.startsWith(it) } ?: return color
+        color = getValue(prefix)[color.removePrefix(prefix)] ?: return null
     }
 
     return null
 }
 
-private fun invertedInk(palette: Map<String, String>, attribute: String, value: String): String? {
-    val color = palette.resolveColor(value) ?: return null
-
+private fun ColorPalettes.invertedInk(value: String): String? {
+    val color = resolveColor(value) ?: return null
     val alpha = inkAlpha(color)?.toInt(16) ?: return null
-    val readable = if (attribute in TEXT_ATTRIBUTES) maxOf(alpha, MIN_TEXT_INK_ALPHA) else alpha
+    val readable = if (alpha < VISIBLE_INK_ALPHA) alpha else maxOf(alpha, MIN_INK_ALPHA)
 
     return "#%02xffffff".format(readable)
 }
@@ -419,8 +416,12 @@ private fun ResourcePackage.resourceFiles(
         ?.filter { it.extension == extension }
         .orEmpty()
 
-private fun ResourcePackage.dayResourceFiles(directoryPrefix: String): List<File> =
+private fun ResourcePackage.dayResourceFiles(
+    directoryPrefix: String,
+    excludedFileNames: Set<String> = emptySet(),
+): List<File> =
     resourceFiles("xml") { it.startsWith(directoryPrefix) && !it.contains("night") }
+        .filterNot { it.name in excludedFileNames }
 
 private fun ResourcePackage.dayStyleFiles(): List<File> =
     dayResourceFiles("values").filter { it.name == "styles.xml" }
@@ -446,8 +447,12 @@ private fun ResourcePatchContext.replaceAttributes(
     directoryPrefix: String,
     attributes: List<String>,
     replacements: Map<String, String>,
+    excludedFileNames: Set<String> = emptySet(),
     unlisted: (Element, String, String) -> String? = { _, _, _ -> null },
-): Int = editDocuments(pkg, pkg.dayResourceFiles(directoryPrefix).filter { it.declaresAnyOf(attributes) }) {
+): Int = editDocuments(
+    pkg,
+    pkg.dayResourceFiles(directoryPrefix, excludedFileNames).filter { it.declaresAnyOf(attributes) },
+) {
     var replaced = 0
 
     documentElement.doRecursively { node ->
@@ -672,17 +677,35 @@ private val amoledThemeResourcesPatch = resourcePatch {
         val themes = editDocuments(app, app.dayStyleFiles()) { useDayNightThemes() } +
             document("res/values/styles.xml", HEADSET_PACKAGE).use { it.useDayNightThemes() }
 
+        val appPalettes = mapOf(COLOR_REFERENCE to palette)
+        val headsetPalettes = mapOf(
+            COLOR_REFERENCE to headsetPalette,
+            "@${app.name}:color/" to palette,
+        )
+
         val lightSurface = { element: Element, _: String, value: String ->
-            if (element.isHairline()) null else lightNeutralSurface(value, SURFACE_COLOR)
+            if (element.isHairline()) {
+                null
+            } else {
+                appPalettes.resolveColor(value)?.let {
+                    SURFACE_REPLACEMENTS[it] ?: lightNeutralSurface(it, SURFACE_COLOR)
+                }
+            }
         }
         val lightHeadsetSurface = { element: Element, _: String, value: String ->
-            if (element.isHairline()) null else lightNeutralSurface(value, HEADSET_SURFACE)
+            if (element.isHairline()) {
+                null
+            } else {
+                headsetPalettes.resolveColor(value)?.let {
+                    HEADSET_SURFACE_REPLACEMENTS[it] ?: lightNeutralSurface(it, HEADSET_SURFACE)
+                }
+            }
         }
 
         requireReplaced("light theme parent", themes)
         requireReplaced(
             "light layout background",
-            replaceAttributes(app, "layout", LAYOUT_ATTRIBUTES, LAYOUT_REPLACEMENTS, lightSurface),
+            replaceAttributes(app, "layout", LAYOUT_ATTRIBUTES, LAYOUT_REPLACEMENTS, unlisted = lightSurface),
         )
         requireReplaced(
             "light drawable fill",
@@ -690,25 +713,28 @@ private val amoledThemeResourcesPatch = resourcePatch {
         )
         requireReplaced(
             "light drawable gradient",
-            replaceAttributes(app, "drawable", GRADIENT_ATTRIBUTES, SURFACE_REPLACEMENTS, lightSurface),
+            replaceAttributes(app, "drawable", GRADIENT_ATTRIBUTES, SURFACE_REPLACEMENTS, unlisted = lightSurface),
         )
         requireReplaced("black monochrome icon", invertMonochromeVectors(app, ON_SURFACE_COLOR))
         requireReplaced("black tab animation", invertTabAnimations())
         requireReplaced("dark glyph icon", app.whitenDarkGlyphIcons())
 
-        val ink = { _: Element, attribute: String, value: String -> invertedInk(palette, attribute, value) }
+        val overriddenReferences = NIGHT_COLORS.keys.mapTo(mutableSetOf()) { "$COLOR_REFERENCE$it" }
+        val ink = { _: Element, _: String, value: String ->
+            if (value in overriddenReferences) null else appPalettes.invertedInk(value)
+        }
 
         requireReplaced(
             "light layout foreground",
-            replaceAttributes(app, "layout", ON_SURFACE_ATTRIBUTES, LAYOUT_ON_SURFACE_REPLACEMENTS, ink),
+            replaceAttributes(app, "layout", ON_SURFACE_ATTRIBUTES, LAYOUT_ON_SURFACE_REPLACEMENTS, unlisted = ink),
         )
         requireReplaced(
             "light drawable foreground",
-            replaceAttributes(app, "drawable", ON_SURFACE_ATTRIBUTES, ON_SURFACE_REPLACEMENTS, ink),
+            replaceAttributes(app, "drawable", ON_SURFACE_ATTRIBUTES, ON_SURFACE_REPLACEMENTS, unlisted = ink),
         )
         requireReplaced(
             "light selector foreground",
-            replaceAttributes(app, "color", COLOR_ATTRIBUTES, ON_SURFACE_REPLACEMENTS, ink),
+            replaceAttributes(app, "color", COLOR_ATTRIBUTES, ON_SURFACE_REPLACEMENTS, unlisted = ink),
         )
         requireReplaced(
             "light toolbar chrome",
@@ -727,13 +753,24 @@ private val amoledThemeResourcesPatch = resourcePatch {
             replaceStyleItems(app, STYLE_CARD_ATTRIBUTES, CARD_REPLACEMENTS),
         )
 
-        val headsetInk = { attribute: String, value: String ->
-            invertedInk(headsetPalette, attribute, value)
+        val headsetOverriddenReferences = HEADSET_COLORS.keys.map { "$COLOR_REFERENCE$it" } +
+            NIGHT_COLORS.keys.map { "@${app.name}:color/$it" }
+        val headsetInk = { _: Element, _: String, value: String ->
+            if (value in headsetOverriddenReferences) null else headsetPalettes.invertedInk(value)
+        }
+        val headsetStyleInk = { _: String, value: String ->
+            if (value in headsetOverriddenReferences) null else headsetPalettes.invertedInk(value)
         }
 
         requireReplaced(
             "light headset layout background",
-            replaceAttributes(headset, "layout", LAYOUT_ATTRIBUTES, HEADSET_SURFACE_REPLACEMENTS, lightHeadsetSurface),
+            replaceAttributes(
+                headset,
+                "layout",
+                LAYOUT_ATTRIBUTES,
+                HEADSET_SURFACE_REPLACEMENTS,
+                unlisted = lightHeadsetSurface,
+            ),
         )
         requireReplaced(
             "light headset drawable fill",
@@ -746,7 +783,7 @@ private val amoledThemeResourcesPatch = resourcePatch {
                 "drawable",
                 GRADIENT_ATTRIBUTES,
                 HEADSET_SURFACE_REPLACEMENTS,
-                lightHeadsetSurface,
+                unlisted = lightHeadsetSurface,
             ),
         )
         requireReplaced(
@@ -759,12 +796,34 @@ private val amoledThemeResourcesPatch = resourcePatch {
                 headset,
                 "layout",
                 ON_SURFACE_ATTRIBUTES,
+                HEADSET_LAYOUT_ON_SURFACE_REPLACEMENTS,
+                HEADSET_ARTWORK_LAYOUTS,
+                headsetInk,
+            ),
+        )
+        requireReplaced(
+            "light headset drawable foreground",
+            replaceAttributes(
+                headset,
+                "drawable",
+                ON_SURFACE_ATTRIBUTES,
                 HEADSET_ON_SURFACE_REPLACEMENTS,
-            ) { _, attribute, value -> headsetInk(attribute, value) },
+                unlisted = headsetInk,
+            ),
+        )
+        requireReplaced(
+            "light headset selector foreground",
+            replaceAttributes(
+                headset,
+                "color",
+                COLOR_ATTRIBUTES,
+                HEADSET_ON_SURFACE_REPLACEMENTS,
+                unlisted = headsetInk,
+            ),
         )
         requireReplaced(
             "white headset style foreground",
-            replaceStyleItems(headset, STYLE_ON_SURFACE_ATTRIBUTES, HEADSET_ON_SURFACE_REPLACEMENTS, headsetInk),
+            replaceStyleItems(headset, STYLE_ON_SURFACE_ATTRIBUTES, HEADSET_ON_SURFACE_REPLACEMENTS, headsetStyleInk),
         )
 
         document(HEADSET_PANEL_BACKGROUND_DRAWABLE, HEADSET_PACKAGE).use { document ->
