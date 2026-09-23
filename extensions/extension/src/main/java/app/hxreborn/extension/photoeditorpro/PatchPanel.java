@@ -105,6 +105,9 @@ public final class PatchPanel {
             new Entry(PatchSettings.UNLOCK_PREMIUM, GENERAL, "Unlock premium",
                     "Unlocks the pro tools, removes the export watermark and hides the "
                             + "upgrade prompts"),
+            new Entry(PatchSettings.HIDE_SHARE, GENERAL, "Hide share options",
+                    "Hides the share buttons on the save screen and centers the saved "
+                            + "photo"),
             new Entry(PatchSettings.SHOW_AI_PROGRESS, AI_TOOLS,
                     "Show AI progress",
                     "Reads the current stage off the real network activity instead of the "

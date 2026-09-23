@@ -16,6 +16,9 @@ public final class PatchSettings {
     public static final BooleanSetting UNLOCK_PREMIUM =
             new BooleanSetting("pep_unlock_premium", true, true);
 
+    public static final BooleanSetting HIDE_SHARE =
+            new BooleanSetting("pep_hide_share", true);
+
     public static final BooleanSetting SHOW_AI_PROGRESS =
             new BooleanSetting("pep_show_ai_progress", true);
 
