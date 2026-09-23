@@ -36,6 +36,7 @@ private val HOME_HEADER_TINT_SITES = 2..2
 private const val ALGORITHMIC_DARKENING_MIN_SDK = 33
 private const val HOME_BACKGROUND_COLOR = "#000000"
 private const val OPAQUE_WHITE_ARGB = "-0x1"
+private const val OPAQUE_BLACK_ARGB = "-0x1000000"
 
 private const val SURFACE_COLOR = "@color/hx_surface"
 private const val PAGE_COLOR = "@color/hx_page"
@@ -148,10 +149,19 @@ private val NIGHT_COLORS = mapOf(
     "sp_device_tip_color" to "#80ffffff",
     "nx_color_shape_btn_check_fill_color_off_normal" to "#4dffffff",
     "nx_shape_btn_check_fill_color_off_normal" to "#4dffffff",
+    "realme_common_grey_27000000" to "#27ffffff",
     "nx_toolbar_title_text_color" to "#e6ffffff",
     "usercenter_ui_color_85_000000" to "#d9ffffff",
     "nx_hint_text_color" to "#66ffffff",
     "text_grey" to "#66ffffff",
+)
+
+private const val NIGHT_V29_COLORS_FILE = "res/values-night-v29/colors.xml"
+
+private val NIGHT_V29_COLORS = mapOf(
+    "nx_color_surface" to "#1a1a1a",
+    "nx_color_surface_top" to "#1a1a1a",
+    "nx_color_surface_with_card" to "#1a1a1a",
 )
 
 private const val HEADSET_PACKAGE = "com.realme.link.realmeHeadset"
@@ -302,7 +312,18 @@ private val HEADSET_LAYOUT_ON_SURFACE_REPLACEMENTS = HEADSET_ON_SURFACE_REPLACEM
 
 private const val HEADSET_PANEL_BACKGROUND_DRAWABLE = "res/drawable/realme_headset_shape_home_bg.xml"
 
+private val SELECTOR_ATTRIBUTES = listOf("android:drawable")
+
+private val HEADSET_CHECK_MARK_REPLACEMENTS = mapOf(
+    "@drawable/check_box_1" to "@drawable/ic_radio_uncheck",
+    "@drawable/check_box_2" to "@drawable/ic_radio_checked",
+)
+
 private val HEADSET_ARTWORK_LAYOUTS = setOf("activity_golden_hearing_previous_detection.xml")
+
+private const val ACTIVITY_LAYOUT_PREFIX = "activity_"
+
+private val HEADSET_PAGE_REPLACEMENTS = mapOf("@color/color_bg_white" to HEADSET_PAGE)
 
 private const val COLOR_REFERENCE = "@color/"
 
@@ -357,7 +378,7 @@ private fun Element.isHairline() =
 private const val NEUTRAL_CHANNEL_FLOOR = 0xe0
 private const val NEUTRAL_CHANNEL_SPREAD = 0x10
 
-private fun lightNeutralSurface(value: String, surface: String): String? {
+private fun opaqueChannels(value: String): List<Int>? {
     val digits = value.removePrefix("#").lowercase()
     if (!digits.all { it in "0123456789abcdef" }) return null
 
@@ -366,7 +387,13 @@ private fun lightNeutralSurface(value: String, surface: String): String? {
         6 -> digits.chunked(2)
         8 -> if (digits.take(2) != "ff") return null else digits.chunked(2).drop(1)
         else -> return null
-    }.map { it.toInt(16) }
+    }
+
+    return channels.map { it.toInt(16) }
+}
+
+private fun lightNeutralSurface(value: String, surface: String): String? {
+    val channels = opaqueChannels(value) ?: return null
 
     val darkest = channels.min()
     if (darkest < NEUTRAL_CHANNEL_FLOOR) return null
@@ -419,9 +446,10 @@ private fun ResourcePackage.resourceFiles(
 private fun ResourcePackage.dayResourceFiles(
     directoryPrefix: String,
     excludedFileNames: Set<String> = emptySet(),
+    fileNamePrefix: String = "",
 ): List<File> =
     resourceFiles("xml") { it.startsWith(directoryPrefix) && !it.contains("night") }
-        .filterNot { it.name in excludedFileNames }
+        .filter { it.name.startsWith(fileNamePrefix) && it.name !in excludedFileNames }
 
 private fun ResourcePackage.dayStyleFiles(): List<File> =
     dayResourceFiles("values").filter { it.name == "styles.xml" }
@@ -449,9 +477,10 @@ private fun ResourcePatchContext.replaceAttributes(
     replacements: Map<String, String>,
     excludedFileNames: Set<String> = emptySet(),
     unlisted: (Element, String, String) -> String? = { _, _, _ -> null },
+    fileNamePrefix: String = "",
 ): Int = editDocuments(
     pkg,
-    pkg.dayResourceFiles(directoryPrefix, excludedFileNames).filter { it.declaresAnyOf(attributes) },
+    pkg.dayResourceFiles(directoryPrefix, excludedFileNames, fileNamePrefix).filter { it.declaresAnyOf(attributes) },
 ) {
     var replaced = 0
 
@@ -501,6 +530,11 @@ private fun Document.useDayNightThemes(): Int {
     return replaced
 }
 
+private const val NEAR_BLACK_CHANNEL_CEILING = 0x10
+
+private fun isNearBlack(value: String) =
+    opaqueChannels(value)?.all { it <= NEAR_BLACK_CHANNEL_CEILING } == true
+
 private fun Document.invertIfMonochrome(onSurface: String): Int {
     val blackAttributes = mutableListOf<Pair<Element, String>>()
     var monochrome = true
@@ -513,7 +547,7 @@ private fun Document.invertIfMonochrome(onSurface: String): Int {
 
             when {
                 value.isEmpty() || value in TRANSPARENT_VALUES -> Unit
-                value in BLACK_VALUES -> blackAttributes += element to attribute
+                isNearBlack(value) -> blackAttributes += element to attribute
                 else -> monochrome = false
             }
         }
@@ -666,6 +700,10 @@ private val amoledThemeResourcesPatch = resourcePatch {
         }
         requireDeclared("night override", NIGHT_COLORS.keys - ADDED_COLORS.keys, palette.keys)
         document("res/values-night/colors.xml").use { it.setColors(NIGHT_COLORS) }
+        document(NIGHT_V29_COLORS_FILE).use { document ->
+            requireDeclared("night v29 override", NIGHT_V29_COLORS.keys, document.readColors().keys)
+            document.setColors(NIGHT_V29_COLORS)
+        }
 
         val headsetPalette = document("res/values/colors.xml", HEADSET_PACKAGE).use { document ->
             val declared = document.readColors()
@@ -764,6 +802,16 @@ private val amoledThemeResourcesPatch = resourcePatch {
         }
 
         requireReplaced(
+            "light headset activity page",
+            replaceAttributes(
+                headset,
+                "layout",
+                LAYOUT_ATTRIBUTES,
+                HEADSET_PAGE_REPLACEMENTS,
+                fileNamePrefix = ACTIVITY_LAYOUT_PREFIX,
+            ),
+        )
+        requireReplaced(
             "light headset layout background",
             replaceAttributes(
                 headset,
@@ -791,13 +839,14 @@ private val amoledThemeResourcesPatch = resourcePatch {
             "black headset monochrome icon",
             invertMonochromeVectors(headset, HEADSET_ON_SURFACE),
         )
+        requireReplaced("dark headset glyph icon", headset.whitenDarkGlyphIcons())
         requireReplaced(
             "light headset layout foreground",
             replaceAttributes(
                 headset,
                 "layout",
                 ON_SURFACE_ATTRIBUTES,
-                HEADSET_LAYOUT_ON_SURFACE_REPLACEMENTS,
+                HEADSET_LAYOUT_ON_SURFACE_REPLACEMENTS + ("@${app.name}:color/white" to HEADSET_ON_SURFACE),
                 HEADSET_ARTWORK_LAYOUTS,
                 headsetInk,
             ),
@@ -834,6 +883,11 @@ private val amoledThemeResourcesPatch = resourcePatch {
             GRADIENT_ATTRIBUTES.filter { gradient.getAttribute(it).isNotEmpty() }
                 .forEach { gradient.setAttribute(it, HEADSET_PAGE) }
         }
+
+        requireReplaced(
+            "opaque headset check mark",
+            replaceAttributes(headset, "drawable", SELECTOR_ATTRIBUTES, HEADSET_CHECK_MARK_REPLACEMENTS),
+        )
 
         document(HOME_BANNER_DRAWABLE).use { document ->
             val banner = document.getNode("path") as? Element
@@ -885,6 +939,13 @@ val amoledThemePatch = bytecodePatch(
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
             method.replaceInstruction(index, "const-string v$register, \"$HOME_BACKGROUND_COLOR\"")
+        }
+
+        HeadsetSubScreenBackgroundFingerprint.matchSingle().apply {
+            val index = instructionMatches.first().index
+            val register = method.getInstruction<OneRegisterInstruction>(index).registerA
+
+            method.replaceInstruction(index, "const v$register, $OPAQUE_BLACK_ARGB")
         }
 
         WebViewSettingsFingerprint.matchAll(WEB_VIEW_SETTINGS_SITES).forEach { match ->

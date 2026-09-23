@@ -17,6 +17,23 @@ import com.android.tools.smali.dexlib2.Opcode
 private const val DEFAULT_HOME_BACKGROUND_COLOR = "#E4E4E4"
 private const val HOME_BACKGROUND_TINT_PREFERENCE = "home_background_tint_color"
 private const val OPAQUE_BLACK_ARGB = -0x1000000
+private const val OPAQUE_WHITE_ARGB = -0x1
+
+internal object HeadsetSubScreenBackgroundFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC),
+    returnType = "V",
+    parameters = listOf(),
+    name = "init",
+    definingClass = "Lcom/realme/iot/headset/activity/device/HeadsetDeviceSubScreenActivity;",
+    filters = listOf(
+        literal(OPAQUE_WHITE_ARGB),
+        methodCall(
+            definingClass = "Landroid/view/View;",
+            name = "setBackgroundColor",
+            location = InstructionLocation.MatchAfterImmediately(),
+        ),
+    ),
+)
 
 internal object ApplicationOnCreateFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC),
