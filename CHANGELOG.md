@@ -1,3 +1,16 @@
+## [1.29.0](https://github.com/hxreborn/morphe-patches/compare/v1.28.0...v1.29.0) (2026-09-23)
+
+### Bug Fixes
+
+* **Realme Link - AMOLED dark theme:** apply the black theme to the earbuds screens too ([5231e4c](https://github.com/hxreborn/morphe-patches/commit/5231e4c52bd63a5753899a1924b7a15f19f66c7a))
+* **Realme Link - AMOLED dark theme:** cover the earbuds screens the theme missed ([69b11db](https://github.com/hxreborn/morphe-patches/commit/69b11db1bb4f8772a7e626139c0bc1323d9a7260))
+* **Realme Link - AMOLED dark theme:** keep pinned night colours on page backgrounds ([2279e5f](https://github.com/hxreborn/morphe-patches/commit/2279e5fe1c9a2637951c47e2476a738adbdf32b6))
+
+### New Features
+
+* **Override certificate pinning:** allow inspecting app traffic via proxy ([392ff3e](https://github.com/hxreborn/morphe-patches/commit/392ff3e9a122e6e21d5cee5ef4cd19840127fb18))
+* **Photo Editor Pro - Hide share options:** hide share buttons and center saved photo ([2d0b293](https://github.com/hxreborn/morphe-patches/commit/2d0b29323151cc964f72dbc9c79c40c14701860c))
+
 ## [1.28.0](https://github.com/hxreborn/morphe-patches/compare/v1.27.1...v1.28.0) (2026-09-22)
 
 ### Bug Fixes

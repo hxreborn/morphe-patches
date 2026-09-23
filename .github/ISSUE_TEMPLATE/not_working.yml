@@ -121,12 +121,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.29.0"
         - "1.28.0"
         - "1.27.1"
         - "1.27.0"
         - "1.26.0"
         - "1.25.0"
-        - "1.24.0"
         - "Older than these"
         # /generated
     validations:
@@ -203,6 +203,7 @@ body:
         - "Notesnook \u00b7 Unlock pro"
         - "Perplexity \u00b7 AMOLED dark theme"
         - "Photo Editor Pro \u00b7 Hide ads"
+        - "Photo Editor Pro \u00b7 Hide share options"
         - "Photo Editor Pro \u00b7 Inspect AI requests"
         - "Photo Editor Pro \u00b7 Show AI progress"
         - "Photo Editor Pro \u00b7 Speed up AI tools"
