@@ -99,6 +99,10 @@ private val PAIRIP_HOOKED_LIBRARIES = mapOf(
         "libflutter" to "libflutter.so",
         "libfastdev" to "libfastdev_quickjs_runtime.so",
     ),
+    "com.darinsoft.vimo" to mapOf(
+        "libonnxruntime" to "libonnxruntime.so",
+        "libmediapipe_tasks_vision_jni" to "libmediapipe_tasks_vision_jni.so",
+    ),
 )
 
 private fun ByteArray.applyDelta(delta: ByteArray): ByteArray {
@@ -213,6 +217,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
     compatibleWith(
         AppCompatibilities.ALL_IN_ONE_CALCULATOR,
         AppCompatibilities.BETTERSLEEP,
+        AppCompatibilities.VLLO,
     )
 
     dependsOn(removePairipResourcesPatch)

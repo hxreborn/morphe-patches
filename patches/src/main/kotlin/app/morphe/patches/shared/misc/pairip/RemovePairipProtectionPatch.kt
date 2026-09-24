@@ -14,6 +14,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.ECHOGRAM,
         AppCompatibilities.QURANIFY,
         AppCompatibilities.RATEGLANCE,
+        AppCompatibilities.VLLO,
     )
 
     execute {

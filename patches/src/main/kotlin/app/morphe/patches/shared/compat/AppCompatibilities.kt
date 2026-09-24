@@ -326,6 +326,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "407.0.0.178994", versionCode = 1278994, minSdk = 26)),
     )
 
+    val VLLO = Compatibility(
+        name = "VLLO",
+        packageName = "com.darinsoft.vimo",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF02050,
+        targets = listOf(AppTarget(version = "13.7.4", versionCode = 130704, minSdk = 32)),
+    )
+
     val VPNIFY = Compatibility(
         name = "vpnify",
         packageName = "com.vpn.free.hotspot.secure.vpnify",
