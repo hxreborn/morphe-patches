@@ -82,6 +82,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val ECHOGRAM = Compatibility(
+        name = "Echogram",
+        packageName = "com.liori.echogram",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x191E31,
+        signatures = setOf(
+            "331fa00a81a7f2e70aeaec25ee709aa4f1f17062d61e7aa6048f14abc47f0d1a",
+        ),
+        targets = listOf(AppTarget(version = "1.0.7.0", versionCode = 138, minSdk = 32)),
+    )
+
     val ETSY = Compatibility(
         name = "Etsy",
         packageName = "com.etsy.android",
