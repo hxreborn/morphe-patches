@@ -5,10 +5,16 @@
 package app.morphe.patches.protonmail.misc.theme
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation
+import app.morphe.patcher.InstructionLocation.MatchAfterAnywhere
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.opcode
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.string
+import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patches.all.misc.resources.resourceLiteral
 import com.android.tools.smali.dexlib2.Opcode
 
 private object ProtonPalette {
@@ -115,4 +121,48 @@ internal object ColorSchemeFingerprint : Fingerprint(
 internal object UpsellingDarkBackgroundFingerprint : Fingerprint(
     returnType = "Ljava/lang/Object;",
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
+)
+
+private const val DESIGN_THEME_PACKAGE = "Lch/protonmail/android/design/compose/theme/"
+
+private const val CONTACT_LIST_SCREEN_GROUP_KEY = -0x1a6b0b89
+private const val CONTACT_LIST_TOP_BAR_GROUP_KEY = -0x692e2b18
+private const val CONTACT_SEARCH_SCREEN_GROUP_KEY = 0x4cef0155
+private const val CONTACT_SEARCH_TOP_BAR_GROUP_KEY = 0x58ded95e
+private const val CONTACT_CARD_GROUP_KEY = -0xca78f09
+
+private const val SWIPE_BOX_THEME_READ_DISTANCE = 20
+
+private fun themeColorRead(location: InstructionLocation = MatchAfterAnywhere()) = listOf(
+    methodCall(definingClass = DESIGN_THEME_PACKAGE, parameters = listOf(), returnType = "J", location = location),
+    opcode(Opcode.MOVE_RESULT_WIDE, MatchAfterImmediately()),
+)
+
+internal object ContactListScreenBackgroundFingerprint : Fingerprint(
+    filters = listOf(literal(CONTACT_LIST_SCREEN_GROUP_KEY)) + themeColorRead(),
+)
+
+internal object ContactListTopBarBackgroundFingerprint : Fingerprint(
+    filters = listOf(literal(CONTACT_LIST_TOP_BAR_GROUP_KEY)) + themeColorRead(),
+)
+
+internal object ContactSearchScreenBackgroundFingerprint : Fingerprint(
+    filters = listOf(literal(CONTACT_SEARCH_SCREEN_GROUP_KEY)) + themeColorRead(),
+)
+
+internal object ContactSearchTopBarBackgroundFingerprint : Fingerprint(
+    filters = listOf(literal(CONTACT_SEARCH_TOP_BAR_GROUP_KEY)) + themeColorRead(),
+)
+
+internal object ContactSearchFieldBackgroundFingerprint : Fingerprint(
+    filters = listOf(resourceLiteral(ResourceType.STRING, "contact_search_placeholder")) + themeColorRead(),
+)
+
+internal object ContactCardSurfaceFingerprint : Fingerprint(
+    filters = listOf(literal(CONTACT_CARD_GROUP_KEY)) + themeColorRead(),
+)
+
+internal object ContactSwipeBoxSurfaceFingerprint : Fingerprint(
+    filters = listOf(string("\$this\$SwipeToDismissBox")) +
+        themeColorRead(MatchAfterWithin(SWIPE_BOX_THEME_READ_DISTANCE)),
 )

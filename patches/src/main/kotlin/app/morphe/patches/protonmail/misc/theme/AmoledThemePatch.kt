@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.theme.webview.CachedMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.InlineMessageBodyFingerprint
@@ -51,6 +52,19 @@ internal fun MutableMethod.injectColorTransformCall(index: Int, method: String) 
 
 private fun MutableMethod.injectBackgroundColorCall(index: Int) =
     injectColorTransformCall(index, "$EXTENSION_CLASS->background(J)J")
+
+private const val PACKED_BACKGROUND = "$EXTENSION_CLASS->packedBackground(J)J"
+private const val PACKED_SURFACE = "$EXTENSION_CLASS->packedSurface(J)J"
+
+private val CONTACTS_COLOR_TRANSFORMS = listOf(
+    ContactListScreenBackgroundFingerprint to PACKED_BACKGROUND,
+    ContactListTopBarBackgroundFingerprint to PACKED_BACKGROUND,
+    ContactSearchScreenBackgroundFingerprint to PACKED_BACKGROUND,
+    ContactSearchTopBarBackgroundFingerprint to PACKED_BACKGROUND,
+    ContactSearchFieldBackgroundFingerprint to PACKED_BACKGROUND,
+    ContactCardSurfaceFingerprint to PACKED_SURFACE,
+    ContactSwipeBoxSurfaceFingerprint to PACKED_SURFACE,
+)
 
 private fun Instruction.constructsProtonColors(): Boolean {
     if (opcode != Opcode.INVOKE_DIRECT_RANGE) return false
@@ -127,7 +141,7 @@ val amoledThemePatch = bytecodePatch(
     description = "Replaces the dark theme background with pure black.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
-    dependsOn(webSettingsThemePatch)
+    dependsOn(resourceMappingPatch, webSettingsThemePatch)
 
     execute {
         DarkPaletteFingerprint.matchSingle().method.apply {
@@ -144,6 +158,11 @@ val amoledThemePatch = bytecodePatch(
 
         UpsellingDarkBackgroundFingerprint.instructionMatchesOrNull?.first()?.index?.let { index ->
             UpsellingDarkBackgroundFingerprint.method.injectBackgroundColorCall(index)
+        }
+
+        CONTACTS_COLOR_TRANSFORMS.forEach { (fingerprint, transform) ->
+            val match = fingerprint.matchSingle()
+            match.method.injectColorTransformCall(match.instructionMatches.last().index, transform)
         }
 
         mutableClassDefBy(EXTENSION_CLASS).methods
