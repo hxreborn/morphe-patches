@@ -196,7 +196,7 @@ final class DashFile {
     }
 
     static DashFile open(String manifestUrl, int height, Cookies cookies) throws IOException {
-        Manifest manifest = parse(fetch(manifestUrl, cookies), manifestUrl);
+        Manifest manifest = parse(withRetries(() -> fetch(manifestUrl, cookies)), manifestUrl);
         Representation video = select(manifest.representations, "video", height);
         Representation audio = select(manifest.representations, "audio", Integer.MAX_VALUE);
         if (video == null || audio == null) throw new IOException("manifest lacks a video or audio track");
@@ -205,8 +205,8 @@ final class DashFile {
         List<Segment> audioSegments = segments(audio, manifest.presentationSeconds);
         size(videoSegments, audioSegments, cookies);
 
-        byte[] videoInit = fetch(initializationUrl(video), cookies);
-        byte[] audioInit = fetch(initializationUrl(audio), cookies);
+        byte[] videoInit = withRetries(() -> fetch(initializationUrl(video), cookies));
+        byte[] audioInit = withRetries(() -> fetch(initializationUrl(audio), cookies));
         int videoId = trackId(videoInit);
         int audioId = videoId + 1;
         long templateTimescale = video.template.timescale;
@@ -274,7 +274,7 @@ final class DashFile {
                     pending.add(pool.submit(new Callable<byte[]>() {
                         @Override
                         public byte[] call() throws IOException {
-                            return readPiece(piece, from, to);
+                            return withRetries(() -> readPiece(piece, from, to));
                         }
                     }));
                     at = piece.offset + to + 1;
@@ -312,29 +312,30 @@ final class DashFile {
         return low;
     }
 
-    private byte[] readPiece(Piece piece, long from, long to) throws IOException {
+    private interface CdnRequest<T> {
+        T send() throws IOException;
+    }
+
+    private static <T> T withRetries(CdnRequest<T> request) throws IOException {
         for (int attempt = 1; ; attempt++) {
             try {
-                return readPieceOnce(piece, from, to);
-            } catch (IOException e) {
-                rethrowOrBackOff(attempt, e);
+                return request.send();
+            } catch (IOException failure) {
+                boolean cancelled = failure instanceof InterruptedIOException
+                        && !(failure instanceof SocketTimeoutException);
+                if (attempt == CDN_ATTEMPTS || cancelled) throw failure;
+                Log.w(TAG, "CDN read attempt " + attempt + " of " + CDN_ATTEMPTS + " failed", failure);
+                try {
+                    Thread.sleep(CDN_RETRY_DELAY_MS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(e);
+                }
             }
         }
     }
 
-    private static void rethrowOrBackOff(int attempt, IOException failure) throws IOException {
-        boolean cancelled = failure instanceof InterruptedIOException && !(failure instanceof SocketTimeoutException);
-        if (attempt == CDN_ATTEMPTS || cancelled) throw failure;
-        Log.w(TAG, "CDN read attempt " + attempt + " of " + CDN_ATTEMPTS + " failed", failure);
-        try {
-            Thread.sleep(CDN_RETRY_DELAY_MS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IOException(e);
-        }
-    }
-
-    private byte[] readPieceOnce(Piece piece, long from, long to) throws IOException {
+    private byte[] readPiece(Piece piece, long from, long to) throws IOException {
         String range = "bytes=" + (piece.prefixBytes + from) + "-" + (piece.prefixBytes + to);
         HttpURLConnection connection = connect(piece.url, range, cookies);
         if (connection.getResponseCode() != HttpURLConnection.HTTP_PARTIAL) {
@@ -523,8 +524,10 @@ final class DashFile {
                 probes.add(pool.submit(new Callable<Void>() {
                     @Override
                     public Void call() throws IOException {
-                        probe(segment, cookies);
-                        return null;
+                        return withRetries(() -> {
+                            probe(segment, cookies);
+                            return null;
+                        });
                     }
                 }));
             }
@@ -535,17 +538,6 @@ final class DashFile {
     }
 
     private static void probe(Segment segment, Cookies cookies) throws IOException {
-        for (int attempt = 1; ; attempt++) {
-            try {
-                probeOnce(segment, cookies);
-                return;
-            } catch (IOException e) {
-                rethrowOrBackOff(attempt, e);
-            }
-        }
-    }
-
-    private static void probeOnce(Segment segment, Cookies cookies) throws IOException {
         HttpURLConnection connection = connect(segment.url, "bytes=0-" + (PROBE_BYTES - 1), cookies);
         try (InputStream in = connection.getInputStream()) {
             String contentRange = connection.getHeaderField("Content-Range");
@@ -593,16 +585,6 @@ final class DashFile {
     }
 
     private static byte[] fetch(String url, Cookies cookies) throws IOException {
-        for (int attempt = 1; ; attempt++) {
-            try {
-                return fetchOnce(url, cookies);
-            } catch (IOException e) {
-                rethrowOrBackOff(attempt, e);
-            }
-        }
-    }
-
-    private static byte[] fetchOnce(String url, Cookies cookies) throws IOException {
         try (InputStream in = connect(url, null, cookies).getInputStream()) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buffer = new byte[COPY_BUFFER_BYTES];

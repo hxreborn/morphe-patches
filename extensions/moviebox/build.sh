@@ -30,7 +30,7 @@ out=$resources
 $verify && out=$work/resources
 mkdir -p "$out"
 
-javac -Xlint:all -source 8 -target 8 -bootclasspath "$platform" -d "$work/hook" "$here"/src/hx/*.java
+javac -Xlint:all -source 8 -target 8 -bootclasspath "$platform:$build_tools/core-lambda-stubs.jar" -d "$work/hook" "$here"/src/hx/*.java
 "$build_tools/d8" --min-api 28 --lib "$platform" --output "$work/hook" "$work"/hook/hx/*.class
 cp "$work/hook/classes.dex" "$out/dashhook.dex"
 
