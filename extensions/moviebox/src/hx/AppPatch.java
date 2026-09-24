@@ -297,16 +297,13 @@ public final class AppPatch {
     private static final class SignedResource {
         private static final String POLICY_KEY = "CloudFront-Policy=";
         private static final String EDGE_KEY = "Edge-Cache-Cookie=";
-        private static final long EXPIRY_MARGIN_MS = 60_000L;
 
         final String cookie;
         final String manifestUrl;
-        final long expiresAtMs;
 
-        private SignedResource(String cookie, String manifestUrl, long expiresAtMs) {
+        private SignedResource(String cookie, String manifestUrl) {
             this.cookie = cookie;
             this.manifestUrl = manifestUrl;
-            this.expiresAtMs = expiresAtMs;
         }
 
         static SignedResource fromCookie(String cookie) {
@@ -320,13 +317,9 @@ public final class AppPatch {
             try {
                 String standard = policy.replace('-', '+').replace('_', '=').replace('~', '/');
                 String json = new String(Base64.decode(standard, Base64.DEFAULT), StandardCharsets.UTF_8);
-                JSONObject statement = new JSONObject(json).getJSONArray("Statement").getJSONObject(0);
-                String resource = statement.getString("Resource");
+                String resource = new JSONObject(json).getJSONArray("Statement").getJSONObject(0).getString("Resource");
                 if (!resource.startsWith("https://") || !resource.endsWith("/*")) return null;
-                long expiresAt = statement.getJSONObject("Condition").getJSONObject("DateLessThan")
-                        .getLong("AWS:EpochTime") * 1000L;
-                String manifestUrl = resource.substring(0, resource.length() - 2) + "/index.mpd";
-                return new SignedResource(cookie, manifestUrl, expiresAt);
+                return new SignedResource(cookie, resource.substring(0, resource.length() - 2) + "/index.mpd");
             } catch (JSONException | IllegalArgumentException malformed) {
                 return null;
             }
@@ -336,15 +329,12 @@ public final class AppPatch {
             String value = fieldValue(cookie, EDGE_KEY, ';');
             if (value == null) return null;
             String prefixEncoded = fieldValue(value, "urlprefix=", ':');
-            String expiry = fieldValue(value, "t=", ':');
-            if (prefixEncoded == null || expiry == null) return null;
+            if (prefixEncoded == null) return null;
             try {
                 String urlPrefix = new String(Base64.decode(prefixEncoded, Base64.URL_SAFE), StandardCharsets.UTF_8);
                 if (!urlPrefix.startsWith("https://")) return null;
                 if (!urlPrefix.endsWith("/")) urlPrefix = urlPrefix + "/";
-                long seconds = Long.parseLong(expiry.trim());
-                if (seconds < 0 || seconds > Long.MAX_VALUE / 1000L) return null;
-                return new SignedResource(cookie, urlPrefix + "index.mpd", seconds * 1000L);
+                return new SignedResource(cookie, urlPrefix + "index.mpd");
             } catch (IllegalArgumentException malformed) {
                 return null;
             }
@@ -376,10 +366,6 @@ public final class AppPatch {
             } catch (NumberFormatException malformed) {
                 return null;
             }
-        }
-
-        boolean expired() {
-            return System.currentTimeMillis() + EXPIRY_MARGIN_MS >= expiresAtMs;
         }
 
         private static String fieldValue(String source, String key, char delimiter) {
@@ -564,7 +550,7 @@ public final class AppPatch {
             synchronized (resources) {
                 cached = resources.get(key);
             }
-            if (cached != null && !cached.expired() && !cached.cookie.equals(rejectedCookie)) return cached;
+            if (cached != null && !cached.cookie.equals(rejectedCookie)) return cached;
             String url = apiBase + PLAY_INFO + "?subjectId=" + subjectId + "&se=" + season + "&ep=" + episode
                     + "&isVip=true";
             SignedResource fetched = observePlayInfo(url, getPlayInfoWithRetry(url, key));
