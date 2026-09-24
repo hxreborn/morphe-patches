@@ -499,7 +499,8 @@ public final class AppPatch {
                         @Override
                         public DashFile call() throws IOException {
                             final String manifestUrl = resource(subjectId, season, episode, null).manifestUrl;
-                            return DashFile.open(manifestUrl, height, new DashFile.Cookies() {
+                            long started = SystemClock.elapsedRealtime();
+                            DashFile file = DashFile.open(manifestUrl, height, new DashFile.Cookies() {
                                 @Override
                                 public String current() throws IOException {
                                     return cookieFor(key, manifestUrl, subjectId, season, episode, null);
@@ -510,6 +511,10 @@ public final class AppPatch {
                                     return cookieFor(key, manifestUrl, subjectId, season, episode, rejected);
                                 }
                             });
+                            Log.i(TAG, "DASH file " + key + ": " + file.length + " bytes from "
+                                    + Uri.parse(manifestUrl).getHost() + ", ready in "
+                                    + (SystemClock.elapsedRealtime() - started) + " ms");
+                            return file;
                         }
                     });
                     files.put(key, task);

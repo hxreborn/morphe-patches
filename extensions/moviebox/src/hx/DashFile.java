@@ -26,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,9 @@ final class DashFile {
     }
 
     private static final int PROBE_BYTES = 256;
-    private static final int SIZING_THREADS = 12;
+    private static final int SIZING_THREADS = 48;
+    private static final int PARALLEL_READS = 6;
+    private static final int READ_CHUNK_BYTES = 256 * 1024;
     private static final int CONNECT_TIMEOUT_MS = 15000;
     private static final int READ_TIMEOUT_MS = 30000;
     private static final int COPY_BUFFER_BYTES = 1 << 16;
@@ -62,7 +65,6 @@ final class DashFile {
     private static final long SECONDS_PER_HOUR = 3600L;
     private static final long SECONDS_PER_DAY = 86400L;
 
-    // ISO BMFF field offsets from the box start
     private static final int BOX_HEADER = 8;
     private static final int BOX_TYPE_AT = 4;
     private static final int FULL_BOX_HEADER = 12;
@@ -253,13 +255,43 @@ final class DashFile {
             out.write(head, (int) at, count);
             at += count;
         }
-        int index = pieceAt(at);
-        while (at <= end && index < pieces.length) {
-            Piece piece = pieces[index++];
-            long from = at - piece.offset;
-            long to = Math.min(end - piece.offset, piece.length - 1);
-            copy(piece, from, to, out);
-            at = piece.offset + to + 1;
+        out.flush();
+        ExecutorService pool = Executors.newFixedThreadPool(PARALLEL_READS);
+        ArrayDeque<Future<byte[]>> pending = new ArrayDeque<>();
+        try {
+            int index = pieceAt(at);
+            while (true) {
+                while (pending.size() < PARALLEL_READS && at <= end && index < pieces.length) {
+                    final Piece piece = pieces[index];
+                    final long from = at - piece.offset;
+                    final long to = Math.min(Math.min(end - piece.offset, piece.length - 1), from + READ_CHUNK_BYTES - 1);
+                    pending.add(pool.submit(new Callable<byte[]>() {
+                        @Override
+                        public byte[] call() throws IOException {
+                            return readPiece(piece, from, to);
+                        }
+                    }));
+                    at = piece.offset + to + 1;
+                    if (to == piece.length - 1) index++;
+                }
+                Future<byte[]> next = pending.poll();
+                if (next == null) return;
+                out.write(await(next));
+            }
+        } finally {
+            pool.shutdownNow();
+        }
+    }
+
+    private static <T> T await(Future<T> task) throws IOException {
+        try {
+            return task.get();
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            throw cause instanceof IOException ? (IOException) cause : new IOException(cause);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException(e);
         }
     }
 
@@ -274,33 +306,28 @@ final class DashFile {
         return low;
     }
 
-    private void copy(Piece piece, long from, long to, OutputStream out) throws IOException {
+    private byte[] readPiece(Piece piece, long from, long to) throws IOException {
         String range = "bytes=" + (piece.prefixBytes + from) + "-" + (piece.prefixBytes + to);
         HttpURLConnection connection = connect(piece.url, range, cookies);
-        try {
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_PARTIAL) {
-                throw new IOException("range ignored for " + piece.url);
-            }
-            InputStream in = connection.getInputStream();
-            byte[] buffer = new byte[COPY_BUFFER_BYTES];
-            long position = from;
-            long remaining = to - from + 1;
-            while (remaining > 0) {
-                int count = in.read(buffer, 0, (int) Math.min(buffer.length, remaining));
-                if (count < 0) throw new IOException("segment ended early: " + piece.url);
-                for (int k = 0; k < TRACK_ID_BYTES; k++) {
-                    long index = piece.trackIdOffset + k - position;
-                    if (index >= 0 && index < count) {
-                        buffer[(int) index] = (byte) (piece.trackId >>> (Byte.SIZE * (TRACK_ID_BYTES - 1 - k)));
-                    }
-                }
-                out.write(buffer, 0, count);
-                position += count;
-                remaining -= count;
-            }
-        } finally {
+        if (connection.getResponseCode() != HttpURLConnection.HTTP_PARTIAL) {
             connection.disconnect();
+            throw new IOException("range ignored for " + piece.url);
         }
+        byte[] bytes = new byte[(int) (to - from + 1)];
+        try (InputStream in = connection.getInputStream()) {
+            for (int got = 0; got < bytes.length; ) {
+                int count = in.read(bytes, got, bytes.length - got);
+                if (count < 0) throw new IOException("segment ended early: " + piece.url);
+                got += count;
+            }
+        }
+        for (int k = 0; k < TRACK_ID_BYTES; k++) {
+            long index = piece.trackIdOffset + k - from;
+            if (index >= 0 && index < bytes.length) {
+                bytes[(int) index] = (byte) (piece.trackId >>> (Byte.SIZE * (TRACK_ID_BYTES - 1 - k)));
+            }
+        }
+        return bytes;
     }
 
     private static Manifest parse(byte[] xml, String manifestUrl) throws IOException {
@@ -471,12 +498,7 @@ final class DashFile {
                     }
                 }));
             }
-            for (Future<Void> probe : probes) probe.get();
-        } catch (ExecutionException e) {
-            throw new IOException("cannot size segments", e.getCause());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IOException("interrupted while sizing segments", e);
+            for (Future<Void> probe : probes) await(probe);
         } finally {
             pool.shutdownNow();
         }
@@ -484,7 +506,7 @@ final class DashFile {
 
     private static void probe(Segment segment, Cookies cookies) throws IOException {
         HttpURLConnection connection = connect(segment.url, "bytes=0-" + (PROBE_BYTES - 1), cookies);
-        try {
+        try (InputStream in = connection.getInputStream()) {
             String contentRange = connection.getHeaderField("Content-Range");
             int slash = contentRange == null ? -1 : contentRange.indexOf('/');
             segment.byteLength = slash >= 0
@@ -492,7 +514,6 @@ final class DashFile {
                     : connection.getContentLength();
             if (segment.byteLength <= 0) throw new IOException("no size for " + segment.url);
             byte[] prefix = new byte[PROBE_BYTES];
-            InputStream in = connection.getInputStream();
             int got = 0;
             while (got < prefix.length) {
                 int count = in.read(prefix, got, prefix.length - got);
@@ -506,8 +527,6 @@ final class DashFile {
             segment.trackIdOffset = trackIdOffset(prefix, offset, got);
         } catch (NumberFormatException malformed) {
             throw new IOException("unreadable Content-Range for " + segment.url, malformed);
-        } finally {
-            connection.disconnect();
         }
     }
 
@@ -533,16 +552,12 @@ final class DashFile {
     }
 
     private static byte[] fetch(String url, Cookies cookies) throws IOException {
-        HttpURLConnection connection = connect(url, null, cookies);
-        try {
-            InputStream in = connection.getInputStream();
+        try (InputStream in = connect(url, null, cookies).getInputStream()) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buffer = new byte[COPY_BUFFER_BYTES];
             int count;
             while ((count = in.read(buffer)) != -1) out.write(buffer, 0, count);
             return out.toByteArray();
-        } finally {
-            connection.disconnect();
         }
     }
 
