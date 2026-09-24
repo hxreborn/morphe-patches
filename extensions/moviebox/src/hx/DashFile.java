@@ -15,15 +15,18 @@
  */
 package hx;
 
+import android.util.Log;
 import android.util.Xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
@@ -48,12 +51,15 @@ final class DashFile {
         String refresh(String rejected) throws IOException;
     }
 
+    private static final String TAG = "hxreborn/moviebox";
     private static final int PROBE_BYTES = 256;
     private static final int SIZING_THREADS = 48;
     private static final int PARALLEL_READS = 6;
     private static final int READ_CHUNK_BYTES = 256 * 1024;
     private static final int CONNECT_TIMEOUT_MS = 15000;
     private static final int READ_TIMEOUT_MS = 30000;
+    private static final int CDN_ATTEMPTS = 5;
+    private static final long CDN_RETRY_DELAY_MS = 2000L;
     private static final int COPY_BUFFER_BYTES = 1 << 16;
     private static final int MAX_MANIFEST_DEPTH = 32;
     private static final long MS_PER_SECOND = 1000L;
@@ -307,6 +313,28 @@ final class DashFile {
     }
 
     private byte[] readPiece(Piece piece, long from, long to) throws IOException {
+        for (int attempt = 1; ; attempt++) {
+            try {
+                return readPieceOnce(piece, from, to);
+            } catch (IOException e) {
+                rethrowOrBackOff(attempt, e);
+            }
+        }
+    }
+
+    private static void rethrowOrBackOff(int attempt, IOException failure) throws IOException {
+        boolean cancelled = failure instanceof InterruptedIOException && !(failure instanceof SocketTimeoutException);
+        if (attempt == CDN_ATTEMPTS || cancelled) throw failure;
+        Log.w(TAG, "CDN read attempt " + attempt + " of " + CDN_ATTEMPTS + " failed", failure);
+        try {
+            Thread.sleep(CDN_RETRY_DELAY_MS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException(e);
+        }
+    }
+
+    private byte[] readPieceOnce(Piece piece, long from, long to) throws IOException {
         String range = "bytes=" + (piece.prefixBytes + from) + "-" + (piece.prefixBytes + to);
         HttpURLConnection connection = connect(piece.url, range, cookies);
         if (connection.getResponseCode() != HttpURLConnection.HTTP_PARTIAL) {
@@ -505,6 +533,17 @@ final class DashFile {
     }
 
     private static void probe(Segment segment, Cookies cookies) throws IOException {
+        for (int attempt = 1; ; attempt++) {
+            try {
+                probeOnce(segment, cookies);
+                return;
+            } catch (IOException e) {
+                rethrowOrBackOff(attempt, e);
+            }
+        }
+    }
+
+    private static void probeOnce(Segment segment, Cookies cookies) throws IOException {
         HttpURLConnection connection = connect(segment.url, "bytes=0-" + (PROBE_BYTES - 1), cookies);
         try (InputStream in = connection.getInputStream()) {
             String contentRange = connection.getHeaderField("Content-Range");
@@ -552,6 +591,16 @@ final class DashFile {
     }
 
     private static byte[] fetch(String url, Cookies cookies) throws IOException {
+        for (int attempt = 1; ; attempt++) {
+            try {
+                return fetchOnce(url, cookies);
+            } catch (IOException e) {
+                rethrowOrBackOff(attempt, e);
+            }
+        }
+    }
+
+    private static byte[] fetchOnce(String url, Cookies cookies) throws IOException {
         try (InputStream in = connect(url, null, cookies).getInputStream()) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buffer = new byte[COPY_BUFFER_BYTES];
