@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -390,11 +391,21 @@ public final class AppPatch {
         }
     }
 
+    private static final class NoSignedResource extends IOException {
+        private static final long serialVersionUID = 1L;
+
+        NoSignedResource(String message) {
+            super(message);
+        }
+    }
+
     private static final class MovieBoxSource implements DashServer.Source {
         private static final int FILE_RETENTION = 8;
         private static final int RESOURCE_RETENTION = 32;
         private static final int ORIGIN_PROBE_TIMEOUT_MS = 10000;
         private static final long PLACEHOLDER_SIZE_RATIO = 2;
+        private static final int PLAY_INFO_ATTEMPTS = 5;
+        private static final long PLAY_INFO_RETRY_DELAY_MS = 2000L;
 
         private final ClassLoader loader;
         private final Object client;
@@ -435,7 +446,7 @@ public final class AppPatch {
             }
             try {
                 resource(subjectId, season, episode, null);
-            } catch (IOException noResource) {
+            } catch (NoSignedResource noResource) {
                 if (origin == null) throw noResource;
                 if (placeholder(origin, originSize)) {
                     diagnose(NOT_HOSTED);
@@ -556,9 +567,21 @@ public final class AppPatch {
             if (cached != null && !cached.expired() && !cached.cookie.equals(rejectedCookie)) return cached;
             String url = apiBase + PLAY_INFO + "?subjectId=" + subjectId + "&se=" + season + "&ep=" + episode
                     + "&isVip=true";
-            SignedResource fetched = observePlayInfo(url, get(url));
-            if (fetched == null) throw new IOException("play-info has no signed DASH resource for " + key);
+            SignedResource fetched = observePlayInfo(url, getPlayInfoWithRetry(url, key));
+            if (fetched == null) throw new NoSignedResource("play-info has no signed DASH resource for " + key);
             return fetched;
+        }
+
+        private String getPlayInfoWithRetry(String url, String key) throws IOException {
+            for (int attempt = 1; ; attempt++) {
+                try {
+                    return get(url);
+                } catch (IOException e) {
+                    if (attempt == PLAY_INFO_ATTEMPTS) throw e;
+                    Log.w(TAG, "play-info " + key + " attempt " + attempt + " of " + PLAY_INFO_ATTEMPTS + " failed", e);
+                    SystemClock.sleep(PLAY_INFO_RETRY_DELAY_MS);
+                }
+            }
         }
 
         private String get(String url) throws IOException {
@@ -568,6 +591,11 @@ public final class AppPatch {
                 Object request = builder.getClass().getMethod("build").invoke(builder);
                 Object call = client.getClass().getMethod("newCall", request.getClass()).invoke(client, request);
                 Object response = call.getClass().getMethod("execute").invoke(call);
+                int code = (Integer) response.getClass().getMethod("code").invoke(response);
+                if (code < 200 || code >= 300) {
+                    response.getClass().getMethod("close").invoke(response);
+                    throw new IOException("HTTP " + code + " for " + url);
+                }
                 Object body = response.getClass().getMethod("body").invoke(response);
                 return (String) body.getClass().getMethod("string").invoke(body);
             } catch (InvocationTargetException e) {
