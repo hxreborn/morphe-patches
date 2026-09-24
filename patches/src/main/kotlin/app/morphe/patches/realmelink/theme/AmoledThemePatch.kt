@@ -24,12 +24,14 @@ import app.morphe.util.doRecursively
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.getNode
 import app.morphe.util.matchSingle
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import java.io.File
 import org.w3c.dom.Element
 
 private const val APP_COMPAT_DELEGATE_CLASS = "Landroidx/appcompat/app/AppCompatDelegate;"
 private const val WEB_SETTINGS_CLASS = "Landroid/webkit/WebSettings;"
+private const val TITLE_VIEW_CLASS = "Lcom/realme/iot/common/widgets/TitleView;"
 private const val MODE_NIGHT_YES = 2
 private val WEB_VIEW_SETTINGS_SITES = 4..4
 private val HOME_HEADER_TINT_SITES = 2..2
@@ -139,6 +141,7 @@ private val NIGHT_COLORS = mapOf(
     "account_color_4D000000" to "#4dffffff",
     "color_4C000000" to "#4cffffff",
     "color_4D000000" to "#4dffffff",
+    "color_0D000000" to "#0dffffff",
     "color_8C000000" to "#8cffffff",
     "color_D9000000" to "#d9ffffff",
     "color_d9000000" to "#d9ffffff",
@@ -169,7 +172,6 @@ private const val HEADSET_PACKAGE = "com.realme.link.realmeHeadset"
 private val HEADSET_COLORS = mapOf(
     "color_F2F2F2" to "#000000",
     "color_F3F4F6" to "#000000",
-    "color_bg_grey" to "#000000",
     "headset_ffecd" to "#000000",
     "color_bg_white" to "#1a1a1a",
     "headset_white" to "#1a1a1a",
@@ -191,6 +193,7 @@ private val HEADSET_COLORS = mapOf(
     "color_D8000000" to "#d8ffffff",
     "color_D9000000" to "#d9ffffff",
     "color_check_box_grey" to "#33ffffff",
+    "color_bg_grey" to "#33ffffff",
     "headset_bg_grey" to "#1effffff",
     "text_grey" to "#66ffffff",
 )
@@ -307,10 +310,14 @@ private val HEADSET_SURFACE_REPLACEMENTS = SURFACE_VALUES.associateWith { HEADSE
 
 private val HEADSET_ON_SURFACE_REPLACEMENTS = SURFACE_VALUES.associateWith { HEADSET_ON_SURFACE }
 
+private const val FRAMEWORK_BLACK = "@android:color/black"
+
 private val HEADSET_LAYOUT_ON_SURFACE_REPLACEMENTS = HEADSET_ON_SURFACE_REPLACEMENTS +
-    BLACK_VALUES.associateWith { HEADSET_ON_SURFACE }
+    (BLACK_VALUES + FRAMEWORK_BLACK).associateWith { HEADSET_ON_SURFACE }
 
 private const val HEADSET_PANEL_BACKGROUND_DRAWABLE = "res/drawable/realme_headset_shape_home_bg.xml"
+private const val HEADSET_SUB_SCREEN_GROUP_LAYOUT = "res/layout/headset_item_sub_screen_group.xml"
+private const val BACKGROUND_ATTRIBUTE = "android:background"
 
 private val SELECTOR_ATTRIBUTES = listOf("android:drawable")
 
@@ -361,12 +368,13 @@ private fun ColorPalettes.resolveColor(value: String): String? {
     return null
 }
 
+private fun readableInkAlpha(alpha: Int) = if (alpha < VISIBLE_INK_ALPHA) alpha else maxOf(alpha, MIN_INK_ALPHA)
+
 private fun ColorPalettes.invertedInk(value: String): String? {
     val color = resolveColor(value) ?: return null
     val alpha = inkAlpha(color)?.toInt(16) ?: return null
-    val readable = if (alpha < VISIBLE_INK_ALPHA) alpha else maxOf(alpha, MIN_INK_ALPHA)
 
-    return "#%02xffffff".format(readable)
+    return "#%02xffffff".format(readableInkAlpha(alpha))
 }
 
 private val HAIRLINE_SIZES = setOf("1px", "2px", "0.5dp", "1dp")
@@ -631,21 +639,24 @@ private fun PngImage.isDarkGlyph(): Boolean {
         tones.size <= GLYPH_TONE_CEILING
 }
 
-private fun PngImage.whitenOpaquePixels() {
+private fun PngImage.whitenOpaquePixels(applyInkAlphaFloor: Boolean) {
+    val strongestAlpha = argb.maxOf { it ushr 24 }
+    val targetAlpha = if (applyInkAlphaFloor) readableInkAlpha(strongestAlpha) else strongestAlpha
+
     for (index in argb.indices) {
-        val alpha = argb[index] and 0xff000000.toInt()
-        if (alpha != 0) argb[index] = alpha or OPAQUE_WHITE_RGB
+        val alpha = (argb[index] ushr 24) * targetAlpha / strongestAlpha
+        if (alpha != 0) argb[index] = (alpha shl 24) or OPAQUE_WHITE_RGB
     }
 }
 
-private fun ResourcePackage.whitenDarkGlyphIcons(): Int {
+private fun ResourcePackage.whitenDarkGlyphIcons(applyInkAlphaFloor: Boolean = false): Int {
     var whitened = 0
 
     iconImageFiles().forEach icon@{ file ->
         val image = PngImage.read(file)
         if (!image.isDarkGlyph()) return@icon
 
-        image.whitenOpaquePixels()
+        image.whitenOpaquePixels(applyInkAlphaFloor)
         image.write(file)
         whitened++
     }
@@ -839,7 +850,7 @@ private val amoledThemeResourcesPatch = resourcePatch {
             "black headset monochrome icon",
             invertMonochromeVectors(headset, HEADSET_ON_SURFACE),
         )
-        requireReplaced("dark headset glyph icon", headset.whitenDarkGlyphIcons())
+        requireReplaced("dark headset glyph icon", headset.whitenDarkGlyphIcons(applyInkAlphaFloor = true))
         requireReplaced(
             "light headset layout foreground",
             replaceAttributes(
@@ -882,6 +893,10 @@ private val amoledThemeResourcesPatch = resourcePatch {
 
             GRADIENT_ATTRIBUTES.filter { gradient.getAttribute(it).isNotEmpty() }
                 .forEach { gradient.setAttribute(it, HEADSET_PAGE) }
+        }
+
+        document(HEADSET_SUB_SCREEN_GROUP_LAYOUT, HEADSET_PACKAGE).use { document ->
+            document.documentElement.setAttribute(BACKGROUND_ATTRIBUTE, HEADSET_PAGE)
         }
 
         requireReplaced(
@@ -941,11 +956,36 @@ val amoledThemePatch = bytecodePatch(
             method.replaceInstruction(index, "const-string v$register, \"$HOME_BACKGROUND_COLOR\"")
         }
 
-        HeadsetSubScreenBackgroundFingerprint.matchSingle().apply {
-            val index = instructionMatches.first().index
-            val register = method.getInstruction<OneRegisterInstruction>(index).registerA
+        mapOf(
+            HeadsetSubScreenBackgroundFingerprint to OPAQUE_BLACK_ARGB,
+            SpatialAudioPlayButtonTextColorFingerprint to OPAQUE_WHITE_ARGB,
+        ).forEach { (fingerprint, color) ->
+            fingerprint.matchSingle().apply {
+                val index = instructionMatches.first().index
+                val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
-            method.replaceInstruction(index, "const v$register, $OPAQUE_BLACK_ARGB")
+                method.replaceInstruction(index, "const v$register, $color")
+            }
+        }
+
+        listOf(
+            HeadsetSubScreenTitleFingerprint,
+            HeadsetVirtualDeviceTitleFingerprint,
+        ).forEach { fingerprint ->
+            fingerprint.matchSingle().apply {
+                val index = instructionMatches.last().index
+                val titleRegister = method.getInstruction<FiveRegisterInstruction>(index).registerC
+                val backgroundRegister = method.getFreeRegisterProvider(index + 1, 1, titleRegister)
+                    .getFreeRegister4Bit()
+
+                method.addInstructions(
+                    index + 1,
+                    """
+                        const/4 v$backgroundRegister, 0x0
+                        invoke-virtual { v$titleRegister, v$backgroundRegister }, $TITLE_VIEW_CLASS->setBackground(Landroid/graphics/drawable/Drawable;)V
+                    """,
+                )
+            }
         }
 
         WebViewSettingsFingerprint.matchAll(WEB_VIEW_SETTINGS_SITES).forEach { match ->

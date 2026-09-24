@@ -18,6 +18,7 @@ private const val DEFAULT_HOME_BACKGROUND_COLOR = "#E4E4E4"
 private const val HOME_BACKGROUND_TINT_PREFERENCE = "home_background_tint_color"
 private const val OPAQUE_BLACK_ARGB = -0x1000000
 private const val OPAQUE_WHITE_ARGB = -0x1
+private const val TITLE_VIEW_CLASS = "Lcom/realme/iot/common/widgets/TitleView;"
 
 internal object HeadsetSubScreenBackgroundFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC),
@@ -30,6 +31,46 @@ internal object HeadsetSubScreenBackgroundFingerprint : Fingerprint(
         methodCall(
             definingClass = "Landroid/view/View;",
             name = "setBackgroundColor",
+            location = InstructionLocation.MatchAfterImmediately(),
+        ),
+    ),
+)
+
+internal object HeadsetSubScreenTitleFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC),
+    returnType = "V",
+    parameters = listOf(),
+    name = "initToolbar",
+    definingClass = "Lcom/realme/iot/headset/activity/device/HeadsetDeviceSubScreenActivity;",
+    filters = listOf(
+        methodCall(definingClass = TITLE_VIEW_CLASS, name = "setCenterText"),
+    ),
+)
+
+internal object HeadsetVirtualDeviceTitleFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
+    returnType = "V",
+    parameters = listOf(),
+    definingClass = "Lcom/realme/iot/headset/activity/device/HeadsetVirtualDeviceActivity;",
+    filters = listOf(
+        methodCall(
+            definingClass = TITLE_VIEW_CLASS,
+            parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;"),
+            returnType = "V",
+        ),
+    ),
+)
+
+internal object SpatialAudioPlayButtonTextColorFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
+    returnType = "V",
+    parameters = listOf("Z"),
+    definingClass = "Lcom/realme/iot/headset/activity/soundeffect/SpatialAudioActivity;",
+    filters = listOf(
+        literal(OPAQUE_BLACK_ARGB),
+        methodCall(
+            definingClass = "Landroid/widget/TextView;",
+            name = "setTextColor",
             location = InstructionLocation.MatchAfterImmediately(),
         ),
     ),
