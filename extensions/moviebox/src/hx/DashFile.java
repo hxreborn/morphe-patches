@@ -473,9 +473,11 @@ final class DashFile {
         if (template.timescale <= 0) throw new IOException("representation " + representation.id + " has no timescale");
         List<Interval> timeline = template.timeline;
         if (timeline.isEmpty() && template.duration > 0 && presentationSeconds > 0) {
-            long count = (long) Math.ceil(presentationSeconds * template.timescale / template.duration);
+            long total = Math.round(presentationSeconds * template.timescale);
+            long fullSegments = (total - 1) / template.duration;
             timeline = new ArrayList<>();
-            timeline.add(new Interval(0, template.duration, count - 1));
+            if (fullSegments > 0) timeline.add(new Interval(0, template.duration, fullSegments - 1));
+            timeline.add(new Interval(fullSegments * template.duration, total - fullSegments * template.duration, 0));
         }
         if (timeline.isEmpty()) throw new IOException("manifest lacks a segment timeline or segment duration");
         List<Segment> segments = new ArrayList<>();
