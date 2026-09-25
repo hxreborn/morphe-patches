@@ -36,8 +36,8 @@ import java.util.regex.Pattern;
 
 final class DashServer implements Runnable {
     interface Source {
-        DashFile open(String subjectId, int season, int episode, int height, String origin, long originSize)
-                throws IOException;
+        DashFile open(String subjectId, int season, int episode, int height, String origin, long originSize,
+                      String resourceId, boolean fromStart) throws IOException;
     }
 
     static final class UnavailableException extends IOException {
@@ -74,6 +74,7 @@ final class DashServer implements Runnable {
     private static final char DEL = 0x7F;
     private static final String ORIGIN_PARAMETER = "origin";
     private static final String ORIGIN_SIZE_PARAMETER = "size";
+    private static final String RESOURCE_ID_PARAMETER = "resourceId";
     private static final String STATUS_OK = "200 OK";
     private static final String STATUS_PARTIAL = "206 Partial Content";
     private static final String STATUS_FOUND = "302 Found";
@@ -96,9 +97,11 @@ final class DashServer implements Runnable {
         return new DashServer(source, new ServerSocket(PORT, BACKLOG, InetAddress.getByAddress(LOOPBACK)));
     }
 
-    static String buildUrl(String subjectId, int season, int episode, int height, String origin, long originSize) {
+    static String buildUrl(String subjectId, int season, int episode, int height, String origin, long originSize,
+                           String resourceId) {
         return "http://127.0.0.1:" + PORT + "/dash/" + subjectId + "/" + season + "/" + episode + "/" + height + ".mp4"
-                + "?" + ORIGIN_PARAMETER + "=" + Uri.encode(origin) + "&" + ORIGIN_SIZE_PARAMETER + "=" + originSize;
+                + "?" + ORIGIN_PARAMETER + "=" + Uri.encode(origin) + "&" + ORIGIN_SIZE_PARAMETER + "=" + originSize
+                + (resourceId == null ? "" : "&" + RESOURCE_ID_PARAMETER + "=" + Uri.encode(resourceId));
     }
 
     synchronized void start() {
@@ -198,11 +201,15 @@ final class DashServer implements Runnable {
         }
         String origin = parseValidOrigin(target.getQueryParameter(ORIGIN_PARAMETER));
         long originSize = parseSize(target.getQueryParameter(ORIGIN_SIZE_PARAMETER));
+        Matcher requested = rangeHeader == null ? null : RANGE.matcher(rangeHeader);
+        boolean partial = requested != null && requested.matches();
+        boolean fromStart = !partial || Long.parseLong(requested.group(1)) == 0;
 
         DashFile file;
         try {
             file = source.open(path.group(1), Integer.parseInt(path.group(2)),
-                    Integer.parseInt(path.group(3)), Integer.parseInt(path.group(4)), origin, originSize);
+                    Integer.parseInt(path.group(3)), Integer.parseInt(path.group(4)), origin, originSize,
+                    target.getQueryParameter(RESOURCE_ID_PARAMETER), fromStart);
         } catch (UnavailableException gone) {
             Log.i(TAG, "unavailable " + request[1] + ": " + gone.getMessage());
             writeEmpty(out, STATUS_NOT_FOUND, null);
@@ -223,8 +230,6 @@ final class DashServer implements Runnable {
             return;
         }
 
-        Matcher requested = rangeHeader == null ? null : RANGE.matcher(rangeHeader);
-        boolean partial = requested != null && requested.matches();
         Range range = partial ? parseRequestedRange(requested, file.length) : new Range(0, file.length - 1);
         if (range.start > range.end) {
             writeEmpty(out, STATUS_UNSATISFIABLE, "bytes */" + file.length);

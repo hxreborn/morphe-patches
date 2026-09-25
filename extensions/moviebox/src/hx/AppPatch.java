@@ -62,6 +62,7 @@ public final class AppPatch {
     private static final String OKHTTP_URL = "okhttp3.HttpUrl";
     private static final String BFF = "wefeed-mobile-bff";
     private static final String PLAY_INFO = BFF + "/subject-api/play-info/v2";
+    private static final String RESOURCE_POSITION = BFF + "/subject-api/resource-position/v2";
     private static final String PLAY_INFO_SEGMENT = "/subject-api/play-info/";
     private static final String RESOURCE_LIST_SEGMENT = "/subject-api/resource/";
     private static final String USER_PROFILE = BFF + "/user-api/profile";
@@ -413,6 +414,8 @@ public final class AppPatch {
         private final String apiBase;
         private final Map<String, SignedResource> resources = newLruMap(RESOURCE_RETENTION);
         private final Map<String, Long> originLengths = newLruMap(RESOURCE_RETENTION);
+        private final Map<String, Boolean> directFiles = newLruMap(RESOURCE_RETENTION);
+        private final Map<String, Boolean> handedOff = newLruMap(RESOURCE_RETENTION);
         private final Map<String, FutureTask<DashFile>> files = newLruMap(FILE_RETENTION);
         private final CloudFrontPlayInfoClient cloudFrontPlayInfoClient = new CloudFrontPlayInfoClient();
 
@@ -441,14 +444,15 @@ public final class AppPatch {
 
         @Override
         public DashFile open(final String subjectId, final int season, final int episode, final int height,
-                             String origin, long originSize) throws IOException {
+                             String origin, long originSize, String resourceId, boolean fromStart) throws IOException {
             String label = SignedResource.key(subjectId, season, episode) + "@" + height;
             if (origin != null && originSize > 0 && originLength(origin) == originSize) {
                 Log.i(TAG, label + ": redirect to origin, size " + originSize + " matches");
                 return null;
             }
+            SignedResource signed;
             try {
-                resource(subjectId, season, episode, null);
+                signed = resource(subjectId, season, episode, null);
             } catch (NoSignedResourceException noResource) {
                 if (origin == null) throw noResource;
                 if (isPlaceholder(origin, originSize)) {
@@ -458,7 +462,52 @@ public final class AppPatch {
                 Log.i(TAG, label + ": redirect to origin, " + noResource.getMessage());
                 return null;
             }
+            if (isHandedOff(label, subjectId, signed, resourceId, origin, originSize, fromStart)) {
+                throw new DashServer.UnavailableException(label + ": DASH on " + Uri.parse(signed.manifestUrl).getHost()
+                        + ", leaving the download to the app's direct file");
+            }
             return getOrCreateFile(subjectId, season, episode, height);
+        }
+
+        private boolean isHandedOff(String label, String subjectId, SignedResource signed, String resourceId,
+                                    String origin, long originSize, boolean fromStart) {
+            synchronized (handedOff) {
+                Boolean decided = handedOff.get(label);
+                if (decided != null) return decided;
+            }
+            boolean handOff = fromStart && !DashFile.isUnpacedCdn(signed.manifestUrl)
+                    && hasDirectFile(subjectId, resourceId, origin, originSize);
+            synchronized (handedOff) {
+                Boolean decided = handedOff.get(label);
+                if (decided != null) return decided;
+                handedOff.put(label, handOff);
+                return handOff;
+            }
+        }
+
+        private boolean hasDirectFile(String subjectId, String resourceId, String origin, long originSize) {
+            if (resourceId == null || origin == null || originSize <= 0) return false;
+            synchronized (directFiles) {
+                Boolean known = directFiles.get(resourceId);
+                if (known != null) return known;
+            }
+            try {
+                String body = get(apiBase + RESOURCE_POSITION + "?subjectId=" + subjectId + "&resourceId=" + resourceId
+                        + "&failUrl=" + Uri.encode(origin) + "&failCode=404&resourceNum=0&isVip=true");
+                JSONArray list = new JSONObject(body).getJSONObject("data").optJSONArray("list");
+                String url = list == null || list.length() == 0 ? "" : list.getJSONObject(0).optString("resourceLink", "");
+                long length = url.isEmpty() ? -1 : probeLength(url);
+                boolean available = length == originSize;
+                Log.i(TAG, "direct file " + resourceId + ": " + (url.isEmpty() ? "none"
+                        : Uri.parse(url).getHost() + ", " + length + " of " + originSize + " bytes"));
+                synchronized (directFiles) {
+                    directFiles.put(resourceId, available);
+                }
+                return available;
+            } catch (IOException | JSONException | NumberFormatException e) {
+                Log.w(TAG, "direct file " + resourceId + " not checked", e);
+                return false;
+            }
         }
 
         private boolean isPlaceholder(String origin, long originSize) {
@@ -797,7 +846,8 @@ public final class AppPatch {
             String origin = stream.optString("url", "");
             int height = parseMaxResolution(stream.optString("resolutions", ""));
             if (origin.isEmpty() || height <= 0) continue;
-            stream.put("url", DashServer.buildUrl(subjectId, season, episode, height, origin, stream.optLong("size", 0)));
+            stream.put("url", DashServer.buildUrl(subjectId, season, episode, height, origin, stream.optLong("size", 0),
+                    null));
             changed = true;
         }
         return changed;
@@ -894,7 +944,9 @@ public final class AppPatch {
                     + " resolution=" + height);
             return false;
         }
-        item.put("resourceLink", DashServer.buildUrl(subjectId, season, episode, height, origin, item.optLong("size", 0)));
+        String resourceId = item.optString("resourceId", "");
+        item.put("resourceLink", DashServer.buildUrl(subjectId, season, episode, height, origin, item.optLong("size", 0),
+                resourceId.isEmpty() ? null : resourceId));
         return true;
     }
 
