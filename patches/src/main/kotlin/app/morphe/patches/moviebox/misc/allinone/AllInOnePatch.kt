@@ -40,6 +40,7 @@ private const val PREMIUM_PROVIDER = "Lcom/transsion/member/premium/PremiumProvi
 private const val PREMIUM_ACCESS = "Lcom/transsion/memberapi/PremiumV2CheckAccessDto;"
 private const val MEMBER_RESOLUTION = "Lcom/transsion/baselib/db/member/MemberResolutionBean;"
 private const val OBSERVE_LOGIN_ACTION = "Lcom/transsion/member/ObserveLoginAction;"
+private const val MEMBER_LOGIN_HELPER = "Lfy/a;"
 private const val DOWNLOAD_RESOLUTION_ITEM = "Lcom/transsion/moviedetailapi/bean/DownloadResolutionItem;"
 private const val REMOTE_VERSION_INFO = "Lcom/transsion/version/update/RemoteVersionInfo;"
 private const val LIFE_STATUS_INTERCEPTOR = "Lcom/transsion/baselib/net/AppLifeStatusInterceptor;"
@@ -52,6 +53,7 @@ private val MEMBER_CHECK_FLAGS = listOf("isPassed", "getVipEnable", "getVipPayEn
 private val MEMBER_FLAG_KEYS = listOf("kv_is_pay_enable_member", "kv_is_skip_ad", "kv_is_enable_member")
 private const val PARALLEL_DOWNLOAD_KEY = "kv_parallel_download_task_num"
 private const val UPSELL_DIALOG_LOG = "checkMemberShipShow data:"
+private const val MEMBER_NOT_LOGGED_IN_LOG = "showMemberNotLoggedInLoginDialog:isLogin ="
 
 private val PREMIUM_QUOTA_KEYS = listOf("free_download_count", "max_resolution")
 private val FREE_PLAY_QUOTA_KEYS = listOf(
@@ -156,6 +158,7 @@ val allInOnePatch = resourcePatch(
             method(MEMBER_RESOLUTION, "isUnlock").returnBoxed(true)
             method(MEMBER_RESOLUTION, "getVipResolutionTip").returnBoxed(false)
             method(OBSERVE_LOGIN_ACTION, "onLogout").returnEarly()
+            methodWithStringOrNull(MEMBER_LOGIN_HELPER, MEMBER_NOT_LOGGED_IN_LOG)?.returnEarly(false)
 
             REQUIRE_MEMBER_TYPE_HOLDERS.forEach { method(it, "getRequireMemberType").returnNull() }
             method(DOWNLOAD_RESOLUTION_ITEM, "getRequireMemberType").returnEarly(FREE)
