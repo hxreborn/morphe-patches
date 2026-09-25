@@ -34,7 +34,7 @@ identify each app. They are not covered by this repository's licence. See
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.29.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.29.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;65 patches total
+> **[v1.30.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.30.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;75 patches total
 <details open>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -218,6 +218,22 @@ identify each app. They are not covered by this repository's licence. See
 </details>
 
 <details open>
+<summary>📦&nbsp;Hindu Calendar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 9.3.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="hindu-calendar-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/hinducalendar/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics from collecting usage data. |
+| <a id="hindu-calendar-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/hinducalendar/ads/HideAdsPatch.kt) | Removes banner and interstitial ads and the Remove Ads menu item. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/mymoveset.png" width="18" align="top">&nbsp;&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -264,6 +280,41 @@ identify each app. They are not covered by this repository's licence. See
 |----------|----------------|
 | <a id="projectivy-launcher-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/projectivy/misc/tracking/DisableTrackingPatch.kt) | Disables analytics and crash reporting. |
 | <a id="projectivy-launcher-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/projectivy/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;VLLO&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 13.7.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="vllo-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/vllo/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Firebase Analytics, and Facebook from collecting usage data. |
+| <a id="vllo-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/vllo/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium editing features, removes ads and the export watermark, and skips the ad before importing audio. Hides the store button. The AI tools are not included. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.26.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |
+| <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open, video player and rewarded ads. Features unlocked by watching an ad are unavailable. |
+| <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |
+| <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Hides Premium upgrade cards and banners, prize cards, and sale, coupon and promotional popups. |
+| <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Hides the recommended videos below the video player. |
 
 </details>
 
@@ -452,6 +503,21 @@ identify each app. They are not covered by this repository's licence. See
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="bettersleep-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bettersleep/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium content and skips the free trial screen. |
+
+</details>
+
+<details open>
+<summary>📦&nbsp;Echogram&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.0.7.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="echogram-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/echogram/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
 
 </details>
 
