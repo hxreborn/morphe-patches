@@ -117,6 +117,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.2.221", versionCode = 221, minSdk = 24)),
     )
 
+    val HINDU_CALENDAR = Compatibility(
+        name = "Hindu Calendar",
+        packageName = "com.alokmandavgane.hinducalendar",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF89532,
+        signatures = setOf(
+            "1dc3da6664982c69c3c7326282beaf0c6f153daa7da36bd7ec4cd4313e664651",
+        ),
+        targets = listOf(AppTarget(version = "9.3.0", versionCode = 156, minSdk = 28)),
+    )
+
     val KICK = Compatibility(
         name = "Kick",
         packageName = "com.kick.mobile",

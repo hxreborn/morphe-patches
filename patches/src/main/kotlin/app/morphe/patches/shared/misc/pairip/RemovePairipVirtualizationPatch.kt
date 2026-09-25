@@ -217,6 +217,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
     compatibleWith(
         AppCompatibilities.ALL_IN_ONE_CALCULATOR,
         AppCompatibilities.BETTERSLEEP,
+        AppCompatibilities.HINDU_CALENDAR,
         AppCompatibilities.VLLO,
     )
 
