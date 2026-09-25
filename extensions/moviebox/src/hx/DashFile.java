@@ -54,8 +54,11 @@ final class DashFile {
     private static final String TAG = "hxreborn/moviebox";
     private static final int PROBE_BYTES = 256;
     private static final int SIZING_THREADS = 48;
-    private static final int PARALLEL_READS = 6;
+    private static final int PARALLEL_READS = 8;
     private static final int READ_CHUNK_BYTES = 256 * 1024;
+    private static final int EDGE_READ_CHUNK_BYTES = 48 * 1024;
+    private static final int READ_AHEAD_BYTES = 3 * 1024 * 1024;
+    private static final String EDGE_KEY = "Edge-Cache-Cookie=";
     private static final int CONNECT_TIMEOUT_MS = 15000;
     private static final int READ_TIMEOUT_MS = 30000;
     private static final int CDN_ATTEMPTS = 5;
@@ -185,12 +188,14 @@ final class DashFile {
     private final Cookies cookies;
     private final byte[] head;
     private final Piece[] pieces;
+    private final int readChunkBytes;
     final long length;
 
-    private DashFile(Cookies cookies, byte[] head, Piece[] pieces) {
+    private DashFile(Cookies cookies, byte[] head, Piece[] pieces, int readChunkBytes) {
         this.cookies = cookies;
         this.head = head;
         this.pieces = pieces;
+        this.readChunkBytes = readChunkBytes;
         Piece last = pieces[pieces.length - 1];
         this.length = last.offset + last.length;
     }
@@ -251,7 +256,8 @@ final class DashFile {
             pieces[i] = new Piece(offset, ordered.get(i), trackIds.get(i));
             offset += pieces[i].length;
         }
-        return new DashFile(cookies, head, pieces);
+        int readChunkBytes = cookies.current().contains(EDGE_KEY) ? EDGE_READ_CHUNK_BYTES : READ_CHUNK_BYTES;
+        return new DashFile(cookies, head, pieces, readChunkBytes);
     }
 
     void write(OutputStream out, long start, long end) throws IOException {
@@ -264,13 +270,14 @@ final class DashFile {
         out.flush();
         ExecutorService pool = Executors.newFixedThreadPool(PARALLEL_READS);
         ArrayDeque<Future<byte[]>> pending = new ArrayDeque<>();
+        int readAheadChunks = Math.max(PARALLEL_READS, READ_AHEAD_BYTES / readChunkBytes);
         try {
             int index = pieceAt(at);
             while (true) {
-                while (pending.size() < PARALLEL_READS && at <= end && index < pieces.length) {
+                while (pending.size() < readAheadChunks && at <= end && index < pieces.length) {
                     final Piece piece = pieces[index];
                     final long from = at - piece.offset;
-                    final long to = Math.min(Math.min(end - piece.offset, piece.length - 1), from + READ_CHUNK_BYTES - 1);
+                    final long to = Math.min(Math.min(end - piece.offset, piece.length - 1), from + readChunkBytes - 1);
                     pending.add(pool.submit(new Callable<byte[]>() {
                         @Override
                         public byte[] call() throws IOException {
