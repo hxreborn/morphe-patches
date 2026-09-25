@@ -318,6 +318,14 @@ internal object AppCompatibilities {
         ),
     )
 
+    val TERABOX = Compatibility(
+        name = "TeraBox",
+        packageName = "com.dubox.drive",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0x226DF6,
+        targets = listOf(AppTarget(version = "4.26.0", versionCode = 698, minSdk = 23)),
+    )
+
     val TRAINLINE = Compatibility(
         name = "Trainline",
         packageName = "com.thetrainline",
