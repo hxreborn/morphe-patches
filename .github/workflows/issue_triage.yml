@@ -1,21 +1,33 @@
-name: Triage bug reports
+name: Triage issues
 
 on:
   issues:
     types: [opened, edited, labeled]
+  schedule:
+    - cron: "30 6 * * *"
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: Print app request verdicts without acting on them
+        type: boolean
+        default: true
 
 permissions: {}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.issue.number }}
+  group: ${{ github.workflow }}-${{ github.event.issue.number || 'sweep' }}
   cancel-in-progress: false
 
 jobs:
   triage:
     if: >-
+      github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
       (github.event.action == 'labeled' && startsWith(github.event.label.name, 'r: ')) ||
-      (github.event.action == 'opened' &&
-       contains(github.event.issue.labels.*.name, 'app request')) ||
+      (contains(github.event.issue.labels.*.name, 'app request') &&
+       !contains(github.event.issue.labels.*.name, 'bad-triage') &&
+       (github.event.action == 'opened' ||
+        (github.event.action == 'edited' && github.event.issue.state == 'open' &&
+         contains(github.event.issue.labels.*.name, 'needs info')))) ||
       (github.event.action != 'labeled' &&
        contains(github.event.issue.labels.*.name, 'bug') &&
        !contains(github.event.issue.labels.*.name, 'bad-triage') &&
@@ -35,3 +47,4 @@ jobs:
       - uses: ./.github/actions/triage
         with:
           token: ${{ github.token }}
+          dry-run: ${{ inputs.dry-run || false }}

@@ -26,5 +26,22 @@ jobs:
           days-before-pr-close: -1
           exempt-assignees: true
           exempt-milestones: true
-          exempt-issue-labels: "app request"
+          exempt-issue-labels: "app request,needs info"
+          operations-per-run: 30
+      - uses: actions/stale@v11
+        with:
+          only-labels: "needs info"
+          days-before-issue-stale: 14
+          days-before-issue-close: 7
+          stale-issue-label: "stale"
+          stale-issue-message: >
+            This issue is still missing the information asked for above. It will be closed in
+            7 days unless someone adds it.
+          close-issue-message: >
+            Closed because the missing information was never added. Open a new issue with it filled in.
+          close-issue-reason: "not planned"
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+          exempt-assignees: true
+          exempt-issue-labels: "bad-triage"
           operations-per-run: 30

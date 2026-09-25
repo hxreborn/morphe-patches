@@ -13,6 +13,9 @@ inputs:
   patches-list:
     description: Path to the bundle's patches-list.json in the checked-out repo.
     default: patches-list.json
+  dry-run:
+    description: Print app request verdicts without commenting, labeling or closing.
+    default: "false"
   responses:
     description: Path to a JSON map of label name to {message, close} for canned replies.
     default: .github/triage-responses.json
@@ -43,28 +46,72 @@ runs:
           gh issue close "$ISSUE" --repo "$REPO" --reason "$reason"
         fi
 
-    - name: Say which bundles already patch the requested app
+    - name: Triage app requests
       if: >-
-        github.event.action == 'opened' &&
-        contains(github.event.issue.labels.*.name, 'app request')
+        github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
+        (github.event.action != 'labeled' &&
+         contains(github.event.issue.labels.*.name, 'app request'))
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
         ISSUE: ${{ github.event.issue.number }}
         REPO: ${{ github.repository }}
         REGISTRY: ${{ inputs.registry }}
+        PATCHES_LIST: ${{ inputs.patches-list }}
+        DRY_RUN: ${{ inputs.dry-run }}
       run: |
-        jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > "$RUNNER_TEMP/body.md"
+        list="$PWD/$PATCHES_LIST"
+        cd "$RUNNER_TEMP"
         curl -sSL --max-time 30 -H "Referer: https://morphe-patches.software/" \
           -H "Accept: application/json" \
           -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36" \
-          "$REGISTRY" -o "$RUNNER_TEMP/bundles.json" || exit 0
-        jq -e '.bundles | length > 0' "$RUNNER_TEMP/bundles.json" >/dev/null 2>&1 || exit 0
-        python3 "${{ github.action_path }}/app_request.py" \
-          "$RUNNER_TEMP/body.md" "$RUNNER_TEMP/bundles.json" > "$RUNNER_TEMP/apps.json"
-        jq -r .comment "$RUNNER_TEMP/apps.json" > "$RUNNER_TEMP/apps.md"
-        [ -s "$RUNNER_TEMP/apps.md" ] && [ "$(cat "$RUNNER_TEMP/apps.md")" != "" ] || exit 0
-        gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/apps.md"
+          "$REGISTRY" -o bundles.json || rm -f bundles.json
+        gh issue list --repo "$REPO" --label "app request" --state all --limit 1000 \
+          --json number,title,body,state,labels,comments > requests.json
+
+        if [ -n "$ISSUE" ]; then
+          targets=$ISSUE
+        else
+          targets=$(jq -r 'map(select(.state == "OPEN")) | sort_by(.number) | .[].number' requests.json)
+        fi
+
+        for n in $targets; do
+          jq -e --argjson n "$n" \
+            '.[] | select(.number == $n) | .labels | map(.name) | index("bad-triage")' \
+            requests.json >/dev/null && continue
+          jq -r --argjson n "$n" '.[] | select(.number == $n) | .body // ""' requests.json > body.md
+          python3 "${{ github.action_path }}/app_request.py" \
+            "$n" body.md requests.json "$list" bundles.json > verdict.json
+          verdict=$(jq -r .verdict verdict.json)
+          [ -z "$ISSUE" ] && [ "$verdict" = pass ] && continue
+          jq -r .comment verdict.json > comment.md
+          echo "#$n: $(jq -c 'del(.comment)' verdict.json)"
+          [ "$DRY_RUN" = "true" ] && continue
+
+          existing=$(jq -r --argjson n "$n" '.[] | select(.number == $n) | .comments
+            | map(select(.body | contains("<!-- app-request-bot -->"))) | .[0].url // empty
+            | capture("issuecomment-(?<id>[0-9]+)").id' requests.json)
+          if [ -s comment.md ] && [ "$(cat comment.md)" != "" ]; then
+            if [ -n "$existing" ]; then
+              gh api -X PATCH "repos/$REPO/issues/comments/$existing" -F body=@comment.md >/dev/null
+            else
+              gh issue comment "$n" --repo "$REPO" --body-file comment.md
+            fi
+          fi
+          labels=$(jq -r '.labels | join(",")' verdict.json)
+          [ -n "$labels" ] && gh issue edit "$n" --repo "$REPO" --add-label "$labels"
+          if [ "$verdict" = close ]; then
+            if [ "$(jq -r .reason verdict.json)" = duplicate ]; then
+              gh issue close "$n" --repo "$REPO" --duplicate-of "$(jq -r .duplicate_of verdict.json)"
+            else
+              gh issue close "$n" --repo "$REPO" --reason "$(jq -r .reason verdict.json)"
+            fi
+          elif [ "$verdict" = pass ] && [ -n "$existing" ] && [ ! -s comment.md ]; then
+            gh issue edit "$n" --repo "$REPO" --remove-label "needs info" || true
+            printf '<!-- app-request-bot -->\nResolved: nothing left to flag.\n' > comment.md
+            gh api -X PATCH "repos/$REPO/issues/comments/$existing" -F body=@comment.md >/dev/null
+          fi
+        done
 
     - name: Check the report
       if: >-
