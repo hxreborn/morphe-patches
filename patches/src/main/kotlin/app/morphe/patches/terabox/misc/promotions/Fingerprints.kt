@@ -141,3 +141,9 @@ internal object FloatWindowUpdateFingerprint : Fingerprint(
     parameters = listOf("Ljava/util/Map;"),
     strings = listOf("floatWindowDataMap"),
 )
+
+internal object SearchOperationEntryFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "Lcom/dubox/drive/files/domain/SearchOperationData;",
+    parameters = emptyList(),
+)

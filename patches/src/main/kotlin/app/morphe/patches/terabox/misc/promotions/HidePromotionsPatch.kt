@@ -21,8 +21,8 @@ private const val PREMIUM_HOME_CARD_TYPE = 6
 @Suppress("unused")
 val hidePromotionsPatch = bytecodePatch(
     name = "Hide promotions",
-    description = "Hides Premium upgrade cards and banners, prize cards, speed-up prompts, floating invites, " +
-        "and sale, coupon and promotional popups.",
+    description = "Hides Premium upgrade cards and banners, prize and campaign cards, speed-up prompts, " +
+        "floating invites, and sale, coupon and promotional popups.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(spoofSignaturePatch)
@@ -45,6 +45,8 @@ val hidePromotionsPatch = bytecodePatch(
         ).forEach { it.matchSingle().method.returnEarly() }
 
         PremiumPopupLimitFingerprint.matchSingle().method.returnEarly(false)
+
+        SearchOperationEntryFingerprint.matchSingle().method.returnEarly(null)
 
         SpeedUpSheetAutoShowFingerprint.matchSingle().apply {
             val flagResult = instructionMatches.last()
