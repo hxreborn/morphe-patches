@@ -13,6 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.matchSingle
+import app.morphe.util.returnEarly
 
 private const val PREMIUM_HOME_CARD_TYPE = 6
 
@@ -36,6 +37,8 @@ val hidePromotionsPatch = bytecodePatch(
             NewUserGiftPopupFingerprint,
             VideoPlayerUpsellFingerprint,
         ).forEach { it.matchSingle().method.addInstructions(0, "return-void") }
+
+        PremiumPopupLimitFingerprint.matchSingle().method.returnEarly(false)
 
         HomeCardVisibilityFingerprint.matchSingle().method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()

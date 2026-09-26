@@ -93,3 +93,10 @@ internal object VideoPlayerUpsellFingerprint : Fingerprint(
     parameters = listOf("Landroidx/lifecycle/LifecycleOwner;"),
     filters = listOf(methodCall(definingClass = "Lcom/dubox/drive/ads/AdManager;")),
 )
+
+internal object PremiumPopupLimitFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL, AccessFlags.DECLARED_SYNCHRONIZED),
+    returnType = "Z",
+    parameters = listOf("Lcom/dubox/drive/vip/manager/VipPopupScene;"),
+    strings = listOf("premium_popup_limit_intercept"),
+)
