@@ -46,7 +46,7 @@ private val hideDataSaverOptionPatch = resourcePatch {
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock Premium Plus",
-    description = "Unlocks HD up to original quality and playback speeds up to 3x. " +
+    description = "Unlocks HD up to original quality, playback speeds up to 3x and video uploads. " +
         "HD buffers faster over parallel connections.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
@@ -60,6 +60,7 @@ val unlockPremiumPatch = bytecodePatch(
         VipInfoIdentityFingerprint.matchSingle().method.returnEarly(PREMIUM_PLUS_LEVEL)
         NamedPrivilegeCheckFingerprint.matchSingle().method.returnEarly(true)
         HasPrivilegeFingerprint.matchSingle().method.returnEarly(true)
+        VideoUploadPremiumSwitchFingerprint.matchSingle().method.returnEarly(false)
         PlaybackSpeedFreeLimitFingerprint.matchSingle().method.returnEarly(MAX_PLAYBACK_SPEED)
 
         val currentVipInfo = CurrentVipInfoFingerprint.matchSingle()

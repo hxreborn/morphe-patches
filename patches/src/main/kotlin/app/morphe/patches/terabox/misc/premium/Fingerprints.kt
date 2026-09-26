@@ -47,6 +47,13 @@ internal object NamedPrivilegeCheckFingerprint : Fingerprint(
     strings = listOf("vip_can_use_all_privilege"),
 )
 
+internal object VideoUploadPremiumSwitchFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "Z",
+    parameters = emptyList(),
+    strings = listOf("upload_video_premium_switch"),
+)
+
 internal object CurrentVipInfoFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = VIP_INFO,
