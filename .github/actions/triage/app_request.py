@@ -77,28 +77,28 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
         verdict, reason = "close", "completed"
         lines.append(
             f"`{package}` is already supported here as **{supported[package.lower()]}**. Update the "
-            "bundle in Morphe Manager and patch it. If you need something the current patches "
-            "don't do, open a feature request."
+            "bundle in Morphe Manager and patch it. If the current patches are missing something "
+            "you need, open a feature request."
         )
     elif open_same:
         canonical = open_same[0]
         verdict, reason, duplicate_of = "close", "duplicate", canonical["number"]
         lines.append(
-            f"{link(canonical)} already requests `{package}`, so this one is closed as a duplicate. "
-            f"Upvote {link(canonical)} and add anything new there."
+            f"Thanks! {link(canonical)} already requests `{package}`, so I'm closing this one as a "
+            f"duplicate. Upvote {link(canonical)} and add anything new there."
         )
     elif same_package:
         prior = same_package[-1]
         verdict, labels = "flag", ["duplicate"]
         lines.append(
             f"{link(prior)} asked for `{package}` before and was closed. Leaving this open for "
-            "review. If something changed since then, say what."
+            "review. If something changed since then, please mention what."
         )
     elif not package:
         verdict, labels = "flag", ["needs info"]
         lines.append(
-            "**I can't find a package name.** Put it in the Package name field, for example "
-            "`com.duolingo`. It's the `id=` part of the Play Store link."
+            "**I couldn't find a package name.** Could you add it to the Package name field, for example "
+            "`com.duolingo`? It's the `id=` part of the Play Store link."
         )
 
     this = next((r for r in requests if r["number"] == number), {})
@@ -137,12 +137,12 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
                 rows.append(f"- and {len(bundles) - MAX_LISTED} more")
             lines.append(
                 f"`{package}` already has patches elsewhere:\n\n" + "\n".join(rows) + "\n\n"
-                "Add that bundle as a source in Morphe Manager. If you need something those "
-                "patches don't cover, say what."
+                "You can add that bundle as a source in Morphe Manager. If those patches don't cover "
+                "what you need, let me know what's missing."
             )
 
     if verdict != "pass":
-        lines.append("If this is wrong, add the `bad-triage` label or say so below.")
+        lines.append("_I'm a bot, so I can get this wrong. If I did, comment below and a maintainer will take a look._")
     return {
         "package": package,
         "verdict": verdict,

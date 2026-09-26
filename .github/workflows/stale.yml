@@ -18,14 +18,15 @@ jobs:
           days-before-issue-close: 7
           stale-issue-label: "stale"
           stale-issue-message: >
-            This issue has been automatically marked as stale because it has not had
-            recent activity. It will be closed in 7 days if no further activity occurs.
+            Nobody has posted here in 30 days, so I've marked this stale. It closes in 7 days
+            unless someone comments. _I'm a bot._
           close-issue-message: >
-            This issue was closed due to inactivity. Feel free to reopen if still relevant.
+            Closing this after a quiet month. _I'm a bot, so if this still matters, comment below and a
+            maintainer will reopen it._
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          exempt-assignees: true
-          exempt-milestones: true
+          exempt-all-assignees: true
+          exempt-all-milestones: true
           exempt-issue-labels: "app request,needs info"
           operations-per-run: 30
       - uses: actions/stale@v11
@@ -35,13 +36,13 @@ jobs:
           days-before-issue-close: 7
           stale-issue-label: "stale"
           stale-issue-message: >
-            This issue is still missing the information asked for above. It will be closed in
-            7 days unless someone adds it.
+            This still needs the info asked for above. I'll close it in 7 days if nobody adds it. _I'm a bot._
           close-issue-message: >
-            Closed because the missing information was never added. Open a new issue with it filled in.
-          close-issue-reason: "not planned"
+            Closing this because the missing info never arrived. Open a new issue with it filled in. _I'm a bot,
+            so if I got this wrong, comment below and a maintainer will take a look._
+          close-issue-reason: not_planned
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          exempt-assignees: true
+          exempt-all-assignees: true
           exempt-issue-labels: "bad-triage"
           operations-per-run: 30

@@ -37,11 +37,15 @@ runs:
         [ -f "$RESPONSES" ] || exit 0
         message=$(jq -r --arg l "$LABEL" '.[$l].message // empty' "$RESPONSES")
         [ -z "$message" ] && exit 0
+        close=$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")
         printf '%s\n' "$message" > "$RUNNER_TEMP/comment.md"
+        if [ "$close" = "true" ]; then
+          printf '\n_Posted by a bot on behalf of the maintainer. If this was closed by mistake, comment below._\n' >> "$RUNNER_TEMP/comment.md"
+        fi
         gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/comment.md"
         labels=$(jq -r --arg l "$LABEL" '.[$l].labels // [] | join(",")' "$RESPONSES")
         [ -n "$labels" ] && gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
-        if [ "$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")" = "true" ]; then
+        if [ "$close" = "true" ]; then
           reason=$(jq -r --arg l "$LABEL" '.[$l].reason // "not planned"' "$RESPONSES")
           gh issue close "$ISSUE" --repo "$REPO" --reason "$reason"
         fi
@@ -84,14 +88,14 @@ runs:
             "$n" body.md requests.json "$list" bundles.json > verdict.json
           verdict=$(jq -r .verdict verdict.json)
           [ -z "$ISSUE" ] && [ "$verdict" = pass ] && continue
-          jq -r .comment verdict.json > comment.md
+          jq -j .comment verdict.json > comment.md
           echo "#$n: $(jq -c 'del(.comment)' verdict.json)"
           [ "$DRY_RUN" = "true" ] && continue
 
           existing=$(jq -r --argjson n "$n" '.[] | select(.number == $n) | .comments
             | map(select(.body | contains("<!-- app-request-bot -->"))) | .[0].url // empty
             | capture("issuecomment-(?<id>[0-9]+)").id' requests.json)
-          if [ -s comment.md ] && [ "$(cat comment.md)" != "" ]; then
+          if [ -s comment.md ]; then
             if [ -n "$existing" ]; then
               gh api -X PATCH "repos/$REPO/issues/comments/$existing" -F body=@comment.md >/dev/null
             else
