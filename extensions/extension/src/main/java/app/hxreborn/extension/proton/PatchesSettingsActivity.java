@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -186,8 +187,9 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private void confirmRestart() {
+        final CharSequence appName = getApplicationInfo().loadLabel(getPackageManager());
         PatchesDialog.showConfirmation(this, "Restart required",
-                "Proton Mail must restart to apply the theme.", "Restart", this::restartApp);
+                appName + " must restart to apply the theme.", "Restart", this::restartApp);
     }
 
     private void restartApp() {
@@ -265,7 +267,8 @@ public final class PatchesSettingsActivity extends Activity {
                 dp(SCREEN_INSET_DP), dp(APP_BAR_VERTICAL_PADDING_DP));
 
         final ImageView back = new ImageView(this);
-        back.setImageDrawable(PatchesTheme.getDrawableByName(this, "ic_proton_arrow_left"));
+        final Drawable arrow = PatchesTheme.getDrawableByName(this, "ic_proton_arrow_left");
+        back.setImageDrawable(arrow != null ? arrow : PatchesTheme.getDrawableByName(this, "ic_arrow_back"));
         back.setColorFilter(textNormColor);
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         back.setPadding(dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP),

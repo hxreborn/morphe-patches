@@ -29,6 +29,10 @@ public final class AppliedPatches {
         return UpsellingVisibility.isPatched();
     }
 
+    public static boolean hidePromotionalMessages() {
+        return false;
+    }
+
     public static boolean removeSentFromSignature() {
         return false;
     }
@@ -50,6 +54,7 @@ public final class AppliedPatches {
         if (accentColor()) names.add(ACCENT_COLOR);
         if (amoledDarkTheme()) names.add(AMOLED_DARK_THEME);
         if (hideUpgradePromotions()) names.add(HIDE_UPGRADE_PROMOTIONS);
+        if (hidePromotionalMessages()) names.add("Hide promotional messages");
         if (removeSentFromSignature()) names.add("Remove 'Sent from' signature");
         if (removeFreeAccountsLimit()) names.add("Remove free accounts limit");
         if (scheduledDeletion()) names.add(SCHEDULED_DELETION);

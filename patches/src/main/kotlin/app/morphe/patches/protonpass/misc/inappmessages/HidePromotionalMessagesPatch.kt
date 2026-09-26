@@ -6,7 +6,9 @@ package app.morphe.patches.protonpass.misc.inappmessages
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.matchSingle
 
@@ -16,8 +18,11 @@ val hidePromotionalMessagesPatch = bytecodePatch(
     description = "Hides promotional banners, offers and pop-up messages.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_PASS)
+    dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchApplied("hidePromotionalMessages")
+
         StoreInAppMessagesFingerprint.matchSingle().method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister()
 
