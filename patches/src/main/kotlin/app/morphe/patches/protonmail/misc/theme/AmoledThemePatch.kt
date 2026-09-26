@@ -17,7 +17,7 @@ import app.morphe.patches.protonmail.misc.theme.webview.webSettingsThemePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
-import app.morphe.patches.shared.misc.proton.transformCoreDarkBackground
+import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.patches.shared.misc.proton.injectColorTransformCall
 import app.morphe.util.matchSingle
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -141,7 +141,7 @@ val amoledThemePatch = bytecodePatch(
             }
         }
 
-        transformCoreDarkBackground()
+        transformCoreDarkBackgrounds()
 
         ColorSchemeFingerprint.matchSingle().method.setSidebarPressedAndSeparatorColors()
 
