@@ -13,7 +13,7 @@ import com.android.tools.smali.dexlib2.Opcode
 private const val COLOR_ROLE_COUNT = 68
 private const val BRUSH_COUNT = 2
 
-internal object DarkPassColorsFingerprint : Fingerprint(
+internal object PassColorsInitializerFingerprint : Fingerprint(
     name = "<clinit>",
     filters = listOf(
         methodCall(

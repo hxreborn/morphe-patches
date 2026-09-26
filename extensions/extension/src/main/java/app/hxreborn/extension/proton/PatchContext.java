@@ -28,6 +28,7 @@ public final class PatchContext {
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
+                AmoledBackgroundOverlay.apply(activity);
             }
 
             @Override
