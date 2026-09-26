@@ -22,6 +22,7 @@ private const val LONG_REGISTER_COUNT = 2
 private const val COLORS_ASSIGNMENT_DISTANCE = 4
 
 internal const val DARK_COLORS_FIELD = "Dark"
+internal const val LIGHT_COLORS_FIELD = "Light"
 
 private fun MutableMethod.indexOfPassColorsConstructorCall(colorsField: String): Int {
     val instructions = instructions.toList()

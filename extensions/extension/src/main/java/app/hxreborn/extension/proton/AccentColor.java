@@ -88,6 +88,12 @@ public final class AccentColor {
         }
     }
 
+    public static long transformPackedBrandColor(long original) {
+        final long argb = original >>> 32;
+        final long transformed = transformBrandColor(argb);
+        return transformed == argb ? original : (transformed << 32) | (original & ARGB_MASK);
+    }
+
     public static boolean hasCustomAccent() {
         return computeLabAdjustment(getPreset()) != null;
     }
