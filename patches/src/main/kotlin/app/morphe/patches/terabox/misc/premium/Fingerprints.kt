@@ -84,3 +84,10 @@ internal fun reportedVipTypeFingerprint(vipTypeGetter: MethodReference) = Finger
     returnType = vipTypeGetter.returnType,
     parameters = emptyList(),
 )
+
+internal object PlaybackSpeedFreeLimitFingerprint : Fingerprint(
+    definingClass = "Lcom/dubox/drive/remoteconfig/PlayerSpeedMultiplierConfig;",
+    name = "getFreeLimit",
+    returnType = "D",
+    parameters = emptyList(),
+)

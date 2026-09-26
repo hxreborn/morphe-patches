@@ -21,6 +21,7 @@ import com.android.tools.smali.dexlib2.formatter.DexFormatter
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val PREMIUM_PLUS_LEVEL = 2
+private const val MAX_PLAYBACK_SPEED = 3.0
 private const val SERVER_MEMBERSHIP_CLASS = "Lapp/hxreborn/extension/terabox/TeraboxServerMembership;"
 
 private val DATA_SAVER_LAYOUTS = listOf(
@@ -45,7 +46,8 @@ private val hideDataSaverOptionPatch = resourcePatch {
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock Premium Plus",
-    description = "Unlocks HD up to original quality. HD buffers faster over parallel connections.",
+    description = "Unlocks HD up to original quality and playback speeds up to 3x. " +
+        "HD buffers faster over parallel connections.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(spoofSignaturePatch, unlockHdPlaybackPatch, hideDataSaverOptionPatch)
@@ -58,6 +60,7 @@ val unlockPremiumPatch = bytecodePatch(
         VipInfoIdentityFingerprint.matchSingle().method.returnEarly(PREMIUM_PLUS_LEVEL)
         NamedPrivilegeCheckFingerprint.matchSingle().method.returnEarly(true)
         HasPrivilegeFingerprint.matchSingle().method.returnEarly(true)
+        PlaybackSpeedFreeLimitFingerprint.matchSingle().method.returnEarly(MAX_PLAYBACK_SPEED)
 
         val currentVipInfo = CurrentVipInfoFingerprint.matchSingle()
         val vipManager = currentVipInfo.classDef
