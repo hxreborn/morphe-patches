@@ -23,11 +23,14 @@ internal const val COMPOSER_TYPE = "Landroidx/compose/runtime/Composer;"
 private const val ON_CLICK_TYPE = "Lkotlin/jvm/functions/Function0;"
 private const val SETTINGS_ROW_METHOD = "patchesSettingsRow"
 
+internal class SettingsRowIcon(val parameter: Int, val resourceId: Long)
+
 internal fun MutableClass.addSettingsRowMethod(
     templateMethod: MutableMethod,
     templateCallIndex: Int,
     titleParameter: Int,
     onClickParameter: Int,
+    icon: SettingsRowIcon? = null,
 ): String {
     val templateCall = templateMethod.getInstruction<RegisterRangeInstruction>(templateCallIndex)
     val templateRow = templateCall.getReference<MethodReference>()!!
@@ -51,11 +54,12 @@ internal fun MutableClass.addSettingsRowMethod(
         templateCall.startRegister + templateCall.registerCount - 1,
         templateCallIndex,
     )
-    val assignedParameters = setOf(
+    val assignedParameters = setOfNotNull(
         titleParameter,
         onClickParameter,
         composerParameter,
         defaultArgumentsParameter,
+        icon?.parameter,
     )
 
     val method = ImmutableMethod(
@@ -72,6 +76,7 @@ internal fun MutableClass.addSettingsRowMethod(
             0,
             """
                 ${(parameterTypes.indices - assignedParameters).joinToString("\n") { "const v$it, 0x0" }}
+                ${icon?.let { "const v${it.parameter}, ${it.resourceId}" } ?: ""}
                 const-string v$titleParameter, "$SETTINGS_ROW_TITLE"
                 const-class v$onClickParameter, $ON_CLICK_TYPE
                 invoke-static/range { v$onClickParameter .. v$onClickParameter }, $PATCHES_MENU_CLASS->settingsRowOnClick(Ljava/lang/Class;)Ljava/lang/Object;

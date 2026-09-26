@@ -238,6 +238,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.40.3", versionCode = 14003373, minSdk = 27)),
     )
 
+    val PROTON_VPN = Compatibility(
+        name = "Proton VPN",
+        packageName = "ch.protonvpn.android",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x6D4AFF,
+        signatures = setOf(
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
+        ),
+        targets = listOf(AppTarget(version = "5.20.39.0", versionCode = 605203900, minSdk = 26)),
+    )
+
     val QURANIFY = Compatibility(
         name = "Quranify",
         packageName = "com.mchutov.Quranify",
