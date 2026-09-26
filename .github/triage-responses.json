@@ -38,5 +38,10 @@
     "close": true,
     "message": "Thanks for the report! This doesn't look like a patch bug, so I'm closing it. Comment below if it comes back.",
     "reason": "not planned"
+  },
+  "r: shipped": {
+    "close": true,
+    "message": "Thanks for the request! This is in the latest release. Update the bundle in Morphe Manager and repatch, and comment below if something is missing.",
+    "reason": "completed"
   }
 }
