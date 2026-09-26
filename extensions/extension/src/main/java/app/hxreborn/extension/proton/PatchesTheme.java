@@ -7,6 +7,7 @@ package app.hxreborn.extension.proton;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -29,10 +30,29 @@ public final class PatchesTheme {
     private static final int FALLBACK_TEXT_WEAK = 0xFFA9A9AF;
     private static final int FALLBACK_ICON_DISABLED = 0xFF5B5966;
 
+    private static final int APP_COMPAT_MODE_NIGHT_NO = 1;
+    private static final int APP_COMPAT_MODE_NIGHT_YES = 2;
+    private static final int APP_COMPAT_MODE_NIGHT_UNSPECIFIED = -100;
+
     private static final int DARK_COLOR_THRESHOLD = 128;
     private static final int HALF_ALPHA = 0x80;
 
     private PatchesTheme() {}
+
+    public static int appCompatDefaultNightMode() {
+        return APP_COMPAT_MODE_NIGHT_UNSPECIFIED;
+    }
+
+    static int uiNightMode() {
+        switch (appCompatDefaultNightMode()) {
+            case APP_COMPAT_MODE_NIGHT_NO:
+                return Configuration.UI_MODE_NIGHT_NO;
+            case APP_COMPAT_MODE_NIGHT_YES:
+                return Configuration.UI_MODE_NIGHT_YES;
+            default:
+                return Configuration.UI_MODE_NIGHT_UNDEFINED;
+        }
+    }
 
     public static int resolveColorAttribute(Context context, String attribute) {
         final int fallbackColor = fallbackColor(attribute);

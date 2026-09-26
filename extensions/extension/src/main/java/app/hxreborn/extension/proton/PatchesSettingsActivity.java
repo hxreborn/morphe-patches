@@ -6,7 +6,9 @@ package app.hxreborn.extension.proton;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -66,12 +68,28 @@ public final class PatchesSettingsActivity extends Activity {
     private ScrollView content;
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(withNightMode(base, PatchesTheme.uiNightMode()));
+    }
+
+    private static Context withNightMode(Context base, int nightMode) {
+        final Configuration configuration = base.getResources().getConfiguration();
+        final int currentNightMode = configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightMode == Configuration.UI_MODE_NIGHT_UNDEFINED || nightMode == currentNightMode) return base;
+
+        final Configuration override = new Configuration(configuration);
+        override.uiMode = (configuration.uiMode & ~Configuration.UI_MODE_NIGHT_MASK) | nightMode;
+        return base.createConfigurationContext(override);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        screenBackgroundColor = AmoledTheme.isEnabled()
+        final int backgroundNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_NORM);
+        screenBackgroundColor = AmoledTheme.isEnabled() && PatchesTheme.isDark(backgroundNormColor)
                 ? Color.BLACK
-                : PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_NORM);
+                : backgroundNormColor;
         cardBackgroundColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_SECONDARY);
         textNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_NORM);
         textWeakColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_WEAK);

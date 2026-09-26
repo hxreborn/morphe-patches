@@ -16,6 +16,7 @@ import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.proton.PATCHES_MENU_CLASS
 import app.morphe.patches.shared.misc.proton.SETTINGS_ROW_TITLE
+import app.morphe.patches.shared.misc.proton.injectAppCompatDefaultNightMode
 import app.morphe.patches.shared.misc.proton.injectBundleVersion
 import app.morphe.patches.shared.misc.proton.literalWrittenTo
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
@@ -55,6 +56,7 @@ internal val patchesSettingsPatch = bytecodePatch {
 
     execute {
         injectBundleVersion()
+        injectAppCompatDefaultNightMode()
 
         val iconId = getResourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
             ?: throw PatchException("Missing settings icon: ic_proton_wrench")
