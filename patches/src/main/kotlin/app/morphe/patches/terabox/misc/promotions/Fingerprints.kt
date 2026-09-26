@@ -5,12 +5,16 @@
 package app.morphe.patches.terabox.misc.promotions
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
 
 private const val MAIN_ACTIVITY = "Lcom/dubox/drive/ui/MainActivity;"
+private const val VIDEO_PLAYER_ACTIVITY = "Lcom/dubox/drive/ui/preview/video/pageC/VideoPlayerCActivity;"
 private const val SERVER_RESPONSE = "Lcom/dubox/drive/home/homecard/server/response/"
 
 internal object VipStatusSectionFingerprint : Fingerprint(
@@ -99,4 +103,34 @@ internal object PremiumPopupLimitFingerprint : Fingerprint(
     returnType = "Z",
     parameters = listOf("Lcom/dubox/drive/vip/manager/VipPopupScene;"),
     strings = listOf("premium_popup_limit_intercept"),
+)
+
+internal object AccelerateToastFingerprint : Fingerprint(
+    definingClass = VIDEO_PLAYER_ACTIVITY,
+    name = "showAccelerateToast",
+    returnType = "V",
+    parameters = emptyList(),
+)
+
+internal object AccelerateTrialToastFingerprint : Fingerprint(
+    definingClass = VIDEO_PLAYER_ACTIVITY,
+    name = "showAccelerateTrialToast",
+    returnType = "V",
+    parameters = emptyList(),
+)
+
+internal object WebPlayerStutterGuideFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = emptyList(),
+    strings = listOf("hijack_stuck_guide_view"),
+)
+
+internal object SpeedUpSheetAutoShowFingerprint : Fingerprint(
+    name = "<init>",
+    returnType = "V",
+    filters = listOf(
+        string("na_sniffer_dialog_auto_show"),
+        opcode(Opcode.INVOKE_VIRTUAL, location = MatchAfterImmediately()),
+        opcode(Opcode.MOVE_RESULT_WIDE, location = MatchAfterImmediately()),
+    ),
 )
