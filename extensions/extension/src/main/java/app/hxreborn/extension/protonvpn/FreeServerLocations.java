@@ -19,22 +19,12 @@ import java.util.List;
 public final class FreeServerLocations {
 
     private static final int FREE_TIER = 0;
-
-    private static volatile boolean freeAccount;
+    private static final String STANDARD_PROFILE_TYPE = "Standard";
 
     private FreeServerLocations() {}
 
-    public static void onUserInfoChanged(Object userInfo) {
-        Object vpnUser = userInfo == null ? null : call(userInfo, "getVpnUser");
-        freeAccount = vpnUser != null && (Boolean) call(vpnUser, "isFreeUser");
-    }
-
-    public static void onUserInfoInvalidated() {
-        freeAccount = false;
-    }
-
     public static boolean shouldExcludeServer(boolean isFreeServer) {
-        return freeAccount != isFreeServer;
+        return FreeAccount.isSignedIn() != isFreeServer;
     }
 
     public static Integer tierForAvailabilityCheck(Object item, Integer userTier) {
@@ -52,23 +42,40 @@ public final class FreeServerLocations {
     }
 
     public static Object resolveSelectedFilter(Object filter) {
-        if (!freeAccount || filter == null) return filter;
+        if (!FreeAccount.isSignedIn() || filter == null) return filter;
         return Enum.valueOf((Class) ((Enum<?>) filter).getDeclaringClass(), "All");
     }
 
     public static List<?> resolveFilterButtons(List<?> buttons) {
-        return freeAccount ? Collections.emptyList() : buttons;
+        return FreeAccount.isSignedIn() ? Collections.emptyList() : buttons;
+    }
+
+    public static List<?> countriesForAccount(List<?> countries) {
+        if (!FreeAccount.isSignedIn()) return countries;
+        List<Object> filtered = new ArrayList<>(countries.size());
+        for (Object country : countries) {
+            if (hasFreeServer(country)) filtered.add(country);
+        }
+        return filtered;
+    }
+
+    public static List<?> profileTypesForAccount(List<?> types) {
+        if (!FreeAccount.isSignedIn()) return types;
+        List<Object> filtered = new ArrayList<>(1);
+        for (Object type : types) {
+            if (STANDARD_PROFILE_TYPE.equals(((Enum<?>) type).name())) filtered.add(type);
+        }
+        return filtered;
+    }
+
+    private static boolean hasFreeServer(Object country) {
+        for (Object server : (List<?>) Reflection.call(country, "getServerList")) {
+            if ((Boolean) Reflection.call(server, "isFreeServer")) return true;
+        }
+        return false;
     }
 
     private static int tierOf(Object item) {
-        return (Integer) call(item, "getTier");
-    }
-
-    private static Object call(Object target, String method) {
-        try {
-            return target.getClass().getMethod(method).invoke(target);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
-        }
+        return (Integer) Reflection.call(item, "getTier");
     }
 }

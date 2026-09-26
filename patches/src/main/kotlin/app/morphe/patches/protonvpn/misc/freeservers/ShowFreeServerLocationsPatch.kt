@@ -13,10 +13,18 @@ package app.morphe.patches.protonvpn.misc.freeservers
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patches.all.misc.resources.getResourceId
+import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.protonvpn.misc.restrictions.filterReturnValue
+import app.morphe.patches.protonvpn.misc.restrictions.freeAccountStatePatch
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
@@ -35,21 +43,13 @@ val showFreeServerLocationsPatch = bytecodePatch(
         "Applies only to free plans.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
-    dependsOn(patchesSettingsPatch)
+    dependsOn(patchesSettingsPatch, resourceMappingPatch, freeAccountStatePatch)
 
     execute {
         markPatchApplied("showFreeServerLocations")
-        UserInfoUpdateFingerprint.matchSingle().run {
-            method.addInstruction(
-                instructionMatches.first().index,
-                "invoke-static { p1 }, $FREE_SERVER_LOCATIONS->onUserInfoChanged(Ljava/lang/Object;)V",
-            )
-        }
-        UserInfoInvalidateFingerprint.matchSingle().method.addInstruction(
-            0,
-            "invoke-static { }, $FREE_SERVER_LOCATIONS->onUserInfoInvalidated()V",
-        )
 
+        val freeLocationsHeader = getResourceId(ResourceType.STRING, "free_connections_info_server_locations")
+            ?: throw PatchException("Missing string: free_connections_info_server_locations")
         ServerListFilterFingerprint.matchSingle().run {
             val isFreeServerResult = instructionMatches.last()
             val register = isFreeServerResult.getInstruction<OneRegisterInstruction>().registerA
@@ -71,9 +71,17 @@ val showFreeServerLocationsPatch = bytecodePatch(
         )
 
         CountriesHeaderLabelFingerprint.matchSingle().run {
-            val call = instructionMatches.first()
-            val isFreeUser = call.getInstruction<FiveRegisterInstruction>().registerD
-            method.addInstruction(call.index, "const/4 v$isFreeUser, 0x0")
+            val isFreeUser = instructionMatches.first().getInstruction<FiveRegisterInstruction>().registerD
+            val label = instructionMatches.last()
+            val labelRegister = label.getInstruction<OneRegisterInstruction>().registerA
+            method.addInstructionsWithLabels(
+                label.index + 1,
+                """
+                    if-eqz v$isFreeUser, :label_chosen
+                    const v$labelRegister, $freeLocationsHeader
+                """,
+                ExternalLabel("label_chosen", method.getInstruction(label.index + 1)),
+            )
         }
 
         ServerGroupsMainScreenStateFingerprint.matchSingle().method.addInstructions(
@@ -85,22 +93,9 @@ val showFreeServerLocationsPatch = bytecodePatch(
         )
 
         selectedFilterFingerprints.forEach { fingerprint ->
-            fingerprint.matchSingle().method.apply {
-                val index = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
-                val register = getInstruction<OneRegisterInstruction>(index).registerA
-                replaceInstruction(
-                    index,
-                    "invoke-static { v$register }, $FREE_SERVER_LOCATIONS->resolveSelectedFilter(Ljava/lang/Object;)Ljava/lang/Object;",
-                )
-                addInstructions(
-                    index + 1,
-                    """
-                        move-result-object v$register
-                        check-cast v$register, Lcom/protonvpn/android/redesign/countries/ui/ServerFilterType;
-                        return-object v$register
-                    """,
-                )
-            }
+            fingerprint.matchSingle().method.filterReturnValue(
+                "$FREE_SERVER_LOCATIONS->resolveSelectedFilter(Ljava/lang/Object;)Ljava/lang/Object;",
+            )
         }
 
         SearchResultSectionFingerprint.matchSingle().method.addInstructions(

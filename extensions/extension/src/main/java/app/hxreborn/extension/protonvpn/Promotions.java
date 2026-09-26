@@ -64,10 +64,6 @@ public final class Promotions {
     }
 
     private static int notificationType(Object notification) {
-        try {
-            return (Integer) notification.getClass().getMethod("getType").invoke(notification);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
-        }
+        return (Integer) Reflection.call(notification, "getType");
     }
 }

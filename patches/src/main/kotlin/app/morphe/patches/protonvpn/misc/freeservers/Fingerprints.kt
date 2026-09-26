@@ -20,23 +20,6 @@ import com.android.tools.smali.dexlib2.Opcode
 private const val UI = "Lcom/protonvpn/android/redesign/countries/ui"
 private const val FILTER_TYPE = "$UI/ServerFilterType;"
 
-internal object UserInfoUpdateFingerprint : Fingerprint(
-    definingClass = "Lcom/protonvpn/android/auth/usecase/DefaultCurrentUserProvider\$1\$1\$3;",
-    name = "emit",
-    parameters = listOf(
-        "Lcom/protonvpn/android/auth/usecase/PartialJointUserInfo;",
-        "Lkotlin/coroutines/Continuation;",
-    ),
-    filters = listOf(methodCall(definingClass = "Lkotlinx/coroutines/flow/MutableStateFlow;", name = "setValue")),
-)
-
-internal object UserInfoInvalidateFingerprint : Fingerprint(
-    definingClass = "Lcom/protonvpn/android/auth/usecase/DefaultCurrentUserProvider;",
-    name = "invalidateCache",
-    returnType = "V",
-    parameters = emptyList(),
-)
-
 internal object ServerListFilterFingerprint : Fingerprint(
     definingClass = "$UI/ServerListViewModelDataAdapterLegacy;",
     returnType = "Z",
@@ -58,7 +41,10 @@ internal object ServerGroupItemStateFingerprint : Fingerprint(
 )
 
 internal object CountriesHeaderLabelFingerprint : Fingerprint(
-    filters = listOf(methodCall(definingClass = "$UI/ServerGroupsViewModelKt;", name = "headerLabel")),
+    filters = listOf(
+        methodCall(definingClass = "$UI/ServerGroupsViewModelKt;", name = "headerLabel"),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
+    ),
 )
 
 internal object ServerGroupsMainScreenStateFingerprint : Fingerprint(

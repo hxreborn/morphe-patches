@@ -15,6 +15,7 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.protonvpn.misc.restrictions.filterReturnValue
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
@@ -75,22 +76,9 @@ val hideUpgradePromotionsPatch = bytecodePatch(
             )
         }
 
-        ActiveNotificationsFingerprint.matchSingle().method.apply {
-            findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
-                    val register = getInstruction<OneRegisterInstruction>(index).registerA
-                    replaceInstruction(
-                        index,
-                        "invoke-static/range { v$register .. v$register }, $PROMOTIONS_CLASS->withoutPromoNotifications(Ljava/util/List;)Ljava/util/List;",
-                    )
-                    addInstructions(
-                        index + 1,
-                        """
-                            move-result-object v$register
-                            return-object v$register
-                        """,
-                    )
-                }
-        }
+        ActiveNotificationsFingerprint.matchSingle().method.filterReturnValue(
+            "$PROMOTIONS_CLASS->withoutPromoNotifications(Ljava/util/List;)Ljava/util/List;",
+        )
 
         ServerGroupsMainScreenStateFingerprint.matchSingle().method.addInstructions(
             0,
