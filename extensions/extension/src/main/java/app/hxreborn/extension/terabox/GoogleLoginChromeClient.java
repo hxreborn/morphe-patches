@@ -11,6 +11,7 @@ import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
 import android.view.View;
@@ -23,6 +24,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import org.json.JSONObject;
 
 @SuppressWarnings("unused")
 public class GoogleLoginChromeClient extends WebChromeClient {
@@ -263,7 +266,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            if (url != null && url.contains(GOOGLE_ACCOUNTS_HOST)) {
+            if (isGoogleAccountsPage(url)) {
                 view.evaluateJavascript(OPENER_RELAY_SCRIPT, null);
             }
         }
@@ -272,7 +275,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            if (url == null || !url.contains(GOOGLE_ACCOUNTS_HOST)) return;
+            if (!isGoogleAccountsPage(url)) return;
 
             view.evaluateJavascript(READ_CREDENTIAL_SCRIPT, value -> {
                 String credential = jwtOf(value);
@@ -298,7 +301,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             if (credential == null) return;
 
             opener.evaluateJavascript(
-                    "window.__tbDeliver&&window.__tbDeliver('" + credential + "')", null);
+                    "window.__tbDeliver&&window.__tbDeliver(" + JSONObject.quote(credential) + ")", null);
         }
 
         private boolean interceptRelayUrl(String url) {
@@ -324,6 +327,10 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
         private static boolean isTokenChar(char c) {
             return Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '-';
+        }
+
+        private static boolean isGoogleAccountsPage(String url) {
+            return url != null && GOOGLE_ACCOUNTS_HOST.equals(Uri.parse(url).getHost());
         }
 
         private static String credentialOf(String url) {
