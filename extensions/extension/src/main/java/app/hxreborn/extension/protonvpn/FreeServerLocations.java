@@ -20,6 +20,7 @@ public final class FreeServerLocations {
 
     private static final int FREE_TIER = 0;
     private static final String STANDARD_PROFILE_TYPE = "Standard";
+    private static final String UNAVAILABLE_PLAN = "UNAVAILABLE_PLAN";
 
     private FreeServerLocations() {}
 
@@ -68,9 +69,33 @@ public final class FreeServerLocations {
         return filtered;
     }
 
+    public static List<?> serversForAccount(List<?> servers) {
+        if (!FreeAccount.isSignedIn()) return servers;
+        List<Object> filtered = new ArrayList<>(servers.size());
+        for (Object server : servers) {
+            if (isFreeServer(server)) filtered.add(server);
+        }
+        return filtered;
+    }
+
+    public static List<?> profilesForAccount(List<?> profiles) {
+        if (!FreeAccount.isSignedIn()) return profiles;
+        List<Object> filtered = new ArrayList<>(profiles.size());
+        for (Object profile : profiles) {
+            if (!UNAVAILABLE_PLAN.equals(((Enum<?>) Reflection.call(profile, "getAvailability")).name())) {
+                filtered.add(profile);
+            }
+        }
+        return filtered;
+    }
+
+    private static boolean isFreeServer(Object server) {
+        return (Boolean) Reflection.call(server, "isFreeServer");
+    }
+
     private static boolean hasFreeServer(Object country) {
         for (Object server : (List<?>) Reflection.call(country, "getServerList")) {
-            if ((Boolean) Reflection.call(server, "isFreeServer")) return true;
+            if (isFreeServer(server)) return true;
         }
         return false;
     }
