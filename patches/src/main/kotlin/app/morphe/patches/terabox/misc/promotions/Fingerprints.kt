@@ -134,3 +134,10 @@ internal object SpeedUpSheetAutoShowFingerprint : Fingerprint(
         opcode(Opcode.MOVE_RESULT_WIDE, location = MatchAfterImmediately()),
     ),
 )
+
+internal object FloatWindowUpdateFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
+    returnType = "V",
+    parameters = listOf("Ljava/util/Map;"),
+    strings = listOf("floatWindowDataMap"),
+)
