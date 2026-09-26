@@ -42,6 +42,22 @@ Every icon was taken from the developer's own published listing, website, or sou
 | `oneweather.png` | 1Weather (`com.handmark.expressweather`) | 1Weather LLC | [Google Play listing](https://play.google.com/store/apps/details?id=com.handmark.expressweather) (`og:image`) |
 | `vpnsuper.png` | VPN Super Unlimited Proxy (`com.free.vpn.super.hotspot.open`) | VPN Super Unlimited Proxy Master | [Google Play listing](https://play.google.com/store/apps/details?id=com.free.vpn.super.hotspot.open) (`og:image`) |
 | `klassikradio.png` | Klassik Radio+ (`de.klassikradio.app`) | Klassik Radio AG | [Google Play listing](https://play.google.com/store/apps/details?id=de.klassikradio.app) (`og:image`) |
+| `atlomaps.png` | AtloMaps (`com.atlogis.atlomaps`) | ATLOGIS Geoinformatics GmbH & Co. KG | [Google Play listing](https://play.google.com/store/apps/details?id=com.atlogis.atlomaps) (`og:image`) |
+| `atvtools.png` | atvTools (`dev.vodik7.atvtools`) | tvDev | [Google Play listing](https://play.google.com/store/apps/details?id=dev.vodik7.atvtools) (`og:image`) |
+| `bettersleep.png` | BetterSleep (`ipnossoft.rma.free`) | BetterSleep Health | [Google Play listing](https://play.google.com/store/apps/details?id=ipnossoft.rma.free) (`og:image`) |
+| `dwgfastview.png` | DWG FastView (`com.gstarmc.android`) | Gstarsoft Co., Ltd. | [Google Play listing](https://play.google.com/store/apps/details?id=com.gstarmc.android) (`og:image`) |
+| `mymoveset.png` | MyMoveset (`com.soulbreakers.mymoveset`) | soulBREAKERS | [Google Play listing](https://play.google.com/store/apps/details?id=com.soulbreakers.mymoveset) (`og:image`) |
+| `quranify.png` | Quranify (`com.mchutov.Quranify`) | Media Content Labs, LLC | [Google Play listing](https://play.google.com/store/apps/details?id=com.mchutov.Quranify) (`og:image`) |
+| `rateglance.png` | RateGlance (`com.sry.rateglance`) | choyoworks | [Google Play listing](https://play.google.com/store/apps/details?id=com.sry.rateglance) (`og:image`) |
+| `realmelink.png` | realme Link (`com.realme.link`) | realme Ltd. | [Google Play listing](https://play.google.com/store/apps/details?id=com.realme.link) (`og:image`) |
+| `ringtonemaker.png` | Ringtone Maker (`ringtonemaker.musiccutter.customringtones.freeringtonemaker`) | Dairy App & Notes & Audio Editor & Voice Recorder | [Google Play listing](https://play.google.com/store/apps/details?id=ringtonemaker.musiccutter.customringtones.freeringtonemaker) (`og:image`) |
+| `risesleep.png` | RISE (`com.risesci.nyx`) | Rise Science | [Google Play listing](https://play.google.com/store/apps/details?id=com.risesci.nyx) (`og:image`) |
+| `vpnify.png` | vpnify (`com.vpn.free.hotspot.secure.vpnify`) | VPNIFY | [Google Play listing](https://play.google.com/store/apps/details?id=com.vpn.free.hotspot.secure.vpnify) (`og:image`) |
+| `protonvpn.png` | Proton VPN (`ch.protonvpn.android`) | Proton AG | [Google Play listing](https://play.google.com/store/apps/details?id=ch.protonvpn.android) (`og:image`) |
+| `hinducalendar.png` | Hindu Calendar (`com.alokmandavgane.hinducalendar`) | Alok Mandavgane | [Google Play listing](https://play.google.com/store/apps/details?id=com.alokmandavgane.hinducalendar) (`og:image`) |
+| `vllo.png` | VLLO (`com.darinsoft.vimo`) | vimosoft | [Google Play listing](https://play.google.com/store/apps/details?id=com.darinsoft.vimo) (`og:image`) |
+| `terabox.png` | TeraBox (`com.dubox.drive`) | Flextech Inc. | [Google Play listing](https://play.google.com/store/apps/details?id=com.dubox.drive) (`og:image`) |
+| `echogram.png` | Echogram (`com.liori.echogram`) | Illuzion Apps | [Google Play listing](https://play.google.com/store/apps/details?id=com.liori.echogram) (`og:image`) |
 
 `showly.png` comes from a repository published under GPLv3, so its copyright terms are
 compatible with this one. The rest are used under nominative fair use only, with no

@@ -218,6 +218,11 @@ ICONS = {
     "com.realme.link": "realmelink.png",
     "ringtonemaker.musiccutter.customringtones.freeringtonemaker": "ringtonemaker.png",
     "com.vpn.free.hotspot.secure.vpnify": "vpnify.png",
+    "ch.protonvpn.android": "protonvpn.png",
+    "com.alokmandavgane.hinducalendar": "hinducalendar.png",
+    "com.darinsoft.vimo": "vllo.png",
+    "com.dubox.drive": "terabox.png",
+    "com.liori.echogram": "echogram.png",
 }
 
 
