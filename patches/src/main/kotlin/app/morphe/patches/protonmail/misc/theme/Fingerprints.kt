@@ -15,21 +15,16 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.string
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.resourceLiteral
+import app.morphe.patches.shared.misc.proton.CORE_BRAND_COLORS
+import app.morphe.patches.shared.misc.proton.ProtonPalette
 import com.android.tools.smali.dexlib2.Opcode
 
-private object ProtonPalette {
+private object MailPalette {
     const val EERIE_BLACK = 0xFF191927L
     const val MIDNIGHT_BLUE = 0xFF222230L
-
-    const val CHAMBRAY = 0xFF372580L
-    const val SAN_MARINO = 0xFF4D34B3L
     const val PURPLE_HEART = 0xFF5C3FD9L
-    const val CORNFLOWER_BLUE = 0xFF6D4AFFL
-    const val PORTAGE = 0xFF8A6EFFL
-    const val PERANO = 0xFFC4B7FFL
     const val BLUE_CHALK = 0xFFEAE5FFL
     const val MAGNOLIA = 0xFFF5F2FFL
-
     const val PALE_BLUE = 0xFFD0D0FFL
     const val PERIWINKLE = 0xFFADADFBL
     const val BLUE_BELL = 0xFF9292F9L
@@ -38,55 +33,38 @@ private object ProtonPalette {
     const val DUSKY_INDIGO = 0xFF4D4D9CL
     const val RHINO = 0xFF35356AL
     const val DARK_BLUE = 0xFF282848L
-
-    const val HAITI = 0xFF1B1340L
-    const val VALHALLA = 0xFF271B54L
-    const val JACARTA = 0xFF2E2260L
-    const val ENZIAN_BASE = 0xFF5252CCL
-    const val PURPLE_BASE = 0xFF8080FFL
 }
 
-internal const val MAILBOX_BACKGROUND = ProtonPalette.EERIE_BLACK
-internal const val SETTINGS_BACKGROUND = ProtonPalette.MIDNIGHT_BLUE
-internal const val CORE_BACKGROUND_NORM = 0xFF1C1B24L
+internal const val MAILBOX_BACKGROUND = MailPalette.EERIE_BLACK
+internal const val SETTINGS_BACKGROUND = MailPalette.MIDNIGHT_BLUE
 
 internal val DARK_BACKGROUND_COLORS = listOf(MAILBOX_BACKGROUND, SETTINGS_BACKGROUND)
 
-internal const val SIDEBAR_STRUCTURE_COLOR = SETTINGS_BACKGROUND
+internal const val SIDEBAR_PRESSED_AND_SEPARATOR_COLOR = SETTINGS_BACKGROUND
 
-private val LIGHT_BRAND_TONES = listOf(
+private val LIGHT_BRAND_COLORS = listOf(
     ProtonPalette.CHAMBRAY,
     ProtonPalette.SAN_MARINO,
-    ProtonPalette.PURPLE_HEART,
+    MailPalette.PURPLE_HEART,
     ProtonPalette.CORNFLOWER_BLUE,
     ProtonPalette.PORTAGE,
     ProtonPalette.PERANO,
-    ProtonPalette.BLUE_CHALK,
-    ProtonPalette.MAGNOLIA,
+    MailPalette.BLUE_CHALK,
+    MailPalette.MAGNOLIA,
 )
 
-private val DARK_BRAND_TONES = listOf(
-    ProtonPalette.PALE_BLUE,
-    ProtonPalette.PERIWINKLE,
-    ProtonPalette.BLUE_BELL,
-    ProtonPalette.LIGHT_SLATE_BLUE,
-    ProtonPalette.LIGHT_VIOLET_BLUE,
-    ProtonPalette.DUSKY_INDIGO,
-    ProtonPalette.RHINO,
-    ProtonPalette.DARK_BLUE,
+private val DARK_BRAND_COLORS = listOf(
+    MailPalette.PALE_BLUE,
+    MailPalette.PERIWINKLE,
+    MailPalette.BLUE_BELL,
+    MailPalette.LIGHT_SLATE_BLUE,
+    MailPalette.LIGHT_VIOLET_BLUE,
+    MailPalette.DUSKY_INDIGO,
+    MailPalette.RHINO,
+    MailPalette.DARK_BLUE,
 )
 
-private val CORE_BRAND_TONES = listOf(
-    ProtonPalette.HAITI,
-    ProtonPalette.VALHALLA,
-    ProtonPalette.JACARTA,
-    ProtonPalette.ENZIAN_BASE,
-    ProtonPalette.PURPLE_BASE,
-)
-
-internal val BRAND_COLORS = LIGHT_BRAND_TONES + DARK_BRAND_TONES + CORE_BRAND_TONES
-
-private const val BRAND_NORM = ProtonPalette.CORNFLOWER_BLUE
+internal val BRAND_COLORS = LIGHT_BRAND_COLORS + DARK_BRAND_COLORS + CORE_BRAND_COLORS
 
 private const val COLOR_PARAMETER_COUNT = 45
 
@@ -95,15 +73,6 @@ internal val PROTON_COLORS_PARAMETERS = listOf("Z") + List(COLOR_PARAMETER_COUNT
 internal object DarkPaletteFingerprint : Fingerprint(
     name = "<clinit>",
     filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
-)
-
-internal object CoreBackgroundNormFingerprint : Fingerprint(
-    filters = listOf(literal(CORE_BACKGROUND_NORM)),
-)
-
-internal object BrandPaletteFingerprint : Fingerprint(
-    name = "<clinit>",
-    filters = listOf(literal(BRAND_NORM)),
 )
 
 internal object ColorSchemeFingerprint : Fingerprint(

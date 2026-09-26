@@ -4,6 +4,9 @@
  */
 package app.hxreborn.extension.protonmail;
 
+import app.hxreborn.extension.proton.PatchSettings;
+import app.hxreborn.extension.proton.AppliedPatches;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 

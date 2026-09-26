@@ -4,10 +4,15 @@
  */
 package app.hxreborn.extension.protonmail;
 
+import android.graphics.Color;
 import android.view.View;
 import android.webkit.WebView;
 
+import java.util.Map;
+
 import app.hxreborn.extension.WebAssets;
+import app.hxreborn.extension.proton.AccentColor;
+import app.hxreborn.extension.proton.AmoledTheme;
 import app.morphe.extension.shared.Logger;
 
 @SuppressWarnings("unused")
@@ -32,9 +37,9 @@ public final class WebSettingsTheme {
         try {
             if (view == null) return;
 
-            AmoledTheme.injectSettingsWebViewStyle(view);
-            AccentColor.injectSettingsWebViewStyle(view);
-            if (AccentColor.isSettingsWebViewStyleEnabled()) {
+            injectAmoledStyle(view);
+            injectAccentStyle(view);
+            if (AccentColor.hasCustomAccent()) {
                 showWhenAccentStyled(view);
             } else {
                 view.setVisibility(View.VISIBLE);
@@ -45,7 +50,71 @@ public final class WebSettingsTheme {
     }
 
     private static boolean hasEnabledStyle() {
-        return AmoledTheme.isEnabled() || AccentColor.isSettingsWebViewStyleEnabled();
+        return AmoledTheme.isEnabled() || AccentColor.hasCustomAccent();
+    }
+
+    private static void injectAmoledStyle(WebView view) {
+        if (!AmoledTheme.isEnabled()) return;
+        view.evaluateJavascript(WebAssets.AMOLED_WEBVIEW, null);
+    }
+
+    private static void injectAccentStyle(WebView view) {
+        try {
+            if (!AccentColor.hasCustomAccent()) return;
+
+            final float[] stockHsl = argbToHsl(AccentColor.STOCK_DARK_ACCENT);
+            final float[] accentHsl = argbToHsl(AccentColor.transformedStockDarkAccent());
+            final float saturationScale = stockHsl[1] == 0 ? 1 : accentHsl[1] / stockHsl[1];
+
+            view.evaluateJavascript(
+                    WebAssets.ACCENT_RECOLOR
+                            .replace("__TONES__", serializeColorMap())
+                            .replace("__SHIFT__", Float.toString(accentHsl[0] - stockHsl[0]))
+                            .replace("__SATURATION__", Float.toString(saturationScale)),
+                    null);
+        } catch (Throwable t) {
+            Logger.printException(() -> "Could not style the settings web view", t);
+        }
+    }
+
+    private static float[] argbToHsl(int argb) {
+        final float red = Color.red(argb) / 255f;
+        final float green = Color.green(argb) / 255f;
+        final float blue = Color.blue(argb) / 255f;
+        final float max = Math.max(red, Math.max(green, blue));
+        final float min = Math.min(red, Math.min(green, blue));
+        final float delta = max - min;
+        final float lightness = (max + min) / 2f;
+        if (delta == 0) return new float[] {0, 0, lightness};
+
+        final float saturation = lightness > 0.5f
+                ? delta / (2f - max - min)
+                : delta / (max + min);
+        final float hue;
+        if (max == red) {
+            hue = (green - blue) / delta + (green < blue ? 6 : 0);
+        } else if (max == green) {
+            hue = (blue - red) / delta + 2;
+        } else {
+            hue = (red - green) / delta + 4;
+        }
+
+        return new float[] {hue * 60f, saturation, lightness};
+    }
+
+    private static String serializeColorMap() {
+        final StringBuilder map = new StringBuilder("{");
+        for (Map.Entry<Integer, Integer> entry : AccentColor.transformedBrandColors().entrySet()) {
+            if (map.length() > 1) map.append(',');
+            map.append('\'').append(rgbChannelString(entry.getKey())).append("':'")
+                    .append(rgbChannelString(entry.getValue())).append('\'');
+        }
+
+        return map.append('}').toString();
+    }
+
+    private static String rgbChannelString(int argb) {
+        return Color.red(argb) + "," + Color.green(argb) + "," + Color.blue(argb);
     }
 
     private static void showWhenAccentStyled(WebView view) {

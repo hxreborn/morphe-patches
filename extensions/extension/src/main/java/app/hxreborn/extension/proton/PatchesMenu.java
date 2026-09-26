@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,9 +24,9 @@ public final class PatchesMenu {
 
     public static final String SETTINGS_ROW_TITLE = "hxreborn patches";
 
-    private static final Handler MAIN = new Handler(Looper.getMainLooper());
+    private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
 
-    private static volatile Object settingsRowAction;
+    private static volatile Object settingsRowOnClickProxy;
 
     private PatchesMenu() {}
 
@@ -34,12 +34,12 @@ public final class PatchesMenu {
         return "unknown";
     }
 
-    public static synchronized Object settingsRowAction(Class<?> actionType) {
-        if (settingsRowAction == null) {
-            settingsRowAction = Proxy.newProxyInstance(PatchesMenu.class.getClassLoader(),
-                    new Class<?>[] { actionType }, new RowClickHandler());
+    public static synchronized Object settingsRowOnClick(Class<?> onClickType) {
+        if (settingsRowOnClickProxy == null) {
+            settingsRowOnClickProxy = Proxy.newProxyInstance(PatchesMenu.class.getClassLoader(),
+                    new Class<?>[] { onClickType }, new RowClickHandler());
         }
-        return settingsRowAction;
+        return settingsRowOnClickProxy;
     }
 
     private static final class RowClickHandler implements InvocationHandler {
@@ -50,13 +50,13 @@ public final class PatchesMenu {
             if ("hashCode".equals(name)) return System.identityHashCode(proxy);
             if ("equals".equals(name)) return proxy == args[0];
 
-            MAIN.post(PatchesMenu::show);
+            MAIN_HANDLER.post(PatchesMenu::show);
             return null;
         }
     }
 
     private static void show() {
-        final Activity activity = PatchApplication.resumedActivity();
+        final Activity activity = PatchContext.resumedActivity();
         if (activity != null && !activity.isFinishing()) {
             activity.startActivity(new Intent(activity, PatchesSettingsActivity.class));
             return;

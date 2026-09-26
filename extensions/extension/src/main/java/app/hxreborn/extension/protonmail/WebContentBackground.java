@@ -6,16 +6,15 @@ package app.hxreborn.extension.protonmail;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
-import android.webkit.WebView;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import app.hxreborn.extension.WebAssets;
+import app.hxreborn.extension.proton.AmoledTheme;
 
-public final class AmoledTheme {
+@SuppressWarnings("unused")
+public final class WebContentBackground {
     private static final String PROTON_DARK_BACKGROUND = "#191927";
     private static final String AMOLED_BACKGROUND = "#000000";
     private static final byte[] PROTON_DARK_BACKGROUND_BYTES =
@@ -23,60 +22,19 @@ public final class AmoledTheme {
     private static final byte[] AMOLED_BACKGROUND_BYTES =
             AMOLED_BACKGROUND.getBytes(US_ASCII);
 
-    private AmoledTheme() {}
-
-    private static final String KEY = "amoled_dark_theme";
-    private static final long BLACK = 0xFF000000L;
-    private static final long PACKED_BLACK = BLACK << 32;
-    private static final long PACKED_SURFACE = 0xFF2B2B38L << 32;
-    private static final int DARK_CHANNEL_SUM = 3 * 0x80;
-
-    public static boolean isPatched() {
-        return false;
-    }
-
-    public static boolean isEnabled() {
-        return PatchSettings.isFeatureEnabled(isPatched(), KEY);
-    }
-
-    static void setEnabled(boolean enabled) {
-        PatchSettings.setEnabled(KEY, enabled);
-    }
-
-    public static long background(long original) {
-        return isEnabled() ? BLACK : original;
-    }
-
-    public static long packedBackground(long original) {
-        return isEnabled() && isDark(original) ? PACKED_BLACK : original;
-    }
-
-    public static long packedSurface(long original) {
-        return isEnabled() && isDark(original) ? PACKED_SURFACE : original;
-    }
-
-    private static boolean isDark(long packedColor) {
-        final int argb = (int) (packedColor >>> 32);
-        return ((argb >> 16) & 0xFF) + ((argb >> 8) & 0xFF) + (argb & 0xFF) < DARK_CHANNEL_SUM;
-    }
-
-    static void injectSettingsWebViewStyle(WebView view) {
-        if (!isEnabled()) return;
-        view.evaluateJavascript(WebAssets.AMOLED_WEBVIEW, null);
-    }
+    private WebContentBackground() {}
 
     public static String replaceBackground(String html) {
-        if (!isEnabled()) return html;
+        if (!AmoledTheme.isEnabled()) return html;
         return html == null
                 ? null
                 : html.replace(PROTON_DARK_BACKGROUND, AMOLED_BACKGROUND);
     }
 
     public static InputStream replaceBackground(InputStream input) {
-        if (!isEnabled()) return input;
+        if (!AmoledTheme.isEnabled()) return input;
         return input == null ? null : new BackgroundReplacingInputStream(input);
     }
-
     private static byte[] readAllBytes(InputStream input) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] buffer = new byte[8192];
@@ -150,7 +108,7 @@ public final class AmoledTheme {
 
         private ByteArrayInputStream replacement() throws IOException {
             if (replacement == null) {
-                byte[] content = AmoledTheme.readAllBytes(source);
+                byte[] content = WebContentBackground.readAllBytes(source);
                 replaceInPlace(
                         content,
                         PROTON_DARK_BACKGROUND_BYTES,

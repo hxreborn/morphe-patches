@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -18,7 +18,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-final class PatchesDialog {
+public final class PatchesDialog {
 
     static final int BACKGROUND_RADIUS_DP = 32;
     static final int PADDING_DP = 24;
@@ -36,7 +36,7 @@ final class PatchesDialog {
 
     private PatchesDialog() {}
 
-    static LinearLayout createContentLayout(Activity activity) {
+    public static LinearLayout createContentLayout(Activity activity) {
         final LinearLayout contentLayout = new LinearLayout(activity);
         contentLayout.setOrientation(LinearLayout.VERTICAL);
         contentLayout.setBackground(PatchesTheme.createRoundedRectangle(activity,
@@ -47,12 +47,12 @@ final class PatchesDialog {
         return contentLayout;
     }
 
-    static TextView createTitle(Activity activity, String titleText) {
+    public static TextView createTitle(Activity activity, String titleText) {
         return createTextView(activity, titleText, TITLE_SP,
                 PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
     }
 
-    static TextView createTextView(Activity activity, String value, int sizeSp, int color) {
+    public static TextView createTextView(Activity activity, String value, int sizeSp, int color) {
         final TextView view = new TextView(activity);
         view.setText(value);
         view.setTextColor(color);
@@ -60,7 +60,7 @@ final class PatchesDialog {
         return view;
     }
 
-    static View configureActionButton(Activity activity, TextView label, Runnable onClick) {
+    public static View configureActionButton(Activity activity, TextView label, Runnable onClick) {
         label.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
         label.setGravity(Gravity.CENTER);
         label.setMinWidth(dp(activity, BUTTON_MIN_WIDTH_DP));
@@ -73,14 +73,14 @@ final class PatchesDialog {
         return label;
     }
 
-    static LinearLayout createButtonRow(Activity activity) {
+    public static LinearLayout createButtonRow(Activity activity) {
         final LinearLayout actions = new LinearLayout(activity);
         actions.setOrientation(LinearLayout.HORIZONTAL);
         actions.setGravity(Gravity.END);
         return actions;
     }
 
-    static Dialog createDialog(Activity activity, View contentLayout) {
+    public static Dialog createDialog(Activity activity, View contentLayout) {
         final Dialog dialog = new Dialog(activity,
                 android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
         dialog.setContentView(contentLayout);

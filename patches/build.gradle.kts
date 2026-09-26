@@ -59,7 +59,7 @@ tasks {
 
     processResources {
         inputs.property("version", project.version)
-        filesMatching("protonmail-bundle-version.txt") {
+        filesMatching("proton-bundle-version.txt") {
             expand("version" to project.version)
         }
     }

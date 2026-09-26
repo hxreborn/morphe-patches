@@ -10,7 +10,7 @@ package app.morphe.patches.protonmail.misc.scheduling
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.protonmail.misc.settings.markPatchApplied
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly

@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +30,19 @@ public final class AppliedPatches {
     }
 
     public static boolean removeSentFromSignature() {
-        return false; // stub
+        return false;
     }
 
     public static boolean removeFreeAccountsLimit() {
-        return false; // stub
+        return false;
     }
 
     public static boolean scheduledDeletion() {
-        return false; // stub
+        return false;
     }
 
     public static boolean unlockCustomTimePicker() {
-        return false; // stub
+        return false;
     }
 
     static List<String> names() {

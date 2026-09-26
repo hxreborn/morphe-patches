@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,12 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 
-final class PatchesTheme {
+public final class PatchesTheme {
 
     static final String BACKGROUND_NORM = "proton_background_norm";
-    static final String BACKGROUND_SECONDARY = "proton_background_secondary";
-    static final String TEXT_NORM = "proton_text_norm";
-    static final String TEXT_WEAK = "proton_text_weak";
+    public static final String BACKGROUND_SECONDARY = "proton_background_secondary";
+    public static final String TEXT_NORM = "proton_text_norm";
+    public static final String TEXT_WEAK = "proton_text_weak";
     static final String ICON_DISABLED = "proton_icon_disabled";
 
     private static final int FALLBACK_BACKGROUND_NORM = 0xFF1C1B24;
@@ -34,7 +34,7 @@ final class PatchesTheme {
 
     private PatchesTheme() {}
 
-    static int resolveColorAttribute(Context context, String attribute) {
+    public static int resolveColorAttribute(Context context, String attribute) {
         final int fallbackColor = fallbackColor(attribute);
         try {
             final int identifier = context.getResources()
@@ -88,7 +88,7 @@ final class PatchesTheme {
         return background;
     }
 
-    static boolean isDark(int color) {
+    public static boolean isDark(int color) {
         return weightedRgbBrightness(color) < DARK_COLOR_THRESHOLD;
     }
 
@@ -98,7 +98,7 @@ final class PatchesTheme {
                 + (color & 0xFF) * 114) / 1000;
     }
 
-    static void tintSwitch(Switch control, int accentColor) {
+    public static void tintSwitch(Switch control, int accentColor) {
         final int inactiveColor = resolveColorAttribute(control.getContext(), ICON_DISABLED);
         final int[][] states = {{android.R.attr.state_checked}, {}};
 
@@ -108,7 +108,7 @@ final class PatchesTheme {
                 new ColorStateList(states, new int[] {withHalfAlpha(accentColor), inactiveColor}));
     }
 
-    static void tintTextInput(EditText input, int accentColor) {
+    public static void tintTextInput(EditText input, int accentColor) {
         final int inactiveColor = resolveColorAttribute(input.getContext(), ICON_DISABLED);
 
         input.setBackgroundTintList(new ColorStateList(
@@ -145,7 +145,7 @@ final class PatchesTheme {
         view.setForeground(view.getContext().getDrawable(value.resourceId));
     }
 
-    static int dpToPx(Context context, int value) {
+    public static int dpToPx(Context context, int value) {
         return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
 }

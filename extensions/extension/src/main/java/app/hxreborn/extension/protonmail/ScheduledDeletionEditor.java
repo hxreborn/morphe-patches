@@ -4,6 +4,10 @@
  */
 package app.hxreborn.extension.protonmail;
 
+import app.hxreborn.extension.proton.PatchesDialog;
+import app.hxreborn.extension.proton.PatchesTheme;
+import app.hxreborn.extension.proton.AccentColor;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -32,9 +36,9 @@ import app.morphe.extension.shared.Utils;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("deprecation")
-final class ScheduledDeletionEditor {
+public final class ScheduledDeletionEditor {
 
-    static final String SETTINGS_ROW_TITLE = "Scheduled deletion";
+    public static final String SETTINGS_ROW_TITLE = "Scheduled deletion";
 
     private static final int[] UNIT_SECONDS = { 60, 3600, 86400 };
     private static final String[] UNIT_LABELS = { "Minutes", "Hours", "Days" };
@@ -47,7 +51,7 @@ final class ScheduledDeletionEditor {
 
     private ScheduledDeletionEditor() {}
 
-    static String summary(Context context) {
+    public static String summary(Context context) {
         final String schedules = schedules(context);
         return schedules.isEmpty() ? "Off" : schedules;
     }
@@ -87,7 +91,7 @@ final class ScheduledDeletionEditor {
         return names.toString();
     }
 
-    static void show(Activity activity, Runnable onSettingChanged) {
+    public static void show(Activity activity, Runnable onSettingChanged) {
         if (activity.isFinishing() || activity.isDestroyed()) {
             return;
         }

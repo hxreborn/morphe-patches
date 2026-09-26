@@ -15,7 +15,10 @@ import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.InlineMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.webSettingsThemePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.returnEarly
+import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
+import app.morphe.patches.shared.misc.proton.transformCoreDarkBackground
+import app.morphe.patches.shared.misc.proton.injectColorTransformCall
 import app.morphe.util.matchSingle
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
@@ -29,41 +32,29 @@ import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import java.lang.Long.toHexString
 
-private const val SIDEBAR_BLOCK_REGISTER_OFFSET = 18
+private const val WEB_CONTENT_BACKGROUND_CLASS = "Lapp/hxreborn/extension/protonmail/WebContentBackground;"
+private const val SIDEBAR_COLORS_REGISTER_OFFSET = 18
 private const val SIDEBAR_INTERACTION_PRESSED = 1
 private const val SIDEBAR_SEPARATOR = 2
 private const val COLOR_PACK_SHIFT = 32
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/AmoledTheme;"
 private const val LOAD_DATA_WITH_BASE_URL =
     "Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/String;" +
         "Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
 
-internal fun MutableMethod.injectColorTransformCall(index: Int, method: String) {
-    val register = getInstruction<OneRegisterInstruction>(index).registerA
+private fun MutableMethod.injectBackgroundTransformCall(index: Int) =
+    injectColorTransformCall(index, "$AMOLED_THEME_CLASS->transformBackground(J)J")
 
-    addInstructions(
-        index + 1,
-        """
-            invoke-static/range { v$register .. v${register + 1} }, $method
-            move-result-wide v$register
-        """,
-    )
-}
-
-private fun MutableMethod.injectBackgroundColorCall(index: Int) =
-    injectColorTransformCall(index, "$EXTENSION_CLASS->background(J)J")
-
-private const val PACKED_BACKGROUND = "$EXTENSION_CLASS->packedBackground(J)J"
-private const val PACKED_SURFACE = "$EXTENSION_CLASS->packedSurface(J)J"
+private const val TRANSFORM_PACKED_BACKGROUND = "$AMOLED_THEME_CLASS->transformPackedBackground(J)J"
+private const val TRANSFORM_PACKED_SURFACE = "$AMOLED_THEME_CLASS->transformPackedSurface(J)J"
 
 private val CONTACTS_COLOR_TRANSFORMS = listOf(
-    ContactListScreenBackgroundFingerprint to PACKED_BACKGROUND,
-    ContactListTopBarBackgroundFingerprint to PACKED_BACKGROUND,
-    ContactSearchScreenBackgroundFingerprint to PACKED_BACKGROUND,
-    ContactSearchTopBarBackgroundFingerprint to PACKED_BACKGROUND,
-    ContactSearchFieldBackgroundFingerprint to PACKED_BACKGROUND,
-    ContactCardSurfaceFingerprint to PACKED_SURFACE,
-    ContactSwipeBoxSurfaceFingerprint to PACKED_SURFACE,
+    ContactListScreenBackgroundFingerprint to TRANSFORM_PACKED_BACKGROUND,
+    ContactListTopBarBackgroundFingerprint to TRANSFORM_PACKED_BACKGROUND,
+    ContactSearchScreenBackgroundFingerprint to TRANSFORM_PACKED_BACKGROUND,
+    ContactSearchTopBarBackgroundFingerprint to TRANSFORM_PACKED_BACKGROUND,
+    ContactSearchFieldBackgroundFingerprint to TRANSFORM_PACKED_BACKGROUND,
+    ContactCardSurfaceFingerprint to TRANSFORM_PACKED_SURFACE,
+    ContactSwipeBoxSurfaceFingerprint to TRANSFORM_PACKED_SURFACE,
 )
 
 private fun Instruction.constructsProtonColors(): Boolean {
@@ -90,16 +81,16 @@ private fun MutableMethod.indexOfDarkColorsOrThrow() =
         ?.index
         ?: throw PatchException("Could not find the dark color scheme")
 
-private fun MutableMethod.restoreSidebarStructure() {
+private fun MutableMethod.setSidebarPressedAndSeparatorColors() {
     val invokeIndex = indexOfDarkColorsOrThrow()
     val instruction = getInstruction<RegisterRangeInstruction>(invokeIndex)
-    val block = instruction.startRegister + instruction.registerCount - SIDEBAR_BLOCK_REGISTER_OFFSET
-    val packed = toHexString(SIDEBAR_STRUCTURE_COLOR shl COLOR_PACK_SHIFT)
+    val sidebarColorsRegister = instruction.startRegister + instruction.registerCount - SIDEBAR_COLORS_REGISTER_OFFSET
+    val packed = toHexString(SIDEBAR_PRESSED_AND_SEPARATOR_COLOR shl COLOR_PACK_SHIFT)
 
     addInstructions(
         invokeIndex,
         listOf(SIDEBAR_INTERACTION_PRESSED, SIDEBAR_SEPARATOR).joinToString("\n") { role ->
-            "const-wide v${block + role * 2}, 0x${packed}L"
+            "const-wide v${sidebarColorsRegister + role * 2}, 0x${packed}L"
         },
     )
 }
@@ -114,7 +105,7 @@ private fun MutableMethod.replaceCachedMessageBackground() {
     addInstructions(
         index + 1,
         """
-            invoke-static/range {v$register .. v$register}, $EXTENSION_CLASS->replaceBackground(Ljava/io/InputStream;)Ljava/io/InputStream;
+            invoke-static/range {v$register .. v$register}, $WEB_CONTENT_BACKGROUND_CLASS->replaceBackground(Ljava/io/InputStream;)Ljava/io/InputStream;
             move-result-object v$register
         """,
     )
@@ -129,7 +120,7 @@ private fun MutableMethod.replaceInlineMessageBackground() {
     addInstructions(
         index,
         """
-            invoke-static/range {v$register .. v$register}, $EXTENSION_CLASS->replaceBackground(Ljava/lang/String;)Ljava/lang/String;
+            invoke-static/range {v$register .. v$register}, $WEB_CONTENT_BACKGROUND_CLASS->replaceBackground(Ljava/lang/String;)Ljava/lang/String;
             move-result-object v$register
         """,
     )
@@ -146,18 +137,16 @@ val amoledThemePatch = bytecodePatch(
     execute {
         DarkPaletteFingerprint.matchSingle().method.apply {
             DARK_BACKGROUND_COLORS.forEach { color ->
-                injectBackgroundColorCall(indexOfFirstLiteralInstructionOrThrow(color))
+                injectBackgroundTransformCall(indexOfFirstLiteralInstructionOrThrow(color))
             }
         }
 
-        CoreBackgroundNormFingerprint.matchSingle().method.apply {
-            injectBackgroundColorCall(indexOfFirstLiteralInstructionOrThrow(CORE_BACKGROUND_NORM))
-        }
+        transformCoreDarkBackground()
 
-        ColorSchemeFingerprint.matchSingle().method.restoreSidebarStructure()
+        ColorSchemeFingerprint.matchSingle().method.setSidebarPressedAndSeparatorColors()
 
         UpsellingDarkBackgroundFingerprint.instructionMatchesOrNull?.first()?.index?.let { index ->
-            UpsellingDarkBackgroundFingerprint.method.injectBackgroundColorCall(index)
+            UpsellingDarkBackgroundFingerprint.method.injectBackgroundTransformCall(index)
         }
 
         CONTACTS_COLOR_TRANSFORMS.forEach { (fingerprint, transform) ->
@@ -165,9 +154,7 @@ val amoledThemePatch = bytecodePatch(
             match.method.injectColorTransformCall(match.instructionMatches.last().index, transform)
         }
 
-        mutableClassDefBy(EXTENSION_CLASS).methods
-            .single { it.name == "isPatched" }
-            .returnEarly(true)
+        markFeaturePatched(AMOLED_THEME_CLASS)
 
         CachedMessageBodyFingerprint.matchSingle().method.replaceCachedMessageBackground()
         InlineMessageBodyFingerprint.matchSingle().method.replaceInlineMessageBackground()
@@ -177,7 +164,7 @@ val amoledThemePatch = bytecodePatch(
             match.method.addInstructions(
                 inputStreamResult.index + 1,
                 """
-                    invoke-static/range { v$register .. v$register }, $EXTENSION_CLASS->replaceBackground(Ljava/io/InputStream;)Ljava/io/InputStream;
+                    invoke-static/range { v$register .. v$register }, $WEB_CONTENT_BACKGROUND_CLASS->replaceBackground(Ljava/io/InputStream;)Ljava/io/InputStream;
                     move-result-object v$register
                 """,
             )

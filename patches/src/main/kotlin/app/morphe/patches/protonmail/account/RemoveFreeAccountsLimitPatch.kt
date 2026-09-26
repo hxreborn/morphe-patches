@@ -12,7 +12,7 @@ package app.morphe.patches.protonmail.account
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.protonmail.misc.settings.appliedPatchMarkerPatch
+import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64

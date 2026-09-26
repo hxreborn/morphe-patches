@@ -18,8 +18,9 @@ import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
 import app.morphe.util.indexOfFirstLiteralInstruction
-import app.morphe.util.returnEarly
 import org.w3c.dom.Element
 
 private val unhandledSidebarUpsellingPatch = resourcePatch {
@@ -41,9 +42,6 @@ private val unhandledSidebarUpsellingPatch = resourcePatch {
         }
     }
 }
-
-private const val UPSELLING_VISIBILITY_CLASS =
-    "Lapp/hxreborn/extension/protonmail/UpsellingVisibility;"
 
 private fun MutableMethod.returnVoidWhenUpsellingHidden() {
     val free = getFreeRegisterProvider(0, 1).getFreeRegister()
@@ -77,9 +75,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        mutableClassDefBy(UPSELLING_VISIBILITY_CLASS).methods
-            .single { it.name == "isPatched" }
-            .returnEarly(true)
+        markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
 
         val rows = sidebarUpsellingRowFingerprints.mapNotNull { it.methodOrNull }
 

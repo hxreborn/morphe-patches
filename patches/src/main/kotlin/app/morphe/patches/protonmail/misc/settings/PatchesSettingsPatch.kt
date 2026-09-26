@@ -7,37 +7,31 @@ package app.morphe.patches.protonmail.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
-import app.morphe.util.returnEarly
+import app.morphe.patches.shared.misc.proton.PATCHES_MENU_CLASS
+import app.morphe.patches.shared.misc.proton.SETTINGS_ROW_TITLE
+import app.morphe.patches.shared.misc.proton.injectBundleVersion
+import app.morphe.patches.shared.misc.proton.literalWrittenTo
+import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import app.morphe.util.getReference
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.formatter.DexFormatter
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import org.w3c.dom.Element
-
-private const val MENU_CLASS = "Lapp/hxreborn/extension/protonmail/PatchesMenu;"
-private const val SETTINGS_ROW_NAME = "hxreborn patches"
 
 private const val SETTINGS_ITEM_NAME_PARAMETER = 1
 private const val SETTINGS_ITEM_ICON_PARAMETER = 3
 private const val SETTINGS_ITEM_BADGE_PARAMETER = 6
 private const val SETTINGS_ITEM_TEMPLATE_INDEX = 1
-
-private val MethodReference.smaliDescriptor
-    get() = "$definingClass->$name(${parameterTypes.joinToString("")})$returnType"
 
 private fun MethodReference.registerOffsetOf(parameter: Int) =
     parameterTypes.take(parameter).sumOf { if (it == "J" || it == "D") 2 else 1 }
@@ -52,63 +46,15 @@ private fun MutableMethod.settingsItemCalls() = instructions.withIndex().filter 
         } == true
 }
 
-private fun MutableMethod.literalWrittenTo(register: Int, before: Int): Long {
-    for (index in before - 1 downTo 0) {
-        val instruction = getInstruction(index)
-        if (instruction !is OneRegisterInstruction || instruction.registerA != register) continue
-        if (instruction !is WideLiteralInstruction) {
-            throw PatchException(
-                "Expected a literal write to settings item register v$register at instruction " +
-                    "$index, found ${instruction.opcode}",
-            )
-        }
-        return instruction.wideLiteral
-    }
-    throw PatchException(
-        "No write to settings item register v$register before instruction $before",
-    )
-}
-
-private const val SETTINGS_ACTIVITY_CLASS =
-    "app.hxreborn.extension.protonmail.PatchesSettingsActivity"
-
-private val patchesSettingsActivityPatch = resourcePatch {
-    finalize {
-        document("AndroidManifest.xml").use { document ->
-            val application = document.getElementsByTagName("application").item(0) as Element
-
-            val activity = document.createElement("activity")
-            activity.setAttribute("android:name", SETTINGS_ACTIVITY_CLASS)
-            activity.setAttribute("android:exported", "false")
-            activity.setAttribute("android:theme", "@style/ProtonTheme.Mail")
-            application.appendChild(activity)
-        }
-    }
-}
-
-private const val APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/protonmail/AppliedPatches;"
-
-internal fun BytecodePatchContext.markPatchApplied(methodName: String) =
-    mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
-        .single { it.name == methodName }
-        .returnEarly(true)
-
-internal fun appliedPatchMarkerPatch(methodName: String) = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
-    execute { markPatchApplied(methodName) }
-}
-
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(spoofSignaturePatch, resourceMappingPatch, patchesSettingsActivityPatch)
+    dependsOn(
+        spoofSignaturePatch,
+        resourceMappingPatch,
+        patchesSettingsActivityPatch("@style/ProtonTheme.Mail"),
+    )
 
     execute {
-        val bundleVersion = PatchesSettingsVersion::class.java
-            .getResourceAsStream("/protonmail-bundle-version.txt")?.bufferedReader()?.use {
-                it.readText().trim()
-            } ?: throw PatchException("Patch bundle version resource is unavailable")
-        mutableClassDefBy(MENU_CLASS).methods.single { it.name == "bundleVersion" }
-            .returnEarly(bundleVersion)
+        injectBundleVersion()
 
         val iconId = getResourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
             ?: throw PatchException("Missing settings icon: ic_proton_wrench")
@@ -153,21 +99,19 @@ internal val patchesSettingsPatch = bytecodePatch {
                 anchorIndex + 1,
                 """
                     const-class v${register(0)}, $onClickType
-                    invoke-static/range { v${register(0)} .. v${register(0)} }, $MENU_CLASS->settingsRowAction(Ljava/lang/Class;)Ljava/lang/Object;
+                    invoke-static/range { v${register(0)} .. v${register(0)} }, $PATCHES_MENU_CLASS->settingsRowOnClick(Ljava/lang/Class;)Ljava/lang/Object;
                     move-result-object v${register(onClickParameter)}
                     check-cast v${register(onClickParameter)}, $onClickType
                     const v${register(0)}, 0x0
-                    const-string v${register(SETTINGS_ITEM_NAME_PARAMETER)}, "$SETTINGS_ROW_NAME"
+                    const-string v${register(SETTINGS_ITEM_NAME_PARAMETER)}, "$SETTINGS_ROW_TITLE"
                     const v${register(SETTINGS_ITEM_ICON_PARAMETER)}, $iconId
                     ${if (hasBadge) "const v${register(SETTINGS_ITEM_BADGE_PARAMETER)}, 0x0" else ""}
                     const v${last - 1}, 0x0
                     const v$last, $defaultArgumentsMask
-                    invoke-static/range { v$first .. v$last }, ${reference.smaliDescriptor}
-                    invoke-static { v${dividerCall.registerC}, v${dividerCall.registerD} }, ${dividerReference.smaliDescriptor}
+                    invoke-static/range { v$first .. v$last }, ${DexFormatter.INSTANCE.getMethodDescriptor(reference)}
+                    invoke-static { v${dividerCall.registerC}, v${dividerCall.registerD} }, ${DexFormatter.INSTANCE.getMethodDescriptor(dividerReference)}
                 """,
             )
         }
     }
 }
-
-private object PatchesSettingsVersion

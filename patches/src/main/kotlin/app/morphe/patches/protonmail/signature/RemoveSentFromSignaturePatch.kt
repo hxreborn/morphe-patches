@@ -12,7 +12,7 @@ package app.morphe.patches.protonmail.signature
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.protonmail.misc.settings.appliedPatchMarkerPatch
+import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.RUST_CORE
 import app.morphe.patches.shared.compat.AppCompatibilities

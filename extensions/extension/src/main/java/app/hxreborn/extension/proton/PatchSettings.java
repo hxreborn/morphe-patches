@@ -2,16 +2,16 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import app.morphe.extension.shared.Utils;
 
-final class PatchSettings {
+public final class PatchSettings {
 
-    static final String PREFERENCES_NAME = "hx_protonmail_patches";
+    public static final String PREFERENCES_NAME = "hx_protonmail_patches";
 
     private PatchSettings() {}
 

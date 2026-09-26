@@ -4,6 +4,8 @@
  */
 package app.hxreborn.extension.protonmail;
 
+import app.hxreborn.extension.proton.UpsellingVisibility;
+
 import android.content.Context;
 import app.morphe.extension.shared.Utils;
 

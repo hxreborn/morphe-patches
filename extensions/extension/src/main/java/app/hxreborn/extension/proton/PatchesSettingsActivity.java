@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,6 +22,8 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import java.util.List;
+
+import app.hxreborn.extension.protonmail.ScheduledDeletionEditor;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -352,9 +354,9 @@ public final class PatchesSettingsActivity extends Activity {
 
     private String appVersion() {
         try {
-            final PackageInfo info =
+            final PackageInfo packageInfo =
                     getPackageManager().getPackageInfo(getPackageName(), 0);
-            return info.versionName + " (" + info.versionCode + ")";
+            return packageInfo.versionName + " (" + packageInfo.versionCode + ")";
         } catch (Throwable t) {
             return "unknown";
         }

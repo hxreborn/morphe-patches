@@ -2,20 +2,18 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorSpace;
 import android.os.Build;
-import android.webkit.WebView;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import app.hxreborn.extension.WebAssets;
-import app.morphe.extension.shared.Logger;
 import app.morphe.extension.shared.Utils;
 
 @SuppressWarnings("unused")
@@ -26,7 +24,7 @@ public final class AccentColor {
     static final String SYSTEM = "system";
 
     static final int STOCK_LIGHT_ACCENT = 0xFF6D4AFF;
-    static final int STOCK_DARK_ACCENT = 0xFF9292F9;
+    public static final int STOCK_DARK_ACCENT = 0xFF9292F9;
 
     private static final long ARGB_MASK = 0xFFFFFFFFL;
     private static final double MAX_CHROMA_SCALE = 2.5;
@@ -37,7 +35,7 @@ public final class AccentColor {
     private static final double GAMUT_TOLERANCE = 2;
     private static final int GAMUT_STEPS = 10;
 
-    private static final Map<Integer, Integer> RECOLORED_COLORS = new ConcurrentHashMap<>();
+    private static final Map<Integer, Integer> TRANSFORMED_BRAND_COLORS = new ConcurrentHashMap<>();
 
     private AccentColor() {}
 
@@ -55,10 +53,10 @@ public final class AccentColor {
 
     static void setPreset(String preset) {
         PatchSettings.setString(PREFERENCE_KEY, preset);
-        RECOLORED_COLORS.clear();
+        TRANSFORMED_BRAND_COLORS.clear();
     }
 
-    static int getAccentColor(boolean dark) {
+    public static int getAccentColor(boolean dark) {
         return resolveAccentColor(getPreset(), dark);
     }
 
@@ -72,16 +70,16 @@ public final class AccentColor {
         return SYSTEM.equals(preset) ? getSystemAccentColor() : parseColorOrZero(preset);
     }
 
-    public static long applyAccentToArgb(long original) {
+    public static long transformBrandColor(long original) {
         try {
             final LabAdjustment adjustment = computeLabAdjustment(getPreset());
             if (adjustment == null) return original;
 
             final int source = (int) original;
-            Integer accentColor = RECOLORED_COLORS.get(source);
+            Integer accentColor = TRANSFORMED_BRAND_COLORS.get(source);
             if (accentColor == null) {
                 accentColor = applyLabAdjustment(source, adjustment);
-                RECOLORED_COLORS.put(source, accentColor);
+                TRANSFORMED_BRAND_COLORS.put(source, accentColor);
             }
 
             return accentColor & ARGB_MASK;
@@ -90,70 +88,17 @@ public final class AccentColor {
         }
     }
 
-    static void injectSettingsWebViewStyle(WebView view) {
-        try {
-            if (view == null) return;
-
-            final LabAdjustment adjustment = computeLabAdjustment(getPreset());
-            if (adjustment == null) return;
-
-            final float[] stockHsl = argbToHsl(STOCK_DARK_ACCENT);
-            final float[] accentHsl = argbToHsl(applyLabAdjustment(STOCK_DARK_ACCENT, adjustment));
-            final float saturationScale = stockHsl[1] == 0 ? 1 : accentHsl[1] / stockHsl[1];
-
-            view.evaluateJavascript(
-                    WebAssets.ACCENT_RECOLOR
-                            .replace("__TONES__", serializeColorMap())
-                            .replace("__SHIFT__", Float.toString(accentHsl[0] - stockHsl[0]))
-                            .replace("__SATURATION__", Float.toString(saturationScale)),
-                    null);
-        } catch (Throwable t) {
-            Logger.printException(() -> "Could not style the settings web view", t);
-        }
-    }
-
-    static boolean isSettingsWebViewStyleEnabled() {
+    public static boolean hasCustomAccent() {
         return computeLabAdjustment(getPreset()) != null;
     }
 
-    private static float[] argbToHsl(int argb) {
-        final float red = Color.red(argb) / 255f;
-        final float green = Color.green(argb) / 255f;
-        final float blue = Color.blue(argb) / 255f;
-        final float max = Math.max(red, Math.max(green, blue));
-        final float min = Math.min(red, Math.min(green, blue));
-        final float delta = max - min;
-        final float lightness = (max + min) / 2f;
-        if (delta == 0) return new float[] {0, 0, lightness};
-
-        final float saturation = lightness > 0.5f
-                ? delta / (2f - max - min)
-                : delta / (max + min);
-        final float hue;
-        if (max == red) {
-            hue = (green - blue) / delta + (green < blue ? 6 : 0);
-        } else if (max == green) {
-            hue = (blue - red) / delta + 2;
-        } else {
-            hue = (red - green) / delta + 4;
-        }
-
-        return new float[] {hue * 60f, saturation, lightness};
+    public static int transformedStockDarkAccent() {
+        final LabAdjustment adjustment = computeLabAdjustment(getPreset());
+        return adjustment == null ? STOCK_DARK_ACCENT : applyLabAdjustment(STOCK_DARK_ACCENT, adjustment);
     }
 
-    private static String serializeColorMap() {
-        final StringBuilder map = new StringBuilder("{");
-        for (Map.Entry<Integer, Integer> entry : RECOLORED_COLORS.entrySet()) {
-            if (map.length() > 1) map.append(',');
-            map.append('\'').append(rgbChannelString(entry.getKey())).append("':'")
-                    .append(rgbChannelString(entry.getValue())).append('\'');
-        }
-
-        return map.append('}').toString();
-    }
-
-    private static String rgbChannelString(int argb) {
-        return Color.red(argb) + "," + Color.green(argb) + "," + Color.blue(argb);
+    public static Map<Integer, Integer> transformedBrandColors() {
+        return new HashMap<>(TRANSFORMED_BRAND_COLORS);
     }
 
     private static LabAdjustment computeLabAdjustment(String preset) {
