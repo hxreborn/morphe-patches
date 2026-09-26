@@ -37,6 +37,10 @@ runs:
         [ -f "$RESPONSES" ] || exit 0
         message=$(jq -r --arg l "$LABEL" '.[$l].message // empty' "$RESPONSES")
         [ -z "$message" ] && exit 0
+        if [[ "$message" == *"{latest_release}"* ]]; then
+          release=$(gh release view --repo "$REPO" --json tagName,url -q '"[" + .tagName + "](" + .url + ")"' 2>/dev/null)
+          message=${message//"{latest_release}"/${release:-the latest release}}
+        fi
         close=$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")
         printf '%s\n' "$message" > "$RUNNER_TEMP/comment.md"
         if [ "$close" = "true" ]; then

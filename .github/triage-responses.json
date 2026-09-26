@@ -41,7 +41,7 @@
   },
   "r: shipped": {
     "close": true,
-    "message": "Thanks for the request! This is in the latest release. Update the bundle in Morphe Manager and repatch, and comment below if something is missing.",
+    "message": "Thanks for the request! This is in {latest_release}. Update the bundle in Morphe Manager and repatch, and comment below if something is missing.",
     "reason": "completed"
   }
 }
