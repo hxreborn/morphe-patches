@@ -19,6 +19,10 @@ public final class UpsellingVisibility {
         return PatchSettings.isFeatureEnabled(isPatched(), KEY);
     }
 
+    public static boolean resolveUpgradeAvailable(boolean available) {
+        return available && !isHidden();
+    }
+
     static void setHidden(boolean hidden) {
         PatchSettings.setEnabled(KEY, hidden);
     }

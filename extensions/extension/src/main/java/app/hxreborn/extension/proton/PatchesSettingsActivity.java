@@ -159,12 +159,13 @@ public final class PatchesSettingsActivity extends Activity {
 
         if (UpsellingVisibility.isPatched()) {
             column.addView(card(toggle(AppliedPatches.HIDE_UPGRADE_PROMOTIONS,
-                    "Banners, sidebar offers and top-bar upgrade buttons.",
+                    "Upgrade buttons, banners and offers.",
                     UpsellingVisibility.isHidden(),
                     new Toggle() {
                         @Override
                         public void set(boolean hidden) {
                             UpsellingVisibility.setHidden(hidden);
+                            confirmRestart();
                         }
                     })));
         }
@@ -189,7 +190,7 @@ public final class PatchesSettingsActivity extends Activity {
     private void confirmRestart() {
         final CharSequence appName = getApplicationInfo().loadLabel(getPackageManager());
         PatchesDialog.showConfirmation(this, "Restart required",
-                appName + " must restart to apply the theme.", "Restart", this::restartApp);
+                appName + " must restart to apply the change.", "Restart", this::restartApp);
     }
 
     private void restartApp() {
