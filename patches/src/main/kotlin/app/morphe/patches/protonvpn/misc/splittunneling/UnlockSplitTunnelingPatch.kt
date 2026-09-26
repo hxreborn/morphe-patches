@@ -12,7 +12,9 @@ package app.morphe.patches.protonvpn.misc.splittunneling
 
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonvpn.misc.restrictions.unlockUserSetting
+import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
 val unlockSplitTunnelingPatch = bytecodePatch(
@@ -20,8 +22,10 @@ val unlockSplitTunnelingPatch = bytecodePatch(
     description = "Unlocks split tunneling on free plans.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
+    dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchApplied("unlockSplitTunneling")
         unlockUserSetting(
             SplitTunnelingViewStateFingerprint,
             freeUserParameter = 5,

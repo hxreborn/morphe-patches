@@ -17,7 +17,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
+import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -32,13 +35,14 @@ val showFreeServerLocationsPatch = bytecodePatch(
         "Applies only to free plans.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
-    extendWith("extensions/extension.mpe")
+    dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchApplied("showFreeServerLocations")
         UserInfoUpdateFingerprint.matchSingle().run {
             method.addInstruction(
                 instructionMatches.first().index,
-                "invoke-static { p1 }, $FREE_SERVER_LOCATIONS->onUserInfo(Ljava/lang/Object;)V",
+                "invoke-static { p1 }, $FREE_SERVER_LOCATIONS->onUserInfoChanged(Ljava/lang/Object;)V",
             )
         }
         UserInfoInvalidateFingerprint.matchSingle().method.addInstruction(
@@ -47,10 +51,10 @@ val showFreeServerLocationsPatch = bytecodePatch(
         )
 
         ServerListFilterFingerprint.matchSingle().run {
-            val result = instructionMatches.last()
-            val register = result.getInstruction<OneRegisterInstruction>().registerA
+            val isFreeServerResult = instructionMatches.last()
+            val register = isFreeServerResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
-                result.index + 1,
+                isFreeServerResult.index + 1,
                 """
                     invoke-static { v$register }, $FREE_SERVER_LOCATIONS->shouldExcludeServer(Z)Z
                     move-result v$register
@@ -58,7 +62,7 @@ val showFreeServerLocationsPatch = bytecodePatch(
             )
         }
 
-        ItemStateFingerprint.matchSingle().method.addInstructions(
+        ServerGroupItemStateFingerprint.matchSingle().method.addInstructions(
             0,
             """
                 invoke-static { p1, p2 }, $FREE_SERVER_LOCATIONS->tierForAvailabilityCheck(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;
@@ -66,13 +70,13 @@ val showFreeServerLocationsPatch = bytecodePatch(
             """,
         )
 
-        ListHeaderFingerprint.matchSingle().run {
+        CountriesHeaderLabelFingerprint.matchSingle().run {
             val call = instructionMatches.first()
             val isFreeUser = call.getInstruction<FiveRegisterInstruction>().registerD
             method.addInstruction(call.index, "const/4 v$isFreeUser, 0x0")
         }
 
-        MainScreenStateFingerprint.matchSingle().method.addInstructions(
+        ServerGroupsMainScreenStateFingerprint.matchSingle().method.addInstructions(
             0,
             """
                 invoke-static { p3 }, $FREE_SERVER_LOCATIONS->resolveFilterButtons(Ljava/util/List;)Ljava/util/List;
@@ -82,7 +86,7 @@ val showFreeServerLocationsPatch = bytecodePatch(
 
         selectedFilterFingerprints.forEach { fingerprint ->
             fingerprint.matchSingle().method.apply {
-                val index = instructions.indexOfLast { it.opcode == Opcode.RETURN_OBJECT }
+                val index = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
                 val register = getInstruction<OneRegisterInstruction>(index).registerA
                 replaceInstruction(
                     index,
@@ -102,7 +106,7 @@ val showFreeServerLocationsPatch = bytecodePatch(
         SearchResultSectionFingerprint.matchSingle().method.addInstructions(
             0,
             """
-                invoke-static { p2, p4 }, $FREE_SERVER_LOCATIONS->itemsForTier(Ljava/util/List;Ljava/lang/Integer;)Ljava/util/List;
+                invoke-static { p2, p4 }, $FREE_SERVER_LOCATIONS->itemsVisibleToTier(Ljava/util/List;Ljava/lang/Integer;)Ljava/util/List;
                 move-result-object p2
             """,
         )

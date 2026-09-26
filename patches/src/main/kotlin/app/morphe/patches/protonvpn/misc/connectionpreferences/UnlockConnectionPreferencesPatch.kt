@@ -6,7 +6,9 @@ package app.morphe.patches.protonvpn.misc.connectionpreferences
 
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonvpn.misc.restrictions.unlockUserSetting
+import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
 val unlockConnectionPreferencesPatch = bytecodePatch(
@@ -14,8 +16,10 @@ val unlockConnectionPreferencesPatch = bytecodePatch(
     description = "Unlocks the default connection and excluded locations on free plans.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
+    dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchApplied("unlockConnectionPreferences")
         unlockUserSetting(
             ConnectionPreferencesViewStateFingerprint,
             freeUserParameter = 2,

@@ -5,8 +5,10 @@
 package app.morphe.patches.protonvpn.misc.profiles
 
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.protonvpn.misc.restrictions.treatAsPaidUser
+import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
+import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
 val unlockProfilesPatch = bytecodePatch(
@@ -14,8 +16,10 @@ val unlockProfilesPatch = bytecodePatch(
     description = "Unlocks profiles on free plans. Profiles for locations without free servers open the upgrade screen.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
+    dependsOn(patchesSettingsPatch)
 
     execute {
-        treatAsPaidUser(ProfileAvailabilityFingerprint)
+        markPatchApplied("unlockProfiles")
+        clearFreeUserCheck(ProfileAvailabilityFingerprint)
     }
 }

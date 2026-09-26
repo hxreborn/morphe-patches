@@ -11,7 +11,9 @@
 package app.morphe.patches.protonvpn.misc.delay
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 
@@ -21,8 +23,10 @@ val removeServerChangeDelayPatch = bytecodePatch(
     description = "Removes the wait between server changes on free plans.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
+    dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchApplied("removeServerChangeDelay")
         changeServerDelayFingerprints.forEach { it.matchSingle().method.returnEarly(0) }
     }
 }

@@ -24,7 +24,7 @@ public final class FreeServerLocations {
 
     private FreeServerLocations() {}
 
-    public static void onUserInfo(Object userInfo) {
+    public static void onUserInfoChanged(Object userInfo) {
         Object vpnUser = userInfo == null ? null : call(userInfo, "getVpnUser");
         freeAccount = vpnUser != null && (Boolean) call(vpnUser, "isFreeUser");
     }
@@ -42,7 +42,7 @@ public final class FreeServerLocations {
         return userTier;
     }
 
-    public static List<?> itemsForTier(List<?> items, Integer userTier) {
+    public static List<?> itemsVisibleToTier(List<?> items, Integer userTier) {
         if (userTier == null || userTier != FREE_TIER) return items;
         List<Object> filtered = new ArrayList<>(items.size());
         for (Object item : items) {

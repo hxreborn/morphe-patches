@@ -5,8 +5,10 @@
 package app.morphe.patches.protonvpn.misc.netshield
 
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.protonvpn.misc.restrictions.treatAsPaidUser
+import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
+import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
 val unlockNetShieldPatch = bytecodePatch(
@@ -14,9 +16,11 @@ val unlockNetShieldPatch = bytecodePatch(
     description = "Unlocks NetShield ad and tracker blocking on free plans.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
+    dependsOn(patchesSettingsPatch)
 
     execute {
-        treatAsPaidUser(NetShieldAvailabilityFingerprint)
-        treatAsPaidUser(NetShieldResetFingerprint)
+        markPatchApplied("unlockNetShield")
+        clearFreeUserCheck(NetShieldAvailabilityFingerprint)
+        clearFreeUserCheck(NetShieldResetFingerprint)
     }
 }

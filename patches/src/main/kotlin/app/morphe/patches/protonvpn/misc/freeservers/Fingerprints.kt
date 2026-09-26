@@ -46,7 +46,7 @@ internal object ServerListFilterFingerprint : Fingerprint(
     ),
 )
 
-internal object ItemStateFingerprint : Fingerprint(
+internal object ServerGroupItemStateFingerprint : Fingerprint(
     definingClass = "$UI/ServerGroupsViewModel;",
     name = "toState",
     parameters = listOf(
@@ -57,11 +57,11 @@ internal object ItemStateFingerprint : Fingerprint(
     ),
 )
 
-internal object ListHeaderFingerprint : Fingerprint(
+internal object CountriesHeaderLabelFingerprint : Fingerprint(
     filters = listOf(methodCall(definingClass = "$UI/ServerGroupsViewModelKt;", name = "headerLabel")),
 )
 
-internal object MainScreenStateFingerprint : Fingerprint(
+internal object ServerGroupsMainScreenStateFingerprint : Fingerprint(
     definingClass = "$UI/ServerGroupsMainScreenState;",
     name = "<init>",
     parameters = listOf(FILTER_TYPE, "Ljava/util/List;", "Ljava/util/List;"),

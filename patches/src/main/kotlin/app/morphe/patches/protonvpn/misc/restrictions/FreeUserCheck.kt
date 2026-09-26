@@ -29,14 +29,10 @@ internal open class FreeUserCheckFingerprint(
     ) + followingFilters,
 )
 
-internal fun BytecodePatchContext.treatAsPaidUser(check: FreeUserCheckFingerprint) {
+internal fun BytecodePatchContext.clearFreeUserCheck(check: FreeUserCheckFingerprint) {
     check.matchSingle().run {
-        val result = instructionMatches[1]
-        val register = result.getInstruction<OneRegisterInstruction>().registerA
-        method.addInstruction(result.index + 1, "const/16 v$register, 0x0")
+        val freeUserResult = instructionMatches[1]
+        val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
+        method.addInstruction(freeUserResult.index + 1, "const/16 v$register, 0x0")
     }
-}
-
-internal fun BytecodePatchContext.clearFreeUserParameter(viewState: Fingerprint, freeUserParameter: Int) {
-    viewState.matchSingle().method.addInstruction(0, "const/16 p$freeUserParameter, 0x0")
 }

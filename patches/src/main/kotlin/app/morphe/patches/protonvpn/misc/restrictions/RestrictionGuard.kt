@@ -12,6 +12,7 @@ package app.morphe.patches.protonvpn.misc.restrictions
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
@@ -37,7 +38,7 @@ internal fun BytecodePatchContext.unlockUserSetting(
     freeUserParameter: Int,
     restriction: RestrictionGuardFingerprint,
 ) {
-    clearFreeUserParameter(viewState, freeUserParameter)
+    viewState.matchSingle().method.addInstruction(0, "const/16 p$freeUserParameter, 0x0")
     keepUserSetting(restriction)
 }
 
