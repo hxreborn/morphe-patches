@@ -19,6 +19,7 @@ import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.util.findInstructionIndicesReversedOrThrow
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -29,7 +30,7 @@ private const val IS_HIDDEN = "$UPSELLING_VISIBILITY_CLASS->isHidden()Z"
 @Suppress("unused")
 val hideUpgradePromotionsPatch = bytecodePatch(
     name = "Hide upgrade promotions",
-    description = "Hides settings that need a paid plan, upgrade banners and special offers.",
+    description = "Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
     dependsOn(patchesSettingsPatch, resourceMappingPatch)
@@ -37,7 +38,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     execute {
         markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
 
-        val plusBadge = getResourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
+        val plusBadgeId = getResourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
             ?: throw PatchException("Missing drawable: vpn_plus_badge")
 
         SettingRowWithIconFingerprint.matchSingle().method.apply {
@@ -47,7 +48,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
                     if-eqz p4, :shown
                     invoke-virtual/range { p4 .. p4 }, Ljava/lang/Integer;->intValue()I
                     move-result v0
-                    const v1, $plusBadge
+                    const v1, $plusBadgeId
                     if-ne v0, v1, :shown
                     invoke-static { }, $IS_HIDDEN
                     move-result v0
@@ -75,11 +76,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
         }
 
         ActiveNotificationsFingerprint.matchSingle().method.apply {
-            instructions.withIndex()
-                .filter { it.value.opcode == Opcode.RETURN_OBJECT }
-                .map { it.index }
-                .reversed()
-                .forEach { index ->
+            findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
                     val register = getInstruction<OneRegisterInstruction>(index).registerA
                     replaceInstruction(
                         index,
@@ -106,7 +103,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
         FreeConnectionsInfoFingerprint.matchSingle().method.apply {
             val returnIndex = instructions.lastIndex
             if (getInstruction(returnIndex).opcode != Opcode.RETURN_VOID) {
-                throw PatchException("setupViews no longer ends in return-void")
+                throw PatchException("setupViews does not end in return-void")
             }
             replaceInstruction(returnIndex, "nop")
             addInstructions(
@@ -121,15 +118,29 @@ val hideUpgradePromotionsPatch = bytecodePatch(
             )
         }
 
-        LaunchOnboardingFingerprint.matchSingle().method.addInstructionsWithLabels(
-            0,
-            """
-                invoke-static { }, $IS_HIDDEN
-                move-result v0
-                if-eqz v0, :shown
-                return-void
-            """,
-            ExternalLabel("shown", LaunchOnboardingFingerprint.method.getInstruction(0)),
-        )
+        UpgradeCarouselFingerprint.matchSingle().run {
+            val freeUserResult = instructionMatches[1]
+            val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
+            method.addInstructions(
+                freeUserResult.index + 1,
+                """
+                    invoke-static { v$register }, $PROMOTIONS_CLASS->showsUpgradeCarousel(Z)Z
+                    move-result v$register
+                """,
+            )
+        }
+
+        LaunchOnboardingFingerprint.matchSingle().method.apply {
+            addInstructionsWithLabels(
+                0,
+                """
+                    invoke-static { }, $IS_HIDDEN
+                    move-result v0
+                    if-eqz v0, :shown
+                    return-void
+                """,
+                ExternalLabel("shown", getInstruction(0)),
+            )
+        }
     }
 }

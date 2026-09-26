@@ -5,6 +5,7 @@
 package app.morphe.patches.protonvpn.misc.upselling
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patches.protonvpn.misc.restrictions.FreeUserCheckFingerprint
 
 internal object SettingRowWithIconFingerprint : Fingerprint(
     definingClass = "Lcom/protonvpn/android/redesign/settings/ui/SettingsKt;",
@@ -68,4 +69,9 @@ internal object LaunchOnboardingFingerprint : Fingerprint(
     name = "launchOnboarding",
     returnType = "V",
     parameters = listOf("Landroid/content/Context;"),
+)
+
+internal object UpgradeCarouselFingerprint : FreeUserCheckFingerprint(
+    definingClass = "Lcom/protonvpn/android/redesign/home_screen/ui/UpsellCarouselStateFlow\$stateFlow\$1;",
+    name = "invokeSuspend",
 )

@@ -55,6 +55,10 @@ public final class Promotions {
         return filtered;
     }
 
+    public static boolean showsUpgradeCarousel(boolean freeUser) {
+        return freeUser && !UpsellingVisibility.isHidden();
+    }
+
     public static void hideUpgradeView(View view) {
         if (UpsellingVisibility.isHidden()) view.setVisibility(View.GONE);
     }
