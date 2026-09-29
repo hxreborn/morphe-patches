@@ -228,6 +228,8 @@ ICONS = {
     "ru.iiec.pydroid3": "pydroid.png",
     "com.yunyi.smartcamera": "yiiot.png",
     "com.greenstone.pocketwhip": "pocketwhip.png",
+    "apps.automan.blurwallpaper": "blurwall.png",
+    "com.one4studio.one4home": "one4home.png",
 }
 
 
