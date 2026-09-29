@@ -297,7 +297,7 @@ final class AccentColorDialog {
 
             previewButtonBackground.setColor(accent);
             previewLink.setTextColor(accent);
-            PatchesTheme.tintSwitch(previewSwitch, accent);
+            SwitchStyle.apply(previewSwitch, accent);
             applyButton.setTextColor(accent);
 
             hueSlider.setThumbTintList(ColorStateList.valueOf(accent));

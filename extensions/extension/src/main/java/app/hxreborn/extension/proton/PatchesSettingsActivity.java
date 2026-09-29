@@ -51,7 +51,7 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int ROW_TITLE_SP = 16;
     private static final int ROW_SUMMARY_SP = 14;
     private static final int CHEVRON_SIZE_DP = 24;
-    private static final int CHEVRON_START_PADDING_DP = 16;
+    private static final int ROW_CONTROL_START_MARGIN_DP = 16;
     private static final int SWATCH_SIZE_DP = 26;
 
     private static final int FIELD_VERTICAL_PADDING_DP = 4;
@@ -145,12 +145,12 @@ public final class PatchesSettingsActivity extends Activity {
                     }))));
         }
         if (AmoledTheme.isPatched()) {
-            column.addView(card(toggle(AppliedPatches.AMOLED_DARK_THEME,
+            column.addView(card(switchRow(AppliedPatches.AMOLED_DARK_THEME,
                     "Pure black backgrounds.",
                     AmoledTheme.isEnabled(),
-                    new Toggle() {
+                    new CheckedChangeListener() {
                         @Override
-                        public void set(boolean enabled) {
+                        public void onCheckedChanged(boolean enabled) {
                             AmoledTheme.setEnabled(enabled);
                             confirmRestart();
                         }
@@ -158,12 +158,12 @@ public final class PatchesSettingsActivity extends Activity {
         }
 
         if (UpsellingVisibility.isPatched()) {
-            column.addView(card(toggle(AppliedPatches.HIDE_UPGRADE_PROMOTIONS,
+            column.addView(card(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS,
                     "Upgrade buttons, banners and offers.",
                     UpsellingVisibility.isHidden(),
-                    new Toggle() {
+                    new CheckedChangeListener() {
                         @Override
-                        public void set(boolean hidden) {
+                        public void onCheckedChanged(boolean hidden) {
                             UpsellingVisibility.setHidden(hidden);
                             confirmRestart();
                         }
@@ -203,11 +203,12 @@ public final class PatchesSettingsActivity extends Activity {
         Runtime.getRuntime().exit(0);
     }
 
-    private interface Toggle {
-        void set(boolean enabled);
+    private interface CheckedChangeListener {
+        void onCheckedChanged(boolean checked);
     }
 
-    private View toggle(String title, String summary, boolean checked, final Toggle onChange) {
+    private View switchRow(String title, String summary, boolean checked,
+                           final CheckedChangeListener onChange) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -241,10 +242,11 @@ public final class PatchesSettingsActivity extends Activity {
         control.setMinimumHeight(dp(ROW_MIN_HEIGHT_DP));
         final LinearLayout.LayoutParams controlParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        controlParams.setMarginStart(dp(CHEVRON_START_PADDING_DP));
+        controlParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
         control.setLayoutParams(controlParams);
-        tintSwitch(control);
-        control.setOnCheckedChangeListener((button, isChecked) -> onChange.set(isChecked));
+        styleSwitch(control);
+        control.setOnCheckedChangeListener(
+                (button, isChecked) -> onChange.onCheckedChanged(isChecked));
         row.addView(control);
 
         row.setOnClickListener(ignored -> control.performClick());
@@ -256,8 +258,8 @@ public final class PatchesSettingsActivity extends Activity {
         return PatchesTheme.isDark(cardBackgroundColor);
     }
 
-    private void tintSwitch(Switch control) {
-        PatchesTheme.tintSwitch(control, AccentColor.getAccentColor(isDarkTheme()));
+    private void styleSwitch(Switch control) {
+        SwitchStyle.apply(control, AccentColor.getAccentColor(isDarkTheme()));
     }
 
     private View header() {
@@ -348,7 +350,7 @@ public final class PatchesSettingsActivity extends Activity {
         if (swatchColor != null) {
             final LinearLayout.LayoutParams swatchParams = new LinearLayout.LayoutParams(
                     dp(SWATCH_SIZE_DP), dp(SWATCH_SIZE_DP));
-            swatchParams.setMarginStart(dp(CHEVRON_START_PADDING_DP));
+            swatchParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
             final View swatchView = new View(this);
             swatchView.setBackground(PatchesTheme.createCircle(swatchColor));
             row.addView(swatchView, swatchParams);
@@ -360,7 +362,7 @@ public final class PatchesSettingsActivity extends Activity {
         chevron.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         final LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(
                 dp(CHEVRON_SIZE_DP), dp(CHEVRON_SIZE_DP));
-        chevronParams.setMarginStart(dp(CHEVRON_START_PADDING_DP));
+        chevronParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
         chevron.setLayoutParams(chevronParams);
         row.addView(chevron);
 

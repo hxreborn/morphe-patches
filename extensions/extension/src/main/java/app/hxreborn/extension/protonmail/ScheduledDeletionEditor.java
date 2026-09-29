@@ -6,6 +6,7 @@ package app.hxreborn.extension.protonmail;
 
 import app.hxreborn.extension.proton.PatchesDialog;
 import app.hxreborn.extension.proton.PatchesTheme;
+import app.hxreborn.extension.proton.SwitchStyle;
 import app.hxreborn.extension.proton.AccentColor;
 
 import android.annotation.SuppressLint;
@@ -108,20 +109,20 @@ public final class ScheduledDeletionEditor {
             sections[index].addTo(content, index > 0);
         }
 
-        final Switch notificationSwitch = new Switch(activity);
-        notificationSwitch.setText("Show a toast after each deletion");
-        notificationSwitch.setGravity(Gravity.CENTER_VERTICAL);
-        notificationSwitch.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
-        notificationSwitch.setChecked(ScheduledDeletionSettings.showsToast(activity));
+        final Switch toastSwitch = new Switch(activity);
+        toastSwitch.setText("Show a toast after each deletion");
+        toastSwitch.setGravity(Gravity.CENTER_VERTICAL);
+        toastSwitch.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
+        toastSwitch.setChecked(ScheduledDeletionSettings.showsToast(activity));
 
         final TextView warningText = new TextView(activity);
         warningText.setText("Deletes everything in each folder on its own schedule, regardless "
                 + "of when a message arrived there. Deleted messages cannot be recovered.");
         warningText.setTextSize(TypedValue.COMPLEX_UNIT_SP, BODY_TEXT_SP);
 
-        final LinearLayout.LayoutParams notificationParams = matchWidth();
-        notificationParams.topMargin = dp(activity, SECTION_SPACING_DP);
-        content.addView(notificationSwitch, notificationParams);
+        final LinearLayout.LayoutParams toastParams = matchWidth();
+        toastParams.topMargin = dp(activity, SECTION_SPACING_DP);
+        content.addView(toastSwitch, toastParams);
 
         final LinearLayout.LayoutParams warningParams = matchWidth();
         warningParams.topMargin = dp(activity, CONTROL_SPACING_DP);
@@ -166,15 +167,15 @@ public final class ScheduledDeletionEditor {
                                 activity, sections[index].label, seconds[index]);
                     }
                     ScheduledDeletionSettings.saveShowsToast(
-                            activity, notificationSwitch.isChecked());
+                            activity, toastSwitch.isChecked());
                     Toast.makeText(activity, savedMessage(activity), Toast.LENGTH_SHORT).show();
                     onSettingChanged.run();
                     dialog.dismiss();
                 }));
         surface.addView(actions, matchWidth());
 
-        PatchesTheme.tintSwitch(notificationSwitch, accentColor);
-        notificationSwitch.setTextColor(
+        SwitchStyle.apply(toastSwitch, accentColor);
+        toastSwitch.setTextColor(
                 PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
         warningText.setTextColor(textWeakColor);
         for (LabelSection section : sections) {
@@ -251,7 +252,7 @@ public final class ScheduledDeletionEditor {
         }
 
         void applyTheme(int accentColor, int textWeakColor) {
-            PatchesTheme.tintSwitch(enabledSwitch, accentColor);
+            SwitchStyle.apply(enabledSwitch, accentColor);
             PatchesTheme.tintTextInput(amountInput, accentColor);
             enabledSwitch.setTextColor(PatchesTheme.resolveColorAttribute(
                     enabledSwitch.getContext(), PatchesTheme.TEXT_NORM));

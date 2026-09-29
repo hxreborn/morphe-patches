@@ -14,7 +14,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
 
 public final class PatchesTheme {
 
@@ -116,16 +115,6 @@ public final class PatchesTheme {
         return (((color >> 16) & 0xFF) * 299
                 + ((color >> 8) & 0xFF) * 587
                 + (color & 0xFF) * 114) / 1000;
-    }
-
-    public static void tintSwitch(Switch control, int accentColor) {
-        final int inactiveColor = resolveColorAttribute(control.getContext(), ICON_DISABLED);
-        final int[][] states = {{android.R.attr.state_checked}, {}};
-
-        control.setThumbTintList(
-                new ColorStateList(states, new int[] {accentColor, inactiveColor}));
-        control.setTrackTintList(
-                new ColorStateList(states, new int[] {withHalfAlpha(accentColor), inactiveColor}));
     }
 
     public static void tintTextInput(EditText input, int accentColor) {
