@@ -8,31 +8,33 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.matchSingle
-
-private const val LIFETIME_SOURCE = "LIFETIME"
+import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks One4Home Pro.",
+    description = "Unlocks One4Home Pro and the collector Pals.",
 ) {
     compatibleWith(AppCompatibilities.ONE4HOME)
 
     execute {
-        ProBillingStateToStringFingerprint.matchSingle().classDef.methods
-            .single { it.name == "<init>" }
-            .apply {
-                val sourceType = parameterTypes[1].toString()
+        val proBillingStateConstructor = ProBillingStateToStringFingerprint.matchSingle()
+            .classDef.methods.single { it.name == "<init>" }
+        val proSourceType = proBillingStateConstructor.parameterTypes[1]
 
-                addInstructions(
-                    0,
-                    """
-                        const/4 p1, 0x1
-                        const-string p2, "$LIFETIME_SOURCE"
-                        invoke-static { p2 }, $sourceType->valueOf(Ljava/lang/String;)$sourceType
-                        move-result-object p2
-                    """,
-                )
-            }
+        proBillingStateConstructor.addInstructions(
+            0,
+            """
+                const/4 p1, 0x1
+                const-string p2, "LIFETIME"
+                invoke-static { p2 }, $proSourceType->valueOf(Ljava/lang/String;)$proSourceType
+                move-result-object p2
+            """,
+        )
+
+        val palAccessCheck = HomePalCatalogFingerprint.matchSingle()
+            .classDef.methods.single { it.returnType == "Z" }
+
+        palAccessCheck.returnEarly(true)
     }
 }
