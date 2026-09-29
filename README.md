@@ -12,6 +12,7 @@
 
 [![Build badge](https://img.shields.io/github/actions/workflow/status/hxreborn/morphe-patches/release.yml?branch=main&style=for-the-badge&label=Build&logo=githubactions&logoColor=white)](https://github.com/hxreborn/morphe-patches/actions/workflows/release.yml)
 [![License badge](https://img.shields.io/badge/License-GPLv3-3FB950?style=for-the-badge&logo=gnu&logoColor=white)](LICENSE)
+[![Ko-fi badge](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/hxreborn)
 
 <a href="https://morphe.software/add-source?github=hxreborn/morphe-patches" title="Add this source to Morphe">
   <img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20this%20source-00A8FF?style=for-the-badge" height="38"/>
