@@ -202,6 +202,18 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.4.12", versionCode = 4197422, minSdk = 24)),
     )
 
+    val ONE4HOME = Compatibility(
+        name = "One4Home Launcher",
+        packageName = "com.one4studio.one4home",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x596580,
+        signatures = setOf(
+            "5620d2344aa13b4fb30df6bb59df508839af348ad12f5e4f3b95fca02662b77b",
+            "b87ed511109b159844ff23ab802e00d56ab9d94d1435d89edd32cf07b62551fa",
+        ),
+        targets = listOf(AppTarget(version = "0.4.72", versionCode = 284, minSdk = 32)),
+    )
+
     val ONE_WEATHER = Compatibility(
         name = "1Weather",
         packageName = "com.handmark.expressweather",
