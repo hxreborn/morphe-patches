@@ -12,3 +12,8 @@ internal object ProBillingStateToStringFingerprint : Fingerprint(
     parameters = emptyList(),
     strings = listOf("ProBillingState(isPro="),
 )
+
+internal object HomePalCatalogFingerprint : Fingerprint(
+    name = "<clinit>",
+    strings = listOf("one4home_pal_founder"),
+)
