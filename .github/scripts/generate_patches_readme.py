@@ -227,6 +227,7 @@ ICONS = {
     "ru.iiec.jvdroid": "jvdroid.png",
     "ru.iiec.pydroid3": "pydroid.png",
     "com.yunyi.smartcamera": "yiiot.png",
+    "com.greenstone.pocketwhip": "pocketwhip.png",
 }
 
 

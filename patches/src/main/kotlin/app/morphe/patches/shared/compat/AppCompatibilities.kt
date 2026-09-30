@@ -232,6 +232,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.791.265", versionCode = 265100, minSdk = 28)),
     )
 
+    val POCKET_WHIP = Compatibility(
+        name = "Pocket Whip",
+        packageName = "com.greenstone.pocketwhip",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x232323,
+        signatures = setOf(
+            "27262c6f8cd7448c28622464a0f1b8ce6a848f087a131c229cc0d1846d9b0b5d",
+        ),
+        targets = listOf(AppTarget(version = "2.3", versionCode = 20, minSdk = 26)),
+    )
+
     val PROJECTIVY = Compatibility(
         name = "Projectivy Launcher",
         packageName = "com.spocky.projengmenu",
