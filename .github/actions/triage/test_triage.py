@@ -224,6 +224,30 @@ Fail to patch giving this error below.
 app.morphe.patcher.patch.PatchException: no native library found
 ~~~
 """),
+    "repackager named in the description only": ("pass", f"""### App and version
+
+Proton Mail 7.10.4
+
+### APK source
+
+https://www.apkmirror.com/apk/proton-technologies-ag/
+
+### Bug description
+
+{LONG} I did not use softonic.
+"""),
+    "source host that merely ends like a repackager": ("pass", f"""### App and version
+
+Proton Mail 7.10.4
+
+### APK source
+
+https://titan1.com/proton-mail
+
+### Bug description
+
+{LONG}
+"""),
     "patching failed without a report": ("flag", f"""### App name
 
 Proton Mail
