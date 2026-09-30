@@ -69,8 +69,9 @@ version_tokens = {normalize_version(t) for t in re.split(r"[\s(),`]+", app_versi
 version_haystack = normalize(app_haystack)
 what_happened = field(fields, "What happened")
 apk_source = field(fields, *SOURCE_FIELDS)
-source_text = (apk_source + "\n" + "\n".join(fields.values())).lower()
-repackager = next((h for h in REPACKAGERS if h in source_text), "")
+repackager = next(
+    (h for h in REPACKAGERS if re.search(rf"(?:^|[/.@\s]){re.escape(h)}(?![a-z0-9])", apk_source.lower())), ""
+)
 debug_log = field(fields, *LOG_FIELDS)
 report_attached = any(marker in debug_log for marker in REPORT_MARKERS)
 
