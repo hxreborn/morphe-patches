@@ -67,10 +67,14 @@ body:
         - "MyMoveset (another version, type it below)"
         - "Notesnook 3.4.12"
         - "Notesnook (another version, type it below)"
+        - "One4Home Launcher 0.4.72"
+        - "One4Home Launcher (another version, type it below)"
         - "Perplexity 2.95.0"
         - "Perplexity (another version, type it below)"
         - "Photo Editor Pro 1.791.265"
         - "Photo Editor Pro (another version, type it below)"
+        - "Pocket Whip 2.3"
+        - "Pocket Whip (another version, type it below)"
         - "Projectivy Launcher 4.70"
         - "Projectivy Launcher 4.71"
         - "Projectivy Launcher (another version, type it below)"
@@ -143,12 +147,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.37.0"
         - "1.36.0"
         - "1.35.0"
         - "1.34.0"
         - "1.33.0"
         - "1.32.0"
-        - "1.31.0"
         - "Older than these"
         # /generated
     validations:
@@ -235,6 +239,7 @@ body:
         - "MyMoveset \u00b7 Disable tracking"
         - "MyMoveset \u00b7 Unlock premium"
         - "Notesnook \u00b7 Unlock pro"
+        - "One4Home Launcher \u00b7 Unlock premium"
         - "Perplexity \u00b7 AMOLED dark theme"
         - "Photo Editor Pro \u00b7 Hide ads"
         - "Photo Editor Pro \u00b7 Hide share options"
@@ -242,6 +247,8 @@ body:
         - "Photo Editor Pro \u00b7 Show AI progress"
         - "Photo Editor Pro \u00b7 Speed up AI tools"
         - "Photo Editor Pro \u00b7 Unlock premium"
+        - "Pocket Whip \u00b7 Hide ads"
+        - "Pocket Whip \u00b7 Unlock premium"
         - "Projectivy Launcher \u00b7 Disable tracking"
         - "Projectivy Launcher \u00b7 Unlock premium"
         - "Proton Mail \u00b7 AMOLED dark theme"

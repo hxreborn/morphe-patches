@@ -1,3 +1,17 @@
+## [1.37.0](https://github.com/hxreborn/morphe-patches/compare/v1.36.0...v1.37.0) (2026-09-30)
+
+### New Features
+
+* **One4Home Launcher - Unlock premium:** unlock collector Pals ([e1baee3](https://github.com/hxreborn/morphe-patches/commit/e1baee36d792688a32dd0d9bc19978641b0e32b7))
+* **One4Home Launcher - Unlock premium:** unlock Pro themes, special Pals and Pro tools ([45480be](https://github.com/hxreborn/morphe-patches/commit/45480be62540ac3cc7b7559885707a161bbc2c6c))
+* **Pocket Whip:** unlock premium and hide ads ([59fe38b](https://github.com/hxreborn/morphe-patches/commit/59fe38b9f89ff8d0d67bc54cc3b15cba2c71498c))
+* **Proton - Patches menu:** draw toggles as Material 3 switches ([26b28db](https://github.com/hxreborn/morphe-patches/commit/26b28db0fa2fc77aaef3b31b43210aab906df083))
+* **Proton Mail:** remove tap highlight from web settings screens ([6421674](https://github.com/hxreborn/morphe-patches/commit/6421674c3c89a591ce3d27c37071714ebb6228c6))
+
+### Improvements
+
+* **MovieBox - All-In-One:** resume playback after seeking in downloaded videos ([5294c81](https://github.com/hxreborn/morphe-patches/commit/5294c81d6df958200009c114b5e6c0f4c8236462))
+
 ## [1.36.0](https://github.com/hxreborn/morphe-patches/compare/v1.35.0...v1.36.0) (2026-09-29)
 
 ### New Features

@@ -32,9 +32,9 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.36.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.36.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;102 patches total
+> **[v1.37.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.37.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;105 patches total
 <details open>
-<summary>📦&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -479,6 +479,22 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/pocketwhip.png" width="18" align="top">&nbsp;&nbsp;Pocket Whip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="pocket-whip-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/pocketwhip/ads/HideAdsPatch.kt) | Hides the banner and stops ads from loading. |
+| <a id="pocket-whip-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/pocketwhip/misc/premium/UnlockPremiumPatch.kt) | Unlocks all whips. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/trainline.png" width="18" align="top">&nbsp;&nbsp;Trainline&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -657,6 +673,21 @@ recorded in the Git history.
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="klassik-radio-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/klassikradio/misc/premium/UnlockPremiumPatch.kt) | Unlocks the premium music channels, on-demand playback and track skipping. Requires a signed-in account. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/one4home.png" width="18" align="top">&nbsp;&nbsp;One4Home Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 0.4.72 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="one4home-launcher-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/one4home/misc/premium/UnlockPremiumPatch.kt) | Unlocks One4Home Pro and the collector Pals. |
 
 </details>
 
