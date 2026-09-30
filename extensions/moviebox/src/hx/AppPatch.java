@@ -570,7 +570,7 @@ public final class AppPatch {
                                     new PinnedCookies(signed, subjectId, season, episode));
                             Log.i(TAG, "DASH file " + key + ": " + file.length + " bytes from "
                                     + Uri.parse(signed.manifestUrl).getHost() + ", ready in "
-                                    + (SystemClock.elapsedRealtime() - started) + " ms");
+                                    + (SystemClock.elapsedRealtime() - started) + " ms, " + file.readPattern());
                             return file;
                         }
                     });

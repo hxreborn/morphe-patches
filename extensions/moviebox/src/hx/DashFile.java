@@ -63,6 +63,11 @@ final class DashFile {
     private static final int UNPACED_READ_CHUNK_BYTES = 256 * 1024;
     private static final int PACED_READ_CHUNK_BYTES = 48 * 1024;
     private static final int READ_AHEAD_BYTES = 3 * 1024 * 1024;
+    private static final long TRANSFER_REPORT_MS = 5000L;
+    private static final long NANOS_PER_MS = 1000000L;
+    private static final int BYTES_PER_KIB = 1024;
+    private static final double BYTES_PER_MB = 1e6;
+    private static final TransferLog TRANSFER = new TransferLog();
     private static final int CONNECT_TIMEOUT_MS = 15000;
     private static final int READ_TIMEOUT_MS = 30000;
     private static final int CDN_ATTEMPTS = 5;
@@ -199,6 +204,62 @@ final class DashFile {
         }
     }
 
+    private static final class TransferLog {
+        private long windowStart = System.nanoTime();
+        private long served;
+        private long reads;
+        private long readBytes;
+        private long headerNanos;
+        private long bodyNanos;
+        private long retries;
+        private int activeRanges;
+
+        synchronized void rangeStarted() {
+            if (activeRanges++ == 0) restart(System.nanoTime());
+        }
+
+        synchronized int rangeEnded() {
+            return --activeRanges;
+        }
+
+        synchronized void read(long bytes, long headerNanos, long bodyNanos) {
+            reads++;
+            readBytes += bytes;
+            this.headerNanos += headerNanos;
+            this.bodyNanos += bodyNanos;
+        }
+
+        synchronized void retry() {
+            retries++;
+        }
+
+        synchronized void served(long bytes) {
+            served += bytes;
+            long now = System.nanoTime();
+            if (now - windowStart >= TRANSFER_REPORT_MS * NANOS_PER_MS) {
+                double seconds = (now - windowStart) / (double) (MS_PER_SECOND * NANOS_PER_MS);
+                Log.i(TAG, String.format(Locale.ROOT,
+                        "DASH served %.1f MB in %.1f s = %.1f MB/s over %d ranges, %d CDN reads of %d KiB avg, "
+                                + "headers %d ms avg, body %d ms avg, %d retries",
+                        served / BYTES_PER_MB, seconds, served / BYTES_PER_MB / seconds, activeRanges, reads,
+                        reads == 0 ? 0 : readBytes / reads / BYTES_PER_KIB,
+                        reads == 0 ? 0 : headerNanos / reads / NANOS_PER_MS,
+                        reads == 0 ? 0 : bodyNanos / reads / NANOS_PER_MS, retries));
+                restart(now);
+            }
+        }
+
+        private void restart(long now) {
+            windowStart = now;
+            served = 0;
+            reads = 0;
+            readBytes = 0;
+            headerNanos = 0;
+            bodyNanos = 0;
+            retries = 0;
+        }
+    }
+
     private static final class Piece {
         final long offset;
         final long length;
@@ -287,12 +348,31 @@ final class DashFile {
         return UNPACED_CDN_HOST.equals(Uri.parse(manifestUrl).getHost());
     }
 
+    String readPattern() {
+        return parallelReads + " x " + readChunkBytes / BYTES_PER_KIB + " KiB reads";
+    }
+
     void write(OutputStream out, long start, long end) throws IOException {
+        long begun = System.nanoTime();
+        long[] served = {0};
+        TRANSFER.rangeStarted();
+        try {
+            writeRange(out, start, end, served);
+        } finally {
+            int others = TRANSFER.rangeEnded();
+            double seconds = (System.nanoTime() - begun) / (double) (MS_PER_SECOND * NANOS_PER_MS);
+            Log.i(TAG, String.format(Locale.ROOT, "DASH range %d-%d: %.1f MB in %.1f s = %.1f MB/s, %d ranges still open",
+                    start, end, served[0] / BYTES_PER_MB, seconds, served[0] / BYTES_PER_MB / seconds, others));
+        }
+    }
+
+    private void writeRange(OutputStream out, long start, long end, long[] served) throws IOException {
         long at = start;
         if (at < head.length) {
             int count = (int) (Math.min(end + 1, head.length) - at);
             out.write(head, (int) at, count);
             at += count;
+            served[0] += count;
         }
         out.flush();
         ExecutorService pool = Executors.newFixedThreadPool(parallelReads);
@@ -317,7 +397,10 @@ final class DashFile {
                 }
                 Future<byte[]> next = pending.poll();
                 if (next == null) return;
-                out.write(await(next));
+                byte[] chunk = await(next);
+                out.write(chunk);
+                served[0] += chunk.length;
+                TRANSFER.served(chunk.length);
             }
         } finally {
             reads.close();
@@ -360,6 +443,7 @@ final class DashFile {
                 boolean cancelled = failure instanceof InterruptedIOException
                         && !(failure instanceof SocketTimeoutException);
                 if (attempt == CDN_ATTEMPTS || cancelled) throw failure;
+                TRANSFER.retry();
                 Log.w(TAG, "CDN read attempt " + attempt + " of " + CDN_ATTEMPTS + " failed", failure);
                 try {
                     Thread.sleep(CDN_RETRY_DELAY_MS);
@@ -376,6 +460,8 @@ final class DashFile {
         long end = piece.prefixBytes + to;
         byte[] bytes = new byte[(int) (to - from + 1)];
         HttpURLConnection connection = null;
+        long requested = System.nanoTime();
+        long answered;
         try {
             connection = connect(piece.url, "bytes=" + start + "-" + end, cookies, reads);
             String contentRange = connection.getHeaderField("Content-Range");
@@ -383,6 +469,7 @@ final class DashFile {
                     || contentRange == null || !contentRange.startsWith("bytes " + start + "-" + end + "/")) {
                 throw new IOException("expected bytes " + start + "-" + end + ", got " + contentRange + " for " + piece.url);
             }
+            answered = System.nanoTime();
             try (InputStream in = connection.getInputStream()) {
                 for (int got = 0; got < bytes.length; ) {
                     int count = in.read(bytes, got, bytes.length - got);
@@ -397,6 +484,7 @@ final class DashFile {
         } finally {
             if (connection != null) reads.remove(connection);
         }
+        TRANSFER.read(bytes.length, answered - requested, System.nanoTime() - answered);
         for (int k = 0; k < TRACK_ID_BYTES; k++) {
             long index = piece.trackIdOffset + k - from;
             if (index >= 0 && index < bytes.length) {
