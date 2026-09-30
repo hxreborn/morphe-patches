@@ -78,6 +78,12 @@ repackager = next(
 debug_log = field(fields, *LOG_FIELDS)
 report_attached = bool(REPORT.search(debug_log))
 
+
+def target_forms(version):
+    numbered = [w for w in version.split() if any(c.isdigit() for c in w)]
+    return {normalize_version(version)} | {normalize_version(w) for w in numbered}
+
+
 blockers = []
 flags = []
 labels = []
@@ -132,8 +138,8 @@ elif another_version:
     )
     labels.append("needs info")
 elif matched[1] and not (
-    any(normalize_version(v) in version_tokens for v in matched[1]) if version_tokens
-    else any(normalize_version(v) in version_haystack for v in matched[1])
+    any(form in version_tokens for v in matched[1] for form in target_forms(v)) if version_tokens
+    else any(form in version_haystack for v in matched[1] for form in target_forms(v))
 ):
     name, versions = matched
     flags.append(

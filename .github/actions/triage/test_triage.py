@@ -304,6 +304,18 @@ RISE Sleep Tracker Android V1.78.47
 
 {LONG}
 """),
+    "bare number for a target that carries a platform word": ("pass", f"""### App name
+
+RISE Sleep Tracker
+
+### App version
+
+v1.78.47
+
+### Bug description
+
+{LONG}
+"""),
     "patching failed without a report": ("flag", f"""### App name
 
 Proton Mail
