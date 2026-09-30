@@ -20,13 +20,9 @@ jobs:
           stale-issue-message: |
             **Marked stale after 30 days without activity.**
             It closes in 7 days unless someone comments.
-
-            Your **triage** bot 🤖
           close-issue-message: |
             **Closed after 7 more days without activity.**
             If it still matters, comment below and a maintainer will reopen it.
-
-            Your **triage** bot 🤖
           days-before-pr-stale: -1
           days-before-pr-close: -1
           exempt-all-assignees: true
@@ -42,13 +38,9 @@ jobs:
           stale-issue-message: |
             **Still waiting on the details asked for above.**
             It closes in 7 days without them.
-
-            Your **triage** bot 🤖
           close-issue-message: |
             **Closed because the requested details never arrived.**
             Open a new issue with them, or comment below if this closure seems wrong.
-
-            Your **triage** bot 🤖
           close-issue-reason: not_planned
           days-before-pr-stale: -1
           days-before-pr-close: -1

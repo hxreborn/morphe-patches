@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fields import CONTEST, SIGN_OFF, field, normalize, parse_fields
+from fields import CONTEST, field, normalize, parse_fields
 
 MARKER = "<!-- app-request-bot -->"
 URL = re.compile(r"https?://\S+")
@@ -142,7 +142,7 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             )
 
     if verdict != "pass":
-        lines.append(f"{CONTEST}\n\n{SIGN_OFF}")
+        lines.append(CONTEST)
     return {
         "package": package,
         "verdict": verdict,
