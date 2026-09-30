@@ -11,7 +11,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 from fields import CONTEST, field, has_any, normalize, normalize_version, parse_fields
 
 MIN_CHARS = 60
-MIN_WORDS = 10
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "")
 NEW_ISSUE = f"https://github.com/{REPO}/issues/new/choose" if REPO else ""
@@ -19,8 +18,7 @@ NEW_ISSUE = f"https://github.com/{REPO}/issues/new/choose" if REPO else ""
 APP_NAME_FIELDS = ("App and version", "App name", "App", "Target app", "App version patched")
 APP_VERSION_FIELDS = ("Other version", "App version", "Broken app version", "App version patched",
                       "App and version")
-DESCRIPTION_FIELDS = ("Bug description", "What happens", "What happened?", "Describe the bug",
-                      "Summary")
+DESCRIPTION_FIELDS = ("Bug description", "What happens", "Describe the bug", "Summary")
 LOG_FIELDS = ("Debug log", "Error logs", "Morphe logs", "Logs")
 SOURCE_FIELDS = ("APK source", "APK source and type", "APK source and architecture")
 
@@ -30,7 +28,9 @@ REPACKAGERS = ("softonic", "happymod", "apkmody", "modyolo", "moddroid", "an1.co
 MARKER = "<!-- triage-bot -->"
 NO_RESPONSE = "_no response_"
 
-REPORT_MARKERS = ("PatchException", "Manager:", "manager=", "Failed to match")
+REPORT = re.compile(
+    r"Exception|Error|INSTALL_FAILED|Failed to match|Manager:|manager=|\(API \d+\)|^\s+at \S", re.I | re.M
+)
 
 OPTION_PATCHING_FAILED = "patchingfailed"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
@@ -73,7 +73,7 @@ repackager = next(
     (h for h in REPACKAGERS if re.search(rf"(?:^|[/.@\s]){re.escape(h)}(?![a-z0-9])", apk_source.lower())), ""
 )
 debug_log = field(fields, *LOG_FIELDS)
-report_attached = any(marker in debug_log for marker in REPORT_MARKERS)
+report_attached = bool(REPORT.search(debug_log))
 
 blockers = []
 flags = []
@@ -85,13 +85,12 @@ if not fields:
         + (f"Open [a new issue]({NEW_ISSUE}) and pick the matching form." if NEW_ISSUE else "Open a new issue and pick the matching form.")
     )
 
-words = len(description.split())
-if fields and not report_attached and (len(description) < MIN_CHARS or words < MIN_WORDS):
-    blockers.append(
-        f"**The description is short** ({words} word{'s' if words != 1 else ''} and "
-        f"{len(description)} characters, {MIN_WORDS} words and {MIN_CHARS} characters needed). Add "
+if fields and not report_attached and len(description) < MIN_CHARS:
+    flags.append(
+        f"**The description is short** ({len(description)} characters, {MIN_CHARS} needed). Add "
         "what you did, what you expected and what happened instead."
     )
+    labels.append("needs info")
 
 matched = None
 best = 0
