@@ -27,11 +27,14 @@ jobs:
        !contains(github.event.issue.labels.*.name, 'bad-triage') &&
        (github.event.action == 'opened' ||
         (github.event.action == 'edited' && github.event.issue.state == 'open' &&
+         toJSON(github.event.changes.body) != 'null' &&
          contains(github.event.issue.labels.*.name, 'needs info')))) ||
       (github.event.action != 'labeled' &&
        contains(github.event.issue.labels.*.name, 'bug') &&
        !contains(github.event.issue.labels.*.name, 'bad-triage') &&
        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association) &&
+       (github.event.action != 'edited' || toJSON(github.event.changes.body) != 'null') &&
+       !(github.event.issue.state == 'open' && contains(github.event.issue.labels.*.name, 'incomplete')) &&
        (github.event.action == 'opened' ||
         contains(github.event.issue.labels.*.name, 'incomplete') ||
         contains(github.event.issue.labels.*.name, 'needs info') ||
