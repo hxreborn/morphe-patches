@@ -163,6 +163,30 @@ Patching failed
 app.morphe.patcher.patch.PatchException: Failed to match
 ```
 """),
+    "short description with the error report attached": ("pass", """### App and version
+
+Proton Mail 7.10.4
+
+### Other version
+
+_No response_
+
+### What happened
+
+Patching failed
+
+### Bug description
+
+Fail to patch giving this error below.
+Thanks!
+
+### Error logs
+
+Manager: 1.32.0
+Patcher: 1.14.1
+
+app.morphe.patcher.patch.PatchException: no native library found
+"""),
     "patching failed without a report": ("flag", f"""### App name
 
 Proton Mail
