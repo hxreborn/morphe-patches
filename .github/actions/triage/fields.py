@@ -11,19 +11,21 @@ def normalize_version(text):
     return normalize(re.sub(r"^v(?=\d)", "", text.strip(), flags=re.I))
 
 
-def parse_fields(body):
+def parse_fields(body, track_fences=True):
     fields = {}
     current = None
     fenced = False
     for line in body.splitlines():
-        if line.lstrip().startswith("```"):
+        if track_fences and line.lstrip().startswith(("```", "~~~")):
             fenced = not fenced
-        heading = None if fenced else re.match(r"^#{2,3}\s+(.+?)\s*$", line)
-        if heading:
+        heading = None if fenced else re.match(r"^###\s+(.+?)\s*$", line)
+        if heading and heading.group(1) not in fields:
             current = heading.group(1)
             fields[current] = []
         elif current:
             fields[current].append(line)
+    if fenced:
+        return parse_fields(body, track_fences=False)
     return {k: "\n".join(v).strip() for k, v in fields.items()}
 
 

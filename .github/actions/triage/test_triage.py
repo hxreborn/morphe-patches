@@ -187,6 +187,43 @@ Patcher: 1.14.1
 
 app.morphe.patcher.patch.PatchException: no native library found
 """),
+    "markdown heading inside the description": ("pass", f"""### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+Install fails.
+## Steps
+{LONG}
+"""),
+    "unclosed code fence in another field": ("pass", f"""### APK source
+
+```apkmirror
+
+### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+{LONG}
+"""),
+    "tilde fence around the log": ("pass", """### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+Fail to patch giving this error below.
+
+### Error logs
+
+~~~
+### Applying patches
+app.morphe.patcher.patch.PatchException: no native library found
+~~~
+"""),
     "patching failed without a report": ("flag", f"""### App name
 
 Proton Mail
