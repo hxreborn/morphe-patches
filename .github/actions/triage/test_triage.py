@@ -296,6 +296,14 @@ it broke
 
 asdf
 """),
+    "dropdown version made of two words": ("pass", f"""### App and version
+
+RISE Sleep Tracker Android V1.78.47
+
+### Bug description
+
+{LONG}
+"""),
     "patching failed without a report": ("flag", f"""### App name
 
 Proton Mail

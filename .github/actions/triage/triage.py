@@ -65,7 +65,10 @@ app_version = " ".join(filter(None, (field(fields, n) for n in APP_VERSION_FIELD
 another_version = "another version" in app_name.lower() and not field(fields, "Other version")
 reported = " ".join(dict.fromkeys(filter(None, (app_name, app_version))))
 app_haystack = reported or "\n".join(fields.values())
-version_tokens = {normalize_version(t) for t in re.split(r"[\s(),`]+", app_version) if t.strip()}
+version_words = [t for t in re.split(r"[\s(),`]+", app_version) if t.strip()]
+version_tokens = {normalize_version(t) for t in version_words} | {
+    normalize(a) + normalize(b) for a, b in zip(version_words, version_words[1:])
+}
 version_haystack = normalize(app_haystack)
 what_happened = field(fields, "What happened")
 apk_source = field(fields, *SOURCE_FIELDS)
