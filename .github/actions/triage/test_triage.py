@@ -116,7 +116,7 @@ https://proton-mail.en.softonic.com/android
 {LONG}
 """),
     "no issue form used": ("close", "the app doesnt open pls fix it\n"),
-    "too short": ("close", """### App name
+    "too short": ("flag", """### App name
 
 Proton Mail
 
@@ -247,6 +247,54 @@ https://titan1.com/proton-mail
 ### Bug description
 
 {LONG}
+"""),
+    "bare logcat with a short description": ("pass", """### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+Crashes on start.
+
+### Error logs
+
+09-30 10:00:01 E/AndroidRuntime: FATAL EXCEPTION: main
+java.lang.NullPointerException
+\tat app.x.Y.z(Y.java:1)
+"""),
+    "localized manager report without a marker word": ("pass", """### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+Не удалось пропатчить.
+
+### Error logs
+
+Менеджер: 1.32.0
+Android: 16 (API 36)
+Память: 2.01 GB / 7.85 GB
+"""),
+    "long description in a script without spaces": ("pass", """### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+修补过程在中途停止并且显示一个错误对话框，最终没有生成任何输出文件，我已经尝试了多次并且每次都是同样的结果，请帮忙看看。
+"""),
+    "junk in the log field": ("flag", """### App and version
+
+Proton Mail 7.10.4
+
+### Bug description
+
+it broke
+
+### Error logs
+
+asdf
 """),
     "patching failed without a report": ("flag", f"""### App name
 
