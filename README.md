@@ -31,7 +31,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.36.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.36.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;102 patches total
+> **[v1.37.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.37.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;104 patches total
 <details open>
 <summary>📦&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -474,6 +474,22 @@ recorded in the Git history.
 | <a id="photo-editor-pro-show-ai-progress"></a>[Show AI progress](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/ShowAiProgressPatch.kt) | Reads the current stage off the real network activity instead of the fake progress bar InShot ships. |
 | <a id="photo-editor-pro-speed-up-ai-tools"></a>[Speed up AI tools](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/SpeedUpAiToolsPatch.kt) | Shortens the AI tool wait by polling for the result more often and uploading the photo in larger chunks. |
 | <a id="photo-editor-pro-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/premium/UnlockPremiumPatch.kt) | Adds an option to unlock the pro tools, remove the export watermark and hide the upgrade prompts. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/pocketwhip.png" width="18" align="top">&nbsp;&nbsp;Pocket Whip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="pocket-whip-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/pocketwhip/ads/HideAdsPatch.kt) | Hides the banner and stops ads from loading. |
+| <a id="pocket-whip-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/pocketwhip/misc/premium/UnlockPremiumPatch.kt) | Unlocks all whips. |
 
 </details>
 

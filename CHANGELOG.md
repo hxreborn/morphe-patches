@@ -1,3 +1,9 @@
+## [1.37.0](https://github.com/hxreborn/morphe-patches/compare/v1.36.0...v1.37.0) (2026-09-30)
+
+### New Features
+
+* **Pocket Whip:** unlock premium and hide ads ([59fe38b](https://github.com/hxreborn/morphe-patches/commit/59fe38b9f89ff8d0d67bc54cc3b15cba2c71498c))
+
 ## [1.36.0](https://github.com/hxreborn/morphe-patches/compare/v1.35.0...v1.36.0) (2026-09-29)
 
 ### New Features
