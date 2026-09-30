@@ -149,6 +149,12 @@ runs:
         verdict=$(jq -r .verdict verdict.json)
         jq -r .comment verdict.json > comment.md
 
+        if [ "$WAS_CLOSED_BY_BOT" = "true" ]; then
+          closer=$(gh api "repos/$REPO/issues/$ISSUE/timeline" --paginate \
+            --jq '.[] | select(.event == "closed") | .actor.login' | tail -1)
+          [ "$closer" = "github-actions[bot]" ] || WAS_CLOSED_BY_BOT=false
+        fi
+
         app=$(jq -r .app verdict.json)
         if [ -n "$app" ] && [ "$verdict" != "pass" ] && [ "$ACTION" = "opened" ]; then
           dupes=$(gh search issues "$app" --repo "$REPO" --limit 4 --json number,title --jq \
@@ -179,12 +185,18 @@ runs:
             upsert_comment
             labels=$(jq -r '.labels | join(",")' verdict.json)
             [ -n "$labels" ] && gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
+            if [ "$WAS_CLOSED_BY_BOT" = "true" ]; then
+              gh issue reopen "$ISSUE" --repo "$REPO"
+              gh issue edit "$ISSUE" --repo "$REPO" --remove-label incomplete
+            fi
             ;;
           pass)
-            gh issue edit "$ISSUE" --repo "$REPO" \
-              --remove-label incomplete \
-              --remove-label "needs info" \
-              --remove-label "untargeted version" || true
+            if [ "$WAS_CLOSED_BY_BOT" = "true" ] || [ -n "$existing" ]; then
+              gh issue edit "$ISSUE" --repo "$REPO" \
+                --remove-label incomplete \
+                --remove-label "needs info" \
+                --remove-label "untargeted version" || true
+            fi
             if [ "$WAS_CLOSED_BY_BOT" = "true" ]; then
               gh issue reopen "$ISSUE" --repo "$REPO"
               printf '<!-- triage-bot -->\n🔓 **Reopened.** The report passes the checks now.\n' > comment.md
