@@ -96,6 +96,7 @@ final class DashFile {
     private static final int SIDX_REFERENCE_ID = 4;
     private static final int SIDX_TIMESCALE = 8;
     private static final int SIDX_EARLIEST_TIME = 12;
+    private static final int SIDX_FIRST_OFFSET = 16;
     private static final int SIDX_REFERENCE_COUNT = 22;
     private static final int SIDX_REFERENCE_BYTES = 12;
     private static final int REFERENCE_SIZE_AT = 0;
@@ -248,42 +249,31 @@ final class DashFile {
         int videoId = trackId(videoInit);
         int audioId = videoId + 1;
         long templateTimescale = video.template.timescale;
-        long videoTimescale = mediaTimescale(videoInit);
         long durationUnits = 0;
         for (Segment segment : videoSegments) durationUnits += segment.duration;
         long durationMs = durationUnits * MS_PER_SECOND / templateTimescale;
 
         List<Segment> ordered = new ArrayList<>();
         List<Integer> trackIds = new ArrayList<>();
-        List<Reference> references = new ArrayList<>();
         int nextAudio = 0;
         double audioScale = (double) templateTimescale / audio.template.timescale;
-        long firstStart = videoSegments.get(0).startTime;
-        long elapsed = firstStart;
-        long indexedEnd = firstStart * videoTimescale / templateTimescale;
         for (int i = 0; i < videoSegments.size(); i++) {
-            Segment videoSegment = videoSegments.get(i);
-            long groupBytes = videoSegment.byteLength - videoSegment.prefixBytes;
-            ordered.add(videoSegment);
+            ordered.add(videoSegments.get(i));
             trackIds.add(videoId);
             boolean last = i + 1 == videoSegments.size();
             long until = last ? Long.MAX_VALUE : videoSegments.get(i + 1).startTime;
             while (nextAudio < audioSegments.size()
                     && (last || audioSegments.get(nextAudio).startTime * audioScale < until)) {
-                Segment audioSegment = audioSegments.get(nextAudio++);
-                ordered.add(audioSegment);
+                ordered.add(audioSegments.get(nextAudio++));
                 trackIds.add(audioId);
-                groupBytes += audioSegment.byteLength - audioSegment.prefixBytes;
             }
-            elapsed += videoSegment.duration;
-            long end = elapsed * videoTimescale / templateTimescale;
-            references.add(new Reference(groupBytes, end - indexedEnd));
-            indexedEnd = end;
         }
 
         byte[] moov = moov(videoInit, audioInit, audioId, durationMs);
-        byte[] sidx = sidx(videoId, videoTimescale, firstStart * videoTimescale / templateTimescale, references);
-        byte[] head = concat(slice(videoInit, child(videoInit, 0, videoInit.length, "ftyp")), moov, sidx);
+        byte[] audioSidx = trackIndex(ordered, trackIds, audioId, mediaTimescale(audioInit), audio.template.timescale, 0);
+        byte[] videoSidx = trackIndex(ordered, trackIds, videoId, mediaTimescale(videoInit), templateTimescale,
+                audioSidx.length);
+        byte[] head = concat(slice(videoInit, child(videoInit, 0, videoInit.length, "ftyp")), moov, videoSidx, audioSidx);
         Piece[] pieces = new Piece[ordered.size()];
         long offset = head.length;
         for (int i = 0; i < pieces.length; i++) {
@@ -739,12 +729,41 @@ final class DashFile {
         return trak;
     }
 
-    private static byte[] sidx(int referenceId, long timescale, long earliestTime, List<Reference> references) {
+    private static byte[] trackIndex(List<Segment> ordered, List<Integer> trackIds, int trackId, long mediaTimescale,
+                                     long templateTimescale, long bytesAfterIndex) {
+        List<Segment> segments = new ArrayList<>();
+        List<Long> starts = new ArrayList<>();
+        long position = 0;
+        for (int i = 0; i < ordered.size(); i++) {
+            Segment segment = ordered.get(i);
+            if (trackIds.get(i) == trackId) {
+                segments.add(segment);
+                starts.add(position);
+            }
+            position += segment.byteLength - segment.prefixBytes;
+        }
+        List<Reference> references = new ArrayList<>();
+        long elapsed = segments.get(0).startTime;
+        long earliestTime = elapsed * mediaTimescale / templateTimescale;
+        long indexedEnd = earliestTime;
+        for (int i = 0; i < segments.size(); i++) {
+            long next = i + 1 < starts.size() ? starts.get(i + 1) : position;
+            elapsed += segments.get(i).duration;
+            long end = elapsed * mediaTimescale / templateTimescale;
+            references.add(new Reference(next - starts.get(i), end - indexedEnd));
+            indexedEnd = end;
+        }
+        return sidx(trackId, mediaTimescale, earliestTime, bytesAfterIndex + starts.get(0), references);
+    }
+
+    private static byte[] sidx(int referenceId, long timescale, long earliestTime, long firstOffset,
+                               List<Reference> references) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] fixed = new byte[SIDX_FIXED_BYTES];
         putU32(fixed, SIDX_REFERENCE_ID, referenceId);
         putU32(fixed, SIDX_TIMESCALE, timescale);
         putU32(fixed, SIDX_EARLIEST_TIME, earliestTime);
+        putU32(fixed, SIDX_FIRST_OFFSET, firstOffset);
         putU16(fixed, SIDX_REFERENCE_COUNT, references.size());
         out.write(fixed, 0, fixed.length);
         byte[] entry = new byte[SIDX_REFERENCE_BYTES];
