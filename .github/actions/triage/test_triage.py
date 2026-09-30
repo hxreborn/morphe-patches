@@ -128,7 +128,7 @@ Proton Mail
 
 app not open
 """),
-    "unknown app": ("close", f"""### App name
+    "unknown app": ("flag", f"""### App name
 
 Duolingo
 
@@ -356,7 +356,7 @@ I have not tried the unpatched app
 
 {LONG}
 """),
-    "unpatched app fails the same way": ("close", f"""### App name
+    "unpatched app fails the same way": ("flag", f"""### App name
 
 Showly
 
