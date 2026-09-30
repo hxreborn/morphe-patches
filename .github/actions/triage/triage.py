@@ -117,10 +117,11 @@ elif not matched:
         if reported
         else "**The report doesn't name an app this bundle patches.**"
     )
-    blockers.append(
+    flags.append(
         f"{lead} Supported apps in {data['version']}: {supported}. "
         "To get another app added, open an app request."
     )
+    labels.append("needs info")
 elif another_version:
     flags.append(
         "**\"Another version\" is picked but the version is missing.** Fill in the Other version "
@@ -150,10 +151,11 @@ stock = normalize(field(fields, "Does the unpatched app do the same thing"))
 single_patch = normalize(field(fields, "Does it still happen with only one patch selected"))
 
 if stock.startswith(OPTION_STOCK_FAILS_TOO):
-    blockers.append(
+    flags.append(
         "**The unpatched app fails the same way**, so the app is the likely cause rather than a "
         "patch. If the patched build behaves differently, change that answer and describe the difference."
     )
+    labels.append("needs info")
 elif stock.startswith(OPTION_NOT_TRIED):
     flags.append(
         "**The unpatched app hasn't been tried.** Install the stock APK, repeat the same steps and "
@@ -190,7 +192,7 @@ if lines:
 
 print(json.dumps({
     "verdict": verdict,
-    "labels": labels,
+    "labels": list(dict.fromkeys(labels)),
     "app": matched[0] if matched else "",
     "comment": MARKER + "\n" + "\n".join(lines) if lines else "",
 }))
