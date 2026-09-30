@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fields import CONTEST, SIGN_OFF, field, has_any, normalize, normalize_version, parse_fields
+from fields import CONTEST, field, has_any, normalize, normalize_version, parse_fields
 
 MIN_CHARS = 60
 MIN_WORDS = 10
@@ -186,7 +186,7 @@ else:
     lines = []
 
 if lines:
-    lines += ["", CONTEST, "", SIGN_OFF]
+    lines += ["", CONTEST]
 
 print(json.dumps({
     "verdict": verdict,

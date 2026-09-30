@@ -1,7 +1,6 @@
 import re
 
 CONTEST = "_Think this is wrong? Comment below and a maintainer will take a look._"
-SIGN_OFF = "Your **triage** bot 🤖"
 
 
 def normalize(text):
