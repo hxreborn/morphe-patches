@@ -72,6 +72,7 @@ apk_source = field(fields, *SOURCE_FIELDS)
 source_text = (apk_source + "\n" + "\n".join(fields.values())).lower()
 repackager = next((h for h in REPACKAGERS if h in source_text), "")
 debug_log = field(fields, *LOG_FIELDS)
+report_attached = any(marker in debug_log for marker in REPORT_MARKERS)
 
 blockers = []
 flags = []
@@ -84,9 +85,10 @@ if not fields:
     )
 
 words = len(description.split())
-if fields and (len(description) < MIN_CHARS or words < MIN_WORDS):
+if fields and not report_attached and (len(description) < MIN_CHARS or words < MIN_WORDS):
     blockers.append(
-        f"**The description is short** ({words} word{'s' if words != 1 else ''}, {MIN_WORDS} needed). Add "
+        f"**The description is short** ({words} word{'s' if words != 1 else ''} and "
+        f"{len(description)} characters, {MIN_WORDS} words and {MIN_CHARS} characters needed). Add "
         "what you did, what you expected and what happened instead."
     )
 
@@ -136,9 +138,7 @@ elif matched[1] and not (
     )
     labels.append("untargeted version")
 
-if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not any(
-    marker in debug_log for marker in REPORT_MARKERS
-):
+if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_attached:
     flags.append(
         "**Patching failed but no error report is attached.** In Morphe Manager, tap **Copy** on the "
         "error dialog and paste it here. With morphe-cli, add `-r report.json` and attach the "
