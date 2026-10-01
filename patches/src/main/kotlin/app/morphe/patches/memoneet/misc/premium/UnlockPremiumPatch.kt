@@ -19,13 +19,21 @@ internal val PRODUCT_ACCESS_CHECK_PROLOGUE =
 internal val PRODUCT_ACCESS_CHECK_PROLOGUE_MASK =
     "ffffffffffffffffffffffffffffffffffffffffff03c0ffffffffff1f0000ffffffffff".hexToByteArray()
 
+internal val COMBO_PURCHASE_CHECK_PROLOGUE =
+    ("fd79bfa9fd030faaef2101d1a2031ff8502740f9ff0110eba90e0054" +
+        "40f043b800801c8b7093409110fa45f91f00106b").hexToByteArray()
+
+internal val COMBO_PURCHASE_CHECK_PROLOGUE_MASK =
+    ("ffffffffffffffffffffffffffffffffffffffffffffffff1f0000ff" +
+        "ffffffffffffffffff03c0ffff03c0ffffffffff").hexToByteArray()
+
 internal val RETURN_TRUE = "c0820091c0035fd6".hexToByteArray()
 
 @Suppress("unused")
 val unlockPremiumPatch = resourcePatch(
     name = "Unlock premium",
-    description = "Unlocks the premium question banks, notes and previous-year papers, " +
-        "with no energy cost or ads. Features that need a signed-in account are not included.",
+    description = "Unlocks the premium question banks, notes, test series, previous-year papers " +
+        "and shop plans, with no energy cost or ads. Signing in requires GmsCore support.",
 ) {
     compatibleWith(AppCompatibilities.MEMONEET)
     availability(requireArm64)
@@ -34,13 +42,14 @@ val unlockPremiumPatch = resourcePatch(
         val library = get("lib/$ARM64/$DART_AOT_LIBRARY")
         if (!library.exists()) throw PatchException("Could not find $DART_AOT_LIBRARY for $ARM64")
 
-        val replaced = library.replaceMasked(
-            PRODUCT_ACCESS_CHECK_PROLOGUE,
-            PRODUCT_ACCESS_CHECK_PROLOGUE_MASK,
-            mapOf(0 to RETURN_TRUE),
-        )
-        if (!replaced) {
-            throw PatchException("Could not find the product access check in $DART_AOT_LIBRARY")
+        mapOf(
+            "product access check" to (PRODUCT_ACCESS_CHECK_PROLOGUE to PRODUCT_ACCESS_CHECK_PROLOGUE_MASK),
+            "combo purchase check" to (COMBO_PURCHASE_CHECK_PROLOGUE to COMBO_PURCHASE_CHECK_PROLOGUE_MASK),
+        ).forEach { (check, prologue) ->
+            val (pattern, mask) = prologue
+            if (!library.replaceMasked(pattern, mask, mapOf(0 to RETURN_TRUE))) {
+                throw PatchException("Could not find the $check in $DART_AOT_LIBRARY")
+            }
         }
     }
 }
