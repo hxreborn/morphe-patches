@@ -1,0 +1,84 @@
+name: App updates
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: Comma-separated package names, empty for every app
+        required: false
+  schedule:
+    - cron: "17 6 * * *"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: app-updates
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check upstream versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    services:
+      flaresolverr:
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        ports:
+          - 8191:8191
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install tools
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pip install requests google-play-scraper
+          mkdir -p "$HOME/bin" tools
+          curl -sSfL https://github.com/mgdm/htmlq/releases/download/v0.4.0/htmlq-x86_64-linux.tar.gz | tar xz -C "$HOME/bin"
+          curl -sSfL -o "$HOME/bin/apkeep" https://github.com/EFForg/apkeep/releases/download/1.0.0/apkeep-x86_64-unknown-linux-gnu
+          chmod +x "$HOME/bin/apkeep"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+          gh release download -R MorpheApp/morphe-cli -p '*-all.jar' -D tools
+          gh release download -R "$GITHUB_REPOSITORY" -p '*.mpp' -D tools
+
+      - name: Restore source URL cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/app-updates/source-urls.json
+          key: app-updates-urls-${{ github.run_id }}
+          restore-keys: app-updates-urls-
+
+      - name: Check versions
+        env:
+          FLARESOLVERR_URL: http://localhost:8191
+          GITHUB_TOKEN: ${{ github.token }}
+          ONLY: ${{ inputs.only }}
+        run: |
+          mkdir -p ~/.cache/app-updates
+          python .github/scripts/app_updates.py --out app-updates \
+            --cli tools/*-all.jar --mpp tools/*.mpp --issues ${ONLY:+--only "$ONLY"}
+
+      - name: Summary
+        if: always()
+        run: cat app-updates/app-updates.md >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-updates
+          path: app-updates
