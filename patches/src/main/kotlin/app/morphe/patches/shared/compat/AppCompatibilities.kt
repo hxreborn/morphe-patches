@@ -184,6 +184,18 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "p5.11.1", versionCode = 50126, minSdk = 29)),
     )
 
+    val MEMONEET = Compatibility(
+        name = "MemoNeet",
+        packageName = "com.adithya.memoneet",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x8865BC,
+        signatures = setOf(
+            "0b35fb5df963d4382ba19bf70923a66a056334335721a4fe395bf9365721a151",
+            "c3f2c1d09fe211d59fe243da4a639bd610a4cee4ee54ad5380c03f83310378cb",
+        ),
+        targets = listOf(AppTarget(version = "62.6", versionCode = 626, minSdk = 24)),
+    )
+
     val MOVIEBOX = Compatibility(
         name = "MovieBox",
         packageName = "com.community.oneroom",

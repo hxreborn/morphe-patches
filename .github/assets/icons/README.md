@@ -67,6 +67,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `pocketwhip.png` | Pocket Whip (`com.greenstone.pocketwhip`) | Original Pocket Whip | APK 2.3, `res/mipmap-hdpi-v4/pocket_whip_icon_round.png` |
+| `memoneet.png` | MemoNeet (`com.adithya.memoneet`) | MemoNeet | APK 62.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair
