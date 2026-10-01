@@ -88,7 +88,10 @@ internal object AppCompatibilities {
         packageName = "com.cxinventor.file.explorer",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x5167F6,
-        targets = listOf(AppTarget(version = "2.7.8", versionCode = 278, minSdk = 21)),
+        targets = listOf(
+            AppTarget(version = "2.7.8", versionCode = 278, minSdk = 21),
+            AppTarget(version = "2.7.9", versionCode = 279, minSdk = 21),
+        ),
     )
 
     val CXXDROID = Compatibility(
