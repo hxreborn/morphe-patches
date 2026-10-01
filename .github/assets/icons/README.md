@@ -63,6 +63,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `pydroid.png` | Pydroid 3 (`ru.iiec.pydroid3`) | Lider Soft KZ | APK 8.6_arm64, `mipmap/app_icon_pydroid3`, xxxhdpi |
 | `yiiot.png` | Yi iot (`com.yunyi.smartcamera`) | Kami HK | APK 5.1.7, `res/drawable-xxhdpi-v4/ic_launcher.webp`, cut to a circle |
 | `blurwall.png` | BlurWall (`apps.automan.blurwallpaper`) | automan | APK 2.9.8, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `catzy.png` | Catzy (`com.nieruo.healthapp`) | Nieruo | APK 1.61.0, `res/mipmap-xxxhdpi-v4/ic_launcher_103.webp` |
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `pocketwhip.png` | Pocket Whip (`com.greenstone.pocketwhip`) | Original Pocket Whip | APK 2.3, `res/mipmap-hdpi-v4/pocket_whip_icon_round.png` |

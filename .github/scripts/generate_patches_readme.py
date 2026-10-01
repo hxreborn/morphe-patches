@@ -229,6 +229,7 @@ ICONS = {
     "com.yunyi.smartcamera": "yiiot.png",
     "com.greenstone.pocketwhip": "pocketwhip.png",
     "apps.automan.blurwallpaper": "blurwall.png",
+    "com.nieruo.healthapp": "catzy.png",
     "com.one4studio.one4home": "one4home.png",
 }
 
