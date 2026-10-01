@@ -347,7 +347,7 @@ def build_content(expanded=False):
 raw_ver = data["version"]
 # Strip leading "v" if present
 ver   = raw_ver.lstrip("v")
-total = sum(len(e["patches"]) for e in by_pkg.values()) + len(universal)
+total = len(data["patches"])
 
 readme = readme_path.read_text(encoding="utf-8")
 
