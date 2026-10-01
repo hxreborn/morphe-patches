@@ -1,3 +1,18 @@
+## [1.38.0](https://github.com/hxreborn/morphe-patches/compare/v1.37.0...v1.38.0) (2026-10-01)
+
+### New Features
+
+* **Catzy - Max intimacy level:** raise pet intimacy to the highest level ([21de064](https://github.com/hxreborn/morphe-patches/commit/21de064ae893fec8631c7c23e09b6b79e4521741))
+* **Catzy - Remove app protection:** let a patched build start ([a6f43fe](https://github.com/hxreborn/morphe-patches/commit/a6f43fea97194746ab7bcd8374e0028a5efccda2))
+* **Catzy - Remove usage limits:** remove daily caps and shorten pet exploration ([9f9c59b](https://github.com/hxreborn/morphe-patches/commit/9f9c59be6ff64ca887d3f9669e3ab4cefb109244))
+* **Catzy - Unlimited cat coins:** buy every store item without running out of cat coins ([0d3ff1a](https://github.com/hxreborn/morphe-patches/commit/0d3ff1a9adc72353add742a972bd3b5b49fee945))
+* **Catzy - Unlock premium:** unlock premium goals, journeys, exercises, sounds and themes ([531a9bf](https://github.com/hxreborn/morphe-patches/commit/531a9bf8f942647247483fea6299d92d6e3c70b8)), closes [#105](https://github.com/hxreborn/morphe-patches/issues/105)
+* **Cx File Explorer:** support 2.7.9 ([ff09aed](https://github.com/hxreborn/morphe-patches/commit/ff09aedc336dc85bd8af5686b7637db2ff916562)), closes [#108](https://github.com/hxreborn/morphe-patches/issues/108)
+* **MemoNeet - GmsCore support:** sign in with Google through GmsCore ([87dda07](https://github.com/hxreborn/morphe-patches/commit/87dda07b4ed288b0731a7dedfdfa95fb50791fd0))
+* **MemoNeet - Unlock premium:** mark every shop plan as purchased, combos included ([e32b6a2](https://github.com/hxreborn/morphe-patches/commit/e32b6a2e47be77cd54ab1dfc845b39be118f9cad))
+* **MemoNeet - Unlock premium:** unlock question banks, notes and previous-year papers ([6e9fe8b](https://github.com/hxreborn/morphe-patches/commit/6e9fe8b2b16d5780e722260421aa2332d1152fb6)), closes [#107](https://github.com/hxreborn/morphe-patches/issues/107)
+* **Showly:** support 3.72.0 ([d183910](https://github.com/hxreborn/morphe-patches/commit/d18391018c08f35869071f31316d0fcd5afb59e0)), closes [#127](https://github.com/hxreborn/morphe-patches/issues/127)
+
 ## [1.37.0](https://github.com/hxreborn/morphe-patches/compare/v1.36.0...v1.37.0) (2026-09-30)
 
 ### New Features
