@@ -14,6 +14,8 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.rawResourcePatch
 
 internal val bypassSignatureCheckPatch = rawResourcePatch {
+    dependsOn(removeSharedUserIdPatch)
+
     execute {
         val metaInf = get("META-INF", true)
         if (!metaInf.isDirectory) throw PatchException("META-INF not found in the input APK")
