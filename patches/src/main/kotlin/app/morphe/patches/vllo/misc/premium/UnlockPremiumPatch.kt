@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.pairip.requireArm64Delta
+import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.util.getReference
@@ -42,7 +42,7 @@ val unlockPremiumPatch = bytecodePatch(
 
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, hideStoreButtonPatch)
 
-    availability(requireArm64Delta)
+    availability(requireArm64)
 
     execute {
         val allFeatures = EntitlementEnumFingerprint.matchSingle()

@@ -7,7 +7,7 @@ package app.morphe.patches.memoneet.misc.premium
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.pairip.requireArm64Delta
+import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.replaceMasked
 
 private const val FLUTTER_LIBRARY = "libapp.so"
@@ -28,7 +28,7 @@ val unlockPremiumPatch = resourcePatch(
         "with no energy cost or ads. Features that need a signed-in account are not included.",
 ) {
     compatibleWith(AppCompatibilities.MEMONEET)
-    availability(requireArm64Delta)
+    availability(requireArm64)
 
     execute {
         val library = get("lib/$ARM64/$FLUTTER_LIBRARY")

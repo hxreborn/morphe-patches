@@ -9,7 +9,7 @@ import app.morphe.patcher.patch.PatchAvailability
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.catzy.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.pairip.arm64DeltaAvailability
+import app.morphe.patches.shared.misc.arm64Availability
 
 internal fun catzyPatch(
     name: String,
@@ -19,7 +19,7 @@ internal fun catzyPatch(
 ) = bytecodePatch(name, description) {
     compatibleWith(AppCompatibilities.CATZY)
 
-    availability(arm64DeltaAvailability(selection))
+    availability(arm64Availability(selection))
 
     dependsOn(removeAppProtectionPatch)
 
