@@ -1,42 +1,41 @@
 {
   "r: support": {
     "close": true,
-    "message": "👋 **This tracker is for patch bugs.**\nGeneral support is outside its scope. If a patch misbehaves, a bug report is welcome."
+    "message": "this tracker is for patch bugs. a patch misbehaving is a bug report, general support isn't"
   },
   "r: app-side": {
     "close": true,
-    "message": "🔎 **The unpatched app does this too.**\nThat rules out a patch. If the patched app behaves differently, comment below with the difference."
+    "message": "the unpatched app does this too, so it isn't a patch. if the patched build behaves differently, comment with the difference"
   },
   "r: not-this-bundle": {
     "close": true,
-    "message": "📦 **That APK wasn't patched with this bundle.**\nPatch it with this bundle in Morphe Manager or morphe-cli and report again if it still happens."
+    "message": "that APK wasn't patched with this bundle. patch it with this bundle in Morphe Manager or morphe-cli and report again if it still happens"
   },
   "r: app-updated": {
     "close": false,
     "labels": [
       "untargeted version"
     ],
-    "message": "⏳ **This app version isn't targeted yet.**\nThis issue tracks it. A listed version works in the meantime."
+    "message": "this app version isn't targeted yet. this issue tracks it, a listed version works meanwhile"
   },
   "r: server-side": {
     "close": true,
-    "message": "☁️ **The server enforces this.**\nThe restriction lives on the app's server, so the APK has nothing to patch."
+    "message": "the server enforces this, the APK has nothing to patch"
   },
   "r: no-repro": {
     "close": false,
     "labels": [
       "needs info"
     ],
-    "message": "🧪 **Couldn't reproduce this yet.**\nAdd the exact steps and the patch list from the app's entry in Morphe Manager."
+    "message": "can't reproduce this yet. add the exact steps and the patch list from the app's entry in Morphe Manager"
   },
   "r: fixed": {
-    "close": true,
-    "message": "🔧 **Fixed, landing in the next release.**\nUpdate the bundle and repatch once it's out. Comment below if it still happens.",
-    "reason": "completed"
+    "close": false,
+    "message": "possible fix committed. comment if it still happens once the next release is out"
   },
   "r: not-a-bug": {
     "close": true,
-    "message": "🤔 **This doesn't look like a patch bug.**\nClosing it. Comment below if something suggests otherwise.",
+    "message": "this doesn't look like a patch bug. comment if something suggests otherwise",
     "reason": "not planned"
   },
   "r: shipped": {

@@ -1,14 +1,4 @@
 #!/usr/bin/env python3
-"""
-Daily upstream-version check for every app in patches-list.json.
-
-Version lookup and APK download reuse rushiranpise/patches-tracker (pinned below):
-its resolve-apk.sh for APKMirror, Uptodown and APKCombo, and its source-URL discovery.
-Google Play, Aptoide and APKPure's direct host are package-keyed and need no discovery.
-
-python3 app_updates.py [--patches-list patches-list.json] [--out out]
-                       [--cli morphe.jar --mpp patches.mpp] [--only pkg,pkg] [--issues]
-"""
 
 import argparse
 import base64
@@ -93,7 +83,7 @@ def load_inventory(path):
     return dict(sorted(apps.items(), key=lambda kv: kv[1]["name"].lower()))
 
 
-def tracker_dir(path):
+def checkout_tracker(path):
     path = Path(path)
     if not (path / "scripts" / "resolve-apk.sh").exists():
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -219,9 +209,9 @@ def lookup_apkpure(app, _ctx):
         location = requests.get(url, timeout=30, allow_redirects=False,
                                 headers={"User-Agent": UA}).headers.get("location", "")
         name = re.search(r"filename=([^&]+)", location)
-        found = name and re.search(r"^.*?_([A-Za-z ]*\d.*)_APKPure\.[a-z]+$",
-                                   unquote(name.group(1)).replace("+", " "), re.I)
-        if not found:
+        version_match = name and re.search(r"^.*?_([A-Za-z ]*\d.*)_APKPure\.[a-z]+$",
+                                          unquote(name.group(1)).replace("+", " "), re.I)
+        if not version_match:
             continue
         code = None
         blob = re.search(r"/(?:APK|XAPK)/([A-Za-z0-9_-]+)\?", location)
@@ -230,7 +220,7 @@ def lookup_apkpure(app, _ctx):
             parts = decoded.rsplit("_", 2)
             if len(parts) == 3 and parts[0] == app["package"] and parts[1].isdigit():
                 code = int(parts[1])
-        return {"version": found.group(1), "version_code": code, "download": url,
+        return {"version": version_match.group(1), "version_code": code, "download": url,
                 "url": f"https://apkpure.com/search?q={app['package']}", "format": kind.lower()}
     return {"error": "not listed"}
 
@@ -304,7 +294,7 @@ def query_sources(app, ctx):
     return results
 
 
-def build_tool(name):
+def sdk_tool_path(name):
     found = shutil.which(name)
     if found:
         return found
@@ -316,7 +306,7 @@ def build_tool(name):
     return None
 
 
-def base_apk(path, package, workdir):
+def extract_base_apk(path, package, workdir):
     with zipfile.ZipFile(path) as archive:
         names = archive.namelist()
         if "AndroidManifest.xml" in names:
@@ -333,18 +323,18 @@ def base_apk(path, package, workdir):
 
 
 def read_apk(path, package, workdir):
-    apk, kind = base_apk(path, package, workdir)
+    apk, kind = extract_base_apk(path, package, workdir)
     if path.suffix != f".{kind}":
         path = path.rename(path.with_suffix(f".{kind}"))
         apk = path if apk.suffix == ".bin" else apk
-    badging = subprocess.run([build_tool("aapt2") or "aapt2", "dump", "badging", str(apk)],
+    badging = subprocess.run([sdk_tool_path("aapt2") or "aapt2", "dump", "badging", str(apk)],
                              capture_output=True, text=True, timeout=120).stdout
     head = re.search(r"package: name='([^']+)' versionCode='(\d+)' versionName='([^']*)'", badging)
     if not head:
         raise ValueError("aapt2 could not read the manifest")
     abis = re.search(r"native-code: (.+)", badging)
     certs = []
-    signer = build_tool("apksigner")
+    signer = sdk_tool_path("apksigner")
     if signer:
         out = subprocess.run([signer, "verify", "--print-certs", "--max-sdk-version", "36", str(apk)],
                              capture_output=True, text=True, timeout=120).stdout
@@ -381,12 +371,12 @@ def patch_check(apk, ctx, workdir):
     log = done.stdout + done.stderr
     applied = sorted({name.strip() for name in re.findall(r"Applied: (.+)", log)})
     failed = sorted({name.strip() for name in re.findall(r"FAILED: (.+)", log)})
-    messages = "\n".join(line for line in log.splitlines() if line.strip() and not line.startswith("\tat "))
+    errors = "\n".join(line.strip() for line in log.splitlines() if line.startswith("SEVERE") or "Exception" in line)
     return {"applied": applied, "failed": failed, "exit": done.returncode,
-            "tail": "" if done.returncode == 0 else messages[-1500:]}
+            "tail": "" if done.returncode == 0 else errors[-1500:]}
 
 
-def judge(app, facts, version, reference):
+def mark_checks(app, facts, version, reference):
     facts["package_ok"] = facts["package"] == app["package"]
     facts["version_ok"] = compare(facts["version"], version) == 0
     facts["cert_ok"] = bool(set(facts["certs"]) & reference) if reference and facts["certs"] else None
@@ -400,7 +390,7 @@ def verify(app, version, sources, ctx):
         reference = set(play["certs"])
     attempts = []
     if play.get("version") and compare(play["version"], version) == 0:
-        facts = judge(app, {k: v for k, v in play.items() if k != "path"}, version, set(app["signatures"]))
+        facts = mark_checks(app, {k: v for k, v in play.items() if k != "path"}, version, set(app["signatures"]))
         if ctx.get("cli"):
             facts["patch_check"] = patch_check(Path(play["path"]), ctx, Path(play["path"]).parent)
         return [facts]
@@ -412,7 +402,7 @@ def verify(app, version, sources, ctx):
             facts = read_apk(download(app, source, sources[source], version, ctx, workdir),
                              app["package"], workdir)
             facts["source"] = source
-            judge(app, facts, version, reference)
+            mark_checks(app, facts, version, reference)
             if ctx.get("cli") and facts["package_ok"] and facts["version_ok"]:
                 facts["patch_check"] = patch_check(Path(facts["path"]), ctx, workdir)
             attempts.append(facts)
@@ -464,12 +454,12 @@ def classify(app, sources, ctx):
                     "play" if "play" in names else None]
         attempts = verify(app, version, sources, ctx)
         record["verification"][version] = attempts
-        good = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")
-                     and a.get("cert_ok") is not False), None)
-        if good:
-            cert = ("cert matches" if good["cert_ok"] else
-                    "served by play" if good["source"] == "play" else "cert unchecked")
-            evidence.append(f"apk from {good['source']} (vc {good['version_code']}, {cert})")
+        verified = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")
+                         and a.get("cert_ok") is not False), None)
+        if verified:
+            cert = ("cert matches" if verified["cert_ok"] else
+                    "served by play" if verified["source"] == "play" else "cert unchecked")
+            evidence.append(f"apk from {verified['source']} (vc {verified['version_code']}, {cert})")
         elif any(a.get("cert_ok") is False for a in attempts):
             record["notes"].append(f"{version}: apk signed by a foreign certificate")
         evidence = [e for e in evidence if e]
@@ -520,7 +510,7 @@ def render(report):
         if not apps:
             continue
         lines += [f"## {title} ({len(apps)})", "",
-                  "| App | Package | Ours | Candidate | Evidence | Readiness | Notes |",
+                  "| App | Package | Targeted | Candidate | Evidence | Readiness | Notes |",
                   "|---|---|---|---|---|---|---|"]
         for app in apps:
             found = ", ".join(f"{n} {r['version']}" + (f" ({r['version_code']})" if r.get("version_code") else "")
@@ -545,28 +535,24 @@ def gh(*args, **kwargs):
 def issue_body(app, record):
     candidate = record["candidate"]
     attempts = record.get("verification", {}).get(candidate, [])
-    good = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")), {})
-    check = good.get("patch_check") or {}
-    step = {"ready": f"retarget with `feat({app['name']}): support {candidate}`",
-            "untested": "run the patch check against the released bundle"}.get(
-        record["readiness"], "read the patch log below and repair what failed")
-    lines = [f"Package: `{app['package']}`",
-             f"Our target: {app['current']} ({', '.join(map(str, app['current_version_codes']))})",
-             f"Candidate: {candidate}" + (f" ({good['version_code']})" if good.get("version_code") else ""),
-             f"Reported by: {', '.join(record['reported_by'])}",
-             f"Verification: {'; '.join(record['confirmed_by'])}",
-             f"Patch check: {record['readiness']}"
-             + (f", applied: {', '.join(check['applied'])}" if check.get("applied") else "")
-             + (f", failed: {', '.join(check['failed'])}" if check.get("failed") else ""),
-             f"Next step: {step}"]
+    verified = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")), {})
+    check = verified.get("patch_check") or {}
+    cert = "cert matches" if verified.get("cert_ok") else "served by play" if verified.get("source") == "play" else "cert unchecked"
+    patches = [f"{name} applied" for name in check.get("applied", [])] + [f"{name} failed" for name in check.get("failed", [])]
+    lines = [f"package: `{app['package']}`",
+             f"targeted: {app['current']} ({', '.join(map(str, app['current_version_codes']))})",
+             f"upstream: {candidate}" + (f" ({verified['version_code']})" if verified.get("version_code") else "")
+             + f", reported by {', '.join(record['reported_by'])}",
+             f"apk: {verified['source']}, {cert}" if verified else "apk: none verified",
+             "patches: " + (", ".join(patches) or "not checked")]
     if check.get("tail"):
         lines += ["", "```", check["tail"].strip(), "```"]
     return "\n".join(lines) + "\n"
 
 
-def sync_issues(apps, results):
+def sync_issues(apps, results, bundle_version):
     gh("label", "create", ISSUE_LABEL, "--force", "--color", "FBCA04",
-       "--description", "Opened by the app update check when a newer version is confirmed")
+       "--description", "newer app version confirmed upstream")
     issues = json.loads(gh("issue", "list", "--label", ISSUE_LABEL, "--state", "all", "--limit", "1000",
                            "--json", "number,title,state"))
     by_title = {issue["title"]: issue for issue in issues}
@@ -580,7 +566,7 @@ def sync_issues(apps, results):
                 continue
             version = issue["title"][len(prefix):]
             if compare(app["current"], version) >= 0:
-                gh("issue", "close", str(issue["number"]), "--comment", f"Targeted {app['current']}.")
+                gh("issue", "close", str(issue["number"]), "--comment", f"targeted in v{bundle_version}")
             elif candidate and compare(candidate, version) >= 0:
                 open_same = issue
         if not candidate:
@@ -599,14 +585,13 @@ def main():
     parser.add_argument("--out", default="app-updates")
     parser.add_argument("--tracker-dir", default=str(Path.home() / ".cache" / "app-updates" / "patches-tracker"))
     parser.add_argument("--url-cache", default=str(Path.home() / ".cache" / "app-updates" / "source-urls.json"))
-    parser.add_argument("--cli", help="morphe-cli jar; with --mpp, applies the bundle to verified candidates")
-    parser.add_argument("--mpp")
+    parser.add_argument("--cli", help="morphe-cli jar")
+    parser.add_argument("--mpp", help="patch bundle (.mpp)")
     parser.add_argument("--only", help="comma-separated package names")
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--issues", action="store_true",
-                        help="open, update and close GitHub issues for confirmed updates through gh")
-    parser.add_argument("--workdir", default=str(Path.home() / ".cache" / "app-updates"),
-                        help="downloads land here, not on tmpfs")
+                        help="sync app update issues")
+    parser.add_argument("--workdir", default=str(Path.home() / ".cache" / "app-updates"))
     args = parser.parse_args()
 
     apps = load_inventory(args.patches_list)
@@ -615,7 +600,7 @@ def main():
         apps = {k: v for k, v in apps.items() if k in wanted}
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    tracker = tracker_dir(args.tracker_dir)
+    tracker = checkout_tracker(args.tracker_dir)
     ctx = {"tracker": tracker, "cli": args.cli, "mpp": args.mpp,
            "apkeep": shutil.which("apkeep"), "lock": threading.Lock(), "play": {},
            "workdir": Path(tempfile.mkdtemp(prefix="app-updates-", dir=args.workdir))}
@@ -642,7 +627,7 @@ def main():
     (out / "app-updates.json").write_text(json.dumps(report, indent=2) + "\n")
     (out / "app-updates.md").write_text(render(report))
     if args.issues:
-        sync_issues(apps, results)
+        sync_issues(apps, results, bundle)
     failed = sum(1 for r in results if r["status"] == "failed")
     print(f"{len(results)} apps, {failed} with no source answering", file=sys.stderr)
     return 1 if results and failed > len(results) / 2 else 0

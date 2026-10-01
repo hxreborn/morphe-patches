@@ -76,29 +76,27 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
     if package and package.lower() in supported:
         verdict, reason = "close", "completed"
         lines.append(
-            f"🎉 **Already supported.** `{package}` is patched as **{supported[package.lower()]}**. "
-            "Update the bundle in Morphe Manager and patch the app. For anything the patches don't "
-            "cover, open a feature request."
+            f"`{package}` is already patched as {supported[package.lower()]}. update the bundle in "
+            "Morphe Manager and patch the app. for anything the patches don't cover, open a feature request"
         )
     elif open_same:
         canonical = open_same[0]
         verdict, reason, duplicate_of = "close", "duplicate", canonical["number"]
         lines.append(
-            f"🔁 **Duplicate of {link(canonical)}**, which already requests `{package}`. "
-            "Upvote it or add any new details there."
+            f"duplicate of {link(canonical)}, which already requests `{package}`. upvote it or add "
+            "new details there"
         )
     elif same_package:
         prior = same_package[-1]
         verdict, labels = "flag", ["duplicate"]
         lines.append(
-            f"👀 **{link(prior)} asked for `{package}` and was closed.** A maintainer will review "
-            "this request. Mention anything that changed since."
+            f"{link(prior)} already asked for `{package}`. mention anything that changed since"
         )
     elif not package:
         verdict, labels = "flag", ["needs info"]
         lines.append(
-            "📦 **No package name found.** Add it to the Package name field, for example "
-            "`com.duolingo`. It's the value after `id=` in the Play Store link."
+            "no package name found. add it to the Package name field, for example `com.duolingo`, "
+            "the value after `id=` in the Play Store link"
         )
 
     this = next((r for r in requests if r["number"] == number), {})
@@ -114,10 +112,10 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             verdict = "flag"
             if "duplicate" not in labels:
                 labels.append("duplicate")
-            refs = ", ".join(f"**{r['name']}** (already supported)" if not r["number"] else link(r) for r in lookalikes)
+            refs = ", ".join(f"{r['name']} (already supported)" if not r["number"] else link(r) for r in lookalikes)
             lines.append(
-                f"🔍 **This may be the same app as {refs}**, but the package name differs or is "
-                "missing. Confirm the package name. A maintainer will review this request."
+                f"this may be the same app as {refs}, but the package name differs or is missing. "
+                "confirm the package name"
             )
 
     bundles = []
@@ -136,9 +134,9 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             if len(bundles) > MAX_LISTED:
                 rows.append(f"- {len(bundles) - MAX_LISTED} more bundles")
             lines.append(
-                f"🧩 **Other bundles already patch `{package}`:**\n\n" + "\n".join(rows) + "\n\n"
-                "Add one as a source in Morphe Manager to try its patches. If they don't cover the "
-                "request, describe what's missing."
+                f"other bundles already patch `{package}`:\n\n" + "\n".join(rows) + "\n\n"
+                "add one as a source in Morphe Manager to try its patches. if they don't cover the "
+                "request, describe what's missing"
             )
 
     if verdict != "pass":

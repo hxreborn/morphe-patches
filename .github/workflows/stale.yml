@@ -18,11 +18,9 @@ jobs:
           days-before-issue-close: 7
           stale-issue-label: "stale"
           stale-issue-message: |
-            **Marked stale after 30 days without activity.**
-            It closes in 7 days unless someone comments.
+            no activity for 30 days. it closes in 7 unless someone comments
           close-issue-message: |
-            **Closed after 7 more days without activity.**
-            If it still matters, comment below and a maintainer will reopen it.
+            no activity for 37 days. comment if it still matters and it gets reopened
           days-before-pr-stale: -1
           days-before-pr-close: -1
           exempt-all-assignees: true
@@ -36,11 +34,9 @@ jobs:
           days-before-issue-close: 7
           stale-issue-label: "stale"
           stale-issue-message: |
-            **Still waiting on the details asked for above.**
-            It closes in 7 days without them.
+            still waiting on the details asked for above. it closes in 7 days without them
           close-issue-message: |
-            **Closed because the requested details never arrived.**
-            Open a new issue with them, or comment below if this closure seems wrong.
+            the requested details never arrived. open a new issue with them, or comment if this is wrong
           close-issue-reason: not_planned
           days-before-pr-stale: -1
           days-before-pr-close: -1

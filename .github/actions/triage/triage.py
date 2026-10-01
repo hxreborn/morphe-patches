@@ -90,14 +90,14 @@ labels = []
 
 if not fields:
     blockers.append(
-        "**No issue form.** The triage reads the form fields. "
-        + (f"Open [a new issue]({NEW_ISSUE}) and pick the matching form." if NEW_ISSUE else "Open a new issue and pick the matching form.")
+        "no issue form, triage reads the form fields. "
+        + (f"open [a new issue]({NEW_ISSUE}) with the matching form" if NEW_ISSUE else "open a new issue with the matching form")
     )
 
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(
-        f"**The description is short** ({len(description)} characters, {MIN_CHARS} needed). Add "
-        "what you did, what you expected and what happened instead."
+        f"the description is {len(description)} characters, {MIN_CHARS} needed. add what you did, "
+        "what you expected and what happened instead"
     )
     labels.append("needs info")
 
@@ -113,8 +113,8 @@ for (name, package), versions in apps.items():
 
 if repackager:
     blockers.append(
-        f"**`{repackager}` repackages apps**, so patches may not apply cleanly. Patch an "
-        "unmodified APK from APKMirror, APKPure, Uptodown or APKCombo instead."
+        f"`{repackager}` repackages apps and patches may not apply cleanly. patch an unmodified APK "
+        "from APKMirror, APKPure, Uptodown or APKCombo"
     )
 
 if not fields:
@@ -122,19 +122,19 @@ if not fields:
 elif not matched:
     supported = ", ".join(sorted(name for name, _ in apps))
     lead = (
-        f"**`{reported}` isn't patched by this bundle yet.**"
+        f"`{reported}` isn't patched by this bundle yet."
         if reported
-        else "**The report doesn't name an app this bundle patches.**"
+        else "the report doesn't name an app this bundle patches."
     )
     flags.append(
-        f"{lead} Supported apps in {data['version']}: {supported}. "
-        "To get another app added, open an app request."
+        f"{lead} supported apps in {data['version']}: {supported}. "
+        "for another app, open an app request"
     )
     labels.append("needs info")
 elif another_version:
     flags.append(
-        "**\"Another version\" is picked but the version is missing.** Fill in the Other version "
-        "field. The number is on the app's About screen."
+        "\"Another version\" is picked but the version is missing. fill in the Other version field, "
+        "the number is on the app's About screen"
     )
     labels.append("needs info")
 elif matched[1] and not (
@@ -143,16 +143,15 @@ elif matched[1] and not (
 ):
     name, versions = matched
     flags.append(
-        f"**{data['version']} targets {name} {', '.join(sorted(versions))}**, not "
-        f"`{app_version or reported}`. Either the app updated or it was patched with `-f`. Say which."
+        f"{data['version']} targets {name} {', '.join(sorted(versions))}, not "
+        f"`{app_version or reported}`. either the app updated or it was patched with `-f`, say which"
     )
     labels.append("untargeted version")
 
 if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_attached:
     flags.append(
-        "**Patching failed but no error report is attached.** In Morphe Manager, tap **Copy** on the "
-        "error dialog and paste it here. With morphe-cli, add `-r report.json` and attach the "
-        "report."
+        "patching failed but no error report is attached. in Morphe Manager, tap Copy on the error "
+        "dialog and paste it here. with morphe-cli, add `-r report.json` and attach the report"
     )
     labels.append("needs info")
 
@@ -161,22 +160,22 @@ single_patch = normalize(field(fields, "Does it still happen with only one patch
 
 if stock.startswith(OPTION_STOCK_FAILS_TOO):
     flags.append(
-        "**The unpatched app fails the same way**, so the app is the likely cause rather than a "
-        "patch. If the patched build behaves differently, change that answer and describe the difference."
+        "the unpatched app fails the same way, so the app is the likely cause rather than a patch. "
+        "if the patched build behaves differently, change that answer and describe the difference"
     )
     labels.append("needs info")
 elif stock.startswith(OPTION_NOT_TRIED):
     flags.append(
-        "**The unpatched app hasn't been tried.** Install the stock APK, repeat the same steps and "
-        "add the result to the report."
+        "the unpatched app hasn't been tried. install the stock APK, repeat the same steps and add "
+        "the result to the report"
     )
     labels.append("needs info")
 
 if single_patch.startswith(OPTION_NOT_TRIED):
     flags.append(
-        "**Narrow it down to one patch.** Patch again with only the reported patch selected. If the "
+        "narrow it down to one patch. patch again with only the reported patch selected. if the "
         "problem stops, enable the others one at a time until it returns, then pick the culprit in "
-        "the form."
+        "the form"
     )
     if "needs info" not in labels:
         labels.append("needs info")
@@ -184,14 +183,14 @@ if single_patch.startswith(OPTION_NOT_TRIED):
 if blockers:
     verdict = "close"
     labels = []
-    lines = ["🚧 **Closing this for now.**", ""]
+    lines = ["the report is missing what triage needs:", ""]
     lines += [f"- {b}" for b in blockers + flags]
-    lines += ["", "Edit the issue to cover the points above and it reopens automatically."]
+    lines += ["", "edit the issue to cover these and it reopens"]
 elif flags:
     verdict = "flag"
-    lines = ["📝 **A few details are missing.**", ""]
+    lines = ["missing details:", ""]
     lines += [f"- {f}" for f in flags]
-    lines += ["", "Edit the issue to add them."]
+    lines += ["", "edit the issue to add them"]
 else:
     verdict = "pass"
     lines = []

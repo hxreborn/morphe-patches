@@ -44,7 +44,7 @@ runs:
         close=$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")
         printf '%s\n' "$message" > "$RUNNER_TEMP/comment.md"
         if [ "$close" = "true" ]; then
-          printf '\n_Think this is wrong? Comment below and a maintainer will take a look._\n' >> "$RUNNER_TEMP/comment.md"
+          printf '\ncomment if this is wrong\n' >> "$RUNNER_TEMP/comment.md"
         fi
         gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/comment.md"
         labels=$(jq -r --arg l "$LABEL" '.[$l].labels // [] | join(",")' "$RESPONSES")
@@ -116,7 +116,7 @@ runs:
             fi
           elif [ "$verdict" = pass ] && [ -n "$existing" ] && [ ! -s comment.md ]; then
             gh issue edit "$n" --repo "$REPO" --remove-label "needs info" || true
-            printf '<!-- app-request-bot -->\n✅ **All checks pass now.**\n' > comment.md
+            printf '<!-- app-request-bot -->\nchecks pass now\n' > comment.md
             gh api -X PATCH "repos/$REPO/issues/comments/$existing" -F body=@comment.md >/dev/null
           fi
         done
@@ -160,7 +160,7 @@ runs:
           dupes=$(gh search issues "$app" --repo "$REPO" --limit 4 --json number,title --jq \
             "map(select(.number != $ISSUE)) | .[0:3] | map(\"- #\(.number): \(.title)\") | join(\"\n\")")
           if [ -n "$dupes" ]; then
-            printf '\n---\n🔗 **Possibly related:**\n%s\n' "$dupes" >> comment.md
+            printf '\npossibly related:\n%s\n' "$dupes" >> comment.md
           fi
         fi
 
@@ -199,10 +199,10 @@ runs:
             fi
             if [ "$WAS_CLOSED_BY_BOT" = "true" ]; then
               gh issue reopen "$ISSUE" --repo "$REPO"
-              printf '<!-- triage-bot -->\n🔓 **Reopened.** The report passes the checks now.\n' > comment.md
+              printf '<!-- triage-bot -->\nreopened, the report passes the checks now\n' > comment.md
               upsert_comment
             elif [ -n "$existing" ]; then
-              printf '<!-- triage-bot -->\n✅ **All checks pass now.**\n' > comment.md
+              printf '<!-- triage-bot -->\nchecks pass now\n' > comment.md
               upsert_comment
             fi
             ;;
