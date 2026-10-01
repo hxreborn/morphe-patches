@@ -581,14 +581,13 @@ def sync_issues(apps, results):
             version = issue["title"][len(prefix):]
             if compare(app["current"], version) >= 0:
                 gh("issue", "close", str(issue["number"]), "--comment", f"Targeted {app['current']}.")
-            elif candidate and compare(candidate, version) > 0:
-                gh("issue", "close", str(issue["number"]), "--comment", f"Superseded by {candidate}.")
-            elif candidate and compare(candidate, version) == 0:
+            elif candidate and compare(candidate, version) >= 0:
                 open_same = issue
         if not candidate:
             continue
         if open_same:
-            gh("issue", "edit", str(open_same["number"]), "--body-file", "-", input=issue_body(app, record))
+            gh("issue", "edit", str(open_same["number"]), "--title", prefix + candidate, "--body-file", "-",
+               input=issue_body(app, record))
         elif prefix + candidate not in by_title:
             gh("issue", "create", "--title", prefix + candidate, "--label", ISSUE_LABEL, "--body-file", "-",
                input=issue_body(app, record))

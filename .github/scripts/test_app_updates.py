@@ -47,7 +47,7 @@ app_updates.sync_issues(apps, [{**record, "package": "cx", "candidate": "2.7.9"}
                                {**record, "package": "audible", "candidate": None, "status": "current"},
                                {**record, "package": "new", "candidate": "1.1"}])
 actions = [c[1:3] for c in calls if c[0] == "issue" and c[1] != "list"]
-assert actions == [("edit", "1"), ("close", "2"), ("close", "4"),
-                   ("create", "--title")], actions
+assert actions == [("edit", "1"), ("edit", "2"), ("close", "4"), ("create", "--title")], actions
+assert ("issue", "edit", "2", "--title", "[App Update]: Showly 3.72.0") == next(c for c in calls if c[1:3] == ("edit", "2"))[:5]
 assert any(c[3] == "[App Update]: Newcomer 1.1" for c in calls if c[1] == "create"), calls
-print("issue sync: edit on equal version, close superseded and targeted, skip closed title, create new")
+print("issue sync: edit on equal version, retitle on newer, close targeted, skip closed title, create new")
