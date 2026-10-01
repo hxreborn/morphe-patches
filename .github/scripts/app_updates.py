@@ -573,22 +573,24 @@ def sync_issues(apps, results):
     for record in results:
         app = apps[record["package"]]
         prefix = f"[App Update]: {app['name']} "
-        wanted = prefix + record["candidate"] if record["status"] == "update" else None
+        candidate = record["candidate"] if record["status"] == "update" else None
+        open_same = None
         for issue in issues:
             if issue["state"] != "OPEN" or not issue["title"].startswith(prefix):
                 continue
             version = issue["title"][len(prefix):]
             if compare(app["current"], version) >= 0:
                 gh("issue", "close", str(issue["number"]), "--comment", f"Targeted {app['current']}.")
-            elif wanted and compare(record["candidate"], version) > 0:
-                gh("issue", "close", str(issue["number"]), "--comment", f"Superseded by {record['candidate']}.")
-        if not wanted:
+            elif candidate and compare(candidate, version) > 0:
+                gh("issue", "close", str(issue["number"]), "--comment", f"Superseded by {candidate}.")
+            elif candidate and compare(candidate, version) == 0:
+                open_same = issue
+        if not candidate:
             continue
-        existing = by_title.get(wanted)
-        if existing and existing["state"] == "OPEN":
-            gh("issue", "edit", str(existing["number"]), "--body-file", "-", input=issue_body(app, record))
-        elif not existing:
-            gh("issue", "create", "--title", wanted, "--label", ISSUE_LABEL, "--body-file", "-",
+        if open_same:
+            gh("issue", "edit", str(open_same["number"]), "--body-file", "-", input=issue_body(app, record))
+        elif prefix + candidate not in by_title:
+            gh("issue", "create", "--title", prefix + candidate, "--label", ISSUE_LABEL, "--body-file", "-",
                input=issue_body(app, record))
 
 
