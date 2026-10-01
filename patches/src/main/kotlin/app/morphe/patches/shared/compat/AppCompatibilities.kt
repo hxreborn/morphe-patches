@@ -414,7 +414,10 @@ internal object AppCompatibilities {
         packageName = "com.michaldrabik.showly2",
         apkFileType = ApkFileType.APK,
         appIconColor = 0xF44336,
-        targets = listOf(AppTarget(version = "3.70.0", versionCode = 840, minSdk = 23)),
+        targets = listOf(
+            AppTarget(version = "3.70.0", versionCode = 840, minSdk = 23),
+            AppTarget(version = "3.72.0", versionCode = 843, minSdk = 28),
+        ),
     )
 
     val SYMFONIUM = Compatibility(
