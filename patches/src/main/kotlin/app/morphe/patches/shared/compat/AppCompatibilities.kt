@@ -72,6 +72,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.9.8", versionCode = 31, minSdk = 23)),
     )
 
+    val CATZY = Compatibility(
+        name = "Catzy",
+        packageName = "com.nieruo.healthapp",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x4059B9,
+        signatures = setOf(
+            "9cf85b81cc307a9dc367d5421dbe47737724275e92781c95768a8eef9e529a39",
+        ),
+        targets = listOf(AppTarget(version = "1.61.0", versionCode = 281, minSdk = 24)),
+    )
+
     val CX_FILE_EXPLORER = Compatibility(
         name = "Cx File Explorer",
         packageName = "com.cxinventor.file.explorer",

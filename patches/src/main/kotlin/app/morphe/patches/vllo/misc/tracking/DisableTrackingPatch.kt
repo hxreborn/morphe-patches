@@ -9,7 +9,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
-import app.morphe.patches.vllo.requireArm64Delta
+import app.morphe.patches.shared.misc.pairip.requireArm64Delta
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 

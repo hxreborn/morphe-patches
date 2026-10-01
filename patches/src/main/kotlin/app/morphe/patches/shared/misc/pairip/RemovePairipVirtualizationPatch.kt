@@ -103,6 +103,9 @@ private val PAIRIP_HOOKED_LIBRARIES = mapOf(
         "libonnxruntime" to "libonnxruntime.so",
         "libmediapipe_tasks_vision_jni" to "libmediapipe_tasks_vision_jni.so",
     ),
+    "com.nieruo.healthapp" to mapOf(
+        "librealmc" to "librealmc.so",
+    ),
 )
 
 private fun ByteArray.applyDelta(delta: ByteArray): ByteArray {
@@ -217,6 +220,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
     compatibleWith(
         AppCompatibilities.ALL_IN_ONE_CALCULATOR,
         AppCompatibilities.BETTERSLEEP,
+        AppCompatibilities.CATZY,
         AppCompatibilities.HINDU_CALENDAR,
         AppCompatibilities.VLLO,
     )
