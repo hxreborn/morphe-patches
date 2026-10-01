@@ -10,13 +10,13 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.replaceMasked
 
-private const val FLUTTER_LIBRARY = "libapp.so"
+private const val DART_AOT_LIBRARY = "libapp.so"
 private const val ARM64 = "arm64-v8a"
 
-internal val PRODUCT_ACCESS_GATE =
+internal val PRODUCT_ACCESS_CHECK_PROLOGUE =
     "fd79bfa9fd030faaefc100d1e00301aaa1031ff8502740f9ff0110eb290e005403b042b8".hexToByteArray()
 
-internal val PRODUCT_ACCESS_GATE_MASK =
+internal val PRODUCT_ACCESS_CHECK_PROLOGUE_MASK =
     "ffffffffffffffffffffffffffffffffffffffffff03c0ffffffffff1f0000ffffffffff".hexToByteArray()
 
 internal val RETURN_TRUE = "c0820091c0035fd6".hexToByteArray()
@@ -31,11 +31,16 @@ val unlockPremiumPatch = resourcePatch(
     availability(requireArm64)
 
     execute {
-        val library = get("lib/$ARM64/$FLUTTER_LIBRARY")
-        if (!library.exists()) throw PatchException("Could not find $FLUTTER_LIBRARY for $ARM64")
+        val library = get("lib/$ARM64/$DART_AOT_LIBRARY")
+        if (!library.exists()) throw PatchException("Could not find $DART_AOT_LIBRARY for $ARM64")
 
-        if (!library.replaceMasked(PRODUCT_ACCESS_GATE, PRODUCT_ACCESS_GATE_MASK, mapOf(0 to RETURN_TRUE))) {
-            throw PatchException("Could not find the product access check in $FLUTTER_LIBRARY")
+        val replaced = library.replaceMasked(
+            PRODUCT_ACCESS_CHECK_PROLOGUE,
+            PRODUCT_ACCESS_CHECK_PROLOGUE_MASK,
+            mapOf(0 to RETURN_TRUE),
+        )
+        if (!replaced) {
+            throw PatchException("Could not find the product access check in $DART_AOT_LIBRARY")
         }
     }
 }
