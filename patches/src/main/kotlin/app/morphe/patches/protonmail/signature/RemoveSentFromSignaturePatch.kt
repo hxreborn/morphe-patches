@@ -17,10 +17,10 @@ import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64
 import app.morphe.patches.protonmail.shared.MAIL_UNIFFI_LIBRARY
 import app.morphe.patches.protonmail.shared.X86_64
-import app.morphe.patches.protonmail.shared.replaceMasked
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.shared.replaceAsciiInPlace
+import app.morphe.patches.shared.replaceMasked
 
 private const val DEFAULT_MOBILE_SIGNATURE =
     """Sent from <a target="_blank" href="https://proton.me/mail/home">Proton Mail</a> for Android."""

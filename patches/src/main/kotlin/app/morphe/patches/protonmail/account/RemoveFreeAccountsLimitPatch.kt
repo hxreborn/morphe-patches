@@ -18,8 +18,8 @@ import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64
 import app.morphe.patches.protonmail.shared.MAIL_UNIFFI_LIBRARY
 import app.morphe.patches.protonmail.shared.X86_64
-import app.morphe.patches.protonmail.shared.replaceTrailingMasked
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.replaceTrailingMasked
 
 private class LimitCheck(pattern: String, mask: String, bypass: String) {
     val pattern = pattern.hexToByteArray()
