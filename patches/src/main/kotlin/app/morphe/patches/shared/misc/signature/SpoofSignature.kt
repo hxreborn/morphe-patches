@@ -93,7 +93,7 @@ private fun X509Certificate.isInauthentic(): Boolean {
     return sha1 in INAUTHENTIC_CERTIFICATE_SHA1
 }
 
-private fun MutableMethod.replaceString(placeholder: String, value: String) {
+internal fun MutableMethod.replaceString(placeholder: String, value: String) {
     val index = indexOfFirstStringInstructionOrThrow(placeholder)
     val register = getInstruction<OneRegisterInstruction>(index).registerA
 
