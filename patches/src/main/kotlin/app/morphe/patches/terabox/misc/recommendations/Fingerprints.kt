@@ -12,6 +12,5 @@ internal object VideoRecommendationsFingerprint : Fingerprint(
     definingClass = "Lcom/dubox/drive/ui/preview/video/pageC/VideoPlayerCViewModel;",
     accessFlags = listOf(AccessFlags.PRIVATE, AccessFlags.FINAL),
     returnType = "V",
-    parameters = listOf("Ljava/util/List;", "I"),
     filters = listOf(methodCall(definingClass = "Lkotlin/collections/CollectionsKt;", name = "take")),
 )
