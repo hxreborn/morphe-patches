@@ -438,7 +438,10 @@ internal object AppCompatibilities {
         packageName = "com.dubox.drive",
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0x226DF6,
-        targets = listOf(AppTarget(version = "4.26.0", versionCode = 698, minSdk = 23)),
+        targets = listOf(
+            AppTarget(version = "4.26.0", versionCode = 698, minSdk = 23),
+            AppTarget(version = "4.26.5", versionCode = 699, minSdk = 23),
+        ),
     )
 
     val TRAINLINE = Compatibility(
