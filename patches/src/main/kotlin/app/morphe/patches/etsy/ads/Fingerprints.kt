@@ -11,5 +11,5 @@ internal object SearchGridBoxFingerprint : Fingerprint(
 )
 
 internal object SearchHeaderFingerprint : Fingerprint(
-    strings = listOf("buildProcessVideoFilterPill should not be called for CONTROL"),
+    parameters = listOf("I", "Lcom/etsy/android/ui/search/model/api/AdsTooltipApiModel;", "Ljava/util/List;"),
 )
