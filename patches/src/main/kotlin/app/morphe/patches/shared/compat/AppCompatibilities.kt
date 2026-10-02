@@ -184,7 +184,7 @@ internal object AppCompatibilities {
         packageName = "de.klassikradio.app",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x000000,
-        targets = listOf(AppTarget(version = "p5.11.1", versionCode = 50126, minSdk = 29)),
+        targets = listOf(AppTarget(version = "p5.12.0", versionCode = 50138, minSdk = 29)),
     )
 
     val MEMONEET = Compatibility(
