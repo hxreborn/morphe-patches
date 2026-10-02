@@ -20,7 +20,6 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 internal const val COMPOSER_TYPE = "Landroidx/compose/runtime/Composer;"
-private const val ON_CLICK_TYPE = "Lkotlin/jvm/functions/Function0;"
 private const val SETTINGS_ROW_METHOD = "patchesSettingsRow"
 
 internal class SettingsRowIcon(val parameter: Int, val resourceId: Long)
@@ -31,6 +30,7 @@ internal fun MutableClass.addSettingsRowMethod(
     titleParameter: Int,
     onClickParameter: Int,
     icon: SettingsRowIcon? = null,
+    composerParameter: Int? = null,
 ): String {
     val templateCall = templateMethod.getInstruction<RegisterRangeInstruction>(templateCallIndex)
     val templateRow = templateCall.getReference<MethodReference>()!!
@@ -38,16 +38,17 @@ internal fun MutableClass.addSettingsRowMethod(
     if (parameterTypes.any { it == "J" || it == "D" }) {
         throw PatchException("Wide parameters are unsupported in ${DexFormatter.INSTANCE.getMethodDescriptor(templateRow)}")
     }
-    if (parameterTypes[titleParameter] != "Ljava/lang/String;" || parameterTypes[onClickParameter] != ON_CLICK_TYPE) {
+    if (parameterTypes[titleParameter] != "Ljava/lang/String;") {
         throw PatchException(
-            "Expected String title at parameter $titleParameter and $ON_CLICK_TYPE at parameter $onClickParameter in " +
-                DexFormatter.INSTANCE.getMethodDescriptor(templateRow),
+            "Expected String title at parameter $titleParameter in ${DexFormatter.INSTANCE.getMethodDescriptor(templateRow)}",
         )
     }
-    val composerParameter = parameterTypes.indexOf(COMPOSER_TYPE)
+    val onClickType = parameterTypes[onClickParameter]
+    val composerParameter = composerParameter ?: parameterTypes.indexOf(COMPOSER_TYPE)
     if (composerParameter < 0) {
         throw PatchException("No Composer parameter in ${DexFormatter.INSTANCE.getMethodDescriptor(templateRow)}")
     }
+    val composerType = parameterTypes[composerParameter]
 
     val defaultArgumentsParameter = parameterTypes.lastIndex
     val defaultArgumentsMask = templateMethod.literalWrittenTo(
@@ -65,7 +66,7 @@ internal fun MutableClass.addSettingsRowMethod(
     val method = ImmutableMethod(
         type,
         SETTINGS_ROW_METHOD,
-        listOf(ImmutableMethodParameter(COMPOSER_TYPE, null, null)),
+        listOf(ImmutableMethodParameter(composerType, null, null)),
         "V",
         AccessFlags.PRIVATE.value or AccessFlags.STATIC.value,
         null,
@@ -78,10 +79,10 @@ internal fun MutableClass.addSettingsRowMethod(
                 ${(parameterTypes.indices - assignedParameters).joinToString("\n") { "const v$it, 0x0" }}
                 ${icon?.let { "const v${it.parameter}, ${it.resourceId}" } ?: ""}
                 const-string v$titleParameter, "$SETTINGS_ROW_TITLE"
-                const-class v$onClickParameter, $ON_CLICK_TYPE
+                const-class v$onClickParameter, $onClickType
                 invoke-static/range { v$onClickParameter .. v$onClickParameter }, $PATCHES_MENU_CLASS->settingsRowOnClick(Ljava/lang/Class;)Ljava/lang/Object;
                 move-result-object v$onClickParameter
-                check-cast v$onClickParameter, $ON_CLICK_TYPE
+                check-cast v$onClickParameter, $onClickType
                 move-object/from16 v$composerParameter, p0
                 const v$defaultArgumentsParameter, $defaultArgumentsMask
                 invoke-static/range { v0 .. v$defaultArgumentsParameter }, ${DexFormatter.INSTANCE.getMethodDescriptor(templateRow)}

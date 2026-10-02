@@ -11,9 +11,12 @@ import app.morphe.util.indexOfFirstInstructionReversed
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 
-internal fun MutableMethod.indexOfLastWrite(register: Int, before: Int) =
+internal fun MutableMethod.indexOfLastWriteOrNull(register: Int, before: Int) =
     indexOfFirstInstructionReversed(before - 1) { this is OneRegisterInstruction && registerA == register }
         .takeIf { it >= 0 }
+
+internal fun MutableMethod.indexOfLastWrite(register: Int, before: Int) =
+    indexOfLastWriteOrNull(register, before)
         ?: throw PatchException("No write to register v$register before instruction $before")
 
 internal fun MutableMethod.literalWrittenTo(register: Int, before: Int): Long {

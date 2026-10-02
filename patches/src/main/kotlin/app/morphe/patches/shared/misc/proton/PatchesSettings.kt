@@ -33,7 +33,6 @@ private const val APP_COMPAT_MODE_NIGHT_NO = 1
 private const val APP_COMPAT_MODE_NIGHT_YES = 2
 
 internal object CoreNightModeFingerprint : Fingerprint(
-    custom = { method, _ -> method.hasCoreComposeThemeType() },
     filters = listOf(
         anyInstruction(
             fieldAccess(opcode = Opcode.SGET, type = "I"),
@@ -73,20 +72,23 @@ internal fun BytecodePatchContext.injectBundleVersion() {
 internal fun BytecodePatchContext.injectAppCompatDefaultNightMode() {
     val nightModeReads = CoreNightModeFingerprint.matchAll()
         .map { (it.instructionMatches.first().instruction as ReferenceInstruction).reference }
+        .filter {
+            val definingClass = when (it) {
+                is FieldReference -> it.definingClass
+                is MethodReference -> it.definingClass
+                else -> null
+            }
+            definingClass?.startsWith(APP_COMPAT_PACKAGE) == true
+        }
         .distinctBy(Any::toString)
     val nightModeRead = nightModeReads.singleOrNull()
         ?: throw PatchException("Expected one AppCompat default night mode read, found $nightModeReads")
 
-    val (readInstructions, definingClass) = when (nightModeRead) {
-        is FieldReference ->
-            "sget v0, ${DexFormatter.INSTANCE.getFieldDescriptor(nightModeRead)}" to nightModeRead.definingClass
+    val readInstructions = when (nightModeRead) {
+        is FieldReference -> "sget v0, ${DexFormatter.INSTANCE.getFieldDescriptor(nightModeRead)}"
         is MethodReference ->
-            "invoke-static { }, ${DexFormatter.INSTANCE.getMethodDescriptor(nightModeRead)}\nmove-result v0" to
-                nightModeRead.definingClass
+            "invoke-static { }, ${DexFormatter.INSTANCE.getMethodDescriptor(nightModeRead)}\nmove-result v0"
         else -> throw PatchException("Unexpected night mode read: $nightModeRead")
-    }
-    if (!definingClass.startsWith(APP_COMPAT_PACKAGE)) {
-        throw PatchException("Core night mode reads $definingClass, expected a class in $APP_COMPAT_PACKAGE")
     }
 
     mutableClassDefBy(PATCHES_THEME_CLASS).methods.single { it.name == "appCompatDefaultNightMode" }.addInstructions(

@@ -34,7 +34,6 @@ internal object BalticSeaPaletteFingerprint : Fingerprint(
 
 internal object CoreColorsBuilderFingerprint : Fingerprint(
     parameters = listOf("J", "J", "J", "J", "J"),
-    custom = { method, _ -> method.hasCoreComposeThemeType() },
     filters = listOf(methodCall(name = "<init>", opcode = Opcode.INVOKE_DIRECT_RANGE)),
 )
 
@@ -64,7 +63,8 @@ private fun BytecodePatchContext.readsBalticSea(method: MutableMethod, index: In
 private fun BytecodePatchContext.isDarkColorsBuilder(match: Match, balticSea: FieldReference): Boolean {
     val constructorCall = match.instructionMatches.first()
     val arguments = constructorCall.getInstruction<RegisterRangeInstruction>()
-    val shade10Write = match.method.indexOfLastWrite(arguments.shadeRegister(SHADE_10_ARGUMENT), constructorCall.index)
+    val shade10Write = match.method.indexOfLastWriteOrNull(arguments.shadeRegister(SHADE_10_ARGUMENT), constructorCall.index)
+        ?: return false
     return readsBalticSea(match.method, shade10Write, balticSea)
 }
 

@@ -11,14 +11,8 @@ import app.morphe.patcher.literal
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
-
-internal const val CORE_COMPOSE_THEME_PACKAGE = "Lme/proton/core/compose/theme/"
-
-internal fun Method.hasCoreComposeThemeType() =
-    (listOf(definingClass, returnType) + parameterTypes).any { it.startsWith(CORE_COMPOSE_THEME_PACKAGE) }
 
 internal object ProtonPalette {
     const val HAITI = 0xFF1B1340L
