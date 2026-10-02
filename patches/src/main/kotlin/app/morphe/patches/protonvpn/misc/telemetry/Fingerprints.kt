@@ -11,37 +11,52 @@
 package app.morphe.patches.protonvpn.misc.telemetry
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.methodCall
+import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patches.protonvpn.misc.anchors.resourceField
+import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
+
+private const val PAYMENT_FFI = "Lme/proton/android/payment/core/PaymentFfi;"
 
 internal object VpnTelemetryEventFingerprint : Fingerprint(
-    definingClass = "Lcom/protonvpn/android/telemetry/Telemetry;",
-    name = "addEvent",
+    accessFlags = listOf(AccessFlags.PRIVATE, AccessFlags.FINAL),
     returnType = "Ljava/lang/Object;",
-    parameters = listOf("Lcom/protonvpn/android/telemetry/TelemetryEvent;", "Z", "Lkotlin/coroutines/Continuation;"),
+    parameters = listOf("Lcom/protonvpn/android/telemetry/TelemetryEvent;", "Z", "L"),
 )
 
 internal object CoreTelemetryUploadSchedulerFingerprint : Fingerprint(
-    definingClass = "Lme/proton/core/telemetry/data/worker/TelemetryWorkerManagerImpl;",
     returnType = "V",
     parameters = listOf("Lme/proton/core/domain/entity/UserId;", "J"),
+    filters = listOf(
+        fieldAccess(definingClass = "Lme/proton/core/telemetry/data/worker/TelemetryWorker;", opcode = Opcode.SGET_OBJECT),
+    ),
 )
 
 internal object ObservabilityUploadFingerprint : Fingerprint(
-    definingClass = "Lme/proton/core/observability/data/usecase/SendObservabilityEventsImpl;",
-    name = "invoke",
     returnType = "Ljava/lang/Object;",
-    parameters = listOf("Ljava/util/List;", "Lkotlin/coroutines/Continuation;"),
+    parameters = listOf("Ljava/util/List;", "L"),
+    filters = listOf(
+        fieldAccess(
+            definingClass = "Lme/proton/core/observability/data/api/request/MetricEvent;",
+            opcode = Opcode.SGET_OBJECT,
+        ),
+    ),
 )
 
 internal object ObservabilityEnabledFingerprint : Fingerprint(
-    definingClass = "Lme/proton/core/observability/data/IsObservabilityEnabledImpl;",
-    name = "invoke",
     returnType = "Ljava/lang/Object;",
-    parameters = listOf("Lkotlin/coroutines/Continuation;"),
+    parameters = listOf("L"),
+    filters = listOf(
+        resourceField(ResourceType.BOOL, "core_feature_observability_enabled"),
+        methodCall(definingClass = "Landroid/content/res/Resources;", name = "getBoolean"),
+    ),
 )
 
 internal object PaymentsObservabilityWorkerFingerprint : Fingerprint(
-    definingClass = "Lme/proton/android/payment/observability/ObservabilityWorkerImpl;",
     name = "start",
     returnType = "V",
     parameters = emptyList(),
+    custom = { _, classDef -> classDef.fields.any { it.type == PAYMENT_FFI } },
 )

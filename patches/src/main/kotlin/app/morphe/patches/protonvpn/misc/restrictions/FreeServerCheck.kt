@@ -16,10 +16,8 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal open class FreeServerCheckFingerprint(
-    definingClass: String,
-    parameters: List<String>? = null,
+    parameters: List<String>,
 ) : Fingerprint(
-    definingClass = definingClass,
     returnType = "Z",
     parameters = parameters,
     filters = listOf(

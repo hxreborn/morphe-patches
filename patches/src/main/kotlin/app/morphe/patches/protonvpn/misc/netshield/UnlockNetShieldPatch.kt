@@ -20,7 +20,7 @@ val unlockNetShieldPatch = bytecodePatch(
 
     execute {
         markPatchApplied("unlockNetShield")
-        clearFreeUserCheck(NetShieldAvailabilityFingerprint)
-        clearFreeUserCheck(NetShieldResetFingerprint)
+        clearFreeUserCheck(netShieldAvailabilityFingerprint())
+        clearFreeUserCheck(netShieldResetFingerprint())
     }
 }

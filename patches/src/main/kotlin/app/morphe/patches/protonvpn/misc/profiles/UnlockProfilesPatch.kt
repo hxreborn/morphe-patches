@@ -7,6 +7,8 @@ package app.morphe.patches.protonvpn.misc.profiles
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.protonvpn.misc.anchors.findPropertyGetter
+import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
 import app.morphe.patches.protonvpn.misc.restrictions.filterReturnValue
 import app.morphe.patches.protonvpn.misc.restrictions.freeAccountStatePatch
@@ -30,8 +32,12 @@ val unlockProfilesPatch = bytecodePatch(
 
     execute {
         markPatchApplied("unlockProfiles")
-        clearFreeUserCheck(ProfileAvailabilityFingerprint)
-        VpnCountriesFingerprint.matchSingle().method.filterReturnValue(
+        setExtensionMember(
+            "profileAvailability",
+            findPropertyGetter(ProfileViewItemToStringFingerprint, "availability").name,
+        )
+        clearFreeUserCheck(profileAvailabilityFingerprint())
+        vpnCountriesFingerprint().matchSingle().method.filterReturnValue(
             "$FREE_SERVER_LOCATIONS->countriesForAccount(Ljava/util/List;)Ljava/util/List;",
         )
         invertFreeServerCheckForFreeAccount(ProfileServerFilterFingerprint)
@@ -53,8 +59,8 @@ val unlockProfilesPatch = bytecodePatch(
                 move-result-object p1
             """,
         )
-        profileTypesFingerprints.forEach { fingerprint ->
-            fingerprint.matchSingle().method.filterReturnValue(
+        profileTypesToStringFingerprints.forEach { toString ->
+            navigate(findPropertyGetter(toString, "availableTypes")).stop().filterReturnValue(
                 "$FREE_SERVER_LOCATIONS->profileTypesForAccount(Ljava/util/List;)Ljava/util/List;",
             )
         }

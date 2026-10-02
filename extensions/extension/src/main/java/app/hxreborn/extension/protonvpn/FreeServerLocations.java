@@ -82,7 +82,7 @@ public final class FreeServerLocations {
         if (!FreeAccount.isSignedIn()) return profiles;
         List<Object> filtered = new ArrayList<>(profiles.size());
         for (Object profile : profiles) {
-            if (!UNAVAILABLE_PLAN.equals(((Enum<?>) Reflection.call(profile, "getAvailability")).name())) {
+            if (!UNAVAILABLE_PLAN.equals(((Enum<?>) Reflection.call(profile, Members.profileAvailability())).name())) {
                 filtered.add(profile);
             }
         }
@@ -101,6 +101,6 @@ public final class FreeServerLocations {
     }
 
     private static int tierOf(Object item) {
-        return (Integer) Reflection.call(item, "getTier");
+        return (Integer) Reflection.call(item, Members.serverGroupTier());
     }
 }

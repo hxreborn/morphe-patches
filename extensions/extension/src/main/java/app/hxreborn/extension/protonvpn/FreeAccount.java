@@ -12,8 +12,8 @@ public final class FreeAccount {
     private FreeAccount() {}
 
     public static void onUserInfoChanged(Object userInfo) {
-        Object vpnUser = userInfo == null ? null : Reflection.call(userInfo, "getVpnUser");
-        signedIn = vpnUser != null && (Boolean) Reflection.call(vpnUser, "isFreeUser");
+        Object vpnUser = userInfo == null ? null : Reflection.call(userInfo, Members.userInfoVpnUser());
+        signedIn = vpnUser != null && (Boolean) Reflection.call(vpnUser, Members.vpnUserIsFreeUser());
     }
 
     public static void onUserInfoInvalidated() {

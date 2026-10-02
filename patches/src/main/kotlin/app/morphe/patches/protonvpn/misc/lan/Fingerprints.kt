@@ -11,17 +11,14 @@
 package app.morphe.patches.protonvpn.misc.lan
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import app.morphe.patches.protonvpn.misc.restrictions.RestrictionGuardFingerprint
 
 internal object LanConnectionsViewStateFingerprint : Fingerprint(
-    definingClass = "Lcom/protonvpn/android/redesign/settings/ui/SettingsViewModel\$SettingViewState\$LanConnections;",
     name = "<init>",
-    parameters = listOf(
-        "Z",
-        "Ljava/lang/Boolean;",
-        "Z",
-        "Lcom/protonvpn/android/redesign/vpn/ui/ConnectIntentPrimaryLabel\$Profile;",
-    ),
+    parameters = listOf("Z", "Ljava/lang/Boolean;", "Z", "L"),
+    filters = listOf(resourceField(ResourceType.STRING, "settings_advanced_allow_lan_title")),
 )
 
 internal object LanConnectionsRestrictionFingerprint : RestrictionGuardFingerprint("getLanConnections")

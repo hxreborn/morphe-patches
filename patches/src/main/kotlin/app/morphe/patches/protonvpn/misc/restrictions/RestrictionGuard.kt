@@ -20,13 +20,16 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 
+private const val LOCAL_USER_SETTINGS = "Lcom/protonvpn/android/settings/data/LocalUserSettings;"
+
 internal open class RestrictionGuardFingerprint(settingGetter: String) : Fingerprint(
-    definingClass = "Lcom/protonvpn/android/settings/data/BaseApplyEffectiveUserSettings;",
-    name = "applyRestrictions",
+    returnType = LOCAL_USER_SETTINGS,
+    parameters = listOf(LOCAL_USER_SETTINGS, "L", "Z", "L"),
+    strings = listOf("flags"),
     filters = listOf(
         opcode(Opcode.IF_EQZ),
         methodCall(
-            definingClass = "Lcom/protonvpn/android/settings/data/LocalUserSettings;",
+            definingClass = LOCAL_USER_SETTINGS,
             name = settingGetter,
             location = MatchAfterImmediately(),
         ),

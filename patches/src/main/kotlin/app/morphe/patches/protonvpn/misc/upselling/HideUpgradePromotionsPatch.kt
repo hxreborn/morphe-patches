@@ -4,25 +4,26 @@
  */
 package app.morphe.patches.protonvpn.misc.upselling
 
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateFingerprint
+import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
+import app.morphe.patches.protonvpn.misc.anchors.toJavaClassName
 import app.morphe.patches.protonvpn.misc.restrictions.filterReturnValue
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
-import app.morphe.util.findInstructionIndicesReversedOrThrow
 import app.morphe.util.matchSingle
-import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PROMOTIONS_CLASS = "Lapp/hxreborn/extension/protonvpn/Promotions;"
@@ -60,11 +61,15 @@ val hideUpgradePromotionsPatch = bytecodePatch(
             )
         }
 
-        SettingsValueItemFingerprint.matchSingle().method.apply {
+        val settingViewState = SettingsValueItemFingerprint.matchSingle().originalMethod.parameterTypes.first().toString()
+        val isRestricted = classDefBy(settingViewState).methods.single {
+            it.returnType == "Z" && it.parameterTypes.isEmpty() && !AccessFlags.STATIC.isSet(it.accessFlags)
+        }
+        SettingsValueItemFingerprint.method.apply {
             addInstructionsWithLabels(
                 0,
                 """
-                    invoke-virtual/range { p0 .. p0 }, Lcom/protonvpn/android/redesign/settings/ui/SettingsViewModel${'$'}SettingViewState;->isRestricted()Z
+                    invoke-virtual/range { p0 .. p0 }, $settingViewState->${isRestricted.name}()Z
                     move-result v0
                     if-eqz v0, :shown
                     invoke-static { }, $IS_HIDDEN
@@ -80,6 +85,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
             "$PROMOTIONS_CLASS->withoutPromoNotifications(Ljava/util/List;)Ljava/util/List;",
         )
 
+        setExtensionMember("serverGroupBannerClass", ServerGroupBannerToStringFingerprint.originalClassDef.type.toJavaClassName())
         ServerGroupsMainScreenStateFingerprint.matchSingle().method.addInstructions(
             0,
             """
@@ -88,25 +94,16 @@ val hideUpgradePromotionsPatch = bytecodePatch(
             """,
         )
 
-        FreeConnectionsInfoFingerprint.matchSingle().method.apply {
-            val returnIndex = instructions.lastIndex
-            if (getInstruction(returnIndex).opcode != Opcode.RETURN_VOID) {
-                throw PatchException("setupViews does not end in return-void")
-            }
-            replaceInstruction(returnIndex, "nop")
-            addInstructions(
-                returnIndex + 1,
-                """
-                    iget-object v0, p0, Lcom/protonvpn/android/databinding/FreeConnectionsInfoBinding;->upsellBanner:Lcom/protonvpn/android/databinding/ItemFreeUpsellBinding;
-                    invoke-virtual { v0 }, Lcom/protonvpn/android/databinding/ItemFreeUpsellBinding;->getRoot()Landroidx/constraintlayout/widget/ConstraintLayout;
-                    move-result-object v0
-                    invoke-static { v0 }, $PROMOTIONS_CLASS->hideUpgradeView(Landroid/view/View;)V
-                    return-void
-                """,
+        FreeConnectionsUpsellBannerFingerprint.matchSingle().run {
+            val bannerRoot = instructionMatches.last()
+            val register = bannerRoot.getInstruction<OneRegisterInstruction>().registerA
+            method.addInstruction(
+                bannerRoot.index + 1,
+                "invoke-static { v$register }, $PROMOTIONS_CLASS->hideUpgradeView(Landroid/view/View;)V",
             )
         }
 
-        UpgradeCarouselFingerprint.matchSingle().run {
+        upgradeCarouselFingerprint().matchSingle().run {
             val freeUserResult = instructionMatches[1]
             val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
@@ -126,7 +123,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
             """,
         )
 
-        LaunchOnboardingFingerprint.matchSingle().method.apply {
+        launchOnboardingFingerprint().matchSingle().method.apply {
             addInstructionsWithLabels(
                 0,
                 """

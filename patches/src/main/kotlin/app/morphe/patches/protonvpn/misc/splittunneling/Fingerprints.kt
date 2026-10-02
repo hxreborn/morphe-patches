@@ -11,19 +11,14 @@
 package app.morphe.patches.protonvpn.misc.splittunneling
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import app.morphe.patches.protonvpn.misc.restrictions.RestrictionGuardFingerprint
 
 internal object SplitTunnelingViewStateFingerprint : Fingerprint(
-    definingClass = "Lcom/protonvpn/android/redesign/settings/ui/SettingsViewModel\$SettingViewState\$SplitTunneling;",
     name = "<init>",
-    parameters = listOf(
-        "Z",
-        "Lcom/protonvpn/android/settings/data/SplitTunnelingMode;",
-        "Ljava/util/List;",
-        "Ljava/util/List;",
-        "Z",
-        "I",
-    ),
+    parameters = listOf("Z", "L", "Ljava/util/List;", "Ljava/util/List;", "Z", "I"),
+    filters = listOf(resourceField(ResourceType.STRING, "settings_split_tunneling_title")),
 )
 
 internal object SplitTunnelingRestrictionFingerprint : RestrictionGuardFingerprint("getSplitTunneling")

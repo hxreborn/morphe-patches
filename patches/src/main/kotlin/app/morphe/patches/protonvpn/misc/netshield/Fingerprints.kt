@@ -4,17 +4,26 @@
  */
 package app.morphe.patches.protonvpn.misc.netshield
 
+import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.checkCast
-import app.morphe.patches.protonvpn.misc.restrictions.FreeUserCheckFingerprint
+import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
+import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
+import com.android.tools.smali.dexlib2.AccessFlags
 
-internal object NetShieldAvailabilityFingerprint : FreeUserCheckFingerprint(
-    definingClass = "Lcom/protonvpn/android/netshield/NetShieldAvailabilityKt;",
-    name = "getNetShieldAvailability",
+private const val LOCAL_USER_SETTINGS = "Lcom/protonvpn/android/settings/data/LocalUserSettings;"
+
+internal fun BytecodePatchContext.netShieldAvailabilityFingerprint() = freeUserCheckFingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "L",
+    parameters = listOf(vpnUserType),
 )
 
-internal object NetShieldResetFingerprint : FreeUserCheckFingerprint(
-    "Lcom/protonvpn/android/vpn/UpdateSettingsOnVpnUserChange\$1\$1;",
-    "emit\$lambda\$0",
-    checkCast("Lcom/protonvpn/android/netshield/NetShieldProtocol;", location = MatchAfterWithin(8)),
-)
+internal fun BytecodePatchContext.netShieldResetFingerprint(): Fingerprint {
+    val netShieldProtocol = classDefBy(LOCAL_USER_SETTINGS).methods.single { it.name == "getNetShield" }.returnType
+    return freeUserCheckFingerprint(
+        strings = listOf("reset default profile: "),
+        followingFilters = arrayOf(checkCast(netShieldProtocol, location = MatchAfterWithin(8))),
+    )
+}

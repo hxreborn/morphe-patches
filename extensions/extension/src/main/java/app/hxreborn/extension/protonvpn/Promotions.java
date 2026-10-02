@@ -32,8 +32,6 @@ public final class Promotions {
             TYPE_BUILTIN_UPSELL_ONBOARDING,
             TYPE_BUILTIN_UPSELL_PADLOCK,
             TYPE_INTERNAL_ONE_TIME_IAP_POPUP));
-    private static final String SERVER_GROUP_BANNER =
-            "com.protonvpn.android.redesign.countries.ui.ServerGroupUiItem$Banner";
 
     private Promotions() {}
 
@@ -50,7 +48,7 @@ public final class Promotions {
         if (!UpsellingVisibility.isHidden()) return items;
         List<Object> filtered = new ArrayList<>(items.size());
         for (Object item : items) {
-            if (!SERVER_GROUP_BANNER.equals(item.getClass().getName())) filtered.add(item);
+            if (!Members.serverGroupBannerClass().equals(item.getClass().getName())) filtered.add(item);
         }
         return filtered;
     }

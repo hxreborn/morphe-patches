@@ -11,27 +11,26 @@
  */
 package app.morphe.patches.protonvpn.misc.freeservers
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateFingerprint
+import app.morphe.patches.protonvpn.misc.anchors.findPropertyGetter
+import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.filterReturnValue
 import app.morphe.patches.protonvpn.misc.restrictions.freeAccountStatePatch
 import app.morphe.patches.protonvpn.misc.restrictions.invertFreeServerCheckForFreeAccount
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
-import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import app.morphe.util.matchSingle
-import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -53,7 +52,14 @@ val showFreeServerLocationsPatch = bytecodePatch(
             ?: throw PatchException("Missing string: free_connections_info_server_locations")
         invertFreeServerCheckForFreeAccount(ServerListFilterFingerprint)
 
-        ServerGroupItemStateFingerprint.matchSingle().method.addInstructions(
+        val serverGroupItem = ServerGroupItemStateFingerprint.matchSingle().originalMethod.parameterTypes.first()
+        setExtensionMember(
+            "serverGroupTier",
+            classDefBy(serverGroupItem.toString()).methods.single {
+                AccessFlags.ABSTRACT.isSet(it.accessFlags) && it.returnType == "I" && it.parameterTypes.isEmpty()
+            }.name,
+        )
+        ServerGroupItemStateFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p1, p2 }, $FREE_SERVER_LOCATIONS->tierForAvailabilityCheck(Ljava/lang/Object;Ljava/lang/Integer;)Ljava/lang/Integer;
@@ -61,7 +67,7 @@ val showFreeServerLocationsPatch = bytecodePatch(
             """,
         )
 
-        CountriesHeaderLabelFingerprint.matchSingle().run {
+        countriesHeaderLabelFingerprint().matchSingle().run {
             val isFreeUser = instructionMatches.first().getInstruction<FiveRegisterInstruction>().registerD
             val label = instructionMatches.last()
             val labelRegister = label.getInstruction<OneRegisterInstruction>().registerA
@@ -83,8 +89,11 @@ val showFreeServerLocationsPatch = bytecodePatch(
             """,
         )
 
-        selectedFilterFingerprints.forEach { fingerprint ->
-            fingerprint.matchSingle().method.filterReturnValue(
+        val selectedFilterGetters = saveStateToStringFingerprints.map { findPropertyGetter(it, "selectedFilter") }
+        val gatewaySelectedFilter = GatewayServersSaveStateToStringFingerprint.matchSingle().originalClassDef.methods
+            .single { method -> selectedFilterGetters.any { it.name == method.name && it.returnType == method.returnType } }
+        (selectedFilterGetters + gatewaySelectedFilter).forEach { getter ->
+            navigate(getter).stop().filterReturnValue(
                 "$FREE_SERVER_LOCATIONS->resolveSelectedFilter(Ljava/lang/Object;)Ljava/lang/Object;",
             )
         }

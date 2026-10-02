@@ -8,55 +8,61 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
+import app.morphe.patches.protonvpn.misc.anchors.findPropertyGetter
+import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.patches.protonvpn.misc.restrictions.FreeServerCheckFingerprint
-import app.morphe.patches.protonvpn.misc.restrictions.FreeUserCheckFingerprint
+import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
 import com.android.tools.smali.dexlib2.Opcode
 
-private const val PROFILES_UI = "Lcom/protonvpn/android/profiles/ui"
-private const val SERVER_DATA_ADAPTER = "$PROFILES_UI/ProfilesServerDataAdapter;"
+private const val SERVER = "Lcom/protonvpn/android/servers/Server;"
 
-internal object ProfileAvailabilityFingerprint : FreeUserCheckFingerprint(
-    definingClass = "$PROFILES_UI/ProfilesViewModel;",
-    name = "toItem",
+internal fun BytecodePatchContext.profileAvailabilityFingerprint() = freeUserCheckFingerprint(
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf(
+        "L",
+        vpnUserType,
+        "Ljava/lang/Long;",
+        "Lcom/protonvpn/android/vpn/ProtocolSelection;",
+        "Ljava/util/List;",
+        "L",
+    ),
 )
 
-internal object VpnCountriesFingerprint : Fingerprint(
+internal object ServerListsToStringFingerprint : ToStringFingerprint("ServerLists(allServers=")
+
+internal fun BytecodePatchContext.vpnCountriesFingerprint() = Fingerprint(
     definingClass = "Lcom/protonvpn/android/utils/ServerManager;",
-    name = "getVpnCountries",
     returnType = "Ljava/util/List;",
     parameters = emptyList(),
+    filters = listOf(
+        methodCall(findPropertyGetter(ServerListsToStringFingerprint, "vpnCountries")),
+        methodCall(definingClass = "Ljava/text/Collator;", name = "getInstance"),
+    ),
 )
 
-internal val profileTypesFingerprints = listOf("Standard", "SecureCore", "P2P", "Gateway").map { type ->
-    Fingerprint(
-        definingClass = "$PROFILES_UI/TypeAndLocationScreenState\$$type;",
-        name = "getAvailableTypes",
-        returnType = "Ljava/util/List;",
-        parameters = emptyList(),
-    )
+internal val profileTypesToStringFingerprints = listOf("Standard", "SecureCore", "P2P", "Gateway").map { type ->
+    ToStringFingerprint("$type(availableTypes=")
 }
 
-internal object ProfileServerFilterFingerprint : FreeServerCheckFingerprint(
-    definingClass = SERVER_DATA_ADAPTER,
-    parameters = listOf("Lcom/protonvpn/android/servers/Server;"),
-)
+internal object ProfileServerFilterFingerprint : FreeServerCheckFingerprint(parameters = listOf(SERVER))
 
 internal object ProfileCitiesOrStatesFingerprint : Fingerprint(
-    definingClass = SERVER_DATA_ADAPTER,
-    parameters = listOf(
-        "Ljava/lang/String;",
-        "Z",
-        "Lcom/protonvpn/android/redesign/vpn/ServerFeature;",
-        "Lkotlin/coroutines/Continuation;",
-    ),
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Ljava/lang/String;", "Z", "L", "L"),
     filters = listOf(
         methodCall(definingClass = "Lcom/protonvpn/android/models/vpn/VpnCountry;", name = "getServerList"),
         opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
     ),
 )
 
+internal object ProfilesListToStringFingerprint : ToStringFingerprint("ProfilesList(profiles=")
+
 internal object ProfilesListStateFingerprint : Fingerprint(
-    definingClass = "$PROFILES_UI/ProfilesState\$ProfilesList;",
+    classFingerprint = ProfilesListToStringFingerprint,
     name = "<init>",
     parameters = listOf("Ljava/util/List;"),
 )
+
+internal object ProfileViewItemToStringFingerprint : ToStringFingerprint("ProfileViewItem(profile=")
