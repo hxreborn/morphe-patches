@@ -134,7 +134,7 @@ internal object AppCompatibilities {
         packageName = "com.etsy.android",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xF1641E,
-        targets = listOf(AppTarget(version = "7.90.0", versionCode = 79000153, minSdk = 32)),
+        targets = listOf(AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 32)),
     )
 
     val FORUS = Compatibility(
