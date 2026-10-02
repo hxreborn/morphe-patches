@@ -5,13 +5,19 @@
 package app.morphe.patches.rateglance.misc.premium
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.literal
+import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.AccessFlags
 
-private const val TRIAL_WINDOW_MS = 259200000L
+private const val BILLING_ENTITLEMENT_STATE_CLASS = "Lcom/sry/rateglance/domain/model/BillingEntitlementState;"
 
 internal object PremiumAccessFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "Z",
-    filters = listOf(literal(TRIAL_WINDOW_MS)),
+    parameters = listOf("L", "J"),
+    filters = listOf(
+        fieldAccess(definingClass = "Ljava/lang/Boolean;", name = "TRUE"),
+        methodCall(definingClass = "Ljava/lang/Long;", name = "longValue"),
+    ),
+    custom = { _, classDef -> classDef.methods.any { it.returnType == BILLING_ENTITLEMENT_STATE_CLASS } },
 )

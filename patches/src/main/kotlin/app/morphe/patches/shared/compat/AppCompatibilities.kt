@@ -355,7 +355,7 @@ internal object AppCompatibilities {
         packageName = "com.sry.rateglance",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x0D192C,
-        targets = listOf(AppTarget(version = "1.14.8", versionCode = 278, minSdk = 32)),
+        targets = listOf(AppTarget(version = "1.17.6", versionCode = 304, minSdk = 32)),
     )
 
     val READERA = Compatibility(
