@@ -475,10 +475,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.XAPK_REQUIRED,
         appIconColor = 0x0A84FF,
         signatures = setOf("6a0e2299884977821273e9b69252bc9f53aad9621dd911336b569872cb2b5707"),
-        targets = listOf(
-            AppTarget(version = "2.2.9.9", minSdk = 29),
-            AppTarget(version = "2.3.0", minSdk = 29),
-        ),
+        targets = listOf(AppTarget(version = "2.3.0", minSdk = 29)),
     )
 
     val VPN_SUPER = Compatibility(
