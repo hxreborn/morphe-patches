@@ -70,7 +70,7 @@
             "path": "patches/build/libs/patches-!(*sources*|*javadoc*).mpp?(.asc)"
           }
         ],
-        "successComment": "🎉 **Shipped in [v${nextRelease.version}](https://github.com/hxreborn/morphe-patches/releases/tag/v${nextRelease.version})** 🎉\n\nUpdate the bundle in Morphe Manager and repatch.\n\nYour **release** bot 📦🚀",
+        "successComment": "🎉 **Shipped in [v${nextRelease.version}](https://github.com/hxreborn/morphe-patches/releases/tag/v${nextRelease.version})** 🎉\n\nYour **release** bot 📦🚀",
         "releasedLabels": false
       }
     ]

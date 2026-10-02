@@ -20,7 +20,7 @@ jobs:
           stale-issue-message: |
             no activity for 30 days. it closes in 7 unless someone comments
           close-issue-message: |
-            no activity for 37 days. comment if it still matters and it gets reopened
+            no activity for 37 days
           days-before-pr-stale: -1
           days-before-pr-close: -1
           exempt-all-assignees: true
@@ -36,7 +36,7 @@ jobs:
           stale-issue-message: |
             still waiting on the details asked for above. it closes in 7 days without them
           close-issue-message: |
-            the requested details never arrived. open a new issue with them, or comment if this is wrong
+            the requested details never arrived
           close-issue-reason: not_planned
           days-before-pr-stale: -1
           days-before-pr-close: -1

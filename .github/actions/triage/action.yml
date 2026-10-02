@@ -43,9 +43,6 @@ runs:
         fi
         close=$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")
         printf '%s\n' "$message" > "$RUNNER_TEMP/comment.md"
-        if [ "$close" = "true" ]; then
-          printf '\ncomment if this is wrong\n' >> "$RUNNER_TEMP/comment.md"
-        fi
         gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/comment.md"
         labels=$(jq -r --arg l "$LABEL" '.[$l].labels // [] | join(",")' "$RESPONSES")
         [ -n "$labels" ] && gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"

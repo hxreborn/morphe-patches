@@ -1,7 +1,5 @@
 import re
 
-CONTEST = "comment if this is wrong"
-
 
 def normalize(text):
     return re.sub(r"[^a-z0-9]", "", text.lower())

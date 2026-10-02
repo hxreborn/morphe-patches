@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fields import CONTEST, field, has_any, normalize, normalize_version, parse_fields
+from fields import field, has_any, normalize, normalize_version, parse_fields
 
 MIN_CHARS = 60
 
@@ -90,14 +90,12 @@ labels = []
 
 if not fields:
     blockers.append(
-        "no issue form, triage reads the form fields. "
-        + (f"open [a new issue]({NEW_ISSUE}) with the matching form" if NEW_ISSUE else "open a new issue with the matching form")
+        "no issue form, triage reads the form fields"
     )
 
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(
-        f"the description is {len(description)} characters, {MIN_CHARS} needed. add what you did, "
-        "what you expected and what happened instead"
+        f"the description is {len(description)} characters, {MIN_CHARS} needed"
     )
     labels.append("needs info")
 
@@ -113,8 +111,7 @@ for (name, package), versions in apps.items():
 
 if repackager:
     blockers.append(
-        f"`{repackager}` repackages apps and patches may not apply cleanly. patch an unmodified APK "
-        "from APKMirror, APKPure, Uptodown or APKCombo"
+        f"`{repackager}` repackages apps and patches may not apply cleanly"
     )
 
 if not fields:
@@ -127,14 +124,12 @@ elif not matched:
         else "the report doesn't name an app this bundle patches."
     )
     flags.append(
-        f"{lead} supported apps in {data['version']}: {supported}. "
-        "for another app, open an app request"
+        f"{lead} supported apps in {data['version']}: {supported}"
     )
     labels.append("needs info")
 elif another_version:
     flags.append(
-        "\"Another version\" is picked but the version is missing. fill in the Other version field, "
-        "the number is on the app's About screen"
+        "\"Another version\" is picked but the version is missing"
     )
     labels.append("needs info")
 elif matched[1] and not (
@@ -144,14 +139,13 @@ elif matched[1] and not (
     name, versions = matched
     flags.append(
         f"{data['version']} targets {name} {', '.join(sorted(versions))}, not "
-        f"`{app_version or reported}`. either the app updated or it was patched with `-f`, say which"
+        f"`{app_version or reported}`"
     )
     labels.append("untargeted version")
 
 if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_attached:
     flags.append(
-        "patching failed but no error report is attached. in Morphe Manager, tap Copy on the error "
-        "dialog and paste it here. with morphe-cli, add `-r report.json` and attach the report"
+        "patching failed but no error report is attached"
     )
     labels.append("needs info")
 
@@ -160,22 +154,18 @@ single_patch = normalize(field(fields, "Does it still happen with only one patch
 
 if stock.startswith(OPTION_STOCK_FAILS_TOO):
     flags.append(
-        "the unpatched app fails the same way, so the app is the likely cause rather than a patch. "
-        "if the patched build behaves differently, change that answer and describe the difference"
+        "the unpatched app fails the same way, so the app is the likely cause rather than a patch"
     )
     labels.append("needs info")
 elif stock.startswith(OPTION_NOT_TRIED):
     flags.append(
-        "the unpatched app hasn't been tried. install the stock APK, repeat the same steps and add "
-        "the result to the report"
+        "the unpatched app hasn't been tried"
     )
     labels.append("needs info")
 
 if single_patch.startswith(OPTION_NOT_TRIED):
     flags.append(
-        "narrow it down to one patch. patch again with only the reported patch selected. if the "
-        "problem stops, enable the others one at a time until it returns, then pick the culprit in "
-        "the form"
+        "it hasn't been narrowed down to one patch"
     )
     if "needs info" not in labels:
         labels.append("needs info")
@@ -185,18 +175,13 @@ if blockers:
     labels = []
     lines = ["the report is missing what triage needs:", ""]
     lines += [f"- {b}" for b in blockers + flags]
-    lines += ["", "edit the issue to cover these and it reopens"]
 elif flags:
     verdict = "flag"
     lines = ["missing details:", ""]
     lines += [f"- {f}" for f in flags]
-    lines += ["", "edit the issue to add them"]
 else:
     verdict = "pass"
     lines = []
-
-if lines:
-    lines += ["", CONTEST]
 
 print(json.dumps({
     "verdict": verdict,
