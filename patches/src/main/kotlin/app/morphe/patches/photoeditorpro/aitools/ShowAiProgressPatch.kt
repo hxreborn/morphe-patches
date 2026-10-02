@@ -111,10 +111,14 @@ private fun BytecodePatchContext.hookTask(
         it.indexOfFirstInstruction { getReference<MethodReference>()?.toString() == THREAD_SLEEP } >= 0
     }.addInstructions(0, "invoke-static { }, $PROGRESS_TRACE_CLASS->polling()V")
 
-    task.methodMatching("result handler") {
-        it.parameterTypes.firstOrNull()?.toString() == "I" && it.returnType == "V" &&
+    val resultHandler = task.methodMatching("result handler") {
+        it.parameterTypes.count { type -> type.toString() == "I" } == 1 && it.returnType == "V" &&
             it.indexOfFirstLiteralInstruction(RESULT_DELIVERED) >= 0
-    }.addInstructions(0, "invoke-static { p1 }, $PROGRESS_TRACE_CLASS->finished(I)V")
+    }
+    val statusRegister = 1 + resultHandler.parameterTypes
+        .takeWhile { it.toString() != "I" }
+        .sumOf { if (it.toString() == "J" || it.toString() == "D") 2 else 1 }
+    resultHandler.addInstructions(0, "invoke-static { p$statusRegister }, $PROGRESS_TRACE_CLASS->finished(I)V")
 }
 
 private fun BytecodePatchContext.hookLoadingFragment(fragmentClass: String) {

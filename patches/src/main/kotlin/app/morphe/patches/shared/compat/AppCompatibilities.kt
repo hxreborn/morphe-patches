@@ -267,7 +267,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "868aa1a8470b4214e88a5c9e65a1dbe475a32e1da7a23079ba6e0be0bd50b621",
         ),
-        targets = listOf(AppTarget(version = "1.791.265", versionCode = 265100, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "1.791.265", versionCode = 265100, minSdk = 28),
+            AppTarget(version = "1.802.266", versionCode = 266201, minSdk = 32),
+        ),
     )
 
     val POCKET_WHIP = Compatibility(

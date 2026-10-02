@@ -11,7 +11,6 @@ import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionOrThrow
-import app.morphe.util.indexOfFirstStringInstructionOrThrow
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -24,8 +23,9 @@ val spoofIosPlatformPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
 
     execute {
-        AiRequestInterceptorFingerprint.matchSingle().method.apply {
-            val valueIndex = indexOfFirstStringInstructionOrThrow(OBFUSCATED_ANDROID_VALUE)
+        val match = AiRequestInterceptorFingerprint.matchSingle()
+        match.method.apply {
+            val valueIndex = match.instructionMatches[3].index
             val decodedIndex = indexOfFirstInstructionOrThrow(valueIndex) {
                 opcode == Opcode.MOVE_RESULT_OBJECT
             }

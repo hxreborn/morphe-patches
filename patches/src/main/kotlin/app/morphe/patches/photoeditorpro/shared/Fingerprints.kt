@@ -8,11 +8,31 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.AccessFlags
 
+internal object PurchasePreferencesFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "V",
+    parameters = listOf("Landroid/content/SharedPreferences\$OnSharedPreferenceChangeListener;"),
+)
+
 internal object RemoveAdsPurchasedFingerprint : Fingerprint(
+    classFingerprint = PurchasePreferencesFingerprint,
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "Z",
     parameters = listOf("Landroid/content/Context;"),
-    strings = listOf("SGgsdAwuAWQrdAhySHArbz9vBmQTdCZyX3A8bxlvLGRRdCxyE3ILLjBlCm8QZSJkcw=="),
+    filters = listOf(
+        methodCall(
+            parameters = listOf("Landroid/content/Context;"),
+            returnType = "Landroid/content/SharedPreferences;",
+        ),
+        methodCall(
+            parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;"),
+            returnType = "Ljava/lang/String;",
+        ),
+        methodCall(
+            definingClass = "Landroid/content/SharedPreferences;",
+            name = "getBoolean",
+        ),
+    ),
 )
 
 internal object ProGateFingerprint : Fingerprint(

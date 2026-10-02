@@ -9,19 +9,18 @@ import app.morphe.patches.photoeditorpro.shared.PATCH_APPLICATION_CLASS
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
-import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 
-private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Application;"
+private const val APPLICATION_CLASS = "Lcom/camerasideas/collagemaker/activity/CollageMakerApplication;"
 
 val spoofSignaturePatch = bytecodePatch {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     extendWith("extensions/extension.mpe")
 
     execute {
-        spoofSignature(PAIRIP_APPLICATION_CLASS, hostClass = PATCH_APPLICATION_CLASS)
+        spoofSignature(APPLICATION_CLASS, hostClass = PATCH_APPLICATION_CLASS)
 
-        InitializeLicenseCheckFingerprint.matchSingle().method.returnEarly()
+        InitializeLicenseCheckFingerprint.methodOrNull?.returnEarly()
 
         markPatchInstalled("pep_spoof_signature")
     }
