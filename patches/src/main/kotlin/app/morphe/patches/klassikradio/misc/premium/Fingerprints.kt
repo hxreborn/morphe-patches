@@ -25,8 +25,8 @@ internal fun contractConstructorFingerprint(subscriptionType: String) = Fingerpr
     name = "<init>",
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.CONSTRUCTOR),
     returnType = "V",
-    parameters = listOf(subscriptionType, "L", "Ljava/lang/String;"),
     filters = listOf(
         fieldAccess(type = subscriptionType, opcode = Opcode.IPUT_OBJECT),
     ),
+    custom = { method, _ -> method.parameterTypes.firstOrNull() == subscriptionType },
 )
