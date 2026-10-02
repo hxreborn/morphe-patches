@@ -332,7 +332,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
         ),
-        targets = listOf(AppTarget(version = "5.20.39.0", versionCode = 605203900, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "5.20.39.0", versionCode = 605203900, minSdk = 26),
+            AppTarget(version = "5.20.57.0", versionCode = 605205700, minSdk = 26),
+        ),
     )
 
     val PYDROID = Compatibility(
