@@ -16,9 +16,9 @@ private const val ONBOARDING_ROUTE = "$HOME_NAVIGATION_CLASS\$OnBoarding;"
 private const val UPSELL_ONBOARDING_ROUTE = "$HOME_NAVIGATION_CLASS\$UpsellV2AndOnboarding;"
 
 internal object UpgradeInfoConstructorFingerprint : Fingerprint(
+    definingClass = "Lproton/android/pass/data/api/usecases/UpgradeInfo;",
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.CONSTRUCTOR),
     returnType = "V",
-    parameters = listOf("Z", "Z", "L", "I", "I", "I"),
     filters = listOf(
         fieldAccess(name = UPGRADE_AVAILABLE_FIELD, type = "Z", opcode = Opcode.IPUT_BOOLEAN),
     ),
