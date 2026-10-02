@@ -1,3 +1,27 @@
+## [1.39.0](https://github.com/hxreborn/morphe-patches/compare/v1.38.0...v1.39.0) (2026-10-02)
+
+### Bug Fixes
+
+* **BetterSleep - Unlock premium:** match the feature and purchase types under obfuscated names ([15344a6](https://github.com/hxreborn/morphe-patches/commit/15344a616ef306c1198746a2f4846e18d7ae0425))
+* **Etsy - Hide ads:** match the search header builder by its ads tooltip parameter ([66bd0a8](https://github.com/hxreborn/morphe-patches/commit/66bd0a8f51d0f17a8a5353656ef1e016839241ca))
+* **Klassik Radio+ - Unlock premium:** match the subscription constructor by its first parameter ([a3be693](https://github.com/hxreborn/morphe-patches/commit/a3be6938b045516ecd5ad544247e0ca45b53954c))
+* **Pydroid 3:** install next to stock-signed Pydroid plugins ([f7fe72d](https://github.com/hxreborn/morphe-patches/commit/f7fe72d2a683a250371533213f8f6f2746719b90)), closes [#106](https://github.com/hxreborn/morphe-patches/issues/106)
+* **TeraBox - Hide video recommendations:** match the ranked list builder on 4.26.5 ([2a9fee7](https://github.com/hxreborn/morphe-patches/commit/2a9fee71ef27654d94cac4bf7d082d6b065f3834))
+* **vpnify - Unlock premium:** connect on the rebuilt 2.3.0 build 2300003 ([4506518](https://github.com/hxreborn/morphe-patches/commit/4506518ea78c1888def4b5d8ab759ddfd23e7a59)), closes [#134](https://github.com/hxreborn/morphe-patches/issues/134)
+* **vpnify:** drop the unverified 2.2.9.9 target ([1a0554d](https://github.com/hxreborn/morphe-patches/commit/1a0554df3a9cdb30facb840e36b060b20cfc2276))
+
+### New Features
+
+* **BetterSleep:** support 26.17 ([87ee5fe](https://github.com/hxreborn/morphe-patches/commit/87ee5feca8860fda7c84dfaad5264f3266385e3e)), closes [#111](https://github.com/hxreborn/morphe-patches/issues/111)
+* **Etsy:** support 7.97.0 ([02f4af8](https://github.com/hxreborn/morphe-patches/commit/02f4af8277b6d782b9163764b07acfaf01bec96e)), closes [#112](https://github.com/hxreborn/morphe-patches/issues/112)
+* **Klassik Radio+:** support p5.12.0 ([7efe428](https://github.com/hxreborn/morphe-patches/commit/7efe428c048affd631b586601bbbacb450e5f145)), closes [#114](https://github.com/hxreborn/morphe-patches/issues/114)
+* **Photo Editor Pro:** support 1.802.266 ([34df492](https://github.com/hxreborn/morphe-patches/commit/34df4929bdeb046b98251dcc573883e376cb77bb)), closes [#118](https://github.com/hxreborn/morphe-patches/issues/118)
+* **Proton Pass:** support 1.41.2 ([ed075d3](https://github.com/hxreborn/morphe-patches/commit/ed075d33cff7e3461229d7e346b5e237fca6c444)), closes [#120](https://github.com/hxreborn/morphe-patches/issues/120)
+* **Proton VPN:** support 5.20.57.0 ([d0852eb](https://github.com/hxreborn/morphe-patches/commit/d0852eb4b97344b4dcf7dffa8fc3c89b09f2c4eb)), closes [#121](https://github.com/hxreborn/morphe-patches/issues/121)
+* **RateGlance:** support 1.17.6 ([d91483e](https://github.com/hxreborn/morphe-patches/commit/d91483eabb133cd0decbb0805b32419c402c5342)), closes [#124](https://github.com/hxreborn/morphe-patches/issues/124)
+* **TeraBox:** support 4.26.5 ([263528a](https://github.com/hxreborn/morphe-patches/commit/263528ad8e0fdf12c7998f537fee615731702acf)), closes [#128](https://github.com/hxreborn/morphe-patches/issues/128) [#103](https://github.com/hxreborn/morphe-patches/issues/103)
+* **VLLO:** support 13.9.0 ([832cb60](https://github.com/hxreborn/morphe-patches/commit/832cb606e6c4b5c7dd5325c00c67ee1743b46aa9)), closes [#130](https://github.com/hxreborn/morphe-patches/issues/130)
+
 ## [1.38.0](https://github.com/hxreborn/morphe-patches/compare/v1.37.0...v1.38.0) (2026-10-01)
 
 ### New Features

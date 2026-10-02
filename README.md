@@ -32,7 +32,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.38.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.38.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;112 patches total
+> **[v1.39.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.39.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;106 patches total
 <details open>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -175,8 +175,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 1.40.3 |
-| :---: |
+| 1.40.3 | 1.41.2 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -193,8 +193,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 5.20.39.0 |
-| :---: |
+| 5.20.39.0 | 5.20.57.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -283,8 +283,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.2.9.9 | 2.3.0 |
-| :---: | :---: |
+| 2.3.0 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -382,7 +382,7 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 13.7.4 |
+| 13.9.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -398,8 +398,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 4.26.0 |
-| :---: |
+| 4.26.0 | 4.26.5 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -450,7 +450,7 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 7.90.0 |
+| 7.97.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -480,8 +480,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 1.791.265 |
-| :---: |
+| 1.791.265 | 1.802.266 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -657,7 +657,7 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 26.15 |
+| 26.17 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -702,7 +702,7 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| p5.11.1 |
+| p5.12.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -747,7 +747,7 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 1.14.8 |
+| 1.17.6 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
