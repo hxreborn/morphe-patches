@@ -7,6 +7,7 @@ package app.morphe.patches.bettersleep.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
+import app.morphe.patches.bettersleep.misc.fix.iterable.restoreIterableRequestsPatch
 import app.morphe.patches.bettersleep.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -32,7 +33,7 @@ val unlockPremiumPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.BETTERSLEEP)
 
-    dependsOn(removePairipVirtualizationPatch, spoofSignaturePatch)
+    dependsOn(removePairipVirtualizationPatch, restoreIterableRequestsPatch, spoofSignaturePatch)
 
     execute {
         IsContentUnlockedFingerprint.matchSingle().method.returnEarly(true)

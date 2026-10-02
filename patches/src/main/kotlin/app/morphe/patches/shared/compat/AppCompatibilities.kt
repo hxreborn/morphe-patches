@@ -58,7 +58,7 @@ internal object AppCompatibilities {
         packageName = "ipnossoft.rma.free",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x1D204B,
-        targets = listOf(AppTarget(version = "26.15", versionCode = 26799, minSdk = 26)),
+        targets = listOf(AppTarget(version = "26.17", versionCode = 26910, minSdk = 26)),
     )
 
     val BLURWALL = Compatibility(
