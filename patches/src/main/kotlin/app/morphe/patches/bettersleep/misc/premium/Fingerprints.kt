@@ -8,12 +8,18 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object IsContentUnlockedFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "Z",
-    parameters = listOf("Lcom/ipnossoft/api/featuremanager/FeatureType;", "Ljava/lang/String;"),
-    strings = listOf("*"),
+    parameters = listOf("L", "Ljava/lang/String;"),
+    filters = listOf(
+        string("*"),
+        methodCall(definingClass = "Ljava/util/List;", name = "contains", location = MatchAfterImmediately()),
+    ),
 )
 
 internal object OnAskForUserPremiumFingerprint : Fingerprint(
@@ -37,8 +43,8 @@ internal object PurchaseConstructorFingerprint : Fingerprint(
         "J",
         "J",
         "Ljava/lang/String;",
-        DATA_SOURCE_NAME_CLASS,
-        PURCHASE_TYPE_CLASS,
+        "L",
+        "L",
         "Z",
         "Z",
         "Ljava/lang/String;",
