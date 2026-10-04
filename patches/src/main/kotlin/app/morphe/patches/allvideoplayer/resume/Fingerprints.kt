@@ -8,6 +8,6 @@ import app.morphe.patcher.Fingerprint
 
 internal object PlayVideoFingerprint : Fingerprint(
     definingClass = "Lcom/allformatplayer/streamvideoplayer/feature/player/MyPlayerActivity;",
+    returnType = "L",
     parameters = listOf("Landroid/net/Uri;"),
-    custom = { method, _ -> method.returnType != "V" },
 )
