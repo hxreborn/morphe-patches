@@ -5,6 +5,7 @@
 package app.morphe.patches.shared.misc.analytics
 
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.util.asSequence
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 
@@ -18,10 +19,8 @@ private val disabledCollectionFlags = listOf(
 
 internal fun Document.putApplicationMetaData(name: String, value: String) {
     val application = getElementsByTagName("application").item(0) as Element
-    val declared = application.childNodes.let { nodes ->
-        (0 until nodes.length).map(nodes::item).filterIsInstance<Element>().firstOrNull {
-            it.tagName == "meta-data" && it.getAttribute("android:name") == name
-        }
+    val declared = application.childNodes.asSequence().filterIsInstance<Element>().firstOrNull {
+        it.tagName == "meta-data" && it.getAttribute("android:name") == name
     }
     val metadata = declared ?: createElement("meta-data").also {
         it.setAttribute("android:name", name)
