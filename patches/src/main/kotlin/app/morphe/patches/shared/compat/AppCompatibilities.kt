@@ -186,7 +186,10 @@ internal object AppCompatibilities {
         packageName = "com.gamma.scan",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x2196F3,
-        targets = listOf(AppTarget(version = "2.2.221", versionCode = 221, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "2.2.221", versionCode = 221, minSdk = 24),
+            AppTarget(version = "2.2.224", versionCode = 224, minSdk = 24),
+        ),
     )
 
     val HINDU_CALENDAR = Compatibility(
