@@ -59,6 +59,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `terabox.png` | TeraBox (`com.dubox.drive`) | Flextech Inc. | APK 4.26.0, adaptive icon `res/drawable-anydpi-v26/ic_element_appicon_netdisk_new.xml` |
 | `echogram.png` | Echogram (`com.liori.echogram`) | Illuzion Apps | APK 1.0.7.0, `res/mipmap-xxxhdpi-v4/ic_launcher.png` |
 | `echoequalizer.png` | Echo Equalizer (`com.hapibits.soundlift`) | HapiBits | APK 9.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `ledblinker.png` | LED Blinker (`com.ledblinker`) | Mario Ostwald | APK 26.01.08, `res/mipmap-xxxhdpi-v4/ic_launcher_new.webp` |
 | `cxxdroid.png` | Cxxdroid (`ru.iiec.cxxdroid`) | IIEC | APK 6.0_arm64, `mipmap/ic_launcher`, xxxhdpi |
 | `jvdroid.png` | Jvdroid (`ru.iiec.jvdroid`) | Lider Soft KZ | APK 2.8, `mipmap/ic_launcher`, xxxhdpi |
 | `pydroid.png` | Pydroid 3 (`ru.iiec.pydroid3`) | Lider Soft KZ | APK 8.6_arm64, `mipmap/app_icon_pydroid3`, xxxhdpi |

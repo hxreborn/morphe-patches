@@ -198,6 +198,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "p5.12.0", versionCode = 50138, minSdk = 29)),
     )
 
+    val LED_BLINKER = Compatibility(
+        name = "LED Blinker",
+        packageName = "com.ledblinker",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x190C53,
+        signatures = setOf(
+            "40a44cbdf290932098b46c12ae0c9932c82211659a27253ddda4e5ca62780dea",
+        ),
+        targets = listOf(AppTarget(version = "26.01.08", versionCode = 12506, minSdk = 32)),
+    )
+
     val MEMONEET = Compatibility(
         name = "MemoNeet",
         packageName = "com.adithya.memoneet",

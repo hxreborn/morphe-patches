@@ -225,6 +225,7 @@ ICONS = {
     "com.dubox.drive": "terabox.png",
     "com.liori.echogram": "echogram.png",
     "com.hapibits.soundlift": "echoequalizer.png",
+    "com.ledblinker": "ledblinker.png",
     "ru.iiec.cxxdroid": "cxxdroid.png",
     "ru.iiec.jvdroid": "jvdroid.png",
     "ru.iiec.pydroid3": "pydroid.png",
