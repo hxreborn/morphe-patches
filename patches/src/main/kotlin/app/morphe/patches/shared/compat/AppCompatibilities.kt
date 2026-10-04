@@ -148,6 +148,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 32)),
     )
 
+    val FDDB = Compatibility(
+        name = "Fddb",
+        packageName = "com.fddb",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x006495,
+        signatures = setOf(
+            "9caf67d3efca4ffb9f888256a5963c6117c28051a0669bc3d8bb098291ea9f4f",
+        ),
+        targets = listOf(AppTarget(version = "v7.8.4-Build-1-gms-release", versionCode = 7080401, minSdk = 26)),
+    )
+
     val FORUS = Compatibility(
         name = "ForusApp",
         packageName = "com.myvitale.forus",
