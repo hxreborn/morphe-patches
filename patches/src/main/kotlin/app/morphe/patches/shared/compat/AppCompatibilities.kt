@@ -537,7 +537,10 @@ internal object AppCompatibilities {
         packageName = "com.free.vpn.super.hotspot.open",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x007DFF,
-        targets = listOf(AppTarget(version = "2.32.0", versionCode = 23200, minSdk = 32)),
+        targets = listOf(
+            AppTarget(version = "2.32.0", versionCode = 23200, minSdk = 32),
+            AppTarget(version = "2.33.0", versionCode = 23300, minSdk = 32),
+        ),
     )
 
     val YI_IOT = Compatibility(
