@@ -9,21 +9,29 @@ import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.instructionsOrNull
 import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
+import app.morphe.util.getReference
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 internal fun BytecodePatchContext.freeUserCheckFingerprint(
+    definingClass: String? = null,
+    name: String? = null,
     accessFlags: List<AccessFlags>? = null,
     returnType: String? = null,
     parameters: List<String>? = null,
     strings: List<String>? = null,
     vararg followingFilters: InstructionFilter,
 ) = Fingerprint(
+    definingClass = definingClass,
+    name = name,
     accessFlags = accessFlags,
     returnType = returnType,
     parameters = parameters,
@@ -40,4 +48,20 @@ internal fun BytecodePatchContext.clearFreeUserCheck(check: Fingerprint) {
         val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
         method.addInstruction(freeUserResult.index + 1, "const/16 v$register, 0x0")
     }
+}
+
+internal fun BytecodePatchContext.clearFreeUserCheckInLambdaOf(owner: Fingerprint) {
+    val instantiatedTypes = owner.originalClassDef.methods
+        .flatMap { it.instructionsOrNull ?: emptyList() }
+        .filter { it.opcode == Opcode.NEW_INSTANCE }
+        .mapNotNull { it.getReference<TypeReference>()?.type }
+        .toSet()
+    val check = instantiatedTypes.mapNotNull { type ->
+        val classDef = classDefByOrNull(type) ?: return@mapNotNull null
+        freeUserCheckFingerprint(definingClass = type, name = "invokeSuspend")
+            .takeIf { it.matchOrNull(classDef) != null }
+    }.singleOrNull() ?: throw PatchException(
+        "Expected one invokeSuspend free-user check in a class instantiated by ${owner.originalClassDef.type}",
+    )
+    clearFreeUserCheck(check)
 }
