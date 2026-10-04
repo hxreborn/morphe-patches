@@ -5,6 +5,7 @@
 package app.morphe.patches.shared.misc.analytics
 
 import app.morphe.patcher.patch.resourcePatch
+import org.w3c.dom.Document
 import org.w3c.dom.Element
 
 private val disabledCollectionFlags = listOf(
@@ -15,24 +16,25 @@ private val disabledCollectionFlags = listOf(
     "com.facebook.sdk.AdvertiserIDCollectionEnabled",
 )
 
+internal fun Document.putApplicationMetaData(name: String, value: String) {
+    val application = getElementsByTagName("application").item(0) as Element
+    val declared = application.childNodes.let { nodes ->
+        (0 until nodes.length).map(nodes::item).filterIsInstance<Element>().firstOrNull {
+            it.tagName == "meta-data" && it.getAttribute("android:name") == name
+        }
+    }
+    val metadata = declared ?: createElement("meta-data").also {
+        it.setAttribute("android:name", name)
+        application.appendChild(it)
+    }
+    metadata.removeAttribute("android:resource")
+    metadata.setAttribute("android:value", value)
+}
+
 val disableAnalyticsCollectionPatch = resourcePatch {
     execute {
         document("AndroidManifest.xml").use { document ->
-            val application = document.getElementsByTagName("application").item(0)
-            val declared = buildSet {
-                val existing = document.getElementsByTagName("meta-data")
-                for (index in 0 until existing.length) {
-                    add((existing.item(index) as Element).getAttribute("android:name"))
-                }
-            }
-
-            disabledCollectionFlags.forEach { name ->
-                if (name in declared) return@forEach
-                val metadata = document.createElement("meta-data")
-                metadata.setAttribute("android:name", name)
-                metadata.setAttribute("android:value", "false")
-                application.appendChild(metadata)
-            }
+            disabledCollectionFlags.forEach { document.putApplicationMetaData(it, "false") }
         }
     }
 }
