@@ -32,7 +32,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.39.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.39.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;106 patches total
+> **[v1.40.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.40.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;113 patches total
 <details open>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -139,8 +139,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.95.0 |
-| :---: |
+| 2.95.0 | 2.100.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -154,8 +154,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 7.11.8 | 7.11.5 | 7.10.4 |
-| :---: | :---: | :---: |
+| 7.11.9 | 7.11.8 | 7.11.5 | 7.10.4 |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -206,7 +206,7 @@ recorded in the Git history.
 | <a id="proton-vpn-show-free-server-locations"></a>[Show free server locations](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/freeservers/ShowFreeServerLocationsPatch.kt) | Lists free server locations in Countries and Search and connects to the one you pick. Applies only to free plans. |
 | <a id="proton-vpn-unlock-lan-connections"></a>[Unlock LAN connections](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/lan/UnlockLanConnectionsPatch.kt) | Unlocks LAN connections on free plans. |
 | <a id="proton-vpn-unlock-netshield"></a>[Unlock NetShield](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/netshield/UnlockNetShieldPatch.kt) | Unlocks NetShield ad and tracker blocking on free plans. |
-| <a id="proton-vpn-unlock-connection-preferences"></a>[Unlock connection preferences](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/connectionpreferences/UnlockConnectionPreferencesPatch.kt) | Unlocks the default connection and excluded locations on free plans. |
+| <a id="proton-vpn-unlock-connection-preferences"></a>[Unlock connection preferences](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/connectionpreferences/UnlockConnectionPreferencesPatch.kt) | Unlocks the default connection, recent connections and excluded locations on free plans. |
 | <a id="proton-vpn-unlock-custom-dns"></a>[Unlock custom DNS](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/customdns/UnlockCustomDnsPatch.kt) | Unlocks custom DNS on free plans. |
 | <a id="proton-vpn-unlock-profiles"></a>[Unlock profiles](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/profiles/UnlockProfilesPatch.kt) | Unlocks profiles on free plans and limits them to free locations. Profiles for other locations are hidden. |
 | <a id="proton-vpn-unlock-split-tunneling"></a>[Unlock split tunneling](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/splittunneling/UnlockSplitTunnelingPatch.kt) | Unlocks split tunneling on free plans. |
@@ -299,14 +299,32 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| Android V1.78.49 | Android V1.78.47 |
-| :---: | :---: |
+| Android V1.78.51 | Android V1.78.49 | Android V1.78.47 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="rise-sleep-tracker-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableTelemetryPatch.kt) | Stops crash and error reports from reaching Sentry. |
 | <a id="rise-sleep-tracker-disable-usage-tracking"></a>[Disable usage tracking](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableUsageTrackingPatch.kt) | Stops app usage events from being uploaded. Local usage tracking remains enabled. |
 | <a id="rise-sleep-tracker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rise/misc/premium/UnlockPremiumPatch.kt) | Unlocks the energy schedule, habit tools, smart alarm and progress insights. Requires a RISE account. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="all-video-player-app-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Facebook and OneSignal from collecting usage data. |
+| <a id="all-video-player-app-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/ads/HideAdsPatch.kt) | Removes app open, interstitial and native ads, and the promoted apps list. |
+| <a id="all-video-player-app-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
+| <a id="all-video-player-app-resume-videos-opened-from-other-apps"></a>[Resume videos opened from other apps](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/resume/ResumeExternalVideosPatch.kt) | Resumes videos opened from a file manager or gallery where playback stopped. |
 
 </details>
 
@@ -465,8 +483,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.2.221 |
-| :---: |
+| 2.2.221 | 2.2.224 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -516,8 +534,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 407.0.0.178994 |
-| :---: |
+| 407.0.0.178994 | 415.0.0.182623 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -546,8 +564,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 26.30.05 |
-| :---: |
+| 26.30.05 | 26.38.08 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -627,8 +645,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 1.0.6 |
-| :---: |
+| 1.0.6 | 1.1.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -667,6 +685,21 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/echoequalizer.png" width="18" align="top">&nbsp;&nbsp;Echo Equalizer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 9.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="echo-equalizer-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/echoequalizer/misc/premium/UnlockPremiumPatch.kt) | Unlocks Echo Pro, including the 15- and 31-band equalizers, compressor, limiter and Safe Hearing protect mode. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/echogram.png" width="18" align="top">&nbsp;&nbsp;Echogram&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -682,13 +715,28 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/fddb.png" width="18" align="top">&nbsp;&nbsp;Fddb&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| v7.8.4-Build-1-gms-release |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="fddb-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/fddb/misc/premium/UnlockPremiumPatch.kt) | Unlocks the weekly report, intermittent fasting, the calorie and nutrient planners, and custom nutrient targets. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/forus.png" width="18" align="top">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 3.0.15 |
-| :---: |
+| 3.0.15 | 3.0.18 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -712,13 +760,28 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/ledblinker.png" width="18" align="top">&nbsp;&nbsp;LED Blinker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 26.01.08 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="led-blinker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/ledblinker/misc/premium/UnlockPremiumPatch.kt) | Unlocks pocket mode, notification history and statistics, and removes ads. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/one4home.png" width="18" align="top">&nbsp;&nbsp;One4Home Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 0.4.72 |
-| :---: |
+| 0.4.72 | 0.4.97 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -732,8 +795,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.2.8 |
-| :---: |
+| 2.2.8 | 2.2.9 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -762,8 +825,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 3.9 |
-| :---: |
+| 3.9 | 3.11 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -792,8 +855,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.32.0 |
-| :---: |
+| 2.32.0 | 2.33.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -807,8 +870,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 3.4.12 |
-| :---: |
+| 3.4.12 | 3.4.13 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|

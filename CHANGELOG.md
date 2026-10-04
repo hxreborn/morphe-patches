@@ -1,3 +1,33 @@
+## [1.40.0](https://github.com/hxreborn/morphe-patches/compare/v1.39.0...v1.40.0) (2026-10-04)
+
+### Bug Fixes
+
+* **Proton VPN - Unlock connection preferences:** connect to chosen default and list recents ([9b88f34](https://github.com/hxreborn/morphe-patches/commit/9b88f34b54b31e88a7738502faf73a579fcace7d)), closes [#141](https://github.com/hxreborn/morphe-patches/issues/141)
+* **Proton VPN - Unlock connection preferences:** label home card as default connection ([0d5d868](https://github.com/hxreborn/morphe-patches/commit/0d5d86801787dd41d04e1721fa8761e985a516cd))
+
+### New Features
+
+* **All Video Player App - Disable tracking:** stop Firebase, Facebook and OneSignal tracking ([e96cf94](https://github.com/hxreborn/morphe-patches/commit/e96cf94873c47fd544b5476c7e4c7aaa37150332))
+* **All Video Player App - Hide ads:** remove app open, interstitial and native ads ([9c63731](https://github.com/hxreborn/morphe-patches/commit/9c63731ceb887effa597f8ebc5367a541192ba22))
+* **All Video Player App - Remove rating prompts:** stop asking for a rating when opening folders ([b2d6206](https://github.com/hxreborn/morphe-patches/commit/b2d6206227be2f00b4213da8955b27d555f93d11))
+* **All Video Player App - Resume videos opened from other apps:** resume where playback stopped ([3837b1a](https://github.com/hxreborn/morphe-patches/commit/3837b1ad2e166bc24f1d29429f88cecddf1777a1)), closes [#104](https://github.com/hxreborn/morphe-patches/issues/104)
+* **AtloMaps:** add support for 1.1.0 ([9143555](https://github.com/hxreborn/morphe-patches/commit/9143555478c87a1955b8bb8984ceb180eb75e84a)), closes [#109](https://github.com/hxreborn/morphe-patches/issues/109)
+* **Audible:** add support for 26.38.08 ([eee3bed](https://github.com/hxreborn/morphe-patches/commit/eee3bed986b27f30e5c6033d0157e2777cb86001)), closes [#110](https://github.com/hxreborn/morphe-patches/issues/110)
+* **Echo Equalizer - Unlock premium:** unlock 15- and 31-band EQ, compressor and limiter ([3c4138e](https://github.com/hxreborn/morphe-patches/commit/3c4138edfec69142e8c4cc8f0fef7b69530dbe4d)), closes [#133](https://github.com/hxreborn/morphe-patches/issues/133)
+* **Fddb - Unlock premium:** unlock weekly report, intermittent fasting and nutrition planners ([c99a65b](https://github.com/hxreborn/morphe-patches/commit/c99a65bf1171176d7c91bcbabfcd83262fa41f1c)), closes [#142](https://github.com/hxreborn/morphe-patches/issues/142)
+* **ForusApp:** add support for 3.0.18 ([cceef3c](https://github.com/hxreborn/morphe-patches/commit/cceef3cfd4844d145e557d9c59603ca928b1d861)), closes [#113](https://github.com/hxreborn/morphe-patches/issues/113)
+* **LED Blinker - Unlock premium:** unlock pocket mode, notification history and statistics ([6b26f37](https://github.com/hxreborn/morphe-patches/commit/6b26f37e44c50274762c483e743384110afa92ba)), closes [#136](https://github.com/hxreborn/morphe-patches/issues/136)
+* **Notesnook:** add support for 3.4.13 ([9c3fb1b](https://github.com/hxreborn/morphe-patches/commit/9c3fb1bc58976444fd8e6b904c8ecf189c707b46)), closes [#115](https://github.com/hxreborn/morphe-patches/issues/115)
+* **One4Home Launcher:** add support for 0.4.97 ([7b8022b](https://github.com/hxreborn/morphe-patches/commit/7b8022b8ffd304c6f5dbaaee295650eb4c61a7c9)), closes [#116](https://github.com/hxreborn/morphe-patches/issues/116)
+* **Perplexity:** add support for 2.100.0 ([339a9aa](https://github.com/hxreborn/morphe-patches/commit/339a9aa9a8b07a90c4b030419595d0c6588efacf)), closes [#117](https://github.com/hxreborn/morphe-patches/issues/117)
+* **Proton Mail:** add support for 7.11.9 ([3197e20](https://github.com/hxreborn/morphe-patches/commit/3197e2032921d7034f43926b9a1fed6a35982beb)), closes [#119](https://github.com/hxreborn/morphe-patches/issues/119)
+* **QR & Barcode Scanner:** add support for 2.2.224 ([6b27a57](https://github.com/hxreborn/morphe-patches/commit/6b27a57e7601bde44a1016b053c4348d4e98513a)), closes [#122](https://github.com/hxreborn/morphe-patches/issues/122)
+* **Quranify:** add support for 2.2.9 ([e1e70eb](https://github.com/hxreborn/morphe-patches/commit/e1e70eb3c7e29637d91130d26c10e2d1f8c85841)), closes [#123](https://github.com/hxreborn/morphe-patches/issues/123)
+* **RISE:** add support for 1.78.51 ([db73cab](https://github.com/hxreborn/morphe-patches/commit/db73cabb92e40cc66ddcfa539316ba9f78a603ef)), closes [#125](https://github.com/hxreborn/morphe-patches/issues/125)
+* **Rubber Bands:** add support for 3.11 ([bf73cbf](https://github.com/hxreborn/morphe-patches/commit/bf73cbf5972d7845153b19a090f21961bfaa0608)), closes [#126](https://github.com/hxreborn/morphe-patches/issues/126)
+* **Trainline:** add support for 415.0.0.182623 ([815aecc](https://github.com/hxreborn/morphe-patches/commit/815aeccfafc7c08daac675f4543b4cb6feea4e61)), closes [#129](https://github.com/hxreborn/morphe-patches/issues/129)
+* **VPN Super Unlimited Proxy:** add support for 2.33.0 ([4dea441](https://github.com/hxreborn/morphe-patches/commit/4dea441346cf28e2bf5b1a94b28b2e5bf3e93edc)), closes [#131](https://github.com/hxreborn/morphe-patches/issues/131)
+
 ## [1.39.0](https://github.com/hxreborn/morphe-patches/compare/v1.38.0...v1.39.0) (2026-10-02)
 
 ### Bug Fixes
