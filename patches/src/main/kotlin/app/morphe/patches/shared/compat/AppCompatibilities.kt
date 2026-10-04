@@ -456,6 +456,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x8E58FF,
         targets = listOf(
+            AppTarget(version = "Android V1.78.51", minSdk = 26),
             AppTarget(version = "Android V1.78.49", minSdk = 26),
             AppTarget(version = "Android V1.78.47", minSdk = 26),
         ),
