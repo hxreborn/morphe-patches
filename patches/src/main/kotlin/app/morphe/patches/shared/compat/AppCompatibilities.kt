@@ -118,6 +118,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val ECHO_EQUALIZER = Compatibility(
+        name = "Echo Equalizer",
+        packageName = "com.hapibits.soundlift",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x2E2E45,
+        signatures = setOf(
+            "96cdac84105ee04a12a48110d37ec60888aa8fbff8220345888d7f9c12c2f3fa",
+        ),
+        targets = listOf(AppTarget(version = "9.2", versionCode = 86, minSdk = 32)),
+    )
+
     val ECHOGRAM = Compatibility(
         name = "Echogram",
         packageName = "com.liori.echogram",
