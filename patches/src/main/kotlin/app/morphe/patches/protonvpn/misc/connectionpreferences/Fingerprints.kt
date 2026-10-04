@@ -5,6 +5,7 @@
 package app.morphe.patches.protonvpn.misc.connectionpreferences
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.patch.BytecodePatchContext
@@ -67,5 +68,18 @@ internal fun BytecodePatchContext.defaultConnectionSettingFingerprint() = Finger
             opcodes = listOf(Opcode.INVOKE_STATIC, Opcode.INVOKE_STATIC_RANGE),
         ),
         newInstance(DefaultConnectionSettingStateToStringFingerprint.originalClassDef.type),
+    ),
+)
+
+internal object ConnectionCardViewStateToStringFingerprint :
+    ToStringFingerprint("VpnConnectionCardViewState(cardLabel=")
+
+internal fun BytecodePatchContext.connectionCardLabelFingerprint() = freeUserCheckFingerprint(
+    name = "invokeSuspend",
+    followingFilters = arrayOf(
+        methodCall(
+            returnType = ConnectionCardViewStateToStringFingerprint.originalClassDef.type,
+            location = MatchAfterWithin(3),
+        ),
     ),
 )

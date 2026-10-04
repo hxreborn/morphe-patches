@@ -37,6 +37,7 @@ val unlockConnectionPreferencesPatch = bytecodePatch(
         clearFreeUserCheckInLambdaOf(RecentsListViewStateFlowFingerprint)
         clearFreeUserCheckInLambdaOf(DefaultConnectionViewStateFlowFingerprint)
         clearFreeUserCheck(quickConnectIntentFingerprint())
+        clearFreeUserCheck(connectionCardLabelFingerprint())
 
         defaultConnectionSettingFingerprint().matchSingle().run {
             val recentIdIndex = instructionMatches[1].index
