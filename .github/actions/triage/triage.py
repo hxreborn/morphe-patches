@@ -36,6 +36,7 @@ OPTION_PATCHING_FAILED = "patchingfailed"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
 OPTIONS_RUNTIME_FAILURE = ("theappwillnotopenatall", "theappopensthencrashes")
+OPTIONS_PATCH_INEFFECTIVE = ("thepatchedfeatureisstilllocked", "thepatchhasnovisibleeffect")
 
 body_path = Path(sys.argv[1])
 list_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("patches-list.json")
@@ -150,14 +151,17 @@ if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_at
     )
     labels.append("needs info")
 
+failure = normalize(field(fields, "What does not work"))
 log_text = re.sub(r"^\s*(```|~~~)\w*\s*$", "", debug_log, flags=re.M).strip()
-if normalize(field(fields, "What does not work")).startswith(OPTIONS_RUNTIME_FAILURE) and not log_text:
+if failure.startswith(OPTIONS_RUNTIME_FAILURE) and not log_text:
     flags.append(
         "the app crashes or won't open but no logcat is attached"
     )
     labels.append("needs info")
 
-stock = normalize(field(fields, "Does the unpatched app do the same thing"))
+stock = "" if failure.startswith(OPTIONS_PATCH_INEFFECTIVE) else normalize(
+    field(fields, "Does the unpatched app do the same thing")
+)
 single_patch = normalize(field(fields, "Does it still happen with only one patch selected"))
 
 if stock.startswith(OPTION_STOCK_FAILS_TOO):

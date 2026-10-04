@@ -472,6 +472,33 @@ Yes, it happens with only that one patch
 FATAL EXCEPTION: main
 ```
 """),
+    "still locked without trying the unpatched app": ("pass", f"""### App name
+
+Showly
+
+### App version
+
+3.70.0
+
+### What does not work
+
+The patched feature is still locked or still shows ads
+
+### Does the unpatched app do the same thing
+
+I have not tried the unpatched app
+
+### Does it still happen with only one patch selected
+
+Yes, it happens with only that one patch
+
+### What happens
+
+{LONG}
+
+### Error logs
+
+"""),
 }
 
 
