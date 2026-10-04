@@ -401,7 +401,7 @@ body:
     attributes:
       label: Error logs
       description: |
-        Optional. A logcat of the app if you can get one.
+        Required when the app won't open or crashes. Run `adb logcat -d > log.txt` right after it fails and paste the file here.
       render: shell
   - type: checkboxes
     id: acknowledgements

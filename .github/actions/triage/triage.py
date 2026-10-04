@@ -35,6 +35,7 @@ REPORT = re.compile(
 OPTION_PATCHING_FAILED = "patchingfailed"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
+OPTIONS_RUNTIME_FAILURE = ("theappwillnotopenatall", "theappopensthencrashes")
 
 body_path = Path(sys.argv[1])
 list_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("patches-list.json")
@@ -146,6 +147,13 @@ elif matched[1] and not (
 if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_attached:
     flags.append(
         "patching failed but no error report is attached"
+    )
+    labels.append("needs info")
+
+log_text = re.sub(r"^\s*(```|~~~)\w*\s*$", "", debug_log, flags=re.M).strip()
+if normalize(field(fields, "What does not work")).startswith(OPTIONS_RUNTIME_FAILURE) and not log_text:
+    flags.append(
+        "the app crashes or won't open but no logcat is attached"
     )
     labels.append("needs info")
 

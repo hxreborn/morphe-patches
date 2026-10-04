@@ -412,6 +412,66 @@ Yes, it happens with only that one patch
 
 {LONG}
 """),
+    "crash without a logcat": ("flag", f"""### App name
+
+Showly
+
+### App version
+
+3.70.0
+
+### What does not work
+
+The app opens, then crashes
+
+### Does the unpatched app do the same thing
+
+The unpatched app works fine, only the patched one fails
+
+### Does it still happen with only one patch selected
+
+Yes, it happens with only that one patch
+
+### What happens
+
+{LONG}
+
+### Error logs
+
+```shell
+
+```
+"""),
+    "crash with a logcat": ("pass", f"""### App name
+
+Showly
+
+### App version
+
+3.70.0
+
+### What does not work
+
+The app opens, then crashes
+
+### Does the unpatched app do the same thing
+
+The unpatched app works fine, only the patched one fails
+
+### Does it still happen with only one patch selected
+
+Yes, it happens with only that one patch
+
+### What happens
+
+{LONG}
+
+### Error logs
+
+```shell
+FATAL EXCEPTION: main
+```
+"""),
 }
 
 
