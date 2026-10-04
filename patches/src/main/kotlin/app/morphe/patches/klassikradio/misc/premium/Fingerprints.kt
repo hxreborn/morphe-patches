@@ -5,7 +5,9 @@
 package app.morphe.patches.klassikradio.misc.premium
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -29,4 +31,15 @@ internal fun contractConstructorFingerprint(subscriptionType: String) = Fingerpr
         fieldAccess(type = subscriptionType, opcode = Opcode.IPUT_OBJECT),
     ),
     custom = { method, _ -> method.parameterTypes.firstOrNull() == subscriptionType },
+)
+
+internal object SectionTypeDecoderFingerprint : Fingerprint(
+    name = "deserialize",
+    returnType = "Ljava/lang/Object;",
+    strings = listOf("itemType", "category"),
+    filters = listOf(
+        string("banner"),
+        opcode(Opcode.INVOKE_STATIC, location = MatchAfterImmediately()),
+        opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
+    ),
 )

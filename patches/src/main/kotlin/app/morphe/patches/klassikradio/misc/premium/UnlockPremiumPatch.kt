@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.getReference
 import app.morphe.util.matchSingle
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -17,8 +18,8 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks the premium music channels, on-demand playback and track skipping. " +
-        "Requires a signed-in account.",
+    description = "Unlocks the premium music channels, on-demand playback and track skipping, " +
+        "and hides the trial banner. Requires a signed-in account.",
 ) {
     compatibleWith(AppCompatibilities.KLASSIK_RADIO)
 
@@ -33,6 +34,13 @@ val unlockPremiumPatch = bytecodePatch(
             val register = method.getInstruction<TwoRegisterInstruction>(index).registerA
 
             method.addInstruction(index, "sget-object v$register, $premium")
+        }
+
+        SectionTypeDecoderFingerprint.matchSingle().apply {
+            val index = instructionMatches.last().index
+            val register = method.getInstruction<OneRegisterInstruction>(index).registerA
+
+            method.addInstruction(index + 1, "const/4 v$register, 0x0")
         }
     }
 }
