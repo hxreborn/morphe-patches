@@ -43,3 +43,9 @@ internal object SectionTypeDecoderFingerprint : Fingerprint(
         opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
     ),
 )
+
+internal object SkipToStringFingerprint : Fingerprint(
+    name = "toString",
+    returnType = "Ljava/lang/String;",
+    strings = listOf("Skip(availableSkips=", ", skipValid="),
+)

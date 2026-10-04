@@ -5,6 +5,7 @@
 package app.morphe.patches.klassikradio.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -18,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks the premium music channels, on-demand playback and track skipping, " +
+    description = "Unlocks the premium music channels, on-demand playback and unlimited track skipping, " +
         "and hides the trial banner. Requires a signed-in account.",
 ) {
     compatibleWith(AppCompatibilities.KLASSIK_RADIO)
@@ -42,5 +43,17 @@ val unlockPremiumPatch = bytecodePatch(
 
             method.addInstruction(index + 1, "const/4 v$register, 0x0")
         }
+
+        SkipToStringFingerprint.matchSingle().classDef.methods
+            .single { it.name == "<init>" && it.parameterTypes == listOf("I", "Z") }
+            .addInstructionsWithLabels(
+                0,
+                """
+                    if-gtz p1, :has_skips
+                    const/4 p1, 0x1
+                    :has_skips
+                    const/4 p2, 0x1
+                """,
+            )
     }
 }
