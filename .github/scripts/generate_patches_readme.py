@@ -236,6 +236,7 @@ ICONS = {
     "apps.automan.blurwallpaper": "blurwall.png",
     "com.nieruo.healthapp": "catzy.png",
     "com.one4studio.one4home": "one4home.png",
+    "com.keepa.mobile": "keepa.png",
 }
 
 

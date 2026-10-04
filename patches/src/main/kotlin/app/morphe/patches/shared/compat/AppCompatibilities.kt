@@ -224,6 +224,17 @@ internal object AppCompatibilities {
         appIconColor = 0x53FC18,
     )
 
+    val KEEPA = Compatibility(
+        name = "Keepa",
+        packageName = "com.keepa.mobile",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x256A93,
+        signatures = setOf(
+            "43329e3a67415def40f307e5a7b3343498db9a821f436785d0a5487c636b9bcd",
+        ),
+        targets = listOf(AppTarget(version = "6.2.1", versionCode = 56014, minSdk = 30)),
+    )
+
     val KLASSIK_RADIO = Compatibility(
         name = "Klassik Radio+",
         packageName = "de.klassikradio.app",
