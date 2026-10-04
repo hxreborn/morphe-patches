@@ -21,6 +21,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.4.0", versionCode = 340, minSdk = 24)),
     )
 
+    val ALL_VIDEO_PLAYER = Compatibility(
+        name = "All Video Player App",
+        packageName = "com.allformatplayer.streamvideoplayer",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x0072FF,
+        signatures = setOf(
+            "567e9fdfe00635da716359222fee014a6a8621cf4b7fc08c579eaafba59bf690",
+        ),
+        targets = listOf(AppTarget(version = "1.4", versionCode = 14, minSdk = 26)),
+    )
+
     val ALPINEQUEST = Compatibility(
         name = "AlpineQuest",
         packageName = "psyberia.alpinequest.free",

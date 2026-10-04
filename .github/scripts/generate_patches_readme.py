@@ -184,6 +184,7 @@ def versions_table(targets):
 # without an icon, so adding a new app does not require touching this map.
 ICONS = {
     "all.in.one.calculator": "allinonecalculator.png",
+    "com.allformatplayer.streamvideoplayer": "allvideoplayer.png",
     "psyberia.alpinequest.free": "alpinequest.png",
     "com.atlogis.atlomaps": "atlomaps.png",
     "com.adithya.memoneet": "memoneet.png",

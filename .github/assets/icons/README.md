@@ -20,6 +20,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | File | App | Developer | Source |
 |---|---|---|---|
 | `allinonecalculator.png` | All-In-One Calculator (`all.in.one.calculator`) | allinonecalculator.com | APK 3.4.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `allvideoplayer.png` | All Video Player App (`com.allformatplayer.streamvideoplayer`) | Legend eSolution | APK 1.4, `res/drawable-xhdpi-v4/small_logo.png` |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
 | `projectivy.png` | Projectivy Launcher (`com.spocky.projengmenu`) | Spocky | APK 4.71, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
 | `forus.png` | ForusApp (`com.myvitale.forus`) | MyVitale | APK 3.0.15, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
