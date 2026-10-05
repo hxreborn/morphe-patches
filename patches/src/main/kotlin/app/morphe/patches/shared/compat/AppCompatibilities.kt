@@ -465,7 +465,10 @@ internal object AppCompatibilities {
         packageName = "org.readera",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x0061BD,
-        targets = listOf(AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16)),
+        targets = listOf(
+            AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 16),
+            AppTarget(version = "26.09.29+2320", versionCode = 2320, minSdk = 23),
+        ),
     )
 
     val REALME_LINK = Compatibility(
