@@ -9,10 +9,12 @@ public final class FreeAccount {
 
     private static volatile boolean signedIn;
 
-    private FreeAccount() {}
+    private FreeAccount() {
+
+    }
 
     public static void onUserInfoChanged(Object userInfo) {
-        Object vpnUser = userInfo == null ? null : Reflection.call(userInfo, Members.userInfoVpnUser());
+        Object vpnUser = (userInfo != null) ? Reflection.call(userInfo, Members.userInfoVpnUser()) : null;
         signedIn = vpnUser != null && (Boolean) Reflection.call(vpnUser, Members.vpnUserIsFreeUser());
     }
 
@@ -23,4 +25,5 @@ public final class FreeAccount {
     public static boolean isSignedIn() {
         return signedIn;
     }
+
 }

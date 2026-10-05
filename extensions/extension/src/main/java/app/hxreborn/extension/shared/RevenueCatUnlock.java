@@ -4,17 +4,21 @@
  */
 package app.hxreborn.extension.shared;
 
+import java.util.Iterator;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-
 @SuppressWarnings("unused")
 public final class RevenueCatUnlock {
+
     private static final String PURCHASE_DATE = "2020-01-01T00:00:00Z";
+
     private static final String EXPIRES_DATE = "2099-01-01T00:00:00Z";
 
-    private RevenueCatUnlock() {}
+    private RevenueCatUnlock() {
+
+    }
 
     public static void grantEntitlement(JSONObject body, String entitlement, String product) {
         if (body == null) {
@@ -45,12 +49,13 @@ public final class RevenueCatUnlock {
 
             renew(subscriptions);
             renew(entitlements);
-        } catch (Exception ignored) {
+        }
+        catch (Exception ignored) {
         }
     }
 
     private static void renew(JSONObject entriesById) throws JSONException {
-        for (Iterator<String> keys = entriesById.keys(); keys.hasNext(); ) {
+        for (Iterator<String> keys = entriesById.keys(); keys.hasNext();) {
             JSONObject entry = entriesById.optJSONObject(keys.next());
             if (entry == null) {
                 continue;
@@ -83,4 +88,5 @@ public final class RevenueCatUnlock {
         entitlement.put("expires_date", EXPIRES_DATE);
         return entitlement;
     }
+
 }

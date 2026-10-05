@@ -4,12 +4,14 @@
  */
 package app.hxreborn.extension.proton;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.pm.PackageInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -24,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
-import java.util.List;
 
 import app.hxreborn.extension.protonmail.ScheduledDeletionEditor;
 
@@ -33,39 +34,63 @@ import app.hxreborn.extension.protonmail.ScheduledDeletionEditor;
 public final class PatchesSettingsActivity extends Activity {
 
     private static final int SCREEN_INSET_DP = 16;
+
     private static final int SCREEN_TOP_PADDING_DP = 0;
+
     private static final int SCREEN_BOTTOM_PADDING_DP = 24;
 
     private static final int APP_BAR_START_PADDING_DP = 4;
+
     private static final int APP_BAR_VERTICAL_PADDING_DP = 8;
+
     private static final int APP_BAR_TITLE_SP = 22;
+
     private static final int APP_BAR_TITLE_START_DP = 4;
+
     private static final int BACK_TOUCH_TARGET_DP = 48;
+
     private static final int BACK_ICON_INSET_DP = 12;
 
     private static final int CARD_RADIUS_DP = 13;
+
     private static final int CARD_GAP_DP = 14;
+
     private static final int CARD_PADDING_DP = 20;
 
     private static final int ROW_MIN_HEIGHT_DP = 56;
+
     private static final int ROW_TITLE_SP = 16;
+
     private static final int ROW_SUMMARY_SP = 14;
+
     private static final int CHEVRON_SIZE_DP = 24;
+
     private static final int ROW_CONTROL_START_MARGIN_DP = 16;
+
     private static final int SWATCH_SIZE_DP = 26;
 
     private static final int FIELD_VERTICAL_PADDING_DP = 4;
+
     private static final int FIELD_LABEL_WIDTH_DP = 120;
+
     private static final int SECTION_LABEL_INSET_DP = 4;
+
     private static final int SECTION_LABEL_TOP_DP = 16;
+
     private static final int SECTION_LABEL_BOTTOM_DP = 8;
+
     private static final int FIELD_TEXT_SP = 14;
 
     private int screenBackgroundColor;
+
     private int cardBackgroundColor;
+
     private int textNormColor;
+
     private int textWeakColor;
+
     private int iconDisabledColor;
+
     private ScrollView content;
 
     @Override
@@ -76,7 +101,9 @@ public final class PatchesSettingsActivity extends Activity {
     private static Context withNightMode(Context base, int nightMode) {
         final Configuration configuration = base.getResources().getConfiguration();
         final int currentNightMode = configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (nightMode == Configuration.UI_MODE_NIGHT_UNDEFINED || nightMode == currentNightMode) return base;
+        if (nightMode == Configuration.UI_MODE_NIGHT_UNDEFINED || nightMode == currentNightMode) {
+            return base;
+        }
 
         final Configuration override = new Configuration(configuration);
         override.uiMode = (configuration.uiMode & ~Configuration.UI_MODE_NIGHT_MASK) | nightMode;
@@ -88,13 +115,12 @@ public final class PatchesSettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         final int backgroundNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_NORM);
-        screenBackgroundColor = AmoledTheme.isEnabled() && PatchesTheme.isDark(backgroundNormColor)
-                ? Color.BLACK
+        this.screenBackgroundColor = (AmoledTheme.isEnabled() && PatchesTheme.isDark(backgroundNormColor)) ? Color.BLACK
                 : backgroundNormColor;
-        cardBackgroundColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_SECONDARY);
-        textNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_NORM);
-        textWeakColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_WEAK);
-        iconDisabledColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.ICON_DISABLED);
+        this.cardBackgroundColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_SECONDARY);
+        this.textNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_NORM);
+        this.textWeakColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_WEAK);
+        this.iconDisabledColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.ICON_DISABLED);
 
         setContentView(buildScreen());
     }
@@ -108,47 +134,43 @@ public final class PatchesSettingsActivity extends Activity {
     private View buildScreen() {
         final LinearLayout screen = new LinearLayout(this);
         screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(screenBackgroundColor);
-        screen.setPadding(0, systemBarHeight("status_bar_height", 24), 0,
-                systemBarHeight("navigation_bar_height", 0));
+        screen.setBackgroundColor(this.screenBackgroundColor);
+        screen.setPadding(0, systemBarHeight("status_bar_height", 24), 0, systemBarHeight("navigation_bar_height", 0));
         screen.addView(header());
 
-        content = new ScrollView(this);
-        screen.addView(content, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        this.content = new ScrollView(this);
+        screen.addView(this.content, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
         recreateContent();
         return screen;
     }
 
     private void recreateContent() {
-        if (content == null) return;
+        if (this.content == null) {
+            return;
+        }
 
-        content.removeAllViews();
+        this.content.removeAllViews();
         final LinearLayout column = new LinearLayout(this);
         column.setOrientation(LinearLayout.VERTICAL);
-        column.setPadding(dp(SCREEN_INSET_DP), dp(SCREEN_TOP_PADDING_DP),
-                dp(SCREEN_INSET_DP), dp(SCREEN_BOTTOM_PADDING_DP));
+        column.setPadding(dp(SCREEN_INSET_DP), dp(SCREEN_TOP_PADDING_DP), dp(SCREEN_INSET_DP),
+                dp(SCREEN_BOTTOM_PADDING_DP));
 
         if (AppliedPatches.scheduledDeletion()) {
-            column.addView(card(row(ScheduledDeletionEditor.SETTINGS_ROW_TITLE,
-                    ScheduledDeletionEditor.summary(this),
+            column.addView(card(row(ScheduledDeletionEditor.SETTINGS_ROW_TITLE, ScheduledDeletionEditor.summary(this),
                     () -> ScheduledDeletionEditor.show(this, this::recreateContent))));
         }
 
         if (AccentColor.isPatched()) {
-            column.addView(card(row(AppliedPatches.ACCENT_COLOR,
-                    AccentColorDialog.getPresetLabel(AccentColor.getPreset()),
-                    AccentColor.getAccentColor(isDarkTheme()),
-                    () -> AccentColorDialog.show(this, () -> {
-                        recreateContent();
-                        confirmRestart();
-                    }))));
+            column.addView(
+                    card(row(AppliedPatches.ACCENT_COLOR, AccentColorDialog.getPresetLabel(AccentColor.getPreset()),
+                            AccentColor.getAccentColor(isDarkTheme()), () -> AccentColorDialog.show(this, () -> {
+                                recreateContent();
+                                confirmRestart();
+                            }))));
         }
         if (AmoledTheme.isPatched()) {
-            column.addView(card(switchRow(AppliedPatches.AMOLED_DARK_THEME,
-                    "Pure black backgrounds.",
-                    AmoledTheme.isEnabled(),
-                    new CheckedChangeListener() {
+            column.addView(card(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Pure black backgrounds.",
+                    AmoledTheme.isEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
                             AmoledTheme.setEnabled(enabled);
@@ -158,44 +180,45 @@ public final class PatchesSettingsActivity extends Activity {
         }
 
         if (UpsellingVisibility.isPatched()) {
-            column.addView(card(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS,
-                    "Upgrade buttons, banners and offers.",
-                    UpsellingVisibility.isHidden(),
-                    new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean hidden) {
-                            UpsellingVisibility.setHidden(hidden);
-                            confirmRestart();
-                        }
-                    })));
+            column
+                .addView(card(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS, "Upgrade buttons, banners and offers.",
+                        UpsellingVisibility.isHidden(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean hidden) {
+                                UpsellingVisibility.setHidden(hidden);
+                                confirmRestart();
+                            }
+                        })));
         }
 
         column.addView(sectionLabel("App"));
         column.addView(card(appFields()));
 
-        content.addView(column, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        this.content.addView(column,
+                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private View sectionLabel(String text) {
         final TextView label = new TextView(this);
         label.setText(text);
-        label.setTextColor(textWeakColor);
+        label.setTextColor(this.textWeakColor);
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, ROW_SUMMARY_SP);
-        label.setPadding(dp(SECTION_LABEL_INSET_DP), dp(SECTION_LABEL_TOP_DP),
-                dp(SECTION_LABEL_INSET_DP), dp(SECTION_LABEL_BOTTOM_DP));
+        label.setPadding(dp(SECTION_LABEL_INSET_DP), dp(SECTION_LABEL_TOP_DP), dp(SECTION_LABEL_INSET_DP),
+                dp(SECTION_LABEL_BOTTOM_DP));
         return label;
     }
 
     private void confirmRestart() {
         final CharSequence appName = getApplicationInfo().loadLabel(getPackageManager());
-        PatchesDialog.showConfirmation(this, "Restart required",
-                appName + " must restart to apply the change.", "Restart", this::restartApp);
+        PatchesDialog.showConfirmation(this, "Restart required", appName + " must restart to apply the change.",
+                "Restart", this::restartApp);
     }
 
     private void restartApp() {
         final Intent launch = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        if (launch == null) return;
+        if (launch == null) {
+            return;
+        }
 
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(launch);
@@ -203,35 +226,28 @@ public final class PatchesSettingsActivity extends Activity {
         Runtime.getRuntime().exit(0);
     }
 
-    private interface CheckedChangeListener {
-        void onCheckedChanged(boolean checked);
-    }
-
-    private View switchRow(String title, String summary, boolean checked,
-                           final CheckedChangeListener onChange) {
+    private View switchRow(String title, String summary, boolean checked, final CheckedChangeListener onChange) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(dp(CARD_PADDING_DP), dp(CARD_PADDING_DP),
-                dp(CARD_PADDING_DP), dp(CARD_PADDING_DP));
+        row.setPadding(dp(CARD_PADDING_DP), dp(CARD_PADDING_DP), dp(CARD_PADDING_DP), dp(CARD_PADDING_DP));
         row.setMinimumHeight(dp(ROW_MIN_HEIGHT_DP));
-        row.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        row.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
         final LinearLayout text = new LinearLayout(this);
         text.setOrientation(LinearLayout.VERTICAL);
-        text.setLayoutParams(new LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        text.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
         final TextView titleView = new TextView(this);
         titleView.setText(title);
-        titleView.setTextColor(textNormColor);
+        titleView.setTextColor(this.textNormColor);
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, ROW_TITLE_SP);
         text.addView(titleView);
 
         final TextView summaryView = new TextView(this);
         summaryView.setText(summary);
-        summaryView.setTextColor(textWeakColor);
+        summaryView.setTextColor(this.textWeakColor);
         summaryView.setTextSize(TypedValue.COMPLEX_UNIT_SP, ROW_SUMMARY_SP);
         text.addView(summaryView);
         row.addView(text);
@@ -245,17 +261,16 @@ public final class PatchesSettingsActivity extends Activity {
         controlParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
         control.setLayoutParams(controlParams);
         styleSwitch(control);
-        control.setOnCheckedChangeListener(
-                (button, isChecked) -> onChange.onCheckedChanged(isChecked));
+        control.setOnCheckedChangeListener((button, isChecked) -> onChange.onCheckedChanged(isChecked));
         row.addView(control);
 
-        row.setOnClickListener(ignored -> control.performClick());
+        row.setOnClickListener((ignored) -> control.performClick());
         PatchesTheme.makeClickable(row);
         return row;
     }
 
     private boolean isDarkTheme() {
-        return PatchesTheme.isDark(cardBackgroundColor);
+        return PatchesTheme.isDark(this.cardBackgroundColor);
     }
 
     private void styleSwitch(Switch control) {
@@ -266,27 +281,26 @@ public final class PatchesSettingsActivity extends Activity {
         final LinearLayout header = new LinearLayout(this);
         header.setOrientation(LinearLayout.HORIZONTAL);
         header.setGravity(Gravity.CENTER_VERTICAL);
-        header.setPadding(dp(APP_BAR_START_PADDING_DP), dp(APP_BAR_VERTICAL_PADDING_DP),
-                dp(SCREEN_INSET_DP), dp(APP_BAR_VERTICAL_PADDING_DP));
+        header.setPadding(dp(APP_BAR_START_PADDING_DP), dp(APP_BAR_VERTICAL_PADDING_DP), dp(SCREEN_INSET_DP),
+                dp(APP_BAR_VERTICAL_PADDING_DP));
 
         final ImageView back = new ImageView(this);
         final Drawable arrow = PatchesTheme.getDrawableByName(this, "ic_proton_arrow_left");
-        back.setImageDrawable(arrow != null ? arrow : PatchesTheme.getDrawableByName(this, "ic_arrow_back"));
-        back.setColorFilter(textNormColor);
+        back.setImageDrawable((arrow != null) ? arrow : PatchesTheme.getDrawableByName(this, "ic_arrow_back"));
+        back.setColorFilter(this.textNormColor);
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        back.setPadding(dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP),
-                dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP));
+        back.setPadding(dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP));
         back.setLayoutParams(new LinearLayout.LayoutParams(dp(BACK_TOUCH_TARGET_DP), dp(BACK_TOUCH_TARGET_DP)));
         back.setClickable(true);
         back.setFocusable(true);
         back.setContentDescription("Back");
         PatchesTheme.makeClickable(back);
-        back.setOnClickListener(ignored -> finish());
+        back.setOnClickListener((ignored) -> finish());
         header.addView(back);
 
         final TextView title = new TextView(this);
         title.setText(PatchesMenu.SETTINGS_ROW_TITLE);
-        title.setTextColor(textNormColor);
+        title.setTextColor(this.textNormColor);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, APP_BAR_TITLE_SP);
         title.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
         title.setPadding(dp(APP_BAR_TITLE_START_DP), 0, 0, 0);
@@ -299,13 +313,13 @@ public final class PatchesSettingsActivity extends Activity {
         card.setOrientation(LinearLayout.VERTICAL);
 
         final GradientDrawable background = new GradientDrawable();
-        background.setColor(cardBackgroundColor);
+        background.setColor(this.cardBackgroundColor);
         background.setCornerRadius(dp(CARD_RADIUS_DP));
         card.setBackground(background);
         card.addView(child);
 
-        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = dp(CARD_GAP_DP);
         card.setLayoutParams(params);
         return card;
@@ -319,37 +333,35 @@ public final class PatchesSettingsActivity extends Activity {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(dp(CARD_PADDING_DP), dp(CARD_PADDING_DP),
-                dp(CARD_PADDING_DP), dp(CARD_PADDING_DP));
+        row.setPadding(dp(CARD_PADDING_DP), dp(CARD_PADDING_DP), dp(CARD_PADDING_DP), dp(CARD_PADDING_DP));
         row.setMinimumHeight(dp(ROW_MIN_HEIGHT_DP));
         row.setClickable(true);
         row.setFocusable(true);
-        row.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        row.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
         final LinearLayout text = new LinearLayout(this);
         text.setOrientation(LinearLayout.VERTICAL);
-        text.setLayoutParams(new LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        text.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
         final TextView titleView = new TextView(this);
         titleView.setText(title);
-        titleView.setTextColor(textNormColor);
+        titleView.setTextColor(this.textNormColor);
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, ROW_TITLE_SP);
         text.addView(titleView);
 
         if (summary != null) {
             final TextView summaryView = new TextView(this);
             summaryView.setText(summary);
-            summaryView.setTextColor(textWeakColor);
+            summaryView.setTextColor(this.textWeakColor);
             summaryView.setTextSize(TypedValue.COMPLEX_UNIT_SP, ROW_SUMMARY_SP);
             text.addView(summaryView);
         }
         row.addView(text);
 
         if (swatchColor != null) {
-            final LinearLayout.LayoutParams swatchParams = new LinearLayout.LayoutParams(
-                    dp(SWATCH_SIZE_DP), dp(SWATCH_SIZE_DP));
+            final LinearLayout.LayoutParams swatchParams = new LinearLayout.LayoutParams(dp(SWATCH_SIZE_DP),
+                    dp(SWATCH_SIZE_DP));
             swatchParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
             final View swatchView = new View(this);
             swatchView.setBackground(PatchesTheme.createCircle(swatchColor));
@@ -358,30 +370,30 @@ public final class PatchesSettingsActivity extends Activity {
 
         final ImageView chevron = new ImageView(this);
         chevron.setImageDrawable(PatchesTheme.getDrawableByName(this, "ic_proton_chevron_right"));
-        chevron.setColorFilter(iconDisabledColor);
+        chevron.setColorFilter(this.iconDisabledColor);
         chevron.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        final LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(
-                dp(CHEVRON_SIZE_DP), dp(CHEVRON_SIZE_DP));
+        final LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(dp(CHEVRON_SIZE_DP),
+                dp(CHEVRON_SIZE_DP));
         chevronParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
         chevron.setLayoutParams(chevronParams);
         row.addView(chevron);
 
-        row.setOnClickListener(ignored -> onClick.run());
+        row.setOnClickListener((ignored) -> onClick.run());
         PatchesTheme.makeClickable(row);
         return row;
     }
 
     private int systemBarHeight(String name, int fallbackDp) {
         final int identifier = getResources().getIdentifier(name, "dimen", "android");
-        return identifier > 0 ? getResources().getDimensionPixelSize(identifier) : dp(fallbackDp);
+        return (identifier > 0) ? getResources().getDimensionPixelSize(identifier) : dp(fallbackDp);
     }
 
     private String appVersion() {
         try {
-            final PackageInfo packageInfo =
-                    getPackageManager().getPackageInfo(getPackageName(), 0);
+            final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             return packageInfo.versionName + " (" + packageInfo.versionCode + ")";
-        } catch (Throwable t) {
+        }
+        catch (Throwable ex) {
             return "unknown";
         }
     }
@@ -389,10 +401,9 @@ public final class PatchesSettingsActivity extends Activity {
     private LinearLayout fieldColumn() {
         final LinearLayout fields = new LinearLayout(this);
         fields.setOrientation(LinearLayout.VERTICAL);
-        fields.setPadding(dp(CARD_PADDING_DP), dp(CARD_PADDING_DP),
-                dp(CARD_PADDING_DP), dp(CARD_PADDING_DP));
-        fields.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        fields.setPadding(dp(CARD_PADDING_DP), dp(CARD_PADDING_DP), dp(CARD_PADDING_DP), dp(CARD_PADDING_DP));
+        fields.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         return fields;
     }
 
@@ -403,7 +414,7 @@ public final class PatchesSettingsActivity extends Activity {
 
         final List<String> applied = AppliedPatches.names();
         for (int index = 0; index < applied.size(); index++) {
-            fields.addView(field(index == 0 ? "Applied patches" : "", applied.get(index)));
+            fields.addView(field((index != 0) ? "" : "Applied patches", applied.get(index)));
         }
         return fields;
     }
@@ -412,23 +423,22 @@ public final class PatchesSettingsActivity extends Activity {
         final LinearLayout field = new LinearLayout(this);
         field.setOrientation(LinearLayout.HORIZONTAL);
         field.setPadding(0, dp(FIELD_VERTICAL_PADDING_DP), 0, dp(FIELD_VERTICAL_PADDING_DP));
-        field.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        field.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
         final TextView labelView = new TextView(this);
         labelView.setText(label);
-        labelView.setTextColor(textWeakColor);
+        labelView.setTextColor(this.textWeakColor);
         labelView.setTextSize(TypedValue.COMPLEX_UNIT_SP, FIELD_TEXT_SP);
-        labelView.setLayoutParams(new LinearLayout.LayoutParams(dp(FIELD_LABEL_WIDTH_DP),
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+        labelView.setLayoutParams(
+                new LinearLayout.LayoutParams(dp(FIELD_LABEL_WIDTH_DP), ViewGroup.LayoutParams.WRAP_CONTENT));
         field.addView(labelView);
 
         final TextView valueView = new TextView(this);
-        valueView.setText(value == null || value.isEmpty() ? "unknown" : value);
-        valueView.setTextColor(textNormColor);
+        valueView.setText((value == null || value.isEmpty()) ? "unknown" : value);
+        valueView.setTextColor(this.textNormColor);
         valueView.setTextSize(TypedValue.COMPLEX_UNIT_SP, FIELD_TEXT_SP);
-        valueView.setLayoutParams(new LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        valueView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         field.addView(valueView);
         return field;
     }
@@ -436,4 +446,11 @@ public final class PatchesSettingsActivity extends Activity {
     private int dp(int value) {
         return PatchesTheme.dpToPx(this, value);
     }
+
+    private interface CheckedChangeListener {
+
+        void onCheckedChanged(boolean checked);
+
+    }
+
 }

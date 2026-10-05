@@ -24,7 +24,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
 import org.json.JSONObject;
 
 @SuppressWarnings("unused")
@@ -36,23 +35,20 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     private static final String GOOGLE_ACCOUNTS_HOST = "accounts.google.com";
 
-    private static final String OPENER_RELAY_SCRIPT =
-            "(function(){try{if(window.__tbShim)return;window.__tbShim=1;"
+    private static final String OPENER_RELAY_SCRIPT = "(function(){try{if(window.__tbShim)return;window.__tbShim=1;"
             + "var o=window.opener;var relay={postMessage:function(d,t){"
             + "try{window.__tbCaptured=(typeof d==='string')?d:JSON.stringify(d);}catch(e){}"
             + "try{if(o&&o.postMessage)o.postMessage(d,t);}catch(e){}}};"
             + "try{Object.defineProperty(window,'opener',{configurable:true,get:function(){return relay}});}"
             + "catch(e){window.opener=relay;}}catch(e){}})()";
 
-    private static final String READ_CREDENTIAL_SCRIPT =
-            "(function(){var c=window.__tbCaptured||'';"
+    private static final String READ_CREDENTIAL_SCRIPT = "(function(){var c=window.__tbCaptured||'';"
             + "if(!c){var m=document.documentElement.outerHTML.match(/eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]+/);"
             + "if(m)c=m[0];}return c;})()";
 
     private static final int DARK_BACKGROUND = Color.BLACK;
 
-    private static final String DARK_THEME_SCRIPT =
-            "(function(){var r=document.documentElement;if(!r||r.__tbDark)return;r.__tbDark=1;"
+    private static final String DARK_THEME_SCRIPT = "(function(){var r=document.documentElement;if(!r||r.__tbDark)return;r.__tbDark=1;"
             + "var st=document.createElement('style');st.textContent='[data-theme=DARK] .components-login-center-third-party-button{"
             + "background:transparent!important;border:1px solid rgba(255,255,255,.9)!important}"
             + "[data-theme=DARK] .other-login-icon .components-login-center-icon-button{"
@@ -73,8 +69,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     private static final String RESET_BUTTON_SCRIPT = "window.__tbReset&&window.__tbReset()";
 
-    private static final String LOGIN_PAGE_SCRIPT =
-            "(function(){if(window.__tbFix)return;window.__tbFix=1;"
+    private static final String LOGIN_PAGE_SCRIPT = "(function(){if(window.__tbFix)return;window.__tbFix=1;"
             + "var rawFetch=window.fetch?window.fetch.bind(window):null;"
             + "function send(d){try{var p={state:1,ndus:d.ndus,uid:String(d.userid||''),"
             + "displayName:d.displayName||'',headUrl:d.headUrl||'',"
@@ -83,21 +78,16 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             + "var u='dubox://user/tbsend/sendLoginResults?params='+encodeURIComponent(JSON.stringify(p));"
             + "var f=document.createElement('iframe');f.style.display='none';"
             + "document.documentElement.appendChild(f);f.src=u;"
-            + "setTimeout(function(){try{f.remove()}catch(e){}},1500);}catch(e){}}"
-            + "function rewrite(v){v=String(v);"
+            + "setTimeout(function(){try{f.remove()}catch(e){}},1500);}catch(e){}}" + "function rewrite(v){v=String(v);"
             + "if(v.indexOf('/passport/ssologin')<0||v.indexOf('__tbraw')>=0)return v;"
             + "v=v.replace(/([?&])client=[^&]*/,'$1client=web')"
             + ".replace(/([?&])clienttype=[^&]*/,'$1clienttype=0');"
             + "var cb=(v.match(/[?&]callback=([^&]*)/)||[])[1];"
             + "var j=v.replace(/([?&])callback=[^&]*/,'$1__tbraw=1');"
             + "if(rawFetch)rawFetch(j,{credentials:'include'}).then(function(r){return r.text()})"
-            + ".then(function(t){"
-            + "var a=t.indexOf('{'),b=t.lastIndexOf('}');"
-            + "var o=JSON.parse(t.slice(a,b+1));"
-            + "var ok=o&&o.code===0&&o.data&&o.data.ndus;"
-            + "if(ok)send(o.data);"
-            + "if(!ok&&cb&&window[cb])window[cb](o);}).catch(function(e){});"
-            + "return 'data:text/javascript,';}"
+            + ".then(function(t){" + "var a=t.indexOf('{'),b=t.lastIndexOf('}');" + "var o=JSON.parse(t.slice(a,b+1));"
+            + "var ok=o&&o.code===0&&o.data&&o.data.ndus;" + "if(ok)send(o.data);"
+            + "if(!ok&&cb&&window[cb])window[cb](o);}).catch(function(e){});" + "return 'data:text/javascript,';}"
             + "try{var d=Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src');"
             + "if(d&&d.set)Object.defineProperty(HTMLScriptElement.prototype,'src',{configurable:true,"
             + "enumerable:d.enumerable,get:d.get,set:function(v){d.set.call(this,rewrite(v))}});"
@@ -109,12 +99,10 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             + "window.__tbDeliver=function(c){try{if(window.__tbCb)window.__tbCb({credential:c,select_by:'btn'});}catch(e){}};"
             + "window.__tbReset=function(){"
             + "try{var g=window.google&&window.google.accounts&&window.google.accounts.id;"
-            + "if(g&&g.cancel)g.cancel();"
-            + "var h=document.querySelector('.hidden-google-btn');"
+            + "if(g&&g.cancel)g.cancel();" + "var h=document.querySelector('.hidden-google-btn');"
             + "if(g&&h&&window.__tbCb){var d=h.firstElementChild||h;d.innerHTML='';"
             + "g.renderButton(d,{type:'standard',theme:'outline',size:'large',"
-            + "width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});"
-            + "}}catch(e){}};"
+            + "width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});" + "}}catch(e){}};"
             + "var w=false,n=0,t=setInterval(function(){"
             + "var g=window.google&&window.google.accounts&&window.google.accounts.id;"
             + "if(g&&!w){w=true;var o2=g.initialize;"
@@ -124,8 +112,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             + "if(g&&window.__tbCb&&!d2.__tb){d2.__tb=1;try{d2.innerHTML='';"
             + "g.renderButton(d2,{type:'standard',theme:'outline',size:'large',"
             + "width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});"
-            + "}catch(e){d2.__tb=0;}}"
-            + "if(d2.__tb&&h.querySelector('iframe')){clearInterval(t);return;}}"
+            + "}catch(e){d2.__tb=0;}}" + "if(d2.__tb&&h.querySelector('iframe')){clearInterval(t);return;}}"
             + "if(++n>300)clearInterval(t);},50);})()";
 
     private static final String APP_UA_TOKEN = "dubox;";
@@ -133,10 +120,12 @@ public class GoogleLoginChromeClient extends WebChromeClient {
     private static final String WEBKIT_TOKEN = "AppleWebKit/537.36";
 
     public static void setBrowserUserAgent(WebSettings settings, String userAgent) {
-        if (userAgent == null || userAgent.length() == 0) return;
+        if (userAgent == null || userAgent.length() == 0) {
+            return;
+        }
 
         int token = userAgent.indexOf(APP_UA_TOKEN);
-        String appUserAgent = token >= 0 ? userAgent.substring(token) : userAgent;
+        String appUserAgent = (token >= 0) ? userAgent.substring(token) : userAgent;
 
         settings.setUserAgentString(appUserAgent + " " + WEBKIT_TOKEN);
     }
@@ -145,13 +134,19 @@ public class GoogleLoginChromeClient extends WebChromeClient {
     public void onProgressChanged(WebView view, int newProgress) {
         super.onProgressChanged(view, newProgress);
 
-        if (newProgress < 10) return;
+        if (newProgress < 10) {
+            return;
+        }
 
         String url = view.getUrl();
-        if (url == null || !url.contains(LOGIN_PATH)) return;
+        if (url == null || !url.contains(LOGIN_PATH)) {
+            return;
+        }
 
         view.evaluateJavascript(LOGIN_PAGE_SCRIPT, null);
-        if (isNightMode(view.getContext())) applyDarkTheme(view);
+        if (isNightMode(view.getContext())) {
+            applyDarkTheme(view);
+        }
     }
 
     private static void applyDarkTheme(WebView view) {
@@ -159,11 +154,15 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         view.evaluateJavascript(DARK_THEME_SCRIPT, null);
 
         Activity activity = activityOf(view.getContext());
-        if (activity == null) return;
+        if (activity == null) {
+            return;
+        }
 
         int backButtonId = activity.getResources().getIdentifier("left_button", "id", activity.getPackageName());
-        View backButton = backButtonId == 0 ? null : activity.findViewById(backButtonId);
-        if (backButton instanceof ImageView) ((ImageView) backButton).setColorFilter(Color.WHITE);
+        View backButton = (backButtonId != 0) ? activity.findViewById(backButtonId) : null;
+        if (backButton instanceof ImageView) {
+            ((ImageView) backButton).setColorFilter(Color.WHITE);
+        }
 
         useLightStatusBarIcons(activity);
     }
@@ -193,7 +192,9 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     private static boolean openPopup(WebView opener, Message resultMsg) {
         Activity activity = activityOf(opener.getContext());
-        if (activity == null || activity.isFinishing()) return false;
+        if (activity == null || activity.isFinishing()) {
+            return false;
+        }
 
         WebView popup = new WebView(activity);
         WebSettings settings = popup.getSettings();
@@ -205,22 +206,23 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         CookieManager.getInstance().setAcceptThirdPartyCookies(popup, true);
 
         boolean night = isNightMode(activity);
-        if (night) popup.setBackgroundColor(DARK_BACKGROUND);
+        if (night) {
+            popup.setBackgroundColor(DARK_BACKGROUND);
+        }
 
-        Dialog dialog = new Dialog(
-                activity,
-                night
-                        ? android.R.style.Theme_DeviceDefault_NoActionBar
-                        : android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+        Dialog dialog = new Dialog(activity, (night) ? android.R.style.Theme_DeviceDefault_NoActionBar
+                : android.R.style.Theme_DeviceDefault_Light_NoActionBar);
         FrameLayout container = new FrameLayout(activity);
-        if (night) container.setBackgroundColor(DARK_BACKGROUND);
+        if (night) {
+            container.setBackgroundColor(DARK_BACKGROUND);
+        }
         container.setOnApplyWindowInsetsListener((v, insets) -> {
             v.setPadding(0, insets.getSystemWindowInsetTop(), 0, insets.getSystemWindowInsetBottom());
             return insets;
         });
         container.addView(popup);
         dialog.setContentView(container);
-        dialog.setOnDismissListener(d -> {
+        dialog.setOnDismissListener((d) -> {
             opener.evaluateJavascript(RESET_BUTTON_SCRIPT, null);
             popup.destroy();
         });
@@ -237,14 +239,18 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     private static Activity activityOf(Context context) {
         while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) return (Activity) context;
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
             context = ((ContextWrapper) context).getBaseContext();
         }
         return null;
     }
 
     private static final class PopupViewClient extends WebViewClient {
+
         private final WebView opener;
+
         private final Dialog dialog;
 
         PopupViewClient(WebView opener, Dialog dialog) {
@@ -275,11 +281,15 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            if (!isGoogleAccountsPage(url)) return;
+            if (!isGoogleAccountsPage(url)) {
+                return;
+            }
 
-            view.evaluateJavascript(READ_CREDENTIAL_SCRIPT, value -> {
+            view.evaluateJavascript(READ_CREDENTIAL_SCRIPT, (value) -> {
                 String credential = jwtOf(value);
-                if (credential == null) return;
+                if (credential == null) {
+                    return;
+                }
 
                 deliver(credential);
                 dismiss();
@@ -287,25 +297,31 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         }
 
         void relayCapturedCredentialAndClose(WebView view) {
-            view.evaluateJavascript(READ_CREDENTIAL_SCRIPT, value -> {
+            view.evaluateJavascript(READ_CREDENTIAL_SCRIPT, (value) -> {
                 deliver(jwtOf(value));
                 dismiss();
             });
         }
 
         private void dismiss() {
-            if (dialog.isShowing()) dialog.dismiss();
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
         }
 
         private void deliver(String credential) {
-            if (credential == null) return;
+            if (credential == null) {
+                return;
+            }
 
-            opener.evaluateJavascript(
+            this.opener.evaluateJavascript(
                     "window.__tbDeliver&&window.__tbDeliver(" + JSONObject.quote(credential) + ")", null);
         }
 
         private boolean interceptRelayUrl(String url) {
-            if (!url.startsWith(RELAY_SCHEME)) return false;
+            if (!url.startsWith(RELAY_SCHEME)) {
+                return false;
+            }
 
             deliver(credentialOf(url));
             dismiss();
@@ -313,16 +329,22 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         }
 
         private static String jwtOf(String value) {
-            if (value == null) return null;
+            if (value == null) {
+                return null;
+            }
 
             int start = value.indexOf("eyJ");
-            if (start < 0) return null;
+            if (start < 0) {
+                return null;
+            }
 
             int end = start;
-            while (end < value.length() && isTokenChar(value.charAt(end))) end++;
+            while (end < value.length() && isTokenChar(value.charAt(end))) {
+                end++;
+            }
 
             String token = value.substring(start, end);
-            return token.indexOf('.') > 0 ? token : null;
+            return (token.indexOf('.') > 0) ? token : null;
         }
 
         private static boolean isTokenChar(char c) {
@@ -334,19 +356,23 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         }
 
         private static String credentialOf(String url) {
-            for (String key : new String[] {"credential=", "id_token=", "access_token="}) {
+            for (String key : new String[] { "credential=", "id_token=", "access_token=" }) {
                 int start = url.indexOf(key);
-                if (start < 0) continue;
+                if (start < 0) {
+                    continue;
+                }
 
                 start += key.length();
                 int end = url.indexOf('&', start);
-                return end < 0 ? url.substring(start) : url.substring(start, end);
+                return (end < 0) ? url.substring(start) : url.substring(start, end);
             }
             return null;
         }
+
     }
 
     private static final class PopupChromeClient extends WebChromeClient {
+
         private final PopupViewClient viewClient;
 
         PopupChromeClient(PopupViewClient viewClient) {
@@ -360,7 +386,9 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
         @Override
         public void onCloseWindow(WebView window) {
-            viewClient.relayCapturedCredentialAndClose(window);
+            this.viewClient.relayCapturedCredentialAndClose(window);
         }
+
     }
+
 }

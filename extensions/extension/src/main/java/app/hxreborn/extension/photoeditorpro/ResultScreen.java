@@ -11,9 +11,11 @@ import android.widget.TextView;
 @SuppressWarnings("unused")
 public final class ResultScreen {
 
+    private ResultScreen() {
+    }
+
     public static void hideShareRowAndCenterPreview(View shareRow) {
-        if (!PatchSettings.HIDE_SHARE.get()
-                || !(shareRow.getParent() instanceof ViewGroup screen)) {
+        if (!PatchSettings.HIDE_SHARE.get() || !(shareRow.getParent() instanceof ViewGroup screen)) {
             return;
         }
         shareRow.setVisibility(View.GONE);
@@ -24,20 +26,16 @@ public final class ResultScreen {
         }
         label.setVisibility(View.GONE);
         View previewGroup = screen.getChildAt(labelIndex - 1);
-        if (previewGroup != null
-                && previewGroup.getLayoutParams() instanceof ViewGroup.MarginLayoutParams params) {
+        if (previewGroup != null && previewGroup.getLayoutParams() instanceof ViewGroup.MarginLayoutParams params) {
             centerVertically(screen, previewGroup, params.topMargin);
         }
     }
 
     private static void centerVertically(ViewGroup screen, View previewGroup, int minTopMargin) {
-        screen.addOnLayoutChangeListener((view, left, top, right, bottom,
-                                          oldLeft, oldTop, oldRight, oldBottom) -> {
-            ViewGroup.MarginLayoutParams params =
-                    (ViewGroup.MarginLayoutParams) previewGroup.getLayoutParams();
+        screen.addOnLayoutChangeListener((view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) previewGroup.getLayoutParams();
             int headerBottom = previewGroup.getTop() - params.topMargin;
-            int centeredTopMargin =
-                    (screen.getHeight() - previewGroup.getHeight()) / 2 - headerBottom;
+            int centeredTopMargin = (screen.getHeight() - previewGroup.getHeight()) / 2 - headerBottom;
             int topMargin = Math.max(minTopMargin, centeredTopMargin);
             if (topMargin != params.topMargin) {
                 screen.post(() -> {
@@ -48,6 +46,4 @@ public final class ResultScreen {
         });
     }
 
-    private ResultScreen() {
-    }
 }

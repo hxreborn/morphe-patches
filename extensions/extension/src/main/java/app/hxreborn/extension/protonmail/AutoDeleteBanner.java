@@ -4,22 +4,29 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import app.hxreborn.extension.proton.UpsellingVisibility;
-
 import android.content.Context;
 import app.morphe.extension.shared.Utils;
+
+import app.hxreborn.extension.proton.UpsellingVisibility;
 
 @SuppressWarnings("unused")
 public final class AutoDeleteBanner {
 
     private static final String BANNER_BOTH = "hx_scheduled_deletion_banner";
+
     private static final String BANNER_TRASH = "hx_scheduled_deletion_banner_trash";
+
     private static final String BANNER_SPAM = "hx_scheduled_deletion_banner_spam";
+
     private static final String UPSELL_STATE_NAME = "AutoDeleteUpsell";
+
     private static final String DISABLED_STATE_NAME = "AutoDeleteDisabled";
+
     private static final String ENABLED_STATE_NAME = "AutoDeleteEnabled";
 
-    private AutoDeleteBanner() {}
+    private AutoDeleteBanner() {
+
+    }
 
     public static boolean isAutoDeleteEnabled(boolean enabledByProton) {
         return enabledByProton || isScheduled();
@@ -31,17 +38,15 @@ public final class AutoDeleteBanner {
         }
 
         final Context context = Utils.getContext();
-        final int resource = context.getResources()
-                .getIdentifier(bannerName(), "string", context.getPackageName());
-        return resource == 0 ? original : resource;
+        final int resource = context.getResources().getIdentifier(bannerName(), "string", context.getPackageName());
+        return (resource != 0) ? resource : original;
     }
 
     private static boolean isScheduled() {
         final Context context = Utils.getContext();
         final String shown = ScheduledDeletion.shownLabel();
-        return shown == null
-                ? ScheduledDeletionSettings.isActive(context)
-                : ScheduledDeletionSettings.isActive(context, shown);
+        return (shown != null) ? ScheduledDeletionSettings.isActive(context, shown)
+                : ScheduledDeletionSettings.isActive(context);
     }
 
     private static String bannerName() {
@@ -59,7 +64,7 @@ public final class AutoDeleteBanner {
         if (trash && spam) {
             return BANNER_BOTH;
         }
-        return trash ? BANNER_TRASH : BANNER_SPAM;
+        return (trash) ? BANNER_TRASH : BANNER_SPAM;
     }
 
     public static Object resolveState(Object currentState) {
@@ -71,7 +76,8 @@ public final class AutoDeleteBanner {
             if (UpsellingVisibility.isHidden() && UPSELL_STATE_NAME.equals(currentStateName)) {
                 return enumConstant(currentState, DISABLED_STATE_NAME);
             }
-        } catch (Throwable ignored) {
+        }
+        catch (Throwable ignored) {
         }
         return currentState;
     }
@@ -80,4 +86,5 @@ public final class AutoDeleteBanner {
     private static Object enumConstant(Object currentState, String name) {
         return Enum.valueOf((Class) ((Enum<?>) currentState).getDeclaringClass(), name);
     }
+
 }

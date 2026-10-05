@@ -5,12 +5,13 @@
 package app.hxreborn.extension.photoeditorpro;
 
 import android.content.Context;
+import app.morphe.extension.shared.Utils;
 
 import app.hxreborn.extension.shared.SpoofSignature;
-import app.morphe.extension.shared.Utils;
 
 @SuppressWarnings("unused")
 public class PatchApplication extends SpoofSignature {
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -22,4 +23,5 @@ public class PatchApplication extends SpoofSignature {
         super.onCreate();
         PatchPanel.install(this);
     }
+
 }

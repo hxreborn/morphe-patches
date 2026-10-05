@@ -12,34 +12,48 @@ import android.util.TypedValue;
 
 @SuppressWarnings("unused")
 public final class AmoledBackgroundOverlay {
+
     private static final String STYLE = "ThemeOverlay.Patches.AmoledBackground";
 
-    private AmoledBackgroundOverlay() {}
+    private AmoledBackgroundOverlay() {
+
+    }
 
     public static boolean isPatched() {
         return false;
     }
 
     static void apply(Activity activity) {
-        if (!isPatched() || !AmoledTheme.isEnabled()) return;
+        if (!isPatched() || !AmoledTheme.isEnabled()) {
+            return;
+        }
 
         final int nightMode = activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (nightMode != Configuration.UI_MODE_NIGHT_YES) return;
+        if (nightMode != Configuration.UI_MODE_NIGHT_YES) {
+            return;
+        }
 
         final int style = activity.getResources().getIdentifier(STYLE, "style", activity.getPackageName());
-        if (style == 0) return;
+        if (style == 0) {
+            return;
+        }
 
         final TypedValue windowBackground = resolveWindowBackground(activity);
         activity.getTheme().applyStyle(style, true);
         final TypedValue overlaidWindowBackground = resolveWindowBackground(activity);
-        if (isSameValue(windowBackground, overlaidWindowBackground)) return;
+        if (isSameValue(windowBackground, overlaidWindowBackground)) {
+            return;
+        }
 
-        final TypedArray attributes =
-                activity.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
+        final TypedArray attributes = activity.getTheme()
+            .obtainStyledAttributes(new int[] { android.R.attr.windowBackground });
         try {
             final Drawable background = attributes.getDrawable(0);
-            if (background != null) activity.getWindow().setBackgroundDrawable(background);
-        } finally {
+            if (background != null) {
+                activity.getWindow().setBackgroundDrawable(background);
+            }
+        }
+        finally {
             attributes.recycle();
         }
     }
@@ -53,4 +67,5 @@ public final class AmoledBackgroundOverlay {
     private static boolean isSameValue(TypedValue first, TypedValue second) {
         return first.type == second.type && first.data == second.data && first.resourceId == second.resourceId;
     }
+
 }

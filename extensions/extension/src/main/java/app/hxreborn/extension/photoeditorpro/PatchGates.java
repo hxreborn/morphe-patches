@@ -8,7 +8,11 @@ package app.hxreborn.extension.photoeditorpro;
 public final class PatchGates {
 
     private static final int POLL_DIVISOR = 4;
+
     private static final int UPLOAD_CHUNK_BYTES = 4 * 1024 * 1024;
+
+    private PatchGates() {
+    }
 
     public static boolean hideAds() {
         return PatchSettings.HIDE_ADS.get();
@@ -30,6 +34,4 @@ public final class PatchGates {
         return Math.max(stock, UPLOAD_CHUNK_BYTES);
     }
 
-    private PatchGates() {
-    }
 }

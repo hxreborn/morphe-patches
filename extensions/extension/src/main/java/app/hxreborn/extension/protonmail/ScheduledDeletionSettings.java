@@ -4,11 +4,11 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import app.hxreborn.extension.proton.PatchSettings;
-import app.hxreborn.extension.proton.AppliedPatches;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import app.hxreborn.extension.proton.AppliedPatches;
+import app.hxreborn.extension.proton.PatchSettings;
 
 final class ScheduledDeletionSettings {
 
@@ -17,10 +17,14 @@ final class ScheduledDeletionSettings {
     static final int MAXIMUM_SECONDS = 365 * 86400;
 
     private static final String INTERVAL_SECONDS = "interval_seconds";
+
     private static final String LAST_EMPTIED_MS = "last_emptied_ms";
+
     private static final String SHOW_TOAST = "show_toast";
 
-    private ScheduledDeletionSettings() {}
+    private ScheduledDeletionSettings() {
+
+    }
 
     static boolean isActive(Context context) {
         for (String label : ScheduledDeletion.EMPTIED_LABELS) {
@@ -42,9 +46,8 @@ final class ScheduledDeletionSettings {
         }
 
         final String key = intervalKey(label);
-        return clamp(preferences.contains(key)
-                ? preferences.getInt(key, OFF)
-                : preferences.getInt(INTERVAL_SECONDS, OFF));
+        return clamp(
+                (preferences.contains(key)) ? preferences.getInt(key, OFF) : preferences.getInt(INTERVAL_SECONDS, OFF));
     }
 
     static boolean saveIntervalSeconds(Context context, String label, int seconds) {
@@ -57,8 +60,7 @@ final class ScheduledDeletionSettings {
         }
 
         final int previousSeconds = intervalSeconds(context, label);
-        final SharedPreferences.Editor editor =
-                preferences.edit().putInt(intervalKey(label), seconds);
+        final SharedPreferences.Editor editor = preferences.edit().putInt(intervalKey(label), seconds);
 
         if (seconds != previousSeconds) {
             final long now = System.currentTimeMillis();
@@ -104,9 +106,7 @@ final class ScheduledDeletionSettings {
             return;
         }
 
-        preferences.edit()
-                .putLong(key(label, accountId), System.currentTimeMillis())
-                .apply();
+        preferences.edit().putLong(key(label, accountId), System.currentTimeMillis()).apply();
     }
 
     static boolean showsToast(Context context) {
@@ -142,8 +142,8 @@ final class ScheduledDeletionSettings {
     }
 
     private static SharedPreferences preferences(Context context) {
-        return context == null
-                ? null
-                : context.getSharedPreferences(PatchSettings.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return (context != null) ? context.getSharedPreferences(PatchSettings.PREFERENCES_NAME, Context.MODE_PRIVATE)
+                : null;
     }
+
 }

@@ -6,7 +6,9 @@ package app.hxreborn.extension.protonvpn;
 
 public final class Members {
 
-    private Members() {}
+    private Members() {
+
+    }
 
     public static String userInfoVpnUser() {
         return "getVpnUser";
@@ -27,4 +29,5 @@ public final class Members {
     public static String serverGroupBannerClass() {
         return "com.protonvpn.android.redesign.countries.ui.ServerGroupUiItem$Banner";
     }
+
 }

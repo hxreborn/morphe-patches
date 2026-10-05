@@ -4,6 +4,11 @@
  */
 package app.hxreborn.extension.photoeditorpro;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import android.os.SystemClock;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -12,48 +17,56 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 public final class ProgressTrace {
 
     private static final String TAG = "hxreborn/progress";
 
     private static final int STAGE_UPLOAD = 0;
+
     private static final int STAGE_PREDICT = 1;
+
     private static final int STAGE_POLL = 2;
+
     private static final int STAGE_DELIVER = 3;
 
-    private static final String[] STAGE_NAMES = {
-            "Uploading", "Processing", "Waiting for result", "Finishing",
-    };
+    private static final String[] STAGE_NAMES = { "Uploading", "Processing", "Waiting for result", "Finishing", };
 
-    private static final int[] STAGE_TARGET = {45, 60, 60, 100};
-    private static final long[] STAGE_DURATION_MS = {4000, 1500, 300, 400};
+    private static final int[] STAGE_TARGET = { 45, 60, 60, 100 };
+
+    private static final long[] STAGE_DURATION_MS = { 4000, 1500, 300, 400 };
 
     private static final int STOCK_PROGRESS_FLOOR = 50;
+
     private static final int POLL_CEILING = 95;
+
     private static final long POLL_FLOOR_MS = 1500;
 
     private static final int RESULT_DELIVERED = 0x400;
+
     private static final float STAGE_SP = 16f;
+
     private static final int LIVE_ROWS = 8;
 
     private static final Object LOCK = new Object();
+
     private static final List<String> LAST_RUN = new ArrayList<>();
 
     private static WeakReference<TextView> liveView;
+
     private static CharSequence liveStock;
 
     private static String feature;
+
     private static long runStartedAt;
+
     private static long runStartedAtEpochMs;
+
     private static long stageStartedAt;
+
     private static int stage = -1;
+
     private static int pollCount;
+
     private static boolean settled;
 
     private ProgressTrace() {
@@ -65,8 +78,7 @@ public final class ProgressTrace {
         synchronized (LOCK) {
             long now = SystemClock.elapsedRealtime();
             if (stage >= 0) {
-                closed = String.format(Locale.US, "%s %.2fs",
-                        STAGE_NAMES[stage], (now - stageStartedAt) / 1000f);
+                closed = String.format(Locale.US, "%s %.2fs", STAGE_NAMES[stage], (now - stageStartedAt) / 1000f);
                 LAST_RUN.add(closed);
             }
             if (stage < 0) {
@@ -96,7 +108,8 @@ public final class ProgressTrace {
             }
             log("=== " + startingFeature + " started ===");
             enter(STAGE_UPLOAD);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "beginUpload", ex);
         }
     }
@@ -104,7 +117,8 @@ public final class ProgressTrace {
     public static void predict() {
         try {
             enter(STAGE_PREDICT);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "predict", ex);
         }
     }
@@ -127,7 +141,8 @@ public final class ProgressTrace {
                 since = SystemClock.elapsedRealtime() - stageStartedAt;
             }
             log(String.format(Locale.US, "poll #%d  +%.2fs", count, since / 1000f));
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "polling", ex);
         }
     }
@@ -146,16 +161,17 @@ public final class ProgressTrace {
             synchronized (LOCK) {
                 total = SystemClock.elapsedRealtime() - runStartedAt;
                 count = pollCount;
-                LAST_RUN.add(String.format(Locale.US, "server result %.2fs (%d polls) code=0x%x",
-                        total / 1000f, count, resultCode));
+                LAST_RUN.add(String.format(Locale.US, "server result %.2fs (%d polls) code=0x%x", total / 1000f, count,
+                        resultCode));
             }
             LiveOverlay.linger(PatchSettings.OVERLAY_LINGER.get().millis);
             if (resultCode == RESULT_DELIVERED) {
                 RunHistory.add(currentFeature(), total);
             }
-            log(String.format(Locale.US, "=== server result in %.2fs, %d polls, code=0x%x ===",
-                    total / 1000f, count, resultCode));
-        } catch (Exception ex) {
+            log(String.format(Locale.US, "=== server result in %.2fs, %d polls, code=0x%x ===", total / 1000f, count,
+                    resultCode));
+        }
+        catch (Exception ex) {
             Log.w(TAG, "finished", ex);
         }
     }
@@ -184,7 +200,8 @@ public final class ProgressTrace {
                 target += (int) Math.min(span, waited * span / pollScaleMs(enteredAt));
             }
             return Math.max(stock, target);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             return stock;
         }
     }
@@ -200,7 +217,8 @@ public final class ProgressTrace {
                 return stock;
             }
             return STAGE_DURATION_MS[current];
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             return stock;
         }
     }
@@ -225,10 +243,10 @@ public final class ProgressTrace {
                 return withLiveCall(view, name + " " + percent);
             }
             SpannableString label = new SpannableString(name + "\n" + percent);
-            label.setSpan(new RelativeSizeSpan(scale), 0, name.length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            label.setSpan(new RelativeSizeSpan(scale), 0, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             return withLiveCall(view, label);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             return stock;
         }
     }
@@ -237,7 +255,7 @@ public final class ProgressTrace {
         TextView view;
         CharSequence stock;
         synchronized (LOCK) {
-            view = liveView == null ? null : liveView.get();
+            view = (liveView != null) ? liveView.get() : null;
             stock = liveStock;
         }
         if (view == null || stock == null || !PatchSettings.LOG_ENDPOINTS.get()) {
@@ -246,7 +264,8 @@ public final class ProgressTrace {
         view.post(() -> {
             try {
                 view.setText(label(view, stock));
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 Log.w(TAG, "refreshLive", ex);
             }
         });
@@ -257,8 +276,7 @@ public final class ProgressTrace {
             LiveOverlay.hide();
             return label;
         }
-        LiveOverlay.render(view, AiTrace.liveRows(runStartedAtEpoch(), LIVE_ROWS),
-                "waiting for the first traced call");
+        LiveOverlay.render(view, AiTrace.liveRows(runStartedAtEpoch(), LIVE_ROWS), "waiting for the first traced call");
         return label;
     }
 
@@ -281,7 +299,7 @@ public final class ProgressTrace {
         float target = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, STAGE_SP,
                 view.getResources().getDisplayMetrics());
         float actual = view.getTextSize();
-        return actual <= target ? 1f : target / actual;
+        return (actual <= target) ? 1f : target / actual;
     }
 
     private static String currentFeature() {
@@ -320,4 +338,5 @@ public final class ProgressTrace {
             Log.i(TAG, message);
         }
     }
+
 }

@@ -12,15 +12,25 @@ final class Account {
     static final int FREE_TRACKING_LIMIT = 200;
 
     final String id;
+
     String token = "";
+
     String username = "";
+
     String email = "";
+
     AccountState state = AccountState.OK;
+
     long throttledUntil;
+
     int tracked;
+
     int limit;
+
     long refreshedAt;
+
     long addedAt;
+
     private final JSONObject json;
 
     Account(String id) {
@@ -47,32 +57,34 @@ final class Account {
     }
 
     JSONObject toJson() throws JSONException {
-        return json.put("id", id)
-                .put("token", token)
-                .put("username", username)
-                .put("email", email)
-                .put("state", state.wireValue)
-                .put("throttledUntil", throttledUntil)
-                .put("tracked", tracked)
-                .put("limit", limit)
-                .put("refreshedAt", refreshedAt)
-                .put("addedAt", addedAt);
+        return this.json.put("id", this.id)
+            .put("token", this.token)
+            .put("username", this.username)
+            .put("email", this.email)
+            .put("state", this.state.wireValue)
+            .put("throttledUntil", this.throttledUntil)
+            .put("tracked", this.tracked)
+            .put("limit", this.limit)
+            .put("refreshedAt", this.refreshedAt)
+            .put("addedAt", this.addedAt);
     }
 
     void markHealthy() {
-        state = AccountState.OK;
-        throttledUntil = 0;
+        this.state = AccountState.OK;
+        this.throttledUntil = 0;
     }
 
     boolean isThrottled(long now) {
-        return state == AccountState.THROTTLED && now < throttledUntil;
+        return this.state == AccountState.THROTTLED && now < this.throttledUntil;
     }
 
     boolean canTrack(long now) {
-        return state != AccountState.INVALID && !isThrottled(now) && (limit <= 0 || tracked < limit);
+        return this.state != AccountState.INVALID && !isThrottled(now)
+                && (this.limit <= 0 || this.tracked < this.limit);
     }
 
     int limitOrDefault() {
-        return limit > 0 ? limit : FREE_TRACKING_LIMIT;
+        return (this.limit > 0) ? this.limit : FREE_TRACKING_LIMIT;
     }
+
 }

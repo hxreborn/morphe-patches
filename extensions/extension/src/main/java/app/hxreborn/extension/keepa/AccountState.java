@@ -5,6 +5,7 @@
 package app.hxreborn.extension.keepa;
 
 enum AccountState {
+
     OK("ok"), THROTTLED("throttled"), INVALID("invalid");
 
     final String wireValue;
@@ -15,8 +16,11 @@ enum AccountState {
 
     static AccountState fromWireValue(String value) {
         for (AccountState state : values()) {
-            if (state.wireValue.equals(value)) return state;
+            if (state.wireValue.equals(value)) {
+                return state;
+            }
         }
         return INVALID;
     }
+
 }

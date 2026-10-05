@@ -8,35 +8,46 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 
 public final class PatchesTheme {
 
-    static final String BACKGROUND_NORM = "proton_background_norm";
     public static final String BACKGROUND_SECONDARY = "proton_background_secondary";
+
     public static final String TEXT_NORM = "proton_text_norm";
+
     public static final String TEXT_WEAK = "proton_text_weak";
+    static final String BACKGROUND_NORM = "proton_background_norm";
     static final String ICON_DISABLED = "proton_icon_disabled";
 
     private static final int FALLBACK_BACKGROUND_NORM = 0xFF1C1B24;
+
     private static final int FALLBACK_BACKGROUND_SECONDARY = 0xFF292733;
+
     private static final int FALLBACK_TEXT_NORM = 0xFFEDEDEE;
+
     private static final int FALLBACK_TEXT_WEAK = 0xFFA9A9AF;
+
     private static final int FALLBACK_ICON_DISABLED = 0xFF5B5966;
 
     private static final int APP_COMPAT_MODE_NIGHT_NO = 1;
+
     private static final int APP_COMPAT_MODE_NIGHT_YES = 2;
+
     private static final int APP_COMPAT_MODE_NIGHT_UNSPECIFIED = -100;
 
     private static final int DARK_COLOR_THRESHOLD = 128;
+
     private static final int HALF_ALPHA = 0x80;
 
-    private PatchesTheme() {}
+    private PatchesTheme() {
+
+    }
 
     public static int appCompatDefaultNightMode() {
         return APP_COMPAT_MODE_NIGHT_UNSPECIFIED;
@@ -56,18 +67,21 @@ public final class PatchesTheme {
     public static int resolveColorAttribute(Context context, String attribute) {
         final int fallbackColor = fallbackColor(attribute);
         try {
-            final int identifier = context.getResources()
-                    .getIdentifier(attribute, "attr", context.getPackageName());
-            if (identifier == 0) return fallbackColor;
+            final int identifier = context.getResources().getIdentifier(attribute, "attr", context.getPackageName());
+            if (identifier == 0) {
+                return fallbackColor;
+            }
 
             final TypedValue value = new TypedValue();
-            if (!context.getTheme().resolveAttribute(identifier, value, true)) return fallbackColor;
-            if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT
-                    && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            if (!context.getTheme().resolveAttribute(identifier, value, true)) {
+                return fallbackColor;
+            }
+            if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
                 return value.data;
             }
-            return value.resourceId == 0 ? fallbackColor : context.getColor(value.resourceId);
-        } catch (Throwable t) {
+            return (value.resourceId != 0) ? context.getColor(value.resourceId) : fallbackColor;
+        }
+        catch (Throwable ex) {
             return fallbackColor;
         }
     }
@@ -88,9 +102,8 @@ public final class PatchesTheme {
     }
 
     static Drawable getDrawableByName(Context context, String name) {
-        final int identifier = context.getResources()
-                .getIdentifier(name, "drawable", context.getPackageName());
-        return identifier == 0 ? null : context.getDrawable(identifier);
+        final int identifier = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        return (identifier != 0) ? context.getDrawable(identifier) : null;
     }
 
     static GradientDrawable createRoundedRectangle(Context context, int color, int radiusDp) {
@@ -112,17 +125,14 @@ public final class PatchesTheme {
     }
 
     private static int weightedRgbBrightness(int color) {
-        return (((color >> 16) & 0xFF) * 299
-                + ((color >> 8) & 0xFF) * 587
-                + (color & 0xFF) * 114) / 1000;
+        return (((color >> 16) & 0xFF) * 299 + ((color >> 8) & 0xFF) * 587 + (color & 0xFF) * 114) / 1000;
     }
 
     public static void tintTextInput(EditText input, int accentColor) {
         final int inactiveColor = resolveColorAttribute(input.getContext(), ICON_DISABLED);
 
-        input.setBackgroundTintList(new ColorStateList(
-                new int[][] {{android.R.attr.state_focused}, {}},
-                new int[] {accentColor, inactiveColor}));
+        input.setBackgroundTintList(new ColorStateList(new int[][] { { android.R.attr.state_focused }, {} },
+                new int[] { accentColor, inactiveColor }));
         input.setHighlightColor(withHalfAlpha(accentColor));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tintTextCursor(input, accentColor);
@@ -132,7 +142,9 @@ public final class PatchesTheme {
     @TargetApi(Build.VERSION_CODES.Q)
     private static void tintTextCursor(EditText input, int accentColor) {
         final Drawable cursor = input.getTextCursorDrawable();
-        if (cursor == null) return;
+        if (cursor == null) {
+            return;
+        }
 
         cursor.setTint(accentColor);
         input.setTextCursorDrawable(cursor);
@@ -144,8 +156,7 @@ public final class PatchesTheme {
 
     static void makeClickable(View view) {
         final TypedValue value = new TypedValue();
-        if (!view.getContext().getTheme()
-                .resolveAttribute(android.R.attr.selectableItemBackground, value, true)) {
+        if (!view.getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, value, true)) {
             return;
         }
 
@@ -157,4 +168,5 @@ public final class PatchesTheme {
     public static int dpToPx(Context context, int value) {
         return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
+
 }

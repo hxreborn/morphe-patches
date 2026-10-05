@@ -28,22 +28,28 @@ public final class PatchesDialog {
     static final int LABEL_SP = 14;
 
     private static final int BODY_SP = 14;
+
     private static final int TOUCH_TARGET_DP = 48;
+
     private static final int BUTTON_MIN_WIDTH_DP = 96;
+
     private static final int BUTTON_RADIUS_DP = 20;
+
     private static final int MAX_WIDTH_DP = 560;
+
     private static final float WIDTH_FRACTION = 0.92f;
 
-    private PatchesDialog() {}
+    private PatchesDialog() {
+
+    }
 
     public static LinearLayout createContentLayout(Activity activity) {
         final LinearLayout contentLayout = new LinearLayout(activity);
         contentLayout.setOrientation(LinearLayout.VERTICAL);
         contentLayout.setBackground(PatchesTheme.createRoundedRectangle(activity,
-                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY),
-                BACKGROUND_RADIUS_DP));
-        contentLayout.setPadding(dp(activity, PADDING_DP), dp(activity, PADDING_DP),
-                dp(activity, PADDING_DP), dp(activity, BOTTOM_PADDING_DP));
+                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY), BACKGROUND_RADIUS_DP));
+        contentLayout.setPadding(dp(activity, PADDING_DP), dp(activity, PADDING_DP), dp(activity, PADDING_DP),
+                dp(activity, BOTTOM_PADDING_DP));
         return contentLayout;
     }
 
@@ -66,10 +72,9 @@ public final class PatchesDialog {
         label.setMinWidth(dp(activity, BUTTON_MIN_WIDTH_DP));
         label.setMinHeight(dp(activity, TOUCH_TARGET_DP));
         label.setPadding(dp(activity, PADDING_DP / 2), 0, dp(activity, PADDING_DP / 2), 0);
-        label.setBackground(
-                PatchesTheme.createRoundedRectangle(activity, Color.TRANSPARENT, BUTTON_RADIUS_DP));
+        label.setBackground(PatchesTheme.createRoundedRectangle(activity, Color.TRANSPARENT, BUTTON_RADIUS_DP));
         PatchesTheme.makeClickable(label);
-        label.setOnClickListener(ignored -> onClick.run());
+        label.setOnClickListener((ignored) -> onClick.run());
         return label;
     }
 
@@ -81,8 +86,7 @@ public final class PatchesDialog {
     }
 
     public static Dialog createDialog(Activity activity, View contentLayout) {
-        final Dialog dialog = new Dialog(activity,
-                android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+        final Dialog dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
         dialog.setContentView(contentLayout);
 
         final Window window = dialog.getWindow();
@@ -94,17 +98,19 @@ public final class PatchesDialog {
         return dialog;
     }
 
-    static void showConfirmation(Activity activity, String titleText, String message,
-            String confirmLabel, Runnable onConfirm) {
-        if (activity.isFinishing() || activity.isDestroyed()) return;
+    static void showConfirmation(Activity activity, String titleText, String message, String confirmLabel,
+            Runnable onConfirm) {
+        if (activity.isFinishing() || activity.isDestroyed()) {
+            return;
+        }
 
         final int textWeakColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
         final LinearLayout contentLayout = createContentLayout(activity);
         contentLayout.addView(createTitle(activity, titleText));
 
         final TextView body = createTextView(activity, message, BODY_SP, textWeakColor);
-        final LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         bodyParams.topMargin = dp(activity, GAP_DP);
         bodyParams.bottomMargin = dp(activity, GAP_DP);
         contentLayout.addView(body, bodyParams);
@@ -115,25 +121,25 @@ public final class PatchesDialog {
                 () -> dialog.dismiss()));
         actions.addView(configureActionButton(activity,
                 createTextView(activity, confirmLabel, LABEL_SP,
-                        AccentColor.getAccentColor(PatchesTheme.isDark(
-                                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY)))),
+                        AccentColor.getAccentColor(PatchesTheme
+                            .isDark(PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY)))),
                 () -> {
                     dialog.dismiss();
                     onConfirm.run();
                 }));
-        contentLayout.addView(actions, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        contentLayout.addView(actions, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
         dialog.show();
     }
 
     private static int dialogWidthPx(Activity activity) {
         final DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
-        return Math.min(Math.round(metrics.widthPixels * WIDTH_FRACTION),
-                dp(activity, MAX_WIDTH_DP));
+        return Math.min(Math.round(metrics.widthPixels * WIDTH_FRACTION), dp(activity, MAX_WIDTH_DP));
     }
 
     private static int dp(Activity activity, int value) {
         return PatchesTheme.dpToPx(activity, value);
     }
+
 }

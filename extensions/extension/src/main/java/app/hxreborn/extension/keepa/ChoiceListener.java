@@ -7,5 +7,7 @@ package app.hxreborn.extension.keepa;
 import org.json.JSONException;
 
 interface ChoiceListener {
+
     void chosen(int which) throws JSONException;
+
 }

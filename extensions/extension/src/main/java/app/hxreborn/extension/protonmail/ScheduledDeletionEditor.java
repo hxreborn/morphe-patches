@@ -4,10 +4,8 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import app.hxreborn.extension.proton.PatchesDialog;
-import app.hxreborn.extension.proton.PatchesTheme;
-import app.hxreborn.extension.proton.SwitchStyle;
-import app.hxreborn.extension.proton.AccentColor;
+import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,11 +27,12 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.List;
-import java.util.Locale;
-
 import app.morphe.extension.shared.Utils;
+
+import app.hxreborn.extension.proton.AccentColor;
+import app.hxreborn.extension.proton.PatchesDialog;
+import app.hxreborn.extension.proton.PatchesTheme;
+import app.hxreborn.extension.proton.SwitchStyle;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("deprecation")
@@ -42,19 +41,26 @@ public final class ScheduledDeletionEditor {
     public static final String SETTINGS_ROW_TITLE = "Scheduled deletion";
 
     private static final int[] UNIT_SECONDS = { 60, 3600, 86400 };
+
     private static final String[] UNIT_LABELS = { "Minutes", "Hours", "Days" };
+
     private static final int DEFAULT_SECONDS = 30 * 86400;
 
     private static final int TOUCH_TARGET_DP = 48;
+
     private static final int CONTROL_SPACING_DP = 8;
+
     private static final int SECTION_SPACING_DP = 16;
+
     private static final int BODY_TEXT_SP = 14;
 
-    private ScheduledDeletionEditor() {}
+    private ScheduledDeletionEditor() {
+
+    }
 
     public static String summary(Context context) {
         final String schedules = schedules(context);
-        return schedules.isEmpty() ? "Off" : schedules;
+        return (schedules.isEmpty()) ? "Off" : schedules;
     }
 
     private static String schedules(Context context) {
@@ -86,8 +92,7 @@ public final class ScheduledDeletionEditor {
     private static String folderNames(List<String> labels) {
         final StringBuilder names = new StringBuilder(folderName(labels.get(0)));
         for (int index = 1; index < labels.size(); index++) {
-            names.append(index == labels.size() - 1 ? " and " : ", ")
-                    .append(folderName(labels.get(index)));
+            names.append((index != labels.size() - 1) ? ", " : " and ").append(folderName(labels.get(index)));
         }
         return names.toString();
     }
@@ -135,39 +140,33 @@ public final class ScheduledDeletionEditor {
 
         final LinearLayout surface = PatchesDialog.createContentLayout(activity);
         surface.addView(PatchesDialog.createTitle(activity, SETTINGS_ROW_TITLE));
-        surface.addView(scroll, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        surface.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         final Dialog dialog = PatchesDialog.createDialog(activity, surface);
         final int accentColor = AccentColor.getAccentColor(
-                PatchesTheme.isDark(PatchesTheme.resolveColorAttribute(
-                        activity, PatchesTheme.BACKGROUND_SECONDARY)));
-        final int textWeakColor =
-                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
+                PatchesTheme.isDark(PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY)));
+        final int textWeakColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
 
         final LinearLayout actions = PatchesDialog.createButtonRow(activity);
         actions.addView(PatchesDialog.configureActionButton(activity,
-                PatchesDialog.createTextView(activity, "Cancel", BODY_TEXT_SP, textWeakColor),
-                dialog::dismiss));
+                PatchesDialog.createTextView(activity, "Cancel", BODY_TEXT_SP, textWeakColor), dialog::dismiss));
         actions.addView(PatchesDialog.configureActionButton(activity,
-                PatchesDialog.createTextView(activity, "Save", BODY_TEXT_SP, accentColor),
-                () -> {
+                PatchesDialog.createTextView(activity, "Save", BODY_TEXT_SP, accentColor), () -> {
                     final int[] seconds = new int[sections.length];
                     for (int index = 0; index < sections.length; index++) {
                         seconds[index] = sections[index].selectedSeconds();
                         if (seconds[index] < 0) {
-                            Toast.makeText(activity,
-                                    "The interval must be between 1 minute and 365 days",
-                                    Toast.LENGTH_LONG).show();
+                            Toast
+                                .makeText(activity, "The interval must be between 1 minute and 365 days",
+                                        Toast.LENGTH_LONG)
+                                .show();
                             return;
                         }
                     }
                     for (int index = 0; index < sections.length; index++) {
-                        ScheduledDeletionSettings.saveIntervalSeconds(
-                                activity, sections[index].label, seconds[index]);
+                        ScheduledDeletionSettings.saveIntervalSeconds(activity, sections[index].label, seconds[index]);
                     }
-                    ScheduledDeletionSettings.saveShowsToast(
-                            activity, toastSwitch.isChecked());
+                    ScheduledDeletionSettings.saveShowsToast(activity, toastSwitch.isChecked());
                     Toast.makeText(activity, savedMessage(activity), Toast.LENGTH_SHORT).show();
                     onSettingChanged.run();
                     dialog.dismiss();
@@ -175,8 +174,7 @@ public final class ScheduledDeletionEditor {
         surface.addView(actions, matchWidth());
 
         SwitchStyle.apply(toastSwitch, accentColor);
-        toastSwitch.setTextColor(
-                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
+        toastSwitch.setTextColor(PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
         warningText.setTextColor(textWeakColor);
         for (LabelSection section : sections) {
             section.applyTheme(accentColor, textWeakColor);
@@ -189,106 +187,10 @@ public final class ScheduledDeletionEditor {
         dialog.show();
     }
 
-    private static final class LabelSection {
-        private final String label;
-        private final Switch enabledSwitch;
-        private final TextView periodLabel;
-        private final EditText amountInput;
-        private final Spinner unitSpinner;
-        private final LinearLayout periodInput;
-
-        LabelSection(Activity activity, String label) {
-            this.label = label;
-            final String folder = folderName(label);
-            final int intervalSeconds =
-                    ScheduledDeletionSettings.intervalSeconds(activity, label);
-            final int displayedSeconds = intervalSeconds > ScheduledDeletionSettings.OFF
-                    ? intervalSeconds
-                    : DEFAULT_SECONDS;
-            final int unitIndex = largestExactUnit(displayedSeconds);
-
-            enabledSwitch = new Switch(activity);
-            enabledSwitch.setText("Delete " + folder + " on a schedule");
-            enabledSwitch.setGravity(Gravity.CENTER_VERTICAL);
-            enabledSwitch.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
-            enabledSwitch.setChecked(intervalSeconds > ScheduledDeletionSettings.OFF);
-
-            periodLabel = new TextView(activity);
-            periodLabel.setText("Delete every");
-            periodLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, BODY_TEXT_SP);
-
-            amountInput = new EditText(activity);
-            amountInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-            amountInput.setSingleLine(true);
-            amountInput.setSelectAllOnFocus(true);
-            amountInput.setImeOptions(EditorInfo.IME_ACTION_DONE);
-            amountInput.setText(String.valueOf(displayedSeconds / UNIT_SECONDS[unitIndex]));
-            amountInput.setContentDescription(folder + " deletion interval");
-            amountInput.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
-
-            unitSpinner = new Spinner(activity);
-            final ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(activity,
-                    android.R.layout.simple_spinner_item, UNIT_LABELS);
-            unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            unitSpinner.setAdapter(unitAdapter);
-            unitSpinner.setSelection(unitIndex);
-            unitSpinner.setContentDescription(folder + " interval unit");
-            unitSpinner.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
-
-            periodInput = new LinearLayout(activity);
-            periodInput.setOrientation(LinearLayout.HORIZONTAL);
-            periodInput.setGravity(Gravity.CENTER_VERTICAL);
-            periodInput.addView(amountInput, new LinearLayout.LayoutParams(
-                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-            final LinearLayout.LayoutParams unitParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            unitParams.setMarginStart(dp(activity, CONTROL_SPACING_DP));
-            periodInput.addView(unitSpinner, unitParams);
-
-            final View[] settingViews = { periodLabel, amountInput, unitSpinner };
-            setEnabled(settingViews, enabledSwitch.isChecked());
-            enabledSwitch.setOnCheckedChangeListener(
-                    (button, checked) -> setEnabled(settingViews, checked));
-        }
-
-        void applyTheme(int accentColor, int textWeakColor) {
-            SwitchStyle.apply(enabledSwitch, accentColor);
-            PatchesTheme.tintTextInput(amountInput, accentColor);
-            enabledSwitch.setTextColor(PatchesTheme.resolveColorAttribute(
-                    enabledSwitch.getContext(), PatchesTheme.TEXT_NORM));
-            periodLabel.setTextColor(textWeakColor);
-            amountInput.setTextColor(PatchesTheme.resolveColorAttribute(
-                    amountInput.getContext(), PatchesTheme.TEXT_NORM));
-        }
-
-        void addTo(LinearLayout content, boolean separated) {
-            final Context context = content.getContext();
-            final LinearLayout.LayoutParams switchParams = matchWidth();
-            if (separated) {
-                switchParams.topMargin = dp(context, SECTION_SPACING_DP);
-            }
-            content.addView(enabledSwitch, switchParams);
-
-            final LinearLayout.LayoutParams periodLabelParams = matchWidth();
-            periodLabelParams.topMargin = dp(context, CONTROL_SPACING_DP);
-            content.addView(periodLabel, periodLabelParams);
-
-            content.addView(periodInput, matchWidth());
-        }
-
-        int selectedSeconds() {
-            if (!enabledSwitch.isChecked()) {
-                return ScheduledDeletionSettings.OFF;
-            }
-            return parseIntervalSeconds(amountInput.getText().toString(),
-                    UNIT_SECONDS[unitSpinner.getSelectedItemPosition()]);
-        }
-    }
-
     private static void setEnabled(View[] views, boolean enabled) {
         for (View view : views) {
             view.setEnabled(enabled);
-            view.setAlpha(enabled ? 1f : 0.4f);
+            view.setAlpha((enabled) ? 1f : 0.4f);
         }
     }
 
@@ -308,7 +210,8 @@ public final class ScheduledDeletionEditor {
                 return -1;
             }
             return (int) seconds;
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException ex) {
             return -1;
         }
     }
@@ -326,8 +229,7 @@ public final class ScheduledDeletionEditor {
         final int index = largestExactUnit(seconds);
         final int amount = seconds / UNIT_SECONDS[index];
         final String unit = UNIT_LABELS[index].toLowerCase(Locale.US);
-        return String.format(Locale.US, "%d %s", amount,
-                amount == 1 ? unit.substring(0, unit.length() - 1) : unit);
+        return String.format(Locale.US, "%d %s", amount, (amount != 1) ? unit : unit.substring(0, unit.length() - 1));
     }
 
     private static String folderName(String label) {
@@ -336,7 +238,7 @@ public final class ScheduledDeletionEditor {
 
     private static String savedMessage(Context context) {
         final String schedules = schedules(context);
-        return schedules.isEmpty() ? "Trash and Spam will not be deleted" : schedules;
+        return (schedules.isEmpty()) ? "Trash and Spam will not be deleted" : schedules;
     }
 
     private static int dp(Context context, int value) {
@@ -344,7 +246,107 @@ public final class ScheduledDeletionEditor {
     }
 
     private static LinearLayout.LayoutParams matchWidth() {
-        return new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        return new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
+
+    private static final class LabelSection {
+
+        private final String label;
+
+        private final Switch enabledSwitch;
+
+        private final TextView periodLabel;
+
+        private final EditText amountInput;
+
+        private final Spinner unitSpinner;
+
+        private final LinearLayout periodInput;
+
+        LabelSection(Activity activity, String label) {
+            this.label = label;
+            final String folder = folderName(label);
+            final int intervalSeconds = ScheduledDeletionSettings.intervalSeconds(activity, label);
+            final int displayedSeconds = (intervalSeconds > ScheduledDeletionSettings.OFF) ? intervalSeconds
+                    : DEFAULT_SECONDS;
+            final int unitIndex = largestExactUnit(displayedSeconds);
+
+            this.enabledSwitch = new Switch(activity);
+            this.enabledSwitch.setText("Delete " + folder + " on a schedule");
+            this.enabledSwitch.setGravity(Gravity.CENTER_VERTICAL);
+            this.enabledSwitch.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
+            this.enabledSwitch.setChecked(intervalSeconds > ScheduledDeletionSettings.OFF);
+
+            this.periodLabel = new TextView(activity);
+            this.periodLabel.setText("Delete every");
+            this.periodLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, BODY_TEXT_SP);
+
+            this.amountInput = new EditText(activity);
+            this.amountInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+            this.amountInput.setSingleLine(true);
+            this.amountInput.setSelectAllOnFocus(true);
+            this.amountInput.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            this.amountInput.setText(String.valueOf(displayedSeconds / UNIT_SECONDS[unitIndex]));
+            this.amountInput.setContentDescription(folder + " deletion interval");
+            this.amountInput.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
+
+            this.unitSpinner = new Spinner(activity);
+            final ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,
+                    UNIT_LABELS);
+            unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            this.unitSpinner.setAdapter(unitAdapter);
+            this.unitSpinner.setSelection(unitIndex);
+            this.unitSpinner.setContentDescription(folder + " interval unit");
+            this.unitSpinner.setMinimumHeight(dp(activity, TOUCH_TARGET_DP));
+
+            this.periodInput = new LinearLayout(activity);
+            this.periodInput.setOrientation(LinearLayout.HORIZONTAL);
+            this.periodInput.setGravity(Gravity.CENTER_VERTICAL);
+            this.periodInput.addView(this.amountInput,
+                    new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            final LinearLayout.LayoutParams unitParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            unitParams.setMarginStart(dp(activity, CONTROL_SPACING_DP));
+            this.periodInput.addView(this.unitSpinner, unitParams);
+
+            final View[] settingViews = { this.periodLabel, this.amountInput, this.unitSpinner };
+            setEnabled(settingViews, this.enabledSwitch.isChecked());
+            this.enabledSwitch.setOnCheckedChangeListener((button, checked) -> setEnabled(settingViews, checked));
+        }
+
+        void applyTheme(int accentColor, int textWeakColor) {
+            SwitchStyle.apply(this.enabledSwitch, accentColor);
+            PatchesTheme.tintTextInput(this.amountInput, accentColor);
+            this.enabledSwitch.setTextColor(
+                    PatchesTheme.resolveColorAttribute(this.enabledSwitch.getContext(), PatchesTheme.TEXT_NORM));
+            this.periodLabel.setTextColor(textWeakColor);
+            this.amountInput.setTextColor(
+                    PatchesTheme.resolveColorAttribute(this.amountInput.getContext(), PatchesTheme.TEXT_NORM));
+        }
+
+        void addTo(LinearLayout content, boolean separated) {
+            final Context context = content.getContext();
+            final LinearLayout.LayoutParams switchParams = matchWidth();
+            if (separated) {
+                switchParams.topMargin = dp(context, SECTION_SPACING_DP);
+            }
+            content.addView(this.enabledSwitch, switchParams);
+
+            final LinearLayout.LayoutParams periodLabelParams = matchWidth();
+            periodLabelParams.topMargin = dp(context, CONTROL_SPACING_DP);
+            content.addView(this.periodLabel, periodLabelParams);
+
+            content.addView(this.periodInput, matchWidth());
+        }
+
+        int selectedSeconds() {
+            if (!this.enabledSwitch.isChecked()) {
+                return ScheduledDeletionSettings.OFF;
+            }
+            return parseIntervalSeconds(this.amountInput.getText().toString(),
+                    UNIT_SECONDS[this.unitSpinner.getSelectedItemPosition()]);
+        }
+
+    }
+
 }

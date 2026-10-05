@@ -9,7 +9,9 @@ public final class UpsellingVisibility {
 
     private static final String KEY = "hide_upgrade_promotions";
 
-    private UpsellingVisibility() {}
+    private UpsellingVisibility() {
+
+    }
 
     public static boolean isPatched() {
         return false;
@@ -26,4 +28,5 @@ public final class UpsellingVisibility {
     static void setHidden(boolean hidden) {
         PatchSettings.setEnabled(KEY, hidden);
     }
+
 }

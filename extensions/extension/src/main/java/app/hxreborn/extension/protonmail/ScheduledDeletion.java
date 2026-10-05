@@ -4,10 +4,6 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import app.morphe.extension.shared.Utils;
-
-import android.util.Log;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -21,14 +17,20 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.util.Log;
+import app.morphe.extension.shared.Utils;
+
 @SuppressWarnings("unused")
 public final class ScheduledDeletion {
 
-    private static final String TAG = "ScheduledDeletion";
-    private static final String UNIFFI_PACKAGE = "uniffi.mail_uniffi.";
     static final String TRASH = "TRASH";
     static final String SPAM = "SPAM";
     static final String[] EMPTIED_LABELS = { TRASH, SPAM };
+
+    private static final String TAG = "ScheduledDeletion";
+
+    private static final String UNIFFI_PACKAGE = "uniffi.mail_uniffi.";
+
     private static final long SUSPEND_TIMEOUT_SECONDS = 60L;
 
     private static final AtomicBoolean DELETING = new AtomicBoolean();
@@ -39,7 +41,9 @@ public final class ScheduledDeletion {
 
     private static volatile Object shownLabelId;
 
-    private ScheduledDeletion() {}
+    private ScheduledDeletion() {
+
+    }
 
     public static synchronized void captureMailbox(Object result, Object mailUserSession) {
         try {
@@ -47,7 +51,8 @@ public final class ScheduledDeletion {
             if (mailbox != null) {
                 MAILBOX_SESSIONS.put(mailbox, mailUserSession);
             }
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             Log.e(TAG, "Failed to associate mailbox with account", throwable);
         }
     }
@@ -96,19 +101,23 @@ public final class ScheduledDeletion {
             final Thread worker = new Thread(() -> {
                 try {
                     emptyDueLabels(sessionSnapshot, account);
-                } catch (Throwable throwable) {
+                }
+                catch (Throwable throwable) {
                     Log.e(TAG, "Failed to empty Trash and Spam", throwable);
-                } finally {
+                }
+                finally {
                     DELETING.set(false);
                 }
             }, "hx-scheduled-deletion");
             try {
                 worker.start();
-            } catch (Throwable throwable) {
+            }
+            catch (Throwable throwable) {
                 DELETING.set(false);
                 throw throwable;
             }
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             Log.e(TAG, "Failed to start scheduled deletion", throwable);
         }
     }
@@ -131,13 +140,12 @@ public final class ScheduledDeletion {
                 continue;
             }
 
-            final Object result = suspendInvoker.invoke(
-                    uniffiMethod("deleteAllMessagesInLabel"), null, mailSession, labelId);
+            final Object result = suspendInvoker.invoke(uniffiMethod("deleteAllMessagesInLabel"), null, mailSession,
+                    labelId);
             final boolean emptied = "Ok".equals(simpleNameOf(result));
 
             if (!emptied) {
-                Log.w(TAG, "deleteAllMessagesInLabel(" + label + ") returned "
-                        + simpleNameOf(result));
+                Log.w(TAG, "deleteAllMessagesInLabel(" + label + ") returned " + simpleNameOf(result));
                 continue;
             }
 
@@ -170,10 +178,10 @@ public final class ScheduledDeletion {
             try {
                 final SuspendInvoker suspendInvoker = new SuspendInvoker();
                 for (String label : EMPTIED_LABELS) {
-                    SYSTEM_LABEL_IDS.put(label,
-                            systemLabelId(mailSession, suspendInvoker, label));
+                    SYSTEM_LABEL_IDS.put(label, systemLabelId(mailSession, suspendInvoker, label));
                 }
-            } catch (Throwable throwable) {
+            }
+            catch (Throwable throwable) {
                 Log.e(TAG, "Failed to resolve the Trash and Spam label IDs", throwable);
             }
         }, "hx-label-ids").start();
@@ -184,91 +192,16 @@ public final class ScheduledDeletion {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static Object systemLabelId(Object mailSession, SuspendInvoker suspendInvoker,
-                                        String label)
+    private static Object systemLabelId(Object mailSession, SuspendInvoker suspendInvoker, String label)
             throws Exception {
         final Class<?> systemLabel = Class.forName(UNIFFI_PACKAGE + "SystemLabel");
         final Object constant = Enum.valueOf((Class) systemLabel, label);
-        final Object result =
-                suspendInvoker.invoke(
-                        uniffiMethod("resolveSystemLabelId"), null, mailSession, constant);
+        final Object result = suspendInvoker.invoke(uniffiMethod("resolveSystemLabelId"), null, mailSession, constant);
         final Object labelId = okValueOrNull(result);
         if (labelId == null) {
-            throw new IllegalStateException(
-                    "resolveSystemLabelId(" + label + ") returned " + simpleNameOf(result));
+            throw new IllegalStateException("resolveSystemLabelId(" + label + ") returned " + simpleNameOf(result));
         }
         return labelId;
-    }
-
-    private static final class SuspendInvoker {
-        private final Class<?> continuationType;
-        private final Object context;
-
-        SuspendInvoker() throws Exception {
-            final Class<?>[] parameters =
-                    uniffiMethod("deleteAllMessagesInLabel").getParameterTypes();
-            continuationType = parameters[parameters.length - 1];
-            context = ioDispatcher();
-            if (context == null) {
-                throw new IllegalStateException("I/O coroutine dispatcher is unavailable");
-            }
-        }
-
-        Object invoke(Method method, Object target, Object... args) throws Exception {
-            final ParkedContinuation parked = new ParkedContinuation(context);
-            final Object continuation = Proxy.newProxyInstance(classLoader(),
-                    new Class<?>[] { continuationType }, parked);
-
-            final Object[] withContinuation = new Object[args.length + 1];
-            System.arraycopy(args, 0, withContinuation, 0, args.length);
-            withContinuation[args.length] = continuation;
-
-            final Object immediate = method.invoke(target, withContinuation);
-            if (!isCoroutineSuspended(immediate)) {
-                return immediate;
-            }
-
-            if (!parked.resumed.await(SUSPEND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                throw new IllegalStateException(
-                        method.getName() + " did not resume within "
-                                + SUSPEND_TIMEOUT_SECONDS + "s");
-            }
-            throwOnFailure(parked.result);
-            return parked.result;
-        }
-    }
-
-    private static final class ParkedContinuation implements InvocationHandler {
-        private final CountDownLatch resumed = new CountDownLatch(1);
-        private final Object context;
-        private volatile Object result;
-
-        ParkedContinuation(Object context) {
-            this.context = context;
-        }
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) {
-            final String name = method.getName();
-            if ("getContext".equals(name)) {
-                return context;
-            }
-            if ("resumeWith".equals(name)) {
-                result = args[0];
-                resumed.countDown();
-                return null;
-            }
-            if ("toString".equals(name)) {
-                return "ScheduledDeletion";
-            }
-            if ("hashCode".equals(name)) {
-                return System.identityHashCode(proxy);
-            }
-            if ("equals".equals(name)) {
-                return proxy == args[0];
-            }
-            return null;
-        }
     }
 
     private static boolean isCoroutineSuspended(Object value) {
@@ -278,14 +211,15 @@ public final class ScheduledDeletion {
     private static String userIdOf(Object mailUserSession) {
         try {
             return (String) okValueOrNull(callNoArg(mailUserSession, "userId"));
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             Log.e(TAG, "Failed to read the account ID", throwable);
             return null;
         }
     }
 
     private static Object okValueOrNull(Object result) {
-        return "Ok".equals(simpleNameOf(result)) ? callNoArg(result, "getV1") : null;
+        return ("Ok".equals(simpleNameOf(result))) ? callNoArg(result, "getV1") : null;
     }
 
     private static Method uniffiMethod(String name) throws Exception {
@@ -305,17 +239,94 @@ public final class ScheduledDeletion {
     private static Object callNoArg(Object target, String name) {
         try {
             return methodNamed(target.getClass(), name).invoke(target);
-        } catch (Throwable throwable) {
-            throw new IllegalStateException(
-                    "Failed to invoke " + simpleNameOf(target) + "." + name + "()", throwable);
+        }
+        catch (Throwable throwable) {
+            throw new IllegalStateException("Failed to invoke " + simpleNameOf(target) + "." + name + "()", throwable);
         }
     }
 
     private static String simpleNameOf(Object value) {
-        return value == null ? "null" : value.getClass().getSimpleName();
+        return (value != null) ? value.getClass().getSimpleName() : "null";
     }
 
     private static ClassLoader classLoader() {
         return ScheduledDeletion.class.getClassLoader();
     }
+
+    private static final class SuspendInvoker {
+
+        private final Class<?> continuationType;
+
+        private final Object context;
+
+        SuspendInvoker() throws Exception {
+            final Class<?>[] parameters = uniffiMethod("deleteAllMessagesInLabel").getParameterTypes();
+            this.continuationType = parameters[parameters.length - 1];
+            this.context = ioDispatcher();
+            if (this.context == null) {
+                throw new IllegalStateException("I/O coroutine dispatcher is unavailable");
+            }
+        }
+
+        Object invoke(Method method, Object target, Object... args) throws Exception {
+            final ParkedContinuation parked = new ParkedContinuation(this.context);
+            final Object continuation = Proxy.newProxyInstance(classLoader(), new Class<?>[] { this.continuationType },
+                    parked);
+
+            final Object[] withContinuation = new Object[args.length + 1];
+            System.arraycopy(args, 0, withContinuation, 0, args.length);
+            withContinuation[args.length] = continuation;
+
+            final Object immediate = method.invoke(target, withContinuation);
+            if (!isCoroutineSuspended(immediate)) {
+                return immediate;
+            }
+
+            if (!parked.resumed.await(SUSPEND_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+                throw new IllegalStateException(
+                        method.getName() + " did not resume within " + SUSPEND_TIMEOUT_SECONDS + "s");
+            }
+            throwOnFailure(parked.result);
+            return parked.result;
+        }
+
+    }
+
+    private static final class ParkedContinuation implements InvocationHandler {
+
+        private final CountDownLatch resumed = new CountDownLatch(1);
+
+        private final Object context;
+
+        private volatile Object result;
+
+        ParkedContinuation(Object context) {
+            this.context = context;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) {
+            final String name = method.getName();
+            if ("getContext".equals(name)) {
+                return this.context;
+            }
+            if ("resumeWith".equals(name)) {
+                this.result = args[0];
+                this.resumed.countDown();
+                return null;
+            }
+            if ("toString".equals(name)) {
+                return "ScheduledDeletion";
+            }
+            if ("hashCode".equals(name)) {
+                return System.identityHashCode(proxy);
+            }
+            if ("equals".equals(name)) {
+                return proxy == args[0];
+            }
+            return null;
+        }
+
+    }
+
 }

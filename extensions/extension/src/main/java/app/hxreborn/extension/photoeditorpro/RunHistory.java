@@ -13,9 +13,11 @@ import java.util.Map;
 public final class RunHistory {
 
     private static final int KEEP = 5;
+
     private static final long FALLBACK_MS = 9000;
 
     private static final Object LOCK = new Object();
+
     private static Map<String, List<Long>> cache;
 
     private RunHistory() {
@@ -70,7 +72,8 @@ public final class RunHistory {
             for (String value : block.substring(split + 1).split(",")) {
                 try {
                     runs.add(Long.parseLong(value.trim()));
-                } catch (NumberFormatException ex) {
+                }
+                catch (NumberFormatException ex) {
                     // A corrupt entry must not discard the rest of the history
                 }
             }
@@ -97,4 +100,5 @@ public final class RunHistory {
         }
         return out.toString();
     }
+
 }

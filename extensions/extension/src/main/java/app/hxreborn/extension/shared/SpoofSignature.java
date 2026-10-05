@@ -12,6 +12,8 @@
  */
 package app.hxreborn.extension.shared;
 
+import java.lang.reflect.Field;
+
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.Signature;
@@ -20,10 +22,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Base64;
 
-import java.lang.reflect.Field;
-
 @SuppressWarnings("unused")
 public class SpoofSignature extends Application {
+
     static {
         String packageName = "<package-name>";
         String certificate = "<certificate>";
@@ -54,8 +55,9 @@ public class SpoofSignature extends Application {
             Field creatorField = PackageInfo.class.getDeclaredField("CREATOR");
             creatorField.setAccessible(true);
             creatorField.set(null, creator);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Could not replace PackageInfo.CREATOR", e);
+        }
+        catch (ReflectiveOperationException ex) {
+            throw new IllegalStateException("Could not replace PackageInfo.CREATOR", ex);
         }
     }
 
@@ -77,4 +79,5 @@ public class SpoofSignature extends Application {
             signatures[0] = spoofed;
         }
     }
+
 }

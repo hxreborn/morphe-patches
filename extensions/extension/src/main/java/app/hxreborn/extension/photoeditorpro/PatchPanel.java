@@ -4,6 +4,12 @@
  */
 package app.hxreborn.extension.photoeditorpro;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -30,24 +36,14 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import app.hxreborn.extension.BuildConfig;
 import app.morphe.extension.shared.settings.BooleanSetting;
 import app.morphe.extension.shared.settings.EnumSetting;
 import app.morphe.extension.shared.settings.Setting;
 
+import app.hxreborn.extension.BuildConfig;
+
 public final class PatchPanel {
 
-    private static final String TITLE = "hxreborn’s patches";
-    private static final String BUNDLE_VERSION = BuildConfig.BUNDLE_VERSION;
-
-    private static final int BG = Color.parseColor("#0B0B0D");
     static final int FG = Color.parseColor("#FFFFFF");
     static final int DIM = Color.parseColor("#8E8E93");
     static final int ACCENT = Color.parseColor("#FA2A80");
@@ -58,73 +54,96 @@ public final class PatchPanel {
     static final int NEUTRAL = Color.parseColor("#2C2C30");
     static final int SURFACE = Color.parseColor("#1E1E22");
     static final int MUTED = Color.parseColor("#6E6E73");
+
+    private static final String TITLE = "hxreborn’s patches";
+
+    private static final String BUNDLE_VERSION = BuildConfig.BUNDLE_VERSION;
+
+    private static final int BG = Color.parseColor("#0B0B0D");
+
     private static final int CARD_BG = Color.parseColor("#17171A");
 
     private static final float TITLE_SP = 17f;
+
     private static final float SUMMARY_SP = 14f;
+
     private static final float HEADER_SP = 15f;
+
     private static final int ROW_HEIGHT_DP = 73;
+
     private static final int SIDE_PAD_DP = 25;
+
     private static final float CHEVRON_SP = 20f;
+
     private static final int CHEVRON_MARGIN_DP = 8;
 
     private static final int CARD_RADIUS_DP = 14;
+
     private static final int CHIP_RADIUS_DP = 8;
+
     private static final int CHIP_PAD_H_DP = 8;
+
     private static final int CHIP_PAD_V_DP = 3;
+
     private static final float CHIP_SP = 12f;
+
     private static final int ROW_PAD_V_DP = 4;
+
     private static final int ROW_TIME_WIDTH_DP = 46;
+
     private static final int ROW_CHIP_MARGIN_DP = 10;
+
     private static final float ROW_SP = 13f;
+
     private static final float DISABLED_ALPHA = 0.38f;
 
     private static final String GENERAL = "General";
+
     private static final String AI_TOOLS = "AI tools";
+
     private static final String DIAGNOSTICS = "Diagnostics";
 
     private static final Set<String> INSTALLED = new HashSet<>();
+
     private static final String SPOOF_SIGNATURE_KEY = "pep_spoof_signature";
+
     private static final String SPOOF_IOS_PLATFORM_KEY = "pep_spoof_ios_platform";
+
     private static final String[][] ALWAYS_ON = {
-            {SPOOF_SIGNATURE_KEY, "Spoof signature",
-                    "Spoofs the original app signature and disables the pairip client-side "
-                            + "license check"},
-            {SPOOF_IOS_PLATFORM_KEY, "Spoof iOS platform",
+            { SPOOF_SIGNATURE_KEY, "Spoof signature",
+                    "Spoofs the original app signature and disables the pairip client-side " + "license check" },
+            { SPOOF_IOS_PLATFORM_KEY, "Spoof iOS platform",
                     "Reports the AI requests as coming from the iOS app, so the server does "
-                            + "not ask for a Play Integrity token"},
-    };
+                            + "not ask for a Play Integrity token" }, };
+
     private static final Set<String> SAFE_METHODS = Set.of("GET", "HEAD", "OPTIONS", "TRACE");
-    private static final Set<String> HTTP_METHODS = Set.of(
-            "GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE", "CONNECT");
-    private static final float EQUAL_CONTRAST_LUMINANCE =
-            (float) (Math.sqrt(1.05 * 0.05) - 0.05);
+
+    private static final Set<String> HTTP_METHODS = Set.of("GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS",
+            "TRACE", "CONNECT");
+
+    private static final float EQUAL_CONTRAST_LUMINANCE = (float) (Math.sqrt(1.05 * 0.05) - 0.05);
+
     private static final List<Entry> ENTRIES = List.of(
             new Entry(PatchSettings.HIDE_ADS, GENERAL, "Hide ads",
                     "Hides banner, interstitial, app-open and rewarded ads"),
             new Entry(PatchSettings.UNLOCK_PREMIUM, GENERAL, "Unlock premium",
-                    "Unlocks the pro tools, removes the export watermark and hides the "
-                            + "upgrade prompts"),
+                    "Unlocks the pro tools, removes the export watermark and hides the " + "upgrade prompts"),
             new Entry(PatchSettings.HIDE_SHARE, GENERAL, "Hide share options",
-                    "Hides the share buttons on the save screen and centers the saved "
-                            + "photo"),
-            new Entry(PatchSettings.SHOW_AI_PROGRESS, AI_TOOLS,
-                    "Show AI progress",
+                    "Hides the share buttons on the save screen and centers the saved " + "photo"),
+            new Entry(PatchSettings.SHOW_AI_PROGRESS, AI_TOOLS, "Show AI progress",
                     "Reads the current stage off the real network activity instead of the "
                             + "fake progress bar InShot ships"),
-            new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS,
-                    "Inspect AI requests",
+            new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS, "Inspect AI requests",
                     "Shows the network calls an AI tool makes, such as HTTP requests and "
                             + "Firebase uploads, and keeps a log, so you can watch your photo "
                             + "fly to China or the US"),
-            new Entry(PatchSettings.OVERLAY_POSITION, DIAGNOSTICS,
-                    "Live overlay position",
-                    "Screen position of the live network request list",
-                    PatchSettings.LOG_ENDPOINTS),
-            new Entry(PatchSettings.OVERLAY_LINGER, DIAGNOSTICS,
-                    "Live overlay hold time",
-                    "Delay before the overlay disappears",
-                    PatchSettings.LOG_ENDPOINTS));
+            new Entry(PatchSettings.OVERLAY_POSITION, DIAGNOSTICS, "Live overlay position",
+                    "Screen position of the live network request list", PatchSettings.LOG_ENDPOINTS),
+            new Entry(PatchSettings.OVERLAY_LINGER, DIAGNOSTICS, "Live overlay hold time",
+                    "Delay before the overlay disappears", PatchSettings.LOG_ENDPOINTS));
+
+    private PatchPanel() {
+    }
 
     static boolean installed(Setting<?> setting) {
         return INSTALLED.contains(setting.key);
@@ -139,23 +158,18 @@ public final class PatchPanel {
     }
 
     static int dp(Context c, float v) {
-        return Math.round(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, v, c.getResources().getDisplayMetrics()));
-    }
-
-    private PatchPanel() {
+        return Math
+            .round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v, c.getResources().getDisplayMetrics()));
     }
 
     static int topInset(WindowInsets insets) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                ? insets.getInsets(WindowInsets.Type.systemBars()).top
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ? insets.getInsets(WindowInsets.Type.systemBars()).top
                 : insets.getSystemWindowInsetTop();
     }
 
     static int bottomInset(WindowInsets insets) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                ? insets.getInsets(WindowInsets.Type.systemBars()).bottom
-                : insets.getSystemWindowInsetBottom();
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                ? insets.getInsets(WindowInsets.Type.systemBars()).bottom : insets.getSystemWindowInsetBottom();
     }
 
     private static void fitSystemBars(View root) {
@@ -182,7 +196,8 @@ public final class PatchPanel {
                     return;
                 }
                 stackAbove(activity, list, buildEntry(activity));
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 Log.e(TITLE, "attach failed", ex);
             }
         });
@@ -247,7 +262,7 @@ public final class PatchPanel {
         row.addView(versionBadge(activity));
         row.addView(chevron(activity));
         row.setContentDescription(TITLE + ", bundle " + BUNDLE_VERSION);
-        row.setOnClickListener(v -> show(activity));
+        row.setOnClickListener((v) -> show(activity));
         return row;
     }
 
@@ -256,8 +271,8 @@ public final class PatchPanel {
         chevron.setText("›");
         chevron.setTextColor(DIM);
         chevron.setTextSize(TypedValue.COMPLEX_UNIT_SP, CHEVRON_SP);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = dp(activity, CHEVRON_MARGIN_DP);
         chevron.setLayoutParams(params);
         return chevron;
@@ -274,8 +289,8 @@ public final class PatchPanel {
         pill.setColor(ACCENT);
         pill.setCornerRadius(dp(activity, 10));
         badge.setBackground(pill);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = dp(activity, 12);
         badge.setLayoutParams(params);
         return badge;
@@ -310,9 +325,11 @@ public final class PatchPanel {
             View row;
             if (entry.setting instanceof BooleanSetting) {
                 row = booleanRow(activity, entry, syncDependants);
-            } else if (entry.setting instanceof EnumSetting) {
+            }
+            else if (entry.setting instanceof EnumSetting) {
                 row = choiceRow(activity, entry);
-            } else {
+            }
+            else {
                 continue;
             }
             if (!entry.category.equals(previous)) {
@@ -329,8 +346,7 @@ public final class PatchPanel {
 
         if (installed(PatchSettings.SHOW_AI_PROGRESS) || installed(PatchSettings.LOG_ENDPOINTS)) {
             content.addView(divider(activity));
-            content.addView(traceRow(activity, "AI requests", RequestLog.summary(),
-                    () -> RequestLog.show(activity)));
+            content.addView(traceRow(activity, "AI requests", RequestLog.summary(), () -> RequestLog.show(activity)));
         }
 
         boolean anyAlwaysOn = false;
@@ -353,14 +369,12 @@ public final class PatchPanel {
         ScrollView scroll = new ScrollView(activity);
         scroll.setFillViewport(true);
         scroll.addView(content);
-        root.addView(scroll, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         dialog.setContentView(root);
         Window window = dialog.getWindow();
         if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(new ColorDrawable(BG));
             window.setStatusBarColor(BG);
             window.setNavigationBarColor(BG);
@@ -382,10 +396,9 @@ public final class PatchPanel {
         holder.setTag(TITLE);
         holder.addView(sectionHeader(activity, "Patches"));
         holder.addView(divider(activity));
-        holder.addView(row, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, ROW_HEIGHT_DP)));
-        holder.addView(list, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        holder.addView(row,
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, ROW_HEIGHT_DP)));
+        holder.addView(list, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         parent.addView(holder, index, original);
     }
@@ -395,8 +408,7 @@ public final class PatchPanel {
         bar.setOrientation(LinearLayout.HORIZONTAL);
         bar.setGravity(Gravity.CENTER_VERTICAL);
         bar.setBackgroundColor(BG);
-        bar.setPadding(dp(activity, 10), dp(activity, 14),
-                dp(activity, SIDE_PAD_DP), dp(activity, 14));
+        bar.setPadding(dp(activity, 10), dp(activity, 14), dp(activity, SIDE_PAD_DP), dp(activity, 14));
 
         TextView back = new TextView(activity);
         back.setText("‹");
@@ -406,7 +418,7 @@ public final class PatchPanel {
         back.setBackground(ripple(activity));
         int size = dp(activity, 48);
         back.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-        back.setOnClickListener(v -> dialog.dismiss());
+        back.setOnClickListener((v) -> dialog.dismiss());
         bar.addView(back);
 
         TextView title = new TextView(activity);
@@ -414,8 +426,7 @@ public final class PatchPanel {
         title.setTextColor(FG);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         title.setTypeface(Typeface.DEFAULT_BOLD);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         params.leftMargin = dp(activity, 12);
         title.setLayoutParams(params);
         bar.addView(title);
@@ -436,7 +447,7 @@ public final class PatchPanel {
         row.addView(toggle);
 
         row.setContentDescription(entry.title + ". " + entry.summary);
-        row.setOnClickListener(v -> {
+        row.setOnClickListener((v) -> {
             boolean next = !toggle.isChecked();
             toggle.setChecked(next);
             setting.save(next);
@@ -458,8 +469,8 @@ public final class PatchPanel {
         view.setText(text);
         view.setTextColor(DIM);
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, SUMMARY_SP);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         params.topMargin = dp(activity, 5);
         view.setLayoutParams(params);
         return view;
@@ -470,16 +481,15 @@ public final class PatchPanel {
         header.setText(text.toUpperCase(Locale.getDefault()));
         header.setTextColor(DIM);
         header.setTextSize(TypedValue.COMPLEX_UNIT_SP, HEADER_SP);
-        header.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 26),
-                dp(activity, SIDE_PAD_DP), dp(activity, 14));
+        header.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 26), dp(activity, SIDE_PAD_DP), dp(activity, 14));
         return header;
     }
 
     private static View divider(Activity activity) {
         View line = new View(activity);
         line.setBackgroundColor(HAIRLINE);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, Math.max(1, dp(activity, 0.5f)));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                Math.max(1, dp(activity, 0.5f)));
         params.leftMargin = dp(activity, 14);
         line.setLayoutParams(params);
         return line;
@@ -498,8 +508,7 @@ public final class PatchPanel {
     private static LinearLayout labels(Activity activity, String titleText, String summaryText) {
         LinearLayout block = new LinearLayout(activity);
         block.setOrientation(LinearLayout.VERTICAL);
-        block.setLayoutParams(new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        block.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         block.addView(title(activity, titleText));
         if (!summaryText.isEmpty()) {
             block.addView(summary(activity, summaryText));
@@ -526,38 +535,35 @@ public final class PatchPanel {
             items[i] = choices[i].toString();
         }
         row.setContentDescription(entry.title + ". " + entry.summary);
-        row.setOnClickListener(v -> new AlertDialog.Builder(
-                activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle(entry.title)
-                .setItems(items, (dialog, which) -> {
-                    setting.save(choices[which]);
-                    value.setText(items[which]);
-                })
-                .show());
+        row.setOnClickListener(
+                (v) -> new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+                    .setTitle(entry.title)
+                    .setItems(items, (dialog, which) -> {
+                        setting.save(choices[which]);
+                        value.setText(items[which]);
+                    })
+                    .show());
         return row;
     }
 
     private static void setRowEnabled(View row, boolean enabled) {
         row.setEnabled(enabled);
-        row.setAlpha(enabled ? 1f : DISABLED_ALPHA);
+        row.setAlpha((enabled) ? 1f : DISABLED_ALPHA);
     }
 
-    private static View traceRow(Activity activity, String titleText, String summaryText,
-                                 Runnable onOpen) {
+    private static View traceRow(Activity activity, String titleText, String summaryText, Runnable onOpen) {
         LinearLayout row = flatRow(activity);
-        row.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 16),
-                dp(activity, SIDE_PAD_DP), dp(activity, 16));
+        row.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 16), dp(activity, SIDE_PAD_DP), dp(activity, 16));
         row.addView(labels(activity, titleText, summaryText));
         row.addView(chevron(activity));
         row.setContentDescription(titleText + ". " + summaryText);
-        row.setOnClickListener(v -> onOpen.run());
+        row.setOnClickListener((v) -> onOpen.run());
         return row;
     }
 
     private static View staticRow(Activity activity, String titleText, String summaryText) {
         LinearLayout row = flatRow(activity);
-        row.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 16),
-                dp(activity, SIDE_PAD_DP), dp(activity, 16));
+        row.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 16), dp(activity, SIDE_PAD_DP), dp(activity, 16));
         row.addView(labels(activity, titleText, summaryText));
         return row;
     }
@@ -565,8 +571,7 @@ public final class PatchPanel {
     static LinearLayout logBody(Activity activity) {
         LinearLayout body = new LinearLayout(activity);
         body.setOrientation(LinearLayout.VERTICAL);
-        body.setPadding(dp(activity, 16), dp(activity, 8),
-                dp(activity, 16), dp(activity, 24));
+        body.setPadding(dp(activity, 16), dp(activity, 8), dp(activity, 16), dp(activity, 24));
         return body;
     }
 
@@ -586,7 +591,7 @@ public final class PatchPanel {
         if (HttpStatus.isSuccess(code)) {
             return OK;
         }
-        return HttpStatus.isPending(code) ? PENDING : FAILED;
+        return (HttpStatus.isPending(code)) ? PENDING : FAILED;
     }
 
     static Drawable card(Context context) {
@@ -602,8 +607,8 @@ public final class PatchPanel {
         view.setTextColor(chipTextColour(background));
         view.setTypeface(Typeface.DEFAULT_BOLD);
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, CHIP_SP);
-        view.setPadding(dp(context, CHIP_PAD_H_DP), dp(context, CHIP_PAD_V_DP),
-                dp(context, CHIP_PAD_H_DP), dp(context, CHIP_PAD_V_DP));
+        view.setPadding(dp(context, CHIP_PAD_H_DP), dp(context, CHIP_PAD_V_DP), dp(context, CHIP_PAD_H_DP),
+                dp(context, CHIP_PAD_V_DP));
         GradientDrawable pill = new GradientDrawable();
         pill.setColor(background);
         pill.setCornerRadius(dp(context, CHIP_RADIUS_DP));
@@ -612,20 +617,17 @@ public final class PatchPanel {
     }
 
     static int chipTextColour(int background) {
-        return luminance(background) > EQUAL_CONTRAST_LUMINANCE ? BG : FG;
+        return (luminance(background) > EQUAL_CONTRAST_LUMINANCE) ? BG : FG;
     }
 
     private static float luminance(int colour) {
-        return 0.2126f * linear(Color.red(colour))
-                + 0.7152f * linear(Color.green(colour))
+        return 0.2126f * linear(Color.red(colour)) + 0.7152f * linear(Color.green(colour))
                 + 0.0722f * linear(Color.blue(colour));
     }
 
     private static float linear(int channel) {
         float value = channel / 255f;
-        return value < 0.03928f
-                ? value / 12.92f
-                : (float) Math.pow((value + 0.055f) / 1.055f, 2.4);
+        return (value < 0.03928f) ? value / 12.92f : (float) Math.pow((value + 0.055f) / 1.055f, 2.4);
     }
 
     static boolean isHttpMethod(String method) {
@@ -633,11 +635,10 @@ public final class PatchPanel {
     }
 
     static int methodColour(String method) {
-        return SAFE_METHODS.contains(method.toUpperCase(Locale.US)) ? NEUTRAL : ACCENT;
+        return (SAFE_METHODS.contains(method.toUpperCase(Locale.US))) ? NEUTRAL : ACCENT;
     }
 
-    static View logRow(Activity activity, String time, String status, int statusColour,
-                       String detail) {
+    static View logRow(Activity activity, String time, String status, int statusColour, String detail) {
         LinearLayout row = new LinearLayout(activity);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -647,13 +648,13 @@ public final class PatchPanel {
         timeView.setText(time);
         timeView.setTextColor(DIM);
         timeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, ROW_SP);
-        timeView.setLayoutParams(new LinearLayout.LayoutParams(
-                dp(activity, ROW_TIME_WIDTH_DP), ViewGroup.LayoutParams.WRAP_CONTENT));
+        timeView.setLayoutParams(
+                new LinearLayout.LayoutParams(dp(activity, ROW_TIME_WIDTH_DP), ViewGroup.LayoutParams.WRAP_CONTENT));
         row.addView(timeView);
 
         View chip = chip(activity, status, statusColour);
-        LinearLayout.LayoutParams chipParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams chipParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         chipParams.rightMargin = dp(activity, ROW_CHIP_MARGIN_DP);
         chip.setLayoutParams(chipParams);
         row.addView(chip);
@@ -681,14 +682,12 @@ public final class PatchPanel {
         ScrollView scroll = new ScrollView(activity);
         scroll.setFillViewport(true);
         scroll.addView(body);
-        root.addView(scroll, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         dialog.setContentView(root);
         Window window = dialog.getWindow();
         if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             window.setBackgroundDrawable(new ColorDrawable(BG));
             window.setStatusBarColor(BG);
             window.setNavigationBarColor(BG);
@@ -699,48 +698,52 @@ public final class PatchPanel {
     static Drawable ripple(Context context) {
         TypedValue value = new TypedValue();
         context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, value, true);
-        Drawable drawable = value.resourceId != 0 ? context.getDrawable(value.resourceId) : null;
-        return drawable != null ? drawable : new ColorDrawable(Color.TRANSPARENT);
+        Drawable drawable = (value.resourceId != 0) ? context.getDrawable(value.resourceId) : null;
+        return (drawable != null) ? drawable : new ColorDrawable(Color.TRANSPARENT);
     }
 
     private static String appVersion(Activity activity) {
         try {
-            return activity.getPackageManager()
-                    .getPackageInfo(activity.getPackageName(), 0).versionName;
-        } catch (Exception ex) {
+            return activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
+        }
+        catch (Exception ex) {
             return "unknown";
         }
     }
 
     private static void tint(Switch toggle) {
-        int[][] states = {{android.R.attr.state_checked}, {}};
-        toggle.setThumbTintList(new android.content.res.ColorStateList(
-                states, new int[]{ACCENT, Color.parseColor("#B0B0B6")}));
-        toggle.setTrackTintList(new android.content.res.ColorStateList(
-                states, new int[]{
-                        Color.argb(130, Color.red(ACCENT), Color.green(ACCENT), Color.blue(ACCENT)),
-                        Color.parseColor("#4A4A50"),
-                }));
+        int[][] states = { { android.R.attr.state_checked }, {} };
+        toggle.setThumbTintList(
+                new android.content.res.ColorStateList(states, new int[] { ACCENT, Color.parseColor("#B0B0B6") }));
+        toggle.setTrackTintList(new android.content.res.ColorStateList(states,
+                new int[] { Color.argb(130, Color.red(ACCENT), Color.green(ACCENT), Color.blue(ACCENT)),
+                        Color.parseColor("#4A4A50"), }));
     }
 
     private static final class Entry {
+
         final Setting<?> setting;
+
         final String category;
+
         final String title;
+
         final String summary;
+
         final BooleanSetting parent;
 
         Entry(Setting<?> setting, String category, String title, String summary) {
             this(setting, category, title, summary, null);
         }
 
-        Entry(Setting<?> setting, String category, String title, String summary,
-              BooleanSetting parent) {
+        Entry(Setting<?> setting, String category, String title, String summary, BooleanSetting parent) {
             this.setting = setting;
             this.category = category;
             this.title = title;
             this.summary = summary;
             this.parent = parent;
         }
+
     }
+
 }

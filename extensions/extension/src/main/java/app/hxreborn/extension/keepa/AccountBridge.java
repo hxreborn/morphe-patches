@@ -7,7 +7,6 @@ package app.hxreborn.extension.keepa;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,12 +16,15 @@ public final class AccountBridge {
 
     private static final String TAG = "hx.KeepaAccounts";
 
-    private AccountBridge() {}
+    private AccountBridge() {
+
+    }
 
     public static String call(Context context, String method, String json) {
         try {
             return new JSONObject().put("value", dispatch(context, AccountStore.of(context), method, json)).toString();
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             Log.e(TAG, "Bridge call " + method + " failed", throwable);
             return "{\"error\":" + JSONObject.quote(method + ": " + throwable) + "}";
         }
@@ -41,7 +43,7 @@ public final class AccountBridge {
 
     static synchronized Object dispatch(Context context, AccountStore store, String method, String json)
             throws JSONException {
-        final JSONObject arguments = json == null || json.isEmpty() ? new JSONObject() : new JSONObject(json);
+        final JSONObject arguments = (json == null || json.isEmpty()) ? new JSONObject() : new JSONObject(json);
         switch (method) {
             case "setPending":
                 store.writePending(json);
@@ -50,10 +52,12 @@ public final class AccountBridge {
                 store.clearPending();
                 return snapshot(store, store.load());
             case "openAccounts":
-                context.startActivity(new Intent()
-                        .setClassName(context.getPackageName(), AccountsActivity.class.getName())
+                context
+                    .startActivity(new Intent().setClassName(context.getPackageName(), AccountsActivity.class.getName())
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return "";
+            default:
+                break;
         }
 
         final Accounts accounts = store.load();
@@ -63,11 +67,12 @@ public final class AccountBridge {
                 return snapshot(store, accounts);
             case "allocate":
                 return accounts.allocate(arguments.getString("asin"), now);
-            case "mergeOverviews": {
+            case "mergeOverviews":
                 final JSONObject merged = accounts.mergeOverviews(arguments.getJSONObject("responses"), now);
-                if (arguments.getBoolean("commit")) store.save(accounts);
+                if (arguments.getBoolean("commit")) {
+                    store.save(accounts);
+                }
                 return merged;
-            }
             case "onServerData":
                 accounts.upsertByUsername(arguments.getString("token"), arguments.getString("username"),
                         arguments.optString("email", ""), now);
@@ -91,13 +96,12 @@ public final class AccountBridge {
             case "applyReject":
                 accounts.applyReject(arguments.getString("accountId"), arguments.getInt("status"), now);
                 break;
-            case "applyDelete": {
+            case "applyDelete":
                 final JSONArray asins = arguments.getJSONArray("asins");
                 for (int i = 0; i < asins.length(); i++) {
                     accounts.applyDelete(asins.getString(i), arguments.getString("accountId"));
                 }
                 break;
-            }
             default:
                 throw new IllegalArgumentException("Unknown bridge method " + method);
         }
@@ -107,11 +111,11 @@ public final class AccountBridge {
 
     private static JSONObject snapshot(AccountStore store, Accounts accounts) throws JSONException {
         final String pending = store.pending();
-        return new JSONObject()
-                .put("accounts", accounts.toJson())
-                .put("owners", accounts.owners())
-                .put("pending", pending.isEmpty() ? JSONObject.NULL : new JSONObject(pending))
-                .put("summary", accounts.summary())
-                .put("limitTotal", accounts.limitTotal());
+        return new JSONObject().put("accounts", accounts.toJson())
+            .put("owners", accounts.owners())
+            .put("pending", (pending.isEmpty()) ? JSONObject.NULL : new JSONObject(pending))
+            .put("summary", accounts.summary())
+            .put("limitTotal", accounts.limitTotal());
     }
+
 }

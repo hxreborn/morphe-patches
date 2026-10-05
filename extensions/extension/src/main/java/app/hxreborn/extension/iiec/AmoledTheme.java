@@ -4,6 +4,9 @@
  */
 package app.hxreborn.extension.iiec;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -16,21 +19,26 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("unused")
 public final class AmoledTheme {
-    private static final String EDITOR_THEME_DARK_PREFERENCE_KEY = "appearance_editor_theme_dark";
-    private static final String AMOLED_VALUE = "amoled";
-    private static final String OVERLAY_STYLE = "hx_iiec_amoled_theme_overlay";
-    private static final String[] APP_PACKAGE_PREFIXES = {"ru.iiec.", "iiec.androidterm."};
 
-    private static final List<Activity> appActivities = new ArrayList<>();
+    private static final String EDITOR_THEME_DARK_PREFERENCE_KEY = "appearance_editor_theme_dark";
+
+    private static final String AMOLED_VALUE = "amoled";
+
+    private static final String OVERLAY_STYLE = "hx_iiec_amoled_theme_overlay";
+
+    private static final String[] APP_PACKAGE_PREFIXES = { "ru.iiec.", "iiec.androidterm." };
+
+    private static final List<Activity> APP_ACTIVITIES = new ArrayList<>();
+
     private static SharedPreferences.OnSharedPreferenceChangeListener editorThemeListener;
+
     private static boolean amoledSelected;
 
-    private AmoledTheme() {}
+    private AmoledTheme() {
+
+    }
 
     public static void attach(Application application) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
@@ -38,10 +46,14 @@ public final class AmoledTheme {
         editorThemeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (!EDITOR_THEME_DARK_PREFERENCE_KEY.equals(key)) return;
+                if (!EDITOR_THEME_DARK_PREFERENCE_KEY.equals(key)) {
+                    return;
+                }
 
                 boolean selected = isAmoledValue(sharedPreferences);
-                if (selected == amoledSelected) return;
+                if (selected == amoledSelected) {
+                    return;
+                }
 
                 amoledSelected = selected;
                 recreateAppActivities();
@@ -57,7 +69,9 @@ public final class AmoledTheme {
 
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                if (isAppActivity(activity)) appActivities.add(activity);
+                if (isAppActivity(activity)) {
+                    APP_ACTIVITIES.add(activity);
+                }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     return;
@@ -69,23 +83,28 @@ public final class AmoledTheme {
             }
 
             @Override
-            public void onActivityStarted(Activity activity) {}
+            public void onActivityStarted(Activity activity) {
+            }
 
             @Override
-            public void onActivityResumed(Activity activity) {}
+            public void onActivityResumed(Activity activity) {
+            }
 
             @Override
-            public void onActivityPaused(Activity activity) {}
+            public void onActivityPaused(Activity activity) {
+            }
 
             @Override
-            public void onActivityStopped(Activity activity) {}
+            public void onActivityStopped(Activity activity) {
+            }
 
             @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                appActivities.remove(activity);
+                APP_ACTIVITIES.remove(activity);
             }
         });
     }
@@ -94,8 +113,10 @@ public final class AmoledTheme {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                for (Activity activity : new ArrayList<>(appActivities)) {
-                    if (!activity.isFinishing()) activity.recreate();
+                for (Activity activity : new ArrayList<>(APP_ACTIVITIES)) {
+                    if (!activity.isFinishing()) {
+                        activity.recreate();
+                    }
                 }
             }
         });
@@ -104,7 +125,8 @@ public final class AmoledTheme {
     private static boolean isAmoledValue(SharedPreferences preferences) {
         try {
             return AMOLED_VALUE.equals(preferences.getString(EDITOR_THEME_DARK_PREFERENCE_KEY, ""));
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException ex) {
             return false;
         }
     }
@@ -125,13 +147,16 @@ public final class AmoledTheme {
     }
 
     private static void reapplyWindowBackground(Activity activity) {
-        TypedArray attributes =
-                activity.getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
+        TypedArray attributes = activity.getTheme()
+            .obtainStyledAttributes(new int[] { android.R.attr.windowBackground });
 
         try {
             Drawable background = attributes.getDrawable(0);
-            if (background != null) activity.getWindow().setBackgroundDrawable(background);
-        } finally {
+            if (background != null) {
+                activity.getWindow().setBackgroundDrawable(background);
+            }
+        }
+        finally {
             attributes.recycle();
         }
     }
@@ -140,7 +165,9 @@ public final class AmoledTheme {
         String name = activity.getClass().getName();
 
         for (String prefix : APP_PACKAGE_PREFIXES) {
-            if (name.startsWith(prefix)) return true;
+            if (name.startsWith(prefix)) {
+                return true;
+            }
         }
 
         return false;
@@ -159,4 +186,5 @@ public final class AmoledTheme {
 
         return (uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
     }
+
 }

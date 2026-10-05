@@ -17,11 +17,16 @@ import android.util.Log;
 
 @SuppressWarnings("unused")
 public final class MediaStoreVideoUri {
+
     private static final String TAG = "MediaStoreVideoUri";
+
     private static final String EXTERNAL_STORAGE_DOCUMENTS = "com.android.externalstorage.documents";
+
     private static final String PRIMARY_VOLUME_PREFIX = "primary:";
 
-    private MediaStoreVideoUri() {}
+    private MediaStoreVideoUri() {
+
+    }
 
     public static Uri resolve(Activity activity, Uri uri) {
         if (uri == null || MediaStore.AUTHORITY.equals(uri.getAuthority())) {
@@ -39,7 +44,8 @@ public final class MediaStoreVideoUri {
                 intent.setDataAndType(mediaUri, intent.getType());
             }
             return mediaUri;
-        } catch (Exception exception) {
+        }
+        catch (Exception exception) {
             Log.e(TAG, "Could not resolve " + uri, exception);
             return uri;
         }
@@ -48,7 +54,7 @@ public final class MediaStoreVideoUri {
     private static Uri lookUp(ContentResolver resolver, Uri uri) {
         String path = filePath(resolver, uri);
         if (path != null) {
-            Uri byPath = findVideo(resolver, MediaStore.MediaColumns.DATA + "=?", new String[] {path});
+            Uri byPath = findVideo(resolver, MediaStore.MediaColumns.DATA + "=?", new String[] { path });
             if (byPath != null) {
                 return byPath;
             }
@@ -57,15 +63,14 @@ public final class MediaStoreVideoUri {
         if (!ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
             return null;
         }
-        try (Cursor cursor = resolver.query(
-                uri, new String[] {OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE}, null, null, null)) {
+        try (Cursor cursor = resolver.query(uri, new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE },
+                null, null, null)) {
             if (cursor == null || !cursor.moveToFirst() || cursor.isNull(0) || cursor.isNull(1)) {
                 return null;
             }
-            return findVideo(
-                resolver,
-                MediaStore.MediaColumns.DISPLAY_NAME + "=? AND " + MediaStore.MediaColumns.SIZE + "=?",
-                new String[] {cursor.getString(0), String.valueOf(cursor.getLong(1))});
+            return findVideo(resolver,
+                    MediaStore.MediaColumns.DISPLAY_NAME + "=? AND " + MediaStore.MediaColumns.SIZE + "=?",
+                    new String[] { cursor.getString(0), String.valueOf(cursor.getLong(1)) });
         }
     }
 
@@ -77,7 +82,7 @@ public final class MediaStoreVideoUri {
             String documentId = uri.getLastPathSegment();
             if (documentId != null && documentId.startsWith(PRIMARY_VOLUME_PREFIX)) {
                 return Environment.getExternalStorageDirectory() + "/"
-                    + documentId.substring(PRIMARY_VOLUME_PREFIX.length());
+                        + documentId.substring(PRIMARY_VOLUME_PREFIX.length());
             }
         }
         return null;
@@ -85,12 +90,13 @@ public final class MediaStoreVideoUri {
 
     private static Uri findVideo(ContentResolver resolver, String selection, String[] selectionArgs) {
         Uri collection = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        try (Cursor cursor = resolver.query(
-                collection, new String[] {MediaStore.MediaColumns._ID}, selection, selectionArgs, null)) {
+        try (Cursor cursor = resolver.query(collection, new String[] { MediaStore.MediaColumns._ID }, selection,
+                selectionArgs, null)) {
             if (cursor == null || cursor.getCount() != 1 || !cursor.moveToFirst()) {
                 return null;
             }
             return ContentUris.withAppendedId(collection, cursor.getLong(0));
         }
     }
+
 }

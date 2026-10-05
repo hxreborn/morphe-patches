@@ -5,9 +5,9 @@
 package app.hxreborn.extension.proton;
 
 import android.content.Context;
+import app.morphe.extension.shared.Utils;
 
 import app.hxreborn.extension.shared.SpoofSignature;
-import app.morphe.extension.shared.Utils;
 
 @SuppressWarnings("unused")
 public class PatchApplication extends SpoofSignature {
@@ -23,4 +23,5 @@ public class PatchApplication extends SpoofSignature {
         super.onCreate();
         PatchContext.attach(this);
     }
+
 }

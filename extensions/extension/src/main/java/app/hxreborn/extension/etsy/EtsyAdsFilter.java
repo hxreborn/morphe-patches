@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class EtsyAdsFilter {
-    private EtsyAdsFilter() {}
+
+    private EtsyAdsFilter() {
+    }
 
     public static List<?> removeAds(List<?> components) {
         if (components == null || components.isEmpty()) {
@@ -27,4 +29,5 @@ public final class EtsyAdsFilter {
     private static boolean isPromoted(Object component) {
         return component.toString().contains("AdLabelApiModel");
     }
+
 }

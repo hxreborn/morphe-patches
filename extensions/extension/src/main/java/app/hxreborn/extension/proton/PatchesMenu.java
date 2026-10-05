@@ -4,31 +4,32 @@
  */
 package app.hxreborn.extension.proton;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
 import app.morphe.extension.shared.Utils;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 @SuppressWarnings("unused")
 public final class PatchesMenu {
 
-    private static final String TAG = "PatchesMenu";
-
     public static final String SETTINGS_ROW_TITLE = "hxreborn patches";
+
+    private static final String TAG = "PatchesMenu";
 
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
 
     private static volatile Object settingsRowOnClickProxy;
 
-    private PatchesMenu() {}
+    private PatchesMenu() {
+
+    }
 
     public static String bundleVersion() {
         return "unknown";
@@ -40,19 +41,6 @@ public final class PatchesMenu {
                     new Class<?>[] { onClickType }, new RowClickHandler());
         }
         return settingsRowOnClickProxy;
-    }
-
-    private static final class RowClickHandler implements InvocationHandler {
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) {
-            final String name = method.getName();
-            if ("toString".equals(name)) return SETTINGS_ROW_TITLE;
-            if ("hashCode".equals(name)) return System.identityHashCode(proxy);
-            if ("equals".equals(name)) return proxy == args[0];
-
-            MAIN_HANDLER.post(PatchesMenu::show);
-            return null;
-        }
     }
 
     private static void show() {
@@ -72,4 +60,26 @@ public final class PatchesMenu {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    private static final class RowClickHandler implements InvocationHandler {
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) {
+            final String name = method.getName();
+            if ("toString".equals(name)) {
+                return SETTINGS_ROW_TITLE;
+            }
+            if ("hashCode".equals(name)) {
+                return System.identityHashCode(proxy);
+            }
+            if ("equals".equals(name)) {
+                return proxy == args[0];
+            }
+
+            MAIN_HANDLER.post(PatchesMenu::show);
+            return null;
+        }
+
+    }
+
 }

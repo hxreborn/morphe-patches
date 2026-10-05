@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 @SuppressWarnings("unused")
 public final class PairipMethods {
+
     private PairipMethods() {
     }
 
@@ -18,8 +19,9 @@ public final class PairipMethods {
             method.setAccessible(true);
 
             return method;
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(className + "." + methodName + " is missing", e);
+        }
+        catch (ReflectiveOperationException ex) {
+            throw new IllegalStateException(className + "." + methodName + " is missing", ex);
         }
     }
 
@@ -61,4 +63,5 @@ public final class PairipMethods {
                 return Class.forName(name);
         }
     }
+
 }

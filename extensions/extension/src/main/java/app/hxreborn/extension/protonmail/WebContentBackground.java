@@ -4,42 +4,49 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import app.hxreborn.extension.proton.AmoledTheme;
 
 @SuppressWarnings("unused")
 public final class WebContentBackground {
-    private static final String PROTON_DARK_BACKGROUND = "#191927";
-    private static final String AMOLED_BACKGROUND = "#000000";
-    private static final byte[] PROTON_DARK_BACKGROUND_BYTES =
-            PROTON_DARK_BACKGROUND.getBytes(US_ASCII);
-    private static final byte[] AMOLED_BACKGROUND_BYTES =
-            AMOLED_BACKGROUND.getBytes(US_ASCII);
 
-    private WebContentBackground() {}
+    private static final String PROTON_DARK_BACKGROUND = "#191927";
+
+    private static final String AMOLED_BACKGROUND = "#000000";
+
+    private static final byte[] PROTON_DARK_BACKGROUND_BYTES = PROTON_DARK_BACKGROUND
+        .getBytes(StandardCharsets.US_ASCII);
+
+    private static final byte[] AMOLED_BACKGROUND_BYTES = AMOLED_BACKGROUND.getBytes(StandardCharsets.US_ASCII);
+
+    private WebContentBackground() {
+
+    }
 
     public static String replaceBackground(String html) {
-        if (!AmoledTheme.isEnabled()) return html;
-        return html == null
-                ? null
-                : html.replace(PROTON_DARK_BACKGROUND, AMOLED_BACKGROUND);
+        if (!AmoledTheme.isEnabled()) {
+            return html;
+        }
+        return (html != null) ? html.replace(PROTON_DARK_BACKGROUND, AMOLED_BACKGROUND) : null;
     }
 
     public static InputStream replaceBackground(InputStream input) {
-        if (!AmoledTheme.isEnabled()) return input;
-        return input == null ? null : new BackgroundReplacingInputStream(input);
+        if (!AmoledTheme.isEnabled()) {
+            return input;
+        }
+        return (input != null) ? new BackgroundReplacingInputStream(input) : null;
     }
+
     private static byte[] readAllBytes(InputStream input) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] buffer = new byte[8192];
 
-        for (int bytesRead; (bytesRead = input.read(buffer)) != -1; ) {
+        for (int bytesRead; (bytesRead = input.read(buffer)) != -1;) {
             output.write(buffer, 0, bytesRead);
         }
 
@@ -48,16 +55,15 @@ public final class WebContentBackground {
 
     private static void replaceInPlace(byte[] content, byte[] target, byte[] replacement) {
         if (target.length != replacement.length) {
-            throw new IllegalArgumentException(
-                    "In-place replacement requires equal-length values"
-            );
+            throw new IllegalArgumentException("In-place replacement requires equal-length values");
         }
 
-        for (int offset = 0; offset <= content.length - target.length; ) {
+        for (int offset = 0; offset <= content.length - target.length;) {
             if (matchesAt(content, target, offset)) {
                 System.arraycopy(replacement, 0, content, offset, replacement.length);
                 offset += target.length;
-            } else {
+            }
+            else {
                 offset++;
             }
         }
@@ -74,7 +80,9 @@ public final class WebContentBackground {
     }
 
     private static final class BackgroundReplacingInputStream extends InputStream {
+
         private final InputStream source;
+
         private ByteArrayInputStream replacement;
 
         private BackgroundReplacingInputStream(InputStream source) {
@@ -103,21 +111,19 @@ public final class WebContentBackground {
 
         @Override
         public void close() throws IOException {
-            source.close();
+            this.source.close();
         }
 
         private ByteArrayInputStream replacement() throws IOException {
-            if (replacement == null) {
-                byte[] content = WebContentBackground.readAllBytes(source);
-                replaceInPlace(
-                        content,
-                        PROTON_DARK_BACKGROUND_BYTES,
-                        AMOLED_BACKGROUND_BYTES
-                );
-                replacement = new ByteArrayInputStream(content);
+            if (this.replacement == null) {
+                byte[] content = WebContentBackground.readAllBytes(this.source);
+                replaceInPlace(content, PROTON_DARK_BACKGROUND_BYTES, AMOLED_BACKGROUND_BYTES);
+                this.replacement = new ByteArrayInputStream(content);
             }
 
-            return replacement;
+            return this.replacement;
         }
+
     }
+
 }

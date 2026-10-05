@@ -4,8 +4,6 @@
  */
 package app.hxreborn.extension.photoeditorpro;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.util.Log;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -31,45 +30,43 @@ import okhttp3.ResponseBody;
 public final class AiTrace {
 
     private static final String TAG = "hxreborn/ai";
+
     private static final int MAX_SESSIONS = 8;
+
     private static final int MAX_EXCHANGES_PER_SESSION = 16;
+
     private static final int MAX_ATTEMPTS_PER_EXCHANGE = 250;
+
     private static final int MAX_HEADERS = 32;
+
     private static final int MAX_PAYLOAD_FIELDS = 24;
+
     private static final int MAX_VALUE_CHARS = 512;
+
     private static final int MAX_BODY_BYTES = 8192;
+
     private static final int MAX_BODY_CHARS = 2048;
 
-    private static final String[] ROUTING_SEGMENTS = {
-            "api", "new", "predict", "query", "result", "results", "revoke", "task", "upload",
-    };
+    private static final String[] ROUTING_SEGMENTS = { "api", "new", "predict", "query", "result", "results", "revoke",
+            "task", "upload", };
 
-    private static final String[][] LABELS = {
-            {"inpaint", "AI Remove"},
-            {"remove", "AI Remove"},
-            {"expand", "AI Expand"},
-            {"outpaint", "AI Expand"},
-            {"enhance", "Enhance"},
-            {"color", "Enhance"},
-            {"sketch", "Sketch"},
-            {"segmentation", "Cutout"},
-            {"eraser", "Cutout"},
-            {"bgeraser", "Cutout"},
-            {"subject", "Cutout"},
-    };
+    private static final String[][] LABELS = { { "inpaint", "AI Remove" }, { "remove", "AI Remove" },
+            { "expand", "AI Expand" }, { "outpaint", "AI Expand" }, { "enhance", "Enhance" }, { "color", "Enhance" },
+            { "sketch", "Sketch" }, { "segmentation", "Cutout" }, { "eraser", "Cutout" }, { "bgeraser", "Cutout" },
+            { "subject", "Cutout" }, };
 
-    private static final String[] SECRET_TOKENS = {
-            "token", "secret", "signature", "sign", "auth", "cookie", "password", "session",
-    };
+    private static final String[] SECRET_TOKENS = { "token", "secret", "signature", "sign", "auth", "cookie",
+            "password", "session", };
 
     private static final String POLISH_PREFIX = "polish_";
+
     private static final String PUT_FILE = "putFile";
+
     private static final String GET = "GET";
 
     private static final Set<String> CONTROL_OPERATIONS = Set.of("revoke", "cancel", "query", "task");
 
-    private static final Pattern UUID = Pattern.compile(
-            "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+    private static final Pattern UUID = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
 
     private static final ThreadLocal<SimpleDateFormat> ISO = new ThreadLocal<>() {
         @Override
@@ -79,6 +76,7 @@ public final class AiTrace {
     };
 
     private static final Object LOCK = new Object();
+
     private static final List<Session> SESSIONS = new ArrayList<>();
 
     private AiTrace() {
@@ -87,7 +85,8 @@ public final class AiTrace {
     private static boolean enabled() {
         try {
             return PatchSettings.LOG_ENDPOINTS.get();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             return false;
         }
     }
@@ -108,7 +107,8 @@ public final class AiTrace {
             Response response = chain.proceed(request);
             close(attempt, response);
             return response;
-        } catch (IOException | RuntimeException ex) {
+        }
+        catch (IOException | RuntimeException ex) {
             fail(attempt, ex);
             throw ex;
         }
@@ -120,8 +120,7 @@ public final class AiTrace {
         Attempt attempt = new Attempt(now, 0);
         try {
             synchronized (LOCK) {
-                Session session = GET.equals(method)
-                        ? sessionFor(operationOf(url), resourceOf(url), now)
+                Session session = (GET.equals(method)) ? sessionFor(operationOf(url), resourceOf(url), now)
                         : pendingSession(operationOf(url), now);
                 Exchange exchange = session.exchange(method, url);
                 if (exchange.payload.isEmpty()) {
@@ -131,7 +130,8 @@ public final class AiTrace {
                 session.touch(now);
             }
             ProgressTrace.refreshLive();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "open", ex);
         }
         return attempt;
@@ -142,15 +142,16 @@ public final class AiTrace {
             synchronized (LOCK) {
                 describe(response, attempt);
             }
-            Log.i(TAG, String.format(Locale.US, "%s  %s %s -> %s  %dms",
-                    iso(attempt.startedAtMs), response.request().method(),
-                    path(response.request().url().toString()), attempt.statusLine(),
-                    attempt.durationMs()));
+            Log.i(TAG,
+                    String.format(Locale.US, "%s  %s %s -> %s  %dms", iso(attempt.startedAtMs),
+                            response.request().method(), path(response.request().url().toString()),
+                            attempt.statusLine(), attempt.durationMs()));
             if (!attempt.body.isEmpty()) {
                 Log.i(TAG, "    body: " + attempt.body);
             }
             ProgressTrace.refreshLive();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "close", ex);
         }
     }
@@ -162,7 +163,8 @@ public final class AiTrace {
                 attempt.message = clamp(String.valueOf(cause));
             }
             ProgressTrace.refreshLive();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "fail", ex);
         }
     }
@@ -181,7 +183,8 @@ public final class AiTrace {
             }
             Log.i(TAG, iso(now) + "  " + PUT_FILE + " " + path(url));
             ProgressTrace.refreshLive();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "upload", ex);
         }
     }
@@ -205,7 +208,7 @@ public final class AiTrace {
         if (body != null) {
             attempt.contentLength = body.contentLength();
             MediaType type = body.contentType();
-            attempt.contentType = type == null ? "" : type.toString();
+            attempt.contentType = (type != null) ? type.toString() : "";
         }
 
         attempt.body = peek(response);
@@ -214,10 +217,9 @@ public final class AiTrace {
     private static String peek(Response response) {
         try {
             String text = response.peekBody(MAX_BODY_BYTES).string().replace('\n', ' ');
-            return text.length() <= MAX_BODY_CHARS
-                    ? text
-                    : text.substring(0, MAX_BODY_CHARS) + "\u2026";
-        } catch (Exception ex) {
+            return (text.length() <= MAX_BODY_CHARS) ? text : text.substring(0, MAX_BODY_CHARS) + "\u2026";
+        }
+        catch (Exception ex) {
             return "";
         }
     }
@@ -226,7 +228,7 @@ public final class AiTrace {
         int count = Math.min(headers.size(), MAX_HEADERS);
         List<String[]> pairs = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            pairs.add(new String[]{headers.name(i), redact(headers.name(i), headers.value(i))});
+            pairs.add(new String[] { headers.name(i), redact(headers.name(i), headers.value(i)) });
         }
         return pairs;
     }
@@ -238,7 +240,7 @@ public final class AiTrace {
         int count = Math.min(form.size(), MAX_PAYLOAD_FIELDS);
         List<String[]> pairs = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            pairs.add(new String[]{form.name(i), redact(form.name(i), form.value(i))});
+            pairs.add(new String[] { form.name(i), redact(form.name(i), form.value(i)) });
         }
         return pairs;
     }
@@ -247,14 +249,14 @@ public final class AiTrace {
         String key = name.toLowerCase(Locale.US);
         for (String secret : SECRET_TOKENS) {
             if (key.contains(secret)) {
-                return value.isEmpty() ? "" : "<redacted, " + value.length() + " chars>";
+                return (value.isEmpty()) ? "" : "<redacted, " + value.length() + " chars>";
             }
         }
         return clamp(value);
     }
 
     private static String clamp(String value) {
-        return value.length() <= MAX_VALUE_CHARS ? value : value.substring(0, MAX_VALUE_CHARS) + "…";
+        return (value.length() <= MAX_VALUE_CHARS) ? value : value.substring(0, MAX_VALUE_CHARS) + "…";
     }
 
     public static List<Session> sessions() {
@@ -266,8 +268,7 @@ public final class AiTrace {
     public static String headline() {
         synchronized (LOCK) {
             if (SESSIONS.isEmpty()) {
-                return enabled()
-                        ? "No AI request recorded yet this session"
+                return (enabled()) ? "No AI request recorded yet this session"
                         : "Turn on AI request logging above to record requests";
             }
             Session last = null;
@@ -279,8 +280,8 @@ public final class AiTrace {
             if (last == null) {
                 last = SESSIONS.get(SESSIONS.size() - 1);
             }
-            return String.format(Locale.US, "%s · %d requests · %s",
-                    last.feature, last.requestCount(), duration(last.durationMs()));
+            return String.format(Locale.US, "%s · %d requests · %s", last.feature, last.requestCount(),
+                    duration(last.durationMs()));
         }
     }
 
@@ -306,7 +307,8 @@ public final class AiTrace {
                     rows.remove(0);
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Log.w(TAG, "liveRows", ex);
         }
         return rows;
@@ -317,8 +319,7 @@ public final class AiTrace {
         String status = overlayStatus(attempt);
         LiveRow row = byRoute.get(exchange.method + ' ' + path);
         if (row == null) {
-            byRoute.put(exchange.method + ' ' + path,
-                    new LiveRow(exchange.method, path, status, attempt.statusCode));
+            byRoute.put(exchange.method + ' ' + path, new LiveRow(exchange.method, path, status, attempt.statusCode));
             return;
         }
         row.count++;
@@ -330,13 +331,13 @@ public final class AiTrace {
 
     private static String overlayStatus(Attempt attempt) {
         if (attempt.dispatchOnly()) {
-            return ProgressTrace.uploading() ? "" : null;
+            return (ProgressTrace.uploading()) ? "" : null;
         }
         if (attempt.inFlight() || HttpStatus.isPending(attempt.statusCode)) {
             return "";
         }
         String reason = HttpStatus.reason(attempt.statusCode);
-        return reason.isEmpty() ? attempt.status() : attempt.status() + " " + reason;
+        return (reason.isEmpty()) ? attempt.status() : attempt.status() + " " + reason;
     }
 
     private static String overlayPath(String url) {
@@ -372,7 +373,7 @@ public final class AiTrace {
 
     static String safeUrl(String url) {
         int query = url.indexOf('?');
-        return query < 0 ? url : url.substring(0, query) + "?<redacted>";
+        return (query < 0) ? url : url.substring(0, query) + "?<redacted>";
     }
 
     static String iso(long epochMs) {
@@ -438,21 +439,21 @@ public final class AiTrace {
                 if (first == null) {
                     first = token;
                 }
-            } else if (namedSegment(segment)) {
+            }
+            else if (namedSegment(segment)) {
                 fallback = segment.toLowerCase(Locale.US);
             }
         }
         if (first != null) {
             return first;
         }
-        return fallback != null ? fallback : "request";
+        return (fallback != null) ? fallback : "request";
     }
 
     private static boolean namedSegment(String segment) {
         String token = segment.toLowerCase(Locale.US);
-        return !token.isEmpty() && token.indexOf('.') < 0 && !token.startsWith("rst_")
-                && !token.matches("v\\d+") && !token.matches("\\d+")
-                && !token.matches("\\d{4}-\\d{2}-\\d{2}");
+        return !token.isEmpty() && token.indexOf('.') < 0 && !token.startsWith("rst_") && !token.matches("v\\d+")
+                && !token.matches("\\d+") && !token.matches("\\d{4}-\\d{2}-\\d{2}");
     }
 
     private static String operationToken(String segment) {
@@ -474,12 +475,12 @@ public final class AiTrace {
         if (token.startsWith(POLISH_PREFIX)) {
             token = token.substring(POLISH_PREFIX.length());
         }
-        for (String suffix : new String[]{"_trt", "_v2", "_v3"}) {
+        for (String suffix : new String[] { "_trt", "_v2", "_v3" }) {
             if (token.endsWith(suffix)) {
                 token = token.substring(0, token.length() - suffix.length());
             }
         }
-        return token.isEmpty() ? null : token;
+        return (token.isEmpty()) ? null : token;
     }
 
     static String labelOf(String operation) {
@@ -498,7 +499,7 @@ public final class AiTrace {
             }
             label.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
         }
-        return label.length() == 0 ? "AI request" : label.toString();
+        return (label.length() != 0) ? label.toString() : "AI request";
     }
 
     private static String resourceOf(String url) {
@@ -508,12 +509,12 @@ public final class AiTrace {
         int start = url.indexOf("rst_");
         if (start < 0) {
             Matcher match = UUID.matcher(url);
-            return match.find() ? match.group() : null;
+            return (match.find()) ? match.group() : null;
         }
         int end = url.indexOf('?', start);
-        String tail = end < 0 ? url.substring(start) : url.substring(start, end);
+        String tail = (end < 0) ? url.substring(start) : url.substring(start, end);
         int dot = tail.lastIndexOf('.');
-        return dot > 0 ? tail.substring(0, dot) : tail;
+        return (dot > 0) ? tail.substring(0, dot) : tail;
     }
 
     static String path(String url) {
@@ -521,20 +522,25 @@ public final class AiTrace {
             return "/";
         }
         int host = url.indexOf("://");
-        int start = host < 0 ? 0 : url.indexOf('/', host + 3);
+        int start = (host < 0) ? 0 : url.indexOf('/', host + 3);
         if (start < 0) {
             return "/";
         }
         String path = url.substring(start);
         int query = path.indexOf('?');
-        return query < 0 ? path : path.substring(0, query);
+        return (query < 0) ? path : path.substring(0, query);
     }
 
     static final class LiveRow {
+
         final String method;
+
         final String path;
+
         int statusCode;
+
         int count = 1;
+
         private String status;
 
         LiveRow(String method, String path, String status, int statusCode) {
@@ -545,28 +551,39 @@ public final class AiTrace {
         }
 
         boolean unobserved() {
-            return status == null;
+            return this.status == null;
         }
 
         boolean inFlight() {
-            return status != null && status.isEmpty();
+            return this.status != null && this.status.isEmpty();
         }
 
         String status() {
-            return status;
+            return this.status;
         }
+
     }
 
     public static final class Attempt {
+
         long startedAtMs;
+
         long endedAtMs;
+
         int statusCode = HttpStatus.NONE;
+
         String message = "";
+
         String protocol = "";
+
         String contentType = "";
+
         String body = "";
+
         long contentLength = -1;
+
         List<String[]> requestHeaders = new ArrayList<>();
+
         List<String[]> responseHeaders = new ArrayList<>();
 
         Attempt(long startedAtMs, long endedAtMs) {
@@ -575,39 +592,44 @@ public final class AiTrace {
         }
 
         public long durationMs() {
-            long ended = endedAtMs == 0 ? System.currentTimeMillis() : endedAtMs;
-            return Math.max(0, ended - startedAtMs);
+            long ended = (this.endedAtMs != 0) ? this.endedAtMs : System.currentTimeMillis();
+            return Math.max(0, ended - this.startedAtMs);
         }
 
         public int statusCode() {
-            return statusCode;
+            return this.statusCode;
         }
 
         public String status() {
-            return statusCode == HttpStatus.NONE ? "" : String.valueOf(statusCode);
+            return (this.statusCode != HttpStatus.NONE) ? String.valueOf(this.statusCode) : "";
         }
 
         public boolean inFlight() {
-            return endedAtMs == 0;
+            return this.endedAtMs == 0;
         }
 
         public boolean dispatchOnly() {
-            return statusCode == HttpStatus.NONE;
+            return this.statusCode == HttpStatus.NONE;
         }
 
         public String statusLine() {
             if (dispatchOnly()) {
-                return message.isEmpty() ? "no response captured" : message;
+                return (this.message.isEmpty()) ? "no response captured" : this.message;
             }
-            String reason = message.isEmpty() ? HttpStatus.reason(statusCode) : message;
-            return reason.isEmpty() ? status() : status() + " " + reason;
+            String reason = (this.message.isEmpty()) ? HttpStatus.reason(this.statusCode) : this.message;
+            return (reason.isEmpty()) ? status() : status() + " " + reason;
         }
+
     }
 
     public static final class Exchange {
-        public final String method;
-        public final String url;
+
+        final String method;
+
+        final String url;
+
         final List<Attempt> attempts = new ArrayList<>();
+
         List<String[]> payload = new ArrayList<>();
 
         Exchange(String method, String url) {
@@ -616,60 +638,69 @@ public final class AiTrace {
         }
 
         void add(Attempt attempt) {
-            if (attempts.size() < MAX_ATTEMPTS_PER_EXCHANGE) {
-                attempts.add(attempt);
+            if (this.attempts.size() < MAX_ATTEMPTS_PER_EXCHANGE) {
+                this.attempts.add(attempt);
             }
         }
 
         public String path() {
-            return AiTrace.path(url);
+            return AiTrace.path(this.url);
         }
 
         public List<Attempt> attempts() {
             synchronized (LOCK) {
-                return new ArrayList<>(attempts);
+                return new ArrayList<>(this.attempts);
             }
         }
 
         public List<String[]> payload() {
             synchronized (LOCK) {
-                return new ArrayList<>(payload);
+                return new ArrayList<>(this.payload);
             }
         }
 
         public boolean dispatchOnly() {
             synchronized (LOCK) {
-                for (Attempt attempt : attempts) {
+                for (Attempt attempt : this.attempts) {
                     if (!attempt.dispatchOnly()) {
                         return false;
                     }
                 }
-                return !attempts.isEmpty();
+                return !this.attempts.isEmpty();
             }
         }
 
         public Attempt last() {
             synchronized (LOCK) {
-                return attempts.isEmpty() ? null : attempts.get(attempts.size() - 1);
+                return (this.attempts.isEmpty()) ? null : this.attempts.get(this.attempts.size() - 1);
             }
         }
 
         public long durationMs() {
             synchronized (LOCK) {
                 Attempt last = last();
-                return last == null ? 0 : Math.max(0, last.endedAtMs - attempts.get(0).startedAtMs);
+                return (last != null) ? Math.max(0, last.endedAtMs - this.attempts.get(0).startedAtMs) : 0;
             }
         }
+
     }
 
     public static final class Session {
-        public final String operation;
-        public final String feature;
-        public final long startedAtMs;
-        private final List<Exchange> exchanges = new ArrayList<>();
+
+        final String operation;
+
+        final String feature;
+
+        final long startedAtMs;
+
         boolean control;
+
         String resource;
+
         boolean postObserved = true;
+
+        private final List<Exchange> exchanges = new ArrayList<>();
+
         private long endedAtMs;
 
         Session(String operation, long startedAtMs) {
@@ -680,46 +711,46 @@ public final class AiTrace {
         }
 
         Exchange exchange(String method, String url) {
-            for (Exchange exchange : exchanges) {
+            for (Exchange exchange : this.exchanges) {
                 if (exchange.method.equals(method) && exchange.url.equals(url)) {
                     return exchange;
                 }
             }
             Exchange exchange = new Exchange(method, url);
-            exchanges.add(exchange);
-            while (exchanges.size() > MAX_EXCHANGES_PER_SESSION) {
-                exchanges.remove(0);
+            this.exchanges.add(exchange);
+            while (this.exchanges.size() > MAX_EXCHANGES_PER_SESSION) {
+                this.exchanges.remove(0);
             }
             return exchange;
         }
 
         void touch(long atMs) {
-            endedAtMs = Math.max(endedAtMs, atMs);
+            this.endedAtMs = Math.max(this.endedAtMs, atMs);
         }
 
         public List<Exchange> exchanges() {
             synchronized (LOCK) {
-                return new ArrayList<>(exchanges);
+                return new ArrayList<>(this.exchanges);
             }
         }
 
         public boolean postObserved() {
-            return postObserved;
+            return this.postObserved;
         }
 
         public long endedAtMs() {
-            return endedAtMs;
+            return this.endedAtMs;
         }
 
         public long durationMs() {
-            long ended = endedAtMs == 0 ? System.currentTimeMillis() : endedAtMs;
-            return Math.max(0, ended - startedAtMs);
+            long ended = (this.endedAtMs != 0) ? this.endedAtMs : System.currentTimeMillis();
+            return Math.max(0, ended - this.startedAtMs);
         }
 
         public int requestCount() {
             synchronized (LOCK) {
                 int total = 0;
-                for (Exchange exchange : exchanges) {
+                for (Exchange exchange : this.exchanges) {
                     total += exchange.attempts.size();
                 }
                 return total;
@@ -728,8 +759,8 @@ public final class AiTrace {
 
         public int outcomeCode() {
             synchronized (LOCK) {
-                for (int i = exchanges.size() - 1; i >= 0; i--) {
-                    List<Attempt> attempts = exchanges.get(i).attempts;
+                for (int i = this.exchanges.size() - 1; i >= 0; i--) {
+                    List<Attempt> attempts = this.exchanges.get(i).attempts;
                     for (int j = attempts.size() - 1; j >= 0; j--) {
                         if (!attempts.get(j).dispatchOnly()) {
                             return attempts.get(j).statusCode;
@@ -739,5 +770,7 @@ public final class AiTrace {
                 return HttpStatus.NONE;
             }
         }
+
     }
+
 }

@@ -7,5 +7,7 @@ package app.hxreborn.extension.keepa;
 import org.json.JSONException;
 
 interface AccountsUpdate {
+
     void apply(Accounts accounts) throws JSONException;
+
 }

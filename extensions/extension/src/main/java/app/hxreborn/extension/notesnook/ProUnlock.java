@@ -4,17 +4,22 @@
  */
 package app.hxreborn.extension.notesnook;
 
+import java.nio.charset.StandardCharsets;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
-
 public final class ProUnlock {
+
     private static final int PLAN_BELIEVER = 3;
+
     private static final int STATUS_ACTIVE = 0;
+
     private static final int MAX_BODY_BYTES = 64 * 1024;
 
-    private ProUnlock() {}
+    private ProUnlock() {
+
+    }
 
     public static byte[] rewriteSubscription(byte[] body) {
         if (body == null || body.length == 0 || body.length > MAX_BODY_BYTES) {
@@ -36,8 +41,10 @@ public final class ProUnlock {
             subscription.put("plan", PLAN_BELIEVER);
             subscription.put("status", STATUS_ACTIVE);
             return user.toString().getBytes(StandardCharsets.UTF_8);
-        } catch (JSONException e) {
+        }
+        catch (JSONException ex) {
             return body;
         }
     }
+
 }

@@ -15,7 +15,9 @@ public final class AppliedPatches {
     static final String ACCENT_COLOR = "Custom accent color";
     static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
 
-    private AppliedPatches() {}
+    private AppliedPatches() {
+
+    }
 
     public static boolean accentColor() {
         return AccentColor.isPatched();
@@ -87,23 +89,58 @@ public final class AppliedPatches {
 
     static List<String> names() {
         final List<String> names = new ArrayList<>();
-        if (accentColor()) names.add(ACCENT_COLOR);
-        if (amoledDarkTheme()) names.add(AMOLED_DARK_THEME);
-        if (hideUpgradePromotions()) names.add(HIDE_UPGRADE_PROMOTIONS);
-        if (hidePromotionalMessages()) names.add("Hide promotional messages");
-        if (removeSentFromSignature()) names.add("Remove 'Sent from' signature");
-        if (removeFreeAccountsLimit()) names.add("Remove free accounts limit");
-        if (scheduledDeletion()) names.add(SCHEDULED_DELETION);
-        if (unlockCustomTimePicker()) names.add("Unlock custom time picker");
-        if (removeServerChangeDelay()) names.add("Remove server change delay");
-        if (unlockSplitTunneling()) names.add("Unlock split tunneling");
-        if (unlockLanConnections()) names.add("Unlock LAN connections");
-        if (unlockCustomDns()) names.add("Unlock custom DNS");
-        if (unlockNetShield()) names.add("Unlock NetShield");
-        if (unlockConnectionPreferences()) names.add("Unlock connection preferences");
-        if (unlockProfiles()) names.add("Unlock profiles");
-        if (showFreeServerLocations()) names.add("Show free server locations");
-        if (disableTelemetry()) names.add("Disable telemetry");
+        if (accentColor()) {
+            names.add(ACCENT_COLOR);
+        }
+        if (amoledDarkTheme()) {
+            names.add(AMOLED_DARK_THEME);
+        }
+        if (hideUpgradePromotions()) {
+            names.add(HIDE_UPGRADE_PROMOTIONS);
+        }
+        if (hidePromotionalMessages()) {
+            names.add("Hide promotional messages");
+        }
+        if (removeSentFromSignature()) {
+            names.add("Remove 'Sent from' signature");
+        }
+        if (removeFreeAccountsLimit()) {
+            names.add("Remove free accounts limit");
+        }
+        if (scheduledDeletion()) {
+            names.add(SCHEDULED_DELETION);
+        }
+        if (unlockCustomTimePicker()) {
+            names.add("Unlock custom time picker");
+        }
+        if (removeServerChangeDelay()) {
+            names.add("Remove server change delay");
+        }
+        if (unlockSplitTunneling()) {
+            names.add("Unlock split tunneling");
+        }
+        if (unlockLanConnections()) {
+            names.add("Unlock LAN connections");
+        }
+        if (unlockCustomDns()) {
+            names.add("Unlock custom DNS");
+        }
+        if (unlockNetShield()) {
+            names.add("Unlock NetShield");
+        }
+        if (unlockConnectionPreferences()) {
+            names.add("Unlock connection preferences");
+        }
+        if (unlockProfiles()) {
+            names.add("Unlock profiles");
+        }
+        if (showFreeServerLocations()) {
+            names.add("Show free server locations");
+        }
+        if (disableTelemetry()) {
+            names.add("Disable telemetry");
+        }
         return names;
     }
+
 }

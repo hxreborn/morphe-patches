@@ -5,20 +5,26 @@
 package app.hxreborn.extension.protonmail;
 
 import android.webkit.WebView;
+import app.morphe.extension.shared.Logger;
 
 import app.hxreborn.extension.WebAssets;
-import app.morphe.extension.shared.Logger;
 
 @SuppressWarnings("unused")
 public final class WebTapHighlight {
-    private WebTapHighlight() {}
+
+    private WebTapHighlight() {
+    }
 
     public static void remove(WebView view) {
         try {
-            if (view == null) return;
+            if (view == null) {
+                return;
+            }
             view.evaluateJavascript(WebAssets.TAP_HIGHLIGHT_WEBVIEW, null);
-        } catch (Throwable t) {
-            Logger.printException(() -> "Could not remove the web view tap highlight", t);
+        }
+        catch (Throwable ex) {
+            Logger.printException(() -> "Could not remove the web view tap highlight", ex);
         }
     }
+
 }

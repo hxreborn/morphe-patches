@@ -4,16 +4,6 @@
  */
 package app.hxreborn.extension.shared;
 
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-
-import org.json.JSONObject;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -21,8 +11,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import org.json.JSONObject;
+
 @SuppressWarnings("unused")
 public final class GmsCoreSignIn {
+
     private static final String TAG = "GmsCoreSignIn";
 
     private static final String ACCOUNT_TYPE = "app.revanced";
@@ -44,15 +44,9 @@ public final class GmsCoreSignIn {
             return;
         }
 
-        AccountManager.get(activity).getAuthTokenByFeatures(
-                ACCOUNT_TYPE,
-                "audience:server:client_id:" + serverClientId,
-                null,
-                activity,
-                null,
-                null,
-                new TokenCallback(callback),
-                null);
+        AccountManager.get(activity)
+            .getAuthTokenByFeatures(ACCOUNT_TYPE, "audience:server:client_id:" + serverClientId, null, activity, null,
+                    null, new TokenCallback(callback), null);
     }
 
     private static Class<?> successClass() throws ClassNotFoundException {
@@ -65,29 +59,6 @@ public final class GmsCoreSignIn {
 
     private static Class<?> resultClass() throws ClassNotFoundException {
         return Class.forName("<result-class>");
-    }
-
-    private static final class TokenCallback implements AccountManagerCallback<Bundle> {
-        private final Object callback;
-
-        TokenCallback(Object callback) {
-            this.callback = callback;
-        }
-
-        @Override
-        public void run(AccountManagerFuture<Bundle> future) {
-            try {
-                Bundle result = future.getResult();
-                String idToken = result.getString(AccountManager.KEY_AUTHTOKEN);
-                if (idToken == null) {
-                    fail(callback, "NO_CREDENTIAL", "GmsCore returned no token");
-                    return;
-                }
-                succeed(callback, idToken, result.getString(AccountManager.KEY_ACCOUNT_NAME));
-            } catch (Throwable throwable) {
-                fail(callback, "UNKNOWN", String.valueOf(throwable.getMessage()));
-            }
-        }
     }
 
     private static void succeed(Object callback, String idToken, String accountName) {
@@ -109,7 +80,8 @@ public final class GmsCoreSignIn {
             Object credential = newCredential(successConstructor.getParameterTypes()[0], fields);
 
             complete(callback, successConstructor.newInstance(credential));
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             Log.e(TAG, "Could not deliver the credential", throwable);
             fail(callback, "UNKNOWN", String.valueOf(throwable.getMessage()));
         }
@@ -140,14 +112,18 @@ public final class GmsCoreSignIn {
             for (Class<?> parameterType : parameterTypes) {
                 allStrings &= parameterType == String.class;
             }
-            if (allStrings) return constructor;
+            if (allStrings) {
+                return constructor;
+            }
         }
         throw new NoSuchMethodException(type.getName() + " has no String constructor");
     }
 
     private static Constructor<?> singleArgumentConstructor(Class<?> type) throws NoSuchMethodException {
         for (Constructor<?> constructor : type.getConstructors()) {
-            if (constructor.getParameterTypes().length == 1) return constructor;
+            if (constructor.getParameterTypes().length == 1) {
+                return constructor;
+            }
         }
         throw new NoSuchMethodException(type.getName() + " has no single-argument constructor");
     }
@@ -167,12 +143,13 @@ public final class GmsCoreSignIn {
 
             Object failureType = enumValue(failureConstructor.getParameterTypes()[0], type);
             complete(callback, failureConstructor.newInstance(failureType, message, null));
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             Log.e(TAG, "Could not deliver the failure", throwable);
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Object enumValue(Class<?> typeClass, String name) {
         return Enum.valueOf((Class<Enum>) typeClass.asSubclass(Enum.class), name);
     }
@@ -189,11 +166,41 @@ public final class GmsCoreSignIn {
     private static JSONObject decodeClaims(String idToken) {
         try {
             String[] parts = idToken.split("\\.");
-            if (parts.length < 2) return new JSONObject();
+            if (parts.length < 2) {
+                return new JSONObject();
+            }
             byte[] payload = Base64.decode(parts[1], Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
             return new JSONObject(new String(payload, "UTF-8"));
-        } catch (Throwable throwable) {
+        }
+        catch (Throwable throwable) {
             return new JSONObject();
         }
     }
+
+    private static final class TokenCallback implements AccountManagerCallback<Bundle> {
+
+        private final Object callback;
+
+        TokenCallback(Object callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        public void run(AccountManagerFuture<Bundle> future) {
+            try {
+                Bundle result = future.getResult();
+                String idToken = result.getString(AccountManager.KEY_AUTHTOKEN);
+                if (idToken == null) {
+                    fail(this.callback, "NO_CREDENTIAL", "GmsCore returned no token");
+                    return;
+                }
+                succeed(this.callback, idToken, result.getString(AccountManager.KEY_ACCOUNT_NAME));
+            }
+            catch (Throwable throwable) {
+                fail(this.callback, "UNKNOWN", String.valueOf(throwable.getMessage()));
+            }
+        }
+
+    }
+
 }

@@ -4,29 +4,33 @@
  */
 package app.hxreborn.extension.terabox;
 
-import android.net.Uri;
-import android.util.Log;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import android.net.Uri;
+import android.util.Log;
 
 @SuppressWarnings("unused")
 public final class TeraboxHdUnlock {
 
     private static final String TAG = "TeraboxHdUnlock";
+
     private static final int FIRST_HD_HEIGHT = 720;
+
     private static final int RECORDED_FILES = 32;
 
-    private static final Map<String, String> originalLinks = new LinkedHashMap<String, String>(16, 0.75f, true) {
+    private static final Map<String, String> ORIGINAL_LINKS = new LinkedHashMap<String, String>(16, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
             return size() > RECORDED_FILES;
         }
     };
+
     private static final String SHARED_FILE_PREFIX = "share:";
 
     private static volatile String streamingFileKey;
+
     private static volatile boolean playingOriginal;
 
     private TeraboxHdUnlock() {
@@ -34,8 +38,8 @@ public final class TeraboxHdUnlock {
 
     public static void recordOriginalFile(String fileKey, String dlink) {
         if (fileKey != null && dlink != null && !dlink.isEmpty()) {
-            synchronized (originalLinks) {
-                originalLinks.put(fileKey, dlink);
+            synchronized (ORIGINAL_LINKS) {
+                ORIGINAL_LINKS.put(fileKey, dlink);
             }
         }
     }
@@ -61,7 +65,8 @@ public final class TeraboxHdUnlock {
         String proxyUrl;
         try {
             proxyUrl = ParallelRangeProxy.proxyUrl(dlink);
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             Log.w(TAG, "Could not start the stream proxy", exception);
             return url;
         }
@@ -72,7 +77,7 @@ public final class TeraboxHdUnlock {
     }
 
     public static boolean requiresReload(Enum<?> resolution) {
-        return isHdTier(resolution.name()) ? originalLink(streamingFileKey) != null : playingOriginal;
+        return (isHdTier(resolution.name())) ? originalLink(streamingFileKey) != null : playingOriginal;
     }
 
     private static String fileKey(Uri uri) {
@@ -81,15 +86,15 @@ public final class TeraboxHdUnlock {
             return path;
         }
         String fsId = uri.getQueryParameter("fid");
-        return fsId == null ? null : SHARED_FILE_PREFIX + fsId;
+        return (fsId != null) ? SHARED_FILE_PREFIX + fsId : null;
     }
 
     private static String originalLink(String fileKey) {
         if (fileKey == null) {
             return null;
         }
-        synchronized (originalLinks) {
-            return originalLinks.get(fileKey);
+        synchronized (ORIGINAL_LINKS) {
+            return ORIGINAL_LINKS.get(fileKey);
         }
     }
 
@@ -111,8 +116,10 @@ public final class TeraboxHdUnlock {
     private static void disablePlayerOption(Object vastView, String setter) {
         try {
             vastView.getClass().getMethod(setter, boolean.class).invoke(vastView, false);
-        } catch (ReflectiveOperationException exception) {
+        }
+        catch (ReflectiveOperationException exception) {
             Log.w(TAG, "Could not call " + setter, exception);
         }
     }
+
 }

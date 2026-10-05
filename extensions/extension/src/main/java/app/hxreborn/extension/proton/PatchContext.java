@@ -4,20 +4,21 @@
  */
 package app.hxreborn.extension.proton;
 
+import java.lang.ref.WeakReference;
+
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-
 import app.morphe.extension.shared.Utils;
-
-import java.lang.ref.WeakReference;
 
 @SuppressWarnings("unused")
 public final class PatchContext {
 
     private static WeakReference<Activity> resumedActivityReference = new WeakReference<>(null);
 
-    private PatchContext() {}
+    private PatchContext() {
+
+    }
 
     static Activity resumedActivity() {
         return resumedActivityReference.get();
@@ -66,4 +67,5 @@ public final class PatchContext {
             resumedActivityReference = new WeakReference<>(null);
         }
     }
+
 }

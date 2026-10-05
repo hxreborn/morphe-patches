@@ -6,13 +6,17 @@ package app.hxreborn.extension.protonvpn;
 
 final class Reflection {
 
-    private Reflection() {}
+    private Reflection() {
+
+    }
 
     static Object call(Object target, String method) {
         try {
             return target.getClass().getMethod(method).invoke(target);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
+        }
+        catch (ReflectiveOperationException ex) {
+            throw new IllegalStateException(ex);
         }
     }
+
 }

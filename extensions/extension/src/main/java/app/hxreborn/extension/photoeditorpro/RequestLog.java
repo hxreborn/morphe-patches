@@ -4,10 +4,17 @@
  */
 package app.hxreborn.extension.photoeditorpro;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import android.app.Activity;
-import android.os.Build;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -16,32 +23,38 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 final class RequestLog {
 
     private static final float FEATURE_SP = 15f;
+
     private static final float PATH_SP = 11.5f;
+
     private static final float VALUE_SP = 10.5f;
+
     private static final float LABEL_SP = 9.5f;
+
     private static final float ROW_SP = 10.5f;
 
     private static final int CARD_PAD_DP = 14;
+
     private static final int CARD_GAP_DP = 10;
+
     private static final int BLOCK_GAP_DP = 16;
+
     private static final int LABEL_COL_DP = 62;
+
     private static final int TABLE_PAD_DP = 8;
+
     private static final int TABLE_RADIUS_DP = 8;
+
     private static final int TOUCH_TARGET_DP = 48;
+
     private static final int ATTEMPT_HEAD = 3;
 
     private static final String NO_RESPONSE = "no response";
+
     private static final String COLLAPSED = ", collapsed";
+
     private static final String EXPANDED = ", expanded";
 
     private static final ThreadLocal<SimpleDateFormat> CLOCK = new ThreadLocal<>() {
@@ -82,7 +95,8 @@ final class RequestLog {
             for (String stage : stages) {
                 card.addView(PatchPanel.logLine(activity, stage, PatchPanel.FG));
             }
-        } else {
+        }
+        else {
             card.addView(PatchPanel.logLine(activity, summary(), PatchPanel.DIM));
         }
         body.addView(card);
@@ -95,8 +109,8 @@ final class RequestLog {
         card.setBackground(PatchPanel.card(activity));
         int pad = PatchPanel.dp(activity, CARD_PAD_DP);
         card.setPadding(pad, pad, pad, pad);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = PatchPanel.dp(activity, CARD_GAP_DP);
         card.setLayoutParams(params);
         return card;
@@ -112,14 +126,12 @@ final class RequestLog {
         TextView feature = ui(activity, session.feature, PatchPanel.FG, FEATURE_SP);
         feature.setTypeface(Typeface.DEFAULT_BOLD);
         markHeading(feature);
-        feature.setLayoutParams(new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        feature.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         header.addView(feature);
 
         int outcome = session.outcomeCode();
         if (outcome != HttpStatus.NONE) {
-            header.addView(PatchPanel.chip(activity, statusText(outcome),
-                    PatchPanel.statusColour(outcome)));
+            header.addView(PatchPanel.chip(activity, statusText(outcome), PatchPanel.statusColour(outcome)));
         }
         card.addView(header);
         card.addView(gap(activity, 8));
@@ -154,8 +166,8 @@ final class RequestLog {
         TextView path = mono(activity, exchange.path(), PatchPanel.FG, PATH_SP);
         path.setSingleLine(true);
         path.setEllipsize(TextUtils.TruncateAt.MIDDLE);
-        LinearLayout.LayoutParams pathParams = new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        LinearLayout.LayoutParams pathParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,
+                1f);
         pathParams.leftMargin = PatchPanel.dp(activity, 8);
         path.setLayoutParams(pathParams);
         line.addView(path);
@@ -167,7 +179,8 @@ final class RequestLog {
 
         if (exchange.dispatchOnly()) {
             block.addView(field(activity, "sent", clock(last.startedAtMs)));
-        } else {
+        }
+        else {
             block.addView(field(activity, "attempts", String.valueOf(attempts.size())));
             block.addView(field(activity, "elapsed", AiTrace.duration(exchange.durationMs())));
             block.addView(field(activity, "outcome", tally(attempts)));
@@ -186,9 +199,9 @@ final class RequestLog {
         Map<String, Integer> counts = new LinkedHashMap<>();
         for (int i = 0; i < attempts.size() - 1; i++) {
             String status = attempts.get(i).status();
-            String key = status.isEmpty() ? NO_RESPONSE : status;
+            String key = (status.isEmpty()) ? NO_RESPONSE : status;
             Integer seen = counts.get(key);
-            counts.put(key, seen == null ? 1 : seen + 1);
+            counts.put(key, (seen != null) ? seen + 1 : 1);
         }
         StringBuilder line = new StringBuilder();
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {
@@ -250,33 +263,30 @@ final class RequestLog {
 
         TextView number = mono(activity, String.valueOf(index), PatchPanel.MUTED, ROW_SP);
         number.setGravity(Gravity.END);
-        number.setLayoutParams(new LinearLayout.LayoutParams(
-                PatchPanel.dp(activity, 18), ViewGroup.LayoutParams.WRAP_CONTENT));
+        number.setLayoutParams(
+                new LinearLayout.LayoutParams(PatchPanel.dp(activity, 18), ViewGroup.LayoutParams.WRAP_CONTENT));
         row.addView(number);
 
         TextView at = mono(activity, clock(attempt.startedAtMs), PatchPanel.DIM, ROW_SP);
         at.setSingleLine(true);
-        LinearLayout.LayoutParams atParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams atParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         atParams.leftMargin = PatchPanel.dp(activity, 10);
         at.setLayoutParams(atParams);
         row.addView(at);
 
-        View chip = PatchPanel.chip(activity,
-                attempt.dispatchOnly() ? "—" : attempt.status(),
+        View chip = PatchPanel.chip(activity, (attempt.dispatchOnly()) ? "—" : attempt.status(),
                 PatchPanel.statusColour(attempt.statusCode()));
-        LinearLayout.LayoutParams chipParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams chipParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         chipParams.leftMargin = PatchPanel.dp(activity, 10);
         chip.setLayoutParams(chipParams);
         row.addView(chip);
 
-        TextView latency = mono(activity, AiTrace.duration(attempt.durationMs()),
-                PatchPanel.MUTED, ROW_SP);
+        TextView latency = mono(activity, AiTrace.duration(attempt.durationMs()), PatchPanel.MUTED, ROW_SP);
         latency.setGravity(Gravity.END);
         latency.setSingleLine(true);
-        latency.setLayoutParams(new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        latency.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         row.addView(latency);
 
         row.setContentDescription("Attempt " + index + ", " + clock(attempt.startedAtMs) + ", "
@@ -293,14 +303,14 @@ final class RequestLog {
         view.setGravity(Gravity.CENTER);
         view.setMinHeight(PatchPanel.dp(activity, TOUCH_TARGET_DP));
         view.setBackground(PatchPanel.ripple(activity));
-        view.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         view.setContentDescription(label + COLLAPSED);
-        view.setOnClickListener(v -> {
+        view.setOnClickListener((v) -> {
             boolean open = target.getVisibility() == View.VISIBLE;
-            target.setVisibility(open ? View.GONE : View.VISIBLE);
-            view.setText(open ? label : "collapse");
-            view.setContentDescription(label + (open ? COLLAPSED : EXPANDED));
+            target.setVisibility((open) ? View.GONE : View.VISIBLE);
+            view.setText((open) ? label : "collapse");
+            view.setContentDescription(label + ((open) ? COLLAPSED : EXPANDED));
         });
         return view;
     }
@@ -329,8 +339,8 @@ final class RequestLog {
 
         if (!last.dispatchOnly()) {
             section(activity, details, "Response");
-            details.addView(field(activity, "status", (last.protocol.isEmpty()
-                    ? "" : last.protocol + " ") + last.statusLine()));
+            details.addView(field(activity, "status",
+                    ((last.protocol.isEmpty()) ? "" : last.protocol + " ") + last.statusLine()));
             details.addView(field(activity, "received", AiTrace.iso(last.endedAtMs)));
             if (!last.contentType.isEmpty()) {
                 details.addView(field(activity, "type", last.contentType));
@@ -355,13 +365,12 @@ final class RequestLog {
         row.setPadding(0, PatchPanel.dp(activity, 2), 0, PatchPanel.dp(activity, 2));
 
         TextView name = ui(activity, label, PatchPanel.MUTED, LABEL_SP);
-        name.setLayoutParams(new LinearLayout.LayoutParams(
-                PatchPanel.dp(activity, LABEL_COL_DP), ViewGroup.LayoutParams.WRAP_CONTENT));
+        name.setLayoutParams(new LinearLayout.LayoutParams(PatchPanel.dp(activity, LABEL_COL_DP),
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         row.addView(name);
 
         TextView text = mono(activity, value, PatchPanel.DIM, VALUE_SP);
-        text.setLayoutParams(new LinearLayout.LayoutParams(
-                0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        text.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         row.addView(text);
 
         row.setContentDescription(label + " " + value);
@@ -377,14 +386,14 @@ final class RequestLog {
         view.setGravity(Gravity.CENTER_VERTICAL);
         view.setMinHeight(PatchPanel.dp(activity, TOUCH_TARGET_DP));
         view.setBackground(PatchPanel.ripple(activity));
-        view.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         view.setContentDescription(label + COLLAPSED);
-        view.setOnClickListener(v -> {
+        view.setOnClickListener((v) -> {
             boolean open = target.getVisibility() == View.VISIBLE;
-            target.setVisibility(open ? View.GONE : View.VISIBLE);
-            view.setText((open ? label : "hide " + label).toUpperCase(Locale.US));
-            view.setContentDescription(label + (open ? COLLAPSED : EXPANDED));
+            target.setVisibility((open) ? View.GONE : View.VISIBLE);
+            view.setText(((open) ? label : "hide " + label).toUpperCase(Locale.US));
+            view.setContentDescription(label + ((open) ? COLLAPSED : EXPANDED));
         });
         return view;
     }
@@ -426,8 +435,8 @@ final class RequestLog {
 
     private static View gap(Activity activity, int heightDp) {
         View view = new View(activity);
-        view.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, PatchPanel.dp(activity, heightDp)));
+        view.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, PatchPanel.dp(activity, heightDp)));
         return view;
     }
 
@@ -440,7 +449,7 @@ final class RequestLog {
             return NO_RESPONSE;
         }
         String reason = HttpStatus.reason(code);
-        return reason.isEmpty() ? String.valueOf(code) : code + " " + reason;
+        return (reason.isEmpty()) ? String.valueOf(code) : code + " " + reason;
     }
 
 }
