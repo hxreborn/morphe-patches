@@ -113,7 +113,7 @@ internal class MinifiedSource(private var text: String, private val file: String
     override fun toString() = text
 
     private companion object {
-        val PLACEHOLDER = Regex("""([@#])\{([A-Za-z][A-Za-z0-9]*)}""")
+        val PLACEHOLDER = Regex("""([@#])\{([A-Za-z][A-Za-z0-9]*)\}""")
         const val IDENTIFIER = """[\w$]+"""
         const val NUMBER = """\d+"""
         const val NOT_AFTER_IDENTIFIER = """(?<![\w$])"""
