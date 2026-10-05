@@ -1,3 +1,7 @@
+plugins {
+    checkstyle
+}
+
 extension {
     name = "extensions/extension.mpe"
 }
@@ -14,7 +18,17 @@ android {
     }
 }
 
+tasks.register<Checkstyle>("checkstyle") {
+    source("src/main/java")
+    classpath = files()
+}
+
+tasks.named("check") {
+    dependsOn("checkstyle")
+}
+
 dependencies {
+    checkstyle(libs.spring.javaformat.checkstyle)
     implementation(libs.morphe.extensions.library)
     compileOnly(libs.okhttp)
     testImplementation("junit:junit:4.13.2")

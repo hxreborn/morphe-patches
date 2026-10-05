@@ -39,6 +39,11 @@ jobs:
       - name: Check regexes for Android
         run: python3 .github/scripts/check_android_regex.py
 
+      - name: Check Java style
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew :extensions:extension:checkstyle --no-daemon
+
       # Semantic release runs its own Gradle build command.
       # Only the main branch generates a release as specified by .releaserc
       - name: Release

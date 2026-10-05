@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :patches:test :extensions:extension:test --no-daemon
+        run: ./gradlew :patches:test :extensions:extension:test :extensions:extension:checkstyle --no-daemon
 
       - name: Verify project compiles
         env:

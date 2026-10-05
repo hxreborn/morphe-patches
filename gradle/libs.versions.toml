@@ -7,10 +7,12 @@ gson = "2.14.0"
 # Pinned to the okhttp Photo Editor Pro ships
 okhttp = "5.5.0"
 pngj = "2.1.0"
+spring-javaformat = "0.0.47"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 pngj = { module = "ar.com.hjg:pngj", version.ref = "pngj" }
+spring-javaformat-checkstyle = { module = "io.spring.javaformat:spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 morphe-patches-library = { module = "app.morphe:morphe-patches-library", version.ref = "morphe-patches-library" }
 morphe-extensions-library = { module = "app.morphe:morphe-extensions-library", version.ref = "morphe-patches-library" }
