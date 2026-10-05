@@ -56,7 +56,7 @@ jobs:
           gh release download -R "$GITHUB_REPOSITORY" -p '*.mpp' -D tools
 
       - name: Restore source URL cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/app-updates/source-urls.json
           key: app-updates-urls-${{ github.run_id }}
