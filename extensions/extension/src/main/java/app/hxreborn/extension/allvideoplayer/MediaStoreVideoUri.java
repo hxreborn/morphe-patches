@@ -44,8 +44,7 @@ public final class MediaStoreVideoUri {
                 intent.setDataAndType(mediaUri, intent.getType());
             }
             return mediaUri;
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             Log.e(TAG, "Could not resolve " + uri, exception);
             return uri;
         }

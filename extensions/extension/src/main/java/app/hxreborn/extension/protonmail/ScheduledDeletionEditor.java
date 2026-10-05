@@ -210,8 +210,7 @@ public final class ScheduledDeletionEditor {
                 return -1;
             }
             return (int) seconds;
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             return -1;
         }
     }

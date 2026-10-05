@@ -80,8 +80,7 @@ public final class PatchesTheme {
                 return value.data;
             }
             return (value.resourceId != 0) ? context.getColor(value.resourceId) : fallbackColor;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             return fallbackColor;
         }
     }

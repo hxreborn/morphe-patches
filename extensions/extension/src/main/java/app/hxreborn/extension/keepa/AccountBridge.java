@@ -23,8 +23,7 @@ public final class AccountBridge {
     public static String call(Context context, String method, String json) {
         try {
             return new JSONObject().put("value", dispatch(context, AccountStore.of(context), method, json)).toString();
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Bridge call " + method + " failed", throwable);
             return "{\"error\":" + JSONObject.quote(method + ": " + throwable) + "}";
         }

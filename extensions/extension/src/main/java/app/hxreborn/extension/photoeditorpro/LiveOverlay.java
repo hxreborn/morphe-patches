@@ -128,8 +128,7 @@ final class LiveOverlay {
                 for (int i = 0; i < rows.size(); i++) {
                     update((LinearLayout) view.getChildAt(i), rows.get(i));
                 }
-            }
-            else {
+            } else {
                 structure = shape;
                 view.removeAllViews();
                 if (rows.isEmpty()) {
@@ -141,8 +140,7 @@ final class LiveOverlay {
             }
             view.setVisibility(View.VISIBLE);
             schedulePulse(anyInFlight(rows));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "render", ex);
         }
     }
@@ -162,8 +160,7 @@ final class LiveOverlay {
             if (view != null) {
                 view.setVisibility(View.GONE);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "hide", ex);
         }
     }
@@ -327,11 +324,9 @@ final class LiveOverlay {
         status.setTag((call.inFlight()) ? PULSING : null);
         if (call.unobserved()) {
             fill(status, UNOBSERVED, PatchPanel.NEUTRAL);
-        }
-        else if (call.inFlight()) {
+        } else if (call.inFlight()) {
             fill(status, PULSE[pulseStep], PatchPanel.NEUTRAL);
-        }
-        else {
+        } else {
             fill(status, call.status(), PatchPanel.statusColour(call.statusCode));
         }
     }

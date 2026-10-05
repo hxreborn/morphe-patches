@@ -233,8 +233,7 @@ public final class SwitchStyle {
                 this.icon.moveTo(centerX - dp(3.5f), centerY + dp(0.5f));
                 this.icon.lineTo(centerX - dp(1f), centerY + dp(3f));
                 this.icon.lineTo(centerX + dp(3.5f), centerY - dp(2.5f));
-            }
-            else {
+            } else {
                 this.icon.moveTo(centerX - dp(3f), centerY - dp(3f));
                 this.icon.lineTo(centerX + dp(3f), centerY + dp(3f));
                 this.icon.moveTo(centerX + dp(3f), centerY - dp(3f));

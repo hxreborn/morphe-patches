@@ -52,8 +52,7 @@ public final class AmoledBackgroundOverlay {
             if (background != null) {
                 activity.getWindow().setBackgroundDrawable(background);
             }
-        }
-        finally {
+        } finally {
             attributes.recycle();
         }
     }

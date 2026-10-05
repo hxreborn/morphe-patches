@@ -214,8 +214,7 @@ public final class AccountsActivity extends Activity {
         try {
             arrow.setTypeface(Typeface.createFromAsset(getAssets(), ICON_FONT_ASSET));
             arrow.setText(ICON_ARROW_BACK);
-        }
-        catch (RuntimeException missingFont) {
+        } catch (RuntimeException missingFont) {
             arrow.setText("←");
         }
         bar.addView(arrow, new LinearLayout.LayoutParams(dp(ICON_SIZE_DP), dp(ICON_SIZE_DP)));
@@ -243,8 +242,7 @@ public final class AccountsActivity extends Activity {
         final Accounts accounts;
         try {
             accounts = AccountStore.of(this).load();
-        }
-        catch (JSONException exception) {
+        } catch (JSONException exception) {
             column.addView(paragraph("Stored accounts could not be read. Reset removes them from this device. "
                     + "Add each account again afterwards."));
             column.addView(button("Reset accounts", this.dangerColor, (ignored) -> {
@@ -258,8 +256,7 @@ public final class AccountsActivity extends Activity {
         if (accounts.all().isEmpty()) {
             column.addView(
                     paragraph("No accounts. Each account tracks up to " + Account.FREE_TRACKING_LIMIT + " products."));
-        }
-        else {
+        } else {
             column.addView(summaryCard(accounts));
             for (Account account : primaryFirst(accounts)) {
                 column.addView(accountCard(account, account.id.equals(accounts.primaryId())));
@@ -275,8 +272,7 @@ public final class AccountsActivity extends Activity {
         for (Account account : accounts.all()) {
             if (account.id.equals(accounts.primaryId())) {
                 ordered.add(0, account);
-            }
-            else {
+            } else {
                 ordered.add(account);
             }
         }
@@ -379,8 +375,7 @@ public final class AccountsActivity extends Activity {
                 try {
                     choice.chosen(which);
                     render();
-                }
-                catch (JSONException exception) {
+                } catch (JSONException exception) {
                     showSaveError();
                 }
             })
@@ -465,8 +460,7 @@ public final class AccountsActivity extends Activity {
         if (account.state == AccountState.INVALID) {
             labels.add("Sign in again");
             actions.add(() -> writePending("reauth", account.id));
-        }
-        else if (!primary) {
+        } else if (!primary) {
             labels.add("Set as primary");
             actions.add(() -> writePending("switch", account.id));
         }
@@ -517,8 +511,7 @@ public final class AccountsActivity extends Activity {
             }
             AccountBridge.requestOperation(this, pending);
             finish();
-        }
-        catch (JSONException exception) {
+        } catch (JSONException exception) {
             showSaveError();
         }
     }

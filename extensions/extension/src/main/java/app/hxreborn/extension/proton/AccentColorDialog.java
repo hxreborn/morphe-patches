@@ -394,8 +394,7 @@ final class AccentColorDialog {
 
                 if (bar == Picker.this.hueSlider) {
                     Picker.this.selectedHsv[0] = progress;
-                }
-                else {
+                } else {
                     Picker.this.selectedHsv[1] = (progress + MIN_SATURATION) / (float) PERCENT;
                 }
                 Picker.this.selectedPreset = hsvToHexColor(Picker.this.selectedHsv);

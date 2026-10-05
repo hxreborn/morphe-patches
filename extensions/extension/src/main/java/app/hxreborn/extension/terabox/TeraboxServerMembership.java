@@ -32,8 +32,7 @@ public final class TeraboxServerMembership {
             Field field = target.getClass().getDeclaredField(name);
             field.setAccessible(true);
             return (T) field.get(target);
-        }
-        catch (ReflectiveOperationException | ClassCastException exception) {
+        } catch (ReflectiveOperationException | ClassCastException exception) {
             Log.w(TAG, "Could not read " + name, exception);
             return fallback;
         }

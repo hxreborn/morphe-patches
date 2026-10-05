@@ -13,8 +13,7 @@ final class Reflection {
     static Object call(Object target, String method) {
         try {
             return target.getClass().getMethod(method).invoke(target);
-        }
-        catch (ReflectiveOperationException ex) {
+        } catch (ReflectiveOperationException ex) {
             throw new IllegalStateException(ex);
         }
     }

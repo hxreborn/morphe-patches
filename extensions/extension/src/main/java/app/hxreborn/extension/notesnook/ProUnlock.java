@@ -41,8 +41,7 @@ public final class ProUnlock {
             subscription.put("plan", PLAN_BELIEVER);
             subscription.put("status", STATUS_ACTIVE);
             return user.toString().getBytes(StandardCharsets.UTF_8);
-        }
-        catch (JSONException ex) {
+        } catch (JSONException ex) {
             return body;
         }
     }

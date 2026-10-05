@@ -65,8 +65,7 @@ public final class TeraboxHdUnlock {
         String proxyUrl;
         try {
             proxyUrl = ParallelRangeProxy.proxyUrl(dlink);
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             Log.w(TAG, "Could not start the stream proxy", exception);
             return url;
         }
@@ -116,8 +115,7 @@ public final class TeraboxHdUnlock {
     private static void disablePlayerOption(Object vastView, String setter) {
         try {
             vastView.getClass().getMethod(setter, boolean.class).invoke(vastView, false);
-        }
-        catch (ReflectiveOperationException exception) {
+        } catch (ReflectiveOperationException exception) {
             Log.w(TAG, "Could not call " + setter, exception);
         }
     }

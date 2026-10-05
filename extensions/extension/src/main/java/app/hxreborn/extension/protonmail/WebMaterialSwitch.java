@@ -28,8 +28,7 @@ public final class WebMaterialSwitch {
                 .contentColorOn(AccentColor.getAccentColor(nightMode == Configuration.UI_MODE_NIGHT_YES));
             view.evaluateJavascript(WebAssets.MATERIAL_SWITCH_WEBVIEW.replace("__CHECKED_THUMB__",
                     String.format("#%06X", thumb & 0xFFFFFF)), null);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Logger.printException(() -> "Could not restyle the web view switches", ex);
         }
     }

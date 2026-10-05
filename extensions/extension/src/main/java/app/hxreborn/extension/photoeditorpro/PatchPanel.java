@@ -196,8 +196,7 @@ public final class PatchPanel {
                     return;
                 }
                 stackAbove(activity, list, buildEntry(activity));
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Log.e(TITLE, "attach failed", ex);
             }
         });
@@ -325,11 +324,9 @@ public final class PatchPanel {
             View row;
             if (entry.setting instanceof BooleanSetting) {
                 row = booleanRow(activity, entry, syncDependants);
-            }
-            else if (entry.setting instanceof EnumSetting) {
+            } else if (entry.setting instanceof EnumSetting) {
                 row = choiceRow(activity, entry);
-            }
-            else {
+            } else {
                 continue;
             }
             if (!entry.category.equals(previous)) {
@@ -705,8 +702,7 @@ public final class PatchPanel {
     private static String appVersion(Activity activity) {
         try {
             return activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return "unknown";
         }
     }

@@ -95,8 +95,7 @@ final class RequestLog {
             for (String stage : stages) {
                 card.addView(PatchPanel.logLine(activity, stage, PatchPanel.FG));
             }
-        }
-        else {
+        } else {
             card.addView(PatchPanel.logLine(activity, summary(), PatchPanel.DIM));
         }
         body.addView(card);
@@ -179,8 +178,7 @@ final class RequestLog {
 
         if (exchange.dispatchOnly()) {
             block.addView(field(activity, "sent", clock(last.startedAtMs)));
-        }
-        else {
+        } else {
             block.addView(field(activity, "attempts", String.valueOf(attempts.size())));
             block.addView(field(activity, "elapsed", AiTrace.duration(exchange.durationMs())));
             block.addView(field(activity, "outcome", tally(attempts)));

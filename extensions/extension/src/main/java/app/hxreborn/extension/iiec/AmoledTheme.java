@@ -125,8 +125,7 @@ public final class AmoledTheme {
     private static boolean isAmoledValue(SharedPreferences preferences) {
         try {
             return AMOLED_VALUE.equals(preferences.getString(EDITOR_THEME_DARK_PREFERENCE_KEY, ""));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return false;
         }
     }
@@ -155,8 +154,7 @@ public final class AmoledTheme {
             if (background != null) {
                 activity.getWindow().setBackgroundDrawable(background);
             }
-        }
-        finally {
+        } finally {
             attributes.recycle();
         }
     }

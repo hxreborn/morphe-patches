@@ -44,8 +44,7 @@ public final class AdMobLoadFailure {
                         Class.forName(ADS_PACKAGE + "ResponseInfo", false, loader))
                 .newInstance(ERROR_CODE_NO_FILL, "No fill", "com.google.android.gms.ads", null, null);
             sdkType(callback.getClass()).getMethod("onAdFailedToLoad", loadAdError).invoke(callback, error);
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Could not deliver the load failure", throwable);
         }
     }

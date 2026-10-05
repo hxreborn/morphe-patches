@@ -72,8 +72,7 @@ public final class RunHistory {
             for (String value : block.substring(split + 1).split(",")) {
                 try {
                     runs.add(Long.parseLong(value.trim()));
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     // A corrupt entry must not discard the rest of the history
                 }
             }

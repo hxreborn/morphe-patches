@@ -19,8 +19,7 @@ public final class PairipMethods {
             method.setAccessible(true);
 
             return method;
-        }
-        catch (ReflectiveOperationException ex) {
+        } catch (ReflectiveOperationException ex) {
             throw new IllegalStateException(className + "." + methodName + " is missing", ex);
         }
     }

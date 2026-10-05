@@ -62,8 +62,7 @@ public final class WebContentBackground {
             if (matchesAt(content, target, offset)) {
                 System.arraycopy(replacement, 0, content, offset, replacement.length);
                 offset += target.length;
-            }
-            else {
+            } else {
                 offset++;
             }
         }

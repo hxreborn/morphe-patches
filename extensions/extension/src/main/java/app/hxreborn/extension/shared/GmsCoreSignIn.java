@@ -80,8 +80,7 @@ public final class GmsCoreSignIn {
             Object credential = newCredential(successConstructor.getParameterTypes()[0], fields);
 
             complete(callback, successConstructor.newInstance(credential));
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Could not deliver the credential", throwable);
             fail(callback, "UNKNOWN", String.valueOf(throwable.getMessage()));
         }
@@ -143,8 +142,7 @@ public final class GmsCoreSignIn {
 
             Object failureType = enumValue(failureConstructor.getParameterTypes()[0], type);
             complete(callback, failureConstructor.newInstance(failureType, message, null));
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Could not deliver the failure", throwable);
         }
     }
@@ -171,8 +169,7 @@ public final class GmsCoreSignIn {
             }
             byte[] payload = Base64.decode(parts[1], Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
             return new JSONObject(new String(payload, "UTF-8"));
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             return new JSONObject();
         }
     }
@@ -195,8 +192,7 @@ public final class GmsCoreSignIn {
                     return;
                 }
                 succeed(this.callback, idToken, result.getString(AccountManager.KEY_ACCOUNT_NAME));
-            }
-            catch (Throwable throwable) {
+            } catch (Throwable throwable) {
                 fail(this.callback, "UNKNOWN", String.valueOf(throwable.getMessage()));
             }
         }

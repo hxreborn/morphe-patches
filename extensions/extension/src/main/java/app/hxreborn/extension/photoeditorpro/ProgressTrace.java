@@ -108,8 +108,7 @@ public final class ProgressTrace {
             }
             log("=== " + startingFeature + " started ===");
             enter(STAGE_UPLOAD);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "beginUpload", ex);
         }
     }
@@ -117,8 +116,7 @@ public final class ProgressTrace {
     public static void predict() {
         try {
             enter(STAGE_PREDICT);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "predict", ex);
         }
     }
@@ -141,8 +139,7 @@ public final class ProgressTrace {
                 since = SystemClock.elapsedRealtime() - stageStartedAt;
             }
             log(String.format(Locale.US, "poll #%d  +%.2fs", count, since / 1000f));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "polling", ex);
         }
     }
@@ -170,8 +167,7 @@ public final class ProgressTrace {
             }
             log(String.format(Locale.US, "=== server result in %.2fs, %d polls, code=0x%x ===", total / 1000f, count,
                     resultCode));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "finished", ex);
         }
     }
@@ -200,8 +196,7 @@ public final class ProgressTrace {
                 target += (int) Math.min(span, waited * span / pollScaleMs(enteredAt));
             }
             return Math.max(stock, target);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return stock;
         }
     }
@@ -217,8 +212,7 @@ public final class ProgressTrace {
                 return stock;
             }
             return STAGE_DURATION_MS[current];
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return stock;
         }
     }
@@ -245,8 +239,7 @@ public final class ProgressTrace {
             SpannableString label = new SpannableString(name + "\n" + percent);
             label.setSpan(new RelativeSizeSpan(scale), 0, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             return withLiveCall(view, label);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return stock;
         }
     }
@@ -264,8 +257,7 @@ public final class ProgressTrace {
         view.post(() -> {
             try {
                 view.setText(label(view, stock));
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Log.w(TAG, "refreshLive", ex);
             }
         });

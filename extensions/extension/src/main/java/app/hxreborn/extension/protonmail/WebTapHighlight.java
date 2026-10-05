@@ -21,8 +21,7 @@ public final class WebTapHighlight {
                 return;
             }
             view.evaluateJavascript(WebAssets.TAP_HIGHLIGHT_WEBVIEW, null);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Logger.printException(() -> "Could not remove the web view tap highlight", ex);
         }
     }

@@ -76,8 +76,7 @@ public final class AutoDeleteBanner {
             if (UpsellingVisibility.isHidden() && UPSELL_STATE_NAME.equals(currentStateName)) {
                 return enumConstant(currentState, DISABLED_STATE_NAME);
             }
-        }
-        catch (Throwable ignored) {
+        } catch (Throwable ignored) {
         }
         return currentState;
     }

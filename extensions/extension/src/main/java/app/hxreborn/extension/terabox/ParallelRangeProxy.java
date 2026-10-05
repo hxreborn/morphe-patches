@@ -135,8 +135,7 @@ final class ParallelRangeProxy {
             try {
                 Socket client = this.serverSocket.accept();
                 this.clientThreads.execute(() -> serve(client));
-            }
-            catch (IOException exception) {
+            } catch (IOException exception) {
                 Log.w(TAG, "Proxy accept failed", exception);
             }
         }
@@ -163,8 +162,7 @@ final class ParallelRangeProxy {
             Origin origin;
             try {
                 origin = file.resolve(request);
-            }
-            catch (OriginRejected rejection) {
+            } catch (OriginRejected rejection) {
                 writeStatus(out, rejection.status, "", rejection.body);
                 return;
             }
@@ -179,11 +177,9 @@ final class ParallelRangeProxy {
             if (request.method.equals("GET")) {
                 file.stream(out, start, end);
             }
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             Log.d(TAG, "Proxy request failed: " + exception.getMessage());
-        }
-        catch (RuntimeException exception) {
+        } catch (RuntimeException exception) {
             Log.w(TAG, "Proxy client failed", exception);
         }
     }
@@ -262,8 +258,7 @@ final class ParallelRangeProxy {
                 length += count;
             }
             return Arrays.copyOf(buffer, length);
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             Log.d(TAG, "Could not read origin error body: " + exception.getMessage());
             return NO_BODY;
         }
@@ -320,8 +315,7 @@ final class ParallelRangeProxy {
                 String value = line.substring(colon + 1).trim();
                 if (name.equals("range")) {
                     range = value;
-                }
-                else if (name.equals("cookie")) {
+                } else if (name.equals("cookie")) {
                     cookie = value;
                 }
             }
@@ -339,8 +333,7 @@ final class ParallelRangeProxy {
                         return head.toString().trim();
                     }
                     lineLength = 0;
-                }
-                else if (next != '\r') {
+                } else if (next != '\r') {
                     lineLength++;
                 }
             }
@@ -500,8 +493,7 @@ final class ParallelRangeProxy {
         private void submit(Fetch fetch) {
             try {
                 this.fetchers.execute(fetch);
-            }
-            catch (RejectedExecutionException exception) {
+            } catch (RejectedExecutionException exception) {
                 fetch.discard();
             }
         }
@@ -543,8 +535,7 @@ final class ParallelRangeProxy {
                     requireContentRange(connection, from, segment.end, current.length);
                     segment.fill(connection.getInputStream());
                     return;
-                }
-                catch (IOException exception) {
+                } catch (IOException exception) {
                     connection.disconnect();
                     lastFailure = exception;
                 }
@@ -568,8 +559,7 @@ final class ParallelRangeProxy {
                 int status;
                 try {
                     status = connection.getResponseCode();
-                }
-                catch (IOException exception) {
+                } catch (IOException exception) {
                     connection.disconnect();
                     throw exception;
                 }
@@ -598,8 +588,7 @@ final class ParallelRangeProxy {
                 try {
                     length = contentRangeTotal(connection);
                     requireContentRange(connection, start, Math.min(end, length - 1), length);
-                }
-                catch (IOException exception) {
+                } catch (IOException exception) {
                     connection.disconnect();
                     throw exception;
                 }
@@ -670,17 +659,14 @@ final class ParallelRangeProxy {
                     try {
                         this.segment.fill(this.openResponse.getInputStream());
                         return;
-                    }
-                    catch (IOException exception) {
+                    } catch (IOException exception) {
                         this.openResponse.disconnect();
                     }
                 }
                 this.file.download(this.segment);
-            }
-            catch (IOException exception) {
+            } catch (IOException exception) {
                 this.segment.fail(exception);
-            }
-            catch (RuntimeException exception) {
+            } catch (RuntimeException exception) {
                 this.segment.fail(new IOException(exception));
             }
         }
@@ -783,8 +769,7 @@ final class ParallelRangeProxy {
                 }
                 try {
                     wait();
-                }
-                catch (InterruptedException exception) {
+                } catch (InterruptedException exception) {
                     Thread.currentThread().interrupt();
                     throw new IOException("Interrupted waiting for byte " + position, exception);
                 }

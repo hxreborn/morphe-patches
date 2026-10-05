@@ -94,8 +94,7 @@ public final class AccentColor {
             }
 
             return accentColor & ARGB_MASK;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             return original;
         }
     }
@@ -160,8 +159,7 @@ public final class AccentColor {
     private static int parseColorOrZero(String color) {
         try {
             return Color.parseColor(color);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             return 0;
         }
     }
@@ -191,8 +189,7 @@ public final class AccentColor {
             final double middle = (low + high) / 2;
             if (isInGamut(lightness, middle, hue, alpha)) {
                 low = middle;
-            }
-            else {
+            } else {
                 high = middle;
             }
         }

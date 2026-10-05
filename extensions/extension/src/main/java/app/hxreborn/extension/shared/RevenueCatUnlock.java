@@ -49,8 +49,7 @@ public final class RevenueCatUnlock {
 
             renew(subscriptions);
             renew(entitlements);
-        }
-        catch (Exception ignored) {
+        } catch (Exception ignored) {
         }
     }
 

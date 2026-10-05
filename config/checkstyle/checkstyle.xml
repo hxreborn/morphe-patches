@@ -29,10 +29,15 @@
             com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocPackageCheck,
             com.puppycrawl.tools.checkstyle.checks.javadoc.NonEmptyAtclauseDescriptionCheck,
             com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagContinuationIndentationCheck,
-            com.puppycrawl.tools.checkstyle.checks.javadoc.AtclauseOrderCheck"/>
+            com.puppycrawl.tools.checkstyle.checks.javadoc.AtclauseOrderCheck,
+            com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheck"/>
     </module>
 
     <module name="TreeWalker">
         <module name="DeclarationOrder"/>
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+            <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE"/>
+        </module>
     </module>
 </module>

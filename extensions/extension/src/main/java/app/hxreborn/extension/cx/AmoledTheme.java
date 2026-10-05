@@ -46,8 +46,7 @@ public final class AmoledTheme {
 
         try {
             return preferences.getBoolean(AMOLED_PREFERENCE_KEY, false) && isNight(activity);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return false;
         }
     }

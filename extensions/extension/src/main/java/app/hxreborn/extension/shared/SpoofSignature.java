@@ -55,8 +55,7 @@ public class SpoofSignature extends Application {
             Field creatorField = PackageInfo.class.getDeclaredField("CREATOR");
             creatorField.setAccessible(true);
             creatorField.set(null, creator);
-        }
-        catch (ReflectiveOperationException ex) {
+        } catch (ReflectiveOperationException ex) {
             throw new IllegalStateException("Could not replace PackageInfo.CREATOR", ex);
         }
     }

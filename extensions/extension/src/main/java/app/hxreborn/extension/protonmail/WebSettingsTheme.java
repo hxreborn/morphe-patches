@@ -34,8 +34,7 @@ public final class WebSettingsTheme {
 
             view.setVisibility(View.INVISIBLE);
             view.postDelayed(() -> view.setVisibility(View.VISIBLE), WEBVIEW_VISIBILITY_TIMEOUT_MS);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Logger.printException(() -> "Could not hide the settings web view before styling", ex);
         }
     }
@@ -50,12 +49,10 @@ public final class WebSettingsTheme {
             injectAccentStyle(view);
             if (AccentColor.hasCustomAccent()) {
                 showWhenAccentStyled(view);
-            }
-            else {
+            } else {
                 view.setVisibility(View.VISIBLE);
             }
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Logger.printException(() -> "Could not style the settings web view", ex);
         }
     }
@@ -84,8 +81,7 @@ public final class WebSettingsTheme {
             view.evaluateJavascript(WebAssets.ACCENT_RECOLOR.replace("__TONES__", serializeColorMap())
                 .replace("__SHIFT__", Float.toString(accentHsl[0] - stockHsl[0]))
                 .replace("__SATURATION__", Float.toString(saturationScale)), null);
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             Logger.printException(() -> "Could not style the settings web view", ex);
         }
     }
@@ -106,11 +102,9 @@ public final class WebSettingsTheme {
         final float hue;
         if (max == red) {
             hue = (green - blue) / delta + ((green < blue) ? 6 : 0);
-        }
-        else if (max == green) {
+        } else if (max == green) {
             hue = (blue - red) / delta + 2;
-        }
-        else {
+        } else {
             hue = (red - green) / delta + 4;
         }
 
@@ -145,8 +139,7 @@ public final class WebSettingsTheme {
         view.evaluateJavascript(WebAssets.ACCENT_STYLE_READY, (ready) -> {
             if (Boolean.parseBoolean(ready)) {
                 view.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 view.postDelayed(() -> showWhenAccentStyled(view), STYLE_CHECK_INTERVAL_MS);
             }
         });

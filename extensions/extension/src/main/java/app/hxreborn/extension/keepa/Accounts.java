@@ -196,8 +196,7 @@ final class Accounts {
                 account.tracked += 1;
             }
             account.markHealthy();
-        }
-        else if ("maxTrackingReached".equals(errorType)) {
+        } else if ("maxTrackingReached".equals(errorType)) {
             if (account.limit <= 0) {
                 account.limit = Math.max(account.tracked, 1);
             }
@@ -212,8 +211,7 @@ final class Accounts {
         }
         if (status == 401) {
             account.state = AccountState.INVALID;
-        }
-        else if (status == 429) {
+        } else if (status == 429) {
             account.state = AccountState.THROTTLED;
             account.throttledUntil = now + THROTTLE_MS;
         }
@@ -334,8 +332,7 @@ final class Accounts {
         }
         if (remaining.length() == 0) {
             this.owners.remove(asin);
-        }
-        else {
+        } else {
             this.owners.put(asin, remaining);
         }
         return true;

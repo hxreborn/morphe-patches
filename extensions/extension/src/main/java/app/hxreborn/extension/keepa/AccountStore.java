@@ -82,12 +82,10 @@ final class AccountStore {
                     offset += count;
                 }
                 return new JSONObject(new String(bytes, 0, offset, StandardCharsets.UTF_8));
-            }
-            finally {
+            } finally {
                 stream.close();
             }
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             throw new JSONException("Unable to read " + this.file + ": " + exception);
         }
     }
@@ -98,15 +96,13 @@ final class AccountStore {
             final OutputStream stream = new FileOutputStream(replacement);
             try {
                 stream.write(document.toString().getBytes(StandardCharsets.UTF_8));
-            }
-            finally {
+            } finally {
                 stream.close();
             }
             if (!replacement.renameTo(this.file)) {
                 throw new IOException("rename failed");
             }
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             throw new JSONException("Unable to write " + this.file + ": " + exception);
         }
     }

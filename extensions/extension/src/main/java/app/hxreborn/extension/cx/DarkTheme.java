@@ -41,8 +41,7 @@ public final class DarkTheme {
             String value = preferences.getString(THEME_PREFERENCE_KEY, DEFAULT_MODE);
 
             mode = (value != null) ? Integer.parseInt(value) : MODE_NIGHT_NO;
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return MODE_NIGHT_NO;
         }
 
@@ -62,8 +61,7 @@ public final class DarkTheme {
         try {
             return context.getSharedPreferences(context.getPackageName() + PREFERENCE_FILE_SUFFIX,
                     Context.MODE_PRIVATE);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return null;
         }
     }

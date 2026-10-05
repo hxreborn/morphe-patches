@@ -52,8 +52,7 @@ public final class PatchSettings {
         try {
             final Context context = Utils.getContext();
             return (context != null) ? context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE) : null;
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             return null;
         }
     }

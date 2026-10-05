@@ -85,8 +85,7 @@ public final class AiTrace {
     private static boolean enabled() {
         try {
             return PatchSettings.LOG_ENDPOINTS.get();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
@@ -107,8 +106,7 @@ public final class AiTrace {
             Response response = chain.proceed(request);
             close(attempt, response);
             return response;
-        }
-        catch (IOException | RuntimeException ex) {
+        } catch (IOException | RuntimeException ex) {
             fail(attempt, ex);
             throw ex;
         }
@@ -130,8 +128,7 @@ public final class AiTrace {
                 session.touch(now);
             }
             ProgressTrace.refreshLive();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "open", ex);
         }
         return attempt;
@@ -150,8 +147,7 @@ public final class AiTrace {
                 Log.i(TAG, "    body: " + attempt.body);
             }
             ProgressTrace.refreshLive();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "close", ex);
         }
     }
@@ -163,8 +159,7 @@ public final class AiTrace {
                 attempt.message = clamp(String.valueOf(cause));
             }
             ProgressTrace.refreshLive();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "fail", ex);
         }
     }
@@ -183,8 +178,7 @@ public final class AiTrace {
             }
             Log.i(TAG, iso(now) + "  " + PUT_FILE + " " + path(url));
             ProgressTrace.refreshLive();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "upload", ex);
         }
     }
@@ -218,8 +212,7 @@ public final class AiTrace {
         try {
             String text = response.peekBody(MAX_BODY_BYTES).string().replace('\n', ' ');
             return (text.length() <= MAX_BODY_CHARS) ? text : text.substring(0, MAX_BODY_CHARS) + "\u2026";
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return "";
         }
     }
@@ -307,8 +300,7 @@ public final class AiTrace {
                     rows.remove(0);
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.w(TAG, "liveRows", ex);
         }
         return rows;
@@ -439,8 +431,7 @@ public final class AiTrace {
                 if (first == null) {
                     first = token;
                 }
-            }
-            else if (namedSegment(segment)) {
+            } else if (namedSegment(segment)) {
                 fallback = segment.toLowerCase(Locale.US);
             }
         }

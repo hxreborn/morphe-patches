@@ -392,8 +392,7 @@ public final class PatchesSettingsActivity extends Activity {
         try {
             final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             return packageInfo.versionName + " (" + packageInfo.versionCode + ")";
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             return "unknown";
         }
     }

@@ -51,8 +51,7 @@ public final class ScheduledDeletion {
             if (mailbox != null) {
                 MAILBOX_SESSIONS.put(mailbox, mailUserSession);
             }
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Failed to associate mailbox with account", throwable);
         }
     }
@@ -101,23 +100,19 @@ public final class ScheduledDeletion {
             final Thread worker = new Thread(() -> {
                 try {
                     emptyDueLabels(sessionSnapshot, account);
-                }
-                catch (Throwable throwable) {
+                } catch (Throwable throwable) {
                     Log.e(TAG, "Failed to empty Trash and Spam", throwable);
-                }
-                finally {
+                } finally {
                     DELETING.set(false);
                 }
             }, "hx-scheduled-deletion");
             try {
                 worker.start();
-            }
-            catch (Throwable throwable) {
+            } catch (Throwable throwable) {
                 DELETING.set(false);
                 throw throwable;
             }
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Failed to start scheduled deletion", throwable);
         }
     }
@@ -180,8 +175,7 @@ public final class ScheduledDeletion {
                 for (String label : EMPTIED_LABELS) {
                     SYSTEM_LABEL_IDS.put(label, systemLabelId(mailSession, suspendInvoker, label));
                 }
-            }
-            catch (Throwable throwable) {
+            } catch (Throwable throwable) {
                 Log.e(TAG, "Failed to resolve the Trash and Spam label IDs", throwable);
             }
         }, "hx-label-ids").start();
@@ -211,8 +205,7 @@ public final class ScheduledDeletion {
     private static String userIdOf(Object mailUserSession) {
         try {
             return (String) okValueOrNull(callNoArg(mailUserSession, "userId"));
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             Log.e(TAG, "Failed to read the account ID", throwable);
             return null;
         }
@@ -239,8 +232,7 @@ public final class ScheduledDeletion {
     private static Object callNoArg(Object target, String name) {
         try {
             return methodNamed(target.getClass(), name).invoke(target);
-        }
-        catch (Throwable throwable) {
+        } catch (Throwable throwable) {
             throw new IllegalStateException("Failed to invoke " + simpleNameOf(target) + "." + name + "()", throwable);
         }
     }
