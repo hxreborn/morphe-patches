@@ -55,6 +55,7 @@ final class Boot {
     private static final String APP_HOOK_CLASS = "hx.AppPatch";
     private static final String STRIP_WARNING =
             "Disable \"Optimize for device architecture\" & re-patch";
+    private static final String ARCH_WARNING = "This device runs 32-bit, the patch needs arm64";
 
     private static boolean installed;
     private static boolean appHookStarted;
@@ -198,11 +199,16 @@ final class Boot {
     }
 
     private static void loadNativeLibrary(ApplicationInfo info) throws Exception {
+        if (!Process.is64Bit()) {
+            Log.e(TAG, "32-bit process; arm64 " + NATIVE_LIBRARY + " cannot load");
+            toast(ARCH_WARNING);
+            return;
+        }
+
         try {
             System.load(info.nativeLibraryDir + File.separator + NATIVE_LIBRARY);
             return;
         } catch (Throwable ignored) {
-            // Not extracted at install time
         }
 
         File extracted = new File(info.dataDir + File.separator + "files", NATIVE_LIBRARY);
