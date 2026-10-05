@@ -36,5 +36,6 @@ val jiaguRuntimePatch = rawResourcePatch {
 
         get("assets/h", copy = false).writeBytes(bundledResource("boot.dex"))
         get("assets/hc", copy = false).writeBytes(packageMetadata.stockSigningCertificate().encoded)
+        get("assets/hl", copy = false).writeBytes(bundledResource("hiddenapi.so"))
     }
 }

@@ -10,6 +10,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -29,6 +31,9 @@ public class Boot {
 
     private static final String CONFIGURATION_ASSET = "hcfg";
     private static final String CERTIFICATE_ASSET = "hc";
+    private static final String HIDDEN_API_OPENER_ASSET = "hl";
+    private static final String HIDDEN_API_OPENER_FILE = "hl.so";
+    private static final String PACKAGE_INFO_CACHE_FIELD = "sPackageInfoCache";
     private static final String TELEMETRY_FLAG = "telemetry";
 
     private static final String[] TELEMETRY_HOSTS = {
@@ -46,6 +51,8 @@ public class Boot {
 
         try {
             spoofSignature(context().getPackageName(), asset(CERTIFICATE_ASSET));
+            openHiddenApiAccess();
+            clearPackageInfoCache();
         } catch (Throwable ignored) {
         }
 
@@ -54,6 +61,30 @@ public class Boot {
                 blockTelemetry();
             } catch (Throwable ignored) {
             }
+        }
+    }
+
+    private static void openHiddenApiAccess() {
+        try {
+            File opener = new File(context().getFilesDir(), HIDDEN_API_OPENER_FILE);
+            FileOutputStream out = new FileOutputStream(opener);
+            out.write(asset(HIDDEN_API_OPENER_ASSET));
+            out.close();
+            System.load(opener.getAbsolutePath());
+        } catch (Throwable ignored) {
+        }
+    }
+
+    private static void clearPackageInfoCache() {
+        try {
+            Field field = Class.forName("android.content.pm.PackageManager")
+                    .getDeclaredField(PACKAGE_INFO_CACHE_FIELD);
+            field.setAccessible(true);
+            Object cache = field.get(null);
+            if (cache != null) {
+                cache.getClass().getMethod("clear").invoke(cache);
+            }
+        } catch (Throwable ignored) {
         }
     }
 
@@ -72,9 +103,6 @@ public class Boot {
         in.close();
         return out.toByteArray();
     }
-
-
-
 
     private static boolean isTelemetry(String host) {
         if (host == null) return false;
