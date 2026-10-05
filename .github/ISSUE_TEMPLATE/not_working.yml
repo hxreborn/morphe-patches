@@ -67,6 +67,8 @@ body:
         - "Hindu Calendar (another version, type it below)"
         - "Jvdroid 2.8"
         - "Jvdroid (another version, type it below)"
+        - "Keepa 6.2.1"
+        - "Keepa (another version, type it below)"
         - "Kick (another version, type it below)"
         - "Klassik Radio+ p5.12.0"
         - "Klassik Radio+ (another version, type it below)"
@@ -177,12 +179,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.41.0"
         - "1.40.0"
         - "1.39.0"
         - "1.38.0"
         - "1.37.0"
         - "1.36.0"
-        - "1.35.0"
         - "Older than these"
         # /generated
     validations:
@@ -274,6 +276,12 @@ body:
         - "Jvdroid \u00b7 AMOLED dark theme"
         - "Jvdroid \u00b7 Disable tracking"
         - "Jvdroid \u00b7 Unlock premium"
+        - "Keepa \u00b7 Clone app"
+        - "Keepa \u00b7 Disable tracking"
+        - "Keepa \u00b7 Multiple accounts"
+        - "Keepa \u00b7 Remove app protection"
+        - "Keepa \u00b7 Show offer counts"
+        - "Keepa \u00b7 Unlock price increase tracking"
         - "Kick \u00b7 AMOLED dark theme"
         - "Klassik Radio+ \u00b7 Unlock premium"
         - "LED Blinker \u00b7 Unlock premium"

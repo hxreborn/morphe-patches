@@ -32,7 +32,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.40.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.40.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;113 patches total
+> **[v1.41.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.41.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;119 patches total
 <details open>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -274,6 +274,26 @@ recorded in the Git history.
 | <a id="dwg-fastview-block-telemetry"></a>[Block telemetry](patches/src/main/kotlin/app/morphe/patches/gstarmc/misc/telemetry/BlockTelemetryPatch.kt) | Blocks the Umeng, ByteDance and ad network analytics endpoints. |
 | <a id="dwg-fastview-hide-rating-dialog"></a>[Hide rating dialog](patches/src/main/kotlin/app/morphe/patches/gstarmc/misc/rating/HideRatingDialogPatch.kt) | Removes the prompt asking for a store review. |
 | <a id="dwg-fastview-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/gstarmc/misc/premium/UnlockPremiumPatch.kt) | Unlocks the paid drawing, annotation and measurement tools, and removes ads. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/keepa.png" width="18" align="top">&nbsp;&nbsp;Keepa&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 6.2.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| <a id="keepa-clone-app"></a>[Clone app](patches/src/main/kotlin/app/morphe/patches/keepa/misc/clone/CloneAppPatch.kt) | Installs Keepa as a separate app alongside the original, with its own account and price watches. Each copy needs a different clone number. | • Package name |
+| <a id="keepa-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/keepa/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics and Crashlytics from collecting usage data. |  |
+| <a id="keepa-multiple-accounts"></a>[Multiple accounts](patches/src/main/kotlin/app/morphe/patches/keepa/misc/accounts/MultipleAccountsPatch.kt) | Signs in to several Keepa accounts at once and lists their price watches together. Accounts are added and removed in Settings > Accounts. |  |
+| <a id="keepa-remove-app-protection"></a>[Remove app protection](patches/src/main/kotlin/app/morphe/patches/keepa/misc/protection/RemoveAppProtectionPatch.kt) | Lets a patched build start. |  |
+| <a id="keepa-show-offer-counts"></a>[Show offer counts](patches/src/main/kotlin/app/morphe/patches/keepa/misc/offercount/ShowOfferCountsPatch.kt) | Shows the new and used offer counts in the product overview. |  |
+| <a id="keepa-unlock-price-increase-tracking"></a>[Unlock price increase tracking](patches/src/main/kotlin/app/morphe/patches/keepa/misc/priceincrease/UnlockPriceIncreaseTrackingPatch.kt) | Adds the rise option when creating or editing a price watch. |  |
 
 </details>
 
@@ -755,7 +775,7 @@ recorded in the Git history.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="klassik-radio-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/klassikradio/misc/premium/UnlockPremiumPatch.kt) | Unlocks the premium music channels, on-demand playback and track skipping. Requires a signed-in account. |
+| <a id="klassik-radio-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/klassikradio/misc/premium/UnlockPremiumPatch.kt) | Unlocks the premium music channels, on-demand playback and unlimited track skipping, and hides the trial banner. Requires a signed-in account. |
 
 </details>
 
