@@ -15,9 +15,11 @@ import app.morphe.patcher.apk.ApkSignatureScheme
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstStringInstructionOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import java.security.MessageDigest
@@ -74,8 +76,28 @@ internal fun PackageMetadata.stockSigningCertificate(): X509Certificate {
         )
     }
 
+    val declaredSha256 = declaredSignatures(packageName)
+    if (declaredSha256.isNotEmpty()) {
+        val certificateSha256 = MessageDigest.getInstance("SHA-256").digest(certificate.encoded)
+            .joinToString("") { "%02x".format(it) }
+        if (certificateSha256 !in declaredSha256) {
+            throw PatchException(
+                "The app being patched is not signed with the $packageName developer certificate " +
+                    "($certificateSha256). Patch a stock APK instead.",
+            )
+        }
+    }
+
     return certificate
 }
+
+private fun declaredSignatures(packageName: String): Set<String> =
+    AppCompatibilities::class.java.methods
+        .filter { it.returnType == Compatibility::class.java && it.parameterTypes.isEmpty() }
+        .map { it.invoke(AppCompatibilities) as Compatibility }
+        .filter { it.packageName == packageName }
+        .flatMap { it.signatures.orEmpty() }
+        .toSet()
 
 private fun schemeOrder(scheme: ApkSignatureScheme) = when (scheme) {
     ApkSignatureScheme.V31 -> 0

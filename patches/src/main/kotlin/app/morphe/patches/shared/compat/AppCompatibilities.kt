@@ -18,6 +18,9 @@ internal object AppCompatibilities {
         packageName = "all.in.one.calculator",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x455A64,
+        signatures = setOf(
+            "e84de8a3c91c9806d2eefe29e4caf433d2672dcdcc8def0c5d55e98da40138bd",
+        ),
         targets = listOf(AppTarget(version = "3.4.0", versionCode = 340, minSdk = 24)),
     )
 
@@ -75,6 +78,9 @@ internal object AppCompatibilities {
         packageName = "ipnossoft.rma.free",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x1D204B,
+        signatures = setOf(
+            "22c4c3a7776a3b54b9380a6021fa86cea27fd6844792ea6c579ba9ad0d2dbd71",
+        ),
         targets = listOf(AppTarget(version = "26.17", versionCode = 26910, minSdk = 26)),
     )
 
@@ -127,6 +133,9 @@ internal object AppCompatibilities {
         packageName = "com.gstarmc.android",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x1AACAC,
+        signatures = setOf(
+            "8fdce506f048af0e813622bbe20448a49fccd7606808e7b3c00c5634aa03ec5f",
+        ),
         targets = listOf(
             AppTarget(version = "5.19.4", versionCode = 614, minSdk = 26),
             AppTarget(version = "5.19.6", versionCode = 616, minSdk = 26),
@@ -271,6 +280,9 @@ internal object AppCompatibilities {
         packageName = "com.community.oneroom",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x30E66D,
+        signatures = setOf(
+            "03d4b741632d136bc23e2de4c6adcdb7712f1980b619c183221801730bbd0410",
+        ),
         targets = listOf(
             AppTarget(version = "4.0.02.0828.03", versionCode = 50020125, minSdk = 29),
             AppTarget(version = "4.0.02.0831.03", versionCode = 50020126, minSdk = 29),
@@ -531,6 +543,9 @@ internal object AppCompatibilities {
         packageName = "com.dubox.drive",
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0x226DF6,
+        signatures = setOf(
+            "b75fd2b70084d7e0813b8f74dd74b62ab79b2aa0ce1372331a1841bd88eed993",
+        ),
         targets = listOf(
             AppTarget(version = "4.26.0", versionCode = 698, minSdk = 23),
             AppTarget(version = "4.26.5", versionCode = 699, minSdk = 23),
