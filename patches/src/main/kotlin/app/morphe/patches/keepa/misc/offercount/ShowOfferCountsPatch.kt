@@ -35,7 +35,7 @@ val showOfferCountsPatch = resourcePatch(
         val bundle = get("assets/app/bundle.mjs")
         var bundleSource = bundle.readText()
         for ((name, csvType) in offerCountCsvTypes) {
-            val declaration = Regex("""$name:\{index:$csvType,[^}]*}""").findAll(bundleSource).singleOrNull()?.value
+            val declaration = Regex("""$name:\{index:$csvType,[^}]*\}""").findAll(bundleSource).singleOrNull()?.value
                 ?: throw PatchException("Could not uniquely find the $name declaration.")
             if (!declaration.contains(RESTRICTED_FLAG)) {
                 throw PatchException("Could not find the restricted flag in the $name declaration.")
