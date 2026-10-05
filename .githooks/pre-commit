@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+hook=$(basename "$0")
+if [[ "$hook" == pre-commit ]]; then
+  python3 .github/scripts/check_android_regex.py --staged
+fi
+global="$(git config --global --get core.hooksPath)/$hook"
+if [[ -x "$global" ]]; then
+  exec "$global" "$@"
+fi
