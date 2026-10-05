@@ -14,6 +14,7 @@ import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.getResourceId
 import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.protonmail.misc.materialswitch.materialWebSwitchPatch
 import app.morphe.patches.protonmail.misc.taphighlight.removeWebTapHighlightPatch
 import app.morphe.patches.shared.misc.proton.PATCHES_MENU_CLASS
 import app.morphe.patches.shared.misc.proton.SETTINGS_ROW_TITLE
@@ -54,6 +55,7 @@ internal val patchesSettingsPatch = bytecodePatch {
         resourceMappingPatch,
         patchesSettingsActivityPatch("@style/ProtonTheme.Mail"),
         removeWebTapHighlightPatch,
+        materialWebSwitchPatch,
     )
 
     execute {

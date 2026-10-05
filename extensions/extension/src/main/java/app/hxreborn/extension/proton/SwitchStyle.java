@@ -48,7 +48,7 @@ public final class SwitchStyle {
         control.refreshDrawableState();
     }
 
-    private static int contentColorOn(int background) {
+    public static int contentColorOn(int background) {
         return relativeLuminance(background) > BLACK_CONTENT_LUMINANCE_THRESHOLD
                 ? Color.BLACK
                 : Color.WHITE;
