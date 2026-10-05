@@ -24,6 +24,7 @@ private val TRUE_METHODS = mapOf(
         "isUserVip_High",
         "isUserVip_Super",
         "isUserVip_Company",
+        "getGuideShow",
     ),
     BASE_ACTIVITY to listOf(ASYNC_CHECK),
 )
