@@ -17,6 +17,8 @@ android {
 dependencies {
     implementation(libs.morphe.extensions.library)
     compileOnly(libs.okhttp)
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20240303")
 }
 
 abstract class GenerateWebAssets : DefaultTask() {
