@@ -175,6 +175,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 32)),
     )
 
+    val FAST_STL_VIEWER = Compatibility(
+        name = "Fast STL Viewer",
+        packageName = "com.performance.meshview",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x1A73B2,
+        signatures = setOf(
+            "925c7b1df5689fef2371e1f6e71e98a3956295df95221baa06145222aa89f769",
+        ),
+        targets = listOf(AppTarget(version = "2.84", versionCode = 309, minSdk = 24)),
+    )
+
     val FDDB = Compatibility(
         name = "Fddb",
         packageName = "com.fddb",

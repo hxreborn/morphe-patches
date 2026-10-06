@@ -229,6 +229,7 @@ ICONS = {
     "com.ledblinker": "ledblinker.png",
     "com.fddb": "fddb.png",
     "ru.iiec.cxxdroid": "cxxdroid.png",
+    "com.performance.meshview": "faststlviewer.png",
     "ru.iiec.jvdroid": "jvdroid.png",
     "ru.iiec.pydroid3": "pydroid.png",
     "com.yunyi.smartcamera": "yiiot.png",

@@ -63,6 +63,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `ledblinker.png` | LED Blinker (`com.ledblinker`) | Mario Ostwald | APK 26.01.08, `res/mipmap-xxxhdpi-v4/ic_launcher_new.webp` |
 | `fddb.png` | Fddb (`com.fddb`) | Fddb | APK v7.8.4, `res/mipmap-xxxhdpi-v4/ic_launcher.png` |
 | `cxxdroid.png` | Cxxdroid (`ru.iiec.cxxdroid`) | IIEC | APK 6.0_arm64, `mipmap/ic_launcher`, xxxhdpi |
+| `faststlviewer.png` | Fast STL Viewer (`com.performance.meshview`) | Fast STL Viewer | APK 2.84, `res/Gd.png`, cut to a circle |
 | `jvdroid.png` | Jvdroid (`ru.iiec.jvdroid`) | Lider Soft KZ | APK 2.8, `mipmap/ic_launcher`, xxxhdpi |
 | `pydroid.png` | Pydroid 3 (`ru.iiec.pydroid3`) | Lider Soft KZ | APK 8.6_arm64, `mipmap/app_icon_pydroid3`, xxxhdpi |
 | `yiiot.png` | Yi iot (`com.yunyi.smartcamera`) | Kami HK | APK 5.1.7, `res/drawable-xxhdpi-v4/ic_launcher.webp`, cut to a circle |
