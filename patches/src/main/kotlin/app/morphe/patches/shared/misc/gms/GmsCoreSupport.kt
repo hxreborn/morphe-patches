@@ -15,10 +15,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.string
 import app.morphe.patches.shared.misc.signature.replaceString
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
-import app.morphe.util.findInstructionIndicesReversed
-import app.morphe.util.findMutableMethodOf
+import app.morphe.util.matchAllMethodIndicesForEach
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
@@ -73,16 +73,9 @@ internal fun BytecodePatchContext.bindGmsCoreSignInTypes() {
 }
 
 internal fun BytecodePatchContext.redirectGmsPackageToGmsCore() {
-    classDefForEach { classDef ->
-        classDef.methods.forEach { method ->
-            if (method.implementation?.instructions?.any { it.isString(GMS_PACKAGE_NAME) } != true) return@forEach
-
-            val mutableMethod = mutableClassDefBy(classDef).findMutableMethodOf(method)
-            mutableMethod.findInstructionIndicesReversed { isString(GMS_PACKAGE_NAME) }.forEach { index ->
-                val register = mutableMethod.getInstruction<OneRegisterInstruction>(index).registerA
-                mutableMethod.replaceInstruction(index, "const-string v$register, \"$GMS_CORE_PACKAGE_NAME\"")
-            }
-        }
+    string(GMS_PACKAGE_NAME).matchAllMethodIndicesForEach(requireMatches = false) { index ->
+        val register = getInstruction<OneRegisterInstruction>(index).registerA
+        replaceInstruction(index, "const-string v$register, \"$GMS_CORE_PACKAGE_NAME\"")
     }
 }
 
