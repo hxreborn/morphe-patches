@@ -21,6 +21,8 @@ public final class PatchesMenu {
 
     public static final String SETTINGS_ROW_TITLE = "hxreborn patches";
 
+    static final String ACTION_SHOW_PATCHES_SETTINGS = "app.hxreborn.extension.proton.SHOW_PATCHES_SETTINGS";
+
     private static final String TAG = "PatchesMenu";
 
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
@@ -35,6 +37,10 @@ public final class PatchesMenu {
         return "unknown";
     }
 
+    public static String hostActivity() {
+        return "";
+    }
+
     public static synchronized Object settingsRowOnClick(Class<?> onClickType) {
         if (settingsRowOnClickProxy == null) {
             settingsRowOnClickProxy = Proxy.newProxyInstance(PatchesMenu.class.getClassLoader(),
@@ -46,7 +52,7 @@ public final class PatchesMenu {
     private static void show() {
         final Activity activity = PatchContext.resumedActivity();
         if (activity != null && !activity.isFinishing()) {
-            activity.startActivity(new Intent(activity, PatchesSettingsActivity.class));
+            activity.startActivity(settingsIntent(activity));
             return;
         }
 
@@ -56,9 +62,17 @@ public final class PatchesMenu {
             return;
         }
 
-        final Intent intent = new Intent(context, PatchesSettingsActivity.class);
+        final Intent intent = settingsIntent(context);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    private static Intent settingsIntent(Context context) {
+        final Intent intent = new Intent(context, PatchesSettingsActivity.class);
+        if (context.getPackageManager().resolveActivity(intent, 0) == null) {
+            intent.setClassName(context, hostActivity()).setAction(ACTION_SHOW_PATCHES_SETTINGS);
+        }
+        return intent;
     }
 
     private static final class RowClickHandler implements InvocationHandler {

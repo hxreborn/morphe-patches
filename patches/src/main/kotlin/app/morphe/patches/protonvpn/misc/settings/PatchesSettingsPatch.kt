@@ -22,6 +22,7 @@ import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 
+private const val HOST_ACTIVITY = "me.proton.core.devicemigration.presentation.DeviceMigrationActivity"
 private const val APPLICATION_CLASS = "Lcom/protonvpn/android/ProtonApplicationHilt;"
 private const val ICON_PARAMETER = 1
 private const val TITLE_PARAMETER = 2
@@ -50,7 +51,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(resourceMappingPatch, resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile"))
+    dependsOn(resourceMappingPatch, resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY))
     extendWith("extensions/extension.mpe")
 
     execute {

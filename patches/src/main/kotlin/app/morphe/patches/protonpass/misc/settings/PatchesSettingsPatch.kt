@@ -21,6 +21,7 @@ import com.android.tools.smali.dexlib2.formatter.DexFormatter
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
+private const val HOST_ACTIVITY = "me.proton.core.devicemigration.presentation.DeviceMigrationActivity"
 private const val APPLICATION_CLASS = "Lproton/android/pass/App;"
 private const val TITLE_PARAMETER = 1
 private const val ON_CLICK_PARAMETER = 5
@@ -54,7 +55,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(resourceMappingPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Pass"))
+    dependsOn(resourceMappingPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Pass", HOST_ACTIVITY))
     extendWith("extensions/extension.mpe")
 
     execute {

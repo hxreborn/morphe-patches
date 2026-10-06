@@ -9,13 +9,17 @@ import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.util.getReference
+import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.formatter.DexFormatter
@@ -26,6 +30,10 @@ import org.w3c.dom.Element
 
 internal const val SETTINGS_ROW_TITLE = "hxreborn patches"
 private const val SETTINGS_ACTIVITY_CLASS = "app.hxreborn.extension.proton.PatchesSettingsActivity"
+private const val CORE_COMPONENT_FACTORY_CLASS = "Landroidx/core/app/CoreComponentFactory;"
+private const val CORE_COMPONENT_FACTORY_NAME = "androidx.core.app.CoreComponentFactory"
+private const val APP_COMPONENT_FACTORY_CLASS = "Landroid/app/AppComponentFactory;"
+private const val PATCHES_COMPONENT_FACTORY_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesComponentFactory;"
 private const val BUNDLE_VERSION_RESOURCE = "/proton-bundle-version.txt"
 private const val PATCHES_THEME_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesTheme;"
 private const val APP_COMPAT_PACKAGE = "Landroidx/appcompat/app/"
@@ -45,16 +53,51 @@ internal object CoreNightModeFingerprint : Fingerprint(
     ),
 )
 
-internal fun patchesSettingsActivityPatch(themeStyle: String) = resourcePatch {
-    finalize {
-        document("AndroidManifest.xml").use { document ->
-            val application = document.getElementsByTagName("application").item(0) as Element
+internal fun patchesSettingsActivityPatch(themeStyle: String, hostActivity: String) = bytecodePatch {
+    dependsOn(
+        resourcePatch {
+            finalize {
+                document("AndroidManifest.xml").use { document ->
+                    val activities = document.getElementsByTagName("activity")
+                    val hostDeclared = (0 until activities.length).any {
+                        (activities.item(it) as Element).getAttribute("android:name") == hostActivity
+                    }
+                    if (!hostDeclared) throw PatchException("Missing host activity $hostActivity")
 
-            val activity = document.createElement("activity")
-            activity.setAttribute("android:name", SETTINGS_ACTIVITY_CLASS)
-            activity.setAttribute("android:exported", "false")
-            activity.setAttribute("android:theme", themeStyle)
-            application.appendChild(activity)
+                    val application = document.getElementsByTagName("application").item(0) as Element
+                    val componentFactory = application.getAttribute("android:appComponentFactory")
+                    if (componentFactory != CORE_COMPONENT_FACTORY_NAME) {
+                        throw PatchException("Unexpected appComponentFactory $componentFactory")
+                    }
+
+                    val activity = document.createElement("activity")
+                    activity.setAttribute("android:name", SETTINGS_ACTIVITY_CLASS)
+                    activity.setAttribute("android:exported", "false")
+                    activity.setAttribute("android:theme", themeStyle)
+                    application.appendChild(activity)
+                }
+            }
+        },
+    )
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        mutableClassDefBy(PATCHES_MENU_CLASS).methods.single { it.name == "hostActivity" }
+            .returnEarly(hostActivity)
+
+        mutableClassDefBy(CORE_COMPONENT_FACTORY_CLASS).apply {
+            if (superclass != APP_COMPONENT_FACTORY_CLASS) {
+                throw PatchException("$CORE_COMPONENT_FACTORY_CLASS extends $superclass")
+            }
+            setSuperClass(PATCHES_COMPONENT_FACTORY_CLASS)
+
+            methods.single { it.name == "<init>" && it.parameterTypes.isEmpty() }.apply {
+                val index = indexOfFirstInstructionOrThrow {
+                    opcode == Opcode.INVOKE_DIRECT &&
+                        getReference<MethodReference>()?.definingClass == APP_COMPONENT_FACTORY_CLASS
+                }
+                replaceInstruction(index, "invoke-direct { p0 }, $PATCHES_COMPONENT_FACTORY_CLASS-><init>()V")
+            }
         }
     }
 }

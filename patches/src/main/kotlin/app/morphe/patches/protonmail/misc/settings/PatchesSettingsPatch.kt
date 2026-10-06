@@ -31,6 +31,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
+private const val HOST_ACTIVITY = "ch.protonmail.android.feature.applicationlogs.ApplicationLogsActivity"
 private const val SETTINGS_ITEM_NAME_PARAMETER = 1
 private const val SETTINGS_ITEM_ICON_PARAMETER = 3
 private const val SETTINGS_ITEM_BADGE_PARAMETER = 6
@@ -53,7 +54,7 @@ internal val patchesSettingsPatch = bytecodePatch {
     dependsOn(
         spoofSignaturePatch,
         resourceMappingPatch,
-        patchesSettingsActivityPatch("@style/ProtonTheme.Mail"),
+        patchesSettingsActivityPatch("@style/ProtonTheme.Mail", HOST_ACTIVITY),
         removeWebTapHighlightPatch,
         materialWebSwitchPatch,
     )
