@@ -1,4 +1,11 @@
 version: 2
+registries:
+  morphe:
+    type: maven-repository
+    url: https://maven.pkg.github.com/MorpheApp/registry
+    username: hxreborn
+    password: ${{ secrets.MORPHE_PACKAGES_TOKEN }}
+
 updates:
   - package-ecosystem: github-actions
     commit-message:
@@ -23,6 +30,8 @@ updates:
   - package-ecosystem: gradle
     commit-message:
       prefix: "ci(deps)"
+    registries:
+      - morphe
     # scan needs the root build.gradle.kts; dependabot aborts without one
     labels: []
     directory: /
