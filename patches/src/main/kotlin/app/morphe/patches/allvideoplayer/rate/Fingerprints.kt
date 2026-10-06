@@ -20,3 +20,13 @@ internal object RatingPromptGateFingerprint : Fingerprint(
         opcode(Opcode.IF_EQ, location = MatchAfterImmediately()),
     ),
 )
+
+internal object HomeRatingPromptGateFingerprint : Fingerprint(
+    returnType = "V",
+    strings = listOf("FolderScreen: ......langCodeLocal......"),
+    filters = listOf(
+        literal(2),
+        opcode(Opcode.IF_NE, location = MatchAfterImmediately()),
+        string("rateShow"),
+    ),
+)
