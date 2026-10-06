@@ -1,3 +1,25 @@
+## [1.42.0](https://github.com/hxreborn/morphe-patches/compare/v1.41.0...v1.42.0) (2026-10-06)
+
+### Bug Fixes
+
+* **DWG FastView - Unlock premium:** stop crashing at launch on ColorOS and Nothing OS ([d212e21](https://github.com/hxreborn/morphe-patches/commit/d212e21173e498b94ecb0b9c4a53f235602fcc87)), closes [#149](https://github.com/hxreborn/morphe-patches/issues/149)
+* **Keepa - Multiple accounts:** fix patching failure in Morphe Manager ([042c815](https://github.com/hxreborn/morphe-patches/commit/042c8153fd1dd99eab1110d30f02cfc9c03d07a0))
+* **Keepa - Show offer counts:** fix patching failure in Morphe Manager ([dd01cee](https://github.com/hxreborn/morphe-patches/commit/dd01cee39a5985acedae58059e233f5e1ca32550))
+* **MovieBox - All-In-One:** warn that 32-bit devices are unsupported ([01ca495](https://github.com/hxreborn/morphe-patches/commit/01ca495f8f3124e1a1e39b2dab8a8f5c1b09e541)), closes [#143](https://github.com/hxreborn/morphe-patches/issues/143)
+* **ReadEra - Remove nags:** hide the Premium button in the toolbar ([1f3a8d9](https://github.com/hxreborn/morphe-patches/commit/1f3a8d9ef2439bbfd09c50b49fc4ca9c96a49b88))
+
+### New Features
+
+* **Cx File Explorer:** add support for 2.8.1 ([803a0a7](https://github.com/hxreborn/morphe-patches/commit/803a0a70051e0e92b4086768154cfddbcfd06557)), closes [#150](https://github.com/hxreborn/morphe-patches/issues/150)
+* **DWG FastView - Unlock premium:** skip first-run intro ([73340b0](https://github.com/hxreborn/morphe-patches/commit/73340b00a828d6141657e00f144d7f2587411436))
+* **One4Home Launcher:** add support for 0.4.98 ([53e1f1a](https://github.com/hxreborn/morphe-patches/commit/53e1f1a6e34768e3545d5714580f01d57be88fd1)), closes [#151](https://github.com/hxreborn/morphe-patches/issues/151)
+* **Proton Mail:** draw web settings toggles as Material 3 switches ([3275cdd](https://github.com/hxreborn/morphe-patches/commit/3275cdd927cd17e93b34f1b0f6c18cafa143dc22)), closes [#98](https://github.com/hxreborn/morphe-patches/issues/98)
+* **ReadEra:** add support for 26.09.29+2320 ([e283bb4](https://github.com/hxreborn/morphe-patches/commit/e283bb433b13ed866ceac28afb3771b25f0f8929)), closes [#132](https://github.com/hxreborn/morphe-patches/issues/132)
+* **Symfonium:** add support for 15.1.0 ([07c3752](https://github.com/hxreborn/morphe-patches/commit/07c37520091f9048890b06b92cad83ace802d5ca)), closes [#152](https://github.com/hxreborn/morphe-patches/issues/152)
+* **TeraBox - Clone app:** install several copies side by side ([4c47dac](https://github.com/hxreborn/morphe-patches/commit/4c47dac5d8c032170f417849378c6ae5916a342b)), closes [#146](https://github.com/hxreborn/morphe-patches/issues/146)
+* **Trainline:** add support for 415.0.0.182626 ([962149e](https://github.com/hxreborn/morphe-patches/commit/962149eb8c00a1c10163f142f74c62b65db122c8)), closes [#153](https://github.com/hxreborn/morphe-patches/issues/153)
+* **VPN Super Unlimited Proxy:** add support for 2.33.1 ([97319bd](https://github.com/hxreborn/morphe-patches/commit/97319bd325fcd9bf3fcffafc69635ba5d3ae83f7)), closes [#154](https://github.com/hxreborn/morphe-patches/issues/154)
+
 ## [1.41.0](https://github.com/hxreborn/morphe-patches/compare/v1.40.0...v1.41.0) (2026-10-05)
 
 ### Bug Fixes

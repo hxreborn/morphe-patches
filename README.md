@@ -32,7 +32,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.41.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.41.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;119 patches total
+> **[v1.42.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.42.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;120 patches total
 <details open>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -56,8 +56,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.7.8 | 2.7.9 |
-| :---: | :---: |
+| 2.7.8 | 2.7.9 | 2.8.1 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -298,6 +298,27 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.26.0 | 4.26.5 |
+| :---: | :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| <a id="terabox-clone-app"></a>[Clone app](patches/src/main/kotlin/app/morphe/patches/terabox/misc/clone/CloneAppPatch.kt) | Installs TeraBox as a separate app alongside the original, with its own account. Each copy needs a different clone number. | • Package name |
+| <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |  |
+| <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open, video player and rewarded ads. Features unlocked by watching an ad are unavailable. |  |
+| <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |  |
+| <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Hides Premium upgrade cards and banners, prize and campaign cards, speed-up prompts, floating invites, and sale, coupon and promotional popups. |  |
+| <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Hides the recommended videos below the video player. |  |
+| <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD up to original quality, playback speeds up to 3x and video uploads. HD buffers faster over parallel connections. |  |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/vpnify.png" width="18" align="top">&nbsp;&nbsp;vpnify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -431,26 +452,6 @@ recorded in the Git history.
 </details>
 
 <details open>
-<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 4.26.0 | 4.26.5 |
-| :---: | :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |
-| <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open, video player and rewarded ads. Features unlocked by watching an ad are unavailable. |
-| <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |
-| <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Hides Premium upgrade cards and banners, prize and campaign cards, speed-up prompts, floating invites, and sale, coupon and promotional popups. |
-| <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Hides the recommended videos below the video player. |
-| <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD up to original quality, playback speeds up to 3x and video uploads. HD buffers faster over parallel connections. |
-
-</details>
-
-<details open>
 <summary><img src=".github/assets/icons/allinonecalculator.png" width="18" align="top">&nbsp;&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -554,8 +555,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 407.0.0.178994 | 415.0.0.182623 |
-| :---: | :---: |
+| 407.0.0.178994 | 415.0.0.182623 | 415.0.0.182626 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -619,12 +620,12 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 26.05.20+2300 |
-| :---: |
+| 26.05.20+2300 | 26.09.29+2320 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog and the promotional dialogs shown on startup. |
+| <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog, the promotional dialogs shown on startup and the Premium button in the toolbar. |
 
 </details>
 
@@ -800,8 +801,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 0.4.72 | 0.4.97 |
-| :---: | :---: |
+| 0.4.72 | 0.4.97 | 0.4.98 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -860,8 +861,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 14.0.0 | 14.1.0 | 15.0.1 | 14.0.0 TV |
-| :---: | :---: | :---: | :---: |
+| 14.0.0 | 14.1.0 | 15.0.1 | 15.1.0 | 14.0.0 TV | 15.1.0 TV |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -875,8 +876,8 @@ recorded in the Git history.
 
 **🎯 Supported versions:**
 
-| 2.32.0 | 2.33.0 |
-| :---: | :---: |
+| 2.32.0 | 2.33.0 | 2.33.1 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
