@@ -43,6 +43,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.4.0e", versionCode = 412)),
     )
 
+    val ANYTRACKER = Compatibility(
+        name = "AnyTracker",
+        packageName = "com.shervinkoushan.anyTracker",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x0D4AD8,
+        signatures = setOf(
+            "5e95a289ea73c30af95199eed6d64a2abf0ffc59c578f7686f24c5ce902ea26c",
+        ),
+        targets = listOf(AppTarget(version = "7.5.4", versionCode = 386, minSdk = 24)),
+    )
+
     val ATLOMAPS = Compatibility(
         name = "AtloMaps",
         packageName = "com.atlogis.atlomaps",

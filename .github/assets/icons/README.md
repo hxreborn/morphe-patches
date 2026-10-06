@@ -45,6 +45,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `vpnsuper.png` | VPN Super Unlimited Proxy (`com.free.vpn.super.hotspot.open`) | VPN Super Unlimited Proxy Master | APK 2.32.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `klassikradio.png` | Klassik Radio+ (`de.klassikradio.app`) | Klassik Radio AG | APK p5.11.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `atlomaps.png` | AtloMaps (`com.atlogis.atlomaps`) | ATLOGIS Geoinformatics GmbH & Co. KG | APK 1.0.6, adaptive icon `res/mipmap-anydpi-v26/icon.xml` |
+| `anytracker.png` | AnyTracker (`com.shervinkoushan.anyTracker`) | Shervin Koushan | APK 7.5.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `atvtools.png` | atvTools (`dev.vodik7.atvtools`) | tvDev | APK 1.3.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `bettersleep.png` | BetterSleep (`ipnossoft.rma.free`) | BetterSleep Health | APK 26.15, `res/mipmap-xxxhdpi/ic_launcher_round.png` |
 | `dwgfastview.png` | DWG FastView (`com.gstarmc.android`) | Gstarsoft Co., Ltd. | APK 5.21.0, `drawable/ic_launcher`, xxxhdpi, cut to a circle |

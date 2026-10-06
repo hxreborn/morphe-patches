@@ -187,6 +187,7 @@ ICONS = {
     "com.allformatplayer.streamvideoplayer": "allvideoplayer.png",
     "psyberia.alpinequest.free": "alpinequest.png",
     "com.atlogis.atlomaps": "atlomaps.png",
+    "com.shervinkoushan.anyTracker": "anytracker.png",
     "com.adithya.memoneet": "memoneet.png",
     "com.spocky.projengmenu": "projectivy.png",
     "com.myvitale.forus": "forus.png",
