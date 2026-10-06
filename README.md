@@ -32,7 +32,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.42.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.42.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;120 patches total
+> **[v1.43.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.43.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;125 patches total
 <details open>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -484,6 +484,23 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/raindrop.png" width="18" align="top">&nbsp;&nbsp;Raindrop.io&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.7.44 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="raindrop-io-gmscore-support"></a>[GmsCore support](patches/src/main/kotlin/app/morphe/patches/raindrop/misc/gms/GmsCoreSupportPatch.kt) | Signs in with Google through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="raindrop-io-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/raindrop/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Go Pro entry in Settings. |
+| <a id="raindrop-io-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/raindrop/misc/premium/UnlockProPatch.kt) | Unlocks reminders and highlight notes. Adds duplicate and broken link filters, collection and tag suggestions, full-text search of saved pages, Wayback Machine copies and a weekly bookmark export to Downloads. Requires a signed-in account. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/etsy.png" width="18" align="top">&nbsp;&nbsp;Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -510,6 +527,21 @@ recorded in the Git history.
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="qr-barcode-scanner-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/gammascan/ads/HideAdsPatch.kt) | Disables banner, interstitial, and native ads. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/joyn.png" width="18" align="top">&nbsp;&nbsp;Joyn&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 6.9.0-AOS-609012264 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="joyn-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/joyn/ads/HideAdsPatch.kt) | Removes ads before and during videos. Live TV requires a German IP address. |
 
 </details>
 
@@ -732,6 +764,21 @@ recorded in the Git history.
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="echogram-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/echogram/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/faststlviewer.png" width="18" align="top">&nbsp;&nbsp;Fast STL Viewer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.84 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="fast-stl-viewer-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/faststlviewer/misc/premium/UnlockPremiumPatch.kt) | Unlocks slice view, colors, lighting, normals, measurements, printability analysis and transform, and removes ads. |
 
 </details>
 

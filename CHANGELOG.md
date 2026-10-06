@@ -1,3 +1,17 @@
+## [1.43.0](https://github.com/hxreborn/morphe-patches/compare/v1.42.0...v1.43.0) (2026-10-06)
+
+### Bug Fixes
+
+* **Proton:** stop patches settings crashing on mount installs ([3cc0dba](https://github.com/hxreborn/morphe-patches/commit/3cc0dba5a27096d9d654f5e9bec4a5ecc7c3d050))
+
+### New Features
+
+* **Fast STL Viewer - Unlock premium:** unlock paid viewing and analysis tools and remove ads ([25426c5](https://github.com/hxreborn/morphe-patches/commit/25426c5fa66ce54fe41bef8b6d8b7ae6d6a3743b)), closes [#159](https://github.com/hxreborn/morphe-patches/issues/159)
+* **Joyn - Hide ads:** remove ads before and during videos ([3063376](https://github.com/hxreborn/morphe-patches/commit/3063376bc82831777d44a8afbe2df57e16785b8b)), closes [#160](https://github.com/hxreborn/morphe-patches/issues/160)
+* **Raindrop.io - GmsCore support:** sign in with Google through GmsCore ([a257400](https://github.com/hxreborn/morphe-patches/commit/a25740011d81cc64c0bf4bd27e291d8c3a33dd82))
+* **Raindrop.io - Hide upgrade promotions:** hide Go Pro entry in Settings ([a41e004](https://github.com/hxreborn/morphe-patches/commit/a41e004791c496beff303516282e9452a157b6cd))
+* **Raindrop.io - Unlock pro:** unlock reminders, highlight notes, duplicate and broken link filters ([444946a](https://github.com/hxreborn/morphe-patches/commit/444946afe7b6b7c93707cf42e8ab2304aced34d5)), closes [#158](https://github.com/hxreborn/morphe-patches/issues/158)
+
 ## [1.42.0](https://github.com/hxreborn/morphe-patches/compare/v1.41.0...v1.42.0) (2026-10-06)
 
 ### Bug Fixes
