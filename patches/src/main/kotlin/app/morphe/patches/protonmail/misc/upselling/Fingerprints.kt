@@ -5,8 +5,8 @@
 package app.morphe.patches.protonmail.misc.upselling
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.resourceLiteral
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resourceLiteral
 
 internal const val SIDEBAR_UPSELLING_LABEL_PREFIX = "drawer_upgrade"
 

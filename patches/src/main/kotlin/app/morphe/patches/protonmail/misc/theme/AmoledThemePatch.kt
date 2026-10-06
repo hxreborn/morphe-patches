@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.theme.webview.CachedMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.InlineMessageBodyFingerprint
@@ -132,7 +131,7 @@ val amoledThemePatch = bytecodePatch(
     description = "Replaces the dark theme background with pure black.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
-    dependsOn(resourceMappingPatch, webSettingsThemePatch)
+    dependsOn(webSettingsThemePatch)
 
     execute {
         DarkPaletteFingerprint.matchSingle().method.apply {

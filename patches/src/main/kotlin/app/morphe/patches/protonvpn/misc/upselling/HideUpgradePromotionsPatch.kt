@@ -8,12 +8,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.anchors.toJavaClassName
@@ -35,13 +33,12 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     description = "Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
-    dependsOn(patchesSettingsPatch, resourceMappingPatch)
+    dependsOn(patchesSettingsPatch)
 
     execute {
         markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
 
-        val plusBadgeId = getResourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
-            ?: throw PatchException("Missing drawable: vpn_plus_badge")
+        val plusBadgeId = resourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
 
         SettingRowWithIconFingerprint.matchSingle().method.apply {
             addInstructionsWithLabels(

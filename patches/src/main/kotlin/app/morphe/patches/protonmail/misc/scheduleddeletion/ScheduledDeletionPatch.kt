@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
@@ -56,7 +55,6 @@ val scheduledDeletionPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(
         patchesSettingsPatch,
-        resourceMappingPatch,
         autoDeleteBannerStatePatch,
         scheduledDeletionStringsPatch,
     )

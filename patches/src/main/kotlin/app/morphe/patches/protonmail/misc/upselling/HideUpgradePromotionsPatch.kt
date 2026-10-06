@@ -12,9 +12,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -67,7 +66,6 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(
         patchesSettingsPatch,
-        resourceMappingPatch,
         unhandledSidebarUpsellingPatch,
         autoDeleteBannerStatePatch,
     )
@@ -83,9 +81,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
 
         rows.forEach { it.returnVoidWhenUpsellingHidden() }
 
-        val buttonDescriptionId =
-            getResourceId(ResourceType.STRING, "upselling_button_item_content_description")
-                ?: throw PatchException("Could not find upselling_button_item_content_description")
+        val buttonDescriptionId = resourceId(ResourceType.STRING, "upselling_button_item_content_description")
         val buttons = UpgradeUpsellingButtonFingerprint.classDef.methods.filter { method ->
             method.returnType == "V" &&
                 method.indexOfFirstLiteralInstruction(buttonDescriptionId) >= 0

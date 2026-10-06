@@ -14,8 +14,8 @@
 package app.morphe.patches.showly.misc.premium
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.resourceLiteral
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resourceLiteral
 
 private const val QONVERSION_INTERNAL = "Lcom/qonversion/android/sdk/internal/QonversionInternal;"
 

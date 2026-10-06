@@ -12,10 +12,9 @@ import app.morphe.patcher.patch.ResourcePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.Document
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.hasResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.hasResourceId
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.png.PngImage
 import app.morphe.util.adoptChild
@@ -698,8 +697,6 @@ private fun requireReplaced(description: String, replaced: Int) {
 }
 
 private val amoledThemeResourcesPatch = resourcePatch {
-    dependsOn(resourceMappingPatch)
-
     execute {
         val app = resourcePackage(packageMetadata.packageName)
         val headset = resourcePackage(HEADSET_PACKAGE)
@@ -928,13 +925,13 @@ val amoledThemePatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.REALME_LINK)
 
-    dependsOn(amoledThemeResourcesPatch, resourceMappingPatch)
+    dependsOn(amoledThemeResourcesPatch)
 
     execute {
         CommonTitleBarBackIconFingerprint.matchSingle().apply {
             val index = instructionMatches.first().index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
-            val backIcon = getResourceId(ResourceType.DRAWABLE, BACK_ICON_NAME)
+            val backIcon = resourceId(ResourceType.DRAWABLE, BACK_ICON_NAME)
 
             method.replaceInstruction(index, "const v$register, 0x${backIcon.toString(16)}")
         }

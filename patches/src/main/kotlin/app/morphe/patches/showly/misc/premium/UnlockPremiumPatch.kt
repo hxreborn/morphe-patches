@@ -15,11 +15,9 @@ package app.morphe.patches.showly.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -30,8 +28,6 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included.",
 ) {
     compatibleWith(AppCompatibilities.SHOWLY)
-
-    dependsOn(resourceMappingPatch)
 
     execute {
         PremiumRepoConstructorFingerprint.classDef.methods
@@ -48,8 +44,7 @@ val unlockPremiumPatch = bytecodePatch(
         TraktLoginPaywallNavigationFingerprint.method.apply {
             val actionIdConstIndex = TraktLoginPaywallNavigationFingerprint.instructionMatches[0].index
             val actionIdRegister = getInstruction<OneRegisterInstruction>(actionIdConstIndex).registerA
-            val actionId = getResourceId(ResourceType.ID, "actionNavigateProgressFragment")
-                ?: throw PatchException("Could not find the progress fragment navigation action")
+            val actionId = resourceId(ResourceType.ID, "actionNavigateProgressFragment")
 
             replaceInstruction(actionIdConstIndex, "const v$actionIdRegister, 0x${actionId.toString(16)}")
         }

@@ -7,11 +7,9 @@ package app.morphe.patches.protonvpn.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.shared.misc.proton.SettingsRowIcon
 import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
@@ -30,8 +28,7 @@ private const val ON_CLICK_PARAMETER = 8
 private const val COMPOSER_PARAMETER = 9
 
 private fun BytecodePatchContext.addPatchesSettingsRow() {
-    val iconId = getResourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
-        ?: throw PatchException("Missing settings icon: ic_proton_wrench")
+    val iconId = resourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
 
     val match = WidgetSettingsRowFingerprint.matchSingle()
     val rowIndex = match.instructionMatches.last().index
@@ -51,7 +48,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(resourceMappingPatch, resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY))
+    dependsOn(resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY))
     extendWith("extensions/extension.mpe")
 
     execute {

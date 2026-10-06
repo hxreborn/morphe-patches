@@ -7,9 +7,8 @@ package app.morphe.patches.protonvpn.misc.anchors
 import app.morphe.patcher.InstructionLocation
 import app.morphe.patcher.OpcodesFilter
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
@@ -25,8 +24,6 @@ private var resourceIdsByField: Map<String, Long> = emptyMap()
 private fun FieldReference.descriptor() = "$definingClass->$name"
 
 internal val resourceFieldsPatch = bytecodePatch {
-    dependsOn(resourceMappingPatch)
-
     execute {
         val resourceIds = HashMap<String, Long>()
         classDefForEach { classDef ->
@@ -44,14 +41,14 @@ internal class ResourceFieldFilter(
     name: String,
     location: InstructionLocation,
 ) : OpcodesFilter(null as List<Opcode>?, location) {
-    private val resourceId by lazy { getResourceId(type, name) }
+    private val resolvedId by lazy { resourceId(type, name) }
 
     override fun matches(enclosingMethod: Method, instruction: Instruction): Boolean {
         if (!super.matches(enclosingMethod, instruction)) return false
-        if (instruction is WideLiteralInstruction) return instruction.wideLiteral == resourceId
+        if (instruction is WideLiteralInstruction) return instruction.wideLiteral == resolvedId
         if (instruction.opcode != Opcode.SGET) return false
         val field = (instruction as ReferenceInstruction).reference as FieldReference
-        return resourceIdsByField[field.descriptor()] == resourceId
+        return resourceIdsByField[field.descriptor()] == resolvedId
     }
 }
 

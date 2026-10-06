@@ -10,9 +10,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.getResourceId
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.protonmail.misc.materialswitch.materialWebSwitchPatch
 import app.morphe.patches.protonmail.misc.taphighlight.removeWebTapHighlightPatch
@@ -53,7 +52,6 @@ private fun MutableMethod.settingsItemCalls() = instructions.withIndex().filter 
 internal val patchesSettingsPatch = bytecodePatch {
     dependsOn(
         spoofSignaturePatch,
-        resourceMappingPatch,
         patchesSettingsActivityPatch("@style/ProtonTheme.Mail", HOST_ACTIVITY),
         removeWebTapHighlightPatch,
         materialWebSwitchPatch,
@@ -63,8 +61,7 @@ internal val patchesSettingsPatch = bytecodePatch {
         injectBundleVersion()
         injectAppCompatDefaultNightMode()
 
-        val iconId = getResourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
-            ?: throw PatchException("Missing settings icon: ic_proton_wrench")
+        val iconId = resourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
 
         with(MainSettingsItemsFingerprint.matchSingle().method) {
             val (callIndex, settingsItemCall) =

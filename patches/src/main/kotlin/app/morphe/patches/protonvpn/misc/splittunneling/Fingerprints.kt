@@ -11,7 +11,7 @@
 package app.morphe.patches.protonvpn.misc.splittunneling
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import app.morphe.patches.protonvpn.misc.restrictions.RestrictionGuardFingerprint
 

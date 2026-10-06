@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.shared.misc.proton.COMPOSER_TYPE
 import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
 import app.morphe.patches.shared.misc.proton.attachPatchContext
@@ -55,7 +54,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(resourceMappingPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Pass", HOST_ACTIVITY))
+    dependsOn(patchesSettingsActivityPatch("@style/ProtonTheme.Pass", HOST_ACTIVITY))
     extendWith("extensions/extension.mpe")
 
     execute {

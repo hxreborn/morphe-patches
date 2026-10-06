@@ -6,7 +6,6 @@ package app.morphe.patches.vpnify.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.all.misc.resources.resourceMappingPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.vpnify.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.getReference
@@ -21,7 +20,7 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks premium, removes ads and the free session time limit.",
 ) {
     compatibleWith(AppCompatibilities.VPNIFY)
-    dependsOn(spoofSignaturePatch, resourceMappingPatch)
+    dependsOn(spoofSignaturePatch)
 
     execute {
         SubscriptionActiveFingerprint.matchSingle().method.returnEarly(true)

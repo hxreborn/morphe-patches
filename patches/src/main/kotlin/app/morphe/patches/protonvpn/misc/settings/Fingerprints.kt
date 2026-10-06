@@ -7,7 +7,7 @@ package app.morphe.patches.protonvpn.misc.settings
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.methodCall
-import app.morphe.patches.all.misc.resources.ResourceType
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import com.android.tools.smali.dexlib2.Opcode
 

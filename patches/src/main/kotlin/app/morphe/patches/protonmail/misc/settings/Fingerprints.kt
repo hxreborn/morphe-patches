@@ -5,8 +5,8 @@
 package app.morphe.patches.protonmail.misc.settings
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patches.all.misc.resources.ResourceType
-import app.morphe.patches.all.misc.resources.resourceLiteral
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resourceLiteral
 
 internal object MainSettingsItemsFingerprint : Fingerprint(
     filters = listOf(resourceLiteral(ResourceType.STRING, "mail_settings_folders_labels")),
