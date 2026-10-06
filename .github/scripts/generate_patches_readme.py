@@ -231,6 +231,7 @@ ICONS = {
     "com.fddb": "fddb.png",
     "ru.iiec.cxxdroid": "cxxdroid.png",
     "com.performance.meshview": "faststlviewer.png",
+    "de.prosiebensat1digital.seventv": "joyn.png",
     "ru.iiec.jvdroid": "jvdroid.png",
     "ru.iiec.pydroid3": "pydroid.png",
     "com.yunyi.smartcamera": "yiiot.png",
