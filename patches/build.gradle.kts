@@ -25,13 +25,9 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
 
-val patchListGeneratorClasspath: Configuration by configurations.creating
-
 dependencies {
-    compileOnly(libs.gson)
     implementation(libs.morphe.patches.library)
     implementation(libs.pngj)
-    patchListGeneratorClasspath(libs.gson)
     testImplementation(kotlin("test"))
 }
 
@@ -73,8 +69,8 @@ tasks {
 
         dependsOn(build)
 
-        classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
-        mainClass.set("util.PatchListGeneratorKt")
+        classpath = sourceSets["main"].runtimeClasspath
+        mainClass.set("app.morphe.util.PatchListGeneratorKt")
     }
 
     publish {
