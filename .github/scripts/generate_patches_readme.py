@@ -206,6 +206,7 @@ ICONS = {
     "com.streetwriters.notesnook": "notesnook.png",
     "io.raindrop.raindropio": "raindrop.png",
     "app.rubberbands.fit": "rubberbands.png",
+    "io.lightray.photone": "photone.png",
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
     "com.community.oneroom": "moviebox.png",
     "com.gstarmc.android": "dwgfastview.png",

@@ -369,6 +369,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val PHOTONE = Compatibility(
+        name = "Photone",
+        packageName = "io.lightray.photone",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "4f3a4b830ee2f3b8a79622949dbda2c2b159cb27a3c18d926672d1eaab96b88e",
+        ),
+        targets = listOf(AppTarget(version = "1.5.4", versionCode = 5624, minSdk = 32)),
+    )
+
     val PHOTO_EDITOR_PRO = Compatibility(
         name = "Photo Editor Pro",
         packageName = "photo.editor.photoeditor.photoeditorpro",
