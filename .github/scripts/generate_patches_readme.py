@@ -204,6 +204,7 @@ ICONS = {
     "com.gamma.scan": "qrscanner.png",
     "com.cxinventor.file.explorer": "cx.png",
     "com.streetwriters.notesnook": "notesnook.png",
+    "io.raindrop.raindropio": "raindrop.png",
     "app.rubberbands.fit": "rubberbands.png",
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
     "com.community.oneroom": "moviebox.png",

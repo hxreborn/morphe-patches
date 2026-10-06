@@ -38,6 +38,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `qrscanner.png` | QR & Barcode Scanner (`com.gamma.scan`) | Gamma Play | APK 2.2.224, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `cx.png` | Cx File Explorer (`com.cxinventor.file.explorer`) | Cx File Explorer | APK 2.7.8, adaptive icon `res/mipmap-anydpi-v26/app_icon.xml` |
 | `notesnook.png` | Notesnook (`com.streetwriters.notesnook`) | Streetwriters (Private) Limited | APK 3.4.13, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
+| `raindrop.png` | Raindrop.io (`io.raindrop.raindropio`) | Rustem Mussabekov | APK 4.7.44, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
 | `rubberbands.png` | Rubber Bands (`app.rubberbands.fit`) | Rubber Bands LLC | APK 3.9, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `photoeditorpro.png` | Photo Editor Pro (`photo.editor.photoeditor.photoeditorpro`) | InShot Inc. | APK 1.791.265, adaptive round icon |
 | `oneweather.png` | 1Weather (`com.handmark.expressweather`) | 1Weather LLC | APK 12.9.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
