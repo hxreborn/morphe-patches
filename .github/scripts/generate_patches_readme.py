@@ -209,6 +209,7 @@ ICONS = {
     "io.lightray.photone": "photone.png",
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
     "com.community.oneroom": "moviebox.png",
+    "com.musixmatch.android.lyrify": "musixmatch.png",
     "com.gstarmc.android": "dwgfastview.png",
     "com.mchutov.Quranify": "quranify.png",
     "com.sry.rateglance": "rateglance.png",
