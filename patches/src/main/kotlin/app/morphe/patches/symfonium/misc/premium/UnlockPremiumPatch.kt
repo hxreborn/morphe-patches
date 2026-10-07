@@ -35,6 +35,14 @@ val unlockPremiumPatch = bytecodePatch(
             """,
         )
 
+        TrialExpiryTextFingerprint.matchSingle().method.addInstructions(
+            0,
+            """
+                const/4 v0, 0x0
+                return-object v0
+            """,
+        )
+
         NativeVerdictHandlerFingerprint.matchSingle().method.returnEarly()
     }
 }

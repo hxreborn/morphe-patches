@@ -34,6 +34,12 @@ internal object LicenseStateWriterFingerprint : Fingerprint(
     parameters = listOf("J"),
 )
 
+internal object TrialExpiryTextFingerprint : Fingerprint(
+    classFingerprint = LicenseKeyCheckFingerprint,
+    returnType = "Ljava/io/Serializable;",
+    strings = listOf("Probably soon"),
+)
+
 internal object NativeVerdictHandlerFingerprint : Fingerprint(
     definingClass = "Lapp/symfonik/init/HandlerInitializable\$handler\$1;",
     name = "init",
