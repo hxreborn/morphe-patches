@@ -598,12 +598,12 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xE22728,
         targets = listOf(
-            AppTarget(version = "14.0.0", versionCode = 127708, minSdk = 26),
-            AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 26),
+            AppTarget(version = "14.0.0", versionCode = 127708, minSdk = 28),
+            AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 28),
             AppTarget(version = "15.0.1", versionCode = 127798, minSdk = 26),
             AppTarget(version = "15.1.0", versionCode = 127812, minSdk = 26),
-            AppTarget(version = "14.0.0 TV", versionCode = 227708, minSdk = 32),
-            AppTarget(version = "15.1.0 TV", versionCode = 227812, minSdk = 32),
+            AppTarget(version = "14.0.0 TV", versionCode = 227708, minSdk = 29),
+            AppTarget(version = "15.1.0 TV", versionCode = 227812, minSdk = 26),
         ),
     )
 
