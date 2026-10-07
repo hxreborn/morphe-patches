@@ -16,6 +16,25 @@ android {
     defaultConfig {
         buildConfigField("String", "BUNDLE_VERSION", "\"${project.version}\"")
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                it.systemProperty("user.timezone", "UTC")
+                it.jvmArgs(
+                    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                    "--add-opens=java.base/java.util=ALL-UNNAMED",
+                    "--add-opens=java.base/java.io=ALL-UNNAMED",
+                    "--add-opens=java.base/java.net=ALL-UNNAMED",
+                    "--add-opens=java.base/java.security=ALL-UNNAMED",
+                    "--add-opens=java.base/java.text=ALL-UNNAMED",
+                    "--add-opens=java.base/jdk.internal.access=ALL-UNNAMED",
+                    "--add-opens=java.desktop/java.awt.font=ALL-UNNAMED",
+                )
+            }
+        }
+    }
 }
 
 tasks.register<Checkstyle>("checkstyle") {
@@ -32,6 +51,8 @@ dependencies {
     implementation(libs.morphe.extensions.library)
     compileOnly(libs.okhttp)
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.16")
+    testImplementation(libs.okhttp)
     testImplementation("org.json:json:20240303")
 }
 
