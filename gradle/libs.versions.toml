@@ -6,7 +6,7 @@ smali = "d92701d947"
 # Pinned to the okhttp Photo Editor Pro ships
 okhttp = "5.5.0"
 pngj = "2.1.0"
-spring-javaformat = "0.0.47"
+spring-javaformat = "0.0.48"
 
 [libraries]
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
