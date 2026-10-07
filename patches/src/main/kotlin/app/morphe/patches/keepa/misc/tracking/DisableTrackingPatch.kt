@@ -7,16 +7,8 @@ package app.morphe.patches.keepa.misc.tracking
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
-import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
+import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-
-private val disableCrashlyticsCollectionPatch = resourcePatch {
-    execute {
-        document("AndroidManifest.xml").use { document ->
-            document.putApplicationMetaData("firebase_crashlytics_collection_enabled", "false")
-        }
-    }
-}
 
 @Suppress("unused")
 val disableTrackingPatch = resourcePatch(

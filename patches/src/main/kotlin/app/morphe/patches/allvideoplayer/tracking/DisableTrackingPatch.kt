@@ -9,13 +9,13 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
+import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 import app.morphe.util.matchSingle
 
 private val disableSdkCollectionPatch = resourcePatch {
     execute {
         document("AndroidManifest.xml").use { document ->
-            document.putApplicationMetaData("firebase_crashlytics_collection_enabled", "false")
             document.putApplicationMetaData("com.onesignal.PrivacyConsent", "ENABLE")
         }
     }
@@ -27,7 +27,11 @@ val disableTrackingPatch = bytecodePatch(
     description = "Stops Firebase Analytics, Crashlytics, Facebook and OneSignal from collecting usage data.",
 ) {
     compatibleWith(AppCompatibilities.ALL_VIDEO_PLAYER)
-    dependsOn(disableAnalyticsCollectionPatch, disableSdkCollectionPatch)
+    dependsOn(
+        disableAnalyticsCollectionPatch,
+        disableCrashlyticsCollectionPatch,
+        disableSdkCollectionPatch,
+    )
 
     execute {
         FacebookOpenConnectionFingerprint.matchSingle().method.addInstructions(

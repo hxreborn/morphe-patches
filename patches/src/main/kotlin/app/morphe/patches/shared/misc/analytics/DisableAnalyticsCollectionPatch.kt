@@ -37,3 +37,11 @@ val disableAnalyticsCollectionPatch = resourcePatch {
         }
     }
 }
+
+val disableCrashlyticsCollectionPatch = resourcePatch {
+    execute {
+        document("AndroidManifest.xml").use { document ->
+            document.putApplicationMetaData("firebase_crashlytics_collection_enabled", "false")
+        }
+    }
+}
