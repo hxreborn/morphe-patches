@@ -32,7 +32,7 @@ recorded in the Git history.
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.43.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.43.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;125 patches total
+> **[v1.44.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.44.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;129 patches total
 <details open>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -261,6 +261,25 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="all-video-player-app-allow-offline-use"></a>[Allow offline use](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/offline/AllowOfflineUsePatch.kt) | Opens the app without an internet connection. |
+| <a id="all-video-player-app-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Facebook and OneSignal from collecting usage data. |
+| <a id="all-video-player-app-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/ads/HideAdsPatch.kt) | Removes app open, interstitial and native ads, and the promoted apps list. |
+| <a id="all-video-player-app-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
+| <a id="all-video-player-app-resume-videos-opened-from-other-apps"></a>[Resume videos opened from other apps](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/resume/ResumeExternalVideosPatch.kt) | Resumes videos opened from a file manager or gallery where playback stopped. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/dwgfastview.png" width="18" align="top">&nbsp;&nbsp;DWG FastView&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -348,24 +367,6 @@ recorded in the Git history.
 | <a id="rise-sleep-tracker-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableTelemetryPatch.kt) | Stops crash and error reports from reaching Sentry. |
 | <a id="rise-sleep-tracker-disable-usage-tracking"></a>[Disable usage tracking](patches/src/main/kotlin/app/morphe/patches/rise/misc/telemetry/DisableUsageTrackingPatch.kt) | Stops app usage events from being uploaded. Local usage tracking remains enabled. |
 | <a id="rise-sleep-tracker-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/rise/misc/premium/UnlockPremiumPatch.kt) | Unlocks the energy schedule, habit tools, smart alarm and progress insights. Requires a RISE account. |
-
-</details>
-
-<details open>
-<summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 1.4 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="all-video-player-app-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Facebook and OneSignal from collecting usage data. |
-| <a id="all-video-player-app-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/ads/HideAdsPatch.kt) | Removes app open, interstitial and native ads, and the promoted apps list. |
-| <a id="all-video-player-app-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
-| <a id="all-video-player-app-resume-videos-opened-from-other-apps"></a>[Resume videos opened from other apps](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/resume/ResumeExternalVideosPatch.kt) | Resumes videos opened from a file manager or gallery where playback stopped. |
 
 </details>
 
@@ -678,6 +679,21 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/anytracker.png" width="18" align="top">&nbsp;&nbsp;AnyTracker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 7.5.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="anytracker-unlock-platinum"></a>[Unlock Platinum](patches/src/main/kotlin/app/morphe/patches/anytracker/misc/premium/UnlockPlatinumPatch.kt) | Unlocks the Platinum plan with unlimited tracked items, every-minute updates, widgets, watchlists and backups. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/alpinequest.png" width="18" align="top">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -843,6 +859,21 @@ recorded in the Git history.
 </details>
 
 <details open>
+<summary><img src=".github/assets/icons/musixmatch.png" width="18" align="top">&nbsp;&nbsp;Musixmatch&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.4.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="musixmatch-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/musixmatch/misc/premium/UnlockPremiumPatch.kt) | Unlocks offline lyrics, animated backgrounds and Android Auto lyrics. |
+
+</details>
+
+<details open>
 <summary><img src=".github/assets/icons/one4home.png" width="18" align="top">&nbsp;&nbsp;One4Home Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -854,6 +885,21 @@ recorded in the Git history.
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="one4home-launcher-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/one4home/misc/premium/UnlockPremiumPatch.kt) | Unlocks One4Home Pro and the collector Pals. |
+
+</details>
+
+<details open>
+<summary><img src=".github/assets/icons/photone.png" width="18" align="top">&nbsp;&nbsp;Photone&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.5.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="photone-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/photone/misc/premium/UnlockPremiumPatch.kt) | Unlocks all light sources, extended PAR, Pro guides, Pro settings and the full toolbox. Pro support is not included. |
 
 </details>
 

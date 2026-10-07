@@ -1,3 +1,19 @@
+## [1.44.0](https://github.com/hxreborn/morphe-patches/compare/v1.43.0...v1.44.0) (2026-10-07)
+
+### Bug Fixes
+
+* **All Video Player App - Remove rating prompts:** stop rating prompt on second launch ([010a5ac](https://github.com/hxreborn/morphe-patches/commit/010a5ac8be9b57f2cae38a7ebca6de8138ffb89b)), closes [#104](https://github.com/hxreborn/morphe-patches/issues/104)
+* offer Symfonium TV builds on older Android versions ([998f60f](https://github.com/hxreborn/morphe-patches/commit/998f60fbf8ab3c43d03a47c6e7ee59a9a9b021bc))
+* stop hiding apps from Manager on older Android versions ([c44a8f6](https://github.com/hxreborn/morphe-patches/commit/c44a8f630e3b53ba19b1bee2f3eed1879e5b05df)), closes [#165](https://github.com/hxreborn/morphe-patches/issues/165)
+* **TeraBox:** stop email login failing with the malicious implantation warning ([599ad7a](https://github.com/hxreborn/morphe-patches/commit/599ad7af345db0cc7cac21f4dfe1bd2d6d3e7594)), closes [#147](https://github.com/hxreborn/morphe-patches/issues/147)
+
+### New Features
+
+* **All Video Player App - Allow offline use:** open app without internet connection ([5af51e6](https://github.com/hxreborn/morphe-patches/commit/5af51e63a39367a9d4200e6dcf00580a3282a27c))
+* **AnyTracker - Unlock Platinum:** unlock unlimited items, every-minute updates and widgets ([9538470](https://github.com/hxreborn/morphe-patches/commit/9538470a70c35b3de6092c6744b650fe442518df)), closes [#161](https://github.com/hxreborn/morphe-patches/issues/161)
+* **Musixmatch - Unlock premium:** unlock offline lyrics, animated backgrounds, Android Auto lyrics ([744d41c](https://github.com/hxreborn/morphe-patches/commit/744d41cbe3eb24f04acb9edb49c6ed9ea22b3b11)), closes [#163](https://github.com/hxreborn/morphe-patches/issues/163)
+* **Photone - Unlock premium:** unlock all light sources and Pro settings ([c4a47fb](https://github.com/hxreborn/morphe-patches/commit/c4a47fb7eb3103fe52332ab63f53fb2669af2e64)), closes [#156](https://github.com/hxreborn/morphe-patches/issues/156)
+
 ## [1.43.0](https://github.com/hxreborn/morphe-patches/compare/v1.42.0...v1.43.0) (2026-10-06)
 
 ### Bug Fixes
