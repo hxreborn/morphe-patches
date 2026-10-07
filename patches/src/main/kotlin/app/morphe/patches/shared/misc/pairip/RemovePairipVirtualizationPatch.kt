@@ -103,6 +103,11 @@ private val PAIRIP_HOOKED_LIBRARIES = mapOf(
         "libonnxruntime" to "libonnxruntime.so",
         "libmediapipe_tasks_vision_jni" to "libmediapipe_tasks_vision_jni.so",
     ),
+    "com.hitrolab.audioeditor" to mapOf(
+        "libavcodec" to "libavcodec.so",
+        "libavfilter" to "libavfilter.so",
+        "libavformat" to "libavformat.so",
+    ),
     "com.nieruo.healthapp" to mapOf(
         "librealmc" to "librealmc.so",
     ),
@@ -219,6 +224,7 @@ private fun readHoistedFields(packageName: String): List<HoistedField> {
 val removePairipVirtualizationPatch = bytecodePatch {
     compatibleWith(
         AppCompatibilities.ALL_IN_ONE_CALCULATOR,
+        AppCompatibilities.AUDIOLAB,
         AppCompatibilities.BETTERSLEEP,
         AppCompatibilities.CATZY,
         AppCompatibilities.HINDU_CALENDAR,

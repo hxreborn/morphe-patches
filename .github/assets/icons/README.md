@@ -79,6 +79,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `keepa.png` | Keepa (`com.keepa.mobile`) | Keepa.com | APK 6.2.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `joyn.png` | Joyn (`de.prosiebensat1digital.seventv`) | SevenOne Entertainment Group GmbH | APK 6.9.0-AOS-609012264, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `photone.png` | Photone (`io.lightray.photone`) | Lightray Innovation GmbH | APK 1.5.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `audiolab.png` | AudioLab (`com.hitrolab.audioeditor`) | HitroLab | APK 1.3.33, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

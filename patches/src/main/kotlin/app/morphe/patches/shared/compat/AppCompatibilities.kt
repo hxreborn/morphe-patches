@@ -84,6 +84,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val AUDIOLAB = Compatibility(
+        name = "AudioLab",
+        packageName = "com.hitrolab.audioeditor",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFA4C3F,
+        signatures = setOf(
+            "d441c034a8cd999a79ec5b09f0d03627d8689a53e0441a04aaa4a16315e5cec0",
+        ),
+        targets = listOf(AppTarget(version = "1.3.33", versionCode = 5163, minSdk = 32)),
+    )
+
     val BETTERSLEEP = Compatibility(
         name = "BetterSleep",
         packageName = "ipnossoft.rma.free",

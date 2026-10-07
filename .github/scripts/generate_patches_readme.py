@@ -243,6 +243,7 @@ ICONS = {
     "com.nieruo.healthapp": "catzy.png",
     "com.one4studio.one4home": "one4home.png",
     "com.keepa.mobile": "keepa.png",
+    "com.hitrolab.audioeditor": "audiolab.png",
 }
 
 
