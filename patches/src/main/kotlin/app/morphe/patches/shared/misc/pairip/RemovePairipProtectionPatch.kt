@@ -23,6 +23,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.MYMOVESET,
         AppCompatibilities.QURANIFY,
         AppCompatibilities.RATEGLANCE,
+        AppCompatibilities.RUBBER_BANDS,
         AppCompatibilities.VLLO,
     )
 

@@ -6,8 +6,8 @@ package app.morphe.patches.rubberbands.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patches.rubberbands.misc.license.disableLicenseCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.BuildCustomerInfoFingerprint
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.matchSingle
@@ -25,7 +25,7 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.RUBBER_BANDS)
     extendWith("extensions/extension.mpe")
 
-    dependsOn(disableLicenseCheckPatch)
+    dependsOn(removePairipProtectionPatch)
 
     execute {
         BuildCustomerInfoFingerprint.matchSingle().method.apply {
