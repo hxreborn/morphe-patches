@@ -47,6 +47,8 @@ private val HOISTED_TYPES = setOf(STRING_TYPE, METHOD_TYPE)
 
 private val PAIRIP_ASSET_MAGIC = byteArrayOf(0x00, 0x49, 0x41, 0x50, 0x02)
 private val DEX_MAGIC = byteArrayOf(0x64, 0x65, 0x78, 0x0a)
+private const val DEX_HEADER_SIZE = 0x70
+private const val DEX_FILE_SIZE_OFFSET = 0x20
 
 private val recoveredDexFiles = mutableListOf<ByteArray>()
 
@@ -68,20 +70,30 @@ private fun ByteArray.readLittleEndianInt(offset: Int) =
         ((this[offset + 2].toInt() and 0xFF) shl 16) or
         ((this[offset + 3].toInt() and 0xFF) shl 24)
 
+internal fun recoverEmbeddedDex(asset: ByteArray): ByteArray? {
+    if (asset.size < PAIRIP_ASSET_MAGIC.size) return null
+    if (!asset.copyOf(PAIRIP_ASSET_MAGIC.size).contentEquals(PAIRIP_ASSET_MAGIC)) return null
+
+    val dexOffset = asset.indexOfSequence(DEX_MAGIC)
+    if (dexOffset < 0) return null
+
+    val available = asset.size - dexOffset
+    check(available >= DEX_HEADER_SIZE) { "Embedded dex header is truncated" }
+
+    val dexSize = asset.readLittleEndianInt(dexOffset + DEX_FILE_SIZE_OFFSET)
+    check(dexSize in DEX_HEADER_SIZE..available) {
+        "Embedded dex declares $dexSize bytes but the asset holds only $available from the dex offset"
+    }
+
+    return asset.copyOfRange(dexOffset, dexOffset + dexSize)
+}
+
 private val extractRecoveredDexPatch = rawResourcePatch {
     execute {
         recoveredDexFiles.clear()
 
         get("assets").listFiles { file -> file.isFile }?.forEach { asset ->
-            val contents = asset.readBytes()
-            if (contents.size < PAIRIP_ASSET_MAGIC.size) return@forEach
-            if (!contents.copyOf(PAIRIP_ASSET_MAGIC.size).contentEquals(PAIRIP_ASSET_MAGIC)) return@forEach
-
-            val dexOffset = contents.indexOfSequence(DEX_MAGIC)
-            if (dexOffset < 0) return@forEach
-
-            val dexSize = contents.readLittleEndianInt(dexOffset + 0x20)
-            recoveredDexFiles += contents.copyOfRange(dexOffset, dexOffset + dexSize)
+            recoverEmbeddedDex(asset.readBytes())?.let { recoveredDexFiles += it }
         }
 
         check(recoveredDexFiles.isNotEmpty()) { "No dex file embedded in the pairip assets" }
