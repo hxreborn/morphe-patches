@@ -60,8 +60,8 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0x0683DF,
         targets = listOf(
-            AppTarget(version = "1.0.6", versionCode = 153, minSdk = 29),
-            AppTarget(version = "1.1.0", versionCode = 172, minSdk = 32),
+            AppTarget(version = "1.0.6", versionCode = 153, minSdk = 26),
+            AppTarget(version = "1.1.0", versionCode = 172, minSdk = 26),
         ),
     )
 
@@ -164,7 +164,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "96cdac84105ee04a12a48110d37ec60888aa8fbff8220345888d7f9c12c2f3fa",
         ),
-        targets = listOf(AppTarget(version = "9.2", versionCode = 86, minSdk = 32)),
+        targets = listOf(AppTarget(version = "9.2", versionCode = 86, minSdk = 25)),
     )
 
     val ECHOGRAM = Compatibility(
@@ -175,7 +175,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "331fa00a81a7f2e70aeaec25ee709aa4f1f17062d61e7aa6048f14abc47f0d1a",
         ),
-        targets = listOf(AppTarget(version = "1.0.7.0", versionCode = 138, minSdk = 32)),
+        targets = listOf(AppTarget(version = "1.0.7.0", versionCode = 138, minSdk = 26)),
     )
 
     val ETSY = Compatibility(
@@ -183,7 +183,7 @@ internal object AppCompatibilities {
         packageName = "com.etsy.android",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xF1641E,
-        targets = listOf(AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 32)),
+        targets = listOf(AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 29)),
     )
 
     val FAST_STL_VIEWER = Compatibility(
@@ -292,7 +292,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "40a44cbdf290932098b46c12ae0c9932c82211659a27253ddda4e5ca62780dea",
         ),
-        targets = listOf(AppTarget(version = "26.01.08", versionCode = 12506, minSdk = 32)),
+        targets = listOf(AppTarget(version = "26.01.08", versionCode = 12506, minSdk = 24)),
     )
 
     val MEMONEET = Compatibility(
@@ -363,9 +363,9 @@ internal object AppCompatibilities {
             "b87ed511109b159844ff23ab802e00d56ab9d94d1435d89edd32cf07b62551fa",
         ),
         targets = listOf(
-            AppTarget(version = "0.4.72", versionCode = 284, minSdk = 32),
-            AppTarget(version = "0.4.97", versionCode = 309, minSdk = 32),
-            AppTarget(version = "0.4.98", versionCode = 310, minSdk = 32),
+            AppTarget(version = "0.4.72", versionCode = 284, minSdk = 29),
+            AppTarget(version = "0.4.97", versionCode = 309, minSdk = 29),
+            AppTarget(version = "0.4.98", versionCode = 310, minSdk = 29),
         ),
     )
 
@@ -386,8 +386,8 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x20808D,
         targets = listOf(
-            AppTarget(version = "2.95.0", versionCode = 260642, minSdk = 32),
-            AppTarget(version = "2.100.0", versionCode = 260662, minSdk = 32),
+            AppTarget(version = "2.95.0", versionCode = 260642, minSdk = 26),
+            AppTarget(version = "2.100.0", versionCode = 260662, minSdk = 26),
         ),
     )
 
@@ -399,7 +399,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "4f3a4b830ee2f3b8a79622949dbda2c2b159cb27a3c18d926672d1eaab96b88e",
         ),
-        targets = listOf(AppTarget(version = "1.5.4", versionCode = 5624, minSdk = 32)),
+        targets = listOf(AppTarget(version = "1.5.4", versionCode = 5624, minSdk = 24)),
     )
 
     val PHOTO_EDITOR_PRO = Compatibility(
@@ -412,7 +412,7 @@ internal object AppCompatibilities {
         ),
         targets = listOf(
             AppTarget(version = "1.791.265", versionCode = 265100, minSdk = 28),
-            AppTarget(version = "1.802.266", versionCode = 266201, minSdk = 32),
+            AppTarget(version = "1.802.266", versionCode = 266201, minSdk = 28),
         ),
     )
 
@@ -511,7 +511,7 @@ internal object AppCompatibilities {
         packageName = "com.sry.rateglance",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x0D192C,
-        targets = listOf(AppTarget(version = "1.17.6", versionCode = 304, minSdk = 32)),
+        targets = listOf(AppTarget(version = "1.17.6", versionCode = 304, minSdk = 26)),
     )
 
     val RAINDROP = Compatibility(
@@ -520,7 +520,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x1988E0,
         signatures = setOf("ddd75c66578654d085424804cb27c7b6e04fd36616045bfee140d9756ffca563"),
-        targets = listOf(AppTarget(version = "4.7.44", versionCode = 8698961, minSdk = 32)),
+        targets = listOf(AppTarget(version = "4.7.44", versionCode = 8698961, minSdk = 24)),
     )
 
     val READERA = Compatibility(
@@ -598,10 +598,10 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xE22728,
         targets = listOf(
-            AppTarget(version = "14.0.0", versionCode = 127708, minSdk = 28),
-            AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 32),
-            AppTarget(version = "15.0.1", versionCode = 127798, minSdk = 32),
-            AppTarget(version = "15.1.0", versionCode = 127812, minSdk = 32),
+            AppTarget(version = "14.0.0", versionCode = 127708, minSdk = 26),
+            AppTarget(version = "14.1.0", versionCode = 127734, minSdk = 26),
+            AppTarget(version = "15.0.1", versionCode = 127798, minSdk = 26),
+            AppTarget(version = "15.1.0", versionCode = 127812, minSdk = 26),
             AppTarget(version = "14.0.0 TV", versionCode = 227708, minSdk = 32),
             AppTarget(version = "15.1.0 TV", versionCode = 227812, minSdk = 32),
         ),
@@ -638,7 +638,7 @@ internal object AppCompatibilities {
         packageName = "com.darinsoft.vimo",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xF02050,
-        targets = listOf(AppTarget(version = "13.9.0", versionCode = 130900, minSdk = 32)),
+        targets = listOf(AppTarget(version = "13.9.0", versionCode = 130900, minSdk = 27)),
     )
 
     val VPNIFY = Compatibility(
@@ -656,9 +656,9 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x007DFF,
         targets = listOf(
-            AppTarget(version = "2.32.0", versionCode = 23200, minSdk = 32),
-            AppTarget(version = "2.33.0", versionCode = 23300, minSdk = 32),
-            AppTarget(version = "2.33.1", versionCode = 23301, minSdk = 32),
+            AppTarget(version = "2.32.0", versionCode = 23200, minSdk = 26),
+            AppTarget(version = "2.33.0", versionCode = 23300, minSdk = 26),
+            AppTarget(version = "2.33.1", versionCode = 23301, minSdk = 26),
         ),
     )
 
