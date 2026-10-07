@@ -7,10 +7,8 @@ package app.morphe.patches.symfonium.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 
 @Suppress("unused")
@@ -21,23 +19,15 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.SYMFONIUM)
 
     execute {
-        val keyCheck = LicenseKeyCheckFingerprint.matchSingle()
-        val licenseManager = keyCheck.classDef
-
-        val isLicensed = licenseManager.methods.single {
-            it.returnType == "Z" && it.parameters.isEmpty()
-        }
-        val licensedState = isLicensed.implementation!!.instructions
-            .take(isLicensed.indexOfFirstInstructionOrThrow(Opcode.CMP_LONG))
-            .filterIsInstance<WideLiteralInstruction>()
-            .last()
+        val licensedState = IsLicensedFingerprint.matchSingle()
+            .instructionMatches.first()
+            .getInstruction<WideLiteralInstruction>()
             .wideLiteral
 
-        licenseManager.methods
-            .single { it.returnType == "V" && it.parameters.singleOrNull()?.type == "J" }
+        LicenseStateWriterFingerprint.matchSingle().method
             .addInstructions(0, "const-wide p1, ${licensedState}L")
 
-        keyCheck.method.addInstructions(
+        LicenseKeyCheckFingerprint.matchSingle().method.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
