@@ -252,6 +252,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.3.0", versionCode = 156, minSdk = 28)),
     )
 
+    val IMO = Compatibility(
+        name = "imo",
+        packageName = "com.imo.android.imoim",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x1B4A91,
+        signatures = setOf(
+            "44483f98c17bf49fbde08d3376af09c6fc1f9370c7a046c35a3dca45f5785150",
+        ),
+        targets = listOf(AppTarget(version = "2026.08.1041", versionCode = 26081041, minSdk = 32)),
+    )
+
     val JVDROID = Compatibility(
         name = "Jvdroid",
         packageName = "ru.iiec.jvdroid",

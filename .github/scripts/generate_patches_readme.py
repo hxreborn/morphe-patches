@@ -230,6 +230,7 @@ ICONS = {
     "com.dubox.drive": "terabox.png",
     "com.liori.echogram": "echogram.png",
     "com.hapibits.soundlift": "echoequalizer.png",
+    "com.imo.android.imoim": "imo.png",
     "com.ledblinker": "ledblinker.png",
     "com.fddb": "fddb.png",
     "com.performance.meshview": "faststlviewer.png",
