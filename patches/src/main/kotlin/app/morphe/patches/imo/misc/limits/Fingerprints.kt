@@ -42,3 +42,7 @@ internal object CloseFriendPreselectionFingerprint : Fingerprint(
 )
 
 internal object FamilyGuardContactLimitFingerprint : RemoteSettingFingerprint("familyGuardInviteMaxSelectionCount")
+
+internal object GalleryMediaLimitFingerprint : RemoteSettingFingerprint("sendIMGalleryLimitCount")
+
+internal object FileCountLimitFingerprint : RemoteSettingFingerprint("imSendFilesMax")
