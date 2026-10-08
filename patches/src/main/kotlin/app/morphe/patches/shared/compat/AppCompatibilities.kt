@@ -673,6 +673,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val YANOSIK = Compatibility(
+        name = "Yanosik",
+        packageName = "pl.neptis.yanosik.mobi.android",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x00A99D,
+        signatures = setOf(
+            "5447ddeefa77b9897fd3755c225899a0cbfb61a959f04fc949870808aceb52e6",
+        ),
+        targets = listOf(AppTarget(version = "26.9.0", versionCode = 6001512, minSdk = 32)),
+    )
+
     val YI_IOT = Compatibility(
         name = "Yi iot",
         packageName = "com.yunyi.smartcamera",
