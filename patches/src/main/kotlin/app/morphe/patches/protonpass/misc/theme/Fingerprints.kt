@@ -8,6 +8,7 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val COLOR_ROLE_COUNT = 68
@@ -24,4 +25,30 @@ internal object PassColorsInitializerFingerprint : Fingerprint(
         ),
         fieldAccess(name = "Dark", opcode = Opcode.SPUT_OBJECT, location = MatchAfterWithin(4)),
     ),
+)
+
+internal object MaterialSwitchFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    name = "Switch",
+    returnType = "V",
+    parameters = listOf(
+        "Z",
+        "Lkotlin/jvm/functions/Function1;",
+        "Landroidx/compose/ui/Modifier;",
+        "Z",
+        "L",
+        "Landroidx/compose/runtime/Composer;",
+        "I",
+        "I",
+    ),
+    filters = listOf(
+        fieldAccess(definingClass = "Landroidx/compose/ui/Modifier\$Companion;", opcode = Opcode.SGET_OBJECT),
+    ),
+)
+
+internal fun androidViewFingerprint(function: String, modifier: String, composer: String) = Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    name = "AndroidView",
+    returnType = "V",
+    parameters = listOf(function, modifier, function, composer, "I"),
 )
