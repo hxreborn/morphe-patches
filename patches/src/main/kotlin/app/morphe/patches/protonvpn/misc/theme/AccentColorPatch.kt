@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.CORE_BRAND_COLORS
+import app.morphe.patches.shared.misc.proton.accentOverlayPatch
 import app.morphe.patches.shared.misc.proton.transformBrandColors
 
 @Suppress("unused")
@@ -16,7 +17,7 @@ val accentColorPatch = bytecodePatch(
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
-    dependsOn(patchesSettingsPatch)
+    dependsOn(patchesSettingsPatch, accentOverlayPatch)
 
     execute {
         transformBrandColors(CORE_BRAND_COLORS)

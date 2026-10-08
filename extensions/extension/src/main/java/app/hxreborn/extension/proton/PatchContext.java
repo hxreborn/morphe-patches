@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
 import app.morphe.extension.shared.Utils;
 
@@ -26,7 +27,17 @@ public final class PatchContext {
 
     public static void attach(Application application) {
         Utils.setContext(application);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            AccentOverlay.install(application);
+        }
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityPreCreated(Activity activity, Bundle bundle) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    AccentOverlay.applyTo(activity);
+                }
+            }
+
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
                 AmoledBackgroundOverlay.apply(activity);

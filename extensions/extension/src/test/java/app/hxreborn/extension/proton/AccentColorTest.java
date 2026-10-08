@@ -372,6 +372,27 @@ public final class AccentColorTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    public void keepsAnArgbBrandColorWithoutAPreset() {
+        assertEquals(0xFF6D4AFF, AccentColor.transformBrandColorArgb(0xFF6D4AFF));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void transformsAnArgbBrandColorAsTheLongOverloadDoes() {
+        // given
+        AccentColor.setPreset(ORANGE);
+
+        // when
+        final int transformed = AccentColor.transformBrandColorArgb(0xFF6D4AFF);
+
+        // then
+        assertEquals((int) AccentColor.transformBrandColor(0xFF6D4AFFL), transformed);
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
     public void transformedBrandColorsAreRememberedUntilThePresetChanges() {
         AccentColor.setPreset(ORANGE);
         final long stock = AccentColor.transformBrandColor(0xFF9292F9L);

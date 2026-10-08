@@ -99,6 +99,10 @@ public final class AccentColor {
         }
     }
 
+    public static int transformBrandColorArgb(int original) {
+        return (int) transformBrandColor(original & ARGB_MASK);
+    }
+
     public static long transformPackedBrandColor(long original) {
         final long argb = original >>> 32;
         final long transformed = transformBrandColor(argb);
