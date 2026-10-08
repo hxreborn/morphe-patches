@@ -14,6 +14,7 @@ public final class AppliedPatches {
     static final String AMOLED_DARK_THEME = "AMOLED dark theme";
     static final String ACCENT_COLOR = "Custom accent color";
     static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
+    static final String MATERIAL_SWITCHES = "Material 3 switches";
 
     private AppliedPatches() {
 
@@ -97,6 +98,9 @@ public final class AppliedPatches {
         }
         if (hideUpgradePromotions()) {
             names.add(HIDE_UPGRADE_PROMOTIONS);
+        }
+        if (MaterialSwitches.isPatched()) {
+            names.add(MATERIAL_SWITCHES);
         }
         if (hidePromotionalMessages()) {
             names.add("Hide promotional messages");

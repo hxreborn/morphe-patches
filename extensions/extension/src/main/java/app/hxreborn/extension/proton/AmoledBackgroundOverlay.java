@@ -5,7 +5,6 @@
 package app.hxreborn.extension.proton;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
@@ -28,8 +27,7 @@ public final class AmoledBackgroundOverlay {
             return;
         }
 
-        final int nightMode = activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (nightMode != Configuration.UI_MODE_NIGHT_YES) {
+        if (!PatchesTheme.isNightMode(activity)) {
             return;
         }
 

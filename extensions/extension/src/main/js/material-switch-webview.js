@@ -30,7 +30,7 @@
     container + icon + ":last-of-type .toggle-container-img{opacity:0 !important;}",
     checked + "{background-color:var(--interaction-norm) !important;}",
     checked + "::after{border-color:transparent !important;}",
-    checked + "::before{background-color:__CHECKED_THUMB__ !important;transform:translateX(20px) !important;}",
+    checked + "::before{background-color:#fff !important;transform:translateX(20px) !important;}",
     "[dir=rtl] " + checked + "::before{transform:translateX(-20px) !important;}",
     checked + icon + ":first-of-type .toggle-container-img{opacity:0 !important;}",
     checked + icon + ":last-of-type .toggle-container-img{opacity:1 !important;}"

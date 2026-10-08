@@ -34,6 +34,10 @@ public final class PatchedBuild {
         UpsellingVisibility.setHidden(hidden);
     }
 
+    public static void setMaterialSwitchesEnabled(boolean enabled) {
+        MaterialSwitches.setEnabled(enabled);
+    }
+
     @Implements(AmoledTheme.class)
     public static final class Amoled {
 
@@ -56,6 +60,16 @@ public final class PatchedBuild {
 
     @Implements(UpsellingVisibility.class)
     public static final class Upselling {
+
+        @Implementation
+        public static boolean isPatched() {
+            return true;
+        }
+
+    }
+
+    @Implements(MaterialSwitches.class)
+    public static final class Switches {
 
         @Implementation
         public static boolean isPatched() {

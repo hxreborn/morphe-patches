@@ -179,6 +179,17 @@ public final class PatchesSettingsActivity extends Activity {
                     })));
         }
 
+        if (MaterialSwitches.isPatched()) {
+            column.addView(card(switchRow(AppliedPatches.MATERIAL_SWITCHES, "Check and close icons in switches.",
+                    MaterialSwitches.isEnabled(), new CheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(boolean enabled) {
+                            MaterialSwitches.setEnabled(enabled);
+                            confirmRestart();
+                        }
+                    })));
+        }
+
         if (UpsellingVisibility.isPatched()) {
             column
                 .addView(card(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS, "Upgrade buttons, banners and offers.",

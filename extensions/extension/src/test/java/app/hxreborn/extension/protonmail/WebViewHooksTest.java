@@ -35,10 +35,6 @@ public final class WebViewHooksTest {
         this.activity = Robolectric.buildActivity(Activity.class).setup().get();
     }
 
-    private String switchScript(String thumb) {
-        return WebAssets.MATERIAL_SWITCH_WEBVIEW.replace("__CHECKED_THUMB__", thumb);
-    }
-
     @Test
     public void settingsThemeIgnoresAMissingViewBeforeStyling() {
         WebSettingsTheme.hideBeforeStyling(null);
@@ -86,12 +82,8 @@ public final class WebViewHooksTest {
     }
 
     @Test
-    public void materialSwitchTemplateCarriesTheThumbPlaceholder() {
-        assertTrue(WebAssets.MATERIAL_SWITCH_WEBVIEW.contains("__CHECKED_THUMB__"));
-    }
-
-    @Test
-    public void lightThemeStockAccentGetsAWhiteThumb() {
+    @Config(shadows = PatchedBuild.Switches.class)
+    public void materialSwitchRunsTheBundledScript() {
         // given
         final RecordingWebView view = new RecordingWebView(this.activity, View.VISIBLE);
 
@@ -100,52 +92,22 @@ public final class WebViewHooksTest {
 
         // then
         assertEquals(1, view.scripts.size());
-        assertEquals(switchScript("#FFFFFF"), view.lastScript());
+        assertEquals(WebAssets.MATERIAL_SWITCH_WEBVIEW, view.lastScript());
         assertNull(view.lastCallback());
     }
 
     @Test
-    @Config(qualifiers = "night")
-    public void darkThemeStockAccentGetsABlackThumb() {
+    @Config(shadows = PatchedBuild.Switches.class)
+    public void materialSwitchSkipsTheScriptWhenTurnedOff() {
         // given
+        PatchedBuild.setMaterialSwitchesEnabled(false);
         final RecordingWebView view = new RecordingWebView(this.activity, View.VISIBLE);
 
         // when
         WebMaterialSwitch.apply(view);
 
         // then
-        assertEquals(1, view.scripts.size());
-        assertEquals(switchScript("#000000"), view.lastScript());
-    }
-
-    @Test
-    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
-            PatchedBuild.Applied.class })
-    public void thumbContrastsWithTheLightThemeAccent() {
-        PatchedBuild.setAccentPreset("#0000FF");
-        final RecordingWebView blue = new RecordingWebView(this.activity, View.VISIBLE);
-        WebMaterialSwitch.apply(blue);
-        assertEquals(switchScript("#FFFFFF"), blue.lastScript());
-
-        PatchedBuild.setAccentPreset("#FFFF00");
-        final RecordingWebView yellow = new RecordingWebView(this.activity, View.VISIBLE);
-        WebMaterialSwitch.apply(yellow);
-        assertEquals(switchScript("#000000"), yellow.lastScript());
-    }
-
-    @Test
-    @Config(qualifiers = "night", shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class,
-            PatchedBuild.Upselling.class, PatchedBuild.Applied.class })
-    public void thumbContrastsWithTheDarkThemeAccent() {
-        PatchedBuild.setAccentPreset("#0000FF");
-        final RecordingWebView blue = new RecordingWebView(this.activity, View.VISIBLE);
-        WebMaterialSwitch.apply(blue);
-        assertEquals(switchScript("#FFFFFF"), blue.lastScript());
-
-        PatchedBuild.setAccentPreset("#FFFF00");
-        final RecordingWebView yellow = new RecordingWebView(this.activity, View.VISIBLE);
-        WebMaterialSwitch.apply(yellow);
-        assertEquals(switchScript("#000000"), yellow.lastScript());
+        assertTrue(view.scripts.isEmpty());
     }
 
     @Test

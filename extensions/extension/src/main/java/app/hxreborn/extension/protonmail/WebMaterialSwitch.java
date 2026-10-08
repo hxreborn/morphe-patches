@@ -4,13 +4,11 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import android.content.res.Configuration;
 import android.webkit.WebView;
 import app.morphe.extension.shared.Logger;
 
 import app.hxreborn.extension.WebAssets;
-import app.hxreborn.extension.proton.AccentColor;
-import app.hxreborn.extension.proton.SwitchStyle;
+import app.hxreborn.extension.proton.MaterialSwitches;
 
 @SuppressWarnings("unused")
 public final class WebMaterialSwitch {
@@ -20,14 +18,10 @@ public final class WebMaterialSwitch {
 
     public static void apply(WebView view) {
         try {
-            if (view == null) {
+            if (view == null || !MaterialSwitches.isEnabled()) {
                 return;
             }
-            final int nightMode = view.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            final int thumb = SwitchStyle
-                .contentColorOn(AccentColor.getAccentColor(nightMode == Configuration.UI_MODE_NIGHT_YES));
-            view.evaluateJavascript(WebAssets.MATERIAL_SWITCH_WEBVIEW.replace("__CHECKED_THUMB__",
-                    String.format("#%06X", thumb & 0xFFFFFF)), null);
+            view.evaluateJavascript(WebAssets.MATERIAL_SWITCH_WEBVIEW, null);
         } catch (Throwable ex) {
             Logger.printException(() -> "Could not restyle the web view switches", ex);
         }

@@ -164,6 +164,11 @@ public final class PatchesTheme {
         view.setForeground(view.getContext().getDrawable(value.resourceId));
     }
 
+    public static boolean isNightMode(Context context) {
+        return (context.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    }
+
     public static int dpToPx(Context context, int value) {
         return Math.round(value * context.getResources().getDisplayMetrics().density);
     }

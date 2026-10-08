@@ -12,6 +12,7 @@ import app.morphe.util.returnEarly
 internal const val PROTON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/proton/"
 internal const val ACCENT_COLOR_CLASS = "${PROTON_EXTENSION_PACKAGE}AccentColor;"
 internal const val AMOLED_THEME_CLASS = "${PROTON_EXTENSION_PACKAGE}AmoledTheme;"
+internal const val MATERIAL_SWITCHES_CLASS = "${PROTON_EXTENSION_PACKAGE}MaterialSwitches;"
 internal const val UPSELLING_VISIBILITY_CLASS = "${PROTON_EXTENSION_PACKAGE}UpsellingVisibility;"
 internal const val PATCHES_MENU_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesMenu;"
 private const val PATCH_CONTEXT_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchContext;"

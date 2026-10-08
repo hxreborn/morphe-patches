@@ -55,6 +55,7 @@ internal object CoreNightModeFingerprint : Fingerprint(
 
 internal fun patchesSettingsActivityPatch(themeStyle: String, hostActivity: String) = bytecodePatch {
     dependsOn(
+        switchColorsPatch,
         resourcePatch {
             finalize {
                 document("AndroidManifest.xml").use { document ->
