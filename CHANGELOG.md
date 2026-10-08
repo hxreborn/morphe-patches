@@ -1,3 +1,19 @@
+## [1.45.0](https://github.com/hxreborn/morphe-patches/compare/v1.44.0...v1.45.0) (2026-10-08)
+
+### Bug Fixes
+
+* **Proton Pass - Custom accent color:** apply the accent to account screens ([0ed1225](https://github.com/hxreborn/morphe-patches/commit/0ed12256d10a63c34cf5468f0fd126da592ddcf4)), closes [#155](https://github.com/hxreborn/morphe-patches/issues/155)
+* **Proton VPN - Custom accent color:** apply the accent to usage statistics and account screens ([1e1f530](https://github.com/hxreborn/morphe-patches/commit/1e1f53079ded3f01655f21a95e83eec869f3adc8))
+* **Symfonium - Unlock premium:** hide the trial expiry banner ([72ae957](https://github.com/hxreborn/morphe-patches/commit/72ae9571a8f580345b6725344aefdc9d2ce047ed))
+
+### New Features
+
+* **AudioLab - Unlock premium:** unlock pro tools, remove ads and upgrade prompts ([3082df1](https://github.com/hxreborn/morphe-patches/commit/3082df16089f0266dc838417134abb5b2eaed534)), closes [#148](https://github.com/hxreborn/morphe-patches/issues/148)
+* **Proton Mail - Material 3 switches:** show check and close icons in native switches ([7be59e8](https://github.com/hxreborn/morphe-patches/commit/7be59e8b34f813eee8fb6948bd2214a2e96f3f64))
+* **Proton Pass - Material 3 switches:** show Material 3 switches with check and close icons ([6331eb1](https://github.com/hxreborn/morphe-patches/commit/6331eb11f777ebf52ced5abdb79825da66ce6ed9))
+* **Proton VPN - Material 3 switches:** show check and close icons in switches ([77667d8](https://github.com/hxreborn/morphe-patches/commit/77667d8cfd8894e7d87adcb284bf53c3fe8ec48e))
+* **Yanosik - Unlock premium:** unlock pro tools and remove ads ([7628934](https://github.com/hxreborn/morphe-patches/commit/76289347a85cdc29c36999b52c9e0dc8ce32cf90)), closes [#164](https://github.com/hxreborn/morphe-patches/issues/164)
+
 ## [1.44.0](https://github.com/hxreborn/morphe-patches/compare/v1.43.0...v1.44.0) (2026-10-07)
 
 ### Bug Fixes

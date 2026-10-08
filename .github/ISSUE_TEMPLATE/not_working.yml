@@ -37,6 +37,8 @@ body:
         - "Audible 26.30.05"
         - "Audible 26.38.08"
         - "Audible (another version, type it below)"
+        - "AudioLab 1.3.33"
+        - "AudioLab (another version, type it below)"
         - "BetterSleep 26.17"
         - "BetterSleep (another version, type it below)"
         - "BlurWall 2.9.8"
@@ -180,6 +182,8 @@ body:
         - "VPN Super Unlimited Proxy (another version, type it below)"
         - "vpnify 2.3.0"
         - "vpnify (another version, type it below)"
+        - "Yanosik 26.9.0"
+        - "Yanosik (another version, type it below)"
         - "Yi iot 5.1.7_20260914"
         - "Yi iot (another version, type it below)"
         # /generated
@@ -198,12 +202,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.45.0"
         - "1.44.0"
         - "1.43.0"
         - "1.42.0"
         - "1.41.0"
         - "1.40.0"
-        - "1.39.0"
         - "Older than these"
         # /generated
     validations:
@@ -269,6 +273,7 @@ body:
         - "atvTools \u00b7 Unlock premium"
         - "Audible \u00b7 Hide membership upselling"
         - "Audible \u00b7 Open Library on launch"
+        - "AudioLab \u00b7 Unlock premium"
         - "BetterSleep \u00b7 Unlock premium"
         - "BlurWall \u00b7 AMOLED dark theme"
         - "BlurWall \u00b7 Disable tracking"
@@ -331,6 +336,7 @@ body:
         - "Proton Mail \u00b7 AMOLED dark theme"
         - "Proton Mail \u00b7 Custom accent color"
         - "Proton Mail \u00b7 Hide upgrade promotions"
+        - "Proton Mail \u00b7 Material 3 switches"
         - "Proton Mail \u00b7 Remove 'Sent from' signature"
         - "Proton Mail \u00b7 Remove free accounts limit"
         - "Proton Mail \u00b7 Scheduled Trash and Spam deletion"
@@ -339,10 +345,12 @@ body:
         - "Proton Pass \u00b7 Custom accent color"
         - "Proton Pass \u00b7 Hide promotional messages"
         - "Proton Pass \u00b7 Hide upgrade promotions"
+        - "Proton Pass \u00b7 Material 3 switches"
         - "Proton VPN \u00b7 AMOLED dark theme"
         - "Proton VPN \u00b7 Custom accent color"
         - "Proton VPN \u00b7 Disable telemetry"
         - "Proton VPN \u00b7 Hide upgrade promotions"
+        - "Proton VPN \u00b7 Material 3 switches"
         - "Proton VPN \u00b7 Remove server change delay"
         - "Proton VPN \u00b7 Show free server locations"
         - "Proton VPN \u00b7 Unlock connection preferences"
@@ -385,6 +393,7 @@ body:
         - "VPN Super Unlimited Proxy \u00b7 Unlock premium"
         - "vpnify \u00b7 Disable rating prompt"
         - "vpnify \u00b7 Unlock premium"
+        - "Yanosik \u00b7 Unlock premium"
         - "Yi iot \u00b7 Hide ads"
         - "Not narrowed down yet"
         # /generated
