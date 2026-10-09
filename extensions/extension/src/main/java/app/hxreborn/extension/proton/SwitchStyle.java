@@ -45,6 +45,7 @@ public final class SwitchStyle {
     public static void apply(Switch control, int primaryColor) {
         final MaterialStyle style = MaterialStyle.resolve(control.getContext(), primaryColor);
         if (style == null) {
+            WebToggleSwitchStyle.apply(control);
             return;
         }
         control.setSplitTrack(false);

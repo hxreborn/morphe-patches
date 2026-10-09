@@ -2,13 +2,12 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.hxreborn.extension.protonmail;
+package app.hxreborn.extension.proton;
 
 import android.webkit.WebView;
 import app.morphe.extension.shared.Logger;
 
 import app.hxreborn.extension.WebAssets;
-import app.hxreborn.extension.proton.MaterialSwitches;
 
 @SuppressWarnings("unused")
 public final class WebMaterialSwitch {
@@ -16,9 +15,15 @@ public final class WebMaterialSwitch {
     private WebMaterialSwitch() {
     }
 
-    public static void apply(WebView view) {
+    public static void restyleIfEnabled(WebView view) {
+        if (MaterialSwitches.isEnabled()) {
+            restyle(view);
+        }
+    }
+
+    public static void restyle(WebView view) {
         try {
-            if (view == null || !MaterialSwitches.isEnabled()) {
+            if (view == null) {
                 return;
             }
             view.evaluateJavascript(WebAssets.MATERIAL_SWITCH_WEBVIEW, null);

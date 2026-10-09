@@ -15,6 +15,8 @@ import android.webkit.WebView;
 
 import app.hxreborn.extension.WebAssets;
 import app.hxreborn.extension.proton.PatchedBuild;
+import app.hxreborn.extension.proton.WebMaterialSwitch;
+import app.hxreborn.extension.shared.WebTapHighlight;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +54,7 @@ public final class WebViewHooksTest {
 
     @Test
     public void materialSwitchIgnoresAMissingView() {
-        WebMaterialSwitch.apply(null);
+        WebMaterialSwitch.restyleIfEnabled(null);
     }
 
     @Test
@@ -88,7 +90,7 @@ public final class WebViewHooksTest {
         final RecordingWebView view = new RecordingWebView(this.activity, View.VISIBLE);
 
         // when
-        WebMaterialSwitch.apply(view);
+        WebMaterialSwitch.restyleIfEnabled(view);
 
         // then
         assertEquals(1, view.scripts.size());
@@ -104,15 +106,29 @@ public final class WebViewHooksTest {
         final RecordingWebView view = new RecordingWebView(this.activity, View.VISIBLE);
 
         // when
-        WebMaterialSwitch.apply(view);
+        WebMaterialSwitch.restyleIfEnabled(view);
 
         // then
         assertTrue(view.scripts.isEmpty());
     }
 
     @Test
+    @Config(shadows = PatchedBuild.Switches.class)
+    public void materialSwitchRestyleIgnoresTheSetting() {
+        // given
+        PatchedBuild.setMaterialSwitchesEnabled(false);
+        final RecordingWebView view = new RecordingWebView(this.activity, View.VISIBLE);
+
+        // when
+        WebMaterialSwitch.restyle(view);
+
+        // then
+        assertEquals(WebAssets.MATERIAL_SWITCH_WEBVIEW, view.lastScript());
+    }
+
+    @Test
     public void materialSwitchFailureDoesNotEscape() {
-        WebMaterialSwitch.apply(new WebView(this.activity) {
+        WebMaterialSwitch.restyleIfEnabled(new WebView(this.activity) {
 
             @Override
             public void evaluateJavascript(String script, ValueCallback<String> callback) {

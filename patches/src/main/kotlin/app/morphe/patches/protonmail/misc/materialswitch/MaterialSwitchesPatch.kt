@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.util.matchSingle
 
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/WebMaterialSwitch;"
+private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/proton/WebMaterialSwitch;"
 private const val COMPOSER_PARAMETER = 4
 
 private fun BytecodePatchContext.drawNativeSwitchesAsViews() {
@@ -37,7 +37,7 @@ val materialSwitchesPatch = bytecodePatch(
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         WebSettingsPageFinishedFingerprint.matchSingle().method.addInstructions(
             0,
-            "invoke-static { p1 }, $EXTENSION_CLASS->apply(Landroid/webkit/WebView;)V",
+            "invoke-static { p1 }, $EXTENSION_CLASS->restyleIfEnabled(Landroid/webkit/WebView;)V",
         )
         drawNativeSwitchesAsViews()
     }

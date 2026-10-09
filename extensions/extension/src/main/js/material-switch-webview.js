@@ -13,7 +13,7 @@
     container + "::after{inline-size:52px !important;border-radius:16px !important;" +
       "border:2px solid var(--text-weak) !important;box-shadow:none !important;}",
     container + "::before{inset-block-start:4px !important;inset-block-end:auto !important;inset-inline-start:4px !important;" +
-      "inline-size:24px !important;block-size:24px !important;border-radius:50% !important;" +
+      "inline-size:24px !important;block-size:24px !important;border-radius:50% !important;margin:0 !important;" +
       "background-color:var(--text-weak) !important;" +
       "transition:transform .2s ease-out,inset .1s ease-out,inline-size .1s ease-out,block-size .1s ease-out," +
       "background-color .2s ease-out !important;}",

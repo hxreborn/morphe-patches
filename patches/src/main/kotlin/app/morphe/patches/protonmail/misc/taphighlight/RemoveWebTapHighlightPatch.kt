@@ -9,7 +9,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonmail.misc.theme.webview.WebSettingsPageFinishedFingerprint
 import app.morphe.util.matchSingle
 
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/WebTapHighlight;"
+private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/WebTapHighlight;"
 
 internal val removeWebTapHighlightPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
