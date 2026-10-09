@@ -36,9 +36,6 @@ private const val SIDEBAR_COLORS_REGISTER_OFFSET = 18
 private const val SIDEBAR_INTERACTION_PRESSED = 1
 private const val SIDEBAR_SEPARATOR = 2
 private const val COLOR_PACK_SHIFT = 32
-private const val LOAD_DATA_WITH_BASE_URL =
-    "Landroid/webkit/WebView;->loadDataWithBaseURL(Ljava/lang/String;Ljava/lang/String;" +
-        "Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
 
 private fun MutableMethod.injectBackgroundTransformCall(index: Int) =
     injectColorTransformCall(index, "$AMOLED_THEME_CLASS->transformBackground(J)J")
@@ -110,10 +107,7 @@ private fun MutableMethod.replaceCachedMessageBackground() {
     )
 }
 
-private fun MutableMethod.replaceInlineMessageBackground() {
-    val index = indexOfFirstInstructionOrThrow {
-        (this as? ReferenceInstruction)?.reference?.toString() == LOAD_DATA_WITH_BASE_URL
-    }
+private fun MutableMethod.replaceInlineMessageBackground(index: Int) {
     val register = getInstruction<RegisterRangeInstruction>(index).startRegister + 2
 
     addInstructions(
@@ -156,7 +150,9 @@ val amoledThemePatch = bytecodePatch(
         markFeaturePatched(AMOLED_THEME_CLASS)
 
         CachedMessageBodyFingerprint.matchSingle().method.replaceCachedMessageBackground()
-        InlineMessageBodyFingerprint.matchSingle().method.replaceInlineMessageBackground()
+        InlineMessageBodyFingerprint.matchSingle().let { match ->
+            match.method.replaceInlineMessageBackground(match.instructionMatches.single().index)
+        }
         ComposerCssFingerprint.matchSingle().let { match ->
             val inputStreamResult = match.instructionMatches.last()
             val register = inputStreamResult.getInstruction<OneRegisterInstruction>().registerA
