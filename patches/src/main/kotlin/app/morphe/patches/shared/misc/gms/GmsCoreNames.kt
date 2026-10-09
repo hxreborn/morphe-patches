@@ -296,7 +296,8 @@ private fun gmsCoreName(value: String): String? {
 }
 
 internal fun BytecodePatchContext.renameGmsReferencesToGmsCore() {
-    GooglePlayServicesAvailabilityFingerprint.method.returnEarly(0)
+    (GooglePlayServicesAvailabilityFingerprint.methodOrNull ?: GooglePlayServicesUtilAvailabilityFingerprint.method)
+        .returnEarly(0)
 
     classDefForEach { classDef ->
         classDef.methods.forEach { method ->

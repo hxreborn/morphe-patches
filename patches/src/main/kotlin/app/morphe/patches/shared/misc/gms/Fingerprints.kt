@@ -38,3 +38,9 @@ internal object GooglePlayServicesAvailabilityFingerprint : Fingerprint(
     parameters = listOf("Landroid/content/Context;", "I"),
     strings = listOf("This should never happen.", "MetadataValueReader"),
 )
+
+internal object GooglePlayServicesUtilAvailabilityFingerprint : Fingerprint(
+    returnType = "I",
+    parameters = listOf("Landroid/content/Context;", "I"),
+    strings = listOf("GooglePlayServicesUtil", " requires Google Play services, but their signature is invalid."),
+)
