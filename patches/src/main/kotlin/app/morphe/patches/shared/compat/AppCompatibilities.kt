@@ -332,6 +332,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.1.4-gms", versionCode = 78, minSdk = 29)),
     )
 
+    val MEDICNEET = Compatibility(
+        name = "MedicNEET",
+        packageName = "com.halalfire.medicneet",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x4D8E78,
+        signatures = setOf(
+            "befd82717721a7d025fb5783b48469bcf222536a224a7466098459f0ba1f4559",
+        ),
+        targets = listOf(AppTarget(version = "1.5.137", versionCode = 258, minSdk = 24)),
+    )
+
     val MEMONEET = Compatibility(
         name = "MemoNeet",
         packageName = "com.adithya.memoneet",
