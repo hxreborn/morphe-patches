@@ -13,6 +13,11 @@ package app.morphe.patches.shared.misc.gms
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Compatibility
+import app.morphe.patcher.patch.InstallerType
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.PatchAvailability
+import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.util.findInstructionIndicesReversed
 import app.morphe.util.findMutableMethodOf
@@ -325,5 +330,27 @@ internal val gmsCoreManifestPatch = resourcePatch {
                     "<package android:name=\"$GMS_CORE_VENDOR_GROUP_ID.android.gms\"/></queries>",
                 ),
         )
+    }
+}
+
+internal fun gmsCoreSupportPatchFor(compatibility: Compatibility, vararg dependencies: Patch<*>) = bytecodePatch(
+    name = "GmsCore support",
+    description = "Signs in through GmsCore instead of Google Play Services. " +
+        "Requires GmsCore to be installed.",
+    default = false,
+) {
+    compatibleWith(compatibility)
+
+    availability { installer, _ ->
+        when (installer) {
+            InstallerType.MOUNT -> PatchAvailability.UNAVAILABLE
+            else -> PatchAvailability.DISABLED
+        }
+    }
+
+    dependsOn(*dependencies, gmsCoreSpoofedSignaturePatch, gmsCoreManifestPatch)
+
+    execute {
+        renameGmsReferencesToGmsCore()
     }
 }
