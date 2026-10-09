@@ -50,7 +50,6 @@ val scheduledDeletionPatch = bytecodePatch(
     name = "Scheduled Trash and Spam deletion",
     description = "Deletes all messages in Trash and Spam on separate configurable schedules. " +
         "Deleted messages cannot be recovered.",
-    default = false,
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(
