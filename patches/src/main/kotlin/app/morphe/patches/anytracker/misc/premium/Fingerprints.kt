@@ -32,7 +32,6 @@ internal object FetchPlanFingerprint : Fingerprint(
 
 internal object RequestCustomerInfoFingerprint : Fingerprint(
     returnType = "V",
-    parameters = listOf("Landroid/content/Context;"),
     filters = listOf(
         fetchCurrentPolicy,
         methodCall(

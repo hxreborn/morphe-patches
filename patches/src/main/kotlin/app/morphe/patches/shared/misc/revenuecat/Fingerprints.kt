@@ -10,11 +10,5 @@ internal object BuildCustomerInfoFingerprint : Fingerprint(
     definingClass = "Lcom/revenuecat/purchases/common/CustomerInfoFactory;",
     name = "buildCustomerInfo",
     returnType = "Lcom/revenuecat/purchases/CustomerInfo;",
-    parameters = listOf(
-        "Lorg/json/JSONObject;",
-        "Ljava/util/Date;",
-        "Lcom/revenuecat/purchases/VerificationResult;",
-        "Lcom/revenuecat/purchases/CustomerInfoOriginalSource;",
-        "Z",
-    ),
+    custom = { method, _ -> method.parameterTypes.firstOrNull() == "Lorg/json/JSONObject;" },
 )
