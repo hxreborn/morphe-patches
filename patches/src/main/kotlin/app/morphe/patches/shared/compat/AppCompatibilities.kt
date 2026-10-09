@@ -630,6 +630,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val STEEZY = Compatibility(
+        name = "STEEZY",
+        packageName = "co.steezy.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0E7AFE,
+        signatures = setOf(
+            "72222080cdb4e8e9ef66d0ac120b85c52ef223815bae6c1a07d2b11cd373722e",
+        ),
+        targets = listOf(AppTarget(version = "5.23.0", versionCode = 299, minSdk = 24)),
+    )
+
     val SYMFONIUM = Compatibility(
         name = "Symfonium",
         packageName = "app.symfonik.music.player",
