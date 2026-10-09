@@ -4,11 +4,6 @@
  */
 package app.morphe.patches.protonmail.misc.upselling
 
-import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
@@ -18,6 +13,7 @@ import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
 import app.morphe.util.indexOfFirstLiteralInstruction
 import org.w3c.dom.Element
@@ -40,21 +36,6 @@ private val unhandledSidebarUpsellingPatch = resourcePatch {
             throw PatchException("Unhandled sidebar upselling rows: ${unhandled.joinToString()}")
         }
     }
-}
-
-private fun MutableMethod.returnVoidWhenUpsellingHidden() {
-    val free = getFreeRegisterProvider(0, 1).getFreeRegister()
-
-    addInstructionsWithLabels(
-        0,
-        """
-            invoke-static { }, $UPSELLING_VISIBILITY_CLASS->isHidden()Z
-            move-result v$free
-            if-eqz v$free, :show
-            return-void
-        """,
-        ExternalLabel("show", getInstruction(0)),
-    )
 }
 
 @Suppress("unused")

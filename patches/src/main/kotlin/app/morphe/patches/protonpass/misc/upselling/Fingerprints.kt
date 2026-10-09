@@ -39,6 +39,12 @@ internal object OnboardingRouteFingerprint : Fingerprint(
     ),
 )
 
+internal object UpgradeButtonFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "V",
+    custom = { method, _ -> method.name.substringBefore('-') == "UpgradeButton" },
+)
+
 internal object AttachmentsStateConstructorFingerprint : Fingerprint(
     definingClass = "Lproton/android/pass/commonuimodels/api/attachments/AttachmentsState;",
     name = "<init>",

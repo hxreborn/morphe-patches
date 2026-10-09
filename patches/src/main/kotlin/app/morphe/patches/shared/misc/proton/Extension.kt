@@ -5,8 +5,13 @@
 package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.returnEarly
 
 internal const val PROTON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/proton/"
@@ -30,6 +35,21 @@ internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
     mutableClassDefBy(featureClass).methods
         .single { it.name == "isPatched" }
         .returnEarly(true)
+
+internal fun MutableMethod.returnVoidWhenUpsellingHidden() {
+    val free = getFreeRegisterProvider(0, 1).getFreeRegister()
+
+    addInstructionsWithLabels(
+        0,
+        """
+            invoke-static { }, $UPSELLING_VISIBILITY_CLASS->isHidden()Z
+            move-result v$free
+            if-eqz v$free, :show
+            return-void
+        """,
+        ExternalLabel("show", getInstruction(0)),
+    )
+}
 
 internal fun BytecodePatchContext.markPatchApplied(methodName: String) =
     mutableClassDefBy(APPLIED_PATCHES_CLASS).methods

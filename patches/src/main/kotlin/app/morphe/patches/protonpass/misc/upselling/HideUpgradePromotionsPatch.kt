@@ -15,6 +15,7 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.matchSingle
@@ -81,6 +82,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
 
         UpgradeInfoConstructorFingerprint.matchSingle().preserveAndResolveUpgradeAvailable()
         PlanLimitReachedFingerprint.matchSingle().readOriginalUpgradeAvailable()
+        UpgradeButtonFingerprint.matchSingle().method.returnVoidWhenUpsellingHidden()
         AttachmentsStateConstructorFingerprint.matchSingle().method.addInstructions(
             0,
             """
