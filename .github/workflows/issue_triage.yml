@@ -22,16 +22,16 @@ jobs:
   triage:
     if: >-
       github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
-      (github.event.action == 'labeled' && startsWith(github.event.label.name, 'r: ')) ||
+      (github.event.action == 'labeled' && (startsWith(github.event.label.name, 'r: ') || startsWith(github.event.label.name, 'ac: '))) ||
       (contains(github.event.issue.labels.*.name, 'app request') &&
-       !contains(github.event.issue.labels.*.name, 'bad-triage') &&
+       !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
        (github.event.action == 'opened' ||
         (github.event.action == 'edited' && github.event.issue.state == 'open' &&
          toJSON(github.event.changes.body) != 'null' &&
          contains(github.event.issue.labels.*.name, 'needs info')))) ||
       (github.event.action != 'labeled' &&
        contains(github.event.issue.labels.*.name, 'bug') &&
-       !contains(github.event.issue.labels.*.name, 'bad-triage') &&
+       !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association) &&
        (github.event.action != 'edited' || toJSON(github.event.changes.body) != 'null') &&
        !(github.event.issue.state == 'open' && contains(github.event.issue.labels.*.name, 'incomplete')) &&

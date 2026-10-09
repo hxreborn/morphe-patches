@@ -1,45 +1,36 @@
 {
-  "r: support": {
-    "close": true,
-    "message": "this tracker is for patch bugs. a patch misbehaving is a bug report, general support isn't"
+  "ac: support": {
+    "message": "this tracker is for patch bugs, not general support"
   },
-  "r: app-side": {
-    "close": true,
+  "ac: app-side": {
     "message": "the unpatched app does this too, so it isn't a patch"
   },
-  "r: not-this-bundle": {
-    "close": true,
+  "ac: not-this-bundle": {
     "message": "that APK wasn't patched with this bundle"
   },
   "r: app-updated": {
-    "close": false,
     "labels": [
       "untargeted version"
     ],
     "message": "this app version isn't targeted yet. this issue tracks it"
   },
-  "r: server-side": {
-    "close": true,
+  "ac: server-side": {
     "message": "the server enforces this, the APK has nothing to patch"
   },
   "r: no-repro": {
-    "close": false,
     "labels": [
       "needs info"
     ],
     "message": "can't reproduce this yet"
   },
   "r: fixed": {
-    "close": false,
     "message": "possible fix committed"
   },
-  "r: not-a-bug": {
-    "close": true,
+  "ac: not-a-bug": {
     "message": "this doesn't look like a patch bug",
     "reason": "not planned"
   },
-  "r: shipped": {
-    "close": true,
+  "ac: shipped": {
     "message": "🎉 **Shipped in {latest_release}** 🎉",
     "reason": "completed"
   }

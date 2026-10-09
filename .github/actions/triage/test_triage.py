@@ -502,7 +502,7 @@ Yes, it happens with only that one patch
 }
 
 
-def verdict_for(body, patches_list=None):
+def triage(body, patches_list=None):
     with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:
         f.write(body)
         path = f.name
@@ -515,11 +515,15 @@ def verdict_for(body, patches_list=None):
     try:
         out = subprocess.run([sys.executable, str(SCRIPT), path, list_path],
                              capture_output=True, text=True, check=True)
-        return json.loads(out.stdout)["verdict"]
+        return json.loads(out.stdout)
     finally:
         Path(path).unlink()
         if extra:
             Path(extra).unlink()
+
+
+def verdict_for(body, patches_list=None):
+    return triage(body, patches_list)["verdict"]
 
 
 REGISTRY = {"bundles": [
@@ -604,12 +608,28 @@ ok = registry_hit["matches"] == ["someone/patches"] and "Someone's patches" in r
 failures += not ok
 print(f"{'ok  ' if ok else 'FAIL'} app another bundle already patches is listed, not closed")
 
+untargeted = triage(f"""### App and version
+
+Proton Mail (another version, type it below)
+
+### Other version
+
+7.5.6 (388)
+
+### Bug description
+
+{LONG}
+""")["comment"]
+ok = "not `7.5.6 (388)`" in untargeted
+failures += not ok
+print(f"{'ok  ' if ok else 'FAIL'} untargeted version quotes only the typed version")
+
 for name, (expected, body) in CASES.items():
     actual = verdict_for(*body) if isinstance(body, tuple) else verdict_for(body)
     ok = actual == expected
     failures += not ok
     print(f"{'ok  ' if ok else 'FAIL'} {name}: expected {expected}, got {actual}")
 
-total = len(CASES) + len(APP_CASES) + 1
+total = len(CASES) + len(APP_CASES) + 2
 print(f"\n{total - failures}/{total} passed")
 sys.exit(1 if failures else 0)

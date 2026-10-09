@@ -17,7 +17,9 @@ inputs:
     description: Print app request verdicts without commenting, labeling or closing.
     default: "false"
   responses:
-    description: Path to a JSON map of label name to {message, close} for canned replies.
+    description: >-
+      Path to a JSON map of label name to {message, labels, reason} for canned replies. An `ac: `
+      label closes the issue after replying, an `r: ` label only replies.
     default: .github/triage-responses.json
 
 runs:
@@ -25,7 +27,7 @@ runs:
   steps:
     - name: Post the canned reply for a triage label
       if: >-
-        github.event.action == 'labeled' && startsWith(github.event.label.name, 'r: ')
+        github.event.action == 'labeled' && (startsWith(github.event.label.name, 'r: ') || startsWith(github.event.label.name, 'ac: '))
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
@@ -41,12 +43,11 @@ runs:
           release=$(gh release view --repo "$REPO" --json tagName,url -q '"[" + .tagName + "](" + .url + ")"' 2>/dev/null)
           message=${message//"{latest_release}"/${release:-the latest release}}
         fi
-        close=$(jq -r --arg l "$LABEL" '.[$l].close' "$RESPONSES")
         printf '%s\n' "$message" > "$RUNNER_TEMP/comment.md"
         gh issue comment "$ISSUE" --repo "$REPO" --body-file "$RUNNER_TEMP/comment.md"
         labels=$(jq -r --arg l "$LABEL" '.[$l].labels // [] | join(",")' "$RESPONSES")
         [ -n "$labels" ] && gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
-        if [ "$close" = "true" ]; then
+        if [[ "$LABEL" == "ac: "* ]]; then
           reason=$(jq -r --arg l "$LABEL" '.[$l].reason // "not planned"' "$RESPONSES")
           gh issue close "$ISSUE" --repo "$REPO" --reason "$reason"
         fi
@@ -82,7 +83,7 @@ runs:
 
         for n in $targets; do
           jq -e --argjson n "$n" \
-            '.[] | select(.number == $n) | .labels | map(.name) | index("bad-triage")' \
+            '.[] | select(.number == $n) | .labels | map(.name) | index("bot-wrong")' \
             requests.json >/dev/null && continue
           jq -r --argjson n "$n" '.[] | select(.number == $n) | .body // ""' requests.json > body.md
           python3 "${{ github.action_path }}/app_request.py" \

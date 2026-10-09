@@ -63,9 +63,12 @@ if not has_any(fields, *DESCRIPTION_FIELDS):
     description = max(fields.values(), key=len, default="")
 
 app_name = field(fields, *APP_NAME_FIELDS)
-app_version = " ".join(filter(None, (field(fields, n) for n in APP_VERSION_FIELDS)))
+reported_versions = [v for v in (field(fields, n) for n in APP_VERSION_FIELDS) if v]
+app_version = " ".join(reported_versions)
+typed_version = reported_versions[0] if reported_versions else ""
 another_version = "another version" in app_name.lower() and not field(fields, "Other version")
-reported = " ".join(dict.fromkeys(filter(None, (app_name, app_version))))
+shown_name = re.sub(r"\s*\(another version, type it below\)", "", app_name, flags=re.I)
+reported = " ".join(dict.fromkeys(filter(None, (shown_name, typed_version))))
 app_haystack = reported or "\n".join(fields.values())
 version_words = [t for t in re.split(r"[\s(),`]+", app_version) if t.strip()]
 version_tokens = {normalize_version(t) for t in version_words} | {
@@ -92,7 +95,7 @@ labels = []
 
 if not fields:
     blockers.append(
-        "no issue form, triage reads the form fields"
+        "no issue form, the checks read the form fields"
     )
 
 if fields and not report_attached and len(description) < MIN_CHARS:
@@ -141,7 +144,7 @@ elif matched[1] and not (
     name, versions = matched
     flags.append(
         f"{data['version']} targets {name} {', '.join(sorted(versions))}, not "
-        f"`{app_version or reported}`"
+        f"`{typed_version or reported}`"
     )
     labels.append("untargeted version")
 
@@ -185,12 +188,11 @@ if single_patch.startswith(OPTION_NOT_TRIED):
 if blockers:
     verdict = "close"
     labels = []
-    lines = ["the report is missing what triage needs:", ""]
+    lines = ["this report can't be worked on:", ""]
     lines += [f"- {b}" for b in blockers + flags]
 elif flags:
     verdict = "flag"
-    lines = ["missing details:", ""]
-    lines += [f"- {f}" for f in flags]
+    lines = [f"- {f}" for f in flags]
 else:
     verdict = "pass"
     lines = []
