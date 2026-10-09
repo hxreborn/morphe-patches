@@ -320,6 +320,18 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.01.08", versionCode = 12506, minSdk = 24)),
     )
 
+    val LUMO = Compatibility(
+        name = "Lumo",
+        packageName = "me.proton.android.lumo",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x6D4AFF,
+        signatures = setOf(
+            "a747eaee28611e25217b793c07bf302234405cfd1e19068162556c79e5bf04f0",
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
+        ),
+        targets = listOf(AppTarget(version = "2.1.4-gms", versionCode = 78, minSdk = 29)),
+    )
+
     val MEMONEET = Compatibility(
         name = "MemoNeet",
         packageName = "com.adithya.memoneet",

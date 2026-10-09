@@ -123,6 +123,11 @@ private val PAIRIP_HOOKED_LIBRARIES = mapOf(
     "com.nieruo.healthapp" to mapOf(
         "librealmc" to "librealmc.so",
     ),
+    "me.proton.android.lumo" to mapOf(
+        "libaccount_crux_ffi" to "libaccount_crux_ffi.so",
+        "libjnidispatch" to "libjnidispatch.so",
+        "libvosk" to "libvosk.so",
+    ),
 )
 
 private fun ByteArray.applyDelta(delta: ByteArray): ByteArray {
@@ -240,6 +245,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
         AppCompatibilities.BETTERSLEEP,
         AppCompatibilities.CATZY,
         AppCompatibilities.HINDU_CALENDAR,
+        AppCompatibilities.LUMO,
         AppCompatibilities.VLLO,
     )
 
