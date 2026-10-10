@@ -14,6 +14,7 @@ import json
 import re
 import sys
 import os
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -248,6 +249,50 @@ ICONS = {
 }
 
 
+ICON_DIR = Path(".github/assets/icons")
+PLAY_URL = "https://play.google.com/store/apps/details?id={}&hl=en&gl=US"
+def icon_file(pkg):
+    for filename in (ICONS.get(pkg), f"{pkg}.png"):
+        if filename and (ICON_DIR / filename).is_file():
+            return filename
+    return None
+
+
+def fetch_play_listing(pkg):
+    request = urllib.request.Request(PLAY_URL.format(pkg), headers={"User-Agent": "Mozilla/5.0"})
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            page = response.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as error:
+        return ("", None) if error.code == 404 else None
+    except OSError:
+        return None
+    category = re.search(r'"applicationCategory":"([A-Z_]+)"', page)
+    if not category:
+        return None
+    icon = re.search(r'"image":"(https://play-lh\.googleusercontent\.com/[^"]+)"', page)
+    return (category.group(1), icon.group(1) if icon else None)
+
+
+def download_icon(url, pkg):
+    try:
+        with urllib.request.urlopen(f"{url}=s96-cc", timeout=20) as response:
+            data = response.read()
+    except OSError:
+        return
+    if data.startswith(b"\x89PNG\r\n\x1a\n"):
+        (ICON_DIR / f"{pkg}.png").write_bytes(data)
+
+
+def fetch_missing_icons(pkgs):
+    for pkg in pkgs:
+        if icon_file(pkg):
+            continue
+        listing = fetch_play_listing(pkg)
+        if listing and listing[1]:
+            download_icon(listing[1], pkg)
+
+
 TIKTOK_REPO = "hxreborn/hxreborn-tiktok-patches"
 TIKTOK_PKG = "com.zhiliaoapp.musically"
 TIKTOK_LIST = f"https://raw.githubusercontent.com/{TIKTOK_REPO}/main/patches-list.json"
@@ -285,7 +330,7 @@ def sibling_targets(url, pkg):
 def icon_img(pkg):
     """Inline <img> for an app, or a generic package emoji when it has no icon.
     Relative path so it resolves on any branch and in forks."""
-    filename = ICONS.get(pkg)
+    filename = icon_file(pkg)
     if not filename:
         return "📦&nbsp;"
     return f'<img src=".github/assets/icons/{filename}" width="18" align="top">&nbsp;&nbsp;'
@@ -299,7 +344,8 @@ def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     vtbl = versions_table(targets)
     versions_section = f"**🎯 Supported versions:**\n\n{vtbl}\n\n" if vtbl else ""
     tag = "<details open>" if expanded else "<details>"
-    return f"""{tag}
+    return f"""<a id="{slug(label)}"></a>
+{tag}
 <summary>{icon_img(pkg)}{label}&nbsp;&nbsp;•&nbsp;&nbsp;{count} {noun}</summary>
 <br>
 
@@ -315,9 +361,9 @@ def build_content(expanded=False):
         f"&nbsp;&nbsp;•&nbsp;&nbsp;`{branch}`&nbsp;&nbsp;•&nbsp;&nbsp;"
         f"{total} patches total"
     ]
+    fetch_missing_icons(list(by_pkg) + [TIKTOK_PKG])
 
-    # One spoiler per app, in the order they appear in the JSON
-    for pkg, entry in by_pkg.items():
+    for pkg, entry in sorted(by_pkg.items(), key=lambda item: item[1]["name"].lower()):
         patches = list(entry["patches"].values())
         label   = entry["name"]
         lines.append(spoiler(label, len(patches), entry["targets"], patches_table(patches, slug(label), pkg), expanded, pkg))
@@ -328,7 +374,8 @@ def build_content(expanded=False):
     tiktok_versions = versions_table(sibling_targets(TIKTOK_LIST, TIKTOK_PKG))
     tiktok_section = f"**🎯 Supported versions:**\n\n{tiktok_versions}\n\n" if tiktok_versions else ""
 
-    lines.append(f"""{"<details open>" if expanded else "<details>"}
+    lines.append(f"""<a id="tiktok"></a>
+{"<details open>" if expanded else "<details>"}
 <summary>{icon_img(TIKTOK_PKG)}TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
 <br>
 
