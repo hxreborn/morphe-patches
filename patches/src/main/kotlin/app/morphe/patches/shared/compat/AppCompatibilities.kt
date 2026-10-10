@@ -607,6 +607,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val MAY_BULLET_JOURNAL = Compatibility(
+        name = "May: Beautiful Bullet Journal",
+        packageName = "com.azeravn.bulletjournal",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF2CF7F,
+        signatures = setOf("89c58e85cc8fa88481577d6c237043f975c44765ef98f622385ecafac2f9694c"),
+        targets = listOf(AppTarget(version = "1.0.216", minSdk = 24)),
+    )
+
     val RISE = Compatibility(
         name = "RISE Sleep Tracker",
         packageName = "com.risesci.nyx",
