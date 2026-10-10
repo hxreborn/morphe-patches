@@ -12,7 +12,7 @@ import app.morphe.patches.lumo.misc.PageFinishedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
-import app.morphe.patches.shared.misc.proton.descriptor
+import app.morphe.patches.shared.misc.generated.descriptor
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode

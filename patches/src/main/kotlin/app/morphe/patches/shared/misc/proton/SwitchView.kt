@@ -11,6 +11,8 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.shared.misc.generated.descriptor
+import app.morphe.patches.shared.misc.generated.replaceStub
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
