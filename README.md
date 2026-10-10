@@ -15,7 +15,7 @@
 ## 🩹 Patches list
 
 <!-- PATCHES_START -->
-> **[v1.46.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.46.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;149 patches total
+> **[v1.47.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.47.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;161 patches total
 <a id="1weather"></a>
 <details>
 <summary><img src=".github/assets/icons/oneweather.png" width="18" align="top">&nbsp;&nbsp;1Weather&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
@@ -523,6 +523,56 @@
 
 </details>
 
+<a id="lumo"></a>
+<details>
+<summary><img src=".github/assets/icons/lumo.png" width="18" align="top">&nbsp;&nbsp;Lumo&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.1.4-gms |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="lumo-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/lumo/misc/materialswitch/MaterialSwitchesPatch.kt) | Shows switches in the Material 3 style with check and close icons. |
+| <a id="lumo-remove-tap-highlight"></a>[Remove tap highlight](patches/src/main/kotlin/app/morphe/patches/lumo/misc/taphighlight/RemoveWebTapHighlightPatch.kt) | Removes the highlight flash on tapped buttons and links. |
+
+</details>
+
+<a id="may-beautiful-bullet-journal"></a>
+<details>
+<summary><img src=".github/assets/icons/com.azeravn.bulletjournal.png" width="18" align="top">&nbsp;&nbsp;May: Beautiful Bullet Journal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.0.216 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="may-beautiful-bullet-journal-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bulletjournal/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features. |
+
+</details>
+
+<a id="medicneet"></a>
+<details>
+<summary><img src=".github/assets/icons/medicneet.png" width="18" align="top">&nbsp;&nbsp;MedicNEET&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.5.137 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="medicneet-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="medicneet-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/medicneet/misc/premium/UnlockPremiumPatch.kt) | Unlocks the AIMTS test series, the PYQ generator, video lectures and tier 1 and 2 questions in every topic. Tier 3 questions and flashcards are not included. |
+
+</details>
+
 <a id="memoneet"></a>
 <details>
 <summary><img src=".github/assets/icons/memoneet.png" width="18" align="top">&nbsp;&nbsp;MemoNeet&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
@@ -841,7 +891,7 @@
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="raindrop-io-gmscore-support"></a>[GmsCore support](patches/src/main/kotlin/app/morphe/patches/raindrop/misc/gms/GmsCoreSupportPatch.kt) | Signs in with Google through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="raindrop-io-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="raindrop-io-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/raindrop/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Go Pro entry in Settings. |
 | <a id="raindrop-io-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/raindrop/misc/premium/UnlockProPatch.kt) | Unlocks reminders and highlight notes. Adds duplicate and broken link filters, collection and tag suggestions, full-text search of saved pages, Wayback Machine copies and a weekly bookmark export to Downloads. Requires a signed-in account. |
 
@@ -892,7 +942,7 @@
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="realme-link-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/realmelink/theme/AmoledThemePatch.kt) | Replaces the light theme with a pure black dark theme. Requires Android 13 or later. |
-| <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Stops the security prompt that signs the account out. |
+| <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Renews the session in the background instead of asking to sign in again. The sign-in prompt appears only when renewal fails. |
 
 </details>
 
@@ -961,6 +1011,42 @@
 |----------|----------------|
 | <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/showly/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black. |
 | <a id="showly-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/showly/misc/premium/UnlockPremiumPatch.kt) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, and transparent widgets. The News feed is not included. |
+
+</details>
+
+<a id="sqcom"></a>
+<details>
+<summary><img src=".github/assets/icons/sqcom.png" width="18" align="top">&nbsp;&nbsp;SQCOM&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.1.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="sqcom-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="sqcom-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/sqcom/ads/HideAdsPatch.kt) | Removes splash, banner, native, interstitial and rewarded ads, and the ad consent prompt. |
+
+</details>
+
+<a id="steezy"></a>
+<details>
+<summary><img src=".github/assets/icons/steezy.png" width="18" align="top">&nbsp;&nbsp;STEEZY&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 5.23.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="steezy-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/steezy/misc/tracking/DisableTrackingPatch.kt) | Stops RudderStack, Branch, Firebase Sessions and Crashlytics from collecting usage data. |
+| <a id="steezy-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="steezy-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/steezy/misc/upselling/HideUpgradePromotionsPatch.kt) | Skips the subscription offer shown after sign-up. |
+| <a id="steezy-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/steezy/misc/premium/UnlockPremiumPatch.kt) | Unlocks all classes and programs. Requires a STEEZY account. |
 
 </details>
 
@@ -1065,6 +1151,22 @@
 |----------|----------------|
 | <a id="vpnify-disable-rating-prompt"></a>[Disable rating prompt](patches/src/main/kotlin/app/morphe/patches/vpnify/misc/review/DisableRatingPromptPatch.kt) | Stops the Google Play rating prompt from appearing. |
 | <a id="vpnify-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/vpnify/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium, removes ads and the free session time limit. |
+
+</details>
+
+<a id="walp"></a>
+<details>
+<summary><img src=".github/assets/icons/walp.png" width="18" align="top">&nbsp;&nbsp;WalP&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 10.2.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="walp-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/walp/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro filters and wallpaper rotation from categories, and removes ads. |
 
 </details>
 
