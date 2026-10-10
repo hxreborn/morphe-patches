@@ -1,0 +1,46 @@
+name: Banner
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7 0 * * *"
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: banner
+  cancel-in-progress: false
+
+jobs:
+  banner:
+    name: Rebuild the README banner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Checkout assets
+        uses: actions/checkout@v7
+        with:
+          ref: assets
+          path: assets
+
+      - name: Generate banner
+        run: python3 .github/scripts/generate_banner.py assets
+
+      - name: Replace the assets branch with one commit
+        working-directory: assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          tip=$(git rev-parse HEAD)
+          git checkout --orphan banner
+          git add -A
+          git commit -m "chore: rebuild banner"
+          git push --force-with-lease=assets:"$tip" origin banner:assets

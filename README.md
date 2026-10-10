@@ -1,17 +1,9 @@
 <div align="center">
 
-# 🧩 hxreborn’s patches
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/banner-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/banner-light.svg" alt="hxreborn's patches" width="700"></picture>
 
-**A collection of Android app patches for [Morphe](https://morphe.software).**
-
-[![Release badge](https://img.shields.io/github/v/release/hxreborn/morphe-patches?style=for-the-badge&label=Release&color=D29922&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
 [![Downloads badge](https://img.shields.io/github/downloads/hxreborn/morphe-patches/total?style=for-the-badge&label=Downloads&color=2F81F7&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
-[![Updated badge](https://img.shields.io/github/release-date/hxreborn/morphe-patches?style=for-the-badge&label=Updated&color=3FB950&logo=clockify&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
 [![Stars badge](https://img.shields.io/github/stars/hxreborn/morphe-patches?style=for-the-badge&label=Stars&color=E3B341&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/stargazers)
-[![Patches badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhxreborn%2Fmorphe-patches%2Fmain%2Fpatches-list.json&query=%24.patches.length&style=for-the-badge&label=Patches&color=DB61A2&logo=android&logoColor=white)](#-patches-list)
-
-[![Build badge](https://img.shields.io/github/actions/workflow/status/hxreborn/morphe-patches/release.yml?branch=main&style=for-the-badge&label=Build&logo=githubactions&logoColor=white)](https://github.com/hxreborn/morphe-patches/actions/workflows/release.yml)
-[![License badge](https://img.shields.io/badge/License-GPLv3-3FB950?style=for-the-badge&logo=gnu&logoColor=white)](LICENSE)
 [![Ko-fi badge](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/hxreborn)
 
 <a href="https://morphe.software/add-source?github=hxreborn/morphe-patches" title="Add this source to Morphe">
@@ -20,20 +12,12 @@
 
 </div>
 
-&nbsp;
-## ❓ About
-
-I also accept [requests for other apps](https://github.com/hxreborn/morphe-patches/issues/new?template=app_request.yml).
-
-Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
-recorded in the Git history.
-
-&nbsp;
 ## 🩹 Patches list
 
-<!-- PATCHES_START EXPANDED -->
+<!-- PATCHES_START -->
 > **[v1.46.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.46.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;149 patches total
-<details open>
+<a id="blurwall"></a>
+<details>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -50,7 +34,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="cx-file-explorer"></a>
+<details>
 <summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -67,7 +52,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="cxxdroid"></a>
+<details>
 <summary><img src=".github/assets/icons/cxxdroid.png" width="18" align="top">&nbsp;&nbsp;Cxxdroid&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -84,7 +70,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="jvdroid"></a>
+<details>
 <summary><img src=".github/assets/icons/jvdroid.png" width="18" align="top">&nbsp;&nbsp;Jvdroid&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -101,7 +88,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="pydroid-3"></a>
+<details>
 <summary><img src=".github/assets/icons/pydroid.png" width="18" align="top">&nbsp;&nbsp;Pydroid 3&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -118,7 +106,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="imo"></a>
+<details>
 <summary><img src=".github/assets/icons/imo.png" width="18" align="top">&nbsp;&nbsp;imo&nbsp;&nbsp;•&nbsp;&nbsp;16 patches</summary>
 <br>
 
@@ -148,7 +137,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="kick"></a>
+<details>
 <summary><img src=".github/assets/icons/kick.png" width="18" align="top">&nbsp;&nbsp;Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -163,7 +153,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="perplexity"></a>
+<details>
 <summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -178,7 +169,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="proton-mail"></a>
+<details>
 <summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
 <br>
 
@@ -200,7 +192,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="proton-pass"></a>
+<details>
 <summary><img src=".github/assets/icons/protonpass.png" width="18" align="top">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
@@ -219,7 +212,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="proton-vpn"></a>
+<details>
 <summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;13 patches</summary>
 <br>
 
@@ -246,7 +240,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="realme-link"></a>
+<details>
 <summary><img src=".github/assets/icons/realmelink.png" width="18" align="top">&nbsp;&nbsp;Realme Link&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -262,7 +257,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="showly"></a>
+<details>
 <summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -278,7 +274,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="moviebox"></a>
+<details>
 <summary><img src=".github/assets/icons/moviebox.png" width="18" align="top">&nbsp;&nbsp;MovieBox&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -293,7 +290,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="all-video-player-app"></a>
+<details>
 <summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
@@ -312,7 +310,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="dwg-fastview"></a>
+<details>
 <summary><img src=".github/assets/icons/dwgfastview.png" width="18" align="top">&nbsp;&nbsp;DWG FastView&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -329,7 +328,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="terabox"></a>
+<details>
 <summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
@@ -350,7 +350,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="vpnify"></a>
+<details>
 <summary><img src=".github/assets/icons/vpnify.png" width="18" align="top">&nbsp;&nbsp;vpnify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -366,7 +367,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="rise-sleep-tracker"></a>
+<details>
 <summary><img src=".github/assets/icons/risesleep.png" width="18" align="top">&nbsp;&nbsp;RISE Sleep Tracker&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -383,7 +385,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="hindu-calendar"></a>
+<details>
 <summary><img src=".github/assets/icons/hinducalendar.png" width="18" align="top">&nbsp;&nbsp;Hindu Calendar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -399,7 +402,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="keepa"></a>
+<details>
 <summary><img src=".github/assets/icons/keepa.png" width="18" align="top">&nbsp;&nbsp;Keepa&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
@@ -418,7 +422,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="mymoveset"></a>
+<details>
 <summary><img src=".github/assets/icons/mymoveset.png" width="18" align="top">&nbsp;&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -434,7 +439,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="1weather"></a>
+<details>
 <summary><img src=".github/assets/icons/oneweather.png" width="18" align="top">&nbsp;&nbsp;1Weather&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
 
@@ -452,7 +458,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="projectivy-launcher"></a>
+<details>
 <summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -468,7 +475,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="vllo"></a>
+<details>
 <summary><img src=".github/assets/icons/vllo.png" width="18" align="top">&nbsp;&nbsp;VLLO&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -484,7 +492,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="all-in-one-calculator"></a>
+<details>
 <summary><img src=".github/assets/icons/allinonecalculator.png" width="18" align="top">&nbsp;&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -500,7 +509,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="memoneet"></a>
+<details>
 <summary><img src=".github/assets/icons/memoneet.png" width="18" align="top">&nbsp;&nbsp;MemoNeet&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -516,7 +526,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="raindrop-io"></a>
+<details>
 <summary><img src=".github/assets/icons/raindrop.png" width="18" align="top">&nbsp;&nbsp;Raindrop.io&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -533,7 +544,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="etsy"></a>
+<details>
 <summary><img src=".github/assets/icons/etsy.png" width="18" align="top">&nbsp;&nbsp;Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -548,7 +560,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="qr-barcode-scanner"></a>
+<details>
 <summary><img src=".github/assets/icons/qrscanner.png" width="18" align="top">&nbsp;&nbsp;QR & Barcode Scanner&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -563,7 +576,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="joyn"></a>
+<details>
 <summary><img src=".github/assets/icons/joyn.png" width="18" align="top">&nbsp;&nbsp;Joyn&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -578,7 +592,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="photo-editor-pro"></a>
+<details>
 <summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
@@ -598,7 +613,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="pocket-whip"></a>
+<details>
 <summary><img src=".github/assets/icons/pocketwhip.png" width="18" align="top">&nbsp;&nbsp;Pocket Whip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -614,7 +630,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="trainline"></a>
+<details>
 <summary><img src=".github/assets/icons/trainline.png" width="18" align="top">&nbsp;&nbsp;Trainline&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -629,7 +646,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="yi-iot"></a>
+<details>
 <summary><img src=".github/assets/icons/yiiot.png" width="18" align="top">&nbsp;&nbsp;Yi iot&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -644,7 +662,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="audible"></a>
+<details>
 <summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -660,7 +679,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="catzy"></a>
+<details>
 <summary><img src=".github/assets/icons/catzy.png" width="18" align="top">&nbsp;&nbsp;Catzy&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
@@ -679,7 +699,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="readera"></a>
+<details>
 <summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -694,7 +715,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="ringtone-maker"></a>
+<details>
 <summary><img src=".github/assets/icons/ringtonemaker.png" width="18" align="top">&nbsp;&nbsp;Ringtone Maker&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
@@ -710,7 +732,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="anytracker"></a>
+<details>
 <summary><img src=".github/assets/icons/anytracker.png" width="18" align="top">&nbsp;&nbsp;AnyTracker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -725,7 +748,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="alpinequest"></a>
+<details>
 <summary><img src=".github/assets/icons/alpinequest.png" width="18" align="top">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -740,7 +764,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="atlomaps"></a>
+<details>
 <summary><img src=".github/assets/icons/atlomaps.png" width="18" align="top">&nbsp;&nbsp;AtloMaps&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -755,7 +780,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="atvtools"></a>
+<details>
 <summary><img src=".github/assets/icons/atvtools.png" width="18" align="top">&nbsp;&nbsp;atvTools&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -770,7 +796,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="audiolab"></a>
+<details>
 <summary><img src=".github/assets/icons/audiolab.png" width="18" align="top">&nbsp;&nbsp;AudioLab&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -785,7 +812,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="bettersleep"></a>
+<details>
 <summary><img src=".github/assets/icons/bettersleep.png" width="18" align="top">&nbsp;&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -800,7 +828,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="echo-equalizer"></a>
+<details>
 <summary><img src=".github/assets/icons/echoequalizer.png" width="18" align="top">&nbsp;&nbsp;Echo Equalizer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -815,7 +844,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="echogram"></a>
+<details>
 <summary><img src=".github/assets/icons/echogram.png" width="18" align="top">&nbsp;&nbsp;Echogram&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -830,7 +860,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="fast-stl-viewer"></a>
+<details>
 <summary><img src=".github/assets/icons/faststlviewer.png" width="18" align="top">&nbsp;&nbsp;Fast STL Viewer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -845,7 +876,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="fddb"></a>
+<details>
 <summary><img src=".github/assets/icons/fddb.png" width="18" align="top">&nbsp;&nbsp;Fddb&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -860,7 +892,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="forusapp"></a>
+<details>
 <summary><img src=".github/assets/icons/forus.png" width="18" align="top">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -875,7 +908,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="klassik-radio"></a>
+<details>
 <summary><img src=".github/assets/icons/klassikradio.png" width="18" align="top">&nbsp;&nbsp;Klassik Radio+&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -890,7 +924,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="led-blinker"></a>
+<details>
 <summary><img src=".github/assets/icons/ledblinker.png" width="18" align="top">&nbsp;&nbsp;LED Blinker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -905,7 +940,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="musixmatch"></a>
+<details>
 <summary><img src=".github/assets/icons/musixmatch.png" width="18" align="top">&nbsp;&nbsp;Musixmatch&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -920,7 +956,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="one4home-launcher"></a>
+<details>
 <summary><img src=".github/assets/icons/one4home.png" width="18" align="top">&nbsp;&nbsp;One4Home Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -935,7 +972,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="photone"></a>
+<details>
 <summary><img src=".github/assets/icons/photone.png" width="18" align="top">&nbsp;&nbsp;Photone&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -950,7 +988,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="quranify"></a>
+<details>
 <summary><img src=".github/assets/icons/quranify.png" width="18" align="top">&nbsp;&nbsp;Quranify&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -965,7 +1004,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="rateglance"></a>
+<details>
 <summary><img src=".github/assets/icons/rateglance.png" width="18" align="top">&nbsp;&nbsp;RateGlance&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -980,7 +1020,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="rubber-bands"></a>
+<details>
 <summary><img src=".github/assets/icons/rubberbands.png" width="18" align="top">&nbsp;&nbsp;Rubber Bands&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -995,7 +1036,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="symfonium"></a>
+<details>
 <summary><img src=".github/assets/icons/symfonium.png" width="18" align="top">&nbsp;&nbsp;Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -1010,7 +1052,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="vpn-super-unlimited-proxy"></a>
+<details>
 <summary><img src=".github/assets/icons/vpnsuper.png" width="18" align="top">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -1025,8 +1068,9 @@ recorded in the Git history.
 
 </details>
 
-<details open>
-<summary>📦&nbsp;Yanosik&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="yanosik"></a>
+<details>
+<summary><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="18" align="top">&nbsp;&nbsp;Yanosik&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1040,7 +1084,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="notesnook"></a>
+<details>
 <summary><img src=".github/assets/icons/notesnook.png" width="18" align="top">&nbsp;&nbsp;Notesnook&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -1055,7 +1100,8 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<a id="tiktok"></a>
+<details>
 <summary><img src=".github/assets/icons/tiktok.png" width="18" align="top">&nbsp;&nbsp;TikTok&nbsp;&nbsp;•&nbsp;&nbsp;separate bundle</summary>
 <br>
 
@@ -1070,7 +1116,7 @@ recorded in the Git history.
 
 </details>
 
-<details open>
+<details>
 <summary>🌐&nbsp;Universal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
@@ -1081,6 +1127,15 @@ recorded in the Git history.
 </details>
 
 <!-- PATCHES_END -->
+
+---
+
+<img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/request.png" width="96" align="left" alt="">
+
+**Want to request an app?**<br>Check the [existing requests](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+label%3A%22app+request%22) first. If it isn't there, open an [app request](https://github.com/hxreborn/morphe-patches/issues/new?template=app_request.yml) with its Play Store link and package name, and pick the features you want.
+
+<br clear="left">
+
 &nbsp;
 ## 🌍 MovieBox region
 
@@ -1123,6 +1178,12 @@ additional conditions under GPLv3 Section 7 inherited from Morphe:
 
 See [NOTICE](NOTICE) for the full conditions.
 
+Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
+recorded in the Git history.
+
 App icons in the patches list belong to their respective developers and are used only to
 identify each app. They are not covered by this repository's licence. See
 [the icon notice](.github/assets/icons/README.md).
+
+The Aqua pictures in the banner are fan and game art, credited in
+[aqua/CREDITS.md](https://github.com/hxreborn/morphe-patches/blob/assets/aqua/CREDITS.md).
