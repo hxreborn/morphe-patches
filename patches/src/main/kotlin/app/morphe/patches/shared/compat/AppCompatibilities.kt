@@ -742,6 +742,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val WALP = Compatibility(
+        name = "WalP",
+        packageName = "com.stresscodes.wallp",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xA346FC,
+        signatures = setOf("dbb4adaa10cdf28ae38d36ffe3b11f5f6d30506c79f0e59e702a113b0e93a361"),
+        targets = listOf(AppTarget(version = "10.2.1", versionCode = 168, minSdk = 32)),
+    )
+
     val YANOSIK = Compatibility(
         name = "Yanosik",
         packageName = "pl.neptis.yanosik.mobi.android",

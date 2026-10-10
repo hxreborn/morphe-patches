@@ -53,6 +53,22 @@ internal fun File.replaceMasked(
     return true
 }
 
+internal fun File.replaceMaskedEvery(pattern: ByteArray, mask: ByteArray, offset: Int, replacement: ByteArray): Int {
+    require(pattern.size == mask.size) { "Mask must be the same length as the pattern" }
+    require(offset >= 0 && offset + replacement.size <= pattern.size) { "Replacement must fall inside the pattern" }
+
+    val bytes = readBytes()
+    var count = 0
+    var index = bytes.indexOfMasked(pattern, mask)
+    while (index >= 0) {
+        replacement.copyInto(bytes, index + offset)
+        count++
+        index = bytes.indexOfMasked(pattern, mask, index + pattern.size)
+    }
+    if (count > 0) writeBytes(bytes)
+    return count
+}
+
 private fun ByteArray.indexOfMasked(pattern: ByteArray, mask: ByteArray, startIndex: Int = 0): Int {
     candidate@ for (index in startIndex..size - pattern.size) {
         for (offset in pattern.indices) {
