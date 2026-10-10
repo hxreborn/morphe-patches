@@ -84,6 +84,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `audiolab.png` | AudioLab (`com.hitrolab.audioeditor`) | HitroLab | APK 1.3.33, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `imo.png` | imo (`com.imo.android.imoim`) | imo.im | APK 2026.08.1041, adaptive icon `res/drawable-anydpi-v26/b63.xml`, cut to a circle |
 | `steezy.png` | STEEZY (`co.steezy.app`) | STEEZY | APK 5.23.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `sqcom.png` | SQCOM (`com.sqcom.shangqing`) | Shenzhen SHANGQING INDUSTRIAL CO., LTD | APK 1.1.0, `mipmap/wd_path_executor` (round icon), xxxhdpi |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

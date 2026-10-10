@@ -641,6 +641,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val SQCOM = Compatibility(
+        name = "SQCOM",
+        packageName = "com.sqcom.shangqing",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x4880F8,
+        signatures = setOf(
+            "a931de7526cdbb08051147215c8283266f53a54ac26ac1b41d1e9d943a6a5b59",
+        ),
+        targets = listOf(AppTarget(version = "1.1.0", versionCode = 1001000, minSdk = 26)),
+    )
+
     val STEEZY = Compatibility(
         name = "STEEZY",
         packageName = "co.steezy.app",
