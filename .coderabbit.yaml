@@ -1,0 +1,43 @@
+reviews:
+  profile: quiet
+  high_level_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  suggested_reviewers: false
+  enable_prompt_for_ai_agents: false
+  auto_review:
+    enabled: true
+    drafts: false
+    ignore_usernames:
+      - dependabot[bot]
+  path_filters:
+    - "!patches-list.json"
+    - "**/*.tsv"
+  path_instructions:
+    - path: "patches/src/main/{kotlin,java}/**"
+      instructions: |
+        This code runs while patching an APK, both in the desktop CLI and in Morphe Manager's Android app_process. Report a defect only when the changed code and its callers support a concrete failure; identify the affected app/version or execution path. Do not infer runtime behavior from a successful compile alone.
+        Check that fingerprints select the intended method uniquely and that anchors survive plausible obfuscation or version changes. A single literal can be the most stable anchor; do not demand extra strings, opcode sequences, or deobfuscated names without evidence that they improve the match.
+        For bytecode edits, check the exact insertion point, instruction order after mutation, register allocation and types, invoke/move-result adjacency, branch targets, and verifier-safe control flow. Check patch dependencies before access to resources or injected extension classes.
+        For compatibility changes, check AppTarget versions, compatibleWith, default selection, and availability for ABI or install-target restrictions. The CLI can force versions, options, and bundles that Manager cannot; review whether the feature is reachable through Manager. A declared signature is a Manager warning, not an enforcement gate.
+        For resource, manifest, raw, Hermes, and native edits, check the target package, version and split, valid references, input bounds, ABI assumptions, and output consistency.
+        Patch-time code must also run against Android's class library in Manager; flag desktop-only JDK APIs when reachable on that path.
+    - path: "patches/src/main/resources/**"
+      instructions: |
+        Review changed text assets, smali, mapping tables, and native payload references against the patch code that consumes them. Check file names, packaged paths, ABI coverage, version coupling, and whether a missing or malformed asset causes a controlled failure. Do not speculate about opaque binary contents without evidence from a consumer or a reproducible check.
+    - path: "extensions/{extension/src/main,moviebox/src,ijiami/src,ijiami/native,gstarmc}/**"
+      instructions: |
+        Runtime sources and payloads under extensions are merged into the target APK and run inside the host app; review them as Android runtime code, not as patch-time tooling. Check injected method descriptors and call sites against the extension classes, initialization order, null/context assumptions, and failures that would crash app startup or a patched feature. The shared extensions/extension module has minSdk 23 and no core-library desugaring; standalone payloads use the API floor in their build scripts. For the shared module, flag unguarded newer Android/Java APIs and Java records or other dependencies on an R8 runtime shim. For WebView JavaScript, check bridge availability and host-page timing. For native and smali payloads, check loading and ABI assumptions. Prefer a concrete affected API level or call path over generic portability warnings.
+    - path: "{**/*.gradle.kts,extensions/**/build.sh}"
+      instructions: |
+        Check that build changes package the required extension classes, JavaScript assets, and native payloads for their consumers. Distinguish the build JVM from Android patch execution and injected Android runtime code. Check compile-only dependencies against the host classpath and the API floor declared for each payload.
+    - path: "patches/src/test/**"
+      instructions: |
+        Check that assertions exercise the claimed patch behavior and relevant failure cases. A unit test cannot prove that a fingerprint matches a stock APK or that an injected feature works on-device; request that evidence only when the changed behavior needs it.
+    - path: "extensions/extension/src/test/**"
+      instructions: |
+        Check that tests cover host-runtime behavior and API-level boundaries relevant to the change. Do not treat a JVM or Robolectric pass as proof that the injected APK launches or the patched feature works.
+knowledge_base:
+  code_guidelines:
+    enabled: false
