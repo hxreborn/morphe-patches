@@ -57,8 +57,6 @@ private const val MEMBER_NOT_LOGGED_IN_LOG = "showMemberNotLoggedInLoginDialog:i
 
 private val PREMIUM_QUOTA_KEYS = listOf("free_download_count", "max_resolution")
 private val FREE_PLAY_QUOTA_KEYS = listOf(
-    "preview_seconds",
-    "free_hd_preview_count",
     "free_play_seconds",
     "free_block_time",
     "highquality_free_time",
@@ -149,8 +147,8 @@ val allInOnePatch = resourcePatch(
             methodsCalling(PREMIUM_PROVIDER, MEMBER_INFO, "isActive", BOOLEAN).returnEarly(true)
             methodsCalling(PREMIUM_PROVIDER, MEMBER_INFO, "getVipLevel", BOOLEAN).returnEarly(true)
             PREMIUM_QUOTA_KEYS.forEach { methodWithString(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
-            FREE_PLAY_QUOTA_KEYS.forEach { methodWithStringOrNull(PREMIUM_PROVIDER, it)?.returnEarly(UNLIMITED) }
-            AD_UNLOCK_COUNT_KEYS.forEach { methodWithStringOrNull(PREMIUM_PROVIDER, it)?.returnEarly(NO_AD_UNLOCKS) }
+            FREE_PLAY_QUOTA_KEYS.forEach { methodWithString(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
+            AD_UNLOCK_COUNT_KEYS.forEach { methodWithString(PREMIUM_PROVIDER, it).returnEarly(NO_AD_UNLOCKS) }
             methodWithString(PREMIUM_PROVIDER, RESOLUTIONS_PER_DOWNLOAD_KEY).returnEarly(DOWNLOAD_RESOLUTIONS)
             methodsCalling(PREMIUM_PROVIDER, MEMBER_INFO, "getDaysLeft", BOXED_INTEGER).returnBoxed(DAYS_LEFT)
             method(PREMIUM_ACCESS, "getHasAccess").returnBoxed(true)
@@ -158,7 +156,7 @@ val allInOnePatch = resourcePatch(
             method(MEMBER_RESOLUTION, "isUnlock").returnBoxed(true)
             method(MEMBER_RESOLUTION, "getVipResolutionTip").returnBoxed(false)
             method(OBSERVE_LOGIN_ACTION, "onLogout").returnEarly()
-            methodWithStringOrNull(MEMBER_LOGIN_HELPER, MEMBER_NOT_LOGGED_IN_LOG)?.returnEarly(false)
+            methodWithString(MEMBER_LOGIN_HELPER, MEMBER_NOT_LOGGED_IN_LOG).returnEarly(false)
 
             REQUIRE_MEMBER_TYPE_HOLDERS.forEach { method(it, "getRequireMemberType").returnNull() }
             method(DOWNLOAD_RESOLUTION_ITEM, "getRequireMemberType").returnEarly(FREE)
