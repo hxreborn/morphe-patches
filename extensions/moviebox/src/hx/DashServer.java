@@ -40,6 +40,17 @@ final class DashServer implements Runnable {
                       String resourceId, boolean fromStart) throws IOException;
     }
 
+    static final class RedirectException extends IOException {
+        private static final long serialVersionUID = 1L;
+
+        final String location;
+
+        RedirectException(String location) {
+            super("redirect to " + location);
+            this.location = location;
+        }
+    }
+
     static final class UnavailableException extends IOException {
         private static final long serialVersionUID = 1L;
 
@@ -181,6 +192,12 @@ final class DashServer implements Runnable {
         return true;
     }
 
+    private static void writeRedirect(OutputStream out, String location) throws IOException {
+        StringBuilder sb = buildStatusHeader(STATUS_FOUND).append("Location: ").append(location).append("\r\n")
+                .append("Content-Length: 0\r\n\r\n");
+        out.write(sb.toString().getBytes(StandardCharsets.ISO_8859_1));
+    }
+
     private static String findRangeHeader(String[] requestHead) {
         for (int i = 1; i < requestHead.length; i++) {
             if (requestHead[i].regionMatches(true, 0, RANGE_HEADER, 0, RANGE_HEADER.length())) {
@@ -210,6 +227,9 @@ final class DashServer implements Runnable {
             file = source.open(path.group(1), Integer.parseInt(path.group(2)),
                     Integer.parseInt(path.group(3)), Integer.parseInt(path.group(4)), origin, originSize,
                     target.getQueryParameter(RESOURCE_ID_PARAMETER), fromStart);
+        } catch (RedirectException redirect) {
+            writeRedirect(out, redirect.location);
+            return;
         } catch (UnavailableException gone) {
             Log.i(TAG, "unavailable " + request[1] + ": " + gone.getMessage());
             writeEmpty(out, STATUS_NOT_FOUND, null);
@@ -223,9 +243,7 @@ final class DashServer implements Runnable {
             if (origin == null) {
                 writeEmpty(out, STATUS_NOT_FOUND, null);
             } else {
-                StringBuilder sb = buildStatusHeader(STATUS_FOUND).append("Location: ").append(origin).append("\r\n")
-                        .append("Content-Length: 0\r\n\r\n");
-                out.write(sb.toString().getBytes(StandardCharsets.ISO_8859_1));
+                writeRedirect(out, origin);
             }
             return;
         }

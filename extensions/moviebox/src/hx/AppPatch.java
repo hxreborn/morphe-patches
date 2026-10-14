@@ -415,6 +415,7 @@ public final class AppPatch {
         private final Map<String, SignedResource> resources = newLruMap(RESOURCE_RETENTION);
         private final Map<String, Long> originLengths = newLruMap(RESOURCE_RETENTION);
         private final Map<String, Boolean> directFiles = newLruMap(RESOURCE_RETENTION);
+        private final Map<String, String> directFileUrls = newLruMap(RESOURCE_RETENTION);
         private final Map<String, Boolean> handedOff = newLruMap(RESOURCE_RETENTION);
         private final Map<String, FutureTask<DashFile>> files = newLruMap(FILE_RETENTION);
         private final CloudFrontPlayInfoClient cloudFrontPlayInfoClient = new CloudFrontPlayInfoClient();
@@ -449,11 +450,18 @@ public final class AppPatch {
                 Log.i(TAG, label + ": redirect to origin, size " + originSize + " matches");
                 return null;
             }
+            String directFileUrl = knownDirectFileUrl(resourceId);
+            if (directFileUrl != null) throw new DashServer.RedirectException(directFileUrl);
             SignedResource signed;
             try {
                 signed = resource(subjectId, season, episode, null);
             } catch (NoSignedResourceException noResource) {
                 if (origin == null) throw noResource;
+                directFileUrl = resolveDirectFileUrl(subjectId, resourceId, origin);
+                if (directFileUrl != null) {
+                    Log.i(TAG, label + ": redirect to direct file on " + Uri.parse(directFileUrl).getHost());
+                    throw new DashServer.RedirectException(directFileUrl);
+                }
                 if (isPlaceholder(origin, originSize)) {
                     throw new DashServer.UnavailableException(label + ": origin is a placeholder for " + originSize + " bytes");
                 }
@@ -558,6 +566,29 @@ public final class AppPatch {
                 diagnose(NO_STREAM);
                 return null;
             }
+        }
+
+        private String knownDirectFileUrl(String resourceId) {
+            if (resourceId == null) return null;
+            synchronized (directFileUrls) {
+                return directFileUrls.get(resourceId);
+            }
+        }
+
+        private String resolveDirectFileUrl(String subjectId, String resourceId, String origin) {
+            if (resourceId == null) return null;
+            String url;
+            try {
+                url = fetchDirectFileUrl(subjectId, resourceId, origin);
+            } catch (IOException | JSONException e) {
+                Log.w(TAG, "direct file " + resourceId + " not resolved", e);
+                return null;
+            }
+            if (url.isEmpty()) return null;
+            synchronized (directFileUrls) {
+                directFileUrls.put(resourceId, url);
+            }
+            return url;
         }
 
         private String fetchDirectFileUrl(String subjectId, String resourceId, String origin) throws IOException,
