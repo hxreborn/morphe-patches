@@ -63,6 +63,7 @@ public final class AppPatch {
     private static final String BFF = "wefeed-mobile-bff";
     private static final String PLAY_INFO = BFF + "/subject-api/play-info/v2";
     private static final String RESOURCE_POSITION = BFF + "/subject-api/resource-position/v2";
+    private static final String RESOURCE_LIST = BFF + "/subject-api/resource/v2";
     private static final String PLAY_INFO_SEGMENT = "/subject-api/play-info/";
     private static final String RESOURCE_LIST_SEGMENT = "/subject-api/resource/";
     private static final String USER_PROFILE = BFF + "/user-api/profile";
@@ -77,8 +78,7 @@ public final class AppPatch {
     private static final long MANAGER_RETRY_DELAY_MS = 50L;
     private static final String INSTALL_FAILED = "Playback patch failed to load";
     private static final String ACTIVITY_THREAD = "android.app.ActivityThread";
-    private static final String NO_STREAM = "No signed stream for this title";
-    private static final String NOT_HOSTED = "This title is not hosted";
+    private static final String NO_STREAM = "No stream for this title";
 
     private static final Set<String> reported = Collections.synchronizedSet(new HashSet<>());
 
@@ -430,7 +430,6 @@ public final class AppPatch {
             SignedResource resource = SignedResource.fromPlayInfo(body);
             if (resource == null) {
                 Log.w(TAG, "play-info " + key + ": no signed DASH resource");
-                diagnose(NO_STREAM);
                 return null;
             }
             Log.i(TAG, "play-info " + key + ": DASH on " + Uri.parse(resource.manifestUrl).getHost()
@@ -456,7 +455,6 @@ public final class AppPatch {
             } catch (NoSignedResourceException noResource) {
                 if (origin == null) throw noResource;
                 if (isPlaceholder(origin, originSize)) {
-                    diagnose(NOT_HOSTED);
                     throw new DashServer.UnavailableException(label + ": origin is a placeholder for " + originSize + " bytes");
                 }
                 Log.i(TAG, label + ": redirect to origin, " + noResource.getMessage());
@@ -492,10 +490,7 @@ public final class AppPatch {
                 if (known != null) return known;
             }
             try {
-                String body = get(apiBase + RESOURCE_POSITION + "?subjectId=" + subjectId + "&resourceId=" + resourceId
-                        + "&failUrl=" + Uri.encode(origin) + "&failCode=404&resourceNum=0&isVip=true");
-                JSONArray list = new JSONObject(body).getJSONObject("data").optJSONArray("list");
-                String url = list == null || list.length() == 0 ? "" : list.getJSONObject(0).optString("resourceLink", "");
+                String url = fetchDirectFileUrl(subjectId, resourceId, origin);
                 long length = url.isEmpty() ? -1 : probeLength(url);
                 boolean available = length == originSize;
                 Log.i(TAG, "direct file " + resourceId + ": " + (url.isEmpty() ? "none"
@@ -508,6 +503,69 @@ public final class AppPatch {
                 Log.w(TAG, "direct file " + resourceId + " not checked", e);
                 return false;
             }
+        }
+
+        String fetchDirectFilePlayInfo(String playInfo, String subjectId, int season, int episode) {
+            if (subjectId == null || season < 0 || episode < 0) return null;
+            String key = SignedResource.key(subjectId, season, episode);
+            try {
+                JSONObject root = new JSONObject(playInfo);
+                JSONObject data = root.getJSONObject("data");
+                JSONArray rows = new JSONObject(get(apiBase + RESOURCE_LIST + "?subjectId=" + subjectId
+                        + "&page=1&perPage=8&all=0&startPosition=1&endPosition=1&pagerMode=2&resolution=0&se="
+                        + season + "&epFrom=" + episode + "&epTo=" + episode + "&isVip=true"))
+                        .getJSONObject("data").getJSONArray("list");
+                List<JSONObject> streams = new ArrayList<>();
+                for (int i = 0; i < rows.length(); i++) {
+                    try {
+                        JSONObject row = rows.getJSONObject(i);
+                        if (row.optInt("se", -1) != season || row.optInt("ep", -1) != episode) continue;
+                        String resourceId = row.getString("resourceId");
+                        String url = fetchDirectFileUrl(subjectId, resourceId, row.optString("resourceLink"));
+                        if (url.isEmpty()) continue;
+                        streams.add(new JSONObject()
+                                .put("format", "MP4")
+                                .put("id", resourceId)
+                                .put("url", url)
+                                .put("resolutions", String.valueOf(row.getInt("resolution")))
+                                .put("size", row.optString("size"))
+                                .put("duration", row.optInt("duration"))
+                                .put("codecName", row.optString("codecName"))
+                                .put("signCookie", "")
+                                .put("idType", ""));
+                    } catch (IOException | JSONException e) {
+                        Log.w(TAG, "play-info " + key + ": direct file row " + i + " not resolved", e);
+                    }
+                }
+                if (streams.isEmpty()) {
+                    Log.w(TAG, "play-info " + key + ": no direct file");
+                    diagnose(NO_STREAM);
+                    return null;
+                }
+                Collections.sort(streams, (a, b) -> Integer.compare(b.optInt("resolutions"), a.optInt("resolutions")));
+                StringBuilder resolutions = new StringBuilder();
+                for (JSONObject stream : streams) {
+                    if (resolutions.length() > 0) resolutions.append(',');
+                    resolutions.append(stream.getString("resolutions"));
+                }
+                data.put("streams", new JSONArray(streams));
+                data.put("displayResolutions", resolutions.toString());
+                Log.i(TAG, "play-info " + key + ": direct files at " + resolutions + "p on "
+                        + Uri.parse(streams.get(0).getString("url")).getHost());
+                return root.toString();
+            } catch (IOException | JSONException e) {
+                Log.w(TAG, "play-info " + key + ": direct files not resolved", e);
+                diagnose(NO_STREAM);
+                return null;
+            }
+        }
+
+        private String fetchDirectFileUrl(String subjectId, String resourceId, String origin) throws IOException,
+                JSONException {
+            JSONArray list = new JSONObject(get(apiBase + RESOURCE_POSITION + "?subjectId=" + subjectId
+                    + "&resourceId=" + resourceId + "&failUrl=" + Uri.encode(origin)
+                    + "&failCode=404&resourceNum=0&isVip=true")).getJSONObject("data").optJSONArray("list");
+            return list == null || list.length() == 0 ? "" : list.getJSONObject(0).optString("resourceLink", "");
         }
 
         private boolean isPlaceholder(String origin, long originSize) {
@@ -778,12 +836,17 @@ public final class AppPatch {
             }
             String out;
             if (playInfo) {
+                Uri requested = Uri.parse(url);
+                if (SignedResource.fromPlayInfo(text) == null) {
+                    String direct = source.fetchDirectFilePlayInfo(text, requested.getQueryParameter("subjectId"),
+                            parseQueryInt(requested, "se"), parseQueryInt(requested, "ep"));
+                    if (direct != null) return direct.getBytes(StandardCharsets.UTF_8);
+                }
                 Object sent = response.getClass().getMethod("request").invoke(response);
                 source.observePlayInfo(url, text, Uri.parse(String.valueOf(
                         sent.getClass().getMethod("url").invoke(sent))).getHost());
-                Uri playInfoUri = Uri.parse(url);
-                out = rewritePlayInfo(text, playInfoUri.getQueryParameter("subjectId"),
-                        parseQueryInt(playInfoUri, "se"), parseQueryInt(playInfoUri, "ep"));
+                out = rewritePlayInfo(text, requested.getQueryParameter("subjectId"),
+                        parseQueryInt(requested, "se"), parseQueryInt(requested, "ep"));
             } else if (resourceList) {
                 out = routeDownloads ? rewriteResourceList(text) : text;
             } else {
