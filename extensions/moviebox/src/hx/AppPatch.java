@@ -405,7 +405,6 @@ public final class AppPatch {
         private static final int FILE_RETENTION = 8;
         private static final int RESOURCE_RETENTION = 32;
         private static final int ORIGIN_PROBE_TIMEOUT_MS = 10000;
-        private static final long PLACEHOLDER_SIZE_RATIO = 2;
         private static final int PLAY_INFO_ATTEMPTS = 5;
         private static final long PLAY_INFO_RETRY_DELAY_MS = 2000L;
 
@@ -414,7 +413,6 @@ public final class AppPatch {
         private final String apiBase;
         private final Map<String, SignedResource> resources = newLruMap(RESOURCE_RETENTION);
         private final Map<String, Long> originLengths = newLruMap(RESOURCE_RETENTION);
-        private final Map<String, Boolean> directFiles = newLruMap(RESOURCE_RETENTION);
         private final Map<String, String> directFileUrls = newLruMap(RESOURCE_RETENTION);
         private final Map<String, Boolean> handedOff = newLruMap(RESOURCE_RETENTION);
         private final Map<String, FutureTask<DashFile>> files = newLruMap(FILE_RETENTION);
@@ -457,16 +455,13 @@ public final class AppPatch {
                 signed = resource(subjectId, season, episode, null);
             } catch (NoSignedResourceException noResource) {
                 if (origin == null) throw noResource;
-                directFileUrl = resolveDirectFileUrl(subjectId, resourceId, origin);
+                directFileUrl = resolveDirectFileUrl(subjectId, resourceId, origin, originSize);
                 if (directFileUrl != null) {
                     Log.i(TAG, label + ": redirect to direct file on " + Uri.parse(directFileUrl).getHost());
                     throw new DashServer.RedirectException(directFileUrl);
                 }
-                if (isPlaceholder(origin, originSize)) {
-                    throw new DashServer.UnavailableException(label + ": origin is a placeholder for " + originSize + " bytes");
-                }
-                Log.i(TAG, label + ": redirect to origin, " + noResource.getMessage());
-                return null;
+                diagnose(NO_STREAM);
+                throw new DashServer.UnavailableException(label + ": no signed DASH resource and no direct file");
             }
             if (isHandedOff(label, subjectId, signed, resourceId, origin, originSize, fromStart)) {
                 throw new DashServer.UnavailableException(label + ": DASH on " + Uri.parse(signed.manifestUrl).getHost()
@@ -482,34 +477,12 @@ public final class AppPatch {
                 if (decided != null) return decided;
             }
             boolean handOff = fromStart && !DashFile.isUnpacedCdn(signed.manifestUrl)
-                    && hasDirectFile(subjectId, resourceId, origin, originSize);
+                    && resolveDirectFileUrl(subjectId, resourceId, origin, originSize) != null;
             synchronized (handedOff) {
                 Boolean decided = handedOff.get(label);
                 if (decided != null) return decided;
                 handedOff.put(label, handOff);
                 return handOff;
-            }
-        }
-
-        private boolean hasDirectFile(String subjectId, String resourceId, String origin, long originSize) {
-            if (resourceId == null || origin == null || originSize <= 0) return false;
-            synchronized (directFiles) {
-                Boolean known = directFiles.get(resourceId);
-                if (known != null) return known;
-            }
-            try {
-                String url = fetchDirectFileUrl(subjectId, resourceId, origin);
-                long length = url.isEmpty() ? -1 : probeLength(url);
-                boolean available = length == originSize;
-                Log.i(TAG, "direct file " + resourceId + ": " + (url.isEmpty() ? "none"
-                        : Uri.parse(url).getHost() + ", " + length + " of " + originSize + " bytes"));
-                synchronized (directFiles) {
-                    directFiles.put(resourceId, available);
-                }
-                return available;
-            } catch (IOException | JSONException | NumberFormatException e) {
-                Log.w(TAG, "direct file " + resourceId + " not checked", e);
-                return false;
             }
         }
 
@@ -547,7 +520,6 @@ public final class AppPatch {
                 }
                 if (streams.isEmpty()) {
                     Log.w(TAG, "play-info " + key + ": no direct file");
-                    diagnose(NO_STREAM);
                     return null;
                 }
                 Collections.sort(streams, (a, b) -> Integer.compare(b.optInt("resolutions"), a.optInt("resolutions")));
@@ -563,7 +535,6 @@ public final class AppPatch {
                 return root.toString();
             } catch (IOException | JSONException e) {
                 Log.w(TAG, "play-info " + key + ": direct files not resolved", e);
-                diagnose(NO_STREAM);
                 return null;
             }
         }
@@ -575,16 +546,23 @@ public final class AppPatch {
             }
         }
 
-        private String resolveDirectFileUrl(String subjectId, String resourceId, String origin) {
+        private String resolveDirectFileUrl(String subjectId, String resourceId, String origin, long originSize) {
+            if (origin == null || originSize <= 0) return null;
+            String known = knownDirectFileUrl(resourceId);
+            if (known != null) return known;
             if (resourceId == null) return null;
             String url;
+            long length;
             try {
                 url = fetchDirectFileUrl(subjectId, resourceId, origin);
-            } catch (IOException | JSONException e) {
-                Log.w(TAG, "direct file " + resourceId + " not resolved", e);
+                length = url.isEmpty() ? -1 : probeLength(url);
+            } catch (IOException | JSONException | NumberFormatException e) {
+                Log.w(TAG, "direct file " + resourceId + " not checked", e);
                 return null;
             }
-            if (url.isEmpty()) return null;
+            Log.i(TAG, "direct file " + resourceId + ": " + (url.isEmpty() ? "none"
+                    : Uri.parse(url).getHost() + ", " + length + " of " + originSize + " bytes"));
+            if (length != originSize) return null;
             synchronized (directFileUrls) {
                 directFileUrls.put(resourceId, url);
             }
@@ -597,11 +575,6 @@ public final class AppPatch {
                     + "&resourceId=" + resourceId + "&failUrl=" + Uri.encode(origin)
                     + "&failCode=404&resourceNum=0&isVip=true")).getJSONObject("data").optJSONArray("list");
             return list == null || list.length() == 0 ? "" : list.getJSONObject(0).optString("resourceLink", "");
-        }
-
-        private boolean isPlaceholder(String origin, long originSize) {
-            long actual = originLength(origin);
-            return originSize > 0 && actual > 0 && actual * PLACEHOLDER_SIZE_RATIO < originSize;
         }
 
         private long originLength(String origin) {

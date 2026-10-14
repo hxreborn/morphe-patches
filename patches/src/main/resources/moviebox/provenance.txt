@@ -1,8 +1,8 @@
 build-tools 37.0.0
 platform android-36
 javac 21.0.12.1
-a191ece38a5d13c2a290703cbdf17dc708a43dac2323a8793cb596cde51ea22b  src/hx/AppPatch.java
+f99d3d9caee4bd08f02a5a9dce2a9519b7162a26a98d5734e02f1c5e593ab412  src/hx/AppPatch.java
 179cb4a72eeed3c10c00d171890414b1ae66e10de0d98c3e60014f21ee21da05  src/hx/CloudFrontPlayInfoClient.java
 2fe1deebd0d6ea2cdf603d9a95db51ca735309b874817eaef0db3d701960719a  src/hx/DashFile.java
 dcb7580847bd4f641b3cecd88951aede8537466ff52e0403271473e7844cc3c7  src/hx/DashServer.java
-69d1c043bcb59f03b3edee0f6f54bacc3103faf2beb860c09473058174b22cc2  dashhook.dex
+c41e7b85bd53e721d0d198f041290f3d9bbcaa5ac66a4b8a5d289ad95e899472  dashhook.dex
