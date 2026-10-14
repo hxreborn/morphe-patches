@@ -12,7 +12,7 @@ platform_version=${PLATFORM_VERSION:-36}
 sdk=${ANDROID_HOME:-$HOME/Android/Sdk}
 build_tools=${BUILD_TOOLS:-$sdk/build-tools/$build_tools_version}
 platform=${PLATFORM:-$sdk/platforms/android-$platform_version/android.jar}
-clang=${NDK:-$sdk/ndk/$ndk_version}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android23-clang
+toolchain=${NDK:-$sdk/ndk/$ndk_version}/toolchains/llvm/prebuilt/linux-x86_64/bin
 
 die() {
     echo "$*" >&2
@@ -21,7 +21,7 @@ die() {
 
 [ -x "$build_tools/d8" ] || die "no d8 at $build_tools; install build-tools $build_tools_version or set BUILD_TOOLS"
 [ -f "$platform" ] || die "no android.jar at $platform; install platform $platform_version or set PLATFORM"
-[ -x "$clang" ] || die "no clang at $clang; install NDK $ndk_version or set NDK"
+[ -x "$toolchain/clang" ] || die "no NDK toolchain at $toolchain; install NDK $ndk_version or set NDK"
 command -v javac >/dev/null || die "javac is not on PATH"
 
 verify=false
@@ -45,6 +45,11 @@ cp "$work/boot/classes.dex" "$out/boot.dex"
 rm -f "$out"/libhxpatch*.so
 for header in "$here"/native/profiles/*.h; do
     profile=$(basename "$header" .h)
+    case $(sed -n 's/^#define HX_ABI "\(.*\)"$/\1/p' "$header") in
+        arm64-v8a) clang=$toolchain/aarch64-linux-android23-clang ;;
+        armeabi-v7a) clang=$toolchain/armv7a-linux-androideabi23-clang ;;
+        *) die "$header declares no supported HX_ABI" ;;
+    esac
     "$clang" -O2 -fPIC -shared -Wall -Wextra -Werror -I"$here/native" \
         -DHX_PROFILE="\"profiles/$profile.h\"" \
         -o "$out/libhxpatch-$profile.so" "$here/native/hxpatch.c" -llog

@@ -13,6 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+#define HX_ABI "arm64-v8a"
+
 #define IMAGE_MIN_SIZE 0x39000
 #define ANCHOR_A_OFFSET 0x1218
 #define ANCHOR_A_FIRST 0xf940aae8

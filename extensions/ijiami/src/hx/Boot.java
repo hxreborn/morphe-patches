@@ -51,11 +51,10 @@ final class Boot {
     private static final String NATIVE_LIBRARY = "libhxpatch.so";
     private static final String ARM64_ABI = "arm64-v8a";
     private static final String ARM32_ABI = "armeabi-v7a";
-    private static final String NATIVE_LIBRARY_ENTRY = "lib/" + ARM64_ABI + "/" + NATIVE_LIBRARY;
     private static final String APP_HOOK_CLASS = "hx.AppPatch";
     private static final String STRIP_WARNING =
             "Disable \"Optimize for device architecture\" & re-patch";
-    private static final String ARCH_WARNING = "This device runs 32-bit, the patch needs arm64";
+    private static final String ARCH_WARNING = "This device's architecture is not supported by the patch";
 
     private static boolean installed;
     private static boolean appHookStarted;
@@ -199,11 +198,7 @@ final class Boot {
     }
 
     private static void loadNativeLibrary(ApplicationInfo info) throws Exception {
-        if (!Process.is64Bit()) {
-            Log.e(TAG, "32-bit process; arm64 " + NATIVE_LIBRARY + " cannot load");
-            toast(ARCH_WARNING);
-            return;
-        }
+        String libraryEntry = "lib/" + (Process.is64Bit() ? ARM64_ABI : ARM32_ABI) + "/" + NATIVE_LIBRARY;
 
         try {
             System.load(info.nativeLibraryDir + File.separator + NATIVE_LIBRARY);
@@ -214,9 +209,10 @@ final class Boot {
         File extracted = new File(info.dataDir + File.separator + "files", NATIVE_LIBRARY);
 
         try (ZipFile archive = new ZipFile(info.sourceDir)) {
-            ZipEntry entry = archive.getEntry(NATIVE_LIBRARY_ENTRY);
+            ZipEntry entry = archive.getEntry(libraryEntry);
             if (entry == null) {
-                throw new IllegalStateException("missing APK entry: " + NATIVE_LIBRARY_ENTRY);
+                toast(ARCH_WARNING);
+                throw new IllegalStateException("missing APK entry: " + libraryEntry);
             }
 
             if (!matches(extracted, entry)) {

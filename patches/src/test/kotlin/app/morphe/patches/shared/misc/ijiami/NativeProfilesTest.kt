@@ -4,23 +4,20 @@
  */
 package app.morphe.patches.shared.misc.ijiami
 
-import app.morphe.patcher.patch.PatchException
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import java.io.File
 import java.util.zip.ZipFile
 import kotlin.test.Test
 import kotlin.test.assertNotNull
-import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
+
+private val PACKER_LIBRARIES = listOf("assets/ijm_lib/arm64-v8a/libexec.so", "assets/ijm_lib/armeabi/libexec.so")
 
 internal class NativeProfilesTest {
     @Test
-    fun `rejects an unrecognized native library`() {
-        val message = assertFailsWith<PatchException> {
-            NativeProfiles.forLibexec(ByteArray(4096) { 0x2A })
-        }.message
-
-        assertTrue(message!!.contains("Unsupported"), message)
+    fun `selects no profile for an unrecognized native library`() {
+        assertNull(NativeProfiles.forLibexecOrNull(ByteArray(4096) { 0x2A }))
     }
 
     @Test
@@ -32,17 +29,22 @@ internal class NativeProfilesTest {
             val apk = File(path)
             assertTrue(apk.isFile, "configured stock APK does not exist: $apk")
 
-            val libexec = ZipFile(apk).use { zip ->
-                val entry = zip.getEntry("assets/ijm_lib/arm64-v8a/libexec.so")
-                    ?: throw AssertionError("${apk.name} has no arm64 libexec.so")
-                zip.getInputStream(entry).readBytes()
+            val packers = ZipFile(apk).use { zip ->
+                PACKER_LIBRARIES.mapNotNull { library -> zip.getEntry(library)?.let { library to zip.getInputStream(it).readBytes() } }
             }
+            assertTrue(packers.isNotEmpty(), "${apk.name} has no Ijiami packer library")
 
-            val profile = NativeProfiles.forLibexec(libexec)
-            assertNotNull(
-                NativeProfilesTest::class.java.getResourceAsStream("/ijiami/${profile.resource}"),
-                "${apk.name} selected ${profile.name} but ${profile.resource} is not bundled",
-            )
+            packers.forEach { (library, libexec) ->
+                val profile = assertNotNull(NativeProfiles.forLibexecOrNull(libexec), "${apk.name} has no profile for $library")
+                assertBundled(apk, profile)
+            }
         }
+    }
+
+    private fun assertBundled(apk: File, profile: NativeProfile) {
+        assertNotNull(
+            NativeProfilesTest::class.java.getResourceAsStream("/ijiami/${profile.resource}"),
+            "${apk.name} selected ${profile.name} but ${profile.resource} is not bundled",
+        )
     }
 }

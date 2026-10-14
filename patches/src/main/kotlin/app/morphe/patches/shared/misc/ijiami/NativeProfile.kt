@@ -4,7 +4,6 @@
  */
 package app.morphe.patches.shared.misc.ijiami
 
-import app.morphe.patcher.patch.PatchException
 import java.security.MessageDigest
 
 internal class NativeProfile(val name: String, val libexecSha256: String, val resource: String)
@@ -21,12 +20,18 @@ internal object NativeProfiles {
             "1f3fe693586b069264b80a47349c2aee29daacab4511ccc54d7d5d9023124dfd",
             "libhxpatch-1f3fe693.so",
         ),
+        NativeProfile(
+            "ed71312c",
+            "ed71312c4f1427b0ea9b8628b2aa4ec1cfa5a841a8ff425deeb2a41bba713dc2",
+            "libhxpatch-ed71312c.so",
+        ),
     )
 
-    fun forLibexec(libexec: ByteArray): NativeProfile {
-        val digest = MessageDigest.getInstance("SHA-256").digest(libexec)
-            .joinToString("") { "%02x".format(it) }
+    fun forLibexecOrNull(libexec: ByteArray): NativeProfile? {
+        val digest = sha256(libexec)
         return all.firstOrNull { it.libexecSha256 == digest }
-            ?: throw PatchException("Unsupported Ijiami native packer build: libexec.so sha-256 $digest")
     }
+
+    fun sha256(bytes: ByteArray) =
+        MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 }
