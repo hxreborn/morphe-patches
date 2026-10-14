@@ -428,6 +428,19 @@ internal object AppCompatibilities {
         ),
     )
 
+    val MOVIEBOX_TV = Compatibility(
+        name = "MovieBox TV",
+        packageName = "com.community.mbox.tv",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x30E66D,
+        signatures = setOf(
+            "03d4b741632d136bc23e2de4c6adcdb7712f1980b619c183221801730bbd0410",
+        ),
+        targets = listOf(
+            AppTarget(version = "1.2.0.0923.web_socialmedia", versionCode = 50040018, minSdk = 29),
+        ),
+    )
+
     val MUSIXMATCH = Compatibility(
         name = "Musixmatch",
         packageName = "com.musixmatch.android.lyrify",
