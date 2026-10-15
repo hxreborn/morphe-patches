@@ -6,6 +6,7 @@ package app.morphe.patches.readera.shared
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
@@ -68,5 +69,25 @@ internal fun ttsFlagInitFingerprint(settingsClass: String, flag: FieldReference)
     name = "<init>",
     filters = listOf(
         fieldAccess(flag, Opcode.IPUT_BOOLEAN),
+    ),
+)
+
+internal object DrawerMenuVisibilityFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PRIVATE),
+    returnType = "V",
+    parameters = listOf(),
+    filters = listOf(
+        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible"),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible", location = MatchAfterWithin(1)),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible", location = MatchAfterWithin(1)),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterWithin(1)),
+        opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
+        methodCall(definingClass = "Landroid/view/MenuItem;", name = "setVisible", location = MatchAfterImmediately()),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterWithin(1)),
+        opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
+        methodCall(definingClass = "Landroid/view/MenuItem;", name = "setVisible", location = MatchAfterImmediately()),
+        opcode(Opcode.IGET_OBJECT, MatchAfterImmediately()),
+        opcode(Opcode.CONST, MatchAfterImmediately()),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterImmediately()),
     ),
 )
