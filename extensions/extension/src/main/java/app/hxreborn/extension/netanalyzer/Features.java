@@ -16,6 +16,8 @@ public final class Features {
 
     private static final String TAG = "hxNetAnalyzer";
 
+    private static final String DETAILS_LABEL = "Details";
+
     private static final Map<String, Object> TOOLBAR_ACTIONS = new HashMap<>();
 
     private static Object menuClick;
@@ -66,6 +68,21 @@ public final class Features {
         });
     }
 
+    public static String externalIpLabel(String reloadLabel, Object stateHolder) {
+        return hasExternalIp(stateHolder) ? DETAILS_LABEL : reloadLabel;
+    }
+
+    public static Object onExternalIpClick(Object reload, Object stateHolder, boolean ipv6) {
+        final Runnable reloadAction = () -> HostCallbacks.invoke(reload);
+        return HostCallbacks.create(reload.getClass().getInterfaces(), () -> {
+            if (hasExternalIp(stateHolder)) {
+                ExternalIpActivity.show(stateHolder, ipv6, reloadAction);
+            } else {
+                reloadAction.run();
+            }
+        });
+    }
+
     public static void registerHostTools(Class<?> ping, Class<?> traceroute, String registration) {
         HostTools.register(ping, traceroute, registration);
     }
@@ -79,6 +96,15 @@ public final class Features {
     public static void recordTracerouteStart(String host, int maxDelay, int minDelay, boolean preferIpv6,
             boolean udpProbes) {
         HostTools.recordTracerouteStart(new Object[] { host, maxDelay, minDelay, preferIpv6, udpProbes });
+    }
+
+    private static boolean hasExternalIp(Object stateHolder) {
+        try {
+            final ExternalIp details = ExternalIp.read(stateHolder);
+            return details != null && details.address != null;
+        } catch (ReflectiveOperationException ex) {
+            return false;
+        }
     }
 
 }
