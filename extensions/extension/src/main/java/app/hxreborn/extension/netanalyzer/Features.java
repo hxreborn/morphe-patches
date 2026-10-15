@@ -98,6 +98,10 @@ public final class Features {
         HostTools.recordTracerouteStart(new Object[] { host, maxDelay, minDelay, preferIpv6, udpProbes });
     }
 
+    public static void open(String activityClass) {
+        HostActivity.open(activityClass, null);
+    }
+
     private static boolean hasExternalIp(Object stateHolder) {
         try {
             final ExternalIp details = ExternalIp.read(stateHolder);
