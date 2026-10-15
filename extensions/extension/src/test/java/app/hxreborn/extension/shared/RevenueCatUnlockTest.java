@@ -251,4 +251,63 @@ public final class RevenueCatUnlockTest {
         assertTrue(subscriber.getJSONObject("subscriptions").has("plus_monthly"));
     }
 
+    @Test
+    public void grantsALifetimeEntitlementWithoutAnExpiry() throws JSONException {
+        // given
+        final JSONObject body = body(new JSONObject());
+
+        // when
+        RevenueCatUnlock.grantLifetimeEntitlement(body, ENTITLEMENT, "pro_lifetime");
+
+        // then
+        final JSONObject subscriber = subscriber(body);
+        final JSONObject entitlement = subscriber.getJSONObject("entitlements").getJSONObject(ENTITLEMENT);
+        assertEquals("pro_lifetime", entitlement.getString("product_identifier"));
+        assertEquals(PURCHASE_DATE, entitlement.getString("purchase_date"));
+        assertTrue(entitlement.isNull("expires_date"));
+    }
+
+    @Test
+    public void recordsALifetimePurchaseAsANonSubscription() throws JSONException {
+        // given
+        final JSONObject body = body(new JSONObject());
+
+        // when
+        RevenueCatUnlock.grantLifetimeEntitlement(body, ENTITLEMENT, "pro_lifetime");
+
+        // then
+        final JSONObject transaction = subscriber(body).getJSONObject("non_subscriptions")
+            .getJSONArray("pro_lifetime")
+            .getJSONObject(0);
+        assertEquals(PURCHASE_DATE, transaction.getString("purchase_date"));
+        assertEquals(PURCHASE_DATE, transaction.getString("original_purchase_date"));
+        assertEquals("play_store", transaction.getString("store"));
+        assertFalse(transaction.getBoolean("is_sandbox"));
+        assertFalse(subscriber(body).has("subscriptions"));
+    }
+
+    @Test
+    public void keepsAnExistingLifetimePurchase() throws JSONException {
+        // given
+        final JSONObject owned = new JSONObject().put("id", "owned");
+        final JSONObject subscriber = new JSONObject().put("non_subscriptions",
+                new JSONObject().put("pro_lifetime", new JSONArray().put(owned)));
+        final JSONObject body = body(subscriber);
+
+        // when
+        RevenueCatUnlock.grantLifetimeEntitlement(body, ENTITLEMENT, "pro_lifetime");
+
+        // then
+        assertEquals("owned",
+                subscriber(body).getJSONObject("non_subscriptions")
+                    .getJSONArray("pro_lifetime")
+                    .getJSONObject(0)
+                    .getString("id"));
+    }
+
+    @Test
+    public void ignoresNullBodyForALifetimeGrant() {
+        RevenueCatUnlock.grantLifetimeEntitlement(null, ENTITLEMENT, "pro_lifetime");
+    }
+
 }

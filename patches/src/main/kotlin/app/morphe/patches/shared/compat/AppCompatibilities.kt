@@ -889,6 +889,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val WALLMAA = Compatibility(
+        name = "Wallmaa",
+        packageName = "com.wallmaa.minimal.wallpapers",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf("2da8b29136b6eb1735c32d87d56722bbd374ad8781119914bd7443adb64b0b0d"),
+        targets = listOf(AppTarget(version = "1.0.1", versionCode = 22, minSdk = 24)),
+    )
+
     val WALP = Compatibility(
         name = "WalP",
         packageName = "com.stresscodes.wallp",

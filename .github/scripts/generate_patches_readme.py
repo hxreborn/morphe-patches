@@ -194,6 +194,7 @@ ICONS = {
     "com.adithya.memoneet": "memoneet.png",
     "com.halalfire.medicneet": "medicneet.png",
     "com.stresscodes.wallp": "walp.png",
+    "com.wallmaa.minimal.wallpapers": "wallmaa.png",
     "com.spocky.projengmenu": "projectivy.png",
     "com.myvitale.forus": "forus.png",
     "com.psiphon3.subscription": "psiphon.png",

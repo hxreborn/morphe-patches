@@ -6,6 +6,7 @@ package app.hxreborn.extension.shared;
 
 import java.util.Iterator;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,26 +32,48 @@ public final class RevenueCatUnlock {
                 return;
             }
 
-            JSONObject subscriptions = subscriber.optJSONObject("subscriptions");
-            if (subscriptions == null) {
-                subscriptions = new JSONObject();
-                subscriber.put("subscriptions", subscriptions);
-            }
+            JSONObject subscriptions = getOrCreateObject(subscriber, "subscriptions");
             if (!subscriptions.has(product)) {
                 subscriptions.put(product, buildSubscription());
             }
 
-            JSONObject entitlements = subscriber.optJSONObject("entitlements");
-            if (entitlements == null) {
-                entitlements = new JSONObject();
-                subscriber.put("entitlements", entitlements);
-            }
+            JSONObject entitlements = getOrCreateObject(subscriber, "entitlements");
             entitlements.put(entitlement, buildEntitlement(product));
 
             renew(subscriptions);
             renew(entitlements);
         } catch (Exception ignored) {
         }
+    }
+
+    public static void grantLifetimeEntitlement(JSONObject body, String entitlement, String product) {
+        if (body == null) {
+            return;
+        }
+
+        try {
+            JSONObject subscriber = body.optJSONObject("subscriber");
+            if (subscriber == null) {
+                return;
+            }
+
+            JSONObject nonSubscriptions = getOrCreateObject(subscriber, "non_subscriptions");
+            if (!nonSubscriptions.has(product)) {
+                nonSubscriptions.put(product, new JSONArray().put(buildNonSubscriptionTransaction()));
+            }
+
+            getOrCreateObject(subscriber, "entitlements").put(entitlement, buildLifetimeEntitlement(product));
+        } catch (Exception ignored) {
+        }
+    }
+
+    private static JSONObject getOrCreateObject(JSONObject parent, String name) throws JSONException {
+        JSONObject child = parent.optJSONObject(name);
+        if (child == null) {
+            child = new JSONObject();
+            parent.put(name, child);
+        }
+        return child;
     }
 
     private static void renew(JSONObject entriesById) throws JSONException {
@@ -85,6 +108,24 @@ public final class RevenueCatUnlock {
         entitlement.put("product_identifier", product);
         entitlement.put("purchase_date", PURCHASE_DATE);
         entitlement.put("expires_date", EXPIRES_DATE);
+        return entitlement;
+    }
+
+    private static JSONObject buildNonSubscriptionTransaction() throws JSONException {
+        JSONObject transaction = new JSONObject();
+        transaction.put("id", "hx_lifetime");
+        transaction.put("purchase_date", PURCHASE_DATE);
+        transaction.put("original_purchase_date", PURCHASE_DATE);
+        transaction.put("store", "play_store");
+        transaction.put("is_sandbox", false);
+        return transaction;
+    }
+
+    private static JSONObject buildLifetimeEntitlement(String product) throws JSONException {
+        JSONObject entitlement = new JSONObject();
+        entitlement.put("product_identifier", product);
+        entitlement.put("purchase_date", PURCHASE_DATE);
+        entitlement.put("expires_date", JSONObject.NULL);
         return entitlement;
     }
 
