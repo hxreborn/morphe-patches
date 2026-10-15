@@ -6,6 +6,9 @@ reviews:
   suggested_labels: false
   suggested_reviewers: false
   enable_prompt_for_ai_agents: false
+  pre_merge_checks:
+    docstrings:
+      mode: "off"
   auto_review:
     enabled: true
     drafts: false
