@@ -558,6 +558,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.3", versionCode = 20, minSdk = 26)),
     )
 
+    val PRAYER_TIMES = Compatibility(
+        name = "Prayer Times and Qibla",
+        packageName = "com.reworewo.prayertimes",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x0E9567,
+        signatures = setOf(
+            "cd1f0d9a62d0479c4b71bbc4d519698269d6dc499d3953de7528087e515a1968",
+        ),
+        targets = listOf(AppTarget(version = "3.8.3", versionCode = 742, minSdk = 24)),
+    )
+
     val PROJECTIVY = Compatibility(
         name = "Projectivy Launcher",
         packageName = "com.spocky.projengmenu",

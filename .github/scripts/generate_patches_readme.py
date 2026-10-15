@@ -226,6 +226,7 @@ ICONS = {
     "com.musixmatch.android.lyrify": "musixmatch.png",
     "com.gstarmc.android": "dwgfastview.png",
     "com.mchutov.Quranify": "quranify.png",
+    "com.reworewo.prayertimes": "prayertimes.png",
     "com.sry.rateglance": "rateglance.png",
     "com.risesci.nyx": "risesleep.png",
     "ipnossoft.rma.free": "bettersleep.png",

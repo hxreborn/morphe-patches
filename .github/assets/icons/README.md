@@ -56,6 +56,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `dwgfastview.png` | DWG FastView (`com.gstarmc.android`) | Gstarsoft Co., Ltd. | APK 5.21.0, `drawable/ic_launcher`, xxxhdpi, cut to a circle |
 | `mymoveset.png` | MyMoveset (`com.soulbreakers.mymoveset`) | soulBREAKERS | APK downloaded 2026-09-27, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `quranify.png` | Quranify (`com.mchutov.Quranify`) | Media Content Labs, LLC | APK 2.2.8, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `prayertimes.png` | Prayer Times and Qibla (`com.reworewo.prayertimes`) | reworewo | APK 3.8.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `rateglance.png` | RateGlance (`com.sry.rateglance`) | choyoworks | APK 1.14.8, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `realmelink.png` | realme Link (`com.realme.link`) | realme Ltd. | APK 5.5.514.11421, `res/mipmap-xxxhdpi-v4/ic_launcher_me.png`, cut to a circle |
 | `ringtonemaker.png` | Ringtone Maker (`ringtonemaker.musiccutter.customringtones.freeringtonemaker`) | Dairy App & Notes & Audio Editor & Voice Recorder | APK 1.01.99.0909, `res/drawable-xxhdpi-v4/logo_oval.png` |
