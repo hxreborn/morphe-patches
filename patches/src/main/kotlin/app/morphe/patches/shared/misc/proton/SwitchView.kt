@@ -20,8 +20,6 @@ private const val SWITCH_VIEW_CLASS = "${PROTON_EXTENSION_PACKAGE}MaterialSwitch
 private const val ON_CHECKED_CHANGE_PARAMETER = 1
 private const val MODIFIER_PARAMETER = 2
 private const val ENABLED_PARAMETER = 3
-private const val MODIFIER_DEFAULT_BIT = 0x4
-private const val ENABLED_DEFAULT_BIT = 0x8
 private const val ANDROID_VIEW_PARAMETERS = 5
 private const val ANDROID_VIEW_PARAMETERS_WITH_DEFAULTS = 6
 
@@ -30,7 +28,10 @@ internal fun BytecodePatchContext.drawSwitchAsView(
     composerParameter: Int,
     modifierCompanion: FieldReference?,
     androidViewFingerprint: (function: String, modifier: String, composer: String) -> Fingerprint,
+    enabledParameter: Int = ENABLED_PARAMETER,
 ) {
+    val modifierDefaultBit = 1 shl MODIFIER_PARAMETER
+    val enabledDefaultBit = 1 shl enabledParameter
     val function = method.parameterTypes[ON_CHECKED_CHANGE_PARAMETER].toString()
     val androidView = androidViewFingerprint(
         function,
@@ -40,11 +41,11 @@ internal fun BytecodePatchContext.drawSwitchAsView(
     val defaultMask = "p${method.parameterTypes.lastIndex}"
     val (lastArgument, defaultModifier) = when {
         androidView.parameterTypes.size == ANDROID_VIEW_PARAMETERS_WITH_DEFAULTS -> "v6" to """
-            and-int/lit8 v6, $defaultMask, $MODIFIER_DEFAULT_BIT
+            and-int/lit8 v6, $defaultMask, $modifierDefaultBit
             shr-int/lit8 v6, v6, 0x1
         """
         androidView.parameterTypes.size == ANDROID_VIEW_PARAMETERS && modifierCompanion != null -> "v5" to """
-            and-int/lit8 v5, $defaultMask, $MODIFIER_DEFAULT_BIT
+            and-int/lit8 v5, $defaultMask, $modifierDefaultBit
             if-eqz v5, :modifier
             sget-object v2, ${descriptor(modifierCompanion)}
             :modifier
@@ -76,8 +77,8 @@ internal fun BytecodePatchContext.drawSwitchAsView(
             check-cast v1, $function
             move/from16 v2, p0
             move-object/from16 v3, p$ON_CHECKED_CHANGE_PARAMETER
-            move/from16 v4, p$ENABLED_PARAMETER
-            and-int/lit8 v5, $defaultMask, $ENABLED_DEFAULT_BIT
+            move/from16 v4, p$enabledParameter
+            and-int/lit8 v5, $defaultMask, $enabledDefaultBit
             if-eqz v5, :enabled
             const/4 v4, 0x1
             :enabled

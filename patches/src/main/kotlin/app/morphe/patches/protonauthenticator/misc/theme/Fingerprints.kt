@@ -9,6 +9,7 @@ import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val BACKGROUND_GRADIENT_TOP_FIELD = "backgroundGradientTop"
@@ -45,4 +46,30 @@ internal object ButtonShadowColorFingerprint : Fingerprint(
             location = MatchAfterImmediately(),
         ),
     ),
+)
+
+internal object MaterialSwitchFingerprint : Fingerprint(
+    definingClass = "Landroidx/compose/material3/SwitchKt;",
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    name = "Switch",
+    returnType = "V",
+    parameters = listOf(
+        "Z",
+        "Lkotlin/jvm/functions/Function1;",
+        "Landroidx/compose/ui/Modifier;",
+        "Lkotlin/jvm/functions/Function2;",
+        "Z",
+        "Landroidx/compose/material3/SwitchColors;",
+        "Landroidx/compose/foundation/interaction/MutableInteractionSource;",
+        "Landroidx/compose/runtime/Composer;",
+        "I",
+        "I",
+    ),
+)
+
+internal fun androidViewFingerprint(function: String, modifier: String, composer: String) = Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    name = "AndroidView",
+    returnType = "V",
+    parameters = listOf(function, modifier, function, composer, "I", "I"),
 )
