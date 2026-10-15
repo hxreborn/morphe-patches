@@ -36,6 +36,10 @@ public final class Features {
         try {
             LiveLanScan.observe(running, scanInfo, onStart, onStop);
             LanNames.setCurrentNetwork(LanScan.networkKeyOf(scanInfo));
+            final Activity activity = HostActivity.current();
+            if (activity != null) {
+                LanHistory.observe(activity, running, scanInfo);
+            }
         } catch (RuntimeException ex) {
             Log.e(TAG, "Cannot observe the LAN scan", ex);
         }
@@ -65,6 +69,10 @@ public final class Features {
         } catch (ReflectiveOperationException ex) {
             Log.e(TAG, "Cannot register the device name database", ex);
         }
+    }
+
+    public static void enableLanScanHistory() {
+        LanHistory.enable();
     }
 
     public static synchronized Object onToolbarAction(Class<?> onClickType, String activityClass) {
