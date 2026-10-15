@@ -5,7 +5,9 @@
 package app.morphe.patches.readera.misc.nags
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.util.returnEarly
 
 @Suppress("unused")
@@ -15,6 +17,10 @@ val removeNagsPatch = bytecodePatch(
         "and the Premium button in the toolbar.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
+
+    availability(requireArm64)
+
+    dependsOn(disableSignatureChecksPatch)
 
     execute {
         StartupNagDispatchFingerprint.matchAll(1..1)
