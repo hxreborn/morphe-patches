@@ -471,6 +471,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.1.1", versionCode = 3231, minSdk = 26)),
     )
 
+    val NETWORK_ANALYZER = Compatibility(
+        name = "Network Analyzer",
+        packageName = "net.techet.netanalyzerlite.an",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x3B4A5C,
+        signatures = setOf(
+            "3961d83e6d20d3363e07c6fe330601ef6ece07d44cda2fe46a0048bc70eacdaf",
+        ),
+        targets = listOf(AppTarget(version = "5.1", versionCode = 19502, minSdk = 32)),
+    )
+
     val NOTESNOOK = Compatibility(
         name = "Notesnook",
         packageName = "com.streetwriters.notesnook",
