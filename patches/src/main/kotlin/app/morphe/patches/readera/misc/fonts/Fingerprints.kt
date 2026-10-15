@@ -68,6 +68,17 @@ internal object SystemFontsScanFingerprint : Fingerprint(
     ),
 )
 
+internal object FontsUpdateFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = listOf(),
+    filters = listOf(
+        string("FontsModel update GO"),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/util/Map;", "Ljava/util/List;"), returnType = "V"),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/util/Map;", "Ljava/util/List;"), returnType = "V", location = MatchAfterImmediately()),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/util/Map;", "Ljava/util/List;"), returnType = "V", location = MatchAfterImmediately()),
+    ),
+)
+
 internal object FontsByCategoryFingerprint : Fingerprint(
     classFingerprint = SaveCustomFontsCacheFingerprint,
     returnType = "Ljava/util/List;",

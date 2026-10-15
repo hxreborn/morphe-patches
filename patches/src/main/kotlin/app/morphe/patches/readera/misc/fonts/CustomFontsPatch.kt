@@ -62,7 +62,7 @@ val customFontsPatch = bytecodePatch(
             LOAD_CUSTOM_FONTS_METHOD,
             listOf(),
             "Ljava/util/List;",
-            AccessFlags.PRIVATE.value or AccessFlags.STATIC.value,
+            AccessFlags.STATIC.value,
             null,
             null,
             MutableMethodImplementation(4),
@@ -131,6 +131,18 @@ val customFontsPatch = bytecodePatch(
                     """,
                 )
             }
+        }
+
+        FontsUpdateFingerprint.let {
+            val customListIndex = it.instructionMatches.last().index
+            val customListRegister = it.method.getInstruction<FiveRegisterInstruction>(customListIndex).registerD
+            it.method.addInstructions(
+                customListIndex,
+                """
+                    invoke-static { }, $loadCustomFonts
+                    move-result-object v$customListRegister
+                """,
+            )
         }
 
         LoadFontsFingerprint.let {
