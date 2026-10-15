@@ -32,6 +32,7 @@ public final class Features {
     public static void observeLanScan(boolean running, Object scanInfo, Object onStart, Object onStop) {
         try {
             LiveLanScan.observe(running, scanInfo, onStart, onStop);
+            LanNames.setCurrentNetwork(LanScan.networkKeyOf(scanInfo));
         } catch (RuntimeException ex) {
             Log.e(TAG, "Cannot observe the LAN scan", ex);
         }
@@ -39,6 +40,28 @@ public final class Features {
 
     public static void registerNetworkScanItem(Class<?> owner, String method) {
         LiveLanScan.registerNetworkScanItem(owner, method);
+    }
+
+    public static String lanDeviceName(Object record) {
+        final String network = LanNames.currentNetwork();
+        if (network == null) {
+            return null;
+        }
+        try {
+            final String[] assigned = LanNames.get(network, LanRecord.addressOf(record).getHostAddress());
+            return (assigned != null && !assigned[LanNames.NAME].isEmpty()) ? assigned[LanNames.NAME] : null;
+        } catch (RuntimeException ex) {
+            Log.e(TAG, "Cannot read a custom LAN name", ex);
+            return null;
+        }
+    }
+
+    public static void registerDeviceNames(String registration) {
+        try {
+            DeviceNames.register(registration);
+        } catch (ReflectiveOperationException ex) {
+            Log.e(TAG, "Cannot register the device name database", ex);
+        }
     }
 
     public static synchronized Object onToolbarAction(Class<?> onClickType, String activityClass) {

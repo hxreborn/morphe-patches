@@ -25,6 +25,7 @@ final class HostActivity {
     static void attach(Activity activity) {
         hostActivity = new WeakReference<>(activity);
         ToolsHistory.forgetNavigators();
+        LanNames.load(activity);
         if (!lifecycleRegistered) {
             lifecycleRegistered = true;
             activity.getApplication().registerActivityLifecycleCallbacks(new HostRefresh(activity.getClass()));

@@ -219,7 +219,12 @@ final class LanScan {
                 return value;
             }
         }
-        return null;
+        final String[] assigned = LanNames.get(networkKey(), record.ip());
+        if (assigned == null) {
+            return null;
+        }
+        final String value = assigned[index];
+        return (value == null || value.isEmpty()) ? null : value;
     }
 
     private static String host(InetAddress address) {
