@@ -20,11 +20,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 @SuppressWarnings("unused")
-public final class QuoteColorPicker {
+public final class HighlightColorPicker {
 
-    private static final String CITATION_COLOR_KEY = "pref_citation_color";
-
-    private static final String VIEW_TAG = "hx_quote_color_picker";
+    private static final String VIEW_TAG = "hx_highlight_color_picker";
 
     private static final String[] COLOR_NAMES = { "Gray", "Red", "Orange", "Green", "Blue" };
 
@@ -34,11 +32,15 @@ public final class QuoteColorPicker {
 
     private static final int DARK_BACKGROUND = Color.parseColor("#1c3239");
 
-    private final QuoteColorHost host;
+    private final HighlightColorHost host;
 
     private final FrameLayout root;
 
-    private final View dictionaryButton;
+    private final View hiddenWhileExpanded;
+
+    private final View shiftedWhileCollapsed;
+
+    private final int collapsedShift;
 
     private final GradientDrawable background;
 
@@ -50,9 +52,12 @@ public final class QuoteColorPicker {
 
     private final Swatch[] swatches = new Swatch[COLOR_NAMES.length];
 
-    public QuoteColorPicker(Activity activity, ViewGroup container, ViewGroup dictionaryGroup, QuoteColorHost host) {
+    private HighlightColorPicker(Activity activity, ViewGroup container, View hiddenWhileExpanded,
+            View shiftedWhileCollapsed, HighlightColorHost host) {
         this.host = host;
-        this.dictionaryButton = dictionaryGroup.getChildAt(0);
+        this.hiddenWhileExpanded = hiddenWhileExpanded;
+        this.shiftedWhileCollapsed = shiftedWhileCollapsed;
+        this.collapsedShift = dp(activity, 90);
         this.background = new GradientDrawable();
         float radius = dp(activity, 20);
         this.background.setCornerRadii(new float[] { radius, radius, 0, 0, 0, 0, radius, radius });
@@ -104,17 +109,28 @@ public final class QuoteColorPicker {
         collapse();
     }
 
-    public static int readDefaultColor(SharedPreferences preferences) {
+    public static HighlightColorPicker forQuotes(Activity activity, ViewGroup quoteGroup, ViewGroup dictionaryGroup,
+            HighlightColorHost host) {
+        return new HighlightColorPicker(activity, quoteGroup, dictionaryGroup.getChildAt(0), null, host);
+    }
+
+    public static HighlightColorPicker forDictionary(Activity activity, ViewGroup quoteGroup, ViewGroup dictionaryGroup,
+            HighlightColorHost host) {
+        ViewGroup dictionaryButtons = (ViewGroup) dictionaryGroup.getChildAt(0);
+        return new HighlightColorPicker(activity, dictionaryButtons, null, dictionaryButtons, host);
+    }
+
+    public static int readDefaultColor(SharedPreferences preferences, String key) {
         try {
-            int color = Integer.parseInt(preferences.getString(CITATION_COLOR_KEY, "0"));
+            int color = Integer.parseInt(preferences.getString(key, "0"));
             return Math.max(0, Math.min(COLOR_NAMES.length - 1, color));
         } catch (RuntimeException ex) {
             return 0;
         }
     }
 
-    public static void saveDefaultColor(SharedPreferences preferences, int color) {
-        preferences.edit().putString(CITATION_COLOR_KEY, Integer.toString(color)).apply();
+    public static void saveDefaultColor(SharedPreferences preferences, String key, int color) {
+        preferences.edit().putString(key, Integer.toString(color)).apply();
     }
 
     public void show() {
@@ -134,7 +150,7 @@ public final class QuoteColorPicker {
     }
 
     public void refresh() {
-        int current = this.host.getQuoteColor();
+        int current = this.host.getHighlightColor();
         int[] order = COLLAPSED_ORDER[Math.max(0, Math.min(COLLAPSED_ORDER.length - 1, current))];
         for (int i = 0; i < this.collapsedSwatches.length; i++) {
             this.collapsedSwatches[i].setColor(order[i]);
@@ -145,21 +161,38 @@ public final class QuoteColorPicker {
     }
 
     private void select(int color) {
-        this.host.setQuoteColor(color);
+        this.host.setHighlightColor(color);
         refresh();
         collapse();
     }
 
     private void expand() {
-        this.dictionaryButton.setVisibility(View.GONE);
+        if (this.hiddenWhileExpanded != null) {
+            this.hiddenWhileExpanded.setVisibility(View.GONE);
+        }
+        setRightMargin(this.shiftedWhileCollapsed, 0);
         this.collapsed.setVisibility(View.GONE);
         this.expanded.setVisibility(View.VISIBLE);
     }
 
     private void collapse() {
-        this.dictionaryButton.setVisibility(View.VISIBLE);
+        if (this.hiddenWhileExpanded != null) {
+            this.hiddenWhileExpanded.setVisibility(View.VISIBLE);
+        }
+        setRightMargin(this.shiftedWhileCollapsed, this.collapsedShift);
         this.expanded.setVisibility(View.GONE);
         this.collapsed.setVisibility(View.VISIBLE);
+    }
+
+    private static void setRightMargin(View view, int margin) {
+        if (view == null) {
+            return;
+        }
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (params.rightMargin != margin) {
+            params.rightMargin = margin;
+            view.setLayoutParams(params);
+        }
     }
 
     private static int dp(Context context, float value) {
@@ -170,7 +203,7 @@ public final class QuoteColorPicker {
     @SuppressLint("ViewConstructor")
     private static final class Swatch extends View {
 
-        private final QuoteColorHost host;
+        private final HighlightColorHost host;
 
         private final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -180,7 +213,7 @@ public final class QuoteColorPicker {
 
         private boolean checked;
 
-        Swatch(Context context, QuoteColorHost host) {
+        Swatch(Context context, HighlightColorHost host) {
             super(context);
             this.host = host;
             this.fill.setColor(Color.WHITE);
@@ -193,8 +226,8 @@ public final class QuoteColorPicker {
         }
 
         void setColor(int color) {
-            this.fill.setColorFilter(this.host.getQuoteColorFilter(color));
-            this.ring.setColorFilter(this.host.getQuoteColorFilter(color));
+            this.fill.setColorFilter(this.host.getHighlightColorFilter(color));
+            this.ring.setColorFilter(this.host.getHighlightColorFilter(color));
             invalidate();
         }
 

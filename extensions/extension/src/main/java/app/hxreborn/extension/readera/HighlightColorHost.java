@@ -6,12 +6,12 @@ package app.hxreborn.extension.readera;
 
 import android.graphics.ColorFilter;
 
-public interface QuoteColorHost {
+public interface HighlightColorHost {
 
-    int getQuoteColor();
+    int getHighlightColor();
 
-    void setQuoteColor(int color);
+    void setHighlightColor(int color);
 
-    ColorFilter getQuoteColorFilter(int color);
+    ColorFilter getHighlightColorFilter(int color);
 
 }
