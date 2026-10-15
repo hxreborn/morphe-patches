@@ -98,6 +98,19 @@ public final class Features {
         HostTools.recordTracerouteStart(new Object[] { host, maxDelay, minDelay, preferIpv6, udpProbes });
     }
 
+    public static Object applyToolOptions(Object query, String fieldNames) {
+        final Activity activity = HostActivity.current();
+        if (activity == null) {
+            return query;
+        }
+        try {
+            return ToolOptions.apply(activity, query, fieldNames);
+        } catch (ReflectiveOperationException | RuntimeException ex) {
+            Log.e(TAG, "Cannot apply the tool options", ex);
+            return query;
+        }
+    }
+
     public static void open(String activityClass) {
         HostActivity.open(activityClass, null);
     }
