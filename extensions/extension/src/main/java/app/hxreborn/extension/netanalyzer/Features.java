@@ -98,6 +98,16 @@ public final class Features {
         HostTools.recordTracerouteStart(new Object[] { host, maxDelay, minDelay, preferIpv6, udpProbes });
     }
 
+    public static Object onProbeClick(Class<?> onClickType, Object probe, String fieldNames) {
+        return HostCallbacks.create(onClickType, () -> {
+            try {
+                ProbeDetailsActivity.show(Probe.read(probe, fieldNames));
+            } catch (ReflectiveOperationException ex) {
+                Log.e(TAG, "Cannot read the selected probe", ex);
+            }
+        });
+    }
+
     public static Object applyToolOptions(Object query, String fieldNames) {
         final Activity activity = HostActivity.current();
         if (activity == null) {
