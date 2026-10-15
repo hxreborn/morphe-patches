@@ -587,6 +587,19 @@ internal object AppCompatibilities {
         ),
     )
 
+    val PROTON_AUTHENTICATOR = Compatibility(
+        name = "Proton Authenticator",
+        packageName = "proton.android.authenticator",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x6D4AFF,
+        signatures = setOf(
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
+        ),
+        targets = listOf(
+            AppTarget(version = "1.3.10", versionCode = 10310372, minSdk = 27),
+        ),
+    )
+
     val PROTON_PASS = Compatibility(
         name = "Proton Pass",
         packageName = "proton.android.pass",

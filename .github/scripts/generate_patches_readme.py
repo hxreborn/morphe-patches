@@ -205,6 +205,7 @@ ICONS = {
     "com.zhiliaoapp.musically": "tiktok.png",
     "ch.protonmail.android": "protonmail.png",
     "proton.android.pass": "protonpass.png",
+    "proton.android.authenticator": "protonauthenticator.png",
     "com.audible.application": "audible.png",
     "app.symfonik.music.player": "symfonium.png",
     "ai.perplexity.app.android": "perplexity.png",

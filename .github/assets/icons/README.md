@@ -30,6 +30,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `showly.png` | Showly (`com.michaldrabik.showly2`) | Michał Drabik / Trakt | APK 3.70.0, `mipmap/ic_launcher_round`, xxxhdpi |
 | `tiktok.png` | TikTok (`com.zhiliaoapp.musically`) | TikTok Pte. Ltd. | APK 47.0.3, adaptive icon `mipmap/c` |
 | `protonmail.png` | Proton Mail (`ch.protonmail.android`) | Proton AG | APK 7.11.8, adaptive icon `ic_launcher_round` |
+| `protonauthenticator.png` | Proton Authenticator (`proton.android.authenticator`) | Proton AG | APK 1.3.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `protonpass.png` | Proton Pass (`proton.android.pass`) | Proton AG | APK 1.40.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `audible.png` | Audible (`com.audible.application`) | Audible, Inc. | APK 26.30.05, adaptive icon `adaptive_app_icon_orange_round` |
 | `symfonium.png` | Symfonium (`app.symfonik.music.player`) | Tolriq | APK 14.1.0, adaptive icon `res/mipmap-anydpi-v21/ic_default_launcher.xml` |
