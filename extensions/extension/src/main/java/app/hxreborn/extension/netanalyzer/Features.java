@@ -4,6 +4,9 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,6 +109,15 @@ public final class Features {
         });
     }
 
+    public static Object wrapLanDeviceClick(Class<?> onClickType, Object original) {
+        if (Proxy.isProxyClass(original.getClass())
+                && Proxy.getInvocationHandler(original) instanceof LanDeviceClickHandler) {
+            return original;
+        }
+        return Proxy.newProxyInstance(Features.class.getClassLoader(), new Class<?>[] { onClickType },
+                new LanDeviceClickHandler(original));
+    }
+
     public static void registerToolsHistory(String registration) {
         try {
             ToolsHistory.register(registration);
@@ -167,6 +179,31 @@ public final class Features {
         } catch (ReflectiveOperationException ex) {
             return false;
         }
+    }
+
+    private static final class LanDeviceClickHandler implements InvocationHandler {
+
+        private final Object original;
+
+        LanDeviceClickHandler(Object original) {
+            this.original = original;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws ReflectiveOperationException {
+            if (method.getDeclaringClass() == Object.class) {
+                return method.invoke(this.original, args);
+            }
+            LanDeviceActivity.show(LanRecord.read(args[0]), LanScan.read(args[1]), Boolean.TRUE.equals(args[2]), () -> {
+                try {
+                    method.invoke(this.original, args);
+                } catch (ReflectiveOperationException ex) {
+                    Log.e(TAG, "Cannot run the original LAN device action", ex);
+                }
+            });
+            return null;
+        }
+
     }
 
 }
