@@ -41,3 +41,13 @@ internal object ToolbarPromoModeFingerprint : Fingerprint(
         literal(FRESH_INSTALL_TOOLBAR_MODE),
     ),
 )
+
+internal fun promoMenuItemsFingerprint(promoClass: String, promoModeMethod: String) = Fingerprint(
+    definingClass = promoClass,
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "V",
+    parameters = listOf("Landroid/view/Menu;"),
+    filters = listOf(
+        methodCall(definingClass = promoClass, name = promoModeMethod),
+    ),
+)
