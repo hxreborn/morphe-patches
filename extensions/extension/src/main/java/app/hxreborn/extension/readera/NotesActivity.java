@@ -7,6 +7,8 @@ package app.hxreborn.extension.readera;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.content.Context;
@@ -60,6 +62,24 @@ public final class NotesActivity extends Activity {
 
     private static final String[] COLOR_NAMES = { "Gray", "Red", "Orange", "Green", "Blue" };
 
+    private static final String BOOK_TITLE = "coalesce(nullif(d.user_title, ''), nullif(d.doc_title, ''), "
+            + "d.doc_file_name_title)";
+
+    private static final int BOOKS_GROUPING = 1;
+
+    private static final Grouping[] GROUPINGS = {
+            new Grouping("hx_notes_all", "hx_notes_empty_all", null, null, "", "", null),
+            new Grouping("hx_notes_in_books", "hx_notes_empty_books", "n.doc_id", BOOK_TITLE, "", "",
+                    "SELECT max(m.note_modified_time) FROM notes m WHERE m.doc_id = n.doc_id"),
+            new Grouping("hx_notes_in_collections", "hx_notes_empty_collections", "g.coll_id", "g.coll_title",
+                    ", docs_to_colls t, colls g", " AND t.doc_id = n.doc_id AND g.coll_id = t.coll_id",
+                    "SELECT max(m.note_modified_time) FROM notes m, docs_to_colls u "
+                            + "WHERE u.coll_id = g.coll_id AND m.doc_id = u.doc_id"),
+            new Grouping("hx_notes_in_authors", "hx_notes_empty_authors", "g.author_id", "g.author_name",
+                    ", docs_to_authors t, authors g", " AND t.doc_id = n.doc_id AND g.author_id = t.author_id",
+                    "SELECT max(m.note_modified_time) FROM notes m, docs_to_authors u "
+                            + "WHERE u.author_id = g.author_id AND m.doc_id = u.doc_id") };
+
     private final boolean[] typeFilter = new boolean[4];
 
     private final boolean[] colorFilter = new boolean[PALETTE.length];
@@ -68,7 +88,13 @@ public final class NotesActivity extends Activity {
 
     private final RowAdapter adapter = new RowAdapter();
 
-    private boolean groupByBook;
+    private final TextView[] groupingTabs = new TextView[GROUPINGS.length];
+
+    private final ExecutorService queryExecutor = Executors.newSingleThreadExecutor();
+
+    private int queryGeneration;
+
+    private int groupingIndex;
 
     private String query = "";
 
@@ -81,10 +107,6 @@ public final class NotesActivity extends Activity {
     private TextView emptyView;
 
     private ListView listView;
-
-    private TextView allTab;
-
-    private TextView booksTab;
 
     public static void open(Activity activity) {
         activity.startActivity(new Intent(activity, NotesActivity.class));
@@ -111,8 +133,7 @@ public final class NotesActivity extends Activity {
         this.listView.setOnItemClickListener((parent, view, position, id) -> openRow(this.rows.get(position)));
         content.addView(this.listView,
                 new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        this.emptyView = text("Quotes, notes, bookmarks and reviews from all your books will be here.", 16,
-                this.secondaryTextColor);
+        this.emptyView = text("", 16, this.secondaryTextColor);
         this.emptyView.setGravity(Gravity.CENTER);
         this.emptyView.setPadding(dp(32), dp(32), dp(32), dp(32));
         content.addView(this.emptyView,
@@ -127,15 +148,21 @@ public final class NotesActivity extends Activity {
         reload();
     }
 
+    @Override
+    protected void onDestroy() {
+        this.queryExecutor.shutdownNow();
+        super.onDestroy();
+    }
+
     private View buildHeader() {
         LinearLayout header = new LinearLayout(this);
         header.setGravity(Gravity.CENTER_VERTICAL);
         header.setMinimumHeight(dp(56));
         View back = new BackArrow(this, this.textColor);
-        back.setContentDescription("Back");
+        back.setContentDescription(string("hx_notes_back"));
         back.setOnClickListener((view) -> finish());
         header.addView(back, new LinearLayout.LayoutParams(dp(56), dp(56)));
-        TextView title = text("Quotes and notes", 20, this.textColor);
+        TextView title = text(string("hx_notes_title"), 20, this.textColor);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         header.addView(title);
         return header;
@@ -143,7 +170,7 @@ public final class NotesActivity extends Activity {
 
     private View buildSearch() {
         EditText search = new EditText(this);
-        search.setHint("Search quotes and notes");
+        search.setHint(string("hx_notes_search"));
         search.setSingleLine(true);
         search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         search.setTextColor(this.textColor);
@@ -174,17 +201,20 @@ public final class NotesActivity extends Activity {
     }
 
     private View buildTabs() {
+        HorizontalScrollView scroll = new HorizontalScrollView(this);
+        scroll.setHorizontalScrollBarEnabled(false);
         LinearLayout tabs = new LinearLayout(this);
         tabs.setPadding(dp(16), dp(8), dp(16), 0);
-        this.allTab = chip("All");
-        this.booksTab = chip("In books");
-        this.allTab.setOnClickListener((view) -> setGroupByBook(false));
-        this.booksTab.setOnClickListener((view) -> setGroupByBook(true));
-        tabs.addView(this.allTab);
-        tabs.addView(this.booksTab);
-        styleChip(this.allTab, true, this.accentColor);
-        styleChip(this.booksTab, false, this.accentColor);
-        return tabs;
+        for (int index = 0; index < GROUPINGS.length; index++) {
+            TextView tab = chip(string(GROUPINGS[index].labelResource));
+            int selectedGrouping = index;
+            tab.setOnClickListener((view) -> setGrouping(selectedGrouping));
+            styleChip(tab, index == this.groupingIndex, this.accentColor);
+            this.groupingTabs[index] = tab;
+            tabs.addView(tab);
+        }
+        scroll.addView(tabs);
+        return scroll;
     }
 
     private View buildFilters() {
@@ -193,9 +223,9 @@ public final class NotesActivity extends Activity {
         LinearLayout filters = new LinearLayout(this);
         filters.setGravity(Gravity.CENTER_VERTICAL);
         filters.setPadding(dp(16), dp(8), dp(16), dp(8));
-        addTypeChip(filters, "Quotes", TYPE_QUOTE);
-        addTypeChip(filters, "Bookmarks", TYPE_BOOKMARK);
-        addTypeChip(filters, "Reviews", TYPE_REVIEW);
+        addTypeChip(filters, string("hx_notes_quotes"), TYPE_QUOTE);
+        addTypeChip(filters, string("hx_notes_bookmarks"), TYPE_BOOKMARK);
+        addTypeChip(filters, string("hx_notes_reviews"), TYPE_REVIEW);
         for (int color = 0; color < PALETTE.length; color++) {
             TextView chip = chip("");
             chip.setContentDescription(COLOR_NAMES[color]);
@@ -224,20 +254,26 @@ public final class NotesActivity extends Activity {
         filters.addView(chip);
     }
 
-    private void setGroupByBook(boolean groupByBook) {
-        this.groupByBook = groupByBook;
-        styleChip(this.allTab, !groupByBook, this.accentColor);
-        styleChip(this.booksTab, groupByBook, this.accentColor);
+    private void setGrouping(int groupingIndex) {
+        this.groupingIndex = groupingIndex;
+        for (int index = 0; index < this.groupingTabs.length; index++) {
+            styleChip(this.groupingTabs[index], index == groupingIndex, this.accentColor);
+        }
         reload();
     }
 
     private void reload() {
-        this.rows.clear();
         List<String> arguments = new ArrayList<>();
+        Grouping grouping = GROUPINGS[this.groupingIndex];
         StringBuilder sql = new StringBuilder("SELECT n.note_id, n.note_type, n.doc_id, n.note_body, n.note_extra, "
-                + "n.note_page, n.note_mark, n.note_modified_time, "
-                + "coalesce(nullif(d.user_title, ''), nullif(d.doc_title, ''), d.doc_file_name_title) "
-                + "FROM notes n, docs d WHERE n.doc_id = d.doc_id AND d.doc_active > 0");
+                + "n.note_page, n.note_mark, n.note_modified_time, " + BOOK_TITLE);
+        if (grouping.keyColumn != null) {
+            sql.append(", ").append(grouping.keyColumn).append(", ").append(grouping.titleColumn);
+        }
+        sql.append(" FROM notes n, docs d")
+            .append(grouping.extraTables)
+            .append(" WHERE n.doc_id = d.doc_id AND d.doc_active > 0")
+            .append(grouping.joinClause);
         String filter = filterClause();
         if (filter != null) {
             sql.append(" AND (").append(filter).append(')');
@@ -246,30 +282,60 @@ public final class NotesActivity extends Activity {
             sql.append(" AND n.note_id IN (SELECT docid FROM fts_notes WHERE fts_notes MATCH ?)");
             arguments.add(this.query.replace('"', ' ') + "*");
         }
-        if (this.groupByBook) {
-            sql.append(" ORDER BY (SELECT max(m.note_modified_time) FROM notes m WHERE m.doc_id = n.doc_id) DESC, "
-                    + "n.doc_id, n.note_index");
+        if (grouping.keyColumn != null) {
+            sql.append(" ORDER BY (")
+                .append(grouping.latestNoteQuery)
+                .append(") DESC, ")
+                .append(grouping.keyColumn)
+                .append(", n.doc_id, n.note_index");
         } else {
             sql.append(" ORDER BY n.note_modified_time DESC");
         }
-        try (SQLiteDatabase database = openDatabase();
-                Cursor cursor = database.rawQuery(sql.toString(), arguments.toArray(new String[0]))) {
-            String section = null;
+        int generation = ++this.queryGeneration;
+        String[] argumentArray = arguments.toArray(new String[0]);
+        this.queryExecutor.execute(() -> {
+            List<Row> result = queryRows(grouping, sql.toString(), argumentArray);
+            runOnUiThread(() -> showRows(generation, grouping, result));
+        });
+    }
+
+    private List<Row> queryRows(Grouping grouping, String sql, String[] arguments) {
+        List<Row> result = new ArrayList<>();
+        try (SQLiteDatabase database = openDatabase(); Cursor cursor = database.rawQuery(sql, arguments)) {
+            String sectionKey = null;
             while (cursor.moveToNext()) {
                 Row row = new Row(cursor.getLong(0), cursor.getInt(1), cursor.getLong(2), cursor.getString(3),
                         cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getLong(7), cursor.getString(8),
                         null);
-                String rowSection = this.groupByBook ? row.bookTitle : formatDate(row.modified);
-                if (!TextUtils.equals(section, rowSection)) {
-                    section = rowSection;
-                    this.rows.add(Row.header(rowSection));
+                String rowSectionKey;
+                String rowSectionTitle;
+                if (grouping.keyColumn != null) {
+                    rowSectionKey = cursor.getString(9);
+                    rowSectionTitle = cursor.getString(10);
+                } else {
+                    rowSectionKey = formatDate(row.modified);
+                    rowSectionTitle = rowSectionKey;
                 }
-                this.rows.add(row);
+                if (!TextUtils.equals(sectionKey, rowSectionKey)) {
+                    sectionKey = rowSectionKey;
+                    result.add(Row.header(rowSectionTitle));
+                }
+                result.add(row);
             }
         } catch (RuntimeException ex) {
-            this.rows.clear();
+            result.clear();
         }
+        return result;
+    }
+
+    private void showRows(int generation, Grouping grouping, List<Row> result) {
+        if (generation != this.queryGeneration || isFinishing()) {
+            return;
+        }
+        this.rows.clear();
+        this.rows.addAll(result);
         this.adapter.notifyDataSetChanged();
+        this.emptyView.setText(string(grouping.emptyMessageResource));
         this.emptyView.setVisibility(this.rows.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
@@ -320,6 +386,14 @@ public final class NotesActivity extends Activity {
         intent.setClassName(getPackageName(), READ_ACTIVITY);
         intent.putExtra(STARTUP_MODE_EXTRA, 0);
         startActivity(intent);
+    }
+
+    private int stringId(String name) {
+        return getResources().getIdentifier(name, "string", getPackageName());
+    }
+
+    private String string(String name) {
+        return getString(stringId(name));
     }
 
     private String formatDate(long time) {
@@ -447,16 +521,17 @@ public final class NotesActivity extends Activity {
             String body = (row.body != null) ? row.body : "";
             switch (row.type) {
                 case TYPE_BOOKMARK:
-                    return "Bookmark: " + body + ", page " + (row.page + 1);
+                    return string("hx_notes_bookmark") + ": " + body + ", "
+                            + getString(stringId("hx_notes_page"), row.page + 1);
                 case TYPE_REVIEW:
-                    return "Review " + stars(row.mark) + "\n" + body;
+                    return string("hx_notes_review") + " " + stars(row.mark) + "\n" + body;
                 default:
                     return body;
             }
         }
 
         private String metaText(Row row) {
-            return NotesActivity.this.groupByBook ? formatDate(row.modified)
+            return (NotesActivity.this.groupingIndex == BOOKS_GROUPING) ? formatDate(row.modified)
                     : row.bookTitle + ", " + formatDate(row.modified);
         }
 
@@ -512,6 +587,35 @@ public final class NotesActivity extends Activity {
 
         boolean isHeader() {
             return this.sectionTitle != null;
+        }
+
+    }
+
+    private static final class Grouping {
+
+        final String labelResource;
+
+        final String emptyMessageResource;
+
+        final String keyColumn;
+
+        final String titleColumn;
+
+        final String extraTables;
+
+        final String joinClause;
+
+        final String latestNoteQuery;
+
+        Grouping(String labelResource, String emptyMessageResource, String keyColumn, String titleColumn,
+                String extraTables, String joinClause, String latestNoteQuery) {
+            this.labelResource = labelResource;
+            this.emptyMessageResource = emptyMessageResource;
+            this.keyColumn = keyColumn;
+            this.titleColumn = titleColumn;
+            this.extraTables = extraTables;
+            this.joinClause = joinClause;
+            this.latestNoteQuery = latestNoteQuery;
         }
 
     }
