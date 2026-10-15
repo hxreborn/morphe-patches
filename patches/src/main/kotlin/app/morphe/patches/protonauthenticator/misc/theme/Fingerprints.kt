@@ -5,13 +5,16 @@
 package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val BACKGROUND_GRADIENT_TOP_FIELD = "backgroundGradientTop"
 private const val BACKGROUND_GRADIENT_BOTTOM_FIELD = "backgroundGradientBottom"
 private const val BACKGROUND_TOP_BAR_FIELD = "backgroundTopBar"
+private const val BUTTON_SHADOW_COLOR = 0x40995EFF
 
 internal object ThemeColorsInitializerFingerprint : Fingerprint(
     name = "<clinit>",
@@ -27,6 +30,19 @@ internal object EmptyStateImageFingerprint : Fingerprint(
             definingClass = "Landroidx/compose/foundation/ImageKt;",
             name = "Image",
             opcode = Opcode.INVOKE_STATIC_RANGE,
+        ),
+    ),
+)
+
+internal object ButtonShadowColorFingerprint : Fingerprint(
+    name = "<init>",
+    filters = listOf(
+        literal(BUTTON_SHADOW_COLOR.toLong()),
+        methodCall(
+            definingClass = "Landroidx/compose/ui/graphics/ColorKt;",
+            name = "Color",
+            parameters = listOf("I"),
+            location = MatchAfterImmediately(),
         ),
     ),
 )
