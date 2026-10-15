@@ -83,6 +83,18 @@ public final class Features {
         });
     }
 
+    public static void registerToolsHistory(String registration) {
+        try {
+            ToolsHistory.register(registration);
+        } catch (ClassNotFoundException ex) {
+            Log.e(TAG, "Cannot register the tools history", ex);
+        }
+    }
+
+    public static void captureNavigator(Object navigator) {
+        ToolsHistory.captureNavigator(navigator);
+    }
+
     public static void registerHostTools(Class<?> ping, Class<?> traceroute, String registration) {
         HostTools.register(ping, traceroute, registration);
     }
