@@ -4,6 +4,9 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -13,6 +16,8 @@ public final class Features {
 
     private static final String TAG = "hxNetAnalyzer";
 
+    private static final Map<String, Object> TOOLBAR_ACTIONS = new HashMap<>();
+
     private static Object menuClick;
 
     private Features() {
@@ -20,6 +25,27 @@ public final class Features {
 
     public static void attach(Activity activity) {
         HostActivity.attach(activity);
+    }
+
+    public static void observeLanScan(boolean running, Object scanInfo, Object onStart, Object onStop) {
+        try {
+            LiveLanScan.observe(running, scanInfo, onStart, onStop);
+        } catch (RuntimeException ex) {
+            Log.e(TAG, "Cannot observe the LAN scan", ex);
+        }
+    }
+
+    public static void registerNetworkScanItem(Class<?> owner, String method) {
+        LiveLanScan.registerNetworkScanItem(owner, method);
+    }
+
+    public static synchronized Object onToolbarAction(Class<?> onClickType, String activityClass) {
+        Object proxy = TOOLBAR_ACTIONS.get(activityClass);
+        if (proxy == null) {
+            proxy = HostCallbacks.create(onClickType, () -> HostActivity.open(activityClass, null));
+            TOOLBAR_ACTIONS.put(activityClass, proxy);
+        }
+        return proxy;
     }
 
     public static synchronized Object onMenuClick(Class<?> onClickType, String entries) {
@@ -38,6 +64,21 @@ public final class Features {
                 Log.e(TAG, "Cannot read the selected Wi-Fi network", ex);
             }
         });
+    }
+
+    public static void registerHostTools(Class<?> ping, Class<?> traceroute, String registration) {
+        HostTools.register(ping, traceroute, registration);
+    }
+
+    public static void recordPingStart(String host, int delay, int payloadSize, boolean preferIpv6, Object protocol,
+            int port, boolean dontFragment, boolean audible) {
+        HostTools.recordPingStart(
+                new Object[] { host, delay, payloadSize, preferIpv6, protocol, port, dontFragment, audible });
+    }
+
+    public static void recordTracerouteStart(String host, int maxDelay, int minDelay, boolean preferIpv6,
+            boolean udpProbes) {
+        HostTools.recordTracerouteStart(new Object[] { host, maxDelay, minDelay, preferIpv6, udpProbes });
     }
 
 }
