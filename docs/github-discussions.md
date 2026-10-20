@@ -174,8 +174,12 @@ already on the thread, and retitles only on `created`.
 `Closes #N` must never name a discussion. `@semantic-release/github` resolves every footer number with
 `issueOrPullRequest(number:)` in one query, the error aborts the call, and the success step fails after
 the release is published. New-app commits carry no footer; `release.yml` instead runs
-`.github/scripts/shipped_requests.py` on the package names new since the previous tag and closes the
-open requests that name one of them, through `discussion.sh comment|remove-labels|close`.
+`.github/scripts/shipped_requests.py` on the package names new since the previous tag. Every open
+request naming one of them gets the "Shipped in vX" comment through `discussion.sh comment`. Only a
+request whose `Requested features` field lists exactly one feature is then closed (`remove-labels "in
+progress"`, `close RESOLVED`); several features, `Something else` or an empty field leave it open for
+the maintainer to close once every item ships. The field is the form's dropdown, rendered as a
+comma-separated line under `### Requested features`.
 
 ## Gotchas
 
