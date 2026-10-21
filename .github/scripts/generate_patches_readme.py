@@ -238,6 +238,7 @@ ICONS = {
     "com.community.oneroom": "moviebox.png",
     "com.community.mbox.tv": "movieboxtv.png",
     "com.musixmatch.android.lyrify": "musixmatch.png",
+    "com.myscript.math": "myscriptmath.png",
     "com.myscript.nebo": "myscriptnotes.png",
     "com.gstarmc.android": "dwgfastview.png",
     "com.mchutov.Quranify": "quranify.png",

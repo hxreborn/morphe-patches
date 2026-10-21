@@ -1,0 +1,45 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package app.morphe.patches.myscriptmath.misc.premium
+
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.revenuecat.BuildCustomerInfoFingerprint
+import app.morphe.patches.shared.misc.revenuecat.customerInfoJsonParameter
+import app.morphe.util.getFreeRegisterProvider
+import app.morphe.util.matchSingle
+
+private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/RevenueCatUnlock;"
+private const val ENTITLEMENT = "MyScript Math – Full Access"
+private const val PRODUCT = "msmath_standard_lifetime"
+
+@Suppress("unused")
+val unlockPremiumPatch = bytecodePatch(
+    name = "Unlock premium",
+    description = "Unlocks all features after the free trial ends.",
+) {
+    compatibleWith(AppCompatibilities.MYSCRIPT_MATH)
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        BuildCustomerInfoFingerprint.matchSingle().method.apply {
+            val registers = getFreeRegisterProvider(0, 3)
+            val jsonRegister = registers.getFreeRegister4Bit()
+            val entitlementRegister = registers.getFreeRegister4Bit()
+            val productRegister = registers.getFreeRegister4Bit()
+
+            addInstructions(
+                0,
+                """
+                    move-object/from16 v$jsonRegister, ${customerInfoJsonParameter()}
+                    const-string v$entitlementRegister, "$ENTITLEMENT"
+                    const-string v$productRegister, "$PRODUCT"
+                    invoke-static { v$jsonRegister, v$entitlementRegister, v$productRegister }, $EXTENSION_CLASS->grantLifetimeEntitlement(Lorg/json/JSONObject;Ljava/lang/String;Ljava/lang/String;)V
+                """,
+            )
+        }
+    }
+}

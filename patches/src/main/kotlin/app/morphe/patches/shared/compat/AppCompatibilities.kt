@@ -656,6 +656,18 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.4.0", versionCode = 16, minSdk = 24)),
     )
 
+    val MYSCRIPT_MATH = Compatibility(
+        name = "MyScript Math",
+        packageName = "com.myscript.math",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFF1A1A,
+        signatures = setOf(
+            "405515fc77f1c69d3631d7fb0e63a848819b0bcfcd72c8cc14c91378b24b6fb4",
+            "5f87e50754e55d725b5343bffbbb12fca88f5992118b2feb407e738178227cb1",
+        ),
+        targets = listOf(AppTarget(version = "1.11.0", versionCode = 2001812, minSdk = 26)),
+    )
+
     val MYSCRIPT_NOTES = Compatibility(
         name = "MyScript Notes",
         packageName = "com.myscript.nebo",
