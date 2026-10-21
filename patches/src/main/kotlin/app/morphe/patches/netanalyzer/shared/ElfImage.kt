@@ -178,5 +178,7 @@ internal object Arm64 {
 
     fun branch(offsetWords: Int) = BRANCH or (offsetWords and BRANCH_IMMEDIATE_MASK)
 
+    fun branchLink(offsetWords: Int) = BRANCH_LINK or (offsetWords and BRANCH_IMMEDIATE_MASK)
+
     private fun signExtend(value: Int, bits: Int) = (value shl (Int.SIZE_BITS - bits)) shr (Int.SIZE_BITS - bits)
 }

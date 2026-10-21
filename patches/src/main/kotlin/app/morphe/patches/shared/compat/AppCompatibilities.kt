@@ -1319,4 +1319,13 @@ internal object AppCompatibilities {
         appIconColor = 0x38D880,
         targets = listOf(AppTarget(version = "5.1.7_20260914", versionCode = 3799, minSdk = 24)),
     )
+
+    val GRAPH_MESSENGER = Compatibility(
+        name = "Graph Messenger",
+        packageName = "ir.ilmili.telegraph",
+        apkFileType = ApkFileType.APKM,
+        appIconColor = 0xB6D790,
+        signatures = setOf("e7d5ad736aeecd2fe237679e4deaf2a40bb32fc07837fe48778a5b41c0418862"),
+        targets = listOf(AppTarget(version = "13.0.2.0", versionCode = 71751, minSdk = 23)),
+    )
 }

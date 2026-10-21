@@ -16,6 +16,8 @@ private const val MOV_W9_1 = 0x52800029
 internal class MaskedPattern(val name: String, hex: String) {
     private val bytes = hex.trim().split(Regex("\\s+")).map { if (it == "??") null else it.toInt(16).toByte() }
 
+    val size get() = bytes.size
+
     fun indicesIn(library: ByteArray): List<Int> = (0..library.size - bytes.size).filter { start ->
         bytes.indices.all { bytes[it] == null || library[start + it] == bytes[it] }
     }
