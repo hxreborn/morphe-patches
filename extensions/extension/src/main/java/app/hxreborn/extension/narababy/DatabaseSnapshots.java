@@ -20,6 +20,8 @@ public final class DatabaseSnapshots {
 
     private static final String ENTITLEMENTS_KEY = "entitlementz";
 
+    private static final String VERSION_BLOCK_KEY = "versionBlock";
+
     private static final String ENTITLEMENT_ID = "Nara Baby & Pregnancy Tracker Pro";
 
     private static final String PRODUCT_ID = "narababy_default_lifetime";
@@ -52,6 +54,16 @@ public final class DatabaseSnapshots {
         }
     }
 
+    public static void removeVersionBlock(Object snapshotMap) {
+        try {
+            if (isSnapshotOf(snapshotMap, VERSION_BLOCK_KEY)) {
+                replaceValue(snapshotMap, null);
+            }
+        } catch (Throwable ex) {
+            Log.e(TAG, "Could not remove the version block", ex);
+        }
+    }
+
     private static boolean isSnapshotOf(Object snapshotMap, String key) throws ReflectiveOperationException {
         Class<?> readableMap = bridgeClass(snapshotMap.getClass().getClassLoader(), "ReadableMap");
         return key.equals(readableMap.getMethod("getString", String.class).invoke(snapshotMap, "key"));
@@ -62,18 +74,23 @@ public final class DatabaseSnapshots {
         ClassLoader loader = snapshotMap.getClass().getClassLoader();
         Class<?> arguments = bridgeClass(loader, "Arguments");
         Class<?> writableMap = bridgeClass(loader, "WritableMap");
+        Map<String, Object> children = (value != null) ? value : new HashMap<String, Object>();
         Object childKeys = arguments.getMethod("makeNativeArray", List.class)
-            .invoke(null, new ArrayList<Object>(value.keySet()));
+            .invoke(null, new ArrayList<Object>(children.keySet()));
 
-        writableMap.getMethod("putBoolean", String.class, boolean.class).invoke(snapshotMap, "exists", true);
+        writableMap.getMethod("putBoolean", String.class, boolean.class).invoke(snapshotMap, "exists", value != null);
         writableMap.getMethod("putBoolean", String.class, boolean.class)
-            .invoke(snapshotMap, "hasChildren", !value.isEmpty());
+            .invoke(snapshotMap, "hasChildren", !children.isEmpty());
         writableMap.getMethod("putDouble", String.class, double.class)
-            .invoke(snapshotMap, "childrenCount", (double) value.size());
+            .invoke(snapshotMap, "childrenCount", (double) children.size());
         writableMap.getMethod("putArray", String.class, bridgeClass(loader, "ReadableArray"))
             .invoke(snapshotMap, "childKeys", childKeys);
-        writableMap.getMethod("putMap", String.class, bridgeClass(loader, "ReadableMap"))
-            .invoke(snapshotMap, "value", arguments.getMethod("makeNativeMap", Map.class).invoke(null, value));
+        if (value != null) {
+            writableMap.getMethod("putMap", String.class, bridgeClass(loader, "ReadableMap"))
+                .invoke(snapshotMap, "value", arguments.getMethod("makeNativeMap", Map.class).invoke(null, value));
+        } else {
+            writableMap.getMethod("putNull", String.class).invoke(snapshotMap, "value");
+        }
     }
 
     private static Map<String, Object> lifetimeEntry(String userId) {
