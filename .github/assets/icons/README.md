@@ -121,6 +121,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `serializd.png` | Serializd (`com.serializdmobile`) | Serializd | Play 1.992, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `musicolet.png` | Musicolet (`in.krosbits.musicolet`) | Krosbits | APK 6.14.1 build540, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_ex4.xml`, cut to a circle |
 | `sygic.png` | Sygic GPS Navigation (`com.sygic.aura`) | Sygic a.s. | APK 26.6.1, adaptive icon `res/mipmap-anydpi/ic_launcher.xml` (`ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi, centre 72dp cut to a circle) |
+| `minishare.png` | MiniShare (`com.omniashare.minishare`) | Not on Google Play | APK 1.6.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 | `periodcalendar.png` | Period Tracker and Calendar (`com.lbrc.PeriodCalendar`) | SimpleInnovation | APK 13.3.2, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, cut to a circle |

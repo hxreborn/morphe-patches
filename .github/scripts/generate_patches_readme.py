@@ -289,6 +289,7 @@ ICONS = {
     "com.generalmagic.magicearth": "magicearth.png",
     "com.lbrc.PeriodCalendar": "periodcalendar.png",
     "com.sygic.aura": "sygic.png",
+    "com.omniashare.minishare": "minishare.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

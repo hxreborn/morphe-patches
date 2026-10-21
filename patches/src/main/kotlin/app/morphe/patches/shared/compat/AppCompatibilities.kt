@@ -578,6 +578,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "62.6", versionCode = 626, minSdk = 24)),
     )
 
+    val MINISHARE = Compatibility(
+        name = "MiniShare",
+        packageName = "com.omniashare.minishare",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x2CADC7,
+        signatures = setOf(
+            "cf0684e9abe941d8ad027981fc82d853746c4b0604b31962dcf4d3eea9d55fb0",
+        ),
+        targets = listOf(AppTarget(version = "1.6.6", versionCode = 18, minSdk = 21)),
+    )
+
     val MOON_READER = Compatibility(
         name = "Moon+ Reader",
         packageName = "com.flyersoft.moonreader",

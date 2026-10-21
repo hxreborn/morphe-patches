@@ -3,8 +3,16 @@ package app.morphe.patches.shared.misc.png;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import ar.com.hjg.pngj.ImageInfo;
+import ar.com.hjg.pngj.ImageLineInt;
+import ar.com.hjg.pngj.PngReader;
+import ar.com.hjg.pngj.PngWriter;
+import ar.com.hjg.pngj.chunks.ChunksList;
+import ar.com.hjg.pngj.chunks.PngChunk;
+import ar.com.hjg.pngj.chunks.PngChunkUNKNOWN;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -48,6 +56,28 @@ class PngImageTest {
 
         assertArrayEquals(original.argb, PngImage.read(written).argb);
         assertArrayEquals(original.argb, expectedArgb(ImageIO.read(written)));
+    }
+
+    @Test
+    void keepsNinePatchChunksAheadOfTheImageData() throws IOException {
+        // given
+        byte[] padding = new byte[32];
+        random.nextBytes(padding);
+        File ninePatch = saveWithChunk("npTc", padding);
+        File written = File.createTempFile("png-image", ".9.png");
+        written.deleteOnExit();
+
+        // when
+        PngImage.read(ninePatch).write(written);
+
+        // then
+        PngReader reader = new PngReader(written);
+        reader.readSkippingAllRows();
+        List<PngChunk> chunks = reader.getChunksList().getChunks();
+        reader.close();
+        PngChunk kept = chunks.stream().filter(chunk -> chunk.id.equals("npTc")).findFirst().orElseThrow();
+        assertArrayEquals(padding, ((PngChunkUNKNOWN) kept).getData());
+        assertTrue(kept.getChunkGroup() < ChunksList.CHUNK_GROUP_4_IDAT);
     }
 
     @Test
@@ -101,6 +131,19 @@ class PngImageTest {
         File file = File.createTempFile("png-image", ".png");
         file.deleteOnExit();
         ImageIO.write(image, "png", file);
+        return file;
+    }
+
+    private File saveWithChunk(String id, byte[] data) throws IOException {
+        File file = File.createTempFile("png-image", ".9.png");
+        file.deleteOnExit();
+        PngWriter writer = new PngWriter(file, new ImageInfo(13, 7, 8, true), true);
+        writer.getMetadata().queueChunk(new PngImage.RawChunk(id, data, writer.imgInfo));
+        ImageLineInt line = new ImageLineInt(writer.imgInfo);
+        for (int y = 0; y < 7; y++) {
+            writer.writeRow(line);
+        }
+        writer.end();
         return file;
     }
 
