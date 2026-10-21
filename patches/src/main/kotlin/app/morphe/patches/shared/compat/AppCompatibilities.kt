@@ -656,6 +656,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.4.0", versionCode = 16, minSdk = 24)),
     )
 
+    val MYSCRIPT_NOTES = Compatibility(
+        name = "MyScript Notes",
+        packageName = "com.myscript.nebo",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x007FFD,
+        signatures = setOf(
+            "12645b76721993f0f3faf82dddecd6c96355260bf44d06ce6246caf2fcf3ada8",
+        ),
+        targets = listOf(AppTarget(version = "7.4.5", versionCode = 181541, minSdk = 26)),
+    )
+
     val MY_APK = Compatibility(
         name = "My APK",
         packageName = "com.andatsoft.myapk.fwa",
