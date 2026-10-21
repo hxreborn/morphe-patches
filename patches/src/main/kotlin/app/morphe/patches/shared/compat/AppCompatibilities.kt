@@ -1292,6 +1292,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val WATTPAD = Compatibility(
+        name = "Wattpad",
+        packageName = "wp.wattpad",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFF500A,
+        signatures = setOf("012de45837d20561255a02bbc22334c1f681d01b366fe31bef418baf535903ef"),
+        targets = listOf(AppTarget(version = "11.41.1", versionCode = 3830, minSdk = 32)),
+    )
+
     val YANOSIK = Compatibility(
         name = "Yanosik",
         packageName = "pl.neptis.yanosik.mobi.android",

@@ -203,6 +203,7 @@ ICONS = {
     "com.quickcursor": "quickcursor.png",
     "com.biobird.exvee": "biobird.png",
     "com.stresscodes.wallp": "walp.png",
+    "wp.wattpad": "wattpad.png",
     "com.wallmaa.minimal.wallpapers": "wallmaa.png",
     "com.spocky.projengmenu": "projectivy.png",
     "app.privacynotes": "privacynotes.png",

@@ -125,6 +125,7 @@ Every icon comes from the app's own APK, at the version and resource listed belo
 | `sygic.png` | Sygic GPS Navigation (`com.sygic.aura`) | Sygic a.s. | APK 26.6.1, adaptive icon `res/mipmap-anydpi/ic_launcher.xml` (`ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi, centre 72dp cut to a circle) |
 | `minishare.png` | MiniShare (`com.omniashare.minishare`) | Not on Google Play | APK 1.6.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `narababy.png` | Nara Baby (`com.naraorganics.nara`) | Nara Organics | APK 2.8.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `wattpad.png` | Wattpad (`wp.wattpad`) | Wattpad.com | APK 11.41.1, `res/mipmap-xxxhdpi-v4/ic_launcher.webp` (round icon cropped to the circle) |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 | `periodcalendar.png` | Period Tracker and Calendar (`com.lbrc.PeriodCalendar`) | SimpleInnovation | APK 13.3.2, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, cut to a circle |
