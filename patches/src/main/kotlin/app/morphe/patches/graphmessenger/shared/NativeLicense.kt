@@ -17,6 +17,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val CONNECTIONS_MANAGER_CLASS = "Lorg/telegram/tgnet/ConnectionsManager;"
 
 internal val licenseCheck = methodCall(definingClass = CONNECTIONS_MANAGER_CLASS, name = "native_checkLicense")
+internal val licenseDaysLeft = methodCall(definingClass = CONNECTIONS_MANAGER_CLASS, name = "native_daysFile")
+internal val licenseExpired = methodCall(definingClass = CONNECTIONS_MANAGER_CLASS, name = "native_expireFile")
 
 internal fun MutableMethod.overrideResultsOf(call: InstructionFilter, value: Int) {
     findInstructionIndicesReversed(call).forEach { callIndex ->
