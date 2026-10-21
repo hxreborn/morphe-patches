@@ -292,6 +292,7 @@ ICONS = {
     "com.lbrc.PeriodCalendar": "periodcalendar.png",
     "com.sygic.aura": "sygic.png",
     "com.omniashare.minishare": "minishare.png",
+    "com.naraorganics.nara": "narababy.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

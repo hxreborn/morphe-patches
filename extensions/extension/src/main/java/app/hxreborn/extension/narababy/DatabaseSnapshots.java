@@ -1,0 +1,105 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package app.hxreborn.extension.narababy;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.util.Log;
+
+@SuppressWarnings("unused")
+public final class DatabaseSnapshots {
+
+    private static final String TAG = "NaraDatabase";
+
+    private static final String BRIDGE_PACKAGE = "com.facebook.react.bridge.";
+
+    private static final String ENTITLEMENTS_KEY = "entitlementz";
+
+    private static final String ENTITLEMENT_ID = "Nara Baby & Pregnancy Tracker Pro";
+
+    private static final String PRODUCT_ID = "narababy_default_lifetime";
+
+    private static final long STARTED_AT = 1577836800000L;
+
+    private DatabaseSnapshots() {
+
+    }
+
+    public static void addLifetimeEntitlement(Object snapshotMap) {
+        try {
+            if (!isSnapshotOf(snapshotMap, ENTITLEMENTS_KEY)) {
+                return;
+            }
+            ClassLoader loader = snapshotMap.getClass().getClassLoader();
+            Map<?, ?> snapshot = (Map<?, ?>) bridgeClass(loader, "ReadableMap").getMethod("toHashMap")
+                .invoke(snapshotMap);
+            Map<String, Object> entitlements = new HashMap<>();
+            Object stored = snapshot.get("value");
+            if (stored instanceof Map) {
+                for (Map.Entry<?, ?> entry : ((Map<?, ?>) stored).entrySet()) {
+                    entitlements.put(String.valueOf(entry.getKey()), entry.getValue());
+                }
+            }
+            entitlements.put(ENTITLEMENT_ID, lifetimeEntry(currentUserId(loader)));
+            replaceValue(snapshotMap, entitlements);
+        } catch (Throwable ex) {
+            Log.e(TAG, "Could not add the lifetime entitlement", ex);
+        }
+    }
+
+    private static boolean isSnapshotOf(Object snapshotMap, String key) throws ReflectiveOperationException {
+        Class<?> readableMap = bridgeClass(snapshotMap.getClass().getClassLoader(), "ReadableMap");
+        return key.equals(readableMap.getMethod("getString", String.class).invoke(snapshotMap, "key"));
+    }
+
+    private static void replaceValue(Object snapshotMap, Map<String, Object> value)
+            throws ReflectiveOperationException {
+        ClassLoader loader = snapshotMap.getClass().getClassLoader();
+        Class<?> arguments = bridgeClass(loader, "Arguments");
+        Class<?> writableMap = bridgeClass(loader, "WritableMap");
+        Object childKeys = arguments.getMethod("makeNativeArray", List.class)
+            .invoke(null, new ArrayList<Object>(value.keySet()));
+
+        writableMap.getMethod("putBoolean", String.class, boolean.class).invoke(snapshotMap, "exists", true);
+        writableMap.getMethod("putBoolean", String.class, boolean.class)
+            .invoke(snapshotMap, "hasChildren", !value.isEmpty());
+        writableMap.getMethod("putDouble", String.class, double.class)
+            .invoke(snapshotMap, "childrenCount", (double) value.size());
+        writableMap.getMethod("putArray", String.class, bridgeClass(loader, "ReadableArray"))
+            .invoke(snapshotMap, "childKeys", childKeys);
+        writableMap.getMethod("putMap", String.class, bridgeClass(loader, "ReadableMap"))
+            .invoke(snapshotMap, "value", arguments.getMethod("makeNativeMap", Map.class).invoke(null, value));
+    }
+
+    private static Map<String, Object> lifetimeEntry(String userId) {
+        Map<String, Object> entry = new HashMap<>();
+        entry.put("entitlementId", ENTITLEMENT_ID);
+        entry.put("productId", PRODUCT_ID);
+        entry.put("startedAt", STARTED_AT);
+        if (userId != null) {
+            Map<String, Object> selfTrackKeys = new HashMap<>();
+            selfTrackKeys.put(userId, true);
+            entry.put("subscriberUserKey", userId);
+            entry.put("selfTrackKeyz", selfTrackKeys);
+        }
+        return entry;
+    }
+
+    private static String currentUserId(ClassLoader loader) throws ReflectiveOperationException {
+        Class<?> firebaseAuth = Class.forName("com.google.firebase.auth.FirebaseAuth", false, loader);
+        Object auth = firebaseAuth.getMethod("getInstance").invoke(null);
+        Object user = firebaseAuth.getMethod("getCurrentUser").invoke(auth);
+        Class<?> firebaseUser = Class.forName("com.google.firebase.auth.FirebaseUser", false, loader);
+        return (user != null) ? (String) firebaseUser.getMethod("getUid").invoke(user) : null;
+    }
+
+    private static Class<?> bridgeClass(ClassLoader loader, String name) throws ClassNotFoundException {
+        return Class.forName(BRIDGE_PACKAGE + name, false, loader);
+    }
+
+}

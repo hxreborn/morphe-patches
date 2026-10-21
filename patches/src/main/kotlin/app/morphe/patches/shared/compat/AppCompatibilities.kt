@@ -690,6 +690,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.1.1", versionCode = 3231, minSdk = 26)),
     )
 
+    val NARA_BABY = Compatibility(
+        name = "Nara Baby",
+        packageName = "com.naraorganics.nara",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFF5D01,
+        signatures = setOf(
+            "de6c7a92a739929e4a32b5a1e10b79c6e1b5bac0162e20453c1a6eb1c1b365c6",
+        ),
+        targets = listOf(AppTarget(version = "2.8.2", versionCode = 405, minSdk = 24)),
+    )
+
     val NETWORK_ANALYZER = Compatibility(
         name = "Network Analyzer",
         packageName = "net.techet.netanalyzerlite.an",
