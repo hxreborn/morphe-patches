@@ -295,6 +295,7 @@ ICONS = {
     "com.sygic.aura": "sygic.png",
     "com.omniashare.minishare": "minishare.png",
     "com.naraorganics.nara": "narababy.png",
+    "com.jndapp.glass.widgets": "glasswidgets.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

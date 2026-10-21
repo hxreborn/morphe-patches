@@ -398,6 +398,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val GLASS_WIDGETS = Compatibility(
+        name = "Glass Widgets",
+        packageName = "com.jndapp.glass.widgets",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "6566216a168c676d7290543751611e836d79c88a0c9e616c9ba3db9688c9737b",
+        ),
+        targets = listOf(AppTarget(version = "1.0.10", versionCode = 11, minSdk = 32)),
+    )
+
     val HINDU_CALENDAR = Compatibility(
         name = "Hindu Calendar",
         packageName = "com.alokmandavgane.hinducalendar",
