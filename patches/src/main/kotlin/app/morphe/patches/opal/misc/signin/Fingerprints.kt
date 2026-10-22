@@ -6,6 +6,7 @@ package app.morphe.patches.opal.misc.signin
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
@@ -29,7 +30,10 @@ internal object FirebaseAuthStoreFingerprint : Fingerprint(
 
 internal object CreateAllTablesFingerprint : Fingerprint(
     returnType = "V",
-    strings = listOf(USERS_TABLE_STATEMENT, ONBOARDING_TABLE_STATEMENT),
+    strings = listOf(
+        string(USERS_TABLE_STATEMENT, StringComparisonType.STARTS_WITH),
+        string(ONBOARDING_TABLE_STATEMENT, StringComparisonType.STARTS_WITH),
+    ),
 )
 
 internal object OpalUserToStringFingerprint : Fingerprint(
