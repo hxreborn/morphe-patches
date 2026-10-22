@@ -60,7 +60,7 @@ val overrideCertificatePinningPatch = resourcePatch(
             }
         }
 
-        if (resXmlDirectory.resolve(networkSecurityFileName).exists()) {
+        if (decode("res/xml/$networkSecurityFileName").isNotEmpty()) {
             document("res/xml/$networkSecurityFileName").use { document ->
                 arrayOf(
                     "base-config",
@@ -100,6 +100,7 @@ val overrideCertificatePinningPatch = resourcePatch(
                 }
             }
         } else {
+            resXmlDirectory.mkdirs()
             File(resXmlDirectory, networkSecurityFileName).apply {
                 writeText(
                     """

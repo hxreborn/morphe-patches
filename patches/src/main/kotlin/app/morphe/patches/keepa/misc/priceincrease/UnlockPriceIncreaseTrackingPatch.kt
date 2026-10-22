@@ -22,6 +22,7 @@ val unlockPriceIncreaseTrackingPatch = resourcePatch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
+        decode("assets/app/*.mjs")
         val chunks = get("assets/app").listFiles { file -> file.extension == "mjs" }
             ?: throw PatchException("Could not read the application bundle directory.")
 

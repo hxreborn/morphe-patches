@@ -247,12 +247,14 @@ private fun Document.readPalette(): Map<String, String> =
         .filter { it.tagName == "color" }
         .associate { it.getAttribute("name") to it.textContent.trim() }
 
-private fun ResourcePatchContext.resourceFiles(directoryPrefixes: List<String>, extension: String): List<File> =
-    get("res").listFiles().orEmpty()
+private fun ResourcePatchContext.resourceFiles(directoryPrefixes: List<String>, extension: String): List<File> {
+    decode(*directoryPrefixes.map { "res/$it*" }.toTypedArray())
+    return get("res").listFiles().orEmpty()
         .filter { directory -> directoryPrefixes.any { directory.name.startsWith(it) } }
         .sortedBy { it.name }
         .flatMap { directory -> directory.listFiles().orEmpty().sortedBy { it.name } }
         .filter { it.extension == extension && !isLibraryResource(it.name) }
+}
 
 private fun ResourcePatchContext.cloneDialogDrawables() {
     val drawables = get("res/drawable")
@@ -262,6 +264,7 @@ private fun ResourcePatchContext.cloneDialogDrawables() {
         val xml = layout.readText()
         val patched = xml.replace(drawableReference) { reference ->
             val name = reference.groupValues[1]
+            decode("res/drawable/$name.xml")
             val source = drawables.resolve("$name.xml").takeIf { it.exists() && !isLibraryResource(name) }
                 ?: return@replace reference.value
             source.copyTo(drawables.resolve("$DIALOG_DRAWABLE_PREFIX$name.xml"), overwrite = true)
@@ -298,6 +301,7 @@ private fun ResourcePatchContext.recolorXmlAttributes(recolorer: Recolorer) {
 }
 
 private fun ResourcePatchContext.addSplashIcon() {
+    decode("res/mipmap*")
     val logoExists = get("res").listFiles().orEmpty()
         .filter { it.name.startsWith("mipmap") }
         .any { directory -> directory.listFiles().orEmpty().any { it.nameWithoutExtension == SPLASH_LOGO } }
@@ -429,6 +433,7 @@ private fun ResourcePatchContext.invertDarkGlyphs() {
 }
 
 private fun ResourcePatchContext.rewriteColorsXml(recolorer: Recolorer) {
+    decode("res/**")
     val xmlReferencingCodeInk = get("res").walk()
         .filter { it.extension == "xml" && it.name != "colors.xml" }
         .filter { file ->
