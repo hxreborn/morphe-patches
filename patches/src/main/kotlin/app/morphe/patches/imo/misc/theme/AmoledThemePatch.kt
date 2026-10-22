@@ -98,6 +98,7 @@ val amoledThemePatch = resourcePatch(
             }
         }
 
+        decode("res/layout*")
         val chatLayouts = get("res").listFiles { dir -> dir.name.startsWith("layout") }.orEmpty()
             .flatMap { it.listFiles().orEmpty().toList() }
             .filter { CHAT_BACKGROUND_VIEW in it.readText() }
