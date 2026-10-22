@@ -389,7 +389,7 @@ private val resolveRestoredMethodsPatch = bytecodePatch {
 internal val restoreVirtualizedMethodsPatch = bytecodePatch {
     dependsOn(removePairipVirtualizationPatch, resolveRestoredMethodsPatch)
 
-    setExtensionInputStream(Supplier { ByteArrayInputStream(assembleDex(restoredSmali)) })
+    extendWith(Supplier { ByteArrayInputStream(assembleDex(restoredSmali)) })
 
     execute {
         virtualizedMethods.forEach { (method, restoredName) ->

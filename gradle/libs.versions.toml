@@ -1,8 +1,8 @@
 [versions]
-morphe-patcher = "1.14.0"
-morphe-patches-library = "1.8.0"
+morphe-patcher = "2.0.0"
+morphe-patches-library = "2.0.0"
 #noinspection GradleDependency
-smali = "d92701d947"
+smali = "4220ae75f7"
 okhttp = "5.5.0"
 pngj = "2.1.0"
 spring-javaformat = "0.0.48"
