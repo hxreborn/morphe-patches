@@ -140,7 +140,7 @@ runs:
             if [ -n "$previous" ]; then
               mapfile -t outdated < <(jq -r '.issue.labels[].name | select(. == "needs info")' "$GITHUB_EVENT_PATH")
               bash -eo pipefail "${{ github.action_path }}/remove_bot_labels.sh" "$ISSUE" "${outdated[@]}"
-              printf '<!-- app-update-bot -->\nThis app update request now passes the automated checks.\n' > comment.md
+              printf '<!-- app-update-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" update-passes)" > comment.md
               post_comment
             fi
             ;;
@@ -198,7 +198,7 @@ runs:
             "map(select(.number != $ISSUE)) | .[0:3] | map(\"- [#\(.number)](https://redirect.github.com/$REPO/issues/\(.number)) \`\(.title | gsub(\"\`\"; \"'\") | gsub(\"\\\\s+\"; \" \"))\`\") | join(\"\n\")") ||
             { echo "::warning::Searching for issues about $app failed"; dupes=""; }
           if [ -n "$dupes" ]; then
-            printf '\nThese issues matched a search for %s:\n%s\n' "$app" "$dupes" >> comment.md
+            printf '\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" related issues="$dupes")" >> comment.md
           fi
         fi
 
@@ -207,7 +207,7 @@ runs:
           tail -n 1 | jq -r '. // empty')
 
         without_related() {
-          sed '/^These issues matched a search for /,$d'
+          sed -E '/^(These issues matched a search for |These issues may be about the same problem:)/,$d'
         }
         comment_changed() {
           [ "$(without_related < comment.md)" != "$(printf '%s\n' "$previous" | without_related)" ]
@@ -249,10 +249,10 @@ runs:
             fi
             if [ "$CLOSED" = "true" ]; then
               gh issue reopen "$ISSUE" --repo "$REPO"
-              printf '<!-- triage-bot -->\nThis issue was reopened because the report now passes the automated checks.\n' > comment.md
+              printf '<!-- triage-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" report-reopened)" > comment.md
               post_comment
             elif [ -n "$previous" ]; then
-              printf '<!-- triage-bot -->\nThis bug report now passes the automated checks.\n' > comment.md
+              printf '<!-- triage-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" report-passes)" > comment.md
               post_comment
             fi
             ;;

@@ -1,4 +1,4 @@
-name: 🐞 Patching or install failed
+name: 🐞 Patching failed
 description: Patching stopped with an error, or the patched APK would not install.
 title: "[Bug]: "
 labels: ["bug"]
@@ -8,8 +8,8 @@ body:
       value: |
         Use this one when patching stopped with an error, or the APK it produced wouldn't install.
 
-        - 🚨 App patched but misbehaves: use
-          [Patched app does not work](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml).
+        - 🚨 Patching finished and the app misbehaves: use
+          [Patched app broken](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml).
         - Search open and closed reports [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
         - App version newer than the ones listed below: that's an
           [app update request](https://github.com/hxreborn/morphe-patches/issues/new?template=app_update.yml), not a bug.

@@ -30,6 +30,7 @@ jobs:
           sparse-checkout: |
             .github/scripts/issue_comment.py
             .github/scripts/versions.py
+            .github/actions/triage/replies.py
           sparse-checkout-cone-mode: false
       - env:
           GH_TOKEN: ${{ github.token }}
@@ -66,6 +67,7 @@ jobs:
           sparse-checkout: |
             .github/scripts/issue_comment.py
             .github/scripts/versions.py
+            .github/actions/triage/replies.py
             patches-list.json
           sparse-checkout-cone-mode: false
       - env:
@@ -113,6 +115,7 @@ jobs:
           sparse-checkout: |
             .github/scripts/issue_comment.py
             .github/scripts/versions.py
+            .github/actions/triage/replies.py
             .github/actions/triage/discussion.sh
           sparse-checkout-cone-mode: false
       - env:
