@@ -28,6 +28,7 @@ final class PatchCatalog {
         addIfApplied(groups, posting());
         addIfApplied(groups, feed());
         addIfApplied(groups, privacy());
+        addIfApplied(groups, updates());
         return new PatchCatalog(groups);
     }
 
@@ -148,6 +149,15 @@ final class PatchCatalog {
         if (ContactsPermission.isPatchIncluded()) {
             group.addAlwaysOn("ic_person_crop_rectangle", "Remove contacts permission",
                     "BeReal can't ask for or read your phone's contacts.");
+        }
+        return group;
+    }
+
+    private static PatchGroup updates() {
+        final PatchGroup group = new PatchGroup("Updates");
+        if (UpdatePrompts.isPatchIncluded()) {
+            group.addAlwaysOn("ic_arrow_up_circle_fill", "Remove update popups",
+                    "Removes BeReal's required and suggested update popups and the Play Store update prompt.");
         }
         return group;
     }
