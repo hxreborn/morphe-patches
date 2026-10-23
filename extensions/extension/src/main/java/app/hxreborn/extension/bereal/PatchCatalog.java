@@ -56,6 +56,11 @@ final class PatchCatalog {
                             + "or shoot as usual.",
                     PatchSettings.GALLERY_PHOTOS);
         }
+        if (CustomLocation.isPatchIncluded()) {
+            group.addLocation("ic_location_fill", "Use a custom location",
+                    "Your BeReal shows the place you choose below, on the map or by searching a place name.",
+                    PatchSettings.CUSTOM_LOCATION);
+        }
         return group;
     }
 
