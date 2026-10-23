@@ -28,6 +28,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting REMOVE_LATE_LABEL = new BooleanSetting("bereal_remove_late_label", true);
 
+    public static final BooleanSetting REMOVE_STREAK_PROMPTS = new BooleanSetting("bereal_remove_streak_prompts", true);
+
     private PatchSettings() {
     }
 

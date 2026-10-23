@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
+import app.hxreborn.extension.bereal.streak.StreakPrompts;
 
 final class PatchCatalog {
 
@@ -89,6 +90,12 @@ final class PatchCatalog {
                     "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and "
                             + "the feed.",
                     PatchSettings.REMOVE_FRIEND_SUGGESTIONS);
+        }
+        if (StreakPrompts.isPatchIncluded()) {
+            group.addExperimentalToggle("ic_bell_slash_fill", "Remove streak offers",
+                    "Removes the offers to recover your streak and the Save your streak sheet. Your streak count "
+                            + "doesn't change.",
+                    PatchSettings.REMOVE_STREAK_PROMPTS);
         }
         if (LateLabel.isPatchIncluded()) {
             group.addToggle("ic_tag_fill", "Remove late labels",
