@@ -7,6 +7,7 @@ package app.morphe.patches.lumo.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.lumo.misc.PageStartedFingerprint
+import app.morphe.patches.lumo.misc.pairip.restoreWidgetActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -22,7 +23,7 @@ val unlockPremiumPatch = bytecodePatch(
         "Usage limits for models, messages and images still apply.",
 ) {
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreWidgetActionsPatch)
     availability(requireArm64)
     extendWith("extensions/extension.mpe")
 
