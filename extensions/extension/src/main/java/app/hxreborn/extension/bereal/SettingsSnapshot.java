@@ -13,8 +13,8 @@ final class SettingsSnapshot {
     private static final BooleanSetting[] FLAGS = { PatchSettings.GALLERY_PHOTOS, PatchSettings.CUSTOM_LOCATION,
             PatchSettings.CUSTOM_RETAKE_COUNT, PatchSettings.REMOVE_LATE_FLAG, PatchSettings.REMOVE_FRIEND_SUGGESTIONS,
             PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_PROMPTS, PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB,
-            PatchSettings.DISABLE_VIEW_RECEIPTS, PatchSettings.REMOVE_LATE_LABEL, PatchSettings.REMOVE_STREAK_PROMPTS,
-            PatchSettings.REMOVE_PROMOTIONS };
+            PatchSettings.DISABLE_VIEW_RECEIPTS, PatchSettings.DISABLE_TYPING_INDICATOR,
+            PatchSettings.REMOVE_LATE_LABEL, PatchSettings.REMOVE_STREAK_PROMPTS, PatchSettings.REMOVE_PROMOTIONS };
 
     private static final StringSetting[] TEXTS = { PatchSettings.LOCATION_LATITUDE, PatchSettings.LOCATION_LONGITUDE,
             PatchSettings.LOCATION_LABEL };
