@@ -19,6 +19,8 @@ public final class PatchSettings {
 
     public static final StringSetting LOCATION_LABEL = new StringSetting("bereal_location_label", "");
 
+    public static final BooleanSetting CUSTOM_RETAKE_COUNT = new BooleanSetting("bereal_custom_retake_count", false);
+
     private PatchSettings() {
     }
 
