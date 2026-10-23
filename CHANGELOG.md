@@ -1,3 +1,9 @@
+## [1.60.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.59.0...v1.60.0-dev.1) (2026-10-23)
+
+### New Features
+
+* update to Patcher 2.0 ([e749db9](https://github.com/hxreborn/morphe-patches/commit/e749db9d8194a6370507fd8b7191018d2bbe4664))
+
 ## [1.59.0](https://github.com/hxreborn/morphe-patches/compare/v1.58.0...v1.59.0) (2026-10-23)
 
 ### Bug Fixes
