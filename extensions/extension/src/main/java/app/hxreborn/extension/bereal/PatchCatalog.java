@@ -56,6 +56,11 @@ final class PatchCatalog {
                             + "then tap the shutter. Sides you don't pick use the camera.",
                     PatchSettings.GALLERY_PHOTOS);
         }
+        if (CustomLocation.isPatchIncluded()) {
+            group.addLocation("ic_location_fill", "Use a custom location",
+                    "Your BeReal shows the place you pick on the map below or find by name.",
+                    PatchSettings.CUSTOM_LOCATION);
+        }
         return group;
     }
 

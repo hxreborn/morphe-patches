@@ -4,6 +4,7 @@
  */
 package app.hxreborn.extension.bereal;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -95,6 +96,9 @@ final class SettingsPages {
 
     private void addRow(LinearLayout card, PatchGroup.Row spec) {
         switch (spec.kind) {
+            case LOCATION:
+                locationRow(card, spec);
+                break;
             case ALWAYS_ON:
                 this.rows.alwaysOnRow(card, spec.iconName, spec.title, spec.description);
                 break;
@@ -107,6 +111,17 @@ final class SettingsPages {
                 });
                 break;
         }
+    }
+
+    private void locationRow(LinearLayout card, PatchGroup.Row spec) {
+        final LocationRows location = new LocationRows(this.activity, this.style, this.rows);
+        final SettingsRows.Row row = this.rows.switchRow(card, spec.iconName, spec.title, spec.description,
+                spec.setting, () -> {
+                    refreshStatus();
+                    location.refresh();
+                });
+        card.addView(location.build(row));
+        card.post(() -> card.setLayoutTransition(new LayoutTransition()));
     }
 
     private void addCard(LinearLayout content, LinearLayout card) {
