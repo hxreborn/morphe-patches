@@ -46,6 +46,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting REMOVE_PROMOTIONS = new BooleanSetting("bereal_remove_promotions", true);
 
+    public static final BooleanSetting SAVE_FRIENDS_BEREALS = new BooleanSetting("bereal_save_friends_bereals", true);
+
     private PatchSettings() {
     }
 

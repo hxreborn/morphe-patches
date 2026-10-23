@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.blur.FriendsPosts;
+import app.hxreborn.extension.bereal.download.FriendsPostDownload;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsTab;
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
@@ -94,6 +95,11 @@ final class PatchCatalog {
                     "Friends' BeReals in My Friends and Friends of Friends are visible before you post today's "
                             + "BeReal. Restart BeReal to apply this.",
                     PatchSettings.SHOW_FRIENDS_POSTS, true);
+        }
+        if (FriendsPostDownload.isPatchIncluded()) {
+            group.addToggle("ic_square_and_arrow_down", "Save friends' BeReals",
+                    "Download appears in the ⋯ menu of friends' BeReals in the feed and on the RealMoji screen.",
+                    PatchSettings.SAVE_FRIENDS_BEREALS);
         }
         return group;
     }
