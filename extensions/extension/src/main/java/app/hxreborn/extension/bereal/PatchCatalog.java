@@ -67,6 +67,11 @@ final class PatchCatalog {
                             + "send the number you took.",
                     PatchSettings.CUSTOM_RETAKE_COUNT);
         }
+        if (LateFlag.isPatchIncluded()) {
+            group.addToggle("ic_clock", "Send late BeReals as on time",
+                    "BeReals taken after the moment's window reach your friends without the late tag.",
+                    PatchSettings.REMOVE_LATE_FLAG);
+        }
         return group;
     }
 

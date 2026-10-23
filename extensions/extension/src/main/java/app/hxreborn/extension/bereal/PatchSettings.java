@@ -21,6 +21,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting CUSTOM_RETAKE_COUNT = new BooleanSetting("bereal_custom_retake_count", false);
 
+    public static final BooleanSetting REMOVE_LATE_FLAG = new BooleanSetting("bereal_remove_late_flag", false);
+
     private PatchSettings() {
     }
 
