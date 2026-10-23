@@ -11,7 +11,7 @@ import app.morphe.extension.shared.settings.StringSetting;
 final class SettingsSnapshot {
 
     private static final BooleanSetting[] FLAGS = { PatchSettings.GALLERY_PHOTOS, PatchSettings.CUSTOM_LOCATION,
-            PatchSettings.CUSTOM_RETAKE_COUNT, PatchSettings.REMOVE_LATE_FLAG };
+            PatchSettings.CUSTOM_RETAKE_COUNT, PatchSettings.REMOVE_LATE_FLAG, PatchSettings.REMOVE_LATE_LABEL };
 
     private static final StringSetting[] TEXTS = { PatchSettings.LOCATION_LATITUDE, PatchSettings.LOCATION_LONGITUDE,
             PatchSettings.LOCATION_LABEL };
