@@ -23,6 +23,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting REMOVE_LATE_FLAG = new BooleanSetting("bereal_remove_late_flag", false);
 
+    public static final BooleanSetting REMOVE_LATE_LABEL = new BooleanSetting("bereal_remove_late_label", true);
+
     private PatchSettings() {
     }
 

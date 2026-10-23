@@ -7,6 +7,8 @@ package app.hxreborn.extension.bereal;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.hxreborn.extension.bereal.latelabel.LateLabel;
+
 final class PatchCatalog {
 
     final List<PatchGroup> groups;
@@ -81,6 +83,11 @@ final class PatchCatalog {
             group.addAlwaysOn("ic_grid_view", "Remove ads",
                     "Removes ads and sponsored BeReals from My Friends and Friends of Friends and the full-screen ad "
                             + "at launch, and stops the ad networks from loading.");
+        }
+        if (LateLabel.isPatchIncluded()) {
+            group.addToggle("ic_tag_fill", "Remove late labels",
+                    "Removes the late label from friends' BeReals. Each one shows how long ago your friend posted it.",
+                    PatchSettings.REMOVE_LATE_LABEL);
         }
         return group;
     }
