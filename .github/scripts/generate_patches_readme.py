@@ -262,6 +262,7 @@ ICONS = {
     "com.naraorganics.nara": "narababy.png",
     "com.jndapp.glass.widgets": "glasswidgets.png",
     "io.yuka.android": "yuka.png",
+    "vpn.usa_tap2free": "usavpn.png",
     "com.viber.voip": "viber.png",
 }
 
