@@ -238,6 +238,15 @@ public final class PatchesSettingsActivity extends Activity {
                         }
                     }));
         }
+        if (LoadingIndicator.isPatched()) {
+            appearanceRows.add(switchRow(AppliedPatches.LOADING_INDICATOR, "Shape-morphing pull to refresh indicator.",
+                    LoadingIndicator.isEnabled(), new CheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(boolean enabled) {
+                            LoadingIndicator.setEnabled(enabled);
+                        }
+                    }));
+        }
         addSection(column, "Appearance", appearanceRows);
 
         addSection(column, "App", Collections.singletonList(appFields()));
