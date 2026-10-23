@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
+import app.hxreborn.extension.bereal.promos.Promotions;
 import app.hxreborn.extension.bereal.streak.StreakPrompts;
 
 final class PatchCatalog {
@@ -96,6 +97,12 @@ final class PatchCatalog {
                     "Removes the offers to recover your streak and the Save your streak sheet. Your streak count "
                             + "doesn't change.",
                     PatchSettings.REMOVE_STREAK_PROMPTS);
+        }
+        if (Promotions.isPatchIncluded()) {
+            group.addToggle("ic_rating_star_fill", "Remove BeReal promos",
+                    "Removes Recap cards, the How's BeReal? review prompt, the profile completion card, the "
+                            + "notifications banner and the add music tooltip.",
+                    PatchSettings.REMOVE_PROMOTIONS);
         }
         if (LateLabel.isPatchIncluded()) {
             group.addToggle("ic_tag_fill", "Remove late labels",
