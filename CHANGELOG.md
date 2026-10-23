@@ -1,3 +1,9 @@
+## [1.60.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.1...v1.60.0-dev.2) (2026-10-23)
+
+### Bug Fixes
+
+* **Castle - Unlock premium:** stop crashing when playing 1080p stream ([b4a8bd6](https://github.com/hxreborn/morphe-patches/commit/b4a8bd6b89a32e1da6db8865dfdf83eb26d1c62b))
+
 ## [1.60.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.59.0...v1.60.0-dev.1) (2026-10-23)
 
 ### New Features
