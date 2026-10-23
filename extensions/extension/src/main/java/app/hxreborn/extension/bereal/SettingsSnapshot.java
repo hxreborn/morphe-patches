@@ -15,7 +15,7 @@ final class SettingsSnapshot {
             PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_PROMPTS, PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB,
             PatchSettings.DISABLE_VIEW_RECEIPTS, PatchSettings.DISABLE_TYPING_INDICATOR,
             PatchSettings.REMOVE_LATE_LABEL, PatchSettings.REMOVE_STREAK_PROMPTS, PatchSettings.REMOVE_PROMOTIONS,
-            PatchSettings.SHOW_FRIENDS_POSTS };
+            PatchSettings.SHOW_FRIENDS_POSTS, PatchSettings.SAVE_FRIENDS_BEREALS };
 
     private static final StringSetting[] TEXTS = { PatchSettings.LOCATION_LATITUDE, PatchSettings.LOCATION_LONGITUDE,
             PatchSettings.LOCATION_LABEL };
