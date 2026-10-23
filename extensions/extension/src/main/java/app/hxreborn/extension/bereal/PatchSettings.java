@@ -42,6 +42,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting REMOVE_STREAK_PROMPTS = new BooleanSetting("bereal_remove_streak_prompts", true);
 
+    public static final BooleanSetting SHOW_FRIENDS_POSTS = new BooleanSetting("bereal_show_friends_posts", false);
+
     public static final BooleanSetting REMOVE_PROMOTIONS = new BooleanSetting("bereal_remove_promotions", true);
 
     private PatchSettings() {
