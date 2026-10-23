@@ -5,6 +5,8 @@
 package app.morphe.patches.bereal.misc.post
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.checkCast
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
@@ -19,6 +21,14 @@ internal object CreatePostRetakeCounterSetterFingerprint : Fingerprint(
     filters = listOf(fieldAccess(name = "retakeCounter_", type = "I", opcode = Opcode.IPUT)),
 )
 
+internal fun createPostTakenAtSetterFingerprint(requestType: String) = Fingerprint(
+    definingClass = requestType,
+    isStatic = true,
+    returnType = "V",
+    parameters = listOf(requestType, "L"),
+    filters = listOf(fieldAccess(definingClass = requestType, name = "takenAt_", opcode = Opcode.IPUT_OBJECT)),
+)
+
 internal fun createPostRequestBuilderFingerprint(retakeCounterSetter: MethodReference) = Fingerprint(
     isStatic = true,
     returnType = retakeCounterSetter.definingClass,
@@ -29,11 +39,34 @@ internal fun createPostLocationReadFingerprint(locationType: String) = Fingerpri
     filters = listOf(fieldAccess(type = locationType, opcode = Opcode.IGET_OBJECT)),
 )
 
+internal fun createPostTakenAtConversionFingerprint(
+    instantType: String,
+    timestampType: String,
+    takenAtSetter: MethodReference,
+) = Fingerprint(
+    filters = listOf(
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf(instantType), returnType = timestampType),
+        methodCall(reference = takenAtSetter, location = MatchAfterWithin(4)),
+    ),
+)
+
 internal object LocationToStringFingerprint : Fingerprint(
     name = "toString",
     returnType = "Ljava/lang/String;",
     parameters = emptyList(),
     strings = listOf("Location(longitude=", ", latitude="),
+)
+
+internal object MomentToStringFingerprint : Fingerprint(
+    name = "toString",
+    returnType = "Ljava/lang/String;",
+    parameters = emptyList(),
+    strings = listOf("Moment(id=", ", creationDate=", ", expirationDate="),
+)
+
+internal fun lateCheckFingerprint(momentType: String) = Fingerprint(
+    returnType = "Ljava/io/Serializable;",
+    filters = listOf(checkCast(momentType)),
 )
 
 internal object SendPostDelegateFingerprint : Fingerprint(
