@@ -7,6 +7,7 @@ package app.hxreborn.extension.bereal;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
 import app.hxreborn.extension.bereal.promos.Promotions;
 import app.hxreborn.extension.bereal.streak.StreakPrompts;
@@ -103,6 +104,11 @@ final class PatchCatalog {
                     "Removes Recap cards, the How's BeReal? review prompt, the profile completion card, the "
                             + "notifications banner and the add music tooltip.",
                     PatchSettings.REMOVE_PROMOTIONS);
+        }
+        if (FriendsOfFriendsPrompts.isPatchIncluded()) {
+            group.addExperimentalToggle("ic_person_2_badge_plus_fill", "Remove Friends of Friends prompts",
+                    "Removes the Share with Friends of Friends card and the messages at the end of the feed.",
+                    PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_PROMPTS);
         }
         if (LateLabel.isPatchIncluded()) {
             group.addToggle("ic_tag_fill", "Remove late labels",
