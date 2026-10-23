@@ -13,6 +13,7 @@ import app.hxreborn.extension.bereal.latelabel.LateLabel;
 import app.hxreborn.extension.bereal.promos.Promotions;
 import app.hxreborn.extension.bereal.seen.ViewReceipts;
 import app.hxreborn.extension.bereal.streak.StreakPrompts;
+import app.hxreborn.extension.bereal.typing.TypingIndicator;
 
 final class PatchCatalog {
 
@@ -133,6 +134,11 @@ final class PatchCatalog {
             group.addToggle("ic_eye_slash_fill", "Turn off seen status",
                     "BeReal stops sending which BeReals you viewed and which chats you opened.",
                     PatchSettings.DISABLE_VIEW_RECEIPTS);
+        }
+        if (TypingIndicator.isPatchIncluded()) {
+            group.addToggle("ic_bubble_fill", "Turn off typing indicator",
+                    "Friends don't see when you're typing in a chat. You still see when they type.",
+                    PatchSettings.DISABLE_TYPING_INDICATOR);
         }
         return group;
     }

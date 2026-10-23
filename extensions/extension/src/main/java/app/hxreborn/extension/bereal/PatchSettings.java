@@ -35,6 +35,9 @@ public final class PatchSettings {
     public static final BooleanSetting DISABLE_VIEW_RECEIPTS = new BooleanSetting("bereal_disable_view_receipts",
             false);
 
+    public static final BooleanSetting DISABLE_TYPING_INDICATOR = new BooleanSetting("bereal_disable_typing_indicator",
+            false);
+
     public static final BooleanSetting REMOVE_LATE_LABEL = new BooleanSetting("bereal_remove_late_label", true);
 
     public static final BooleanSetting REMOVE_STREAK_PROMPTS = new BooleanSetting("bereal_remove_streak_prompts", true);
