@@ -6,15 +6,14 @@ package app.morphe.patches.musicolet.misc.pairip
 
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
-import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
+import app.morphe.patches.shared.misc.pairip.restoreVirtualizedMethods
 import app.morphe.patches.shared.misc.smali.addDefaultConstructor
 
 private const val APP_PACKAGE = "Lin/krosbits/musicolet"
 private const val DO_IN_BACKGROUND = "doInBackground"
 private const val ON_RECEIVE = "onReceive"
-
-private class RestoredMethod(val type: String, val name: String, val registers: Int, val smali: String)
 
 private val RESTORED_METHODS = listOf(
     RestoredMethod(
@@ -287,9 +286,7 @@ val restoreVirtualizedMethodsPatch = bytecodePatch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        RESTORED_METHODS.forEach { restored ->
-            mutableClassDefBy(restored.type).replaceVirtualizedMethod(restored.name, restored.registers, restored.smali)
-        }
+        restoreVirtualizedMethods(RESTORED_METHODS)
         mutableClassDefBy("Lhm1;").addDefaultConstructor()
     }
 }
