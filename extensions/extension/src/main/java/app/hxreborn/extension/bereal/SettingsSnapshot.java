@@ -10,7 +10,8 @@ import app.morphe.extension.shared.settings.StringSetting;
 
 final class SettingsSnapshot {
 
-    private static final BooleanSetting[] FLAGS = { PatchSettings.GALLERY_PHOTOS, PatchSettings.CUSTOM_LOCATION };
+    private static final BooleanSetting[] FLAGS = { PatchSettings.GALLERY_PHOTOS, PatchSettings.CUSTOM_LOCATION,
+            PatchSettings.CUSTOM_RETAKE_COUNT };
 
     private static final StringSetting[] TEXTS = { PatchSettings.LOCATION_LATITUDE, PatchSettings.LOCATION_LONGITUDE,
             PatchSettings.LOCATION_LABEL };

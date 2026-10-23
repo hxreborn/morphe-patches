@@ -61,6 +61,12 @@ final class PatchCatalog {
                     "Your BeReal shows the place you choose below, on the map or by searching a place name.",
                     PatchSettings.CUSTOM_LOCATION);
         }
+        if (RetakeCount.isPatchIncluded()) {
+            group.addToggle("ic_retake", "Choose your retake count",
+                    "When you send a BeReal, a prompt asks how many retakes your friends see. Pick Use real count to "
+                            + "send the number you took.",
+                    PatchSettings.CUSTOM_RETAKE_COUNT);
+        }
         return group;
     }
 

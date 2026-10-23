@@ -26,6 +26,7 @@ internal const val BEREAL_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/bereal/"
 private const val PATCH_CONTEXT_CLASS = "${BEREAL_EXTENSION_PACKAGE}PatchContext;"
 private const val SETTINGS_ACTIVITY_CLASS = "app.hxreborn.extension.bereal.PatchesSettingsActivity"
 private const val GALLERY_PICKER_ACTIVITY_CLASS = "app.hxreborn.extension.bereal.GalleryPickerActivity"
+private const val RETAKE_COUNT_ACTIVITY_CLASS = "app.hxreborn.extension.bereal.RetakeCountActivity"
 private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Application;"
 private const val SETTINGS_ROW_TITLE = "hxreborn patches"
 private const val SETTINGS_ROW_TAG = "settingsscreen_patches_button"
@@ -95,6 +96,13 @@ internal val settingsPatch = bytecodePatch {
                     picker.setAttribute("android:excludeFromRecents", "true")
                     picker.setAttribute("android:theme", "@android:style/Theme.Translucent.NoTitleBar")
                     application.appendChild(picker)
+
+                    val retakes = document.createElement("activity")
+                    retakes.setAttribute("android:name", RETAKE_COUNT_ACTIVITY_CLASS)
+                    retakes.setAttribute("android:exported", "false")
+                    retakes.setAttribute("android:excludeFromRecents", "true")
+                    retakes.setAttribute("android:theme", "@android:style/Theme.Translucent.NoTitleBar")
+                    application.appendChild(retakes)
                 }
             }
         },
