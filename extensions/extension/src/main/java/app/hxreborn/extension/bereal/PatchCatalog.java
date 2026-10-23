@@ -84,6 +84,12 @@ final class PatchCatalog {
                     "Removes ads and sponsored BeReals from My Friends and Friends of Friends and the full-screen ad "
                             + "at launch, and stops the ad networks from loading.");
         }
+        if (FriendSuggestions.isPatchIncluded()) {
+            group.addToggle("ic_person_2_foreground_fill", "Remove friend suggestions",
+                    "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and "
+                            + "the feed.",
+                    PatchSettings.REMOVE_FRIEND_SUGGESTIONS);
+        }
         if (LateLabel.isPatchIncluded()) {
             group.addToggle("ic_tag_fill", "Remove late labels",
                     "Removes the late label from friends' BeReals. Each one shows how long ago your friend posted it.",
