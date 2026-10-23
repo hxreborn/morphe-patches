@@ -6,6 +6,7 @@ package app.morphe.patches.hinducalendar.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.hinducalendar.misc.pairip.restoreReminderReceiversPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -19,7 +20,7 @@ val hideAdsPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.HINDU_CALENDAR)
 
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreReminderReceiversPatch)
 
     execute {
         val match = OnQueryPurchasesResponseFingerprint.matchSingle()
