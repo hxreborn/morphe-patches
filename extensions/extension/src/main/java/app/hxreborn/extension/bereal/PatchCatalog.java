@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
+import app.hxreborn.extension.bereal.fof.FriendsOfFriendsTab;
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
 import app.hxreborn.extension.bereal.promos.Promotions;
 import app.hxreborn.extension.bereal.streak.StreakPrompts;
@@ -114,6 +115,12 @@ final class PatchCatalog {
             group.addToggle("ic_tag_fill", "Remove late labels",
                     "Friends' BeReals show when they were posted, without late or how late they were.",
                     PatchSettings.REMOVE_LATE_LABEL);
+        }
+        if (FriendsOfFriendsTab.isPatchIncluded()) {
+            group.addToggle("ic_person_fill_and_arrow_left_and_arrow_right_outward",
+                    "Remove the Friends of Friends tab",
+                    "The home screen shows My Friends only. Restart BeReal to apply this.",
+                    PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB, true);
         }
         return group;
     }

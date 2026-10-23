@@ -14,6 +14,24 @@ import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.resource.ResourceType
 import com.android.tools.smali.dexlib2.Opcode
 
+internal object HomeTabToStringFingerprint : Fingerprint(
+    name = "toString",
+    returnType = "Ljava/lang/String;",
+    parameters = emptyList(),
+    strings = listOf("HomeTab(title=", ", entry="),
+)
+
+internal fun homeTabListFingerprint(homeTabType: String) = Fingerprint(
+    name = "invoke",
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Ljava/lang/Object;"),
+    filters = listOf(
+        resourceLiteral(ResourceType.STRING, "general_fof"),
+        methodCall(definingClass = homeTabType, name = "<init>", location = MatchAfterWithin(4)),
+        methodCall(definingClass = "Ljava/util/List;", name = "add", location = MatchAfterImmediately()),
+    ),
+)
+
 internal object EndOfFeedFooterToStringFingerprint : Fingerprint(
     name = "toString",
     returnType = "Ljava/lang/String;",
