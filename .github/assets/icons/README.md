@@ -26,6 +26,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `allvideoplayer.png` | All Video Player App (`com.allformatplayer.streamvideoplayer`) | Legend eSolution | APK 1.4, `res/drawable-xhdpi-v4/small_logo.png` |
 | `aloa.png` | Aloa (`com.getaloa.app`) | Aloa | APK 1.3.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
+| `bereal.png` | BeReal (`com.bereal.ft`) | BeReal | APK 3.97.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.19.1, adaptive icon `res/mipmap-anydpi-v26/botim_logo.xml` (square `res/mipmap-xxxhdpi-v4/botim_logo_square.png` cut to a circle) |
 | `depthpix.png` | DepthPix (`com.androholic.wallpapersdepthpix`) | Androholic | APK 1.0.12, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `devcheck.png` | DevCheck (`flar2.devcheck`) | flar2 | APK 6.57, adaptive icon `res/mipmap-xxxhdpi-v4/ic_launcher_background.webp` under `ic_launcher_foreground.webp` |
