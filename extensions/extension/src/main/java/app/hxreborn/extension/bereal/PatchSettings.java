@@ -26,6 +26,9 @@ public final class PatchSettings {
     public static final BooleanSetting REMOVE_FRIEND_SUGGESTIONS = new BooleanSetting("bereal_hide_friend_suggestions",
             true);
 
+    public static final BooleanSetting REMOVE_FRIENDS_OF_FRIENDS_PROMPTS = new BooleanSetting(
+            "bereal_remove_friends_of_friends_prompts", true);
+
     public static final BooleanSetting REMOVE_LATE_LABEL = new BooleanSetting("bereal_remove_late_label", true);
 
     public static final BooleanSetting REMOVE_STREAK_PROMPTS = new BooleanSetting("bereal_remove_streak_prompts", true);
