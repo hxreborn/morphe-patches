@@ -7,6 +7,7 @@ package app.morphe.patches.lumo.misc.taphighlight
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
+import app.morphe.patches.lumo.misc.pairip.restoreWidgetActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -21,7 +22,7 @@ val removeWebTapHighlightPatch = bytecodePatch(
     description = "Removes the highlight flash on tapped buttons and links.",
 ) {
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreWidgetActionsPatch)
     availability(requireArm64)
     extendWith("extensions/extension.mpe")
 
