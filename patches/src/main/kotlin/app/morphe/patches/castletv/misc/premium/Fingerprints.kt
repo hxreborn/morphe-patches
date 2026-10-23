@@ -23,3 +23,8 @@ internal object VideoIsPreviewFingerprint : Fingerprint(
 internal object DefaultResolutionFingerprint : Fingerprint(
     strings = listOf("clarityPremium==="),
 )
+
+internal object PlaylistParserFingerprint : Fingerprint(
+    parameters = listOf("Landroid/net/Uri;", "L"),
+    strings = listOf("Input does not start with the #EXTM3U header."),
+)
