@@ -32,6 +32,9 @@ public final class PatchSettings {
     public static final BooleanSetting REMOVE_FRIENDS_OF_FRIENDS_TAB = new BooleanSetting(
             "bereal_remove_friends_of_friends_tab", false);
 
+    public static final BooleanSetting DISABLE_VIEW_RECEIPTS = new BooleanSetting("bereal_disable_view_receipts",
+            false);
+
     public static final BooleanSetting REMOVE_LATE_LABEL = new BooleanSetting("bereal_remove_late_label", true);
 
     public static final BooleanSetting REMOVE_STREAK_PROMPTS = new BooleanSetting("bereal_remove_streak_prompts", true);

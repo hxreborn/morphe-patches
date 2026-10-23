@@ -11,6 +11,7 @@ import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsTab;
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
 import app.hxreborn.extension.bereal.promos.Promotions;
+import app.hxreborn.extension.bereal.seen.ViewReceipts;
 import app.hxreborn.extension.bereal.streak.StreakPrompts;
 
 final class PatchCatalog {
@@ -25,6 +26,7 @@ final class PatchCatalog {
         final List<PatchGroup> groups = new ArrayList<>();
         addIfApplied(groups, posting());
         addIfApplied(groups, feed());
+        addIfApplied(groups, privacy());
         return new PatchCatalog(groups);
     }
 
@@ -121,6 +123,16 @@ final class PatchCatalog {
                     "Remove the Friends of Friends tab",
                     "The home screen shows My Friends only. Restart BeReal to apply this.",
                     PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB, true);
+        }
+        return group;
+    }
+
+    private static PatchGroup privacy() {
+        final PatchGroup group = new PatchGroup("Privacy");
+        if (ViewReceipts.isPatchIncluded()) {
+            group.addToggle("ic_eye_slash_fill", "Turn off seen status",
+                    "BeReal stops sending which BeReals you viewed and which chats you opened.",
+                    PatchSettings.DISABLE_VIEW_RECEIPTS);
         }
         return group;
     }
