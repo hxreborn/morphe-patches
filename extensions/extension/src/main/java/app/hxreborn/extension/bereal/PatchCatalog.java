@@ -140,6 +140,11 @@ final class PatchCatalog {
                     "Friends don't see when you're typing in a chat. You still see when they type.",
                     PatchSettings.DISABLE_TYPING_INDICATOR);
         }
+        if (DataCollection.isPatchIncluded()) {
+            group.addAlwaysOn("ic_lock_shield", "Block tracking",
+                    "Turns off the advertising ID, Firebase crash reports and sessions, Amplitude and Datadog "
+                            + "analytics, Adjust attribution and the Shake bug reporter.");
+        }
         return group;
     }
 
