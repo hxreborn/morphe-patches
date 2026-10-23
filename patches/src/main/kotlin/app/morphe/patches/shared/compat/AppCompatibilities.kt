@@ -192,6 +192,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.0.01c", versionCode = 302400127, minSdk = 24)),
     )
 
+    val BEREAL = Compatibility(
+        name = "BeReal",
+        packageName = "com.bereal.ft",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "2efdbd738f3fdae901ecb96ead2d7b9b1ee6d2ceab911bdf7b1a3df812f3cfc4",
+        ),
+        targets = listOf(AppTarget(version = "3.97.1", versionCode = 3599414, minSdk = 26)),
+    )
+
     val BETTERSLEEP = Compatibility(
         name = "BetterSleep",
         packageName = "ipnossoft.rma.free",
