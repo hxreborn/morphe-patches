@@ -30,6 +30,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting REMOVE_STREAK_PROMPTS = new BooleanSetting("bereal_remove_streak_prompts", true);
 
+    public static final BooleanSetting REMOVE_PROMOTIONS = new BooleanSetting("bereal_remove_promotions", true);
+
     private PatchSettings() {
     }
 
