@@ -145,6 +145,10 @@ final class PatchCatalog {
                     "Turns off the advertising ID, Firebase crash reports and sessions, Amplitude and Datadog "
                             + "analytics, Adjust attribution and the Shake bug reporter.");
         }
+        if (ContactsPermission.isPatchIncluded()) {
+            group.addAlwaysOn("ic_person_crop_rectangle", "Remove contacts permission",
+                    "BeReal can't ask for or read your phone's contacts.");
+        }
         return group;
     }
 
