@@ -40,6 +40,10 @@ final class SettingsStyle {
 
     static final int RIPPLE = 0x33FFFFFF;
 
+    static final int CAUTION = 0xFFFF9F0A;
+
+    static final int CAUTION_SURFACE = 0x33FF9F0A;
+
     static final int MAP_CONTROL_SURFACE = 0xE61C1C1E;
 
     static final float BAR_TITLE_SP = 17f;
@@ -52,6 +56,8 @@ final class SettingsStyle {
 
     static final float SECTION_SP = 13f;
 
+    static final float CHIP_SP = 12f;
+
     static final int SCREEN_INSET_DP = 16;
 
     static final int CARD_RADIUS_DP = 16;
@@ -59,6 +65,8 @@ final class SettingsStyle {
     static final int FIELD_RADIUS_DP = 12;
 
     static final int ICON_DP = 24;
+
+    static final int CHIP_RADIUS_DP = 8;
 
     static final int CONTENT_MAX_DP = 640;
 
@@ -84,6 +92,15 @@ final class SettingsStyle {
         view.setTextColor(color);
         view.setTypeface(typeface);
         return view;
+    }
+
+    TextView chip(String label) {
+        final TextView chip = text(label, CHIP_SP, CAUTION, this.fonts.medium);
+        chip.setSingleLine(true);
+        chip.setIncludeFontPadding(false);
+        chip.setPadding(dp(8), dp(3), dp(8), dp(3));
+        chip.setBackground(rounded(CAUTION_SURFACE, CHIP_RADIUS_DP));
+        return chip;
     }
 
     GradientDrawable rounded(int color, int radiusDp) {

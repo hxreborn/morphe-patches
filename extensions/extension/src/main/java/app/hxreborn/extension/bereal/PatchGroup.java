@@ -25,15 +25,19 @@ final class PatchGroup {
     }
 
     void addToggle(String iconName, String title, String description, BooleanSetting setting, boolean restart) {
-        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, restart));
+        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, restart, null));
+    }
+
+    void addExperimentalToggle(String iconName, String title, String description, BooleanSetting setting) {
+        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, false, "Experimental"));
     }
 
     void addLocation(String iconName, String title, String description, BooleanSetting setting) {
-        this.rows.add(new Row(Kind.LOCATION, iconName, title, description, setting, false));
+        this.rows.add(new Row(Kind.LOCATION, iconName, title, description, setting, false, null));
     }
 
     void addAlwaysOn(String iconName, String title, String description) {
-        this.rows.add(new Row(Kind.ALWAYS_ON, iconName, title, description, null, false));
+        this.rows.add(new Row(Kind.ALWAYS_ON, iconName, title, description, null, false, null));
     }
 
     boolean isEmpty() {
@@ -74,14 +78,17 @@ final class PatchGroup {
 
         final boolean restart;
 
+        final String chip;
+
         private Row(Kind kind, String iconName, String title, String description, BooleanSetting setting,
-                boolean restart) {
+                boolean restart, String chip) {
             this.kind = kind;
             this.iconName = iconName;
             this.title = title;
             this.description = description;
             this.setting = setting;
             this.restart = restart;
+            this.chip = chip;
         }
 
     }

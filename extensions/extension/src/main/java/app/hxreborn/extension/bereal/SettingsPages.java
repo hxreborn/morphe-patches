@@ -103,7 +103,7 @@ final class SettingsPages {
                 this.rows.alwaysOnRow(card, spec.iconName, spec.title, spec.description);
                 break;
             default:
-                this.rows.switchRow(card, spec.iconName, spec.title, spec.description, spec.setting, () -> {
+                this.rows.switchRow(card, spec.iconName, spec.title, spec.description, spec.chip, spec.setting, () -> {
                     refreshStatus();
                     if (spec.restart) {
                         ConfirmDialog.showRestart(this.activity, this.style);
@@ -115,7 +115,7 @@ final class SettingsPages {
 
     private void locationRow(LinearLayout card, PatchGroup.Row spec) {
         final LocationRows location = new LocationRows(this.activity, this.style, this.rows);
-        final SettingsRows.Row row = this.rows.switchRow(card, spec.iconName, spec.title, spec.description,
+        final SettingsRows.Row row = this.rows.switchRow(card, spec.iconName, spec.title, spec.description, spec.chip,
                 spec.setting, () -> {
                     refreshStatus();
                     location.refresh();

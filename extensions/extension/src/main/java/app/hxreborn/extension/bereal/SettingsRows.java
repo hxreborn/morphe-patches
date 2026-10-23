@@ -58,10 +58,10 @@ final class SettingsRows {
         card.addView(divider, params);
     }
 
-    Row switchRow(LinearLayout card, String iconName, String title, String description, BooleanSetting setting,
-            Runnable onChanged) {
+    Row switchRow(LinearLayout card, String iconName, String title, String description, String chip,
+            BooleanSetting setting, Runnable onChanged) {
         final HostToggle toggle = displayToggle(setting.get());
-        final Row row = baseRow(card, iconName, title, description, null, toggle);
+        final Row row = baseRow(card, iconName, title, description, chip, chip, toggle);
         toggle.setOnCheckedChangeListener((button, checked) -> {
             setting.save(checked);
             onChanged.run();
@@ -83,7 +83,7 @@ final class SettingsRows {
     Row alwaysOnRow(LinearLayout card, String iconName, String title, String description) {
         final HostToggle toggle = displayToggle(true);
         toggle.setEnabled(false);
-        final Row row = baseRow(card, iconName, title, description, "always on", toggle);
+        final Row row = baseRow(card, iconName, title, description, "always on", null, toggle);
         row.view.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
@@ -98,20 +98,20 @@ final class SettingsRows {
     }
 
     Row actionRow(LinearLayout card, String iconName, String title, String description, Runnable action) {
-        final Row row = baseRow(card, iconName, title, description, null, null);
+        final Row row = baseRow(card, iconName, title, description, null, null, null);
         row.view.setAccessibilityDelegate(buttonDelegate());
         pressable(row.view, action);
         return row;
     }
 
     Row valueRow(LinearLayout card, String iconName, String title, String value) {
-        final Row row = baseRow(card, iconName, title, "", null, null);
+        final Row row = baseRow(card, iconName, title, "", null, null, null);
         row.setValue(value);
         return row;
     }
 
     private Row baseRow(LinearLayout card, String iconName, String title, String description, String spokenState,
-            View trailing) {
+            String chip, View trailing) {
         if (card.getChildCount() > 0) {
             divider(card);
         }
@@ -133,6 +133,12 @@ final class SettingsRows {
         labels.setOrientation(LinearLayout.VERTICAL);
         labels.addView(this.style.text(title, SettingsStyle.ROW_TITLE_SP, SettingsStyle.PRIMARY_TEXT,
                 this.style.fonts.medium));
+        if (chip != null) {
+            final LinearLayout.LayoutParams chipParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            chipParams.topMargin = this.style.dp(4);
+            labels.addView(this.style.chip(chip), chipParams);
+        }
         final TextView value = this.style.text("", SettingsStyle.BODY_SP, SettingsStyle.PRIMARY_TEXT,
                 this.style.fonts.regular);
         value.setPadding(0, this.style.dp(2), 0, 0);
