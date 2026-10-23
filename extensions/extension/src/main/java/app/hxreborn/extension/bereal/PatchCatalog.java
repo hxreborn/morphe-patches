@@ -7,6 +7,7 @@ package app.hxreborn.extension.bereal;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.hxreborn.extension.bereal.blur.FriendsPosts;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsTab;
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
@@ -26,6 +27,7 @@ final class PatchCatalog {
     static PatchCatalog collect() {
         final List<PatchGroup> groups = new ArrayList<>();
         addIfApplied(groups, posting());
+        addIfApplied(groups, friends());
         addIfApplied(groups, feed());
         addIfApplied(groups, privacy());
         addIfApplied(groups, updates());
@@ -81,6 +83,17 @@ final class PatchCatalog {
             group.addToggle("ic_clock", "Send late BeReals as on time",
                     "BeReals taken after the moment's window reach your friends without the late tag.",
                     PatchSettings.REMOVE_LATE_FLAG);
+        }
+        return group;
+    }
+
+    private static PatchGroup friends() {
+        final PatchGroup group = new PatchGroup("Friends' posts");
+        if (FriendsPosts.isPatchIncluded()) {
+            group.addToggle("ic_eyes", "See friends' BeReals before posting",
+                    "Friends' BeReals in My Friends and Friends of Friends are visible before you post today's "
+                            + "BeReal. Restart BeReal to apply this.",
+                    PatchSettings.SHOW_FRIENDS_POSTS, true);
         }
         return group;
     }
