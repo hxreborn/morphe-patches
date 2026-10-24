@@ -504,7 +504,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x000F15,
         signatures = setOf("71733196d1b3d681ee981cb02563e6778585f1891ed74b1d31604c1444c6b10a"),
-        targets = listOf(AppTarget(version = "6.9.0-AOS-609012264", versionCode = 609012264, minSdk = 24)),
+        targets = listOf(AppTarget(version = "6.9.2-AOS-609282180", versionCode = 609282180, minSdk = 24)),
     )
 
     val JOYN_AT = Compatibility(
