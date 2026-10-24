@@ -104,7 +104,7 @@ internal fun BytecodePatchContext.drawPullRefreshAsLoadingIndicator(
     val content = match.method
     val androidView = androidViewFingerprint(COMPOSE_MODIFIER, COMPOSE_COMPOSER, androidViewParameterCount)
         .matchSingle().originalMethod
-    val modifierCompanion = content.getInstruction(match.instructionMatches.first().index).getReference<FieldReference>()
+    val modifierCompanion = match.instructionMatches.first().instruction.getReference<FieldReference>()
     bindLoadingIndicatorView(androidView, modifierCompanion)
 
     redirectToLoadingIndicator(content, match.instructionMatches[1].index, "loadingIndicatorRefreshing") { _ ->
