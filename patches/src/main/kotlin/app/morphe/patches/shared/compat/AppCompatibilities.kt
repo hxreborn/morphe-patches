@@ -841,12 +841,8 @@ internal object AppCompatibilities {
             "b87ed511109b159844ff23ab802e00d56ab9d94d1435d89edd32cf07b62551fa",
         ),
         targets = listOf(
-            AppTarget(version = "0.4.72", versionCode = 284, minSdk = 29),
-            AppTarget(version = "0.4.97", versionCode = 309, minSdk = 29),
-            AppTarget(version = "0.4.98", versionCode = 310, minSdk = 29),
             AppTarget(version = "0.5.38", versionCode = 350, minSdk = 29),
-            AppTarget(version = "0.5.68", versionCode = 380, minSdk = 32),
-            AppTarget(version = "0.5.84", versionCode = 396, minSdk = 32),
+            AppTarget(version = "0.5.93", versionCode = 405, minSdk = 32),
         ),
     )
 
