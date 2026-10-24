@@ -1192,8 +1192,8 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xFD8700,
         targets = listOf(
-            AppTarget(version = "3.9", versionCode = 291, minSdk = 26),
             AppTarget(version = "3.11", versionCode = 297, minSdk = 26),
+            AppTarget(version = "3.14", versionCode = 300, minSdk = 29),
         ),
     )
 
