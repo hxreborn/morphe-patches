@@ -66,7 +66,7 @@ assert actions == [("edit", "1"), ("edit", "2"), ("close", "4"), ("edit", "7"), 
 assert ("issue", "edit", "2", "--title", "[App Update]: Showly 3.72.0") == next(c for c in calls if c[1:3] == ("edit", "2"))
 assert ("issue", "edit", "7", "--title", "[App Update]: Newcomer 1.1") == next(c for c in calls if c[1:3] == ("edit", "7"))
 close = next(c for c in calls if c[1] == "close")
-assert close[:4] == ("issue", "close", "4", "--comment") and close[4].startswith("Bundle [v1.38.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.38.0) adds Audible `26.38.08`. "), calls
+assert close[:4] == ("issue", "close", "4", "--comment") and close[4].startswith("Audible `26.38.08` support has been added in Bundle [v1.38.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.38.0). "), calls
 print("issue sync passes")
 
 

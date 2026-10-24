@@ -552,7 +552,7 @@ def issue_body(app, record):
 
 
 def sync_close_comment(app, bundle_version):
-    return (f"{bundle(bundle_version)} adds {app['name']} `{app['current']}`. This issue is now closed. "
+    return (f"{app['name']} `{app['current']}` support has been added in {bundle(bundle_version)}. This issue is now closed. "
             f"If it doesn't patch or work, open an issue:\n\n{BROKEN_FORMS}")
 
 

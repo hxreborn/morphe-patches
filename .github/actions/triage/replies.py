@@ -46,7 +46,7 @@ def code_list(versions):
 
 
 def prerelease_request(app, link):
-    return f"{app} is in the pre-release {link}. Please try it and reply whether it works. " \
+    return f"{app} has been added in the pre-release {link}. Please try it and reply whether it works. " \
            "This discussion closes when it reaches a stable release."
 
 

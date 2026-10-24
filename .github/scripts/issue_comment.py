@@ -120,7 +120,7 @@ def ping_reply(issue):
     if any(label["name"] == "in pre-release" for label in issue.get("labels") or []):
         return (
             f"{PING_MARKER}\n"
-            "A pre-release with this change is already out, see the comment above. Please try it and reply whether it works. "
+            "This change has been added in a pre-release, see the comment above. Please try it and reply whether it works. "
             "The next stable release will include it.\n"
         )
     return (

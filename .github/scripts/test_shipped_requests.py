@@ -48,7 +48,7 @@ check(all(row["app"] == ("New App" if row["package"] == "com.new.app" else "Othe
 check(shipped(CURRENT, CURRENT, REQUESTS) == [], "a release that adds no package lists nothing")
 
 comment = prerelease_comment(rows[1], "v1.2.0-dev.3", "owner/repo")
-check(comment == "<!-- prerelease-bot -->\nNew App is in the pre-release "
+check(comment == "<!-- prerelease-bot -->\nNew App has been added in the pre-release "
       "[v1.2.0-dev.3](https://github.com/owner/repo/releases/tag/v1.2.0-dev.3). Please try it and reply whether "
       "it works. This discussion closes when it reaches a stable release.\n",
       "a shipped request gets the pre-release line and the close notice")

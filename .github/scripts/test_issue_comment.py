@@ -152,7 +152,7 @@ record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the ping reply is the marker and the no-ETA sentence")
 
 text = ping_reply({"labels": [{"name": "in pre-release"}]})
-ok = text == PING_MARKER + ("\nA pre-release with this change is already out, see the comment above. Please try it and reply "
+ok = text == PING_MARKER + ("\nThis change has been added in a pre-release, see the comment above. Please try it and reply "
                             "whether it works. The next stable release will include it.\n")
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a ping on an issue in pre-release points at the pre-release comment")
