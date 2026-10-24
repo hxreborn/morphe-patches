@@ -138,6 +138,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `usavpn.png` | USA VPN (`vpn.usa_tap2free`) | AltApps | APK 1.168, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `periodcalendar.png` | Period Tracker and Calendar (`com.lbrc.PeriodCalendar`) | SimpleInnovation | APK 13.3.2, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, cut to a circle |
 | `udictionary.png` | U Dictionary (`com.youdao.hindict`) | Youdao (Hong Kong) Limited | APK 6.7.5, `res/mipmap-xxhdpi/ic_launcher_round.png` |
+| `uptcl.png` | UPTCL (`com.ufoneselfcare`) | Pak Telecom Mobile Limited | APK 11.0.41, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` (stored as `b`) |
 | `magicearth.png` | Magic Earth (`com.generalmagic.magicearth`) | Magic Lane International | APK 7.1.26, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `3way.png` | 3way: Couples & Singles Hookup (`app.threesome.dating`) | 3way App | APK 3.1.0, `res/drawable-xxhdpi-v4/ic_launcher_round.png` |
 | `internetspeedmeterlite.png` | Internet Speed Meter Lite (`com.internet.speed.meter.lite`) | DynamicApps | APK 1.7.0-lite, square icon `res/drawable/app_icon.png` cut to a circle |

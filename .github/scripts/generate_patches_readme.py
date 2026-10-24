@@ -257,6 +257,7 @@ ICONS = {
     "in.krosbits.musicolet": "musicolet.png",
     "in.krosbits.castplugin": "musicoletcastplugin.png",
     "com.youdao.hindict": "udictionary.png",
+    "com.ufoneselfcare": "uptcl.png",
     "com.generalmagic.magicearth": "magicearth.png",
     "com.lbrc.PeriodCalendar": "periodcalendar.png",
     "com.sygic.aura": "sygic.png",

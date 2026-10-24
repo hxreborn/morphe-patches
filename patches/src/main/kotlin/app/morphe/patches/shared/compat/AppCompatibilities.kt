@@ -1364,6 +1364,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "6.7.5", versionCode = 399, minSdk = 23)),
     )
 
+    val UPTCL = Compatibility(
+        name = "UPTCL",
+        packageName = "com.ufoneselfcare",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xF58220,
+        signatures = setOf(
+            "9ea10f551f0670ad451dd99fbdfafe7d45dda2addce3f2bdd1bec9d50ee99539",
+        ),
+        targets = listOf(AppTarget(version = "11.0.41", versionCode = 220, minSdk = 23)),
+    )
+
     val VIBER = Compatibility(
         name = "Viber",
         packageName = "com.viber.voip",
