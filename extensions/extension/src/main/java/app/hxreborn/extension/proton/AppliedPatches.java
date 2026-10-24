@@ -19,6 +19,7 @@ public final class AppliedPatches {
     static final String ACCENT_COLOR = "Custom accent color";
     static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
     static final String MATERIAL_SWITCHES = "Material 3 switches";
+    static final String LOADING_INDICATOR = "Material 3 loading indicator";
 
     static final String SWIPE_TO_SWITCH_ACCOUNTS = "Swipe to switch accounts";
 
@@ -111,6 +112,9 @@ public final class AppliedPatches {
         }
         if (MaterialSwitches.isPatched()) {
             names.add(MATERIAL_SWITCHES);
+        }
+        if (LoadingIndicator.isPatched()) {
+            names.add(LOADING_INDICATOR);
         }
         if (LayoutComponents.isPatched() || SidebarEntries.isPatched() || SettingsSections.isPatched()) {
             names.add("Hide layout components");

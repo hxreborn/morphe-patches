@@ -7,6 +7,7 @@ package app.morphe.patches.shared.misc.pairip
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
+import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -33,6 +34,12 @@ private fun Method.requireVirtualized() = check(callsVmRunner()) {
 internal fun MutableClass.replaceVirtualizedMethod(name: String, registers: Int, smali: String) {
     methods.single { it.name == name }.requireVirtualized()
     replaceMethod(name, registers, smali)
+}
+
+internal class RestoredMethod(val type: String, val name: String, val registers: Int, val smali: String)
+
+internal fun BytecodePatchContext.restoreVirtualizedMethods(methods: List<RestoredMethod>) = methods.forEach { restored ->
+    mutableClassDefBy(restored.type).replaceVirtualizedMethod(restored.name, restored.registers, restored.smali)
 }
 
 internal fun MutableMethod.replaceVirtualizedBody(smali: String) {

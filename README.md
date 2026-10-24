@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.59.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.59.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;303 patches total
+> **[v1.60.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.60.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;306 patches total
 
 <table>
 <tr>
@@ -143,7 +143,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#proton-authenticator"><img src=".github/assets/icons/protonauthenticator.png" width="40"><br>Proton Authenticator</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-lumo"><img src=".github/assets/icons/lumo.png" width="40"><br>Proton Lumo</a><br><sub>4 patches</sub></td>
-<td align="center" width="25%"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>10 patches</sub></td>
+<td align="center" width="25%"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-pass"><img src=".github/assets/icons/protonpass.png" width="40"><br>Proton Pass</a><br><sub>6 patches</sub></td>
 </tr>
 <tr>
@@ -185,23 +185,24 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#trainline"><img src=".github/assets/icons/trainline.png" width="40"><br>Trainline</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#u-dictionary"><img src=".github/assets/icons/udictionary.png" width="40"><br>U Dictionary</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#vpn-super-unlimited-proxy"><img src=".github/assets/icons/vpnsuper.png" width="40"><br>VPN Super Unlimited Proxy</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpnify"><img src=".github/assets/icons/vpnify.png" width="40"><br>vpnify</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#walp"><img src=".github/assets/icons/walp.png" width="40"><br>WalP</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#wattpad"><img src=".github/assets/icons/wattpad.png" width="40"><br>Wattpad</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#yanosik"><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="40"><br>Yanosik</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
-<td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#universal">🌐<br>Universal</a><br><sub>1 patch</sub></td>
 </tr>
 </table>
@@ -746,8 +747,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 7.97.0 | 8.0.0 |
-| :---: | :---: |
+| 7.97.0 | 7.99.0 | 8.0.0 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1636,7 +1637,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="proton-mail"></a>
 <details>
-<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;10 patches</summary>
+<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1650,6 +1651,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="proton-mail-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-mail-hide-layout-components"></a>[Hide layout components](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/layout/HideLayoutComponentsPatch.kt) | Adds settings to hide the Subscription and Report a problem sidebar entries. |
 | <a id="proton-mail-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the top-bar upgrade button, promotional sidebar rows and the auto-delete upgrade banner in Trash and Spam. Keeps the Empty trash and Empty spam buttons. |
+| <a id="proton-mail-material-3-loading-indicator"></a>[Material 3 loading indicator](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/loadingindicator/LoadingIndicatorPatch.kt) | Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator. |
 | <a id="proton-mail-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/materialswitch/MaterialSwitchesPatch.kt) | Shows switches in the Material 3 style with check and close icons. |
 | <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](patches/src/main/kotlin/app/morphe/patches/protonmail/signature/RemoveSentFromSignaturePatch.kt) | Removes the 'Sent from Proton Mail' signature and unlocks the mobile signature setting. |
 | <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](patches/src/main/kotlin/app/morphe/patches/protonmail/account/RemoveFreeAccountsLimitPatch.kt) | Removes the limit on signed-in free accounts. |
@@ -2151,6 +2153,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
+<a id="usa-vpn"></a>
+<details>
+<summary><img src=".github/assets/icons/usavpn.png" width="18" align="top">&nbsp;&nbsp;USA VPN&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.168 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="usa-vpn-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/usavpn/misc/premium/UnlockPremiumPatch.kt) | Unlocks PRO servers and removes ads and the connection time limit. |
+
+</details>
+
 <a id="viber"></a>
 <details>
 <summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
@@ -2320,7 +2338,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="yuka"></a>
 <details>
-<summary><img src=".github/assets/icons/yuka.png" width="18" align="top">&nbsp;&nbsp;Yuka&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/yuka.png" width="18" align="top">&nbsp;&nbsp;Yuka&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2328,9 +2346,31 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 5.7 |
 | :---: |
 
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="yuka-unlock-premium-root"></a>[Unlock premium (root)](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads need a paid subscription. Requires a root mount install. |
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| <a id="yuka-sign-in-token"></a>[Sign-in token](patches/src/main/kotlin/app/morphe/patches/yuka/misc/signin/SignInTokenPatch.kt) | Signs in on a standard install with an App Check token. Requires a token copied from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of the README. | • App Check token |
+| <a id="yuka-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads don't work. Signing in on a standard install needs Sign-in token. A root mount install signs in without it. |  |
+
+**Sign-in token** needs an App Check token from Yuka installed from Google Play on a rooted phone. Yuka uses
+the token only to sign in. You need a new one only if you sign out or clear Yuka's data. A root mount install
+signs in without a token.
+
+1. On the rooted phone, open Yuka, go to the sign-in screen, enter any email address and tap **Continue**. You
+   don't need to enter a password.
+2. In [Termux](https://f-droid.org/packages/com.termux), run this command and allow root. It prints one long
+   line starting with `eyJ`.
+
+   ```sh
+   su --mount-master -c "grep -o 'eyJ[A-Za-z0-9_.-]*' /data/data/io.yuka.android/shared_prefs/com.google.firebase.appcheck.store.*.xml"
+   ```
+
+   `No such file or directory` means Yuka hasn't fetched a token yet. Repeat step 1, then run the command again.
+
+   With [Termux:API](https://f-droid.org/packages/com.termux.api) and `pkg install termux-api`, add
+   `| termux-clipboard-set` to copy the token straight to the clipboard.
+
+3. Paste the line into the **App Check token** option in Morphe Manager, then patch, install and sign in on
+   the same day.
 
 </details>
 

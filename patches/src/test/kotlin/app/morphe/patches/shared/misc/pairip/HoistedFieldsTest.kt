@@ -50,6 +50,16 @@ internal class HoistedFieldsTest {
     }
 
     @Test
+    fun `marks an assigned row as set by the app with its field type`() {
+        val rows = listOf("assigned\tsample.Holder\ta\tLjava/lang/reflect/Method;")
+
+        val field = resolveHoistedFields("table.tsv", rows, emptyList()).single()
+
+        assertTrue(field.assignedByApp)
+        assertEquals("Ljava/lang/reflect/Method;", field.type)
+    }
+
+    @Test
     fun `rejects a hash that no string in the app's dex matches`() {
         // given
         val rows = listOf("hash\tsample.Holder\ta\t${prefix("not in the dex")}")

@@ -147,12 +147,13 @@ record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a ping after 30 days gets no reply")
 
 text = ping_reply({"labels": []})
-ok = text == PING_MARKER + "\nThere's no ETA for this request yet. Any updates will be posted here.\n"
+ok = text == PING_MARKER + "\nThere's no ETA for this request yet. Any progress will be posted here.\n"
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the ping reply is the marker and the no-ETA sentence")
 
 text = ping_reply({"labels": [{"name": "in pre-release"}]})
-ok = text == PING_MARKER + "\nA pre-release with this change is out, see the comment above. It ships in the next stable release once confirmed.\n"
+ok = text == PING_MARKER + ("\nThis change has been added in a pre-release, see the comment above. Please try it and reply "
+                            "whether it works. The next stable release will include it.\n")
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a ping on an issue in pre-release points at the pre-release comment")
 
@@ -163,21 +164,23 @@ PATCHES = {"version": "1.49.1", "patches": [{"compatiblePackages": [
 
 COMMENTED_AT = timestamp("2026-10-15T10:00:00Z")
 text = closed_issue_reply(COMMENTED_AT)
-ok = text.startswith(CLOSED_MARKER + "\n") and "template=app_update.yml" in text and "issues/new/choose" in text
+ok = text.startswith(CLOSED_MARKER + "\n") and all(f"template={t}.yml" in text for t in
+                                                  ("bug_report", "not_working", "feature_request", "app_update"))
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} the closed-issue reply carries its marker and both forms")
+print(f"{'ok  ' if ok else 'FAIL'} the closed-issue reply carries its marker and all four forms")
 
-ok = text.rstrip().endswith("The bot locks this issue on October 23, 2026 unless someone comments before then.")
+ok = text.rstrip().endswith("This issue will be locked on October 23, 2026 unless someone comments first.")
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the closed-issue reply names the day the lock job locks it")
 
 text = closed_issue_reply(COMMENTED_AT, "[App Update]: Proton VPN 5.20.57.0", PATCHES)
-ok = text.splitlines()[1] == "Version 1.49.1 of the bundle supports Proton VPN 5.20.39.0 and 5.20.57.0. This issue is closed. For anything new, open a new issue:"
+ok = text.splitlines()[1] == ("Bundle [v1.49.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.49.1) supports Proton VPN "
+                               "`5.20.39.0` and `5.20.57.0`. This issue is closed. For anything new, please open a new issue:")
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a title naming a supported app opens with its targeted versions")
 
 text = closed_issue_reply(COMMENTED_AT, "[Feature]: Hide Unnecessary boxes", PATCHES)
-ok = text.splitlines()[1] == "This issue is closed. For anything new, open a new issue:"
+ok = text.splitlines()[1] == "This issue is closed. For anything new, please open a new issue:"
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a title naming no app keeps the plain opening")
 
@@ -208,7 +211,7 @@ for text in NOT_RELEASE_QUESTIONS:
     record(ok)
     print(f"{'ok  ' if ok else 'FAIL'} not a release question: {text[:70]!r}")
 
-ok = unreleased_reply() == UNRELEASED_MARKER + "\nThe commit that closed this issue is not in a release yet. A comment here names the release that includes it.\n"
+ok = unreleased_reply() == UNRELEASED_MARKER + "\nThe fix isn't in a release yet. A comment here will name the release that includes it.\n"
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the unreleased reply is the marker and one plain line")
 

@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import field, normalize, parse_fields
 from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, same_variant, targets, tracked_version,
                       version_key)
+from replies import BROKEN_FORMS, bundle
 
 MARKER = "<!-- app-update-bot -->"
 VERSION_CODE = re.compile(r"\s*\(([\w.+-]*)\)\s*$")
@@ -53,26 +54,31 @@ def decide(number, body, issues, patches_list):
 
     if not app:
         verdict, labels = "flag", ["needs info"]
-        lines.append("The App field doesn't name an app this bundle supports.")
+        lines.append("The App field doesn't match an app this bundle supports. Please edit the issue and pick it from the list.")
     elif not re.search(r"\d", version):
         verdict, labels = "flag", ["needs info"]
-        lines.append("The New version field doesn't hold a single version number.")
+        example = max(apps[app], key=version_key, default="1.2.3")
+        lines.append(f"The New version field needs a single version number, like `{example}`. Please edit the issue to fix it.")
     else:
         current = max((t for t in apps[app] if same_variant(version, t)), key=version_key, default="")
         tracker, tracked = open_tracker(app, version, number, issues, apps)
         if any(compare(version, target) == 0 and same_variant(version, target) for target in apps[app]):
             verdict, reason = "close", "completed"
-            lines.append(f"Version {patches_list['version']} of the bundle already supports {app} {version}.")
+            lines.append(f"{bundle(patches_list['version'])} already supports {app} `{version}`. This issue is now closed. "
+                         f"If it doesn't patch or work, open an issue:\n\n{BROKEN_FORMS}")
         elif current and compare(version, current) < 0:
             verdict, reason = "close", "completed"
-            lines.append(f"Version {patches_list['version']} of the bundle supports {app} {current}, which is newer than {version}.")
+            lines.append(f"{bundle(patches_list['version'])} already supports {app} `{current}`, which is newer than `{version}`. "
+                         f"This issue is now closed. Please update the app to `{current}` and repatch.")
         elif tracker:
             verdict, reason, duplicate_of = "close", "duplicate", tracker["number"]
             if compare(version, tracked) > 0:
                 retitle = {"number": tracker["number"], "title": f"{APP_UPDATE_TITLE_PREFIX}{app} {version}"}
-                lines.append(f"Issue #{tracker['number']} now tracks {app} {version}.")
+                lines.append(f"Thanks! #{tracker['number']} now tracks {app} `{version}`, so this issue is now closed as a duplicate. "
+                             f"Please follow #{tracker['number']} for updates.")
             else:
-                lines.append(f"Issue #{tracker['number']} already tracks {app} {tracked}.")
+                lines.append(f"#{tracker['number']} already tracks {app} `{tracked}`, so this issue is now closed as a duplicate. "
+                             f"Please follow #{tracker['number']} for updates.")
         else:
             title = f"{APP_UPDATE_TITLE_PREFIX}{app} {version}"
 

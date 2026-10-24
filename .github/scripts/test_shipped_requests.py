@@ -45,24 +45,13 @@ rows = {row["number"]: row for row in shipped(PREVIOUS, CURRENT, REQUESTS)}
 check(sorted(rows) == [1, 2, 5, 7], "open requests naming a package new in this release are listed")
 check(all(row["app"] == ("New App" if row["package"] == "com.new.app" else "Other App") for row in rows.values()),
       "each row carries the app name from the patches list")
-check(rows[1]["close"], "a request for one feature closes")
-check(not rows[2]["close"], "a request for several features is commented but left open")
-check(not rows[5]["close"], "a request for something else is left open")
-check(not rows[7]["close"], "a request with no feature field is left open")
 check(shipped(CURRENT, CURRENT, REQUESTS) == [], "a release that adds no package lists nothing")
 
-single = prerelease_comment(rows[1], "v1.2.0-dev.3", "owner/repo")
-check(single == "<!-- prerelease-bot -->\nA pre-release with patches for New App is out: "
-      "[v1.2.0-dev.3](https://github.com/owner/repo/releases/tag/v1.2.0-dev.3). In Morphe Manager open Sources, "
-      "this bundle, and turn on Pre-release patches, then update the bundle and patch New App. "
-      "Reply here whether it works. The request closes when the change is merged into main.\n",
-      "a one-feature request gets the pre-release line and the close notice")
-several = prerelease_comment(rows[2], "v1.2.0-dev.3", "owner/repo")
-check(several == "<!-- prerelease-bot -->\nA pre-release with patches for New App is out: "
-      "[v1.2.0-dev.3](https://github.com/owner/repo/releases/tag/v1.2.0-dev.3). In Morphe Manager open Sources, "
-      "this bundle, and turn on Pre-release patches, then update the bundle and patch New App. "
-      "Reply here whether it works.\n",
-      "a several-feature request gets the pre-release line without the close notice")
+comment = prerelease_comment(rows[1], "v1.2.0-dev.3", "owner/repo")
+check(comment == "<!-- prerelease-bot -->\nNew App has been added in the pre-release "
+      "[v1.2.0-dev.3](https://github.com/owner/repo/releases/tag/v1.2.0-dev.3). Please try it and reply whether "
+      "it works. This discussion closes when it reaches a stable release.\n",
+      "a shipped request gets the pre-release line and the close notice")
 
 print(f"\n{checks - failures}/{checks} passed")
 sys.exit(1 if failures else 0)

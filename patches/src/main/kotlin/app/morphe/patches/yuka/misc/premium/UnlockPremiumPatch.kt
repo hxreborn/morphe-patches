@@ -7,7 +7,8 @@ package app.morphe.patches.yuka.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.requireArm64RootMount
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.parameterRegister
 import app.morphe.patches.yuka.misc.pairip.guardVirtualizedTasksPatch
 import app.morphe.util.matchSingle
@@ -15,15 +16,16 @@ import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
-    name = "Unlock premium (root)",
+    name = "Unlock premium",
     description = "Unlocks food preferences, diet alerts and the full history. " +
-        "Search and offline downloads need a paid subscription. Requires a root mount install.",
+        "Search and offline downloads don't work. " +
+        "Signing in on a standard install needs Sign-in token. A root mount install signs in without it.",
 ) {
     compatibleWith(AppCompatibilities.YUKA)
 
-    availability(requireArm64RootMount)
+    availability(requireArm64)
 
-    dependsOn(guardVirtualizedTasksPatch)
+    dependsOn(guardVirtualizedTasksPatch, removePairipProtectionPatch)
 
     execute {
         YukaUserConstructorFingerprint.matchSingle().method.apply {

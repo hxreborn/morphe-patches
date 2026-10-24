@@ -262,6 +262,7 @@ ICONS = {
     "com.naraorganics.nara": "narababy.png",
     "com.jndapp.glass.widgets": "glasswidgets.png",
     "io.yuka.android": "yuka.png",
+    "vpn.usa_tap2free": "usavpn.png",
     "com.viber.voip": "viber.png",
 }
 
@@ -316,6 +317,14 @@ def icon_img(pkg):
     return f'<img src=".github/assets/icons/{filename}" width="18" align="top">&nbsp;&nbsp;'
 
 
+APP_NOTES_DIR = Path(__file__).resolve().parents[1] / "readme-notes"
+
+
+def app_notes(pkg):
+    path = APP_NOTES_DIR / f"{pkg}.md"
+    return f"\n\n{path.read_text(encoding='utf-8').strip()}" if pkg and path.is_file() else ""
+
+
 def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     noun = "patch" if count == 1 else "patches"
     vtbl = versions_table(targets)
@@ -326,7 +335,7 @@ def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
 <summary>{icon_img(pkg)}{label}&nbsp;&nbsp;•&nbsp;&nbsp;{count} {noun}</summary>
 <br>
 
-{versions_section}{tbl}
+{versions_section}{tbl}{app_notes(pkg)}
 
 </details>"""
 

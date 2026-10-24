@@ -38,6 +38,10 @@ public final class PatchedBuild {
         MaterialSwitches.setEnabled(enabled);
     }
 
+    public static void setLoadingIndicatorEnabled(boolean enabled) {
+        LoadingIndicator.setEnabled(enabled);
+    }
+
     @Implements(AmoledTheme.class)
     public static final class Amoled {
 
@@ -70,6 +74,16 @@ public final class PatchedBuild {
 
     @Implements(MaterialSwitches.class)
     public static final class Switches {
+
+        @Implementation
+        public static boolean isPatched() {
+            return true;
+        }
+
+    }
+
+    @Implements(LoadingIndicator.class)
+    public static final class Indicator {
 
         @Implementation
         public static boolean isPatched() {

@@ -73,11 +73,11 @@ val accentColorPatch = bytecodePatch(
         title = "Accent color",
         description = "Hex color such as #1988E0. Applies when Material You is off or unavailable. " +
             "Leave empty for the stock accent.",
-        validator = { it.isNullOrEmpty() || HEX_COLOR.matches(it) },
+        validator = { it.isNullOrBlank() || HEX_COLOR.matches(it.trim()) },
     )
 
     execute {
-        val customColor = accentColor?.takeIf { it.isNotEmpty() }?.let {
+        val customColor = accentColor?.trim()?.takeIf { it.isNotEmpty() }?.let {
             "#" + HEX_COLOR.matchEntire(it)!!.groupValues[1].lowercase()
         }
 

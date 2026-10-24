@@ -53,6 +53,7 @@ private val bundledAssetsThemePatch = resourcePatch {
             return@execute
         }
 
+        decode(WEB_ASSETS)
         val webAssets = get(WEB_ASSETS)
 
         if (!webAssets.isDirectory) return@execute

@@ -16,9 +16,7 @@ private const val BRAND_COLORS_ARRAY = "hx_accent_brand_colors"
 private const val COLOR_REFERENCE = "@color/"
 
 private fun ResourcePatchContext.valuesFiles(name: String) =
-    get("res").listFiles { file -> file.isDirectory && file.name.startsWith("values") }.orEmpty()
-        .filter { it.resolve(name).exists() }
-        .map { "res/${it.name}/$name" }
+    decode("res/values*/$name")
 
 private fun ResourcePatchContext.elements(path: String, tag: String) =
     document(path).use { document -> document.getElementsByTagName(tag).asSequence().map { it as Element }.toList() }

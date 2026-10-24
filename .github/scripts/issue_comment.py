@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from versions import targets
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
+from replies import ALL_FORMS, bundle, code_list
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "hxreborn/morphe-patches")
 CLOSED_MARKER = "<!-- closed-issue-bot -->"
@@ -118,42 +120,37 @@ def ping_reply(issue):
     if any(label["name"] == "in pre-release" for label in issue.get("labels") or []):
         return (
             f"{PING_MARKER}\n"
-            "A pre-release with this change is out, see the comment above. It ships in the next stable release once confirmed.\n"
+            "This change has been added in a pre-release, see the comment above. Please try it and reply whether it works. "
+            "The next stable release will include it.\n"
         )
     return (
         f"{PING_MARKER}\n"
-        "There's no ETA for this request yet. Any updates will be posted here.\n"
+        "There's no ETA for this request yet. Any progress will be posted here.\n"
     )
 
 
 def unreleased_reply():
     return (
         f"{UNRELEASED_MARKER}\n"
-        "The commit that closed this issue is not in a release yet. A comment here names the release that includes it.\n"
+        "The fix isn't in a release yet. A comment here will name the release that includes it.\n"
     )
 
 
 def closed_issue_reply(commented_at, issue_title="", patches_list=None, discussion=False):
     lock_day = commented_at + LOCK_DELAY
-    new = f"https://github.com/{REPO}/issues/new"
-    lead = "This issue is closed. For anything new, open a new issue:"
+    lead = "This issue is closed. For anything new, please open a new issue:"
     if patches_list:
         apps = targets(patches_list)
         app = targeted_app(issue_title, apps)
         if app and apps[app]:
-            versions = sorted(apps[app])
-            named = " and ".join([", ".join(versions[:-1]), versions[-1]]) if len(versions) > 1 else versions[0]
-            lead = (f"Version {patches_list['version']} of the bundle supports {app} {named}. "
-                    "This issue is closed. For anything new, open a new issue:")
+            lead = f"{bundle(patches_list['version'])} supports {app} {code_list(apps[app])}. {lead}"
     return (
         f"{CLOSED_MARKER}\n"
         f"{lead}\n"
         "\n"
-        f"- A newer app version: an [app update request]({new}?template=app_update.yml), one per version\n"
-        f"- Another patch for a supported app: a [feature request]({new}?template=feature_request.yml)\n"
-        f"- A problem on a version the README lists: a [bug report]({new}/choose)\n"
+        f"{ALL_FORMS}\n"
         + ("" if discussion else
-           f"\nThe bot locks this issue on {lock_day:%B} {lock_day.day}, {lock_day.year} unless someone comments before then.\n")
+           f"\nThis issue will be locked on {lock_day:%B} {lock_day.day}, {lock_day.year} unless someone comments first.\n")
     )
 
 

@@ -1,4 +1,4 @@
-name: 🐞 Patching or install failed
+name: 🐞 Patching failed
 description: Patching stopped with an error, or the patched APK would not install.
 title: "[Bug]: "
 labels: ["bug"]
@@ -8,8 +8,8 @@ body:
       value: |
         Use this one when patching stopped with an error, or the APK it produced wouldn't install.
 
-        - 🚨 App patched but misbehaves: use
-          [Patched app does not work](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml).
+        - 🚨 Patching finished and the app misbehaves: use
+          [Patched app broken](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml).
         - Search open and closed reports [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
         - App version newer than the ones listed below: that's an
           [app update request](https://github.com/hxreborn/morphe-patches/issues/new?template=app_update.yml), not a bug.
@@ -115,6 +115,7 @@ body:
         - "Echogram 1.0.7.0"
         - "Echogram (another version, type it below)"
         - "Etsy 7.97.0"
+        - "Etsy 7.99.0"
         - "Etsy 8.0.0"
         - "Etsy (another version, type it below)"
         - "Fast STL Viewer 2.84"
@@ -343,6 +344,8 @@ body:
         - "Trainline (another version, type it below)"
         - "U Dictionary 6.7.5"
         - "U Dictionary (another version, type it below)"
+        - "USA VPN 1.168"
+        - "USA VPN (another version, type it below)"
         - "Viber 29.1.1.0"
         - "Viber (another version, type it below)"
         - "Video Editor 1.621.196"

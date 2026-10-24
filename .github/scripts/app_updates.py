@@ -21,6 +21,9 @@ from urllib.parse import unquote
 import requests
 from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare, tracked_version, version_key
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
+from replies import BROKEN_FORMS, bundle
+
 TRACKER_REPO = "https://github.com/rushiranpise/patches-tracker"
 TRACKER_SHA = "b41567ad88e784f04c8a60f1cd11e4c956d8e57a"
 UA = "Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0"
@@ -548,6 +551,11 @@ def issue_body(app, record):
     return "\n".join(lines) + "\n"
 
 
+def sync_close_comment(app, bundle_version):
+    return (f"{app['name']} `{app['current']}` support has been added in {bundle(bundle_version)}. This issue is now closed. "
+            f"If it doesn't patch or work, open an issue:\n\n{BROKEN_FORMS}")
+
+
 def sync_issues(apps, results, bundle_version):
     gh("label", "create", ISSUE_LABEL, "--force", "--color", "FBCA04",
        "--description", "newer app version confirmed upstream")
@@ -567,7 +575,7 @@ def sync_issues(apps, results, bundle_version):
             if issue["state"] != "OPEN" or version is None or excluded:
                 continue
             if compare(app["current"], version) >= 0:
-                gh("issue", "close", str(issue["number"]), "--comment", f"targeted in v{bundle_version}")
+                gh("issue", "close", str(issue["number"]), "--comment", sync_close_comment(app, bundle_version))
             elif not candidate or build_tags(candidate) != build_tags(version):
                 continue
             elif compare(candidate, version) >= 0:

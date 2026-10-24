@@ -7,19 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
 from app_request import find_package, supported_apps
-from fields import field, parse_fields
-
-OPEN_ENDED = "something else"
-
-
-def requested_features(body):
-    value = field(parse_fields(body), "Requested features")
-    return [feature.strip() for feature in value.split(",") if feature.strip()]
-
-
-def asks_for_one_feature(body):
-    features = requested_features(body)
-    return len(features) == 1 and not features[0].lower().startswith(OPEN_ENDED)
+from replies import prerelease_request
 
 
 def shipped(previous, current, requests):
@@ -32,19 +20,13 @@ def shipped(previous, current, requests):
         body = request.get("body") or ""
         package = find_package(body).lower()
         if package in added:
-            rows.append({"number": request["number"], "package": package, "app": added[package],
-                         "close": asks_for_one_feature(body)})
+            rows.append({"number": request["number"], "package": package, "app": added[package]})
     return rows
 
 
 def prerelease_comment(row, tag, repo):
     link = f"[{tag}](https://github.com/{repo}/releases/tag/{tag})"
-    comment = (f"<!-- prerelease-bot -->\nA pre-release with patches for {row['app']} is out: {link}. "
-               f"In Morphe Manager open Sources, this bundle, and turn on Pre-release patches, "
-               f"then update the bundle and patch {row['app']}. Reply here whether it works.")
-    if row["close"]:
-        comment += " The request closes when the change is merged into main."
-    return comment + "\n"
+    return f"<!-- prerelease-bot -->\n{prerelease_request(row['app'], link)}\n"
 
 
 if __name__ == "__main__":
