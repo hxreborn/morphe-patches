@@ -107,6 +107,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `pocketwhip.png` | Pocket Whip (`com.greenstone.pocketwhip`) | Original Pocket Whip | APK 2.3, `res/mipmap-hdpi-v4/pocket_whip_icon_round.png` |
 | `memoneet.png` | MemoNeet (`com.adithya.memoneet`) | MemoNeet | APK 62.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `medicneet.png` | MedicNEET (`com.halalfire.medicneet`) | SkorA Labs | APK 1.5.137, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
+| `neetprep.png` | NEETprep (`com.lernr.app`) | NEETprep | APK 15.0.93, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `biobird.png` | Biobird Flashcards (`com.biobird.exvee`) | Biobird | APK 2.0.2, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
 | `keepa.png` | Keepa (`com.keepa.mobile`) | Keepa.com | APK 6.2.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `joyn.png` | Joyn (`de.prosiebensat1digital.seventv`) | SevenOne Entertainment Group GmbH | APK 6.9.0-AOS-609012264, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |

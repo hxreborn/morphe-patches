@@ -627,6 +627,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val NEETPREP = Compatibility(
+        name = "NEETprep",
+        packageName = "com.lernr.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE5A020,
+        signatures = setOf(
+            "dd68677619d49bb48e69dbefc748488a3a7a70d1f0569de0e298e342d3354aa0",
+        ),
+        targets = listOf(AppTarget(version = "15.0.93", versionCode = 832, minSdk = 28)),
+    )
+
     val MINISHARE = Compatibility(
         name = "MiniShare",
         packageName = "com.omniashare.minishare",
