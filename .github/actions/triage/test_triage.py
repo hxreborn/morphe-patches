@@ -632,26 +632,6 @@ Fddb (another version, type it below)
 
 {LONG}
 """, ONE_AND_TWO_PATCH_APPS)),
-    "one-patch app not tried with one patch passes": ("pass", (f"""### App and version
-
-Etsy 7.97.0
-
-### What does not work
-
-The patch has no visible effect
-
-### Does it still happen with only one patch selected
-
-I have not tried it
-
-### Bug description
-
-{LONG}
-
-### Error logs
-
-[log.txt](https://github.com/user-attachments/files/1/log.txt)
-""", ONE_AND_TWO_PATCH_APPS)),
     "another ABI of a targeted version is untargeted": ("flag", f"""### App and version
 
 Cxxdroid (another version, type it below)
@@ -728,29 +708,13 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """),
-    "two-patch app not tried with one patch asks for it": ("flag", (f"""### App and version
+    "two-patch app not tried with one patch passes": ("pass", (f"""### App and version
 
 Fddb v7.8.4-Build-1-gms-release
 
 ### What does not work
 
 Something else the app used to do stopped working
-
-### Does it still happen with only one patch selected
-
-I have not tried it
-
-### Bug description
-
-{LONG}
-""", ONE_AND_TWO_PATCH_APPS)),
-    "two-patch app with a feature still locked passes without a one-patch test": ("pass", (f"""### App and version
-
-Fddb v7.8.4-Build-1-gms-release
-
-### What does not work
-
-The patched feature is still locked or still shows ads
 
 ### Does it still happen with only one patch selected
 

@@ -5,7 +5,6 @@ import json
 import os
 import re
 import sys
-from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -90,11 +89,6 @@ def matches_target(target):
 
 data = json.loads(list_path.read_text(encoding="utf-8"))
 apps = supported_apps(data)
-patch_counts = Counter(
-    (package["name"], package["packageName"])
-    for patch in data["patches"]
-    for package in patch.get("compatiblePackages") or []
-)
 fields = parse_fields(body_path.read_text(encoding="utf-8"))
 
 description = field(fields, *DESCRIPTION_FIELDS) or "\n".join(filter(None, (field(fields, n) for n in STEP_FIELDS)))
@@ -146,7 +140,6 @@ if fields and not report_attached and len(description) < MIN_CHARS:
     labels.append("needs info")
 
 matched = None
-matched_key = None
 best = 0
 normalized_app = normalize(app_haystack)
 for (name, package), versions in apps.items():
@@ -154,7 +147,7 @@ for (name, package), versions in apps.items():
     signals += [normalize(word) for word in name.split() if len(word) > 3]
     score = max((len(sig) for sig in signals if sig and sig in normalized_app), default=0)
     if score > best:
-        best, matched, matched_key = score, (name, versions), (name, package)
+        best, matched = score, (name, versions)
 
 if repackager_host:
     blockers.append(
@@ -215,7 +208,6 @@ if failure and not report_attached:
 
 patch_ineffective = failure.startswith(OPTIONS_PATCH_INEFFECTIVE)
 stock = "" if patch_ineffective else normalize(field(fields, "Does the unpatched app do the same thing"))
-single_patch = "" if patch_ineffective else normalize(field(fields, "Does it still happen with only one patch selected"))
 
 if stock.startswith(OPTION_STOCK_FAILS_TOO):
     flags.append(
@@ -227,14 +219,6 @@ elif stock.startswith(OPTION_NOT_TRIED):
         "The unpatched app hasn't been tried yet. Please install it and say whether it does the same."
     )
     labels.append("needs info")
-
-if single_patch.startswith(OPTION_NOT_TRIED) and patch_counts[matched_key] != 1:
-    flags.append(
-        "It hasn't been tried with a single patch yet. "
-        "Please repatch with only one patch selected and say whether it still happens."
-    )
-    if "needs info" not in labels:
-        labels.append("needs info")
 
 if blockers:
     verdict = "close"
