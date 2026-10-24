@@ -628,28 +628,6 @@ internal object AppCompatibilities {
         ),
     )
 
-    val NEETPREP = Compatibility(
-        name = "NEETprep",
-        packageName = "com.lernr.app",
-        apkFileType = ApkFileType.APKS_REQUIRED,
-        appIconColor = 0xE5A020,
-        signatures = setOf(
-            "dd68677619d49bb48e69dbefc748488a3a7a70d1f0569de0e298e342d3354aa0",
-        ),
-        targets = listOf(AppTarget(version = "15.0.93", versionCode = 832, minSdk = 28)),
-    )
-
-    val NEETPREP_ESSENTIAL = Compatibility(
-        name = "NEETprep Essential",
-        packageName = "com.gooded.essential",
-        apkFileType = ApkFileType.APKS_REQUIRED,
-        appIconColor = 0xE5A020,
-        signatures = setOf(
-            "205e64b5fc537e9d80d96da86cff1a4b57dec493691493d4abb46b19a93fe9b7",
-        ),
-        targets = listOf(AppTarget(version = "1.2.95", versionCode = 308, minSdk = 24)),
-    )
-
     val MINISHARE = Compatibility(
         name = "MiniShare",
         packageName = "com.omniashare.minishare",
@@ -788,6 +766,28 @@ internal object AppCompatibilities {
             "de6c7a92a739929e4a32b5a1e10b79c6e1b5bac0162e20453c1a6eb1c1b365c6",
         ),
         targets = listOf(AppTarget(version = "2.8.3", versionCode = 407, minSdk = 24)),
+    )
+
+    val NEETPREP = Compatibility(
+        name = "NEETprep",
+        packageName = "com.lernr.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE5A020,
+        signatures = setOf(
+            "dd68677619d49bb48e69dbefc748488a3a7a70d1f0569de0e298e342d3354aa0",
+        ),
+        targets = listOf(AppTarget(version = "15.0.93", versionCode = 832, minSdk = 28)),
+    )
+
+    val NEETPREP_ESSENTIAL = Compatibility(
+        name = "NEETprep Essential",
+        packageName = "com.gooded.essential",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE5A020,
+        signatures = setOf(
+            "205e64b5fc537e9d80d96da86cff1a4b57dec493691493d4abb46b19a93fe9b7",
+        ),
+        targets = listOf(AppTarget(version = "1.2.95", versionCode = 308, minSdk = 24)),
     )
 
     val NETWORK_ANALYZER = Compatibility(
