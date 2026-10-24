@@ -1,3 +1,9 @@
+## [1.60.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.3...v1.60.0-dev.4) (2026-10-24)
+
+### Bug Fixes
+
+* **Raindrop.io - Accent color:** accept a color with surrounding spaces ([22b4f92](https://github.com/hxreborn/morphe-patches/commit/22b4f925d45cdb972710796d34ef9bba679b8778)), closes [#360](https://github.com/hxreborn/morphe-patches/issues/360)
+
 ## [1.60.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.2...v1.60.0-dev.3) (2026-10-24)
 
 ### Bug Fixes
