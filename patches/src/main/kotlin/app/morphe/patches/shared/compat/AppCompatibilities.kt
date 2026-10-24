@@ -602,7 +602,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "befd82717721a7d025fb5783b48469bcf222536a224a7466098459f0ba1f4559",
         ),
-        targets = listOf(AppTarget(version = "1.5.137", versionCode = 258, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.5.138", versionCode = 259, minSdk = 24)),
     )
 
     val MAGIC_EARTH = Compatibility(
