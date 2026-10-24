@@ -18,7 +18,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 @Suppress("unused")
 val disableTrackingPatch = bytecodePatch(
     name = "Disable tracking",
-    description = "Stops Firebase Analytics, Crashlytics, Facebook, TikTok and the app's own " +
+    description = "Stops Firebase Analytics, Crashlytics, Firebase Sessions, Facebook, TikTok and the app's own " +
         "event reporting from collecting usage data.",
 ) {
     compatibleWith(AppCompatibilities.UPTCL)
