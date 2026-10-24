@@ -8,7 +8,7 @@ body:
       value: |
         Before you file:
 
-        - 🚨 Patching stopped with an error or the APK won't install: use
+        - 🚨 Patching won't start, stops with an error or the APK won't install: use
           [Patching failed](https://github.com/hxreborn/morphe-patches/issues/new?template=bug_report.yml).
         - Repatch on the newest release.
         - Install the unpatched APK and repeat the steps.

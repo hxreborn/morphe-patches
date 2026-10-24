@@ -350,6 +350,26 @@ Patching failed
 
 _No response_
 """),
+    "patching that did not start needs no error report": ("pass", f"""### App name
+
+Proton Mail
+
+### App version
+
+7.10.4
+
+### What happened
+
+Patching did not start
+
+### Bug description
+
+{LONG}
+
+### Error logs
+
+none
+"""),
     "version the bundle does not target": ("flag", f"""### App name
 
 Proton Mail

@@ -8,7 +8,7 @@ import sys
 REPO = os.environ.get("GITHUB_REPOSITORY") or os.environ.get("REPO") or "hxreborn/morphe-patches"
 NEW_ISSUE = f"https://github.com/{REPO}/issues/new?template="
 FORMS = {
-    "bug_report": ("Patching failed", "patching stops with an error or the APK won't install"),
+    "bug_report": ("Patching failed", "patching won't start, stops with an error or the APK won't install"),
     "not_working": ("Patched app broken", "the app crashes or a patch does nothing"),
     "feature_request": ("Feature request", "another patch for this app"),
     "app_update": ("App update request", "a newer app version"),
