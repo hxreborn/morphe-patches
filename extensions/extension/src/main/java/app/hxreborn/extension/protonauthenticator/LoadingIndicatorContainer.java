@@ -11,6 +11,12 @@ import app.hxreborn.extension.proton.LoadingIndicator;
 @SuppressWarnings("unused")
 public final class LoadingIndicatorContainer {
 
+    private static final float PRIMARY_MAX_CHROMA = 36f;
+
+    private static final float LIGHT_PRIMARY_CONTAINER_TONE = 90f;
+
+    private static final float DARK_PRIMARY_CONTAINER_TONE = 30f;
+
     private static final float RED_LUMA = 0.299f;
 
     private static final float GREEN_LUMA = 0.587f;
@@ -30,12 +36,13 @@ public final class LoadingIndicatorContainer {
             return surfaceColor;
         }
 
-        final int container = accentContainer(argb(accentColor), isLight(argb(surfaceColor)));
+        final float tone = (isLight(argb(surfaceColor))) ? LIGHT_PRIMARY_CONTAINER_TONE : DARK_PRIMARY_CONTAINER_TONE;
+        final int container = toneWithMaxChroma(argb(accentColor), PRIMARY_MAX_CHROMA, tone);
         return (container & ARGB_MASK) << 32;
     }
 
-    static int accentContainer(int accent, boolean light) {
-        return accent;
+    static int toneWithMaxChroma(int argb, float maxChroma, float tone) {
+        return argb;
     }
 
     private static boolean isLight(int argb) {

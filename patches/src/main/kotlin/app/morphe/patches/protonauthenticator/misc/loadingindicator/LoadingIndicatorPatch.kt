@@ -5,28 +5,24 @@
 package app.morphe.patches.protonauthenticator.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
+import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.util.getReference
 import app.morphe.util.matchSingle
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val ANDROID_VIEW_PARAMETERS = 6
 private const val COLOR_TYPE = "J"
 private const val CONTAINER_AND_INDICATOR_COLOR_REGISTERS = 4
-private const val COLOR_ROLE_COUNT = 4
-private const val ACCENT_CONTAINER_ROLE_PARAMETER = 3
-private const val ACCENT_CONTAINER_STUB_REGISTERS = 3
+private const val TONE_WITH_MAX_CHROMA_REGISTERS = 5
+private const val TONE_WITH_MAX_CHROMA_STUB_REGISTERS = 3
 private const val LOADING_INDICATOR_CONTAINER_CLASS =
     "Lapp/hxreborn/extension/protonauthenticator/LoadingIndicatorContainer;"
 
@@ -67,29 +63,43 @@ val loadingIndicatorPatch = bytecodePatch(
             )
         }
 
-        val getColorRoles = ColorRolesFingerprint.matchSingle().method
-        mutableClassDefBy(LOADING_INDICATOR_CONTAINER_CLASS).replaceStub(
-            "accentContainer",
-            ACCENT_CONTAINER_STUB_REGISTERS,
-            """
-                invoke-static { p0, p1 }, ${descriptor(getColorRoles)}
-                move-result-object v0
-                invoke-virtual { v0 }, ${accentContainerGetter(getColorRoles.returnType)}
-                move-result v0
-                return v0
-            """,
-        )
+        ColorRoleToneFingerprint.matchSingle().let { match ->
+            val hctFromArgb = match.instructionMatches.first().instruction.getReference<MethodReference>()!!
+            val hctToArgb = match.instructionMatches.last().instruction.getReference<MethodReference>()!!
+            val hctType = hctFromArgb.returnType
+            val hctFromComponents = hctFromComponentsFingerprint(hctType).matchSingle().originalMethod
+            val hctHue = hctComponentGetterFingerprint(hctType, "getHue").matchSingle().originalMethod
+            val hctChroma = hctComponentGetterFingerprint(hctType, "getChroma").matchSingle().originalMethod
+            val toneWithMaxChroma = mutableClassDefBy(match.classDef.type).addStaticMethod(
+                "toneWithMaxChroma",
+                listOf("I", "F", "F"),
+                "I",
+                TONE_WITH_MAX_CHROMA_REGISTERS,
+                """
+                    invoke-static { p0 }, ${descriptor(hctFromArgb)}
+                    move-result-object v0
+                    invoke-virtual { v0 }, ${descriptor(hctHue)}
+                    move-result v1
+                    invoke-virtual { v0 }, ${descriptor(hctChroma)}
+                    move-result v0
+                    invoke-static { v0, p1 }, Ljava/lang/Math;->min(FF)F
+                    move-result v0
+                    invoke-static { v1, v0, p2 }, ${descriptor(hctFromComponents)}
+                    move-result-object v0
+                    invoke-virtual { v0 }, ${descriptor(hctToArgb)}
+                    move-result v0
+                    return v0
+                """,
+            )
+            mutableClassDefBy(LOADING_INDICATOR_CONTAINER_CLASS).replaceStub(
+                "toneWithMaxChroma",
+                TONE_WITH_MAX_CHROMA_STUB_REGISTERS,
+                """
+                    invoke-static { p0, p1, p2 }, $toneWithMaxChroma
+                    move-result p0
+                    return p0
+                """,
+            )
+        }
     }
-}
-
-private fun BytecodePatchContext.accentContainerGetter(colorRolesType: String): String {
-    val colorRolesClass = classDefBy(colorRolesType)
-    val constructor = colorRolesClass.methods.single { it.name == "<init>" && it.parameterTypes.size == COLOR_ROLE_COUNT }
-    val implementation = constructor.implementation!!
-    val accentContainerRegister = implementation.registerCount - (constructor.parameterTypes.size + 1) + ACCENT_CONTAINER_ROLE_PARAMETER
-    val accentContainerField = implementation.instructions.single {
-        it.opcode == Opcode.IPUT && (it as TwoRegisterInstruction).registerA == accentContainerRegister
-    }.getReference<FieldReference>()!!
-    val getter = colorRoleGetterFingerprint(accentContainerField).matchSingle().originalMethod
-    return descriptor(getter)
 }

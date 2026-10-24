@@ -5,14 +5,14 @@
 package app.morphe.patches.protonauthenticator.misc.loadingindicator
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.fieldAccess
-import app.morphe.patcher.literal
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import app.morphe.patches.shared.misc.proton.pullRefreshContentFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 internal val PullToRefreshContentFingerprint = pullRefreshContentFingerprint(
     "Landroidx/compose/material3/ProgressIndicatorKt;",
@@ -29,15 +29,28 @@ internal object PullToRefreshIndicatorColorsFingerprint : Fingerprint(
     ),
 )
 
-internal object ColorRolesFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
-    parameters = listOf("I", "Z"),
-    filters = listOf(90L, 40L, 100L, 10L, 80L, 20L, 30L).map(::literal),
+internal object ColorRoleToneFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PRIVATE, AccessFlags.STATIC),
+    parameters = listOf("I", "I"),
+    returnType = "I",
+    filters = listOf(
+        methodCall(parameters = listOf("I")),
+        opcode(Opcode.INT_TO_FLOAT, MatchAfterWithin(1)),
+        methodCall(parameters = listOf("F"), returnType = "V", location = MatchAfterImmediately()),
+        methodCall(parameters = emptyList(), returnType = "I", location = MatchAfterImmediately()),
+    ),
 )
 
-internal fun colorRoleGetterFingerprint(role: FieldReference) = Fingerprint(
-    definingClass = role.definingClass,
-    returnType = "I",
+internal fun hctFromComponentsFingerprint(hctType: String) = Fingerprint(
+    definingClass = hctType,
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    parameters = listOf("F", "F", "F"),
+    returnType = hctType,
+)
+
+internal fun hctComponentGetterFingerprint(hctType: String, name: String) = Fingerprint(
+    definingClass = hctType,
+    name = name,
     parameters = emptyList(),
-    filters = listOf(fieldAccess(role, Opcode.IGET)),
+    returnType = "F",
 )
