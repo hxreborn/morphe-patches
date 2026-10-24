@@ -4,7 +4,6 @@
  */
 package app.morphe.patches.protonpass.misc.loadingindicator
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -27,11 +26,11 @@ val loadingIndicatorPatch = bytecodePatch(
 
     execute {
         val progressReads = PullRefreshProgressFingerprint.matchAll().map { match ->
-            val instructions = match.instructionMatches
+            val instructions = match.instructionMatches.map { it.instruction }
             Triple(
-                match.method.getInstruction(instructions.first().index).getReference<MethodReference>()!!.let(::descriptor),
-                match.method.getInstruction(instructions[2].index).getReference<FieldReference>()!!.let(::descriptor),
-                match.method.getInstruction(instructions[3].index).getReference<MethodReference>()!!.let(::descriptor),
+                descriptor(instructions.first().getReference<MethodReference>()!!),
+                descriptor(instructions[2].getReference<FieldReference>()!!),
+                descriptor(instructions[3].getReference<MethodReference>()!!),
             )
         }.distinct()
         val (distancePulled, threshold, thresholdValue) = progressReads.singleOrNull()
