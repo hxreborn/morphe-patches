@@ -10,7 +10,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/shared/InstalledCertificate;"
 
-val spoofSignaturePatch = bytecodePatch {
+val trustInstalledCertificatePatch = bytecodePatch {
     compatibleWith(AppCompatibilities.UPTCL)
     extendWith("extensions/extension.mpe")
 

@@ -6,7 +6,7 @@ package app.morphe.patches.uptcl.misc.promotion
 
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.uptcl.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 
@@ -16,7 +16,7 @@ val hideLaunchPromotionPatch = bytecodePatch(
     description = "Hides the promotional banner and video on the launch splash screen.",
 ) {
     compatibleWith(AppCompatibilities.UPTCL)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(trustInstalledCertificatePatch)
 
     execute {
         listOf(ShowLaunchSplashFingerprint, ShowLaunchBannerFingerprint, ShowLaunchVideoFingerprint).forEach {

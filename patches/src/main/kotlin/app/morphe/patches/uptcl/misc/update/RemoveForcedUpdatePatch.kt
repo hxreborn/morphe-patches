@@ -9,7 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.uptcl.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -22,7 +22,7 @@ val removeForcedUpdatePatch = bytecodePatch(
     description = "Removes the update prompts that block the app at launch.",
 ) {
     compatibleWith(AppCompatibilities.UPTCL)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(trustInstalledCertificatePatch)
     extendWith("extensions/extension.mpe")
 
     execute {

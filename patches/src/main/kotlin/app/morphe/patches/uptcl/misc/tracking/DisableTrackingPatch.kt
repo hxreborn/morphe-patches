@@ -10,7 +10,7 @@ import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
-import app.morphe.patches.uptcl.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.util.matchSingle
 import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -23,7 +23,7 @@ val disableTrackingPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.UPTCL)
     dependsOn(
-        spoofSignaturePatch,
+        trustInstalledCertificatePatch,
         disableAnalyticsCollectionPatch,
         deactivateFirebaseAnalyticsPatch,
         disableCrashlyticsCollectionPatch,
