@@ -375,10 +375,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "925c7b1df5689fef2371e1f6e71e98a3956295df95221baa06145222aa89f769",
         ),
-        targets = listOf(
-            AppTarget(version = "2.84", versionCode = 309, minSdk = 24),
-            AppTarget(version = "2.91", versionCode = 329, minSdk = 24),
-        ),
+        targets = listOf(AppTarget(version = "2.92", versionCode = 337, minSdk = 24)),
     )
 
     val FDDB = Compatibility(
