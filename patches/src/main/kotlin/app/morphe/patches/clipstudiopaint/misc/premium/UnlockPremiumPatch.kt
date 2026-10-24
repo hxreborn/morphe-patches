@@ -15,7 +15,7 @@ import java.nio.channels.FileChannel
 
 private const val LIBRARY = "lib/arm64-v8a/libClipStudioPaint.so"
 private const val WORD_SIZE = 4
-private const val REGISTER_FIELD = 0x1f
+private const val ZERO_REGISTER = 0x1f
 
 private const val ADRP_X8_REDIRECT_PAGE = 0xf0025468u
 private const val ADD_X8_REDIRECT_OFFSET = 0x912fc108u
@@ -27,7 +27,7 @@ private class PatchSite(val pattern: IntArray, val rewrite: (ByteBuffer, Int) ->
 
 private val clearDoodleFlagStore: (ByteBuffer, Int) -> Unit = { buffer, start ->
     val store = start + WORD_SIZE
-    buffer.putInt(store, buffer.getInt(store) or REGISTER_FIELD)
+    buffer.putInt(store, buffer.getInt(store) or ZERO_REGISTER)
 }
 
 private val redirectDoodleFlagStore: (ByteBuffer, Int) -> Unit = { buffer, start ->
