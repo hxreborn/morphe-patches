@@ -160,6 +160,7 @@ ICONS = {
     "com.adithya.memoneet": "memoneet.png",
     "com.halalfire.medicneet": "medicneet.png",
     "com.lernr.app": "neetprep.png",
+    "com.gooded.essential": "neetprepessential.png",
     "com.withopal.opal": "opal.png",
     "com.flyersoft.moonreader": "moonreader.png",
     "com.burton999.notecal": "calcnote.png",

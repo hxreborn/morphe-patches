@@ -638,6 +638,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "15.0.93", versionCode = 832, minSdk = 28)),
     )
 
+    val NEETPREP_ESSENTIAL = Compatibility(
+        name = "NEETprep Essential",
+        packageName = "com.gooded.essential",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE5A020,
+        signatures = setOf(
+            "205e64b5fc537e9d80d96da86cff1a4b57dec493691493d4abb46b19a93fe9b7",
+        ),
+        targets = listOf(AppTarget(version = "1.2.95", versionCode = 308, minSdk = 24)),
+    )
+
     val MINISHARE = Compatibility(
         name = "MiniShare",
         packageName = "com.omniashare.minishare",
