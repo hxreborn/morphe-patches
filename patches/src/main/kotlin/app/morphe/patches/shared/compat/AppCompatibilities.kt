@@ -809,7 +809,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "740847519c431975924d4ea55d10ef2dad77d43c6565a9b6d3218c4c00c3279d",
         ),
-        targets = listOf(AppTarget(version = "v2.1.27.0", versionCode = 406, minSdk = 26)),
+        targets = listOf(AppTarget(version = "v2.1.28.0", versionCode = 407, minSdk = 26)),
     )
 
     val NOTESNOOK = Compatibility(
