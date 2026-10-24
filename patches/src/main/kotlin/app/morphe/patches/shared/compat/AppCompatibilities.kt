@@ -790,7 +790,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "de6c7a92a739929e4a32b5a1e10b79c6e1b5bac0162e20453c1a6eb1c1b365c6",
         ),
-        targets = listOf(AppTarget(version = "2.8.2", versionCode = 405, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.8.3", versionCode = 407, minSdk = 24)),
     )
 
     val NETWORK_ANALYZER = Compatibility(
