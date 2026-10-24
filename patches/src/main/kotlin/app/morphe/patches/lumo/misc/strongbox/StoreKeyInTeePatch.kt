@@ -6,6 +6,7 @@ package app.morphe.patches.lumo.misc.strongbox
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.lumo.misc.pairip.restoreWidgetActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -21,7 +22,7 @@ val storeKeyInTeePatch = bytecodePatch(
         "Prevents the Encryption error on devices whose StrongBox rejects the key.",
 ) {
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreWidgetActionsPatch)
     availability(requireArm64)
 
     execute {

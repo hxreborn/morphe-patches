@@ -5,6 +5,7 @@
 package app.morphe.patches.hinducalendar.tracking
 
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patches.hinducalendar.misc.pairip.restoreReminderReceiversPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -21,5 +22,6 @@ val disableTrackingPatch = resourcePatch(
         removePairipVirtualizationPatch,
         removePairipProtectionPatch,
         disableAnalyticsCollectionPatch,
+        restoreReminderReceiversPatch,
     )
 }

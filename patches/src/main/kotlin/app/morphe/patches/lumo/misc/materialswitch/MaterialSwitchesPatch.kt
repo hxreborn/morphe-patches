@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
+import app.morphe.patches.lumo.misc.pairip.restoreWidgetActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -66,7 +67,7 @@ val materialSwitchesPatch = bytecodePatch(
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreWidgetActionsPatch)
     availability(requireArm64)
     extendWith("extensions/extension.mpe")
 
