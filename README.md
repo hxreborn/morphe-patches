@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.60.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.60.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;305 patches total
+> **[v1.60.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.60.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;306 patches total
 
 <table>
 <tr>
@@ -202,7 +202,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#universal">🌐<br>Universal</a><br><sub>1 patch</sub></td>
 </tr>
 </table>
@@ -2338,7 +2338,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="yuka"></a>
 <details>
-<summary><img src=".github/assets/icons/yuka.png" width="18" align="top">&nbsp;&nbsp;Yuka&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/yuka.png" width="18" align="top">&nbsp;&nbsp;Yuka&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2346,9 +2346,31 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 5.7 |
 | :---: |
 
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="yuka-unlock-premium-root"></a>[Unlock premium (root)](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads need a paid subscription. Requires a root mount install. |
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| <a id="yuka-sign-in-token"></a>[Sign-in token](patches/src/main/kotlin/app/morphe/patches/yuka/misc/signin/SignInTokenPatch.kt) | Signs in on a standard install with an App Check token. Requires a token copied from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of the README. | • App Check token |
+| <a id="yuka-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads don't work. Signing in on a standard install needs Sign-in token. A root mount install signs in without it. |  |
+
+**Sign-in token** needs an App Check token from Yuka installed from Google Play on a rooted phone. Yuka uses
+the token only to sign in. You need a new one only if you sign out or clear Yuka's data. A root mount install
+signs in without a token.
+
+1. On the rooted phone, open Yuka, go to the sign-in screen, enter any email address and tap **Continue**. You
+   don't need to enter a password.
+2. In [Termux](https://f-droid.org/packages/com.termux), run this command and allow root. It prints one long
+   line starting with `eyJ`.
+
+   ```sh
+   su --mount-master -c "grep -o 'eyJ[A-Za-z0-9_.-]*' /data/data/io.yuka.android/shared_prefs/com.google.firebase.appcheck.store.*.xml"
+   ```
+
+   `No such file or directory` means Yuka hasn't fetched a token yet. Repeat step 1, then run the command again.
+
+   With [Termux:API](https://f-droid.org/packages/com.termux.api) and `pkg install termux-api`, add
+   `| termux-clipboard-set` to copy the token straight to the clipboard.
+
+3. Paste the line into the **App Check token** option in Morphe Manager, then patch, install and sign in on
+   the same day.
 
 </details>
 

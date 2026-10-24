@@ -1,3 +1,10 @@
+## [1.60.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.4...v1.60.0-dev.5) (2026-10-24)
+
+### New Features
+
+* **Yuka - Sign-in token:** sign in on standard installs ([70fa966](https://github.com/hxreborn/morphe-patches/commit/70fa96694588519ccf70325a5655d7c8fe949b10)), closes [#356](https://github.com/hxreborn/morphe-patches/issues/356)
+* **Yuka - Unlock premium:** enable on standard installs ([1d3cc3f](https://github.com/hxreborn/morphe-patches/commit/1d3cc3f42d80d101ab6d2ff9694d47d66cc3b894))
+
 ## [1.60.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.3...v1.60.0-dev.4) (2026-10-24)
 
 ### Bug Fixes
