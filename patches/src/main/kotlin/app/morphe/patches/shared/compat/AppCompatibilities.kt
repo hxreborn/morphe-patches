@@ -1322,13 +1322,7 @@ internal object AppCompatibilities {
         packageName = "com.thetrainline",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x00A88F,
-        targets = listOf(
-            AppTarget(version = "407.0.0.178994", versionCode = 1278994, minSdk = 26),
-            AppTarget(version = "415.0.0.182623", versionCode = 1282623, minSdk = 26),
-            AppTarget(version = "415.0.0.182626", versionCode = 1282626, minSdk = 26),
-            AppTarget(version = "416.0.0.183472", versionCode = 1283472, minSdk = 26),
-            AppTarget(version = "438.0.0.183733", versionCode = 1283733, minSdk = 26),
-        ),
+        targets = listOf(AppTarget(version = "438.1.0.184284", versionCode = 1284284, minSdk = 26)),
     )
 
     val VIDEO_EDITOR = Compatibility(
