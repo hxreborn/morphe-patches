@@ -106,6 +106,7 @@ body:
         - "Echogram 1.0.7.0"
         - "Echogram (another version, type it below)"
         - "Etsy 7.97.0"
+        - "Etsy 7.99.0"
         - "Etsy 8.0.0"
         - "Etsy (another version, type it below)"
         - "Fast STL Viewer 2.84"
@@ -334,6 +335,8 @@ body:
         - "Trainline (another version, type it below)"
         - "U Dictionary 6.7.5"
         - "U Dictionary (another version, type it below)"
+        - "USA VPN 1.168"
+        - "USA VPN (another version, type it below)"
         - "Viber 29.1.1.0"
         - "Viber (another version, type it below)"
         - "Video Editor 1.621.196"
@@ -377,12 +380,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.60.0-dev.3"
         - "1.60.0-dev.2"
         - "1.60.0-dev.1"
         - "1.59.0-dev.10"
         - "1.59.0-dev.9"
         - "1.59.0-dev.8"
-        - "1.59.0-dev.7"
         - "Older than these"
         # /generated
     validations:
@@ -632,6 +635,7 @@ body:
         - "Proton Mail \u00b7 Custom accent color"
         - "Proton Mail \u00b7 Hide layout components"
         - "Proton Mail \u00b7 Hide upgrade promotions"
+        - "Proton Mail \u00b7 Material 3 loading indicator"
         - "Proton Mail \u00b7 Material 3 switches"
         - "Proton Mail \u00b7 Remove 'Sent from' signature"
         - "Proton Mail \u00b7 Remove free accounts limit"
@@ -725,6 +729,7 @@ body:
         - "TeraBox \u00b7 Unlock Premium Plus"
         - "Trainline \u00b7 Hide ads"
         - "U Dictionary \u00b7 Unlock premium"
+        - "USA VPN \u00b7 Unlock premium"
         - "Viber \u00b7 Hide ads"
         - "Viber \u00b7 Hide More screen items"
         - "Viber \u00b7 Hide navigation buttons"

@@ -1,3 +1,18 @@
+## [1.60.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.2...v1.60.0-dev.3) (2026-10-24)
+
+### Bug Fixes
+
+* **Castle for TV - Unlock premium:** play premium titles in full ([7a89a79](https://github.com/hxreborn/morphe-patches/commit/7a89a79405a7966a67e93259455349d86d88b173)), closes [#358](https://github.com/hxreborn/morphe-patches/issues/358)
+
+### New Features
+
+* **Proton Mail - Material 3 loading indicator:** morph refresh spinner ([1cc54c3](https://github.com/hxreborn/morphe-patches/commit/1cc54c37f6fa78e43e5f85f5511105da45ccd389))
+* **USA VPN - Unlock premium:** unlock pro and remove ads and time limit ([b8d2398](https://github.com/hxreborn/morphe-patches/commit/b8d239865f4ac1ebdffc87925f61438481e67634))
+
+### Updated App Support
+
+* **Etsy:** add support for `7.99.0` ([5a98f44](https://github.com/hxreborn/morphe-patches/commit/5a98f44bb6fec1fe42fe8560aef60adb6da4d607)), closes [#359](https://github.com/hxreborn/morphe-patches/issues/359)
+
 ## [1.60.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.60.0-dev.1...v1.60.0-dev.2) (2026-10-23)
 
 ### Bug Fixes
