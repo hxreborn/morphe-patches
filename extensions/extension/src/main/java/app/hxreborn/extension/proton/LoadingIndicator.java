@@ -51,6 +51,10 @@ public final class LoadingIndicator {
     static void show(Object composer, boolean indeterminate, float rotationDegrees) {
     }
 
+    public static void showProgress(Object composer, float progress) {
+        show(composer, false, progress * FULL_TURN_DEGREES);
+    }
+
     private static Object function(Class<?> functionType, ProxyHandler handler) {
         return Proxy.newProxyInstance(LoadingIndicator.class.getClassLoader(), new Class<?>[] { functionType },
                 handler);
