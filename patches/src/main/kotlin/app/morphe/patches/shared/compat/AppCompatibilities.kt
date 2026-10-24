@@ -1435,7 +1435,7 @@ internal object AppCompatibilities {
         packageName = "com.yunyi.smartcamera",
         apkFileType = ApkFileType.XAPK_REQUIRED,
         appIconColor = 0x38D880,
-        targets = listOf(AppTarget(version = "5.1.7_20260914", versionCode = 3799, minSdk = 24)),
+        targets = listOf(AppTarget(version = "5.1.8_20261021", versionCode = 3800, minSdk = 24)),
     )
 
     val YUKA = Compatibility(
