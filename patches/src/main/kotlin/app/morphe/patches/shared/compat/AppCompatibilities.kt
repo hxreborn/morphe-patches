@@ -247,6 +247,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val CLIP_STUDIO_PAINT = Compatibility(
+        name = "Clip Studio Paint",
+        packageName = "jp.co.celsys.clipstudiopaint.googleplay",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x3F9BF5,
+        signatures = setOf(
+            "2c7507b2c986a1e3750c0d4876d6b1e8035b873a5d221149c167293b3e5449ca",
+        ),
+        targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 33)),
+    )
+
     val CUBASIS_LE_3 = Compatibility(
         name = "Cubasis LE 3",
         packageName = "com.steinberg.cubasisle3",
