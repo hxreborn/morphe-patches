@@ -142,17 +142,9 @@ jobs:
           while read -r row; do
             n=$(jq -r .number <<< "$row")
             app=$(jq -r .app <<< "$row")
-            close=$(jq -r .close <<< "$row")
-            printf '<!-- shipped-bot -->\nShipped in [%s](https://github.com/%s/releases/tag/%s). Update the bundle in Morphe Manager and patch %s.\n' \
-              "$TAG" "$REPO" "$TAG" "$app" > "$RUNNER_TEMP/comment.md"
-            if [ "$close" != true ]; then
-              printf 'This request asks for several features, so it closes once every one of them is in.\n' >> "$RUNNER_TEMP/comment.md"
-            fi
+            printf '<!-- shipped-bot -->\n%s\n' "$(python3 .github/actions/triage/replies.py shipped app="$app" tag="$TAG")" \
+              > "$RUNNER_TEMP/comment.md"
             bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/comment.md" >/dev/null
-            if [ "$close" != true ]; then
-              echo "commented on #$n ($app), left open for its other features"
-              continue
-            fi
             if jq -e --argjson n "$n" '.[] | select(.number == $n) | (.labels // []) | map(.name) | index("in progress")' "$RUNNER_TEMP/requests.json" >/dev/null; then
               bash -eo pipefail "$discussion" remove-labels "$n" "in progress"
             fi

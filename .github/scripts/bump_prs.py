@@ -143,7 +143,7 @@ def sync_bump_prs(records):
         push, pr = bump_plan(subject, branch_subject, prs)
         if push:
             git("push", "-q", "--force", "origin", f"{bump_commit(text, subject, tracker)}:refs/heads/{branch}")
-        body = f"Applies cleanly to {name} {apk['version']}. Needs a device check before merge."
+        body = f"Applies to {name} {apk['version']}. Needs a device check before merge."
         if pr and pr[0] == "create":
             gh("pr", "create", "--draft", "--base", "dev", "--head", branch, "--title", subject, "--body", body)
         elif pr:

@@ -25,9 +25,7 @@ val unlockPremiumPatch = bytecodePatch(
 
     execute {
         val cachedClientBuilder = CachedClientBuilderFingerprint.matchSingle()
-        val clientBuilder = navigate(cachedClientBuilder.method)
-            .to(cachedClientBuilder.instructionMatches.first().index)
-            .stop()
+        val clientBuilder = cachedClientBuilder.instructionMatches.first().getMethodCalled()
 
         val returnIndex = clientBuilder.indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
         val builderRegister = clientBuilder.getInstruction<OneRegisterInstruction>(returnIndex).registerA

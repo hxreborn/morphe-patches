@@ -36,85 +36,101 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     private static final String GOOGLE_ACCOUNTS_HOST = "accounts.google.com";
 
-    private static final String OPENER_RELAY_SCRIPT = "(function(){try{if(window.__tbShim)return;window.__tbShim=1;"
-            + "var o=window.opener;var relay={postMessage:function(d,t){"
-            + "try{window.__tbCaptured=(typeof d==='string')?d:JSON.stringify(d);}catch(e){}"
-            + "try{if(o&&o.postMessage)o.postMessage(d,t);}catch(e){}}};"
-            + "try{Object.defineProperty(window,'opener',{configurable:true,get:function(){return relay}});}"
-            + "catch(e){window.opener=relay;}}catch(e){}})()";
+    private static final String OPENER_RELAY_SCRIPT = """
+            (function(){try{if(window.__tbShim)return;window.__tbShim=1;\
+            var o=window.opener;var relay={postMessage:function(d,t){\
+            try{window.__tbCaptured=(typeof d==='string')?d:JSON.stringify(d);}catch(e){}\
+            try{if(o&&o.postMessage)o.postMessage(d,t);}catch(e){}}};\
+            try{Object.defineProperty(window,'opener',{configurable:true,get:function(){return relay}});}\
+            catch(e){window.opener=relay;}}catch(e){}})()\
+            """;
 
-    private static final String READ_CREDENTIAL_SCRIPT = "(function(){var c=window.__tbCaptured||'';"
-            + "if(!c){var m=document.documentElement.outerHTML.match(/eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]+/);"
-            + "if(m)c=m[0];}return c;})()";
+    private static final String READ_CREDENTIAL_SCRIPT = """
+            (function(){var c=window.__tbCaptured||'';\
+            if(!c){var m=document.documentElement.outerHTML.match(/eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]+/);\
+            if(m)c=m[0];}return c;})()\
+            """;
 
     private static final int DARK_BACKGROUND = Color.BLACK;
 
-    private static final String DARK_THEME_SCRIPT = "(function(){var r=document.documentElement;if(!r||r.__tbDark)return;r.__tbDark=1;"
-            + "var st=document.createElement('style');st.textContent='[data-theme=DARK] .components-login-center-third-party-button{"
-            + "background:transparent!important;border:1px solid rgba(255,255,255,.9)!important}"
-            + "[data-theme=DARK] .other-login-icon .components-login-center-icon-button{"
-            + "border-color:rgba(255,255,255,.5)!important}"
-            + "[data-theme=DARK] .other-login-icon img{filter:brightness(0) invert(.8)!important}';"
-            + "(document.head||r).appendChild(st);"
-            + "function pin(){if(r.getAttribute('data-theme')!=='DARK')r.setAttribute('data-theme','DARK')}"
-            + "function sum(c){var m=(c||'').match(/[\\d.]+/g);return m&&m.length>2?(+m[0])+(+m[1])+(+m[2]):-1}"
-            + "function alpha(c){var m=(c||'').match(/[\\d.]+/g);return m&&m.length>3?+m[3]:1}"
-            + "function lightBehind(e){for(;e&&e.nodeType===1;e=e.parentElement){var b=getComputedStyle(e).backgroundColor;"
-            + "if(alpha(b)>0.5&&sum(b)>=0)return sum(b)>600;}return false}"
-            + "function hasText(e){for(var n=e.firstChild;n;n=n.nextSibling)if(n.nodeType===3&&n.textContent.trim())return true;return false}"
-            + "function lighten(){if(!document.body)return;var a=document.body.querySelectorAll('*');"
-            + "for(var i=0;i<a.length;i++){var e=a[i];if(!hasText(e))continue;var c=sum(getComputedStyle(e).color);"
-            + "if(c>=0&&c<300&&!lightBehind(e))e.style.setProperty('color','rgba(255,255,255,.9)','important');}}"
-            + "var q=0;function run(){pin();if(q)return;q=1;requestAnimationFrame(function(){q=0;lighten()})}"
-            + "run();new MutationObserver(run).observe(r,{attributes:true,childList:true,subtree:true,attributeFilter:['data-theme']});})()";
+    private static final String DARK_THEME_SCRIPT = """
+            (function(){var r=document.documentElement;if(!r||r.__tbDark)return;r.__tbDark=1;\
+            var st=document.createElement('style');st.textContent='[data-theme=DARK] .components-login-center-third-party-button{\
+            background:transparent!important;border:1px solid rgba(255,255,255,.9)!important}\
+            [data-theme=DARK] .other-login-icon .components-login-center-icon-button{\
+            border-color:rgba(255,255,255,.5)!important}\
+            [data-theme=DARK] .other-login-icon img{filter:brightness(0) invert(.8)!important}';\
+            (document.head||r).appendChild(st);\
+            function pin(){if(r.getAttribute('data-theme')!=='DARK')r.setAttribute('data-theme','DARK')}\
+            function sum(c){var m=(c||'').match(/[\\d.]+/g);return m&&m.length>2?(+m[0])+(+m[1])+(+m[2]):-1}\
+            function alpha(c){var m=(c||'').match(/[\\d.]+/g);return m&&m.length>3?+m[3]:1}\
+            function lightBehind(e){for(;e&&e.nodeType===1;e=e.parentElement){var b=getComputedStyle(e).backgroundColor;\
+            if(alpha(b)>0.5&&sum(b)>=0)return sum(b)>600;}return false}\
+            function hasText(e){for(var n=e.firstChild;n;n=n.nextSibling)if(n.nodeType===3&&n.textContent.trim())return true;return false}\
+            function lighten(){if(!document.body)return;var a=document.body.querySelectorAll('*');\
+            for(var i=0;i<a.length;i++){var e=a[i];if(!hasText(e))continue;var c=sum(getComputedStyle(e).color);\
+            if(c>=0&&c<300&&!lightBehind(e))e.style.setProperty('color','rgba(255,255,255,.9)','important');}}\
+            var q=0;function run(){pin();if(q)return;q=1;requestAnimationFrame(function(){q=0;lighten()})}\
+            run();new MutationObserver(run).observe(r,{attributes:true,childList:true,subtree:true,attributeFilter:['data-theme']});})()\
+            """;
 
     private static final String RESET_BUTTON_SCRIPT = "window.__tbReset&&window.__tbReset()";
 
-    private static final String LOGIN_PAGE_SCRIPT = "(function(){if(window.__tbFix)return;window.__tbFix=1;"
-            + "var rawFetch=window.fetch?window.fetch.bind(window):null;"
-            + "function send(d){try{var p={state:1,ndus:d.ndus,uid:String(d.userid||''),"
-            + "displayName:d.displayName||'',headUrl:d.headUrl||'',"
-            + "region_domain_prefix:d.region_domain_prefix||'www',cur_country:d.cur_country||'',"
-            + "reg_country:d.reg_country||'',reg_time:d.reg_time||0};"
-            + "var u='dubox://user/tbsend/sendLoginResults?params='+encodeURIComponent(JSON.stringify(p));"
-            + "var f=document.createElement('iframe');f.style.display='none';"
-            + "document.documentElement.appendChild(f);f.src=u;"
-            + "setTimeout(function(){try{f.remove()}catch(e){}},1500);}catch(e){}}" + "function rewrite(v){v=String(v);"
-            + "if(v.indexOf('/passport/ssologin')<0||v.indexOf('__tbraw')>=0)return v;"
-            + "v=v.replace(/([?&])client=[^&]*/,'$1client=web')"
-            + ".replace(/([?&])clienttype=[^&]*/,'$1clienttype=0');"
-            + "var cb=(v.match(/[?&]callback=([^&]*)/)||[])[1];"
-            + "var j=v.replace(/([?&])callback=[^&]*/,'$1__tbraw=1');"
-            + "if(rawFetch)rawFetch(j,{credentials:'include'}).then(function(r){return r.text()})"
-            + ".then(function(t){" + "var a=t.indexOf('{'),b=t.lastIndexOf('}');" + "var o=JSON.parse(t.slice(a,b+1));"
-            + "var ok=o&&o.code===0&&o.data&&o.data.ndus;" + "if(ok)send(o.data);"
-            + "if(!ok&&cb&&window[cb])window[cb](o);}).catch(function(e){});" + "return 'data:text/javascript,';}"
-            + "try{var d=Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src');"
-            + "if(d&&d.set)Object.defineProperty(HTMLScriptElement.prototype,'src',{configurable:true,"
-            + "enumerable:d.enumerable,get:d.get,set:function(v){d.set.call(this,rewrite(v))}});"
-            + "var sa=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){"
-            + "if(String(n).toLowerCase()==='src')v=rewrite(v);return sa.call(this,n,v)};"
-            + "if(rawFetch)window.fetch=function(u,o){if(typeof u==='string')u=rewrite(u);return rawFetch(u,o)};"
-            + "var oo=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){"
-            + "arguments[1]=rewrite(u);return oo.apply(this,arguments)};}catch(e){}"
-            + "window.__tbDeliver=function(c){try{if(window.__tbCb)window.__tbCb({credential:c,select_by:'btn'});}catch(e){}};"
-            + "window.__tbReset=function(){"
-            + "try{var g=window.google&&window.google.accounts&&window.google.accounts.id;"
-            + "if(g&&g.cancel)g.cancel();" + "var h=document.querySelector('.hidden-google-btn');"
-            + "if(g&&h&&window.__tbCb){var d=h.firstElementChild||h;d.innerHTML='';"
-            + "g.renderButton(d,{type:'standard',theme:'outline',size:'large',"
-            + "width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});" + "}}catch(e){}};"
-            + "var w=false,n=0,t=setInterval(function(){"
-            + "var g=window.google&&window.google.accounts&&window.google.accounts.id;"
-            + "if(g&&!w){w=true;var o2=g.initialize;"
-            + "g.initialize=function(c){if(c&&c.callback)window.__tbCb=c.callback;return o2.apply(this,arguments)};}"
-            + "var h=document.querySelector('.hidden-google-btn');"
-            + "if(h){var d2=h.firstElementChild||h;if(!d2.id)d2.id='google_login_button';"
-            + "if(g&&window.__tbCb&&!d2.__tb){d2.__tb=1;try{d2.innerHTML='';"
-            + "g.renderButton(d2,{type:'standard',theme:'outline',size:'large',"
-            + "width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});"
-            + "}catch(e){d2.__tb=0;}}" + "if(d2.__tb&&h.querySelector('iframe')){clearInterval(t);return;}}"
-            + "if(++n>300)clearInterval(t);},50);})()";
+    private static final String LOGIN_PAGE_SCRIPT = """
+            (function(){if(window.__tbFix)return;window.__tbFix=1;\
+            var rawFetch=window.fetch?window.fetch.bind(window):null;\
+            function send(d){try{var p={state:1,ndus:d.ndus,uid:String(d.userid||''),\
+            displayName:d.displayName||'',headUrl:d.headUrl||'',\
+            region_domain_prefix:d.region_domain_prefix||'www',cur_country:d.cur_country||'',\
+            reg_country:d.reg_country||'',reg_time:d.reg_time||0};\
+            var u='dubox://user/tbsend/sendLoginResults?params='+encodeURIComponent(JSON.stringify(p));\
+            var f=document.createElement('iframe');f.style.display='none';\
+            document.documentElement.appendChild(f);f.src=u;\
+            setTimeout(function(){try{f.remove()}catch(e){}},1500);}catch(e){}}\
+            function rewrite(v){v=String(v);\
+            if(v.indexOf('/passport/ssologin')<0||v.indexOf('__tbraw')>=0)return v;\
+            v=v.replace(/([?&])client=[^&]*/,'$1client=web')\
+            .replace(/([?&])clienttype=[^&]*/,'$1clienttype=0');\
+            var cb=(v.match(/[?&]callback=([^&]*)/)||[])[1];\
+            var j=v.replace(/([?&])callback=[^&]*/,'$1__tbraw=1');\
+            if(rawFetch)rawFetch(j,{credentials:'include'}).then(function(r){return r.text()})\
+            .then(function(t){\
+            var a=t.indexOf('{'),b=t.lastIndexOf('}');\
+            var o=JSON.parse(t.slice(a,b+1));\
+            var ok=o&&o.code===0&&o.data&&o.data.ndus;\
+            if(ok)send(o.data);\
+            if(!ok&&cb&&window[cb])window[cb](o);}).catch(function(e){});\
+            return 'data:text/javascript,';}\
+            try{var d=Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src');\
+            if(d&&d.set)Object.defineProperty(HTMLScriptElement.prototype,'src',{configurable:true,\
+            enumerable:d.enumerable,get:d.get,set:function(v){d.set.call(this,rewrite(v))}});\
+            var sa=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){\
+            if(String(n).toLowerCase()==='src')v=rewrite(v);return sa.call(this,n,v)};\
+            if(rawFetch)window.fetch=function(u,o){if(typeof u==='string')u=rewrite(u);return rawFetch(u,o)};\
+            var oo=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){\
+            arguments[1]=rewrite(u);return oo.apply(this,arguments)};}catch(e){}\
+            window.__tbDeliver=function(c){try{if(window.__tbCb)window.__tbCb({credential:c,select_by:'btn'});}catch(e){}};\
+            window.__tbReset=function(){\
+            try{var g=window.google&&window.google.accounts&&window.google.accounts.id;\
+            if(g&&g.cancel)g.cancel();\
+            var h=document.querySelector('.hidden-google-btn');\
+            if(g&&h&&window.__tbCb){var d=h.firstElementChild||h;d.innerHTML='';\
+            g.renderButton(d,{type:'standard',theme:'outline',size:'large',\
+            width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});\
+            }}catch(e){}};\
+            var w=false,n=0,t=setInterval(function(){\
+            var g=window.google&&window.google.accounts&&window.google.accounts.id;\
+            if(g&&!w){w=true;var o2=g.initialize;\
+            g.initialize=function(c){if(c&&c.callback)window.__tbCb=c.callback;return o2.apply(this,arguments)};}\
+            var h=document.querySelector('.hidden-google-btn');\
+            if(h){var d2=h.firstElementChild||h;if(!d2.id)d2.id='google_login_button';\
+            if(g&&window.__tbCb&&!d2.__tb){d2.__tb=1;try{d2.innerHTML='';\
+            g.renderButton(d2,{type:'standard',theme:'outline',size:'large',\
+            width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});\
+            }catch(e){d2.__tb=0;}}\
+            if(d2.__tb&&h.querySelector('iframe')){clearInterval(t);return;}}\
+            if(++n>300)clearInterval(t);},50);})()\
+            """;
 
     private static final String APP_UA_TOKEN = "dubox;";
 

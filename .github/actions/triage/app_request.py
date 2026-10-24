@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """python3 app_request.py <issue-number> <issue-body-file> <requests.json> <patches-list.json> [bundles.json] [elsewhere-dir] [previous-comment]"""
 
+import hashlib
 import json
 import os
 import re
@@ -11,13 +12,15 @@ from urllib.parse import parse_qs, urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 from fields import code_span, field, normalize, parse_fields
+from replies import ALL_FORMS
 
-MARKER = "<!-- app-request-bot -->"
+MARKER = "<!-- app-request-bot facts={} -->"
 REPO = os.environ.get("GITHUB_REPOSITORY", "")
 TITLE_PREFIX = re.compile(r"^\s*(?:\[[^\]]{0,30}\]|app\s*request\b)\s*[:|\-\u2013\u2014\uff1a]?\s*", re.I)
 MAX_TITLE = 256
 URL = re.compile(r"https?://\S+")
 MARKDOWN_LINK = re.compile(r"\[([^\[\]]*)\]\([^)]*\)")
+REGISTRY_PAGE = "https://morphe-patches.software/#apps"
 REPO_PATH = re.compile(r"[\w.-]+/[\w.-]+")
 PACKAGE = re.compile(r"\b[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+\b")
 DOMAIN_ENDINGS = {"com", "net", "org", "io", "ph", "me", "app", "co", "in", "tv", "apk", "xyz", "to"}
@@ -186,20 +189,23 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
 
     if package and package.lower() in supported:
         verdict, reason = "close", "completed"
+        app = supported[package.lower()]
         lines.append(
-            f"The package `{package}` is already supported as {supported[package.lower()]}."
+            f"{app} (`{package}`) is already supported. This discussion is now closed. "
+            f"For anything else about {app}, open an issue:\n\n{ALL_FORMS}"
         )
     elif open_same:
         canonical = open_same[0]
         verdict, reason, duplicate_of = "close", "duplicate", canonical["number"]
         lines.append(
-            f"This duplicates {link(canonical)}, which already requests `{package}`."
+            f"Thanks for the request! {link(canonical)} already asks for `{package}`, so this discussion is now "
+            f"closed as a duplicate. Please upvote {link(canonical)} instead."
         )
     elif same_package:
         prior = same_package[-1]
         verdict, labels = "flag", ["duplicate"]
         lines.append(
-            f"The closed request {link(prior)} already asked for `{package}`."
+            f"{link(prior)} already asked for `{package}` and was closed. Please reply here with what this request adds."
         )
 
     this = next((r for r in requests if r["number"] == number), {})
@@ -211,9 +217,10 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
         verdict, reason, duplicate_of, labels = "close", "not planned", 0, []
         rows = [f"- [#{r['number']}](https://redirect.github.com/{REPO}/discussions/{r['number']}) "
                 f"{code_span(r.get('title') or '')}" for r in open_by_author]
-        lines = [f"Each person can have {OPEN_LIMIT} app requests open at a time, and these are already open:\n\n"
+        lines = [f"You have {len(rows)} app requests open, the maximum per person:\n\n"
                  + "\n".join(rows)
-                 + "\n\nWait for one of them to finish, or close one, before opening a new request."]
+                 + "\n\nThis discussion is now closed. To request this app again, either:\n\n"
+                 "- close one of the requests above\n- wait until one of them is added or rejected"]
 
     if verdict == "pass" and name:
         lookalikes = [r for r in earlier if r["state"] == "OPEN" and r not in same_package
@@ -224,10 +231,18 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             verdict = "flag"
             if "duplicate" not in labels:
                 labels.append("duplicate")
-            refs = ", ".join(f"{r['name']} (already supported)" if not r["number"] else link(r) for r in lookalikes)
-            lines.append(
-                f"This may be the same app as {refs}, but the package name differs or is missing."
-            )
+            apps = " or ".join(r["name"] for r in lookalikes if not r["number"])
+            requests = " or ".join(link(r) for r in lookalikes if r["number"])
+            if apps:
+                lines.append(
+                    f"This looks like {apps}, which this bundle already supports. If it's a different app, edit this "
+                    f"request and add its package name.\n\nIf it's {apps}, open an issue instead:\n\n{ALL_FORMS}"
+                )
+            if requests:
+                lines.append(
+                    f"This looks like the app requested in {requests}. If it's a different app, edit this request and "
+                    f"add its package name. If it's the same app, please upvote {requests} instead."
+                )
 
     bundles = []
     if package and verdict in ("pass", "flag") and registry:
@@ -239,18 +254,26 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
                 for b in bundles[:MAX_LISTED]
             ]
             if len(bundles) > MAX_LISTED:
-                rows.append(f"- {len(bundles) - MAX_LISTED} more bundles")
+                rows.append(f"- [{len(bundles) - MAX_LISTED} more]({REGISTRY_PAGE})")
             if verdict == "pass":
                 verdict = "flag"
             labels += [label for label in ("needs info", "other bundle") if label not in labels]
             if len(bundles) == 1:
                 lines.append(
-                    f"{rows[0][2:]} already patches `{package}`. Which of the requested features does it not cover?"
+                    f"{rows[0][2:]} already patches `{package}`. To keep work from being split across bundles, a request "
+                    "for an app another bundle covers is kept open only for what that bundle lacks.\n\n"
+                    "- **It doesn't support your app version, or a patch broke:** open an issue on that bundle\n"
+                    "- **It's missing a feature you need:** reply here and name the feature\n\n"
+                    "A reply doesn't guarantee the request gets picked up."
                 )
             else:
                 lines.append(
                     f"These bundles already patch `{package}`:\n\n" + "\n".join(rows)
-                    + "\n\nWhich of the requested features do they not cover?"
+                    + "\n\nTo keep work from being split across bundles, a request for an app other bundles cover "
+                    "is kept open only for what none of them has.\n\n"
+                    "- **They don't support your app version, or a patch broke:** open an issue on one of them\n"
+                    "- **None of them has a feature you need:** reply here and name the feature\n\n"
+                    "A reply doesn't guarantee the request gets picked up."
                 )
 
     posts = []
@@ -261,18 +284,28 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             if "other bundle" not in labels:
                 labels.append("other bundle")
             refs = ", ".join(f"[{repo}#{number}](https://github.com/{repo}/issues/{number})" for repo, number in posts)
-            lines.append(f"This app was also requested at {refs}.")
+            lines.append(
+                f"This app is also requested at {refs}. Keeping one request open helps developers avoid building the "
+                "same patches twice.\n\n- **Fine with the other one:** close this discussion\n"
+                f"- **Prefer this one:** close {'that one' if len(posts) == 1 else 'the others'} and reply here\n\n"
+                "Thanks for helping keep requests in one place!"
+            )
 
+    facts = hashlib.sha256(json.dumps([
+        package, verdict, reason, duplicate_of, sorted(labels), [b["repo"] for b in bundles], posts,
+        [r["number"] for r in open_by_author], [line.split("\n")[0] for line in lines if line.startswith("This looks like")],
+    ]).encode()).hexdigest()[:12]
     return {
         "package": package,
         "verdict": verdict,
+        "facts": facts,
         "reason": reason,
         "duplicate_of": duplicate_of,
         "labels": labels,
         "matches": [b["repo"] for b in bundles],
         "cross_posts": [f"{repo}#{number}" for repo, number in posts],
         "title": canonical_title(title, body),
-        "comment": MARKER + "\n" + "\n\n".join(lines) if lines else "",
+        "comment": MARKER.format(facts) + "\n" + "\n\n".join(lines) if lines else "",
     }
 
 

@@ -53,6 +53,7 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/PairipMethod
 private const val STRING_TYPE = "Ljava/lang/String;"
 private const val METHOD_TYPE = "Ljava/lang/reflect/Method;"
 private const val HASHED_ENCODING = "hash"
+private const val ASSIGNED_ENCODING = "assigned"
 private const val HEX_RADIX = 16
 private val HOISTED_TYPES = setOf(STRING_TYPE, METHOD_TYPE)
 
@@ -120,7 +121,7 @@ private val extractRecoveredDexPatch = rawResourcePatch {
             recoverEmbeddedDex(asset.readBytes())?.let { recoveredDexFiles += it }
         }
 
-        check(recoveredDexFiles.isNotEmpty()) { "No dex file embedded in the pairip assets" }
+        check(virtualizedCodeAssets.isNotEmpty()) { "No pairip VM assets found" }
 
         val appDexFiles = generateSequence(1) { it + 1 }
             .map { get(if (it == 1) "classes.dex" else "classes$it.dex") }
@@ -203,6 +204,7 @@ internal class HoistedField(
     val className: String,
     val fieldName: String,
     val value: String,
+    val assignedByApp: Boolean = false,
 )
 
 private fun String.unescape() = buildString {
@@ -246,6 +248,7 @@ internal fun resolveHoistedFields(tableName: String, rows: List<String>, dexFile
         when (encoding) {
             "string" -> HoistedField(STRING_TYPE, className, fieldName, value.unescape())
             "method" -> HoistedField(METHOD_TYPE, className, fieldName, value.unescape())
+            ASSIGNED_ENCODING -> HoistedField(value, className, fieldName, "", assignedByApp = true)
             HASHED_ENCODING -> {
                 val matches = dexStrings[value.toULong(HEX_RADIX).toLong()].orEmpty()
                 check(matches.size == 1) {
@@ -274,6 +277,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
         AppCompatibilities.MUSICOLET,
         AppCompatibilities.MUSICOLET_CAST_PLUGIN,
         AppCompatibilities.POE,
+        AppCompatibilities.USA_VPN,
         AppCompatibilities.VLLO,
         AppCompatibilities.YUKA,
     )
@@ -332,7 +336,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
                 "$classDescriptor field kinds differ from $tableName"
             }
 
-            val fields = records.filter { it.fieldName in hoistedFields }
+            val fields = records.filter { it.fieldName in hoistedFields && !it.assignedByApp }
             if (fields.isEmpty()) return@forEach
 
             check(classDef.directMethods.none { it.name == "<clinit>" }) {

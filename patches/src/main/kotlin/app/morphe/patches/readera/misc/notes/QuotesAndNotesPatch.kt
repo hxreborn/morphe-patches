@@ -62,10 +62,9 @@ private val notesStringsPatch = resourcePatch {
                 namesByText[text]?.first() ?: throw PatchException("No string \"$text\" in res/values/strings.xml for $name")
             }
         }
-        get("res").listFiles { file -> file.isDirectory && file.name.startsWith("values") }.orEmpty()
-            .filter { it.resolve("strings.xml").exists() }
-            .forEach { directory ->
-                document("res/${directory.name}/strings.xml").use { document ->
+        decode("res/values*/strings.xml")
+            .forEach { path ->
+                document(path).use { document ->
                     val strings = document.getElementsByTagName("string").asSequence()
                         .map { it as Element }
                         .associateBy { it.getAttribute("name") }

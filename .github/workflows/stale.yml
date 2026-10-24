@@ -21,7 +21,9 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-          sparse-checkout: .github/actions/triage/discussion.sh
+          sparse-checkout: |
+            .github/actions/triage/discussion.sh
+            .github/actions/triage/replies.py
           sparse-checkout-cone-mode: false
       - env:
           GH_TOKEN: ${{ github.token }}
@@ -31,7 +33,7 @@ jobs:
         run: |
           discussion=.github/actions/triage/discussion.sh
           cutoff=$(date -u -d '7 days ago' +%FT%TZ)
-          printf '%s\n' 'This request is labelled `needs info` and has had no activity for 7 days. It is being closed automatically.' > "$RUNNER_TEMP/comment.md"
+          python3 .github/actions/triage/replies.py request-stale > "$RUNNER_TEMP/comment.md"
           bash -eo pipefail "$discussion" list app-requests |
           jq -r --arg cutoff "$cutoff" '.[] | select(.state == "OPEN" and .updatedAt < $cutoff)
             | select((.labels | map(.name)) as $l | ($l | index("needs info")) and ($l | index("bot-wrong") | not) and ($l | index("in progress") | not)) | .number' |
@@ -45,16 +47,25 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/actions/triage/replies.py
+          sparse-checkout-cone-mode: false
+      - id: replies
+        shell: bash
+        run: |
+          for reply in issue-stale issue-stale-closed issue-needs-info-closed; do
+            printf '%s<<EOF\n%s\nEOF\n' "$reply" "$(python3 .github/actions/triage/replies.py "$reply")"
+          done >> "$GITHUB_OUTPUT"
       - uses: actions/stale@v11
         with:
           debug-only: ${{ inputs.dry-run || false }}
           days-before-issue-stale: 30
           days-before-issue-close: 7
           stale-issue-label: "stale"
-          stale-issue-message: |
-            This issue has had no activity for 30 days. It will be closed automatically after 7 more days without activity.
-          close-issue-message: |
-            This issue is being closed automatically after 7 more days without activity.
+          stale-issue-message: ${{ steps.replies.outputs.issue-stale }}
+          close-issue-message: ${{ steps.replies.outputs.issue-stale-closed }}
           days-before-pr-stale: -1
           days-before-pr-close: -1
           exempt-all-assignees: true
@@ -68,8 +79,7 @@ jobs:
           days-before-issue-stale: 7
           days-before-issue-close: 0
           stale-issue-label: "stale"
-          stale-issue-message: |
-            This issue is labelled `needs info` and has had no activity for 7 days. It is being closed automatically.
+          stale-issue-message: ${{ steps.replies.outputs.issue-needs-info-closed }}
           close-issue-reason: not_planned
           days-before-pr-stale: -1
           days-before-pr-close: -1

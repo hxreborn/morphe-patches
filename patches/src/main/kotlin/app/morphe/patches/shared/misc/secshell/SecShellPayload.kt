@@ -11,6 +11,11 @@ import app.morphe.patcher.patch.rawResourcePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
+import com.android.tools.smali.dexlib2.iface.ClassDef
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -64,11 +69,11 @@ internal class SecShellPayload(private val container: SecShellContainer) {
         val extension = SecShellPayload::class.java.classLoader.getResourceAsStream(EXTENSION_DEX)
             ?.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()) }
             ?: throw PatchException("$EXTENSION_DEX is missing from the patch bundle")
-        val classes = extension.classes.filter { it.type.startsWith(packageType) }
-        if (classes.isEmpty()) throw PatchException("$EXTENSION_DEX has no class in $packageType")
+        val packageClasses = extension.classes.filter { it.type.startsWith(packageType) }
+        if (packageClasses.isEmpty()) throw PatchException("$EXTENSION_DEX has no class in $packageType")
 
         val editor = editor(dexContaining(besideClass))
-        classes.forEach(editor::addClass)
+        classesReachableFrom(packageClasses, extension.classes.associateBy { it.type }).forEach(editor::addClass)
     }
 
     fun sealed(): ByteArray =
@@ -83,6 +88,43 @@ internal class SecShellPayload(private val container: SecShellContainer) {
     private fun editorUsing(string: String) = editor(singleDex("\"$string\"") { it.hasString(string) })
 
     private fun editor(entry: String) = editors.getOrPut(entry) { SecShellDex(container.read(entry)) }
+}
+
+private fun classesReachableFrom(roots: List<ClassDef>, extensionClasses: Map<String, ClassDef>): Collection<ClassDef> {
+    val reached = LinkedHashMap<String, ClassDef>()
+    val pending = ArrayDeque(roots)
+    while (pending.isNotEmpty()) {
+        val classDef = pending.removeFirst()
+        if (reached.putIfAbsent(classDef.type, classDef) != null) continue
+        classDef.referencedTypes()
+            .map { it.trimStart('[') }
+            .mapNotNullTo(pending) { extensionClasses[it] }
+    }
+    return reached.values
+}
+
+private fun ClassDef.referencedTypes(): Sequence<String> = sequence {
+    superclass?.let { yield(it) }
+    yieldAll(interfaces)
+    fields.forEach { yield(it.type) }
+    methods.forEach { method ->
+        yieldAll(method.parameterTypes.map { it.toString() })
+        yield(method.returnType)
+        method.implementation?.instructions?.forEach { instruction ->
+            when (val reference = (instruction as? ReferenceInstruction)?.reference) {
+                is TypeReference -> yield(reference.type)
+                is FieldReference -> {
+                    yield(reference.definingClass)
+                    yield(reference.type)
+                }
+                is MethodReference -> {
+                    yield(reference.definingClass)
+                    yieldAll(reference.parameterTypes.map { it.toString() })
+                    yield(reference.returnType)
+                }
+            }
+        }
+    }
 }
 
 private class OpenPayload(val entryName: String, val payload: SecShellPayload)

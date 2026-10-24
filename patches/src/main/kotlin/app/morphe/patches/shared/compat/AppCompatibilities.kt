@@ -355,6 +355,7 @@ internal object AppCompatibilities {
         appIconColor = 0xF1641E,
         targets = listOf(
             AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 29),
+            AppTarget(version = "7.99.0", versionCode = 79900161, minSdk = 32),
             AppTarget(version = "8.0.0", versionCode = 80000162, minSdk = 32),
         ),
     )
@@ -1436,6 +1437,17 @@ internal object AppCompatibilities {
             "a7e3c4a612680186937b02e7b89574d5fd62798b8cb668973992fa89f6198fcb",
         ),
         targets = listOf(AppTarget(version = "5.7", versionCode = 875, minSdk = 24)),
+    )
+
+    val USA_VPN = Compatibility(
+        name = "USA VPN",
+        packageName = "vpn.usa_tap2free",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x413C6B,
+        signatures = setOf(
+            "b52d663c4612475b293ca0ec4ca84e00da9c77d55a28cc655ba2dd4bf33ae9fb",
+        ),
+        targets = listOf(AppTarget(version = "1.168", versionCode = 168, minSdk = 24)),
     )
 
     val GRAPH_MESSENGER = Compatibility(

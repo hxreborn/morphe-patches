@@ -512,6 +512,7 @@ Yes, it happens with only that one patch
 
 ### Error logs
 
+[log.txt](https://github.com/user-attachments/files/1/log.txt)
 """),
     "patch missing from the Manager list": ("pass", f"""### App name
 
@@ -539,6 +540,7 @@ Yes, it happens with only that one patch
 
 ### Error logs
 
+[log.txt](https://github.com/user-attachments/files/1/log.txt)
 """),
     "repackager named without a link asks instead of closing": ("flag", f"""### App and version
 
@@ -630,22 +632,6 @@ Fddb (another version, type it below)
 
 {LONG}
 """, ONE_AND_TWO_PATCH_APPS)),
-    "one-patch app not tried with one patch passes": ("pass", (f"""### App and version
-
-Etsy 7.97.0
-
-### What does not work
-
-The patch has no visible effect
-
-### Does it still happen with only one patch selected
-
-I have not tried it
-
-### Bug description
-
-{LONG}
-""", ONE_AND_TWO_PATCH_APPS)),
     "another ABI of a targeted version is untargeted": ("flag", f"""### App and version
 
 Cxxdroid (another version, type it below)
@@ -722,7 +708,7 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """),
-    "two-patch app not tried with one patch asks for it": ("flag", (f"""### App and version
+    "two-patch app not tried with one patch passes": ("pass", (f"""### App and version
 
 Fddb v7.8.4-Build-1-gms-release
 
@@ -737,23 +723,120 @@ I have not tried it
 ### Bug description
 
 {LONG}
-""", ONE_AND_TWO_PATCH_APPS)),
-    "two-patch app with a feature still locked passes without a one-patch test": ("pass", (f"""### App and version
 
-Fddb v7.8.4-Build-1-gms-release
+### Error logs
+
+[log.txt](https://github.com/user-attachments/files/1/log.txt)
+""", ONE_AND_TWO_PATCH_APPS)),
+    "steps, expected and actual behaviour count as the description": ("pass", f"""### App name
+
+Showly
+
+### App version
+
+3.70.0
 
 ### What does not work
 
 The patched feature is still locked or still shows ads
 
+### Does the unpatched app do the same thing
+
+The unpatched app works fine, only the patched one fails
+
 ### Does it still happen with only one patch selected
 
-I have not tried it
+Yes, it happens with only that one patch
 
-### Bug description
+### Steps to reproduce
+
+1. Open the app
+2. Tap Premium
+
+### Expected behaviour
+
+The premium screen opens unlocked
+
+### Actual behaviour
+
+The paywall shows
+
+### Error logs
+
+[log.txt](https://github.com/user-attachments/files/1/log.txt)
+"""),
+    "not-working report with no log in the required field": ("flag", f"""### App name
+
+Showly
+
+### App version
+
+3.70.0
+
+### What does not work
+
+The patch has no visible effect
+
+### Does the unpatched app do the same thing
+
+The unpatched app works fine, only the patched one fails
+
+### Does it still happen with only one patch selected
+
+Yes, it happens with only that one patch
+
+### Steps to reproduce
 
 {LONG}
-""", ONE_AND_TWO_PATCH_APPS)),
+
+### Expected behaviour
+
+No ads
+
+### Actual behaviour
+
+Ads
+
+### Error logs
+
+none
+"""),
+    "a log linked from a paste site counts as a log": ("pass", f"""### App name
+
+Showly
+
+### App version
+
+3.70.0
+
+### What does not work
+
+The patch has no visible effect
+
+### Does the unpatched app do the same thing
+
+The unpatched app works fine, only the patched one fails
+
+### Does it still happen with only one patch selected
+
+Yes, it happens with only that one patch
+
+### Steps to reproduce
+
+{LONG}
+
+### Expected behaviour
+
+No ads
+
+### Actual behaviour
+
+Ads
+
+### Error logs
+
+https://pastebin.com/Xy12Ab34
+"""),
 }
 
 
@@ -876,7 +959,7 @@ registry_hit = app_verdict(9, [request(9, "Proton VPN", "ch.protonvpn.android")]
 ok = (registry_hit["matches"] == ["someone/patches"] and registry_hit["verdict"] == "flag"
       and registry_hit["labels"] == ["needs info", "other bundle"]
       and "[Someone's patches](https://github.com/someone/patches) already patches `ch.protonvpn.android`. "
-          "Which of the requested features does it not cover?" in registry_hit["comment"])
+          "To keep work from being split across bundles" in registry_hit["comment"])
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} app another bundle already patches asks which features it lacks, not closed")
 
@@ -892,7 +975,7 @@ def cross_posted(app, package, elsewhere, registry=REGISTRY, previous=""):
 
 musicolet = cross_posted("Musicolet", "", [posted("someone/patches", 1099, "feat: new app [Musicolet]")])
 ok = (musicolet["verdict"], musicolet["labels"], musicolet["cross_posts"]) == ("flag", ["other bundle"], ["someone/patches#1099"]) \
-    and "This app was also requested at [someone/patches#1099](https://github.com/someone/patches/issues/1099)." in musicolet["comment"]
+    and "This app is also requested at [someone/patches#1099](https://github.com/someone/patches/issues/1099). " in musicolet["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the requester's issue in a listed bundle naming the app is linked and labelled")
 
@@ -947,8 +1030,9 @@ earlier = "<!-- app-request-bot -->\nThis app was also requested at " \
           "[someone/patches#1099](https://github.com/someone/patches/issues/1099), " \
           "[stranger/kodi#3](https://github.com/stranger/kodi/issues/3)."
 kept = cross_posted("Musicolet", "", [], previous=earlier)
-ok = kept["cross_posts"] == ["someone/patches#1099"] and kept["comment"].endswith(
-    "[someone/patches#1099](https://github.com/someone/patches/issues/1099).")
+ok = kept["cross_posts"] == ["someone/patches#1099"] and \
+    "requested at [someone/patches#1099](https://github.com/someone/patches/issues/1099). " in kept["comment"] \
+    and "stranger/kodi" not in kept["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a cross-post found earlier is kept after it leaves the event feed, unlisted repos dropped")
 
@@ -980,7 +1064,7 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """)["comment"]
-ok = "value `7.5.6 (388)` does not match" in untargeted
+ok = "but not `7.5.6 (388)` yet" in untargeted
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} untargeted version quotes only the typed version")
 
@@ -1085,7 +1169,7 @@ limit_closed = limited_verdict(6, busy)
 ok = ((limit_closed["verdict"], limit_closed["reason"], limit_closed["labels"]) == ("close", "not planned", [])
       and "[#2](https://redirect.github.com//discussions/2) `[App Request]: Bar 'Notes'`" in limit_closed["comment"]
       and "#4" not in limit_closed["comment"] and "#5" not in limit_closed["comment"]
-      and limit_closed["comment"].count("\n- ") == 3)
+      and limit_closed["comment"].count("\n- [#") == 3)
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a fourth open request closes as not planned and lists the three open ones, needs info included")
 

@@ -19,8 +19,9 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/castletv/PremiumVipInfo;"
+private const val PREMIUM_VIP_INFO_CLASS = "Lapp/hxreborn/extension/castletv/PremiumVipInfo;"
 private const val VIP_INFO_CLASS = "Lcom/gxgx/base/bean/VipInfo;"
+private const val PREVIEW_PLAYLIST_CLASS = "Lapp/hxreborn/extension/castle/PreviewPlaylist;"
 
 private fun Method.indexOfFreeUserCheck(vipHelperType: String, startIndex: Int = 0) =
     indexOfFirstInstruction(startIndex) {
@@ -47,7 +48,7 @@ val unlockPremiumPatch = bytecodePatch(
             0,
             """
                 const-class v0, $VIP_INFO_CLASS
-                invoke-static { v0 }, $EXTENSION_CLASS->get(Ljava/lang/Class;)Ljava/lang/Object;
+                invoke-static { v0 }, $PREMIUM_VIP_INFO_CLASS->get(Ljava/lang/Class;)Ljava/lang/Object;
                 move-result-object v0
                 check-cast v0, $VIP_INFO_CLASS
                 return-object v0
@@ -59,6 +60,14 @@ val unlockPremiumPatch = bytecodePatch(
             """
                 sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
                 return-object v0
+            """,
+        )
+
+        PlaylistParserFingerprint.matchSingle().method.addInstructions(
+            0,
+            """
+                invoke-static { p1, p2 }, $PREVIEW_PLAYLIST_CLASS->expand(Landroid/net/Uri;Ljava/io/InputStream;)Ljava/io/InputStream;
+                move-result-object p2
             """,
         )
 

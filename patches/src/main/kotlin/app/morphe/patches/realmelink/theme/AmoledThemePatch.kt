@@ -432,6 +432,7 @@ private class ResourcePackage(val name: String, val directory: File)
 private const val PACKAGE_METADATA_FILE = "package.json"
 
 private fun ResourcePatchContext.resourcePackage(name: String): ResourcePackage {
+    decode("res/**", packageName = name)
     val packageDirectory = get("res").parentFile.parentFile.listFiles()
         ?.firstOrNull {
             it.resolve(PACKAGE_METADATA_FILE).takeIf(File::exists)?.readText()?.contains("\"$name\"") == true
@@ -670,6 +671,7 @@ private const val LOTTIE_WHITE = "\"k\":[1,1,1,1]"
 private fun ResourcePatchContext.invertTabAnimations(): Int {
     var replaced = 0
 
+    decode("assets/$TAB_ANIMATION_PREFIX*")
     get("assets").listFiles()
         ?.filter { it.name.startsWith(TAB_ANIMATION_PREFIX) && it.extension == "json" }
         ?.forEach { file ->

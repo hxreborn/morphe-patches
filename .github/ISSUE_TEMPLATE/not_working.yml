@@ -1,4 +1,4 @@
-name: 🔌 Patched app does not work
+name: 🔌 Patched app broken
 description: The app patched fine, but it will not open, crashes, or the patch changed nothing.
 title: "[Not working]: "
 labels: ["bug"]
@@ -8,6 +8,8 @@ body:
       value: |
         Before you file:
 
+        - 🚨 Patching stopped with an error or the APK won't install: use
+          [Patching failed](https://github.com/hxreborn/morphe-patches/issues/new?template=bug_report.yml).
         - Repatch on the newest release.
         - Install the unpatched APK and repeat the steps.
         - Search open and closed reports [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue).
@@ -104,6 +106,7 @@ body:
         - "Echogram 1.0.7.0"
         - "Echogram (another version, type it below)"
         - "Etsy 7.97.0"
+        - "Etsy 7.99.0"
         - "Etsy 8.0.0"
         - "Etsy (another version, type it below)"
         - "Fast STL Viewer 2.84"
@@ -332,6 +335,8 @@ body:
         - "Trainline (another version, type it below)"
         - "U Dictionary 6.7.5"
         - "U Dictionary (another version, type it below)"
+        - "USA VPN 1.168"
+        - "USA VPN (another version, type it below)"
         - "Viber 29.1.1.0"
         - "Viber (another version, type it below)"
         - "Video Editor 1.621.196"
@@ -375,12 +380,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.59.0"
+        - "1.60.0-dev.3"
+        - "1.60.0-dev.2"
+        - "1.60.0-dev.1"
         - "1.59.0-dev.10"
         - "1.59.0-dev.9"
         - "1.59.0-dev.8"
-        - "1.59.0-dev.7"
-        - "1.59.0-dev.6"
         - "Older than these"
         # /generated
     validations:
@@ -630,6 +635,7 @@ body:
         - "Proton Mail \u00b7 Custom accent color"
         - "Proton Mail \u00b7 Hide layout components"
         - "Proton Mail \u00b7 Hide upgrade promotions"
+        - "Proton Mail \u00b7 Material 3 loading indicator"
         - "Proton Mail \u00b7 Material 3 switches"
         - "Proton Mail \u00b7 Remove 'Sent from' signature"
         - "Proton Mail \u00b7 Remove free accounts limit"
@@ -723,6 +729,7 @@ body:
         - "TeraBox \u00b7 Unlock Premium Plus"
         - "Trainline \u00b7 Hide ads"
         - "U Dictionary \u00b7 Unlock premium"
+        - "USA VPN \u00b7 Unlock premium"
         - "Viber \u00b7 Hide ads"
         - "Viber \u00b7 Hide More screen items"
         - "Viber \u00b7 Hide navigation buttons"
@@ -804,15 +811,33 @@ body:
       description: |
         Other patch sources you had enabled. Blank if none.
   - type: textarea
-    id: bug-description
+    id: steps
     attributes:
-      label: Bug description
-      description: |
-        - What you did, what you expected, and what happened instead
-        - Which screen or action triggers it
-        - Screenshots or a screen recording if the problem is visible
-        - A screenshot of the app's entry in Morphe Manager
-        - Any patch settings you changed inside the app
+      label: Steps to reproduce
+      description: Start from opening the app. Please name the screen and any patch setting you changed.
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Please add the app's entry in Morphe Manager with its selected patches, and the problem on screen.
     validations:
       required: true
   - type: textarea
@@ -820,8 +845,10 @@ body:
     attributes:
       label: Error logs
       description: |
-        Required when the app won't open or crashes. Run `adb logcat -d > log.txt` right after it fails and paste the file here. Without a PC, record it with [LogFox](https://github.com/F0x1d/LogFox) and attach the export.
-      render: shell
+        Run `adb logcat -d > log.txt` right after the problem and attach the file. Without a PC, record it with [LogFox](https://github.com/F0x1d/LogFox) and attach the export.
+      placeholder: Drag the log file here, or paste a link to it (Pastebin, GitHub Gist).
+    validations:
+      required: true
   - type: checkboxes
     id: acknowledgements
     attributes:

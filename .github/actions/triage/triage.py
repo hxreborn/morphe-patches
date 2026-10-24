@@ -5,7 +5,6 @@ import json
 import os
 import re
 import sys
-from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -13,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import code_span, field, has_any, normalize, normalize_version, parse_fields
 from versions import prerelease_words, same_variant
+from replies import APK_SOURCES, BROKEN_FORMS, bundle, code_list, missing
 
 MIN_CHARS = 60
 
@@ -23,6 +23,7 @@ APP_NAME_FIELDS = ("App and version", "App name", "App", "Target app", "App vers
 APP_VERSION_FIELDS = ("Other version", "App version", "Broken app version", "App version patched",
                       "App and version")
 DESCRIPTION_FIELDS = ("Bug description", "What happens", "Describe the bug", "Summary")
+STEP_FIELDS = ("Steps to reproduce", "Expected behaviour", "Actual behaviour")
 LOG_FIELDS = ("Debug log", "Error logs", "Morphe logs", "Logs")
 SOURCE_FIELDS = ("APK source", "APK source and type", "APK source and architecture")
 
@@ -33,13 +34,13 @@ MARKER = "<!-- triage-bot -->"
 
 REPORT = re.compile(
     r"Exception|Error|INSTALL_FAILED|Failed to match|Manager:|manager=|\(API \d+\)|^[ \t]+at \S"
-    r"|Fatal signal|SIG(?:SEGV|ABRT|BUS|ILL)|backtrace:|user-attachments/files/", re.I | re.M
+    r"|Fatal signal|SIG(?:SEGV|ABRT|BUS|ILL)|backtrace:|user-attachments/files/"
+    r"|https?://(?:www\.)?(?:pastebin\.com|gist\.github\.com|paste\.ee|hastebin\.com|dpaste\.org|rentry\.co)/\S+", re.I | re.M
 )
 
 OPTION_PATCHING_FAILED = "patchingfailed"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
-OPTIONS_RUNTIME_FAILURE = ("theappwillnotopenatall", "theappopensthencrashes")
 OPTIONS_PATCH_INEFFECTIVE = (
     "thepatchedfeatureisstilllocked",
     "thepatchhasnovisibleeffect",
@@ -88,15 +89,10 @@ def matches_target(target):
 
 data = json.loads(list_path.read_text(encoding="utf-8"))
 apps = supported_apps(data)
-patch_counts = Counter(
-    (package["name"], package["packageName"])
-    for patch in data["patches"]
-    for package in patch.get("compatiblePackages") or []
-)
 fields = parse_fields(body_path.read_text(encoding="utf-8"))
 
-description = field(fields, *DESCRIPTION_FIELDS)
-if not has_any(fields, *DESCRIPTION_FIELDS):
+description = field(fields, *DESCRIPTION_FIELDS) or "\n".join(filter(None, (field(fields, n) for n in STEP_FIELDS)))
+if not has_any(fields, *DESCRIPTION_FIELDS, *STEP_FIELDS):
     description = max(fields.values(), key=len, default="")
 
 app_name = field(fields, *APP_NAME_FIELDS)
@@ -128,22 +124,22 @@ def target_forms(version):
 
 blockers = []
 flags = []
+notes = []
 labels = []
 
 if not fields:
-    flags.append(
-        "The automated checks found no form fields in this issue."
+    notes.append(
+        f"This issue has no form fields, so it can't be checked. Please open it again from one of the forms:\n\n{BROKEN_FORMS}"
     )
     labels.append("needs info")
 
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(
-        f"The description is {len(description)} characters, and at least {MIN_CHARS} are needed."
+        f"The description has {len(description)} characters. It needs at least {MIN_CHARS}."
     )
     labels.append("needs info")
 
 matched = None
-matched_key = None
 best = 0
 normalized_app = normalize(app_haystack)
 for (name, package), versions in apps.items():
@@ -151,34 +147,37 @@ for (name, package), versions in apps.items():
     signals += [normalize(word) for word in name.split() if len(word) > 3]
     score = max((len(sig) for sig in signals if sig and sig in normalized_app), default=0)
     if score > best:
-        best, matched, matched_key = score, (name, versions), (name, package)
+        best, matched = score, (name, versions)
 
 if repackager_host:
     blockers.append(
-        f"The APK source `{repackager_host}` repackages apps, which may cause patching errors."
+        f"`{repackager_host}` repackages apps, which can break patching. "
+        f"Download the original APK from {APK_SOURCES} and patch it again."
     )
 elif repackager_named:
     flags.append(
-        f"The APK source mentions `{repackager_named}`, which repackages apps and may cause patching errors."
+        f"The APK source mentions `{repackager_named}`, which repackages apps and can break patching. "
+        f"Please download the original APK from {APK_SOURCES} and patch it again."
     )
     labels.append("needs info")
+
 
 if not fields:
     pass
 elif not matched:
     supported = ", ".join(sorted(name for name, _ in apps))
     lead = (
-        f"The reported app {code_span(reported)} was not recognized as supported."
+        f"{code_span(reported)} isn't supported by this bundle."
         if reported
-        else "No supported app was identified in the report."
+        else "The report doesn't name a supported app."
     )
     flags.append(
-        f"{lead} Bundle version {data['version']} supports these apps: {supported}."
+        f"{lead} {bundle(data['version'])} supports {supported}."
     )
     labels.append("needs info")
 elif another_version:
     flags.append(
-        "\"Another version\" is selected, but the version is missing."
+        "\"Another version\" is selected, but the Other version field is empty."
     )
     labels.append("needs info")
 elif matched[1] and not (
@@ -186,63 +185,55 @@ elif matched[1] and not (
     else any(form in version_haystack for v in matched[1] for form in target_forms(v))
 ):
     name, versions = matched
-    flags.append(
-        f"Bundle version {data['version']} supports {name} {', '.join(sorted(versions))}. The reported value "
-        f"{code_span(typed_version or reported)} does not match a supported version. A newer version belongs in an [app update request]({NEW_ISSUE}?template=app_update.yml)."
+    typed = code_span(typed_version or reported)
+    notes.append(
+        f"{bundle(data['version'])} supports {name} {code_list(versions)}, but not {typed} yet. Please either:\n\n"
+        f"- patch one of the supported versions\n- open an [app update request]({NEW_ISSUE}?template=app_update.yml) for {typed}"
     )
     labels.append("untargeted version")
 
 if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_attached:
     flags.append(
-        "Patching failed, but no error report was found in the Error logs field."
+        "Patching failed, but the Error logs field has no error report. "
+        "Please tap Copy on Manager's error dialog and paste it there."
     )
     labels.append("needs info")
 
 failure = normalize(field(fields, "What does not work"))
-log_text = re.sub(r"^[ \t]*(```|~~~)\w*[ \t]*$", "", debug_log, flags=re.M).strip()
-if failure.startswith(OPTIONS_RUNTIME_FAILURE) and not log_text:
+if failure and not report_attached:
     flags.append(
-        "The app crashes or won't open, but the Error logs field is empty."
+        "The Error logs field has no log. Please attach the `adb logcat` file or the LogFox export."
     )
     labels.append("needs info")
 
 patch_ineffective = failure.startswith(OPTIONS_PATCH_INEFFECTIVE)
 stock = "" if patch_ineffective else normalize(field(fields, "Does the unpatched app do the same thing"))
-single_patch = "" if patch_ineffective else normalize(field(fields, "Does it still happen with only one patch selected"))
 
 if stock.startswith(OPTION_STOCK_FAILS_TOO):
     flags.append(
-        "The same problem also occurs in the unpatched app."
+        "The unpatched app has the same problem. Please say whether the patched app behaves any differently."
     )
     labels.append("needs info")
 elif stock.startswith(OPTION_NOT_TRIED):
     flags.append(
-        "The unpatched app hasn't been tried."
+        "The unpatched app hasn't been tried yet. Please install it and say whether it does the same."
     )
     labels.append("needs info")
-
-if single_patch.startswith(OPTION_NOT_TRIED) and patch_counts[matched_key] != 1:
-    flags.append(
-        "It hasn't been tested with only one patch selected."
-    )
-    if "needs info" not in labels:
-        labels.append("needs info")
 
 if blockers:
     verdict = "close"
     labels = []
-    lines = ["This issue is being closed automatically for the following reasons:", ""]
-    lines += [f"- {b}" for b in blockers + flags]
-elif flags:
+    sections = ["This issue is now closed:\n\n" + "\n".join(f"- {line}" for line in blockers + flags)]
+elif flags or notes:
     verdict = "flag"
-    lines = [f"- {f}" for f in flags]
+    sections = notes + ([missing(flags)] if flags else [])
 else:
     verdict = "pass"
-    lines = []
+    sections = []
 
 print(json.dumps({
     "verdict": verdict,
     "labels": list(dict.fromkeys(labels)),
     "app": matched[0] if matched else "",
-    "comment": MARKER + "\n" + "\n".join(lines) if lines else "",
+    "comment": MARKER + "\n" + "\n\n".join(sections) if sections else "",
 }))
