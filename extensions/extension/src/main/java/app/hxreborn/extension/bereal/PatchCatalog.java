@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.blur.FriendsPosts;
+import app.hxreborn.extension.bereal.download.DownloadFolder;
 import app.hxreborn.extension.bereal.download.DownloadWatermark;
 import app.hxreborn.extension.bereal.download.FriendsPostDownload;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
@@ -105,6 +106,9 @@ final class PatchCatalog {
         if (DownloadWatermark.isPatchIncluded()) {
             group.addToggle("ic_photo_on_rectangle_angled", "Remove BeReal logo from downloads",
                     "BeReals you download save at full size without the BeReal logo.", PatchSettings.REMOVE_WATERMARK);
+        }
+        if (DownloadFolder.isPatchIncluded()) {
+            group.addFolder("ic_folder", "Download folder", "BeReals you download save to this folder.");
         }
         return group;
     }

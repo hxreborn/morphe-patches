@@ -104,6 +104,10 @@ final class SettingsRows {
         return row;
     }
 
+    Row textRow(LinearLayout card, String iconName, String title, String description) {
+        return baseRow(card, iconName, title, description, null, null, null);
+    }
+
     Row valueRow(LinearLayout card, String iconName, String title, String value) {
         final Row row = baseRow(card, iconName, title, "", null, null, null);
         row.setValue(value);

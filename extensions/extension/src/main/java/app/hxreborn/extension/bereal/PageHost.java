@@ -8,4 +8,8 @@ interface PageHost {
 
     void resetToDefaults();
 
+    void chooseDownloadFolder();
+
+    void useDownloadPreset(String folder);
+
 }

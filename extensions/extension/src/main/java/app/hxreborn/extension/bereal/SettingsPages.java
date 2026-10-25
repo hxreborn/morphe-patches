@@ -99,6 +99,9 @@ final class SettingsPages {
             case LOCATION:
                 locationRow(card, spec);
                 break;
+            case FOLDER:
+                folderRow(card, spec);
+                break;
             case ALWAYS_ON:
                 this.rows.alwaysOnRow(card, spec.iconName, spec.title, spec.description);
                 break;
@@ -122,6 +125,11 @@ final class SettingsPages {
                 });
         card.addView(location.build(row));
         card.post(() -> card.setLayoutTransition(new LayoutTransition()));
+    }
+
+    private void folderRow(LinearLayout card, PatchGroup.Row spec) {
+        this.rows.textRow(card, spec.iconName, spec.title, spec.description);
+        card.addView(new FolderMenu(this.activity, this.style, this.host).build());
     }
 
     private void addCard(LinearLayout content, LinearLayout card) {

@@ -36,6 +36,10 @@ final class PatchGroup {
         this.rows.add(new Row(Kind.LOCATION, iconName, title, description, setting, false, null));
     }
 
+    void addFolder(String iconName, String title, String description) {
+        this.rows.add(new Row(Kind.FOLDER, iconName, title, description, null, false, null));
+    }
+
     void addAlwaysOn(String iconName, String title, String description) {
         this.rows.add(new Row(Kind.ALWAYS_ON, iconName, title, description, null, false, null));
     }
@@ -60,7 +64,7 @@ final class PatchGroup {
 
     enum Kind {
 
-        TOGGLE, LOCATION, ALWAYS_ON
+        TOGGLE, LOCATION, FOLDER, ALWAYS_ON
 
     }
 

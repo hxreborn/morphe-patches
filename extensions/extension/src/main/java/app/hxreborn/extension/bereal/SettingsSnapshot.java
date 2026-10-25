@@ -4,9 +4,12 @@
  */
 package app.hxreborn.extension.bereal;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import app.morphe.extension.shared.settings.BooleanSetting;
 import app.morphe.extension.shared.settings.StringSetting;
+
+import app.hxreborn.extension.bereal.download.DownloadFolder;
 
 final class SettingsSnapshot {
 
@@ -18,7 +21,7 @@ final class SettingsSnapshot {
             PatchSettings.SHOW_FRIENDS_POSTS, PatchSettings.SAVE_FRIENDS_BEREALS, PatchSettings.REMOVE_WATERMARK };
 
     private static final StringSetting[] TEXTS = { PatchSettings.LOCATION_LATITUDE, PatchSettings.LOCATION_LONGITUDE,
-            PatchSettings.LOCATION_LABEL };
+            PatchSettings.LOCATION_LABEL, PatchSettings.DOWNLOAD_FOLDER };
 
     private static final String FLAGS_KEY = "undo_flags";
 
@@ -65,13 +68,32 @@ final class SettingsSnapshot {
         state.putStringArray(TEXTS_KEY, this.texts.clone());
     }
 
-    void restore() {
+    boolean holdsFolder(String folder) {
+        return folder.equals(capturedFolder());
+    }
+
+    void releaseUnusedGrants(ContentResolver resolver) {
+        DownloadFolder.releaseGrantIfUnused(resolver, capturedFolder());
+    }
+
+    void restore(ContentResolver resolver) {
+        final String replacedFolder = PatchSettings.DOWNLOAD_FOLDER.get();
         for (int i = 0; i < FLAGS.length; i++) {
             FLAGS[i].save(this.flags[i]);
         }
         for (int i = 0; i < TEXTS.length; i++) {
             TEXTS[i].save(this.texts[i]);
         }
+        DownloadFolder.releaseGrantIfUnused(resolver, replacedFolder);
+    }
+
+    private String capturedFolder() {
+        for (int i = 0; i < TEXTS.length; i++) {
+            if (TEXTS[i] == PatchSettings.DOWNLOAD_FOLDER) {
+                return this.texts[i];
+            }
+        }
+        throw new IllegalStateException("No download folder in the snapshot");
     }
 
 }

@@ -74,3 +74,18 @@ internal object DownloadImageFingerprint : Fingerprint(
         ),
     ),
 )
+
+internal object MediaStoreInsertFingerprint : Fingerprint(
+    returnType = "Ljava/lang/Object;",
+    strings = listOf("Failed to copy file to "),
+    filters = listOf(
+        string("/BeReal"),
+        string("relative_path", location = MatchAfterWithin(8)),
+        methodCall(
+            opcodes = listOf(Opcode.INVOKE_VIRTUAL),
+            definingClass = "Landroid/content/ContentResolver;",
+            name = "insert",
+            location = MatchAfterWithin(4),
+        ),
+    ),
+)

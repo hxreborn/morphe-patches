@@ -4,15 +4,20 @@
  */
 package app.hxreborn.extension.bereal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import app.hxreborn.extension.bereal.download.DownloadFolder;
 import app.morphe.extension.shared.Utils;
 import org.junit.After;
 import org.junit.Before;
@@ -27,6 +32,9 @@ import org.robolectric.shadows.ShadowSystemClock;
 @RunWith(RobolectricTestRunner.class)
 public final class PatchesSettingsActivityTest {
 
+    private static final Uri PICKED_FOLDER = Uri
+        .parse("content://com.android.externalstorage.documents/tree/primary%3APictures%2FBeReal");
+
     @Before
     public void enableGallery() {
         Utils.setContext(RuntimeEnvironment.getApplication());
@@ -36,6 +44,36 @@ public final class PatchesSettingsActivityTest {
     @After
     public void restoreDefaults() {
         PatchSettings.GALLERY_PHOTOS.save(false);
+        PatchSettings.DOWNLOAD_FOLDER.resetToDefault();
+    }
+
+    @Test
+    public void releasesThePickedFolderWhenAPresetIsChosen() {
+        // given
+        final PatchesSettingsActivity activity = Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get();
+        DownloadFolder.choose(resolver(), PICKED_FOLDER);
+
+        // when
+        activity.useDownloadPreset(DownloadFolder.PICTURES_FOLDER);
+
+        // then
+        assertEquals(0, resolver().getPersistedUriPermissions().size());
+    }
+
+    @Test
+    public void undoKeepsAccessToTheFolderFromBeforeTheReset() {
+        // given
+        final PatchesSettingsActivity activity = Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get();
+        DownloadFolder.choose(resolver(), PICKED_FOLDER);
+        activity.resetToDefaults();
+        DownloadFolder.choose(resolver(), PICKED_FOLDER);
+        activity.useDownloadPreset(DownloadFolder.DCIM_FOLDER);
+
+        // when
+        undo(activity).performClick();
+
+        // then
+        assertEquals(1, resolver().getPersistedUriPermissions().size());
     }
 
     @Test
@@ -88,6 +126,30 @@ public final class PatchesSettingsActivityTest {
 
         // then
         assertFalse(hasVisibleUndo(restored));
+    }
+
+    @Test
+    public void releasesTheFolderFromBeforeTheResetWhenTheActivityIsRestoredAfterTheWindow() {
+        // given
+        final ActivityController<PatchesSettingsActivity> controller = Robolectric
+            .buildActivity(PatchesSettingsActivity.class)
+            .setup();
+        DownloadFolder.choose(resolver(), PICKED_FOLDER);
+        controller.get().resetToDefaults();
+        final Bundle state = new Bundle();
+        controller.saveInstanceState(state);
+        controller.pause().stop().destroy();
+        ShadowSystemClock.advanceBy(Duration.ofSeconds(6));
+
+        // when
+        Robolectric.buildActivity(PatchesSettingsActivity.class).setup(state);
+
+        // then
+        assertEquals(0, resolver().getPersistedUriPermissions().size());
+    }
+
+    private static ContentResolver resolver() {
+        return RuntimeEnvironment.getApplication().getContentResolver();
     }
 
     private static boolean hasVisibleUndo(PatchesSettingsActivity activity) {

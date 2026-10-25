@@ -50,6 +50,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting REMOVE_WATERMARK = new BooleanSetting("bereal_remove_watermark", true);
 
+    public static final StringSetting DOWNLOAD_FOLDER = new StringSetting("bereal_download_folder", "");
+
     private PatchSettings() {
     }
 

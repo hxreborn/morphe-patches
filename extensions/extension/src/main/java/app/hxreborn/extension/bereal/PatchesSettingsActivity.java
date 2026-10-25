@@ -6,6 +6,8 @@ package app.hxreborn.extension.bereal;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -25,6 +27,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.window.OnBackInvokedDispatcher;
 
+import app.hxreborn.extension.bereal.download.DownloadFolder;
+
 @SuppressWarnings({ "unused", "deprecation" })
 public final class PatchesSettingsActivity extends Activity implements PageHost {
 
@@ -37,6 +41,8 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
     private static final long UNDO_WINDOW_MS = 5000;
 
     private static final String UNDO_DEADLINE_KEY = "undo_deadline_ms";
+
+    private static final int DOWNLOAD_FOLDER_REQUEST = 1;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -107,6 +113,9 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
     @Override
     protected void onDestroy() {
         this.handler.removeCallbacks(this.undoTimeout);
+        if (isFinishing()) {
+            expireUndo();
+        }
         super.onDestroy();
     }
 
@@ -129,6 +138,46 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
         this.handler.postDelayed(this.undoTimeout, UNDO_WINDOW_MS);
     }
 
+    @Override
+    public void chooseDownloadFolder() {
+        try {
+            startActivityForResult(DownloadFolder.pickerIntent(), DOWNLOAD_FOLDER_REQUEST);
+        } catch (ActivityNotFoundException ex) {
+            Log.e(TAG, "Folder picker not found", ex);
+        }
+    }
+
+    @Override
+    public void useDownloadPreset(String folder) {
+        final String replacedFolder = PatchSettings.DOWNLOAD_FOLDER.get();
+        DownloadFolder.usePreset(folder);
+        releaseReplacedFolderGrant(replacedFolder);
+        showPage();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != DOWNLOAD_FOLDER_REQUEST || resultCode != RESULT_OK || data == null
+                || data.getData() == null) {
+            return;
+        }
+        final String replacedFolder = PatchSettings.DOWNLOAD_FOLDER.get();
+        try {
+            DownloadFolder.choose(getContentResolver(), data.getData());
+        } catch (RuntimeException ex) {
+            Log.e(TAG, "Download folder not saved", ex);
+        }
+        releaseReplacedFolderGrant(replacedFolder);
+        showPage();
+    }
+
+    private void releaseReplacedFolderGrant(String folder) {
+        if (this.undoSnapshot == null || !this.undoSnapshot.holdsFolder(folder)) {
+            DownloadFolder.releaseGrantIfUnused(getContentResolver(), folder);
+        }
+    }
+
     private void restoreUndo(Bundle state) {
         if (state == null) {
             return;
@@ -136,7 +185,11 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
         final long deadline = state.getLong(UNDO_DEADLINE_KEY);
         final long remaining = Math.min(deadline - SystemClock.elapsedRealtime(), UNDO_WINDOW_MS);
         final SettingsSnapshot snapshot = SettingsSnapshot.readFrom(state);
-        if (snapshot == null || remaining <= 0) {
+        if (snapshot == null) {
+            return;
+        }
+        if (remaining <= 0) {
+            snapshot.releaseUnusedGrants(getContentResolver());
             return;
         }
         this.undoSnapshot = snapshot;
@@ -156,14 +209,17 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
 
     private void expireUndo() {
         this.undoBar.setVisibility(View.GONE);
-        this.undoSnapshot = null;
+        if (this.undoSnapshot != null) {
+            this.undoSnapshot.releaseUnusedGrants(getContentResolver());
+            this.undoSnapshot = null;
+        }
     }
 
     private void undoReset() {
         this.handler.removeCallbacks(this.undoTimeout);
         this.undoBar.setVisibility(View.GONE);
         if (this.undoSnapshot != null) {
-            this.undoSnapshot.restore();
+            this.undoSnapshot.restore(getContentResolver());
             this.undoSnapshot = null;
             showPage();
         }
