@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.botim.misc.signin.fixSignInPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -17,6 +18,8 @@ val unlockVipPatch = bytecodePatch(
     description = "Removes ads and upgrade prompts. Shows the VIP badge in the header.",
 ) {
     compatibleWith(AppCompatibilities.BOTIM)
+
+    dependsOn(fixSignInPatch)
 
     execute {
         val mapper = SelfProfileMapperFingerprint.matchSingle()
