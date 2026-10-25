@@ -6,6 +6,7 @@ package app.morphe.patches.lingodeer.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.lingodeer.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -22,7 +23,7 @@ val skipSignInPromptPatch = bytecodePatch(
 
     availability(requireArm)
 
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
+    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, spoofSignaturePatch)
 
     execute {
         val promptBypassFlag = SignInPromptFingerprint.matchAll().map { match ->
