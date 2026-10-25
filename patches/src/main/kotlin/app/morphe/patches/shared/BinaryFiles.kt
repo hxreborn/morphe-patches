@@ -98,7 +98,7 @@ internal fun File.replaceMaskedEvery(pattern: ByteArray, mask: ByteArray, offset
     return count
 }
 
-private fun ByteArray.indexOfMasked(pattern: ByteArray, mask: ByteArray, startIndex: Int = 0): Int {
+internal fun ByteArray.indexOfMasked(pattern: ByteArray, mask: ByteArray, startIndex: Int = 0): Int {
     candidate@ for (index in startIndex..size - pattern.size) {
         for (offset in pattern.indices) {
             val masked = mask[offset].toInt()

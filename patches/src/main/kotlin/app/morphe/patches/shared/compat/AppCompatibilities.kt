@@ -269,6 +269,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.2.2", versionCode = 820, minSdk = 32)),
     )
 
+    val CODDY = Compatibility(
+        name = "Coddy",
+        packageName = "tech.coddy.coddyapp",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x29A9E2,
+        signatures = setOf(
+            "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728",
+        ),
+        targets = listOf(AppTarget(version = "2.2.9", versionCode = 152, minSdk = 32)),
+    )
+
     val CUBASIS_LE_3 = Compatibility(
         name = "Cubasis LE 3",
         packageName = "com.steinberg.cubasisle3",

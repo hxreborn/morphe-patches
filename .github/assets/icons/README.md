@@ -100,6 +100,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `yiiot.png` | Yi iot (`com.yunyi.smartcamera`) | Kami HK | APK 5.1.7, `res/drawable-xxhdpi-v4/ic_launcher.webp`, cut to a circle |
 | `blurwall.png` | BlurWall (`apps.automan.blurwallpaper`) | automan | APK 2.9.8, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `catzy.png` | Catzy (`com.nieruo.healthapp`) | Nieruo | APK 1.61.0, `res/mipmap-xxxhdpi-v4/ic_launcher_103.webp` |
+| `coddy.png` | Coddy (`tech.coddy.coddyapp`) | Coddy | Play 2.2.9, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `cubasisle3.png` | Cubasis LE 3 (`com.steinberg.cubasisle3`) | Steinberg Media Technologies | Play 3.8.6, adaptive icon `icon_le` (`res/drawable-xxhdpi-v4/icon_le_bg.png` under `icon_le_fg.png`, xxhdpi config split) |
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
