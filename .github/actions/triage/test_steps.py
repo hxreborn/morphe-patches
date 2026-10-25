@@ -165,7 +165,7 @@ def opened(repo, number, title):
 
 
 def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=None, action="edited", events=None,
-        association="NONE"):
+        association="NONE", tagged_lists=None):
     with tempfile.TemporaryDirectory() as temp:
         temp = Path(temp)
         (temp / "bin").mkdir()
@@ -173,6 +173,15 @@ def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=N
         for name, text in (("gh", FAKE_GH), ("curl", FAKE_CURL)):
             (temp / "bin" / name).write_text(text)
             (temp / "bin" / name).chmod(0o755)
+        git = ["git", "-c", "user.name=t", "-c", "user.email=t@t", "-c", "core.hooksPath=/dev/null",
+               "-c", "commit.gpgsign=false", "-c", "tag.gpgsign=false", "-C", str(temp)]
+        for tag, patches_list in (tagged_lists or {}).items():
+            if not (temp / ".git").exists():
+                subprocess.run([*git, "init", "-q"], check=True)
+            (temp / "patches-list.json").write_text(json.dumps(patches_list))
+            subprocess.run([*git, "add", "patches-list.json"], check=True)
+            subprocess.run([*git, "commit", "-qm", tag], check=True)
+            subprocess.run([*git, "tag", tag], check=True)
         (temp / "patches-list.json").write_text(json.dumps(PATCHES_LIST))
         (temp / "registry.json").write_text(json.dumps(REGISTRY))
         (temp / "state.json").write_text(json.dumps({"issues": issues, "calls": [], "mutations": [], "events": events or {}}))
@@ -475,6 +484,28 @@ status, issues, mutations = run(issues, BUG, issue_number=20, event_issue=payloa
 # then
 check(status == 0 and issues["20"]["state"] == "CLOSED" and issues["20"]["labels"] == ["bug", "incomplete"],
       "a triage close removes the stale label so a later fix reopens the report")
+
+DEV_LIST = {"version": "1.1.0-dev.1", "patches": [{"compatiblePackages": [
+    {"name": "Supported", "packageName": "com.supported.app", "targets": [{"version": "2.0.0"}]},
+]}]}
+dev_body = (f"### App and version\n\nSupported 2.0.0\n\n### Bug description\n\n{LONG}\n\n"
+            "### Error logs\n\nApp: Supported\nSource: hxreborn\u2019s patches 1.1.0-dev.1\nManager: 2.2.0-dev.3\n")
+dev_report = {"number": 20, "state": "open", "title": "[Bug]: x", "body": dev_body, "labels": ["bug"]}
+
+# when
+status, issues, mutations = run({"20": issue("[Bug]: x", dev_body, labels=("bug",))}, BUG, issue_number=20,
+                                event_issue=dev_report, action="opened", tagged_lists={"v1.1.0-dev.1": DEV_LIST})
+
+# then
+check(status == 0 and mutations == [], "a report from a pre-release bundle is checked against that pre-release's targets")
+
+# when
+status, issues, mutations = run({"20": issue("[Bug]: x", dev_body, labels=("bug",))}, BUG, issue_number=20,
+                                event_issue=dev_report, action="opened")
+
+# then
+check(status == 0 and "untargeted version" in issues["20"]["labels"],
+      "a report naming a pre-release with no tag is checked against the checked-out targets")
 
 print(f"\n{checks - failures}/{checks} passed")
 sys.exit(1 if failures else 0)
