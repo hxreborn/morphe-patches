@@ -10,6 +10,7 @@ import java.util.List;
 import app.hxreborn.extension.protonauthenticator.SettingsSections;
 import app.hxreborn.extension.protonmail.SidebarEntries;
 import app.hxreborn.extension.protonpass.LayoutComponents;
+import app.hxreborn.extension.protonpass.NavigationBarAutoHide;
 
 @SuppressWarnings("unused")
 public final class AppliedPatches {
@@ -20,6 +21,7 @@ public final class AppliedPatches {
     static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
     static final String MATERIAL_SWITCHES = "Material 3 switches";
     static final String LOADING_INDICATOR = "Material 3 loading indicator";
+    static final String HIDE_NAVIGATION_BAR_ON_SCROLL = "Hide navigation bar on scroll";
 
     static final String SWIPE_TO_SWITCH_ACCOUNTS = "Swipe to switch accounts";
 
@@ -118,6 +120,9 @@ public final class AppliedPatches {
         }
         if (LayoutComponents.isPatched() || SidebarEntries.isPatched() || SettingsSections.isPatched()) {
             names.add("Hide layout components");
+        }
+        if (NavigationBarAutoHide.isPatched()) {
+            names.add(HIDE_NAVIGATION_BAR_ON_SCROLL);
         }
         if (hidePromotionalMessages()) {
             names.add("Hide promotional messages");
