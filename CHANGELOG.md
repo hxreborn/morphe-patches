@@ -1,3 +1,13 @@
+## [1.61.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.61.0-dev.2...v1.61.0-dev.3) (2026-10-25)
+
+### Bug Fixes
+
+* **LingoDeer:** allow signing in to an account ([cbec670](https://github.com/hxreborn/morphe-patches/commit/cbec67075702d2a200a3bb02fe3cd2c61ae6e793)), closes [#369](https://github.com/hxreborn/morphe-patches/issues/369)
+
+### New Features
+
+* **LingoDeer - GmsCore support:** allow signing in with Google ([94dc9e7](https://github.com/hxreborn/morphe-patches/commit/94dc9e72a769a5ebc6c6135a8205817144005966)), closes [#369](https://github.com/hxreborn/morphe-patches/issues/369)
+
 ## [1.61.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.61.0-dev.1...v1.61.0-dev.2) (2026-10-25)
 
 ### Bug Fixes

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.61.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.61.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;317 patches total
+> **[v1.61.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.61.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;318 patches total
 
 <table>
 <tr>
@@ -96,7 +96,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#klassik-radio"><img src=".github/assets/icons/klassikradio.png" width="40"><br>Klassik Radio+</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#lagguy-wallpapers"><img src=".github/assets/icons/lagguy.png" width="40"><br>Lagguy Wallpapers</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#led-blinker"><img src=".github/assets/icons/ledblinker.png" width="40"><br>LED Blinker</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#lingodeer"><img src=".github/assets/icons/lingodeer.png" width="40"><br>LingoDeer</a><br><sub>2 patches</sub></td>
+<td align="center" width="25%"><a href="#lingodeer"><img src=".github/assets/icons/lingodeer.png" width="40"><br>LingoDeer</a><br><sub>3 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#magic-earth"><img src=".github/assets/icons/magicearth.png" width="40"><br>Magic Earth</a><br><sub>1 patch</sub></td>
@@ -1099,7 +1099,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="lingodeer"></a>
 <details>
-<summary><img src=".github/assets/icons/lingodeer.png" width="18" align="top">&nbsp;&nbsp;LingoDeer&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/lingodeer.png" width="18" align="top">&nbsp;&nbsp;LingoDeer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1109,6 +1109,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="lingodeer-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="lingodeer-skip-sign-in-prompt"></a>[Skip sign-in prompt](patches/src/main/kotlin/app/morphe/patches/lingodeer/misc/signin/SkipSignInPromptPatch.kt) | Opens lessons past the second unit without an account. |
 | <a id="lingodeer-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/lingodeer/misc/premium/UnlockPremiumPatch.kt) | Unlocks every course, lesson and practice mode. |
 

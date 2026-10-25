@@ -365,12 +365,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.61.0-dev.3"
         - "1.61.0-dev.2"
         - "1.61.0-dev.1"
         - "1.60.0-dev.5"
         - "1.60.0-dev.4"
         - "1.60.0-dev.3"
-        - "1.60.0-dev.2"
         - "Older than these"
         # /generated
     validations:
@@ -537,6 +537,7 @@ body:
         - "Lagguy Wallpapers \u00b7 GmsCore support"
         - "Lagguy Wallpapers \u00b7 Unlock premium"
         - "LED Blinker \u00b7 Unlock premium"
+        - "LingoDeer \u00b7 GmsCore support"
         - "LingoDeer \u00b7 Skip sign-in prompt"
         - "LingoDeer \u00b7 Unlock premium"
         - "Magic Earth \u00b7 Unlock premium"

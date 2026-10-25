@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.61.0-dev.2",
+  "version": "1.61.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -3506,6 +3506,40 @@
                 "ARMEABI_V7A": 37,
                 "X86_64": 37,
                 "X86": 37
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.lingodeer",
+          "name": "LingoDeer",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#38D06C",
+          "signatures": [
+            "b341b1d855ee55eb2c6c9287eaafc6449c0b34065e170af7bf5bc21a03f05bf2"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.99.413",
+              "versionCodes": {
+                "ARM64_V8A": 677,
+                "ARMEABI_V7A": 677,
+                "X86_64": 677,
+                "X86": 677
               },
               "isExperimental": false,
               "minSdk": 24,
