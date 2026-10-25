@@ -5,7 +5,9 @@
 package app.morphe.patches.protonmail.misc.loadingindicator
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resourceLiteral
@@ -31,6 +33,23 @@ internal object PullToRefreshPullingIconFingerprint : Fingerprint(
             parameters = listOf("L", "Ljava/lang/String;", "L", "L", "L", "F", "L", "L", "I", "I"),
             returnType = "V",
             opcode = Opcode.INVOKE_STATIC_RANGE,
+        ),
+    ),
+)
+
+internal object PullToRefreshIndicatorSizeFingerprint : Fingerprint(
+    filters = listOf(
+        fieldAccess(type = "F", opcode = Opcode.SGET),
+        methodCall(
+            parameters = listOf("L", "F"),
+            returnType = "L",
+            opcode = Opcode.INVOKE_STATIC,
+            location = MatchAfterImmediately(),
+        ),
+        methodCall(
+            parameters = listOf("L", "Z", "L", "F", "L", "J", "F", "L", "L", "I", "I"),
+            returnType = "V",
+            opcode = Opcode.INVOKE_VIRTUAL_RANGE,
         ),
     ),
 )

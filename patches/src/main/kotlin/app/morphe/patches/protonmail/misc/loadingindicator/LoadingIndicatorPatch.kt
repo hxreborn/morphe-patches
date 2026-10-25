@@ -6,7 +6,9 @@ package app.morphe.patches.protonmail.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -15,16 +17,24 @@ import app.morphe.patches.shared.misc.proton.SHOW_LOADING_INDICATOR
 import app.morphe.patches.shared.misc.proton.androidViewFingerprint
 import app.morphe.patches.shared.misc.proton.bindLoadingIndicatorView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
+import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.getReference
+import app.morphe.util.indexOfFirstInstructionReversed
 import app.morphe.util.matchSingle
+import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val IMAGE_MODIFIER_PARAMETER = 2
 private const val IMAGE_COMPOSER_PARAMETER = 7
 private const val ANDROID_VIEW_PARAMETERS = 6
+private const val SIZE_CALL_MATCH = 1
+private const val INDICATOR_BOX_MODIFIER_REGISTER = 3
 
 @Suppress("unused")
 val loadingIndicatorPatch = bytecodePatch(
@@ -89,5 +99,33 @@ val loadingIndicatorPatch = bytecodePatch(
             ExternalLabel("image", pullingIconMethod.getInstruction(imageIndex)),
             ExternalLabel("drawn", pullingIconMethod.getInstruction(imageIndex + 1)),
         )
+
+        PullToRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
+            val method = match.method
+            val sizeCall = match.instructionMatches[SIZE_CALL_MATCH]
+            val indicatorBox = match.instructionMatches.last()
+            val boxModifier = indicatorBox.getInstruction<RegisterRangeInstruction>().startRegister + INDICATOR_BOX_MODIFIER_REGISTER
+            if (method.indexOfObjectSource(indicatorBox.index, boxModifier) != sizeCall.index + 1) {
+                throw PatchException(
+                    "Pull to refresh indicator box modifier does not come from the size call at index ${sizeCall.index} in ${descriptor(method)}",
+                )
+            }
+            resizeLoadingIndicatorContainer(method, sizeCall)
+        }
+    }
+}
+
+private fun MutableMethod.indexOfLastWrite(beforeIndex: Int, register: Int) = indexOfFirstInstructionReversed(beforeIndex - 1) {
+    opcode.setsRegister() && (this as? OneRegisterInstruction)?.registerA == register
+}
+
+private fun MutableMethod.indexOfObjectSource(useIndex: Int, register: Int): Int {
+    val writeIndex = indexOfLastWrite(useIndex, register)
+    if (writeIndex < 0) return writeIndex
+    val write = getInstruction(writeIndex)
+    return when (write.opcode) {
+        Opcode.MOVE_OBJECT, Opcode.MOVE_OBJECT_FROM16, Opcode.MOVE_OBJECT_16 ->
+            indexOfLastWrite(writeIndex, (write as TwoRegisterInstruction).registerB)
+        else -> writeIndex
     }
 }
