@@ -82,6 +82,8 @@ body:
         - "Catzy (another version, type it below)"
         - "Clip Studio Paint 5.1.4"
         - "Clip Studio Paint (another version, type it below)"
+        - "Clone App 4.2.2"
+        - "Clone App (another version, type it below)"
         - "Cubasis LE 3 3.8.6"
         - "Cubasis LE 3 (another version, type it below)"
         - "Cx File Explorer 2.7.8"
@@ -367,12 +369,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.5"
         - "1.62.0-dev.4"
         - "1.62.0-dev.3"
         - "1.62.0-dev.2"
         - "1.62.0-dev.1"
         - "1.61.0-dev.3"
-        - "1.61.0-dev.2"
         - "Older than these"
         # /generated
     validations:
@@ -473,6 +475,10 @@ body:
         - "Catzy \u00b7 Unlimited cat coins"
         - "Catzy \u00b7 Unlock premium"
         - "Clip Studio Paint \u00b7 Unlock premium"
+        - "Clone App \u00b7 Disable tracking"
+        - "Clone App \u00b7 Fix Manage Google account"
+        - "Clone App \u00b7 Remove ads"
+        - "Clone App \u00b7 Unlock premium"
         - "Cubasis LE 3 \u00b7 Disable telemetry"
         - "Cubasis LE 3 \u00b7 Unlock premium"
         - "Cx File Explorer \u00b7 AMOLED dark theme"
