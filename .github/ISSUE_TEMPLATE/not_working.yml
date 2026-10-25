@@ -369,12 +369,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.6"
         - "1.62.0-dev.5"
         - "1.62.0-dev.4"
         - "1.62.0-dev.3"
         - "1.62.0-dev.2"
         - "1.62.0-dev.1"
-        - "1.61.0-dev.3"
         - "Older than these"
         # /generated
     validations:
@@ -460,6 +460,7 @@ body:
         - "BlurWall \u00b7 Disable tracking"
         - "BlurWall \u00b7 Unlock premium"
         - "botim \u00b7 Disable tracking"
+        - "botim \u00b7 Fix sign-in"
         - "botim \u00b7 Unlock VIP"
         - "CalcNote \u00b7 Unlock pro"
         - "Cast Plug-in for Musicolet \u00b7 Remove app protection"

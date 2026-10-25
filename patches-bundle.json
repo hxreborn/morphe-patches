@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-25T22:32:30",
-  "description": "## [1.62.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.4...v1.62.0-dev.5) (2026-10-25)\n\n### New Features\n\n* **Clone App - Disable tracking:** stop usage and history uploads ([5e0d0ef](https://github.com/hxreborn/morphe-patches/commit/5e0d0ef44de7490fd1545acbfc6d3094f19a4fae))\n* **Clone App - Fix Manage Google account:** open account settings ([b5cb895](https://github.com/hxreborn/morphe-patches/commit/b5cb8956e1651daf7b30a93db5cbaa99053aa715))\n* **Clone App - Remove ads:** remove splash, interstitial and native ads ([ce6eb2e](https://github.com/hxreborn/morphe-patches/commit/ce6eb2e21ce5ecc926a5330126e77583eede6874))\n* **Clone App - Unlock premium:** unlock multiple copies and bubble mode ([d827c13](https://github.com/hxreborn/morphe-patches/commit/d827c13cba908cf6869ce07aca248d76600632e3))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.62.0-dev.5/patches-1.62.0-dev.5.mpp",
+  "created_at": "2026-10-25T22:45:52",
+  "description": "## [1.62.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.5...v1.62.0-dev.6) (2026-10-25)\n\n### Bug Fixes\n\n* **botim - Fix sign-in:** send the phone verification code ([b452c0a](https://github.com/hxreborn/morphe-patches/commit/b452c0a94b89b3737802946bdecdafd29813aa11)), closes [#383](https://github.com/hxreborn/morphe-patches/issues/383)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.62.0-dev.6/patches-1.62.0-dev.6.mpp",
   "signature_download_url": "",
-  "version": "1.62.0-dev.5"
+  "version": "1.62.0-dev.6"
 }

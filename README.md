@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.62.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.62.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;326 patches total
+> **[v1.62.0-dev.6](https://github.com/hxreborn/morphe-patches/releases/tag/v1.62.0-dev.6)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;327 patches total
 
 <table>
 <tr>
@@ -46,7 +46,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#blurwall"><img src=".github/assets/icons/blurwall.png" width="40"><br>BlurWall</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#botim"><img src=".github/assets/icons/botim.png" width="40"><br>botim</a><br><sub>2 patches</sub></td>
+<td align="center" width="25%"><a href="#botim"><img src=".github/assets/icons/botim.png" width="40"><br>botim</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#calcnote"><img src=".github/assets/icons/calcnote.png" width="40"><br>CalcNote</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#cast-plug-in-for-musicolet"><img src=".github/assets/icons/musicoletcastplugin.png" width="40"><br>Cast Plug-in for Musicolet</a><br><sub>1 patch</sub></td>
 </tr>
@@ -511,7 +511,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="botim"></a>
 <details>
-<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -522,6 +522,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="botim-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/botim/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data. |
+| <a id="botim-fix-sign-in"></a>[Fix sign-in](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/FixSignInPatch.kt) | Fixes sending the verification code when signing in with a phone number. |
 | <a id="botim-unlock-vip"></a>[Unlock VIP](patches/src/main/kotlin/app/morphe/patches/botim/misc/premium/UnlockVipPatch.kt) | Removes ads and upgrade prompts. Shows the VIP badge in the header. |
 
 </details>

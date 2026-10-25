@@ -1,3 +1,9 @@
+## [1.62.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.5...v1.62.0-dev.6) (2026-10-25)
+
+### Bug Fixes
+
+* **botim - Fix sign-in:** send the phone verification code ([b452c0a](https://github.com/hxreborn/morphe-patches/commit/b452c0a94b89b3737802946bdecdafd29813aa11)), closes [#383](https://github.com/hxreborn/morphe-patches/issues/383)
+
 ## [1.62.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.4...v1.62.0-dev.5) (2026-10-25)
 
 ### New Features

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.5",
+  "version": "1.62.0-dev.6",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -3247,6 +3247,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix sign-in",
+      "description": "Fixes sending the verification code when signing in with a phone number.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "im.thebot.messenger",
+          "name": "botim",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#1F8EFA",
+          "signatures": [
+            "4a75cf385d6aa8530a1a34ba4ed089da6bf1ae6989f62757839fd01e4f2fcd99"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.19.1",
+              "versionCodes": {
+                "ARM64_V8A": 7132,
+                "ARMEABI_V7A": 7132,
+                "X86_64": 7132,
+                "X86": 7132
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
