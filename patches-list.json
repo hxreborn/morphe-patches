@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.6",
+  "version": "1.62.0-dev.7",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -10879,6 +10879,40 @@
                 "ARMEABI_V7A": 820,
                 "X86_64": 820,
                 "X86": 820
+              },
+              "isExperimental": false,
+              "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Coddy Plus with unlimited energy and no ads, and removes the daily AI tutor limit and the free project limit.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "tech.coddy.coddyapp",
+          "name": "Coddy",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#29A9E2",
+          "signatures": [
+            "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.2.9",
+              "versionCodes": {
+                "ARM64_V8A": 152,
+                "ARMEABI_V7A": 152,
+                "X86_64": 152,
+                "X86": 152
               },
               "isExperimental": false,
               "minSdk": 32,

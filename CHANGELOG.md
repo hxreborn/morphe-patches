@@ -1,3 +1,9 @@
+## [1.62.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.6...v1.62.0-dev.7) (2026-10-25)
+
+### New Features
+
+* **Coddy - Unlock premium:** unlock Plus and remove the AI tutor limit ([7868681](https://github.com/hxreborn/morphe-patches/commit/7868681e45c6b98ffa11bd4e6ce5abe568f6765a))
+
 ## [1.62.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.5...v1.62.0-dev.6) (2026-10-25)
 
 ### Bug Fixes
