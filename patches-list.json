@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.3",
+  "version": "1.62.0-dev.4",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -2535,6 +2535,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
+      "description": "Stops device identifiers and usage counters from reaching Pleco's servers and usage events from reaching Google.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.pleco.chinesesystem",
+          "name": "Pleco",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#005A94",
+          "signatures": [
+            "780a2a639a3ccb65621e0caccf18fa38c91f6cbf351d453742ebe2a114b09624"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.101",
+              "versionCodes": {
+                "ARM64_V8A": 3460,
+                "ARMEABI_V7A": 3460,
+                "X86_64": 3460,
+                "X86": 3460
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -9860,6 +9894,40 @@
               },
               "isExperimental": false,
               "minSdk": 21,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock add-ons",
+      "description": "Unlocks the Flashcard System, Document Reader, Optical Character Recognizer and Enhanced Handwriting Recognizer. Excludes paid dictionaries, audio and voices.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.pleco.chinesesystem",
+          "name": "Pleco",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#005A94",
+          "signatures": [
+            "780a2a639a3ccb65621e0caccf18fa38c91f6cbf351d453742ebe2a114b09624"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.2.101",
+              "versionCodes": {
+                "ARM64_V8A": 3460,
+                "ARMEABI_V7A": 3460,
+                "X86_64": 3460,
+                "X86": 3460
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]

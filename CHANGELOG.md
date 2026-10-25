@@ -1,3 +1,10 @@
+## [1.62.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.3...v1.62.0-dev.4) (2026-10-25)
+
+### New Features
+
+* **Pleco - Disable tracking:** stop sending device identifiers ([09d2edb](https://github.com/hxreborn/morphe-patches/commit/09d2edb2471c90c2758324657f769c0cdad14198))
+* **Pleco - Unlock add-ons:** unlock flashcards, document reader and OCR ([1577d90](https://github.com/hxreborn/morphe-patches/commit/1577d9037ebb18c0a5430565f53f789f69572f99))
+
 ## [1.62.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.2...v1.62.0-dev.3) (2026-10-25)
 
 ### Bug Fixes

@@ -213,6 +213,8 @@ body:
         - "Photo Editor Pro (another version, type it below)"
         - "Photone 1.5.4"
         - "Photone (another version, type it below)"
+        - "Pleco 3.2.101"
+        - "Pleco (another version, type it below)"
         - "Pocket Whip 2.3"
         - "Pocket Whip (another version, type it below)"
         - "Poe a3.77.2"
@@ -365,12 +367,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.4"
         - "1.62.0-dev.3"
         - "1.62.0-dev.2"
         - "1.62.0-dev.1"
         - "1.61.0-dev.3"
         - "1.61.0-dev.2"
-        - "1.61.0-dev.1"
         - "Older than these"
         # /generated
     validations:
@@ -608,6 +610,8 @@ body:
         - "Photo Editor Pro \u00b7 Speed up AI tools"
         - "Photo Editor Pro \u00b7 Unlock premium"
         - "Photone \u00b7 Unlock premium"
+        - "Pleco \u00b7 Disable tracking"
+        - "Pleco \u00b7 Unlock add-ons"
         - "Pocket Whip \u00b7 Hide ads"
         - "Pocket Whip \u00b7 Unlock premium"
         - "Poe \u00b7 Disable tracking"

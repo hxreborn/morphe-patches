@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-25T22:08:33",
-  "description": "## [1.62.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.2...v1.62.0-dev.3) (2026-10-25)\n\n### Bug Fixes\n\n* move to Patcher 2.0.1 ([e42e276](https://github.com/hxreborn/morphe-patches/commit/e42e27691c0b4d515db705cc1507c1c1f120dd3e))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.62.0-dev.3/patches-1.62.0-dev.3.mpp",
+  "created_at": "2026-10-25T22:20:59",
+  "description": "## [1.62.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.3...v1.62.0-dev.4) (2026-10-25)\n\n### New Features\n\n* **Pleco - Disable tracking:** stop sending device identifiers ([09d2edb](https://github.com/hxreborn/morphe-patches/commit/09d2edb2471c90c2758324657f769c0cdad14198))\n* **Pleco - Unlock add-ons:** unlock flashcards, document reader and OCR ([1577d90](https://github.com/hxreborn/morphe-patches/commit/1577d9037ebb18c0a5430565f53f789f69572f99))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.62.0-dev.4/patches-1.62.0-dev.4.mpp",
   "signature_download_url": "",
-  "version": "1.62.0-dev.3"
+  "version": "1.62.0-dev.4"
 }
