@@ -910,6 +910,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "13.4.0", versionCode = 21304000, minSdk = 24)),
     )
 
+    val PLECO = Compatibility(
+        name = "Pleco",
+        packageName = "com.pleco.chinesesystem",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x005A94,
+        signatures = setOf(
+            "780a2a639a3ccb65621e0caccf18fa38c91f6cbf351d453742ebe2a114b09624",
+        ),
+        targets = listOf(AppTarget(version = "3.2.101", versionCode = 3460, minSdk = 28)),
+    )
+
     val POCKET_WHIP = Compatibility(
         name = "Pocket Whip",
         packageName = "com.greenstone.pocketwhip",

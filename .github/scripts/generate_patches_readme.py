@@ -189,6 +189,7 @@ ICONS = {
     "com.poe.android": "poe.png",
     "com.thetrainline": "trainline.png",
     "org.readera": "readera.png",
+    "com.pleco.chinesesystem": "pleco.png",
     "com.kick.mobile": "kick.png",
     "com.etsy.android": "etsy.png",
     "com.gamma.scan": "qrscanner.png",

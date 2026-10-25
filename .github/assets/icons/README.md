@@ -45,6 +45,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `poe.png` | Poe (`com.poe.android`) | Quora, Inc. | APK a3.77.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `trainline.png` | Trainline (`com.thetrainline`) | trainline | APK 414.0.0.182041, adaptive icon `mipmap/ttl_ic_launcher` |
 | `readera.png` | ReadEra (`org.readera`) | READERA LLC | APK 26.05.20, `mipmap/d` (round icon), xxxhdpi |
+| `pleco.png` | Pleco (`com.pleco.chinesesystem`) | Pleco Software | APK 3.2.101, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `moonreader.png` | Moon+ Reader (`com.flyersoft.moonreader`) | Moon+ | APK 10.7, adaptive icon `res/drawable-anydpi-v26/icon.xml` |
 | `calcnote.png` | CalcNote (`com.burton999.notecal`) | burton999 | APK 2.25.111, `res/drawable-xxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `castlefortv.png` | Castle for TV (`com.gxnet.castle.indiatv`) | Castle | APK 1.1.5, `res/S1.webp` (square icon cut to a circle) |
