@@ -35,4 +35,14 @@ internal class AvailabilityTest {
     fun `excludes a root mount patch from a Shizuku install`() {
         assertEquals(PatchAvailability.UNAVAILABLE, requireArm64RootMount.resolve(InstallerType.SHIZUKU, ApkArchitecture.ARM64_V8A))
     }
+
+    @Test
+    fun `enables an arm patch on an armeabi-v7a install`() {
+        assertEquals(PatchAvailability.ENABLED, requireArm.resolve(InstallerType.STANDARD, ApkArchitecture.ARMEABI_V7A))
+    }
+
+    @Test
+    fun `excludes an arm patch from an x86_64 install`() {
+        assertEquals(PatchAvailability.UNAVAILABLE, requireArm.resolve(InstallerType.STANDARD, ApkArchitecture.X86_64))
+    }
 }

@@ -34,6 +34,7 @@ private const val SETTINGS_ITEM_NAME_PARAMETER = 1
 private const val SETTINGS_ITEM_ICON_PARAMETER = 3
 private const val SETTINGS_ITEM_BADGE_PARAMETER = 6
 private const val SETTINGS_ITEM_TEMPLATE_INDEX = 1
+private const val SETTINGS_ITEM_PARAMETERS = 11
 
 private fun MethodReference.registerOffsetOf(parameter: Int) =
     parameterTypes.take(parameter).sumOf { if (it == "J" || it == "D") 2 else 1 }
@@ -42,7 +43,7 @@ private fun MutableMethod.settingsItemCalls() = instructions.withIndex().filter 
     instruction.opcode == Opcode.INVOKE_STATIC_RANGE &&
         instruction.getReference<MethodReference>()?.let {
             it.returnType == "V" &&
-                it.parameterTypes.size in 10..11 &&
+                it.parameterTypes.size == SETTINGS_ITEM_PARAMETERS &&
                 it.parameterTypes[SETTINGS_ITEM_NAME_PARAMETER] == "Ljava/lang/String;" &&
                 it.parameterTypes.takeLast(2).all { parameter -> parameter == "I" }
         } == true
@@ -74,9 +75,8 @@ internal val patchesSettingsPatch = bytecodePatch {
 
             fun register(parameter: Int) = first + reference.registerOffsetOf(parameter)
 
-            val hasBadge = reference.parameterTypes.size == 11
             val onClickParameter = reference.parameterTypes.size - 4
-            if (hasBadge && literalWrittenTo(register(SETTINGS_ITEM_BADGE_PARAMETER), callIndex) != 0L) {
+            if (literalWrittenTo(register(SETTINGS_ITEM_BADGE_PARAMETER), callIndex) != 0L) {
                 throw PatchException(
                     "Settings item template at instruction $callIndex has a nonzero badge " +
                         "parameter",
@@ -107,7 +107,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                     const v${register(0)}, 0x0
                     const-string v${register(SETTINGS_ITEM_NAME_PARAMETER)}, "$SETTINGS_ROW_TITLE"
                     const v${register(SETTINGS_ITEM_ICON_PARAMETER)}, $iconId
-                    ${if (hasBadge) "const v${register(SETTINGS_ITEM_BADGE_PARAMETER)}, 0x0" else ""}
+                    const v${register(SETTINGS_ITEM_BADGE_PARAMETER)}, 0x0
                     const v${last - 1}, 0x0
                     const v$last, $defaultArgumentsMask
                     invoke-static/range { v$first .. v$last }, ${descriptor(reference)}

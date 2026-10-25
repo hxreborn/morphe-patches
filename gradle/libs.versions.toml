@@ -7,8 +7,8 @@ okhttp = "5.5.0"
 pngj = "2.1.0"
 spring-javaformat = "0.0.48"
 junit = "4.13.2"
-robolectric = "4.16"
-json = "20240303"
+robolectric = "4.17"
+json = "20260814"
 androidx-annotation = "1.9.1"
 
 [libraries]

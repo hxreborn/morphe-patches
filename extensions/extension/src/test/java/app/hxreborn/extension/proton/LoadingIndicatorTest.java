@@ -4,6 +4,7 @@
  */
 package app.hxreborn.extension.proton;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -51,6 +52,25 @@ public final class LoadingIndicatorTest {
 
         // then
         assertFalse(enabled);
+    }
+
+    @Test
+    @Config(shadows = PatchedBuild.Indicator.class)
+    public void sizesTheContainerAt48DpWhenOn() {
+        assertEquals(48f, LoadingIndicator.containerSize(40f), 0f);
+    }
+
+    @Test
+    @Config(shadows = PatchedBuild.Indicator.class)
+    public void keepsTheStockContainerSizeWhenTurnedOff() {
+        // given
+        PatchedBuild.setLoadingIndicatorEnabled(false);
+
+        // when
+        float size = LoadingIndicator.containerSize(40f);
+
+        // then
+        assertEquals(40f, size, 0f);
     }
 
     @Test

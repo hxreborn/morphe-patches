@@ -35,6 +35,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.MUSICOLET,
         AppCompatibilities.MUSICOLET_CAST_PLUGIN,
         AppCompatibilities.MYMOVESET,
+        AppCompatibilities.NEETPREP,
         AppCompatibilities.NOTEIN,
         AppCompatibilities.OPAL,
         AppCompatibilities.POE,

@@ -27,6 +27,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `aloa.png` | Aloa (`com.getaloa.app`) | Aloa | APK 1.3.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
 | `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.19.1, adaptive icon `res/mipmap-anydpi-v26/botim_logo.xml` (square `res/mipmap-xxxhdpi-v4/botim_logo_square.png` cut to a circle) |
+| `clipstudiopaint.png` | Clip Studio Paint (`jp.co.celsys.clipstudiopaint.googleplay`) | CELSYS, Inc. | APK 5.1.4, `res/mipmap-xxhdpi-v4/ic_launcher_round.png` |
 | `depthpix.png` | DepthPix (`com.androholic.wallpapersdepthpix`) | Androholic | APK 1.0.12, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `devcheck.png` | DevCheck (`flar2.devcheck`) | flar2 | APK 6.57, adaptive icon `res/mipmap-xxxhdpi-v4/ic_launcher_background.webp` under `ic_launcher_foreground.webp` |
 | `psiphon.png` | Psiphon (`com.psiphon3.subscription`) | Psiphon Inc. | APK 2.5.11, `res/mipmap-xxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
@@ -107,6 +108,8 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `pocketwhip.png` | Pocket Whip (`com.greenstone.pocketwhip`) | Original Pocket Whip | APK 2.3, `res/mipmap-hdpi-v4/pocket_whip_icon_round.png` |
 | `memoneet.png` | MemoNeet (`com.adithya.memoneet`) | MemoNeet | APK 62.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `medicneet.png` | MedicNEET (`com.halalfire.medicneet`) | SkorA Labs | APK 1.5.137, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
+| `neetprep.png` | NEETprep (`com.lernr.app`) | NEETprep | APK 15.0.93, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `neetprepessential.png` | NEETprep Essential (`com.gooded.essential`) | NEETprep | APK 1.2.95, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
 | `biobird.png` | Biobird Flashcards (`com.biobird.exvee`) | Biobird | APK 2.0.2, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
 | `keepa.png` | Keepa (`com.keepa.mobile`) | Keepa.com | APK 6.2.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `joyn.png` | Joyn (`de.prosiebensat1digital.seventv`) | SevenOne Entertainment Group GmbH | APK 6.9.0-AOS-609012264, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
@@ -135,6 +138,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `usavpn.png` | USA VPN (`vpn.usa_tap2free`) | AltApps | APK 1.168, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `periodcalendar.png` | Period Tracker and Calendar (`com.lbrc.PeriodCalendar`) | SimpleInnovation | APK 13.3.2, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, cut to a circle |
 | `udictionary.png` | U Dictionary (`com.youdao.hindict`) | Youdao (Hong Kong) Limited | APK 6.7.5, `res/mipmap-xxhdpi/ic_launcher_round.png` |
+| `uptcl.png` | UPTCL (`com.ufoneselfcare`) | Pak Telecom Mobile Limited | APK 11.0.41, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` (stored as `b`) |
 | `magicearth.png` | Magic Earth (`com.generalmagic.magicearth`) | Magic Lane International | APK 7.1.26, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `3way.png` | 3way: Couples & Singles Hookup (`app.threesome.dating`) | 3way App | APK 3.1.0, `res/drawable-xxhdpi-v4/ic_launcher_round.png` |
 | `internetspeedmeterlite.png` | Internet Speed Meter Lite (`com.internet.speed.meter.lite`) | DynamicApps | APK 1.7.0-lite, square icon `res/drawable/app_icon.png` cut to a circle |

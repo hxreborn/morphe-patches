@@ -19,6 +19,8 @@ public final class LoadingIndicator {
 
     private static final float FULL_TURN_DEGREES = 360f;
 
+    private static final float CONTAINER_SIZE_DP = 48f;
+
     private static volatile Object factory;
 
     private LoadingIndicator() {
@@ -37,6 +39,10 @@ public final class LoadingIndicator {
         PatchSettings.setEnabled(KEY, enabled);
     }
 
+    public static float containerSize(float stockSizeDp) {
+        return (isEnabled()) ? CONTAINER_SIZE_DP : stockSizeDp;
+    }
+
     public static synchronized Object factory(Class<?> functionType) {
         if (factory == null) {
             factory = function(functionType, new FactoryHandler());
@@ -49,6 +55,10 @@ public final class LoadingIndicator {
     }
 
     static void show(Object composer, boolean indeterminate, float rotationDegrees) {
+    }
+
+    public static void showProgress(Object composer, float progress) {
+        show(composer, false, progress * FULL_TURN_DEGREES);
     }
 
     private static Object function(Class<?> functionType, ProxyHandler handler) {

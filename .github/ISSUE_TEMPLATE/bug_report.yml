@@ -1,12 +1,12 @@
 name: 🐞 Patching failed
-description: Patching stopped with an error, or the patched APK would not install.
+description: Patching would not start, stopped with an error, or the patched APK would not install.
 title: "[Bug]: "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Use this one when patching stopped with an error, or the APK it produced wouldn't install.
+        Use this one when patching wouldn't start, stopped with an error, or the APK it produced wouldn't install.
 
         - 🚨 Patching finished and the app misbehaves: use
           [Patched app broken](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml).
@@ -22,6 +22,7 @@ body:
       options:
         - Patching failed
         - Patching worked, install failed
+        - Patching did not start
     validations:
       required: true
   - type: dropdown
@@ -48,7 +49,7 @@ body:
         - "Aloa 1.3.3"
         - "Aloa 1.3.4"
         - "Aloa (another version, type it below)"
-        - "AlpineQuest 2.4.0e"
+        - "AlpineQuest 2.4.1"
         - "AlpineQuest (another version, type it below)"
         - "AnyTracker 7.5.4"
         - "AnyTracker 7.5.6"
@@ -89,6 +90,8 @@ body:
         - "Castle for TV (another version, type it below)"
         - "Catzy 1.61.0"
         - "Catzy (another version, type it below)"
+        - "Clip Studio Paint 5.1.4"
+        - "Clip Studio Paint (another version, type it below)"
         - "Cubasis LE 3 3.8.6"
         - "Cubasis LE 3 (another version, type it below)"
         - "Cx File Explorer 2.7.8"
@@ -98,7 +101,7 @@ body:
         - "Cxxdroid 5.6_arm64"
         - "Cxxdroid 6.0_arm64"
         - "Cxxdroid (another version, type it below)"
-        - "DepthPix 1.0.12"
+        - "DepthPix 1.0.21"
         - "DepthPix (another version, type it below)"
         - "DevCheck 6.57"
         - "DevCheck 6.60"
@@ -108,9 +111,7 @@ body:
         - "DWG FastView 5.20.0"
         - "DWG FastView 5.21.0"
         - "DWG FastView (another version, type it below)"
-        - "Echo Equalizer 9.2"
-        - "Echo Equalizer 9.3"
-        - "Echo Equalizer 9.4"
+        - "Echo Equalizer 9.7"
         - "Echo Equalizer (another version, type it below)"
         - "Echogram 1.0.7.0"
         - "Echogram (another version, type it below)"
@@ -118,8 +119,7 @@ body:
         - "Etsy 7.99.0"
         - "Etsy 8.0.0"
         - "Etsy (another version, type it below)"
-        - "Fast STL Viewer 2.84"
-        - "Fast STL Viewer 2.91"
+        - "Fast STL Viewer 2.92"
         - "Fast STL Viewer (another version, type it below)"
         - "Fddb v7.8.4-Build-1-gms-release"
         - "Fddb v7.8.5-Build-1-gms-release"
@@ -140,7 +140,7 @@ body:
         - "imo (another version, type it below)"
         - "Internet Speed Meter Lite 1.7.0-lite"
         - "Internet Speed Meter Lite (another version, type it below)"
-        - "Joyn 6.9.0-AOS-609012264"
+        - "Joyn 6.9.2-AOS-609282180"
         - "Joyn (another version, type it below)"
         - "Joyn Austria 6.9.0-AOS-JOYN_AT-2212264"
         - "Joyn Austria (another version, type it below)"
@@ -149,8 +149,7 @@ body:
         - "Jujo (another version, type it below)"
         - "Jvdroid 2.8"
         - "Jvdroid (another version, type it below)"
-        - "Keepa 6.2.1"
-        - "Keepa 6.3.1"
+        - "Keepa 6.5.1"
         - "Keepa (another version, type it below)"
         - "Kick (another version, type it below)"
         - "Klassik Radio+ p5.12.0"
@@ -166,7 +165,7 @@ body:
         - "Magic Earth (another version, type it below)"
         - "May: Beautiful Bullet Journal 1.0.216"
         - "May: Beautiful Bullet Journal (another version, type it below)"
-        - "MedicNEET 1.5.137"
+        - "MedicNEET 1.5.138"
         - "MedicNEET (another version, type it below)"
         - "MemoNeet 62.6"
         - "MemoNeet 62.9"
@@ -193,28 +192,27 @@ body:
         - "MyScript Math (another version, type it below)"
         - "MyScript Notes 7.4.5"
         - "MyScript Notes (another version, type it below)"
-        - "Nara Baby 2.8.2"
+        - "Nara Baby 2.8.3"
         - "Nara Baby (another version, type it below)"
+        - "NEETprep 15.0.93"
+        - "NEETprep (another version, type it below)"
+        - "NEETprep Essential 1.2.95"
+        - "NEETprep Essential (another version, type it below)"
         - "Network Analyzer 5.1"
         - "Network Analyzer (another version, type it below)"
-        - "Notein v2.1.27.0"
+        - "Notein v2.1.28.0"
         - "Notein (another version, type it below)"
         - "Notesnook 3.4.12"
         - "Notesnook 3.4.13"
         - "Notesnook 3.4.14"
         - "Notesnook 3.4.15"
         - "Notesnook (another version, type it below)"
-        - "One4Home Launcher 0.4.72"
-        - "One4Home Launcher 0.4.97"
-        - "One4Home Launcher 0.4.98"
         - "One4Home Launcher 0.5.38"
-        - "One4Home Launcher 0.5.68"
-        - "One4Home Launcher 0.5.84"
+        - "One4Home Launcher 0.5.93"
         - "One4Home Launcher (another version, type it below)"
-        - "Opal 4.14.0"
-        - "Opal 4.15.0"
+        - "Opal 4.16.0"
         - "Opal (another version, type it below)"
-        - "Period Tracker and Calendar 13.3.2"
+        - "Period Tracker and Calendar 13.4.0"
         - "Period Tracker and Calendar (another version, type it below)"
         - "Perplexity 2.100.0"
         - "Perplexity 2.101.0"
@@ -242,11 +240,7 @@ body:
         - "Proton Lumo 2.1.4-gms"
         - "Proton Lumo 2.1.5-nogms"
         - "Proton Lumo (another version, type it below)"
-        - "Proton Mail 7.10.4"
-        - "Proton Mail 7.11.10"
-        - "Proton Mail 7.11.5"
-        - "Proton Mail 7.11.8"
-        - "Proton Mail 7.11.9"
+        - "Proton Mail 7.11.11"
         - "Proton Mail (another version, type it below)"
         - "Proton Pass 1.40.3"
         - "Proton Pass 1.41.2"
@@ -276,7 +270,7 @@ body:
         - "Quranify 2.2.91"
         - "Quranify (another version, type it below)"
         - "Radio Javan 11.20.1"
-        - "Radio Javan 11.21.1"
+        - "Radio Javan 11.22.1"
         - "Radio Javan (another version, type it below)"
         - "Raindrop.io 4.7.44"
         - "Raindrop.io 4.8.0"
@@ -300,15 +294,10 @@ body:
         - "Ringtone Maker 1.01.99.0909"
         - "Ringtone Maker 1.02.01.1020"
         - "Ringtone Maker (another version, type it below)"
-        - "RISE Sleep Tracker Android V1.78.47"
-        - "RISE Sleep Tracker Android V1.78.49"
-        - "RISE Sleep Tracker Android V1.78.51"
-        - "RISE Sleep Tracker Android V1.78.52"
-        - "RISE Sleep Tracker Android V1.79.1"
-        - "RISE Sleep Tracker Android V1.79.2"
+        - "RISE Sleep Tracker Android V1.79.3"
         - "RISE Sleep Tracker (another version, type it below)"
         - "Rubber Bands 3.11"
-        - "Rubber Bands 3.9"
+        - "Rubber Bands 3.14"
         - "Rubber Bands (another version, type it below)"
         - "Serializd 1.992"
         - "Serializd (another version, type it below)"
@@ -333,17 +322,14 @@ body:
         - "Symfonium 15.1.0"
         - "Symfonium 15.1.0 TV"
         - "Symfonium (another version, type it below)"
-        - "TeraBox 4.26.0"
-        - "TeraBox 4.26.5"
+        - "TeraBox 4.27.5"
         - "TeraBox (another version, type it below)"
-        - "Trainline 407.0.0.178994"
-        - "Trainline 415.0.0.182623"
-        - "Trainline 415.0.0.182626"
-        - "Trainline 416.0.0.183472"
-        - "Trainline 438.0.0.183733"
+        - "Trainline 438.1.0.184284"
         - "Trainline (another version, type it below)"
         - "U Dictionary 6.7.5"
         - "U Dictionary (another version, type it below)"
+        - "UPTCL 11.0.41"
+        - "UPTCL (another version, type it below)"
         - "USA VPN 1.168"
         - "USA VPN (another version, type it below)"
         - "Viber 29.1.1.0"
@@ -365,11 +351,11 @@ body:
         - "WalP 10.2.1"
         - "WalP 10.2.3"
         - "WalP (another version, type it below)"
-        - "Wattpad 11.41.1"
+        - "Wattpad 11.42.0"
         - "Wattpad (another version, type it below)"
         - "Yanosik 26.9.0"
         - "Yanosik (another version, type it below)"
-        - "Yi iot 5.1.7_20260914"
+        - "Yi iot 5.1.8_20261021"
         - "Yi iot (another version, type it below)"
         - "Yuka 5.7"
         - "Yuka (another version, type it below)"
@@ -438,6 +424,8 @@ body:
         was still installed at the time.
 
         **morphe-cli**: add `-r report.json` to the command and attach the report.
+
+        **Patching did not start**: write `none` here and add a screenshot of Manager to Bug description.
     validations:
       required: true
   - type: checkboxes

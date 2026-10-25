@@ -9,15 +9,21 @@ import app.morphe.patcher.patch.AvailabilityResolver
 import app.morphe.patcher.patch.InstallerType
 import app.morphe.patcher.patch.PatchAvailability
 
-internal fun arm64Availability(selection: PatchAvailability) =
+private fun architectureAvailability(selection: PatchAvailability, vararg supported: ApkArchitecture) =
     AvailabilityResolver { _, architecture ->
-        when (architecture) {
-            ApkArchitecture.ARM64_V8A, ApkArchitecture.UNIVERSAL -> selection
-            else -> PatchAvailability.UNAVAILABLE
-        }
+        if (architecture == ApkArchitecture.UNIVERSAL || architecture in supported) selection else PatchAvailability.UNAVAILABLE
     }
 
+internal fun arm64Availability(selection: PatchAvailability) =
+    architectureAvailability(selection, ApkArchitecture.ARM64_V8A)
+
 internal val requireArm64 = arm64Availability(PatchAvailability.ENABLED)
+
+internal val requireArm = architectureAvailability(
+    PatchAvailability.ENABLED,
+    ApkArchitecture.ARM64_V8A,
+    ApkArchitecture.ARMEABI_V7A,
+)
 
 private val arm64Required = arm64Availability(PatchAvailability.REQUIRED)
 

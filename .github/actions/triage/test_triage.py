@@ -13,7 +13,44 @@ import app_request
 from app_request import decide
 
 SCRIPT = Path(__file__).with_name("triage.py")
-PATCHES_LIST = Path(__file__).parents[3] / "patches-list.json"
+BUNDLE_APPS = {"version": "1.60.0", "patches": [{"compatiblePackages": [
+    {"name": "AlpineQuest", "packageName": "psyberia.alpinequest.free",
+     "targets": [{"version": "2.4.0e"}]},
+    {"name": "AtloMaps", "packageName": "com.atlogis.atlomaps",
+     "targets": [{"version": "1.0.6"}, {"version": "1.1.0"}, {"version": "2.0.0"}]},
+    {"name": "Cx File Explorer", "packageName": "com.cxinventor.file.explorer",
+     "targets": [{"version": "2.7.8"}, {"version": "2.7.9"}, {"version": "2.8.1"}]},
+    {"name": "Cxxdroid", "packageName": "ru.iiec.cxxdroid",
+     "targets": [{"version": "5.6_arm64"}, {"version": "6.0_arm64"}]},
+    {"name": "Etsy", "packageName": "com.etsy.android",
+     "targets": [{"version": "7.97.0"}, {"version": "7.99.0"}, {"version": "8.0.0"}]},
+    {"name": "Fddb", "packageName": "com.fddb",
+     "targets": [{"version": "v7.8.4-Build-1-gms-release"}, {"version": "v7.8.5-Build-1-gms-release"}]},
+    {"name": "Kick", "packageName": "com.kick.mobile",
+     "targets": []},
+    {"name": "Magic Earth", "packageName": "com.generalmagic.magicearth",
+     "targets": [{"version": "7.1.26.26.21DB1F1B.3C81F7001"}, {"version": "7.1.26.38.B4684D03.6207A61BA"}]},
+    {"name": "MovieBox", "packageName": "com.community.oneroom",
+     "targets": [{"version": "4.0.03.0918.03"}]},
+    {"name": "MovieBox TV", "packageName": "com.community.mbox.tv",
+     "targets": [{"version": "1.2.0.0923.web_socialmedia"}]},
+    {"name": "Musicolet", "packageName": "in.krosbits.musicolet",
+     "targets": [{"version": "6.14.1 build540"}]},
+    {"name": "Proton Mail", "packageName": "ch.protonmail.android",
+     "targets": [{"version": "7.10.4"}, {"version": "7.11.10"}, {"version": "7.11.5"}, {"version": "7.11.8"}, {"version": "7.11.9"}]},
+    {"name": "Proton VPN", "packageName": "ch.protonvpn.android",
+     "targets": [{"version": "5.20.39.0"}, {"version": "5.20.57.0"}, {"version": "5.20.74.0"}, {"version": "5.20.98.0"}]},
+    {"name": "Quranify", "packageName": "com.mchutov.Quranify",
+     "targets": [{"version": "2.2.8"}, {"version": "2.2.9"}, {"version": "2.2.91"}]},
+    {"name": "RISE Sleep Tracker", "packageName": "com.risesci.nyx",
+     "targets": [{"version": "Android V1.78.47"}, {"version": "Android V1.78.49"}, {"version": "Android V1.78.51"}, {"version": "Android V1.78.52"}, {"version": "Android V1.79.1"}, {"version": "Android V1.79.2"}]},
+    {"name": "Rubber Bands", "packageName": "app.rubberbands.fit",
+     "targets": [{"version": "3.11"}, {"version": "3.9"}]},
+    {"name": "STEEZY", "packageName": "co.steezy.app",
+     "targets": [{"version": "5.23.0"}]},
+    {"name": "Showly", "packageName": "com.michaldrabik.showly2",
+     "targets": [{"version": "3.70.0"}, {"version": "3.72.0"}]},
+]}]}
 
 LONG = "Patching stops with an error dialog partway through and never writes an output file."
 
@@ -349,6 +386,26 @@ Patching failed
 ### Debug log
 
 _No response_
+"""),
+    "patching that did not start needs no error report": ("pass", f"""### App name
+
+Proton Mail
+
+### App version
+
+7.10.4
+
+### What happened
+
+Patching did not start
+
+### Bug description
+
+{LONG}
+
+### Error logs
+
+none
 """),
     "version the bundle does not target": ("flag", f"""### App name
 
@@ -844,20 +901,16 @@ def triage(body, patches_list=None):
     with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:
         f.write(body)
         path = f.name
-    list_path = str(PATCHES_LIST)
-    extra = None
-    if patches_list is not None:
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
-            json.dump(patches_list, f)
-            extra = list_path = f.name
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+        json.dump(BUNDLE_APPS if patches_list is None else patches_list, f)
+        list_path = f.name
     try:
         out = subprocess.run([sys.executable, str(SCRIPT), path, list_path],
                              capture_output=True, text=True, check=True)
         return json.loads(out.stdout)
     finally:
         Path(path).unlink()
-        if extra:
-            Path(extra).unlink()
+        Path(list_path).unlink()
 
 
 def verdict_for(body, patches_list=None):

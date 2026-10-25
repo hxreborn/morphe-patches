@@ -362,9 +362,8 @@ def download(app, source, result, version, ctx, workdir):
 
 def patch_check(apk, ctx, workdir):
     java = shutil.which("java")
-    args = [java, "-jar", ctx["cli"], "patch", "-p", ctx["mpp"], "-f", "--keystore",
-            str(workdir / "check.keystore"), "-o", str(workdir / "patched.apk"),
-            "-t", str(workdir / "cli-tmp"), str(apk)]
+    args = [java, "-jar", ctx["cli"], "patch", "-p", ctx["mpp"], "-f",
+            "-o", str(workdir / "patched.apk"), "-t", str(workdir / "cli-tmp"), str(apk)]
     try:
         done = subprocess.run(args, capture_output=True, text=True, timeout=PATCH_TIMEOUT)
     except subprocess.TimeoutExpired:

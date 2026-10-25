@@ -154,8 +154,14 @@ runs:
         PATCHES_LIST: ${{ inputs.patches-list }}
       run: |
         jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > "$RUNNER_TEMP/issue-body.md"
+        list=$PATCHES_LIST
+        dev_bundle=$(tr -d '\r' < "$RUNNER_TEMP/issue-body.md" | sed -nE \
+          '/^[[:space:]]*Source:.* v?([0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+)[[:space:]]*$/{s//\1/p;q;}')
+        if [ -n "$dev_bundle" ] && git show "v$dev_bundle:$PATCHES_LIST" > "$RUNNER_TEMP/reported-list.json" 2>/dev/null; then
+          list=$RUNNER_TEMP/reported-list.json
+        fi
         python3 "${{ github.action_path }}/triage.py" \
-          "$RUNNER_TEMP/issue-body.md" "$PATCHES_LIST" > "$RUNNER_TEMP/verdict.json"
+          "$RUNNER_TEMP/issue-body.md" "$list" > "$RUNNER_TEMP/verdict.json"
 
     - name: Act on the verdict
       if: >-
