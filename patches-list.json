@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.1",
+  "version": "1.62.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -7708,6 +7708,40 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove bulk import limit",
+      "description": "Removes the credit limit on bulk imports. Doesn't affect the weekly limit on single imports.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.thesortdapp.sortd",
+          "name": "Albo",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#1E1E1E",
+          "signatures": [
+            "ae23b6062bfe3fea5e0372c58ee809e0ee3eb3b356350cfaa2734dd6742c15b9"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.25.1",
+              "versionCodes": {
+                "ARM64_V8A": 996,
+                "ARMEABI_V7A": 996,
+                "X86_64": 996,
+                "X86": 996
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]

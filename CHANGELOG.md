@@ -1,3 +1,14 @@
+## [1.62.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.1...v1.62.0-dev.2) (2026-10-25)
+
+### Bug Fixes
+
+* **DWG FastView:** restore patching on every supported version ([e5b8024](https://github.com/hxreborn/morphe-patches/commit/e5b8024ea6361703e5ef840fca023b804e97cf3d))
+
+### New Features
+
+* **Albo - Remove bulk import limit:** import without spending credits ([45c8e1c](https://github.com/hxreborn/morphe-patches/commit/45c8e1cdbc90e067b6e312a637a96b6fe5ed53c5)), closes [#375](https://github.com/hxreborn/morphe-patches/issues/375)
+* update to Patcher 2.0.2-dev.1 ([ecc9db1](https://github.com/hxreborn/morphe-patches/commit/ecc9db182485daa6d25ea38f194443e9468e574e))
+
 ## [1.62.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.61.0...v1.62.0-dev.1) (2026-10-25)
 
 ### New Features

@@ -365,12 +365,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.2"
         - "1.62.0-dev.1"
         - "1.61.0-dev.3"
         - "1.61.0-dev.2"
         - "1.61.0-dev.1"
         - "1.61.0"
-        - "1.60.0-dev.5"
         - "Older than these"
         # /generated
     validations:
@@ -428,6 +428,7 @@ body:
         - "aCalendar \u00b7 Unlock aCalendar+"
         - "Albo \u00b7 Enable guest sign-in"
         - "Albo \u00b7 GmsCore support"
+        - "Albo \u00b7 Remove bulk import limit"
         - "Albo \u00b7 Unlock premium"
         - "All Video Player App \u00b7 Allow offline use"
         - "All Video Player App \u00b7 Disable tracking"
