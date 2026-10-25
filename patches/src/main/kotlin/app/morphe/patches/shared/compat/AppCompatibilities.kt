@@ -258,6 +258,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 33)),
     )
 
+    val CLONE_APP = Compatibility(
+        name = "Clone App",
+        packageName = "com.pengyou.cloneapp",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x508CEC,
+        signatures = setOf(
+            "828b91795e6ef35a08c2fafe039bec74beffa824bf063167bc30257b14c81127",
+        ),
+        targets = listOf(AppTarget(version = "4.2.2", versionCode = 820, minSdk = 32)),
+    )
+
     val CUBASIS_LE_3 = Compatibility(
         name = "Cubasis LE 3",
         packageName = "com.steinberg.cubasisle3",

@@ -28,6 +28,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
 | `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.19.1, adaptive icon `res/mipmap-anydpi-v26/botim_logo.xml` (square `res/mipmap-xxxhdpi-v4/botim_logo_square.png` cut to a circle) |
 | `clipstudiopaint.png` | Clip Studio Paint (`jp.co.celsys.clipstudiopaint.googleplay`) | CELSYS, Inc. | APK 5.1.4, `res/mipmap-xxhdpi-v4/ic_launcher_round.png` |
+| `cloneapp.png` | Clone App (`com.pengyou.cloneapp`) | SZPY Tech | APK 4.2.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `depthpix.png` | DepthPix (`com.androholic.wallpapersdepthpix`) | Androholic | APK 1.0.12, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `devcheck.png` | DevCheck (`flar2.devcheck`) | flar2 | APK 6.57, adaptive icon `res/mipmap-xxxhdpi-v4/ic_launcher_background.webp` under `ic_launcher_foreground.webp` |
 | `psiphon.png` | Psiphon (`com.psiphon3.subscription`) | Psiphon Inc. | APK 2.5.11, `res/mipmap-xxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |

@@ -175,6 +175,7 @@ ICONS = {
     "com.myvitale.forus": "forus.png",
     "com.psiphon3.subscription": "psiphon.png",
     "im.thebot.messenger": "botim.png",
+    "com.pengyou.cloneapp": "cloneapp.png",
     "com.cardfeed.video_public": "publicvideos.png",
     "com.michaldrabik.showly2": "showly.png",
     "co.steezy.app": "steezy.png",
