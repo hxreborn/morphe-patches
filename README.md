@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.61.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.61.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;316 patches total
+> **[v1.61.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.61.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;317 patches total
 
 <table>
 <tr>
@@ -190,7 +190,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#u-dictionary"><img src=".github/assets/icons/udictionary.png" width="40"><br>U Dictionary</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>4 patches</sub></td>
+<td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>3 patches</sub></td>
 </tr>
@@ -2212,7 +2212,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="uptcl"></a>
 <details>
-<summary><img src=".github/assets/icons/uptcl.png" width="18" align="top">&nbsp;&nbsp;UPTCL&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/uptcl.png" width="18" align="top">&nbsp;&nbsp;UPTCL&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2224,7 +2224,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="uptcl-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/uptcl/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Firebase Sessions, Facebook, TikTok and the app's own event reporting from collecting usage data. |
 | <a id="uptcl-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/uptcl/ads/HideAdsPatch.kt) | Hides banner, native and full-screen ads. |
-| <a id="uptcl-hide-launch-promotion"></a>[Hide launch promotion](patches/src/main/kotlin/app/morphe/patches/uptcl/misc/promotion/HideLaunchPromotionPatch.kt) | Hides the promotional banner and video on the launch splash screen. |
+| <a id="uptcl-hide-launch-promotion"></a>[Hide launch promotion](patches/src/main/kotlin/app/morphe/patches/uptcl/misc/promotion/HideLaunchPromotionPatch.kt) | Hides the promotional banner and video on the launch splash screen and the full-screen offer on the home screen. |
+| <a id="uptcl-match-system-bar-color"></a>[Match system bar color](patches/src/main/kotlin/app/morphe/patches/uptcl/misc/systembars/MatchSystemBarColorPatch.kt) | Colors the status bar and navigation bar white to match the app's screens. |
 | <a id="uptcl-remove-forced-update"></a>[Remove forced update](patches/src/main/kotlin/app/morphe/patches/uptcl/misc/update/RemoveForcedUpdatePatch.kt) | Removes the update prompts that block the app at launch. |
 
 </details>

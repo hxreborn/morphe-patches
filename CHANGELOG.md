@@ -1,3 +1,16 @@
+## [1.61.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.61.0-dev.1...v1.61.0-dev.2) (2026-10-25)
+
+### Bug Fixes
+
+* **Proton Authenticator - Material 3 loading indicator:** grow to 48dp ([dda1dbe](https://github.com/hxreborn/morphe-patches/commit/dda1dbe995a22726d4c8433a8e824624e7a06ec0)), closes [#368](https://github.com/hxreborn/morphe-patches/issues/368)
+* **Proton Mail - Material 3 loading indicator:** shrink to 48dp ([070ae24](https://github.com/hxreborn/morphe-patches/commit/070ae246084e05f8b5ede6a6c53d3351f23ca5f9)), closes [#368](https://github.com/hxreborn/morphe-patches/issues/368)
+* **Proton Pass - Material 3 loading indicator:** grow to 48dp ([71236d9](https://github.com/hxreborn/morphe-patches/commit/71236d97bd16d8bc16314f92ab89372f3872f09c)), closes [#368](https://github.com/hxreborn/morphe-patches/issues/368)
+* **UPTCL - Hide launch promotion:** skip full-screen home screen offer ([2440877](https://github.com/hxreborn/morphe-patches/commit/2440877f068705acb6018a3d4fac63bb606772cb))
+
+### New Features
+
+* **UPTCL - Match system bar color:** make status and nav bars white ([9b876b7](https://github.com/hxreborn/morphe-patches/commit/9b876b7aae4f9741a9ffa3d5562aa0ab1e253b6a))
+
 ## [1.61.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.60.0...v1.61.0-dev.1) (2026-10-25)
 
 ### Bug Fixes

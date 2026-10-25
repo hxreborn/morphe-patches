@@ -365,12 +365,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.61.0-dev.2"
         - "1.61.0-dev.1"
         - "1.60.0-dev.5"
         - "1.60.0-dev.4"
         - "1.60.0-dev.3"
         - "1.60.0-dev.2"
-        - "1.60.0-dev.1"
         - "Older than these"
         # /generated
     validations:
@@ -723,6 +723,7 @@ body:
         - "UPTCL \u00b7 Disable tracking"
         - "UPTCL \u00b7 Hide ads"
         - "UPTCL \u00b7 Hide launch promotion"
+        - "UPTCL \u00b7 Match system bar color"
         - "UPTCL \u00b7 Remove forced update"
         - "USA VPN \u00b7 Unlock premium"
         - "Viber \u00b7 Hide ads"
