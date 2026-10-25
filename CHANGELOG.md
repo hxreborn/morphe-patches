@@ -1,3 +1,9 @@
+## [1.62.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.2...v1.62.0-dev.3) (2026-10-25)
+
+### Bug Fixes
+
+* move to Patcher 2.0.1 ([e42e276](https://github.com/hxreborn/morphe-patches/commit/e42e27691c0b4d515db705cc1507c1c1f120dd3e))
+
 ## [1.62.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.1...v1.62.0-dev.2) (2026-10-25)
 
 ### Bug Fixes
