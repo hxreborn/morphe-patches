@@ -5,14 +5,14 @@
 package app.morphe.patches.uptcl.misc.tracking
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.AccessFlags
 
 @Suppress("unused")

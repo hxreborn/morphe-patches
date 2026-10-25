@@ -7,8 +7,8 @@ package app.morphe.patches.shared.misc.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 
 private const val REPORT_LOAD_FAILURE =
     "Lapp/hxreborn/extension/shared/AdMobLoadFailure;->report(Ljava/lang/Object;)V"

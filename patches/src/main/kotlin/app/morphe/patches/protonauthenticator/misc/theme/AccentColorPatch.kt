@@ -6,13 +6,13 @@ package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.ACCENT_COLOR_CLASS
 import app.morphe.patches.shared.misc.proton.CORE_BRAND_COLORS
 import app.morphe.patches.shared.misc.proton.accentOverlayPatch
 import app.morphe.patches.shared.misc.proton.transformBrandColors
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private object AuthenticatorPalette {

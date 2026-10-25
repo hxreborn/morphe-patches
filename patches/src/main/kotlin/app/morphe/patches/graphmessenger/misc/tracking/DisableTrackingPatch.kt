@@ -6,12 +6,12 @@ package app.morphe.patches.graphmessenger.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.findFreeRegister
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
-import app.morphe.util.findFreeRegister
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val disableTrackingPatch = bytecodePatch(

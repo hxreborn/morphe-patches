@@ -8,9 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 
 private val HIDDEN_MENU_ITEMS = listOf("action_manage_subscriptions", "action_share", "action_about")
 

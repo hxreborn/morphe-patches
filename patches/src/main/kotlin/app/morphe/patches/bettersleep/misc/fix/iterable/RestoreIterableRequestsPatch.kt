@@ -6,10 +6,10 @@ package app.morphe.patches.bettersleep.misc.fix.iterable
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.util.matchSingle
 
 val restoreIterableRequestsPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.BETTERSLEEP)

@@ -6,9 +6,9 @@ package app.morphe.patches.cx.misc.premium
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 private const val STRING_CLASS = "Ljava/lang/String;"
 private const val LICENSE_CHECK_COUNT = 2

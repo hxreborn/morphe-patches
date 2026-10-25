@@ -6,13 +6,13 @@ package app.morphe.patches.devcheck.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.devcheck.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 import java.security.MessageDigest
 import java.util.Base64
 

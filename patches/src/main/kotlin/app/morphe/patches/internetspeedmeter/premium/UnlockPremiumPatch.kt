@@ -11,13 +11,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.internetspeedmeter.ads.removeAdsPatch
 import app.morphe.patches.internetspeedmeter.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.internetspeedmeter.misc.settings.removeSettingsRow
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.adoptChild
-import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.getNode
 import app.morphe.util.insertFirst
 import com.android.tools.smali.dexlib2.Opcode

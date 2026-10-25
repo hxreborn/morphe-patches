@@ -5,7 +5,7 @@
 package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.util.getReference
+import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction

@@ -5,9 +5,9 @@
 package app.morphe.patches.alpinequest.misc.fix.signature
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 val bypassSignatureCheckPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.ALPINEQUEST)

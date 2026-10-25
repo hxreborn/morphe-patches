@@ -6,11 +6,11 @@ package app.morphe.patches.protonpass.misc.inappmessages
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val hidePromotionalMessagesPatch = bytecodePatch(

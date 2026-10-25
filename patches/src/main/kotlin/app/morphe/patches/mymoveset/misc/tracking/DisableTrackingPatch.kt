@@ -5,11 +5,11 @@
 package app.morphe.patches.mymoveset.misc.tracking
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.mymoveset.misc.updates.disableOtaUpdatesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val disableTrackingPatch = bytecodePatch(

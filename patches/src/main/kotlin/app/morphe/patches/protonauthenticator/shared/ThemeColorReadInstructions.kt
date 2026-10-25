@@ -6,8 +6,8 @@ package app.morphe.patches.protonauthenticator.shared
 
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.util.matchSingle
 
 private const val THEME_INSTANCE_FIELD = "INSTANCE"
 private const val COLOR_SCHEME_CHANGED_FLAGS = 6

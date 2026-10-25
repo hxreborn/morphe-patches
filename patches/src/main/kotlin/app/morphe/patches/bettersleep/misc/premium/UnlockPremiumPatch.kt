@@ -6,6 +6,8 @@ package app.morphe.patches.bettersleep.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bettersleep.misc.fix.iterable.restoreIterableRequestsPatch
 import app.morphe.patches.bettersleep.misc.fix.screenevents.restoreScreenEventsPatch
 import app.morphe.patches.bettersleep.misc.fix.signature.spoofSignaturePatch
@@ -13,8 +15,6 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 internal const val PURCHASE_CLASS = "Lcom/ipnossoft/api/purchasemanager/purchaserepo/localdb/Purchase;"

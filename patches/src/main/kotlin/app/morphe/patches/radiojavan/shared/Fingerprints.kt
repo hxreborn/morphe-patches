@@ -6,7 +6,7 @@ package app.morphe.patches.radiojavan.shared
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.util.matchSingle
+import app.morphe.patcher.util.matchSingle
 
 internal object SubscriptionDetailsToStringFingerprint : Fingerprint(
     name = "toString",

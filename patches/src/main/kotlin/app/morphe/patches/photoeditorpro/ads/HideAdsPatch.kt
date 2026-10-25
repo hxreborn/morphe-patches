@@ -5,12 +5,12 @@
 package app.morphe.patches.photoeditorpro.ads
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.RemoveAdsPurchasedFingerprint
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.returnTrueWhileEnabled
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(

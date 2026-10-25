@@ -5,11 +5,11 @@
 package app.morphe.patches.protonmail.misc.layout
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.returnVoidWhen
-import app.morphe.util.matchSingle
 
 private const val SIDEBAR_ENTRIES_CLASS = "Lapp/hxreborn/extension/protonmail/SidebarEntries;"
 

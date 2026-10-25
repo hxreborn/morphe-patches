@@ -7,11 +7,11 @@ package app.morphe.patches.opal.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatLifetimeEntitlement
 import app.morphe.patches.shared.misc.smali.parameterRegister
-import app.morphe.util.matchSingle
 
 private const val ENTITLEMENT = "premium_tier_1"
 private const val PRODUCT = "premium_tier_1_lifetime"

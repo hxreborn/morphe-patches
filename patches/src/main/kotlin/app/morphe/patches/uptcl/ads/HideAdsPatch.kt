@@ -6,10 +6,10 @@ package app.morphe.patches.uptcl.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(

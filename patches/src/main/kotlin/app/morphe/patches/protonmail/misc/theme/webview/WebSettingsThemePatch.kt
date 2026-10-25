@@ -6,8 +6,8 @@ package app.morphe.patches.protonmail.misc.theme.webview
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
-import app.morphe.util.matchSingle
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/WebSettingsTheme;"
 

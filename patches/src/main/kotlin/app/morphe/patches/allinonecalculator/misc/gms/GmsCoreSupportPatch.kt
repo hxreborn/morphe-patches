@@ -6,13 +6,13 @@ package app.morphe.patches.allinonecalculator.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.GMS_CORE_SIGN_IN_CLASS
 import app.morphe.patches.shared.misc.gms.bindGmsCoreSignInTypes
 import app.morphe.patches.shared.misc.gms.gmsCoreSpoofedSignaturePatch
 import app.morphe.patches.shared.misc.gms.redirectGmsPackageToGmsCore
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
-import app.morphe.util.matchSingle
 
 private const val REQUEST_PARAMS_CLASS =
     "Lio/flutter/plugins/googlesignin/GetCredentialRequestParams;"

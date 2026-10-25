@@ -6,9 +6,9 @@ package app.morphe.patches.notesnook.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/notesnook/MaterialYouTheme;"
 

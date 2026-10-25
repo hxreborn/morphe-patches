@@ -7,6 +7,7 @@ package app.morphe.patches.protonmail.misc.materialswitch
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.misc.theme.webview.WebSettingsPageFinishedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -14,7 +15,6 @@ import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.PROTON_EXTENSION_PACKAGE
 import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
-import app.morphe.util.matchSingle
 
 private const val EXTENSION_CLASS = "${PROTON_EXTENSION_PACKAGE}WebMaterialSwitch;"
 private const val COMPOSER_PARAMETER = 4

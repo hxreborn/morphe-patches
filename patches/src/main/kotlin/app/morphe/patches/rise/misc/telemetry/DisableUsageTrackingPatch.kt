@@ -6,8 +6,8 @@ package app.morphe.patches.rise.misc.telemetry
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val disableUsageTrackingPatch = bytecodePatch(

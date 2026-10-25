@@ -6,10 +6,10 @@ package app.morphe.patches.alpinequest.misc.activation
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.findFreeRegister
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.alpinequest.misc.fix.signature.bypassSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.findFreeRegister
-import app.morphe.util.matchSingle
 
 private const val ACTIVATED_STATUS = 'R'
 

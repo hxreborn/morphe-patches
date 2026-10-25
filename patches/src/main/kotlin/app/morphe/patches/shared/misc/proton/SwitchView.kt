@@ -9,11 +9,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val SWITCH_VIEW_CLASS = "${PROTON_EXTENSION_PACKAGE}MaterialSwitchView;"
