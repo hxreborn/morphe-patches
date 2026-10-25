@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
+import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -41,6 +42,9 @@ val loadingIndicatorPatch = bytecodePatch(
                 invoke-interface { $producer }, ${descriptor(produce)}
                 move-result $progress
             """
+        }
+        PullToRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
+            resizeLoadingIndicatorContainer(match.method, match.instructionMatches.last())
         }
 
         PullToRefreshIndicatorColorsFingerprint.matchSingle().let { match ->

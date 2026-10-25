@@ -11,12 +11,25 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import app.morphe.patches.shared.misc.proton.pullRefreshContentFingerprint
+import app.morphe.patches.shared.misc.proton.sizeModifierCall
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal val PullToRefreshContentFingerprint = pullRefreshContentFingerprint(
     "Landroidx/compose/material3/ProgressIndicatorKt;",
     "Landroidx/compose/material3/pulltorefresh/PullToRefreshKt;",
+)
+
+internal object PullToRefreshIndicatorSizeFingerprint : Fingerprint(
+    filters = listOf(
+        methodCall(
+            definingClass = "Landroidx/compose/material3/pulltorefresh/PullToRefreshKt;",
+            name = "getSpinnerContainerSize",
+            returnType = "F",
+        ),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
+        sizeModifierCall(MatchAfterImmediately()),
+    ),
 )
 
 internal object PullToRefreshIndicatorColorsFingerprint : Fingerprint(
