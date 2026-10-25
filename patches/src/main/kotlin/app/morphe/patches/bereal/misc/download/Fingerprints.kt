@@ -9,6 +9,7 @@ import app.morphe.patcher.InstructionLocation.MatchAfterAnywhere
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.resource.ResourceType
@@ -57,5 +58,19 @@ internal object ReactionsPostMenuFingerprint : Fingerprint(
         opcode(Opcode.IF_EQZ),
         opcode(Opcode.IF_NEZ, location = MatchAfterImmediately()),
         resourceLiteral(ResourceType.STRING, "sharing_service_download", location = MatchAfterImmediately()),
+    ),
+)
+
+internal object DownloadImageFingerprint : Fingerprint(
+    returnType = "Landroid/graphics/Bitmap;",
+    parameters = listOf("Landroid/graphics/Bitmap;"),
+    filters = listOf(
+        literal(540.0f),
+        methodCall(
+            opcodes = listOf(Opcode.INVOKE_STATIC),
+            parameters = listOf("L", "Landroid/content/Context;", "F", "F", "Ljava/lang/Integer;"),
+            returnType = "V",
+            location = MatchAfterAnywhere(),
+        ),
     ),
 )

@@ -48,6 +48,8 @@ public final class PatchSettings {
 
     public static final BooleanSetting SAVE_FRIENDS_BEREALS = new BooleanSetting("bereal_save_friends_bereals", true);
 
+    public static final BooleanSetting REMOVE_WATERMARK = new BooleanSetting("bereal_remove_watermark", true);
+
     private PatchSettings() {
     }
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.blur.FriendsPosts;
+import app.hxreborn.extension.bereal.download.DownloadWatermark;
 import app.hxreborn.extension.bereal.download.FriendsPostDownload;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsTab;
@@ -100,6 +101,10 @@ final class PatchCatalog {
             group.addToggle("ic_square_and_arrow_down", "Save friends' BeReals",
                     "Download appears in the 3-dot menu of friends' BeReals in the feed and on the RealMoji screen.",
                     PatchSettings.SAVE_FRIENDS_BEREALS);
+        }
+        if (DownloadWatermark.isPatchIncluded()) {
+            group.addToggle("ic_photo_on_rectangle_angled", "Remove BeReal logo from downloads",
+                    "BeReals you download save at full size without the BeReal logo.", PatchSettings.REMOVE_WATERMARK);
         }
         return group;
     }
