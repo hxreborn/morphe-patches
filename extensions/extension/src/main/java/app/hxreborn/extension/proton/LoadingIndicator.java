@@ -19,6 +19,8 @@ public final class LoadingIndicator {
 
     private static final float FULL_TURN_DEGREES = 360f;
 
+    private static final float CONTAINER_SIZE_DP = 48f;
+
     private static volatile Object factory;
 
     private LoadingIndicator() {
@@ -35,6 +37,10 @@ public final class LoadingIndicator {
 
     static void setEnabled(boolean enabled) {
         PatchSettings.setEnabled(KEY, enabled);
+    }
+
+    public static float containerSize(float stockSizeDp) {
+        return (isEnabled()) ? CONTAINER_SIZE_DP : stockSizeDp;
     }
 
     public static synchronized Object factory(Class<?> functionType) {

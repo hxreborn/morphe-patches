@@ -11,6 +11,7 @@ import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patches.shared.misc.proton.pullRefreshContentFingerprint
+import app.morphe.patches.shared.misc.proton.sizeModifierCall
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val PULL_REFRESH_STATE = "Landroidx/compose/material/pullrefresh/PullRefreshState;"
@@ -28,5 +29,16 @@ internal object PullRefreshProgressFingerprint : Fingerprint(
         methodCall(parameters = emptyList(), returnType = "F", location = MatchAfterImmediately()),
         opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
         opcode(Opcode.DIV_FLOAT_2ADDR, MatchAfterWithin(0)),
+    ),
+)
+
+internal object PullRefreshIndicatorSizeFingerprint : Fingerprint(
+    filters = listOf(
+        fieldAccess(
+            definingClass = "Landroidx/compose/material/pullrefresh/PullRefreshIndicatorKt;",
+            name = "IndicatorSize",
+            opcode = Opcode.SGET,
+        ),
+        sizeModifierCall(MatchAfterImmediately()),
     ),
 )

@@ -5,6 +5,9 @@
 package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation
+import app.morphe.patcher.Match
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.fieldAccess
@@ -28,6 +31,8 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 internal const val LOADING_INDICATOR_CLASS = "${PROTON_EXTENSION_PACKAGE}LoadingIndicator;"
 internal const val SHOW_LOADING_INDICATOR = "$LOADING_INDICATOR_CLASS->show(Ljava/lang/Object;ZF)V"
 private const val SHOW_LOADING_PROGRESS = "$LOADING_INDICATOR_CLASS->showProgress(Ljava/lang/Object;F)V"
+private const val CONTAINER_SIZE = "$LOADING_INDICATOR_CLASS->containerSize(F)F"
+private const val SIZE_MODIFIERS_CLASS = "Landroidx/compose/foundation/layout/SizeKt;"
 private const val VIEW_INTEROP_PACKAGE = "Landroidx/compose/ui/viewinterop/"
 private const val COMPOSE_COMPOSER = "Landroidx/compose/runtime/Composer;"
 private const val COMPOSE_MODIFIER = "Landroidx/compose/ui/Modifier;"
@@ -59,6 +64,26 @@ internal fun pullRefreshContentFingerprint(progressIndicatorClass: String, pullR
         methodCall(definingClass = pullRefreshClass, returnType = "V"),
     ),
 )
+
+internal fun sizeModifierCall(location: InstructionLocation) = methodCall(
+    definingClass = SIZE_MODIFIERS_CLASS,
+    parameters = listOf(COMPOSE_MODIFIER, "F"),
+    returnType = COMPOSE_MODIFIER,
+    location = location,
+)
+
+internal fun resizeLoadingIndicatorContainer(method: MutableMethod, sizeCall: Match.InstructionMatch) {
+    val sizeInvoke = sizeCall.instruction as? FiveRegisterInstruction
+        ?: throw PatchException("Expected a size modifier invoke at index ${sizeCall.index} in ${descriptor(method)}")
+    val sizeRegister = sizeInvoke.registerD
+    method.addInstructions(
+        sizeCall.index,
+        """
+            invoke-static/range { v$sizeRegister .. v$sizeRegister }, $CONTAINER_SIZE
+            move-result v$sizeRegister
+        """,
+    )
+}
 
 internal fun BytecodePatchContext.bindLoadingIndicatorView(androidView: Method, modifierCompanion: FieldReference?) {
     val functionType = androidView.parameterTypes.first().toString()
