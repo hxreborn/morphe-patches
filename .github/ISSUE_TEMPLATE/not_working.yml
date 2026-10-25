@@ -371,12 +371,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.8"
         - "1.62.0-dev.7"
         - "1.62.0-dev.6"
         - "1.62.0-dev.5"
         - "1.62.0-dev.4"
         - "1.62.0-dev.3"
-        - "1.62.0-dev.2"
         - "Older than these"
         # /generated
     validations:
@@ -652,6 +652,7 @@ body:
         - "Proton Pass \u00b7 AMOLED dark theme"
         - "Proton Pass \u00b7 Custom accent color"
         - "Proton Pass \u00b7 Hide layout components"
+        - "Proton Pass \u00b7 Hide navigation bar on scroll"
         - "Proton Pass \u00b7 Hide promotional messages"
         - "Proton Pass \u00b7 Hide upgrade promotions"
         - "Proton Pass \u00b7 Material 3 loading indicator"

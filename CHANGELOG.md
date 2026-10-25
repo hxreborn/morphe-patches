@@ -1,3 +1,9 @@
+## [1.62.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.7...v1.62.0-dev.8) (2026-10-25)
+
+### New Features
+
+* **Proton Pass - Hide navigation bar on scroll:** list fills bar space ([39fff13](https://github.com/hxreborn/morphe-patches/commit/39fff1328d5d4016bc95a4314ce2bf8ff5c1f6bc)), closes [#382](https://github.com/hxreborn/morphe-patches/issues/382)
+
 ## [1.62.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.6...v1.62.0-dev.7) (2026-10-25)
 
 ### New Features
