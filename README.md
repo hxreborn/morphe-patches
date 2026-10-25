@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.61.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.61.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;318 patches total
+> **[v1.62.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.62.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;319 patches total
 
 <table>
 <tr>
@@ -52,7 +52,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#castle"><img src=".github/assets/icons/castle.png" width="40"><br>Castle</a><br><sub>4 patches</sub></td>
-<td align="center" width="25%"><a href="#castle-for-tv"><img src=".github/assets/icons/castlefortv.png" width="40"><br>Castle for TV</a><br><sub>2 patches</sub></td>
+<td align="center" width="25%"><a href="#castle-for-tv"><img src=".github/assets/icons/castlefortv.png" width="40"><br>Castle for TV</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#catzy"><img src=".github/assets/icons/catzy.png" width="40"><br>Catzy</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#clip-studio-paint"><img src=".github/assets/icons/clipstudiopaint.png" width="40"><br>Clip Studio Paint</a><br><sub>1 patch</sub></td>
 </tr>
@@ -574,7 +574,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="castle-for-tv"></a>
 <details>
-<summary><img src=".github/assets/icons/castlefortv.png" width="18" align="top">&nbsp;&nbsp;Castle for TV&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/castlefortv.png" width="18" align="top">&nbsp;&nbsp;Castle for TV&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -585,6 +585,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="castle-for-tv-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/castletv/ads/RemoveAdsPatch.kt) | Removes the pre-roll and mid-roll ads from playback. |
+| <a id="castle-for-tv-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/castletv/misc/fix/signature/SpoofSignaturePatch.kt) | Removes the modified app warning that stops video playback. |
 | <a id="castle-for-tv-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/castletv/misc/premium/UnlockPremiumPatch.kt) | Unlocks member-only titles and shows the account as Premium. Requires a signed-in account. |
 
 </details>

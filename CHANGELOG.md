@@ -1,3 +1,9 @@
+## [1.62.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.61.0...v1.62.0-dev.1) (2026-10-25)
+
+### New Features
+
+* **Castle for TV - Spoof signature:** remove the modified app warning ([7d87a63](https://github.com/hxreborn/morphe-patches/commit/7d87a63236c09ca18b3cbe97fca3d6744e6f03da)), closes [#379](https://github.com/hxreborn/morphe-patches/issues/379)
+
 ## [1.61.0](https://github.com/hxreborn/morphe-patches/compare/v1.60.0...v1.61.0) (2026-10-25)
 
 ### Bug Fixes
