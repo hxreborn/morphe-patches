@@ -365,12 +365,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.61.0"
         - "1.61.0-dev.3"
         - "1.61.0-dev.2"
         - "1.61.0-dev.1"
         - "1.60.0-dev.5"
         - "1.60.0-dev.4"
-        - "1.60.0-dev.3"
         - "Older than these"
         # /generated
     validations:
