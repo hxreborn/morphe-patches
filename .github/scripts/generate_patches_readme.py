@@ -172,6 +172,7 @@ ICONS = {
     "com.stresscodes.wallp": "walp.png",
     "com.fengeon.resprite_desktop": "resprite.png",
     "wp.wattpad": "wattpad.png",
+    "com.watchit.vod": "watchit.png",
     "com.wallmaa.minimal.wallpapers": "wallmaa.png",
     "com.spocky.projengmenu": "projectivy.png",
     "app.privacynotes": "privacynotes.png",

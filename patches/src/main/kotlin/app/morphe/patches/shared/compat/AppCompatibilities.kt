@@ -1557,6 +1557,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "10.2.4", versionCode = 172, minSdk = 32)),
     )
 
+    val WATCH_IT = Compatibility(
+        name = "WATCH IT",
+        packageName = "com.watchit.vod",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE0AF32,
+        signatures = setOf("bc5f2a6254cb58ce31b43b4d1efb1b257c3ed0576f32568ca30bc4536cbdd01a"),
+        targets = listOf(AppTarget(version = "5.26.2", versionCode = 1028, minSdk = 21)),
+    )
+
     val WATTPAD = Compatibility(
         name = "Wattpad",
         packageName = "wp.wattpad",
