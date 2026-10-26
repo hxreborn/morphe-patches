@@ -1,3 +1,10 @@
+## [1.62.0-dev.14](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.13...v1.62.0-dev.14) (2026-10-26)
+
+### New Features
+
+* **blockit - Free parachutes:** add parachute packs without a purchase ([5c8f09d](https://github.com/hxreborn/morphe-patches/commit/5c8f09d0fad692bd200fc1396f21fc0611308a11))
+* **blockit - Unlock premium:** unlock Premium, the suitcase and sounds ([f05f596](https://github.com/hxreborn/morphe-patches/commit/f05f5965f2aada4adebedfa6aa5cf745b3e7d1b5))
+
 ## [1.62.0-dev.13](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.12...v1.62.0-dev.13) (2026-10-26)
 
 ### New Features

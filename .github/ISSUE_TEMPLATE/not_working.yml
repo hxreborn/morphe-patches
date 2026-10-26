@@ -64,6 +64,8 @@ body:
         - "Biobird Flashcards 2.0.2"
         - "Biobird Flashcards 3.0.0"
         - "Biobird Flashcards (another version, type it below)"
+        - "blockit 2.2.7"
+        - "blockit (another version, type it below)"
         - "BlurWall 2.9.8"
         - "BlurWall 3.0.0"
         - "BlurWall (another version, type it below)"
@@ -374,12 +376,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.14"
         - "1.62.0-dev.13"
         - "1.62.0-dev.12"
         - "1.62.0-dev.11"
         - "1.62.0-dev.10"
         - "1.62.0-dev.9"
-        - "1.62.0-dev.8"
         - "Older than these"
         # /generated
     validations:
@@ -461,6 +463,8 @@ body:
         - "BetterSleep \u00b7 Unlock premium"
         - "Biobird Flashcards \u00b7 GmsCore support"
         - "Biobird Flashcards \u00b7 Unlock premium"
+        - "blockit \u00b7 Free parachutes"
+        - "blockit \u00b7 Unlock premium"
         - "BlurWall \u00b7 AMOLED dark theme"
         - "BlurWall \u00b7 Disable tracking"
         - "BlurWall \u00b7 Unlock premium"

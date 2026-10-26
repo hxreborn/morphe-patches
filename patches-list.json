@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.13",
+  "version": "1.62.0-dev.14",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -3344,6 +3344,40 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Free parachutes",
+      "description": "Adds parachute packs without a purchase.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.hypenet.focused",
+          "name": "blockit",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E3E1DD",
+          "signatures": [
+            "2ae4c0e21d3b244c69d6f122c2a1df907ac4c8d08f21c74425ff63c2b74efb1b"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.2.7",
+              "versionCodes": {
+                "ARM64_V8A": 152,
+                "ARMEABI_V7A": 152,
+                "X86_64": 152,
+                "X86": 152
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
@@ -10769,6 +10803,40 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Premium, the big suitcase and the sound pack.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.hypenet.focused",
+          "name": "blockit",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#E3E1DD",
+          "signatures": [
+            "2ae4c0e21d3b244c69d6f122c2a1df907ac4c8d08f21c74425ff63c2b74efb1b"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.2.7",
+              "versionCodes": {
+                "ARM64_V8A": 152,
+                "ARMEABI_V7A": 152,
+                "X86_64": 152,
+                "X86": 152
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]
