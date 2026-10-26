@@ -93,6 +93,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val ARC_PLAYER = Compatibility(
+        name = "Arc Player",
+        packageName = "com.videoplayer.arcplayer",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x528AEA,
+        signatures = setOf(
+            "51b6ef995b6ccd1a3fff12872d04fc7b69f01bf5ff523a3ea016c9beca1d70a3",
+        ),
+        targets = listOf(AppTarget(version = "1.4.2.141", versionCode = 141, minSdk = 23)),
+    )
+
     val ATLOMAPS = Compatibility(
         name = "AtloMaps",
         packageName = "com.atlogis.atlomaps",
