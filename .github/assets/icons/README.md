@@ -99,6 +99,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `jvdroid.png` | Jvdroid (`ru.iiec.jvdroid`) | Lider Soft KZ | APK 2.8, `mipmap/ic_launcher`, xxxhdpi |
 | `pydroid.png` | Pydroid 3 (`ru.iiec.pydroid3`) | Lider Soft KZ | APK 8.6_arm64, `mipmap/app_icon_pydroid3`, xxxhdpi |
 | `yiiot.png` | Yi iot (`com.yunyi.smartcamera`) | Kami HK | APK 5.1.7, `res/drawable-xxhdpi-v4/ic_launcher.webp`, cut to a circle |
+| `blockit.png` | blockit (`com.hypenet.focused`) | Sgnoogle | APK 2.2.7, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` (`mipmap/ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi) |
 | `blurwall.png` | BlurWall (`apps.automan.blurwallpaper`) | automan | APK 2.9.8, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `catzy.png` | Catzy (`com.nieruo.healthapp`) | Nieruo | APK 1.61.0, `res/mipmap-xxxhdpi-v4/ic_launcher_103.webp` |
 | `coddy.png` | Coddy (`tech.coddy.coddyapp`) | Coddy | Play 2.2.9, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |

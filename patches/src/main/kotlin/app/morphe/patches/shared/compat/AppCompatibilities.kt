@@ -173,6 +173,19 @@ internal object AppCompatibilities {
         ),
     )
 
+    val BLOCKIT = Compatibility(
+        name = "blockit",
+        packageName = "com.hypenet.focused",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0xE3E1DD,
+        signatures = setOf(
+            "2ae4c0e21d3b244c69d6f122c2a1df907ac4c8d08f21c74425ff63c2b74efb1b",
+        ),
+        targets = listOf(
+            AppTarget(version = "2.2.7", versionCode = 152, minSdk = 28),
+        ),
+    )
+
     val BLURWALL = Compatibility(
         name = "BlurWall",
         packageName = "apps.automan.blurwallpaper",
