@@ -25,3 +25,17 @@ internal object CollectionPageFingerprint : Fingerprint(
         methodCall(definingClass = "Lorg/json/JSONObject;", name = "<init>", location = MatchAfterImmediately()),
     ),
 )
+
+internal object DefaultCollectionNameFingerprint : Fingerprint(
+    filters = listOf(
+        string("Extensions-for-Android"),
+        methodCall(definingClass = "Lmozilla/components/feature/addons/amo/AMOAddonsProvider;", name = "<init>"),
+    ),
+)
+
+internal object DefaultCollectionUserFingerprint : Fingerprint(
+    filters = listOf(
+        string("mozilla"),
+        methodCall(definingClass = "Lmozilla/components/feature/addons/amo/AMOAddonsProvider;", name = "<init>"),
+    ),
+)

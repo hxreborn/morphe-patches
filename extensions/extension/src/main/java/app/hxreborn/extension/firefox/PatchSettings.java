@@ -64,6 +64,8 @@ public final class PatchSettings {
 
     static final Flag FULL_ADDONS = new Flag("full_addon_collection");
 
+    static final Flag EXTENDED_ADDON_LIST = new Flag("extended_addon_list");
+
     static final Flag ABOUT_CONFIG = new Flag("about_config");
 
     static final Flag SECRET_SETTINGS = new Flag("secret_settings");
@@ -159,6 +161,10 @@ public final class PatchSettings {
         return FULL_ADDONS.get();
     }
 
+    public static boolean extendedAddonList() {
+        return EXTENDED_ADDON_LIST.get();
+    }
+
     public static boolean aboutConfig() {
         return ABOUT_CONFIG.get();
     }
@@ -252,6 +258,10 @@ public final class PatchSettings {
     }
 
     public static boolean fullAddonCollectionApplied() {
+        return false;
+    }
+
+    public static boolean extendedAddonListApplied() {
         return false;
     }
 

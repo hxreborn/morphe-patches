@@ -77,6 +77,9 @@ final class PatchCatalog {
                                 PreviewScenes.fullscreenToast()),
                         Row.of("Load full add-on collection", "Load full add-on collection", "Lists add-ons past 50",
                                 PatchSettings.FULL_ADDONS, PatchSettings.fullAddonCollectionApplied(),
+                                PreviewScenes.addons()),
+                        Row.of("Extended add-on list", "Extended add-on list", "Lists more add-ons",
+                                PatchSettings.EXTENDED_ADDON_LIST, PatchSettings.extendedAddonListApplied(),
                                 PreviewScenes.addons()))));
         groups.add(new Group("Privacy and security",
                 Arrays.asList(Row.spoken("Hide sign-in button", "Hide sign-in button", "Removes Sign in entries",
