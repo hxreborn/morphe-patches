@@ -519,6 +519,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.7.0-lite", versionCode = 57, minSdk = 28)),
     )
 
+    val IOTOTOY = Compatibility(
+        name = "IoToToy",
+        packageName = "com.hardcodedjoy.iototoy",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xDEEEEE,
+        signatures = setOf(
+            "8bae701239d3a6167dace90b3676b2c46a7aca80e4c136a95e2511dcec5a9fca",
+        ),
+        targets = listOf(AppTarget(version = "1.1.0", versionCode = 11, minSdk = 24)),
+    )
+
     val JUJO = Compatibility(
         name = "Jujo",
         packageName = "com.dev2a.junk_journal",

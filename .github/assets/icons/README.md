@@ -22,6 +22,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | File | App | Developer | Source |
 |---|---|---|---|
 | `albo.png` | Albo (`com.thesortdapp.sortd`) | The Feel Good Project Ltd | APK 1.25.1, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
+| `iototoy.png` | IoToToy No-Code IoT automation (`com.hardcodedjoy.iototoy`) | HARDCODED JOY S.R.L. | APK 1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `allinonecalculator.png` | All-In-One Calculator (`all.in.one.calculator`) | allinonecalculator.com | APK 3.4.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `allvideoplayer.png` | All Video Player App (`com.allformatplayer.streamvideoplayer`) | Legend eSolution | APK 1.4, `res/drawable-xhdpi-v4/small_logo.png` |
 | `aloa.png` | Aloa (`com.getaloa.app`) | Aloa | APK 1.3.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |

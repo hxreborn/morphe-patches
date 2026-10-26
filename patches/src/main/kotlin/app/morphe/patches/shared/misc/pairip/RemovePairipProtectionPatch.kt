@@ -28,6 +28,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.GLASS_WIDGETS,
         AppCompatibilities.HINDU_CALENDAR,
         AppCompatibilities.INTERNET_SPEED_METER_LITE,
+        AppCompatibilities.IOTOTOY,
         AppCompatibilities.JUJO,
         AppCompatibilities.KEEPA,
         AppCompatibilities.LAGGUY_WALLPAPERS,
