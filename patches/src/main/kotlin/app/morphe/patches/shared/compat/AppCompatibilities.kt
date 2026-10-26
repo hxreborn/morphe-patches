@@ -960,10 +960,7 @@ internal object AppCompatibilities {
             "5620d2344aa13b4fb30df6bb59df508839af348ad12f5e4f3b95fca02662b77b",
             "b87ed511109b159844ff23ab802e00d56ab9d94d1435d89edd32cf07b62551fa",
         ),
-        targets = listOf(
-            AppTarget(version = "0.5.38", versionCode = 350, minSdk = 29),
-            AppTarget(version = "0.5.93", versionCode = 405, minSdk = 32),
-        ),
+        targets = listOf(AppTarget(version = "0.5.104", versionCode = 416, minSdk = 29)),
     )
 
     val ONE_WEATHER = Compatibility(
