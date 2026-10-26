@@ -1,3 +1,11 @@
+## [1.62.0-dev.11](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.10...v1.62.0-dev.11) (2026-10-26)
+
+### New Features
+
+* **Proton - AMOLED dark theme:** dim raised bars and cards ([935eb84](https://github.com/hxreborn/morphe-patches/commit/935eb84cb6a09a305eb7be2753dec3fae489b5c3))
+* **Proton Mail - AMOLED dark theme:** dim buttons, chips and action bar ([d3e31fa](https://github.com/hxreborn/morphe-patches/commit/d3e31fa59e264f2f26ffec196c257dd579c88557))
+* **Proton Pass - AMOLED dark theme:** dim the vault drawer and sheets ([5406418](https://github.com/hxreborn/morphe-patches/commit/54064187a5f91033f4d6cba8fdc0d715cc407c85)), closes [#389](https://github.com/hxreborn/morphe-patches/issues/389)
+
 ## [1.62.0-dev.10](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.9...v1.62.0-dev.10) (2026-10-26)
 
 ### Updated App Support
