@@ -372,12 +372,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.12"
         - "1.62.0-dev.11"
         - "1.62.0-dev.10"
         - "1.62.0-dev.9"
         - "1.62.0-dev.8"
         - "1.62.0-dev.7"
-        - "1.62.0-dev.6"
         - "Older than these"
         # /generated
     validations:

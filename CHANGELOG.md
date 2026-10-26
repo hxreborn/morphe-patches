@@ -1,3 +1,9 @@
+## [1.62.0-dev.12](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.11...v1.62.0-dev.12) (2026-10-26)
+
+### Bug Fixes
+
+* **Musicolet - Unlock premium:** stop the crash after restoring a backup ([53ed34b](https://github.com/hxreborn/morphe-patches/commit/53ed34bc36757af94b0e4220487b8bd19b5f7750)), closes [#284](https://github.com/hxreborn/morphe-patches/issues/284)
+
 ## [1.62.0-dev.11](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.10...v1.62.0-dev.11) (2026-10-26)
 
 ### New Features
