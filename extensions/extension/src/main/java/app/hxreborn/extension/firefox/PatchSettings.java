@@ -64,6 +64,8 @@ public final class PatchSettings {
 
     static final Flag HIDE_PROMOS = new Flag("hide_promos");
 
+    static final Flag SILENCE_NOTIFICATIONS = new Flag("silence_promo_notifications");
+
     static final Flag FULL_ADDONS = new Flag("full_addon_collection");
 
     static final Flag UNLOCK_EXTENSIONS = new Flag("unlock_all_extensions");
@@ -159,6 +161,10 @@ public final class PatchSettings {
 
     public static boolean keepTabsLoaded() {
         return KEEP_TABS.get();
+    }
+
+    public static boolean silencePromoNotifications() {
+        return SILENCE_NOTIFICATIONS.get();
     }
 
     public static boolean hidePromos() {
@@ -266,6 +272,10 @@ public final class PatchSettings {
     }
 
     public static boolean keepTabsLoadedApplied() {
+        return false;
+    }
+
+    public static boolean silencePromoNotificationsApplied() {
         return false;
     }
 

@@ -44,14 +44,6 @@ val hidePromotionalPromptsPatch = bytecodePatch(
 
         forceSettingsPreference("pref_key_microsurvey_feature_enabled", false, HIDE_PROMOS)
 
-        MessageNotificationWorkFingerprint.matchSingle().method.whenEnabled(HIDE_PROMOS) { (result) ->
-            """
-                new-instance $result, $WORKER_RESULT_SUCCESS
-                invoke-direct { $result }, $WORKER_RESULT_SUCCESS-><init>()V
-                return-object $result
-            """
-        }
-
         DefaultBrowserPromptFingerprint.matchSingle().let { match ->
             val (_, moveResult) = match.instructionMatches
             val register = moveResult.getInstruction<OneRegisterInstruction>().registerA

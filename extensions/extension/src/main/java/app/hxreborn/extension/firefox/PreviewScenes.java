@@ -123,6 +123,11 @@ final class PreviewScenes {
                 "Home without a promotional card");
     }
 
+    static Scene notifications() {
+        return scene((pen) -> notificationShade(pen, true), (pen) -> notificationShade(pen, false),
+                "Promotional notifications arrive", "No promotional notifications");
+    }
+
     static Scene fullscreenToast() {
         return scene((pen) -> fullscreen(pen, true), (pen) -> fullscreen(pen, false),
                 "Fullscreen video shows the exit hint", "Fullscreen video without the exit hint");
@@ -304,6 +309,17 @@ final class PreviewScenes {
             if (tab == selected) {
                 pen.outline(x, 8, x + 60, 48, 8, pen.palette.accent, 2);
             }
+        }
+    }
+
+    private static void notificationShade(Pen pen, boolean promos) {
+        int rows = promos ? 3 : 1;
+        for (int row = 0; row < rows; row++) {
+            float top = 5 + 17 * row;
+            pen.fill(16, top, 280, top + 14, 6, pen.palette.bar);
+            pen.circle(27, top + 7, 4, (row == 0) ? pen.palette.outline : pen.palette.accent);
+            pen.skeleton(38, top + 4, 96, 3, skeleton(pen));
+            pen.skeleton(38, top + 9, 150, 2.5f, skeleton(pen));
         }
     }
 

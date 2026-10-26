@@ -72,7 +72,10 @@ final class PatchCatalog {
                         PatchSettings.HIDE_MOST_VISITED, PatchSettings.hideMostVisitedApplied(),
                         PreviewScenes.mostVisited()),
                 Row.of("Hide promotional prompts", "Hide promotional prompts", "Removes promo cards and prompts",
-                        PatchSettings.HIDE_PROMOS, PatchSettings.hidePromosApplied(), PreviewScenes.promos()))));
+                        PatchSettings.HIDE_PROMOS, PatchSettings.hidePromosApplied(), PreviewScenes.promos()),
+                Row.of("Silence promo notifications", "Silence promo notifications", "Stops marketing notifications",
+                        PatchSettings.SILENCE_NOTIFICATIONS, PatchSettings.silencePromoNotificationsApplied(),
+                        PreviewScenes.notifications()))));
         groups.add(new Group("Browsing",
                 Arrays.asList(
                         Row.of("Hide fullscreen toast", "Hide fullscreen toast", "Removes the exit hint",
