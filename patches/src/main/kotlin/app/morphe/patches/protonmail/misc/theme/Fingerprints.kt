@@ -9,6 +9,7 @@ import app.morphe.patcher.InstructionLocation
 import app.morphe.patcher.InstructionLocation.MatchAfterAnywhere
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.opcode
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
@@ -18,10 +19,12 @@ import app.morphe.patcher.resourceLiteral
 import app.morphe.patches.shared.misc.proton.CORE_BRAND_COLORS
 import app.morphe.patches.shared.misc.proton.ProtonPalette
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private object MailPalette {
     const val EERIE_BLACK = 0xFF191927L
     const val MIDNIGHT_BLUE = 0xFF222230L
+    const val GUNMETAL = 0xFF2B2B38L
     const val PURPLE_HEART = 0xFF5C3FD9L
     const val BLUE_CHALK = 0xFFEAE5FFL
     const val MAGNOLIA = 0xFFF5F2FFL
@@ -41,6 +44,8 @@ internal const val SETTINGS_BACKGROUND = MailPalette.MIDNIGHT_BLUE
 internal val DARK_BACKGROUND_COLORS = listOf(MAILBOX_BACKGROUND, SETTINGS_BACKGROUND)
 
 internal const val SIDEBAR_PRESSED_AND_SEPARATOR_COLOR = SETTINGS_BACKGROUND
+
+internal const val SHADE_40_COLOR = MailPalette.GUNMETAL
 
 private val LIGHT_BRAND_COLORS = listOf(
     ProtonPalette.CHAMBRAY,
@@ -85,6 +90,13 @@ internal object ColorSchemeFingerprint : Fingerprint(
             opcode = Opcode.INVOKE_DIRECT_RANGE,
         ),
     ),
+)
+
+internal fun colorGetterFingerprint(colorsClass: String, colorField: FieldReference) = Fingerprint(
+    definingClass = colorsClass,
+    returnType = "J",
+    parameters = listOf(),
+    filters = listOf(fieldAccess(colorField, Opcode.IGET_OBJECT, InstructionLocation.MatchFirst())),
 )
 
 internal object UpsellingDarkBackgroundFingerprint : Fingerprint(

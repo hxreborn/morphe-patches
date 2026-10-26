@@ -21,7 +21,7 @@ public final class AmoledThemeTest {
 
     private static final long PACKED_BLACK = 0xFF000000L << 32;
 
-    private static final long PACKED_SURFACE = 0xFF2B2B38L << 32;
+    private static final long PACKED_SURFACE = 0xFF15151CL << 32;
 
     private Context context;
 
