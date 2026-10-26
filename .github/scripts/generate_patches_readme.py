@@ -148,6 +148,7 @@ def versions_table(targets):
 ICONS = {
     "com.thesortdapp.sortd": "albo.png",
     "com.hardcodedjoy.iototoy": "iototoy.png",
+    "com.oneletters.audiobooksai": "audiobookunlimited.png",
     "ir.ilmili.telegraph": "graphmessenger.png",
     "all.in.one.calculator": "allinonecalculator.png",
     "com.allformatplayer.streamvideoplayer": "allvideoplayer.png",

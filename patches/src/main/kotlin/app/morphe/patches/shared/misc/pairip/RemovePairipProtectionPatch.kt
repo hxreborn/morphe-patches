@@ -14,6 +14,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.ALBO,
         AppCompatibilities.ALOA,
         AppCompatibilities.ANYTRACKER,
+        AppCompatibilities.AUDIOBOOK_UNLIMITED,
         AppCompatibilities.AUDIOLAB,
         AppCompatibilities.BANGLA_CALENDAR,
         AppCompatibilities.BIOBIRD,
