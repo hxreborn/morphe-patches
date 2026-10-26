@@ -89,7 +89,7 @@ private const val NOP = 0xe320f000.toInt()
 
 private const val CONDITION_MASK = 0x0fffffff
 
-private const val ALWAYS = 0xe0000000.toInt()
+private const val CONDITION_ALWAYS = 0xe0000000.toInt()
 
 private const val BRANCH = 0xea000000.toInt()
 
@@ -101,7 +101,7 @@ private val RETURN_FALSE = intArrayOf(0xe59a004c.toInt(), 0xe12fff1e.toInt())
 
 internal fun ByteArray.unlockPremiumArmeabiV7a() {
     fun find(what: String, pattern: ByteArray, mask: ByteArray) =
-        findOnce(ARMEABI_V7A_DART_AOT_LIBRARY, what, pattern, mask)
+        indexOfSingleMatch(ARMEABI_V7A_DART_AOT_LIBRARY, what, pattern, mask)
 
     fun branchTarget(at: Int): Int = at + 8 + ((readInt(at) shl 8) shr 6)
 
@@ -138,17 +138,17 @@ internal fun ByteArray.unlockPremiumArmeabiV7a() {
         ARMEABI_V7A_GUEST_PREMIUM_ACCOUNT_PROMPT,
         ARMEABI_V7A_GUEST_PREMIUM_ACCOUNT_PROMPT_MASK,
     ) + ACCOUNT_PROMPT_BRANCH_OFFSET
-    writeInstructions(accountPromptBranch, (readInt(accountPromptBranch) and CONDITION_MASK) or ALWAYS)
+    writeInstructions(accountPromptBranch, (readInt(accountPromptBranch) and CONDITION_MASK) or CONDITION_ALWAYS)
 
     val emptyFactory = branchTarget(
         find("the initial subscription", ARMEABI_V7A_INITIAL_SUBSCRIPTION, ARMEABI_V7A_INITIAL_SUBSCRIPTION_MASK),
     )
     val emptyFactoryCode = copyOfRange(emptyFactory, emptyFactory + ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY.size)
-    if (emptyFactoryCode.indexOfMasked(
-            ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY,
-            ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY_MASK,
-        ) != 0
-    ) {
+    val isEmptyFactory = emptyFactoryCode.indexOfMasked(
+        ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY,
+        ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY_MASK,
+    ) == 0
+    if (!isEmptyFactory) {
         throw PatchException("The initial subscription is not built by the empty factory")
     }
     val allocationStub = branchTarget(emptyFactory + FACTORY_ALLOCATION_OFFSET)

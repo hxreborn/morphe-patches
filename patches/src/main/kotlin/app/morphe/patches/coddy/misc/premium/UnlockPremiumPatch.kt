@@ -110,7 +110,7 @@ private val RETURN_FALSE = intArrayOf(0x9100c2c0.toInt(), 0xd65f03c0.toInt())
 
 internal const val ARMEABI_V7A_DART_AOT_LIBRARY = "lib/armeabi-v7a/libapp.so"
 
-internal fun ByteArray.findOnce(library: String, what: String, pattern: ByteArray, mask: ByteArray): Int {
+internal fun ByteArray.indexOfSingleMatch(library: String, what: String, pattern: ByteArray, mask: ByteArray): Int {
     val index = indexOfMasked(pattern, mask)
     if (index < 0) throw PatchException("Could not find $what in $library")
     if (indexOfMasked(pattern, mask, index + 1) >= 0) {
@@ -123,7 +123,8 @@ internal fun ByteArray.writeInstructions(at: Int, vararg instructions: Int) =
     instructions.forEachIndexed { slot, instruction -> writeInt(at + slot * 4, instruction) }
 
 private fun ByteArray.unlockPremiumArm64() {
-    fun find(what: String, pattern: ByteArray, mask: ByteArray) = findOnce(DART_AOT_LIBRARY, what, pattern, mask)
+    fun find(what: String, pattern: ByteArray, mask: ByteArray) =
+        indexOfSingleMatch(DART_AOT_LIBRARY, what, pattern, mask)
 
     fun branchTarget(at: Int): Int = at + ((readInt(at) shl 6) shr 4)
 
