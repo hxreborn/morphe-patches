@@ -1474,7 +1474,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6e9857865c0d4568e02ef76dc838ed282a3d24b12c7027b3926190d99b42fe09",
         ),
-        targets = listOf(AppTarget(version = "29.1.1.0", versionCode = 1290101, minSdk = 32)),
+        targets = listOf(AppTarget(version = "29.2.0.0", versionCode = 1290200, minSdk = 32)),
     )
 
     val VLLO = Compatibility(
