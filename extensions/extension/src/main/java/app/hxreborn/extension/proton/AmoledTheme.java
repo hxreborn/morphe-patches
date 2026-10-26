@@ -8,11 +8,15 @@ public final class AmoledTheme {
 
     private static final String KEY = "amoled_dark_theme";
 
+    private static final String DIM_RAISED_SURFACES_KEY = "amoled_dim_raised_surfaces";
+
     private static final long BLACK = 0xFF000000L;
 
     private static final long PACKED_BLACK = BLACK << 32;
 
-    private static final long PACKED_SURFACE = 0xFF15151CL << 32;
+    private static final long PACKED_SURFACE = 0xFF2B2B38L << 32;
+
+    private static final long PACKED_DIMMED_SURFACE = 0xFF15151CL << 32;
 
     private static final int ALPHA_MASK = 0xFF000000;
 
@@ -38,6 +42,14 @@ public final class AmoledTheme {
         PatchSettings.setEnabled(KEY, enabled);
     }
 
+    public static boolean isDimRaisedSurfacesEnabled() {
+        return isEnabled() && PatchSettings.isEnabled(DIM_RAISED_SURFACES_KEY, false);
+    }
+
+    static void setDimRaisedSurfacesEnabled(boolean enabled) {
+        PatchSettings.setEnabled(DIM_RAISED_SURFACES_KEY, enabled);
+    }
+
     public static long transformBackground(long original) {
         return (isEnabled()) ? BLACK : original;
     }
@@ -47,11 +59,14 @@ public final class AmoledTheme {
     }
 
     public static long transformPackedSurface(long original) {
-        return (isEnabled() && isDark(original)) ? PACKED_SURFACE : original;
+        if (!isEnabled() || !isDark(original)) {
+            return original;
+        }
+        return isDimRaisedSurfacesEnabled() ? PACKED_DIMMED_SURFACE : PACKED_SURFACE;
     }
 
     public static long transformPackedRaisedSurface(long original) {
-        if (!isEnabled() || !isDark(original)) {
+        if (!isDimRaisedSurfacesEnabled() || !isDark(original)) {
             return original;
         }
         final int argb = (int) (original >>> 32);

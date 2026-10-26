@@ -230,14 +230,25 @@ public final class PatchesSettingsActivity extends Activity {
                         })));
         }
         if (AmoledTheme.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Pure black backgrounds, darker buttons.",
+            appearanceRows.add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Pure black backgrounds.",
                     AmoledTheme.isEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
                             AmoledTheme.setEnabled(enabled);
+                            recreateContent();
                             confirmRestart();
                         }
                     }));
+            if (AmoledTheme.isEnabled()) {
+                appearanceRows.add(switchRow("Dim raised surfaces", "Darker bars, cards, buttons and sheets.",
+                        AmoledTheme.isDimRaisedSurfacesEnabled(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean enabled) {
+                                AmoledTheme.setDimRaisedSurfacesEnabled(enabled);
+                                confirmRestart();
+                            }
+                        }));
+            }
         }
         if (MaterialSwitches.isPatched()) {
             appearanceRows.add(switchRow(AppliedPatches.MATERIAL_SWITCHES, "Check and close icons in switches.",

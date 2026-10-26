@@ -21,7 +21,9 @@ public final class AmoledThemeTest {
 
     private static final long PACKED_BLACK = 0xFF000000L << 32;
 
-    private static final long PACKED_SURFACE = 0xFF15151CL << 32;
+    private static final long PACKED_SURFACE = 0xFF2B2B38L << 32;
+
+    private static final long PACKED_DIMMED_SURFACE = 0xFF15151CL << 32;
 
     private Context context;
 
@@ -169,7 +171,56 @@ public final class AmoledThemeTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    public void dimRaisedSurfacesIsOffByDefault() {
+        assertTrue(AmoledTheme.isEnabled());
+        assertFalse(AmoledTheme.isDimRaisedSurfacesEnabled());
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void undimmedRaisedSurfaceKeepsItsColor() {
+        assertEquals(packed(0xFF292733), AmoledTheme.transformPackedRaisedSurface(packed(0xFF292733)));
+        assertEquals(packed(0xFF2B2B38), AmoledTheme.transformPackedRaisedSurface(packed(0xFF2B2B38)));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void dimmedSurfaceUsesTheDarkerColor() {
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
+
+        assertEquals(PACKED_DIMMED_SURFACE, AmoledTheme.transformPackedSurface(packed(0xFF191927)));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void dimSettingHasNoEffectWhileTheThemeIsOff() {
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
+        PatchedBuild.setAmoledEnabled(false);
+
+        assertFalse(AmoledTheme.isDimRaisedSurfacesEnabled());
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void dimSettingIsStoredInThePatchPreferences() {
+        // when
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
+
+        // then
+        assertTrue(this.context.getSharedPreferences(PatchSettings.PREFERENCES_NAME, Context.MODE_PRIVATE)
+            .getBoolean("amoled_dim_raised_surfaces", false));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
     public void raisedSurfaceHalvesEachChannel() {
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
+
         assertEquals(packed(0xFF141319), AmoledTheme.transformPackedRaisedSurface(packed(0xFF292733)));
         assertEquals(packed(0xFF15151C), AmoledTheme.transformPackedRaisedSurface(packed(0xFF2B2B38)));
         assertEquals(packed(0xFF0F0F18), AmoledTheme.transformPackedRaisedSurface(packed(0xFF1F1F31)));
@@ -179,6 +230,8 @@ public final class AmoledThemeTest {
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
     public void raisedSurfaceKeepsAlphaAndColorSpaceBits() {
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
+
         assertEquals(packed(0x80141319) | 0x7FL, AmoledTheme.transformPackedRaisedSurface(packed(0x80292733) | 0x7FL));
     }
 
@@ -186,6 +239,8 @@ public final class AmoledThemeTest {
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
     public void raisedSurfaceLeavesLightColorsAlone() {
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
+
         assertEquals(packed(0xFFF5F4F2), AmoledTheme.transformPackedRaisedSurface(packed(0xFFF5F4F2)));
     }
 
@@ -193,6 +248,7 @@ public final class AmoledThemeTest {
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
     public void disabledThemeLeavesRaisedSurfacesAlone() {
+        PatchedBuild.setDimRaisedSurfacesEnabled(true);
         PatchedBuild.setAmoledEnabled(false);
 
         assertEquals(packed(0xFF292733), AmoledTheme.transformPackedRaisedSurface(packed(0xFF292733)));

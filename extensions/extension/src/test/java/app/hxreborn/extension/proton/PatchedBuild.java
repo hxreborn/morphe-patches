@@ -30,6 +30,10 @@ public final class PatchedBuild {
         AmoledTheme.setEnabled(enabled);
     }
 
+    public static void setDimRaisedSurfacesEnabled(boolean enabled) {
+        AmoledTheme.setDimRaisedSurfacesEnabled(enabled);
+    }
+
     public static void setUpgradePromotionsHidden(boolean hidden) {
         UpsellingVisibility.setHidden(hidden);
     }
