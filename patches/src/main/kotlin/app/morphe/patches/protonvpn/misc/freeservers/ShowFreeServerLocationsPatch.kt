@@ -17,6 +17,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.filterConstructorProperty
@@ -26,7 +27,6 @@ import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.shared.misc.smali.parameterRegister
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 

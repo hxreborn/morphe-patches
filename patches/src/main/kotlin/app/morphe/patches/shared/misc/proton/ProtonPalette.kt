@@ -26,6 +26,7 @@ internal object ProtonPalette {
     const val ENZIAN_BASE = 0xFF5252CCL
     const val PURPLE_BASE = 0xFF8080FFL
     const val BALTIC_SEA = 0xFF1C1B24L
+    const val BASTILLE = 0xFF292733L
 }
 
 internal val CORE_BRAND_COLORS = listOf(

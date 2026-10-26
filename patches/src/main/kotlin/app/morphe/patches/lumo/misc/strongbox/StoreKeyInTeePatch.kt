@@ -6,12 +6,12 @@ package app.morphe.patches.lumo.misc.strongbox
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.pairip.restoreWidgetActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
-import app.morphe.util.matchSingle
 
 private const val STRONGBOX_BACKED_PARAMETER = "p2"
 

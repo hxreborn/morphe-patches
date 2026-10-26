@@ -8,9 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.util.getFreeRegisterProvider
 
 internal const val STRING = "Ljava/lang/String;"
 internal const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/photoeditorpro"

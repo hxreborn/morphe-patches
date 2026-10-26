@@ -5,8 +5,8 @@
 package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 
 internal val playServicesCredentialProviderPatch = bytecodePatch {
     execute {

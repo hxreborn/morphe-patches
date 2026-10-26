@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.util.inputStreamFromBundledResource
 import org.w3c.dom.Element
+import java.io.File
 import java.util.logging.Logger
 
 private const val NATIVE_LIBRARY = "libhxpatch.so"
@@ -46,13 +47,14 @@ internal fun ResourcePatchContext.editIjiamiPayload(block: IjiamiPayload.() -> U
     editable.seal()
 
     classes.writeBytes(container.rebuild(payload))
+    appendCodeOverlay(editable.editedPackerStubs)
 }
 
 internal val ijiamiPatch = resourcePatch {
     execute {
         val profiles = nativeProfiles()
         if (profiles.isEmpty()) {
-            throw PatchException("No supported Ijiami packer library in assets/ijm_lib")
+            throw PatchException("No supported Ijiami packer library in assets")
         }
         profiles.forEach { (abi, profile) -> installNativeLibrary(abi, profile) }
 
@@ -77,17 +79,24 @@ internal val ijiamiPatch = resourcePatch {
     }
 }
 
-private fun packerLibrary(abi: String) = "assets/ijm_lib/$abi/libexec.so"
+private fun ResourcePatchContext.packerLibraries(packerAbi: String): List<File> =
+    get("assets").listFiles().orEmpty().sorted().flatMap { directory ->
+        File(directory, packerAbi).listFiles { file -> file.name.endsWith(".so") }.orEmpty().sorted()
+    }
 
 private fun ResourcePatchContext.nativeProfiles(): Map<String, NativeProfile> =
     PACKER_ABI_BY_LIBRARY_ABI.mapNotNull { (abi, packerAbi) ->
-        val packer = get(packerLibrary(packerAbi))
-        if (!packer.exists() || !shipsNativeLibraries(abi)) return@mapNotNull null
+        val libraries = packerLibraries(packerAbi)
+        if (libraries.isEmpty() || !shipsNativeLibraries(abi)) return@mapNotNull null
 
-        val libexec = packer.readBytes()
-        val profile = NativeProfiles.forLibexecOrNull(libexec)
+        val profile = libraries.firstNotNullOfOrNull { NativeProfiles.forLibexecOrNull(it.readBytes()) }
         if (profile == null) {
-            logger.warning("Unsupported Ijiami native packer build for $abi: libexec.so sha-256 ${NativeProfiles.sha256(libexec)}")
+            val packer = libraries.maxBy { it.length() }
+            logger.warning(
+                "Unsupported Ijiami native packer build for $abi: " +
+                    "${packer.parentFile.parentFile.name}/$packerAbi/${packer.name} sha-256 " +
+                    NativeProfiles.sha256(packer.readBytes()),
+            )
         }
         profile?.let { abi to it }
     }.toMap()

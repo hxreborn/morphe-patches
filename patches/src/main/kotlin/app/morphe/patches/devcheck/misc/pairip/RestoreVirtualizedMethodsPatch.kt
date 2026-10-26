@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedBody
@@ -16,7 +17,6 @@ import app.morphe.patches.shared.misc.smali.addDefaultConstructor
 import app.morphe.patches.shared.misc.smali.assembleDex
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.inputStreamFromBundledResource
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction

@@ -27,7 +27,9 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `aloa.png` | Aloa (`com.getaloa.app`) | Aloa | APK 1.3.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
 | `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.19.1, adaptive icon `res/mipmap-anydpi-v26/botim_logo.xml` (square `res/mipmap-xxxhdpi-v4/botim_logo_square.png` cut to a circle) |
+| `clink.png` | Clink (`ltd.anti.clink`) | Anti Limited | APK 1.9.2, square icon `res/drawable-nodpi-v4/clink_icon.png` cut to a circle |
 | `clipstudiopaint.png` | Clip Studio Paint (`jp.co.celsys.clipstudiopaint.googleplay`) | CELSYS, Inc. | APK 5.1.4, `res/mipmap-xxhdpi-v4/ic_launcher_round.png` |
+| `cloneapp.png` | Clone App (`com.pengyou.cloneapp`) | SZPY Tech | APK 4.2.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `depthpix.png` | DepthPix (`com.androholic.wallpapersdepthpix`) | Androholic | APK 1.0.12, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `devcheck.png` | DevCheck (`flar2.devcheck`) | flar2 | APK 6.57, adaptive icon `res/mipmap-xxxhdpi-v4/ic_launcher_background.webp` under `ic_launcher_foreground.webp` |
 | `psiphon.png` | Psiphon (`com.psiphon3.subscription`) | Psiphon Inc. | APK 2.5.11, `res/mipmap-xxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
@@ -45,6 +47,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `poe.png` | Poe (`com.poe.android`) | Quora, Inc. | APK a3.77.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `trainline.png` | Trainline (`com.thetrainline`) | trainline | APK 414.0.0.182041, adaptive icon `mipmap/ttl_ic_launcher` |
 | `readera.png` | ReadEra (`org.readera`) | READERA LLC | APK 26.05.20, `mipmap/d` (round icon), xxxhdpi |
+| `pleco.png` | Pleco (`com.pleco.chinesesystem`) | Pleco Software | APK 3.2.101, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `moonreader.png` | Moon+ Reader (`com.flyersoft.moonreader`) | Moon+ | APK 10.7, adaptive icon `res/drawable-anydpi-v26/icon.xml` |
 | `calcnote.png` | CalcNote (`com.burton999.notecal`) | burton999 | APK 2.25.111, `res/drawable-xxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `castlefortv.png` | Castle for TV (`com.gxnet.castle.indiatv`) | Castle | APK 1.1.5, `res/S1.webp` (square icon cut to a circle) |
@@ -96,8 +99,11 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `jvdroid.png` | Jvdroid (`ru.iiec.jvdroid`) | Lider Soft KZ | APK 2.8, `mipmap/ic_launcher`, xxxhdpi |
 | `pydroid.png` | Pydroid 3 (`ru.iiec.pydroid3`) | Lider Soft KZ | APK 8.6_arm64, `mipmap/app_icon_pydroid3`, xxxhdpi |
 | `yiiot.png` | Yi iot (`com.yunyi.smartcamera`) | Kami HK | APK 5.1.7, `res/drawable-xxhdpi-v4/ic_launcher.webp`, cut to a circle |
+| `blockit.png` | blockit (`com.hypenet.focused`) | Sgnoogle | APK 2.2.7, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` (`mipmap/ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi) |
+| `monet.png` | Monet Launcher (`com.klevico.monet`) | Klevico | APK 1.1.0, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.webp` cut to a circle |
 | `blurwall.png` | BlurWall (`apps.automan.blurwallpaper`) | automan | APK 2.9.8, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `catzy.png` | Catzy (`com.nieruo.healthapp`) | Nieruo | APK 1.61.0, `res/mipmap-xxxhdpi-v4/ic_launcher_103.webp` |
+| `coddy.png` | Coddy (`tech.coddy.coddyapp`) | Coddy | Play 2.2.9, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `cubasisle3.png` | Cubasis LE 3 (`com.steinberg.cubasisle3`) | Steinberg Media Technologies | Play 3.8.6, adaptive icon `icon_le` (`res/drawable-xxhdpi-v4/icon_le_bg.png` under `icon_le_fg.png`, xxhdpi config split) |
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |

@@ -6,8 +6,8 @@ package app.morphe.patches.privacynotes.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/privacynotes/ProUnlock;"
 

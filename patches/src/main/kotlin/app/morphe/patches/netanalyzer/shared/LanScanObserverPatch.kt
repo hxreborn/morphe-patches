@@ -7,8 +7,8 @@ package app.morphe.patches.netanalyzer.shared
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
 private const val MENU_RUNNING = "running"

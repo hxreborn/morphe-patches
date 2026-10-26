@@ -21,7 +21,7 @@ public final class AmoledThemeTest {
 
     private static final long PACKED_BLACK = 0xFF000000L << 32;
 
-    private static final long PACKED_SURFACE = 0xFF2B2B38L << 32;
+    private static final long PACKED_SURFACE = 0xFF15151CL << 32;
 
     private Context context;
 
@@ -164,6 +164,38 @@ public final class AmoledThemeTest {
         assertEquals(PACKED_BLACK, AmoledTheme.transformPackedBackground(packed(0xFF191927) | 0xFFFFFFFFL));
         assertEquals(PACKED_SURFACE, AmoledTheme.transformPackedSurface(packed(0xFF191927) | 0xFFFFFFFFL));
         assertEquals(packed(0xFFFFFFFF) | 0x7FL, AmoledTheme.transformPackedBackground(packed(0xFFFFFFFF) | 0x7FL));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void raisedSurfaceHalvesEachChannel() {
+        assertEquals(packed(0xFF141319), AmoledTheme.transformPackedRaisedSurface(packed(0xFF292733)));
+        assertEquals(packed(0xFF15151C), AmoledTheme.transformPackedRaisedSurface(packed(0xFF2B2B38)));
+        assertEquals(packed(0xFF0F0F18), AmoledTheme.transformPackedRaisedSurface(packed(0xFF1F1F31)));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void raisedSurfaceKeepsAlphaAndColorSpaceBits() {
+        assertEquals(packed(0x80141319) | 0x7FL, AmoledTheme.transformPackedRaisedSurface(packed(0x80292733) | 0x7FL));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void raisedSurfaceLeavesLightColorsAlone() {
+        assertEquals(packed(0xFFF5F4F2), AmoledTheme.transformPackedRaisedSurface(packed(0xFFF5F4F2)));
+    }
+
+    @Test
+    @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
+            PatchedBuild.Applied.class })
+    public void disabledThemeLeavesRaisedSurfacesAlone() {
+        PatchedBuild.setAmoledEnabled(false);
+
+        assertEquals(packed(0xFF292733), AmoledTheme.transformPackedRaisedSurface(packed(0xFF292733)));
     }
 
 }

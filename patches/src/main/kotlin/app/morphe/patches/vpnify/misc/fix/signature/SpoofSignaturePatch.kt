@@ -7,11 +7,11 @@ package app.morphe.patches.vpnify.misc.fix.signature
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.all.misc.hex.hexPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest

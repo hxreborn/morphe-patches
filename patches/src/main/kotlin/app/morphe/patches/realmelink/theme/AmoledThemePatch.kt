@@ -15,14 +15,14 @@ import app.morphe.patcher.util.Document
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.png.PngImage
 import app.morphe.util.adoptChild
 import app.morphe.util.childElementsSequence
 import app.morphe.util.doRecursively
-import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.getNode
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import java.io.File

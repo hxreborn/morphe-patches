@@ -5,13 +5,14 @@
 package app.morphe.patches.botim.misc.tracking
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.botim.misc.signin.fixSignInPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val disableTrackingPatch = bytecodePatch(
@@ -21,6 +22,7 @@ val disableTrackingPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     dependsOn(
+        fixSignInPatch,
         disableAnalyticsCollectionPatch,
         disableCrashlyticsCollectionPatch,
         deactivateFirebaseAnalyticsPatch,

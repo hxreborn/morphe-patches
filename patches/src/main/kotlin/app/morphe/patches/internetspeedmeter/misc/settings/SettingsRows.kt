@@ -6,7 +6,7 @@ package app.morphe.patches.internetspeedmeter.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
 import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.util.getReference
+import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 internal fun BytecodePatchContext.removeSettingsRow(titleName: String) {

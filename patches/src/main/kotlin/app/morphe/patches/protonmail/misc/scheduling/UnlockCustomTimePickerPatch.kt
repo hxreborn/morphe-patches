@@ -10,10 +10,10 @@ package app.morphe.patches.protonmail.misc.scheduling
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 

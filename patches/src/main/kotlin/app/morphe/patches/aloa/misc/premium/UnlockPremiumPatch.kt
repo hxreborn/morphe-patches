@@ -6,10 +6,10 @@ package app.morphe.patches.aloa.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 
 private const val ENTITLEMENT_ID = "subscribed"
 private const val ENTITLEMENT_CLASS = "Lcom/superwall/sdk/models/entitlements/Entitlement;"

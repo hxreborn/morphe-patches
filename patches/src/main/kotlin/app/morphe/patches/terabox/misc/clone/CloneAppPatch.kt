@@ -8,11 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.patch.stringOption
+import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
 import app.morphe.util.findMutableMethodOf
 import app.morphe.util.getNode
-import app.morphe.util.getReference
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import org.w3c.dom.Element

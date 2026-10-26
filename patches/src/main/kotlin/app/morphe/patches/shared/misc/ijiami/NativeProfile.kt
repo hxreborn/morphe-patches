@@ -21,6 +21,11 @@ internal object NativeProfiles {
             "libhxpatch-1f3fe693.so",
         ),
         NativeProfile(
+            "2d62d8b7",
+            "2d62d8b7e4b9413462b5b21ed1a4a8acd4a15dfff5b1b443f4cf0d0c1c998ec8",
+            "libhxpatch-2d62d8b7.so",
+        ),
+        NativeProfile(
             "ed71312c",
             "ed71312c4f1427b0ea9b8628b2aa4ec1cfa5a841a8ff425deeb2a41bba713dc2",
             "libhxpatch-ed71312c.so",

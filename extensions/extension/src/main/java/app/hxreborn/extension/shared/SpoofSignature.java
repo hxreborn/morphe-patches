@@ -37,15 +37,17 @@ public class SpoofSignature extends Application {
 
     private static Object spoofedPackageManager;
 
+    private static final Signature spoofedSignature;
+
     static {
         String packageName = "<package-name>";
         String certificate = "<certificate>";
 
-        Signature spoofed = new Signature(Base64.decode(certificate, Base64.DEFAULT));
+        spoofedSignature = new Signature(Base64.decode(certificate, Base64.DEFAULT));
         try {
-            spoofPackageInfoCreator(packageName, spoofed);
+            spoofPackageInfoCreator(packageName, spoofedSignature);
         } catch (ReflectiveOperationException ex) {
-            spoofPackageManagerBinder(packageName, spoofed);
+            spoofPackageManagerBinder(packageName, spoofedSignature);
         }
     }
 
@@ -53,13 +55,12 @@ public class SpoofSignature extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
-        if (packageManagerBinder == null) {
-            return;
-        }
-
         PackageManager packageManager = base.getPackageManager();
-        replacePackageManagerProxy(packageManager);
-        packageManagerBinder.learnPackageInfoTransactionCode(packageManager);
+        if (packageManagerBinder != null) {
+            replacePackageManagerProxy(packageManager);
+            packageManagerBinder.learnPackageInfoTransactionCode(packageManager);
+        }
+        spoofCachedPackageInfo(packageManager, base.getPackageName());
     }
 
     private static void spoofPackageInfoCreator(String packageName, Signature spoofed)
@@ -84,6 +85,24 @@ public class SpoofSignature extends Application {
         Field creatorField = PackageInfo.class.getDeclaredField("CREATOR");
         creatorField.setAccessible(true);
         creatorField.set(null, creator);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void spoofCachedPackageInfo(PackageManager packageManager, String packageName) {
+        spoofCachedPackageInfo(packageManager, packageName, PackageManager.GET_SIGNATURES);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            spoofCachedPackageInfo(packageManager, packageName, PackageManager.GET_SIGNING_CERTIFICATES);
+            spoofCachedPackageInfo(packageManager, packageName,
+                    PackageManager.GET_SIGNATURES | PackageManager.GET_SIGNING_CERTIFICATES);
+        }
+    }
+
+    private static void spoofCachedPackageInfo(PackageManager packageManager, String packageName, int flags) {
+        try {
+            spoofSignatures(packageManager.getPackageInfo(packageName, flags), packageName, spoofedSignature);
+        } catch (PackageManager.NameNotFoundException ex) {
+            throw new IllegalStateException("Could not read the package info of " + packageName, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")

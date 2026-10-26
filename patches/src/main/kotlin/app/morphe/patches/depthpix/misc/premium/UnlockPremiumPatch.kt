@@ -7,10 +7,10 @@ package app.morphe.patches.depthpix.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.findInstructionIndicesReversedOrThrow
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 
 @Suppress("unused")

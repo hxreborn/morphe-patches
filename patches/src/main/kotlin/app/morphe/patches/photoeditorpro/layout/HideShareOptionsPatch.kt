@@ -6,11 +6,11 @@ package app.morphe.patches.photoeditorpro.layout
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
 private const val RESULT_SCREEN_CLASS = "$EXTENSION_PACKAGE/ResultScreen;"

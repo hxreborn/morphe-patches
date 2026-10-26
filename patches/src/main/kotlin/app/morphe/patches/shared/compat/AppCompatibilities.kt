@@ -173,6 +173,19 @@ internal object AppCompatibilities {
         ),
     )
 
+    val BLOCKIT = Compatibility(
+        name = "blockit",
+        packageName = "com.hypenet.focused",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0xE3E1DD,
+        signatures = setOf(
+            "2ae4c0e21d3b244c69d6f122c2a1df907ac4c8d08f21c74425ff63c2b74efb1b",
+        ),
+        targets = listOf(
+            AppTarget(version = "2.2.7", versionCode = 152, minSdk = 28),
+        ),
+    )
+
     val BLURWALL = Compatibility(
         name = "BlurWall",
         packageName = "apps.automan.blurwallpaper",
@@ -219,7 +232,7 @@ internal object AppCompatibilities {
         ),
         targets = listOf(
             AppTarget(version = "2.1.1", versionCode = 148, minSdk = 23),
-            AppTarget(version = "2.1.3", versionCode = 157, minSdk = 23),
+            AppTarget(version = "2.1.3", minSdk = 23),
         ),
     )
 
@@ -247,6 +260,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val CLINK = Compatibility(
+        name = "Clink",
+        packageName = "ltd.anti.clink",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF7F7F8,
+        signatures = setOf(
+            "8ea7bd2c094bd6d2dfbd605764c42ffd57c3d2ecf781b9aaf0135ff06b0cbde0",
+        ),
+        targets = listOf(AppTarget(version = "1.9.2", versionCode = 194, minSdk = 28)),
+    )
+
     val CLIP_STUDIO_PAINT = Compatibility(
         name = "Clip Studio Paint",
         packageName = "jp.co.celsys.clipstudiopaint.googleplay",
@@ -256,6 +280,28 @@ internal object AppCompatibilities {
             "2c7507b2c986a1e3750c0d4876d6b1e8035b873a5d221149c167293b3e5449ca",
         ),
         targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 33)),
+    )
+
+    val CLONE_APP = Compatibility(
+        name = "Clone App",
+        packageName = "com.pengyou.cloneapp",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x508CEC,
+        signatures = setOf(
+            "828b91795e6ef35a08c2fafe039bec74beffa824bf063167bc30257b14c81127",
+        ),
+        targets = listOf(AppTarget(version = "4.2.2", versionCode = 820, minSdk = 32)),
+    )
+
+    val CODDY = Compatibility(
+        name = "Coddy",
+        packageName = "tech.coddy.coddyapp",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x29A9E2,
+        signatures = setOf(
+            "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728",
+        ),
+        targets = listOf(AppTarget(version = "2.2.9", versionCode = 152, minSdk = 32)),
     )
 
     val CUBASIS_LE_3 = Compatibility(
@@ -639,6 +685,19 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.6.6", versionCode = 18, minSdk = 21)),
     )
 
+    val MONET = Compatibility(
+        name = "Monet Launcher",
+        packageName = "com.klevico.monet",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0x657085,
+        signatures = setOf(
+            "1b3d405d34ab4a1ba98c26ac0efdf7b79371724fa039c8614e162c402f984af1",
+        ),
+        targets = listOf(
+            AppTarget(version = "1.1.0", versionCode = 134, minSdk = 26),
+        ),
+    )
+
     val MOON_READER = Compatibility(
         name = "Moon+ Reader",
         packageName = "com.flyersoft.moonreader",
@@ -663,6 +722,7 @@ internal object AppCompatibilities {
         ),
         targets = listOf(
             AppTarget(version = "4.0.03.0918.03", versionCode = 50020129, minSdk = 29),
+            AppTarget(version = "4.0.03.1022.03", versionCode = 50020133, minSdk = 29),
         ),
     )
 
@@ -908,6 +968,17 @@ internal object AppCompatibilities {
             "626c56a43dab2f279a257008783c7e752d1ad9ad46cfff9fd858ce68d3ff10ab",
         ),
         targets = listOf(AppTarget(version = "13.4.0", versionCode = 21304000, minSdk = 24)),
+    )
+
+    val PLECO = Compatibility(
+        name = "Pleco",
+        packageName = "com.pleco.chinesesystem",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x005A94,
+        signatures = setOf(
+            "780a2a639a3ccb65621e0caccf18fa38c91f6cbf351d453742ebe2a114b09624",
+        ),
+        targets = listOf(AppTarget(version = "3.2.101", versionCode = 3460, minSdk = 28)),
     )
 
     val POCKET_WHIP = Compatibility(

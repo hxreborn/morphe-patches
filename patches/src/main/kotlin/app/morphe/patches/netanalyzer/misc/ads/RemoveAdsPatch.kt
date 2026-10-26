@@ -5,14 +5,14 @@
 package app.morphe.patches.netanalyzer.misc.ads
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.netanalyzer.shared.ClickableRowFingerprint
 import app.morphe.patches.netanalyzer.shared.HeaderRowFingerprint
 import app.morphe.patches.netanalyzer.shared.disableTamperDetectionPatch
 import app.morphe.patches.netanalyzer.shared.removeComposableCall
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 private const val PRO_VERSION_HEADER = "Pro Version"
 private val ABOUT_ROWS_TO_REMOVE = listOf("Full Feature List", "Configure Ad Consent")

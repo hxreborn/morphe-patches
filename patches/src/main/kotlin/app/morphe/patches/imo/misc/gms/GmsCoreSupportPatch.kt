@@ -7,10 +7,10 @@ package app.morphe.patches.imo.misc.gms
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patches.imo.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
-import app.morphe.util.matchAllMethodIndicesForEach
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/imo/AccountChooser;"

@@ -5,9 +5,9 @@
 package app.morphe.patches.terabox.misc.recommendations
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
-import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val hideVideoRecommendationsPatch = bytecodePatch(

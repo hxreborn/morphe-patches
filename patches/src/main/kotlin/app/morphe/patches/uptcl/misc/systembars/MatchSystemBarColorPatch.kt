@@ -6,9 +6,9 @@ package app.morphe.patches.uptcl.misc.systembars
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
-import app.morphe.util.matchSingle
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/uptcl/WindowBackground;"
 

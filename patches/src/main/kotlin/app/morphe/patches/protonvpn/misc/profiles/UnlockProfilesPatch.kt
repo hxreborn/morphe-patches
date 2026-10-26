@@ -7,6 +7,7 @@ package app.morphe.patches.protonvpn.misc.profiles
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
@@ -18,7 +19,6 @@ import app.morphe.patches.protonvpn.misc.restrictions.invertFreeServerCheckForFr
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"

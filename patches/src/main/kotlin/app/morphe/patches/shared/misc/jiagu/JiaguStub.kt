@@ -5,7 +5,9 @@
 package app.morphe.patches.shared.misc.jiagu
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.shared.DEX_FILE_SIZE_OFFSET
 import app.morphe.patches.shared.misc.smali.assembleDex
+import app.morphe.patches.shared.writeInt
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.Opcodes
@@ -37,7 +39,7 @@ private const val MAX_LAYOUT_ATTEMPTS = 16
 private val dexOpcodes = Opcodes.forDexVersion(35)
 
 internal fun JiaguDex.withLoader(loaderSmali: String): ByteArray {
-    val stock = DexBackedDexFile(dexOpcodes, ByteBuffer.wrap(stub))
+    val stock = DexBackedDexFile(dexOpcodes, ByteBuffer.wrap(stub.apply { writeInt(DEX_FILE_SIZE_OFFSET, size) }))
     val loader = loaderMethod(loaderSmali)
 
     var padding = 0

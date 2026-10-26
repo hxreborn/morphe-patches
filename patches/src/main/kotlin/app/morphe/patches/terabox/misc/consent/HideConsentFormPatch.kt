@@ -7,10 +7,10 @@ package app.morphe.patches.terabox.misc.consent
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.indexOfFirstStringInstructionOrThrow
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val BLOCKED_REQUEST_URL = "https://consent.invalid/a/consent"

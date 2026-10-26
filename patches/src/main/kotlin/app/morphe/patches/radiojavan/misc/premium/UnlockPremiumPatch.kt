@@ -5,11 +5,11 @@
 package app.morphe.patches.radiojavan.misc.premium
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.radiojavan.misc.ads.disableSubscriptionAdFlagsPatch
 import app.morphe.patches.radiojavan.shared.subscriptionGetterFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(

@@ -207,10 +207,131 @@ private val RESTORED_METHODS = listOf(
         """,
     ),
     RestoredMethod(
-        "Lkb;", DO_IN_BACKGROUND, 2,
+        "Lkb;", DO_IN_BACKGROUND, 12,
         """
-            sget-object p0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
-            return-object p0
+            iget v0, p0, Lkb;->a:I
+            if-nez v0, :clear
+            iget-object v0, p0, Lkb;->e:Ljava/lang/Object;
+            check-cast v0, Lk00;
+            invoke-static {}, $APP_PACKAGE/MyApplication;->k()Z
+            move-result v1
+            if-nez v1, :backup_start
+            const/4 v1, 0x1
+            sput-boolean v1, $APP_PACKAGE/MyApplication;->R:Z
+            sget-object v1, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
+            return-object v1
+            :backup_start
+            iget-boolean v1, p0, Lkb;->c:Z
+            invoke-static {v0, v1}, Lmb;->a(Lk00;Z)V
+            invoke-static {}, Lmb;->j()V
+            :backup_end
+            .catch Ljava/lang/Throwable; {:backup_start .. :backup_end} :backup_failed
+            const/4 v1, 0x1
+            invoke-static {v1}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;
+            move-result-object v1
+            return-object v1
+            :backup_failed
+            move-exception v1
+            invoke-virtual {v1}, Ljava/lang/Throwable;->printStackTrace()V
+            :delete_start
+            invoke-virtual {v0}, Lk00;->e()Z
+            :delete_end
+            .catch Ljava/lang/Throwable; {:delete_start .. :delete_end} :backup_discarded
+            :backup_discarded
+            sget-object v1, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
+            return-object v1
+            :clear
+            iget-object v0, p0, Lkb;->e:Ljava/lang/Object;
+            check-cast v0, Ljava/util/List;
+            const/4 v1, 0x0
+            :clear_start
+            const/4 v2, 0x0
+            invoke-static {v2}, Ljava/lang/Integer;->valueOf(I)Ljava/lang/Integer;
+            move-result-object v2
+            sget-object v3, $APP_PACKAGE/MyApplication;->j:Lqn1;
+            invoke-virtual {v3}, Landroid/database/sqlite/SQLiteOpenHelper;->getWritableDatabase()Landroid/database/sqlite/SQLiteDatabase;
+            move-result-object v1
+            invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->beginTransactionNonExclusive()V
+            new-instance v3, Landroid/content/ContentValues;
+            const/4 v4, 0x7
+            invoke-direct {v3, v4}, Landroid/content/ContentValues;-><init>(I)V
+            const-string v4, "COL_NUM_PLAYED"
+            invoke-virtual {v3, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+            const-string v4, "COL_NUM_PLAYED_W"
+            invoke-virtual {v3, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+            const-string v4, "COL_NUM_PLAYED_M"
+            invoke-virtual {v3, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+            const-string v4, "COL_NUM_PLAYED_Y"
+            invoke-virtual {v3, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+            const-string v4, "COL_LAST_PLAYED"
+            invoke-virtual {v3, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+            const-string v4, "COL_LASTPOS"
+            invoke-virtual {v3, v4, v2}, Landroid/content/ContentValues;->put(Ljava/lang/String;Ljava/lang/Integer;)V
+            const/4 v4, 0x1
+            new-array v4, v4, [Ljava/lang/String;
+            sget-object v5, Lcom/google/android/exoplayer2/video/ZR/pVkdwM;->xiRminNIZti:Ljava/lang/String;
+            invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+            move-result-object v6
+            :update_next
+            invoke-interface {v6}, Ljava/util/Iterator;->hasNext()Z
+            move-result v7
+            if-eqz v7, :updated
+            invoke-interface {v6}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+            move-result-object v7
+            check-cast v7, Ldm0;
+            iget-object v7, v7, Ldm0;->c:Lkn1;
+            iget-object v7, v7, Lkn1;->f:Lro;
+            invoke-static {v7}, Lwf0;->Q0(Ljava/lang/Object;)Ljava/lang/String;
+            move-result-object v7
+            const/4 v8, 0x0
+            aput-object v7, v4, v8
+            const-string v7, "TABLE_SONGS"
+            invoke-virtual {v1, v7, v3, v5, v4}, Landroid/database/sqlite/SQLiteDatabase;->update(Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I
+            goto :update_next
+            :updated
+            invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->setTransactionSuccessful()V
+            invoke-static {v0}, Ld51;->b(Ljava/util/List;)V
+            invoke-interface {v0}, Ljava/util/List;->iterator()Ljava/util/Iterator;
+            move-result-object v6
+            :reset_next
+            invoke-interface {v6}, Ljava/util/Iterator;->hasNext()Z
+            move-result v7
+            if-eqz v7, :reset_done
+            invoke-interface {v6}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+            move-result-object v7
+            check-cast v7, Ldm0;
+            const/4 v8, 0x0
+            iput v8, v7, Ldm0;->t:I
+            iput v8, v7, Ldm0;->r:I
+            iput v8, v7, Ldm0;->s:I
+            iput v8, v7, Ldm0;->o:I
+            const-wide/16 v8, 0x0
+            iput-wide v8, v7, Ldm0;->m:J
+            iput-wide v8, v7, Ldm0;->n:J
+            goto :reset_next
+            :reset_done
+            invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->endTransaction()V
+            :clear_end
+            .catch Ljava/lang/Throwable; {:clear_start .. :clear_end} :clear_failed
+            :cleared
+            const v0, 0x7f12018a
+            const/4 v1, 0x0
+            invoke-static {v0, v1}, Lwf0;->O0(II)V
+            const/4 v0, 0x0
+            return-object v0
+            :clear_failed
+            move-exception v2
+            invoke-virtual {v2}, Ljava/lang/Throwable;->printStackTrace()V
+            if-eqz v1, :cleared
+            :end_start
+            invoke-virtual {v1}, Landroid/database/sqlite/SQLiteDatabase;->endTransaction()V
+            :end_end
+            .catch Ljava/lang/Throwable; {:end_start .. :end_end} :end_failed
+            goto :cleared
+            :end_failed
+            move-exception v2
+            invoke-virtual {v2}, Ljava/lang/Throwable;->printStackTrace()V
+            goto :cleared
         """,
     ),
     RestoredMethod(

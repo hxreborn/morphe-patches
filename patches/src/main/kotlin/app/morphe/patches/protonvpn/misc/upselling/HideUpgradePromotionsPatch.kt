@@ -9,6 +9,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
@@ -23,8 +25,6 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.smali.toJavaClassName
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 

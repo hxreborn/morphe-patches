@@ -9,6 +9,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.shared.themeColorReadInstructions
 import app.morphe.patches.shared.misc.proton.COMPOSER_TYPE
 import app.morphe.patches.shared.misc.proton.PATCHES_MENU_CLASS
@@ -20,8 +22,6 @@ import app.morphe.patches.shared.misc.proton.literalWrittenTo
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.util.getReference
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference

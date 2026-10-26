@@ -7,8 +7,8 @@ package app.morphe.patches.narababy.shared
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.util.matchSingle
 import app.morphe.util.findInstructionIndicesReversedOrThrow
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 

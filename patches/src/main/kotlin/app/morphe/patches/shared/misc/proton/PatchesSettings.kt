@@ -18,10 +18,10 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.util.getReference
 import app.morphe.util.indexOfFirstInstructionOrThrow
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference

@@ -6,11 +6,11 @@ package app.morphe.patches.musicolet.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 import java.util.Base64
 
 private const val APPLICATION_CLASS = "Lin/krosbits/musicolet/MyApplication;"

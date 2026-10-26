@@ -6,8 +6,8 @@ package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 
 context(context: BytecodePatchContext)
 internal fun registerAtLaunch(receiver: String, registration: String, classes: List<String> = emptyList()) {

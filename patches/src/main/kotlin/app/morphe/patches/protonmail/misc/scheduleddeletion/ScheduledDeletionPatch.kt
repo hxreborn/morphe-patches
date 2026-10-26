@@ -9,14 +9,14 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.uniffiCallsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.getFreeRegisterProvider
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction

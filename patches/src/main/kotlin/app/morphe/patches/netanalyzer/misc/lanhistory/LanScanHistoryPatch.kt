@@ -6,6 +6,7 @@ package app.morphe.patches.netanalyzer.misc.lanhistory
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MainActivityOnCreateFingerprint
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
@@ -18,7 +19,6 @@ import app.morphe.patches.netanalyzer.shared.lanScanObserverPatch
 import app.morphe.patches.netanalyzer.shared.toolbarActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val lanScanHistoryPatch = bytecodePatch(

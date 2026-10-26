@@ -7,6 +7,9 @@ package app.morphe.patches.netanalyzer.misc.devicenames
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
@@ -15,9 +18,6 @@ import app.morphe.patches.netanalyzer.shared.registerAtLaunch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.toJavaClassName
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.getReference
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val REGISTRATION_SEPARATOR = ";"

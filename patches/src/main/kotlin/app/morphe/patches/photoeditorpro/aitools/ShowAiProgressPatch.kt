@@ -10,6 +10,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.getReference
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.ENHANCE_TASK_CLASS
@@ -21,8 +23,6 @@ import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.methodMatching
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.parameterRegister
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.getReference
 import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstLiteralInstruction

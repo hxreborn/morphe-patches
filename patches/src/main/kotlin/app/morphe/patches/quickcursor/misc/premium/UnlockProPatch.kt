@@ -6,9 +6,9 @@ package app.morphe.patches.quickcursor.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
 
 private const val LIFETIME_STATE = "lifetime"
 

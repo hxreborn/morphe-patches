@@ -11,6 +11,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.shared.misc.proton.SettingsRowIcon
 import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
@@ -18,7 +19,6 @@ import app.morphe.patches.shared.misc.proton.attachPatchContext
 import app.morphe.patches.shared.misc.proton.injectAppCompatDefaultNightMode
 import app.morphe.patches.shared.misc.proton.injectBundleVersion
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import java.util.logging.Logger
 

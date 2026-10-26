@@ -5,10 +5,10 @@
 package app.morphe.patches.castle.misc.update
 
 import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.secshell.editSecShellPayload
 import app.morphe.patches.shared.misc.secshell.secShellPayloadPatch
-import app.morphe.util.returnEarly
 
 private const val VERSION_CLASS = "Lcom/gxgx/daqiandy/bean/VersionBean;"
 

@@ -7,6 +7,8 @@ package app.morphe.patches.protonauthenticator.misc.loadingindicator
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
@@ -14,8 +16,6 @@ import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
-import app.morphe.util.getReference
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 

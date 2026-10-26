@@ -6,11 +6,11 @@ package app.morphe.patches.banglacalendar.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
 private const val BOOLEAN_TRUE = "Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;"

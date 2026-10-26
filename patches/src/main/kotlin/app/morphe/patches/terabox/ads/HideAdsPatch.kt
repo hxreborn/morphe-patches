@@ -7,12 +7,12 @@ package app.morphe.patches.terabox.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
-import app.morphe.util.getFreeRegisterProvider
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 private const val PRIVILEGE_AD_FREE = 4
 

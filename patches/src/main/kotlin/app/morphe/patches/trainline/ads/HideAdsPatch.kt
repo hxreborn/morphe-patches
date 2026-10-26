@@ -6,8 +6,8 @@ package app.morphe.patches.trainline.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
 
 private const val ADVERT_STATE_HIDDEN =
     "Lcom/thetrainline/ads/google_ad/advert_component/AdvertState\$Hidden;"

@@ -7,8 +7,8 @@ package app.morphe.patches.oneweather.misc.shorts
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.matchSingle
 
 internal const val TODAY_CARDS_ORDER_CLASS =
     "Lcom/oneweather/remotelibrary/sources/firebase/models/TodayCardsOderMap;"

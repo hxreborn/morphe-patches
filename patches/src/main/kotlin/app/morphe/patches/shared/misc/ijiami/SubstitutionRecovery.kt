@@ -10,11 +10,9 @@ import app.morphe.patches.shared.DEX_FILE_SIZE_OFFSET
 import app.morphe.patches.shared.DEX_HEADER_SIZE
 import app.morphe.patches.shared.DEX_SIGNATURE_OFFSET
 import app.morphe.patches.shared.readInt
-import java.security.MessageDigest
 import java.util.zip.Adler32
 
 private const val MAGIC_NULL_OFFSET = 7
-private const val SIGNATURE_END = 32
 private const val HEADER_SIZE_OFFSET = 36
 private const val ENDIAN_OFFSET = 40
 private const val STRING_IDS_START = 112
@@ -44,7 +42,7 @@ internal object SubstitutionRecovery {
             return IjiamiSubstitution(substitution, inverse)
         }
         throw PatchException(
-            if (solved) "Ijiami substitution rejected: payload checksum or signature mismatch"
+            if (solved) "Ijiami substitution rejected: payload checksum mismatch"
             else "Ijiami substitution ordering is not unique",
         )
     }
@@ -184,8 +182,6 @@ internal object SubstitutionRecovery {
             val dex = ByteArray(size) { inverse[cipher[start + it].toInt() and 0xFF] }
             val checksum = Adler32().apply { update(dex, DEX_SIGNATURE_OFFSET, size - DEX_SIGNATURE_OFFSET) }
             if (checksum.value.toInt() != dex.readInt(DEX_CHECKSUM_OFFSET)) return false
-            val signature = MessageDigest.getInstance("SHA-1").digest(dex.copyOfRange(SIGNATURE_END, size))
-            if (!signature.contentEquals(dex.copyOfRange(DEX_SIGNATURE_OFFSET, SIGNATURE_END))) return false
             verified++
         }
         return verified > 0

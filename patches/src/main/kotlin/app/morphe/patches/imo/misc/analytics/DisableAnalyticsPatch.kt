@@ -7,11 +7,11 @@ package app.morphe.patches.imo.misc.analytics
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchAllMethodIndicesForEach
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
-import app.morphe.util.matchAllMethodIndicesForEach
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.AccessFlags
 
 @Suppress("unused")

@@ -9,12 +9,12 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.adoptChild
 import app.morphe.util.findElementByAttributeValueOrThrow
 import app.morphe.util.findMutableMethodOf
 import app.morphe.util.getNode
-import app.morphe.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.ClassDef
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/cx/AmoledTheme;"

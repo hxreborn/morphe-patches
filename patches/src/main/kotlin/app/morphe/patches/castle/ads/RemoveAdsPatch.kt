@@ -7,12 +7,12 @@ package app.morphe.patches.castle.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.secshell.SecShellPayload
 import app.morphe.patches.shared.misc.secshell.editSecShellPayload
 import app.morphe.patches.shared.misc.secshell.secShellPayloadPatch
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val AD_LOCATION_CLASS = "Lcom/gxgx/daqiandy/bean/AdsStateBean;"

@@ -6,8 +6,11 @@ package app.morphe.patches.protonmail.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonmail.misc.theme.webview.CachedMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
@@ -17,9 +20,10 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
 import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
+import app.morphe.patches.shared.misc.proton.indexOfLastWrite
+import app.morphe.patches.shared.misc.proton.indexOfLastWriteOrNull
 import app.morphe.patches.shared.misc.proton.injectColorTransformCall
-import app.morphe.util.getReference
-import app.morphe.util.matchSingle
+import app.morphe.patches.shared.misc.proton.paletteFieldAssignedFrom
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversed
@@ -29,6 +33,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import java.lang.Long.toHexString
 
@@ -37,12 +42,18 @@ private const val SIDEBAR_COLORS_REGISTER_OFFSET = 18
 private const val SIDEBAR_INTERACTION_PRESSED = 1
 private const val SIDEBAR_SEPARATOR = 2
 private const val COLOR_PACK_SHIFT = 32
+private const val FIRST_COLOR_REGISTER_OFFSET = 2
+private const val LONG_REGISTER_COUNT = 2
+private const val SHADE_40_COLOR_ARGUMENT = 6
+private const val STATE_FIELDS_BEFORE_COLORS = 1
+private const val SHADE_40_COPY_ROLES = 3
 
 private fun MutableMethod.injectBackgroundTransformCall(index: Int) =
     injectColorTransformCall(index, "$AMOLED_THEME_CLASS->transformBackground(J)J")
 
 private const val TRANSFORM_PACKED_BACKGROUND = "$AMOLED_THEME_CLASS->transformPackedBackground(J)J"
 private const val TRANSFORM_PACKED_SURFACE = "$AMOLED_THEME_CLASS->transformPackedSurface(J)J"
+private const val TRANSFORM_PACKED_RAISED_SURFACE = "$AMOLED_THEME_CLASS->transformPackedRaisedSurface(J)J"
 
 private val CONTACTS_COLOR_TRANSFORMS = listOf(
     ContactListScreenBackgroundFingerprint to TRANSFORM_PACKED_BACKGROUND,
@@ -92,6 +103,60 @@ private fun MutableMethod.setSidebarPressedAndSeparatorColors() {
     )
 }
 
+private fun BytecodePatchContext.shade40Getter(colorsClass: String): MethodReference {
+    val constructor = classDefBy(colorsClass).methods.filter { it.name == "<init>" }.maxBy { it.parameterTypes.size }
+    val stateFields = constructor.implementation!!.instructions
+        .filter { it.opcode == Opcode.IPUT_OBJECT }
+        .map { it.getReference<FieldReference>()!! }
+    val shade40Field = stateFields[STATE_FIELDS_BEFORE_COLORS + SHADE_40_COLOR_ARGUMENT]
+    return colorGetterFingerprint(colorsClass, shade40Field).matchSingle().method
+}
+
+private fun BytecodePatchContext.transformShade40CopyRoles(colorScheme: MutableMethod, shade40Palette: FieldReference) {
+    val darkColorsIndex = colorScheme.indexOfDarkColorsOrThrow()
+    val darkColors = colorScheme.getInstruction<RegisterRangeInstruction>(darkColorsIndex)
+    val colorsClass = darkColors.getReference<MethodReference>()!!.definingClass
+    val shade40Register =
+        darkColors.startRegister + FIRST_COLOR_REGISTER_OFFSET + SHADE_40_COLOR_ARGUMENT * LONG_REGISTER_COUNT
+    val shade40Read = colorScheme.getInstruction(colorScheme.indexOfLastWrite(shade40Register, darkColorsIndex))
+    if (shade40Read.getReference<FieldReference>() != shade40Palette) {
+        throw PatchException("Dark color argument $SHADE_40_COLOR_ARGUMENT does not read $shade40Palette")
+    }
+
+    val shade40 = shade40Getter(colorsClass)
+    val copyIndex = colorScheme.indexOfFirstInstructionOrThrow(darkColorsIndex) {
+        opcode == Opcode.INVOKE_STATIC_RANGE && getReference<MethodReference>()?.let {
+            it.returnType == colorsClass && it.parameterTypes.firstOrNull()?.toString() == colorsClass
+        } == true
+    }
+    val copy = colorScheme.getInstruction<RegisterRangeInstruction>(copyIndex)
+    val copyParameters = copy.getReference<MethodReference>()!!.parameterTypes.map(CharSequence::toString)
+    val parameterRegisters = copyParameters.runningFold(copy.startRegister) { register, type ->
+        register + if (type == "J") LONG_REGISTER_COUNT else 1
+    }
+    val shade40Roles = copyParameters.indices
+        .filter { copyParameters[it] == "J" }
+        .map { parameterRegisters[it] }
+        .filter { register ->
+            val write = colorScheme.indexOfLastWriteOrNull(register, copyIndex) ?: return@filter false
+            write > 0 && colorScheme.getInstruction(write).opcode == Opcode.MOVE_RESULT_WIDE &&
+                colorScheme.getInstruction(write - 1).getReference<MethodReference>() == shade40
+        }
+    if (shade40Roles.size != SHADE_40_COPY_ROLES) {
+        throw PatchException("Expected $SHADE_40_COPY_ROLES dark roles copied from $shade40, found ${shade40Roles.size}")
+    }
+
+    colorScheme.addInstructions(
+        copyIndex,
+        shade40Roles.joinToString("\n") {
+            """
+                invoke-static/range { v$it .. v${it + 1} }, $TRANSFORM_PACKED_RAISED_SURFACE
+                move-result-wide v$it
+            """
+        },
+    )
+}
+
 private fun MutableMethod.replaceCachedMessageBackground() {
     val index = indexOfFirstInstructionOrThrow {
         opcode == Opcode.CHECK_CAST &&
@@ -123,7 +188,7 @@ private fun MutableMethod.replaceInlineMessageBackground(index: Int) {
 @Suppress("unused")
 val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
-    description = "Replaces the dark theme background with pure black.",
+    description = "Replaces the dark theme background with pure black and dims menus, bars and buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(webSettingsThemePatch)
@@ -137,7 +202,11 @@ val amoledThemePatch = bytecodePatch(
 
         transformCoreDarkBackgrounds()
 
-        ColorSchemeFingerprint.matchSingle().method.setSidebarPressedAndSeparatorColors()
+        val shade40Palette = DarkPaletteFingerprint.method.paletteFieldAssignedFrom(SHADE_40_COLOR)
+        ColorSchemeFingerprint.matchSingle().method.apply {
+            setSidebarPressedAndSeparatorColors()
+            transformShade40CopyRoles(this, shade40Palette)
+        }
 
         UpsellingDarkBackgroundFingerprint.instructionMatchesOrNull?.first()?.index?.let { index ->
             UpsellingDarkBackgroundFingerprint.method.injectBackgroundTransformCall(index)

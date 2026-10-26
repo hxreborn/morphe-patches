@@ -5,9 +5,9 @@
 package app.morphe.patches.catzy.misc.intimacy
 
 import app.morphe.patcher.patch.PatchAvailability
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.catzy.catzyPatch
-import app.morphe.util.matchSingle
-import app.morphe.util.returnEarly
 
 @Suppress("unused")
 val maxIntimacyLevelPatch = catzyPatch(

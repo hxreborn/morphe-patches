@@ -12,6 +12,7 @@ package app.morphe.patches.protonvpn.misc.telemetry
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.protonvpn.misc.anchors.unitInstanceField
@@ -19,7 +20,6 @@ import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.proton.markPatchApplied
-import app.morphe.util.matchSingle
 
 @Suppress("unused")
 val disableTelemetryPatch = bytecodePatch(
