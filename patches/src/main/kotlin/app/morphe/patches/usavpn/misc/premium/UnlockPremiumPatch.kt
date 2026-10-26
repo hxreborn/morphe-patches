@@ -16,7 +16,7 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks PRO servers and removes ads and the connection time limit.",
 ) {
-    compatibleWith(AppCompatibilities.USA_VPN)
+    compatibleWith(AppCompatibilities.USA_VPN, AppCompatibilities.VPN_INDIA)
 
     dependsOn(removePairipProtectionPatch, restoreVirtualizedMethodsPatch)
 

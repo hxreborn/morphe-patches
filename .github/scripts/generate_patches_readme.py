@@ -275,6 +275,7 @@ ICONS = {
     "com.jndapp.glass.widgets": "glasswidgets.png",
     "io.yuka.android": "yuka.png",
     "vpn.usa_tap2free": "usavpn.png",
+    "india.vpn_tap2free": "vpnindia.png",
     "com.viber.voip": "viber.png",
     "com.telug.keyboard.for.android": "deshtelugu.png",
 }

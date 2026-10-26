@@ -144,6 +144,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `glasswidgets.png` | Glass Widgets (`com.jndapp.glass.widgets`) | JustNewDesigns | APK 1.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `yuka.png` | Yuka (`io.yuka.android`) | Yuka SAS | APK 5.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `usavpn.png` | USA VPN (`vpn.usa_tap2free`) | AltApps | APK 1.168, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `vpnindia.png` | VPN India (`india.vpn_tap2free`) | AltApps | APK 1.172, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `periodcalendar.png` | Period Tracker and Calendar (`com.lbrc.PeriodCalendar`) | SimpleInnovation | APK 13.3.2, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, cut to a circle |
 | `udictionary.png` | U Dictionary (`com.youdao.hindict`) | Youdao (Hong Kong) Limited | APK 6.7.5, `res/mipmap-xxhdpi/ic_launcher_round.png` |
 | `uptcl.png` | UPTCL (`com.ufoneselfcare`) | Pak Telecom Mobile Limited | APK 11.0.41, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` (stored as `b`) |

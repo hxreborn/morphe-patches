@@ -1572,6 +1572,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.168", versionCode = 168, minSdk = 24)),
     )
 
+    val VPN_INDIA = Compatibility(
+        name = "VPN India",
+        packageName = "india.vpn_tap2free",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x479C1E,
+        signatures = setOf(
+            "efa80db96fc21e9c6345584d3fab947c4cde2838937463d6fdd402c9458898c0",
+        ),
+        targets = listOf(AppTarget(version = "1.172", versionCode = 172, minSdk = 24)),
+    )
+
     val GRAPH_MESSENGER = Compatibility(
         name = "Graph Messenger",
         packageName = "ir.ilmili.telegraph",
