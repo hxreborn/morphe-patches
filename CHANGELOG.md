@@ -1,3 +1,9 @@
+## [1.62.0-dev.10](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.9...v1.62.0-dev.10) (2026-10-26)
+
+### Updated App Support
+
+* **Castle:** add support for `2.1.3` build 158 ([cf26a3e](https://github.com/hxreborn/morphe-patches/commit/cf26a3e4ab02b7792376fc3225274686a9ed329e)), closes [#319](https://github.com/hxreborn/morphe-patches/issues/319) [#357](https://github.com/hxreborn/morphe-patches/issues/357)
+
 ## [1.62.0-dev.9](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.8...v1.62.0-dev.9) (2026-10-26)
 
 ### Updated App Support
