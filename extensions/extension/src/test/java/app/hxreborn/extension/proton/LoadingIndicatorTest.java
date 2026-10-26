@@ -89,7 +89,7 @@ public final class LoadingIndicatorTest {
     @Test
     @Config(shadows = PatchedBuild.Indicator.class)
     public void listsItselfAmongAppliedPatches() {
-        assertTrue(AppliedPatches.names().contains("Material 3 loading indicator"));
+        assertTrue(AppliedPatches.names().contains("M3E loading indicator"));
     }
 
 }

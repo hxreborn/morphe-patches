@@ -20,7 +20,7 @@ public final class AppliedPatches {
     static final String ACCENT_COLOR = "Custom accent color";
     static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
     static final String MATERIAL_SWITCHES = "Material 3 switches";
-    static final String LOADING_INDICATOR = "Material 3 loading indicator";
+    static final String LOADING_INDICATOR = "M3E loading indicator";
     static final String HIDE_NAVIGATION_BAR_ON_SCROLL = "Hide navigation bar on scroll";
 
     static final String SWIPE_TO_SWITCH_ACCOUNTS = "Swipe to switch accounts";

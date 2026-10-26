@@ -38,7 +38,7 @@ private const val INDICATOR_BOX_MODIFIER_REGISTER = 3
 
 @Suppress("unused")
 val loadingIndicatorPatch = bytecodePatch(
-    name = "Material 3 loading indicator",
+    name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
