@@ -248,6 +248,7 @@ ICONS = {
     "com.nieruo.healthapp": "catzy.png",
     "tech.coddy.coddyapp": "coddy.png",
     "jp.co.celsys.clipstudiopaint.googleplay": "clipstudiopaint.png",
+    "ltd.anti.clink": "clink.png",
     "com.steinberg.cubasisle3": "cubasisle3.png",
     "com.one4studio.one4home": "one4home.png",
     "com.keepa.mobile": "keepa.png",

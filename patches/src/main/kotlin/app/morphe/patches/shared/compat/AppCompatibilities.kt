@@ -247,6 +247,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val CLINK = Compatibility(
+        name = "Clink",
+        packageName = "ltd.anti.clink",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF7F7F8,
+        signatures = setOf(
+            "8ea7bd2c094bd6d2dfbd605764c42ffd57c3d2ecf781b9aaf0135ff06b0cbde0",
+        ),
+        targets = listOf(AppTarget(version = "1.9.2", versionCode = 194, minSdk = 28)),
+    )
+
     val CLIP_STUDIO_PAINT = Compatibility(
         name = "Clip Studio Paint",
         packageName = "jp.co.celsys.clipstudiopaint.googleplay",
