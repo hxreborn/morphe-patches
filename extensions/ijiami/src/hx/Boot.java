@@ -48,6 +48,8 @@ final class Boot {
 
     private static final String CERTIFICATE_ASSET = "assets/hx.cer";
     private static final String FACTORY_ASSET = "assets/hx.factory";
+    private static final String OVERLAY_CLASSES_ASSET = "assets/hx.classes";
+    private static final String OVERLAY_CODE_ASSET = "assets/hx.code";
     private static final String NATIVE_LIBRARY = "libhxpatch.so";
     private static final String ARM64_ABI = "arm64-v8a";
     private static final String ARM32_ABI = "armeabi-v7a";
@@ -97,6 +99,39 @@ final class Boot {
         readAssets(info);
         return packerFactory;
     }
+
+    static void writeCodeOverlay(ClassLoader loader, ApplicationInfo info) {
+        byte[] code;
+        String[] classNames;
+        try (ZipFile archive = new ZipFile(info.sourceDir)) {
+            code = read(archive, OVERLAY_CODE_ASSET);
+            classNames = new String(read(archive, OVERLAY_CLASSES_ASSET), StandardCharsets.UTF_8).split("\n");
+        } catch (Throwable t) {
+            Log.e(TAG, "cannot read code overlay from " + info.sourceDir, t);
+            return;
+        }
+        if (code.length == 0) return;
+
+        int loaded = 0;
+        for (String name : classNames) {
+            if (name.isEmpty()) continue;
+            try {
+                Class.forName(name, false, loader);
+                loaded++;
+            } catch (Throwable t) {
+                Log.e(TAG, "cannot load " + name + " before the code overlay", t);
+            }
+        }
+
+        try {
+            int written = writeCode(code);
+            Log.i(TAG, "code overlay: loaded " + loaded + " classes, wrote " + written + " code items");
+        } catch (Throwable t) {
+            Log.e(TAG, "cannot write code overlay", t);
+        }
+    }
+
+    private static native int writeCode(byte[] records);
 
     static void runAppHook(final ClassLoader loader) {
         synchronized (Boot.class) {

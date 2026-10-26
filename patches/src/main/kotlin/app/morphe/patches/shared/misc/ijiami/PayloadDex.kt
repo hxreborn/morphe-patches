@@ -305,6 +305,7 @@ internal class PayloadDex private constructor(
                         bodies += MethodBody(
                             dex = this,
                             payload = payload,
+                            classDescriptor = classDescriptor,
                             methodIndex = methodIndex,
                             codeOffset = start + codeOffset,
                             returnType = returnTypeOf(methodIndex),

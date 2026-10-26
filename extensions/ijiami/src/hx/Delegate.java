@@ -61,6 +61,7 @@ public final class Delegate extends AppComponentFactory {
                 ? super.instantiateClassLoader(classLoader, info)
                 : packer.instantiateClassLoader(classLoader, info);
         Log.i(TAG, "payload class loader ready");
+        Boot.writeCodeOverlay(appLoader, info);
         Boot.runAppHook(appLoader);
         return appLoader;
     }

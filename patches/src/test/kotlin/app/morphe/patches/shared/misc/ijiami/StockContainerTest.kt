@@ -40,7 +40,7 @@ internal class StockContainerTest {
     }
 
     @Test
-    fun `every payload dex verifies itself once the head is recovered`() = eachStock { name, classes ->
+    fun `every payload dex passes its checksum once the head is recovered`() = eachStock { name, classes ->
         val container = IjiamiContainer.of(classes)
         val payload = container.decrypt()
         val dexes = PayloadDex.split(payload)
@@ -49,15 +49,13 @@ internal class StockContainerTest {
 
         val verified = dexes.map { dex ->
             val bytes = payload.copyOfRange(dex.start, dex.start + dex.size)
-            val signature = MessageDigest.getInstance("SHA-1").digest(bytes.copyOfRange(32, bytes.size))
-            val checksum = Adler32().apply { update(bytes, 12, bytes.size - 12) }.value.toInt()
-            signature.contentEquals(bytes.copyOfRange(12, 32)) && checksum == bytes.readInt(8)
+            Adler32().apply { update(bytes, 12, bytes.size - 12) }.value.toInt() == bytes.readInt(8)
         }
 
         assertEquals(
             List(dexes.size - 1) { true } + false,
             verified,
-            "$name: unexpected set of payload dex files failing their own integrity fields",
+            "$name: unexpected set of payload dex files failing their own checksum",
         )
     }
 

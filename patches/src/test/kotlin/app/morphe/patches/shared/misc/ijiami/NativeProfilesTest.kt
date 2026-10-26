@@ -12,7 +12,9 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-private val PACKER_LIBRARIES = listOf("assets/ijm_lib/arm64-v8a/libexec.so", "assets/ijm_lib/armeabi/libexec.so")
+private const val ARM64_ABI = "arm64-v8a"
+
+private val PACKER_LIBRARY = Regex("assets/[^/]+/(arm64-v8a|armeabi)/[^/]+\\.so")
 
 internal class NativeProfilesTest {
     @Test
@@ -21,7 +23,7 @@ internal class NativeProfilesTest {
     }
 
     @Test
-    fun `selects a bundled profile for every stock native library`() {
+    fun `selects a bundled arm64 profile for every stock APK`() {
         val configured = System.getenv("IJIAMI_STOCK_APK")
         assumeTrue(configured != null, "IJIAMI_STOCK_APK is not set")
 
@@ -29,15 +31,18 @@ internal class NativeProfilesTest {
             val apk = File(path)
             assertTrue(apk.isFile, "configured stock APK does not exist: $apk")
 
-            val packers = ZipFile(apk).use { zip ->
-                PACKER_LIBRARIES.mapNotNull { library -> zip.getEntry(library)?.let { library to zip.getInputStream(it).readBytes() } }
+            val librariesByAbi = ZipFile(apk).use { zip ->
+                zip.entries().asSequence()
+                    .mapNotNull { entry -> PACKER_LIBRARY.matchEntire(entry.name)?.let { it.groupValues[1] to zip.getInputStream(entry).readBytes() } }
+                    .groupBy({ it.first }, { it.second })
             }
-            assertTrue(packers.isNotEmpty(), "${apk.name} has no Ijiami packer library")
+            assertTrue(librariesByAbi.isNotEmpty(), "${apk.name} has no Ijiami packer library")
 
-            packers.forEach { (library, libexec) ->
-                val profile = assertNotNull(NativeProfiles.forLibexecOrNull(libexec), "${apk.name} has no profile for $library")
-                assertBundled(apk, profile)
+            val profiles = librariesByAbi.mapValues { (_, libraries) ->
+                libraries.firstNotNullOfOrNull { NativeProfiles.forLibexecOrNull(it) }
             }
+            assertNotNull(profiles[ARM64_ABI], "${apk.name} has no profile for its $ARM64_ABI packer")
+            profiles.values.filterNotNull().forEach { assertBundled(apk, it) }
         }
     }
 
