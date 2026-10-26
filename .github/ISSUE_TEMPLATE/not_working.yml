@@ -383,12 +383,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.63.0"
         - "1.63.0-dev.3"
         - "1.63.0-dev.2"
         - "1.63.0-dev.1"
         - "1.62.0-dev.15"
         - "1.62.0-dev.14"
-        - "1.62.0-dev.13"
         - "Older than these"
         # /generated
     validations:
