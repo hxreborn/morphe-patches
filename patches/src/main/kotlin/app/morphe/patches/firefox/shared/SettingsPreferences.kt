@@ -58,6 +58,17 @@ internal fun forceSettingsPreference(preferenceKey: String, value: Boolean, gate
     }
 }
 
+context(_: BytecodePatchContext)
+internal fun readPreferenceAsFalse(preferenceKey: String, gate: String) {
+    preferenceReadFingerprint(settingsPreferenceDelegate(preferenceKey)).matchAll().forEach { match ->
+        val moveResult = match.instructionMatches.last()
+        val register = moveResult.getInstruction<OneRegisterInstruction>().registerA
+        match.method.whenEnabled(gate, moveResult.index + 1, exclude = register) {
+            "sget-object v$register, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;"
+        }
+    }
+}
+
 private fun MutableClass.lockedPreferenceMethod(checked: Boolean, gate: String?): String {
     val name = (if (checked) "lockPreferenceChecked" else "lockPreferenceUnchecked") +
         if (gate == null) "" else "WhenEnabled"

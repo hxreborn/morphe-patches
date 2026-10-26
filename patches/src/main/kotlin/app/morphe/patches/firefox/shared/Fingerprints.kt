@@ -50,3 +50,15 @@ internal fun settingsPreferenceRowFingerprint(preferenceKey: String) = Fingerpri
         opcode(Opcode.CHECK_CAST, MatchAfterImmediately()),
     ),
 )
+
+internal fun preferenceReadFingerprint(delegate: FieldReference) = Fingerprint(
+    filters = listOf(
+        fieldAccess(reference = delegate, opcode = Opcode.IGET_OBJECT),
+        methodCall(
+            definingClass = "Lmozilla/components/support/ktx/android/content/BooleanPreference;",
+            name = "getValue",
+            location = MatchAfterWithin(5),
+        ),
+        opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
+    ),
+)
