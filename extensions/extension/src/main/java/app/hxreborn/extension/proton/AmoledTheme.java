@@ -14,6 +14,12 @@ public final class AmoledTheme {
 
     private static final long PACKED_SURFACE = 0xFF2B2B38L << 32;
 
+    private static final int ALPHA_MASK = 0xFF000000;
+
+    private static final int HALF_CHANNELS_MASK = 0x007F7F7F;
+
+    private static final long COLOR_SPACE_MASK = 0xFFFFFFFFL;
+
     private static final int DARK_CHANNEL_SUM = 3 * 0x80;
 
     private AmoledTheme() {
@@ -42,6 +48,15 @@ public final class AmoledTheme {
 
     public static long transformPackedSurface(long original) {
         return (isEnabled() && isDark(original)) ? PACKED_SURFACE : original;
+    }
+
+    public static long transformPackedRaisedSurface(long original) {
+        if (!isEnabled() || !isDark(original)) {
+            return original;
+        }
+        final int argb = (int) (original >>> 32);
+        final int halved = (argb & ALPHA_MASK) | ((argb >> 1) & HALF_CHANNELS_MASK);
+        return ((long) halved << 32) | (original & COLOR_SPACE_MASK);
     }
 
     private static boolean isDark(long packedColor) {

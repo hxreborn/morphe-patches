@@ -230,7 +230,7 @@ public final class PatchesSettingsActivity extends Activity {
                         })));
         }
         if (AmoledTheme.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Pure black backgrounds.",
+            appearanceRows.add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Pure black backgrounds, darker buttons.",
                     AmoledTheme.isEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
