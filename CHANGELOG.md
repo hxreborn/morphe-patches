@@ -1,3 +1,13 @@
+## [1.63.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.63.0-dev.2...v1.63.0-dev.3) (2026-10-26)
+
+### Updated App Support
+
+* **Fast STL Viewer:** add support for `2.93` ([42b5a85](https://github.com/hxreborn/morphe-patches/commit/42b5a859fa3dfeb3b7f2a1541d88bc258f043891))
+* **Notein:** add support for `v2.1.37.0` ([d7cee0b](https://github.com/hxreborn/morphe-patches/commit/d7cee0b180ad733f31832d7141f6147031563fee))
+* **One4Home Launcher:** add support for `0.5.104` ([e0fe519](https://github.com/hxreborn/morphe-patches/commit/e0fe51950443d0e5674d68eef3d491ad572502a3))
+* **Ringtone Maker:** add support for `1.02.01.1023` ([8d61a1a](https://github.com/hxreborn/morphe-patches/commit/8d61a1aec93490186eb12397fa71c96458cf4ef3))
+* **Viber:** add support for `29.2.0.0` ([8dfaaaa](https://github.com/hxreborn/morphe-patches/commit/8dfaaaa9d22a1a2e8a63b80b01ab2588bae26df3))
+
 ## [1.63.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.63.0-dev.1...v1.63.0-dev.2) (2026-10-26)
 
 ### New Features

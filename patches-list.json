@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.63.0-dev.2",
+  "version": "1.63.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -4548,12 +4548,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "29.1.1.0",
+              "version": "29.2.0.0",
               "versionCodes": {
-                "ARM64_V8A": 1290101,
-                "ARMEABI_V7A": 1290101,
-                "X86_64": 1290101,
-                "X86": 1290101
+                "ARM64_V8A": 1290200,
+                "ARMEABI_V7A": 1290200,
+                "X86_64": 1290200,
+                "X86": 1290200
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -5503,12 +5503,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "29.1.1.0",
+              "version": "29.2.0.0",
               "versionCodes": {
-                "ARM64_V8A": 1290101,
-                "ARMEABI_V7A": 1290101,
-                "X86_64": 1290101,
-                "X86": 1290101
+                "ARM64_V8A": 1290200,
+                "ARMEABI_V7A": 1290200,
+                "X86_64": 1290200,
+                "X86": 1290200
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -6063,12 +6063,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "29.1.1.0",
+              "version": "29.2.0.0",
               "versionCodes": {
-                "ARM64_V8A": 1290101,
-                "ARMEABI_V7A": 1290101,
-                "X86_64": 1290101,
-                "X86": 1290101
+                "ARM64_V8A": 1290200,
+                "ARMEABI_V7A": 1290200,
+                "X86_64": 1290200,
+                "X86": 1290200
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -8759,108 +8759,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.02.01.1020",
+              "version": "1.02.01.1023",
               "versionCodes": {
-                "ARM64_V8A": 10158,
-                "ARMEABI_V7A": 10158,
-                "X86_64": 10158,
-                "X86": 10158
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.100.1012",
-              "versionCodes": {
-                "ARM64_V8A": 10157,
-                "ARMEABI_V7A": 10157,
-                "X86_64": 10157,
-                "X86": 10157
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.99.0909",
-              "versionCodes": {
-                "ARM64_V8A": 10153,
-                "ARMEABI_V7A": 10153,
-                "X86_64": 10153,
-                "X86": 10153
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.98.0831",
-              "versionCodes": {
-                "ARM64_V8A": 10151,
-                "ARMEABI_V7A": 10151,
-                "X86_64": 10151,
-                "X86": 10151
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.98.0824",
-              "versionCodes": {
-                "ARM64_V8A": 10146,
-                "ARMEABI_V7A": 10146,
-                "X86_64": 10146,
-                "X86": 10146
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.97.0818",
-              "versionCodes": {
-                "ARM64_V8A": 10145,
-                "ARMEABI_V7A": 10145,
-                "X86_64": 10145,
-                "X86": 10145
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.96.0716",
-              "versionCodes": {
-                "ARM64_V8A": 10142,
-                "ARMEABI_V7A": 10142,
-                "X86_64": 10142,
-                "X86": 10142
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.94.0602",
-              "versionCodes": {
-                "ARM64_V8A": 10139,
-                "ARMEABI_V7A": 10139,
-                "X86_64": 10139,
-                "X86": 10139
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.90.0421",
-              "versionCodes": {
-                "ARM64_V8A": 10131,
-                "ARMEABI_V7A": 10131,
-                "X86_64": 10131,
-                "X86": 10131
+                "ARM64_V8A": 10159,
+                "ARMEABI_V7A": 10159,
+                "X86_64": 10159,
+                "X86": 10159
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -11867,12 +11771,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.92",
+              "version": "2.93",
               "versionCodes": {
-                "ARM64_V8A": 337,
-                "ARMEABI_V7A": 337,
-                "X86_64": 337,
-                "X86": 337
+                "ARM64_V8A": 339,
+                "ARMEABI_V7A": 339,
+                "X86_64": 339,
+                "X86": 339
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -13073,12 +12977,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "v2.1.28.0",
+              "version": "v2.1.37.0",
               "versionCodes": {
-                "ARM64_V8A": 407,
-                "ARMEABI_V7A": 407,
-                "X86_64": 407,
-                "X86": 407
+                "ARM64_V8A": 409,
+                "ARMEABI_V7A": 409,
+                "X86_64": 409,
+                "X86": 409
               },
               "isExperimental": false,
               "minSdk": 26,
@@ -13108,27 +13012,15 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "0.5.38",
+              "version": "0.5.104",
               "versionCodes": {
-                "ARM64_V8A": 350,
-                "ARMEABI_V7A": 350,
-                "X86_64": 350,
-                "X86": 350
+                "ARM64_V8A": 416,
+                "ARMEABI_V7A": 416,
+                "X86_64": 416,
+                "X86": 416
               },
               "isExperimental": false,
               "minSdk": 29,
-              "description": null
-            },
-            {
-              "version": "0.5.93",
-              "versionCodes": {
-                "ARM64_V8A": 405,
-                "ARMEABI_V7A": 405,
-                "X86_64": 405,
-                "X86": 405
-              },
-              "isExperimental": false,
-              "minSdk": 32,
               "description": null
             }
           ]
@@ -13628,108 +13520,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.02.01.1020",
+              "version": "1.02.01.1023",
               "versionCodes": {
-                "ARM64_V8A": 10158,
-                "ARMEABI_V7A": 10158,
-                "X86_64": 10158,
-                "X86": 10158
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.100.1012",
-              "versionCodes": {
-                "ARM64_V8A": 10157,
-                "ARMEABI_V7A": 10157,
-                "X86_64": 10157,
-                "X86": 10157
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.99.0909",
-              "versionCodes": {
-                "ARM64_V8A": 10153,
-                "ARMEABI_V7A": 10153,
-                "X86_64": 10153,
-                "X86": 10153
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.98.0831",
-              "versionCodes": {
-                "ARM64_V8A": 10151,
-                "ARMEABI_V7A": 10151,
-                "X86_64": 10151,
-                "X86": 10151
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.98.0824",
-              "versionCodes": {
-                "ARM64_V8A": 10146,
-                "ARMEABI_V7A": 10146,
-                "X86_64": 10146,
-                "X86": 10146
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.97.0818",
-              "versionCodes": {
-                "ARM64_V8A": 10145,
-                "ARMEABI_V7A": 10145,
-                "X86_64": 10145,
-                "X86": 10145
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.96.0716",
-              "versionCodes": {
-                "ARM64_V8A": 10142,
-                "ARMEABI_V7A": 10142,
-                "X86_64": 10142,
-                "X86": 10142
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.94.0602",
-              "versionCodes": {
-                "ARM64_V8A": 10139,
-                "ARMEABI_V7A": 10139,
-                "X86_64": 10139,
-                "X86": 10139
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "1.01.90.0421",
-              "versionCodes": {
-                "ARM64_V8A": 10131,
-                "ARMEABI_V7A": 10131,
-                "X86_64": 10131,
-                "X86": 10131
+                "ARM64_V8A": 10159,
+                "ARMEABI_V7A": 10159,
+                "X86_64": 10159,
+                "X86": 10159
               },
               "isExperimental": false,
               "minSdk": 24,
