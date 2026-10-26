@@ -5,8 +5,8 @@
 package app.morphe.patches.mymoveset.misc.premium
 
 import app.morphe.patcher.patch.rawResourcePatch
-import app.morphe.patches.mymoveset.misc.updates.disableOtaUpdatesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.expo.disableOtaUpdatesPatch
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 

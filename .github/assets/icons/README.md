@@ -22,10 +22,13 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | File | App | Developer | Source |
 |---|---|---|---|
 | `albo.png` | Albo (`com.thesortdapp.sortd`) | The Feel Good Project Ltd | APK 1.25.1, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
+| `iototoy.png` | IoToToy No-Code IoT automation (`com.hardcodedjoy.iototoy`) | HARDCODED JOY S.R.L. | APK 1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `audiobookunlimited.png` | Audiobook Unlimited for Kindle (`com.oneletters.audiobooksai`) | Cee68 | APK 1.7.23, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `allinonecalculator.png` | All-In-One Calculator (`all.in.one.calculator`) | allinonecalculator.com | APK 3.4.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `allvideoplayer.png` | All Video Player App (`com.allformatplayer.streamvideoplayer`) | Legend eSolution | APK 1.4, `res/drawable-xhdpi-v4/small_logo.png` |
 | `aloa.png` | Aloa (`com.getaloa.app`) | Aloa | APK 1.3.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
+| `athan.png` | Athan: Prayer Times, Dua-Azkar (`com.athan`) | IslamicFinder.org | APK 11.0.6, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
 | `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.19.1, adaptive icon `res/mipmap-anydpi-v26/botim_logo.xml` (square `res/mipmap-xxxhdpi-v4/botim_logo_square.png` cut to a circle) |
 | `clink.png` | Clink (`ltd.anti.clink`) | Anti Limited | APK 1.9.2, square icon `res/drawable-nodpi-v4/clink_icon.png` cut to a circle |
 | `clipstudiopaint.png` | Clip Studio Paint (`jp.co.celsys.clipstudiopaint.googleplay`) | CELSYS, Inc. | APK 5.1.4, `res/mipmap-xxhdpi-v4/ic_launcher_round.png` |
@@ -142,6 +145,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `glasswidgets.png` | Glass Widgets (`com.jndapp.glass.widgets`) | JustNewDesigns | APK 1.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `yuka.png` | Yuka (`io.yuka.android`) | Yuka SAS | APK 5.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `usavpn.png` | USA VPN (`vpn.usa_tap2free`) | AltApps | APK 1.168, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `vpnindia.png` | VPN India (`india.vpn_tap2free`) | AltApps | APK 1.172, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `periodcalendar.png` | Period Tracker and Calendar (`com.lbrc.PeriodCalendar`) | SimpleInnovation | APK 13.3.2, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, cut to a circle |
 | `udictionary.png` | U Dictionary (`com.youdao.hindict`) | Youdao (Hong Kong) Limited | APK 6.7.5, `res/mipmap-xxhdpi/ic_launcher_round.png` |
 | `uptcl.png` | UPTCL (`com.ufoneselfcare`) | Pak Telecom Mobile Limited | APK 11.0.41, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` (stored as `b`) |
@@ -150,9 +154,12 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `internetspeedmeterlite.png` | Internet Speed Meter Lite (`com.internet.speed.meter.lite`) | DynamicApps | APK 1.7.0-lite, square icon `res/drawable/app_icon.png` cut to a circle |
 | `com.andatsoft.myapk.fwa.png` | My APK (`com.andatsoft.myapk.fwa`) | Cards | Google Play listing icon, added 2026-10-12 |
 | `viber.png` | Viber (`com.viber.voip`) | Viber Media | APK 29.1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_viber_round.webp` |
+| `deshtelugu.png` | Desh Telugu Keyboard (`com.telug.keyboard.for.android`) | Desh Keyboard | APK 17.6.8, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
+| `automatag.png` | AutomaTag (`com.fillobotto.mp3tagger`) | fillobotto | APK 2.3.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `com.azeravn.bulletjournal.png` | May: Beautiful Bullet Journal (`com.azeravn.bulletjournal`) | AZ Family | Google Play listing icon, added 2026-10-10 |
 | `com.dev2a.junk_journal.png` | Jujo (`com.dev2a.junk_journal`) | Dev2a Inc | Google Play listing icon, added 2026-10-14 |
 | `pl.neptis.yanosik.mobi.android.png` | Yanosik (`pl.neptis.yanosik.mobi.android`) | Yanosik S.A. | Google Play listing icon, added 2026-10-10 |
+| `com.videoplayer.arcplayer.png` | Arc Player (`com.videoplayer.arcplayer`) | Arc Video Player | Google Play listing icon, added 2026-10-26 |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

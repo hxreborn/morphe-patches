@@ -14,6 +14,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.ALBO,
         AppCompatibilities.ALOA,
         AppCompatibilities.ANYTRACKER,
+        AppCompatibilities.AUDIOBOOK_UNLIMITED,
         AppCompatibilities.AUDIOLAB,
         AppCompatibilities.BANGLA_CALENDAR,
         AppCompatibilities.BIOBIRD,
@@ -28,6 +29,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.GLASS_WIDGETS,
         AppCompatibilities.HINDU_CALENDAR,
         AppCompatibilities.INTERNET_SPEED_METER_LITE,
+        AppCompatibilities.IOTOTOY,
         AppCompatibilities.JUJO,
         AppCompatibilities.KEEPA,
         AppCompatibilities.LAGGUY_WALLPAPERS,
@@ -48,6 +50,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.RUBBER_BANDS,
         AppCompatibilities.USA_VPN,
         AppCompatibilities.VLLO,
+        AppCompatibilities.VPN_INDIA,
         AppCompatibilities.WALP,
         AppCompatibilities.YUKA,
     )

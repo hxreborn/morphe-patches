@@ -147,6 +147,8 @@ def versions_table(targets):
 
 ICONS = {
     "com.thesortdapp.sortd": "albo.png",
+    "com.hardcodedjoy.iototoy": "iototoy.png",
+    "com.oneletters.audiobooksai": "audiobookunlimited.png",
     "ir.ilmili.telegraph": "graphmessenger.png",
     "all.in.one.calculator": "allinonecalculator.png",
     "com.allformatplayer.streamvideoplayer": "allvideoplayer.png",
@@ -178,6 +180,7 @@ ICONS = {
     "im.thebot.messenger": "botim.png",
     "com.klevico.monet": "monet.png",
     "com.pengyou.cloneapp": "cloneapp.png",
+    "com.athan": "athan.png",
     "com.cardfeed.video_public": "publicvideos.png",
     "com.michaldrabik.showly2": "showly.png",
     "co.steezy.app": "steezy.png",
@@ -273,7 +276,10 @@ ICONS = {
     "com.jndapp.glass.widgets": "glasswidgets.png",
     "io.yuka.android": "yuka.png",
     "vpn.usa_tap2free": "usavpn.png",
+    "india.vpn_tap2free": "vpnindia.png",
     "com.viber.voip": "viber.png",
+    "com.telug.keyboard.for.android": "deshtelugu.png",
+    "com.fillobotto.mp3tagger": "automatag.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

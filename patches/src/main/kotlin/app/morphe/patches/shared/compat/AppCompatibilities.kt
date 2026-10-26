@@ -93,6 +93,28 @@ internal object AppCompatibilities {
         ),
     )
 
+    val ARC_PLAYER = Compatibility(
+        name = "Arc Player",
+        packageName = "com.videoplayer.arcplayer",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x528AEA,
+        signatures = setOf(
+            "51b6ef995b6ccd1a3fff12872d04fc7b69f01bf5ff523a3ea016c9beca1d70a3",
+        ),
+        targets = listOf(AppTarget(version = "1.4.2.141", versionCode = 141, minSdk = 23)),
+    )
+
+    val ATHAN = Compatibility(
+        name = "Athan",
+        packageName = "com.athan",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x514EFF,
+        signatures = setOf(
+            "9028baa741e6a6b2833e33ccca4db8bf9b82340f6093642ef3f1d569c942ede4",
+        ),
+        targets = listOf(AppTarget(version = "11.0.6", versionCode = 2017033171, minSdk = 24)),
+    )
+
     val ATLOMAPS = Compatibility(
         name = "AtloMaps",
         packageName = "com.atlogis.atlomaps",
@@ -126,6 +148,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val AUDIOBOOK_UNLIMITED = Compatibility(
+        name = "Audiobook Unlimited for Kindle",
+        packageName = "com.oneletters.audiobooksai",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x2890E9,
+        signatures = setOf(
+            "2c2c9d68b4564d29e20fea9a363b7597b15e246ddbc553f5353e07c2da956d0e",
+        ),
+        targets = listOf(AppTarget(version = "1.7.23", versionCode = 196, minSdk = 24)),
+    )
+
     val AUDIOLAB = Compatibility(
         name = "AudioLab",
         packageName = "com.hitrolab.audioeditor",
@@ -135,6 +168,17 @@ internal object AppCompatibilities {
             "d441c034a8cd999a79ec5b09f0d03627d8689a53e0441a04aaa4a16315e5cec0",
         ),
         targets = listOf(AppTarget(version = "1.3.33", versionCode = 5163, minSdk = 26)),
+    )
+
+    val AUTOMATAG = Compatibility(
+        name = "AutomaTag",
+        packageName = "com.fillobotto.mp3tagger",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0288D1,
+        signatures = setOf(
+            "538fbf04f304c4a9a6dc48638bcab88620e445c3be2b1d671bb3228fb04ff6d8",
+        ),
+        targets = listOf(AppTarget(version = "2.3.0.10", versionCode = 797, minSdk = 24)),
     )
 
     val BANGLA_CALENDAR = Compatibility(
@@ -349,6 +393,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.0.21", versionCode = 59, minSdk = 24)),
     )
 
+    val DESH_TELUGU_KEYBOARD = Compatibility(
+        name = "Desh Telugu Keyboard",
+        packageName = "com.telug.keyboard.for.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x08231C,
+        signatures = setOf(
+            "26728e842b7473b4c79b72324ee107ece06bce213520028c8973aeb2edb987af",
+        ),
+        targets = listOf(AppTarget(version = "17.6.8", versionCode = 11768, minSdk = 32)),
+    )
+
     val DEVCHECK = Compatibility(
         name = "DevCheck",
         packageName = "flar2.devcheck",
@@ -421,7 +476,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "925c7b1df5689fef2371e1f6e71e98a3956295df95221baa06145222aa89f769",
         ),
-        targets = listOf(AppTarget(version = "2.92", versionCode = 337, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.93", versionCode = 339, minSdk = 24)),
     )
 
     val FDDB = Compatibility(
@@ -517,6 +572,17 @@ internal object AppCompatibilities {
             "802dcbe0db7955225c2f432aafed521681b835e274e0337aba8477b39c0261cf",
         ),
         targets = listOf(AppTarget(version = "1.7.0-lite", versionCode = 57, minSdk = 28)),
+    )
+
+    val IOTOTOY = Compatibility(
+        name = "IoToToy",
+        packageName = "com.hardcodedjoy.iototoy",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xDEEEEE,
+        signatures = setOf(
+            "8bae701239d3a6167dace90b3676b2c46a7aca80e4c136a95e2511dcec5a9fca",
+        ),
+        targets = listOf(AppTarget(version = "1.1.0", versionCode = 11, minSdk = 24)),
     )
 
     val JUJO = Compatibility(
@@ -869,7 +935,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "740847519c431975924d4ea55d10ef2dad77d43c6565a9b6d3218c4c00c3279d",
         ),
-        targets = listOf(AppTarget(version = "v2.1.28.0", versionCode = 407, minSdk = 26)),
+        targets = listOf(AppTarget(version = "v2.1.37.0", versionCode = 409, minSdk = 26)),
     )
 
     val NOTESNOOK = Compatibility(
@@ -894,10 +960,7 @@ internal object AppCompatibilities {
             "5620d2344aa13b4fb30df6bb59df508839af348ad12f5e4f3b95fca02662b77b",
             "b87ed511109b159844ff23ab802e00d56ab9d94d1435d89edd32cf07b62551fa",
         ),
-        targets = listOf(
-            AppTarget(version = "0.5.38", versionCode = 350, minSdk = 29),
-            AppTarget(version = "0.5.93", versionCode = 405, minSdk = 32),
-        ),
+        targets = listOf(AppTarget(version = "0.5.104", versionCode = 416, minSdk = 29)),
     )
 
     val ONE_WEATHER = Compatibility(
@@ -1214,17 +1277,7 @@ internal object AppCompatibilities {
         packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x243ECA,
-        targets = listOf(
-            AppTarget(version = "1.02.01.1020", versionCode = 10158, minSdk = 24),
-            AppTarget(version = "1.01.100.1012", versionCode = 10157, minSdk = 24),
-            AppTarget(version = "1.01.99.0909", versionCode = 10153, minSdk = 24),
-            AppTarget(version = "1.01.98.0831", versionCode = 10151, minSdk = 24),
-            AppTarget(version = "1.01.98.0824", versionCode = 10146, minSdk = 24),
-            AppTarget(version = "1.01.97.0818", versionCode = 10145, minSdk = 24),
-            AppTarget(version = "1.01.96.0716", versionCode = 10142, minSdk = 24),
-            AppTarget(version = "1.01.94.0602", versionCode = 10139, minSdk = 24),
-            AppTarget(version = "1.01.90.0421", versionCode = 10131, minSdk = 24),
-        ),
+        targets = listOf(AppTarget(version = "1.02.01.1023", versionCode = 10159, minSdk = 24)),
     )
 
     val MAY_BULLET_JOURNAL = Compatibility(
@@ -1421,7 +1474,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6e9857865c0d4568e02ef76dc838ed282a3d24b12c7027b3926190d99b42fe09",
         ),
-        targets = listOf(AppTarget(version = "29.1.1.0", versionCode = 1290101, minSdk = 32)),
+        targets = listOf(AppTarget(version = "29.2.0.0", versionCode = 1290200, minSdk = 32)),
     )
 
     val VLLO = Compatibility(
@@ -1526,6 +1579,17 @@ internal object AppCompatibilities {
             "b52d663c4612475b293ca0ec4ca84e00da9c77d55a28cc655ba2dd4bf33ae9fb",
         ),
         targets = listOf(AppTarget(version = "1.168", versionCode = 168, minSdk = 24)),
+    )
+
+    val VPN_INDIA = Compatibility(
+        name = "VPN India",
+        packageName = "india.vpn_tap2free",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x479C1E,
+        signatures = setOf(
+            "efa80db96fc21e9c6345584d3fab947c4cde2838937463d6fdd402c9458898c0",
+        ),
+        targets = listOf(AppTarget(version = "1.172", versionCode = 172, minSdk = 24)),
     )
 
     val GRAPH_MESSENGER = Compatibility(

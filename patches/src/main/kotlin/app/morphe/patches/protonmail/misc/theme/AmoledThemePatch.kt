@@ -188,7 +188,7 @@ private fun MutableMethod.replaceInlineMessageBackground(index: Int) {
 @Suppress("unused")
 val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
-    description = "Replaces the dark theme background with pure black and dims menus, bars and buttons.",
+    description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(webSettingsThemePatch)

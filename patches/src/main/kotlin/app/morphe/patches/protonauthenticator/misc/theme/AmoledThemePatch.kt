@@ -95,7 +95,7 @@ private fun BytecodePatchContext.tintEmptyStatePlaceholder() {
 @Suppress("unused")
 val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
-    description = "Replaces the dark theme background with pure black.",
+    description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_AUTHENTICATOR)
     dependsOn(patchesSettingsPatch, amoledBackgroundOverlayPatch, amoledWindowBackgroundPatch)

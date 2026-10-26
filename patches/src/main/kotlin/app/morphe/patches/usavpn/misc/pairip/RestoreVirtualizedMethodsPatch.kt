@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.usavpn.misc.pairip
 
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
@@ -22,6 +23,8 @@ internal const val DEVICE_STATE_RECEIVER = "Lde/blinkt/openvpn/core/DeviceStateR
 internal const val SETTINGS = "Lcom/vpn/lib/SettingPreferences;"
 internal const val SHARED_PREFERENCES = "Landroid/content/SharedPreferences;"
 internal const val FIND_VIEW = "Landroidx/appcompat/app/AppCompatActivity;->findViewById(I)Landroid/view/View;"
+
+private const val INDIA_APP = "Lindia/vpn_tap2free/MyApp;"
 
 private const val INMOBI_AD_ACTIVITY = "Lcom/inmobi/ads/rendering/InMobiAdActivity;"
 
@@ -70,7 +73,6 @@ private fun restoredMethods() = listOf(
     ),
     RestoredMethod(STATUS_SERVICE, ON_START_COMMAND, 11, statusServiceOnStartCommand()),
     RestoredMethod(LAUNCH_VPN, ON_CREATE, 8, launchVpnOnCreate()),
-    RestoredMethod(DEVICE_STATE_RECEIVER, ON_RECEIVE, 8, deviceStateOnReceive()),
     RestoredMethod("Lcom/android/billingclient/api/ProxyBillingActivity;", ON_CREATE, 2, FINISH_ON_CREATE),
     RestoredMethod(
         "Lcom/android/billingclient/api/ProxyBillingActivityV2;", ON_CREATE, 2,
@@ -100,14 +102,38 @@ private fun restoredMethods() = listOf(
     ),
 )
 
+private fun appRestoredMethods(packageName: String) = when (packageName) {
+    AppCompatibilities.USA_VPN.packageName -> listOf(
+        RestoredMethod(DEVICE_STATE_RECEIVER, ON_RECEIVE, 8, deviceStateOnReceive()),
+    )
+    AppCompatibilities.VPN_INDIA.packageName -> listOf(
+        RestoredMethod(
+            INDIA_APP, ON_CREATE, 2,
+            """
+                invoke-super {p0}, $APP->onCreate()V
+                sput-object p0, $APP->F:$APP
+                invoke-virtual {p0}, $INDIA_APP->m()V
+                invoke-static {}, Lcom/vpn/lib/injection/DaggerAppComponent;->a()Lcom/vpn/lib/injection/AppComponent${'$'}Builder;
+                move-result-object v0
+                invoke-interface {v0, p0}, Lcom/vpn/lib/injection/AppComponent${'$'}Builder;->a($APP)Lcom/vpn/lib/injection/AppComponent${'$'}Builder;
+                invoke-interface {v0}, Lcom/vpn/lib/injection/AppComponent${'$'}Builder;->build()Lcom/vpn/lib/injection/DaggerAppComponent;
+                move-result-object v0
+                invoke-virtual {v0, p0}, Lcom/vpn/lib/injection/DaggerAppComponent;->c($APP)V
+                return-void
+            """,
+        ),
+    )
+    else -> throw PatchException("No restored methods for $packageName")
+}
+
 val restoreVirtualizedMethodsPatch = bytecodePatch {
-    compatibleWith(AppCompatibilities.USA_VPN)
+    compatibleWith(AppCompatibilities.USA_VPN, AppCompatibilities.VPN_INDIA)
 
     dependsOn(removePairipVirtualizationPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
         checkMergedLambdaBindings()
-        restoreVirtualizedMethods(restoredMethods())
+        restoreVirtualizedMethods(restoredMethods() + appRestoredMethods(packageMetadata.packageName))
     }
 }

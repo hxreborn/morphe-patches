@@ -10,10 +10,10 @@ import app.morphe.patches.coddy.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.indexOfMasked
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
-import app.morphe.patches.shared.misc.dart.dartAotLibrary
-import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.requireArm
 import app.morphe.patches.shared.readInt
 import app.morphe.patches.shared.writeInt
+import java.io.File
 
 internal val SUBSCRIPTION_FIELD_STORES =
     ("d9000094a1035ff8017000b8a1835ef801b000b8a1035ef801f000b8a1835df8013001b8" +
@@ -108,6 +108,68 @@ private val RETURN_TRUE = intArrayOf(0x910082c0.toInt(), 0xd65f03c0.toInt())
 
 private val RETURN_FALSE = intArrayOf(0x9100c2c0.toInt(), 0xd65f03c0.toInt())
 
+internal const val ARMEABI_V7A_DART_AOT_LIBRARY = "lib/armeabi-v7a/libapp.so"
+
+internal fun ByteArray.indexOfSingleMatch(library: String, what: String, pattern: ByteArray, mask: ByteArray): Int {
+    val index = indexOfMasked(pattern, mask)
+    if (index < 0) throw PatchException("Could not find $what in $library")
+    if (indexOfMasked(pattern, mask, index + 1) >= 0) {
+        throw PatchException("Found $what more than once in $library")
+    }
+    return index
+}
+
+internal fun ByteArray.writeInstructions(at: Int, vararg instructions: Int) =
+    instructions.forEachIndexed { slot, instruction -> writeInt(at + slot * 4, instruction) }
+
+private fun ByteArray.unlockPremiumArm64() {
+    fun find(what: String, pattern: ByteArray, mask: ByteArray) =
+        indexOfSingleMatch(DART_AOT_LIBRARY, what, pattern, mask)
+
+    fun branchTarget(at: Int): Int = at + ((readInt(at) shl 6) shr 4)
+
+    fun branch(from: Int, to: Int, opcode: Int) = opcode or (((to - from) shr 2) and 0x3ffffff)
+
+    val fieldStores = find("the subscription field stores", SUBSCRIPTION_FIELD_STORES, SUBSCRIPTION_FIELD_STORES_MASK)
+    writeInstructions(fieldStores + PREMIUM_FIELD_LOAD_OFFSET, LOAD_TRUE_INTO_X1)
+
+    val emptySkip = find("the empty subscription check", EMPTY_SUBSCRIPTION_SKIP, EMPTY_SUBSCRIPTION_SKIP_MASK)
+    writeInstructions(emptySkip + EMPTY_SUBSCRIPTION_BRANCH_OFFSET, NOP)
+
+    val isPro = find("the Pro plan getter", IS_PRO, PLAN_GETTER_MASK)
+    writeInstructions(isPro, *RETURN_FALSE)
+    writeInstructions(find("the Plus plan getter", IS_PLUS, IS_PLUS_MASK), *RETURN_TRUE)
+    writeInstructions(find("the free project limit", FREE_PROJECT_LIMIT, FREE_PROJECT_LIMIT_MASK), *RETURN_FALSE)
+    writeInstructions(find("the AI tutor limit", AI_TUTOR_LIMIT_CHECK, AI_TUTOR_LIMIT_CHECK_MASK), *RETURN_FALSE)
+
+    val accountPromptBranch =
+        find("the guest account prompt", GUEST_PREMIUM_ACCOUNT_PROMPT, GUEST_PREMIUM_ACCOUNT_PROMPT_MASK) +
+            ACCOUNT_PROMPT_BRANCH_OFFSET
+    val promptSkipTarget = accountPromptBranch + (((readInt(accountPromptBranch) shl 8) shr 13) shl 2)
+    writeInstructions(accountPromptBranch, branch(accountPromptBranch, promptSkipTarget, BRANCH))
+
+    val emptyFactory = branchTarget(find("the initial subscription", INITIAL_SUBSCRIPTION, INITIAL_SUBSCRIPTION_MASK))
+    val emptyFactoryCode = copyOfRange(emptyFactory, emptyFactory + EMPTY_SUBSCRIPTION_FACTORY.size)
+    if (emptyFactoryCode.indexOfMasked(EMPTY_SUBSCRIPTION_FACTORY, EMPTY_SUBSCRIPTION_FACTORY_MASK) != 0) {
+        throw PatchException("The initial subscription is not built by the empty factory")
+    }
+    val allocationStub = branchTarget(emptyFactory + FACTORY_ALLOCATION_OFFSET)
+
+    val premiumFactory = isPro + RETURN_FALSE.size * 4
+    writeInstructions(
+        premiumFactory,
+        emptyFactoryCode.readInt(0),
+        emptyFactoryCode.readInt(4),
+        branch(premiumFactory + FACTORY_ALLOCATION_OFFSET, allocationStub, BRANCH_WITH_LINK),
+        LOAD_TRUE_INTO_X1,
+        PREMIUM_FIELD_STORE,
+        emptyFactoryCode.readInt(12),
+        emptyFactoryCode.readInt(16),
+        emptyFactoryCode.readInt(20),
+    )
+    writeInstructions(emptyFactory, branch(emptyFactory, premiumFactory, BRANCH))
+}
+
 @Suppress("unused")
 val unlockPremiumPatch = resourcePatch(
     name = "Unlock premium",
@@ -115,68 +177,19 @@ val unlockPremiumPatch = resourcePatch(
         "limit and the free project limit.",
 ) {
     compatibleWith(AppCompatibilities.CODDY)
-    availability(requireArm64)
+    availability(requireArm)
     dependsOn(spoofSignaturePatch)
 
     execute {
-        val library = dartAotLibrary()
-        val code = library.readBytes()
-
-        fun find(what: String, pattern: ByteArray, mask: ByteArray): Int {
-            val index = code.indexOfMasked(pattern, mask)
-            if (index < 0) throw PatchException("Could not find $what in $DART_AOT_LIBRARY")
-            if (code.indexOfMasked(pattern, mask, index + 1) >= 0) {
-                throw PatchException("Found $what more than once in $DART_AOT_LIBRARY")
-            }
-            return index
-        }
-
-        fun write(at: Int, vararg instructions: Int) =
-            instructions.forEachIndexed { slot, instruction -> code.writeInt(at + slot * 4, instruction) }
-
-        fun branchTarget(at: Int): Int = at + ((code.readInt(at) shl 6) shr 4)
-
-        fun branch(from: Int, to: Int, opcode: Int) = opcode or (((to - from) shr 2) and 0x3ffffff)
-
-        val fieldStores = find("the subscription field stores", SUBSCRIPTION_FIELD_STORES, SUBSCRIPTION_FIELD_STORES_MASK)
-        write(fieldStores + PREMIUM_FIELD_LOAD_OFFSET, LOAD_TRUE_INTO_X1)
-
-        val emptySkip = find("the empty subscription check", EMPTY_SUBSCRIPTION_SKIP, EMPTY_SUBSCRIPTION_SKIP_MASK)
-        write(emptySkip + EMPTY_SUBSCRIPTION_BRANCH_OFFSET, NOP)
-
-        val isPro = find("the Pro plan getter", IS_PRO, PLAN_GETTER_MASK)
-        write(isPro, *RETURN_FALSE)
-        write(find("the Plus plan getter", IS_PLUS, IS_PLUS_MASK), *RETURN_TRUE)
-        write(find("the free project limit", FREE_PROJECT_LIMIT, FREE_PROJECT_LIMIT_MASK), *RETURN_FALSE)
-        write(find("the AI tutor limit", AI_TUTOR_LIMIT_CHECK, AI_TUTOR_LIMIT_CHECK_MASK), *RETURN_FALSE)
-
-        val accountPromptBranch =
-            find("the guest account prompt", GUEST_PREMIUM_ACCOUNT_PROMPT, GUEST_PREMIUM_ACCOUNT_PROMPT_MASK) +
-                ACCOUNT_PROMPT_BRANCH_OFFSET
-        val promptSkipTarget = accountPromptBranch + (((code.readInt(accountPromptBranch) shl 8) shr 13) shl 2)
-        write(accountPromptBranch, branch(accountPromptBranch, promptSkipTarget, BRANCH))
-
-        val emptyFactory = branchTarget(find("the initial subscription", INITIAL_SUBSCRIPTION, INITIAL_SUBSCRIPTION_MASK))
-        val emptyFactoryCode = code.copyOfRange(emptyFactory, emptyFactory + EMPTY_SUBSCRIPTION_FACTORY.size)
-        if (emptyFactoryCode.indexOfMasked(EMPTY_SUBSCRIPTION_FACTORY, EMPTY_SUBSCRIPTION_FACTORY_MASK) != 0) {
-            throw PatchException("The initial subscription is not built by the empty factory")
-        }
-        val allocationStub = branchTarget(emptyFactory + FACTORY_ALLOCATION_OFFSET)
-
-        val premiumFactory = isPro + RETURN_FALSE.size * 4
-        write(
-            premiumFactory,
-            emptyFactoryCode.readInt(0),
-            emptyFactoryCode.readInt(4),
-            branch(premiumFactory + FACTORY_ALLOCATION_OFFSET, allocationStub, BRANCH_WITH_LINK),
-            LOAD_TRUE_INTO_X1,
-            PREMIUM_FIELD_STORE,
-            emptyFactoryCode.readInt(12),
-            emptyFactoryCode.readInt(16),
-            emptyFactoryCode.readInt(20),
+        val unlocksByLibrary = mapOf(
+            DART_AOT_LIBRARY to ByteArray::unlockPremiumArm64,
+            ARMEABI_V7A_DART_AOT_LIBRARY to ByteArray::unlockPremiumArmeabiV7a,
         )
-        write(emptyFactory, branch(emptyFactory, premiumFactory, BRANCH))
+        val libraries = unlocksByLibrary.mapKeys { (path) -> get(path) }.filterKeys(File::exists)
+        if (libraries.isEmpty()) {
+            throw PatchException("Could not find $DART_AOT_LIBRARY or $ARMEABI_V7A_DART_AOT_LIBRARY")
+        }
 
-        library.writeBytes(code)
+        libraries.forEach { (library, unlock) -> library.writeBytes(library.readBytes().apply(unlock)) }
     }
 }
