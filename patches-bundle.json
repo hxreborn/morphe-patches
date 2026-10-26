@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-26T09:41:24",
-  "description": "## [1.62.0-dev.14](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.13...v1.62.0-dev.14) (2026-10-26)\n\n### New Features\n\n* **blockit - Free parachutes:** add parachute packs without a purchase ([5c8f09d](https://github.com/hxreborn/morphe-patches/commit/5c8f09d0fad692bd200fc1396f21fc0611308a11))\n* **blockit - Unlock premium:** unlock Premium, the suitcase and sounds ([f05f596](https://github.com/hxreborn/morphe-patches/commit/f05f5965f2aada4adebedfa6aa5cf745b3e7d1b5))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.62.0-dev.14/patches-1.62.0-dev.14.mpp",
+  "created_at": "2026-10-26T09:50:43",
+  "description": "## [1.62.0-dev.15](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.14...v1.62.0-dev.15) (2026-10-26)\n\n### New Features\n\n* **Monet Launcher - Unlock premium:** unlock wallpapers and designs ([0c69b64](https://github.com/hxreborn/morphe-patches/commit/0c69b64b9ae21fcc65171c3b74d2f291971125e9))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.62.0-dev.15/patches-1.62.0-dev.15.mpp",
   "signature_download_url": "",
-  "version": "1.62.0-dev.14"
+  "version": "1.62.0-dev.15"
 }

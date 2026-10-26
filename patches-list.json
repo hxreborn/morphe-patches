@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.14",
+  "version": "1.62.0-dev.15",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -12187,6 +12187,40 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Monet Premium.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.klevico.monet",
+          "name": "Monet Launcher",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#657085",
+          "signatures": [
+            "1b3d405d34ab4a1ba98c26ac0efdf7b79371724fa039c8614e162c402f984af1"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.1.0",
+              "versionCodes": {
+                "ARM64_V8A": 134,
+                "ARMEABI_V7A": 134,
+                "X86_64": 134,
+                "X86": 134
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]

@@ -1,3 +1,9 @@
+## [1.62.0-dev.15](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.14...v1.62.0-dev.15) (2026-10-26)
+
+### New Features
+
+* **Monet Launcher - Unlock premium:** unlock wallpapers and designs ([0c69b64](https://github.com/hxreborn/morphe-patches/commit/0c69b64b9ae21fcc65171c3b74d2f291971125e9))
+
 ## [1.62.0-dev.14](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.13...v1.62.0-dev.14) (2026-10-26)
 
 ### New Features
