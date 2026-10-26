@@ -179,6 +179,7 @@ ICONS = {
     "im.thebot.messenger": "botim.png",
     "com.klevico.monet": "monet.png",
     "com.pengyou.cloneapp": "cloneapp.png",
+    "com.athan": "athan.png",
     "com.cardfeed.video_public": "publicvideos.png",
     "com.michaldrabik.showly2": "showly.png",
     "co.steezy.app": "steezy.png",
