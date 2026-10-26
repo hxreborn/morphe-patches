@@ -15,11 +15,16 @@ import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.util.findElementByAttributeValueOrThrow
 
 private const val BACKGROUND_NORM = 41
+private const val BACKGROUND_WEAK = 42
 private const val BACKGROUND_STRONG = 44
+private const val BOTTOM_SHEET_BACKGROUND = 64
 private const val ITEM_DETAIL_BACKGROUND = 65
 private const val DARK_BACKGROUND_PALETTE_FIELD = "EerieBlack"
 private val DARK_BACKGROUND_ROLES = listOf(BACKGROUND_NORM, BACKGROUND_STRONG, ITEM_DETAIL_BACKGROUND)
     .associateWith { DARK_BACKGROUND_PALETTE_FIELD }
+private const val DARK_RAISED_SURFACE_PALETTE_FIELD = "DarkGunmetal"
+private val DARK_RAISED_SURFACE_ROLES = listOf(BACKGROUND_WEAK, BOTTOM_SHEET_BACKGROUND)
+    .associateWith { DARK_RAISED_SURFACE_PALETTE_FIELD }
 private const val NIGHT_STYLES = "res/values-night/styles.xml"
 private const val SPLASH_STYLE = "ProtonTheme.Splash.Pass"
 private const val SPLASH_BACKGROUND_ITEM = "windowSplashScreenBackground"
@@ -40,7 +45,7 @@ private val amoledSplashBackgroundPatch = resourcePatch {
 @Suppress("unused")
 val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
-    description = "Replaces the dark theme background with pure black.",
+    description = "Replaces the dark theme background with pure black and dims menus, bars and buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_PASS)
     dependsOn(patchesSettingsPatch, amoledSplashBackgroundPatch, amoledBackgroundOverlayPatch)
@@ -53,6 +58,11 @@ val amoledThemePatch = bytecodePatch(
             DARK_COLORS_FIELD,
             DARK_BACKGROUND_ROLES,
             "$AMOLED_THEME_CLASS->transformPackedBackground(J)J",
+        )
+        PassColorsInitializerFingerprint.method.transformPassColors(
+            DARK_COLORS_FIELD,
+            DARK_RAISED_SURFACE_ROLES,
+            "$AMOLED_THEME_CLASS->transformPackedRaisedSurface(J)J",
         )
     }
 }
