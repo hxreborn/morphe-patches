@@ -242,6 +242,7 @@ ICONS = {
     "com.lingodeer": "lingodeer.png",
     "me.proton.android.lumo": "lumo.png",
     "com.fddb": "fddb.png",
+    "org.mozilla.firefox": "firefox.png",
     "com.performance.meshview": "faststlviewer.png",
     "de.prosiebensat1digital.seventv": "joyn.png",
     "at.zappn": "joyn-austria.png",

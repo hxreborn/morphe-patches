@@ -98,6 +98,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `lingodeer.png` | LingoDeer (`com.lingodeer`) | LingoDeer | APK 2.99.413, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `lumo.png` | Lumo (`me.proton.android.lumo`) | Proton AG | APK 2.1.4-nogms, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `fddb.png` | Fddb (`com.fddb`) | Fddb | APK v7.8.4, `res/mipmap-xxxhdpi-v4/ic_launcher.png` |
+| `firefox.png` | Firefox (`org.mozilla.firefox`) | Mozilla | APK 158.0.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `faststlviewer.png` | Fast STL Viewer (`com.performance.meshview`) | Fast STL Viewer | APK 2.84, `res/Gd.png`, cut to a circle |
 | `cxxdroid.png` | Cxxdroid (`ru.iiec.cxxdroid`) | IIEC | APK 6.0_arm64, `mipmap/ic_launcher`, xxxhdpi |
 | `jvdroid.png` | Jvdroid (`ru.iiec.jvdroid`) | Lider Soft KZ | APK 2.8, `mipmap/ic_launcher`, xxxhdpi |

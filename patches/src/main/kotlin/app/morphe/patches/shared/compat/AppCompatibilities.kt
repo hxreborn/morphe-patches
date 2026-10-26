@@ -504,6 +504,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val FIREFOX = Compatibility(
+        name = "Firefox",
+        packageName = "org.mozilla.firefox",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xFF7139,
+        signatures = setOf(
+            "a78b62a5165b4494b2fead9e76a280d22d937fee6251aece599446b2ea319b04",
+        ),
+        targets = listOf(AppTarget(version = "158.0.2", minSdk = 26)),
+    )
+
     val FOCUS_NOW = Compatibility(
         name = "FocusNow",
         packageName = "com.ferdinandobermeier.focusmate",
