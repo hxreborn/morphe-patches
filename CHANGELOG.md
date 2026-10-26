@@ -1,3 +1,38 @@
+## [1.62.0](https://github.com/hxreborn/morphe-patches/compare/v1.61.0...v1.62.0) (2026-10-26)
+
+### Bug Fixes
+
+* **botim - Fix sign-in:** send the phone verification code ([b452c0a](https://github.com/hxreborn/morphe-patches/commit/b452c0a94b89b3737802946bdecdafd29813aa11)), closes [#383](https://github.com/hxreborn/morphe-patches/issues/383)
+* **DWG FastView:** restore patching on every supported version ([e5b8024](https://github.com/hxreborn/morphe-patches/commit/e5b8024ea6361703e5ef840fca023b804e97cf3d))
+* move to Patcher 2.0.1 ([e42e276](https://github.com/hxreborn/morphe-patches/commit/e42e27691c0b4d515db705cc1507c1c1f120dd3e))
+* **Musicolet - Unlock premium:** stop the crash after restoring a backup ([53ed34b](https://github.com/hxreborn/morphe-patches/commit/53ed34bc36757af94b0e4220487b8bd19b5f7750)), closes [#284](https://github.com/hxreborn/morphe-patches/issues/284)
+
+### New Features
+
+* **Albo - Remove bulk import limit:** import without spending credits ([45c8e1c](https://github.com/hxreborn/morphe-patches/commit/45c8e1cdbc90e067b6e312a637a96b6fe5ed53c5)), closes [#375](https://github.com/hxreborn/morphe-patches/issues/375)
+* **blockit - Free parachutes:** add parachute packs without a purchase ([5c8f09d](https://github.com/hxreborn/morphe-patches/commit/5c8f09d0fad692bd200fc1396f21fc0611308a11))
+* **blockit - Unlock premium:** unlock Premium, the suitcase and sounds ([f05f596](https://github.com/hxreborn/morphe-patches/commit/f05f5965f2aada4adebedfa6aa5cf745b3e7d1b5))
+* **Castle for TV - Spoof signature:** remove the modified app warning ([7d87a63](https://github.com/hxreborn/morphe-patches/commit/7d87a63236c09ca18b3cbe97fca3d6744e6f03da)), closes [#379](https://github.com/hxreborn/morphe-patches/issues/379)
+* **Clink - Unlock Pro:** unlock calculator, Text FX and other Pro tools ([b498be4](https://github.com/hxreborn/morphe-patches/commit/b498be4c034ba61cc26bf975a40753a5d1144c7b))
+* **Clone App - Disable tracking:** stop usage and history uploads ([5e0d0ef](https://github.com/hxreborn/morphe-patches/commit/5e0d0ef44de7490fd1545acbfc6d3094f19a4fae))
+* **Clone App - Fix Manage Google account:** open account settings ([b5cb895](https://github.com/hxreborn/morphe-patches/commit/b5cb8956e1651daf7b30a93db5cbaa99053aa715))
+* **Clone App - Remove ads:** remove splash, interstitial and native ads ([ce6eb2e](https://github.com/hxreborn/morphe-patches/commit/ce6eb2e21ce5ecc926a5330126e77583eede6874))
+* **Clone App - Unlock premium:** unlock multiple copies and bubble mode ([d827c13](https://github.com/hxreborn/morphe-patches/commit/d827c13cba908cf6869ce07aca248d76600632e3))
+* **Coddy - Unlock premium:** unlock Plus and remove the AI tutor limit ([7868681](https://github.com/hxreborn/morphe-patches/commit/7868681e45c6b98ffa11bd4e6ce5abe568f6765a))
+* **Monet Launcher - Unlock premium:** unlock wallpapers and designs ([0c69b64](https://github.com/hxreborn/morphe-patches/commit/0c69b64b9ae21fcc65171c3b74d2f291971125e9))
+* **Pleco - Disable tracking:** stop sending device identifiers ([09d2edb](https://github.com/hxreborn/morphe-patches/commit/09d2edb2471c90c2758324657f769c0cdad14198))
+* **Pleco - Unlock add-ons:** unlock flashcards, document reader and OCR ([1577d90](https://github.com/hxreborn/morphe-patches/commit/1577d9037ebb18c0a5430565f53f789f69572f99))
+* **Proton - AMOLED dark theme:** dim raised bars and cards ([935eb84](https://github.com/hxreborn/morphe-patches/commit/935eb84cb6a09a305eb7be2753dec3fae489b5c3))
+* **Proton Mail - AMOLED dark theme:** dim buttons, chips and action bar ([d3e31fa](https://github.com/hxreborn/morphe-patches/commit/d3e31fa59e264f2f26ffec196c257dd579c88557))
+* **Proton Pass - AMOLED dark theme:** dim the vault drawer and sheets ([5406418](https://github.com/hxreborn/morphe-patches/commit/54064187a5f91033f4d6cba8fdc0d715cc407c85)), closes [#389](https://github.com/hxreborn/morphe-patches/issues/389)
+* **Proton Pass - Hide navigation bar on scroll:** list fills bar space ([39fff13](https://github.com/hxreborn/morphe-patches/commit/39fff1328d5d4016bc95a4314ce2bf8ff5c1f6bc)), closes [#382](https://github.com/hxreborn/morphe-patches/issues/382)
+* update to Patcher 2.0.2-dev.1 ([ecc9db1](https://github.com/hxreborn/morphe-patches/commit/ecc9db182485daa6d25ea38f194443e9468e574e))
+
+### Updated App Support
+
+* **Castle:** add support for `2.1.3` build 158 ([cf26a3e](https://github.com/hxreborn/morphe-patches/commit/cf26a3e4ab02b7792376fc3225274686a9ed329e)), closes [#319](https://github.com/hxreborn/morphe-patches/issues/319) [#357](https://github.com/hxreborn/morphe-patches/issues/357)
+* **MovieBox:** add support for `4.0.03.1022.03` ([bb76d0e](https://github.com/hxreborn/morphe-patches/commit/bb76d0ef8b5e30f37457bbe106770f819a38b506)), closes [#365](https://github.com/hxreborn/morphe-patches/issues/365)
+
 ## [1.62.0-dev.15](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.14...v1.62.0-dev.15) (2026-10-26)
 
 ### New Features
