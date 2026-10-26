@@ -407,6 +407,46 @@ Patching did not start
 
 none
 """),
+    "patching that stopped with an error without a report": ("flag", f"""### App name
+
+Proton Mail
+
+### App version
+
+7.10.4
+
+### What happened
+
+Patching started and stopped with an error
+
+### Bug description
+
+{LONG}
+
+### Error logs
+
+_No response_
+"""),
+    "patching that did not start with a greyed patch needs no error report": ("pass", f"""### App name
+
+Proton Mail
+
+### App version
+
+7.10.4
+
+### What happened
+
+Patching did not start: a patch is greyed out, missing or says Not available
+
+### Bug description
+
+{LONG}
+
+### Error logs
+
+_No response_
+"""),
     "version the bundle does not target": ("flag", f"""### App name
 
 Proton Mail

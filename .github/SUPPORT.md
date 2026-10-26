@@ -6,7 +6,7 @@ This is a hobby project run by one developer. Requests for new apps go to Discus
 | --- | --- |
 | Patches for an app not supported yet | [App request](https://github.com/hxreborn/morphe-patches/discussions/new?category=app-requests) in Discussions |
 | A supported app has a newer version than the README lists | [App update](https://github.com/hxreborn/morphe-patches/issues/new?template=app_update.yml) |
-| Patching stopped with an error, or the APK would not install | [Patching failed](https://github.com/hxreborn/morphe-patches/issues/new?template=bug_report.yml) |
+| Patching would not start (a patch greyed out or Not available), stopped with an error, or the APK would not install | [Patching failed](https://github.com/hxreborn/morphe-patches/issues/new?template=bug_report.yml) |
 | The patched app opens but misbehaves | [Patched app broken](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml) |
 | A new feature for a supported app | [Feature request](https://github.com/hxreborn/morphe-patches/issues/new?template=feature_request.yml) |
 | A question about patching, installing or using the bundle | [Q&A](https://github.com/hxreborn/morphe-patches/discussions/new?category=q-a) in Discussions |

@@ -38,7 +38,7 @@ REPORT = re.compile(
     r"|https?://(?:www\.)?(?:pastebin\.com|gist\.github\.com|paste\.ee|hastebin\.com|dpaste\.org|rentry\.co)/\S+", re.I | re.M
 )
 
-OPTION_PATCHING_FAILED = "patchingfailed"
+OPTIONS_PATCHING_FAILED = ("patchingfailed", "patchingstartedandstoppedwithanerror")
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
 OPTIONS_PATCH_INEFFECTIVE = (
@@ -192,7 +192,7 @@ elif matched[1] and not (
     )
     labels.append("untargeted version")
 
-if normalize(what_happened).startswith(OPTION_PATCHING_FAILED) and not report_attached:
+if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_attached:
     flags.append(
         "Patching failed, but the Error logs field has no error report. "
         "Please tap Copy on Manager's error dialog and paste it there."

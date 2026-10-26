@@ -20,9 +20,9 @@ body:
     attributes:
       label: What happened
       options:
-        - Patching failed
-        - Patching worked, install failed
-        - Patching did not start
+        - "Patching did not start: a patch is greyed out, missing or says Not available"
+        - Patching started and stopped with an error
+        - Patching finished, the APK would not install
     validations:
       required: true
   - type: dropdown
