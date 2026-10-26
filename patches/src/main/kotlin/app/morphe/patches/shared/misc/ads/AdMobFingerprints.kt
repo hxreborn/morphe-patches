@@ -32,3 +32,10 @@ internal object AdLoaderLoadFingerprint : Fingerprint(
     returnType = "V",
     custom = { method, _ -> method.name == "loadAd" || method.name == "loadAds" },
 )
+
+internal object BannerLoadAdFingerprint : Fingerprint(
+    definingClass = "Lcom/google/android/gms/ads/BaseAdView;",
+    name = "loadAd",
+    returnType = "V",
+    parameters = listOf("Lcom/google/android/gms/ads/AdRequest;"),
+)
