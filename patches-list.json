@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.63.0-dev.1",
+  "version": "1.63.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -359,7 +359,7 @@
     },
     {
       "name": "AMOLED dark theme",
-      "description": "Replaces the dark theme background with pure black.",
+      "description": "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -393,7 +393,7 @@
     },
     {
       "name": "AMOLED dark theme",
-      "description": "Replaces the dark theme background with pure black and dims menus, bars and buttons.",
+      "description": "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -427,7 +427,7 @@
     },
     {
       "name": "AMOLED dark theme",
-      "description": "Replaces the dark theme background with pure black and dims menus, bars and buttons.",
+      "description": "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -509,7 +509,7 @@
     },
     {
       "name": "AMOLED dark theme",
-      "description": "Replaces the dark theme background with pure black and dims menus, bars and buttons.",
+      "description": "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
       "default": true,
       "category": null,
       "compatiblePackages": [

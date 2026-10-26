@@ -1,3 +1,9 @@
+## [1.63.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.63.0-dev.1...v1.63.0-dev.2) (2026-10-26)
+
+### New Features
+
+* **Proton - AMOLED dark theme:** add switch to dim raised surfaces ([c35190b](https://github.com/hxreborn/morphe-patches/commit/c35190bac0aa43230db2cb274c56bf6dd77d1424))
+
 ## [1.63.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.62.0...v1.63.0-dev.1) (2026-10-26)
 
 ### Bug Fixes
