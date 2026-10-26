@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.12",
+  "version": "1.62.0-dev.13",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -10065,6 +10065,40 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock Pro",
+      "description": "Unlocks Clink Pro.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ltd.anti.clink",
+          "name": "Clink",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#F7F7F8",
+          "signatures": [
+            "8ea7bd2c094bd6d2dfbd605764c42ffd57c3d2ecf781b9aaf0135ff06b0cbde0"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.9.2",
+              "versionCodes": {
+                "ARM64_V8A": 194,
+                "ARMEABI_V7A": 194,
+                "X86_64": 194,
+                "X86": 194
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]

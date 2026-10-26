@@ -1,3 +1,9 @@
+## [1.62.0-dev.13](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.12...v1.62.0-dev.13) (2026-10-26)
+
+### New Features
+
+* **Clink - Unlock Pro:** unlock calculator, Text FX and other Pro tools ([b498be4](https://github.com/hxreborn/morphe-patches/commit/b498be4c034ba61cc26bf975a40753a5d1144c7b))
+
 ## [1.62.0-dev.12](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.11...v1.62.0-dev.12) (2026-10-26)
 
 ### Bug Fixes

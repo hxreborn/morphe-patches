@@ -80,6 +80,8 @@ body:
         - "Castle for TV (another version, type it below)"
         - "Catzy 1.61.0"
         - "Catzy (another version, type it below)"
+        - "Clink 1.9.2"
+        - "Clink (another version, type it below)"
         - "Clip Studio Paint 5.1.4"
         - "Clip Studio Paint (another version, type it below)"
         - "Clone App 4.2.2"
@@ -372,12 +374,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.13"
         - "1.62.0-dev.12"
         - "1.62.0-dev.11"
         - "1.62.0-dev.10"
         - "1.62.0-dev.9"
         - "1.62.0-dev.8"
-        - "1.62.0-dev.7"
         - "Older than these"
         # /generated
     validations:
@@ -478,6 +480,7 @@ body:
         - "Catzy \u00b7 Remove usage limits"
         - "Catzy \u00b7 Unlimited cat coins"
         - "Catzy \u00b7 Unlock premium"
+        - "Clink \u00b7 Unlock Pro"
         - "Clip Studio Paint \u00b7 Unlock premium"
         - "Clone App \u00b7 Disable tracking"
         - "Clone App \u00b7 Fix Manage Google account"
