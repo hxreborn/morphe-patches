@@ -152,6 +152,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `internetspeedmeterlite.png` | Internet Speed Meter Lite (`com.internet.speed.meter.lite`) | DynamicApps | APK 1.7.0-lite, square icon `res/drawable/app_icon.png` cut to a circle |
 | `com.andatsoft.myapk.fwa.png` | My APK (`com.andatsoft.myapk.fwa`) | Cards | Google Play listing icon, added 2026-10-12 |
 | `viber.png` | Viber (`com.viber.voip`) | Viber Media | APK 29.1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_viber_round.webp` |
+| `deshtelugu.png` | Desh Telugu Keyboard (`com.telug.keyboard.for.android`) | Desh Keyboard | APK 17.6.8, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
 | `com.azeravn.bulletjournal.png` | May: Beautiful Bullet Journal (`com.azeravn.bulletjournal`) | AZ Family | Google Play listing icon, added 2026-10-10 |
 | `com.dev2a.junk_journal.png` | Jujo (`com.dev2a.junk_journal`) | Dev2a Inc | Google Play listing icon, added 2026-10-14 |
 | `pl.neptis.yanosik.mobi.android.png` | Yanosik (`pl.neptis.yanosik.mobi.android`) | Yanosik S.A. | Google Play listing icon, added 2026-10-10 |

@@ -371,6 +371,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.0.21", versionCode = 59, minSdk = 24)),
     )
 
+    val DESH_TELUGU_KEYBOARD = Compatibility(
+        name = "Desh Telugu Keyboard",
+        packageName = "com.telug.keyboard.for.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x08231C,
+        signatures = setOf(
+            "26728e842b7473b4c79b72324ee107ece06bce213520028c8973aeb2edb987af",
+        ),
+        targets = listOf(AppTarget(version = "17.6.8", versionCode = 11768, minSdk = 32)),
+    )
+
     val DEVCHECK = Compatibility(
         name = "DevCheck",
         packageName = "flar2.devcheck",

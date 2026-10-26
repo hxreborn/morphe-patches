@@ -276,6 +276,7 @@ ICONS = {
     "io.yuka.android": "yuka.png",
     "vpn.usa_tap2free": "usavpn.png",
     "com.viber.voip": "viber.png",
+    "com.telug.keyboard.for.android": "deshtelugu.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")
