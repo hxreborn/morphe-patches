@@ -45,7 +45,7 @@ final class PatchCatalog {
                 Row.of("New tab next to current tab", "Add-to-end button", "Open a tab at the end",
                         PatchSettings.TAB_END, PatchSettings.tabNextApplied(), PreviewScenes.tabEnd(),
                         PatchSettings::saveTabEnd),
-                Row.of("Tab scroll buttons", "Scroll buttons", "Jump to first or last tab", PatchSettings.TAB_SCROLL,
+                Row.of("Tab scroll button", "Scroll buttons", "Jump to first or last tab", PatchSettings.TAB_SCROLL,
                         PatchSettings.tabScrollApplied(), PreviewScenes.scrollButtons()),
                 Row.of("Close duplicate tabs", "Close duplicate tabs", "Closes tabs with the same URL",
                         PatchSettings.CLOSE_DUPLICATES, PatchSettings.closeDuplicatesApplied(),
