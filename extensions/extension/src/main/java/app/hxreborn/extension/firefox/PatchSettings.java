@@ -34,6 +34,8 @@ public final class PatchSettings {
 
     static final Flag CLOSE_DUPLICATES = new Flag("close_duplicates");
 
+    static final Flag SELECT_PREVIOUS = new Flag("select_previous_tab");
+
     static final Flag TAB_SCROLL = new Flag("tab_scroll_button");
 
     static final Flag RANGE_SELECT = new Flag("range_select");
@@ -117,6 +119,10 @@ public final class PatchSettings {
 
     public static boolean closeDuplicates() {
         return CLOSE_DUPLICATES.get();
+    }
+
+    public static boolean selectPreviousTab() {
+        return SELECT_PREVIOUS.get();
     }
 
     public static boolean showFullUrl() {
@@ -208,6 +214,10 @@ public final class PatchSettings {
     }
 
     public static boolean closeDuplicatesApplied() {
+        return false;
+    }
+
+    public static boolean selectPreviousTabApplied() {
         return false;
     }
 

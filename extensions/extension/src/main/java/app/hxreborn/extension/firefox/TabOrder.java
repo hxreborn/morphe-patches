@@ -69,7 +69,7 @@ public final class TabOrder {
         return -1;
     }
 
-    private static boolean isPrivate(Object tab) throws Exception {
+    static boolean isPrivate(Object tab) throws Exception {
         Object content = Reflection.read(tab, "content");
         return Boolean.TRUE.equals(Reflection.read(content, "private"));
     }

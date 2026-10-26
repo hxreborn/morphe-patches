@@ -79,6 +79,11 @@ final class PreviewScenes {
                 "Tab tray menu without Close duplicate tabs", "Tab tray menu with Close duplicate tabs");
     }
 
+    static Scene selectPrevious() {
+        return scene((pen) -> closedTab(pen, 3), (pen) -> closedTab(pen, 0),
+                "Closing a tab selects the one beside it", "Closing a tab selects the one you came from");
+    }
+
     static Scene rangeSelect() {
         return scene((pen) -> selection(pen, false), (pen) -> selection(pen, true),
                 "Selecting two tabs selects only those two", "Selecting two tabs selects every tab between them");
@@ -282,6 +287,23 @@ final class PreviewScenes {
         for (int row = 0; row < labels.length; row++) {
             boolean added = closeDuplicates && row == 2;
             pen.text(labels[row], 86, first + step * row, 9.5f, added ? pen.palette.accent : pen.palette.text, added);
+        }
+    }
+
+    private static void closedTab(Pen pen, int selected) {
+        for (int tab = 0; tab < 4; tab++) {
+            float x = 16 + 68 * tab;
+            boolean closed = tab == 2;
+            if (closed) {
+                pen.outline(x, 8, x + 60, 48, 8, pen.palette.outline, 1);
+                continue;
+            }
+            pen.fill(x, 8, x + 60, 48, 8, pen.palette.bar);
+            pen.skeleton(x + 8, 18, 36, 3, skeleton(pen));
+            pen.skeleton(x + 8, 26, 44, 3, skeleton(pen));
+            if (tab == selected) {
+                pen.outline(x, 8, x + 60, 48, 8, pen.palette.accent, 2);
+            }
         }
     }
 
