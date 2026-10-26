@@ -176,6 +176,7 @@ ICONS = {
     "com.psiphon3.subscription": "psiphon.png",
     "com.hypenet.focused": "blockit.png",
     "im.thebot.messenger": "botim.png",
+    "com.klevico.monet": "monet.png",
     "com.pengyou.cloneapp": "cloneapp.png",
     "com.cardfeed.video_public": "publicvideos.png",
     "com.michaldrabik.showly2": "showly.png",

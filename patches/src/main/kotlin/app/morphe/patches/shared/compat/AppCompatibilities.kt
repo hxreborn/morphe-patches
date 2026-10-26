@@ -685,6 +685,19 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.6.6", versionCode = 18, minSdk = 21)),
     )
 
+    val MONET = Compatibility(
+        name = "Monet Launcher",
+        packageName = "com.klevico.monet",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0x657085,
+        signatures = setOf(
+            "1b3d405d34ab4a1ba98c26ac0efdf7b79371724fa039c8614e162c402f984af1",
+        ),
+        targets = listOf(
+            AppTarget(version = "1.1.0", versionCode = 134, minSdk = 26),
+        ),
+    )
+
     val MOON_READER = Compatibility(
         name = "Moon+ Reader",
         packageName = "com.flyersoft.moonreader",
