@@ -78,6 +78,9 @@ final class PatchCatalog {
                         Row.of("Load full add-on collection", "Load full add-on collection", "Lists add-ons past 50",
                                 PatchSettings.FULL_ADDONS, PatchSettings.fullAddonCollectionApplied(),
                                 PreviewScenes.addons()),
+                        Row.of("Unlock all extensions", "Unlock all extensions", "Installs desktop-only extensions",
+                                PatchSettings.UNLOCK_EXTENSIONS, PatchSettings.unlockAllExtensionsApplied(),
+                                PreviewScenes.addons()),
                         Row.of("Extended add-on list", "Extended add-on list", "Lists more add-ons",
                                 PatchSettings.EXTENDED_ADDON_LIST, PatchSettings.extendedAddonListApplied(),
                                 PreviewScenes.addons()))));

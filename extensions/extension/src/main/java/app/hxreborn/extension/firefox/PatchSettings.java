@@ -64,6 +64,8 @@ public final class PatchSettings {
 
     static final Flag FULL_ADDONS = new Flag("full_addon_collection");
 
+    static final Flag UNLOCK_EXTENSIONS = new Flag("unlock_all_extensions");
+
     static final Flag EXTENDED_ADDON_LIST = new Flag("extended_addon_list");
 
     static final Flag ABOUT_CONFIG = new Flag("about_config");
@@ -159,6 +161,10 @@ public final class PatchSettings {
 
     public static boolean fullAddonCollection() {
         return FULL_ADDONS.get();
+    }
+
+    public static boolean unlockAllExtensions() {
+        return UNLOCK_EXTENSIONS.get();
     }
 
     public static boolean extendedAddonList() {
@@ -258,6 +264,10 @@ public final class PatchSettings {
     }
 
     public static boolean fullAddonCollectionApplied() {
+        return false;
+    }
+
+    public static boolean unlockAllExtensionsApplied() {
         return false;
     }
 

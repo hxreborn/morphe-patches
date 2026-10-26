@@ -10,10 +10,12 @@
 package app.morphe.patches.firefox.misc.addons
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object CollectionPageFingerprint : Fingerprint(
@@ -37,5 +39,22 @@ internal object DefaultCollectionUserFingerprint : Fingerprint(
     filters = listOf(
         string("mozilla"),
         methodCall(definingClass = "Lmozilla/components/feature/addons/amo/AMOAddonsProvider;", name = "<init>"),
+    ),
+)
+
+internal object NavigationLoadRequestFingerprint : Fingerprint(
+    name = "onLoadRequest",
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
+    returnType = "Lorg/mozilla/geckoview/GeckoResult;",
+    parameters = listOf(
+        "Lorg/mozilla/geckoview/GeckoSession;",
+        "Lorg/mozilla/geckoview/GeckoSession\$NavigationDelegate\$LoadRequest;",
+    ),
+    filters = listOf(
+        fieldAccess(
+            opcode = Opcode.IGET_OBJECT,
+            definingClass = "Lorg/mozilla/geckoview/GeckoSession\$NavigationDelegate\$LoadRequest;",
+            name = "uri",
+        ),
     ),
 )
