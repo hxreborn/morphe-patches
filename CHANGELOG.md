@@ -1,3 +1,28 @@
+## [1.63.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.62.0...v1.63.0-dev.1) (2026-10-26)
+
+### Bug Fixes
+
+* **Coddy - Unlock premium:** support armeabi-v7a devices ([cf2600a](https://github.com/hxreborn/morphe-patches/commit/cf2600a362a55fdc6f68efbed361740525c51fbc)), closes [#406](https://github.com/hxreborn/morphe-patches/issues/406)
+
+### New Features
+
+* **Arc Player - Disable tracking:** stop Firebase usage collection ([e95861a](https://github.com/hxreborn/morphe-patches/commit/e95861a4ab2856bdeb8239619b8d937ad18988ee))
+* **Arc Player - Remove rating prompts:** skip the feedback sheet ([14338e4](https://github.com/hxreborn/morphe-patches/commit/14338e43aed6db7ff85f177e4ace9444542cc706))
+* **Arc Player - Unlock premium:** unlock pure black and subtitle fonts ([78a3496](https://github.com/hxreborn/morphe-patches/commit/78a349608016ceef8c2392cb8818c266c80be8c9))
+* **Athan - Dark theme:** follow the system dark mode ([fb3960f](https://github.com/hxreborn/morphe-patches/commit/fb3960f157988cadf0f5bf2ae4312c2acdd726de))
+* **Athan - Disable tracking:** stop Firebase and Facebook analytics ([9154833](https://github.com/hxreborn/morphe-patches/commit/9154833413305d249eac1ab09996faa017eb2125))
+* **Athan - GmsCore support:** sign in with Google through GmsCore ([0c718e8](https://github.com/hxreborn/morphe-patches/commit/0c718e815240efafd2eb3b70108079619657a037))
+* **Athan - Remove ads:** remove banner and interstitial ads ([88f4203](https://github.com/hxreborn/morphe-patches/commit/88f4203146cd2ad8ecf02899f283ccf01afb6fcb))
+* **Athan - Save images to gallery:** save shared cards to the gallery ([55923cb](https://github.com/hxreborn/morphe-patches/commit/55923cb84a72d09cc5d6b08dd6a14db7155a5b2c))
+* **Athan - Unlock premium:** unlock premium themes and athans ([cf274fe](https://github.com/hxreborn/morphe-patches/commit/cf274fe91089e437016c735a31b850cea90d8ce7))
+* **Audiobook Unlimited - Unlock premium:** unlock unlimited books ([1794024](https://github.com/hxreborn/morphe-patches/commit/1794024aa4a56df1d89f9cc0873c0193a88b65ff))
+* **AutomaTag - Unlock premium:** unlock fingerprinting and batch modes ([71324b0](https://github.com/hxreborn/morphe-patches/commit/71324b0794077dd6e95a2f22a0e0e823be473662))
+* **Desh Telugu Keyboard - Disable tracking:** stop typing analytics ([70d9abf](https://github.com/hxreborn/morphe-patches/commit/70d9abf95aa10b5453928386aea5a2754b95dad1))
+* **Desh Telugu Keyboard - Unlock premium:** remove promoted tiles ([6fa3c71](https://github.com/hxreborn/morphe-patches/commit/6fa3c71b16761a136a451c394deb1287a8264023))
+* **IoToToy - Disable tracking:** stop AppBrain and ML Kit logging ([ceb45fd](https://github.com/hxreborn/morphe-patches/commit/ceb45fd306fc88d53644a1df3924f5ecfa4ba476))
+* **IoToToy - Unlock premium:** unlock premium blocks and remove ads ([729a702](https://github.com/hxreborn/morphe-patches/commit/729a70218e0b560633ed8f81a5ce928bc4fdc1a3))
+* **VPN India - Unlock premium:** unlock PRO servers and remove ads ([4de2d3f](https://github.com/hxreborn/morphe-patches/commit/4de2d3fc5d971d57417a5f39a1665263ca29557c))
+
 ## [1.62.0](https://github.com/hxreborn/morphe-patches/compare/v1.61.0...v1.62.0) (2026-10-26)
 
 ### Bug Fixes
