@@ -17,50 +17,13 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.view.View;
 
 public final class LoadingIndicatorView extends View {
 
-    private static final long DURATION_PER_SHAPE_MS = 650;
-
-    private static final float CONSTANT_ROTATION_PER_SHAPE_DEGREES = 50f;
-
-    private static final float EXTRA_ROTATION_PER_SHAPE_DEGREES = 90f;
-
-    private static final double SPRING_STIFFNESS = 200;
-
-    private static final double SPRING_DAMPING_RATIO = 0.6;
-
-    private static final double SPRING_VALUE_THRESHOLD = 0.01 * 0.75;
-
-    private static final double SPRING_VELOCITY_THRESHOLD = SPRING_VALUE_THRESHOLD * 62.5;
-
-    private static final double NANOS_PER_SECOND = 1e9;
-
-    private static final float INDICATOR_SIZE_RATIO = 38f / 48f;
-
-    private static final float DETERMINATE_DEGREES_PER_PROGRESS = -180f;
-
-    private static final float START_ANGLE_DEGREES = -90f;
-
-    private static final float FULL_TURN_DEGREES = 360f;
-
-    private static final int START_ANCHOR = 0;
-
-    private static final int FIRST_CONTROL = 1;
-
-    private static final int SECOND_CONTROL = 2;
-
-    private static final int END_ANCHOR = 3;
-
-    private static final int AXES = 2;
-
-    private static float[][] morphs;
-
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private final Path path = new Path();
+    private final LoadingIndicatorMorph morph = new LoadingIndicatorMorph();
 
     private final ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
 
@@ -70,18 +33,10 @@ public final class LoadingIndicatorView extends View {
 
     private int morphTarget;
 
-    private float morphFactor;
-
-    private double morphVelocity;
-
-    private long springFrameNanos;
-
-    private float rotationDegrees;
-
     public LoadingIndicatorView(Context context) {
         super(context);
         this.paint.setStyle(Paint.Style.FILL);
-        this.animator.setDuration(DURATION_PER_SHAPE_MS);
+        this.animator.setDuration(LoadingIndicatorMorph.MILLIS_PER_SHAPE);
         this.animator.setInterpolator(null);
         this.animator.setRepeatCount(ValueAnimator.INFINITE);
         this.animator.addUpdateListener((animation) -> onAnimationFrame(animation.getAnimatedFraction()));
@@ -129,40 +84,16 @@ public final class LoadingIndicatorView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (morphs == null) {
-            morphs = LoadingIndicatorShapes.decodeMorphs();
-        }
-        final float[] morph;
-        final float morphFraction;
-        final float rotation;
-        if (this.indeterminate) {
-            final int shapeIndex = (int) Math.floor(this.morphFactor);
-            final int shapeCount = LoadingIndicatorShapes.INDETERMINATE_CUBIC_COUNTS.length;
-            morph = morphs[((shapeIndex % shapeCount) + shapeCount) % shapeCount];
-            morphFraction = this.morphFactor - shapeIndex;
-            rotation = this.rotationDegrees;
-        } else {
-            morph = morphs[LoadingIndicatorShapes.DETERMINATE_MORPH_INDEX];
-            morphFraction = Math.max(0f, Math.min(1f, this.progress));
-            rotation = this.progress * DETERMINATE_DEGREES_PER_PROGRESS;
-        }
-        final float radius = Math.min(getWidth(), getHeight()) / 2f * INDICATOR_SIZE_RATIO;
-        buildPath(morph, morphFraction, radius);
-        canvas.save();
-        canvas.translate(getWidth() / 2f, getHeight() / 2f);
-        canvas.rotate(START_ANGLE_DEGREES + rotation);
-        canvas.drawPath(this.path, this.paint);
-        canvas.restore();
+        final float radius = Math.min(getWidth(), getHeight()) / 2f;
+        this.morph.draw(canvas, this.paint, getWidth() / 2f, getHeight() / 2f, radius, this.indeterminate,
+                this.progress);
     }
 
     private void updateAnimator() {
         final boolean running = this.indeterminate && isAttachedToWindow();
         if (running && !this.animator.isStarted()) {
             this.morphTarget = 1;
-            this.morphFactor = 0f;
-            this.morphVelocity = 0;
-            this.springFrameNanos = 0;
-            this.rotationDegrees = 0f;
+            this.morph.reset();
             this.animator.start();
         } else if (!running && this.animator.isStarted()) {
             this.animator.cancel();
@@ -170,62 +101,9 @@ public final class LoadingIndicatorView extends View {
     }
 
     private void onAnimationFrame(float animationFraction) {
-        stepSpring(System.nanoTime());
-        final float shapeBase = this.morphTarget - 1;
         final float timeFraction = (animationFraction == 1f) ? 0f : animationFraction;
-        this.rotationDegrees = ((CONSTANT_ROTATION_PER_SHAPE_DEGREES + EXTRA_ROTATION_PER_SHAPE_DEGREES) * shapeBase
-                + CONSTANT_ROTATION_PER_SHAPE_DEGREES * timeFraction
-                + EXTRA_ROTATION_PER_SHAPE_DEGREES * (this.morphFactor - shapeBase)) % FULL_TURN_DEGREES;
+        this.morph.advance(this.morphTarget, timeFraction, System.nanoTime());
         invalidate();
-    }
-
-    private void stepSpring(long frameNanos) {
-        final double elapsedSeconds = (this.springFrameNanos == 0) ? 0
-                : (frameNanos - this.springFrameNanos) / NANOS_PER_SECOND;
-        this.springFrameNanos = frameNanos;
-        final double naturalFrequency = Math.sqrt(SPRING_STIFFNESS);
-        final double dampedFrequency = naturalFrequency * Math.sqrt(1 - SPRING_DAMPING_RATIO * SPRING_DAMPING_RATIO);
-        final double decayRate = SPRING_DAMPING_RATIO * naturalFrequency;
-        final double displacement = this.morphFactor - this.morphTarget;
-        final double sineCoefficient = (this.morphVelocity + decayRate * displacement) / dampedFrequency;
-        final double decay = Math.exp(-decayRate * elapsedSeconds);
-        final double cosine = Math.cos(dampedFrequency * elapsedSeconds);
-        final double sine = Math.sin(dampedFrequency * elapsedSeconds);
-        double nextDisplacement = decay * (displacement * cosine + sineCoefficient * sine);
-        double nextVelocity = -decayRate * nextDisplacement
-                + decay * dampedFrequency * (sineCoefficient * cosine - displacement * sine);
-        if (Math.abs(nextDisplacement) < SPRING_VALUE_THRESHOLD && Math.abs(nextVelocity) < SPRING_VELOCITY_THRESHOLD) {
-            nextDisplacement = 0;
-            nextVelocity = 0;
-        }
-        this.morphFactor = (float) (this.morphTarget + nextDisplacement);
-        this.morphVelocity = nextVelocity;
-    }
-
-    private void buildPath(float[] morph, float fraction, float scale) {
-        this.path.rewind();
-        final int cubics = morph.length / LoadingIndicatorShapes.FLOATS_PER_CUBIC;
-        this.path.moveTo(coordinate(morph, 0, START_ANCHOR, 0, fraction, scale),
-                coordinate(morph, 0, START_ANCHOR, 1, fraction, scale));
-        for (int cubic = 0; cubic < cubics; cubic++) {
-            final boolean last = cubic == cubics - 1;
-            final int endCubic = (last) ? 0 : cubic;
-            final int endAnchor = (last) ? START_ANCHOR : END_ANCHOR;
-            this.path.cubicTo(coordinate(morph, cubic, FIRST_CONTROL, 0, fraction, scale),
-                    coordinate(morph, cubic, FIRST_CONTROL, 1, fraction, scale),
-                    coordinate(morph, cubic, SECOND_CONTROL, 0, fraction, scale),
-                    coordinate(morph, cubic, SECOND_CONTROL, 1, fraction, scale),
-                    coordinate(morph, endCubic, endAnchor, 0, fraction, scale),
-                    coordinate(morph, endCubic, endAnchor, 1, fraction, scale));
-        }
-        this.path.close();
-    }
-
-    private static float coordinate(float[] morph, int cubic, int point, int axis, float fraction, float scale) {
-        final int index = cubic * LoadingIndicatorShapes.FLOATS_PER_CUBIC + (point * AXES + axis) * 2;
-        final float from = morph[index];
-        final float to = morph[index + 1];
-        return (from + (to - from) * fraction) * scale;
     }
 
 }
