@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.62.0-dev.8",
+  "version": "1.62.0-dev.9",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -742,6 +742,18 @@
                 "ARMEABI_V7A": 50020129,
                 "X86_64": 50020129,
                 "X86": 50020129
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "4.0.03.1022.03",
+              "versionCodes": {
+                "ARM64_V8A": 50020133,
+                "ARMEABI_V7A": 50020133,
+                "X86_64": 50020133,
+                "X86": 50020133
               },
               "isExperimental": false,
               "minSdk": 29,
@@ -4221,6 +4233,18 @@
               "isExperimental": false,
               "minSdk": 29,
               "description": null
+            },
+            {
+              "version": "4.0.03.1022.03",
+              "versionCodes": {
+                "ARM64_V8A": 50020133,
+                "ARMEABI_V7A": 50020133,
+                "X86_64": 50020133,
+                "X86": 50020133
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
             }
           ]
         }
@@ -4251,6 +4275,18 @@
                 "ARMEABI_V7A": 50020129,
                 "X86_64": 50020129,
                 "X86": 50020129
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "4.0.03.1022.03",
+              "versionCodes": {
+                "ARM64_V8A": 50020133,
+                "ARMEABI_V7A": 50020133,
+                "X86_64": 50020133,
+                "X86": 50020133
               },
               "isExperimental": false,
               "minSdk": 29,
@@ -5889,6 +5925,18 @@
                 "ARMEABI_V7A": 50020129,
                 "X86_64": 50020129,
                 "X86": 50020129
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
+              "version": "4.0.03.1022.03",
+              "versionCodes": {
+                "ARM64_V8A": 50020133,
+                "ARMEABI_V7A": 50020133,
+                "X86_64": 50020133,
+                "X86": 50020133
               },
               "isExperimental": false,
               "minSdk": 29,

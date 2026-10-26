@@ -1,3 +1,9 @@
+## [1.62.0-dev.9](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.8...v1.62.0-dev.9) (2026-10-26)
+
+### Updated App Support
+
+* **MovieBox:** add support for `4.0.03.1022.03` ([bb76d0e](https://github.com/hxreborn/morphe-patches/commit/bb76d0ef8b5e30f37457bbe106770f819a38b506)), closes [#365](https://github.com/hxreborn/morphe-patches/issues/365)
+
 ## [1.62.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.62.0-dev.7...v1.62.0-dev.8) (2026-10-25)
 
 ### New Features

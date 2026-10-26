@@ -170,6 +170,7 @@ body:
         - "Moon+ Reader 10.8"
         - "Moon+ Reader (another version, type it below)"
         - "MovieBox 4.0.03.0918.03"
+        - "MovieBox 4.0.03.1022.03"
         - "MovieBox (another version, type it below)"
         - "MovieBox TV 1.2.0.0923.web_socialmedia"
         - "MovieBox TV (another version, type it below)"
@@ -371,12 +372,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.62.0-dev.9"
         - "1.62.0-dev.8"
         - "1.62.0-dev.7"
         - "1.62.0-dev.6"
         - "1.62.0-dev.5"
         - "1.62.0-dev.4"
-        - "1.62.0-dev.3"
         - "Older than these"
         # /generated
     validations:
