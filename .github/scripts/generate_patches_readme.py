@@ -279,6 +279,7 @@ ICONS = {
     "india.vpn_tap2free": "vpnindia.png",
     "com.viber.voip": "viber.png",
     "com.telug.keyboard.for.android": "deshtelugu.png",
+    "com.fillobotto.mp3tagger": "automatag.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

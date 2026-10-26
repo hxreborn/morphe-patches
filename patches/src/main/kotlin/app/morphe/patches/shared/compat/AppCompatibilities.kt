@@ -170,6 +170,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.3.33", versionCode = 5163, minSdk = 26)),
     )
 
+    val AUTOMATAG = Compatibility(
+        name = "AutomaTag",
+        packageName = "com.fillobotto.mp3tagger",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0288D1,
+        signatures = setOf(
+            "538fbf04f304c4a9a6dc48638bcab88620e445c3be2b1d671bb3228fb04ff6d8",
+        ),
+        targets = listOf(AppTarget(version = "2.3.0.10", versionCode = 797, minSdk = 24)),
+    )
+
     val BANGLA_CALENDAR = Compatibility(
         name = "Bangla Calendar",
         packageName = "com.outscar.bd.bongcal",
