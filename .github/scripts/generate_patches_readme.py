@@ -265,6 +265,7 @@ ICONS = {
     "com.lagguy.wallpapers": "lagguy.png",
     "net.techet.netanalyzerlite.an": "netanalyzer.png",
     "com.radiojavan.androidradio": "radiojavan.png",
+    "net.mbc.shahid": "shahid.png",
     "com.triovent.datingapp": "sheytoon.png",
     "com.serializdmobile": "serializd.png",
     "in.krosbits.musicolet": "musicolet.png",

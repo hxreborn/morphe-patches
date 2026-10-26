@@ -1357,6 +1357,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.992", versionCode = 1992, minSdk = 24)),
     )
 
+    val SHAHID = Compatibility(
+        name = "MBC Shahid",
+        packageName = "net.mbc.shahid",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x01CD91,
+        signatures = setOf(
+            "74cacd21c9b4949fbf4840992052dacb9e45fdd9da10134404f238a9d38318ae",
+        ),
+        targets = listOf(AppTarget(version = "8.11.0", versionCode = 4464, minSdk = 28)),
+    )
+
     val SHEYTOON = Compatibility(
         name = "Sheytoon",
         packageName = "com.triovent.datingapp",
