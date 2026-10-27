@@ -34,7 +34,7 @@ import android.view.View;
 
 import app.hxreborn.extension.shared.Dimensions;
 
-final class MapPickerView extends View implements OsmTiles.Listener {
+final class MapPickerView extends View implements OsmTileLoadListener {
 
     private static final int TILE_DP = 256;
 
@@ -84,7 +84,7 @@ final class MapPickerView extends View implements OsmTiles.Listener {
 
     private boolean pinMoved;
 
-    private Listener listener;
+    private MapPickerListener listener;
 
     MapPickerView(Context context) {
         super(context);
@@ -132,7 +132,7 @@ final class MapPickerView extends View implements OsmTiles.Listener {
         setContentDescription("Map. Drag or tap to move the pin.");
     }
 
-    void setListener(Listener listener) {
+    void setListener(MapPickerListener listener) {
         this.listener = listener;
     }
 
@@ -292,12 +292,6 @@ final class MapPickerView extends View implements OsmTiles.Listener {
 
     private static float clampZoom(float value) {
         return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, value));
-    }
-
-    interface Listener {
-
-        void onChosen(double latitude, double longitude);
-
     }
 
 }

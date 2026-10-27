@@ -67,11 +67,11 @@ final class OsmTiles {
 
     private final Map<String, Long> failed = new HashMap<>();
 
-    private final Listener listener;
+    private final OsmTileLoadListener listener;
 
     private volatile int[] window = new int[] { 0, 0, 0, 0, 0 };
 
-    OsmTiles(Listener listener) {
+    OsmTiles(OsmTileLoadListener listener) {
         this.listener = listener;
     }
 
@@ -170,12 +170,6 @@ final class OsmTiles {
 
     private static String key(int zoom, int x, int y) {
         return zoom + "/" + x + "/" + y;
-    }
-
-    interface Listener {
-
-        void onTileLoaded();
-
     }
 
 }
