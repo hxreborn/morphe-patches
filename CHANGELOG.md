@@ -1,3 +1,9 @@
+## [1.65.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.3...v1.65.0-dev.4) (2026-10-27)
+
+### Improvements
+
+* **MovieBox - All-In-One:** pick the unpaced CDN on Edge-Cache hosts ([379be65](https://github.com/hxreborn/morphe-patches/commit/379be65bd6af34bfbb663ba7d792f9f3c701b42a))
+
 ## [1.65.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.2...v1.65.0-dev.3) (2026-10-27)
 
 ### Bug Fixes

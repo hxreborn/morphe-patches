@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-27T15:57:56",
-  "description": "## [1.65.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.2...v1.65.0-dev.3) (2026-10-27)\n\n### Bug Fixes\n\n* **MovieBox - All-In-One:** restore video playback and downloads ([920c350](https://github.com/hxreborn/morphe-patches/commit/920c35080f94da37668a1d25a868a41677927fcc)), closes [#456](https://github.com/hxreborn/morphe-patches/issues/456) [#62](https://github.com/hxreborn/morphe-patches/issues/62)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.65.0-dev.3/patches-1.65.0-dev.3.mpp",
+  "created_at": "2026-10-27T16:48:01",
+  "description": "## [1.65.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.3...v1.65.0-dev.4) (2026-10-27)\n\n### Improvements\n\n* **MovieBox - All-In-One:** pick the unpaced CDN on Edge-Cache hosts ([379be65](https://github.com/hxreborn/morphe-patches/commit/379be65bd6af34bfbb663ba7d792f9f3c701b42a))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.65.0-dev.4/patches-1.65.0-dev.4.mpp",
   "signature_download_url": "",
-  "version": "1.65.0-dev.3"
+  "version": "1.65.0-dev.4"
 }
