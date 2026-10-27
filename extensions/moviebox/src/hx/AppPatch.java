@@ -205,8 +205,9 @@ public final class AppPatch {
         if (baseUrl == null) throw new IllegalStateException("no base URL field on Retrofit");
         String apiBase = String.valueOf(baseUrl.get(retrofit));
 
-        Object taggedClient = withBuildTagInterceptor(loader, client);
-        MovieBoxSource source = new MovieBoxSource(loader, taggedClient, apiBase);
+        BuildTag buildTag = BuildTag.fromInstalledApp();
+        Object taggedClient = withBuildTagInterceptor(loader, client, buildTag);
+        MovieBoxSource source = new MovieBoxSource(loader, taggedClient, apiBase, buildTag);
         DashServer server = null;
         if (isMainProcess()) {
             try {
@@ -302,11 +303,12 @@ public final class AppPatch {
         return null;
     }
 
-    private static Object withBuildTagInterceptor(ClassLoader loader, Object client) throws Exception {
-        BuildTagInterceptor buildTagInterceptor = BuildTagInterceptor.fromInstalledApp();
-        if (buildTagInterceptor == null) return client;
+    private static Object withBuildTagInterceptor(ClassLoader loader, Object client, BuildTag buildTag)
+            throws Exception {
+        if (buildTag == null) return client;
         Class<?> interceptorClass = Class.forName(OKHTTP_INTERCEPTOR, false, loader);
-        Object proxy = Proxy.newProxyInstance(loader, new Class<?>[]{interceptorClass}, buildTagInterceptor);
+        Object proxy = Proxy.newProxyInstance(loader, new Class<?>[]{interceptorClass},
+                new BuildTagInterceptor(buildTag));
         Object builder = client.getClass().getMethod("newBuilder").invoke(client);
         Object interceptors = builder.getClass().getMethod("interceptors").invoke(builder);
         int last = (Integer) interceptors.getClass().getMethod("size").invoke(interceptors) - 1;
@@ -469,12 +471,13 @@ public final class AppPatch {
         private final ExecutorService directFileSizeLookups = Executors.newCachedThreadPool();
         private final Map<String, Boolean> handedOff = newLruMap(RESOURCE_RETENTION);
         private final Map<String, FutureTask<DashFile>> files = newLruMap(FILE_RETENTION);
-        private final CloudFrontPlayInfoClient cloudFrontPlayInfoClient = new CloudFrontPlayInfoClient();
+        private final CloudFrontPlayInfoClient cloudFrontPlayInfoClient;
 
-        MovieBoxSource(ClassLoader loader, Object client, String apiBase) {
+        MovieBoxSource(ClassLoader loader, Object client, String apiBase, BuildTag buildTag) {
             this.loader = loader;
             this.client = client;
             this.apiBase = apiBase.endsWith("/") ? apiBase : apiBase + "/";
+            this.cloudFrontPlayInfoClient = new CloudFrontPlayInfoClient(buildTag);
         }
 
         SignedResource observePlayInfo(String requestUrl, String body, String apiHost) {

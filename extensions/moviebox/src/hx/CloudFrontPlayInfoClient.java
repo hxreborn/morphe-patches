@@ -50,15 +50,30 @@ final class CloudFrontPlayInfoClient {
     private static final long RETRY_COOLDOWN_MS = 10 * 60 * 1000L;
 
     private final String clientInfo;
+    private final BuildTag buildTag;
     private final Map<String, String> tokens = new ConcurrentHashMap<>();
     private final Map<String, Long> hostRetryAtMs = new ConcurrentHashMap<>();
 
-    CloudFrontPlayInfoClient() {
+    CloudFrontPlayInfoClient(BuildTag buildTag) {
+        this.buildTag = buildTag;
+        this.clientInfo = buildClientInfo();
+    }
+
+    private static String buildClientInfo() {
         try {
-            clientInfo = new JSONObject()
+            JSONObject info = new JSONObject()
                     .put("device_id", UUID.randomUUID().toString().replace("-", ""))
                     .put("os_version", Build.VERSION.RELEASE)
-                    .toString();
+                    .put("gaid", UUID.randomUUID().toString());
+            try {
+                Context application = InstalledApp.context();
+                info.put("package_name", application.getPackageName())
+                        .put("version_code", application.getPackageManager()
+                                .getPackageInfo(application.getPackageName(), 0).getLongVersionCode());
+            } catch (ReflectiveOperationException | PackageManager.NameNotFoundException unreadable) {
+                Log.w(TAG, "client info has no package identity", unreadable);
+            }
+            return info.toString();
         } catch (JSONException e) {
             throw new IllegalStateException(e);
         }
@@ -159,7 +174,9 @@ final class CloudFrontPlayInfoClient {
         connection.setRequestProperty("x-client-token", timestamp + "," + md5Hex(
                 new StringBuilder(String.valueOf(timestamp)).reverse().toString().getBytes(StandardCharsets.UTF_8)));
         connection.setRequestProperty("x-tr-signature", createSignature(SigningKey.VALUE, method, pathAndQuery, body, timestamp));
-        connection.setRequestProperty("x-client-info", clientInfo);
+        String tag = buildTag == null ? null : buildTag.next();
+        connection.setRequestProperty("x-client-info", tag == null ? clientInfo : BuildTag.addTo(clientInfo, tag));
+        if (tag != null) connection.setRequestProperty(BuildTag.HEADER, tag);
         connection.setRequestProperty("x-forwarded-for", WITHHELD_CLIENT_ADDRESS);
         if (token != null) connection.setRequestProperty("Authorization", "Bearer " + token);
         try {
@@ -187,8 +204,7 @@ final class CloudFrontPlayInfoClient {
 
         private static byte[] read() {
             try {
-                Context context = (Context) Class.forName("android.app.ActivityThread")
-                        .getMethod("currentApplication").invoke(null);
+                Context context = InstalledApp.context();
                 Bundle metaData = context.getPackageManager()
                         .getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
                 String declared = metaData == null ? null : metaData.getString(SIGNING_KEY_META_DATA);
