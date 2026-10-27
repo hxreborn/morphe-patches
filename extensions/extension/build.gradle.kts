@@ -38,7 +38,7 @@ android {
 }
 
 tasks.register<Checkstyle>("checkstyle") {
-    source("src/main/java")
+    source("src/main/java", "../moviebox/src")
     classpath = files()
 }
 
