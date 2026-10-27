@@ -1,3 +1,28 @@
+## [1.64.0](https://github.com/hxreborn/morphe-patches/compare/v1.63.0...v1.64.0) (2026-10-27)
+
+### New Features
+
+* **BeReal - Change download location:** save downloads to any folder ([00b4e20](https://github.com/hxreborn/morphe-patches/commit/00b4e204b895ec69f33ecf615a13cca4af71d3e6))
+* **BeReal - Custom location:** set location from map or place name ([c6d1d7d](https://github.com/hxreborn/morphe-patches/commit/c6d1d7d2541980de41a1530966391e8b6cc21c0d))
+* **BeReal - Custom retake count:** choose retake count friends see ([2074fc2](https://github.com/hxreborn/morphe-patches/commit/2074fc219fa795008166f8bac44f02de302453ad))
+* **BeReal - Disable data collection:** stop analytics and crash reports ([e3bae16](https://github.com/hxreborn/morphe-patches/commit/e3bae169605473ff515b13d2e765b475a17c8456))
+* **BeReal - Disable typing indicator:** stop sending typing status ([93c3525](https://github.com/hxreborn/morphe-patches/commit/93c3525737e6f7528fe7f88848d7b94a50ba06f1))
+* **BeReal - Disable view receipts:** stop sending seen status ([7ace96f](https://github.com/hxreborn/morphe-patches/commit/7ace96f9266c0d70064a919a55db7a655d649dfd))
+* **BeReal - Post from gallery:** pick back and front photos ([0bf9217](https://github.com/hxreborn/morphe-patches/commit/0bf92172521a42fbeae61c805590f16cdc2ad58f))
+* **BeReal - Remove ads:** remove sponsored BeReals and launch ad ([0244b67](https://github.com/hxreborn/morphe-patches/commit/0244b67036316f55591549cda43f40fca0731b3f))
+* **BeReal - Remove contacts permission:** remove contacts access ([c0f69bd](https://github.com/hxreborn/morphe-patches/commit/c0f69bd4ec78ea1ae855f8c585d85ccb3497a860))
+* **BeReal - Remove friend suggestions:** remove suggested friends ([3244b13](https://github.com/hxreborn/morphe-patches/commit/3244b13a6bfaf5fd15be7a6e19d63bebff07788a))
+* **BeReal - Remove Friends of Friends prompts:** remove share card ([b09fc71](https://github.com/hxreborn/morphe-patches/commit/b09fc71862d04b0ab159ab1f05cdf8f2c427274b))
+* **BeReal - Remove Friends of Friends tab:** show My Friends only ([00d40b1](https://github.com/hxreborn/morphe-patches/commit/00d40b1f02228db8b6082d30ac90dc6c88c39dab))
+* **BeReal - Remove late flag:** send late BeReals as on time ([a577bce](https://github.com/hxreborn/morphe-patches/commit/a577bce44e6dc1670b9c6a62f6fa2becb5a73137))
+* **BeReal - Remove late label:** show BeReals without late label ([900943a](https://github.com/hxreborn/morphe-patches/commit/900943a630fafcd8e2ac602781d1105b6a98cefd))
+* **BeReal - Remove promotions:** remove Recap cards and review prompt ([41dbd21](https://github.com/hxreborn/morphe-patches/commit/41dbd214eea91715ff7cf95aec2b65cc82c3cbc1))
+* **BeReal - Remove streak prompts:** remove streak recovery offers ([9f54efd](https://github.com/hxreborn/morphe-patches/commit/9f54efdfb12c0495e821a9143f0d6c06af0b07c4))
+* **BeReal - Remove update prompts:** remove forced and suggested popups ([60a001d](https://github.com/hxreborn/morphe-patches/commit/60a001d4d6c372833c47d653f84752fd8dc75dd4))
+* **BeReal - Remove watermark:** save downloads without BeReal logo ([aa9624d](https://github.com/hxreborn/morphe-patches/commit/aa9624dcf1e9e098b47ae886083a23b969e908ae))
+* **BeReal - Save friends' BeReals:** add download to BeReal menu ([8b7348a](https://github.com/hxreborn/morphe-patches/commit/8b7348a730e97dffafc57e6343d8c62d22fa1e71))
+* **BeReal - Show friends' posts before posting:** unblur friends' feed ([f69336f](https://github.com/hxreborn/morphe-patches/commit/f69336f15ca5d4cdcb10e38e277bf83fef1c2e72))
+
 ## [1.64.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.63.0...v1.64.0-dev.1) (2026-10-26)
 
 ### New Features
