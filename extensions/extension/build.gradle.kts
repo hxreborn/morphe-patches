@@ -44,6 +44,31 @@ tasks.register<Checkstyle>("checkstyle") {
     classpath = files()
 }
 
+val movieBoxMinSdk = 23
+
+val checkMovieBoxApiLevel = tasks.register<Exec>("checkMovieBoxApiLevel") {
+    dependsOn("compileDebugUnitTestJavaWithJavac")
+    val apiVersions = androidComponents.sdkComponents.sdkDirectory.map {
+        it.file("platforms/android-${android.compileSdk}/data/api-versions.xml").asFile.path
+    }
+    val classes = layout.buildDirectory.dir("intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes/hx")
+    val sources = layout.projectDirectory.dir("../moviebox/src/hx")
+    inputs.dir(classes)
+    inputs.dir(sources)
+    commandLine(
+        "python3",
+        rootProject.file(".github/scripts/check_android_api_level.py").path,
+        movieBoxMinSdk.toString(),
+        apiVersions.get(),
+        classes.get().asFile.path,
+        sources.asFile.path,
+    )
+}
+
+tasks.matching { it.name == "lintRelease" }.configureEach {
+    dependsOn(checkMovieBoxApiLevel)
+}
+
 tasks.named("check") {
     dependsOn("checkstyle")
 }
