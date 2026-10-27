@@ -4,16 +4,11 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -34,13 +29,13 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse(get(url.substring("http://127.0.0.1:47291".length())));
 
         // then
-        assertEquals("7700000000000000001", request.subjectId);
-        assertEquals(2, request.season);
-        assertEquals(5, request.episode);
-        assertEquals(1080, request.height);
-        assertEquals(ORIGIN, request.origin);
-        assertEquals(4096, request.originSize);
-        assertEquals("res-1", request.resourceId);
+        Assertions.assertThat(request.subjectId).isEqualTo("7700000000000000001");
+        Assertions.assertThat(request.season).isEqualTo(2);
+        Assertions.assertThat(request.episode).isEqualTo(5);
+        Assertions.assertThat(request.height).isEqualTo(1080);
+        Assertions.assertThat(request.origin).isEqualTo(ORIGIN);
+        Assertions.assertThat(request.originSize).isEqualTo(4096);
+        Assertions.assertThat(request.resourceId).isEqualTo("res-1");
     }
 
     @Test
@@ -52,7 +47,7 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse(get(url.substring("http://127.0.0.1:47291".length())));
 
         // then
-        assertNull(request.resourceId);
+        Assertions.assertThat(request.resourceId).isNull();
     }
 
     @Test
@@ -62,9 +57,9 @@ public final class LoopbackRequestTest {
             .parse("GET /dash/77/0/0/720.mp4 HTTP/1.1\r\nhost: x\r\n" + "RANGE: bytes=100-\r\nAccept: */*");
 
         // then
-        assertEquals(100, request.range.first);
-        assertTrue(request.isPartial());
-        assertFalse(request.startsAtBeginning());
+        Assertions.assertThat(request.range.first).isEqualTo(100);
+        Assertions.assertThat(request.isPartial()).isTrue();
+        Assertions.assertThat(request.startsAtBeginning()).isFalse();
     }
 
     @Test
@@ -73,10 +68,10 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("GET /dash/77/0/0/720.mp4 HTTP/1.1\r\nHost: x");
 
         // then
-        assertTrue(request.startsAtBeginning());
-        assertFalse(request.isPartial());
-        assertEquals(0, request.rangeWithin(50).start);
-        assertEquals(49, request.rangeWithin(50).end);
+        Assertions.assertThat(request.startsAtBeginning()).isTrue();
+        Assertions.assertThat(request.isPartial()).isFalse();
+        Assertions.assertThat(request.rangeWithin(50).start).isEqualTo(0);
+        Assertions.assertThat(request.rangeWithin(50).end).isEqualTo(49);
     }
 
     @Test
@@ -85,8 +80,8 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("GET /dash/77/0/0/720.mp4 HTTP/1.1\r\nRange: bytes=0-9");
 
         // then
-        assertTrue(request.startsAtBeginning());
-        assertTrue(request.isPartial());
+        Assertions.assertThat(request.startsAtBeginning()).isTrue();
+        Assertions.assertThat(request.isPartial()).isTrue();
     }
 
     @Test
@@ -95,7 +90,7 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("HEAD /dash/77/0/0/720.mp4 HTTP/1.1\r\nHost: x");
 
         // then
-        assertTrue(request.headOnly);
+        Assertions.assertThat(request.headOnly).isTrue();
     }
 
     @Test
@@ -104,7 +99,7 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("POST /dash/77/0/0/720.mp4 HTTP/1.1\r\nHost: x");
 
         // then
-        assertNull(request);
+        Assertions.assertThat(request).isNull();
     }
 
     @Test
@@ -113,7 +108,7 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("GET /other/77/0/0/720.mp4 HTTP/1.1\r\nHost: x");
 
         // then
-        assertNull(request);
+        Assertions.assertThat(request).isNull();
     }
 
     @Test
@@ -122,7 +117,7 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("GET");
 
         // then
-        assertNull(request);
+        Assertions.assertThat(request).isNull();
     }
 
     @Test
@@ -132,7 +127,7 @@ public final class LoopbackRequestTest {
             .parse("GET /dash/77/0/0/720.mp4?origin=file%3A%2F%2F%2Fetc%2Fpasswd " + "HTTP/1.1\r\nHost: x");
 
         // then
-        assertNull(request.origin);
+        Assertions.assertThat(request.origin).isNull();
     }
 
     @Test
@@ -142,7 +137,7 @@ public final class LoopbackRequestTest {
             .parse("GET /dash/77/0/0/720.mp4?origin=https%3A%2F%2Fa.example%0Ab " + "HTTP/1.1\r\nHost: x");
 
         // then
-        assertNull(request.origin);
+        Assertions.assertThat(request.origin).isNull();
     }
 
     @Test
@@ -151,7 +146,7 @@ public final class LoopbackRequestTest {
         LoopbackRequest request = LoopbackRequest.parse("GET /dash/77/0/0/720.mp4?size=big HTTP/1.1\r\nHost: x");
 
         // then
-        assertEquals(0, request.originSize);
+        Assertions.assertThat(request.originSize).isEqualTo(0);
     }
 
     @Test
@@ -163,7 +158,7 @@ public final class LoopbackRequestTest {
         String head = LoopbackRequest.readHead(new ByteArrayInputStream(bytes));
 
         // then
-        assertEquals("GET / HTTP/1.1\r\nHost: x", head);
+        Assertions.assertThat(head).isEqualTo("GET / HTTP/1.1\r\nHost: x");
     }
 
     @Test
@@ -174,11 +169,11 @@ public final class LoopbackRequestTest {
         // when
         try {
             LoopbackRequest.readHead(new ByteArrayInputStream(bytes));
-            fail("expected the head to be refused");
+            Assertions.fail("expected the head to be refused");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().contains("8192"));
+            Assertions.assertThat(ex.getMessage().contains("8192")).as(ex.getMessage()).isTrue();
         }
     }
 

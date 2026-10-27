@@ -4,14 +4,11 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class LoopbackResponseTest {
@@ -26,10 +23,10 @@ public final class LoopbackResponseTest {
 
         // then
         String head = text(out);
-        assertTrue(head, head.startsWith("HTTP/1.1 206 Partial Content\r\n"));
-        assertTrue(head, head.contains("Content-Length: 10\r\n"));
-        assertTrue(head, head.contains("Content-Range: bytes 10-19/100\r\n"));
-        assertTrue(head, head.endsWith("\r\n\r\n"));
+        Assertions.assertThat(head.startsWith("HTTP/1.1 206 Partial Content\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Length: 10\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Range: bytes 10-19/100\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.endsWith("\r\n\r\n")).as(head).isTrue();
     }
 
     @Test
@@ -42,9 +39,9 @@ public final class LoopbackResponseTest {
 
         // then
         String head = text(out);
-        assertTrue(head, head.startsWith("HTTP/1.1 200 OK\r\n"));
-        assertTrue(head, head.contains("Content-Length: 100\r\n"));
-        assertFalse(head, head.contains("Content-Range"));
+        Assertions.assertThat(head.startsWith("HTTP/1.1 200 OK\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Length: 100\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Range")).as(head).isFalse();
     }
 
     @Test
@@ -57,9 +54,9 @@ public final class LoopbackResponseTest {
 
         // then
         String head = text(out);
-        assertTrue(head, head.contains("Accept-Ranges: bytes\r\n"));
-        assertTrue(head, head.contains("Content-Type: video/mp4\r\n"));
-        assertTrue(head, head.contains("Connection: close\r\n"));
+        Assertions.assertThat(head.contains("Accept-Ranges: bytes\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Type: video/mp4\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Connection: close\r\n")).as(head).isTrue();
     }
 
     @Test
@@ -72,9 +69,9 @@ public final class LoopbackResponseTest {
 
         // then
         String head = text(out);
-        assertTrue(head, head.startsWith("HTTP/1.1 302 Found\r\n"));
-        assertTrue(head, head.contains("Location: https://cdn.example.com/f.mp4\r\n"));
-        assertTrue(head, head.contains("Content-Length: 0\r\n"));
+        Assertions.assertThat(head.startsWith("HTTP/1.1 302 Found\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Location: https://cdn.example.com/f.mp4\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Length: 0\r\n")).as(head).isTrue();
     }
 
     @Test
@@ -87,8 +84,8 @@ public final class LoopbackResponseTest {
 
         // then
         String head = text(out);
-        assertTrue(head, head.startsWith("HTTP/1.1 416 Range Not Satisfiable\r\n"));
-        assertTrue(head, head.contains("Content-Range: bytes */100\r\n"));
+        Assertions.assertThat(head.startsWith("HTTP/1.1 416 Range Not Satisfiable\r\n")).as(head).isTrue();
+        Assertions.assertThat(head.contains("Content-Range: bytes */100\r\n")).as(head).isTrue();
     }
 
     @Test
@@ -100,8 +97,8 @@ public final class LoopbackResponseTest {
         LoopbackResponse.writeNotFound(out);
 
         // then
-        assertEquals(true, text(out).startsWith("HTTP/1.1 404 Not Found\r\n"));
-        assertTrue(text(out).contains("Content-Length: 0\r\n"));
+        Assertions.assertThat(text(out).startsWith("HTTP/1.1 404 Not Found\r\n")).isEqualTo(true);
+        Assertions.assertThat(text(out).contains("Content-Length: 0\r\n")).isTrue();
     }
 
     @Test
@@ -113,7 +110,7 @@ public final class LoopbackResponseTest {
         LoopbackResponse.writeUnavailable(out);
 
         // then
-        assertTrue(text(out).startsWith("HTTP/1.1 503 Service Unavailable\r\n"));
+        Assertions.assertThat(text(out).startsWith("HTTP/1.1 503 Service Unavailable\r\n")).isTrue();
     }
 
     private static String text(ByteArrayOutputStream out) {

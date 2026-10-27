@@ -4,16 +4,13 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import org.junit.After;
 import org.junit.Before;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -57,7 +54,7 @@ public final class SegmentProbeTest {
         SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
 
         // then
-        assertEquals(media.length, segment.byteLength);
+        Assertions.assertThat(segment.byteLength).isEqualTo(media.length);
     }
 
     @Test
@@ -69,8 +66,8 @@ public final class SegmentProbeTest {
         SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
 
         // then
-        assertEquals(0, segment.prefixBytes);
-        assertEquals(44, segment.trackIdOffset);
+        Assertions.assertThat(segment.prefixBytes).isEqualTo(0);
+        Assertions.assertThat(segment.trackIdOffset).isEqualTo(44);
     }
 
     @Test
@@ -85,8 +82,8 @@ public final class SegmentProbeTest {
         SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
 
         // then
-        assertEquals(styp.length + sidx.length, segment.prefixBytes);
-        assertEquals(styp.length + sidx.length + 44, segment.trackIdOffset);
+        Assertions.assertThat(segment.prefixBytes).isEqualTo(styp.length + sidx.length);
+        Assertions.assertThat(segment.trackIdOffset).isEqualTo(styp.length + sidx.length + 44);
     }
 
     @Test
@@ -100,7 +97,7 @@ public final class SegmentProbeTest {
         SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
 
         // then
-        assertEquals(styp.length, segment.prefixBytes);
+        Assertions.assertThat(segment.prefixBytes).isEqualTo(styp.length);
     }
 
     @Test
@@ -113,8 +110,8 @@ public final class SegmentProbeTest {
         SegmentProbe.size(Collections.singletonList(video), Collections.singletonList(audio), COOKIES);
 
         // then
-        assertTrue(video.byteLength > 0);
-        assertTrue(audio.byteLength > video.byteLength);
+        Assertions.assertThat(video.byteLength > 0).isTrue();
+        Assertions.assertThat(audio.byteLength > video.byteLength).isTrue();
     }
 
     @Test
@@ -125,11 +122,11 @@ public final class SegmentProbeTest {
         // when
         try {
             SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
-            fail("expected a rejected segment");
+            Assertions.fail("expected a rejected segment");
         } catch (IOException ex) {
 
             // then
-            assertEquals("segment does not start with moof", ex.getMessage());
+            Assertions.assertThat(ex.getMessage()).isEqualTo("segment does not start with moof");
         }
     }
 

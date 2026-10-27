@@ -4,10 +4,6 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -15,6 +11,7 @@ import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -38,7 +35,8 @@ public final class GatewayHeadersTest {
         Map<String, String> headers = gateway.create(SIGNING_KEY, "GET", PATH, null, "token-1");
 
         // then
-        assertEquals("170000000012300045.1a8f8b991f95799fba169a8a7f889ebc", headers.get(BuildTag.HEADER));
+        Assertions.assertThat(headers.get(BuildTag.HEADER))
+            .isEqualTo("170000000012300045.1a8f8b991f95799fba169a8a7f889ebc");
     }
 
     @Test
@@ -51,7 +49,7 @@ public final class GatewayHeadersTest {
 
         // then
         JSONObject info = new JSONObject(headers.get("x-client-info"));
-        assertEquals(headers.get(BuildTag.HEADER), info.getString(BuildTag.HEADER));
+        Assertions.assertThat(info.getString(BuildTag.HEADER)).isEqualTo(headers.get(BuildTag.HEADER));
     }
 
     @Test
@@ -64,11 +62,12 @@ public final class GatewayHeadersTest {
 
         // then
         JSONObject info = new JSONObject(headers.get("x-client-info"));
-        assertEquals(RuntimeEnvironment.getApplication().getPackageName(), info.getString("package_name"));
-        assertTrue(info.get("version_code") instanceof Number);
-        assertTrue(info.getString("gaid").matches("[0-9a-f-]{36}"));
-        assertTrue(info.has("device_id"));
-        assertTrue(info.has("os_version"));
+        Assertions.assertThat(info.getString("package_name"))
+            .isEqualTo(RuntimeEnvironment.getApplication().getPackageName());
+        Assertions.assertThat(info.get("version_code") instanceof Number).isTrue();
+        Assertions.assertThat(info.getString("gaid").matches("[0-9a-f-]{36}")).isTrue();
+        Assertions.assertThat(info.has("device_id")).isTrue();
+        Assertions.assertThat(info.has("os_version")).isTrue();
     }
 
     @Test
@@ -80,12 +79,12 @@ public final class GatewayHeadersTest {
         Map<String, String> headers = gateway.create(SIGNING_KEY, "GET", PATH, null, "token-1");
 
         // then
-        assertTrue(headers.get("x-tr-signature").matches("\\d+\\|2\\|[A-Za-z0-9+/=]+"));
-        assertTrue(headers.get("x-client-token").matches("\\d+,[0-9a-f]{32}"));
-        assertEquals("Bearer token-1", headers.get("Authorization"));
-        assertEquals("unknown", headers.get("x-forwarded-for"));
-        assertEquals("application/json", headers.get("Accept"));
-        assertEquals("application/json", headers.get("Content-Type"));
+        Assertions.assertThat(headers.get("x-tr-signature").matches("\\d+\\|2\\|[A-Za-z0-9+/=]+")).isTrue();
+        Assertions.assertThat(headers.get("x-client-token").matches("\\d+,[0-9a-f]{32}")).isTrue();
+        Assertions.assertThat(headers.get("Authorization")).isEqualTo("Bearer token-1");
+        Assertions.assertThat(headers.get("x-forwarded-for")).isEqualTo("unknown");
+        Assertions.assertThat(headers.get("Accept")).isEqualTo("application/json");
+        Assertions.assertThat(headers.get("Content-Type")).isEqualTo("application/json");
     }
 
     @Test
@@ -98,7 +97,7 @@ public final class GatewayHeadersTest {
                 "{}", null);
 
         // then
-        assertFalse(headers.containsKey("Authorization"));
+        Assertions.assertThat(headers.containsKey("Authorization")).isFalse();
     }
 
     @Test
@@ -110,8 +109,8 @@ public final class GatewayHeadersTest {
         Map<String, String> headers = gateway.create(SIGNING_KEY, "GET", PATH, null, "token-1");
 
         // then
-        assertFalse(headers.containsKey(BuildTag.HEADER));
-        assertFalse(new JSONObject(headers.get("x-client-info")).has(BuildTag.HEADER));
+        Assertions.assertThat(headers.containsKey(BuildTag.HEADER)).isFalse();
+        Assertions.assertThat(new JSONObject(headers.get("x-client-info")).has(BuildTag.HEADER)).isFalse();
     }
 
     private static String clientInfo() throws JSONException, IOException, Exception {

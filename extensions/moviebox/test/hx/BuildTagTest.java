@@ -4,14 +4,12 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -32,7 +30,7 @@ public final class BuildTagTest {
         String tag = buildTag.next();
 
         // then
-        assertEquals("170000000012300045.1a8f8b991f95799fba169a8a7f889ebc", tag);
+        Assertions.assertThat(tag).isEqualTo("170000000012300045.1a8f8b991f95799fba169a8a7f889ebc");
     }
 
     @Test
@@ -44,7 +42,7 @@ public final class BuildTagTest {
         String tag = buildTag.next();
 
         // then
-        assertEquals("17000000000070007.d1c4e3525f7a8bf894ffdb6fcda377b2", tag);
+        Assertions.assertThat(tag).isEqualTo("17000000000070007.d1c4e3525f7a8bf894ffdb6fcda377b2");
     }
 
     @Test
@@ -58,8 +56,8 @@ public final class BuildTagTest {
         String second = buildTag.next();
 
         // then
-        assertTrue(first.startsWith("170000000012300045."));
-        assertTrue(second.startsWith("170000000012400045."));
+        Assertions.assertThat(first.startsWith("170000000012300045.")).isTrue();
+        Assertions.assertThat(second.startsWith("170000000012400045.")).isTrue();
     }
 
     @Test
@@ -71,7 +69,7 @@ public final class BuildTagTest {
         String tag = buildTag.next();
 
         // then
-        assertTrue(tag, tag.matches("\\d{17,19}\\.[0-9a-f]{32}"));
+        Assertions.assertThat(tag.matches("\\d{17,19}\\.[0-9a-f]{32}")).as(tag).isTrue();
     }
 
     @Test
@@ -81,8 +79,8 @@ public final class BuildTagTest {
 
         // then
         JSONObject info = new JSONObject(tagged);
-        assertEquals("d1", info.getString("device_id"));
-        assertEquals("stamp.hash", info.getString(BuildTag.HEADER));
+        Assertions.assertThat(info.getString("device_id")).isEqualTo("d1");
+        Assertions.assertThat(info.getString(BuildTag.HEADER)).isEqualTo("stamp.hash");
     }
 
     @Test
@@ -91,7 +89,7 @@ public final class BuildTagTest {
         String tagged = BuildTag.addTo("{\"X-Client-Build\":\"old\"}", "new");
 
         // then
-        assertEquals("new", new JSONObject(tagged).getString(BuildTag.HEADER));
+        Assertions.assertThat(new JSONObject(tagged).getString(BuildTag.HEADER)).isEqualTo("new");
     }
 
     @Test
@@ -100,7 +98,7 @@ public final class BuildTagTest {
         String tagged = BuildTag.addTo("not json", "stamp.hash");
 
         // then
-        assertEquals("not json", tagged);
+        Assertions.assertThat(tagged).isEqualTo("not json");
     }
 
     private static Random fixedRandom(int value) {

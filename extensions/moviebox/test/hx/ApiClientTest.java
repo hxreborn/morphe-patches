@@ -4,13 +4,11 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,8 +27,8 @@ public final class ApiClientTest {
         String slashed = new ApiClient(this.loader, new OkHttpClient(), "https://api.example.com/").url("a/b?c=1");
 
         // then
-        assertEquals("https://api.example.com/a/b?c=1", bare);
-        assertEquals("https://api.example.com/a/b?c=1", slashed);
+        Assertions.assertThat(bare).isEqualTo("https://api.example.com/a/b?c=1");
+        Assertions.assertThat(slashed).isEqualTo("https://api.example.com/a/b?c=1");
     }
 
     @Test
@@ -44,7 +42,7 @@ public final class ApiClientTest {
             String body = api.get(api.url("hello"));
 
             // then
-            assertEquals("world", body);
+            Assertions.assertThat(body).isEqualTo("world");
         }
     }
 
@@ -57,11 +55,11 @@ public final class ApiClientTest {
             // when
             try {
                 api.get(api.url("missing"));
-                fail("expected an HTTP failure");
+                Assertions.fail("expected an HTTP failure");
             } catch (IOException ex) {
 
                 // then
-                assertEquals("HTTP 404 for " + api.url("missing"), ex.getMessage());
+                Assertions.assertThat(ex.getMessage()).isEqualTo("HTTP 404 for " + api.url("missing"));
             }
         }
     }

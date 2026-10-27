@@ -7,6 +7,7 @@ okhttp = "5.5.0"
 pngj = "2.1.0"
 spring-javaformat = "0.0.48"
 junit = "4.13.2"
+assertj = "3.27.7"
 robolectric = "4.17"
 json = "20260814"
 androidx-annotation = "1.9.1"
@@ -19,6 +20,7 @@ spring-javaformat-checkstyle = { module = "io.spring.javaformat:spring-javaforma
 morphe-patches-library = { module = "app.morphe:morphe-patches-library", version.ref = "morphe-patches-library" }
 morphe-extensions-library = { module = "app.morphe:morphe-extensions-library", version.ref = "morphe-patches-library" }
 junit = { module = "junit:junit", version.ref = "junit" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 json = { module = "org.json:json", version.ref = "json" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }

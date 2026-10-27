@@ -4,11 +4,7 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class LruMapTest {
@@ -24,9 +20,9 @@ public final class LruMapTest {
         map.put("c", "3");
 
         // then
-        assertNull(map.get("a"));
-        assertEquals("2", map.get("b"));
-        assertEquals("3", map.get("c"));
+        Assertions.assertThat(map.get("a")).isNull();
+        Assertions.assertThat(map.get("b")).isEqualTo("2");
+        Assertions.assertThat(map.get("c")).isEqualTo("3");
     }
 
     @Test
@@ -41,9 +37,9 @@ public final class LruMapTest {
         map.put("c", "3");
 
         // then
-        assertEquals("1", map.get("a"));
-        assertFalse(map.containsKey("b"));
-        assertTrue(map.containsKey("c"));
+        Assertions.assertThat(map.get("a")).isEqualTo("1");
+        Assertions.assertThat(map.containsKey("b")).isFalse();
+        Assertions.assertThat(map.containsKey("c")).isTrue();
     }
 
 }

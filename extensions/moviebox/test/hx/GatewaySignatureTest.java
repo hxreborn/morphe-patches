@@ -4,11 +4,9 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,7 +27,7 @@ public final class GatewaySignatureTest {
                 "/wefeed-mobile-bff/subject-api/play-info/v2?subjectId=1&se=0&ep=0&isVip=true", null, TIMESTAMP);
 
         // then
-        assertEquals("1700000000123|2|qVn2zS7MkEJJwI3+YDWFIg==", signature);
+        Assertions.assertThat(signature).isEqualTo("1700000000123|2|qVn2zS7MkEJJwI3+YDWFIg==");
     }
 
     @Test
@@ -39,7 +37,7 @@ public final class GatewaySignatureTest {
                 TIMESTAMP);
 
         // then
-        assertEquals("1700000000123|2|coQhNaSHLjcMsQubBCarlA==", signature);
+        Assertions.assertThat(signature).isEqualTo("1700000000123|2|coQhNaSHLjcMsQubBCarlA==");
     }
 
     @Test
@@ -48,7 +46,7 @@ public final class GatewaySignatureTest {
         String signature = GatewaySignature.create(KEY, "GET", "/p?b=2&a=1&c=x%20y", null, TIMESTAMP);
 
         // then
-        assertEquals("1700000000123|2|B5d5OopG3St/B051VCcRQQ==", signature);
+        Assertions.assertThat(signature).isEqualTo("1700000000123|2|B5d5OopG3St/B051VCcRQQ==");
     }
 
     @Test
@@ -57,7 +55,7 @@ public final class GatewaySignatureTest {
         String signature = GatewaySignature.create(KEY, "GET", "/p?k=2&j=0&k=1", null, TIMESTAMP);
 
         // then
-        assertEquals("1700000000123|2|klLhPDlWusNi0OfPnmaTkQ==", signature);
+        Assertions.assertThat(signature).isEqualTo("1700000000123|2|klLhPDlWusNi0OfPnmaTkQ==");
     }
 
     @Test
@@ -66,7 +64,7 @@ public final class GatewaySignatureTest {
         String signature = GatewaySignature.create(KEY, "GET", "/a/b", null, TIMESTAMP);
 
         // then
-        assertEquals("1700000000123|2|sMKJ7cxxZDoJmFsWvNH8XA==", signature);
+        Assertions.assertThat(signature).isEqualTo("1700000000123|2|sMKJ7cxxZDoJmFsWvNH8XA==");
     }
 
     @Test
@@ -75,8 +73,8 @@ public final class GatewaySignatureTest {
         String token = GatewaySignature.clientToken(TIMESTAMP);
 
         // then
-        assertEquals("1700000000123,8bb2b37cedae787f581503a05e847ec5", token);
-        assertTrue(token.startsWith(TIMESTAMP + ","));
+        Assertions.assertThat(token).isEqualTo("1700000000123,8bb2b37cedae787f581503a05e847ec5");
+        Assertions.assertThat(token.startsWith(TIMESTAMP + ",")).isTrue();
     }
 
 }

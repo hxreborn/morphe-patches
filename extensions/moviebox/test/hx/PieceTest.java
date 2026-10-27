@@ -4,9 +4,7 @@
  */
 package hx;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class PieceTest {
@@ -21,9 +19,9 @@ public final class PieceTest {
         Piece piece = piece(2);
 
         // then
-        assertEquals(1000, piece.length);
-        assertEquals(PREFIX, piece.prefixBytes);
-        assertEquals(5000, piece.offset);
+        Assertions.assertThat(piece.length).isEqualTo(1000);
+        Assertions.assertThat(piece.prefixBytes).isEqualTo(PREFIX);
+        Assertions.assertThat(piece.offset).isEqualTo(5000);
     }
 
     @Test
@@ -35,9 +33,9 @@ public final class PieceTest {
         piece(0x01020304).patchTrackId(bytes, 0);
 
         // then
-        assertArrayEquals(new byte[] { 1, 2, 3, 4 }, java.util.Arrays.copyOfRange(bytes, 40, 44));
-        assertEquals(0, bytes[39]);
-        assertEquals(0, bytes[44]);
+        Assertions.assertThat(java.util.Arrays.copyOfRange(bytes, 40, 44)).isEqualTo(new byte[] { 1, 2, 3, 4 });
+        Assertions.assertThat(bytes[39]).isEqualTo((byte) 0);
+        Assertions.assertThat(bytes[44]).isEqualTo((byte) 0);
     }
 
     @Test
@@ -49,7 +47,7 @@ public final class PieceTest {
         piece(0x01020304).patchTrackId(bytes, ID_IN_PAYLOAD + 2);
 
         // then
-        assertArrayEquals(new byte[] { 3, 4, 0 }, java.util.Arrays.copyOfRange(bytes, 0, 3));
+        Assertions.assertThat(java.util.Arrays.copyOfRange(bytes, 0, 3)).isEqualTo(new byte[] { 3, 4, 0 });
     }
 
     @Test
@@ -61,7 +59,8 @@ public final class PieceTest {
         piece(0x01020304).patchTrackId(bytes, 0);
 
         // then
-        assertArrayEquals(new byte[] { 1, 2 }, java.util.Arrays.copyOfRange(bytes, ID_IN_PAYLOAD, ID_IN_PAYLOAD + 2));
+        Assertions.assertThat(java.util.Arrays.copyOfRange(bytes, ID_IN_PAYLOAD, ID_IN_PAYLOAD + 2))
+            .isEqualTo(new byte[] { 1, 2 });
     }
 
     @Test
@@ -73,7 +72,7 @@ public final class PieceTest {
         piece(0x01020304).patchTrackId(bytes, 500);
 
         // then
-        assertArrayEquals(new byte[10], bytes);
+        Assertions.assertThat(bytes).isEqualTo(new byte[10]);
     }
 
     private static Piece piece(int trackId) {

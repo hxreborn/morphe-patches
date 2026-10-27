@@ -4,12 +4,6 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -20,6 +14,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -44,8 +39,8 @@ public final class BuildTagInterceptorTest {
 
         // then
         String tag = chain.proceeded.header(BuildTag.HEADER);
-        assertNotEquals("stock-tag", tag);
-        assertTrue(tag, tag.matches("\\d{17,19}\\.[0-9a-f]{32}"));
+        Assertions.assertThat(tag).isNotEqualTo("stock-tag");
+        Assertions.assertThat(tag.matches("\\d{17,19}\\.[0-9a-f]{32}")).as(tag).isTrue();
     }
 
     @Test
@@ -59,7 +54,7 @@ public final class BuildTagInterceptorTest {
         // then
         String[] parts = chain.proceeded.header(BuildTag.HEADER).split("\\.");
         String seed = Digests.sha256Hex(CERTIFICATE) + "oneroom" + parts[0];
-        assertEquals(Digests.md5Hex(seed.getBytes(StandardCharsets.UTF_8)), parts[1]);
+        Assertions.assertThat(parts[1]).isEqualTo(Digests.md5Hex(seed.getBytes(StandardCharsets.UTF_8)));
     }
 
     @Test
@@ -72,8 +67,8 @@ public final class BuildTagInterceptorTest {
 
         // then
         JSONObject info = new JSONObject(chain.proceeded.header("X-Client-Info"));
-        assertEquals("d1", info.getString("device_id"));
-        assertEquals(chain.proceeded.header(BuildTag.HEADER), info.getString(BuildTag.HEADER));
+        Assertions.assertThat(info.getString("device_id")).isEqualTo("d1");
+        Assertions.assertThat(info.getString(BuildTag.HEADER)).isEqualTo(chain.proceeded.header(BuildTag.HEADER));
     }
 
     @Test
@@ -86,8 +81,8 @@ public final class BuildTagInterceptorTest {
         intercept(chain);
 
         // then
-        assertNotEquals("stock", chain.proceeded.header(BuildTag.HEADER));
-        assertEquals(null, chain.proceeded.header("X-Client-Info"));
+        Assertions.assertThat(chain.proceeded.header(BuildTag.HEADER)).isNotEqualTo("stock");
+        Assertions.assertThat(chain.proceeded.header("X-Client-Info")).isEqualTo(null);
     }
 
     @Test
@@ -100,7 +95,7 @@ public final class BuildTagInterceptorTest {
         intercept(chain);
 
         // then
-        assertSame(request, chain.proceeded);
+        Assertions.assertThat(chain.proceeded).isSameAs(request);
     }
 
     @Test
@@ -118,8 +113,8 @@ public final class BuildTagInterceptorTest {
         }
 
         // then
-        assertNotNull(failure);
-        assertEquals("MovieBox build tag failed", failure.getMessage());
+        Assertions.assertThat(failure).isNotNull();
+        Assertions.assertThat(failure.getMessage()).isEqualTo("MovieBox build tag failed");
     }
 
     @Test
@@ -128,8 +123,8 @@ public final class BuildTagInterceptorTest {
         Object proxy = proxy();
 
         // then
-        assertEquals("MovieBoxBuildTagInterceptor", proxy.toString());
-        assertEquals(proxy, proxy);
+        Assertions.assertThat(proxy.toString()).isEqualTo("MovieBoxBuildTagInterceptor");
+        Assertions.assertThat(proxy).isEqualTo(proxy);
     }
 
     private Request request(String tag, String clientInfo) {

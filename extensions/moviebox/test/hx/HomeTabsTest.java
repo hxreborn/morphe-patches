@@ -4,15 +4,13 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import java.util.Arrays;
 import java.util.HashSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -35,8 +33,8 @@ public final class HomeTabsTest {
             .getJSONArray("bottomTabs")
             .getJSONObject(0)
             .getJSONArray("subTabs");
-        assertEquals(1, subTabs.length());
-        assertEquals("home", subTabs.getJSONObject(0).getString("tabCode"));
+        Assertions.assertThat(subTabs.length()).isEqualTo(1);
+        Assertions.assertThat(subTabs.getJSONObject(0).getString("tabCode")).isEqualTo("home");
     }
 
     @Test
@@ -45,7 +43,7 @@ public final class HomeTabsTest {
         String rewritten = HomeTabs.withoutTabs(TABS, new HashSet<>(Arrays.asList("missing")));
 
         // then
-        assertSame(TABS, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(TABS);
     }
 
     @Test
@@ -57,7 +55,7 @@ public final class HomeTabsTest {
         String rewritten = HomeTabs.withoutTabs(body, new HashSet<>(Arrays.asList("live")));
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -66,7 +64,7 @@ public final class HomeTabsTest {
         String rewritten = HomeTabs.withoutTabs("nope", new HashSet<>(Arrays.asList("live")));
 
         // then
-        assertEquals("nope", rewritten);
+        Assertions.assertThat(rewritten).isEqualTo("nope");
     }
 
 }

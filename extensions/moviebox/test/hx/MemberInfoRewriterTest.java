@@ -4,11 +4,9 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -28,9 +26,9 @@ public final class MemberInfoRewriterTest {
 
         // then
         JSONObject member = new JSONObject(rewritten).getJSONObject("data").getJSONObject("member");
-        assertEquals(9999, member.getInt("daysLeft"));
-        assertEquals("2099-12-31", member.getString("expiryDate"));
-        assertEquals("FREE", member.getString("memberType"));
+        Assertions.assertThat(member.getInt("daysLeft")).isEqualTo(9999);
+        Assertions.assertThat(member.getString("expiryDate")).isEqualTo("2099-12-31");
+        Assertions.assertThat(member.getString("memberType")).isEqualTo("FREE");
     }
 
     @Test
@@ -43,7 +41,7 @@ public final class MemberInfoRewriterTest {
 
         // then
         JSONObject member = new JSONObject(rewritten).getJSONArray("data").getJSONObject(0);
-        assertEquals(9999, member.getInt("daysLeft"));
+        Assertions.assertThat(member.getInt("daysLeft")).isEqualTo(9999);
     }
 
     @Test
@@ -55,7 +53,7 @@ public final class MemberInfoRewriterTest {
         String rewritten = MemberInfoRewriter.rewrite(body);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -64,7 +62,7 @@ public final class MemberInfoRewriterTest {
         String rewritten = MemberInfoRewriter.rewrite("nope");
 
         // then
-        assertEquals("nope", rewritten);
+        Assertions.assertThat(rewritten).isEqualTo("nope");
     }
 
 }

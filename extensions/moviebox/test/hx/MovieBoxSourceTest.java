@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
 import org.junit.After;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,17 +52,17 @@ public final class MovieBoxSourceTest {
         DashFile file = this.source.open("77", 1, 2, 720, this.server.url("/origin.mp4"), ORIGIN_SIZE, "r1", false);
 
         // then
-        Assert.assertNull(file);
+        Assertions.assertThat(file).isNull();
     }
 
     @Test
     public void refusesWithoutASignedResourceWhenTheOriginSizeDiffers() {
         // when
-        IOException failure = Assert.assertThrows(IOException.class,
+        Throwable failure = Assertions.catchThrowable(
                 () -> this.source.open("77", 1, 2, 720, this.server.url("/origin.mp4"), ORIGIN_SIZE + 1, "r1", false));
 
         // then
-        Assert.assertTrue(failure instanceof DashServer.UnavailableException);
+        Assertions.assertThat(failure).isInstanceOf(DashServer.UnavailableException.class);
     }
 
 }

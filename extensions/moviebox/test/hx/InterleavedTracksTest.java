@@ -4,12 +4,11 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class InterleavedTracksTest {
@@ -24,8 +23,9 @@ public final class InterleavedTracksTest {
         InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
 
         // then
-        assertEquals(Arrays.asList("v0", "a0", "a1", "v1", "a2", "a3", "v2", "a4", "a5"), names(ordered));
-        assertEquals(Arrays.asList(1, 2, 2, 1, 2, 2, 1, 2, 2), ordered.trackIds);
+        Assertions.assertThat(names(ordered))
+            .isEqualTo(Arrays.asList("v0", "a0", "a1", "v1", "a2", "a3", "v2", "a4", "a5"));
+        Assertions.assertThat(ordered.trackIds).isEqualTo(Arrays.asList(1, 2, 2, 1, 2, 2, 1, 2, 2));
     }
 
     @Test
@@ -38,7 +38,7 @@ public final class InterleavedTracksTest {
         InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
 
         // then
-        assertEquals(Arrays.asList("v0", "a0", "a1", "a2", "a3", "a4"), names(ordered));
+        Assertions.assertThat(names(ordered)).isEqualTo(Arrays.asList("v0", "a0", "a1", "a2", "a3", "a4"));
     }
 
     @Test
@@ -51,7 +51,7 @@ public final class InterleavedTracksTest {
         InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
 
         // then
-        assertEquals(Arrays.asList("v0", "a0", "a1", "v1", "a2", "a3"), names(ordered));
+        Assertions.assertThat(names(ordered)).isEqualTo(Arrays.asList("v0", "a0", "a1", "v1", "a2", "a3"));
     }
 
     @Test
@@ -64,7 +64,7 @@ public final class InterleavedTracksTest {
         InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
 
         // then
-        assertEquals(Arrays.asList("v0", "v1"), names(ordered));
+        Assertions.assertThat(names(ordered)).isEqualTo(Arrays.asList("v0", "v1"));
     }
 
     static Track track(int id, long templateTimescale, List<Segment> segments) {

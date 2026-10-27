@@ -4,14 +4,12 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -41,7 +39,7 @@ public final class DashManifestParserTest {
         DashManifest manifest = parse(MANIFEST);
 
         // then
-        assertEquals(10.0, manifest.presentationSeconds, 0.0);
+        Assertions.assertThat(manifest.presentationSeconds).isEqualTo(10.0);
     }
 
     @Test
@@ -50,7 +48,7 @@ public final class DashManifestParserTest {
         DashManifest manifest = parse(MANIFEST);
 
         // then
-        assertEquals(3, manifest.representations.size());
+        Assertions.assertThat(manifest.representations.size()).isEqualTo(3);
     }
 
     @Test
@@ -63,8 +61,8 @@ public final class DashManifestParserTest {
         DashManifest.Representation capped = manifest.select("video", 900);
 
         // then
-        assertEquals("v1080", video.id);
-        assertEquals("v720", capped.id);
+        Assertions.assertThat(video.id).isEqualTo("v1080");
+        Assertions.assertThat(capped.id).isEqualTo("v720");
     }
 
     @Test
@@ -76,7 +74,7 @@ public final class DashManifestParserTest {
         DashManifest.Representation video = manifest.select("video", 360);
 
         // then
-        assertEquals("v720", video.id);
+        Assertions.assertThat(video.id).isEqualTo("v720");
     }
 
     @Test
@@ -85,7 +83,7 @@ public final class DashManifestParserTest {
         DashManifest.Representation audio = parse(MANIFEST).select("audio", Integer.MAX_VALUE);
 
         // then
-        assertEquals("a1", audio.id);
+        Assertions.assertThat(audio.id).isEqualTo("a1");
     }
 
     @Test
@@ -94,7 +92,7 @@ public final class DashManifestParserTest {
         DashManifest.Representation text = parse(MANIFEST).select("text", Integer.MAX_VALUE);
 
         // then
-        assertEquals(null, text);
+        Assertions.assertThat(text).isEqualTo(null);
     }
 
     @Test
@@ -106,13 +104,13 @@ public final class DashManifestParserTest {
         List<Segment> segments = manifest.segmentsOf(manifest.select("video", 720));
 
         // then
-        assertEquals(3, segments.size());
-        assertEquals("https://media.example.com/title/v/v720/001.m4s", segments.get(0).url);
-        assertEquals("https://media.example.com/title/v/v720/003.m4s", segments.get(2).url);
-        assertEquals(0, segments.get(0).startTime);
-        assertEquals(4000, segments.get(1).startTime);
-        assertEquals(8000, segments.get(2).startTime);
-        assertEquals(2000, segments.get(2).duration);
+        Assertions.assertThat(segments.size()).isEqualTo(3);
+        Assertions.assertThat(segments.get(0).url).isEqualTo("https://media.example.com/title/v/v720/001.m4s");
+        Assertions.assertThat(segments.get(2).url).isEqualTo("https://media.example.com/title/v/v720/003.m4s");
+        Assertions.assertThat(segments.get(0).startTime).isEqualTo(0);
+        Assertions.assertThat(segments.get(1).startTime).isEqualTo(4000);
+        Assertions.assertThat(segments.get(2).startTime).isEqualTo(8000);
+        Assertions.assertThat(segments.get(2).duration).isEqualTo(2000);
     }
 
     @Test
@@ -124,11 +122,11 @@ public final class DashManifestParserTest {
         List<Segment> segments = manifest.segmentsOf(manifest.select("audio", Integer.MAX_VALUE));
 
         // then
-        assertEquals(3, segments.size());
-        assertEquals("https://media.example.com/title/a/1.m4s", segments.get(0).url);
-        assertEquals(192000, segments.get(1).startTime);
-        assertEquals(384000, segments.get(2).startTime);
-        assertEquals(96000, segments.get(2).duration);
+        Assertions.assertThat(segments.size()).isEqualTo(3);
+        Assertions.assertThat(segments.get(0).url).isEqualTo("https://media.example.com/title/a/1.m4s");
+        Assertions.assertThat(segments.get(1).startTime).isEqualTo(192000);
+        Assertions.assertThat(segments.get(2).startTime).isEqualTo(384000);
+        Assertions.assertThat(segments.get(2).duration).isEqualTo(96000);
     }
 
     @Test
@@ -141,8 +139,8 @@ public final class DashManifestParserTest {
         String audio = manifest.select("audio", Integer.MAX_VALUE).initializationUrl();
 
         // then
-        assertEquals("https://media.example.com/title/v/v720/init.mp4", video);
-        assertEquals("https://media.example.com/title/a/init.mp4", audio);
+        Assertions.assertThat(video).isEqualTo("https://media.example.com/title/v/v720/init.mp4");
+        Assertions.assertThat(audio).isEqualTo("https://media.example.com/title/a/init.mp4");
     }
 
     @Test
@@ -156,7 +154,7 @@ public final class DashManifestParserTest {
         DashManifest.Representation video = parse(xml).select("video", 720);
 
         // then
-        assertEquals("https://cdn.example.com/title/i.mp4", video.initializationUrl());
+        Assertions.assertThat(video.initializationUrl()).isEqualTo("https://cdn.example.com/title/i.mp4");
     }
 
     @Test
@@ -170,11 +168,11 @@ public final class DashManifestParserTest {
         // when
         try {
             video.initializationUrl();
-            fail("expected a missing initialization");
+            Assertions.fail("expected a missing initialization");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().contains("no initialization"));
+            Assertions.assertThat(ex.getMessage().contains("no initialization")).as(ex.getMessage()).isTrue();
         }
     }
 
@@ -189,11 +187,11 @@ public final class DashManifestParserTest {
         // when
         try {
             manifest.segmentsOf(manifest.select("video", 720));
-            fail("expected a missing timeline");
+            Assertions.fail("expected a missing timeline");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().contains("lacks a segment timeline"));
+            Assertions.assertThat(ex.getMessage().contains("lacks a segment timeline")).as(ex.getMessage()).isTrue();
         }
     }
 
@@ -209,11 +207,11 @@ public final class DashManifestParserTest {
         // when
         try {
             manifest.segmentsOf(manifest.select("video", 720));
-            fail("expected an invalid timeline");
+            Assertions.fail("expected an invalid timeline");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().contains("invalid segment timeline"));
+            Assertions.assertThat(ex.getMessage().contains("invalid segment timeline")).as(ex.getMessage()).isTrue();
         }
     }
 
@@ -222,11 +220,11 @@ public final class DashManifestParserTest {
         // when
         try {
             DashManifestParser.parse("<MPD".getBytes(StandardCharsets.UTF_8), MANIFEST_URL);
-            fail("expected a parse failure");
+            Assertions.fail("expected a parse failure");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().startsWith("cannot parse manifest"));
+            Assertions.assertThat(ex.getMessage().startsWith("cannot parse manifest")).as(ex.getMessage()).isTrue();
         }
     }
 
@@ -235,11 +233,11 @@ public final class DashManifestParserTest {
         // when
         try {
             parse("<MPD mediaPresentationDuration=\"ten seconds\"/>");
-            fail("expected a parse failure");
+            Assertions.fail("expected a parse failure");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().startsWith("cannot parse manifest"));
+            Assertions.assertThat(ex.getMessage().startsWith("cannot parse manifest")).as(ex.getMessage()).isTrue();
         }
     }
 
@@ -254,11 +252,11 @@ public final class DashManifestParserTest {
         // when
         try {
             parse(xml.toString());
-            fail("expected a depth failure");
+            Assertions.fail("expected a depth failure");
         } catch (IOException ex) {
 
             // then
-            assertTrue(ex.getMessage(), ex.getMessage().contains("nested deeper than 32"));
+            Assertions.assertThat(ex.getMessage().contains("nested deeper than 32")).as(ex.getMessage()).isTrue();
         }
     }
 
@@ -268,7 +266,7 @@ public final class DashManifestParserTest {
         DashManifest manifest = parse("<MPD mediaPresentationDuration=\"P1DT2H3M4.5S\"/>");
 
         // then
-        assertEquals(86400 + 7200 + 180 + 4.5, manifest.presentationSeconds, 0.0);
+        Assertions.assertThat(manifest.presentationSeconds).isEqualTo(86400 + 7200 + 180 + 4.5);
     }
 
     @Test
@@ -277,7 +275,7 @@ public final class DashManifestParserTest {
         DashManifest manifest = parse("<MPD/>");
 
         // then
-        assertEquals(0.0, manifest.presentationSeconds, 0.0);
+        Assertions.assertThat(manifest.presentationSeconds).isEqualTo(0.0);
     }
 
     private static DashManifest parse(String xml) throws IOException {

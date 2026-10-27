@@ -4,11 +4,9 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -25,7 +23,8 @@ public final class ClientInfoTest {
         JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
 
         // then
-        assertEquals(RuntimeEnvironment.getApplication().getPackageName(), info.getString("package_name"));
+        Assertions.assertThat(info.getString("package_name"))
+            .isEqualTo(RuntimeEnvironment.getApplication().getPackageName());
     }
 
     @Test
@@ -34,7 +33,7 @@ public final class ClientInfoTest {
         JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
 
         // then
-        assertTrue(info.get("version_code") instanceof Number);
+        Assertions.assertThat(info.get("version_code") instanceof Number).isTrue();
     }
 
     @Test
@@ -43,9 +42,9 @@ public final class ClientInfoTest {
         JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
 
         // then
-        assertTrue(info.getString("device_id").matches("[0-9a-f]{32}"));
-        assertTrue(info.getString("gaid").matches("[0-9a-f-]{36}"));
-        assertTrue(!info.getString("os_version").isEmpty());
+        Assertions.assertThat(info.getString("device_id").matches("[0-9a-f]{32}")).isTrue();
+        Assertions.assertThat(info.getString("gaid").matches("[0-9a-f-]{36}")).isTrue();
+        Assertions.assertThat(!info.getString("os_version").isEmpty()).isTrue();
     }
 
     @Test
@@ -57,7 +56,10 @@ public final class ClientInfoTest {
         String second = ClientInfo.create(RuntimeEnvironment.getApplication());
 
         // then
-        assertTrue(!new JSONObject(first).getString("device_id").equals(new JSONObject(second).getString("device_id")));
+        Assertions
+            .assertThat(
+                    !new JSONObject(first).getString("device_id").equals(new JSONObject(second).getString("device_id")))
+            .isTrue();
     }
 
 }

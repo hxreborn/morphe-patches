@@ -4,9 +4,6 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
@@ -14,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -55,8 +53,8 @@ public final class DirectFilesTest {
         String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
 
         // then
-        assertEquals(this.server.url("/f.mp4"), url);
-        assertEquals(url, this.directFiles.knownUrl("r1"));
+        Assertions.assertThat(url).isEqualTo(this.server.url("/f.mp4"));
+        Assertions.assertThat(this.directFiles.knownUrl("r1")).isEqualTo(url);
     }
 
     @Test
@@ -69,7 +67,7 @@ public final class DirectFilesTest {
         this.directFiles.resolveUrl("77", "r1", ORIGIN);
 
         // then
-        assertEquals(1, this.server.hitsOn(POSITION));
+        Assertions.assertThat(this.server.hitsOn(POSITION)).isEqualTo(1);
     }
 
     @Test
@@ -81,8 +79,8 @@ public final class DirectFilesTest {
         String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
 
         // then
-        assertNull(url);
-        assertNull(this.directFiles.knownUrl("r1"));
+        Assertions.assertThat(url).isNull();
+        Assertions.assertThat(this.directFiles.knownUrl("r1")).isNull();
     }
 
     @Test
@@ -94,14 +92,14 @@ public final class DirectFilesTest {
         String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
 
         // then
-        assertNull(url);
+        Assertions.assertThat(url).isNull();
     }
 
     @Test
     public void givesNoDirectFileWithoutAnOriginOrResource() {
         // then
-        assertNull(this.directFiles.resolveUrl("77", "r1", null));
-        assertNull(this.directFiles.resolveUrl("77", null, ORIGIN));
+        Assertions.assertThat(this.directFiles.resolveUrl("77", "r1", null)).isNull();
+        Assertions.assertThat(this.directFiles.resolveUrl("77", null, ORIGIN)).isNull();
     }
 
     @Test
@@ -116,8 +114,8 @@ public final class DirectFilesTest {
 
         // then
         JSONObject item = new JSONObject(sized).getJSONObject("data").getJSONArray("list").getJSONObject(0);
-        assertEquals("123456", item.getString("size"));
-        assertEquals(this.server.url("/f.mp4"), this.directFiles.knownUrl("r1"));
+        Assertions.assertThat(item.getString("size")).isEqualTo("123456");
+        Assertions.assertThat(this.directFiles.knownUrl("r1")).isEqualTo(this.server.url("/f.mp4"));
     }
 
     @Test
@@ -132,7 +130,7 @@ public final class DirectFilesTest {
         this.directFiles.withSizes(resourceList(0, 1));
 
         // then
-        assertEquals(this.server.url("/f.mp4"), this.directFiles.knownUrl("r0"));
+        Assertions.assertThat(this.directFiles.knownUrl("r0")).isEqualTo(this.server.url("/f.mp4"));
     }
 
     @Test
@@ -145,7 +143,7 @@ public final class DirectFilesTest {
         String sized = this.directFiles.withSizes(list);
 
         // then
-        assertEquals(list, sized);
+        Assertions.assertThat(sized).isEqualTo(list);
     }
 
     @Test
@@ -163,11 +161,11 @@ public final class DirectFilesTest {
         // then
         JSONObject data = new JSONObject(playInfo).getJSONObject("data");
         JSONArray streams = data.getJSONArray("streams");
-        assertEquals(1, streams.length());
-        assertEquals(this.server.url("/f.mp4"), streams.getJSONObject(0).getString("url"));
-        assertEquals("720", streams.getJSONObject(0).getString("resolutions"));
-        assertEquals("", streams.getJSONObject(0).getString("signCookie"));
-        assertEquals("720", data.getString("displayResolutions"));
+        Assertions.assertThat(streams.length()).isEqualTo(1);
+        Assertions.assertThat(streams.getJSONObject(0).getString("url")).isEqualTo(this.server.url("/f.mp4"));
+        Assertions.assertThat(streams.getJSONObject(0).getString("resolutions")).isEqualTo("720");
+        Assertions.assertThat(streams.getJSONObject(0).getString("signCookie")).isEqualTo("");
+        Assertions.assertThat(data.getString("displayResolutions")).isEqualTo("720");
     }
 
     @Test
@@ -182,15 +180,15 @@ public final class DirectFilesTest {
         String playInfo = this.directFiles.playInfoFor("{\"data\":{\"streams\":[]}}", "77", 1, 2);
 
         // then
-        assertNull(playInfo);
+        Assertions.assertThat(playInfo).isNull();
     }
 
     @Test
     public void givesNoPlayInfoForAnUnknownEpisode() {
         // then
-        assertNull(this.directFiles.playInfoFor("{}", null, 1, 2));
-        assertNull(this.directFiles.playInfoFor("{}", "77", -1, 2));
-        assertNull(this.directFiles.playInfoFor("{}", "77", 1, -1));
+        Assertions.assertThat(this.directFiles.playInfoFor("{}", null, 1, 2)).isNull();
+        Assertions.assertThat(this.directFiles.playInfoFor("{}", "77", -1, 2)).isNull();
+        Assertions.assertThat(this.directFiles.playInfoFor("{}", "77", 1, -1)).isNull();
     }
 
     private static String resourceList(int from, int to) {

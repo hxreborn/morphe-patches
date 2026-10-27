@@ -4,15 +4,12 @@
  */
 package hx;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class ReadGroupTest {
@@ -30,9 +27,9 @@ public final class ReadGroupTest {
         group.close();
 
         // then
-        assertTrue(first.disconnected);
-        assertTrue(second.disconnected);
-        assertTrue(group.isClosed());
+        Assertions.assertThat(first.disconnected).isTrue();
+        Assertions.assertThat(second.disconnected).isTrue();
+        Assertions.assertThat(group.isClosed()).isTrue();
     }
 
     @Test
@@ -47,7 +44,7 @@ public final class ReadGroupTest {
         group.close();
 
         // then
-        assertFalse(finished.disconnected);
+        Assertions.assertThat(finished.disconnected).isFalse();
     }
 
     @Test
@@ -60,11 +57,11 @@ public final class ReadGroupTest {
         // when
         try {
             group.add(late);
-            fail("expected the late connection to be refused");
+            Assertions.fail("expected the late connection to be refused");
         } catch (InterruptedIOException ex) {
 
             // then
-            assertTrue(late.disconnected);
+            Assertions.assertThat(late.disconnected).isTrue();
         }
     }
 

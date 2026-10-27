@@ -4,13 +4,13 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 
 public final class MovieHeadTest {
@@ -31,7 +31,7 @@ public final class MovieHeadTest {
         int trackId = MovieHead.trackId(Mp4Fixtures.initSegment(7, MOVIE_TIMESCALE, VIDEO_MEDIA_TIMESCALE));
 
         // then
-        assertEquals(7, trackId);
+        Assertions.assertThat(trackId).isEqualTo(7);
     }
 
     @Test
@@ -40,7 +40,7 @@ public final class MovieHeadTest {
         long timescale = MovieHead.mediaTimescale(this.videoInit);
 
         // then
-        assertEquals(VIDEO_MEDIA_TIMESCALE, timescale);
+        Assertions.assertThat(timescale).isEqualTo(VIDEO_MEDIA_TIMESCALE);
     }
 
     @Test
@@ -49,7 +49,7 @@ public final class MovieHeadTest {
         byte[] head = head();
 
         // then
-        assertEquals(Arrays.asList("ftyp", "moov", "sidx", "sidx"), topLevelTypes(head));
+        Assertions.assertThat(topLevelTypes(head)).isEqualTo(Arrays.asList("ftyp", "moov", "sidx", "sidx"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public final class MovieHeadTest {
         Mp4Boxes.Box mvhd = movieChild(head(), "mvhd");
 
         // then
-        assertEquals(6000, Mp4Boxes.u32(head(), mvhd.offset + 24));
+        Assertions.assertThat(Mp4Boxes.u32(head(), mvhd.offset + 24)).isEqualTo(6000);
     }
 
     @Test
@@ -67,7 +67,7 @@ public final class MovieHeadTest {
         Mp4Boxes.Box mvhd = movieChild(head(), "mvhd");
 
         // then
-        assertEquals(3, Mp4Boxes.u32(head(), mvhd.end() - 4));
+        Assertions.assertThat(Mp4Boxes.u32(head(), mvhd.end() - 4)).isEqualTo(3);
     }
 
     @Test
@@ -83,8 +83,8 @@ public final class MovieHeadTest {
         long audioId = Mp4Boxes.u32(head, Mp4Boxes.childOf(head, audioTrak, "tkhd").offset + 20);
 
         // then
-        assertEquals(1, videoId);
-        assertEquals(2, audioId);
+        Assertions.assertThat(videoId).isEqualTo(1);
+        Assertions.assertThat(audioId).isEqualTo(2);
     }
 
     @Test
@@ -101,9 +101,9 @@ public final class MovieHeadTest {
         long audioMdhd = Mp4Boxes.u32(head, mdhd(head, audioTrak).offset + 24);
 
         // then
-        assertEquals(6000, videoTkhd);
-        assertEquals(540000, videoMdhd);
-        assertEquals(288000, audioMdhd);
+        Assertions.assertThat(videoTkhd).isEqualTo(6000);
+        Assertions.assertThat(videoMdhd).isEqualTo(540000);
+        Assertions.assertThat(audioMdhd).isEqualTo(288000);
     }
 
     @Test
@@ -119,8 +119,8 @@ public final class MovieHeadTest {
         long second = Mp4Boxes.u32(head, firstTrex.end() + 12);
 
         // then
-        assertEquals(1, first);
-        assertEquals(2, second);
+        Assertions.assertThat(first).isEqualTo(1);
+        Assertions.assertThat(second).isEqualTo(2);
     }
 
     @Test
@@ -131,12 +131,12 @@ public final class MovieHeadTest {
         Mp4Boxes.Box audioIndex = topLevel(head, 3);
 
         // then
-        assertEquals(1, Mp4Boxes.u32(head, videoIndex.offset + 12));
-        assertEquals(VIDEO_MEDIA_TIMESCALE, Mp4Boxes.u32(head, videoIndex.offset + 16));
-        assertEquals(0, Mp4Boxes.u32(head, videoIndex.offset + 20));
-        assertEquals(audioIndex.size, Mp4Boxes.u32(head, videoIndex.offset + 24));
-        assertEquals(Arrays.asList(1200L, 1200L, 1200L), referenceSizes(head, videoIndex));
-        assertEquals(Arrays.asList(180000L, 180000L, 180000L), referenceDurations(head, videoIndex));
+        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 12)).isEqualTo(1);
+        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 16)).isEqualTo(VIDEO_MEDIA_TIMESCALE);
+        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 20)).isEqualTo(0);
+        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 24)).isEqualTo(audioIndex.size);
+        Assertions.assertThat(referenceSizes(head, videoIndex)).isEqualTo(Arrays.asList(1200L, 1200L, 1200L));
+        Assertions.assertThat(referenceDurations(head, videoIndex)).isEqualTo(Arrays.asList(180000L, 180000L, 180000L));
     }
 
     @Test
@@ -146,12 +146,13 @@ public final class MovieHeadTest {
         Mp4Boxes.Box audioIndex = topLevel(head, 3);
 
         // then
-        assertEquals(2, Mp4Boxes.u32(head, audioIndex.offset + 12));
-        assertEquals(AUDIO_MEDIA_TIMESCALE, Mp4Boxes.u32(head, audioIndex.offset + 16));
-        assertEquals(1000, Mp4Boxes.u32(head, audioIndex.offset + 24));
-        assertEquals(Arrays.asList(100L, 1100L, 100L, 1100L, 100L, 100L), referenceSizes(head, audioIndex));
-        assertEquals(Arrays.asList(48000L, 48000L, 48000L, 48000L, 48000L, 48000L),
-                referenceDurations(head, audioIndex));
+        Assertions.assertThat(Mp4Boxes.u32(head, audioIndex.offset + 12)).isEqualTo(2);
+        Assertions.assertThat(Mp4Boxes.u32(head, audioIndex.offset + 16)).isEqualTo(AUDIO_MEDIA_TIMESCALE);
+        Assertions.assertThat(Mp4Boxes.u32(head, audioIndex.offset + 24)).isEqualTo(1000);
+        Assertions.assertThat(referenceSizes(head, audioIndex))
+            .isEqualTo(Arrays.asList(100L, 1100L, 100L, 1100L, 100L, 100L));
+        Assertions.assertThat(referenceDurations(head, audioIndex))
+            .isEqualTo(Arrays.asList(48000L, 48000L, 48000L, 48000L, 48000L, 48000L));
     }
 
     @Test
@@ -164,7 +165,7 @@ public final class MovieHeadTest {
         long flags = Mp4Boxes.u32(head, videoIndex.offset + 32 + 8);
 
         // then
-        assertEquals(0x90000000L, flags);
+        Assertions.assertThat(flags).isEqualTo(0x90000000L);
     }
 
     @Test
@@ -172,11 +173,11 @@ public final class MovieHeadTest {
         // when
         try {
             MovieHead.trackId(Mp4Fixtures.box("ftyp", Mp4Fixtures.zeros(8)));
-            org.junit.Assert.fail("expected a missing moov");
+            Assertions.fail("expected a missing moov");
         } catch (IOException ex) {
 
             // then
-            assertEquals("missing moov box", ex.getMessage());
+            Assertions.assertThat(ex.getMessage()).isEqualTo("missing moov box");
         }
     }
 

@@ -4,9 +4,6 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -20,6 +17,7 @@ import okhttp3.Response;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -65,7 +63,7 @@ public final class DashInterceptorTest {
         String body = fetch(PROFILE, true, Collections.<String>emptySet());
 
         // then
-        assertEquals(9999, new JSONObject(body).getJSONObject("data").getInt("daysLeft"));
+        Assertions.assertThat(new JSONObject(body).getJSONObject("data").getInt("daysLeft")).isEqualTo(9999);
     }
 
     @Test
@@ -77,7 +75,7 @@ public final class DashInterceptorTest {
         String body = fetch("/other", true, Collections.<String>emptySet());
 
         // then
-        assertEquals(MEMBER, body);
+        Assertions.assertThat(body).isEqualTo(MEMBER);
     }
 
     @Test
@@ -91,8 +89,8 @@ public final class DashInterceptorTest {
 
         // then
         JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
-        assertEquals("https://sacdn.example.com/abc/index.mpd", stream.getString("url"));
-        assertEquals("DASH", stream.getString("format"));
+        Assertions.assertThat(stream.getString("url")).isEqualTo("https://sacdn.example.com/abc/index.mpd");
+        Assertions.assertThat(stream.getString("format")).isEqualTo("DASH");
     }
 
     @Test
@@ -105,8 +103,8 @@ public final class DashInterceptorTest {
 
         // then
         JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
-        assertEquals(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 100, null),
-                stream.getString("url"));
+        Assertions.assertThat(stream.getString("url"))
+            .isEqualTo(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 100, null));
     }
 
     @Test
@@ -118,7 +116,7 @@ public final class DashInterceptorTest {
         String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", false, Collections.<String>emptySet());
 
         // then
-        assertEquals(UNSIGNED_PLAY_INFO, body);
+        Assertions.assertThat(body).isEqualTo(UNSIGNED_PLAY_INFO);
     }
 
     @Test
@@ -133,8 +131,8 @@ public final class DashInterceptorTest {
 
         // then
         JSONObject item = new JSONObject(body).getJSONObject("data").getJSONArray("list").getJSONObject(0);
-        assertEquals(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 0, null),
-                item.getString("resourceLink"));
+        Assertions.assertThat(item.getString("resourceLink"))
+            .isEqualTo(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 0, null));
     }
 
     @Test
@@ -148,7 +146,7 @@ public final class DashInterceptorTest {
         String body = fetch(RESOURCE_LIST, false, Collections.<String>emptySet());
 
         // then
-        assertEquals(list, body);
+        Assertions.assertThat(body).isEqualTo(list);
     }
 
     @Test
@@ -161,8 +159,8 @@ public final class DashInterceptorTest {
         String body = fetch(BOTTOM_TAB, true, new HashSet<>(Arrays.asList("live")));
 
         // then
-        assertTrue(body, body.contains("home"));
-        assertTrue(body, !body.contains("live"));
+        Assertions.assertThat(body.contains("home")).as(body).isTrue();
+        Assertions.assertThat(!body.contains("live")).as(body).isTrue();
     }
 
     @Test
@@ -175,7 +173,7 @@ public final class DashInterceptorTest {
         String body = fetch(BOTTOM_TAB, true, Collections.<String>emptySet());
 
         // then
-        assertEquals(tabs, body);
+        Assertions.assertThat(body).isEqualTo(tabs);
     }
 
     private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs) throws Exception {

@@ -57,6 +57,7 @@ dependencies {
     compileOnly(libs.androidx.compose.runtime)
     compileOnly(libs.androidx.compose.foundation)
     testImplementation(libs.junit)
+    testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)
     testImplementation(libs.okhttp)
     testImplementation(libs.json)

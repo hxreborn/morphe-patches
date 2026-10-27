@@ -4,11 +4,9 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -29,8 +27,8 @@ public final class ResourceListRewriterTest {
 
         // then
         JSONObject item = new JSONObject(rewritten).getJSONObject("data").getJSONArray("list").getJSONObject(0);
-        assertEquals(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 500, "r1"),
-                item.getString("resourceLink"));
+        Assertions.assertThat(item.getString("resourceLink"))
+            .isEqualTo(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 500, "r1"));
     }
 
     @Test
@@ -44,8 +42,8 @@ public final class ResourceListRewriterTest {
 
         // then
         JSONObject item = new JSONObject(rewritten).getJSONObject("data").getJSONArray("list").getJSONObject(0);
-        assertEquals(DashServer.buildUrl("77", 0, 0, 1080, "https://origin.example.com/a.mp4", 0, null),
-                item.getString("resourceLink"));
+        Assertions.assertThat(item.getString("resourceLink"))
+            .isEqualTo(DashServer.buildUrl("77", 0, 0, 1080, "https://origin.example.com/a.mp4", 0, null));
     }
 
     @Test
@@ -57,7 +55,7 @@ public final class ResourceListRewriterTest {
         String rewritten = ResourceListRewriter.rewrite(body);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -71,7 +69,7 @@ public final class ResourceListRewriterTest {
         String rewritten = ResourceListRewriter.rewrite(body);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -83,7 +81,7 @@ public final class ResourceListRewriterTest {
         String rewritten = ResourceListRewriter.rewrite(body);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -95,7 +93,7 @@ public final class ResourceListRewriterTest {
         String rewritten = ResourceListRewriter.rewrite(body);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
 }

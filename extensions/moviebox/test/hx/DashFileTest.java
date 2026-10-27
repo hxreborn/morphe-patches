@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.junit.After;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,7 @@ public final class DashFileTest {
         DashFile file = open();
 
         // then
-        Assert.assertEquals(headLength(whole(file)) + this.fixture.payloadBytes(), file.length);
+        Assertions.assertThat(file.length).isEqualTo(headLength(whole(file)) + this.fixture.payloadBytes());
     }
 
     @Test
@@ -58,7 +59,7 @@ public final class DashFileTest {
         }
 
         // then
-        Assert.assertEquals("ftyp moov sidx sidx ", types.toString());
+        Assertions.assertThat(types.toString()).isEqualTo("ftyp moov sidx sidx ");
     }
 
     @Test
@@ -70,7 +71,7 @@ public final class DashFileTest {
         byte[] body = Arrays.copyOfRange(bytes, headLength(bytes), bytes.length);
 
         // then
-        Assert.assertArrayEquals(this.fixture.expectedBody(), body);
+        Assertions.assertThat(body).isEqualTo(this.fixture.expectedBody());
     }
 
     @Test
@@ -85,7 +86,7 @@ public final class DashFileTest {
         byte[] body = Arrays.copyOfRange(bytes, headLength(bytes), bytes.length);
 
         // then
-        Assert.assertArrayEquals(this.fixture.expectedBody(), body);
+        Assertions.assertThat(body).isEqualTo(this.fixture.expectedBody());
     }
 
     @Test
@@ -98,7 +99,7 @@ public final class DashFileTest {
         long audioTrackId = Mp4Boxes.u32(bytes, audioStart + DashFixture.TRACK_ID_IN_SEGMENT);
 
         // then
-        Assert.assertEquals(2, audioTrackId);
+        Assertions.assertThat(audioTrackId).isEqualTo(2);
     }
 
     @Test
@@ -117,8 +118,9 @@ public final class DashFileTest {
             file.write(out, range[0], range[1]);
 
             // then
-            Assert.assertArrayEquals("range " + range[0] + "-" + range[1],
-                    Arrays.copyOfRange(whole, (int) range[0], (int) range[1] + 1), out.toByteArray());
+            Assertions.assertThat(out.toByteArray())
+                .as("range " + range[0] + "-" + range[1])
+                .isEqualTo(Arrays.copyOfRange(whole, (int) range[0], (int) range[1] + 1));
         }
     }
 
@@ -128,8 +130,8 @@ public final class DashFileTest {
         DashFile file = open();
 
         // then
-        Assert.assertTrue(this.fixture.refreshes.get() > 0);
-        Assert.assertTrue(file.length > 0);
+        Assertions.assertThat(this.fixture.refreshes.get() > 0).isTrue();
+        Assertions.assertThat(file.length > 0).isTrue();
     }
 
     @Test
@@ -143,20 +145,19 @@ public final class DashFileTest {
         byte[] bytes = whole(file);
 
         // then
-        Assert.assertEquals(this.fixture.cdn.rangesOn("/v/1.m4s").toString(), 3,
-                this.fixture.cdn.rangesOn("/v/1.m4s").size());
-        Assert.assertTrue(largestRange("/v/1.m4s") <= PACED_CHUNK_BYTES);
-        Assert.assertTrue(largestRange("/a/2.m4s") <= PACED_CHUNK_BYTES);
-        Assert.assertTrue(this.fixture.cdn.peakConcurrentRanges() > 1);
-        Assert.assertArrayEquals(this.fixture.expectedBody(),
-                Arrays.copyOfRange(bytes, headLength(bytes), bytes.length));
+        Assertions.assertThat(this.fixture.cdn.rangesOn("/v/1.m4s")).hasSize(3);
+        Assertions.assertThat(largestRange("/v/1.m4s") <= PACED_CHUNK_BYTES).isTrue();
+        Assertions.assertThat(largestRange("/a/2.m4s") <= PACED_CHUNK_BYTES).isTrue();
+        Assertions.assertThat(this.fixture.cdn.peakConcurrentRanges() > 1).isTrue();
+        Assertions.assertThat(Arrays.copyOfRange(bytes, headLength(bytes), bytes.length))
+            .isEqualTo(this.fixture.expectedBody());
     }
 
     @Test
     public void recognizesTheUnpacedHost() {
         // then
-        Assert.assertTrue(DashFile.isUnpacedCdn("https://sacdn.hakunaymatata.com/abc/index.mpd"));
-        Assert.assertFalse(DashFile.isUnpacedCdn("https://sbcdn5.hakunaymatata.com/abc/index.mpd"));
+        Assertions.assertThat(DashFile.isUnpacedCdn("https://sacdn.hakunaymatata.com/abc/index.mpd")).isTrue();
+        Assertions.assertThat(DashFile.isUnpacedCdn("https://sbcdn5.hakunaymatata.com/abc/index.mpd")).isFalse();
     }
 
     private int largestRange(String path) {

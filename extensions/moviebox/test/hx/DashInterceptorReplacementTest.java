@@ -4,9 +4,6 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +12,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -53,7 +51,7 @@ public final class DashInterceptorReplacementTest {
         String body = intercept(interceptor, true);
 
         // then
-        assertEquals(UNPACED_MANIFEST, firstStreamUrl(body));
+        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(UNPACED_MANIFEST);
     }
 
     @Test
@@ -65,7 +63,7 @@ public final class DashInterceptorReplacementTest {
         intercept(interceptor, true);
 
         // then
-        assertEquals(Collections.singletonList(PLAY_INFO_PATH_AND_QUERY), this.lookedUp);
+        Assertions.assertThat(this.lookedUp).isEqualTo(Collections.singletonList(PLAY_INFO_PATH_AND_QUERY));
     }
 
     @Test
@@ -77,7 +75,7 @@ public final class DashInterceptorReplacementTest {
         String body = intercept(interceptor, true);
 
         // then
-        assertEquals(EDGE_MANIFEST, firstStreamUrl(body));
+        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(EDGE_MANIFEST);
     }
 
     @Test
@@ -90,7 +88,7 @@ public final class DashInterceptorReplacementTest {
         String body = intercept(interceptor, true);
 
         // then
-        assertEquals(EDGE_MANIFEST, firstStreamUrl(body));
+        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(EDGE_MANIFEST);
     }
 
     @Test
@@ -102,7 +100,7 @@ public final class DashInterceptorReplacementTest {
         String body = intercept(interceptor, false);
 
         // then
-        assertEquals(EDGE_PLAY_INFO, body);
+        Assertions.assertThat(body).isEqualTo(EDGE_PLAY_INFO);
     }
 
     private DashInterceptor givenInterceptorFinding(String replacement) {

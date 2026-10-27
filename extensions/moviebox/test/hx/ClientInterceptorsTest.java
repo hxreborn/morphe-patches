@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.Assert;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -39,9 +39,11 @@ public final class ClientInterceptorsTest {
         client.newCall(new Request.Builder().url("https://example.com/a").build()).execute().close();
 
         // then
-        Assert.assertEquals(1, this.seenByTerminal.size());
-        Assert.assertNotEquals("stock-tag", this.seenByTerminal.get(0));
-        Assert.assertTrue(this.seenByTerminal.get(0), this.seenByTerminal.get(0).matches("\\d{17,19}\\.[0-9a-f]{32}"));
+        Assertions.assertThat(this.seenByTerminal.size()).isEqualTo(1);
+        Assertions.assertThat(this.seenByTerminal.get(0)).isNotEqualTo("stock-tag");
+        Assertions.assertThat(this.seenByTerminal.get(0).matches("\\d{17,19}\\.[0-9a-f]{32}"))
+            .as(this.seenByTerminal.get(0))
+            .isTrue();
     }
 
     @Test
@@ -54,7 +56,7 @@ public final class ClientInterceptorsTest {
         OkHttpClient client = (OkHttpClient) ClientInterceptors.addBeforeTerminal(new OkHttpClient(), proxy);
 
         // then
-        Assert.assertEquals(1, client.interceptors().size());
+        Assertions.assertThat(client.interceptors().size()).isEqualTo(1);
     }
 
     private OkHttpClient givenClientWithTagInterceptor() throws Exception {

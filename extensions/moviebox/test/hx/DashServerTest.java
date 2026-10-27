@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.After;
-import org.junit.Assert;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,9 +55,11 @@ public final class DashServerTest {
         byte[] response = send("HEAD");
 
         // then
-        Assert.assertTrue(head(response).startsWith("HTTP/1.1 200 OK"));
-        Assert.assertTrue(head(response), head(response).contains("Content-Length: " + this.file.length));
-        Assert.assertEquals(0, bodyLength(response));
+        Assertions.assertThat(head(response).startsWith("HTTP/1.1 200 OK")).isTrue();
+        Assertions.assertThat(head(response).contains("Content-Length: " + this.file.length))
+            .as(head(response))
+            .isTrue();
+        Assertions.assertThat(bodyLength(response)).isEqualTo(0);
     }
 
     @Test
@@ -66,7 +68,7 @@ public final class DashServerTest {
         byte[] response = send("GET");
 
         // then
-        Assert.assertEquals(this.file.length, bodyLength(response));
+        Assertions.assertThat(bodyLength(response)).isEqualTo(this.file.length);
     }
 
     private byte[] send(String method) throws IOException {

@@ -4,10 +4,9 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-
 import java.nio.charset.StandardCharsets;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class DigestsTest {
@@ -18,7 +17,7 @@ public final class DigestsTest {
         String digest = Digests.md5Hex("abc".getBytes(StandardCharsets.UTF_8));
 
         // then
-        assertEquals("900150983cd24fb0d6963f7d28e17f72", digest);
+        Assertions.assertThat(digest).isEqualTo("900150983cd24fb0d6963f7d28e17f72");
     }
 
     @Test
@@ -27,7 +26,7 @@ public final class DigestsTest {
         String digest = Digests.sha256Hex("abc".getBytes(StandardCharsets.UTF_8));
 
         // then
-        assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", digest);
+        Assertions.assertThat(digest).isEqualTo("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
     }
 
     @Test
@@ -36,7 +35,7 @@ public final class DigestsTest {
         String digest = Digests.md5Hex(new byte[0]);
 
         // then
-        assertEquals("d41d8cd98f00b204e9800998ecf8427e", digest);
+        Assertions.assertThat(digest).isEqualTo("d41d8cd98f00b204e9800998ecf8427e");
     }
 
 }

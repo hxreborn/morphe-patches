@@ -4,11 +4,7 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public final class RangeHeaderTest {
@@ -22,8 +18,8 @@ public final class RangeHeaderTest {
         ByteRange range = header.within(100);
 
         // then
-        assertEquals(5, range.start);
-        assertEquals(99, range.end);
+        Assertions.assertThat(range.start).isEqualTo(5);
+        Assertions.assertThat(range.end).isEqualTo(99);
     }
 
     @Test
@@ -35,9 +31,9 @@ public final class RangeHeaderTest {
         ByteRange range = header.within(100);
 
         // then
-        assertEquals(10, range.start);
-        assertEquals(19, range.end);
-        assertEquals(10, range.size());
+        Assertions.assertThat(range.start).isEqualTo(10);
+        Assertions.assertThat(range.end).isEqualTo(19);
+        Assertions.assertThat(range.size()).isEqualTo(10);
     }
 
     @Test
@@ -49,7 +45,7 @@ public final class RangeHeaderTest {
         ByteRange range = header.within(100);
 
         // then
-        assertEquals(99, range.end);
+        Assertions.assertThat(range.end).isEqualTo(99);
     }
 
     @Test
@@ -61,7 +57,7 @@ public final class RangeHeaderTest {
         ByteRange range = header.within(100);
 
         // then
-        assertFalse(range.isSatisfiable());
+        Assertions.assertThat(range.isSatisfiable()).isFalse();
     }
 
     @Test
@@ -73,7 +69,7 @@ public final class RangeHeaderTest {
         ByteRange range = header.within(0);
 
         // then
-        assertFalse(range.isSatisfiable());
+        Assertions.assertThat(range.isSatisfiable()).isFalse();
     }
 
     @Test
@@ -82,7 +78,7 @@ public final class RangeHeaderTest {
         RangeHeader header = RangeHeader.parse("bytes=1234-");
 
         // then
-        assertEquals(1234, header.first);
+        Assertions.assertThat(header.first).isEqualTo(1234);
     }
 
     @Test
@@ -91,7 +87,7 @@ public final class RangeHeaderTest {
         RangeHeader header = RangeHeader.parse("bytes=-500");
 
         // then
-        assertNull(header);
+        Assertions.assertThat(header).isNull();
     }
 
     @Test
@@ -100,7 +96,7 @@ public final class RangeHeaderTest {
         RangeHeader header = RangeHeader.parse("bytes=0-1,5-6");
 
         // then
-        assertNull(header);
+        Assertions.assertThat(header).isNull();
     }
 
     @Test
@@ -109,8 +105,8 @@ public final class RangeHeaderTest {
         RangeHeader header = RangeHeader.parse(null);
 
         // then
-        assertNull(header);
-        assertTrue(new ByteRange(0, 9).isSatisfiable());
+        Assertions.assertThat(header).isNull();
+        Assertions.assertThat(new ByteRange(0, 9).isSatisfiable()).isTrue();
     }
 
 }

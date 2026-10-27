@@ -4,15 +4,11 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.nio.charset.StandardCharsets;
 
 import android.net.Uri;
 import android.util.Base64;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -31,9 +27,9 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie(cookie);
 
         // then
-        assertEquals("https://sacdn.hakunaymatata.com/abc/index.mpd", resource.manifestUrl);
-        assertEquals(cookie, resource.cookie);
-        assertFalse(resource.isEdgeCache());
+        Assertions.assertThat(resource.manifestUrl).isEqualTo("https://sacdn.hakunaymatata.com/abc/index.mpd");
+        Assertions.assertThat(resource.cookie).isEqualTo(cookie);
+        Assertions.assertThat(resource.isEdgeCache()).isFalse();
     }
 
     @Test
@@ -45,8 +41,8 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie(cookie);
 
         // then
-        assertEquals("https://sbcdn5.example.com/abc/index.mpd", resource.manifestUrl);
-        assertTrue(resource.isEdgeCache());
+        Assertions.assertThat(resource.manifestUrl).isEqualTo("https://sbcdn5.example.com/abc/index.mpd");
+        Assertions.assertThat(resource.isEdgeCache()).isTrue();
     }
 
     @Test
@@ -55,7 +51,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie(edgeCacheCookie("https://sbcdn5.example.com/abc/"));
 
         // then
-        assertEquals("https://sbcdn5.example.com/abc/index.mpd", resource.manifestUrl);
+        Assertions.assertThat(resource.manifestUrl).isEqualTo("https://sbcdn5.example.com/abc/index.mpd");
     }
 
     @Test
@@ -64,7 +60,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie(cloudFrontCookie("http://sacdn.example.com/abc/*"));
 
         // then
-        assertNull(resource);
+        Assertions.assertThat(resource).isNull();
     }
 
     @Test
@@ -73,7 +69,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie(cloudFrontCookie("https://sacdn.example.com/abc"));
 
         // then
-        assertNull(resource);
+        Assertions.assertThat(resource).isNull();
     }
 
     @Test
@@ -82,7 +78,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie(edgeCacheCookie("http://sbcdn5.example.com/abc"));
 
         // then
-        assertNull(resource);
+        Assertions.assertThat(resource).isNull();
     }
 
     @Test
@@ -91,7 +87,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie("session=1");
 
         // then
-        assertNull(resource);
+        Assertions.assertThat(resource).isNull();
     }
 
     @Test
@@ -100,7 +96,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromCookie("CloudFront-Policy=@@@;");
 
         // then
-        assertNull(resource);
+        Assertions.assertThat(resource).isNull();
     }
 
     @Test
@@ -113,7 +109,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromPlayInfo(body);
 
         // then
-        assertEquals("https://sacdn.example.com/one/index.mpd", resource.manifestUrl);
+        Assertions.assertThat(resource.manifestUrl).isEqualTo("https://sacdn.example.com/one/index.mpd");
     }
 
     @Test
@@ -122,7 +118,7 @@ public final class SignedResourceTest {
         SignedResource resource = SignedResource.fromPlayInfo("<html>");
 
         // then
-        assertNull(resource);
+        Assertions.assertThat(resource).isNull();
     }
 
     @Test
@@ -133,8 +129,8 @@ public final class SignedResourceTest {
             .isEdgeCachePlayInfo(playInfo(cloudFrontCookie("https://sacdn.example.com/a/*")));
 
         // then
-        assertTrue(edge);
-        assertFalse(cloudFront);
+        Assertions.assertThat(edge).isTrue();
+        Assertions.assertThat(cloudFront).isFalse();
     }
 
     @Test
@@ -143,7 +139,7 @@ public final class SignedResourceTest {
         String key = SignedResource.key(Uri.parse("https://h/play-info/v2?subjectId=77&se=2&ep=5&isVip=true"));
 
         // then
-        assertEquals("77/2/5", key);
+        Assertions.assertThat(key).isEqualTo("77/2/5");
     }
 
     @Test
@@ -152,7 +148,7 @@ public final class SignedResourceTest {
         String key = SignedResource.key(Uri.parse("https://h/play-info/v2?subjectId=77&se=2"));
 
         // then
-        assertNull(key);
+        Assertions.assertThat(key).isNull();
     }
 
     @Test
@@ -161,7 +157,7 @@ public final class SignedResourceTest {
         String key = SignedResource.key(Uri.parse("https://h/play-info/v2?subjectId=77&se=x&ep=5"));
 
         // then
-        assertNull(key);
+        Assertions.assertThat(key).isNull();
     }
 
     static String cloudFrontCookie(String resource) {

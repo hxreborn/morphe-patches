@@ -4,11 +4,9 @@
  */
 package hx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -32,8 +30,8 @@ public final class PlayInfoRewriterTest {
 
         // then
         JSONObject stream = new JSONObject(rewritten).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
-        assertEquals(SIGNED_MANIFEST, stream.getString("url"));
-        assertEquals("DASH", stream.getString("format"));
+        Assertions.assertThat(stream.getString("url")).isEqualTo(SIGNED_MANIFEST);
+        Assertions.assertThat(stream.getString("format")).isEqualTo("DASH");
     }
 
     @Test
@@ -47,8 +45,8 @@ public final class PlayInfoRewriterTest {
 
         // then
         JSONObject stream = new JSONObject(rewritten).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
-        assertEquals(DashServer.buildUrl("77", 2, 5, 1080, "https://origin.example.com/f.mp4", 123, null),
-                stream.getString("url"));
+        Assertions.assertThat(stream.getString("url"))
+            .isEqualTo(DashServer.buildUrl("77", 2, 5, 1080, "https://origin.example.com/f.mp4", 123, null));
     }
 
     @Test
@@ -61,7 +59,7 @@ public final class PlayInfoRewriterTest {
         String rewritten = PlayInfoRewriter.rewrite(body, "77", -1, 0);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -74,7 +72,7 @@ public final class PlayInfoRewriterTest {
         String rewritten = PlayInfoRewriter.rewrite(body, "77", 0, 0);
 
         // then
-        assertSame(body, rewritten);
+        Assertions.assertThat(rewritten).isSameAs(body);
     }
 
     @Test
@@ -83,7 +81,7 @@ public final class PlayInfoRewriterTest {
         String rewritten = PlayInfoRewriter.rewrite("not json", "77", 0, 0);
 
         // then
-        assertEquals("not json", rewritten);
+        Assertions.assertThat(rewritten).isEqualTo("not json");
     }
 
 }
