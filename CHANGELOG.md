@@ -1,3 +1,9 @@
+## [1.65.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.1...v1.65.0-dev.2) (2026-10-27)
+
+### Updated App Support
+
+* **Photo Editor Pro:** add support for `1.811.267` ([e6dfb28](https://github.com/hxreborn/morphe-patches/commit/e6dfb28f3dbed4e550d4e80ecd4c4bfae7bb1bb5)), closes [#417](https://github.com/hxreborn/morphe-patches/issues/417)
+
 ## [1.65.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.64.0...v1.65.0-dev.1) (2026-10-27)
 
 ### Bug Fixes

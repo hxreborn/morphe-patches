@@ -234,6 +234,7 @@ body:
         - "Perplexity (another version, type it below)"
         - "Photo Editor Pro 1.791.265"
         - "Photo Editor Pro 1.802.266"
+        - "Photo Editor Pro 1.811.267"
         - "Photo Editor Pro (another version, type it below)"
         - "Photone 1.5.4"
         - "Photone (another version, type it below)"
@@ -383,12 +384,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.65.0-dev.2"
         - "1.65.0-dev.1"
         - "1.64.0-dev.1"
         - "1.64.0"
         - "1.63.0-dev.3"
         - "1.63.0-dev.2"
-        - "1.63.0-dev.1"
         - "Older than these"
         # /generated
     validations:
