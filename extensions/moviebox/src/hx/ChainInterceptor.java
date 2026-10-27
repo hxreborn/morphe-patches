@@ -20,6 +20,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import hx.util.Reflect;
+
 abstract class ChainInterceptor implements InvocationHandler {
 
     private final String description;

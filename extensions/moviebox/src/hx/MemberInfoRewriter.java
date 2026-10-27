@@ -16,6 +16,7 @@
 package hx;
 
 import android.util.Log;
+import hx.util.Logs;
 import org.json.JSONException;
 import org.json.JSONObject;
 

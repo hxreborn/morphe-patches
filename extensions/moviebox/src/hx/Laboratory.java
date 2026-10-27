@@ -20,6 +20,7 @@ import java.lang.reflect.Modifier;
 
 import android.content.SharedPreferences;
 import android.util.Log;
+import hx.util.Logs;
 
 final class Laboratory {
 

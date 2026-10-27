@@ -20,6 +20,7 @@ import java.io.IOException;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import hx.util.Logs;
 
 @SuppressWarnings("unused")
 public final class AppPatch {

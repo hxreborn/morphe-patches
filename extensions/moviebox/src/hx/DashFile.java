@@ -29,6 +29,8 @@ import java.util.concurrent.Future;
 
 import android.net.Uri;
 import android.util.Log;
+import hx.util.Logs;
+import hx.util.Tasks;
 
 final class DashFile {
 

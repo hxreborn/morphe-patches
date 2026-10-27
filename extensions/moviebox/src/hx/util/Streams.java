@@ -13,13 +13,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.util;
 
-final class Logs {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-    static final String TAG = "hxreborn/moviebox";
+public final class Streams {
 
-    private Logs() {
+    private static final int BUFFER_BYTES = 8192;
+
+    private Streams() {
+    }
+
+    public static byte[] readAll(InputStream in) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        byte[] buffer = new byte[BUFFER_BYTES];
+        int count = in.read(buffer);
+        while (count != -1) {
+            bytes.write(buffer, 0, count);
+            count = in.read(buffer);
+        }
+        return bytes.toByteArray();
     }
 
 }

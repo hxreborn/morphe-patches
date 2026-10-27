@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+import hx.util.Logs;
 
 final class Notices {
 

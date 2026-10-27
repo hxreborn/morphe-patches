@@ -2,10 +2,11 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.util;
 
 import java.io.IOException;
 
+import hx.LocalCdn;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;

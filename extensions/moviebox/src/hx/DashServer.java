@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.net.Uri;
 import android.util.Log;
+import hx.util.Logs;
 
 final class DashServer implements Runnable {
 

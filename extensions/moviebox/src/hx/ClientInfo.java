@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
+import hx.util.Logs;
 import org.json.JSONException;
 import org.json.JSONObject;
 

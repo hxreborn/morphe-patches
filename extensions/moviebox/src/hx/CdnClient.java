@@ -23,6 +23,8 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import android.util.Log;
+import hx.util.Logs;
+import hx.util.Streams;
 
 final class CdnClient {
 

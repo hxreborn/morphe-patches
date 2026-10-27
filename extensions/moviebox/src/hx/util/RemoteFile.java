@@ -13,20 +13,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.util;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-final class RemoteFile {
+public final class RemoteFile {
 
     private static final int PROBE_TIMEOUT_MS = 10000;
 
     private RemoteFile() {
     }
 
-    static long probeLength(String url) throws IOException {
+    public static long probeLength(String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setConnectTimeout(PROBE_TIMEOUT_MS);
         connection.setReadTimeout(PROBE_TIMEOUT_MS);
@@ -38,7 +38,7 @@ final class RemoteFile {
         }
     }
 
-    static long totalFromContentRange(String contentRange) {
+    public static long totalFromContentRange(String contentRange) {
         int slash = contentRange.indexOf('/');
         return Long.parseLong(contentRange.substring(slash + 1).trim());
     }

@@ -24,6 +24,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import hx.util.RemoteFile;
+import hx.util.Tasks;
+
 final class SegmentProbe {
 
     private static final int PROBE_BYTES = 256;

@@ -4,7 +4,6 @@
  */
 package hx;
 
-
 import android.net.Uri;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

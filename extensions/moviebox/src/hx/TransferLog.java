@@ -18,6 +18,7 @@ package hx;
 import java.util.Locale;
 
 import android.util.Log;
+import hx.util.Logs;
 
 final class TransferLog {
 

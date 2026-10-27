@@ -13,18 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.util;
 
-final class Reflect {
+public final class Reflect {
 
     private Reflect() {
     }
 
-    static Object call(Object target, String method) throws ReflectiveOperationException {
+    public static Object call(Object target, String method) throws ReflectiveOperationException {
         return target.getClass().getMethod(method).invoke(target);
     }
 
-    static Object call(Object target, String method, Class<?>[] types, Object... args)
+    public static Object call(Object target, String method, Class<?>[] types, Object... args)
             throws ReflectiveOperationException {
         return target.getClass().getMethod(method, types).invoke(target, args);
     }

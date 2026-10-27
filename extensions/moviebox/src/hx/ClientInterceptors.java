@@ -18,6 +18,8 @@ package hx;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
+import hx.util.Reflect;
+
 final class ClientInterceptors {
 
     private static final String INTERCEPTOR = "okhttp3.Interceptor";

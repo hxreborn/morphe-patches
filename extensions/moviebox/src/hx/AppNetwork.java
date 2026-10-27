@@ -17,6 +17,8 @@ package hx;
 
 import java.lang.reflect.Field;
 
+import hx.util.Reflect;
+
 final class AppNetwork {
 
     private static final String OKHTTP_CLIENT = "okhttp3.OkHttpClient";

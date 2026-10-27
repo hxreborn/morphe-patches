@@ -15,6 +15,8 @@
  */
 package hx;
 
+import hx.util.Reflect;
+
 final class BuildTagInterceptor extends ChainInterceptor {
 
     private static final String INFO_HEADER = "X-Client-Info";

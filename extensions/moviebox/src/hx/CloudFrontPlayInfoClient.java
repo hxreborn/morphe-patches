@@ -38,6 +38,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
+import hx.util.Logs;
+import hx.util.Streams;
 import org.json.JSONException;
 import org.json.JSONObject;
 

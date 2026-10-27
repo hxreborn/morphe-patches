@@ -13,18 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.util;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-final class Tasks {
+public final class Tasks {
 
     private Tasks() {
     }
 
-    static <T> T await(Future<T> task) throws IOException {
+    public static <T> T await(Future<T> task) throws IOException {
         try {
             return task.get();
         } catch (ExecutionException ex) {
@@ -35,7 +35,7 @@ final class Tasks {
         }
     }
 
-    static IOException failureOf(ExecutionException ex) {
+    public static IOException failureOf(ExecutionException ex) {
         Throwable cause = ex.getCause();
         return (cause instanceof IOException) ? (IOException) cause : new IOException(cause);
     }

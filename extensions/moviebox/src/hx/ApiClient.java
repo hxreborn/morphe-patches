@@ -18,6 +18,8 @@ package hx;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import hx.util.Reflect;
+
 final class ApiClient {
 
     private static final String REQUEST_BUILDER = "okhttp3.Request$Builder";

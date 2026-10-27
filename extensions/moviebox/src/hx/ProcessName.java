@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import android.util.Log;
+import hx.util.Logs;
+import hx.util.Streams;
 
 final class ProcessName {
 
