@@ -53,7 +53,7 @@ public final class DashServer implements Runnable {
 
     private static final int OUTPUT_BUFFER_BYTES = 1 << 16;
 
-    private final Source source;
+    private final DashFileSource source;
 
     private final ServerSocket serverSocket;
 
@@ -62,12 +62,12 @@ public final class DashServer implements Runnable {
 
     private boolean started;
 
-    private DashServer(Source source, ServerSocket serverSocket) {
+    private DashServer(DashFileSource source, ServerSocket serverSocket) {
         this.source = source;
         this.serverSocket = serverSocket;
     }
 
-    public static DashServer bind(Source source) throws IOException {
+    public static DashServer bind(DashFileSource source) throws IOException {
         return new DashServer(source, new ServerSocket(PORT, BACKLOG, InetAddress.getByAddress(LOOPBACK)));
     }
 
@@ -197,13 +197,6 @@ public final class DashServer implements Runnable {
             socket.close();
         } catch (IOException ignored) {
         }
-    }
-
-    public interface Source {
-
-        DashFile open(String subjectId, int season, int episode, int height, String origin, long originSize,
-                String resourceId, boolean fromStart) throws IOException;
-
     }
 
     public static final class RedirectException extends IOException {

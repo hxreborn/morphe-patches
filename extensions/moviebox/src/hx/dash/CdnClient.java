@@ -44,7 +44,7 @@ final class CdnClient {
     private CdnClient() {
     }
 
-    static <T> T withRetries(Request<T> request) throws IOException {
+    static <T> T withRetries(CdnRequest<T> request) throws IOException {
         for (int attempt = 1;; attempt++) {
             try {
                 return request.send();
@@ -109,12 +109,6 @@ final class CdnClient {
             reads.add(connection);
         }
         return connection;
-    }
-
-    interface Request<T> {
-
-        T send() throws IOException;
-
     }
 
 }

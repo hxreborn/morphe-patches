@@ -31,6 +31,7 @@ import android.util.Log;
 import hx.dash.CdnCookies;
 import hx.dash.DashFile;
 import hx.gateway.PlayInfoLookup;
+import hx.loopback.DashFileSource;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
 import hx.platform.Notices;
@@ -38,7 +39,7 @@ import hx.util.Logs;
 import hx.util.RemoteFile;
 import hx.util.Tasks;
 
-public final class MovieBoxSource implements DashServer.Source {
+public final class MovieBoxSource implements DashFileSource {
 
     private static final int FILE_RETENTION = 8;
 

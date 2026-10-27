@@ -33,7 +33,7 @@ final class JsonTree {
     private JsonTree() {
     }
 
-    static boolean rewriteObjects(JSONObject node, ObjectRewrite rewrite) throws JSONException {
+    static boolean rewriteObjects(JSONObject node, JsonObjectRewrite rewrite) throws JSONException {
         boolean changed = rewrite.apply(node);
         for (String key : keysOf(node)) {
             changed |= rewriteChild(node.opt(key), rewrite);
@@ -41,7 +41,7 @@ final class JsonTree {
         return changed;
     }
 
-    private static boolean rewriteArray(JSONArray array, ObjectRewrite rewrite) throws JSONException {
+    private static boolean rewriteArray(JSONArray array, JsonObjectRewrite rewrite) throws JSONException {
         boolean changed = false;
         for (int i = 0; i < array.length(); i++) {
             changed |= rewriteChild(array.opt(i), rewrite);
@@ -49,7 +49,7 @@ final class JsonTree {
         return changed;
     }
 
-    private static boolean rewriteChild(Object value, ObjectRewrite rewrite) throws JSONException {
+    private static boolean rewriteChild(Object value, JsonObjectRewrite rewrite) throws JSONException {
         if (value instanceof JSONObject) {
             return rewriteObjects((JSONObject) value, rewrite);
         }
@@ -66,12 +66,6 @@ final class JsonTree {
             keys.add(iterator.next());
         }
         return keys;
-    }
-
-    interface ObjectRewrite {
-
-        boolean apply(JSONObject node) throws JSONException;
-
     }
 
 }

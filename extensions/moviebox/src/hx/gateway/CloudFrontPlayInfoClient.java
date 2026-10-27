@@ -73,7 +73,7 @@ public final class CloudFrontPlayInfoClient implements PlayInfoLookup {
     }
 
     @Override
-    public String fetchPlayInfo(String pathAndQuery, PlayInfoLookup.Acceptance acceptance) {
+    public String fetchPlayInfo(String pathAndQuery, PlayInfoAcceptance acceptance) {
         if (SigningKey.VALUE == null) {
             return null;
         }
@@ -109,7 +109,7 @@ public final class CloudFrontPlayInfoClient implements PlayInfoLookup {
     }
 
     private BlockingQueue<Answer> startLookups(List<String> hosts, String pathAndQuery,
-            PlayInfoLookup.Acceptance acceptance, long startedMs) {
+            PlayInfoAcceptance acceptance, long startedMs) {
         BlockingQueue<Answer> answers = new LinkedBlockingQueue<>();
         for (String host : hosts) {
             Thread worker = new Thread(
@@ -144,7 +144,7 @@ public final class CloudFrontPlayInfoClient implements PlayInfoLookup {
         this.hostRetryAtMs.put(host, SystemClock.elapsedRealtime() + RETRY_COOLDOWN_MS);
     }
 
-    private String fetchAccepted(String host, String pathAndQuery, PlayInfoLookup.Acceptance acceptance,
+    private String fetchAccepted(String host, String pathAndQuery, PlayInfoAcceptance acceptance,
             long startedMs) {
         String token = null;
         try {

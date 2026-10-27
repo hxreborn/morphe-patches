@@ -22,12 +22,6 @@ package hx.gateway;
 
 public interface PlayInfoLookup {
 
-    String fetchPlayInfo(String pathAndQuery, Acceptance acceptance);
-
-    interface Acceptance {
-
-        boolean accepts(String playInfo);
-
-    }
+    String fetchPlayInfo(String pathAndQuery, PlayInfoAcceptance acceptance);
 
 }
