@@ -97,6 +97,7 @@ private val NEED_PAID_HOLDERS = listOf(
 )
 
 private const val NO_SIM = ""
+private const val NO_UPDATE_TYPE = ""
 
 private val SIM_OPERATOR_READERS = listOf(
     "Lcom/transsion/api/gateway/utils/DeviceUtils;" to "getSimOperator",
@@ -229,6 +230,8 @@ val allInOnePatch = resourcePatch(
             listOf("getForceUpdate", "getHasUpdate").forEach {
                 method(REMOTE_VERSION_INFO, it).returnEarly(false)
             }
+            method(REMOTE_VERSION_INFO, "getNoticeConfig").returnNull()
+            method(REMOTE_VERSION_INFO, "getUpdateType").returnString(NO_UPDATE_TYPE)
         }
     }
 }
