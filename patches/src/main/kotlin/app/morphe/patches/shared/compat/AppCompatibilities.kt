@@ -189,7 +189,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "d06b27d0bbcec5f0a462796ae16688880cc5740ca33abc9a96f4aaaf107f2cad",
         ),
-        targets = listOf(AppTarget(version = "3.0.01c", versionCode = 302400127, minSdk = 24)),
+        targets = listOf(AppTarget(version = "3.0.01e", versionCode = 302400131, minSdk = 29)),
     )
 
     val BEREAL = Compatibility(
