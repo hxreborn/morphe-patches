@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -55,7 +56,7 @@ final class CloudFrontPlayInfoClient implements PlayInfoLookup {
 
     private final GatewayHeaders gatewayHeaders;
 
-    private final Map<String, String> tokens = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, String> tokens = new ConcurrentHashMap<>();
 
     private final Map<String, Long> hostRetryAtMs = new ConcurrentHashMap<>();
 
