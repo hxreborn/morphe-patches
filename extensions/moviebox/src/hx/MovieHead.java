@@ -17,6 +17,7 @@ package hx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 final class MovieHead {
@@ -66,8 +67,8 @@ final class MovieHead {
 
     static byte[] build(Track video, Track audio, InterleavedTracks ordered) throws IOException {
         byte[] moov = moov(video.init, audio.init, audio.id, video.durationMillis());
-        byte[] audioIndex = ordered.indexOf(audio, 0);
-        byte[] videoIndex = ordered.indexOf(video, audioIndex.length);
+        byte[] audioIndex = sidxBoxFor(audio, ordered, 0);
+        byte[] videoIndex = sidxBoxFor(video, ordered, audioIndex.length);
         byte[] ftyp = Mp4Boxes.slice(video.init, Mp4Boxes.child(video.init, 0, video.init.length, "ftyp"));
         return Mp4Boxes.concat(ftyp, moov, videoIndex, audioIndex);
     }
@@ -100,6 +101,33 @@ final class MovieHead {
             out.write(entry, 0, entry.length);
         }
         return Mp4Boxes.box("sidx", out.toByteArray());
+    }
+
+    private static byte[] sidxBoxFor(Track track, InterleavedTracks ordered, long bytesAfterIndex) throws IOException {
+        long mediaTimescale = mediaTimescale(track.init);
+        List<Segment> own = new ArrayList<>();
+        List<Long> starts = new ArrayList<>();
+        long position = 0;
+        for (int i = 0; i < ordered.segments.size(); i++) {
+            Segment segment = ordered.segments.get(i);
+            if (ordered.trackIds.get(i) == track.id) {
+                own.add(segment);
+                starts.add(position);
+            }
+            position += segment.payloadBytes();
+        }
+        long elapsed = own.get(0).startTime;
+        long earliestTime = elapsed * mediaTimescale / track.templateTimescale;
+        long indexedEnd = earliestTime;
+        List<Reference> references = new ArrayList<>();
+        for (int i = 0; i < own.size(); i++) {
+            long next = (i + 1 < starts.size()) ? starts.get(i + 1) : position;
+            elapsed += own.get(i).duration;
+            long end = elapsed * mediaTimescale / track.templateTimescale;
+            references.add(new Reference(next - starts.get(i), end - indexedEnd));
+            indexedEnd = end;
+        }
+        return sidx(track.id, mediaTimescale, earliestTime, bytesAfterIndex + starts.get(0), references);
     }
 
     private static byte[] moov(byte[] videoInit, byte[] audioInit, int audioId, long durationMs) throws IOException {
