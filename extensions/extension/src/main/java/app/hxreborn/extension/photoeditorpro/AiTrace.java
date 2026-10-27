@@ -96,7 +96,7 @@ public final class AiTrace {
         }
     }
 
-    static Object trace(Object chain, Class<?> responseType, Proceed proceed) {
+    static Object trace(Object chain, Class<?> responseType, ChainProceed proceed) {
         if (!enabled()) {
             return proceed.call();
         }
@@ -757,12 +757,6 @@ public final class AiTrace {
                 return HttpStatus.NONE;
             }
         }
-
-    }
-
-    interface Proceed {
-
-        Object call();
 
     }
 
