@@ -128,7 +128,7 @@ final class SsdpBrowser {
 
     private final NetworkInterface networkInterface;
 
-    private final Listener listener;
+    private final SsdpChangeListener listener;
 
     private final Object lock = new Object();
 
@@ -146,7 +146,7 @@ final class SsdpBrowser {
 
     private int generation;
 
-    SsdpBrowser(InetAddress local, Network network, NetworkInterface networkInterface, Listener listener) {
+    SsdpBrowser(InetAddress local, Network network, NetworkInterface networkInterface, SsdpChangeListener listener) {
         this.local = local;
         this.network = network;
         this.networkInterface = networkInterface;
@@ -466,12 +466,6 @@ final class SsdpBrowser {
             }
             return value;
         }
-
-    }
-
-    interface Listener {
-
-        void onChanged();
 
     }
 

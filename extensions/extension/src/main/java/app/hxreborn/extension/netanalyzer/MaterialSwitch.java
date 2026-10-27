@@ -51,7 +51,7 @@ final class MaterialSwitch extends View implements Checkable {
 
     private final HostPalette palette;
 
-    private HostScreenActivity.SwitchListener listener;
+    private SwitchChangeListener listener;
 
     private boolean checked;
 
@@ -64,7 +64,7 @@ final class MaterialSwitch extends View implements Checkable {
         setOnClickListener((view) -> toggle());
     }
 
-    void setListener(HostScreenActivity.SwitchListener listener) {
+    void setListener(SwitchChangeListener listener) {
         this.listener = listener;
     }
 

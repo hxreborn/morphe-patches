@@ -25,9 +25,9 @@ import android.text.TextWatcher;
 
 final class AfterTextChanged implements TextWatcher {
 
-    private final Listener listener;
+    private final TextChangeListener listener;
 
-    AfterTextChanged(Listener listener) {
+    AfterTextChanged(TextChangeListener listener) {
         this.listener = listener;
     }
 
@@ -42,12 +42,6 @@ final class AfterTextChanged implements TextWatcher {
     @Override
     public void afterTextChanged(Editable text) {
         this.listener.onText(text.toString());
-    }
-
-    interface Listener {
-
-        void onText(String text);
-
     }
 
 }

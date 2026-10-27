@@ -143,7 +143,7 @@ public final class HostPalette {
 
     final int stopAction;
 
-    private HostPalette(Roles roles) {
+    private HostPalette(PaletteRoles roles) {
         final int surfaceContainerHigh = roles.color("surfaceContainerHigh");
         this.dark = Color.luminance(surfaceContainerHigh) < LIGHT_BAR_LUMINANCE;
         this.accent = roles.color("primary");
@@ -247,12 +247,6 @@ public final class HostPalette {
 
     private static int argb(long composeColor) {
         return (int) (composeColor >>> COMPOSE_ARGB_SHIFT);
-    }
-
-    private interface Roles {
-
-        int color(String role);
-
     }
 
     private static final class CustomColors {

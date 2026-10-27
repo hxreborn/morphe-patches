@@ -54,7 +54,7 @@ final class MaterialSlider extends View {
 
     private int position;
 
-    private PositionListener listener;
+    private SliderPositionListener listener;
 
     MaterialSlider(Context context, HostPalette palette, int steps) {
         super(context);
@@ -68,7 +68,7 @@ final class MaterialSlider extends View {
         invalidate();
     }
 
-    void setListener(PositionListener listener) {
+    void setListener(SliderPositionListener listener) {
         this.listener = listener;
     }
 
@@ -120,12 +120,6 @@ final class MaterialSlider extends View {
 
     private float dp(float value) {
         return Dimensions.dpExact(getContext(), value);
-    }
-
-    interface PositionListener {
-
-        void onPosition(int position);
-
     }
 
 }

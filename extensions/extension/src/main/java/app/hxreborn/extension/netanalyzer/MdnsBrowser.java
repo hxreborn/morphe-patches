@@ -138,7 +138,7 @@ final class MdnsBrowser {
 
     private final NetworkInterface networkInterface;
 
-    private final Listener listener;
+    private final MdnsChangeListener listener;
 
     private final Object lock = new Object();
 
@@ -160,7 +160,7 @@ final class MdnsBrowser {
 
     private int generation;
 
-    MdnsBrowser(InetAddress local, NetworkInterface networkInterface, Listener listener) {
+    MdnsBrowser(InetAddress local, NetworkInterface networkInterface, MdnsChangeListener listener) {
         this.local = local;
         this.networkInterface = networkInterface;
         this.listener = listener;
@@ -687,12 +687,6 @@ final class MdnsBrowser {
             final List<InetAddress> addresses = this.hasSrv ? hosts.get(this.server.toLowerCase(Locale.ROOT)) : null;
             return this.hasSrv && this.hasTxt && addresses != null && !addresses.isEmpty();
         }
-
-    }
-
-    interface Listener {
-
-        void onChanged();
 
     }
 

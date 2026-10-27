@@ -153,7 +153,7 @@ final class TileMapView extends View {
 
     private List<MapMarker> markers = Collections.emptyList();
 
-    private OnMarkerClickListener markerClickListener;
+    private MarkerClickListener markerClickListener;
 
     private ValueAnimator animator;
 
@@ -223,7 +223,7 @@ final class TileMapView extends View {
         invalidate();
     }
 
-    void setOnMarkerClickListener(OnMarkerClickListener listener) {
+    void setOnMarkerClickListener(MarkerClickListener listener) {
         this.markerClickListener = listener;
     }
 
@@ -569,12 +569,6 @@ final class TileMapView extends View {
                     TileMapView.this.zoom + Math.log(detector.getScaleFactor()) / LOG_TWO);
             return true;
         }
-
-    }
-
-    interface OnMarkerClickListener {
-
-        void onMarkerClick(MapMarker marker);
 
     }
 

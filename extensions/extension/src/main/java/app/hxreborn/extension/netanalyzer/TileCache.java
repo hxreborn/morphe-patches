@@ -104,7 +104,7 @@ final class TileCache {
 
     private final File root;
 
-    private final Listener listener;
+    private final TileLoadListener listener;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -115,7 +115,7 @@ final class TileCache {
 
     private final Map<String, Long> failedAt = new ConcurrentHashMap<>();
 
-    TileCache(Context context, Listener listener) {
+    TileCache(Context context, TileLoadListener listener) {
         this.listener = listener;
         this.root = new File(context.getCacheDir(), DISK_DIRECTORY);
         final int memoryKilobytes = (int) (Runtime.getRuntime().maxMemory() / BYTES_PER_KILOBYTE / MEMORY_FRACTION);
@@ -309,12 +309,6 @@ final class TileCache {
             this.etag = etag;
             this.expiresAt = expiresAt;
         }
-
-    }
-
-    interface Listener {
-
-        void onTileLoaded();
 
     }
 

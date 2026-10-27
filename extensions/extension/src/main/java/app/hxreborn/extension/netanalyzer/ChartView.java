@@ -274,12 +274,6 @@ final class ChartView extends View {
 
     }
 
-    interface Formatter {
-
-        String format(double value);
-
-    }
-
     static final class Axis {
 
         private static final int SIGNIFICANT_DIGIT_LIMIT = 5;
@@ -298,7 +292,7 @@ final class ChartView extends View {
 
         boolean axisLineEnabled = true;
 
-        Formatter formatter = String::valueOf;
+        ValueFormatter formatter = String::valueOf;
 
         void setRange(double min, double max) {
             this.min = min;

@@ -183,7 +183,7 @@ public final class ToolOptionsActivity extends HostScreenActivity {
         });
     }
 
-    private void sliderRow(String title, int steps, int position, SliderValue value) {
+    private void sliderRow(String title, int steps, int position, SliderValueDescriber value) {
         final LinearLayout row = controlRow(title);
         final MaterialSlider slider = new MaterialSlider(this, this.palette, steps);
         slider.setPosition(position);
@@ -261,12 +261,6 @@ public final class ToolOptionsActivity extends HostScreenActivity {
 
     private static String seconds(int millis) {
         return String.format(Locale.US, "%.1f s", millis / (float) MILLIS_PER_SECOND);
-    }
-
-    private interface SliderValue {
-
-        String describe(int position);
-
     }
 
 }

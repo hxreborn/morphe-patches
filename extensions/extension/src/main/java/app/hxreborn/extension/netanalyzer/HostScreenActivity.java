@@ -279,7 +279,7 @@ abstract class HostScreenActivity extends Activity {
         addRow(column);
     }
 
-    final MaterialSwitch switchRow(String title, String summary, boolean checked, SwitchListener listener) {
+    final MaterialSwitch switchRow(String title, String summary, boolean checked, SwitchChangeListener listener) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -308,7 +308,7 @@ abstract class HostScreenActivity extends Activity {
         return toggle;
     }
 
-    final LinearLayout segmentedRow(String[] options, int selected, SegmentListener listener) {
+    final LinearLayout segmentedRow(String[] options, int selected, SegmentSelectionListener listener) {
         final LinearLayout row = new LinearLayout(this);
         row.setBackgroundColor(this.palette.background);
         row.setPaddingRelative(dp(INSET_DP), dp(ROW_VERTICAL_DP), dp(INSET_DP), dp(ROW_VERTICAL_DP));
@@ -319,7 +319,7 @@ abstract class HostScreenActivity extends Activity {
         return segments;
     }
 
-    final LinearLayout segmentedButtons(String[] options, int selected, SegmentListener listener) {
+    final LinearLayout segmentedButtons(String[] options, int selected, SegmentSelectionListener listener) {
         final LinearLayout segments = new LinearLayout(this);
         segments.setOrientation(LinearLayout.HORIZONTAL);
         final float radius = dp(SEGMENT_HEIGHT_DP) / 2f;
@@ -586,18 +586,6 @@ abstract class HostScreenActivity extends Activity {
             }
             return gray ? NEUTRAL : NEGATIVE;
         }
-
-    }
-
-    interface SwitchListener {
-
-        void onChanged(boolean checked);
-
-    }
-
-    interface SegmentListener {
-
-        void onSelected(int index);
 
     }
 

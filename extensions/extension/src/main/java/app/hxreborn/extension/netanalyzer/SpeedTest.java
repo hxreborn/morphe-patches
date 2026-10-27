@@ -189,7 +189,7 @@ final class SpeedTest {
 
     private static final double MIN_ACK_SECONDS = 0.001;
 
-    private final Listener listener;
+    private final SpeedTestListener listener;
 
     private final long phaseMillis;
 
@@ -207,11 +207,11 @@ final class SpeedTest {
 
     private volatile HttpURLConnection listRequest;
 
-    SpeedTest(Listener listener) {
+    SpeedTest(SpeedTestListener listener) {
         this(listener, PHASE_MS);
     }
 
-    SpeedTest(Listener listener, long phaseMillis) {
+    SpeedTest(SpeedTestListener listener, long phaseMillis) {
         this.listener = listener;
         this.phaseMillis = phaseMillis;
     }
@@ -679,22 +679,6 @@ final class SpeedTest {
     enum Phase {
 
         PREPARING, DOWNLOAD, UPLOAD
-
-    }
-
-    interface Listener {
-
-        void onPhase(Phase phase);
-
-        void onProgress(Phase phase, float progress);
-
-        void onSample(Phase phase, long rawBytesPerSecond, long liveBytesPerSecond, long elapsedMillis);
-
-        void onPhaseResult(Phase phase, long bytesPerSecond);
-
-        void onFinished(long downloadBytesPerSecond, long uploadBytesPerSecond);
-
-        void onFailed(String message);
 
     }
 

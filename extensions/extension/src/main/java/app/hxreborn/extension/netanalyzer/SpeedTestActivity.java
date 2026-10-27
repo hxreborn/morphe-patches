@@ -214,8 +214,8 @@ public final class SpeedTestActivity extends HostScreenActivity {
         });
     }
 
-    private SpeedTest.Listener listener(int token) {
-        return new SpeedTest.Listener() {
+    private SpeedTestListener listener(int token) {
+        return new SpeedTestListener() {
 
             @Override
             public void onPhase(SpeedTest.Phase phase) {
@@ -394,7 +394,7 @@ public final class SpeedTestActivity extends HostScreenActivity {
             this.chart.setLine(this.points, this.plotColor);
         }
 
-        private ChartView.Formatter unitFormatter(double divisor) {
+        private ValueFormatter unitFormatter(double divisor) {
             final String unit = (divisor < KILO) ? "bps" : ((divisor < MEGA) ? "kbps" : "Mbps");
             return (value) -> (long) (value / divisor) + " " + unit;
         }
