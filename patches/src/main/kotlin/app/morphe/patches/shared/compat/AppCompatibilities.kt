@@ -359,6 +359,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.2.9", versionCode = 152, minSdk = 32)),
     )
 
+    val CONNECTED2 = Compatibility(
+        name = "Connected2.me",
+        packageName = "com.connected2.ozzy.c2m",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x5B5FB8,
+        signatures = setOf(
+            "f264ad5badb9510986215aea993d48b47399e2d516f014f71ea04551303df459",
+        ),
+        targets = listOf(AppTarget(version = "3.396", versionCode = 1822300993, minSdk = 24)),
+    )
+
     val CUBASIS_LE_3 = Compatibility(
         name = "Cubasis LE 3",
         packageName = "com.steinberg.cubasisle3",
