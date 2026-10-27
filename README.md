@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.64.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.64.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;368 patches total
+> **[v1.65.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.65.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;369 patches total
 
 <table>
 <tr>
@@ -35,7 +35,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#anytracker"><img src=".github/assets/icons/anytracker.png" width="40"><br>AnyTracker</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#arc-player"><img src=".github/assets/icons/com.videoplayer.arcplayer.png" width="40"><br>Arc Player</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#athan"><img src=".github/assets/icons/athan.png" width="40"><br>Athan</a><br><sub>6 patches</sub></td>
+<td align="center" width="25%"><a href="#athan"><img src=".github/assets/icons/athan.png" width="40"><br>Athan</a><br><sub>7 patches</sub></td>
 <td align="center" width="25%"><a href="#atlomaps"><img src=".github/assets/icons/atlomaps.png" width="40"><br>AtloMaps</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
@@ -414,7 +414,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="athan"></a>
 <details>
-<summary><img src=".github/assets/icons/athan.png" width="18" align="top">&nbsp;&nbsp;Athan&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/athan.png" width="18" align="top">&nbsp;&nbsp;Athan&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -428,6 +428,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="athan-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/athan/misc/tracking/DisableTrackingPatch.kt) | Stops usage events from reaching Firebase and Facebook, and disables Crashlytics and Firebase performance monitoring. |
 | <a id="athan-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="athan-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/athan/ads/RemoveAdsPatch.kt) | Removes banner, native, app open and interstitial ads, including the ad shown before sharing. |
+| <a id="athan-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/athan/misc/promotion/RemovePromotionsPatch.kt) | Removes the Athan Academy banner in the Quran tab, and the Academy popup and teacher feedback bar in the chapter reader. |
 | <a id="athan-save-images-to-gallery"></a>[Save images to gallery](patches/src/main/kotlin/app/morphe/patches/athan/misc/share/SaveImagesToGalleryPatch.kt) | Adds a Save to gallery option to the share sheet of verse, dua and greeting card images. Requires Android 10 or newer. |
 | <a id="athan-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/athan/misc/premium/UnlockPremiumPatch.kt) | Unlocks Athan Premium, including the premium Quran themes and athans, and removes ads. |
 
@@ -537,7 +538,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 3.0.01c |
+| 3.0.01e |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -589,7 +590,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 26.17 |
+| 26.18 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -657,7 +658,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.19.1 |
+| 4.20.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1771,7 +1772,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 2.95.0 | 2.100.0 | 2.101.0 |
+| 2.95.0 | 2.100.0 | 2.102.0 |
 | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2160,8 +2161,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.7.44 | 4.8.0 |
-| :---: | :---: |
+| 4.8.1 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
@@ -2638,8 +2639,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 10.2.1 | 10.2.3 |
-| :---: | :---: |
+| 10.2.4 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|

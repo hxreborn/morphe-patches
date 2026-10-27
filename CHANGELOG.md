@@ -1,3 +1,24 @@
+## [1.65.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.64.0...v1.65.0-dev.1) (2026-10-27)
+
+### Bug Fixes
+
+* **Athan - GmsCore support:** connect location through GmsCore ([1164cff](https://github.com/hxreborn/morphe-patches/commit/1164cfffc93cec222eb6fa7678f3a6222f3ff155)), closes [#442](https://github.com/hxreborn/morphe-patches/issues/442)
+* **Proton Mail - AMOLED dark theme:** show a black launch screen ([2c05619](https://github.com/hxreborn/morphe-patches/commit/2c05619f08e6f9babe57b55e79128e22ad8ef925))
+* **Proton VPN - AMOLED dark theme:** keep the scrolled top bar black ([c0dba6c](https://github.com/hxreborn/morphe-patches/commit/c0dba6cee60064241dd6c587cb8eeb642539aef8))
+
+### New Features
+
+* **Athan - Remove promotions:** remove Academy prompts and reader bar ([e067796](https://github.com/hxreborn/morphe-patches/commit/e067796848bcdea9cfdf2034f87994dc862cd0c7)), closes [#443](https://github.com/hxreborn/morphe-patches/issues/443)
+
+### Updated App Support
+
+* **Bangla Calendar:** add support for `3.0.01e` ([19b197b](https://github.com/hxreborn/morphe-patches/commit/19b197b9c72e0c5e6b2ccce63c04a242e198c474)), closes [#408](https://github.com/hxreborn/morphe-patches/issues/408)
+* **BetterSleep:** add support for `26.18` ([34c393d](https://github.com/hxreborn/morphe-patches/commit/34c393d7ce5cb91117770cd87120df0a345c9e45)), closes [#409](https://github.com/hxreborn/morphe-patches/issues/409)
+* **botim:** add support for `4.20.1` ([df2c07b](https://github.com/hxreborn/morphe-patches/commit/df2c07b0f2ff8f2ea960a62569cefe97062119d1)), closes [#410](https://github.com/hxreborn/morphe-patches/issues/410)
+* **Perplexity:** add support for `2.102.0` ([94ca3e8](https://github.com/hxreborn/morphe-patches/commit/94ca3e8be8d88ce1ab4017d85492092899993085)), closes [#416](https://github.com/hxreborn/morphe-patches/issues/416)
+* **Raindrop.io:** add support for `4.8.1` ([ed172d3](https://github.com/hxreborn/morphe-patches/commit/ed172d3d7a12fb4a53c166755b37231bb23c94ca)), closes [#419](https://github.com/hxreborn/morphe-patches/issues/419)
+* **WalP:** add support for `10.2.4` ([651da7b](https://github.com/hxreborn/morphe-patches/commit/651da7b796baa71c29d5a83563dfe7054eb79855)), closes [#425](https://github.com/hxreborn/morphe-patches/issues/425)
+
 ## [1.64.0](https://github.com/hxreborn/morphe-patches/compare/v1.63.0...v1.64.0) (2026-10-27)
 
 ### New Features
