@@ -384,12 +384,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.65.0-dev.3"
         - "1.65.0-dev.2"
         - "1.65.0-dev.1"
         - "1.64.0-dev.1"
         - "1.64.0"
         - "1.63.0-dev.3"
-        - "1.63.0-dev.2"
         - "Older than these"
         # /generated
     validations:
@@ -685,7 +685,7 @@ body:
         - "Proton Authenticator \u00b7 AMOLED dark theme"
         - "Proton Authenticator \u00b7 Custom accent color"
         - "Proton Authenticator \u00b7 Hide layout components"
-        - "Proton Authenticator \u00b7 Material 3 loading indicator"
+        - "Proton Authenticator \u00b7 M3E loading indicator"
         - "Proton Authenticator \u00b7 Material 3 switches"
         - "Proton Lumo \u00b7 Material 3 switches"
         - "Proton Lumo \u00b7 Remove tap highlight"
@@ -695,7 +695,7 @@ body:
         - "Proton Mail \u00b7 Custom accent color"
         - "Proton Mail \u00b7 Hide layout components"
         - "Proton Mail \u00b7 Hide upgrade promotions"
-        - "Proton Mail \u00b7 Material 3 loading indicator"
+        - "Proton Mail \u00b7 M3E loading indicator"
         - "Proton Mail \u00b7 Material 3 switches"
         - "Proton Mail \u00b7 Remove 'Sent from' signature"
         - "Proton Mail \u00b7 Remove free accounts limit"
@@ -708,7 +708,7 @@ body:
         - "Proton Pass \u00b7 Hide navigation bar on scroll"
         - "Proton Pass \u00b7 Hide promotional messages"
         - "Proton Pass \u00b7 Hide upgrade promotions"
-        - "Proton Pass \u00b7 Material 3 loading indicator"
+        - "Proton Pass \u00b7 M3E loading indicator"
         - "Proton Pass \u00b7 Material 3 switches"
         - "Proton VPN \u00b7 AMOLED dark theme"
         - "Proton VPN \u00b7 Custom accent color"

@@ -1,3 +1,9 @@
+## [1.65.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.2...v1.65.0-dev.3) (2026-10-27)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** restore video playback and downloads ([920c350](https://github.com/hxreborn/morphe-patches/commit/920c35080f94da37668a1d25a868a41677927fcc)), closes [#456](https://github.com/hxreborn/morphe-patches/issues/456) [#62](https://github.com/hxreborn/morphe-patches/issues/62)
+
 ## [1.65.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.1...v1.65.0-dev.2) (2026-10-27)
 
 ### Updated App Support
