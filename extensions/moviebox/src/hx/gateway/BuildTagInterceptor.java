@@ -36,9 +36,9 @@ public final class BuildTagInterceptor extends ChainInterceptor {
         String tag = this.buildTag.next();
         Object builder = Reflect.call(request, "newBuilder");
         setHeader(builder, BuildTag.HEADER, tag);
-        String info = header(request, INFO_HEADER);
-        if (info != null) {
-            setHeader(builder, INFO_HEADER, BuildTag.addTo(info, tag));
+        String clientInfo = header(request, INFO_HEADER);
+        if (clientInfo != null) {
+            setHeader(builder, INFO_HEADER, BuildTag.addTo(clientInfo, tag));
         }
         return Reflect.call(builder, "build");
     }
