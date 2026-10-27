@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Random;
-import java.util.function.LongSupplier;
 
 import android.util.Log;
 import org.json.JSONException;
@@ -42,11 +41,11 @@ final class BuildTag {
 
     private final String certificateSha256;
 
-    private final LongSupplier clock;
+    private final MillisClock clock;
 
     private final Random random;
 
-    private BuildTag(String certificateSha256, LongSupplier clock, Random random) {
+    private BuildTag(String certificateSha256, MillisClock clock, Random random) {
         this.certificateSha256 = certificateSha256;
         this.clock = clock;
         this.random = random;
@@ -65,7 +64,7 @@ final class BuildTag {
         return fromCertificate(certificate, System::currentTimeMillis, new Random());
     }
 
-    static BuildTag fromCertificate(byte[] certificate, LongSupplier clock, Random random) {
+    static BuildTag fromCertificate(byte[] certificate, MillisClock clock, Random random) {
         try {
             return new BuildTag(Digests.sha256Hex(certificate), clock, random);
         } catch (NoSuchAlgorithmException ex) {
@@ -83,7 +82,7 @@ final class BuildTag {
     }
 
     String next() {
-        long nowMillis = this.clock.getAsLong();
+        long nowMillis = this.clock.nowMillis();
         String timestamp = String.format(Locale.ROOT, "%d%06d%d", nowMillis / MILLIS_PER_SECOND,
                 (nowMillis % MILLIS_PER_SECOND) * MICROS_PER_MILLI, this.random.nextInt(RANDOM_BOUND));
         String seed = this.certificateSha256 + SALT + timestamp;
