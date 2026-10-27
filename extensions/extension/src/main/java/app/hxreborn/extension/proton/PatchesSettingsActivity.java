@@ -559,10 +559,4 @@ public final class PatchesSettingsActivity extends Activity {
         return PatchesTheme.dpToPx(this, value);
     }
 
-    private interface CheckedChangeListener {
-
-        void onCheckedChanged(boolean checked);
-
-    }
-
 }
