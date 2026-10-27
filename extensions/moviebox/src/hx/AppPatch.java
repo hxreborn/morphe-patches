@@ -21,15 +21,21 @@
 package hx;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import hx.gateway.BuildTag;
 import hx.gateway.BuildTagInterceptor;
 import hx.gateway.CloudFrontPlayInfoClient;
+import hx.gateway.SharedHeaders;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
+import hx.platform.HotPatches;
+import hx.platform.InstalledApp;
 import hx.platform.Notices;
 import hx.rewrite.DashInterceptor;
 import hx.rewrite.HomeTabs;
@@ -41,11 +47,15 @@ public final class AppPatch {
 
     private static final String MANAGER_CLASS = "fh.c";
 
+    private static final String SHARED_HEADERS_CLASS = "eh.b";
+
     private static final String INSTALL_FAILED = "Playback patch failed to load";
 
-    private static final int MANAGER_RETRY_LIMIT = 200;
+    private static final String CERTIFICATE_UNREADABLE = "Playback patch cannot read its certificate";
 
-    private static final long MANAGER_RETRY_DELAY_MS = 50L;
+    private static final String SHARED_HEADERS_MISSING = "Playback patch cannot tag every request";
+
+    private static final RetrySchedule INSTALL_RETRIES = new RetrySchedule(200, 50L, 300, 1000L);
 
     private AppPatch() {
     }
@@ -74,10 +84,10 @@ public final class AppPatch {
         }
     }
 
-    private static void installInterceptors(Class<?> manager) throws ReflectiveOperationException {
+    private static void installInterceptors(Class<?> manager, BuildTag buildTag, BuildTagInterceptor tagger)
+            throws ReflectiveOperationException {
         AppNetwork network = AppNetwork.locate(manager);
-        BuildTag buildTag = BuildTag.fromInstalledApp();
-        Object taggedClient = withBuildTagInterceptor(network.loader, network.client, buildTag);
+        Object taggedClient = withBuildTagInterceptor(network.loader, network.client, tagger);
         MovieBoxSource source = new MovieBoxSource(new ApiClient(network.loader, taggedClient, network.apiBase),
                 new CloudFrontPlayInfoClient(buildTag));
         DashServer server = bindServer(source);
@@ -98,15 +108,23 @@ public final class AppPatch {
         Log.i(Logs.TAG, "DASH interceptor installed");
     }
 
-    private static Object withBuildTagInterceptor(ClassLoader loader, Object client, BuildTag buildTag)
+    private static Object withBuildTagInterceptor(ClassLoader loader, Object client, BuildTagInterceptor tagger)
             throws ReflectiveOperationException {
-        if (buildTag == null) {
-            return client;
-        }
-        Object proxy = ClientInterceptors.proxy(loader, new BuildTagInterceptor(buildTag));
-        Object tagged = ClientInterceptors.addBeforeTerminal(client, proxy);
+        Object tagged = ClientInterceptors.addBeforeTerminal(client, ClientInterceptors.proxy(loader, tagger));
         Log.i(Logs.TAG, "build tag interceptor installed");
         return tagged;
+    }
+
+    private static Map<String, String> sharedHeaders(ClassLoader loader) {
+        try {
+            Map<String, String> headers = SharedHeaders.of(Class.forName(SHARED_HEADERS_CLASS, false, loader));
+            Log.i(Logs.TAG, "shared request headers found");
+            return headers;
+        } catch (ReflectiveOperationException | RuntimeException ex) {
+            Log.e(Logs.TAG, "shared request headers not found", ex);
+            Notices.showOnce(SHARED_HEADERS_MISSING);
+            return new ConcurrentHashMap<>();
+        }
     }
 
     private static DashServer bindServer(MovieBoxSource source) {
@@ -135,6 +153,12 @@ public final class AppPatch {
 
         private boolean laboratoryUnlocked;
 
+        private boolean hotPatchesChecked;
+
+        private BuildTag buildTag;
+
+        private BuildTagInterceptor tagger;
+
         private Throwable failure;
 
         Installer(ClassLoader preferred) {
@@ -150,14 +174,22 @@ public final class AppPatch {
             if (tryInstall()) {
                 return;
             }
-            if (++this.attempts < MANAGER_RETRY_LIMIT) {
-                this.main.postDelayed(this, MANAGER_RETRY_DELAY_MS);
+            this.attempts++;
+            if (INSTALL_RETRIES.reportsAfter(this.attempts)) {
+                reportFailure();
+            }
+            long delay = INSTALL_RETRIES.delayAfter(this.attempts);
+            if (delay == RetrySchedule.STOP) {
+                Log.e(Logs.TAG, "playback patch not installed after " + this.attempts + " attempts", this.failure);
                 return;
             }
-            reportFailure();
+            this.main.postDelayed(this, delay);
         }
 
         private boolean tryInstall() {
+            if (!this.hotPatchesChecked) {
+                this.hotPatchesChecked = removeHotPatches();
+            }
             Class<?> manager = resolve(MANAGER_CLASS, this.preferred);
             if (manager == null) {
                 return false;
@@ -166,8 +198,12 @@ public final class AppPatch {
                 Laboratory.unlock(manager.getClassLoader());
                 this.laboratoryUnlocked = true;
             }
+            if (this.tagger == null && !createTagger(manager.getClassLoader())) {
+                return false;
+            }
+            this.tagger.tagSharedHeaders();
             try {
-                installInterceptors(manager);
+                installInterceptors(manager, this.buildTag, this.tagger);
                 return true;
             } catch (Throwable ex) {
                 this.failure = ex;
@@ -175,7 +211,38 @@ public final class AppPatch {
             }
         }
 
+        private boolean removeHotPatches() {
+            try {
+                Context context = InstalledApp.context();
+                if (context == null) {
+                    return false;
+                }
+                if (HotPatches.removeApplied(context)) {
+                    Log.i(Logs.TAG, "applied hot patches removed");
+                }
+                return true;
+            } catch (ReflectiveOperationException | RuntimeException ex) {
+                Log.w(Logs.TAG, "hot patches not checked: " + ex);
+                return false;
+            }
+        }
+
+        private boolean createTagger(ClassLoader loader) {
+            BuildTag tag = BuildTag.fromInstalledApp();
+            if (tag == null) {
+                return false;
+            }
+            this.buildTag = tag;
+            this.tagger = new BuildTagInterceptor(tag, sharedHeaders(loader));
+            return true;
+        }
+
         private void reportFailure() {
+            if (this.laboratoryUnlocked && this.tagger == null) {
+                Log.e(Logs.TAG, "certificate unreadable, requests go out untagged");
+                Notices.show(CERTIFICATE_UNREADABLE);
+                return;
+            }
             if (this.failure == null) {
                 Log.e(Logs.TAG, "network manager class not found");
             } else {

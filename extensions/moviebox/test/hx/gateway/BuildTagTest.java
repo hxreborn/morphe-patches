@@ -20,6 +20,8 @@
  */
 package hx.gateway;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -36,6 +38,24 @@ import org.robolectric.annotation.Config;
 public final class BuildTagTest {
 
     private static final byte[] CERTIFICATE = "stock-certificate".getBytes(StandardCharsets.UTF_8);
+
+    @Test
+    public void readsTheCertificatePackagedInTheApp() {
+        // when
+        byte[] certificate = BuildTag.readCertificate(loaderServing("assets/hx.cer", CERTIFICATE));
+
+        // then
+        Assertions.assertThat(certificate).isEqualTo(CERTIFICATE);
+    }
+
+    @Test
+    public void findsNoCertificateWhenTheAppCarriesNone() {
+        // when
+        byte[] certificate = BuildTag.readCertificate(loaderServing("assets/other", CERTIFICATE));
+
+        // then
+        Assertions.assertThat(certificate).isNull();
+    }
 
     @Test
     public void joinsTheTimestampAndTheMd5OfTheCertificateDigestSaltAndTimestamp() {
@@ -122,6 +142,15 @@ public final class BuildTagTest {
             @Override
             public int nextInt(int bound) {
                 return value;
+            }
+        };
+    }
+
+    private static ClassLoader loaderServing(String name, byte[] content) {
+        return new ClassLoader(null) {
+            @Override
+            public InputStream getResourceAsStream(String requested) {
+                return name.equals(requested) ? new ByteArrayInputStream(content) : null;
             }
         };
     }

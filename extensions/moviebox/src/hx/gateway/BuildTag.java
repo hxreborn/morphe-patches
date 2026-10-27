@@ -20,6 +20,7 @@
  */
 package hx.gateway;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
@@ -38,6 +39,8 @@ public final class BuildTag {
     static final String HEADER = "X-Client-Build";
 
     private static final String CERTIFICATE_ASSET = "hx.cer";
+
+    private static final String CERTIFICATE_RESOURCE = "assets/" + CERTIFICATE_ASSET;
 
     private static final String SALT = "oneroom";
 
@@ -60,8 +63,27 @@ public final class BuildTag {
     }
 
     public static BuildTag fromInstalledApp() {
+        byte[] certificate = readCertificate(BuildTag.class.getClassLoader());
+        return (certificate != null) ? fromCertificate(certificate) : null;
+    }
+
+    static byte[] readCertificate(ClassLoader loader) {
+        byte[] packaged = readPackagedCertificate(loader);
+        return (packaged != null) ? packaged : readCertificateAsset();
+    }
+
+    private static byte[] readPackagedCertificate(ClassLoader loader) {
+        try (InputStream resource = loader.getResourceAsStream(CERTIFICATE_RESOURCE)) {
+            return (resource != null) ? Streams.readAll(resource) : null;
+        } catch (IOException ex) {
+            Log.w(Logs.TAG, "cannot read " + CERTIFICATE_RESOURCE + " from the class path", ex);
+            return null;
+        }
+    }
+
+    private static byte[] readCertificateAsset() {
         try (InputStream asset = InstalledApp.context().getAssets().open(CERTIFICATE_ASSET)) {
-            return fromCertificate(Streams.readAll(asset));
+            return Streams.readAll(asset);
         } catch (Exception ex) {
             Log.e(Logs.TAG, "cannot read " + CERTIFICATE_ASSET, ex);
             return null;

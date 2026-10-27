@@ -33,6 +33,10 @@ import hx.util.Logs;
 
 public final class Notices {
 
+    private static final int CONTEXT_ATTEMPTS = 30;
+
+    private static final long CONTEXT_RETRY_DELAY_MS = 1000L;
+
     private static final Set<String> SHOWN = Collections.synchronizedSet(new HashSet<>());
 
     private Notices() {
@@ -45,15 +49,36 @@ public final class Notices {
     }
 
     public static void show(String message) {
-        new Handler(Looper.getMainLooper()).post(() -> toast(message));
+        post(message, 0, 0L);
     }
 
-    private static void toast(String message) {
+    private static void post(String message, int attempt, long delayMs) {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> toast(message, attempt), delayMs);
+    }
+
+    private static void toast(String message, int attempt) {
+        Context application = applicationOrNull();
+        if (application != null) {
+            try {
+                Toast.makeText(application, message, Toast.LENGTH_LONG).show();
+            } catch (Throwable ex) {
+                Log.e(Logs.TAG, "cannot show \"" + message + "\"", ex);
+            }
+            return;
+        }
+        if (attempt + 1 < CONTEXT_ATTEMPTS) {
+            post(message, attempt + 1, CONTEXT_RETRY_DELAY_MS);
+            return;
+        }
+        Log.e(Logs.TAG, "cannot show \"" + message + "\": no application context");
+    }
+
+    private static Context applicationOrNull() {
         try {
-            Context application = InstalledApp.context();
-            Toast.makeText(application, message, Toast.LENGTH_LONG).show();
-        } catch (Throwable ex) {
-            Log.e(Logs.TAG, "cannot show \"" + message + "\"", ex);
+            return InstalledApp.context();
+        } catch (ReflectiveOperationException | RuntimeException ex) {
+            Log.w(Logs.TAG, "application context unavailable: " + ex);
+            return null;
         }
     }
 

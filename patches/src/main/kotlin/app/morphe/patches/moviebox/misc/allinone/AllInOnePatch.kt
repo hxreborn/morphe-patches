@@ -44,6 +44,7 @@ private const val MEMBER_LOGIN_HELPER = "Lfy/a;"
 private const val DOWNLOAD_RESOLUTION_ITEM = "Lcom/transsion/moviedetailapi/bean/DownloadResolutionItem;"
 private const val REMOTE_VERSION_INFO = "Lcom/transsion/version/update/RemoteVersionInfo;"
 private const val LIFE_STATUS_INTERCEPTOR = "Lcom/transsion/baselib/net/AppLifeStatusInterceptor;"
+private const val TINKER_INTERNALS = "Lcom/tencent/tinker/loader/shareutil/ShareTinkerInternals;"
 private const val PLAY_MODE = "Lkk/t;"
 private const val AD_SETTINGS = "Lqi/f;"
 private const val AD_SCENE_CONFIG = "Lcom/transsion/ad/scene/a;"
@@ -232,6 +233,7 @@ val allInOnePatch = resourcePatch(
             }
             method(REMOTE_VERSION_INFO, "getNoticeConfig").returnNull()
             method(REMOTE_VERSION_INFO, "getUpdateType").returnString(NO_UPDATE_TYPE)
+            method(TINKER_INTERNALS, "isTinkerEnabled").returnEarly(false)
         }
     }
 }

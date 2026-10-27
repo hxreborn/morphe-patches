@@ -20,6 +20,8 @@
  */
 package hx.gateway;
 
+import java.util.Map;
+
 import hx.okhttp.ChainInterceptor;
 import hx.util.Reflect;
 
@@ -29,13 +31,28 @@ public final class BuildTagInterceptor extends ChainInterceptor {
 
     private final BuildTag buildTag;
 
-    public BuildTagInterceptor(BuildTag buildTag) {
+    private final Map<String, String> sharedHeaders;
+
+    private volatile String sharedTag;
+
+    public BuildTagInterceptor(BuildTag buildTag, Map<String, String> sharedHeaders) {
         super("MovieBoxBuildTagInterceptor", "MovieBox build tag failed");
         this.buildTag = buildTag;
+        this.sharedHeaders = sharedHeaders;
+    }
+
+    public void tagSharedHeaders() {
+        String current = this.sharedHeaders.get(BuildTag.HEADER);
+        if (current == null || !current.equals(this.sharedTag)) {
+            String tag = this.buildTag.next();
+            this.sharedTag = tag;
+            this.sharedHeaders.put(BuildTag.HEADER, tag);
+        }
     }
 
     @Override
     protected Object intercept(Object chain) throws ReflectiveOperationException {
+        tagSharedHeaders();
         Object request = request(chain);
         return proceed(chain, withStockCertificateTag(request));
     }

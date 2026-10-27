@@ -25,8 +25,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -45,6 +48,11 @@ public final class BuildTagInterceptorTest {
     private static final byte[] CERTIFICATE = "stock-certificate".getBytes(StandardCharsets.UTF_8);
 
     private final ClassLoader loader = getClass().getClassLoader();
+
+    private final Map<String, String> sharedHeaders = new ConcurrentHashMap<>();
+
+    private final BuildTagInterceptor interceptor = new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE),
+            this.sharedHeaders);
 
     @Test
     public void replacesTheStockBuildHeader() throws IOException, ClassNotFoundException {
@@ -118,6 +126,47 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
+    public void tagsARequestFromAnotherClientThatCopiesTheSharedHeaders()
+            throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+        // given
+        this.sharedHeaders.put(BuildTag.HEADER, "own-certificate-tag");
+        intercept(new Chain(request("own-certificate-tag", "{}")));
+
+        // when
+        Request sent = sendThroughAnotherClient();
+
+        // then
+        Assertions.assertThat(isSignedWithTheCertificate(sent.header(BuildTag.HEADER))).isTrue();
+    }
+
+    @Test
+    public void retagsTheSharedHeadersAfterTheAppOverwritesThem()
+            throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+        // given
+        intercept(new Chain(request("stock-tag", "{}")));
+        this.sharedHeaders.put(BuildTag.HEADER, "own-certificate-tag");
+
+        // when
+        intercept(new Chain(request("stock-tag", "{}")));
+
+        // then
+        Assertions.assertThat(isSignedWithTheCertificate(this.sharedHeaders.get(BuildTag.HEADER))).isTrue();
+    }
+
+    @Test
+    public void keepsTheSharedTagWhileTheAppLeavesItAlone() throws IOException, ClassNotFoundException {
+        // given
+        intercept(new Chain(request("stock-tag", "{}")));
+        String first = this.sharedHeaders.get(BuildTag.HEADER);
+
+        // when
+        intercept(new Chain(request("stock-tag", "{}")));
+
+        // then
+        Assertions.assertThat(this.sharedHeaders.get(BuildTag.HEADER)).isEqualTo(first);
+    }
+
+    @Test
     public void reportsAFailureAsAnIoException() throws ClassNotFoundException {
         // given
         Chain chain = new Chain(request("stock-tag", "{}"));
@@ -149,7 +198,33 @@ public final class BuildTagInterceptorTest {
 
     private Object proxy() {
         return Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
-                new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE)));
+                this.interceptor);
+    }
+
+    private Request sendThroughAnotherClient() throws IOException {
+        Request[] sent = new Request[1];
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor((chain) -> {
+            Request.Builder copy = chain.request().newBuilder();
+            for (Map.Entry<String, String> header : this.sharedHeaders.entrySet()) {
+                copy.header(header.getKey(), header.getValue());
+            }
+            return chain.proceed(copy.build());
+        }).addInterceptor((chain) -> {
+            sent[0] = chain.request();
+            return new Response.Builder().request(chain.request())
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .build();
+        }).build();
+        client.newCall(new Request.Builder().url("https://example.com/b").build()).execute().close();
+        return sent[0];
+    }
+
+    private static boolean isSignedWithTheCertificate(String tag) throws NoSuchAlgorithmException {
+        String[] parts = tag.split("\\.");
+        String seed = Digests.sha256Hex(CERTIFICATE) + "oneroom" + parts[0];
+        return parts.length == 2 && parts[1].equals(Digests.md5Hex(seed.getBytes(StandardCharsets.UTF_8)));
     }
 
     private void intercept(Chain chain) throws IOException, ClassNotFoundException {
