@@ -29,7 +29,7 @@ trap 'rm -rf "$work"' EXIT
 mkdir -p "$resources"
 
 "$javac" -Xlint:all -source 8 -target 8 -bootclasspath "$platform:$build_tools/core-lambda-stubs.jar" -d "$work/hook" "$here"/src/hx/*.java
-"$build_tools/d8" --min-api 28 --lib "$platform" --output "$work/hook" "$work"/hook/hx/*.class
+"$build_tools/d8" --min-api 23 --lib "$platform" --output "$work/hook" "$work"/hook/hx/*.class
 cp "$work/hook/classes.dex" "$resources/dashhook.dex"
 
 ls -la "$resources"
