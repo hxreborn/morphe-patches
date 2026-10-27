@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package hx;
+
+import java.io.IOException;
+
+import org.assertj.core.api.Assertions;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public final class RemoteFileTest {
+
+    private LocalCdn server;
+
+    @Before
+    public void startServer() throws IOException {
+        this.server = new LocalCdn(null);
+        this.server.put("/file.mp4", new byte[1234]);
+    }
+
+    @After
+    public void stopServer() {
+        this.server.close();
+    }
+
+    @Test
+    public void readsTheTotalFromTheContentRange() throws IOException {
+        // when
+        long length = RemoteFile.probeLength(this.server.url("/file.mp4"));
+
+        // then
+        Assertions.assertThat(length).isEqualTo(1234);
+    }
+
+    @Test
+    public void readsTheContentLengthOfAnOriginThatIgnoresRanges() throws IOException {
+        // given
+        this.server.ignoreRanges();
+
+        // when
+        long length = RemoteFile.probeLength(this.server.url("/file.mp4"));
+
+        // then
+        Assertions.assertThat(length).isEqualTo(1234);
+    }
+
+    @Test
+    public void refusesAMissingFile() {
+        // when
+        Throwable failure = Assertions.catchThrowable(() -> RemoteFile.probeLength(this.server.url("/missing")));
+
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class).hasMessage("HTTP 404");
+    }
+
+}

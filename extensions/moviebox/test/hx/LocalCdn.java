@@ -47,6 +47,8 @@ final class LocalCdn implements AutoCloseable {
 
     private volatile long rangeDelayMs;
 
+    private volatile boolean rangesIgnored;
+
     LocalCdn(String requiredCookie) throws IOException {
         this.requiredCookie = requiredCookie;
         this.socket = new ServerSocket(0, 50, InetAddress.getLoopbackAddress());
@@ -64,6 +66,10 @@ final class LocalCdn implements AutoCloseable {
     int hitsOn(String path) {
         AtomicInteger count = this.hits.get(path);
         return (count != null) ? count.get() : 0;
+    }
+
+    void ignoreRanges() {
+        this.rangesIgnored = true;
     }
 
     void delayRanges(long delayMs) {
@@ -142,7 +148,7 @@ final class LocalCdn implements AutoCloseable {
 
     private void answerWithRange(OutputStream out, String path, byte[] body, String range) throws IOException {
         Matcher matcher = (range != null) ? RANGE.matcher(range) : null;
-        if (matcher == null || !matcher.matches()) {
+        if (this.rangesIgnored || matcher == null || !matcher.matches()) {
             respond(out, "200 OK", body, null);
             return;
         }

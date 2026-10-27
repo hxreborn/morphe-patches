@@ -43,6 +43,15 @@ final class RemoteFile {
         return Long.parseLong(contentRange.substring(slash + 1).trim());
     }
 
+    private static long contentLength(HttpURLConnection connection) {
+        String header = connection.getHeaderField("Content-Length");
+        try {
+            return (header != null) ? Long.parseLong(header.trim()) : -1;
+        } catch (NumberFormatException ex) {
+            return -1;
+        }
+    }
+
     private static long lengthOf(HttpURLConnection connection) throws IOException {
         int code = connection.getResponseCode();
         String contentRange = connection.getHeaderField("Content-Range");
@@ -50,7 +59,7 @@ final class RemoteFile {
             return totalFromContentRange(contentRange);
         }
         if (code == HttpURLConnection.HTTP_OK) {
-            return connection.getContentLengthLong();
+            return contentLength(connection);
         }
         throw new IOException("HTTP " + code);
     }
