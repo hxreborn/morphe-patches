@@ -1,3 +1,9 @@
+## [1.65.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.6...v1.65.0-dev.7) (2026-10-27)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** tag every request and block hot patches ([ed87244](https://github.com/hxreborn/morphe-patches/commit/ed872446b55eae5c578c4d1691a332353910e38a))
+
 ## [1.65.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.5...v1.65.0-dev.6) (2026-10-27)
 
 ### Bug Fixes
