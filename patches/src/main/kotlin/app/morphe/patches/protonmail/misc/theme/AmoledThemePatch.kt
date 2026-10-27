@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -24,6 +25,9 @@ import app.morphe.patches.shared.misc.proton.indexOfLastWrite
 import app.morphe.patches.shared.misc.proton.indexOfLastWriteOrNull
 import app.morphe.patches.shared.misc.proton.injectColorTransformCall
 import app.morphe.patches.shared.misc.proton.paletteFieldAssignedFrom
+import app.morphe.util.adoptChild
+import app.morphe.util.findElementByAttributeValueOrThrow
+import app.morphe.util.getNode
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversed
@@ -47,6 +51,36 @@ private const val LONG_REGISTER_COUNT = 2
 private const val SHADE_40_COLOR_ARGUMENT = 6
 private const val STATE_FIELDS_BEFORE_COLORS = 1
 private const val SHADE_40_COPY_ROLES = 3
+
+private const val SPLASH_STYLES = "res/values-v30/styles.xml"
+private const val SPLASH_STYLE = "ProtonTheme.Splash.MailET"
+private const val SPLASH_BACKGROUND_ITEM = "windowSplashScreenBackground"
+private const val SPLASH_BACKGROUND_COLOR = "hx_splash_background"
+private val SPLASH_BACKGROUND_VALUES = mapOf(
+    "res/values/colors.xml" to "@color/background_norm",
+    "res/values-night/colors.xml" to "@android:color/black",
+)
+
+private val amoledSplashBackgroundPatch = resourcePatch {
+    execute {
+        SPLASH_BACKGROUND_VALUES.forEach { (file, value) ->
+            document(file).use { document ->
+                document.getNode("resources").adoptChild("color") {
+                    setAttribute("name", SPLASH_BACKGROUND_COLOR)
+                    textContent = value
+                }
+            }
+        }
+
+        document(SPLASH_STYLES).use { document ->
+            document.getElementsByTagName("style")
+                .findElementByAttributeValueOrThrow("name", SPLASH_STYLE)
+                .getElementsByTagName("item")
+                .findElementByAttributeValueOrThrow("name", SPLASH_BACKGROUND_ITEM)
+                .textContent = "@color/$SPLASH_BACKGROUND_COLOR"
+        }
+    }
+}
 
 private fun MutableMethod.injectBackgroundTransformCall(index: Int) =
     injectColorTransformCall(index, "$AMOLED_THEME_CLASS->transformBackground(J)J")
@@ -191,7 +225,7 @@ val amoledThemePatch = bytecodePatch(
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
-    dependsOn(webSettingsThemePatch)
+    dependsOn(webSettingsThemePatch, amoledSplashBackgroundPatch)
 
     execute {
         DarkPaletteFingerprint.matchSingle().method.apply {
