@@ -60,7 +60,7 @@ public final class FullHdPlaylist {
         byte[] original = Streams.readAll(playlist);
         String fullHd;
         try {
-            fullHd = fullHd(new String(original, StandardCharsets.UTF_8), new Existence() {
+            fullHd = fullHd(new String(original, StandardCharsets.UTF_8), new UrlExistence() {
 
                 @Override
                 public boolean exists(String url) throws IOException {
@@ -74,7 +74,7 @@ public final class FullHdPlaylist {
         return new ByteArrayInputStream((fullHd != null) ? fullHd.getBytes(StandardCharsets.UTF_8) : original);
     }
 
-    static String fullHd(String playlist, Existence existence) throws IOException {
+    static String fullHd(String playlist, UrlExistence existence) throws IOException {
         String[] lines = playlist.replace("\r", "").split("\n", -1);
         List<Integer> segments = new ArrayList<>();
         for (int index = 0; index < lines.length; index++) {
@@ -104,7 +104,7 @@ public final class FullHdPlaylist {
         return rewritten.toString();
     }
 
-    private static int availableSegments(String[] lines, List<Integer> segments, Existence existence)
+    private static int availableSegments(String[] lines, List<Integer> segments, UrlExistence existence)
             throws IOException {
         if (!existence.exists(fullHdUrl(lines[segments.get(0)]))) {
             return 0;
@@ -133,12 +133,6 @@ public final class FullHdPlaylist {
         String suffix = (directory.group(2) != null) ? directory.group(2) : "";
         return segmentUrl.substring(0, directory.start()) + directory.group(1) + "1080" + suffix + "/"
                 + segmentUrl.substring(directory.end());
-    }
-
-    interface Existence {
-
-        boolean exists(String url) throws IOException;
-
     }
 
 }

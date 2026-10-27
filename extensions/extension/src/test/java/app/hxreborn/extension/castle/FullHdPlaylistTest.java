@@ -111,7 +111,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void swapsTheTierWhenBothTiersHaveTheSameSegments() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(3);
+        UrlExistence existence = existingUpTo(3);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -124,7 +124,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void rewritesEverySegmentWhenTheFullHdTierHasMoreSegments() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(7);
+        UrlExistence existence = existingUpTo(7);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -137,7 +137,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void endsThePlaylistAtTheLastFullHdSegment() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(1);
+        UrlExistence existence = existingUpTo(1);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -150,7 +150,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void keepsTheHdPlaylistWhenTheFullHdTierHasNoFirstSegment() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(-1);
+        UrlExistence existence = existingUpTo(-1);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -173,8 +173,8 @@ public final class FullHdPlaylistTest {
         return playlist.append("#EXT-X-ENDLIST\n").toString();
     }
 
-    private static FullHdPlaylist.Existence existingUpTo(final int lastNumber) {
-        return new FullHdPlaylist.Existence() {
+    private static UrlExistence existingUpTo(final int lastNumber) {
+        return new UrlExistence() {
 
             @Override
             public boolean exists(String url) {
