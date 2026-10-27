@@ -15,59 +15,43 @@
  */
 package hx;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+final class BuildTagInterceptor extends ChainInterceptor {
 
-final class BuildTagInterceptor implements InvocationHandler {
     private static final String INFO_HEADER = "X-Client-Info";
 
     private final BuildTag buildTag;
 
     BuildTagInterceptor(BuildTag buildTag) {
+        super("MovieBoxBuildTagInterceptor", "MovieBox build tag failed");
         this.buildTag = buildTag;
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        String name = method.getName();
-        if (args == null || args.length == 0) {
-            if ("toString".equals(name)) return "MovieBoxBuildTagInterceptor";
-            if ("hashCode".equals(name)) return System.identityHashCode(proxy);
-        }
-        if ("equals".equals(name) && args != null && args.length == 1) return proxy == args[0];
-        if (args == null || args.length != 1) return null;
-
-        try {
-            return intercept(args[0]);
-        } catch (InvocationTargetException wrapped) {
-            throw asIoException(wrapped.getCause() != null ? wrapped.getCause() : wrapped);
-        } catch (Throwable failure) {
-            throw asIoException(failure);
-        }
-    }
-
-    private static IOException asIoException(Throwable failure) {
-        return failure instanceof IOException ? (IOException) failure : new IOException("MovieBox build tag failed", failure);
-    }
-
-    private Object intercept(Object chain) throws Throwable {
-        Object request = chain.getClass().getMethod("request").invoke(chain);
-        Object stamped = withStockCertificateTag(request);
-        return chain.getClass().getMethod("proceed", request.getClass()).invoke(chain, stamped);
+    Object intercept(Object chain) throws ReflectiveOperationException {
+        Object request = request(chain);
+        return proceed(chain, withStockCertificateTag(request));
     }
 
     private Object withStockCertificateTag(Object request) throws ReflectiveOperationException {
-        Method header = request.getClass().getMethod("header", String.class);
-        if (header.invoke(request, BuildTag.HEADER) == null) return request;
-
+        if (header(request, BuildTag.HEADER) == null) {
+            return request;
+        }
         String tag = this.buildTag.next();
-        Object builder = request.getClass().getMethod("newBuilder").invoke(request);
-        Method set = builder.getClass().getMethod("header", String.class, String.class);
-        set.invoke(builder, BuildTag.HEADER, tag);
-        String info = (String) header.invoke(request, INFO_HEADER);
-        if (info != null) set.invoke(builder, INFO_HEADER, BuildTag.addTo(info, tag));
-        return builder.getClass().getMethod("build").invoke(builder);
+        Object builder = Reflect.call(request, "newBuilder");
+        setHeader(builder, BuildTag.HEADER, tag);
+        String info = header(request, INFO_HEADER);
+        if (info != null) {
+            setHeader(builder, INFO_HEADER, BuildTag.addTo(info, tag));
+        }
+        return Reflect.call(builder, "build");
     }
+
+    private static String header(Object request, String name) throws ReflectiveOperationException {
+        return (String) Reflect.call(request, "header", new Class<?>[] { String.class }, name);
+    }
+
+    private static void setHeader(Object builder, String name, String value) throws ReflectiveOperationException {
+        Reflect.call(builder, "header", new Class<?>[] { String.class, String.class }, name, value);
+    }
+
 }

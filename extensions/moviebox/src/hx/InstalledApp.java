@@ -18,6 +18,7 @@ package hx;
 import android.content.Context;
 
 final class InstalledApp {
+
     private static final String ACTIVITY_THREAD = "android.app.ActivityThread";
 
     private InstalledApp() {
@@ -26,4 +27,5 @@ final class InstalledApp {
     static Context context() throws ReflectiveOperationException {
         return (Context) Class.forName(ACTIVITY_THREAD).getMethod("currentApplication").invoke(null);
     }
+
 }

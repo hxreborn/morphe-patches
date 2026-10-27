@@ -1,96 +1,107 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package hx;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Base64;
-import android.util.Log;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Base64;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-final class CloudFrontPlayInfoClient {
-    private static final String TAG = "hxreborn/moviebox";
-    private static final String[] API_HOSTS = {
-            "api6.aoneroom.com", "api4sg.aoneroom.com", "api5.aoneroom.com", "api4.aoneroom.com", "api3.aoneroom.com"};
-    private static final String WITHHELD_CLIENT_ADDRESS = "unknown";
-    private static final String SIGNING_KEY_META_DATA = "gateway_secret_online";
+final class CloudFrontPlayInfoClient implements PlayInfoLookup {
+
+    private static final String[] API_HOSTS = { "api6.aoneroom.com", "api4sg.aoneroom.com", "api5.aoneroom.com",
+            "api4.aoneroom.com", "api3.aoneroom.com" };
+
     private static final String VISITOR_LOGIN = "/wefeed-mobile-bff/user-api/visitor-login";
-    private static final String JSON_TYPE = "application/json";
+
     private static final int REQUEST_TIMEOUT_MS = 5000;
+
     private static final long LOOKUP_BUDGET_MS = 5000L;
+
     private static final long RETRY_COOLDOWN_MS = 10 * 60 * 1000L;
 
-    private final String clientInfo;
-    private final BuildTag buildTag;
+    private final GatewayHeaders gatewayHeaders;
+
     private final Map<String, String> tokens = new ConcurrentHashMap<>();
+
     private final Map<String, Long> hostRetryAtMs = new ConcurrentHashMap<>();
 
     CloudFrontPlayInfoClient(BuildTag buildTag) {
-        this.buildTag = buildTag;
-        this.clientInfo = buildClientInfo();
+        this.gatewayHeaders = new GatewayHeaders(ClientInfo.forInstalledApp(), buildTag);
     }
 
-    private static String buildClientInfo() {
-        try {
-            JSONObject info = new JSONObject()
-                    .put("device_id", UUID.randomUUID().toString().replace("-", ""))
-                    .put("os_version", Build.VERSION.RELEASE)
-                    .put("gaid", UUID.randomUUID().toString());
-            try {
-                Context application = InstalledApp.context();
-                info.put("package_name", application.getPackageName())
-                        .put("version_code", application.getPackageManager()
-                                .getPackageInfo(application.getPackageName(), 0).getLongVersionCode());
-            } catch (ReflectiveOperationException | PackageManager.NameNotFoundException unreadable) {
-                Log.w(TAG, "client info has no package identity", unreadable);
-            }
-            return info.toString();
-        } catch (JSONException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    String fetchPlayInfo(String pathAndQuery, Predicate<String> accepted) {
-        if (SigningKey.VALUE == null) return null;
-        long startedMs = SystemClock.elapsedRealtime();
-        List<String> hosts = new ArrayList<>();
-        for (String host : API_HOSTS) {
-            Long retryAtMs = hostRetryAtMs.get(host);
-            if (retryAtMs == null || startedMs >= retryAtMs) hosts.add(host);
-        }
-        if (hosts.isEmpty()) {
-            Log.i(TAG, "play-info: every API host is cooling down, staying on Edge-Cache");
+    @Override
+    public String fetchPlayInfo(String pathAndQuery, Predicate<String> accepted) {
+        if (SigningKey.VALUE == null) {
             return null;
         }
+        long startedMs = SystemClock.elapsedRealtime();
+        List<String> hosts = hostsReadyAt(startedMs);
+        if (hosts.isEmpty()) {
+            Log.i(Logs.TAG, "play-info: every API host is cooling down, staying on Edge-Cache");
+            return null;
+        }
+        BlockingQueue<Answer> answers = startLookups(hosts, pathAndQuery, accepted, startedMs);
+        Set<String> unanswered = new HashSet<>(hosts);
+        String body = awaitAccepted(answers, unanswered, startedMs + LOOKUP_BUDGET_MS);
+        if (body != null) {
+            return body;
+        }
+        for (String host : unanswered) {
+            coolDown(host);
+        }
+        Log.i(Logs.TAG, "play-info: no unpaced CDN from " + hosts + " within " + LOOKUP_BUDGET_MS
+                + " ms, staying on Edge-Cache");
+        return null;
+    }
+
+    private List<String> hostsReadyAt(long nowMs) {
+        List<String> hosts = new ArrayList<>();
+        for (String host : API_HOSTS) {
+            Long retryAtMs = this.hostRetryAtMs.get(host);
+            if (retryAtMs == null || nowMs >= retryAtMs) {
+                hosts.add(host);
+            }
+        }
+        return hosts;
+    }
+
+    private BlockingQueue<Answer> startLookups(List<String> hosts, String pathAndQuery, Predicate<String> accepted,
+            long startedMs) {
         BlockingQueue<Answer> answers = new LinkedBlockingQueue<>();
         for (String host : hosts) {
             Thread worker = new Thread(
@@ -99,27 +110,30 @@ final class CloudFrontPlayInfoClient {
             worker.setDaemon(true);
             worker.start();
         }
-        Set<String> unanswered = new HashSet<>(hosts);
-        long deadlineMs = startedMs + LOOKUP_BUDGET_MS;
+        return answers;
+    }
+
+    private static String awaitAccepted(BlockingQueue<Answer> answers, Set<String> unanswered, long deadlineMs) {
         try {
             while (!unanswered.isEmpty()) {
                 long remainingMs = deadlineMs - SystemClock.elapsedRealtime();
-                Answer answer = remainingMs > 0 ? answers.poll(remainingMs, TimeUnit.MILLISECONDS) : null;
-                if (answer == null) break;
+                Answer answer = (remainingMs > 0) ? answers.poll(remainingMs, TimeUnit.MILLISECONDS) : null;
+                if (answer == null) {
+                    return null;
+                }
                 unanswered.remove(answer.host);
-                if (answer.body != null) return answer.body;
+                if (answer.body != null) {
+                    return answer.body;
+                }
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        for (String host : unanswered) coolDown(host);
-        Log.i(TAG, "play-info: no unpaced CDN from " + hosts + " within " + LOOKUP_BUDGET_MS
-                + " ms, staying on Edge-Cache");
         return null;
     }
 
     private void coolDown(String host) {
-        hostRetryAtMs.put(host, SystemClock.elapsedRealtime() + RETRY_COOLDOWN_MS);
+        this.hostRetryAtMs.put(host, SystemClock.elapsedRealtime() + RETRY_COOLDOWN_MS);
     }
 
     private String fetchAccepted(String host, String pathAndQuery, Predicate<String> accepted, long startedMs) {
@@ -129,142 +143,110 @@ final class CloudFrontPlayInfoClient {
             String body = sendRequest("GET", host, pathAndQuery, null, token);
             long elapsedMs = SystemClock.elapsedRealtime() - startedMs;
             if (accepted.test(body)) {
-                if (elapsedMs <= LOOKUP_BUDGET_MS) hostRetryAtMs.remove(host);
-                Log.i(TAG, "play-info from " + host + ": unpaced CDN instead of Edge-Cache, " + elapsedMs + " ms");
+                if (elapsedMs <= LOOKUP_BUDGET_MS) {
+                    this.hostRetryAtMs.remove(host);
+                }
+                Log.i(Logs.TAG, "play-info from " + host + ": unpaced CDN instead of Edge-Cache, " + elapsedMs + " ms");
                 return body;
             }
-            Log.i(TAG, "play-info from " + host + " not used, " + elapsedMs + " ms");
+            Log.i(Logs.TAG, "play-info from " + host + " not used, " + elapsedMs + " ms");
             return null;
-        } catch (Throwable e) {
-            if (token != null) tokens.remove(host, token);
-            Log.w(TAG, "play-info from " + host + " failed after "
-                    + (SystemClock.elapsedRealtime() - startedMs) + " ms", e);
+        } catch (Throwable ex) {
+            if (token != null) {
+                this.tokens.remove(host, token);
+            }
+            Log.w(Logs.TAG,
+                    "play-info from " + host + " failed after " + (SystemClock.elapsedRealtime() - startedMs) + " ms",
+                    ex);
         }
         coolDown(host);
         return null;
     }
 
-    private static final class Answer {
-        final String host;
-        final String body;
-
-        Answer(String host, String body) {
-            this.host = host;
-            this.body = body;
-        }
-    }
-
     private String visitorToken(String host) throws IOException, JSONException {
-        String token = tokens.get(host);
-        if (token != null) return token;
-        token = new JSONObject(sendRequest("POST", host, VISITOR_LOGIN, "{}", null)).getJSONObject("data").getString("token");
-        tokens.put(host, token);
+        String token = this.tokens.get(host);
+        if (token != null) {
+            return token;
+        }
+        String login = sendRequest("POST", host, VISITOR_LOGIN, "{}", null);
+        token = new JSONObject(login).getJSONObject("data").getString("token");
+        this.tokens.put(host, token);
         return token;
     }
 
     private String sendRequest(String method, String host, String pathAndQuery, String body, String token)
             throws IOException {
-        long timestamp = System.currentTimeMillis();
         HttpURLConnection connection = (HttpURLConnection) new URL("https://" + host + pathAndQuery).openConnection();
-        connection.setConnectTimeout(REQUEST_TIMEOUT_MS);
-        connection.setReadTimeout(REQUEST_TIMEOUT_MS);
-        connection.setRequestMethod(method);
-        connection.setRequestProperty("Accept", JSON_TYPE);
-        connection.setRequestProperty("Content-Type", JSON_TYPE);
-        connection.setRequestProperty("x-client-token", timestamp + "," + md5Hex(
-                new StringBuilder(String.valueOf(timestamp)).reverse().toString().getBytes(StandardCharsets.UTF_8)));
-        connection.setRequestProperty("x-tr-signature", createSignature(SigningKey.VALUE, method, pathAndQuery, body, timestamp));
-        String tag = buildTag == null ? null : buildTag.next();
-        connection.setRequestProperty("x-client-info", tag == null ? clientInfo : BuildTag.addTo(clientInfo, tag));
-        if (tag != null) connection.setRequestProperty(BuildTag.HEADER, tag);
-        connection.setRequestProperty("x-forwarded-for", WITHHELD_CLIENT_ADDRESS);
-        if (token != null) connection.setRequestProperty("Authorization", "Bearer " + token);
         try {
+            connection.setConnectTimeout(REQUEST_TIMEOUT_MS);
+            connection.setReadTimeout(REQUEST_TIMEOUT_MS);
+            connection.setRequestMethod(method);
+            addHeaders(connection, method, pathAndQuery, body, token);
             if (body != null) {
                 connection.setDoOutput(true);
                 try (OutputStream out = connection.getOutputStream()) {
                     out.write(body.getBytes(StandardCharsets.UTF_8));
                 }
             }
-            int code = connection.getResponseCode();
-            if (code < 200 || code >= 300) throw new IOException("HTTP " + code + " from " + host);
-            try (InputStream in = connection.getInputStream()) {
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                byte[] buffer = new byte[8192];
-                for (int count; (count = in.read(buffer)) > 0; ) bytes.write(buffer, 0, count);
-                return new String(bytes.toByteArray(), StandardCharsets.UTF_8);
-            }
+            return readSuccessful(connection, host);
         } finally {
             connection.disconnect();
         }
     }
 
+    private void addHeaders(HttpURLConnection connection, String method, String pathAndQuery, String body, String token)
+            throws IOException {
+        Map<String, String> headers = this.gatewayHeaders.create(SigningKey.VALUE, method, pathAndQuery, body, token);
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            connection.setRequestProperty(header.getKey(), header.getValue());
+        }
+    }
+
+    private static String readSuccessful(HttpURLConnection connection, String host) throws IOException {
+        int code = connection.getResponseCode();
+        if (code < 200 || code >= 300) {
+            throw new IOException("HTTP " + code + " from " + host);
+        }
+        try (InputStream in = connection.getInputStream()) {
+            return new String(Streams.readAll(in), StandardCharsets.UTF_8);
+        }
+    }
+
+    private static final class Answer {
+
+        final String host;
+
+        final String body;
+
+        Answer(String host, String body) {
+            this.host = host;
+            this.body = body;
+        }
+
+    }
+
     private static final class SigningKey {
+
         static final byte[] VALUE = read();
+
+        private static final String META_DATA_KEY = "gateway_secret_online";
 
         private static byte[] read() {
             try {
                 Context context = InstalledApp.context();
                 Bundle metaData = context.getPackageManager()
-                        .getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
-                String declared = metaData == null ? null : metaData.getString(SIGNING_KEY_META_DATA);
-                if (declared != null) return Base64.decode(declared, Base64.DEFAULT);
-                Log.w(TAG, SIGNING_KEY_META_DATA + " missing from the manifest, staying on Edge-Cache");
-            } catch (Exception e) {
-                Log.w(TAG, SIGNING_KEY_META_DATA + " unreadable, staying on Edge-Cache", e);
+                    .getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
+                String declared = (metaData != null) ? metaData.getString(META_DATA_KEY) : null;
+                if (declared != null) {
+                    return Base64.decode(declared, Base64.DEFAULT);
+                }
+                Log.w(Logs.TAG, META_DATA_KEY + " missing from the manifest, staying on Edge-Cache");
+            } catch (Exception ex) {
+                Log.w(Logs.TAG, META_DATA_KEY + " unreadable, staying on Edge-Cache", ex);
             }
             return null;
         }
+
     }
 
-    private static String createSignature(byte[] signingKey, String method, String pathAndQuery, String body,
-                                          long timestamp) throws IOException {
-        byte[] bodyBytes = body == null ? null : body.getBytes(StandardCharsets.UTF_8);
-        String canonical = method + "\n" + JSON_TYPE + "\n" + JSON_TYPE + "\n"
-                + (bodyBytes == null ? "" : String.valueOf(bodyBytes.length)) + "\n"
-                + timestamp + "\n"
-                + (bodyBytes == null ? "" : md5Hex(bodyBytes)) + "\n"
-                + canonicalPath(pathAndQuery);
-        try {
-            Mac mac = Mac.getInstance("HmacMD5");
-            mac.init(new SecretKeySpec(signingKey, "HmacMD5"));
-            byte[] digest = mac.doFinal(canonical.getBytes(StandardCharsets.UTF_8));
-            return timestamp + "|2|" + Base64.encodeToString(digest, Base64.NO_WRAP);
-        } catch (GeneralSecurityException e) {
-            throw new IOException(e);
-        }
-    }
-
-    private static String canonicalPath(String pathAndQuery) throws IOException {
-        int question = pathAndQuery.indexOf('?');
-        if (question < 0) return pathAndQuery;
-        List<String> pairs = new ArrayList<>();
-        for (String pair : pathAndQuery.substring(question + 1).split("&")) {
-            if (!pair.isEmpty()) pairs.add(decode(pair));
-        }
-        Collections.sort(pairs, (a, b) -> queryKey(a).compareTo(queryKey(b)));
-        return pathAndQuery.substring(0, question + 1) + String.join("&", pairs);
-    }
-
-    private static String decode(String pair) throws IOException {
-        int equals = pair.indexOf('=');
-        if (equals < 0) return URLDecoder.decode(pair, "UTF-8");
-        return URLDecoder.decode(pair.substring(0, equals), "UTF-8") + "="
-                + URLDecoder.decode(pair.substring(equals + 1), "UTF-8");
-    }
-
-    private static String queryKey(String pair) {
-        int equals = pair.indexOf('=');
-        return equals < 0 ? pair : pair.substring(0, equals);
-    }
-
-    private static String md5Hex(byte[] bytes) throws IOException {
-        try {
-            StringBuilder hex = new StringBuilder();
-            for (byte b : MessageDigest.getInstance("MD5").digest(bytes)) hex.append(String.format("%02x", b));
-            return hex.toString();
-        } catch (GeneralSecurityException e) {
-            throw new IOException(e);
-        }
-    }
 }
