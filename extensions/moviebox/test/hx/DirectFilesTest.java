@@ -121,6 +121,21 @@ public final class DirectFilesTest {
     }
 
     @Test
+    public void keepsTheDirectFileOfAResourceAfterManyOthersWereSized() {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
+        for (int i = 0; i < 33; i++) {
+            this.directFiles.withSizes(resourceList(i, i + 1));
+        }
+
+        // when
+        this.directFiles.withSizes(resourceList(0, 1));
+
+        // then
+        assertEquals(this.server.url("/f.mp4"), this.directFiles.knownUrl("r0"));
+    }
+
+    @Test
     public void keepsTheResourceListWhenNoItemHasADirectFile() {
         // given
         putPosition("{\"data\":{\"list\":[]}}");
@@ -176,6 +191,19 @@ public final class DirectFilesTest {
         assertNull(this.directFiles.playInfoFor("{}", null, 1, 2));
         assertNull(this.directFiles.playInfoFor("{}", "77", -1, 2));
         assertNull(this.directFiles.playInfoFor("{}", "77", 1, -1));
+    }
+
+    private static String resourceList(int from, int to) {
+        StringBuilder items = new StringBuilder();
+        for (int i = from; i < to; i++) {
+            items.append((i > from) ? "," : "")
+                .append("{\"resourceId\":\"r")
+                .append(i)
+                .append("\",\"resourceLink\":\"")
+                .append(ORIGIN)
+                .append("\",\"size\":\"1\"}");
+        }
+        return "{\"data\":{\"subjectId\":\"77\",\"list\":[" + items + "]}}";
     }
 
     private void putPosition(String json) {

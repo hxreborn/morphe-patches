@@ -35,17 +35,15 @@ import org.json.JSONObject;
 
 final class DirectFiles {
 
-    private static final int URL_RETENTION = 32;
-
-    private static final int SIZE_RETENTION = 512;
+    private static final int RETENTION = 512;
 
     private static final long SIZE_LOOKUP_TIMEOUT_MS = 5000L;
 
     private final ApiClient api;
 
-    private final Map<String, String> urls = new LruMap<>(URL_RETENTION);
+    private final Map<String, String> urls = new LruMap<>(RETENTION);
 
-    private final Map<String, Long> sizes = new LruMap<>(SIZE_RETENTION);
+    private final Map<String, Long> sizes = new LruMap<>(RETENTION);
 
     private final ExecutorService sizeLookups = Executors.newCachedThreadPool();
 
@@ -271,7 +269,7 @@ final class DirectFiles {
 
     private boolean resolveSize(String subjectId, JSONObject item) throws IOException, JSONException {
         String resourceId = item.getString("resourceId");
-        Long size = cachedSize(resourceId);
+        Long size = (knownUrl(resourceId) != null) ? cachedSize(resourceId) : null;
         if (size == null) {
             size = lookUpSize(subjectId, resourceId, item.optString("resourceLink", ""));
             if (size == null) {
