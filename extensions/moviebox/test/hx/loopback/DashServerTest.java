@@ -12,8 +12,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-import hx.DashFixture;
 import hx.dash.DashFile;
+import hx.testing.DashFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;

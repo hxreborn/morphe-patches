@@ -7,10 +7,10 @@ package hx.source;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import hx.LocalCdn;
 import hx.dash.DashFile;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
+import hx.testing.LocalCdn;
 import okhttp3.OkHttpClient;
 import org.assertj.core.api.Assertions;
 import org.junit.After;

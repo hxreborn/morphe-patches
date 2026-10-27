@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import hx.Mp4Fixtures;
+import hx.testing.Mp4Fixtures;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

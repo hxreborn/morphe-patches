@@ -5,7 +5,7 @@
 package hx.source;
 
 import android.net.Uri;
-import hx.PlayInfoFixtures;
+import hx.testing.PlayInfoFixtures;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

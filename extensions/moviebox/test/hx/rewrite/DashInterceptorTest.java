@@ -12,11 +12,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import hx.LocalCdn;
-import hx.PlayInfoFixtures;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
 import hx.source.MovieBoxSource;
+import hx.testing.LocalCdn;
+import hx.testing.PlayInfoFixtures;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

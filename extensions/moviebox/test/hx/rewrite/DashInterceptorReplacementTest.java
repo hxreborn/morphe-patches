@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import hx.PlayInfoFixtures;
 import hx.gateway.PlayInfoLookup;
 import hx.okhttp.ApiClient;
 import hx.source.MovieBoxSource;
+import hx.testing.PlayInfoFixtures;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import org.assertj.core.api.Assertions;

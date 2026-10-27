@@ -6,7 +6,7 @@ package hx.util;
 
 import java.io.IOException;
 
-import hx.LocalCdn;
+import hx.testing.LocalCdn;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;

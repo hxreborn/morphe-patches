@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import hx.LocalCdn;
-import hx.Mp4Fixtures;
 import hx.mp4.Segment;
+import hx.testing.LocalCdn;
+import hx.testing.Mp4Fixtures;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;

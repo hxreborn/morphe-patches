@@ -4,8 +4,8 @@
  */
 package hx.rewrite;
 
-import hx.PlayInfoFixtures;
 import hx.loopback.DashServer;
+import hx.testing.PlayInfoFixtures;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.json.JSONObject;
