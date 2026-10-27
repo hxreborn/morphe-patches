@@ -15,6 +15,7 @@
  */
 package hx;
 
+import hx.okhttp.ChainInterceptor;
 import hx.util.Reflect;
 
 final class BuildTagInterceptor extends ChainInterceptor {
@@ -29,7 +30,7 @@ final class BuildTagInterceptor extends ChainInterceptor {
     }
 
     @Override
-    Object intercept(Object chain) throws ReflectiveOperationException {
+    protected Object intercept(Object chain) throws ReflectiveOperationException {
         Object request = request(chain);
         return proceed(chain, withStockCertificateTag(request));
     }

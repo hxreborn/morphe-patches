@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.net.Uri;
 import android.util.Log;
+import hx.okhttp.ApiClient;
 import hx.util.Logs;
 import hx.util.RemoteFile;
 import org.json.JSONArray;

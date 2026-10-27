@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import hx.okhttp.ApiClient;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import org.assertj.core.api.Assertions;

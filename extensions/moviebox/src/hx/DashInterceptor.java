@@ -21,6 +21,7 @@ import java.util.Set;
 
 import android.net.Uri;
 import android.util.Log;
+import hx.okhttp.ChainInterceptor;
 import hx.util.Logs;
 import hx.util.Reflect;
 
@@ -47,7 +48,7 @@ final class DashInterceptor extends ChainInterceptor {
     }
 
     @Override
-    Object intercept(Object chain) throws ReflectiveOperationException {
+    protected Object intercept(Object chain) throws ReflectiveOperationException {
         Object request = request(chain);
         Object response = proceed(chain, request);
         String url = String.valueOf(Reflect.call(request, "url"));

@@ -7,6 +7,7 @@ package hx;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import hx.okhttp.ApiClient;
 import okhttp3.OkHttpClient;
 import org.assertj.core.api.Assertions;
 import org.junit.After;

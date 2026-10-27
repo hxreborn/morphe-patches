@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.okhttp;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -22,13 +22,13 @@ import java.lang.reflect.Method;
 
 import hx.util.Reflect;
 
-abstract class ChainInterceptor implements InvocationHandler {
+public abstract class ChainInterceptor implements InvocationHandler {
 
     private final String description;
 
     private final String failureMessage;
 
-    ChainInterceptor(String description, String failureMessage) {
+    public ChainInterceptor(String description, String failureMessage) {
         this.description = description;
         this.failureMessage = failureMessage;
     }
@@ -52,13 +52,13 @@ abstract class ChainInterceptor implements InvocationHandler {
         return interceptAsIoFailure(args[0]);
     }
 
-    abstract Object intercept(Object chain) throws Throwable;
+    protected abstract Object intercept(Object chain) throws Throwable;
 
-    static Object request(Object chain) throws ReflectiveOperationException {
+    protected static Object request(Object chain) throws ReflectiveOperationException {
         return Reflect.call(chain, "request");
     }
 
-    static Object proceed(Object chain, Object request) throws ReflectiveOperationException {
+    protected static Object proceed(Object chain, Object request) throws ReflectiveOperationException {
         return Reflect.call(chain, "proceed", new Class<?>[] { request.getClass() }, request);
     }
 

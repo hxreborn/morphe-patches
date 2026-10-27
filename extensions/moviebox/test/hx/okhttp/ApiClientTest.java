@@ -2,11 +2,12 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.okhttp;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import hx.LocalCdn;
 import okhttp3.OkHttpClient;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

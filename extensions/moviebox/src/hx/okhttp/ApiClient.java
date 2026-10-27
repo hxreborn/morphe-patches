@@ -13,14 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.okhttp;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import hx.util.Reflect;
 
-final class ApiClient {
+public final class ApiClient {
 
     private static final String REQUEST_BUILDER = "okhttp3.Request$Builder";
 
@@ -30,17 +30,17 @@ final class ApiClient {
 
     private final String base;
 
-    ApiClient(ClassLoader loader, Object client, String apiBase) {
+    public ApiClient(ClassLoader loader, Object client, String apiBase) {
         this.loader = loader;
         this.client = client;
         this.base = apiBase.endsWith("/") ? apiBase : apiBase + "/";
     }
 
-    String url(String pathAndQuery) {
+    public String url(String pathAndQuery) {
         return this.base + pathAndQuery;
     }
 
-    String get(String url) throws IOException {
+    public String get(String url) throws IOException {
         try {
             Object response = execute(url);
             try {
