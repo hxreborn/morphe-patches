@@ -15,6 +15,9 @@
  */
 package hx;
 
+import hx.mp4.Mp4Boxes;
+import hx.mp4.Segment;
+
 final class Piece {
 
     private static final int TRACK_ID_BYTES = Mp4Boxes.U32_BYTES;

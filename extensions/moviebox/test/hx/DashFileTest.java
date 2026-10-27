@@ -74,7 +74,7 @@ public final class DashFileTest {
         // given
         byte[] styp = Mp4Fixtures.box("styp", Mp4Fixtures.zeros(8));
         byte[] sidx = Mp4Fixtures.box("sidx", Mp4Fixtures.zeros(32));
-        this.fixture.publishSegments(Mp4Boxes.concat(styp, sidx));
+        this.fixture.publishSegments(Mp4Fixtures.concat(styp, sidx));
         byte[] bytes = whole(open());
 
         // when
@@ -91,7 +91,7 @@ public final class DashFileTest {
         int audioStart = headLength(bytes) + this.fixture.videoSegments[0].length;
 
         // when
-        long audioTrackId = Mp4Boxes.u32(bytes, audioStart + DashFixture.TRACK_ID_IN_SEGMENT);
+        long audioTrackId = Mp4Fixtures.readU32(bytes, audioStart + DashFixture.TRACK_ID_IN_SEGMENT);
 
         // then
         Assertions.assertThat(audioTrackId).isEqualTo(2);
@@ -181,8 +181,8 @@ public final class DashFileTest {
         int at = 0;
         StringBuilder types = new StringBuilder();
         for (int i = 0; i < 4; i++) {
-            types.append(Mp4Boxes.typeAt(bytes, at)).append(' ');
-            at += Mp4Boxes.size(bytes, at);
+            types.append(Mp4Fixtures.typeAt(bytes, at)).append(' ');
+            at += Mp4Fixtures.sizeAt(bytes, at);
         }
         return types.toString();
     }
@@ -206,7 +206,7 @@ public final class DashFileTest {
     private static int headLength(byte[] bytes) throws IOException {
         int at = 0;
         for (int i = 0; i < 4; i++) {
-            at += Mp4Boxes.size(bytes, at);
+            at += Mp4Fixtures.sizeAt(bytes, at);
         }
         return at;
     }

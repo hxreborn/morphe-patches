@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import hx.mp4.Segment;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -76,7 +77,7 @@ public final class SegmentProbeTest {
         byte[] styp = Mp4Fixtures.box("styp", Mp4Fixtures.zeros(8));
         byte[] sidx = Mp4Fixtures.box("sidx", Mp4Fixtures.zeros(32));
         Segment segment = publish("/s.m4s",
-                Mp4Boxes.concat(styp, sidx, Mp4Fixtures.mediaSegment(5, Mp4Fixtures.bytes(500, 0))));
+                Mp4Fixtures.concat(styp, sidx, Mp4Fixtures.mediaSegment(5, Mp4Fixtures.bytes(500, 0))));
 
         // when
         SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
@@ -91,7 +92,7 @@ public final class SegmentProbeTest {
         // given
         byte[] styp = Mp4Fixtures.box("styp", Mp4Fixtures.zeros(8));
         Segment segment = publish("/s.m4s",
-                Mp4Boxes.concat(styp, Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0))));
+                Mp4Fixtures.concat(styp, Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0))));
 
         // when
         SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);

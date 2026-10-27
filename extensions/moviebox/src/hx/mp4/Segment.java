@@ -13,29 +13,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.mp4;
 
-final class Segment {
+public final class Segment {
 
-    final String url;
+    public final String url;
 
-    final long startTime;
+    public final long startTime;
 
-    final long duration;
+    public final long duration;
 
-    long byteLength;
+    public long byteLength;
 
-    int prefixBytes;
+    public int prefixBytes;
 
-    int trackIdOffset;
+    public int trackIdOffset;
 
-    Segment(String url, long startTime, long duration) {
+    public Segment(String url, long startTime, long duration) {
         this.url = url;
         this.startTime = startTime;
         this.duration = duration;
     }
 
-    long payloadBytes() {
+    public long payloadBytes() {
         return this.byteLength - this.prefixBytes;
     }
 

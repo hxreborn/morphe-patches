@@ -4,6 +4,7 @@
  */
 package hx;
 
+import hx.mp4.Segment;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

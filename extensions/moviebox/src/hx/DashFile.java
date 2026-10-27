@@ -29,6 +29,10 @@ import java.util.concurrent.Future;
 
 import android.net.Uri;
 import android.util.Log;
+import hx.mp4.InterleavedTracks;
+import hx.mp4.MovieHead;
+import hx.mp4.Segment;
+import hx.mp4.Track;
 import hx.util.Logs;
 import hx.util.Tasks;
 

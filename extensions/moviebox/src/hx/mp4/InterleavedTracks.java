@@ -13,18 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.mp4;
 
 import java.util.ArrayList;
 import java.util.List;
 
-final class InterleavedTracks {
+public final class InterleavedTracks {
 
-    final List<Segment> segments = new ArrayList<>();
+    public final List<Segment> segments = new ArrayList<>();
 
-    final List<Integer> trackIds = new ArrayList<>();
+    public final List<Integer> trackIds = new ArrayList<>();
 
-    static InterleavedTracks interleave(Track video, Track audio) {
+    public static InterleavedTracks interleave(Track video, Track audio) {
         InterleavedTracks ordered = new InterleavedTracks();
         double audioScale = (double) video.templateTimescale / audio.templateTimescale;
         int nextAudio = 0;

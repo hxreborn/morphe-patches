@@ -22,6 +22,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import hx.mp4.Segment;
+
 final class DashManifest {
 
     private static final String REPRESENTATION_ID = "$RepresentationID$";

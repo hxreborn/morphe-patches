@@ -13,11 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.mp4;
 
 import java.util.List;
 
-final class Track {
+public final class Track {
 
     final byte[] init;
 
@@ -27,7 +27,7 @@ final class Track {
 
     final List<Segment> segments;
 
-    Track(byte[] init, int id, long templateTimescale, List<Segment> segments) {
+    public Track(byte[] init, int id, long templateTimescale, List<Segment> segments) {
         this.init = init;
         this.id = id;
         this.templateTimescale = templateTimescale;

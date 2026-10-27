@@ -13,14 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.mp4;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-final class MovieHead {
+public final class MovieHead {
 
     private static final int V0_TIMESCALE = 20;
 
@@ -65,7 +65,7 @@ final class MovieHead {
     private MovieHead() {
     }
 
-    static byte[] build(Track video, Track audio, InterleavedTracks ordered) throws IOException {
+    public static byte[] build(Track video, Track audio, InterleavedTracks ordered) throws IOException {
         byte[] moov = moov(video.init, audio.init, audio.id, video.durationMillis());
         byte[] audioIndex = sidxBoxFor(audio, ordered, 0);
         byte[] videoIndex = sidxBoxFor(video, ordered, audioIndex.length);
@@ -73,7 +73,7 @@ final class MovieHead {
         return Mp4Boxes.concat(ftyp, moov, videoIndex, audioIndex);
     }
 
-    static int trackId(byte[] init) throws IOException {
+    public static int trackId(byte[] init) throws IOException {
         Mp4Boxes.Box tkhd = Mp4Boxes.childOf(init, trak(init), "tkhd");
         return (int) Mp4Boxes.u32(init, tkhd.offset + trackIdOffset(init, tkhd.offset));
     }

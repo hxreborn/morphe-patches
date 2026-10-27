@@ -39,10 +39,10 @@ public final class DashFixture implements AutoCloseable {
     }
 
     public void publishSegments(byte[] prefix) {
-        this.cdn.put("/v/1.m4s", Mp4Boxes.concat(prefix, this.videoSegments[0]));
-        this.cdn.put("/v/2.m4s", Mp4Boxes.concat(prefix, this.videoSegments[1]));
-        this.cdn.put("/a/1.m4s", Mp4Boxes.concat(prefix, this.audioSegments[0]));
-        this.cdn.put("/a/2.m4s", Mp4Boxes.concat(prefix, this.audioSegments[1]));
+        this.cdn.put("/v/1.m4s", Mp4Fixtures.concat(prefix, this.videoSegments[0]));
+        this.cdn.put("/v/2.m4s", Mp4Fixtures.concat(prefix, this.videoSegments[1]));
+        this.cdn.put("/a/1.m4s", Mp4Fixtures.concat(prefix, this.audioSegments[0]));
+        this.cdn.put("/a/2.m4s", Mp4Fixtures.concat(prefix, this.audioSegments[1]));
     }
 
     public DashFile open() throws IOException {
@@ -73,7 +73,7 @@ public final class DashFixture implements AutoCloseable {
     }
 
     public byte[] expectedBody() {
-        return Mp4Boxes.concat(this.videoSegments[0], asAudio(this.audioSegments[0]), this.videoSegments[1],
+        return Mp4Fixtures.concat(this.videoSegments[0], asAudio(this.audioSegments[0]), this.videoSegments[1],
                 asAudio(this.audioSegments[1]));
     }
 
@@ -84,7 +84,7 @@ public final class DashFixture implements AutoCloseable {
 
     private static byte[] asAudio(byte[] segment) {
         byte[] copy = segment.clone();
-        Mp4Boxes.putU32(copy, TRACK_ID_IN_SEGMENT, 2);
+        Mp4Fixtures.putU32(copy, TRACK_ID_IN_SEGMENT, 2);
         return copy;
     }
 

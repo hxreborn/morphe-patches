@@ -12,12 +12,44 @@ public final class Mp4Fixtures {
     private Mp4Fixtures() {
     }
 
+    public static byte[] concat(byte[]... parts) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        for (byte[] part : parts) {
+            out.write(part, 0, part.length);
+        }
+        return out.toByteArray();
+    }
+
+    public static void putU32(byte[] data, int at, long value) {
+        data[at] = (byte) (value >>> 24);
+        data[at + 1] = (byte) (value >>> 16);
+        data[at + 2] = (byte) (value >>> 8);
+        data[at + 3] = (byte) value;
+    }
+
+    public static long readU32(byte[] data, int at) {
+        return ((data[at] & 0xFFL) << 24) | ((data[at + 1] & 0xFFL) << 16) | ((data[at + 2] & 0xFFL) << 8)
+                | (data[at + 3] & 0xFFL);
+    }
+
+    public static int sizeAt(byte[] data, int at) {
+        return (int) readU32(data, at);
+    }
+
+    public static String typeAt(byte[] data, int at) {
+        return new String(data, at + 4, 4, StandardCharsets.ISO_8859_1);
+    }
+
     public static byte[] box(String type, byte[]... children) {
-        return Mp4Boxes.box(type, Mp4Boxes.concat(children));
+        byte[] payload = concat(children);
+        byte[] header = new byte[8];
+        putU32(header, 0, payload.length + header.length);
+        System.arraycopy(type.getBytes(StandardCharsets.ISO_8859_1), 0, header, 4, 4);
+        return concat(header, payload);
     }
 
     public static byte[] fullBox(String type, int version, byte[]... children) {
-        return box(type, Mp4Boxes.concat(new byte[] { (byte) version, 0, 0, 0 }, Mp4Boxes.concat(children)));
+        return box(type, concat(new byte[] { (byte) version, 0, 0, 0 }, concat(children)));
     }
 
     public static byte[] zeros(int count) {
@@ -27,7 +59,7 @@ public final class Mp4Fixtures {
     public static byte[] u32(long... values) {
         byte[] out = new byte[values.length * 4];
         for (int i = 0; i < values.length; i++) {
-            Mp4Boxes.putU32(out, i * 4, values[i]);
+            putU32(out, i * 4, values[i]);
         }
         return out;
     }
@@ -40,14 +72,14 @@ public final class Mp4Fixtures {
         byte[] mdhd = fullBox("mdhd", 0, u32(0, 0, mediaTimescale, 0), zeros(2 + 2));
         byte[] trak = box("trak", tkhd, box("mdia", mdhd));
         byte[] trex = fullBox("trex", 0, u32(trackId, 1, 0, 0, 0));
-        return Mp4Boxes.concat(ftyp, box("moov", mvhd, trak, box("mvex", trex)));
+        return concat(ftyp, box("moov", mvhd, trak, box("mvex", trex)));
     }
 
     public static byte[] mediaSegment(int trackId, byte[] payload) {
         byte[] mfhd = fullBox("mfhd", 0, u32(1));
         byte[] tfhd = fullBox("tfhd", 0, u32(trackId));
         byte[] moof = box("moof", mfhd, box("traf", tfhd));
-        return Mp4Boxes.concat(moof, box("mdat", payload));
+        return concat(moof, box("mdat", payload));
     }
 
     public static byte[] bytes(int length, int seed) {

@@ -13,18 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.mp4;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-final class Mp4Boxes {
+public final class Mp4Boxes {
 
-    static final int HEADER_BYTES = 8;
+    public static final int HEADER_BYTES = 8;
 
-    static final int FULL_HEADER_BYTES = 12;
+    public static final int FULL_HEADER_BYTES = 12;
 
-    static final int U32_BYTES = 4;
+    public static final int U32_BYTES = 4;
 
     private static final int TYPE_AT = 4;
 
@@ -52,7 +52,7 @@ final class Mp4Boxes {
         return child(data, parent.offset + HEADER_BYTES, parent.end(), type);
     }
 
-    static int size(byte[] data, int at) throws IOException {
+    public static int size(byte[] data, int at) throws IOException {
         long size = u32(data, at);
         if (size < HEADER_BYTES || size > Integer.MAX_VALUE) {
             throw new IOException("unsupported box size " + size);
@@ -60,7 +60,7 @@ final class Mp4Boxes {
         return (int) size;
     }
 
-    static String typeAt(byte[] data, int at) {
+    public static String typeAt(byte[] data, int at) {
         return new String(data, at + TYPE_AT, TYPE_AT, StandardCharsets.ISO_8859_1);
     }
 
