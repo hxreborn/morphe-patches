@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.gateway;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -131,8 +131,9 @@ public final class BuildTagInterceptorTest {
             .build();
     }
 
-    private Object proxy() throws ClassNotFoundException {
-        return ClientInterceptors.proxy(this.loader, new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE)));
+    private Object proxy() {
+        return Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
+                new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE)));
     }
 
     private void intercept(Chain chain) throws IOException, ClassNotFoundException {

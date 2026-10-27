@@ -13,16 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.gateway;
 
-interface PlayInfoLookup {
+interface MillisClock {
 
-    String fetchPlayInfo(String pathAndQuery, Acceptance acceptance);
-
-    interface Acceptance {
-
-        boolean accepts(String playInfo);
-
-    }
+    long nowMillis();
 
 }

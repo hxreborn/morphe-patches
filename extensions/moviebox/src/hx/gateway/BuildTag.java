@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.gateway;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +28,7 @@ import hx.util.Streams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-final class BuildTag {
+public final class BuildTag {
 
     static final String HEADER = "X-Client-Build";
 
@@ -54,7 +54,7 @@ final class BuildTag {
         this.random = random;
     }
 
-    static BuildTag fromInstalledApp() {
+    public static BuildTag fromInstalledApp() {
         try (InputStream asset = InstalledApp.context().getAssets().open(CERTIFICATE_ASSET)) {
             return fromCertificate(Streams.readAll(asset));
         } catch (Exception ex) {

@@ -13,18 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.gateway;
 
 import hx.okhttp.ChainInterceptor;
 import hx.util.Reflect;
 
-final class BuildTagInterceptor extends ChainInterceptor {
+public final class BuildTagInterceptor extends ChainInterceptor {
 
     private static final String INFO_HEADER = "X-Client-Info";
 
     private final BuildTag buildTag;
 
-    BuildTagInterceptor(BuildTag buildTag) {
+    public BuildTagInterceptor(BuildTag buildTag) {
         super("MovieBoxBuildTagInterceptor", "MovieBox build tag failed");
         this.buildTag = buildTag;
     }

@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.gateway;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +44,7 @@ import hx.util.Streams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-final class CloudFrontPlayInfoClient implements PlayInfoLookup {
+public final class CloudFrontPlayInfoClient implements PlayInfoLookup {
 
     private static final String[] API_HOSTS = { "api6.aoneroom.com", "api4sg.aoneroom.com", "api5.aoneroom.com",
             "api4.aoneroom.com", "api3.aoneroom.com" };
@@ -63,7 +63,7 @@ final class CloudFrontPlayInfoClient implements PlayInfoLookup {
 
     private final Map<String, Long> hostRetryAtMs = new ConcurrentHashMap<>();
 
-    CloudFrontPlayInfoClient(BuildTag buildTag) {
+    public CloudFrontPlayInfoClient(BuildTag buildTag) {
         this.gatewayHeaders = new GatewayHeaders(ClientInfo.forInstalledApp(), buildTag);
     }
 
