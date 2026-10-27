@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.rewrite;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -29,14 +29,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-final class HomeTabs {
+public final class HomeTabs {
 
     private static final String HIDDEN_TABS_ASSET = "hx_hidden_home_tabs";
 
     private HomeTabs() {
     }
 
-    static Set<String> readHidden() {
+    public static Set<String> readHidden() {
         Set<String> tabCodes = new HashSet<>();
         try (InputStream asset = InstalledApp.context().getAssets().open(HIDDEN_TABS_ASSET)) {
             for (String line : new String(Streams.readAll(asset), StandardCharsets.UTF_8).split("\n")) {

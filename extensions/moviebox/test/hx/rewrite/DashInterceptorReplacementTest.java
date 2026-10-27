@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.rewrite;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import hx.PlayInfoFixtures;
 import hx.gateway.PlayInfoLookup;
 import hx.okhttp.ApiClient;
 import hx.source.MovieBoxSource;

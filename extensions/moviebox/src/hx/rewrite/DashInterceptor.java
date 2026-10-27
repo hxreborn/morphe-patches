@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.rewrite;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +28,7 @@ import hx.source.SignedResource;
 import hx.util.Logs;
 import hx.util.Reflect;
 
-final class DashInterceptor extends ChainInterceptor {
+public final class DashInterceptor extends ChainInterceptor {
 
     private static final String RESPONSE_BODY = "okhttp3.ResponseBody";
 
@@ -42,7 +42,8 @@ final class DashInterceptor extends ChainInterceptor {
 
     private final Set<String> hiddenHomeTabs;
 
-    DashInterceptor(ClassLoader loader, MovieBoxSource source, boolean routeDownloads, Set<String> hiddenHomeTabs) {
+    public DashInterceptor(ClassLoader loader, MovieBoxSource source, boolean routeDownloads,
+            Set<String> hiddenHomeTabs) {
         super("MovieBoxDashInterceptor", "MovieBox interceptor failed");
         this.loader = loader;
         this.source = source;

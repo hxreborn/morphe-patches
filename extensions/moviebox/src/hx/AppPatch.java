@@ -26,6 +26,8 @@ import hx.gateway.CloudFrontPlayInfoClient;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
 import hx.platform.Notices;
+import hx.rewrite.DashInterceptor;
+import hx.rewrite.HomeTabs;
 import hx.source.MovieBoxSource;
 import hx.util.Logs;
 

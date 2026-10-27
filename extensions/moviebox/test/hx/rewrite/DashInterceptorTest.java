@@ -2,18 +2,22 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.rewrite;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import hx.LocalCdn;
+import hx.PlayInfoFixtures;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
 import hx.source.MovieBoxSource;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -188,13 +192,13 @@ public final class DashInterceptorTest {
         Assertions.assertThat(body).isEqualTo(tabs);
     }
 
-    private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs)
-            throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs) throws IOException {
         ApiClient api = new ApiClient(this.loader, new OkHttpClient(), this.server.url(""));
         DashInterceptor interceptor = new DashInterceptor(this.loader,
                 new MovieBoxSource(api, (path, accepted) -> null), routeDownloads, hiddenTabs);
-        Object proxy = ClientInterceptors.proxy(this.loader, interceptor);
-        OkHttpClient client = (OkHttpClient) ClientInterceptors.addFirst(new OkHttpClient(), proxy);
+        Interceptor proxy = (Interceptor) Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
+                interceptor);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(proxy).build();
         Request request = new Request.Builder().url(this.server.url(pathAndQuery)).build();
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
