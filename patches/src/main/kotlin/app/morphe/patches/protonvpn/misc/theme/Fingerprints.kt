@@ -95,6 +95,20 @@ internal fun defaultIconSizeModifierFingerprint(iconClass: String) = Fingerprint
     ),
 )
 
+private fun Method.isToolbarColorLambdaConstructor() = name == "<init>" &&
+    parameterTypes.size == 3 && parameterTypes[0] == "J" && parameterTypes[1] == "J" &&
+    parameterTypes[2].startsWith("L")
+
+internal object CollapsingToolbarColorFingerprint : Fingerprint(
+    parameters = emptyList(),
+    filters = listOf(
+        fieldAccess(opcode = Opcode.IGET_WIDE, type = "J"),
+        fieldAccess(opcode = Opcode.IGET_WIDE, type = "J", location = MatchAfterImmediately()),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("J", "J", "F"), returnType = "J"),
+    ),
+    custom = { _, classDef -> classDef.methods.any { it.isToolbarColorLambdaConstructor() } },
+)
+
 internal object SettingsSwitchBindingFingerprint : Fingerprint(
     filters = listOf(
         resourceField(ResourceType.ID, "switchButton"),
