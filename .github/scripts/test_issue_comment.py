@@ -184,6 +184,37 @@ ok = text.splitlines()[1] == "This issue is closed. For anything new, please ope
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a title naming no app keeps the plain opening")
 
+MOVIEBOX = {"version": "1.54.0", "patches": [{"compatiblePackages": [
+    {"name": "MovieBox", "packageName": "com.community.oneroom", "targets": [{"version": "4.0.03.0918.03"}]},
+    {"name": "MovieBox TV", "packageName": "com.community.mbox.tv", "targets": [{"version": "1.2.0.0923.web_socialmedia"}]},
+]}]}
+MOVIEBOX_TV_REQUEST = """### App
+
+https://moviebox.ph/moviebox-tv-apk
+
+### Package name
+
+com.community.mbox.tv
+
+### Requested features
+
+Unlock premium
+"""
+text = closed_issue_reply(COMMENTED_AT, "[App Request]: Moviebox for Android TV", MOVIEBOX, issue_body=MOVIEBOX_TV_REQUEST)
+ok = text.splitlines()[1].endswith("supports MovieBox TV `1.2.0.0923.web_socialmedia`. This issue is closed. For anything new, please open a new issue:")
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a package name in the body picks the app over a shorter title match")
+
+text = closed_issue_reply(COMMENTED_AT, "[App Request]: Moviebox for Android TV", MOVIEBOX)
+ok = "supports MovieBox `4.0.03.0918.03`" in text.splitlines()[1]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a body without a package name falls back to the title match")
+
+text = closed_issue_reply(COMMENTED_AT, "[Not working]: Something", MOVIEBOX, issue_body="com.community.oneroom and com.community.mbox.tv")
+ok = text.splitlines()[1] == "This issue is closed. For anything new, please open a new issue:"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a body naming two apps keeps the plain opening")
+
 RELEASE_QUESTIONS = [
     "when is this getting released?",
     "A new release hasn't been built yet with your commit.",

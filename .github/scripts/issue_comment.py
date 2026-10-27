@@ -69,6 +69,18 @@ def targeted_app(text, apps):
     return max(names, key=len, default="")
 
 
+def reported_app(title, body, patches_list):
+    apps = targets(patches_list)
+    packages = {
+        package["packageName"]: package["name"]
+        for patch in patches_list["patches"]
+        for package in patch.get("compatiblePackages") or []
+        if package.get("packageName") and package["name"] in apps
+    }
+    named = {name for package, name in packages.items() if re.search(rf"(?<![\w.]){re.escape(package)}(?![\w.])", body)}
+    return named.pop() if len(named) == 1 else targeted_app(title, apps)
+
+
 def is_request(comment):
     own = CODE.sub("", QUOTED.sub("", comment))
     return bool(REQUEST.search(own)) and not RESOLVED.search(own)
@@ -136,12 +148,12 @@ def unreleased_reply():
     )
 
 
-def closed_issue_reply(commented_at, issue_title="", patches_list=None, discussion=False):
+def closed_issue_reply(commented_at, issue_title="", patches_list=None, discussion=False, issue_body=""):
     lock_day = commented_at + LOCK_DELAY
     lead = "This issue is closed. For anything new, please open a new issue:"
     if patches_list:
         apps = targets(patches_list)
-        app = targeted_app(issue_title, apps)
+        app = reported_app(issue_title, issue_body, patches_list)
         if app and apps[app]:
             lead = f"{bundle(patches_list['version'])} supports {app} {code_list(apps[app])}. {lead}"
     return (
@@ -175,4 +187,4 @@ if __name__ == "__main__":
             sys.exit(NO_REPLY)
         patches_list = json.loads(Path(args[1]).read_text(encoding="utf-8")) if len(args) > 1 else None
         labels = {label["name"] for label in issue.get("labels") or []}
-        print(closed_issue_reply(timestamp(comment["created_at"]), issue.get("title") or "", patches_list, "discussion" in labels), end="")
+        print(closed_issue_reply(timestamp(comment["created_at"]), issue.get("title") or "", patches_list, "discussion" in labels, issue.get("body") or ""), end="")
