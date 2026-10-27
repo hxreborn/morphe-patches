@@ -7,11 +7,11 @@ package hx;
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
+import org.assertj.core.api.Assertions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;

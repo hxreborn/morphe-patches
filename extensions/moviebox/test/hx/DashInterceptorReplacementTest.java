@@ -11,8 +11,8 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import org.json.JSONObject;
 import org.assertj.core.api.Assertions;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;

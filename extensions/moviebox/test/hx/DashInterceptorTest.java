@@ -14,10 +14,10 @@ import java.util.Set;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.assertj.core.api.Assertions;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -35,7 +35,8 @@ public final class DashInterceptorTest {
 
     private static final String BOTTOM_TAB = "/wefeed-mobile-bff/subject-api/bottom-tab";
 
-    private static final String MEMBER = "{\"data\":{\"daysLeft\":3,\"memberType\":\"FREE\",\"expiryDate\":\"2026-01-01\"}}";
+    private static final String MEMBER = "{\"data\":{\"daysLeft\":3,\"memberType\":\"FREE\","
+            + "\"expiryDate\":\"2026-01-01\"}}";
 
     private static final String UNSIGNED_PLAY_INFO = "{\"data\":{\"streams\":[{\"url\":"
             + "\"https://origin.example.com/a.mp4\",\"resolutions\":\"720\",\"size\":100,\"signCookie\":\"\"}]}}";

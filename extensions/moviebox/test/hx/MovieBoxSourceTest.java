@@ -8,9 +8,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
-import org.junit.After;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
