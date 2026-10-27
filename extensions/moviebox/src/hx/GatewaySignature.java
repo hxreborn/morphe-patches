@@ -27,6 +27,7 @@ import java.util.List;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import android.text.TextUtils;
 import android.util.Base64;
 
 final class GatewaySignature {
@@ -75,7 +76,7 @@ final class GatewaySignature {
             }
         }
         Collections.sort(pairs, (a, b) -> queryKey(a).compareTo(queryKey(b)));
-        return pathAndQuery.substring(0, question + 1) + String.join("&", pairs);
+        return pathAndQuery.substring(0, question + 1) + TextUtils.join("&", pairs);
     }
 
     private static String decode(String pair) throws IOException {
