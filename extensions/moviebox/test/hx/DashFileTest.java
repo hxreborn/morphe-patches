@@ -6,7 +6,9 @@ package hx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.After;
@@ -49,15 +51,10 @@ public final class DashFileTest {
         byte[] bytes = whole(open());
 
         // when
-        int at = 0;
-        StringBuilder types = new StringBuilder();
-        for (int i = 0; i < 4; i++) {
-            types.append(Mp4Boxes.typeAt(bytes, at)).append(' ');
-            at += Mp4Boxes.size(bytes, at);
-        }
+        String types = headTypes(bytes);
 
         // then
-        Assertions.assertThat(types.toString()).isEqualTo("ftyp moov sidx sidx ");
+        Assertions.assertThat(types).isEqualTo("ftyp moov sidx sidx ");
     }
 
     @Test
@@ -109,16 +106,14 @@ public final class DashFileTest {
                 { headLength(whole) + 290, headLength(whole) + 700 },
                 { headLength(whole) + 49000, headLength(whole) + 49300 }, { file.length - 10, file.length - 1 } };
 
-        for (long[] range : ranges) {
+        // when
+        List<byte[]> served = serve(file, ranges);
 
-            // when
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            file.write(out, range[0], range[1]);
-
-            // then
-            Assertions.assertThat(out.toByteArray())
-                .as("range " + range[0] + "-" + range[1])
-                .isEqualTo(Arrays.copyOfRange(whole, (int) range[0], (int) range[1] + 1));
+        // then
+        for (int i = 0; i < ranges.length; i++) {
+            Assertions.assertThat(served.get(i))
+                .as("range " + ranges[i][0] + "-" + ranges[i][1])
+                .isEqualTo(Arrays.copyOfRange(whole, (int) ranges[i][0], (int) ranges[i][1] + 1));
         }
     }
 
@@ -153,9 +148,20 @@ public final class DashFileTest {
 
     @Test
     public void recognizesTheUnpacedHost() {
+        // when
+        boolean unpaced = DashFile.isUnpacedCdn("https://sacdn.hakunaymatata.com/abc/index.mpd");
+
         // then
-        Assertions.assertThat(DashFile.isUnpacedCdn("https://sacdn.hakunaymatata.com/abc/index.mpd")).isTrue();
-        Assertions.assertThat(DashFile.isUnpacedCdn("https://sbcdn5.hakunaymatata.com/abc/index.mpd")).isFalse();
+        Assertions.assertThat(unpaced).isTrue();
+    }
+
+    @Test
+    public void recognizesAPacedHost() {
+        // when
+        boolean unpaced = DashFile.isUnpacedCdn("https://sbcdn5.hakunaymatata.com/abc/index.mpd");
+
+        // then
+        Assertions.assertThat(unpaced).isFalse();
     }
 
     private int largestRange(String path) {
@@ -169,6 +175,26 @@ public final class DashFileTest {
 
     private DashFile open() throws IOException {
         return this.fixture.open();
+    }
+
+    private static String headTypes(byte[] bytes) throws IOException {
+        int at = 0;
+        StringBuilder types = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            types.append(Mp4Boxes.typeAt(bytes, at)).append(' ');
+            at += Mp4Boxes.size(bytes, at);
+        }
+        return types.toString();
+    }
+
+    private static List<byte[]> serve(DashFile file, long[][] ranges) throws IOException {
+        List<byte[]> served = new ArrayList<>();
+        for (long[] range : ranges) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            file.write(out, range[0], range[1]);
+            served.add(out.toByteArray());
+        }
+        return served;
     }
 
     private static byte[] whole(DashFile file) throws IOException {

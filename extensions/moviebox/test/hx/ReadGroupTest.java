@@ -55,14 +55,11 @@ public final class ReadGroupTest {
         CountingConnection late = new CountingConnection();
 
         // when
-        try {
-            group.add(late);
-            Assertions.fail("expected the late connection to be refused");
-        } catch (InterruptedIOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> group.add(late));
 
-            // then
-            Assertions.assertThat(late.disconnected).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(InterruptedIOException.class);
+        Assertions.assertThat(late.disconnected).isTrue();
     }
 
     private static final class CountingConnection extends HttpURLConnection {

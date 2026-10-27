@@ -57,10 +57,20 @@ public final class DashManifestParserTest {
 
         // when
         DashManifest.Representation video = manifest.select("video", 1080);
-        DashManifest.Representation capped = manifest.select("video", 900);
 
         // then
         Assertions.assertThat(video.id).isEqualTo("v1080");
+    }
+
+    @Test
+    public void picksTheTallestVideoUnderACap() throws IOException {
+        // given
+        DashManifest manifest = parse(MANIFEST);
+
+        // when
+        DashManifest.Representation capped = manifest.select("video", 900);
+
+        // then
         Assertions.assertThat(capped.id).isEqualTo("v720");
     }
 
@@ -129,16 +139,26 @@ public final class DashManifestParserTest {
     }
 
     @Test
-    public void resolvesTheInitializationUrl() throws IOException {
+    public void resolvesTheVideoInitializationUrl() throws IOException {
         // given
         DashManifest manifest = parse(MANIFEST);
 
         // when
         String video = manifest.select("video", 720).initializationUrl();
-        String audio = manifest.select("audio", Integer.MAX_VALUE).initializationUrl();
 
         // then
         Assertions.assertThat(video).isEqualTo("https://media.example.com/title/v/v720/init.mp4");
+    }
+
+    @Test
+    public void resolvesTheAudioInitializationUrl() throws IOException {
+        // given
+        DashManifest manifest = parse(MANIFEST);
+
+        // when
+        String audio = manifest.select("audio", Integer.MAX_VALUE).initializationUrl();
+
+        // then
         Assertions.assertThat(audio).isEqualTo("https://media.example.com/title/a/init.mp4");
     }
 
@@ -165,14 +185,11 @@ public final class DashManifestParserTest {
         DashManifest.Representation video = parse(xml).select("video", 720);
 
         // when
-        try {
-            video.initializationUrl();
-            Assertions.fail("expected a missing initialization");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> video.initializationUrl());
 
-            // then
-            Assertions.assertThat(ex.getMessage().contains("no initialization")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().contains("no initialization")).as(failure.getMessage()).isTrue();
     }
 
     @Test
@@ -184,14 +201,13 @@ public final class DashManifestParserTest {
         DashManifest manifest = parse(xml);
 
         // when
-        try {
-            manifest.segmentsOf(manifest.select("video", 720));
-            Assertions.fail("expected a missing timeline");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> manifest.segmentsOf(manifest.select("video", 720)));
 
-            // then
-            Assertions.assertThat(ex.getMessage().contains("lacks a segment timeline")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().contains("lacks a segment timeline"))
+            .as(failure.getMessage())
+            .isTrue();
     }
 
     @Test
@@ -204,40 +220,38 @@ public final class DashManifestParserTest {
         DashManifest manifest = parse(xml);
 
         // when
-        try {
-            manifest.segmentsOf(manifest.select("video", 720));
-            Assertions.fail("expected an invalid timeline");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> manifest.segmentsOf(manifest.select("video", 720)));
 
-            // then
-            Assertions.assertThat(ex.getMessage().contains("invalid segment timeline")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().contains("invalid segment timeline"))
+            .as(failure.getMessage())
+            .isTrue();
     }
 
     @Test
     public void rejectsManifestsThatAreNotXml() {
         // when
-        try {
-            DashManifestParser.parse("<MPD".getBytes(StandardCharsets.UTF_8), MANIFEST_URL);
-            Assertions.fail("expected a parse failure");
-        } catch (IOException ex) {
+        Throwable failure = Assertions
+            .catchThrowable(() -> DashManifestParser.parse("<MPD".getBytes(StandardCharsets.UTF_8), MANIFEST_URL));
 
-            // then
-            Assertions.assertThat(ex.getMessage().startsWith("cannot parse manifest")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().startsWith("cannot parse manifest"))
+            .as(failure.getMessage())
+            .isTrue();
     }
 
     @Test
     public void rejectsAMalformedPresentationDuration() {
         // when
-        try {
-            parse("<MPD mediaPresentationDuration=\"ten seconds\"/>");
-            Assertions.fail("expected a parse failure");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> parse("<MPD mediaPresentationDuration=\"ten seconds\"/>"));
 
-            // then
-            Assertions.assertThat(ex.getMessage().startsWith("cannot parse manifest")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().startsWith("cannot parse manifest"))
+            .as(failure.getMessage())
+            .isTrue();
     }
 
     @Test
@@ -249,14 +263,11 @@ public final class DashManifestParserTest {
         }
 
         // when
-        try {
-            parse(xml.toString());
-            Assertions.fail("expected a depth failure");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> parse(xml.toString()));
 
-            // then
-            Assertions.assertThat(ex.getMessage().contains("nested deeper than 32")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().contains("nested deeper than 32")).as(failure.getMessage()).isTrue();
     }
 
     @Test

@@ -21,14 +21,21 @@ public final class ApiClientTest {
     private final ClassLoader loader = getClass().getClassLoader();
 
     @Test
-    public void joinsPathsToTheBaseWithOneSlash() {
+    public void joinsPathsToABaseWithoutASlash() {
         // when
-        String bare = new ApiClient(this.loader, new OkHttpClient(), "https://api.example.com").url("a/b?c=1");
-        String slashed = new ApiClient(this.loader, new OkHttpClient(), "https://api.example.com/").url("a/b?c=1");
+        String url = new ApiClient(this.loader, new OkHttpClient(), "https://api.example.com").url("a/b?c=1");
 
         // then
-        Assertions.assertThat(bare).isEqualTo("https://api.example.com/a/b?c=1");
-        Assertions.assertThat(slashed).isEqualTo("https://api.example.com/a/b?c=1");
+        Assertions.assertThat(url).isEqualTo("https://api.example.com/a/b?c=1");
+    }
+
+    @Test
+    public void joinsPathsToABaseWithASlash() {
+        // when
+        String url = new ApiClient(this.loader, new OkHttpClient(), "https://api.example.com/").url("a/b?c=1");
+
+        // then
+        Assertions.assertThat(url).isEqualTo("https://api.example.com/a/b?c=1");
     }
 
     @Test
@@ -53,14 +60,11 @@ public final class ApiClientTest {
             ApiClient api = new ApiClient(this.loader, new OkHttpClient(), server.url(""));
 
             // when
-            try {
-                api.get(api.url("missing"));
-                Assertions.fail("expected an HTTP failure");
-            } catch (IOException ex) {
+            Throwable failure = Assertions.catchThrowable(() -> api.get(api.url("missing")));
 
-                // then
-                Assertions.assertThat(ex.getMessage()).isEqualTo("HTTP 404 for " + api.url("missing"));
-            }
+            // then
+            Assertions.assertThat(failure).isInstanceOf(IOException.class);
+            Assertions.assertThat(failure.getMessage()).isEqualTo("HTTP 404 for " + api.url("missing"));
         }
     }
 

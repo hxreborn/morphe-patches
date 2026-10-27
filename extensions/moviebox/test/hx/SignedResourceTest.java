@@ -125,12 +125,18 @@ public final class SignedResourceTest {
     public void recognizesEdgeCachePlayInfo() {
         // when
         boolean edge = SignedResource.isEdgeCachePlayInfo(playInfo(edgeCacheCookie("https://sbcdn5.example.com/a")));
-        boolean cloudFront = SignedResource
-            .isEdgeCachePlayInfo(playInfo(cloudFrontCookie("https://sacdn.example.com/a/*")));
 
         // then
         Assertions.assertThat(edge).isTrue();
-        Assertions.assertThat(cloudFront).isFalse();
+    }
+
+    @Test
+    public void recognizesCloudFrontPlayInfoAsNotEdgeCache() {
+        // when
+        boolean edge = SignedResource.isEdgeCachePlayInfo(playInfo(cloudFrontCookie("https://sacdn.example.com/a/*")));
+
+        // then
+        Assertions.assertThat(edge).isFalse();
     }
 
     @Test

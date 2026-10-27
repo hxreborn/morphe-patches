@@ -120,14 +120,12 @@ public final class SegmentProbeTest {
         Segment segment = publish("/s.m4s", Mp4Fixtures.box("free", Mp4Fixtures.zeros(300)));
 
         // when
-        try {
-            SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
-            Assertions.fail("expected a rejected segment");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(
+                () -> SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES));
 
-            // then
-            Assertions.assertThat(ex.getMessage()).isEqualTo("segment does not start with moof");
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage()).isEqualTo("segment does not start with moof");
     }
 
     private Segment publish(String path, byte[] bytes) {

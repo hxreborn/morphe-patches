@@ -108,16 +108,10 @@ public final class BuildTagInterceptorTest {
         chain.failure = new IllegalStateException("boom");
 
         // when
-        IOException failure = null;
-        try {
-            intercept(chain);
-        } catch (IOException ex) {
-            failure = ex;
-        }
+        Throwable failure = Assertions.catchThrowable(() -> intercept(chain));
 
         // then
-        Assertions.assertThat(failure).isNotNull();
-        Assertions.assertThat(failure.getMessage()).isEqualTo("MovieBox build tag failed");
+        Assertions.assertThat(failure).isInstanceOf(IOException.class).hasMessage("MovieBox build tag failed");
     }
 
     @Test

@@ -167,14 +167,11 @@ public final class LoopbackRequestTest {
         byte[] bytes = new byte[9000];
 
         // when
-        try {
-            LoopbackRequest.readHead(new ByteArrayInputStream(bytes));
-            Assertions.fail("expected the head to be refused");
-        } catch (IOException ex) {
+        Throwable failure = Assertions.catchThrowable(() -> LoopbackRequest.readHead(new ByteArrayInputStream(bytes)));
 
-            // then
-            Assertions.assertThat(ex.getMessage().contains("8192")).as(ex.getMessage()).isTrue();
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage().contains("8192")).as(failure.getMessage()).isTrue();
     }
 
     private static String get(String target) {

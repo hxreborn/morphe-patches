@@ -98,10 +98,21 @@ public final class DirectFilesTest {
     }
 
     @Test
-    public void givesNoDirectFileWithoutAnOriginOrResource() {
+    public void givesNoDirectFileWithoutAnOrigin() {
+        // when
+        String url = this.directFiles.resolveUrl("77", "r1", null);
+
         // then
-        Assertions.assertThat(this.directFiles.resolveUrl("77", "r1", null)).isNull();
-        Assertions.assertThat(this.directFiles.resolveUrl("77", null, ORIGIN)).isNull();
+        Assertions.assertThat(url).isNull();
+    }
+
+    @Test
+    public void givesNoDirectFileWithoutAResource() {
+        // when
+        String url = this.directFiles.resolveUrl("77", null, ORIGIN);
+
+        // then
+        Assertions.assertThat(url).isNull();
     }
 
     @Test
@@ -186,11 +197,30 @@ public final class DirectFilesTest {
     }
 
     @Test
-    public void givesNoPlayInfoForAnUnknownEpisode() {
+    public void givesNoPlayInfoWithoutASubject() {
+        // when
+        String playInfo = this.directFiles.playInfoFor("{}", null, 1, 2);
+
         // then
-        Assertions.assertThat(this.directFiles.playInfoFor("{}", null, 1, 2)).isNull();
-        Assertions.assertThat(this.directFiles.playInfoFor("{}", "77", -1, 2)).isNull();
-        Assertions.assertThat(this.directFiles.playInfoFor("{}", "77", 1, -1)).isNull();
+        Assertions.assertThat(playInfo).isNull();
+    }
+
+    @Test
+    public void givesNoPlayInfoWithoutASeason() {
+        // when
+        String playInfo = this.directFiles.playInfoFor("{}", "77", -1, 2);
+
+        // then
+        Assertions.assertThat(playInfo).isNull();
+    }
+
+    @Test
+    public void givesNoPlayInfoWithoutAnEpisode() {
+        // when
+        String playInfo = this.directFiles.playInfoFor("{}", "77", 1, -1);
+
+        // then
+        Assertions.assertThat(playInfo).isNull();
     }
 
     private static String resourceList(int from, int to) {

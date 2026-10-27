@@ -71,86 +71,67 @@ public final class MovieHeadTest {
 
     @Test
     public void numbersTheAudioTrackAfterTheVideoTrack() throws IOException {
-        // given
-        byte[] head = head();
-        Mp4Boxes.Box moov = Mp4Boxes.child(head, 0, head.length, "moov");
-        Mp4Boxes.Box videoTrak = Mp4Boxes.childOf(head, moov, "trak");
-        Mp4Boxes.Box audioTrak = secondChild(head, moov, "trak");
-
         // when
-        long videoId = Mp4Boxes.u32(head, Mp4Boxes.childOf(head, videoTrak, "tkhd").offset + 20);
-        long audioId = Mp4Boxes.u32(head, Mp4Boxes.childOf(head, audioTrak, "tkhd").offset + 20);
+        byte[] head = head();
 
         // then
-        Assertions.assertThat(videoId).isEqualTo(1);
-        Assertions.assertThat(audioId).isEqualTo(2);
+        Assertions.assertThat(Mp4Boxes.u32(head, Mp4Boxes.childOf(head, trak(head, 0), "tkhd").offset + 20))
+            .isEqualTo(1);
+        Assertions.assertThat(Mp4Boxes.u32(head, Mp4Boxes.childOf(head, trak(head, 1), "tkhd").offset + 20))
+            .isEqualTo(2);
     }
 
     @Test
     public void scalesTheTrackDurationsToEachTimescale() throws IOException {
-        // given
-        byte[] head = head();
-        Mp4Boxes.Box moov = Mp4Boxes.child(head, 0, head.length, "moov");
-        Mp4Boxes.Box videoTrak = Mp4Boxes.childOf(head, moov, "trak");
-        Mp4Boxes.Box audioTrak = secondChild(head, moov, "trak");
-
         // when
-        long videoTkhd = Mp4Boxes.u32(head, Mp4Boxes.childOf(head, videoTrak, "tkhd").offset + 28);
-        long videoMdhd = Mp4Boxes.u32(head, mdhd(head, videoTrak).offset + 24);
-        long audioMdhd = Mp4Boxes.u32(head, mdhd(head, audioTrak).offset + 24);
+        byte[] head = head();
 
         // then
-        Assertions.assertThat(videoTkhd).isEqualTo(6000);
-        Assertions.assertThat(videoMdhd).isEqualTo(540000);
-        Assertions.assertThat(audioMdhd).isEqualTo(288000);
+        Assertions.assertThat(Mp4Boxes.u32(head, Mp4Boxes.childOf(head, trak(head, 0), "tkhd").offset + 28))
+            .isEqualTo(6000);
+        Assertions.assertThat(Mp4Boxes.u32(head, mdhd(head, trak(head, 0)).offset + 24)).isEqualTo(540000);
+        Assertions.assertThat(Mp4Boxes.u32(head, mdhd(head, trak(head, 1)).offset + 24)).isEqualTo(288000);
     }
 
     @Test
     public void declaresBothTracksInTheMovieExtends() throws IOException {
-        // given
-        byte[] head = head();
-        Mp4Boxes.Box moov = Mp4Boxes.child(head, 0, head.length, "moov");
-        Mp4Boxes.Box mvex = Mp4Boxes.childOf(head, moov, "mvex");
-
         // when
-        Mp4Boxes.Box firstTrex = Mp4Boxes.childOf(head, mvex, "trex");
-        long first = Mp4Boxes.u32(head, firstTrex.offset + 12);
-        long second = Mp4Boxes.u32(head, firstTrex.end() + 12);
+        byte[] head = head();
 
         // then
-        Assertions.assertThat(first).isEqualTo(1);
-        Assertions.assertThat(second).isEqualTo(2);
+        Mp4Boxes.Box mvex = Mp4Boxes.childOf(head, moov(head), "mvex");
+        Mp4Boxes.Box firstTrex = Mp4Boxes.childOf(head, mvex, "trex");
+        Assertions.assertThat(Mp4Boxes.u32(head, firstTrex.offset + 12)).isEqualTo(1);
+        Assertions.assertThat(Mp4Boxes.u32(head, firstTrex.end() + 12)).isEqualTo(2);
     }
 
     @Test
     public void indexesEachVideoSegmentWithTheAudioInterleavedAfterIt() throws IOException {
-        // given
+        // when
         byte[] head = head();
-        Mp4Boxes.Box videoIndex = topLevel(head, 2);
-        Mp4Boxes.Box audioIndex = topLevel(head, 3);
 
         // then
-        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 12)).isEqualTo(1);
-        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 16)).isEqualTo(VIDEO_MEDIA_TIMESCALE);
-        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 20)).isEqualTo(0);
-        Assertions.assertThat(Mp4Boxes.u32(head, videoIndex.offset + 24)).isEqualTo(audioIndex.size);
-        Assertions.assertThat(referenceSizes(head, videoIndex)).isEqualTo(Arrays.asList(1200L, 1200L, 1200L));
-        Assertions.assertThat(referenceDurations(head, videoIndex)).isEqualTo(Arrays.asList(180000L, 180000L, 180000L));
+        Assertions.assertThat(indexField(head, 2, 12)).isEqualTo(1);
+        Assertions.assertThat(indexField(head, 2, 16)).isEqualTo(VIDEO_MEDIA_TIMESCALE);
+        Assertions.assertThat(indexField(head, 2, 20)).isEqualTo(0);
+        Assertions.assertThat(indexField(head, 2, 24)).isEqualTo(topLevel(head, 3).size);
+        Assertions.assertThat(referenceSizes(head, topLevel(head, 2))).isEqualTo(Arrays.asList(1200L, 1200L, 1200L));
+        Assertions.assertThat(referenceDurations(head, topLevel(head, 2)))
+            .isEqualTo(Arrays.asList(180000L, 180000L, 180000L));
     }
 
     @Test
     public void indexesEachAudioSegmentFromTheStartOfThePayloads() throws IOException {
-        // given
+        // when
         byte[] head = head();
-        Mp4Boxes.Box audioIndex = topLevel(head, 3);
 
         // then
-        Assertions.assertThat(Mp4Boxes.u32(head, audioIndex.offset + 12)).isEqualTo(2);
-        Assertions.assertThat(Mp4Boxes.u32(head, audioIndex.offset + 16)).isEqualTo(AUDIO_MEDIA_TIMESCALE);
-        Assertions.assertThat(Mp4Boxes.u32(head, audioIndex.offset + 24)).isEqualTo(1000);
-        Assertions.assertThat(referenceSizes(head, audioIndex))
+        Assertions.assertThat(indexField(head, 3, 12)).isEqualTo(2);
+        Assertions.assertThat(indexField(head, 3, 16)).isEqualTo(AUDIO_MEDIA_TIMESCALE);
+        Assertions.assertThat(indexField(head, 3, 24)).isEqualTo(1000);
+        Assertions.assertThat(referenceSizes(head, topLevel(head, 3)))
             .isEqualTo(Arrays.asList(100L, 1100L, 100L, 1100L, 100L, 100L));
-        Assertions.assertThat(referenceDurations(head, audioIndex))
+        Assertions.assertThat(referenceDurations(head, topLevel(head, 3)))
             .isEqualTo(Arrays.asList(48000L, 48000L, 48000L, 48000L, 48000L, 48000L));
     }
 
@@ -170,14 +151,12 @@ public final class MovieHeadTest {
     @Test
     public void rejectsAnInitSegmentWithoutAMovieBox() {
         // when
-        try {
-            MovieHead.trackId(Mp4Fixtures.box("ftyp", Mp4Fixtures.zeros(8)));
-            Assertions.fail("expected a missing moov");
-        } catch (IOException ex) {
+        Throwable failure = Assertions
+            .catchThrowable(() -> MovieHead.trackId(Mp4Fixtures.box("ftyp", Mp4Fixtures.zeros(8))));
 
-            // then
-            Assertions.assertThat(ex.getMessage()).isEqualTo("missing moov box");
-        }
+        // then
+        Assertions.assertThat(failure).isInstanceOf(IOException.class);
+        Assertions.assertThat(failure.getMessage()).isEqualTo("missing moov box");
     }
 
     private byte[] head() throws IOException {
@@ -206,6 +185,18 @@ public final class MovieHeadTest {
 
     private static Mp4Boxes.Box movieChild(byte[] head, String type) throws IOException {
         return Mp4Boxes.childOf(head, Mp4Boxes.child(head, 0, head.length, "moov"), type);
+    }
+
+    private static Mp4Boxes.Box moov(byte[] head) throws IOException {
+        return Mp4Boxes.child(head, 0, head.length, "moov");
+    }
+
+    private static Mp4Boxes.Box trak(byte[] head, int index) throws IOException {
+        return (index == 0) ? Mp4Boxes.childOf(head, moov(head), "trak") : secondChild(head, moov(head), "trak");
+    }
+
+    private static long indexField(byte[] head, int boxIndex, int offset) throws IOException {
+        return Mp4Boxes.u32(head, topLevel(head, boxIndex).offset + offset);
     }
 
     private static Mp4Boxes.Box secondChild(byte[] head, Mp4Boxes.Box parent, String type) throws IOException {

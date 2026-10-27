@@ -50,14 +50,14 @@ public final class BuildTagTest {
         // given
         long[] now = { 1700000000123L };
         BuildTag buildTag = BuildTag.fromCertificate(CERTIFICATE, () -> now[0]++, fixedRandom(45));
+        String first = buildTag.next();
 
         // when
-        String first = buildTag.next();
         String second = buildTag.next();
 
         // then
-        Assertions.assertThat(first.startsWith("170000000012300045.")).isTrue();
-        Assertions.assertThat(second.startsWith("170000000012400045.")).isTrue();
+        Assertions.assertThat(first).startsWith("170000000012300045.");
+        Assertions.assertThat(second).startsWith("170000000012400045.");
     }
 
     @Test
