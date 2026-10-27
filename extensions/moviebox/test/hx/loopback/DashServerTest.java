@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.loopback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import hx.DashFixture;
 import hx.dash.DashFile;
 import org.assertj.core.api.Assertions;
 import org.junit.After;

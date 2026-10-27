@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.loopback;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import android.util.Log;
 import hx.dash.DashFile;
 import hx.util.Logs;
 
-final class DashServer implements Runnable {
+public final class DashServer implements Runnable {
 
     static final int PORT = 47291;
 
@@ -62,11 +62,11 @@ final class DashServer implements Runnable {
         this.serverSocket = serverSocket;
     }
 
-    static DashServer bind(Source source) throws IOException {
+    public static DashServer bind(Source source) throws IOException {
         return new DashServer(source, new ServerSocket(PORT, BACKLOG, InetAddress.getByAddress(LOOPBACK)));
     }
 
-    static String buildUrl(String subjectId, int season, int episode, int height, String origin, long originSize,
+    public static String buildUrl(String subjectId, int season, int episode, int height, String origin, long originSize,
             String resourceId) {
         return "http://127.0.0.1:" + PORT + "/dash/" + subjectId + "/" + season + "/" + episode + "/" + height + ".mp4"
                 + "?" + LoopbackRequest.ORIGIN_PARAMETER + "=" + Uri.encode(origin) + "&"
@@ -74,7 +74,7 @@ final class DashServer implements Runnable {
                         ? "&" + LoopbackRequest.RESOURCE_ID_PARAMETER + "=" + Uri.encode(resourceId) : "");
     }
 
-    synchronized void start() {
+    public synchronized void start() {
         if (this.started) {
             throw new IllegalStateException("already started");
         }
@@ -84,7 +84,7 @@ final class DashServer implements Runnable {
         acceptor.start();
     }
 
-    void close() {
+    public void close() {
         try {
             this.serverSocket.close();
         } catch (IOException ignored) {
@@ -194,31 +194,31 @@ final class DashServer implements Runnable {
         }
     }
 
-    interface Source {
+    public interface Source {
 
         DashFile open(String subjectId, int season, int episode, int height, String origin, long originSize,
                 String resourceId, boolean fromStart) throws IOException;
 
     }
 
-    static final class RedirectException extends IOException {
+    public static final class RedirectException extends IOException {
 
         private static final long serialVersionUID = 1L;
 
         final String location;
 
-        RedirectException(String location) {
+        public RedirectException(String location) {
             super("redirect to " + location);
             this.location = location;
         }
 
     }
 
-    static final class UnavailableException extends IOException {
+    public static final class UnavailableException extends IOException {
 
         private static final long serialVersionUID = 1L;
 
-        UnavailableException(String message) {
+        public UnavailableException(String message) {
             super(message);
         }
 

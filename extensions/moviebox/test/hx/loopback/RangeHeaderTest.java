@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.loopback;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

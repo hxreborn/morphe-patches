@@ -4,6 +4,7 @@
  */
 package hx;
 
+import hx.loopback.DashServer;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.json.JSONObject;

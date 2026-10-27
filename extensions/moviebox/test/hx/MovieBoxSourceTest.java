@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import hx.dash.DashFile;
+import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
 import okhttp3.OkHttpClient;
 import org.assertj.core.api.Assertions;
