@@ -34,11 +34,11 @@ public final class DashInterceptorReplacementTest {
 
     private static final String UNPACED_MANIFEST = "https://sacdn.hakunaymatata.com/abc/index.mpd";
 
-    private static final String EDGE_PLAY_INFO = SignedResourceTest
-        .playInfo(SignedResourceTest.edgeCacheCookie("https://edge.example.com/video/"));
+    private static final String EDGE_PLAY_INFO = PlayInfoFixtures
+        .playInfo(PlayInfoFixtures.edgeCacheCookie("https://edge.example.com/video/"));
 
-    private static final String UNPACED_PLAY_INFO = SignedResourceTest
-        .playInfo(SignedResourceTest.cloudFrontCookie("https://sacdn.hakunaymatata.com/abc/*"));
+    private static final String UNPACED_PLAY_INFO = PlayInfoFixtures
+        .playInfo(PlayInfoFixtures.cloudFrontCookie("https://sacdn.hakunaymatata.com/abc/*"));
 
     private final ClassLoader loader = getClass().getClassLoader();
 
@@ -87,7 +87,7 @@ public final class DashInterceptorReplacementTest {
             throws IOException, ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(
-                SignedResourceTest.playInfo(SignedResourceTest.cloudFrontCookie("https://other.example.com/abc/*")));
+                PlayInfoFixtures.playInfo(PlayInfoFixtures.cloudFrontCookie("https://other.example.com/abc/*")));
 
         // when
         String body = intercept(interceptor, true);

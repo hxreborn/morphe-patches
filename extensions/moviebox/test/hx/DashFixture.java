@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
-final class DashFixture implements AutoCloseable {
+public final class DashFixture implements AutoCloseable {
 
-    static final int TRACK_ID_IN_SEGMENT = 44;
+    public static final int TRACK_ID_IN_SEGMENT = 44;
 
     private static final String MANIFEST = "<MPD mediaPresentationDuration=\"PT4S\"><Period>"
             + "<AdaptationSet contentType=\"video\"><SegmentTemplate timescale=\"1000\" initialization=\"v/init.mp4\" "
@@ -20,17 +20,17 @@ final class DashFixture implements AutoCloseable {
             + "media=\"a/$Number$.m4s\" duration=\"96000\"/><Representation id=\"a\" bandwidth=\"1\"/>"
             + "</AdaptationSet></Period></MPD>";
 
-    final LocalCdn cdn;
+    public final LocalCdn cdn;
 
-    final byte[][] videoSegments = { Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(110_000, 1)),
+    public final byte[][] videoSegments = { Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(110_000, 1)),
             Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(120_000, 2)) };
 
-    final byte[][] audioSegments = { Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(60_000, 3)),
+    public final byte[][] audioSegments = { Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(60_000, 3)),
             Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(70_000, 4)) };
 
-    final AtomicInteger refreshes = new AtomicInteger();
+    public final AtomicInteger refreshes = new AtomicInteger();
 
-    DashFixture() throws IOException {
+    public DashFixture() throws IOException {
         this.cdn = new LocalCdn("fresh=1");
         this.cdn.put("/index.mpd", MANIFEST.getBytes(StandardCharsets.UTF_8));
         this.cdn.put("/v/init.mp4", Mp4Fixtures.initSegment(1, 1000, 90000));
@@ -38,14 +38,14 @@ final class DashFixture implements AutoCloseable {
         publishSegments(new byte[0]);
     }
 
-    void publishSegments(byte[] prefix) {
+    public void publishSegments(byte[] prefix) {
         this.cdn.put("/v/1.m4s", Mp4Boxes.concat(prefix, this.videoSegments[0]));
         this.cdn.put("/v/2.m4s", Mp4Boxes.concat(prefix, this.videoSegments[1]));
         this.cdn.put("/a/1.m4s", Mp4Boxes.concat(prefix, this.audioSegments[0]));
         this.cdn.put("/a/2.m4s", Mp4Boxes.concat(prefix, this.audioSegments[1]));
     }
 
-    DashFile open() throws IOException {
+    public DashFile open() throws IOException {
         CdnCookies cookies = new CdnCookies() {
             @Override
             public String current() {
@@ -61,7 +61,7 @@ final class DashFixture implements AutoCloseable {
         return DashFile.open(this.cdn.url("/index.mpd"), 720, cookies);
     }
 
-    int payloadBytes() {
+    public int payloadBytes() {
         int total = 0;
         for (byte[] segment : this.videoSegments) {
             total += segment.length;
@@ -72,7 +72,7 @@ final class DashFixture implements AutoCloseable {
         return total;
     }
 
-    byte[] expectedBody() {
+    public byte[] expectedBody() {
         return Mp4Boxes.concat(this.videoSegments[0], asAudio(this.audioSegments[0]), this.videoSegments[1],
                 asAudio(this.audioSegments[1]));
     }

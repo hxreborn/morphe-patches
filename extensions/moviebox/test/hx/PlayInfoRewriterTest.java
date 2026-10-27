@@ -22,8 +22,7 @@ public final class PlayInfoRewriterTest {
     public void pointsSignedStreamsAtTheManifest() throws JSONException {
         // given
         String body = "{\"data\":{\"streams\":[{\"url\":\"https://origin.example.com/f.mp4\",\"format\":\"MP4\","
-                + "\"signCookie\":\"" + SignedResourceTest.cloudFrontCookie("https://sacdn.example.com/abc/*")
-                + "\"}]}}";
+                + "\"signCookie\":\"" + PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/abc/*") + "\"}]}}";
 
         // when
         String rewritten = PlayInfoRewriter.rewrite(body, "77", 0, 0);

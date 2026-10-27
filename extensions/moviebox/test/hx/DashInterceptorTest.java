@@ -85,8 +85,8 @@ public final class DashInterceptorTest {
     public void pointsSignedStreamsAtTheManifest()
             throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
-        String cookie = SignedResourceTest.cloudFrontCookie("https://sacdn.example.com/abc/*");
-        this.server.put(PLAY_INFO, SignedResourceTest.playInfo(cookie).getBytes(StandardCharsets.UTF_8));
+        String cookie = PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/abc/*");
+        this.server.put(PLAY_INFO, PlayInfoFixtures.playInfo(cookie).getBytes(StandardCharsets.UTF_8));
 
         // when
         String body = fetch(PLAY_INFO + "?subjectId=77&se=0&ep=0", true, Collections.<String>emptySet());

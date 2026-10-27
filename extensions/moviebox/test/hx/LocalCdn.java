@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class LocalCdn implements AutoCloseable {
+public final class LocalCdn implements AutoCloseable {
 
     private static final Pattern RANGE = Pattern.compile("bytes=(\\d+)-(\\d+)");
 
@@ -49,43 +49,43 @@ final class LocalCdn implements AutoCloseable {
 
     private volatile boolean rangesIgnored;
 
-    LocalCdn(String requiredCookie) throws IOException {
+    public LocalCdn(String requiredCookie) throws IOException {
         this.requiredCookie = requiredCookie;
         this.socket = new ServerSocket(0, 50, InetAddress.getLoopbackAddress());
         this.workers.execute(this::acceptLoop);
     }
 
-    void put(String path, byte[] body) {
+    public void put(String path, byte[] body) {
         this.files.put(path, body);
     }
 
-    String url(String path) {
+    public String url(String path) {
         return "http://127.0.0.1:" + this.socket.getLocalPort() + path;
     }
 
-    int hitsOn(String path) {
+    public int hitsOn(String path) {
         AtomicInteger count = this.hits.get(path);
         return (count != null) ? count.get() : 0;
     }
 
-    void ignoreRanges() {
+    public void ignoreRanges() {
         this.rangesIgnored = true;
     }
 
-    void delayRanges(long delayMs) {
+    public void delayRanges(long delayMs) {
         this.rangeDelayMs = delayMs;
     }
 
-    List<String> rangesOn(String path) {
+    public List<String> rangesOn(String path) {
         List<String> served = this.ranges.get(path);
         return (served != null) ? new ArrayList<>(served) : Collections.<String>emptyList();
     }
 
-    int peakConcurrentRanges() {
+    public int peakConcurrentRanges() {
         return this.peakActive.get();
     }
 
-    void forgetRanges() {
+    public void forgetRanges() {
         this.ranges.clear();
         this.peakActive.set(0);
     }

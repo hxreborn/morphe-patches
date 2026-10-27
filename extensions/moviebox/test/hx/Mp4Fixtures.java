@@ -7,24 +7,24 @@ package hx;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-final class Mp4Fixtures {
+public final class Mp4Fixtures {
 
     private Mp4Fixtures() {
     }
 
-    static byte[] box(String type, byte[]... children) {
+    public static byte[] box(String type, byte[]... children) {
         return Mp4Boxes.box(type, Mp4Boxes.concat(children));
     }
 
-    static byte[] fullBox(String type, int version, byte[]... children) {
+    public static byte[] fullBox(String type, int version, byte[]... children) {
         return box(type, Mp4Boxes.concat(new byte[] { (byte) version, 0, 0, 0 }, Mp4Boxes.concat(children)));
     }
 
-    static byte[] zeros(int count) {
+    public static byte[] zeros(int count) {
         return new byte[count];
     }
 
-    static byte[] u32(long... values) {
+    public static byte[] u32(long... values) {
         byte[] out = new byte[values.length * 4];
         for (int i = 0; i < values.length; i++) {
             Mp4Boxes.putU32(out, i * 4, values[i]);
@@ -32,7 +32,7 @@ final class Mp4Fixtures {
         return out;
     }
 
-    static byte[] initSegment(int trackId, long movieTimescale, long mediaTimescale) {
+    public static byte[] initSegment(int trackId, long movieTimescale, long mediaTimescale) {
         byte[] ftyp = box("ftyp", "iso6".getBytes(StandardCharsets.ISO_8859_1), zeros(4));
         byte[] mvhd = fullBox("mvhd", 0, u32(0, 0, movieTimescale, 0, 0x00010000), zeros(2 + 10 + 36 + 24),
                 u32(trackId + 1));
@@ -43,14 +43,14 @@ final class Mp4Fixtures {
         return Mp4Boxes.concat(ftyp, box("moov", mvhd, trak, box("mvex", trex)));
     }
 
-    static byte[] mediaSegment(int trackId, byte[] payload) {
+    public static byte[] mediaSegment(int trackId, byte[] payload) {
         byte[] mfhd = fullBox("mfhd", 0, u32(1));
         byte[] tfhd = fullBox("tfhd", 0, u32(trackId));
         byte[] moof = box("moof", mfhd, box("traf", tfhd));
         return Mp4Boxes.concat(moof, box("mdat", payload));
     }
 
-    static byte[] bytes(int length, int seed) {
+    public static byte[] bytes(int length, int seed) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         for (int i = 0; i < length; i++) {
             out.write((seed + i) & 0x7F);

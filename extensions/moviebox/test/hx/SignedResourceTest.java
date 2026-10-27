@@ -4,10 +4,8 @@
  */
 package hx;
 
-import java.nio.charset.StandardCharsets;
 
 import android.net.Uri;
-import android.util.Base64;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +19,7 @@ public final class SignedResourceTest {
     @Test
     public void readsTheManifestFromACloudFrontPolicy() {
         // given
-        String cookie = cloudFrontCookie("https://sacdn.hakunaymatata.com/abc/*");
+        String cookie = PlayInfoFixtures.cloudFrontCookie("https://sacdn.hakunaymatata.com/abc/*");
 
         // when
         SignedResource resource = SignedResource.fromCookie(cookie);
@@ -35,7 +33,7 @@ public final class SignedResourceTest {
     @Test
     public void readsTheManifestFromAnEdgeCacheCookie() {
         // given
-        String cookie = edgeCacheCookie("https://sbcdn5.example.com/abc");
+        String cookie = PlayInfoFixtures.edgeCacheCookie("https://sbcdn5.example.com/abc");
 
         // when
         SignedResource resource = SignedResource.fromCookie(cookie);
@@ -48,7 +46,8 @@ public final class SignedResourceTest {
     @Test
     public void keepsTheSlashOfAnEdgeCachePrefix() {
         // when
-        SignedResource resource = SignedResource.fromCookie(edgeCacheCookie("https://sbcdn5.example.com/abc/"));
+        SignedResource resource = SignedResource
+            .fromCookie(PlayInfoFixtures.edgeCacheCookie("https://sbcdn5.example.com/abc/"));
 
         // then
         Assertions.assertThat(resource.manifestUrl).isEqualTo("https://sbcdn5.example.com/abc/index.mpd");
@@ -57,7 +56,8 @@ public final class SignedResourceTest {
     @Test
     public void refusesAPolicyOutsideHttps() {
         // when
-        SignedResource resource = SignedResource.fromCookie(cloudFrontCookie("http://sacdn.example.com/abc/*"));
+        SignedResource resource = SignedResource
+            .fromCookie(PlayInfoFixtures.cloudFrontCookie("http://sacdn.example.com/abc/*"));
 
         // then
         Assertions.assertThat(resource).isNull();
@@ -66,7 +66,8 @@ public final class SignedResourceTest {
     @Test
     public void refusesAPolicyWithoutAWildcardResource() {
         // when
-        SignedResource resource = SignedResource.fromCookie(cloudFrontCookie("https://sacdn.example.com/abc"));
+        SignedResource resource = SignedResource
+            .fromCookie(PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/abc"));
 
         // then
         Assertions.assertThat(resource).isNull();
@@ -75,7 +76,8 @@ public final class SignedResourceTest {
     @Test
     public void refusesAnEdgeCachePrefixOutsideHttps() {
         // when
-        SignedResource resource = SignedResource.fromCookie(edgeCacheCookie("http://sbcdn5.example.com/abc"));
+        SignedResource resource = SignedResource
+            .fromCookie(PlayInfoFixtures.edgeCacheCookie("http://sbcdn5.example.com/abc"));
 
         // then
         Assertions.assertThat(resource).isNull();
@@ -102,8 +104,9 @@ public final class SignedResourceTest {
     @Test
     public void takesTheFirstStreamThatCarriesASignedCookie() {
         // given
-        String body = playInfo("", cloudFrontCookie("https://sacdn.example.com/one/*"),
-                cloudFrontCookie("https://sacdn.example.com/two/*"));
+        String body = PlayInfoFixtures.playInfo("",
+                PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/one/*"),
+                PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/two/*"));
 
         // when
         SignedResource resource = SignedResource.fromPlayInfo(body);
@@ -124,7 +127,8 @@ public final class SignedResourceTest {
     @Test
     public void recognizesEdgeCachePlayInfo() {
         // when
-        boolean edge = SignedResource.isEdgeCachePlayInfo(playInfo(edgeCacheCookie("https://sbcdn5.example.com/a")));
+        boolean edge = SignedResource.isEdgeCachePlayInfo(
+                PlayInfoFixtures.playInfo(PlayInfoFixtures.edgeCacheCookie("https://sbcdn5.example.com/a")));
 
         // then
         Assertions.assertThat(edge).isTrue();
@@ -133,7 +137,8 @@ public final class SignedResourceTest {
     @Test
     public void recognizesCloudFrontPlayInfoAsNotEdgeCache() {
         // when
-        boolean edge = SignedResource.isEdgeCachePlayInfo(playInfo(cloudFrontCookie("https://sacdn.example.com/a/*")));
+        boolean edge = SignedResource.isEdgeCachePlayInfo(
+                PlayInfoFixtures.playInfo(PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/a/*")));
 
         // then
         Assertions.assertThat(edge).isFalse();
@@ -164,34 +169,6 @@ public final class SignedResourceTest {
 
         // then
         Assertions.assertThat(key).isNull();
-    }
-
-    static String cloudFrontCookie(String resource) {
-        String json = "{\"Statement\":[{\"Resource\":\"" + resource + "\"}]}";
-        String policy = Base64.encodeToString(json.getBytes(StandardCharsets.UTF_8), Base64.NO_WRAP)
-            .replace('+', '-')
-            .replace('=', '_')
-            .replace('/', '~');
-        return "CloudFront-Policy=" + policy + ";CloudFront-Signature=sig;CloudFront-Key-Pair-Id=key";
-    }
-
-    static String edgeCacheCookie(String prefix) {
-        String encoded = Base64.encodeToString(prefix.getBytes(StandardCharsets.UTF_8),
-                Base64.URL_SAFE | Base64.NO_WRAP);
-        return "Edge-Cache-Cookie=urlprefix=" + encoded + ":expires=1:hmac=abc;path=/";
-    }
-
-    static String playInfo(String... cookies) {
-        StringBuilder streams = new StringBuilder();
-        for (String cookie : cookies) {
-            if (streams.length() > 0) {
-                streams.append(',');
-            }
-            streams.append("{\"url\":\"https://origin.example.com/f.mp4\",\"signCookie\":\"")
-                .append(cookie)
-                .append("\"}");
-        }
-        return "{\"data\":{\"streams\":[" + streams + "]}}";
     }
 
 }
