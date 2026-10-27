@@ -2,11 +2,12 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.source;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import hx.LocalCdn;
 import hx.dash.DashFile;
 import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;

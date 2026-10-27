@@ -12,6 +12,7 @@ import java.util.List;
 
 import hx.gateway.PlayInfoLookup;
 import hx.okhttp.ApiClient;
+import hx.source.MovieBoxSource;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import org.assertj.core.api.Assertions;

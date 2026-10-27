@@ -17,6 +17,7 @@ package hx;
 
 import android.util.Log;
 import hx.loopback.DashServer;
+import hx.source.SignedResource;
 import hx.util.Logs;
 import org.json.JSONArray;
 import org.json.JSONException;

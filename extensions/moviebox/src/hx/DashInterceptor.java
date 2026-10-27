@@ -22,6 +22,9 @@ import java.util.Set;
 import android.net.Uri;
 import android.util.Log;
 import hx.okhttp.ChainInterceptor;
+import hx.source.Endpoints;
+import hx.source.MovieBoxSource;
+import hx.source.SignedResource;
 import hx.util.Logs;
 import hx.util.Reflect;
 

@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.source;
 
 import java.io.IOException;
 import java.util.Map;
@@ -33,7 +33,7 @@ import hx.util.Logs;
 import hx.util.RemoteFile;
 import hx.util.Tasks;
 
-final class MovieBoxSource implements DashServer.Source {
+public final class MovieBoxSource implements DashServer.Source {
 
     private static final int FILE_RETENTION = 8;
 
@@ -59,7 +59,7 @@ final class MovieBoxSource implements DashServer.Source {
 
     private final Map<String, FutureTask<DashFile>> files = new LruMap<>(FILE_RETENTION);
 
-    MovieBoxSource(ApiClient api, PlayInfoLookup replacementLookup) {
+    public MovieBoxSource(ApiClient api, PlayInfoLookup replacementLookup) {
         this.api = api;
         this.directFiles = new DirectFiles(api);
         this.replacementLookup = replacementLookup;
@@ -97,7 +97,7 @@ final class MovieBoxSource implements DashServer.Source {
         return getOrCreateFile(subjectId, season, episode, height);
     }
 
-    SignedResource observePlayInfo(String requestUrl, String body, String apiHost) {
+    public SignedResource observePlayInfo(String requestUrl, String body, String apiHost) {
         String key = SignedResource.key(Uri.parse(requestUrl));
         SignedResource resource = SignedResource.fromPlayInfo(body);
         if (resource == null) {
@@ -115,15 +115,15 @@ final class MovieBoxSource implements DashServer.Source {
         return resource;
     }
 
-    String fetchReplacementPlayInfo(String pathAndQuery) {
+    public String fetchReplacementPlayInfo(String pathAndQuery) {
         return this.replacementLookup.fetchPlayInfo(pathAndQuery, MovieBoxSource::isUnpacedPlayInfo);
     }
 
-    String directFilePlayInfo(String playInfo, String subjectId, int season, int episode) {
+    public String directFilePlayInfo(String playInfo, String subjectId, int season, int episode) {
         return this.directFiles.playInfoFor(playInfo, subjectId, season, episode);
     }
 
-    String withDirectFileSizes(String resourceList) {
+    public String withDirectFileSizes(String resourceList) {
         return this.directFiles.withSizes(resourceList);
     }
 

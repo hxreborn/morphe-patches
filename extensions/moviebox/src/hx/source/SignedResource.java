@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.source;
 
 import java.nio.charset.StandardCharsets;
 
@@ -23,27 +23,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-final class SignedResource {
+public final class SignedResource {
 
     private static final String POLICY_KEY = "CloudFront-Policy=";
 
     private static final String EDGE_KEY = "Edge-Cache-Cookie=";
 
-    final String cookie;
+    public final String manifestUrl;
 
-    final String manifestUrl;
+    final String cookie;
 
     private SignedResource(String cookie, String manifestUrl) {
         this.cookie = cookie;
         this.manifestUrl = manifestUrl;
     }
 
-    static SignedResource fromCookie(String cookie) {
+    public static SignedResource fromCookie(String cookie) {
         SignedResource cloudFront = fromCloudFront(cookie);
         return (cloudFront != null) ? cloudFront : fromEdgeCache(cookie);
     }
 
-    static SignedResource fromPlayInfo(String body) {
+    public static SignedResource fromPlayInfo(String body) {
         try {
             return firstSigned(new JSONObject(body).getJSONObject("data").getJSONArray("streams"));
         } catch (JSONException ex) {
@@ -51,7 +51,7 @@ final class SignedResource {
         }
     }
 
-    static boolean isEdgeCachePlayInfo(String playInfo) {
+    public static boolean isEdgeCachePlayInfo(String playInfo) {
         SignedResource resource = fromPlayInfo(playInfo);
         return resource != null && resource.isEdgeCache();
     }
