@@ -123,7 +123,8 @@ final class DashInterceptor extends ChainInterceptor {
         Object sent = Reflect.call(response, "request");
         String apiHost = Uri.parse(String.valueOf(Reflect.call(sent, "url"))).getHost();
         this.source.observePlayInfo(url, playInfo, apiHost);
-        return PlayInfoRewriter.rewrite(playInfo, subjectId, season, episode);
+        return this.routeDownloads ? PlayInfoRewriter.rewrite(playInfo, subjectId, season, episode)
+                : PlayInfoRewriter.pointAtManifests(playInfo);
     }
 
     private String withUnpacedCdn(Uri requested, String playInfo) {

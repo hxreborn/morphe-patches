@@ -39,6 +39,9 @@ public final class DashInterceptorTest {
 
     private static final String MEMBER = "{\"data\":{\"daysLeft\":3,\"memberType\":\"FREE\",\"expiryDate\":\"2026-01-01\"}}";
 
+    private static final String UNSIGNED_PLAY_INFO = "{\"data\":{\"streams\":[{\"url\":"
+            + "\"https://origin.example.com/a.mp4\",\"resolutions\":\"720\",\"size\":100,\"signCookie\":\"\"}]}}";
+
     private final ClassLoader loader = getClass().getClassLoader();
 
     private LocalCdn server;
@@ -90,6 +93,32 @@ public final class DashInterceptorTest {
         JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
         assertEquals("https://sacdn.example.com/abc/index.mpd", stream.getString("url"));
         assertEquals("DASH", stream.getString("format"));
+    }
+
+    @Test
+    public void routesUnsignedStreamsThroughTheLoopbackWhenDownloadsAreRouted() throws Exception {
+        // given
+        this.server.put(PLAY_INFO, UNSIGNED_PLAY_INFO.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", true, Collections.<String>emptySet());
+
+        // then
+        JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        assertEquals(DashServer.buildUrl("77", 1, 2, 720, "https://origin.example.com/a.mp4", 100, null),
+                stream.getString("url"));
+    }
+
+    @Test
+    public void keepsUnsignedStreamsWhenDownloadsAreNotRouted() throws Exception {
+        // given
+        this.server.put(PLAY_INFO, UNSIGNED_PLAY_INFO.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", false, Collections.<String>emptySet());
+
+        // then
+        assertEquals(UNSIGNED_PLAY_INFO, body);
     }
 
     @Test

@@ -27,6 +27,10 @@ final class PlayInfoRewriter {
     private PlayInfoRewriter() {
     }
 
+    static String pointAtManifests(String body) {
+        return rewrite(body, null, -1, -1);
+    }
+
     static String rewrite(String body, String subjectId, int season, int episode) {
         try {
             JSONObject root = new JSONObject(body);
