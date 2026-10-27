@@ -90,7 +90,7 @@ public final class LoopbackRequestTest {
     }
 
     @Test
-    public void answersAHeadRequestWithoutABody() {
+    public void marksAHeadRequestAsHeadOnly() {
         // when
         LoopbackRequest request = LoopbackRequest.parse("HEAD /dash/77/0/0/720.mp4 HTTP/1.1\r\nHost: x");
 

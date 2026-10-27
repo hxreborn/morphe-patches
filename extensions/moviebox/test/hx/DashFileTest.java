@@ -4,18 +4,13 @@
  */
 package hx;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,38 +21,18 @@ import org.robolectric.annotation.Config;
 @Config(sdk = 28)
 public final class DashFileTest {
 
-    private static final String MANIFEST = "<MPD mediaPresentationDuration=\"PT4S\"><Period>"
-            + "<AdaptationSet contentType=\"video\"><SegmentTemplate timescale=\"1000\" initialization=\"v/init.mp4\" "
-            + "media=\"v/$Number$.m4s\"><SegmentTimeline><S t=\"0\" d=\"2000\" r=\"1\"/></SegmentTimeline>"
-            + "</SegmentTemplate><Representation id=\"v\" height=\"720\" bandwidth=\"1\"/></AdaptationSet>"
-            + "<AdaptationSet contentType=\"audio\"><SegmentTemplate timescale=\"48000\" initialization=\"a/init.mp4\" "
-            + "media=\"a/$Number$.m4s\" duration=\"96000\"/><Representation id=\"a\" bandwidth=\"1\"/>"
-            + "</AdaptationSet></Period></MPD>";
+    private static final int PACED_CHUNK_BYTES = 48 * 1024;
 
-    private static final int TRACK_ID_IN_SEGMENT = 44;
-
-    private final byte[][] videoSegments = { Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(300, 1)),
-            Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(310, 2)) };
-
-    private final byte[][] audioSegments = { Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(120, 3)),
-            Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(130, 4)) };
-
-    private final AtomicInteger refreshes = new AtomicInteger();
-
-    private LocalCdn cdn;
+    private DashFixture fixture;
 
     @Before
     public void startCdn() throws IOException {
-        this.cdn = new LocalCdn("fresh=1");
-        this.cdn.put("/index.mpd", MANIFEST.getBytes(StandardCharsets.UTF_8));
-        this.cdn.put("/v/init.mp4", Mp4Fixtures.initSegment(1, 1000, 90000));
-        this.cdn.put("/a/init.mp4", Mp4Fixtures.initSegment(1, 1000, 48000));
-        publishSegments(new byte[0]);
+        this.fixture = new DashFixture();
     }
 
     @After
     public void stopCdn() {
-        this.cdn.close();
+        this.fixture.close();
     }
 
     @Test
@@ -66,7 +41,7 @@ public final class DashFileTest {
         DashFile file = open();
 
         // then
-        assertEquals(headLength(whole(file)) + payloadBytes(), file.length);
+        Assert.assertEquals(headLength(whole(file)) + this.fixture.payloadBytes(), file.length);
     }
 
     @Test
@@ -83,7 +58,7 @@ public final class DashFileTest {
         }
 
         // then
-        assertEquals("ftyp moov sidx sidx ", types.toString());
+        Assert.assertEquals("ftyp moov sidx sidx ", types.toString());
     }
 
     @Test
@@ -95,7 +70,7 @@ public final class DashFileTest {
         byte[] body = Arrays.copyOfRange(bytes, headLength(bytes), bytes.length);
 
         // then
-        assertArrayEquals(expectedBody(), body);
+        Assert.assertArrayEquals(this.fixture.expectedBody(), body);
     }
 
     @Test
@@ -103,27 +78,27 @@ public final class DashFileTest {
         // given
         byte[] styp = Mp4Fixtures.box("styp", Mp4Fixtures.zeros(8));
         byte[] sidx = Mp4Fixtures.box("sidx", Mp4Fixtures.zeros(32));
-        publishSegments(Mp4Boxes.concat(styp, sidx));
+        this.fixture.publishSegments(Mp4Boxes.concat(styp, sidx));
         byte[] bytes = whole(open());
 
         // when
         byte[] body = Arrays.copyOfRange(bytes, headLength(bytes), bytes.length);
 
         // then
-        assertArrayEquals(expectedBody(), body);
+        Assert.assertArrayEquals(this.fixture.expectedBody(), body);
     }
 
     @Test
     public void numbersTheAudioFragmentsAfterTheVideoTrack() throws IOException {
         // given
         byte[] bytes = whole(open());
-        int audioStart = headLength(bytes) + this.videoSegments[0].length;
+        int audioStart = headLength(bytes) + this.fixture.videoSegments[0].length;
 
         // when
-        long audioTrackId = Mp4Boxes.u32(bytes, audioStart + TRACK_ID_IN_SEGMENT);
+        long audioTrackId = Mp4Boxes.u32(bytes, audioStart + DashFixture.TRACK_ID_IN_SEGMENT);
 
         // then
-        assertEquals(2, audioTrackId);
+        Assert.assertEquals(2, audioTrackId);
     }
 
     @Test
@@ -132,7 +107,8 @@ public final class DashFileTest {
         DashFile file = open();
         byte[] whole = whole(file);
         long[][] ranges = { { 0, 9 }, { 100, 499 }, { headLength(whole) - 5, headLength(whole) + 5 },
-                { headLength(whole) + 290, headLength(whole) + 700 }, { file.length - 10, file.length - 1 } };
+                { headLength(whole) + 290, headLength(whole) + 700 },
+                { headLength(whole) + 49000, headLength(whole) + 49300 }, { file.length - 10, file.length - 1 } };
 
         for (long[] range : ranges) {
 
@@ -141,7 +117,7 @@ public final class DashFileTest {
             file.write(out, range[0], range[1]);
 
             // then
-            assertArrayEquals("range " + range[0] + "-" + range[1],
+            Assert.assertArrayEquals("range " + range[0] + "-" + range[1],
                     Arrays.copyOfRange(whole, (int) range[0], (int) range[1] + 1), out.toByteArray());
         }
     }
@@ -152,47 +128,48 @@ public final class DashFileTest {
         DashFile file = open();
 
         // then
-        assertTrue(this.refreshes.get() > 0);
-        assertTrue(file.length > 0);
+        Assert.assertTrue(this.fixture.refreshes.get() > 0);
+        Assert.assertTrue(file.length > 0);
     }
 
     @Test
     public void readsPacedHostsInSmallParallelChunks() throws IOException {
+        // given
+        DashFile file = open();
+        this.fixture.cdn.delayRanges(100);
+        this.fixture.cdn.forgetRanges();
+
         // when
-        String pattern = open().readPattern();
+        byte[] bytes = whole(file);
 
         // then
-        assertEquals("16 x 48 KiB reads", pattern);
+        Assert.assertEquals(this.fixture.cdn.rangesOn("/v/1.m4s").toString(), 3,
+                this.fixture.cdn.rangesOn("/v/1.m4s").size());
+        Assert.assertTrue(largestRange("/v/1.m4s") <= PACED_CHUNK_BYTES);
+        Assert.assertTrue(largestRange("/a/2.m4s") <= PACED_CHUNK_BYTES);
+        Assert.assertTrue(this.fixture.cdn.peakConcurrentRanges() > 1);
+        Assert.assertArrayEquals(this.fixture.expectedBody(),
+                Arrays.copyOfRange(bytes, headLength(bytes), bytes.length));
     }
 
     @Test
     public void recognizesTheUnpacedHost() {
         // then
-        assertTrue(DashFile.isUnpacedCdn("https://sacdn.hakunaymatata.com/abc/index.mpd"));
-        assertFalse(DashFile.isUnpacedCdn("https://sbcdn5.hakunaymatata.com/abc/index.mpd"));
+        Assert.assertTrue(DashFile.isUnpacedCdn("https://sacdn.hakunaymatata.com/abc/index.mpd"));
+        Assert.assertFalse(DashFile.isUnpacedCdn("https://sbcdn5.hakunaymatata.com/abc/index.mpd"));
     }
 
-    private void publishSegments(byte[] prefix) {
-        this.cdn.put("/v/1.m4s", Mp4Boxes.concat(prefix, this.videoSegments[0]));
-        this.cdn.put("/v/2.m4s", Mp4Boxes.concat(prefix, this.videoSegments[1]));
-        this.cdn.put("/a/1.m4s", Mp4Boxes.concat(prefix, this.audioSegments[0]));
-        this.cdn.put("/a/2.m4s", Mp4Boxes.concat(prefix, this.audioSegments[1]));
+    private int largestRange(String path) {
+        int largest = 0;
+        for (String range : this.fixture.cdn.rangesOn(path)) {
+            String[] bounds = range.split("-");
+            largest = Math.max(largest, Integer.parseInt(bounds[1]) - Integer.parseInt(bounds[0]) + 1);
+        }
+        return largest;
     }
 
     private DashFile open() throws IOException {
-        CdnCookies cookies = new CdnCookies() {
-            @Override
-            public String current() {
-                return "stale=1";
-            }
-
-            @Override
-            public String refresh(String rejected) {
-                DashFileTest.this.refreshes.incrementAndGet();
-                return "fresh=1";
-            }
-        };
-        return DashFile.open(this.cdn.url("/index.mpd"), 720, cookies);
+        return this.fixture.open();
     }
 
     private static byte[] whole(DashFile file) throws IOException {
@@ -207,28 +184,6 @@ public final class DashFileTest {
             at += Mp4Boxes.size(bytes, at);
         }
         return at;
-    }
-
-    private int payloadBytes() {
-        int total = 0;
-        for (byte[] segment : this.videoSegments) {
-            total += segment.length;
-        }
-        for (byte[] segment : this.audioSegments) {
-            total += segment.length;
-        }
-        return total;
-    }
-
-    private byte[] expectedBody() {
-        return Mp4Boxes.concat(this.videoSegments[0], asAudio(this.audioSegments[0]), this.videoSegments[1],
-                asAudio(this.audioSegments[1]));
-    }
-
-    private static byte[] asAudio(byte[] segment) {
-        byte[] copy = segment.clone();
-        Mp4Boxes.putU32(copy, TRACK_ID_IN_SEGMENT, 2);
-        return copy;
     }
 
 }

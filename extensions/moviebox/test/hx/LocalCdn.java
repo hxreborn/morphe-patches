@@ -12,11 +12,15 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +37,15 @@ final class LocalCdn implements AutoCloseable {
 
     private final Map<String, AtomicInteger> hits = new ConcurrentHashMap<>();
 
+    private final Map<String, List<String>> ranges = new ConcurrentHashMap<>();
+
+    private final AtomicInteger active = new AtomicInteger();
+
+    private final AtomicInteger peakActive = new AtomicInteger();
+
     private final String requiredCookie;
+
+    private volatile long rangeDelayMs;
 
     LocalCdn(String requiredCookie) throws IOException {
         this.requiredCookie = requiredCookie;
@@ -52,6 +64,24 @@ final class LocalCdn implements AutoCloseable {
     int hitsOn(String path) {
         AtomicInteger count = this.hits.get(path);
         return (count != null) ? count.get() : 0;
+    }
+
+    void delayRanges(long delayMs) {
+        this.rangeDelayMs = delayMs;
+    }
+
+    List<String> rangesOn(String path) {
+        List<String> served = this.ranges.get(path);
+        return (served != null) ? new ArrayList<>(served) : Collections.<String>emptyList();
+    }
+
+    int peakConcurrentRanges() {
+        return this.peakActive.get();
+    }
+
+    void forgetRanges() {
+        this.ranges.clear();
+        this.peakActive.set(0);
     }
 
     @Override
@@ -106,11 +136,11 @@ final class LocalCdn implements AutoCloseable {
         } else if (this.requiredCookie != null && !this.requiredCookie.equals(cookie)) {
             respond(out, "403 Forbidden", new byte[0], null);
         } else {
-            answerWithRange(out, body, range);
+            answerWithRange(out, path, body, range);
         }
     }
 
-    private static void answerWithRange(OutputStream out, byte[] body, String range) throws IOException {
+    private void answerWithRange(OutputStream out, String path, byte[] body, String range) throws IOException {
         Matcher matcher = (range != null) ? RANGE.matcher(range) : null;
         if (matcher == null || !matcher.matches()) {
             respond(out, "200 OK", body, null);
@@ -118,8 +148,24 @@ final class LocalCdn implements AutoCloseable {
         }
         int start = Integer.parseInt(matcher.group(1));
         int end = Math.min(Integer.parseInt(matcher.group(2)), body.length - 1);
-        respond(out, "206 Partial Content", Arrays.copyOfRange(body, start, end + 1),
-                "bytes " + start + "-" + end + "/" + body.length);
+        this.ranges.computeIfAbsent(path, (key) -> new CopyOnWriteArrayList<>()).add(start + "-" + end);
+        int inFlight = this.active.incrementAndGet();
+        this.peakActive.accumulateAndGet(inFlight, Math::max);
+        try {
+            pauseBeforeAnswering();
+            respond(out, "206 Partial Content", Arrays.copyOfRange(body, start, end + 1),
+                    "bytes " + start + "-" + end + "/" + body.length);
+        } finally {
+            this.active.decrementAndGet();
+        }
+    }
+
+    private void pauseBeforeAnswering() {
+        try {
+            Thread.sleep(this.rangeDelayMs);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     private static String pathOf(String requestLine) {
