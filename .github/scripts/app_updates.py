@@ -417,6 +417,19 @@ def verify(app, version, sources, ctx):
     return attempts
 
 
+def version_code(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def older_by_code(app, source):
+    codes = [c for c in map(version_code, app.get("current_version_codes") or []) if c is not None]
+    code = version_code(source.get("version_code"))
+    return bool(codes) and code is not None and code <= max(codes)
+
+
 def classify(app, sources, ctx):
     found = {name: r["version"] for name, r in sources.items() if r.get("version")}
     record = {"sources": sources, "notes": []}
@@ -429,9 +442,10 @@ def classify(app, sources, ctx):
 
     newer = {}
     for name, version in found.items():
-        if compare(version, app["current"]) > 0:
+        if compare(version, app["current"]) > 0 and not older_by_code(app, sources[name]):
             newer.setdefault(version_key(version), []).append(name)
-    behind = sorted(n for n, v in found.items() if compare(v, app["current"]) < 0)
+    behind = sorted(n for n, v in found.items()
+                    if compare(v, app["current"]) < 0 or (compare(v, app["current"]) > 0 and older_by_code(app, sources[n])))
     if behind:
         record["notes"].append("behind current: " + ", ".join(f"{n} {found[n]}" for n in behind))
     if not newer:

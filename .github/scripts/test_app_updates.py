@@ -70,6 +70,13 @@ assert close[:4] == ("issue", "close", "4", "--comment") and close[4].startswith
 print("issue sync passes")
 
 
+psiphon = {"current": "2.5.11", "current_version_codes": [506], "any_version": False}
+older = app_updates.classify(psiphon, {"aptoide": {"version": "486", "version_code": 486}}, {})
+assert older["status"] == "current" and older["candidate"] is None, older
+assert older["notes"] == ["behind current: aptoide 486"], older
+print("version code comparison passes")
+
+
 def base_apk_with_dex(folder, version):
     apk = Path(folder) / f"{version}.apk"
     with zipfile.ZipFile(apk, "w") as archive:
