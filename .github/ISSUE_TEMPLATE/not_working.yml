@@ -384,12 +384,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.65.0-dev.5"
         - "1.65.0-dev.4"
         - "1.65.0-dev.3"
         - "1.65.0-dev.2"
         - "1.65.0-dev.1"
         - "1.64.0-dev.1"
-        - "1.64.0"
         - "Older than these"
         # /generated
     validations:

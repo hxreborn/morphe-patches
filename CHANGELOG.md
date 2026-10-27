@@ -1,3 +1,11 @@
+## [1.65.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.4...v1.65.0-dev.5) (2026-10-27)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** keep direct file links as long as sizes ([bfe73a5](https://github.com/hxreborn/morphe-patches/commit/bfe73a5e36b793a0535ee0c338d4f860179f2d1d))
+* **MovieBox - All-In-One:** keep stream links without a loopback ([339f649](https://github.com/hxreborn/morphe-patches/commit/339f6496c9dec6760a6280ed399576d0fc15bb55))
+* **MovieBox - All-In-One:** redirect to the origin without a stream ([6b6b1eb](https://github.com/hxreborn/morphe-patches/commit/6b6b1eb4b9aa875816a978fbb2285ece85a6f82a))
+
 ## [1.65.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.3...v1.65.0-dev.4) (2026-10-27)
 
 ### Improvements
