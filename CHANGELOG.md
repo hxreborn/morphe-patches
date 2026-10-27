@@ -1,3 +1,15 @@
+## [1.65.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.5...v1.65.0-dev.6) (2026-10-27)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** remove server update notices ([fd4c6e4](https://github.com/hxreborn/morphe-patches/commit/fd4c6e407398a559f45c4d27a994f228c4b2fe7f))
+
+### New Features
+
+* **Connected2.me - Enable chat in all regions:** chat from any region ([f6b3255](https://github.com/hxreborn/morphe-patches/commit/f6b3255a64380099db37d18b14df506db506a1dc))
+* **Connected2.me - Remove app protection:** open without crashing ([07515c5](https://github.com/hxreborn/morphe-patches/commit/07515c5daa3c738a72639550ffcda12f7c93c0ce))
+* **Connected2.me - Spoof signature:** enable sign-up and sign-in ([f484e54](https://github.com/hxreborn/morphe-patches/commit/f484e5405fcb816ba180b7445999435c0020aa9d))
+
 ## [1.65.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.4...v1.65.0-dev.5) (2026-10-27)
 
 ### Bug Fixes
