@@ -6,20 +6,21 @@ package app.morphe.patches.perplexity.misc
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 
-private const val KOTLIN_UNIT = "Lkotlin/Unit;"
-
 internal fun BytecodePatchContext.returnUnitEarly(method: MutableMethod) {
-    val instanceField = classDefBy(KOTLIN_UNIT).fields.single {
-        AccessFlags.STATIC.isSet(it.accessFlags) && it.type == KOTLIN_UNIT
+    val unitClass = KotlinUnitToStringFingerprint.matchSingle().classDef
+    val unitType = unitClass.type
+    val instanceField = unitClass.fields.single {
+        AccessFlags.STATIC.isSet(it.accessFlags) && it.type == unitType
     }
 
     method.addInstructions(
         0,
         """
-            sget-object v0, $KOTLIN_UNIT->${instanceField.name}:$KOTLIN_UNIT
+            sget-object v0, $unitType->${instanceField.name}:$unitType
             return-object v0
         """,
     )
