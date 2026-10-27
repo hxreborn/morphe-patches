@@ -63,7 +63,7 @@ public final class AppPatch {
         }
     }
 
-    private static void doInstall(Class<?> manager) throws ReflectiveOperationException {
+    private static void installInterceptors(Class<?> manager) throws ReflectiveOperationException {
         AppNetwork network = AppNetwork.locate(manager);
         BuildTag buildTag = BuildTag.fromInstalledApp();
         Object taggedClient = withBuildTagInterceptor(network.loader, network.client, buildTag);
@@ -156,7 +156,7 @@ public final class AppPatch {
                 this.laboratoryUnlocked = true;
             }
             try {
-                doInstall(manager);
+                installInterceptors(manager);
                 return true;
             } catch (Throwable ex) {
                 this.failure = ex;
