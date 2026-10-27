@@ -68,7 +68,7 @@ public final class GatewaySignatureTest {
     }
 
     @Test
-    public void pairsTheTimestampWithTheMd5OfItsReversal() throws Exception {
+    public void pairsTheTimestampWithTheMd5OfItsReversal() throws IOException {
         // when
         String token = GatewaySignature.clientToken(TIMESTAMP);
 

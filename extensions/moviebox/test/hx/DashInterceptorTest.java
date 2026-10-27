@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -56,7 +57,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void extendsTheMembershipInTheProfileResponse() throws Exception {
+    public void extendsTheMembershipInTheProfileResponse()
+            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         this.server.put(PROFILE, MEMBER.getBytes(StandardCharsets.UTF_8));
 
@@ -68,7 +70,7 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void leavesOtherResponsesAlone() throws Exception {
+    public void leavesOtherResponsesAlone() throws ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         this.server.put("/other", MEMBER.getBytes(StandardCharsets.UTF_8));
 
@@ -80,7 +82,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void pointsSignedStreamsAtTheManifest() throws Exception {
+    public void pointsSignedStreamsAtTheManifest()
+            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         String cookie = SignedResourceTest.cloudFrontCookie("https://sacdn.example.com/abc/*");
         this.server.put(PLAY_INFO, SignedResourceTest.playInfo(cookie).getBytes(StandardCharsets.UTF_8));
@@ -95,7 +98,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void routesUnsignedStreamsThroughTheLoopbackWhenDownloadsAreRouted() throws Exception {
+    public void routesUnsignedStreamsThroughTheLoopbackWhenDownloadsAreRouted()
+            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         this.server.put(PLAY_INFO, UNSIGNED_PLAY_INFO.getBytes(StandardCharsets.UTF_8));
 
@@ -109,7 +113,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void keepsUnsignedStreamsWhenDownloadsAreNotRouted() throws Exception {
+    public void keepsUnsignedStreamsWhenDownloadsAreNotRouted()
+            throws ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         this.server.put(PLAY_INFO, UNSIGNED_PLAY_INFO.getBytes(StandardCharsets.UTF_8));
 
@@ -121,7 +126,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void routesResourceListsThroughTheLoopbackWhenDownloadsAreRouted() throws Exception {
+    public void routesResourceListsThroughTheLoopbackWhenDownloadsAreRouted()
+            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
@@ -137,7 +143,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void keepsResourceListsWhenDownloadsAreNotRouted() throws Exception {
+    public void keepsResourceListsWhenDownloadsAreNotRouted()
+            throws ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
@@ -151,7 +158,7 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void removesTheHiddenHomeTabs() throws Exception {
+    public void removesTheHiddenHomeTabs() throws ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         String tabs = "{\"data\":{\"bottomTabs\":[{\"subTabs\":[{\"tabCode\":\"home\"},{\"tabCode\":\"live\"}]}]}}";
         this.server.put(BOTTOM_TAB, tabs.getBytes(StandardCharsets.UTF_8));
@@ -165,7 +172,8 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void keepsTheHomeTabsWhenNoneAreHidden() throws Exception {
+    public void keepsTheHomeTabsWhenNoneAreHidden()
+            throws ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         String tabs = "{\"data\":{\"bottomTabs\":[{\"subTabs\":[{\"tabCode\":\"live\"}]}]}}";
         this.server.put(BOTTOM_TAB, tabs.getBytes(StandardCharsets.UTF_8));
@@ -177,7 +185,8 @@ public final class DashInterceptorTest {
         Assertions.assertThat(body).isEqualTo(tabs);
     }
 
-    private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs) throws Exception {
+    private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs)
+            throws ClassNotFoundException, IOException, ReflectiveOperationException {
         ApiClient api = new ApiClient(this.loader, new OkHttpClient(), this.server.url(""));
         DashInterceptor interceptor = new DashInterceptor(this.loader,
                 new MovieBoxSource(api, (path, accepted) -> null), routeDownloads, hiddenTabs);

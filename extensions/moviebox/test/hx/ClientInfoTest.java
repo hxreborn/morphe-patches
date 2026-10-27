@@ -4,6 +4,7 @@
  */
 package hx;
 
+import android.content.pm.PackageManager;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ import org.robolectric.annotation.Config;
 public final class ClientInfoTest {
 
     @Test
-    public void namesTheInstalledPackage() throws Exception {
+    public void namesTheInstalledPackage() throws JSONException, PackageManager.NameNotFoundException {
         // when
         JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
 
@@ -28,7 +29,7 @@ public final class ClientInfoTest {
     }
 
     @Test
-    public void carriesTheVersionCodeAsANumber() throws Exception {
+    public void carriesTheVersionCodeAsANumber() throws JSONException, PackageManager.NameNotFoundException {
         // when
         JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
 
@@ -37,7 +38,7 @@ public final class ClientInfoTest {
     }
 
     @Test
-    public void carriesADeviceIdAndAGaid() throws JSONException, Exception {
+    public void carriesADeviceIdAndAGaid() throws JSONException, PackageManager.NameNotFoundException {
         // when
         JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
 
@@ -48,7 +49,7 @@ public final class ClientInfoTest {
     }
 
     @Test
-    public void drawsAFreshIdentityEachTime() throws Exception {
+    public void drawsAFreshIdentityEachTime() throws JSONException, PackageManager.NameNotFoundException {
         // given
         String first = ClientInfo.create(RuntimeEnvironment.getApplication());
 

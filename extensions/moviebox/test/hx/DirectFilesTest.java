@@ -4,11 +4,13 @@
  */
 package hx;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
 import org.assertj.core.api.Assertions;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +34,7 @@ public final class DirectFilesTest {
     private DirectFiles directFiles;
 
     @Before
-    public void startServer() throws Exception {
+    public void startServer() throws IOException {
         this.server = new LocalCdn(null);
         this.server.put("/f.mp4", new byte[2048]);
         ApiClient api = new ApiClient(getClass().getClassLoader(), new OkHttpClient(), this.server.url(""));
@@ -103,7 +105,7 @@ public final class DirectFilesTest {
     }
 
     @Test
-    public void fillsInTheSizeOfEachResourceListItem() throws Exception {
+    public void fillsInTheSizeOfEachResourceListItem() throws JSONException {
         // given
         putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":123456}]}}");
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"resourceId\":\"r1\",\"resourceLink\":\"" + ORIGIN
@@ -147,7 +149,7 @@ public final class DirectFilesTest {
     }
 
     @Test
-    public void buildsPlayInfoStreamsFromTheDirectFiles() throws Exception {
+    public void buildsPlayInfoStreamsFromTheDirectFiles() throws JSONException {
         // given
         putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
         this.server.put(LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","

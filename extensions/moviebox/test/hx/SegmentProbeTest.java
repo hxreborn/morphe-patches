@@ -115,7 +115,7 @@ public final class SegmentProbeTest {
     }
 
     @Test
-    public void rejectsASegmentThatDoesNotStartWithAFragment() throws IOException {
+    public void rejectsASegmentThatDoesNotStartWithAFragment() {
         // given
         Segment segment = publish("/s.m4s", Mp4Fixtures.box("free", Mp4Fixtures.zeros(300)));
 

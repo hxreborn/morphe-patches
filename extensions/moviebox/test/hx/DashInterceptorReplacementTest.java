@@ -4,6 +4,7 @@
  */
 package hx;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +45,8 @@ public final class DashInterceptorReplacementTest {
     private final List<String> lookedUp = new ArrayList<>();
 
     @Test
-    public void servesTheUnpacedPlayInfoInsteadOfTheEdgeCacheOne() throws Exception {
+    public void servesTheUnpacedPlayInfoInsteadOfTheEdgeCacheOne()
+            throws IOException, ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(UNPACED_PLAY_INFO);
 
@@ -55,7 +58,7 @@ public final class DashInterceptorReplacementTest {
     }
 
     @Test
-    public void asksForTheSamePlayInfoPathAndQuery() throws Exception {
+    public void asksForTheSamePlayInfoPathAndQuery() throws ReflectiveOperationException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(UNPACED_PLAY_INFO);
 
@@ -67,7 +70,8 @@ public final class DashInterceptorReplacementTest {
     }
 
     @Test
-    public void keepsTheEdgeCachePlayInfoWhenNoUnpacedOneIsFound() throws Exception {
+    public void keepsTheEdgeCachePlayInfoWhenNoUnpacedOneIsFound()
+            throws IOException, ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(null);
 
@@ -79,7 +83,8 @@ public final class DashInterceptorReplacementTest {
     }
 
     @Test
-    public void keepsTheEdgeCachePlayInfoWhenTheAlternativeIsOnAnotherHost() throws Exception {
+    public void keepsTheEdgeCachePlayInfoWhenTheAlternativeIsOnAnotherHost()
+            throws IOException, ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(
                 SignedResourceTest.playInfo(SignedResourceTest.cloudFrontCookie("https://other.example.com/abc/*")));
@@ -92,7 +97,7 @@ public final class DashInterceptorReplacementTest {
     }
 
     @Test
-    public void returnsTheStockBodyWhenTheRewriteFailsAfterAReplacement() throws Exception {
+    public void returnsTheStockBodyWhenTheRewriteFailsAfterAReplacement() throws ReflectiveOperationException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(UNPACED_PLAY_INFO);
 
@@ -112,14 +117,16 @@ public final class DashInterceptorReplacementTest {
         return new DashInterceptor(this.loader, new MovieBoxSource(api, lookup), true, Collections.<String>emptySet());
     }
 
-    private String intercept(DashInterceptor interceptor, boolean responseKnowsItsRequest) throws Exception {
+    private String intercept(DashInterceptor interceptor, boolean responseKnowsItsRequest)
+            throws ReflectiveOperationException {
         FakeBuilder builder = new FakeBuilder();
         FakeResponse response = new FakeResponse(builder, responseKnowsItsRequest);
         interceptor.intercept(new FakeChain(response));
         return new String(builder.body, StandardCharsets.UTF_8);
     }
 
-    private static String firstStreamUrl(String playInfo) throws Exception {
+    private static String firstStreamUrl(String playInfo) throws IOException, JSONException, IOException, IOException,
+            IOException, IOException, IOException, IOException, IOException {
         return new JSONObject(playInfo).getJSONObject("data").getJSONArray("streams").getJSONObject(0).getString("url");
     }
 
@@ -195,7 +202,7 @@ public final class DashInterceptorReplacementTest {
 
         private byte[] body;
 
-        public FakeBuilder body(ResponseBody replacement) throws Exception {
+        public FakeBuilder body(ResponseBody replacement) throws IOException {
             this.body = replacement.bytes();
             return this;
         }

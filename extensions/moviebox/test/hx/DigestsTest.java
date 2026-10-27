@@ -5,6 +5,7 @@
 package hx;
 
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.junit.Test;
 public final class DigestsTest {
 
     @Test
-    public void hashesWithMd5() throws Exception {
+    public void hashesWithMd5() throws NoSuchAlgorithmException {
         // when
         String digest = Digests.md5Hex("abc".getBytes(StandardCharsets.UTF_8));
 
@@ -21,7 +22,7 @@ public final class DigestsTest {
     }
 
     @Test
-    public void hashesWithSha256() throws Exception {
+    public void hashesWithSha256() throws NoSuchAlgorithmException {
         // when
         String digest = Digests.sha256Hex("abc".getBytes(StandardCharsets.UTF_8));
 
@@ -30,7 +31,7 @@ public final class DigestsTest {
     }
 
     @Test
-    public void padsEveryByteToTwoHexDigits() throws Exception {
+    public void padsEveryByteToTwoHexDigits() throws NoSuchAlgorithmException {
         // when
         String digest = Digests.md5Hex(new byte[0]);
 

@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 
 import okhttp3.Interceptor;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +31,7 @@ public final class BuildTagInterceptorTest {
     private final ClassLoader loader = getClass().getClassLoader();
 
     @Test
-    public void replacesTheStockBuildHeader() throws Exception {
+    public void replacesTheStockBuildHeader() throws IOException, ClassNotFoundException {
         // given
         Request request = request("stock-tag", "{\"device_id\":\"d1\"}");
         Chain chain = new Chain(request);
@@ -44,7 +46,8 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void signsTheTagWithTheCertificateDigest() throws Exception {
+    public void signsTheTagWithTheCertificateDigest()
+            throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
         // given
         Chain chain = new Chain(request("stock-tag", "{}"));
 
@@ -58,7 +61,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void putsTheSameTagInsideTheClientInfo() throws Exception {
+    public void putsTheSameTagInsideTheClientInfo() throws JSONException, IOException, ClassNotFoundException {
         // given
         Chain chain = new Chain(request("stock-tag", "{\"device_id\":\"d1\"}"));
 
@@ -72,7 +75,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void tagsARequestThatHasNoClientInfo() throws Exception {
+    public void tagsARequestThatHasNoClientInfo() throws IOException, ClassNotFoundException {
         // given
         Request request = new Request.Builder().url("https://example.com/a").header(BuildTag.HEADER, "stock").build();
         Chain chain = new Chain(request);
@@ -86,7 +89,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void passesARequestWithoutTheBuildHeaderThrough() throws Exception {
+    public void passesARequestWithoutTheBuildHeaderThrough() throws IOException, ClassNotFoundException {
         // given
         Request request = new Request.Builder().url("https://example.com/a").header("X-Client-Info", "{}").build();
         Chain chain = new Chain(request);
@@ -99,7 +102,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void reportsAFailureAsAnIoException() throws Exception {
+    public void reportsAFailureAsAnIoException() throws ClassNotFoundException {
         // given
         Chain chain = new Chain(request("stock-tag", "{}"));
         chain.failure = new IllegalStateException("boom");
@@ -118,7 +121,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void describesItselfWhenAskedForItsString() throws Exception {
+    public void describesItselfWhenAskedForItsString() throws ClassNotFoundException {
         // when
         Object proxy = proxy();
 
@@ -138,7 +141,7 @@ public final class BuildTagInterceptorTest {
         return ClientInterceptors.proxy(this.loader, new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE)));
     }
 
-    private void intercept(Chain chain) throws Exception {
+    private void intercept(Chain chain) throws IOException, ClassNotFoundException {
         Interceptor.Chain proxy = (Interceptor.Chain) Proxy.newProxyInstance(this.loader,
                 new Class<?>[] { Interceptor.Chain.class }, chain);
         ((Interceptor) proxy()).intercept(proxy);

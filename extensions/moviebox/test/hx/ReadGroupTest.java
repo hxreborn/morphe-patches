@@ -4,9 +4,9 @@
  */
 package hx;
 
-import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.assertj.core.api.Assertions;
@@ -15,7 +15,7 @@ import org.junit.Test;
 public final class ReadGroupTest {
 
     @Test
-    public void disconnectsEveryOpenConnectionWhenClosed() throws IOException {
+    public void disconnectsEveryOpenConnectionWhenClosed() throws InterruptedIOException, MalformedURLException {
         // given
         ReadGroup group = new ReadGroup();
         CountingConnection first = new CountingConnection();
@@ -33,7 +33,7 @@ public final class ReadGroupTest {
     }
 
     @Test
-    public void leavesRemovedConnectionsOpen() throws IOException {
+    public void leavesRemovedConnectionsOpen() throws InterruptedIOException, MalformedURLException {
         // given
         ReadGroup group = new ReadGroup();
         CountingConnection finished = new CountingConnection();
@@ -48,7 +48,7 @@ public final class ReadGroupTest {
     }
 
     @Test
-    public void refusesAndDisconnectsAConnectionAddedAfterClose() throws IOException {
+    public void refusesAndDisconnectsAConnectionAddedAfterClose() throws MalformedURLException {
         // given
         ReadGroup group = new ReadGroup();
         group.close();
@@ -69,7 +69,7 @@ public final class ReadGroupTest {
 
         boolean disconnected;
 
-        CountingConnection() throws IOException {
+        CountingConnection() throws MalformedURLException {
             super(new URL("https://example.com"));
         }
 

@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Random;
 
+import android.content.pm.PackageManager;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ public final class GatewayHeadersTest {
     private static final String PATH = "/wefeed-mobile-bff/subject-api/play-info/v2?subjectId=1&se=0&ep=0";
 
     @Test
-    public void sendsTheTagInTheBuildHeader() throws Exception {
+    public void sendsTheTagInTheBuildHeader() throws IOException, PackageManager.NameNotFoundException {
         // given
         GatewayHeaders gateway = new GatewayHeaders(clientInfo(), stockCertificateTag());
 
@@ -40,7 +41,8 @@ public final class GatewayHeadersTest {
     }
 
     @Test
-    public void sendsTheSameTagInsideTheClientInfo() throws Exception {
+    public void sendsTheSameTagInsideTheClientInfo()
+            throws IOException, JSONException, PackageManager.NameNotFoundException {
         // given
         GatewayHeaders gateway = new GatewayHeaders(clientInfo(), stockCertificateTag());
 
@@ -53,7 +55,8 @@ public final class GatewayHeadersTest {
     }
 
     @Test
-    public void sendsThePackageIdentityTheCdnLookupNeeds() throws Exception {
+    public void sendsThePackageIdentityTheCdnLookupNeeds()
+            throws IOException, JSONException, PackageManager.NameNotFoundException {
         // given
         GatewayHeaders gateway = new GatewayHeaders(clientInfo(), stockCertificateTag());
 
@@ -71,7 +74,8 @@ public final class GatewayHeadersTest {
     }
 
     @Test
-    public void signsTheRequestAndAuthorizesWithTheVisitorToken() throws Exception {
+    public void signsTheRequestAndAuthorizesWithTheVisitorToken()
+            throws IOException, PackageManager.NameNotFoundException {
         // given
         GatewayHeaders gateway = new GatewayHeaders(clientInfo(), stockCertificateTag());
 
@@ -88,7 +92,7 @@ public final class GatewayHeadersTest {
     }
 
     @Test
-    public void omitsTheAuthorizationBeforeTheVisitorLogin() throws Exception {
+    public void omitsTheAuthorizationBeforeTheVisitorLogin() throws IOException, PackageManager.NameNotFoundException {
         // given
         GatewayHeaders gateway = new GatewayHeaders(clientInfo(), stockCertificateTag());
 
@@ -101,7 +105,8 @@ public final class GatewayHeadersTest {
     }
 
     @Test
-    public void sendsNoTagWithoutACertificate() throws Exception {
+    public void sendsNoTagWithoutACertificate()
+            throws IOException, JSONException, PackageManager.NameNotFoundException {
         // given
         GatewayHeaders gateway = new GatewayHeaders(clientInfo(), null);
 
@@ -113,7 +118,7 @@ public final class GatewayHeadersTest {
         Assertions.assertThat(new JSONObject(headers.get("x-client-info")).has(BuildTag.HEADER)).isFalse();
     }
 
-    private static String clientInfo() throws JSONException, IOException, Exception {
+    private static String clientInfo() throws PackageManager.NameNotFoundException {
         return ClientInfo.create(RuntimeEnvironment.getApplication());
     }
 

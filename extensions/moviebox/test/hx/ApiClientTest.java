@@ -32,7 +32,7 @@ public final class ApiClientTest {
     }
 
     @Test
-    public void readsTheBodyOfASuccessfulResponse() throws Exception {
+    public void readsTheBodyOfASuccessfulResponse() throws IOException {
         try (LocalCdn server = new LocalCdn(null)) {
             // given
             server.put("/hello", "world".getBytes(StandardCharsets.UTF_8));
@@ -47,7 +47,7 @@ public final class ApiClientTest {
     }
 
     @Test
-    public void rejectsAnUnsuccessfulResponse() throws Exception {
+    public void rejectsAnUnsuccessfulResponse() throws IOException {
         try (LocalCdn server = new LocalCdn(null)) {
             // given
             ApiClient api = new ApiClient(this.loader, new OkHttpClient(), server.url(""));

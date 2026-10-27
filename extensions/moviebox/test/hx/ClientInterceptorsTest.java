@@ -31,7 +31,8 @@ public final class ClientInterceptorsTest {
     private final List<String> seenByTerminal = new ArrayList<>();
 
     @Test
-    public void tagsTheBuildHeaderAfterTheAppAddedItAndBeforeTheTerminalInterceptor() throws Exception {
+    public void tagsTheBuildHeaderAfterTheAppAddedItAndBeforeTheTerminalInterceptor()
+            throws IOException, ClassNotFoundException, ReflectiveOperationException {
         // given
         OkHttpClient client = givenClientWithTagInterceptor();
 
@@ -47,7 +48,8 @@ public final class ClientInterceptorsTest {
     }
 
     @Test
-    public void addsTheInterceptorToAClientWithoutInterceptors() throws Exception {
+    public void addsTheInterceptorToAClientWithoutInterceptors()
+            throws ClassNotFoundException, ReflectiveOperationException {
         // given
         Object proxy = ClientInterceptors.proxy(this.loader,
                 new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE)));
@@ -59,7 +61,7 @@ public final class ClientInterceptorsTest {
         Assertions.assertThat(client.interceptors().size()).isEqualTo(1);
     }
 
-    private OkHttpClient givenClientWithTagInterceptor() throws Exception {
+    private OkHttpClient givenClientWithTagInterceptor() throws ClassNotFoundException, ReflectiveOperationException {
         OkHttpClient app = new OkHttpClient.Builder().addInterceptor(this::addStockBuildHeader)
             .addInterceptor(this::answerWithoutNetwork)
             .build();
