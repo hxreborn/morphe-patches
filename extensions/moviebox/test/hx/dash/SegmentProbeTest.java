@@ -2,12 +2,14 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package hx;
+package hx.dash;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import hx.LocalCdn;
+import hx.Mp4Fixtures;
 import hx.mp4.Segment;
 import org.assertj.core.api.Assertions;
 import org.junit.After;

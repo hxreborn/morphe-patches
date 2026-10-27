@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.dash;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +36,7 @@ import hx.mp4.Track;
 import hx.util.Logs;
 import hx.util.Tasks;
 
-final class DashFile {
+public final class DashFile {
 
     private static final String UNPACED_CDN_HOST = "sacdn.hakunaymatata.com";
 
@@ -56,7 +56,7 @@ final class DashFile {
 
     private static final double NANOS_PER_SECOND = 1e9;
 
-    final long length;
+    public final long length;
 
     private final CdnCookies cookies;
 
@@ -78,7 +78,7 @@ final class DashFile {
         this.length = last.offset + last.length;
     }
 
-    static DashFile open(String manifestUrl, int height, CdnCookies cookies) throws IOException {
+    public static DashFile open(String manifestUrl, int height, CdnCookies cookies) throws IOException {
         byte[] xml = CdnClient.withRetries(() -> CdnClient.fetch(manifestUrl, cookies));
         DashManifest manifest = DashManifestParser.parse(xml, manifestUrl);
         DashManifest.Representation video = manifest.select("video", height);
@@ -101,15 +101,15 @@ final class DashFile {
         return new DashFile(cookies, head, layOut(head.length, ordered), isUnpacedCdn(manifestUrl));
     }
 
-    static boolean isUnpacedCdn(String manifestUrl) {
+    public static boolean isUnpacedCdn(String manifestUrl) {
         return UNPACED_CDN_HOST.equals(Uri.parse(manifestUrl).getHost());
     }
 
-    String readPattern() {
+    public String readPattern() {
         return this.parallelReads + " x " + this.readChunkBytes / BYTES_PER_KIB + " KiB reads";
     }
 
-    void write(OutputStream out, long start, long end) throws IOException {
+    public void write(OutputStream out, long start, long end) throws IOException {
         RangeTransfer transfer = new RangeTransfer(start, end);
         TransferLog.SHARED.rangeStarted();
         try {

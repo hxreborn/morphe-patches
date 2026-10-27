@@ -13,11 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.dash;
 
 import java.io.IOException;
 
-interface CdnCookies {
+public interface CdnCookies {
 
     String current() throws IOException;
 

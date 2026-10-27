@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import hx.dash.DashFile;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;

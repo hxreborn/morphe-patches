@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import hx.dash.CdnCookies;
+import hx.dash.DashFile;
+
 public final class DashFixture implements AutoCloseable {
 
     public static final int TRACK_ID_IN_SEGMENT = 44;
