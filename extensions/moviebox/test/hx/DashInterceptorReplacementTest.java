@@ -111,7 +111,7 @@ public final class DashInterceptorReplacementTest {
     private DashInterceptor givenInterceptorFinding(String replacement) {
         PlayInfoLookup lookup = (pathAndQuery, accepted) -> {
             this.lookedUp.add(pathAndQuery);
-            return (replacement != null && accepted.test(replacement)) ? replacement : null;
+            return (replacement != null && accepted.accepts(replacement)) ? replacement : null;
         };
         ApiClient api = new ApiClient(this.loader, new OkHttpClient(), "https://api6.example.com/");
         return new DashInterceptor(this.loader, new MovieBoxSource(api, lookup), true, Collections.<String>emptySet());

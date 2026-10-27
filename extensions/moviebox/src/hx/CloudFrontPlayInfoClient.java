@@ -30,7 +30,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -65,7 +64,7 @@ final class CloudFrontPlayInfoClient implements PlayInfoLookup {
     }
 
     @Override
-    public String fetchPlayInfo(String pathAndQuery, Predicate<String> accepted) {
+    public String fetchPlayInfo(String pathAndQuery, PlayInfoLookup.Acceptance acceptance) {
         if (SigningKey.VALUE == null) {
             return null;
         }
@@ -75,7 +74,7 @@ final class CloudFrontPlayInfoClient implements PlayInfoLookup {
             Log.i(Logs.TAG, "play-info: every API host is cooling down, staying on Edge-Cache");
             return null;
         }
-        BlockingQueue<Answer> answers = startLookups(hosts, pathAndQuery, accepted, startedMs);
+        BlockingQueue<Answer> answers = startLookups(hosts, pathAndQuery, acceptance, startedMs);
         Set<String> unanswered = new HashSet<>(hosts);
         String body = awaitAccepted(answers, unanswered, startedMs + LOOKUP_BUDGET_MS);
         if (body != null) {
@@ -100,12 +99,12 @@ final class CloudFrontPlayInfoClient implements PlayInfoLookup {
         return hosts;
     }
 
-    private BlockingQueue<Answer> startLookups(List<String> hosts, String pathAndQuery, Predicate<String> accepted,
-            long startedMs) {
+    private BlockingQueue<Answer> startLookups(List<String> hosts, String pathAndQuery,
+            PlayInfoLookup.Acceptance acceptance, long startedMs) {
         BlockingQueue<Answer> answers = new LinkedBlockingQueue<>();
         for (String host : hosts) {
             Thread worker = new Thread(
-                    () -> answers.add(new Answer(host, fetchAccepted(host, pathAndQuery, accepted, startedMs))),
+                    () -> answers.add(new Answer(host, fetchAccepted(host, pathAndQuery, acceptance, startedMs))),
                     "hx-play-info-" + host);
             worker.setDaemon(true);
             worker.start();
@@ -136,13 +135,14 @@ final class CloudFrontPlayInfoClient implements PlayInfoLookup {
         this.hostRetryAtMs.put(host, SystemClock.elapsedRealtime() + RETRY_COOLDOWN_MS);
     }
 
-    private String fetchAccepted(String host, String pathAndQuery, Predicate<String> accepted, long startedMs) {
+    private String fetchAccepted(String host, String pathAndQuery, PlayInfoLookup.Acceptance acceptance,
+            long startedMs) {
         String token = null;
         try {
             token = visitorToken(host);
             String body = sendRequest("GET", host, pathAndQuery, null, token);
             long elapsedMs = SystemClock.elapsedRealtime() - startedMs;
-            if (accepted.test(body)) {
+            if (acceptance.accepts(body)) {
                 if (elapsedMs <= LOOKUP_BUDGET_MS) {
                     this.hostRetryAtMs.remove(host);
                 }

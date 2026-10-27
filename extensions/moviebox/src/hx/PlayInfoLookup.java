@@ -15,10 +15,14 @@
  */
 package hx;
 
-import java.util.function.Predicate;
-
 interface PlayInfoLookup {
 
-    String fetchPlayInfo(String pathAndQuery, Predicate<String> accepted);
+    String fetchPlayInfo(String pathAndQuery, Acceptance acceptance);
+
+    interface Acceptance {
+
+        boolean accepts(String playInfo);
+
+    }
 
 }
