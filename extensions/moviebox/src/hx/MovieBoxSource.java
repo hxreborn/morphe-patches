@@ -68,10 +68,17 @@ final class MovieBoxSource implements DashServer.Source {
         try {
             signed = resource(subjectId, season, episode, null);
         } catch (NoSignedResourceException ex) {
-            throw withoutSignedResource(label, subjectId, resourceId, origin, ex);
+            if (origin == null) {
+                throw ex;
+            }
+            redirectToDirectFile(label, subjectId, resourceId, origin);
+            if (matchesOrigin(label, origin, originSize)) {
+                return null;
+            }
+            Notices.showOnce(NO_STREAM);
+            throw new DashServer.UnavailableException(label + ": no signed DASH resource and no direct file");
         }
-        if (origin != null && originSize > 0 && originLength(origin) == originSize) {
-            Log.i(Logs.TAG, label + ": redirect to origin, size " + originSize + " matches");
+        if (matchesOrigin(label, origin, originSize)) {
             return null;
         }
         if (isHandedOff(label, subjectId, signed, resourceId, origin, fromStart)) {
@@ -121,18 +128,21 @@ final class MovieBoxSource implements DashServer.Source {
         return false;
     }
 
-    private IOException withoutSignedResource(String label, String subjectId, String resourceId, String origin,
-            NoSignedResourceException noResource) throws DashServer.RedirectException {
-        if (origin == null) {
-            return noResource;
+    private boolean matchesOrigin(String label, String origin, long originSize) {
+        if (origin == null || originSize <= 0 || originLength(origin) != originSize) {
+            return false;
         }
+        Log.i(Logs.TAG, label + ": redirect to origin, size " + originSize + " matches");
+        return true;
+    }
+
+    private void redirectToDirectFile(String label, String subjectId, String resourceId, String origin)
+            throws DashServer.RedirectException {
         String directFileUrl = this.directFiles.resolveUrl(subjectId, resourceId, origin);
         if (directFileUrl != null) {
             Log.i(Logs.TAG, label + ": redirect to direct file on " + Uri.parse(directFileUrl).getHost());
             throw new DashServer.RedirectException(directFileUrl);
         }
-        Notices.showOnce(NO_STREAM);
-        return new DashServer.UnavailableException(label + ": no signed DASH resource and no direct file");
     }
 
     private boolean isHandedOff(String label, String subjectId, SignedResource signed, String resourceId, String origin,
