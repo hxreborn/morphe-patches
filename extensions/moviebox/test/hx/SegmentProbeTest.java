@@ -1,0 +1,141 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package hx;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = 28)
+public final class SegmentProbeTest {
+
+    private static final CdnCookies COOKIES = new CdnCookies() {
+        @Override
+        public String current() {
+            return "c=1";
+        }
+
+        @Override
+        public String refresh(String rejected) {
+            return "c=1";
+        }
+    };
+
+    private LocalCdn cdn;
+
+    @Before
+    public void startCdn() throws IOException {
+        this.cdn = new LocalCdn("c=1");
+    }
+
+    @After
+    public void stopCdn() {
+        this.cdn.close();
+    }
+
+    @Test
+    public void measuresTheWholeSegment() throws IOException {
+        // given
+        byte[] media = Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0));
+        Segment segment = publish("/s.m4s", media);
+
+        // when
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+
+        // then
+        assertEquals(media.length, segment.byteLength);
+    }
+
+    @Test
+    public void findsTheTrackIdOfTheFirstFragment() throws IOException {
+        // given
+        Segment segment = publish("/s.m4s", Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0)));
+
+        // when
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+
+        // then
+        assertEquals(0, segment.prefixBytes);
+        assertEquals(44, segment.trackIdOffset);
+    }
+
+    @Test
+    public void countsTheIndexBoxesThatPrecedeTheFragment() throws IOException {
+        // given
+        byte[] styp = Mp4Fixtures.box("styp", Mp4Fixtures.zeros(8));
+        byte[] sidx = Mp4Fixtures.box("sidx", Mp4Fixtures.zeros(32));
+        Segment segment = publish("/s.m4s",
+                Mp4Boxes.concat(styp, sidx, Mp4Fixtures.mediaSegment(5, Mp4Fixtures.bytes(500, 0))));
+
+        // when
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+
+        // then
+        assertEquals(styp.length + sidx.length, segment.prefixBytes);
+        assertEquals(styp.length + sidx.length + 44, segment.trackIdOffset);
+    }
+
+    @Test
+    public void countsOnlyTheIndexBoxesThatAreThere() throws IOException {
+        // given
+        byte[] styp = Mp4Fixtures.box("styp", Mp4Fixtures.zeros(8));
+        Segment segment = publish("/s.m4s",
+                Mp4Boxes.concat(styp, Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0))));
+
+        // when
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+
+        // then
+        assertEquals(styp.length, segment.prefixBytes);
+    }
+
+    @Test
+    public void measuresVideoAndAudioSegmentsTogether() throws IOException {
+        // given
+        Segment video = publish("/v.m4s", Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(100, 0)));
+        Segment audio = publish("/a.m4s", Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(200, 0)));
+
+        // when
+        SegmentProbe.size(Collections.singletonList(video), Collections.singletonList(audio), COOKIES);
+
+        // then
+        assertTrue(video.byteLength > 0);
+        assertTrue(audio.byteLength > video.byteLength);
+    }
+
+    @Test
+    public void rejectsASegmentThatDoesNotStartWithAFragment() throws IOException {
+        // given
+        Segment segment = publish("/s.m4s", Mp4Fixtures.box("free", Mp4Fixtures.zeros(300)));
+
+        // when
+        try {
+            SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+            fail("expected a rejected segment");
+        } catch (IOException ex) {
+
+            // then
+            assertEquals("segment does not start with moof", ex.getMessage());
+        }
+    }
+
+    private Segment publish(String path, byte[] bytes) {
+        this.cdn.put(path, bytes);
+        return new Segment(this.cdn.url(path), 0, 1000);
+    }
+
+}

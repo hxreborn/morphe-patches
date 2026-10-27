@@ -1,0 +1,143 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package hx;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+final class LocalCdn implements AutoCloseable {
+
+    private static final Pattern RANGE = Pattern.compile("bytes=(\\d+)-(\\d+)");
+
+    private final ServerSocket socket;
+
+    private final ExecutorService workers = Executors.newCachedThreadPool();
+
+    private final Map<String, byte[]> files = new ConcurrentHashMap<>();
+
+    private final Map<String, AtomicInteger> hits = new ConcurrentHashMap<>();
+
+    private final String requiredCookie;
+
+    LocalCdn(String requiredCookie) throws IOException {
+        this.requiredCookie = requiredCookie;
+        this.socket = new ServerSocket(0, 50, InetAddress.getLoopbackAddress());
+        this.workers.execute(this::acceptLoop);
+    }
+
+    void put(String path, byte[] body) {
+        this.files.put(path, body);
+    }
+
+    String url(String path) {
+        return "http://127.0.0.1:" + this.socket.getLocalPort() + path;
+    }
+
+    int hitsOn(String path) {
+        AtomicInteger count = this.hits.get(path);
+        return (count != null) ? count.get() : 0;
+    }
+
+    @Override
+    public void close() {
+        try {
+            this.socket.close();
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+        this.workers.shutdownNow();
+    }
+
+    private void acceptLoop() {
+        while (!this.socket.isClosed()) {
+            try {
+                Socket client = this.socket.accept();
+                this.workers.execute(() -> serve(client));
+            } catch (IOException ex) {
+                return;
+            }
+        }
+    }
+
+    private void serve(Socket client) {
+        try (Socket connection = client) {
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), StandardCharsets.ISO_8859_1));
+            String requestLine = in.readLine();
+            String range = null;
+            String cookie = null;
+            for (String line = in.readLine(); line != null && !line.isEmpty(); line = in.readLine()) {
+                String lower = line.toLowerCase(java.util.Locale.ROOT);
+                if (lower.startsWith("range:")) {
+                    range = line.substring("range:".length()).trim();
+                } else if (lower.startsWith("cookie:")) {
+                    cookie = line.substring("cookie:".length()).trim();
+                }
+            }
+            if (requestLine != null) {
+                answer(connection.getOutputStream(), pathOf(requestLine), range, cookie);
+            }
+        } catch (IOException ex) {
+            return;
+        }
+    }
+
+    private void answer(OutputStream out, String path, String range, String cookie) throws IOException {
+        this.hits.computeIfAbsent(path, (key) -> new AtomicInteger()).incrementAndGet();
+        byte[] body = this.files.get(path);
+        if (body == null) {
+            respond(out, "404 Not Found", new byte[0], null);
+        } else if (this.requiredCookie != null && !this.requiredCookie.equals(cookie)) {
+            respond(out, "403 Forbidden", new byte[0], null);
+        } else {
+            answerWithRange(out, body, range);
+        }
+    }
+
+    private static void answerWithRange(OutputStream out, byte[] body, String range) throws IOException {
+        Matcher matcher = (range != null) ? RANGE.matcher(range) : null;
+        if (matcher == null || !matcher.matches()) {
+            respond(out, "200 OK", body, null);
+            return;
+        }
+        int start = Integer.parseInt(matcher.group(1));
+        int end = Math.min(Integer.parseInt(matcher.group(2)), body.length - 1);
+        respond(out, "206 Partial Content", Arrays.copyOfRange(body, start, end + 1),
+                "bytes " + start + "-" + end + "/" + body.length);
+    }
+
+    private static String pathOf(String requestLine) {
+        String target = requestLine.split(" ")[1];
+        int query = target.indexOf('?');
+        return (query >= 0) ? target.substring(0, query) : target;
+    }
+
+    private static void respond(OutputStream out, String status, byte[] body, String contentRange) throws IOException {
+        StringBuilder head = new StringBuilder("HTTP/1.1 ").append(status).append("\r\n");
+        head.append("Content-Length: ").append(body.length).append("\r\n");
+        if (contentRange != null) {
+            head.append("Content-Range: ").append(contentRange).append("\r\n");
+        }
+        head.append("Connection: close\r\n\r\n");
+        out.write(head.toString().getBytes(StandardCharsets.ISO_8859_1));
+        out.write(body);
+        out.flush();
+    }
+
+}

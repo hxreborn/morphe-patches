@@ -1,0 +1,92 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package hx;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Test;
+
+public final class InterleavedTracksTest {
+
+    @Test
+    public void placesAudioStartingBeforeTheNextVideoSegmentAfterTheCurrentOne() {
+        // given
+        Track video = track(1, 1000, segments("v", 3, 2000, 1000));
+        Track audio = track(2, 1000, segments("a", 6, 1000, 100));
+
+        // when
+        InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
+
+        // then
+        assertEquals(Arrays.asList("v0", "a0", "a1", "v1", "a2", "a3", "v2", "a4", "a5"), names(ordered));
+        assertEquals(Arrays.asList(1, 2, 2, 1, 2, 2, 1, 2, 2), ordered.trackIds);
+    }
+
+    @Test
+    public void givesTheLastVideoSegmentEveryRemainingAudioSegment() {
+        // given
+        Track video = track(1, 1000, segments("v", 1, 2000, 1000));
+        Track audio = track(2, 1000, segments("a", 5, 1000, 100));
+
+        // when
+        InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
+
+        // then
+        assertEquals(Arrays.asList("v0", "a0", "a1", "a2", "a3", "a4"), names(ordered));
+    }
+
+    @Test
+    public void comparesStartTimesAcrossDifferentTimescales() {
+        // given
+        Track video = track(1, 1000, segments("v", 2, 2000, 1000));
+        Track audio = track(2, 48000, segments("a", 4, 48000, 100));
+
+        // when
+        InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
+
+        // then
+        assertEquals(Arrays.asList("v0", "a0", "a1", "v1", "a2", "a3"), names(ordered));
+    }
+
+    @Test
+    public void keepsVideoOnlyWhenThereIsNoAudio() {
+        // given
+        Track video = track(1, 1000, segments("v", 2, 2000, 1000));
+        Track audio = track(2, 1000, new ArrayList<Segment>());
+
+        // when
+        InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);
+
+        // then
+        assertEquals(Arrays.asList("v0", "v1"), names(ordered));
+    }
+
+    static Track track(int id, long templateTimescale, List<Segment> segments) {
+        return new Track(new byte[0], id, templateTimescale, segments);
+    }
+
+    static List<Segment> segments(String prefix, int count, long duration, long byteLength) {
+        List<Segment> segments = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            Segment segment = new Segment(prefix + i, i * duration, duration);
+            segment.byteLength = byteLength;
+            segments.add(segment);
+        }
+        return segments;
+    }
+
+    private static List<String> names(InterleavedTracks ordered) {
+        List<String> names = new ArrayList<>();
+        for (Segment segment : ordered.segments) {
+            names.add(segment.url);
+        }
+        return names;
+    }
+
+}

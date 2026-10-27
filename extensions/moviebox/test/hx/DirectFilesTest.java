@@ -1,0 +1,185 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package hx;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import java.nio.charset.StandardCharsets;
+
+import okhttp3.OkHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = 28)
+public final class DirectFilesTest {
+
+    private static final String POSITION = "/wefeed-mobile-bff/subject-api/resource-position/v2";
+
+    private static final String LISTING = "/wefeed-mobile-bff/subject-api/resource/v2";
+
+    private static final String ORIGIN = "https://origin.example.com/o.mp4";
+
+    private LocalCdn server;
+
+    private DirectFiles directFiles;
+
+    @Before
+    public void startServer() throws Exception {
+        this.server = new LocalCdn(null);
+        this.server.put("/f.mp4", new byte[2048]);
+        ApiClient api = new ApiClient(getClass().getClassLoader(), new OkHttpClient(), this.server.url(""));
+        this.directFiles = new DirectFiles(api);
+    }
+
+    @After
+    public void stopServer() {
+        this.server.close();
+    }
+
+    @Test
+    public void resolvesTheDirectFileOfAResourceOnceItAnswersWithItsLength() {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
+
+        // when
+        String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // then
+        assertEquals(this.server.url("/f.mp4"), url);
+        assertEquals(url, this.directFiles.knownUrl("r1"));
+    }
+
+    @Test
+    public void asksOnlyOnceForAResource() {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\"}]}}");
+        this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // when
+        this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // then
+        assertEquals(1, this.server.hitsOn(POSITION));
+    }
+
+    @Test
+    public void givesNoDirectFileWhenTheAppAlreadyHasThatLink() {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + ORIGIN + "\"}]}}");
+
+        // when
+        String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // then
+        assertNull(url);
+        assertNull(this.directFiles.knownUrl("r1"));
+    }
+
+    @Test
+    public void givesNoDirectFileWhenThereIsNoCandidate() {
+        // given
+        putPosition("{\"data\":{\"list\":[]}}");
+
+        // when
+        String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // then
+        assertNull(url);
+    }
+
+    @Test
+    public void givesNoDirectFileWithoutAnOriginOrResource() {
+        // then
+        assertNull(this.directFiles.resolveUrl("77", "r1", null));
+        assertNull(this.directFiles.resolveUrl("77", null, ORIGIN));
+    }
+
+    @Test
+    public void fillsInTheSizeOfEachResourceListItem() throws Exception {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":123456}]}}");
+        String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"resourceId\":\"r1\",\"resourceLink\":\"" + ORIGIN
+                + "\",\"size\":\"1\"}]}}";
+
+        // when
+        String sized = this.directFiles.withSizes(list);
+
+        // then
+        JSONObject item = new JSONObject(sized).getJSONObject("data").getJSONArray("list").getJSONObject(0);
+        assertEquals("123456", item.getString("size"));
+        assertEquals(this.server.url("/f.mp4"), this.directFiles.knownUrl("r1"));
+    }
+
+    @Test
+    public void keepsTheResourceListWhenNoItemHasADirectFile() {
+        // given
+        putPosition("{\"data\":{\"list\":[]}}");
+        String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"resourceId\":\"r1\",\"size\":\"1\"}]}}";
+
+        // when
+        String sized = this.directFiles.withSizes(list);
+
+        // then
+        assertEquals(list, sized);
+    }
+
+    @Test
+    public void buildsPlayInfoStreamsFromTheDirectFiles() throws Exception {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
+        this.server.put(LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
+                + "\"resourceLink\":\"" + ORIGIN + "\",\"size\":\"2048\",\"duration\":60,\"codecName\":\"h264\"},"
+                + "{\"se\":9,\"ep\":9,\"resolution\":1080,\"resourceId\":\"other\"}]}}")
+            .getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String playInfo = this.directFiles.playInfoFor("{\"data\":{\"streams\":[]}}", "77", 1, 2);
+
+        // then
+        JSONObject data = new JSONObject(playInfo).getJSONObject("data");
+        JSONArray streams = data.getJSONArray("streams");
+        assertEquals(1, streams.length());
+        assertEquals(this.server.url("/f.mp4"), streams.getJSONObject(0).getString("url"));
+        assertEquals("720", streams.getJSONObject(0).getString("resolutions"));
+        assertEquals("", streams.getJSONObject(0).getString("signCookie"));
+        assertEquals("720", data.getString("displayResolutions"));
+    }
+
+    @Test
+    public void givesNoPlayInfoWhenThereIsNoDirectFile() {
+        // given
+        putPosition("{\"data\":{\"list\":[]}}");
+        this.server.put(LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
+                + "\"resourceLink\":\"" + ORIGIN + "\"}]}}")
+            .getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String playInfo = this.directFiles.playInfoFor("{\"data\":{\"streams\":[]}}", "77", 1, 2);
+
+        // then
+        assertNull(playInfo);
+    }
+
+    @Test
+    public void givesNoPlayInfoForAnUnknownEpisode() {
+        // then
+        assertNull(this.directFiles.playInfoFor("{}", null, 1, 2));
+        assertNull(this.directFiles.playInfoFor("{}", "77", -1, 2));
+        assertNull(this.directFiles.playInfoFor("{}", "77", 1, -1));
+    }
+
+    private void putPosition(String json) {
+        this.server.put(POSITION, json.getBytes(StandardCharsets.UTF_8));
+    }
+
+}

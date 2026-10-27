@@ -9,6 +9,8 @@ extension {
 android {
     namespace = "app.hxreborn.extension"
 
+    sourceSets.getByName("test").java.srcDirs("../moviebox/src", "../moviebox/test")
+
     buildFeatures {
         buildConfig = true
     }
