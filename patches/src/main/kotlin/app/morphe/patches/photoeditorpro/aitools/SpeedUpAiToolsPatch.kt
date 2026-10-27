@@ -12,9 +12,10 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
-import app.morphe.patches.photoeditorpro.shared.AI_TASK_CLASSES
+import app.morphe.patches.photoeditorpro.shared.AI_TASK_CALLBACK_CLASSES
 import app.morphe.patches.photoeditorpro.shared.PATCH_GATES_CLASS
 import app.morphe.patches.photoeditorpro.shared.methodMatching
+import app.morphe.patches.photoeditorpro.shared.taskClass
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -42,8 +43,9 @@ val speedUpAiToolsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        AI_TASK_CLASSES.forEach { task ->
-            val pollMethod = mutableClassDefBy(task).methodMatching("poll") { method ->
+        AI_TASK_CALLBACK_CLASSES.forEach { callback ->
+            val task = taskClass(callback)
+            val pollMethod = task.methodMatching("poll") { method ->
                 method.indexOfFirstInstruction {
                     opcode == Opcode.INVOKE_STATIC &&
                         getReference<MethodReference>()?.toString() == THREAD_SLEEP
@@ -64,12 +66,12 @@ val speedUpAiToolsPatch = bytecodePatch(
                     instruction is WideLiteralInstruction &&
                         instruction is OneRegisterInstruction &&
                         instruction.registerA == budgetRegister
-                } ?: throw PatchException("No poll budget literal in $task")
+                } ?: throw PatchException("No poll budget literal in ${task.type}")
 
                 val budgetLiteral = getInstruction<WideLiteralInstruction>(budgetIndex).wideLiteral
                 if (budgetLiteral !in PLAUSIBLE_POLL_BUDGET) {
                     throw PatchException(
-                        "Poll budget literal $budgetLiteral out of expected range in $task",
+                        "Poll budget literal $budgetLiteral out of expected range in ${task.type}",
                     )
                 }
 

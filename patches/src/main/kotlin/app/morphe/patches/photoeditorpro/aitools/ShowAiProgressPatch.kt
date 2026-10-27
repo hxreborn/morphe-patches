@@ -12,15 +12,18 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
-import app.morphe.patches.photoeditorpro.shared.ENHANCE_TASK_CLASS
+import app.morphe.patches.photoeditorpro.shared.ENHANCE_CALLBACK_CLASS
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
-import app.morphe.patches.photoeditorpro.shared.OK_HTTP_UTILS_CLASS
-import app.morphe.patches.photoeditorpro.shared.REMOVAL_TASK_CLASS
-import app.morphe.patches.photoeditorpro.shared.submitRequestMethod
+import app.morphe.patches.photoeditorpro.shared.REMOVAL_CALLBACK_CLASS
+import app.morphe.patches.photoeditorpro.shared.SubmitRequestFingerprint
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.methodMatching
+import app.morphe.patches.photoeditorpro.shared.taskClass
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.parameterRegister
 import app.morphe.util.indexOfFirstInstruction
@@ -52,8 +55,8 @@ private const val RESULT_DELIVERED = 0x400L
 private const val STOCK_PROGRESS_FLOOR = 50L
 
 private val TRACED_TOOLS = mapOf(
-    REMOVAL_TASK_CLASS to (REMOVAL_LOADING_FRAGMENT to "AI Remove"),
-    ENHANCE_TASK_CLASS to (ENHANCE_LOADING_FRAGMENT to "Enhance"),
+    REMOVAL_CALLBACK_CLASS to (REMOVAL_LOADING_FRAGMENT to "AI Remove"),
+    ENHANCE_CALLBACK_CLASS to (ENHANCE_LOADING_FRAGMENT to "Enhance"),
 )
 
 @Suppress("unused")
@@ -66,11 +69,11 @@ val showAiProgressPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        val submitName = submitRequestMethod().name
+        val submit = SubmitRequestFingerprint.matchSingle().method
 
-        TRACED_TOOLS.forEach { (taskClass, tool) ->
+        TRACED_TOOLS.forEach { (callbackClass, tool) ->
             val (fragmentClass, feature) = tool
-            hookTask(taskClass, feature, submitName)
+            hookTask(taskClass(callbackClass), feature, submit)
             hookLoadingFragment(fragmentClass)
         }
 
@@ -78,13 +81,11 @@ val showAiProgressPatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.hookTask(
-    taskClass: String,
+private fun hookTask(
+    task: MutableClass,
     feature: String,
-    submitName: String,
+    submit: MutableMethod,
 ) {
-    val task = mutableClassDefBy(taskClass)
-
     val runMethod = task.methodMatching("run") {
         it.name == "run" && it.parameterTypes.isEmpty() && it.returnType == "V"
     }
@@ -100,7 +101,7 @@ private fun BytecodePatchContext.hookTask(
     task.methodMatching("predict") {
         it.indexOfFirstInstruction {
             val reference = getReference<MethodReference>()
-            reference?.definingClass == OK_HTTP_UTILS_CLASS && reference.name == submitName
+            reference?.definingClass == submit.definingClass && reference.name == submit.name
         } >= 0 &&
             it.indexOfFirstInstruction {
                 getReference<StringReference>()?.string?.contains(PREDICT_PATH) == true
@@ -171,7 +172,10 @@ private fun BytecodePatchContext.hookLoadingFragment(fragmentClass: String) {
     mutableClassDefBy(listenerType).methodMatching("label") {
         it.indexOfFirstInstruction { getReference<MethodReference>()?.toString() == SET_TEXT } >= 0
     }.apply {
-        val index = indexOfFirstInstructionOrThrow {
+        val fragmentCastIndex = indexOfFirstInstruction {
+            opcode == Opcode.CHECK_CAST && getReference<TypeReference>()?.type == fragmentClass
+        }
+        val index = indexOfFirstInstructionOrThrow(maxOf(fragmentCastIndex, 0)) {
             getReference<MethodReference>()?.toString() == SET_TEXT
         }
         val setText = getInstruction<Instruction35c>(index)

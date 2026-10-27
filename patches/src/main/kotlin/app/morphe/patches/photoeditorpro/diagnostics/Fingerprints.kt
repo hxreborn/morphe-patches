@@ -5,6 +5,8 @@
 package app.morphe.patches.photoeditorpro.diagnostics
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.newInstance
+import app.morphe.patches.photoeditorpro.shared.SubmitRequestFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 
 private const val URI = "Landroid/net/Uri;"
@@ -23,4 +25,9 @@ internal object StoragePutFileFingerprint : Fingerprint(
             } &&
             classDef.methods.any { it.parameterTypes.types() == listOf(FILE_INPUT_STREAM) }
     },
+)
+
+internal fun requestClientInterceptorFingerprint(interceptorClass: String) = Fingerprint(
+    classFingerprint = SubmitRequestFingerprint,
+    filters = listOf(newInstance(interceptorClass)),
 )

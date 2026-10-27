@@ -77,10 +77,9 @@ public final class RequestLogTest {
         PatchSettings.LOG_ENDPOINTS.save(true);
         clearTraces();
         replies.clear();
-        OkHttpClient.Builder builder = newBuilder();
-        AiTrace.install(builder);
-        builder.addInterceptor(this::transport);
-        client = builder.build();
+        Interceptor transport = this::transport;
+        AiTraceInterceptor traced = new AiTraceInterceptor(transport);
+        client = newBuilder().addInterceptor((chain) -> (Response) traced.intercept(chain)).build();
     }
 
     @After

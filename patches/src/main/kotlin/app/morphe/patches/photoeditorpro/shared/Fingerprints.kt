@@ -47,3 +47,8 @@ internal object ProGateFingerprint : Fingerprint(
         ),
     ),
 )
+
+internal object SubmitRequestFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = listOf(STRING, RESULT_CALLBACK_CLASS, "["),
+)
