@@ -17,7 +17,6 @@ package hx;
 
 import java.io.IOException;
 
-import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -108,8 +107,7 @@ public final class AppPatch {
     }
 
     private static boolean isMainProcess() {
-        String process = Application.getProcessName();
-        return process != null && !process.contains(":");
+        return ProcessName.isMain(ProcessName.current());
     }
 
     private static final class Installer implements Runnable {
