@@ -205,7 +205,8 @@ public final class AppPatch {
         if (baseUrl == null) throw new IllegalStateException("no base URL field on Retrofit");
         String apiBase = String.valueOf(baseUrl.get(retrofit));
 
-        MovieBoxSource source = new MovieBoxSource(loader, client, apiBase);
+        Object taggedClient = withBuildTagInterceptor(loader, client);
+        MovieBoxSource source = new MovieBoxSource(loader, taggedClient, apiBase);
         DashServer server = null;
         if (isMainProcess()) {
             try {
@@ -217,7 +218,7 @@ public final class AppPatch {
         boolean routeDownloads = !isMainProcess() || server != null;
         try {
             if (server != null) server.start();
-            Object wrapped = addInterceptor(client,
+            Object wrapped = addInterceptor(taggedClient,
                     interceptor(loader, source, routeDownloads, readHiddenHomeTabs()));
             clientField.set(instance, wrapped);
             try {
@@ -299,6 +300,20 @@ public final class AppPatch {
             }
         }
         return null;
+    }
+
+    private static Object withBuildTagInterceptor(ClassLoader loader, Object client) throws Exception {
+        BuildTagInterceptor buildTagInterceptor = BuildTagInterceptor.fromInstalledApp();
+        if (buildTagInterceptor == null) return client;
+        Class<?> interceptorClass = Class.forName(OKHTTP_INTERCEPTOR, false, loader);
+        Object proxy = Proxy.newProxyInstance(loader, new Class<?>[]{interceptorClass}, buildTagInterceptor);
+        Object builder = client.getClass().getMethod("newBuilder").invoke(client);
+        Object interceptors = builder.getClass().getMethod("interceptors").invoke(builder);
+        int last = (Integer) interceptors.getClass().getMethod("size").invoke(interceptors) - 1;
+        interceptors.getClass().getMethod("add", int.class, Object.class)
+                .invoke(interceptors, Math.max(last, 0), proxy);
+        Log.i(TAG, "build tag interceptor installed");
+        return builder.getClass().getMethod("build").invoke(builder);
     }
 
     private static Object addInterceptor(Object client, Object proxy) throws Exception {
