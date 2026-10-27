@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.platform;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,20 +26,20 @@ import android.util.Log;
 import android.widget.Toast;
 import hx.util.Logs;
 
-final class Notices {
+public final class Notices {
 
     private static final Set<String> SHOWN = Collections.synchronizedSet(new HashSet<>());
 
     private Notices() {
     }
 
-    static void showOnce(String message) {
+    public static void showOnce(String message) {
         if (SHOWN.add(message)) {
             show(message);
         }
     }
 
-    static void show(String message) {
+    public static void show(String message) {
         new Handler(Looper.getMainLooper()).post(() -> toast(message));
     }
 

@@ -13,18 +13,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-package hx;
+package hx.platform;
 
 import android.content.Context;
 
-final class InstalledApp {
+public final class InstalledApp {
 
     private static final String ACTIVITY_THREAD = "android.app.ActivityThread";
 
     private InstalledApp() {
     }
 
-    static Context context() throws ReflectiveOperationException {
+    public static Context context() throws ReflectiveOperationException {
         return (Context) Class.forName(ACTIVITY_THREAD).getMethod("currentApplication").invoke(null);
     }
 

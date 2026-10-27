@@ -22,6 +22,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.util.Log;
+import hx.platform.InstalledApp;
 import hx.util.Logs;
 import hx.util.Streams;
 import org.json.JSONException;
