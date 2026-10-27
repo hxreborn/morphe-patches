@@ -218,7 +218,7 @@ final class AvatarSwitchAnimation {
                 this.incomingColor, brightestColor(this.outgoing), initials);
     }
 
-    private void capture(CaptureCallback callback) {
+    private void capture(AvatarCaptureCallback callback) {
         final int[] decorOnScreen = new int[2];
         this.window.getDecorView().getLocationOnScreen(decorOnScreen);
         final Rect source = new Rect(this.area);
@@ -264,12 +264,6 @@ final class AvatarSwitchAnimation {
             }
         }
         return brightest;
-    }
-
-    private interface CaptureCallback {
-
-        void onCaptured(Bitmap bitmap);
-
     }
 
 }
