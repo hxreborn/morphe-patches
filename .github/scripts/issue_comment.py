@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""python3 issue_comment.py [--needs-info] [--unreleased] <issue_comment-event.json> [patches-list.json]"""
+"""python3 issue_comment.py [--needs-info] [--unreleased] [--fixed] <issue_comment-event.json> [patches-list.json]"""
 
 import json
 import os
@@ -28,6 +28,12 @@ REQUEST = re.compile(
     r"|\b(still|broken|crash|error|fail|failure|missing|alert|popup|toast|dialog)",
     re.I,
 )
+PROBLEM = re.compile(
+    r"\b(not|doesn'?t|does not|didn'?t|did not|won'?t|isn'?t|stopped|no longer) work"
+    r"|\b(still|again|broken|crash|error|fail|failure)",
+    re.I,
+)
+UPDATE_DEMAND = re.compile(r"\b(updated?|upgrade[ds]?|latest|newest|newer)\b|\bnew version\b", re.I)
 RESOLVED = re.compile(r"\b(work(s|ing)? (fine|perfectly|great|now)|now (it )?works|it works|fixed now|solved)\b", re.I)
 QUOTED = re.compile(r"^[ \t]*>.*$", re.M)
 MENTION = re.compile(r"@[\w-]+")
@@ -84,6 +90,19 @@ def reported_app(title, body, patches_list):
 def is_request(comment):
     own = CODE.sub("", QUOTED.sub("", comment))
     return bool(REQUEST.search(own)) and not RESOLVED.search(own)
+
+
+def is_fix_follow_up(issue, comment):
+    labels = {label["name"] for label in issue.get("labels") or []}
+    own = CODE.sub("", QUOTED.sub("", comment["body"] or ""))
+    closed_at = issue.get("closed_at")
+    return (
+        "bug" in labels
+        and bool(closed_at)
+        and timestamp(comment["created_at"]) - timestamp(closed_at) <= LOCK_DELAY
+        and bool(PROBLEM.search(own))
+        and not UPDATE_DEMAND.search(own)
+    )
 
 
 def is_bare_ping(text):
@@ -183,7 +202,7 @@ if __name__ == "__main__":
             sys.exit(NO_REPLY)
         print(unreleased_reply(), end="")
     else:
-        if not is_request(body):
+        if not is_request(body) or ("--fixed" in flags and is_fix_follow_up(issue, comment)):
             sys.exit(NO_REPLY)
         patches_list = json.loads(Path(args[1]).read_text(encoding="utf-8")) if len(args) > 1 else None
         labels = {label["name"] for label in issue.get("labels") or []}

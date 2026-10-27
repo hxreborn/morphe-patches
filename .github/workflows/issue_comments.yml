@@ -77,17 +77,18 @@ jobs:
           STATE: ${{ github.event.issue.state }}
         run: |
           unreleased=
+          fixed=
           if [ "$STATE" = closed ]; then
             closing=$(gh api "repos/$REPO/issues/$ISSUE/timeline" --paginate \
               --jq '.[] | select(.event == "closed") | (.commit_id // "-")')
             commit=$(printf '%s\n' "$closing" | tail -n 1)
             if [ -n "$commit" ] && [ "$commit" != - ] && git cat-file -e "$commit^{commit}" 2>/dev/null; then
               tags=$(git tag --contains "$commit" | { grep -v -- - || [ $? -eq 1 ]; })
-              [ -n "$tags" ] || unreleased=--unreleased
+              if [ -n "$tags" ]; then fixed=--fixed; else unreleased=--unreleased; fi
             fi
           fi
           status=0
-          python3 .github/scripts/issue_comment.py $unreleased "$GITHUB_EVENT_PATH" patches-list.json > "$RUNNER_TEMP/comment.md" || status=$?
+          python3 .github/scripts/issue_comment.py $unreleased $fixed "$GITHUB_EVENT_PATH" patches-list.json > "$RUNNER_TEMP/comment.md" || status=$?
           [ "$status" -ne 3 ] || exit 0
           [ "$status" -eq 0 ] || exit "$status"
           marker=$(head -n 1 "$RUNNER_TEMP/comment.md")

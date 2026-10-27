@@ -386,11 +386,12 @@ SHAS = {"known": [UNRELEASED_SHA, RELEASED_SHA, PRERELEASED_SHA],
         "tags": {RELEASED_SHA: ["v1.2.0"], UNRELEASED_SHA: [], PRERELEASED_SHA: ["v1.3.0-dev.1"]}}
 
 
-def run_reply(body, state="closed", closing=(), bot_comments=(), **extra):
+def run_reply(body, state="closed", closing=(), bot_comments=(), labels=("app request",), closed_at="2026-10-18T22:14:42Z",
+              commented_at="2026-10-19T12:37:46Z", **extra):
     event = {
         "issue": {"number": 7, "state": state, "title": "[App Request]: Something", "created_at": "2026-10-01T00:00:00Z",
-                  "labels": [{"name": "app request"}]},
-        "comment": {"user": {"login": "asker", "type": "User"}, "author_association": "NONE", "body": body, "created_at": "2026-10-19T12:37:46Z"},
+                  "closed_at": closed_at, "labels": [{"name": label} for label in labels]},
+        "comment": {"user": {"login": "asker", "type": "User"}, "author_association": "NONE", "body": body, "created_at": commented_at},
     }
     with tempfile.TemporaryDirectory() as temp:
         temp = Path(temp)
@@ -407,6 +408,9 @@ def run_reply(body, state="closed", closing=(), bot_comments=(), **extra):
         return done.returncode, final["posted"], final["calls"]
 
 
+STILL_BROKEN = "<img width=\"720\" height=\"1412\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/48cee40d\" />\n\nThe issue is still NOT fixed even after the new signin patch. Please check "
+CRASHING = "> 18\\. Proceed anyway ! 🤌🏻\n\napp is crashing on launch"
+FIXED_BUG = dict(closing=[RELEASED_SHA], labels=("bug",))
 ETA = "when is this getting released? A new release hasn't been built yet with your commit."
 UNRELEASED_SENT = UNRELEASED_MARKER + "\nx"
 REPLY_CASES = [
@@ -422,6 +426,12 @@ REPLY_CASES = [
     ("thanks on an unreleased closed issue gets no reply", dict(body="Thanks, works great", closing=[UNRELEASED_SHA]), 0, None),
     ("a second question after the unreleased line gets no reply", dict(body=ETA, closing=[UNRELEASED_SHA], bot_comments=[UNRELEASED_SENT]), 0, None),
     ("the unreleased line does not block the redirect once released", dict(body=ETA, closing=[RELEASED_SHA], bot_comments=[UNRELEASED_SENT]), 0, CLOSED_MARKER),
+    ("a still-broken report on a bug closed by a released fix gets no reply", dict(body=STILL_BROKEN, closed_at="2026-10-26T09:53:02Z", commented_at="2026-10-26T15:34:24Z", **FIXED_BUG), 0, None),
+    ("a crash report on a bug closed by a released fix gets no reply", dict(body=CRASHING, closed_at="2026-10-22T11:43:23Z", commented_at="2026-10-24T05:43:43Z", **FIXED_BUG), 0, None),
+    ("a crash report a month after the fix gets the redirect", dict(body=CRASHING, closed_at="2026-09-22T11:43:23Z", commented_at="2026-10-24T05:43:43Z", **FIXED_BUG), 0, CLOSED_MARKER),
+    ("an update demand on a bug closed by a released fix gets the redirect", dict(body="please update patches to 6.83.0", **FIXED_BUG), 0, CLOSED_MARKER),
+    ("a crash report on a bug closed without a commit gets the redirect", dict(body=CRASHING, closing=["-"], labels=("bug",)), 0, CLOSED_MARKER),
+    ("a crash report on a closed request gets the redirect", dict(body=CRASHING, closing=[RELEASED_SHA]), 0, CLOSED_MARKER),
     ("a failing timeline lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], timeline_fails=True), 1, None),
     ("a failing tag lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], tag_fails=True), 128, None),
 ]
