@@ -124,12 +124,18 @@ def violations(api, min_sdk, class_files):
 
 def main(arguments):
     min_sdk, api_versions, classes_dir, source_dir = int(arguments[0]), arguments[1], Path(arguments[2]), Path(arguments[3])
-    sources = {path.stem for path in source_dir.glob("*.java")}
-    class_files = [path for path in classes_dir.glob("*.class") if path.stem.split("$")[0] in sources]
-    if not class_files:
-        print("no classes of %s under %s" % (source_dir, classes_dir))
+    sources = {path.relative_to(source_dir).with_suffix("").as_posix() for path in source_dir.rglob("*.java")}
+    class_files = {}
+    for path in classes_dir.rglob("*.class"):
+        name = path.relative_to(classes_dir).with_suffix("").as_posix().split("$")[0]
+        if name in sources:
+            class_files[path] = name
+    missing = sources - set(class_files.values())
+    for name in sorted(missing):
+        print("no class compiled from %s" % name)
+    if not sources or missing:
         return 1
-    found = violations(load_api(api_versions), min_sdk, class_files)
+    found = violations(load_api(api_versions), min_sdk, list(class_files))
     for (owner, reference), level in sorted(found.items()):
         print("%s: %s requires API %d, above %d" % (owner, reference, level, min_sdk))
     return 1 if found else 0

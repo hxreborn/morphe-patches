@@ -51,8 +51,8 @@ val checkMovieBoxApiLevel = tasks.register<Exec>("checkMovieBoxApiLevel") {
     val apiVersions = androidComponents.sdkComponents.sdkDirectory.map {
         it.file("platforms/android-${android.compileSdk}/data/api-versions.xml").asFile.path
     }
-    val classes = layout.buildDirectory.dir("intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes/hx")
-    val sources = layout.projectDirectory.dir("../moviebox/src/hx")
+    val classes = layout.buildDirectory.dir("intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes")
+    val sources = layout.projectDirectory.dir("../moviebox/src")
     inputs.dir(classes)
     inputs.dir(sources)
     commandLine(
