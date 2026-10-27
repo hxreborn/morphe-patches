@@ -43,9 +43,7 @@ final class ClientInfo {
         try {
             info.put("package_name", application.getPackageName())
                 .put("version_code",
-                        application.getPackageManager()
-                            .getPackageInfo(application.getPackageName(), 0)
-                            .getLongVersionCode());
+                        application.getPackageManager().getPackageInfo(application.getPackageName(), 0).versionCode);
         } catch (JSONException ex) {
             throw new IllegalStateException(ex);
         }

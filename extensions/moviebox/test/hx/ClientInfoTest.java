@@ -4,6 +4,7 @@
  */
 package hx;
 
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
@@ -35,6 +37,21 @@ public final class ClientInfoTest {
 
         // then
         Assertions.assertThat(info.get("version_code") instanceof Number).isTrue();
+    }
+
+    @Test
+    public void carriesTheInstalledVersionCode() throws JSONException, PackageManager.NameNotFoundException {
+        // given
+        PackageInfo installed = new PackageInfo();
+        installed.packageName = RuntimeEnvironment.getApplication().getPackageName();
+        installed.versionCode = 50020133;
+        Shadows.shadowOf(RuntimeEnvironment.getApplication().getPackageManager()).installPackage(installed);
+
+        // when
+        JSONObject info = new JSONObject(ClientInfo.create(RuntimeEnvironment.getApplication()));
+
+        // then
+        Assertions.assertThat(info.getLong("version_code")).isEqualTo(50020133L);
     }
 
     @Test
