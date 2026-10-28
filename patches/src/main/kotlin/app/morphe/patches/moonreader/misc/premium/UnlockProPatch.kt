@@ -19,9 +19,12 @@ private const val PRO_PACKAGE_CONTEXT = "Lapp/hxreborn/extension/moonreader/ProP
 val unlockProPatch = bytecodePatch(
     name = "Unlock pro",
     description = "Unlocks Pro features, including PDF annotations and form filling, " +
-        "WebDAV and FTP sync, text-to-speech controls and extra toolbar and shelf options.",
+        "WebDAV and FTP sync, text-to-speech controls, the home screen widget " +
+        "and extra toolbar and shelf options.",
 ) {
     compatibleWith(AppCompatibilities.MOON_READER)
+
+    dependsOn(homeScreenWidgetPatch)
 
     extendWith("extensions/extension.mpe")
 
