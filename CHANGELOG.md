@@ -1,3 +1,15 @@
+## [1.66.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.65.0...v1.66.0-dev.1) (2026-10-28)
+
+### Bug Fixes
+
+* **BeReal - Custom location:** show chosen place before posting ([5d0ab4f](https://github.com/hxreborn/morphe-patches/commit/5d0ab4fb3a3d009f874e1cff3f1ee79671cc701d))
+* **MovieBox - All-In-One:** list direct links for HD download rows ([0dd1de6](https://github.com/hxreborn/morphe-patches/commit/0dd1de661fc0fca04f6f2fc0a4255bde1b982bfe))
+* **MovieBox - All-In-One:** play titles whose only file is an HD row ([493104d](https://github.com/hxreborn/morphe-patches/commit/493104d53937974ee8b1460f931da9cba81610bb))
+
+### New Features
+
+* **BeReal - Custom retake count:** type any retake count ([6dde0fa](https://github.com/hxreborn/morphe-patches/commit/6dde0faf9bd1f998f1435060c289a8beca7c677a))
+
 ## [1.65.0](https://github.com/hxreborn/morphe-patches/compare/v1.64.0...v1.65.0) (2026-10-28)
 
 ### Bug Fixes

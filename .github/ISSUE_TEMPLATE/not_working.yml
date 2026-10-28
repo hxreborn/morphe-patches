@@ -385,7 +385,7 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.65.0"
+        - "1.66.0-dev.1"
         - "1.65.0-dev.9"
         - "1.65.0-dev.8"
         - "1.65.0-dev.7"
