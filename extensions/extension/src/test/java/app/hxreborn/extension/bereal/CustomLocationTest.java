@@ -23,7 +23,11 @@ package app.hxreborn.extension.bereal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import android.location.Location;
 import app.morphe.extension.shared.Utils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -88,6 +92,52 @@ public final class CustomLocationTest {
         final Object sent = CustomLocation.location(ORIGINAL, String.class);
 
         assertSame(ORIGINAL, sent);
+    }
+
+    @Test
+    public void reportsTheChosenPlaceAsTheDeviceLocation() {
+        final FusedLocationProviderClient client = (FusedLocationProviderClient) CustomLocation
+            .locationClient(new DeviceClient());
+
+        final Location location = (Location) client.getCurrentLocation(102, null).getResult();
+
+        assertEquals(48.8566, location.getLatitude(), 0);
+        assertEquals(2.3522, location.getLongitude(), 0);
+    }
+
+    @Test
+    public void reportsTheDeviceLocationWhenTheSettingIsOff() {
+        // given
+        PatchSettings.CUSTOM_LOCATION.save(false);
+        final FusedLocationProviderClient client = (FusedLocationProviderClient) CustomLocation
+            .locationClient(new DeviceClient());
+
+        // when
+        final Object location = client.getLastLocation().getResult();
+
+        // then
+        assertSame(DeviceClient.LOCATION, location);
+    }
+
+    private static final class DeviceClient implements FusedLocationProviderClient {
+
+        private static final Location LOCATION = new Location("fused");
+
+        @Override
+        public Task getCurrentLocation(int priority, Object cancellationToken) {
+            return Tasks.forResult(LOCATION);
+        }
+
+        @Override
+        public Task getLastLocation() {
+            return Tasks.forResult(LOCATION);
+        }
+
+        @Override
+        public Task getLocationAvailability() {
+            return Tasks.forResult(null);
+        }
+
     }
 
     private static final class HostLocation {

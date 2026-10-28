@@ -50,6 +50,12 @@ internal fun createPostTakenAtConversionFingerprint(
     ),
 )
 
+internal object FusedLocationClientGetterFingerprint : Fingerprint(
+    returnType = "Lcom/google/android/gms/location/FusedLocationProviderClient;",
+    parameters = emptyList(),
+    filters = listOf(checkCast("Lcom/google/android/gms/location/FusedLocationProviderClient;")),
+)
+
 internal object LocationToStringFingerprint : Fingerprint(
     name = "toString",
     returnType = "Ljava/lang/String;",

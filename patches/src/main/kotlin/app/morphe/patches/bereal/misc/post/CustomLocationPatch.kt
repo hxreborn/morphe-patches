@@ -28,6 +28,18 @@ val customLocationPatch = bytecodePatch(
 
     execute {
         setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}CustomLocation;")
+        FusedLocationClientGetterFingerprint.matchSingle().let { getter ->
+            val cast = getter.instructionMatches.single()
+            val client = cast.getInstruction<OneRegisterInstruction>().registerA
+            getter.method.addInstructions(
+                cast.index + 1,
+                """
+                    invoke-static { v$client }, ${BEREAL_EXTENSION_PACKAGE}CustomLocation;->locationClient(Ljava/lang/Object;)Ljava/lang/Object;
+                    move-result-object v$client
+                    check-cast v$client, Lcom/google/android/gms/location/FusedLocationProviderClient;
+                """,
+            )
+        }
         val retakeCounterSetter = CreatePostRetakeCounterSetterFingerprint.matchSingle().method
         val builder = createPostRequestBuilderFingerprint(retakeCounterSetter).matchSingle()
         val locationRead = LocationToStringFingerprint.matchAll(1..3)
