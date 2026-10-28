@@ -26,6 +26,8 @@ public final class Endpoints {
 
     public static final String RESOURCE_LIST_SEGMENT = "/subject-api/resource/";
 
+    public static final String RESOURCE_LIST_V2_SEGMENT = "/subject-api/resource/v2";
+
     public static final String USER_PROFILE = "wefeed-mobile-bff/user-api/profile";
 
     public static final String MEMBER_DETAIL = "wefeed-mobile-bff/vip/member/detail";

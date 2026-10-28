@@ -89,10 +89,32 @@ public final class DashServerTest {
         Assertions.assertThat(bodyLength(response)).isEqualTo(this.file.length);
     }
 
+    @Test
+    public void servesAFileWhoseLengthIsTheSizeTheAppExpects() throws IOException {
+        // when
+        byte[] response = send("GET", TARGET + "?size=" + this.file.length);
+
+        // then
+        Assertions.assertThat(bodyLength(response)).isEqualTo(this.file.length);
+    }
+
+    @Test
+    public void refusesAFileWhoseLengthIsNotTheSizeTheAppExpects() throws IOException {
+        // when
+        byte[] response = send("GET", TARGET + "?size=" + (this.file.length - 1));
+
+        // then
+        Assertions.assertThat(head(response).startsWith("HTTP/1.1 404")).as(head(response)).isTrue();
+    }
+
     private byte[] send(String method) throws IOException {
+        return send(method, TARGET);
+    }
+
+    private byte[] send(String method, String target) throws IOException {
         try (Socket socket = new Socket(InetAddress.getLoopbackAddress(), DashServer.PORT)) {
             OutputStream out = socket.getOutputStream();
-            out.write((method + " " + TARGET + " HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n")
+            out.write((method + " " + target + " HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n")
                 .getBytes(StandardCharsets.ISO_8859_1));
             out.flush();
             return readAll(socket.getInputStream());

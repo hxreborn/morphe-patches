@@ -169,7 +169,17 @@ public final class DashServer implements Runnable {
             writeOriginOrNotFound(request, out);
             return;
         }
+        if (isSizedForAnotherFile(request, file)) {
+            Log.w(Logs.TAG, "unavailable " + request.target + ": file is " + file.length + " bytes, the app expects "
+                    + request.originSize);
+            LoopbackResponse.writeNotFound(out);
+            return;
+        }
         writeFile(request, file, out);
+    }
+
+    private static boolean isSizedForAnotherFile(LoopbackRequest request, DashFile file) {
+        return request.origin == null && request.originSize > 0 && request.originSize != file.length;
     }
 
     private static void writeOriginOrNotFound(LoopbackRequest request, OutputStream out) throws IOException {
