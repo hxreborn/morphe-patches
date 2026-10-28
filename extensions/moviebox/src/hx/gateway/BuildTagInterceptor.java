@@ -29,16 +29,35 @@ public final class BuildTagInterceptor extends ChainInterceptor {
 
     private static final String INFO_HEADER = "X-Client-Info";
 
+    private static final String PLAY_INFO_PATH = "/subject-api/play-info";
+
+    private static final String RESOURCE_LIST_PATH = "/subject-api/resource";
+
+    private static final String RESOURCE_LIST_V2_PATH = "/subject-api/resource/v2";
+
+    private static final String UPGRADE_NOTICE_PATH = "aoneroom.com/other/";
+
+    private static final String ESCAPED_UPGRADE_NOTICE_PATH = "aoneroom.com\\/other\\/";
+
+    private static final long PEEKED_BYTES = 256 * 1024;
+
     private final BuildTag buildTag;
 
     private final Map<String, String> sharedHeaders;
 
+    private final ClientIdentity clientIdentity;
+
     private volatile String sharedTag;
 
     public BuildTagInterceptor(BuildTag buildTag, Map<String, String> sharedHeaders) {
+        this(buildTag, sharedHeaders, ClientIdentity.forInstalledApp());
+    }
+
+    BuildTagInterceptor(BuildTag buildTag, Map<String, String> sharedHeaders, ClientIdentity clientIdentity) {
         super("MovieBoxBuildTagInterceptor", "MovieBox build tag failed");
         this.buildTag = buildTag;
         this.sharedHeaders = sharedHeaders;
+        this.clientIdentity = clientIdentity;
     }
 
     public void tagSharedHeaders() {
@@ -54,6 +73,13 @@ public final class BuildTagInterceptor extends ChainInterceptor {
     protected Object intercept(Object chain) throws ReflectiveOperationException {
         tagSharedHeaders();
         Object request = request(chain);
+        String deviceId = this.clientIdentity.deviceId();
+        Object response = proceed(chain, withStockCertificateTag(request));
+        if (!carriesUpgradeNotice(request, response)) {
+            return response;
+        }
+        this.clientIdentity.replaceDeviceId(deviceId);
+        Reflect.call(response, "close");
         return proceed(chain, withStockCertificateTag(request));
     }
 
@@ -66,9 +92,25 @@ public final class BuildTagInterceptor extends ChainInterceptor {
         setHeader(builder, BuildTag.HEADER, tag);
         String clientInfo = header(request, INFO_HEADER);
         if (clientInfo != null) {
-            setHeader(builder, INFO_HEADER, BuildTag.addTo(clientInfo, tag));
+            setHeader(builder, INFO_HEADER, BuildTag.addTo(this.clientIdentity.rewrite(clientInfo), tag));
         }
         return Reflect.call(builder, "build");
+    }
+
+    private static boolean carriesUpgradeNotice(Object request, Object response) throws ReflectiveOperationException {
+        if (header(request, BuildTag.HEADER) == null || header(request, INFO_HEADER) == null || !isStreamList(request)
+                || Reflect.call(response, "body") == null) {
+            return false;
+        }
+        Object peeked = Reflect.call(response, "peekBody", new Class<?>[] { long.class }, PEEKED_BYTES);
+        String body = (String) Reflect.call(peeked, "string");
+        return body.contains(UPGRADE_NOTICE_PATH) || body.contains(ESCAPED_UPGRADE_NOTICE_PATH);
+    }
+
+    private static boolean isStreamList(Object request) throws ReflectiveOperationException {
+        String path = (String) Reflect.call(Reflect.call(request, "url"), "encodedPath");
+        return path.contains(PLAY_INFO_PATH) || path.endsWith(RESOURCE_LIST_PATH)
+                || path.endsWith(RESOURCE_LIST_V2_PATH);
     }
 
     private static String header(Object request, String name) throws ReflectiveOperationException {
