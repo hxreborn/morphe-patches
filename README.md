@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.65.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.65.0-dev.8)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;372 patches total
+> **[v1.65.0-dev.9](https://github.com/hxreborn/morphe-patches/releases/tag/v1.65.0-dev.9)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;374 patches total
 
 <table>
 <tr>
@@ -70,7 +70,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#coddy"><img src=".github/assets/icons/coddy.png" width="40"><br>Coddy</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#connected2-me"><img src=".github/assets/icons/connected2.png" width="40"><br>Connected2.me</a><br><sub>3 patches</sub></td>
+<td align="center" width="25%"><a href="#connected2-me"><img src=".github/assets/icons/connected2.png" width="40"><br>Connected2.me</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#cubasis-le-3"><img src=".github/assets/icons/cubasisle3.png" width="40"><br>Cubasis LE 3</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#cx-file-explorer"><img src=".github/assets/icons/cx.png" width="40"><br>Cx File Explorer</a><br><sub>3 patches</sub></td>
 </tr>
@@ -827,7 +827,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="connected2-me"></a>
 <details>
-<summary><img src=".github/assets/icons/connected2.png" width="18" align="top">&nbsp;&nbsp;Connected2.me&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/connected2.png" width="18" align="top">&nbsp;&nbsp;Connected2.me&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -838,7 +838,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="connected2-me-enable-chat-in-all-regions"></a>[Enable chat in all regions](patches/src/main/kotlin/app/morphe/patches/connected2/misc/region/EnableChatInAllRegionsPatch.kt) | Enables sign-in and chat in regions the server blocks. Creating an account still requires a supported region. |
+| <a id="connected2-me-keep-deleted-messages"></a>[Keep deleted messages](patches/src/main/kotlin/app/morphe/patches/connected2/misc/deleted/KeepDeletedMessagesPatch.kt) | Keeps messages the other person deletes and marks deleted text messages with 🗑. |
 | <a id="connected2-me-remove-app-protection"></a>[Remove app protection](patches/src/main/kotlin/app/morphe/patches/connected2/misc/protection/RemoveAppProtectionPatch.kt) | Lets a patched build start. |
+| <a id="connected2-me-remove-screenshot-restriction"></a>[Remove screenshot restriction](patches/src/main/kotlin/app/morphe/patches/connected2/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots of view-once photos and videos. |
 | <a id="connected2-me-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/connected2/misc/fix/signature/SpoofSignaturePatch.kt) | Enables sign-up and sign-in. |
 
 </details>
@@ -1491,8 +1493,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.0.03.0918.03 | 4.0.03.1022.03 |
-| :---: | :---: |
+| 4.0.03.1020.03 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|

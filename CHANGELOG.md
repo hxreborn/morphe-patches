@@ -1,3 +1,19 @@
+## [1.65.0-dev.9](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.8...v1.65.0-dev.9) (2026-10-28)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** report a missing hook class on screen ([bc27171](https://github.com/hxreborn/morphe-patches/commit/bc27171b850237966521eaee372d4c3e85bfc557))
+* **MovieBox:** remove `4.0.03.0918.03` and `4.0.03.1022.03` app targets ([c24c122](https://github.com/hxreborn/morphe-patches/commit/c24c122294bebedd25b82f40f12423b21dba7c2a))
+
+### New Features
+
+* **Connected2.me - Keep deleted messages:** show deleted texts ([7e8e6d3](https://github.com/hxreborn/morphe-patches/commit/7e8e6d388889dee8c61218152c631da0edf3ea32))
+* **Connected2.me - Remove screenshot restriction:** capture view-once ([1bcd0f1](https://github.com/hxreborn/morphe-patches/commit/1bcd0f1c5130b7b09293159aa6dc7cd255316a7f))
+
+### Updated App Support
+
+* **MovieBox:** add support for `4.0.03.1020.03` ([24e64e5](https://github.com/hxreborn/morphe-patches/commit/24e64e5b603de77678938f9f27f8451f92c124a6))
+
 ## [1.65.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.7...v1.65.0-dev.8) (2026-10-28)
 
 ### Bug Fixes
