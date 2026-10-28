@@ -1,3 +1,9 @@
+## [1.65.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.7...v1.65.0-dev.8) (2026-10-28)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** show hook and code overlay failures ([23903a6](https://github.com/hxreborn/morphe-patches/commit/23903a67d9a79bcd3911fc053f5bab4984f14a10))
+
 ## [1.65.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.6...v1.65.0-dev.7) (2026-10-27)
 
 ### Bug Fixes
