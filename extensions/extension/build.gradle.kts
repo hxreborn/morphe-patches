@@ -9,7 +9,7 @@ extension {
 android {
     namespace = "app.hxreborn.extension"
 
-    sourceSets.getByName("test").java.srcDirs("../moviebox/src", "../moviebox/test")
+    sourceSets.getByName("test").java.srcDirs("../moviebox/src", "../moviebox/test", "../ijiami/src", "../ijiami/test")
 
     buildFeatures {
         buildConfig = true
@@ -40,7 +40,7 @@ android {
 }
 
 tasks.register<Checkstyle>("checkstyle") {
-    source("src/main/java", "../moviebox/src", "../moviebox/test")
+    source("src/main/java", "../moviebox/src", "../moviebox/test", "../ijiami/test")
     classpath = files()
 }
 

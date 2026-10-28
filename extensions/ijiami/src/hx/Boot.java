@@ -40,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -62,6 +63,10 @@ final class Boot {
     private static final String STRIP_WARNING =
             "Disable \"Optimize for device architecture\" & re-patch";
     private static final String ARCH_WARNING = "This device's architecture is not supported by the patch";
+    static final String APP_HOOK_FAILED = "Patch hook failed";
+    static final String CODE_OVERLAY_FAILED = "Patch cannot write its code overlay";
+    private static final int TOAST_ATTEMPTS = 30;
+    private static final long TOAST_RETRY_MILLIS = 1000L;
 
     private static boolean installed;
     private static boolean appHookStarted;
@@ -133,6 +138,7 @@ final class Boot {
             Log.i(TAG, "code overlay: loaded " + loaded + " classes, wrote " + written + " code items");
         } catch (Throwable t) {
             Log.e(TAG, "cannot write code overlay", t);
+            toast(failureNotice(CODE_OVERLAY_FAILED, t));
         }
     }
 
@@ -154,6 +160,7 @@ final class Boot {
                 } catch (ClassNotFoundException noHook) {
                 } catch (Throwable t) {
                     Log.e(TAG, "app hook failed", t);
+                    toast(failureNotice(APP_HOOK_FAILED, t));
                 }
             }
         }, "hxreborn-apphook");
@@ -217,8 +224,18 @@ final class Boot {
         toast(STRIP_WARNING);
     }
 
-    private static void toast(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+    static String failureNotice(String summary, Throwable t) {
+        Throwable cause = (t instanceof InvocationTargetException && t.getCause() != null) ? t.getCause() : t;
+        String message = cause.getMessage();
+        return summary + ": " + cause.getClass().getSimpleName() + (message == null ? "" : ": " + message);
+    }
+
+    private static void toast(String message) {
+        toast(message, 1);
+    }
+
+    private static void toast(final String message, final int attempt) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -226,6 +243,8 @@ final class Boot {
                             .getMethod("currentApplication").invoke(null);
                     if (application != null) {
                         Toast.makeText((Context) application, message, Toast.LENGTH_LONG).show();
+                    } else if (attempt < TOAST_ATTEMPTS) {
+                        toast(message, attempt + 1);
                     } else {
                         Log.e(TAG, "no application context to show \"" + message + "\"");
                     }
@@ -233,7 +252,7 @@ final class Boot {
                     Log.e(TAG, "cannot show \"" + message + "\"", t);
                 }
             }
-        });
+        }, (attempt == 1) ? 0L : TOAST_RETRY_MILLIS);
     }
 
     private static void loadNativeLibrary(ApplicationInfo info) throws Exception {
