@@ -1,3 +1,44 @@
+## [1.65.0](https://github.com/hxreborn/morphe-patches/compare/v1.64.0...v1.65.0) (2026-10-28)
+
+### Bug Fixes
+
+* **Athan - GmsCore support:** connect location through GmsCore ([1164cff](https://github.com/hxreborn/morphe-patches/commit/1164cfffc93cec222eb6fa7678f3a6222f3ff155)), closes [#442](https://github.com/hxreborn/morphe-patches/issues/442)
+* **MovieBox - All-In-One:** keep direct file links as long as sizes ([bfe73a5](https://github.com/hxreborn/morphe-patches/commit/bfe73a5e36b793a0535ee0c338d4f860179f2d1d))
+* **MovieBox - All-In-One:** keep stream links without a loopback ([339f649](https://github.com/hxreborn/morphe-patches/commit/339f6496c9dec6760a6280ed399576d0fc15bb55))
+* **MovieBox - All-In-One:** redirect to the origin without a stream ([6b6b1eb](https://github.com/hxreborn/morphe-patches/commit/6b6b1eb4b9aa875816a978fbb2285ece85a6f82a))
+* **MovieBox - All-In-One:** remove server update notices ([fd4c6e4](https://github.com/hxreborn/morphe-patches/commit/fd4c6e407398a559f45c4d27a994f228c4b2fe7f))
+* **MovieBox - All-In-One:** report a missing hook class on screen ([bc27171](https://github.com/hxreborn/morphe-patches/commit/bc27171b850237966521eaee372d4c3e85bfc557))
+* **MovieBox - All-In-One:** restore video playback and downloads ([920c350](https://github.com/hxreborn/morphe-patches/commit/920c35080f94da37668a1d25a868a41677927fcc)), closes [#456](https://github.com/hxreborn/morphe-patches/issues/456) [#62](https://github.com/hxreborn/morphe-patches/issues/62)
+* **MovieBox - All-In-One:** show hook and code overlay failures ([23903a6](https://github.com/hxreborn/morphe-patches/commit/23903a67d9a79bcd3911fc053f5bab4984f14a10))
+* **MovieBox - All-In-One:** tag every request and block hot patches ([ed87244](https://github.com/hxreborn/morphe-patches/commit/ed872446b55eae5c578c4d1691a332353910e38a))
+* **MovieBox:** remove `4.0.03.0918.03` and `4.0.03.1022.03` app targets ([c24c122](https://github.com/hxreborn/morphe-patches/commit/c24c122294bebedd25b82f40f12423b21dba7c2a))
+* **Proton Mail - AMOLED dark theme:** show a black launch screen ([2c05619](https://github.com/hxreborn/morphe-patches/commit/2c05619f08e6f9babe57b55e79128e22ad8ef925))
+* **Proton VPN - AMOLED dark theme:** keep the scrolled top bar black ([c0dba6c](https://github.com/hxreborn/morphe-patches/commit/c0dba6cee60064241dd6c587cb8eeb642539aef8))
+
+### New Features
+
+* **Athan - Remove promotions:** remove Academy prompts and reader bar ([e067796](https://github.com/hxreborn/morphe-patches/commit/e067796848bcdea9cfdf2034f87994dc862cd0c7)), closes [#443](https://github.com/hxreborn/morphe-patches/issues/443)
+* **Connected2.me - Enable chat in all regions:** chat from any region ([f6b3255](https://github.com/hxreborn/morphe-patches/commit/f6b3255a64380099db37d18b14df506db506a1dc))
+* **Connected2.me - Keep deleted messages:** show deleted texts ([7e8e6d3](https://github.com/hxreborn/morphe-patches/commit/7e8e6d388889dee8c61218152c631da0edf3ea32))
+* **Connected2.me - Remove app protection:** open without crashing ([07515c5](https://github.com/hxreborn/morphe-patches/commit/07515c5daa3c738a72639550ffcda12f7c93c0ce))
+* **Connected2.me - Remove screenshot restriction:** capture view-once ([1bcd0f1](https://github.com/hxreborn/morphe-patches/commit/1bcd0f1c5130b7b09293159aa6dc7cd255316a7f))
+* **Connected2.me - Spoof signature:** enable sign-up and sign-in ([f484e54](https://github.com/hxreborn/morphe-patches/commit/f484e5405fcb816ba180b7445999435c0020aa9d))
+
+### Updated App Support
+
+* **Bangla Calendar:** add support for `3.0.01e` ([19b197b](https://github.com/hxreborn/morphe-patches/commit/19b197b9c72e0c5e6b2ccce63c04a242e198c474)), closes [#408](https://github.com/hxreborn/morphe-patches/issues/408)
+* **BetterSleep:** add support for `26.18` ([34c393d](https://github.com/hxreborn/morphe-patches/commit/34c393d7ce5cb91117770cd87120df0a345c9e45)), closes [#409](https://github.com/hxreborn/morphe-patches/issues/409)
+* **botim:** add support for `4.20.1` ([df2c07b](https://github.com/hxreborn/morphe-patches/commit/df2c07b0f2ff8f2ea960a62569cefe97062119d1)), closes [#410](https://github.com/hxreborn/morphe-patches/issues/410)
+* **MovieBox:** add support for `4.0.03.1020.03` ([24e64e5](https://github.com/hxreborn/morphe-patches/commit/24e64e5b603de77678938f9f27f8451f92c124a6))
+* **Perplexity:** add support for `2.102.0` ([94ca3e8](https://github.com/hxreborn/morphe-patches/commit/94ca3e8be8d88ce1ab4017d85492092899993085)), closes [#416](https://github.com/hxreborn/morphe-patches/issues/416)
+* **Photo Editor Pro:** add support for `1.811.267` ([e6dfb28](https://github.com/hxreborn/morphe-patches/commit/e6dfb28f3dbed4e550d4e80ecd4c4bfae7bb1bb5)), closes [#417](https://github.com/hxreborn/morphe-patches/issues/417)
+* **Raindrop.io:** add support for `4.8.1` ([ed172d3](https://github.com/hxreborn/morphe-patches/commit/ed172d3d7a12fb4a53c166755b37231bb23c94ca)), closes [#419](https://github.com/hxreborn/morphe-patches/issues/419)
+* **WalP:** add support for `10.2.4` ([651da7b](https://github.com/hxreborn/morphe-patches/commit/651da7b796baa71c29d5a83563dfe7054eb79855)), closes [#425](https://github.com/hxreborn/morphe-patches/issues/425)
+
+### Improvements
+
+* **MovieBox - All-In-One:** pick the unpaced CDN on Edge-Cache hosts ([379be65](https://github.com/hxreborn/morphe-patches/commit/379be65bd6af34bfbb663ba7d792f9f3c701b42a))
+
 ## [1.65.0-dev.9](https://github.com/hxreborn/morphe-patches/compare/v1.65.0-dev.8...v1.65.0-dev.9) (2026-10-28)
 
 ### Bug Fixes
