@@ -39,6 +39,10 @@ jobs:
         (github.event.action == 'edited' && github.event.issue.state == 'open' &&
          toJSON(github.event.changes.body) != 'null' &&
          contains(github.event.issue.labels.*.name, 'needs info')))) ||
+      (github.event_name == 'issues' && github.event.action == 'opened' &&
+       contains(github.event.issue.labels.*.name, 'enhancement') &&
+       github.event.issue.user.type != 'Bot' &&
+       !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) ||
       (github.event_name == 'issues' &&
        contains(github.event.issue.labels.*.name, 'bug') &&
        !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
