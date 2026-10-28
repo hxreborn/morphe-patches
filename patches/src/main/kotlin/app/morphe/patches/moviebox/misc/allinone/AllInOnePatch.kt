@@ -20,10 +20,11 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
-import app.morphe.patches.shared.misc.ijiami.freeDexEntry
 import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
+import app.morphe.patches.shared.misc.ijiami.installAppHook
 import app.morphe.util.inputStreamFromBundledResource
 
+private const val APP_HOOK_CLASS = "hx.AppPatch"
 private const val PREMIUM_MEMBER_TYPE = 2
 private const val PARALLEL_DOWNLOAD_TASKS = 5
 private const val DAYS_LEFT = 9999
@@ -172,7 +173,7 @@ val allInOnePatch = resourcePatch(
     execute {
         val hook = inputStreamFromBundledResource("moviebox", "dashhook.dex")
             ?: throw PatchException("Missing bundled resource: moviebox/dashhook.dex")
-        get(freeDexEntry(), copy = false).writeBytes(hook.use { it.readBytes() })
+        installAppHook(hook.use { it.readBytes() }, APP_HOOK_CLASS)
 
         val stubbedNames = STUBBED_TARGET_NAMES_BY_VERSION_CODE[packageMetadata.versionCode]
 

@@ -59,7 +59,7 @@ final class Boot {
     private static final String NATIVE_LIBRARY = "libhxpatch.so";
     private static final String ARM64_ABI = "arm64-v8a";
     private static final String ARM32_ABI = "armeabi-v7a";
-    private static final String APP_HOOK_CLASS = "hx.AppPatch";
+    private static final String APP_HOOK_ASSET = "assets/hx.hook";
     private static final String STRIP_WARNING =
             "Disable \"Optimize for device architecture\" & re-patch";
     private static final String ARCH_WARNING = "This device's architecture is not supported by the patch";
@@ -72,6 +72,7 @@ final class Boot {
     private static boolean appHookStarted;
     private static boolean assetsRead;
     private static String packerFactory = "";
+    private static String appHookClass = "";
     private static byte[] certificate = new byte[0];
 
     private Boot() {
@@ -145,19 +146,20 @@ final class Boot {
     private static native int writeCode(byte[] records);
 
     static void runAppHook(final ClassLoader loader) {
+        final String hookClass;
         synchronized (Boot.class) {
-            if (appHookStarted) return;
+            if (appHookStarted || appHookClass.isEmpty()) return;
             appHookStarted = true;
+            hookClass = appHookClass;
         }
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Class.forName(APP_HOOK_CLASS, true, Boot.class.getClassLoader())
+                    Class.forName(hookClass, true, Boot.class.getClassLoader())
                             .getMethod("install", ClassLoader.class)
                             .invoke(null, loader);
-                } catch (ClassNotFoundException noHook) {
                 } catch (Throwable t) {
                     Log.e(TAG, "app hook failed", t);
                     toast(failureNotice(APP_HOOK_FAILED, t));
@@ -174,6 +176,7 @@ final class Boot {
         try (ZipFile archive = new ZipFile(info.sourceDir)) {
             certificate = read(archive, CERTIFICATE_ASSET);
             packerFactory = new String(read(archive, FACTORY_ASSET), StandardCharsets.UTF_8).trim();
+            appHookClass = new String(read(archive, APP_HOOK_ASSET), StandardCharsets.UTF_8).trim();
             assetsRead = certificate.length > 0 && !packerFactory.isEmpty();
 
             if (!assetsRead) Log.e(TAG, "missing patch assets in " + info.sourceDir);
