@@ -1,3 +1,9 @@
+## [1.66.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.66.0-dev.1...v1.66.0-dev.2) (2026-10-28)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** bypass blacklisted device ids ([70faeb3](https://github.com/hxreborn/morphe-patches/commit/70faeb385c7ef782c63f33151ee3c3581d85afa1))
+
 ## [1.66.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.65.0...v1.66.0-dev.1) (2026-10-28)
 
 ### Bug Fixes
