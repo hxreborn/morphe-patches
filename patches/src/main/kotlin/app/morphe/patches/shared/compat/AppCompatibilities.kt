@@ -1293,6 +1293,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "5.5.514.11421", versionCode = 530121, minSdk = 33)),
     )
 
+    val RESPRITE = Compatibility(
+        name = "Resprite",
+        packageName = "com.fengeon.resprite_desktop",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xD070B0,
+        signatures = setOf("4b7b35ef333631ef03f56308df5eecaf87db75c227fd3675b12e04c36b2c0ce7"),
+        targets = listOf(
+            AppTarget(version = "1.32.6", versionCode = 302, minSdk = 24),
+        ),
+    )
+
     val RINGTONE_MAKER = Compatibility(
         name = "Ringtone Maker",
         packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
