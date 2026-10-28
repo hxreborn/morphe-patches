@@ -211,8 +211,7 @@ final class DirectFiles {
     private JSONObject fetchResourceListing(String subjectId, int season, int episode, int resolution)
             throws IOException, JSONException {
         String query = "?subjectId=" + subjectId + "&page=1&perPage=8&all=0&startPosition=1&endPosition=1"
-                + "&pagerMode=2&resolution=" + resolution + "&se=" + season + "&epFrom=" + episode + "&epTo=" + episode
-                + "&isVip=true";
+                + "&pagerMode=2&resolution=" + resolution + "&se=" + season + "&epFrom=" + episode + "&epTo=" + episode;
         return new JSONObject(this.api.get(this.api.url(Endpoints.RESOURCE_LIST + query))).getJSONObject("data");
     }
 
@@ -243,7 +242,7 @@ final class DirectFiles {
 
     private JSONObject fetchFile(String subjectId, String resourceId, String origin) throws IOException, JSONException {
         String query = "?subjectId=" + subjectId + "&resourceId=" + resourceId + "&failUrl=" + Uri.encode(origin)
-                + "&failCode=404&resourceNum=0&isVip=true";
+                + "&failCode=404&resourceNum=0";
         JSONArray list = new JSONObject(this.api.get(this.api.url(Endpoints.RESOURCE_POSITION + query)))
             .getJSONObject("data")
             .optJSONArray("list");
