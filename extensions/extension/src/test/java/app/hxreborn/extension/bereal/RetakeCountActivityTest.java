@@ -21,11 +21,13 @@
 package app.hxreborn.extension.bereal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import app.morphe.extension.shared.Utils;
 import org.junit.After;
@@ -74,6 +76,51 @@ public final class RetakeCountActivityTest {
 
         assertEquals(5, RetakeCount.retakeCount(3));
         assertTrue(activity.isFinishing());
+    }
+
+    @Test
+    public void appliesTheTypedCount() {
+        RetakeCount.sendStarted(3);
+        final RetakeCountActivity activity = open();
+
+        type(activity, "100");
+        click(texts(activity, "Apply").get(0));
+
+        assertEquals(100, RetakeCount.retakeCount(3));
+    }
+
+    @Test
+    public void stepsFromTheTypedCount() {
+        RetakeCount.sendStarted(3);
+        final RetakeCountActivity activity = open();
+
+        type(activity, "250");
+        click(describedAs(activity, "Increase"));
+        click(texts(activity, "Apply").get(0));
+
+        assertEquals(251, RetakeCount.retakeCount(3));
+    }
+
+    @Test
+    public void stopsAtTheLargestIntCount() {
+        RetakeCount.sendStarted(3);
+        final RetakeCountActivity activity = open();
+
+        type(activity, "9999999999");
+        click(describedAs(activity, "Increase"));
+        click(texts(activity, "Apply").get(0));
+
+        assertEquals(Integer.MAX_VALUE, RetakeCount.retakeCount(3));
+    }
+
+    @Test
+    public void disablesApplyWhileTheCountIsEmpty() {
+        RetakeCount.sendStarted(3);
+        final RetakeCountActivity activity = open();
+
+        type(activity, "");
+
+        assertFalse(texts(activity, "Apply").get(0).isEnabled());
     }
 
     @Test
@@ -147,6 +194,10 @@ public final class RetakeCountActivityTest {
             }
         }
         return false;
+    }
+
+    private static void type(RetakeCountActivity activity, String text) {
+        ((EditText) describedAs(activity, "Retake count")).setText(text);
     }
 
     private static void click(View view) {
