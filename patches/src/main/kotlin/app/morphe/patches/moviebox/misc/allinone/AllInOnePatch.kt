@@ -41,12 +41,12 @@ private const val PREMIUM_PROVIDER = "Lcom/transsion/member/premium/PremiumProvi
 private const val PREMIUM_ACCESS = "Lcom/transsion/memberapi/PremiumV2CheckAccessDto;"
 private const val MEMBER_RESOLUTION = "Lcom/transsion/baselib/db/member/MemberResolutionBean;"
 private const val OBSERVE_LOGIN_ACTION = "Lcom/transsion/member/ObserveLoginAction;"
-private const val MEMBER_LOGIN_HELPER = "Lfy/a;"
+private const val MEMBER_LOGIN_HELPER = "Lgy/a;"
 private const val DOWNLOAD_RESOLUTION_ITEM = "Lcom/transsion/moviedetailapi/bean/DownloadResolutionItem;"
 private const val REMOTE_VERSION_INFO = "Lcom/transsion/version/update/RemoteVersionInfo;"
 private const val LIFE_STATUS_INTERCEPTOR = "Lcom/transsion/baselib/net/AppLifeStatusInterceptor;"
 private const val TINKER_INTERNALS = "Lcom/tencent/tinker/loader/shareutil/ShareTinkerInternals;"
-private const val PLAY_MODE = "Lkk/t;"
+private const val PLAY_MODE = "Lkk/s;"
 private const val AD_SETTINGS = "Lqi/f;"
 private const val AD_SCENE_CONFIG = "Lcom/transsion/ad/scene/a;"
 private const val BOTTOM_TAB_TYPE = "Lcom/transsion/home/enum/BottomTabType;"
@@ -73,9 +73,6 @@ private val AD_UNLOCK_COUNT_KEYS = listOf(
     "incentivized_ad_count",
 )
 private const val RESOLUTIONS_PER_DOWNLOAD_KEY = "per_download_resource_count"
-
-private const val BOOLEAN = "Z"
-private const val BOXED_INTEGER = "Ljava/lang/Integer;"
 
 private const val PLAY_MODE_IS_STREAM = "b"
 
@@ -107,42 +104,30 @@ private val SIM_OPERATOR_READERS = listOf(
     "Loh/b;" to "o",
 )
 
-private class StubbedTargetNames(
-    val memberLoginHelper: String,
-    val playMode: String,
-    val stringLoaders: Map<String, String>,
-    val memberInfoCallers: Map<Pair<String, String>, List<String>>,
+private val STRING_LOADERS = mapOf(
+    "kv_is_pay_enable_member" to "f",
+    "kv_is_skip_ad" to "g",
+    "kv_is_enable_member" to "A",
+    PARALLEL_DOWNLOAD_KEY to "E",
+    UPSELL_DIALOG_LOG to "w",
+    "free_download_count" to "g",
+    "max_resolution" to "z",
+    "free_play_seconds" to "m",
+    "free_block_time" to "y",
+    "highquality_free_time" to "r",
+    "daily_free_play_count" to "D",
+    "free_incentivized_ad_count" to "l",
+    "highquality_incentivized_ad_count" to "v",
+    "incentivized_ad_count" to "s",
+    RESOLUTIONS_PER_DOWNLOAD_KEY to "O",
+    MEMBER_NOT_LOGGED_IN_LOG to "b",
 )
 
-private val STUBBED_TARGET_NAMES_BY_VERSION_CODE = mapOf(
-    "50020133" to StubbedTargetNames(
-        memberLoginHelper = "Lgy/a;",
-        playMode = "Lkk/s;",
-        stringLoaders = mapOf(
-            "kv_is_pay_enable_member" to "f",
-            "kv_is_skip_ad" to "g",
-            "kv_is_enable_member" to "A",
-            PARALLEL_DOWNLOAD_KEY to "E",
-            UPSELL_DIALOG_LOG to "w",
-            "free_download_count" to "g",
-            "max_resolution" to "z",
-            "free_play_seconds" to "m",
-            "free_block_time" to "y",
-            "highquality_free_time" to "r",
-            "daily_free_play_count" to "D",
-            "free_incentivized_ad_count" to "l",
-            "highquality_incentivized_ad_count" to "v",
-            "incentivized_ad_count" to "s",
-            RESOLUTIONS_PER_DOWNLOAD_KEY to "O",
-            MEMBER_NOT_LOGGED_IN_LOG to "b",
-        ),
-        memberInfoCallers = mapOf(
-            (MEMBER_PROVIDER to "isActive") to listOf("c"),
-            (PREMIUM_PROVIDER to "isActive") to listOf("c"),
-            (PREMIUM_PROVIDER to "getVipLevel") to listOf("A", "i"),
-            (PREMIUM_PROVIDER to "getDaysLeft") to listOf("o"),
-        ),
-    ),
+private val MEMBER_INFO_CALLERS = mapOf(
+    (MEMBER_PROVIDER to "isActive") to listOf("c"),
+    (PREMIUM_PROVIDER to "isActive") to listOf("c"),
+    (PREMIUM_PROVIDER to "getVipLevel") to listOf("A", "i"),
+    (PREMIUM_PROVIDER to "getDaysLeft") to listOf("o"),
 )
 
 private val MINTEGRAL_LOADERS = listOf(
@@ -175,16 +160,11 @@ val allInOnePatch = resourcePatch(
             ?: throw PatchException("Missing bundled resource: moviebox/dashhook.dex")
         installAppHook(hook.use { it.readBytes() }, APP_HOOK_CLASS)
 
-        val stubbedNames = STUBBED_TARGET_NAMES_BY_VERSION_CODE[packageMetadata.versionCode]
-
         editIjiamiPayload {
-            fun methodLoading(holder: String, value: String) =
-                stubbedNames?.let { method(holder, it.stringLoaders.getValue(value)) }
-                    ?: methodWithString(holder, value)
+            fun stringLoader(holder: String, value: String) = method(holder, STRING_LOADERS.getValue(value))
 
-            fun methodsCallingMemberInfo(holder: String, callee: String, returning: String) =
-                stubbedNames?.let { names -> names.memberInfoCallers.getValue(holder to callee).map { method(holder, it) } }
-                    ?: listOf(methodsCalling(holder, MEMBER_INFO, callee, returning))
+            fun memberInfoCallers(holder: String, callee: String) =
+                MEMBER_INFO_CALLERS.getValue(holder to callee).map { method(holder, it) }
 
             MEMBER_CHECK_FLAGS.forEach { method(MEMBER_CHECK_RESULT, it).returnBoxed(true) }
 
@@ -193,32 +173,31 @@ val allInOnePatch = resourcePatch(
                 method(it, "getMemberType").returnEarly(PREMIUM_MEMBER_TYPE)
             }
 
-            MEMBER_FLAG_KEYS.forEach { methodLoading(MEMBER_PROVIDER, it).returnEarly(true) }
-            methodsCallingMemberInfo(MEMBER_PROVIDER, "isActive", BOOLEAN).forEach { it.returnEarly(true) }
-            methodLoading(MEMBER_PROVIDER, PARALLEL_DOWNLOAD_KEY).returnEarly(PARALLEL_DOWNLOAD_TASKS)
-            methodLoading(MEMBER_PROVIDER, UPSELL_DIALOG_LOG).returnEarly()
+            MEMBER_FLAG_KEYS.forEach { stringLoader(MEMBER_PROVIDER, it).returnEarly(true) }
+            memberInfoCallers(MEMBER_PROVIDER, "isActive").forEach { it.returnEarly(true) }
+            stringLoader(MEMBER_PROVIDER, PARALLEL_DOWNLOAD_KEY).returnEarly(PARALLEL_DOWNLOAD_TASKS)
+            stringLoader(MEMBER_PROVIDER, UPSELL_DIALOG_LOG).returnEarly()
             methodWithString(BOTTOM_TAB_TYPE, PREMIUM_TAB_VALUE).replaceString(PREMIUM_TAB_VALUE, PREMIUM_TAB_ENUM_NAME)
 
-            methodsCallingMemberInfo(PREMIUM_PROVIDER, "isActive", BOOLEAN).forEach { it.returnEarly(true) }
-            methodsCallingMemberInfo(PREMIUM_PROVIDER, "getVipLevel", BOOLEAN).forEach { it.returnEarly(true) }
-            PREMIUM_QUOTA_KEYS.forEach { methodLoading(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
-            FREE_PLAY_QUOTA_KEYS.forEach { methodLoading(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
-            AD_UNLOCK_COUNT_KEYS.forEach { methodLoading(PREMIUM_PROVIDER, it).returnEarly(NO_AD_UNLOCKS) }
-            methodLoading(PREMIUM_PROVIDER, RESOLUTIONS_PER_DOWNLOAD_KEY).returnEarly(DOWNLOAD_RESOLUTIONS)
-            methodsCallingMemberInfo(PREMIUM_PROVIDER, "getDaysLeft", BOXED_INTEGER).forEach { it.returnBoxed(DAYS_LEFT) }
+            memberInfoCallers(PREMIUM_PROVIDER, "isActive").forEach { it.returnEarly(true) }
+            memberInfoCallers(PREMIUM_PROVIDER, "getVipLevel").forEach { it.returnEarly(true) }
+            PREMIUM_QUOTA_KEYS.forEach { stringLoader(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
+            FREE_PLAY_QUOTA_KEYS.forEach { stringLoader(PREMIUM_PROVIDER, it).returnEarly(UNLIMITED) }
+            AD_UNLOCK_COUNT_KEYS.forEach { stringLoader(PREMIUM_PROVIDER, it).returnEarly(NO_AD_UNLOCKS) }
+            stringLoader(PREMIUM_PROVIDER, RESOLUTIONS_PER_DOWNLOAD_KEY).returnEarly(DOWNLOAD_RESOLUTIONS)
+            memberInfoCallers(PREMIUM_PROVIDER, "getDaysLeft").forEach { it.returnBoxed(DAYS_LEFT) }
             method(PREMIUM_ACCESS, "getHasAccess").returnBoxed(true)
 
             method(MEMBER_RESOLUTION, "isUnlock").returnBoxed(true)
             method(MEMBER_RESOLUTION, "getVipResolutionTip").returnBoxed(false)
             method(OBSERVE_LOGIN_ACTION, "onLogout").returnEarly()
-            val memberLoginHelper = stubbedNames?.memberLoginHelper ?: MEMBER_LOGIN_HELPER
-            methodLoading(memberLoginHelper, MEMBER_NOT_LOGGED_IN_LOG).returnEarly(false)
+            stringLoader(MEMBER_LOGIN_HELPER, MEMBER_NOT_LOGGED_IN_LOG).returnEarly(false)
 
             REQUIRE_MEMBER_TYPE_HOLDERS.forEach { method(it, "getRequireMemberType").returnNull() }
             method(DOWNLOAD_RESOLUTION_ITEM, "getRequireMemberType").returnEarly(FREE)
             NEED_PAID_HOLDERS.forEach { method(it, "getNeedPaid").returnEarly(FREE) }
 
-            method(stubbedNames?.playMode ?: PLAY_MODE, PLAY_MODE_IS_STREAM).returnEarly(true)
+            method(PLAY_MODE, PLAY_MODE_IS_STREAM).returnEarly(true)
 
             method(AD_SETTINGS, AD_SETTINGS_ADS_OFF).returnEarly(true)
             method(AD_SCENE_CONFIG, AD_SCENE_TIMEOUT).returnEarly(0)

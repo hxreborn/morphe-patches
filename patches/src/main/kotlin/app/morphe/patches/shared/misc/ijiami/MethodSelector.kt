@@ -12,7 +12,6 @@ private const val CODE_HEADER_SIZE = 16
 private const val OP_NOP = 0x00
 private const val OP_CONST_STRING = 0x1a
 private const val OP_CONST_STRING_JUMBO = 0x1b
-private val INVOKE_OPCODES = (0x6e..0x72) + (0x74..0x78)
 
 private const val PACKED_SWITCH_PAYLOAD = 1
 private const val SPARSE_SWITCH_PAYLOAD = 2
@@ -37,23 +36,6 @@ internal class LoadsString(private val value: String) : MethodSelector {
         val string = dex.stringIndexOf(value) ?: return false
         return dex.walkCode(methodIndex, codeOffset) { opcode, operand, _ ->
             (opcode == OP_CONST_STRING || opcode == OP_CONST_STRING_JUMBO) && operand == string
-        }
-    }
-}
-
-internal class CallsMethod(
-    private val classDescriptor: String,
-    private val name: String,
-    private val returnType: String,
-) : MethodSelector {
-    override val criterion = "calls $classDescriptor->$name and returns $returnType"
-
-    override fun matches(dex: PayloadDex, methodIndex: Int, codeOffset: Int): Boolean {
-        if (dex.returnTypeOf(methodIndex) != returnType) return false
-        val callees = dex.methodIndicesOf(classDescriptor, name)
-        if (callees.isEmpty()) return false
-        return dex.walkCode(methodIndex, codeOffset) { opcode, operand, _ ->
-            opcode in INVOKE_OPCODES && operand in callees
         }
     }
 }
