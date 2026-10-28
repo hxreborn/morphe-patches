@@ -22,6 +22,7 @@ private val PACKER_ABI_BY_LIBRARY_ABI = mapOf(
 
 private const val CERTIFICATE_ASSET = "assets/hx.cer"
 private const val FACTORY_ASSET = "assets/hx.factory"
+private const val APP_HOOK_ASSET = "assets/hx.hook"
 
 private const val DELEGATE_FACTORY = "hx.Delegate"
 private const val FACTORY_ATTRIBUTE = "android:appComponentFactory"
@@ -136,7 +137,12 @@ private fun resolveComponentName(name: String, packageName: String) = when {
     else -> "$packageName.$name"
 }
 
-internal fun ResourcePatchContext.freeDexEntry() =
+private fun ResourcePatchContext.freeDexEntry() =
     generateSequence(2) { it + 1 }
         .map { "classes$it.dex" }
         .first { !get(it).exists() }
+
+internal fun ResourcePatchContext.installAppHook(hookDex: ByteArray, hookClass: String) {
+    get(freeDexEntry(), copy = false).writeBytes(hookDex)
+    get(APP_HOOK_ASSET, copy = false).writeText(hookClass)
+}

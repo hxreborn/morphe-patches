@@ -189,7 +189,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "d06b27d0bbcec5f0a462796ae16688880cc5740ca33abc9a96f4aaaf107f2cad",
         ),
-        targets = listOf(AppTarget(version = "3.0.01c", versionCode = 302400127, minSdk = 24)),
+        targets = listOf(AppTarget(version = "3.0.01e", versionCode = 302400131, minSdk = 29)),
     )
 
     val BEREAL = Compatibility(
@@ -211,7 +211,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "22c4c3a7776a3b54b9380a6021fa86cea27fd6844792ea6c579ba9ad0d2dbd71",
         ),
-        targets = listOf(AppTarget(version = "26.17", versionCode = 26910, minSdk = 26)),
+        targets = listOf(AppTarget(version = "26.18", versionCode = 27058, minSdk = 26)),
     )
 
     val BIOBIRD = Compatibility(
@@ -263,7 +263,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "4a75cf385d6aa8530a1a34ba4ed089da6bf1ae6989f62757839fd01e4f2fcd99",
         ),
-        targets = listOf(AppTarget(version = "4.19.1", versionCode = 7132, minSdk = 24)),
+        targets = listOf(AppTarget(version = "4.20.1", versionCode = 7150, minSdk = 24)),
     )
 
     val CALCNOTE = Compatibility(
@@ -357,6 +357,17 @@ internal object AppCompatibilities {
             "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728",
         ),
         targets = listOf(AppTarget(version = "2.2.9", versionCode = 152, minSdk = 32)),
+    )
+
+    val CONNECTED2 = Compatibility(
+        name = "Connected2.me",
+        packageName = "com.connected2.ozzy.c2m",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x5B5FB8,
+        signatures = setOf(
+            "f264ad5badb9510986215aea993d48b47399e2d516f014f71ea04551303df459",
+        ),
+        targets = listOf(AppTarget(version = "3.396", versionCode = 1822300993, minSdk = 24)),
     )
 
     val CUBASIS_LE_3 = Compatibility(
@@ -798,8 +809,7 @@ internal object AppCompatibilities {
             "03d4b741632d136bc23e2de4c6adcdb7712f1980b619c183221801730bbd0410",
         ),
         targets = listOf(
-            AppTarget(version = "4.0.03.0918.03", versionCode = 50020129, minSdk = 29),
-            AppTarget(version = "4.0.03.1022.03", versionCode = 50020133, minSdk = 29),
+            AppTarget(version = "4.0.03.1020.03", versionCode = 50020133, minSdk = 29),
         ),
     )
 
@@ -1004,7 +1014,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "2.95.0", versionCode = 260642, minSdk = 26),
             AppTarget(version = "2.100.0", versionCode = 260662, minSdk = 26),
-            AppTarget(version = "2.101.0", versionCode = 260665, minSdk = 26),
+            AppTarget(version = "2.102.0", versionCode = 260671, minSdk = 26),
         ),
     )
 
@@ -1030,6 +1040,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "1.791.265", versionCode = 265100, minSdk = 28),
             AppTarget(version = "1.802.266", versionCode = 266201, minSdk = 28),
+            AppTarget(version = "1.811.267", versionCode = 267100, minSdk = 29),
         ),
     )
 
@@ -1258,8 +1269,7 @@ internal object AppCompatibilities {
         appIconColor = 0x1988E0,
         signatures = setOf("ddd75c66578654d085424804cb27c7b6e04fd36616045bfee140d9756ffca563"),
         targets = listOf(
-            AppTarget(version = "4.7.44", versionCode = 8698961, minSdk = 24),
-            AppTarget(version = "4.8.0", versionCode = 8699017, minSdk = 24),
+            AppTarget(version = "4.8.1", versionCode = 8699018, minSdk = 28),
         ),
     )
 
@@ -1536,10 +1546,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xA346FC,
         signatures = setOf("dbb4adaa10cdf28ae38d36ffe3b11f5f6d30506c79f0e59e702a113b0e93a361"),
-        targets = listOf(
-            AppTarget(version = "10.2.1", versionCode = 168, minSdk = 32),
-            AppTarget(version = "10.2.3", versionCode = 170, minSdk = 32),
-        ),
+        targets = listOf(AppTarget(version = "10.2.4", versionCode = 172, minSdk = 32)),
     )
 
     val WATTPAD = Compatibility(

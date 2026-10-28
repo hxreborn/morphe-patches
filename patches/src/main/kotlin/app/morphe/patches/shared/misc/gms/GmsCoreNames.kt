@@ -178,6 +178,7 @@ private val ACTIONS = setOf(
     "com.google.android.gms.location.settings.LOCATION_HISTORY",
     "com.google.android.gms.location.settings.LOCATION_REPORTING_SETTINGS",
     "com.google.android.location.internal.GoogleLocationManagerService",
+    "com.google.android.location.internal.GoogleLocationManagerService.START",
     "com.google.android.gms.locationsharing.api.START",
     "com.google.android.gms.locationsharingreporter.service.START",
     "com.google.android.gms.lockbox.service.START",

@@ -1,10 +1,25 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.photoeditorpro;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,15 +32,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.util.Log;
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public final class AiTrace {
 
@@ -90,31 +96,26 @@ public final class AiTrace {
         }
     }
 
-    public static void install(OkHttpClient.Builder builder) {
-        builder.addInterceptor(AiTrace::trace);
-    }
-
-    private static Response trace(Interceptor.Chain chain) throws IOException {
-        Request request = chain.request();
+    static Object trace(Object chain, Class<?> responseType, ChainProceed proceed) {
         if (!enabled()) {
-            return chain.proceed(request);
+            return proceed.call();
         }
 
-        String url = request.url().toString();
-        Attempt attempt = open(request, url);
+        Class<?> requestType = HttpShape.requestType(chain, responseType);
+        Object request = HttpShape.valueOfType(chain, requestType);
+        Attempt attempt = open(HttpShape.method(request), HttpShape.url(request), request);
         try {
-            Response response = chain.proceed(request);
-            close(attempt, response);
+            Object response = proceed.call();
+            close(attempt, response, requestType);
             return response;
-        } catch (IOException | RuntimeException ex) {
+        } catch (Exception ex) {
             fail(attempt, ex);
-            throw ex;
+            throw HttpShape.<RuntimeException>rethrow(ex);
         }
     }
 
-    private static Attempt open(Request request, String url) {
+    private static Attempt open(String method, String url, Object request) {
         long now = System.currentTimeMillis();
-        String method = request.method();
         Attempt attempt = new Attempt(now, 0);
         try {
             synchronized (LOCK) {
@@ -122,7 +123,7 @@ public final class AiTrace {
                         : pendingSession(operationOf(url), now);
                 Exchange exchange = session.exchange(method, url);
                 if (exchange.payload.isEmpty()) {
-                    exchange.payload = payloadOf(request.body());
+                    exchange.payload = payloadOf(request);
                 }
                 exchange.add(attempt);
                 session.touch(now);
@@ -134,15 +135,16 @@ public final class AiTrace {
         return attempt;
     }
 
-    private static void close(Attempt attempt, Response response) {
+    private static void close(Attempt attempt, Object response, Class<?> requestType) {
         try {
+            Object request = HttpShape.valueOfType(response, requestType);
             synchronized (LOCK) {
-                describe(response, attempt);
+                describe(response, request, attempt);
             }
             Log.i(TAG,
                     String.format(Locale.US, "%s  %s %s -> %s  %dms", iso(attempt.startedAtMs),
-                            response.request().method(), path(response.request().url().toString()),
-                            attempt.statusLine(), attempt.durationMs()));
+                            HttpShape.method(request), path(HttpShape.url(request)), attempt.statusLine(),
+                            attempt.durationMs()));
             if (!attempt.body.isEmpty()) {
                 Log.i(TAG, "    body: " + attempt.body);
             }
@@ -183,59 +185,50 @@ public final class AiTrace {
         }
     }
 
-    private static void describe(Response response, Attempt attempt) {
+    private static void describe(Object response, Object request, Attempt attempt) {
         attempt.endedAtMs = System.currentTimeMillis();
-        attempt.statusCode = response.code();
-        attempt.message = clamp(response.message());
-        attempt.protocol = response.protocol().toString();
-        attempt.responseHeaders = headersOf(response.headers());
-        attempt.requestHeaders = headersOf(response.request().headers());
+        attempt.statusCode = HttpShape.statusCode(response, HttpStatus.NONE);
+        attempt.message = clamp(HttpShape.statusMessage(response));
+        attempt.protocol = HttpShape.protocol(response);
+        attempt.responseHeaders = redacted(HttpShape.headers(response), MAX_HEADERS);
+        attempt.requestHeaders = redacted(HttpShape.headers(request), MAX_HEADERS);
 
-        long sent = response.sentRequestAtMillis();
-        long received = response.receivedResponseAtMillis();
-        if (sent > 0 && received >= sent) {
-            attempt.startedAtMs = sent;
-            attempt.endedAtMs = received;
+        long[] times = HttpShape.timestamps(response);
+        if (times.length == 2) {
+            long sent = Math.min(times[0], times[1]);
+            long received = Math.max(times[0], times[1]);
+            if (sent > 0) {
+                attempt.startedAtMs = sent;
+                attempt.endedAtMs = received;
+            }
         }
 
-        ResponseBody body = response.body();
+        Object body = HttpShape.responseBody(response);
         if (body != null) {
-            attempt.contentLength = body.contentLength();
-            MediaType type = body.contentType();
-            attempt.contentType = (type != null) ? type.toString() : "";
+            attempt.contentLength = HttpShape.contentLength(body);
+            attempt.contentType = HttpShape.contentType(body);
         }
 
         attempt.body = peek(response);
     }
 
-    private static String peek(Response response) {
-        try {
-            String text = response.peekBody(MAX_BODY_BYTES).string().replace('\n', ' ');
-            return (text.length() <= MAX_BODY_CHARS) ? text : text.substring(0, MAX_BODY_CHARS) + "\u2026";
-        } catch (Exception ex) {
-            return "";
-        }
+    private static String peek(Object response) {
+        String text = HttpShape.peekBody(response, MAX_BODY_BYTES).replace('\n', ' ');
+        return (text.length() <= MAX_BODY_CHARS) ? text : text.substring(0, MAX_BODY_CHARS) + "\u2026";
     }
 
-    private static List<String[]> headersOf(Headers headers) {
-        int count = Math.min(headers.size(), MAX_HEADERS);
-        List<String[]> pairs = new ArrayList<>(count);
+    private static List<String[]> redacted(List<String[]> pairs, int limit) {
+        int count = Math.min(pairs.size(), limit);
+        List<String[]> result = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
-            pairs.add(new String[] { headers.name(i), redact(headers.name(i), headers.value(i)) });
+            String[] pair = pairs.get(i);
+            result.add(new String[] { pair[0], redact(pair[0], pair[1]) });
         }
-        return pairs;
+        return result;
     }
 
-    private static List<String[]> payloadOf(RequestBody body) {
-        if (!(body instanceof FormBody form)) {
-            return new ArrayList<>();
-        }
-        int count = Math.min(form.size(), MAX_PAYLOAD_FIELDS);
-        List<String[]> pairs = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            pairs.add(new String[] { form.name(i), redact(form.name(i), form.value(i)) });
-        }
-        return pairs;
+    private static List<String[]> payloadOf(Object request) {
+        return redacted(HttpShape.formFields(request), MAX_PAYLOAD_FIELDS);
     }
 
     private static String redact(String name, String value) {

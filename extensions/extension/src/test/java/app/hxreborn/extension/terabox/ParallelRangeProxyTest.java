@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.terabox;
 
@@ -67,7 +83,7 @@ public final class ParallelRangeProxyTest {
         return bytes;
     }
 
-    private FakeOrigin origin(byte[] content, Responder responder) throws IOException {
+    private FakeOrigin origin(byte[] content, OriginResponder responder) throws IOException {
         final FakeOrigin origin = new FakeOrigin(content, responder);
         this.origins.add(origin);
         return origin;
@@ -425,7 +441,7 @@ public final class ParallelRangeProxyTest {
 
     @Test
     public void rejectsUnusableOriginResponses() throws IOException {
-        final Map<String, Responder> broken = new HashMap<>();
+        final Map<String, OriginResponder> broken = new HashMap<>();
         broken.put("redirect loop",
                 (origin, request, out) -> origin.write(out, "302 Found", "Location: /again\r\n", new byte[0]));
         broken.put("redirect without location",
@@ -436,7 +452,7 @@ public final class ParallelRangeProxyTest {
                 "Content-Range: bytes 0-99/*\r\n", new byte[100]));
         broken.put("missing content range",
                 (origin, request, out) -> origin.write(out, "206 Partial Content", "", new byte[100]));
-        for (Map.Entry<String, Responder> entry : broken.entrySet()) {
+        for (Map.Entry<String, OriginResponder> entry : broken.entrySet()) {
             assertNoSuccess(entry.getKey(), get(proxy(origin(DATA, entry.getValue()), "/file")));
         }
     }
@@ -646,7 +662,7 @@ public final class ParallelRangeProxyTest {
         assertArrayEquals(slice(DATA, 0, response.body.length - 1), response.body);
     }
 
-    private static Responder redirectTo(String location) {
+    private static OriginResponder redirectTo(String location) {
         return (origin, request, out) -> {
             if (request.target.equals("/start")) {
                 origin.write(out, "302 Found", "Location: " + location + "\r\n", new byte[0]);
@@ -669,13 +685,7 @@ public final class ParallelRangeProxyTest {
         return (requestLine + extra + padding + terminator).getBytes(StandardCharsets.US_ASCII);
     }
 
-    private interface Responder {
-
-        void respond(FakeOrigin origin, Seen request, OutputStream out) throws IOException;
-
-    }
-
-    private static final class Seen {
+    static final class Seen {
 
         private static final Pattern RANGE = Pattern.compile("bytes=(\\d+)-(\\d*)");
 
@@ -710,7 +720,7 @@ public final class ParallelRangeProxyTest {
 
     }
 
-    private static final class FakeOrigin {
+    static final class FakeOrigin {
 
         final List<Seen> requests = new CopyOnWriteArrayList<>();
 
@@ -720,9 +730,9 @@ public final class ParallelRangeProxyTest {
 
         private final byte[] content;
 
-        private final Responder responder;
+        private final OriginResponder responder;
 
-        FakeOrigin(byte[] content, Responder responder) throws IOException {
+        FakeOrigin(byte[] content, OriginResponder responder) throws IOException {
             this.content = content;
             this.responder = responder;
             this.server = new ServerSocket(0, 50, InetAddress.getByName("127.0.0.1"));

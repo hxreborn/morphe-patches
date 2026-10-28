@@ -19,14 +19,10 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/raindrop/AccentColor;"
 
-private const val LIGHT_ACCENT_ENTRY_4_7 = "52 54 07 0C 07"
-private const val LIGHT_ACCENT_ENTRY_TO_SILVER_4_7 = "52 64 08 0C 07"
-private const val DARK_ACCENT_ENTRY_4_7 = "52 85 08 15 09"
-private const val DARK_ACCENT_ENTRY_TO_MAROON_4_7 = "52 EA 07 15 09"
-private const val LIGHT_ACCENT_ENTRY_4_8 = "52 86 07 3E 07"
-private const val LIGHT_ACCENT_ENTRY_TO_SILVER_4_8 = "52 8D 08 3E 07"
-private const val DARK_ACCENT_ENTRY_4_8 = "52 A4 08 3B 09"
-private const val DARK_ACCENT_ENTRY_TO_MAROON_4_8 = "52 0F 08 3B 09"
+private const val LIGHT_ACCENT_ENTRY = "52 88 07 3E 07"
+private const val LIGHT_ACCENT_ENTRY_TO_SILVER = "52 8F 08 3E 07"
+private const val DARK_ACCENT_ENTRY = "52 A6 08 3D 09"
+private const val DARK_ACCENT_ENTRY_TO_MAROON = "52 11 08 3D 09"
 private const val SILVER_KEYWORD_HEX = "23 63 30 63 30 63 30"
 private const val LIGHT_PLACEHOLDER = "23 31 39 38 38 65 30"
 private const val MAROON_KEYWORD_HEX = "23 38 30 30 30 30 30"
@@ -46,14 +42,8 @@ val accentColorPatch = bytecodePatch(
     dependsOn(
         hermesVariantsPatch(
             setOf(
-                LIGHT_ACCENT_ENTRY_4_7 to LIGHT_ACCENT_ENTRY_TO_SILVER_4_7,
-                DARK_ACCENT_ENTRY_4_7 to DARK_ACCENT_ENTRY_TO_MAROON_4_7,
-                SILVER_KEYWORD_HEX to LIGHT_PLACEHOLDER,
-                MAROON_KEYWORD_HEX to DARK_PLACEHOLDER,
-            ),
-            setOf(
-                LIGHT_ACCENT_ENTRY_4_8 to LIGHT_ACCENT_ENTRY_TO_SILVER_4_8,
-                DARK_ACCENT_ENTRY_4_8 to DARK_ACCENT_ENTRY_TO_MAROON_4_8,
+                LIGHT_ACCENT_ENTRY to LIGHT_ACCENT_ENTRY_TO_SILVER,
+                DARK_ACCENT_ENTRY to DARK_ACCENT_ENTRY_TO_MAROON,
                 SILVER_KEYWORD_HEX to LIGHT_PLACEHOLDER,
                 MAROON_KEYWORD_HEX to DARK_PLACEHOLDER,
             ),

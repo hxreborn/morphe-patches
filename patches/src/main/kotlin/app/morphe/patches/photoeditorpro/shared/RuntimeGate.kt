@@ -17,32 +17,34 @@ internal const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/photoeditorpro"
 internal const val PATCH_GATES_CLASS = "$EXTENSION_PACKAGE/PatchGates;"
 internal const val PATCH_PANEL_CLASS = "$EXTENSION_PACKAGE/PatchPanel;"
 internal const val PATCH_APPLICATION_CLASS = "$EXTENSION_PACKAGE/PatchApplication;"
-internal const val OK_HTTP_UTILS_CLASS =
-    "Lcom/camerasideas/collagemaker/network/OkHttpUtils;"
-internal const val REMOVAL_TASK_CLASS =
-    "Lcom/camerasideas/collagemaker/model/removal/ImageRemovalGCTask;"
-internal const val ENHANCE_TASK_CLASS =
-    "Lcom/camerasideas/collagemaker/model/enhancer/ImageEnhanceGCTask;"
+internal const val RESULT_CALLBACK_CLASS =
+    "Lcom/camerasideas/collagemaker/network/OkHttpUtils\$ResultCallback;"
+internal const val REMOVAL_CALLBACK_CLASS =
+    "Lcom/camerasideas/collagemaker/model/removal/ImageRemovalGCTask\$1;"
+internal const val ENHANCE_CALLBACK_CLASS =
+    "Lcom/camerasideas/collagemaker/model/enhancer/ImageEnhanceGCTask\$1;"
 
-internal val AI_TASK_CLASSES = listOf(
-    REMOVAL_TASK_CLASS,
-    ENHANCE_TASK_CLASS,
-    "Lcom/camerasideas/collagemaker/model/sketch/ImageSketchGCTask;",
-    "Lcom/camerasideas/collagemaker/model/segmentation/ImageSegmentationTask;",
+internal val AI_TASK_CALLBACK_CLASSES = listOf(
+    REMOVAL_CALLBACK_CLASS,
+    ENHANCE_CALLBACK_CLASS,
+    "Lcom/camerasideas/collagemaker/model/sketch/ImageSketchGCTask\$1;",
+    "Lcom/camerasideas/collagemaker/model/segmentation/ImageSegmentationTask\$2;",
     "Lcom/camerasideas/collagemaker/activity/fragment/imagefragment/cutout/" +
-        "ImageAiCutoutGCTask;",
+        "ImageAiCutoutGCTask\$1;",
 )
 
 internal fun MutableClass.methodMatching(role: String, predicate: (MutableMethod) -> Boolean): MutableMethod =
     methods.singleOrNull(predicate)
         ?: throw PatchException("No single $role method in $type")
 
-internal fun BytecodePatchContext.submitRequestMethod(): MutableMethod =
-    mutableClassDefBy(OK_HTTP_UTILS_CLASS).methodMatching("submit request") { method ->
-        val parameters = method.parameterTypes.map(CharSequence::toString)
-        method.returnType == "V" && parameters.size == 3 &&
-            parameters[0] == STRING && parameters[2].startsWith("[")
-    }
+internal fun BytecodePatchContext.taskClass(callbackClass: String): MutableClass {
+    val packagePrefix = callbackClass.substringBeforeLast('/') + "/"
+    val owner = classDefByOrNull(callbackClass)?.fields?.singleOrNull {
+        it.type != callbackClass && it.type.startsWith(packagePrefix)
+    } ?: throw PatchException("No task class owning $callbackClass")
+
+    return mutableClassDefBy(owner.type)
+}
 
 internal fun MutableMethod.returnTrueWhileEnabled(gateMethod: String) {
     val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()

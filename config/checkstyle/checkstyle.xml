@@ -39,5 +39,9 @@
             <property name="option" value="same"/>
             <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE"/>
         </module>
+        <module name="MatchXpath">
+            <property name="query" value="//OBJBLOCK/INTERFACE_DEF"/>
+            <message key="matchxpath.match" value="Interfaces are top-level types in their own file"/>
+        </module>
     </module>
 </module>

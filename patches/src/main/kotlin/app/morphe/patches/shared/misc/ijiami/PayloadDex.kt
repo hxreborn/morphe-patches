@@ -216,15 +216,6 @@ internal class PayloadDex private constructor(
 
     fun stringIndexOf(value: String) = (0 until stringIdsSize).firstOrNull { stringAt(it) == value }
 
-    fun methodIndicesOf(classDescriptor: String, name: String): Set<Int> {
-        val type = typeIndexOf(classDescriptor) ?: return emptySet()
-
-        return (0 until methodIdsSize).filterTo(mutableSetOf()) {
-            val item = methodIdsOffset + METHOD_ID_SIZE * it
-            short(item) == type && stringAt(int(item + 4)) == name
-        }
-    }
-
     private fun typeIndexOf(classDescriptor: String) =
         (0 until typeIdsSize).firstOrNull { typeDescriptor(it) == classDescriptor }
 

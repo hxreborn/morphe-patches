@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.castle;
 
@@ -44,7 +60,7 @@ public final class FullHdPlaylist {
         byte[] original = Streams.readAll(playlist);
         String fullHd;
         try {
-            fullHd = fullHd(new String(original, StandardCharsets.UTF_8), new Existence() {
+            fullHd = fullHd(new String(original, StandardCharsets.UTF_8), new UrlExistence() {
 
                 @Override
                 public boolean exists(String url) throws IOException {
@@ -58,7 +74,7 @@ public final class FullHdPlaylist {
         return new ByteArrayInputStream((fullHd != null) ? fullHd.getBytes(StandardCharsets.UTF_8) : original);
     }
 
-    static String fullHd(String playlist, Existence existence) throws IOException {
+    static String fullHd(String playlist, UrlExistence existence) throws IOException {
         String[] lines = playlist.replace("\r", "").split("\n", -1);
         List<Integer> segments = new ArrayList<>();
         for (int index = 0; index < lines.length; index++) {
@@ -88,7 +104,7 @@ public final class FullHdPlaylist {
         return rewritten.toString();
     }
 
-    private static int availableSegments(String[] lines, List<Integer> segments, Existence existence)
+    private static int availableSegments(String[] lines, List<Integer> segments, UrlExistence existence)
             throws IOException {
         if (!existence.exists(fullHdUrl(lines[segments.get(0)]))) {
             return 0;
@@ -117,12 +133,6 @@ public final class FullHdPlaylist {
         String suffix = (directory.group(2) != null) ? directory.group(2) : "";
         return segmentUrl.substring(0, directory.start()) + directory.group(1) + "1080" + suffix + "/"
                 + segmentUrl.substring(directory.end());
-    }
-
-    interface Existence {
-
-        boolean exists(String url) throws IOException;
-
     }
 
 }

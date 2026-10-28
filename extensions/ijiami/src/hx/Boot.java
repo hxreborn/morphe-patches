@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,6 +13,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package hx;
 
@@ -35,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -53,15 +59,20 @@ final class Boot {
     private static final String NATIVE_LIBRARY = "libhxpatch.so";
     private static final String ARM64_ABI = "arm64-v8a";
     private static final String ARM32_ABI = "armeabi-v7a";
-    private static final String APP_HOOK_CLASS = "hx.AppPatch";
+    private static final String APP_HOOK_ASSET = "assets/hx.hook";
     private static final String STRIP_WARNING =
             "Disable \"Optimize for device architecture\" & re-patch";
     private static final String ARCH_WARNING = "This device's architecture is not supported by the patch";
+    static final String APP_HOOK_FAILED = "Patch hook failed";
+    static final String CODE_OVERLAY_FAILED = "Patch cannot write its code overlay";
+    private static final int TOAST_ATTEMPTS = 30;
+    private static final long TOAST_RETRY_MILLIS = 1000L;
 
     private static boolean installed;
     private static boolean appHookStarted;
     private static boolean assetsRead;
     private static String packerFactory = "";
+    private static String appHookClass = "";
     private static byte[] certificate = new byte[0];
 
     private Boot() {
@@ -128,27 +139,30 @@ final class Boot {
             Log.i(TAG, "code overlay: loaded " + loaded + " classes, wrote " + written + " code items");
         } catch (Throwable t) {
             Log.e(TAG, "cannot write code overlay", t);
+            toast(failureNotice(CODE_OVERLAY_FAILED, t));
         }
     }
 
     private static native int writeCode(byte[] records);
 
     static void runAppHook(final ClassLoader loader) {
+        final String hookClass;
         synchronized (Boot.class) {
-            if (appHookStarted) return;
+            if (appHookStarted || appHookClass.isEmpty()) return;
             appHookStarted = true;
+            hookClass = appHookClass;
         }
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Class.forName(APP_HOOK_CLASS, true, Boot.class.getClassLoader())
+                    Class.forName(hookClass, true, Boot.class.getClassLoader())
                             .getMethod("install", ClassLoader.class)
                             .invoke(null, loader);
-                } catch (ClassNotFoundException noHook) {
                 } catch (Throwable t) {
                     Log.e(TAG, "app hook failed", t);
+                    toast(failureNotice(APP_HOOK_FAILED, t));
                 }
             }
         }, "hxreborn-apphook");
@@ -162,6 +176,7 @@ final class Boot {
         try (ZipFile archive = new ZipFile(info.sourceDir)) {
             certificate = read(archive, CERTIFICATE_ASSET);
             packerFactory = new String(read(archive, FACTORY_ASSET), StandardCharsets.UTF_8).trim();
+            appHookClass = new String(read(archive, APP_HOOK_ASSET), StandardCharsets.UTF_8).trim();
             assetsRead = certificate.length > 0 && !packerFactory.isEmpty();
 
             if (!assetsRead) Log.e(TAG, "missing patch assets in " + info.sourceDir);
@@ -212,8 +227,18 @@ final class Boot {
         toast(STRIP_WARNING);
     }
 
-    private static void toast(final String message) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
+    static String failureNotice(String summary, Throwable t) {
+        Throwable cause = (t instanceof InvocationTargetException && t.getCause() != null) ? t.getCause() : t;
+        String message = cause.getMessage();
+        return summary + ": " + cause.getClass().getSimpleName() + (message == null ? "" : ": " + message);
+    }
+
+    private static void toast(String message) {
+        toast(message, 1);
+    }
+
+    private static void toast(final String message, final int attempt) {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -221,6 +246,8 @@ final class Boot {
                             .getMethod("currentApplication").invoke(null);
                     if (application != null) {
                         Toast.makeText((Context) application, message, Toast.LENGTH_LONG).show();
+                    } else if (attempt < TOAST_ATTEMPTS) {
+                        toast(message, attempt + 1);
                     } else {
                         Log.e(TAG, "no application context to show \"" + message + "\"");
                     }
@@ -228,7 +255,7 @@ final class Boot {
                     Log.e(TAG, "cannot show \"" + message + "\"", t);
                 }
             }
-        });
+        }, (attempt == 1) ? 0L : TOAST_RETRY_MILLIS);
     }
 
     private static void loadNativeLibrary(ApplicationInfo info) throws Exception {

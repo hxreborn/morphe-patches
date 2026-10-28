@@ -138,6 +138,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `serializd.png` | Serializd (`com.serializdmobile`) | Serializd | Play 1.992, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `musicolet.png` | Musicolet (`in.krosbits.musicolet`) | Krosbits | APK 6.14.1 build540, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_ex4.xml`, cut to a circle |
 | `musicoletcastplugin.png` | Cast Plug-in for Musicolet (`in.krosbits.castplugin`) | Krosbits | APK 1.9, `res/mipmap-xxxhdpi-v4/ic_launcher.png` |
+| `connected2.png` | Connected2.me (`com.connected2.ozzy.c2m`) | C2M | APK 3.396, `res/mipmap-xxxhdpi-v4/app_launcher_round.png` |
 | `sygic.png` | Sygic GPS Navigation (`com.sygic.aura`) | Sygic a.s. | APK 26.6.1, adaptive icon `res/mipmap-anydpi/ic_launcher.xml` (`ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi, centre 72dp cut to a circle) |
 | `minishare.png` | MiniShare (`com.omniashare.minishare`) | Not on Google Play | APK 1.6.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `narababy.png` | Nara Baby (`com.naraorganics.nara`) | Nara Organics | APK 2.8.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |

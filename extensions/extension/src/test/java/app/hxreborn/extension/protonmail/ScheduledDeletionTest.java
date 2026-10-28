@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.protonmail;
 
@@ -41,16 +57,6 @@ public final class ScheduledDeletionTest {
     private static final String TAG = "ScheduledDeletion";
 
     private static final long HOUR_MS = 3_600_000L;
-
-    public interface Continuation {
-
-        Object getContext();
-
-        void resumeWith(Object result);
-
-        Object unrelated();
-
-    }
 
     enum Marker {
 
@@ -192,9 +198,9 @@ public final class ScheduledDeletionTest {
         return field.get(blockingContinuation);
     }
 
-    private static Continuation continuationFor(Object blockingContinuation) {
-        return (Continuation) Proxy.newProxyInstance(ScheduledDeletionTest.class.getClassLoader(),
-                new Class<?>[] { Continuation.class }, (InvocationHandler) blockingContinuation);
+    private static FakeContinuation continuationFor(Object blockingContinuation) {
+        return (FakeContinuation) Proxy.newProxyInstance(ScheduledDeletionTest.class.getClassLoader(),
+                new Class<?>[] { FakeContinuation.class }, (InvocationHandler) blockingContinuation);
     }
 
     @Test
@@ -503,7 +509,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void continuationReportsTheDispatcherItWasGiven() throws ReflectiveOperationException {
         final Object dispatcher = new Object();
-        final Continuation continuation = continuationFor(newBlockingContinuation(dispatcher));
+        final FakeContinuation continuation = continuationFor(newBlockingContinuation(dispatcher));
         assertSame(dispatcher, continuation.getContext());
         assertSame(dispatcher, continuation.getContext());
     }
@@ -511,7 +517,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void continuationBlocksUntilResumed() throws Exception {
         final Object blockingContinuation = newBlockingContinuation(new Object());
-        final Continuation continuation = continuationFor(blockingContinuation);
+        final FakeContinuation continuation = continuationFor(blockingContinuation);
         final CountDownLatch resumed = (CountDownLatch) continuationField(blockingContinuation, "resumed");
 
         assertEquals(1, resumed.getCount());
@@ -553,8 +559,8 @@ public final class ScheduledDeletionTest {
 
     @Test
     public void continuationAnswersObjectMethodsItself() throws ReflectiveOperationException {
-        final Continuation first = continuationFor(newBlockingContinuation(new Object()));
-        final Continuation second = continuationFor(newBlockingContinuation(new Object()));
+        final FakeContinuation first = continuationFor(newBlockingContinuation(new Object()));
+        final FakeContinuation second = continuationFor(newBlockingContinuation(new Object()));
 
         assertEquals("UniffiCalls", first.toString());
         assertEquals(System.identityHashCode(first), first.hashCode());
@@ -567,7 +573,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void continuationIgnoresMethodsItDoesNotModel() throws ReflectiveOperationException {
         // given
-        final Continuation continuation = continuationFor(newBlockingContinuation(new Object()));
+        final FakeContinuation continuation = continuationFor(newBlockingContinuation(new Object()));
 
         // when
         final Object result = continuation.unrelated();

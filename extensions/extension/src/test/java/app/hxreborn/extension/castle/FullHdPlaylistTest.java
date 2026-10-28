@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.castle;
 
@@ -95,7 +111,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void swapsTheTierWhenBothTiersHaveTheSameSegments() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(3);
+        UrlExistence existence = existingUpTo(3);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -108,7 +124,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void rewritesEverySegmentWhenTheFullHdTierHasMoreSegments() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(7);
+        UrlExistence existence = existingUpTo(7);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -121,7 +137,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void endsThePlaylistAtTheLastFullHdSegment() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(1);
+        UrlExistence existence = existingUpTo(1);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -134,7 +150,7 @@ public final class FullHdPlaylistTest {
     @Test
     public void keepsTheHdPlaylistWhenTheFullHdTierHasNoFirstSegment() throws IOException {
         // given
-        FullHdPlaylist.Existence existence = existingUpTo(-1);
+        UrlExistence existence = existingUpTo(-1);
 
         // when
         String playlist = FullHdPlaylist.fullHd(hdPlaylist(4), existence);
@@ -157,8 +173,8 @@ public final class FullHdPlaylistTest {
         return playlist.append("#EXT-X-ENDLIST\n").toString();
     }
 
-    private static FullHdPlaylist.Existence existingUpTo(final int lastNumber) {
-        return new FullHdPlaylist.Existence() {
+    private static UrlExistence existingUpTo(final int lastNumber) {
+        return new UrlExistence() {
 
             @Override
             public boolean exists(String url) {

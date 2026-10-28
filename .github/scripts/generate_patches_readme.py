@@ -266,6 +266,7 @@ ICONS = {
     "com.serializdmobile": "serializd.png",
     "in.krosbits.musicolet": "musicolet.png",
     "in.krosbits.castplugin": "musicoletcastplugin.png",
+    "com.connected2.ozzy.c2m": "connected2.png",
     "com.youdao.hindict": "udictionary.png",
     "com.ufoneselfcare": "uptcl.png",
     "com.generalmagic.magicearth": "magicearth.png",

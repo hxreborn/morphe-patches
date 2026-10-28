@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.netanalyzer;
 
@@ -173,7 +189,7 @@ final class SpeedTest {
 
     private static final double MIN_ACK_SECONDS = 0.001;
 
-    private final Listener listener;
+    private final SpeedTestListener listener;
 
     private final long phaseMillis;
 
@@ -191,11 +207,11 @@ final class SpeedTest {
 
     private volatile HttpURLConnection listRequest;
 
-    SpeedTest(Listener listener) {
+    SpeedTest(SpeedTestListener listener) {
         this(listener, PHASE_MS);
     }
 
-    SpeedTest(Listener listener, long phaseMillis) {
+    SpeedTest(SpeedTestListener listener, long phaseMillis) {
         this.listener = listener;
         this.phaseMillis = phaseMillis;
     }
@@ -663,22 +679,6 @@ final class SpeedTest {
     enum Phase {
 
         PREPARING, DOWNLOAD, UPLOAD
-
-    }
-
-    interface Listener {
-
-        void onPhase(Phase phase);
-
-        void onProgress(Phase phase, float progress);
-
-        void onSample(Phase phase, long rawBytesPerSecond, long liveBytesPerSecond, long elapsedMillis);
-
-        void onPhaseResult(Phase phase, long bytesPerSecond);
-
-        void onFinished(long downloadBytesPerSecond, long uploadBytesPerSecond);
-
-        void onFailed(String message);
 
     }
 

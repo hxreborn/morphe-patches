@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Additional term under GPLv3 Section 7(b): When conveying this material
+ * or modified versions, preserve this notice and credit hxreborn for this
+ * material in any Appropriate Legal Notices displayed by works containing it.
  */
 package app.hxreborn.extension.netanalyzer;
 
@@ -263,7 +279,7 @@ abstract class HostScreenActivity extends Activity {
         addRow(column);
     }
 
-    final MaterialSwitch switchRow(String title, String summary, boolean checked, SwitchListener listener) {
+    final MaterialSwitch switchRow(String title, String summary, boolean checked, SwitchChangeListener listener) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -292,7 +308,7 @@ abstract class HostScreenActivity extends Activity {
         return toggle;
     }
 
-    final LinearLayout segmentedRow(String[] options, int selected, SegmentListener listener) {
+    final LinearLayout segmentedRow(String[] options, int selected, SegmentSelectionListener listener) {
         final LinearLayout row = new LinearLayout(this);
         row.setBackgroundColor(this.palette.background);
         row.setPaddingRelative(dp(INSET_DP), dp(ROW_VERTICAL_DP), dp(INSET_DP), dp(ROW_VERTICAL_DP));
@@ -303,7 +319,7 @@ abstract class HostScreenActivity extends Activity {
         return segments;
     }
 
-    final LinearLayout segmentedButtons(String[] options, int selected, SegmentListener listener) {
+    final LinearLayout segmentedButtons(String[] options, int selected, SegmentSelectionListener listener) {
         final LinearLayout segments = new LinearLayout(this);
         segments.setOrientation(LinearLayout.HORIZONTAL);
         final float radius = dp(SEGMENT_HEIGHT_DP) / 2f;
@@ -570,18 +586,6 @@ abstract class HostScreenActivity extends Activity {
             }
             return gray ? NEUTRAL : NEGATIVE;
         }
-
-    }
-
-    interface SwitchListener {
-
-        void onChanged(boolean checked);
-
-    }
-
-    interface SegmentListener {
-
-        void onSelected(int index);
 
     }
 

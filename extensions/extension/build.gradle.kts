@@ -9,6 +9,8 @@ extension {
 android {
     namespace = "app.hxreborn.extension"
 
+    sourceSets.getByName("test").java.srcDirs("../moviebox/src", "../moviebox/test", "../ijiami/src", "../ijiami/test")
+
     buildFeatures {
         buildConfig = true
     }
@@ -38,8 +40,33 @@ android {
 }
 
 tasks.register<Checkstyle>("checkstyle") {
-    source("src/main/java")
+    source("src/main/java", "../moviebox/src", "../moviebox/test", "../ijiami/test")
     classpath = files()
+}
+
+val movieBoxMinSdk = 23
+
+val checkMovieBoxApiLevel = tasks.register<Exec>("checkMovieBoxApiLevel") {
+    dependsOn("compileDebugUnitTestJavaWithJavac")
+    val apiVersions = androidComponents.sdkComponents.sdkDirectory.map {
+        it.file("platforms/android-${android.compileSdk}/data/api-versions.xml").asFile.path
+    }
+    val classes = layout.buildDirectory.dir("intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes")
+    val sources = layout.projectDirectory.dir("../moviebox/src")
+    inputs.dir(classes)
+    inputs.dir(sources)
+    commandLine(
+        "python3",
+        rootProject.file(".github/scripts/check_android_api_level.py").path,
+        movieBoxMinSdk.toString(),
+        apiVersions.get(),
+        classes.get().asFile.path,
+        sources.asFile.path,
+    )
+}
+
+tasks.matching { it.name == "lintRelease" }.configureEach {
+    dependsOn(checkMovieBoxApiLevel)
 }
 
 tasks.named("check") {
@@ -55,6 +82,7 @@ dependencies {
     compileOnly(libs.androidx.compose.runtime)
     compileOnly(libs.androidx.compose.foundation)
     testImplementation(libs.junit)
+    testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)
     testImplementation(libs.okhttp)
     testImplementation(libs.json)
