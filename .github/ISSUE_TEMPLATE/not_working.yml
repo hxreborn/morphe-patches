@@ -387,12 +387,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.66.0"
         - "1.66.0-dev.3"
         - "1.66.0-dev.2"
         - "1.66.0-dev.1"
         - "1.65.0-dev.9"
         - "1.65.0-dev.8"
-        - "1.65.0-dev.7"
         - "Older than these"
         # /generated
     validations:
@@ -528,6 +528,7 @@ body:
         - "Catzy \u00b7 Unlimited cat coins"
         - "Catzy \u00b7 Unlock premium"
         - "Clink \u00b7 Unlock Pro"
+        - "Clip Studio Paint \u00b7 Skip plan selection"
         - "Clip Studio Paint \u00b7 Unlock premium"
         - "Clone App \u00b7 Disable tracking"
         - "Clone App \u00b7 Fix Manage Google account"

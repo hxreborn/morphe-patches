@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.66.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.66.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;375 patches total
+> **[v1.66.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.66.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;376 patches total
 
 <table>
 <tr>
@@ -65,7 +65,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#catzy"><img src=".github/assets/icons/catzy.png" width="40"><br>Catzy</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#clink"><img src=".github/assets/icons/clink.png" width="40"><br>Clink</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#clip-studio-paint"><img src=".github/assets/icons/clipstudiopaint.png" width="40"><br>Clip Studio Paint</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#clip-studio-paint"><img src=".github/assets/icons/clipstudiopaint.png" width="40"><br>Clip Studio Paint</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#clone-app"><img src=".github/assets/icons/cloneapp.png" width="40"><br>Clone App</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -777,7 +777,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="clip-studio-paint"></a>
 <details>
-<summary><img src=".github/assets/icons/clipstudiopaint.png" width="18" align="top">&nbsp;&nbsp;Clip Studio Paint&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/clipstudiopaint.png" width="18" align="top">&nbsp;&nbsp;Clip Studio Paint&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -787,6 +787,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="clip-studio-paint-skip-plan-selection"></a>[Skip plan selection](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/launch/SkipPlanSelectionPatch.kt) | Opens the app in doodle mode without showing the plan selection screen. Log in from the home screen to use a plan. |
 | <a id="clip-studio-paint-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/premium/UnlockPremiumPatch.kt) | Unlocks saving and exporting in doodle mode, including full-length timelapse export with an optional logo. |
 
 </details>
