@@ -4,17 +4,14 @@
  */
 package app.morphe.patches.clipstudiopaint.misc.premium
 
-import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patches.clipstudiopaint.misc.PatchSite
+import app.morphe.patches.clipstudiopaint.misc.WORD_SIZE
+import app.morphe.patches.clipstudiopaint.misc.rewriteNativeLibrary
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
-import java.io.RandomAccessFile
 import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.channels.FileChannel
 
-private const val LIBRARY = "lib/arm64-v8a/libClipStudioPaint.so"
-private const val WORD_SIZE = 4
 private const val ZERO_REGISTER = 0x1f
 
 private const val ADRP_X8_REDIRECT_PAGE = 0xf0025468u
@@ -22,8 +19,6 @@ private const val ADD_X8_REDIRECT_OFFSET = 0x912fc108u
 
 private const val MOV_W0_ALL_PRODUCT_PLAN = 0x52800040
 private const val RET = 0xd65f03c0u
-
-private class PatchSite(val pattern: IntArray, val rewrite: (ByteBuffer, Int) -> Unit)
 
 private val clearDoodleFlagStore: (ByteBuffer, Int) -> Unit = { buffer, start ->
     val store = start + WORD_SIZE
@@ -67,27 +62,6 @@ private val patchSites = listOf(
     ),
 )
 
-private fun ByteBuffer.matchesAt(offset: Int, words: IntArray) =
-    words.indices.all { getInt(offset + it * WORD_SIZE) == words[it] }
-
-private fun ByteBuffer.findPatchSites(): List<Int> {
-    val firstWords = patchSites.map { it.pattern[0] }.toIntArray()
-    val found = List(patchSites.size) { mutableListOf<Int>() }
-    val longestPatternWords = patchSites.maxOf { it.pattern.size }
-    for (offset in 0..limit() - longestPatternWords * WORD_SIZE step WORD_SIZE) {
-        val word = getInt(offset)
-        for (index in firstWords.indices) {
-            if (word == firstWords[index] && matchesAt(offset, patchSites[index].pattern)) found[index] += offset
-        }
-    }
-    found.forEachIndexed { index, offsets ->
-        if (offsets.size != 1) {
-            throw PatchException("Expected one match for site $index in $LIBRARY, found ${offsets.size}")
-        }
-    }
-    return found.map { it.single() }
-}
-
 @Suppress("unused")
 val unlockPremiumPatch = rawResourcePatch(
     name = "Unlock premium",
@@ -97,14 +71,6 @@ val unlockPremiumPatch = rawResourcePatch(
     availability(requireArm64)
 
     execute {
-        val library = get(LIBRARY, true)
-        if (!library.exists()) throw PatchException("$LIBRARY not found")
-
-        RandomAccessFile(library, "rw").use { file ->
-            val mapped = file.channel.map(FileChannel.MapMode.READ_WRITE, 0, file.length())
-            val buffer = mapped.duplicate().order(ByteOrder.LITTLE_ENDIAN)
-            buffer.findPatchSites().forEachIndexed { index, start -> patchSites[index].rewrite(buffer, start) }
-            mapped.force()
-        }
+        rewriteNativeLibrary(patchSites)
     }
 }
