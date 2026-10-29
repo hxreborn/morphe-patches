@@ -76,7 +76,7 @@ internal class Arm64ElfReader(private val bytes: ByteArray) {
 
     fun readQword(address: Long): ULong = buffer.getLong(fileOffset(address)).toULong()
 
-    private fun fileOffset(address: Long): Int {
+    fun fileOffset(address: Long): Int {
         val programs = buffer.getLong(PROGRAM_HEADER_OFFSET).toInt()
         for (index in 0 until buffer.getShort(PROGRAM_HEADER_COUNT)) {
             val header = programs + index * buffer.getShort(PROGRAM_HEADER_SIZE)
