@@ -11,7 +11,6 @@ body:
         - Hobby project. Upvotes show demand. They don't set the order, and nothing is promised.
         - Features that depend on the app's servers (AI, cloud sync, streaming quality) may not be patchable.
           It varies by app, so ask if you're not sure.
-        - Tracking is turned off and the app's own protections are removed wherever a patch allows it, no need to ask.
   - type: input
     id: app_name
     attributes:
@@ -28,22 +27,22 @@ body:
       placeholder: com.duolingo
     validations:
       required: false
-  - type: dropdown
+  - type: textarea
     id: features
     attributes:
       label: Requested features
-      multiple: true
-      options:
-        - Unlock premium
-        - Remove ads
-        - Something else, described below
+      description: What should the patch do? Name the locked features as the app names them.
+      placeholder: |
+        Unlimited hearts
+        Offline lessons
+        No ads between lessons
     validations:
       required: true
   - type: textarea
     id: additional
     attributes:
       label: Additional info
-      description: Which features are locked? Name them as the app does (e.g. "Unlimited hearts", "Offline downloads").
+      description: Anything else useful, such as screenshots of the paywall.
     validations:
       required: false
   - type: checkboxes
