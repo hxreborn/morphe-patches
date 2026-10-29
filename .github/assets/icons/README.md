@@ -145,6 +145,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `narababy.png` | Nara Baby (`com.naraorganics.nara`) | Nara Organics | APK 2.8.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `wattpad.png` | Wattpad (`wp.wattpad`) | Wattpad.com | APK 11.41.1, `res/mipmap-xxxhdpi-v4/ic_launcher.webp` (round icon cropped to the circle) |
 | `watchit.png` | WATCH IT (`com.watchit.vod`) | WATCH iT! | APK 5.26.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `ridmik.png` | Ridmik Keyboard (`ridmik.keyboard`) | Ridmik Labs | APK 19.1.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `graphmessenger.png` | Graph Messenger (`ir.ilmili.telegraph`) | Databite | APK 13.0.2.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `glasswidgets.png` | Glass Widgets (`com.jndapp.glass.widgets`) | JustNewDesigns | APK 1.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `yuka.png` | Yuka (`io.yuka.android`) | Yuka SAS | APK 5.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |

@@ -229,6 +229,7 @@ ICONS = {
     "com.soulbreakers.mymoveset": "mymoveset.png",
     "com.realme.link": "realmelink.png",
     "ringtonemaker.musiccutter.customringtones.freeringtonemaker": "ringtonemaker.png",
+    "ridmik.keyboard": "ridmik.png",
     "com.vpn.free.hotspot.secure.vpnify": "vpnify.png",
     "ch.protonvpn.android": "protonvpn.png",
     "com.alokmandavgane.hinducalendar": "hinducalendar.png",

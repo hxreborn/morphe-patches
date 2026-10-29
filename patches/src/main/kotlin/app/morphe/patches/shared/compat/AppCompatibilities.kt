@@ -1301,6 +1301,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val RIDMIK_KEYBOARD = Compatibility(
+        name = "Ridmik Keyboard",
+        packageName = "ridmik.keyboard",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x037238,
+        signatures = setOf("f5f1ac10f17936cfa2da8f8073b6065e3341feca502c04014b8f6d08852ef881"),
+        targets = listOf(AppTarget(version = "19.1.2", versionCode = 329, minSdk = 23)),
+    )
+
     val RINGTONE_MAKER = Compatibility(
         name = "Ringtone Maker",
         packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
