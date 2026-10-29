@@ -68,8 +68,8 @@ public final class LateFlag {
         }
     }
 
-    public static Object takenAt(Object original) {
-        if (original == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+    public static Object takenAt(Object original, boolean isMain) {
+        if (original == null || !isMain || Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                 || !PatchSettings.REMOVE_LATE_FLAG.get()) {
             return original;
         }
