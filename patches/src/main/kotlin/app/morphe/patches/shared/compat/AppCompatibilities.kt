@@ -1186,7 +1186,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "76dbef15f67726d451a12359b8579c0d7a9f635d526aa37424df131632f17810",
         ),
-        targets = listOf(AppTarget(version = "2.5.11", versionCode = 506, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.5.13", versionCode = 509, minSdk = 24)),
     )
 
     val PUBLIC = Compatibility(
