@@ -26,10 +26,18 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -57,11 +65,15 @@ public final class RetakeCountActivity extends Activity {
 
     private static final int TARGET_DP = 48;
 
-    private static final int MAX_COUNT = 99;
+    private static final int MAX_COUNT = Integer.MAX_VALUE;
+
+    private static final int MAX_DIGITS = 10;
 
     private SettingsStyle style;
 
-    private TextView countView;
+    private EditText countInput;
+
+    private TextView applyButton;
 
     private int count;
 
@@ -93,13 +105,15 @@ public final class RetakeCountActivity extends Activity {
         final LinearLayout buttons = new LinearLayout(this);
         buttons.setOrientation(LinearLayout.VERTICAL);
         buttons.setPadding(0, dp(20), 0, 0);
-        buttons.addView(button("Apply", true, (view) -> finishWith(Integer.valueOf(this.count))), buttonParams(0));
+        this.applyButton = button("Apply", true, (view) -> finishWith(Integer.valueOf(this.count)));
+        buttons.addView(this.applyButton, buttonParams(0));
         buttons.addView(button("Use real count", false, (view) -> finishWith(null)), buttonParams(dp(8)));
         card.addView(buttons);
 
         final FrameLayout.LayoutParams cardParams = new FrameLayout.LayoutParams(dp(320),
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
         root.addView(card, cardParams);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(root);
         refresh();
     }
@@ -122,12 +136,66 @@ public final class RetakeCountActivity extends Activity {
         final LinearLayout row = new LinearLayout(this);
         row.setGravity(Gravity.CENTER);
         row.addView(stepButton("−", "Decrease", -1));
-        this.countView = this.style.text("", 32f, SettingsStyle.PRIMARY_TEXT, this.style.fonts.semibold);
-        this.countView.setGravity(Gravity.CENTER);
-        this.countView.setMinWidth(dp(96));
-        row.addView(this.countView);
+        this.countInput = countField();
+        final LinearLayout.LayoutParams fieldParams = new LinearLayout.LayoutParams(0, dp(56), 1f);
+        fieldParams.leftMargin = dp(8);
+        fieldParams.rightMargin = dp(8);
+        row.addView(this.countInput, fieldParams);
         row.addView(stepButton("+", "Increase", 1));
         return row;
+    }
+
+    private EditText countField() {
+        final EditText field = new EditText(this);
+        field.setInputType(InputType.TYPE_CLASS_NUMBER);
+        field.setFilters(new InputFilter[] { new InputFilter.LengthFilter(MAX_DIGITS) });
+        field.setSingleLine(true);
+        field.setGravity(Gravity.CENTER);
+        field.setPadding(0, 0, 0, 0);
+        field.setTextColor(SettingsStyle.PRIMARY_TEXT);
+        field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f);
+        field.setTypeface(this.style.fonts.semibold);
+        field.setBackground(this.style.rounded(SettingsStyle.FIELD_SURFACE, SettingsStyle.FIELD_RADIUS_DP));
+        field.setSelectAllOnFocus(true);
+        field.setContentDescription("Retake count");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            final GradientDrawable cursor = new GradientDrawable();
+            cursor.setColor(SettingsStyle.PRIMARY_TEXT);
+            cursor.setSize(dp(2), 0);
+            field.setTextCursorDrawable(cursor);
+        }
+        field.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence text, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable text) {
+                onCountTyped(text.toString());
+            }
+        });
+        return field;
+    }
+
+    private void onCountTyped(String text) {
+        final boolean valid = !text.isEmpty();
+        if (valid) {
+            this.count = (int) Math.min(MAX_COUNT, Long.parseLong(text));
+        }
+        this.countInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, countTextSize(text.length()));
+        this.applyButton.setEnabled(valid);
+        this.applyButton.setAlpha(valid ? 1f : 0.4f);
+    }
+
+    private static float countTextSize(int digits) {
+        if (digits <= 5) {
+            return 32f;
+        }
+        return (digits <= 7) ? 26f : 20f;
     }
 
     private TextView stepButton(String label, String description, int delta) {
@@ -139,7 +207,7 @@ public final class RetakeCountActivity extends Activity {
         button.setContentDescription(description);
         button.setClickable(true);
         button.setOnClickListener((view) -> {
-            this.count = Math.max(0, Math.min(MAX_COUNT, this.count + delta));
+            this.count = (int) Math.max(0, Math.min(MAX_COUNT, (long) this.count + delta));
             refresh();
         });
         return button;
@@ -172,7 +240,8 @@ public final class RetakeCountActivity extends Activity {
     }
 
     private void refresh() {
-        this.countView.setText(String.valueOf(this.count));
+        this.countInput.setText(String.valueOf(this.count));
+        this.countInput.setSelection(this.countInput.length());
     }
 
     private void finishWith(Integer value) {

@@ -301,6 +301,8 @@ body:
         - "ReadEra (another version, type it below)"
         - "Realme Link 5.5.514.11421"
         - "Realme Link (another version, type it below)"
+        - "Resprite 1.32.6"
+        - "Resprite (another version, type it below)"
         - "Ringtone Maker 1.02.01.1023"
         - "Ringtone Maker (another version, type it below)"
         - "RISE Sleep Tracker Android V1.79.3"
@@ -385,12 +387,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.65.0"
+        - "1.66.0-dev.3"
+        - "1.66.0-dev.2"
+        - "1.66.0-dev.1"
         - "1.65.0-dev.9"
         - "1.65.0-dev.8"
         - "1.65.0-dev.7"
-        - "1.65.0-dev.6"
-        - "1.65.0-dev.5"
         - "Older than these"
         # /generated
     validations:
@@ -764,6 +766,7 @@ body:
         - "ReadEra \u00b7 Speech rate slider"
         - "Realme Link \u00b7 AMOLED dark theme"
         - "Realme Link \u00b7 Bypass session expiry"
+        - "Resprite \u00b7 Unlock premium"
         - "Ringtone Maker \u00b7 Remove rating prompts"
         - "Ringtone Maker \u00b7 Unlock premium"
         - "RISE Sleep Tracker \u00b7 Disable telemetry"

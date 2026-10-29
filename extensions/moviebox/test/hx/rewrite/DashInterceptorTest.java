@@ -57,6 +57,8 @@ public final class DashInterceptorTest {
 
     private static final String RESOURCE_LIST = "/wefeed-mobile-bff/subject-api/resource/v2";
 
+    private static final String V1_RESOURCE_LIST = "/wefeed-mobile-bff/subject-api/resource";
+
     private static final String BOTTOM_TAB = "/wefeed-mobile-bff/subject-api/bottom-tab";
 
     private static final String MEMBER = "{\"data\":{\"daysLeft\":3,\"memberType\":\"FREE\","
@@ -154,7 +156,7 @@ public final class DashInterceptorTest {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
-        this.server.put(RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
+        this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
         String body = fetch(RESOURCE_LIST, true, Collections.<String>emptySet());
@@ -166,12 +168,30 @@ public final class DashInterceptorTest {
     }
 
     @Test
+    public void requestsResourceListsFromTheV1Endpoint()
+            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
+        // given
+        String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":1080,"
+                + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
+        this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetch(RESOURCE_LIST + "?subjectId=77&isVip=true", true, Collections.<String>emptySet());
+
+        // then
+        JSONObject item = new JSONObject(body).getJSONObject("data").getJSONArray("list").getJSONObject(0);
+        Assertions.assertThat(item.getString("resourceLink"))
+            .isEqualTo(DashServer.buildUrl("77", 1, 2, 1080, "https://origin.example.com/a.mp4", 0, null));
+        Assertions.assertThat(this.server.hitsOn(RESOURCE_LIST)).isZero();
+    }
+
+    @Test
     public void keepsResourceListsWhenDownloadsAreNotRouted()
             throws ClassNotFoundException, IOException, ReflectiveOperationException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
-        this.server.put(RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
+        this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
         String body = fetch(RESOURCE_LIST, false, Collections.<String>emptySet());

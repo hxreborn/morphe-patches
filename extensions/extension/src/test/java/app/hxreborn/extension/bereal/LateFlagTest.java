@@ -59,7 +59,7 @@ public final class LateFlagTest {
         LateFlag.onMoment(new Moment(new Timestamp(START), new Timestamp(END)));
 
         // when
-        final Timestamp sent = (Timestamp) LateFlag.takenAt(new Timestamp(END.plusSeconds(3600)));
+        final Timestamp sent = (Timestamp) LateFlag.takenAt(new Timestamp(END.plusSeconds(3600)), true);
 
         // then
         assertFalse(sent.value.isBefore(START));
@@ -74,7 +74,7 @@ public final class LateFlagTest {
         final Timestamp late = new Timestamp(END.plusSeconds(86400));
 
         // when
-        final Object sent = LateFlag.takenAt(late);
+        final Object sent = LateFlag.takenAt(late, true);
 
         // then
         assertSame(late, sent);
@@ -88,7 +88,7 @@ public final class LateFlagTest {
         final Timestamp late = new Timestamp(END.plusSeconds(86400));
 
         // when
-        final Object sent = LateFlag.takenAt(late);
+        final Object sent = LateFlag.takenAt(late, true);
 
         // then
         assertSame(late, sent);
@@ -101,10 +101,23 @@ public final class LateFlagTest {
         final Timestamp onTime = new Timestamp(START.plusSeconds(30));
 
         // when
-        final Object sent = LateFlag.takenAt(onTime);
+        final Object sent = LateFlag.takenAt(onTime, true);
 
         // then
         assertSame(onTime, sent);
+    }
+
+    @Test
+    public void keepsTheCaptureTimeOfABonusPost() {
+        // given
+        LateFlag.onMoment(new Moment(new Timestamp(START), new Timestamp(END)));
+        final Timestamp late = new Timestamp(END.plusSeconds(39600));
+
+        // when
+        final Object sent = LateFlag.takenAt(late, false);
+
+        // then
+        assertSame(late, sent);
     }
 
     @Test
@@ -115,7 +128,7 @@ public final class LateFlagTest {
         final Timestamp late = new Timestamp(END.plusSeconds(3600));
 
         // when
-        final Object sent = LateFlag.takenAt(late);
+        final Object sent = LateFlag.takenAt(late, true);
 
         // then
         assertSame(late, sent);
@@ -129,7 +142,7 @@ public final class LateFlagTest {
         final Timestamp late = new Timestamp(END.plusSeconds(3600));
 
         // when
-        final Object sent = LateFlag.takenAt(late);
+        final Object sent = LateFlag.takenAt(late, true);
 
         // then
         assertSame(late, sent);

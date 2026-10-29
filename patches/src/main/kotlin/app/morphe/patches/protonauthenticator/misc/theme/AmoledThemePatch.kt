@@ -35,6 +35,22 @@ private const val COMPOSE_COLOR_FILTER_TYPE = "Landroidx/compose/ui/graphics/Col
 private const val COLOR_FILTER_COMPANION_TYPE = "Landroidx/compose/ui/graphics/ColorFilter\$Companion;"
 private const val SRC_IN_BLEND_MODE = 5
 private const val COLOR_FILTER_REGISTER_COUNT = 5
+private const val LAUNCHER_THEME = "Theme.ProtonAuthenticator"
+
+private val amoledSplashBackgroundPatch = resourcePatch {
+    execute {
+        document("res/values-night/styles.xml").use { document ->
+            document.getElementsByTagName("style")
+                .findElementByAttributeValueOrThrow("name", LAUNCHER_THEME)
+                .appendChild(
+                    document.createElement("item").apply {
+                        setAttribute("name", "android:windowSplashScreenBackground")
+                        textContent = "@android:color/black"
+                    },
+                )
+        }
+    }
+}
 
 private val amoledWindowBackgroundPatch = resourcePatch {
     finalize {
@@ -98,7 +114,7 @@ val amoledThemePatch = bytecodePatch(
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_AUTHENTICATOR)
-    dependsOn(patchesSettingsPatch, amoledBackgroundOverlayPatch, amoledWindowBackgroundPatch)
+    dependsOn(patchesSettingsPatch, amoledBackgroundOverlayPatch, amoledWindowBackgroundPatch, amoledSplashBackgroundPatch)
     extendWith("extensions/extension.mpe")
 
     execute {

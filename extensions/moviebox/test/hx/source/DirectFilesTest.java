@@ -41,9 +41,9 @@ import org.robolectric.annotation.Config;
 @Config(sdk = 28)
 public final class DirectFilesTest {
 
-    private static final String POSITION = "/wefeed-mobile-bff/subject-api/resource-position/v2";
+    private static final String POSITION = "/wefeed-mobile-bff/subject-api/resource-position";
 
-    private static final String LISTING = "/wefeed-mobile-bff/subject-api/resource/v2";
+    private static final String LISTING = "/wefeed-mobile-bff/subject-api/resource";
 
     private static final String ORIGIN = "https://origin.example.com/o.mp4";
 

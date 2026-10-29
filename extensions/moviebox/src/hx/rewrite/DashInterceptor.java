@@ -59,8 +59,8 @@ public final class DashInterceptor extends ChainInterceptor {
     @Override
     protected Object intercept(Object chain) throws ReflectiveOperationException {
         Object request = request(chain);
-        Object response = proceed(chain, request);
         String url = String.valueOf(Reflect.call(request, "url"));
+        Object response = proceed(chain, withV1ResourceList(request, url));
         Endpoint endpoint = classify(url);
         if (endpoint == Endpoint.OTHER) {
             return response;
@@ -71,6 +71,16 @@ public final class DashInterceptor extends ChainInterceptor {
         }
         byte[] bytes = (byte[]) Reflect.call(body, "bytes");
         return withBody(response, body, rewriteOrKeep(endpoint, url, response, bytes));
+    }
+
+    private static Object withV1ResourceList(Object request, String url) throws ReflectiveOperationException {
+        String listing = ResourceListRequest.listingUrl(url);
+        if (listing == null) {
+            return request;
+        }
+        Object builder = Reflect.call(request, "newBuilder");
+        Reflect.call(builder, "url", new Class<?>[] { String.class }, listing);
+        return Reflect.call(builder, "build");
     }
 
     private Endpoint classify(String url) {

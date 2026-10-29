@@ -9,6 +9,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.automatag.misc.signature.skipLicenseCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
@@ -17,6 +18,7 @@ val unlockPremiumPatch = bytecodePatch(
         "and duplicate detection, and removes ads.",
 ) {
     compatibleWith(AppCompatibilities.AUTOMATAG)
+    availability(requireArm64)
 
     dependsOn(skipLicenseCheckPatch)
 

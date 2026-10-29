@@ -89,6 +89,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `hinducalendar.png` | Hindu Calendar (`com.alokmandavgane.hinducalendar`) | Alok Mandavgane | APK 9.3.0, adaptive icon `res/drawable-v26/ic_launcher_vector.xml` |
 | `banglacalendar.png` | Bangla Calendar (`com.outscar.bd.bongcal`) | Outscar | APK 3.0.01c, `res/mipmap-xxxhdpi/ic_launcher.png` (square icon cut to a circle) |
 | `walp.png` | WalP - Stock HD Wallpapers (`com.stresscodes.wallp`) | Stress Codes | APK 10.2.1, adaptive icon `res/mipmap-anydpi/ic_launcher.xml` |
+| `resprite.png` | Resprite: pixel art studio (`com.fengeon.resprite_desktop`) | Fengeon | APK 1.32.6, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.webp` cut to a circle |
 | `vllo.png` | VLLO (`com.darinsoft.vimo`) | vimosoft | APK 13.7.4, adaptive icon `res/mipmap-anydpi-v26/vllo_icon.xml` |
 | `videoeditor.png` | Video Editor (`videoeditor.videomaker.videoeditorforyoutube`) | InShot Inc. | APK 1.621.196, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `terabox.png` | TeraBox (`com.dubox.drive`) | Flextech Inc. | APK 4.26.0, adaptive icon `res/drawable-anydpi-v26/ic_element_appicon_netdisk_new.xml` |

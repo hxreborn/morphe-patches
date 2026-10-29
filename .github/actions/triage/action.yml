@@ -1,8 +1,8 @@
 name: Morphe bundle issue triage
 description: >-
-  Checks bug reports and app update issues against the bundle's patches-list.json and app request
-  discussions against earlier requests and other bundles, then comments, labels, closes or reopens
-  them. Works with any Morphe patch bundle's forms.
+  Checks bug reports, feature requests and app update issues against the bundle's
+  patches-list.json and app request discussions against earlier requests and other bundles, then
+  comments, labels, closes or reopens them. Works with any Morphe patch bundle's forms.
 
 inputs:
   registry:
@@ -145,6 +145,32 @@ runs:
             fi
             ;;
         esac
+
+    - name: Triage feature requests
+      if: >-
+        github.event_name == 'issues' && github.event.action == 'opened' &&
+        contains(github.event.issue.labels.*.name, 'enhancement') &&
+        github.event.issue.user.type != 'Bot' &&
+        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        ISSUE: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        PATCHES_LIST: ${{ inputs.patches-list }}
+        CATEGORY: ${{ inputs.requests-category }}
+      run: |
+        list="$PWD/$PATCHES_LIST"
+        cd "$RUNNER_TEMP"
+        jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > body.md
+        python3 "${{ github.action_path }}/feature_request.py" body.md "$list" "$CATEGORY" > verdict.json
+        verdict=$(jq -r .verdict verdict.json)
+        echo "#$ISSUE: $verdict"
+        if [ "$verdict" = close ]; then
+          jq -j .comment verdict.json > comment.md
+          gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
+          gh issue close "$ISSUE" --repo "$REPO" --reason "not planned"
+        fi
 
     - name: Check the report
       if: >-

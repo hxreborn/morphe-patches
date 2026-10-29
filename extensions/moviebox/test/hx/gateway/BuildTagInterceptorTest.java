@@ -25,20 +25,27 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.content.Context;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
@@ -47,12 +54,18 @@ public final class BuildTagInterceptorTest {
 
     private static final byte[] CERTIFICATE = "stock-certificate".getBytes(StandardCharsets.UTF_8);
 
+    private static final String UPGRADE_NOTICE = "{\"data\":{\"streams\":[{\"url\":"
+            + "\"https://macdn.aoneroom.com/other/2026/10/10/notice.mp4\"}]}}";
+
+    private static final String STREAM = "{\"data\":{\"streams\":[{\"url\":\"https://sacdn.example/a.mpd\"}]}}";
+
     private final ClassLoader loader = getClass().getClassLoader();
 
     private final Map<String, String> sharedHeaders = new ConcurrentHashMap<>();
 
     private final BuildTagInterceptor interceptor = new BuildTagInterceptor(BuildTag.fromCertificate(CERTIFICATE),
-            this.sharedHeaders);
+            this.sharedHeaders, new ClientIdentity("{\"gaid\":\"g\"}", RuntimeEnvironment.getApplication()
+                .getSharedPreferences("build_tag_interceptor_test", Context.MODE_PRIVATE)));
 
     @Test
     public void replacesTheStockBuildHeader() throws IOException, ClassNotFoundException {
@@ -94,8 +107,79 @@ public final class BuildTagInterceptorTest {
 
         // then
         JSONObject info = new JSONObject(chain.proceeded.header("X-Client-Info"));
-        Assertions.assertThat(info.getString("device_id")).isEqualTo("d1");
         Assertions.assertThat(info.getString(BuildTag.HEADER)).isEqualTo(chain.proceeded.header(BuildTag.HEADER));
+    }
+
+    @Test
+    public void sendsAGaidWhenTheClientInfoHasNone() throws JSONException, IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(request("stock-tag", "{\"device_id\":\"d1\"}"));
+
+        // when
+        intercept(chain);
+
+        // then
+        JSONObject info = new JSONObject(chain.proceeded.header("X-Client-Info"));
+        Assertions.assertThat(info.getString("gaid")).isNotEmpty();
+    }
+
+    @Test
+    public void retriesPlayInfoOnceWithANewDeviceIdAfterTheUpgradeNotice()
+            throws JSONException, IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(playInfoRequest());
+        chain.bodies.add(UPGRADE_NOTICE);
+        chain.bodies.add(STREAM);
+
+        // when
+        Response response = intercept(chain);
+
+        // then
+        Assertions.assertThat(chain.sent).hasSize(2);
+        Assertions.assertThat(deviceIdSent(chain.sent.get(1))).isNotEqualTo(deviceIdSent(chain.sent.get(0)));
+        Assertions.assertThat(response.body().string()).isEqualTo(STREAM);
+    }
+
+    @Test
+    public void retriesOnlyOnceWhenTheNewDeviceIdAlsoGetsTheUpgradeNotice() throws IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(playInfoRequest());
+        chain.bodies.add(UPGRADE_NOTICE);
+        chain.bodies.add(UPGRADE_NOTICE);
+
+        // when
+        intercept(chain);
+
+        // then
+        Assertions.assertThat(chain.sent).hasSize(2);
+    }
+
+    @Test
+    public void retriesAResourceListThatCarriesTheUpgradeNotice() throws IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(
+                request("https://example.com/wefeed-mobile-bff/subject-api/resource?subjectId=1", "stock-tag", "{}"));
+        chain.bodies.add(UPGRADE_NOTICE);
+        chain.bodies.add(STREAM);
+
+        // when
+        intercept(chain);
+
+        // then
+        Assertions.assertThat(chain.sent).hasSize(2);
+    }
+
+    @Test
+    public void sendsOtherEndpointsOnce() throws IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(request("stock-tag", "{}"));
+        chain.bodies.add(UPGRADE_NOTICE);
+
+        // when
+        intercept(chain);
+
+        // then
+        Assertions.assertThat(chain.sent).hasSize(1);
     }
 
     @Test
@@ -190,15 +274,24 @@ public final class BuildTagInterceptorTest {
     }
 
     private Request request(String tag, String clientInfo) {
-        return new Request.Builder().url("https://example.com/a")
-            .header(BuildTag.HEADER, tag)
-            .header("X-Client-Info", clientInfo)
-            .build();
+        return request("https://example.com/a", tag, clientInfo);
+    }
+
+    private Request request(String url, String tag, String clientInfo) {
+        return new Request.Builder().url(url).header(BuildTag.HEADER, tag).header("X-Client-Info", clientInfo).build();
+    }
+
+    private Request playInfoRequest() {
+        return request("https://example.com/wefeed-mobile-bff/subject-api/play-info/v2?subjectId=1", "stock-tag",
+                "{\"device_id\":\"flagged\"}");
+    }
+
+    private static String deviceIdSent(Request request) throws JSONException {
+        return new JSONObject(request.header("X-Client-Info")).getString("device_id");
     }
 
     private Object proxy() {
-        return Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
-                this.interceptor);
+        return Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class }, this.interceptor);
     }
 
     private Request sendThroughAnotherClient() throws IOException {
@@ -227,10 +320,10 @@ public final class BuildTagInterceptorTest {
         return parts.length == 2 && parts[1].equals(Digests.md5Hex(seed.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private void intercept(Chain chain) throws IOException, ClassNotFoundException {
+    private Response intercept(Chain chain) throws IOException, ClassNotFoundException {
         Interceptor.Chain proxy = (Interceptor.Chain) Proxy.newProxyInstance(this.loader,
                 new Class<?>[] { Interceptor.Chain.class }, chain);
-        ((Interceptor) proxy()).intercept(proxy);
+        return ((Interceptor) proxy()).intercept(proxy);
     }
 
     private static final class Chain implements InvocationHandler {
@@ -238,6 +331,10 @@ public final class BuildTagInterceptorTest {
         final Request original;
 
         Request proceeded;
+
+        final List<Request> sent = new ArrayList<>();
+
+        final Deque<String> bodies = new ArrayDeque<>();
 
         RuntimeException failure;
 
@@ -254,11 +351,16 @@ public final class BuildTagInterceptorTest {
                 return this.original;
             }
             this.proceeded = (Request) args[0];
-            return new Response.Builder().request(this.proceeded)
+            this.sent.add(this.proceeded);
+            Response.Builder response = new Response.Builder().request(this.proceeded)
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
-                .message("OK")
-                .build();
+                .message("OK");
+            String body = this.bodies.poll();
+            if (body != null) {
+                response.body(ResponseBody.create(body, null));
+            }
+            return response.build();
         }
 
     }
