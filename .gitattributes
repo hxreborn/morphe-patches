@@ -10,3 +10,5 @@
 # Unmodified build tooling from morphe-patches-template, not our code
 patches/src/main/kotlin/util/PatchListGenerator.kt      linguist-vendored
 
+.github/**/*.py      -linguist-vendored
+.github/**/*.sh      -linguist-vendored
