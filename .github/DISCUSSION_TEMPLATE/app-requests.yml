@@ -11,6 +11,7 @@ body:
         - Hobby project. Upvotes show demand. They don't set the order, and nothing is promised.
         - Features that depend on the app's servers (AI, cloud sync, streaming quality) may not be patchable.
           It varies by app, so ask if you're not sure.
+        - Tracking is turned off and the app's own protections are removed wherever a patch allows it, no need to ask.
   - type: input
     id: app_name
     attributes:
@@ -35,8 +36,6 @@ body:
       options:
         - Unlock premium
         - Remove ads
-        - Disable tracking
-        - Bypass a check the app does locally
         - Something else, described below
     validations:
       required: true
@@ -44,7 +43,7 @@ body:
     id: additional
     attributes:
       label: Additional info
-      description: Anything else useful, such as which features sit behind the paywall.
+      description: Which features are locked? Name them as the app does (e.g. "Unlimited hearts", "Offline downloads").
     validations:
       required: false
   - type: checkboxes
