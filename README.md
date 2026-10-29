@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.66.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.66.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;374 patches total
+> **[v1.66.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.66.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;375 patches total
 
 <table>
 <tr>
@@ -190,47 +190,48 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#realme-link"><img src=".github/assets/icons/realmelink.png" width="40"><br>Realme Link</a><br><sub>2 patches</sub></td>
+<td align="center" width="25%"><a href="#resprite"><img src=".github/assets/icons/resprite.png" width="40"><br>Resprite</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#ringtone-maker"><img src=".github/assets/icons/ringtonemaker.png" width="40"><br>Ringtone Maker</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#rise-sleep-tracker"><img src=".github/assets/icons/risesleep.png" width="40"><br>RISE Sleep Tracker</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#rubber-bands"><img src=".github/assets/icons/rubberbands.png" width="40"><br>Rubber Bands</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#rubber-bands"><img src=".github/assets/icons/rubberbands.png" width="40"><br>Rubber Bands</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#serializd"><img src=".github/assets/icons/serializd.png" width="40"><br>Serializd</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#sheytoon"><img src=".github/assets/icons/sheytoon.png" width="40"><br>Sheytoon</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#showly"><img src=".github/assets/icons/showly.png" width="40"><br>Showly</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#sqcom"><img src=".github/assets/icons/sqcom.png" width="40"><br>SQCOM</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#sqcom"><img src=".github/assets/icons/sqcom.png" width="40"><br>SQCOM</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#steezy"><img src=".github/assets/icons/steezy.png" width="40"><br>STEEZY</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#storywise"><img src=".github/assets/icons/storywise.png" width="40"><br>Storywise</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#sygic"><img src=".github/assets/icons/sygic.png" width="40"><br>Sygic</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#symfonium"><img src=".github/assets/icons/symfonium.png" width="40"><br>Symfonium</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#symfonium"><img src=".github/assets/icons/symfonium.png" width="40"><br>Symfonium</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>7 patches</sub></td>
 <td align="center" width="25%"><a href="#trainline"><img src=".github/assets/icons/trainline.png" width="40"><br>Trainline</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#u-dictionary"><img src=".github/assets/icons/udictionary.png" width="40"><br>U Dictionary</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>5 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#vpn-india"><img src=".github/assets/icons/vpnindia.png" width="40"><br>VPN India</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpn-super-unlimited-proxy"><img src=".github/assets/icons/vpnsuper.png" width="40"><br>VPN Super Unlimited Proxy</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpnify"><img src=".github/assets/icons/vpnify.png" width="40"><br>vpnify</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#walp"><img src=".github/assets/icons/walp.png" width="40"><br>WalP</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#wattpad"><img src=".github/assets/icons/wattpad.png" width="40"><br>Wattpad</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#yanosik"><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="40"><br>Yanosik</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#universal">🌐<br>Universal</a><br><sub>1 patch</sub></td>
 </tr>
@@ -1482,7 +1483,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="moon-reader-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics from collecting usage data and the Google Mobile Ads SDK from starting at launch. |
 | <a id="moon-reader-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/moonreader/ads/HideAdsPatch.kt) | Hides full-screen ads and the Remove ads button in the side menu. |
-| <a id="moon-reader-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including PDF annotations and form filling, WebDAV and FTP sync, text-to-speech controls and extra toolbar and shelf options. |
+| <a id="moon-reader-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including PDF annotations and form filling, WebDAV and FTP sync, text-to-speech controls, the home screen widget and extra toolbar and shelf options. |
 
 </details>
 
@@ -2254,6 +2255,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="realme-link-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/realmelink/theme/AmoledThemePatch.kt) | Replaces the light theme with a pure black dark theme. Requires Android 13 or later. |
 | <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Keeps the account signed in after the session expires. Asks to sign in again only if renewal fails. |
+
+</details>
+
+<a id="resprite"></a>
+<details>
+<summary><img src=".github/assets/icons/resprite.png" width="18" align="top">&nbsp;&nbsp;Resprite&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.32.6 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| <a id="resprite-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/resprite/misc/premium/UnlockPremiumPatch.kt) | Unlocks every premium feature, including the export limit, symmetry, outline, filters, text, timelapse and custom brushes. | • Hide Get Premium |
 
 </details>
 

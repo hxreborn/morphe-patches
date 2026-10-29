@@ -1,3 +1,16 @@
+## [1.66.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.66.0-dev.2...v1.66.0-dev.3) (2026-10-29)
+
+### Bug Fixes
+
+* **BeReal - Remove late flag:** keep capture time of bonus BeReals ([7b3b6d8](https://github.com/hxreborn/morphe-patches/commit/7b3b6d80d5303ef8a74bbff900e800f264c12e4c))
+* **Proton Authenticator - AMOLED dark theme:** show black launch screen ([98d7026](https://github.com/hxreborn/morphe-patches/commit/98d7026d326382c0f2f3f77c206f2070b7be9386))
+* **Proton VPN - AMOLED dark theme:** show a black launch screen ([45a114c](https://github.com/hxreborn/morphe-patches/commit/45a114cb5faa9813ce2950bdaff5e18c751e299c)), closes [#389](https://github.com/hxreborn/morphe-patches/issues/389)
+
+### New Features
+
+* **Moon+ Reader - Unlock pro:** add the home screen widget ([a6d19d5](https://github.com/hxreborn/morphe-patches/commit/a6d19d55a3c3ce94955c0490c03a7dab4ba1a0ab)), closes [#474](https://github.com/hxreborn/morphe-patches/issues/474)
+* **Resprite - Unlock premium:** unlock every premium tool ([c8f5f20](https://github.com/hxreborn/morphe-patches/commit/c8f5f20b7f06d3f3492a7227cf1dbc6855628b51))
+
 ## [1.66.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.66.0-dev.1...v1.66.0-dev.2) (2026-10-28)
 
 ### Bug Fixes
