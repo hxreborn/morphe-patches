@@ -44,7 +44,7 @@ body:
       label: Additional info
       description: Anything else useful, such as screenshots of the paywall.
     validations:
-      required: false
+      required: true
   - type: checkboxes
     id: acknowledgements
     attributes:
