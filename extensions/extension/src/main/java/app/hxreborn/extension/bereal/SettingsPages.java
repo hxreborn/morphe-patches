@@ -118,6 +118,10 @@ final class SettingsPages {
             case FOLDER:
                 folderRow(card, spec);
                 break;
+            case ACTION:
+                this.rows.actionRow(card, spec.iconName, spec.title, spec.description,
+                        () -> spec.action.accept(this.activity));
+                break;
             case ALWAYS_ON:
                 this.rows.alwaysOnRow(card, spec.iconName, spec.title, spec.description);
                 break;

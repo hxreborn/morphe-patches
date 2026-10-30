@@ -23,7 +23,9 @@ package app.hxreborn.extension.bereal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
+import android.content.Context;
 import app.morphe.extension.shared.settings.BooleanSetting;
 
 final class PatchGroup {
@@ -41,23 +43,27 @@ final class PatchGroup {
     }
 
     void addToggle(String iconName, String title, String description, BooleanSetting setting, boolean restart) {
-        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, restart, null));
+        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, restart, null, null));
     }
 
     void addExperimentalToggle(String iconName, String title, String description, BooleanSetting setting) {
-        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, false, "Experimental"));
+        this.rows.add(new Row(Kind.TOGGLE, iconName, title, description, setting, false, "Experimental", null));
     }
 
     void addLocation(String iconName, String title, String description, BooleanSetting setting) {
-        this.rows.add(new Row(Kind.LOCATION, iconName, title, description, setting, false, null));
+        this.rows.add(new Row(Kind.LOCATION, iconName, title, description, setting, false, null, null));
     }
 
     void addFolder(String iconName, String title, String description) {
-        this.rows.add(new Row(Kind.FOLDER, iconName, title, description, null, false, null));
+        this.rows.add(new Row(Kind.FOLDER, iconName, title, description, null, false, null, null));
+    }
+
+    void addAction(String iconName, String title, String description, Consumer<Context> action) {
+        this.rows.add(new Row(Kind.ACTION, iconName, title, description, null, false, null, action));
     }
 
     void addAlwaysOn(String iconName, String title, String description) {
-        this.rows.add(new Row(Kind.ALWAYS_ON, iconName, title, description, null, false, null));
+        this.rows.add(new Row(Kind.ALWAYS_ON, iconName, title, description, null, false, null, null));
     }
 
     boolean isEmpty() {
@@ -80,7 +86,7 @@ final class PatchGroup {
 
     enum Kind {
 
-        TOGGLE, LOCATION, FOLDER, ALWAYS_ON
+        TOGGLE, LOCATION, FOLDER, ALWAYS_ON, ACTION
 
     }
 
@@ -100,8 +106,10 @@ final class PatchGroup {
 
         final String chip;
 
+        final Consumer<Context> action;
+
         private Row(Kind kind, String iconName, String title, String description, BooleanSetting setting,
-                boolean restart, String chip) {
+                boolean restart, String chip, Consumer<Context> action) {
             this.kind = kind;
             this.iconName = iconName;
             this.title = title;
@@ -109,6 +117,7 @@ final class PatchGroup {
             this.setting = setting;
             this.restart = restart;
             this.chip = chip;
+            this.action = action;
         }
 
     }
