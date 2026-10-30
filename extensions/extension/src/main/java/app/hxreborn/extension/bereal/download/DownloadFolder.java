@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -36,6 +37,7 @@ import android.content.Intent;
 import android.content.UriPermission;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -44,6 +46,7 @@ import android.util.Log;
 import app.hxreborn.extension.bereal.PatchSettings;
 
 @SuppressWarnings("unused")
+@TargetApi(Build.VERSION_CODES.S_V2)
 public final class DownloadFolder {
 
     public static final String PICTURES_FOLDER = Environment.DIRECTORY_PICTURES + "/BeReal";

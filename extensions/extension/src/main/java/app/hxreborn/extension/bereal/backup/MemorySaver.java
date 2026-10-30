@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.media.ExifInterface;
@@ -46,6 +47,7 @@ import org.json.JSONObject;
 
 import app.hxreborn.extension.bereal.download.DownloadFolder;
 
+@TargetApi(Build.VERSION_CODES.S_V2)
 public final class MemorySaver {
 
     private static final String TAG = "MemorySaver";

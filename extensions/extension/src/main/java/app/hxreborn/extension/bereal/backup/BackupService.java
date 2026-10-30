@@ -29,6 +29,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -46,6 +48,8 @@ import android.widget.Toast;
 
 import app.hxreborn.extension.bereal.PatchSettings;
 
+@SuppressLint("NotificationPermission")
+@TargetApi(Build.VERSION_CODES.S_V2)
 public final class BackupService extends Service {
 
     static final String ACTION_CANCEL = "app.hxreborn.extension.bereal.backup.CANCEL";
