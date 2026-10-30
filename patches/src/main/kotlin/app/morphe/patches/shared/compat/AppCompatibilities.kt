@@ -1595,6 +1595,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "11.42.0", versionCode = 3836, minSdk = 24)),
     )
 
+    val WEATHER24 = Compatibility(
+        name = "weather24",
+        packageName = "com.wetter.androidclient",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFBBF31,
+        signatures = setOf("0d4facb5aedccec85e26512473ca51d63d8b415059d4ce8b0a387e0ba8b32f04"),
+        targets = listOf(AppTarget(version = "2.78.1", versionCode = 1515278101, minSdk = 24)),
+    )
+
     val YANOSIK = Compatibility(
         name = "Yanosik",
         packageName = "pl.neptis.yanosik.mobi.android",
