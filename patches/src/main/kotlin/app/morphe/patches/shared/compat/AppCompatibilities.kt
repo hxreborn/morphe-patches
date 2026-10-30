@@ -228,6 +228,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val BIWENGER = Compatibility(
+        name = "Biwenger",
+        packageName = "com.biwenger.app",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xC80A00,
+        signatures = setOf(
+            "b3901a058ccf0d6ffd3b825cb9ea17075c1f80a50aea5776a911aea620ec58f7",
+        ),
+        targets = listOf(AppTarget(version = "4.0.4", versionCode = 237, minSdk = 24)),
+    )
+
     val BLOCKIT = Compatibility(
         name = "blockit",
         packageName = "com.hypenet.focused",

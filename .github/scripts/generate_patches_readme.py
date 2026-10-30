@@ -169,6 +169,7 @@ ICONS = {
     "org.withouthat.acalendar": "acalendar.png",
     "com.quickcursor": "quickcursor.png",
     "com.biobird.exvee": "biobird.png",
+    "com.biwenger.app": "biwenger.png",
     "com.stresscodes.wallp": "walp.png",
     "com.fengeon.resprite_desktop": "resprite.png",
     "wp.wattpad": "wattpad.png",
