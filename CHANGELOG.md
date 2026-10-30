@@ -1,3 +1,26 @@
+## [1.67.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.66.0...v1.67.0-dev.1) (2026-10-30)
+
+### New Features
+
+* **MBC Shahid - Disable tracking:** stop analytics and crash reporting ([35528a7](https://github.com/hxreborn/morphe-patches/commit/35528a75cddadc8e48ac8e28a7d9b217f82160fd))
+* **MBC Shahid - GmsCore support:** sign in with Google through GmsCore ([8ed4752](https://github.com/hxreborn/morphe-patches/commit/8ed4752be543e24f0c4d0ffbf08e4cd554c1cd9a))
+* **MBC Shahid - Remove ads:** remove video, pause and sponsored ads ([f1bdbb0](https://github.com/hxreborn/morphe-patches/commit/f1bdbb0ef0359b1d9fb07ec086a59ba3040ae9b8))
+* **MBC Shahid - Remove root detection:** open the app on rooted devices ([e40ff7f](https://github.com/hxreborn/morphe-patches/commit/e40ff7f68f952066b4c1cb27b885a12d61cfddc6))
+* **MBC Shahid - Unlock premium:** unlock Full HD playback ([941303e](https://github.com/hxreborn/morphe-patches/commit/941303eb68b361fe341b8d31c8f9af6741143e21))
+* **Ridmik Keyboard - Remove ads:** remove keyboard and in-app ads ([08a01fa](https://github.com/hxreborn/morphe-patches/commit/08a01fa12ca83cdaea9fbec9f87445f19f707a27))
+* **TeraBox - Clone app:** set a custom name for the clone app ([1ec4767](https://github.com/hxreborn/morphe-patches/commit/1ec47677e0a3c62f169cc2ce967c59f5dc2703f0))
+* **TeraBox - Hide home shortcuts:** remove shortcuts from home and More ([db19822](https://github.com/hxreborn/morphe-patches/commit/db198225e30c087a2bdb9bdb73c32e14248b8b57)), closes [#485](https://github.com/hxreborn/morphe-patches/issues/485)
+* **Transparent clock & weather - Disable tracking:** stop analytics ([d7d81f9](https://github.com/hxreborn/morphe-patches/commit/d7d81f9b2bceff911ca85e28ab73c6f726f7c458))
+* **Transparent clock & weather - Unlock premium:** remove ads ([507168e](https://github.com/hxreborn/morphe-patches/commit/507168e5cf0d94b349051172894486cc208b4862))
+* **WATCH IT - Disable tracking:** stop analytics and crash reporting ([d923328](https://github.com/hxreborn/morphe-patches/commit/d923328091b3abd55d87b46615426b57896b74e3))
+* **WATCH IT - Remove ads:** remove video, overlay and pause ads ([e2e1a9d](https://github.com/hxreborn/morphe-patches/commit/e2e1a9dc5a7eb16781b9eea6c2069e1140899cdb))
+* **weather24 - Unlock premium:** remove ads and unlock premium icons ([55af94e](https://github.com/hxreborn/morphe-patches/commit/55af94e897312a0b5eb87355d847a3e64109abf0))
+
+### Updated App Support
+
+* **Proton VPN:** add support for `5.21.9.0` ([b29f13c](https://github.com/hxreborn/morphe-patches/commit/b29f13c90c289f090e7cacc0d57b616b2d429d4c)), closes [#482](https://github.com/hxreborn/morphe-patches/issues/482)
+* **Psiphon:** add support for `2.5.13` ([35cdf55](https://github.com/hxreborn/morphe-patches/commit/35cdf55a94e90f2306f8717a5a9d490114cadc04)), closes [#467](https://github.com/hxreborn/morphe-patches/issues/467)
+
 ## [1.66.0](https://github.com/hxreborn/morphe-patches/compare/v1.65.0...v1.66.0) (2026-10-29)
 
 ### Bug Fixes
