@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.imo.shared.enumConstantField
+import app.morphe.patches.imo.shared.storedFlagGetterFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
@@ -18,6 +19,6 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        isPremiumFingerprint(enumConstantField("IS_PREMIUM")).matchSingle().method.returnEarly(true)
+        storedFlagGetterFingerprint(enumConstantField("IS_PREMIUM")).matchSingle().method.returnEarly(true)
     }
 }
