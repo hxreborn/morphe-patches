@@ -46,6 +46,10 @@ public final class MemoriesBackup {
     }
 
     public static void start(Context context) {
+        if (Build.VERSION.SDK_INT < 29) {
+            Toast.makeText(context, "Backup needs Android 10 or newer", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (!BeRealApi.isReady()) {
             Toast.makeText(context, "Restart BeReal and try again", Toast.LENGTH_LONG).show();
             return;

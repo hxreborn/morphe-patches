@@ -248,9 +248,16 @@ public final class BackupService extends Service {
         private int unsaved;
 
         private Ids() {
-            final String saved = PatchSettings.BACKUP_SAVED_IDS.get();
-            this.ids.addAll(Arrays.asList(saved.split("\n")));
-            this.ids.remove("");
+            // The first line is the download folder the ids were saved to
+            final String[] saved = PatchSettings.BACKUP_SAVED_IDS.get().split("\n");
+            if (saved.length > 0 && saved[0].equals(folderKey())) {
+                this.ids.addAll(Arrays.asList(saved).subList(1, saved.length));
+                this.ids.remove("");
+            }
+        }
+
+        private static String folderKey() {
+            return "folder:" + PatchSettings.DOWNLOAD_FOLDER.get();
         }
 
         @Override
@@ -268,7 +275,7 @@ public final class BackupService extends Service {
 
         private void flush() {
             if (this.unsaved > 0) {
-                PatchSettings.BACKUP_SAVED_IDS.save(String.join("\n", this.ids));
+                PatchSettings.BACKUP_SAVED_IDS.save(folderKey() + "\n" + String.join("\n", this.ids));
                 this.unsaved = 0;
             }
         }
