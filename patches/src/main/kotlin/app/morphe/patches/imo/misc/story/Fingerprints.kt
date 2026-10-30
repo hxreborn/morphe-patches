@@ -33,3 +33,5 @@ internal object CameraCallConflictFingerprint : Fingerprint(
         string("av_conflict"),
     ),
 )
+
+internal object StoryNotificationLimitFingerprint : RemoteSettingFingerprint("getStoryFrequencyLimitEnable")
