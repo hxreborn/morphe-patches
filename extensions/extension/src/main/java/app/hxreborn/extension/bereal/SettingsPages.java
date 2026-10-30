@@ -21,7 +21,9 @@
 package app.hxreborn.extension.bereal;
 
 import android.animation.LayoutTransition;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -110,6 +112,7 @@ final class SettingsPages {
         this.status.setText(spanned);
     }
 
+    @TargetApi(Build.VERSION_CODES.S_V2)
     private void addRow(LinearLayout card, PatchGroup.Row spec) {
         switch (spec.kind) {
             case LOCATION:
@@ -117,6 +120,10 @@ final class SettingsPages {
                 break;
             case FOLDER:
                 folderRow(card, spec);
+                break;
+            case ACTION:
+                this.rows.actionRow(card, spec.iconName, spec.title, spec.description,
+                        () -> spec.action.accept(this.activity));
                 break;
             case ALWAYS_ON:
                 this.rows.alwaysOnRow(card, spec.iconName, spec.title, spec.description);
