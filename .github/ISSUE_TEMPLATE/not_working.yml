@@ -394,12 +394,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.67.0-dev.2"
         - "1.67.0-dev.1"
         - "1.66.0-dev.3"
         - "1.66.0-dev.2"
         - "1.66.0-dev.1"
         - "1.66.0"
-        - "1.65.0-dev.9"
         - "Older than these"
         # /generated
     validations:
@@ -490,6 +490,7 @@ body:
         - "AutomaTag \u00b7 Unlock premium"
         - "Bangla Calendar \u00b7 Disable tracking"
         - "Bangla Calendar \u00b7 Unlock premium"
+        - "BeReal \u00b7 Back up memories"
         - "BeReal \u00b7 Change download location"
         - "BeReal \u00b7 Custom location"
         - "BeReal \u00b7 Custom retake count"

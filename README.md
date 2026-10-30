@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.67.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.67.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;388 patches total
+> **[v1.67.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.67.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;389 patches total
 
 <table>
 <tr>
@@ -47,7 +47,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#automatag"><img src=".github/assets/icons/automatag.png" width="40"><br>AutomaTag</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#bangla-calendar"><img src=".github/assets/icons/banglacalendar.png" width="40"><br>Bangla Calendar</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>20 patches</sub></td>
+<td align="center" width="25%"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
 <td align="center" width="25%"><a href="#bettersleep"><img src=".github/assets/icons/bettersleep.png" width="40"><br>BetterSleep</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
@@ -559,7 +559,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="bereal"></a>
 <details>
-<summary><img src=".github/assets/icons/bereal.png" width="18" align="top">&nbsp;&nbsp;BeReal&nbsp;&nbsp;•&nbsp;&nbsp;20 patches</summary>
+<summary><img src=".github/assets/icons/bereal.png" width="18" align="top">&nbsp;&nbsp;BeReal&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -569,6 +569,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="bereal-back-up-memories"></a>[Back up memories](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up all memories to the patch settings. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. The JSON sidecars hold location, friends' usernames and comments, and go to Download/BeReal unless a folder is picked. |
 | <a id="bereal-change-download-location"></a>[Change download location](patches/src/main/kotlin/app/morphe/patches/bereal/misc/download/ChangeDownloadLocationPatch.kt) | Saves downloaded BeReals to Pictures/BeReal, DCIM/BeReal or a folder you pick. Requires Android 10 or newer. |
 | <a id="bereal-custom-location"></a>[Custom location](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomLocationPatch.kt) | Sets the location shown on your BeReal to a place you choose on a map or by name. |
 | <a id="bereal-custom-retake-count"></a>[Custom retake count](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomRetakeCountPatch.kt) | Asks before each BeReal how many retakes your friends see on it. |

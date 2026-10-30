@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.67.0-dev.1",
+  "version": "1.67.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -762,6 +762,40 @@
                 "ARMEABI_V7A": 14,
                 "X86_64": 14,
                 "X86": 14
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Back up memories",
+      "description": "Adds Back up all memories to the patch settings. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. The JSON sidecars hold location, friends' usernames and comments, and go to Download/BeReal unless a folder is picked.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.bereal.ft",
+          "name": "BeReal",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#000000",
+          "signatures": [
+            "2efdbd738f3fdae901ecb96ead2d7b9b1ee6d2ceab911bdf7b1a3df812f3cfc4"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.97.1",
+              "versionCodes": {
+                "ARM64_V8A": 3599414,
+                "ARMEABI_V7A": 3599414,
+                "X86_64": 3599414,
+                "X86": 3599414
               },
               "isExperimental": false,
               "minSdk": 26,

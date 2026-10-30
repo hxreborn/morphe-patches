@@ -1,3 +1,9 @@
+## [1.67.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.67.0-dev.1...v1.67.0-dev.2) (2026-10-30)
+
+### New Features
+
+* **BeReal - Back up memories:** back up all memories in the background ([df2e0b2](https://github.com/hxreborn/morphe-patches/commit/df2e0b22e356ed9573ac3a7e42012c304172fd4e))
+
 ## [1.67.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.66.0...v1.67.0-dev.1) (2026-10-30)
 
 ### New Features
