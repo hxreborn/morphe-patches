@@ -111,6 +111,11 @@ final class BackupRun {
             try {
                 final List<MemoryPost> posts = MemoriesJson.posts(momentId, this.api.moment(momentId));
                 for (final MemoryPost post : posts) {
+                    if (cancel.get()) {
+                        // The moment stays unmarked, so the next run retries it
+                        outcome.cancelled = true;
+                        return;
+                    }
                     final MemorySaver.Result result = save(post);
                     if (result == MemorySaver.Result.SAVED) {
                         outcome.saved++;
