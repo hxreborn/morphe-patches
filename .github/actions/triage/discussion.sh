@@ -96,6 +96,10 @@ case "$command" in
     graphql -f id="$(discussion_id "$1")" -f reason="$2" -f query='mutation Close($id: ID!, $reason: DiscussionCloseReason!) {
       closeDiscussion(input: {discussionId: $id, reason: $reason}) { clientMutationId } }' --silent
     ;;
+  lock)
+    graphql -f id="$(discussion_id "$1")" -f query='mutation Lock($id: ID!) {
+      lockLockable(input: {lockableId: $id, lockReason: RESOLVED}) { clientMutationId } }' --silent
+    ;;
   *)
     echo "discussion.sh: unknown command $command" >&2
     exit 2

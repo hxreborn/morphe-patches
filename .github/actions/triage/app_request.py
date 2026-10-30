@@ -208,15 +208,17 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             f"{link(prior)} already asked for `{package}` and was closed. Please reply here with what this request adds."
         )
 
-    if verdict == "pass" and not field(parse_fields(body), "App"):
-        verdict, labels = "flag", ["app request", "needs info"]
+    this = next((r for r in requests if r["number"] == number), {})
+    owner = REPO.split("/")[0].lower()
+    maintainer = bool(owner) and author(this).lower() == owner
+    if verdict == "pass" and not maintainer and not field(parse_fields(body), "App"):
+        verdict, reason, labels = "close", "no form", ["app request"]
         lines.append(
             "This request didn't use the app request form, so it has no app name, link or requested features. "
-            f"Please close it and open a new one:\n\nhttps://github.com/{REPO}/discussions/new?category=app-requests\n\n"
-            "It closes automatically after 7 days if nothing changes."
+            "This discussion is now closed and locked. Please open a new request with the form:\n\n"
+            f"https://github.com/{REPO}/discussions/new?category=app-requests"
         )
 
-    this = next((r for r in requests if r["number"] == number), {})
     if verdict == "close" and discussed_recently(this, now or datetime.now(timezone.utc)):
         verdict, reason, duplicate_of, labels, lines = "hold", "", 0, [], []
 
