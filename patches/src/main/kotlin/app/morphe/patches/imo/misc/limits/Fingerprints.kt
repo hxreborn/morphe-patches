@@ -46,3 +46,5 @@ internal object FamilyGuardContactLimitFingerprint : RemoteSettingFingerprint("f
 internal object GalleryMediaLimitFingerprint : RemoteSettingFingerprint("sendIMGalleryLimitCount")
 
 internal object FileCountLimitFingerprint : RemoteSettingFingerprint("imSendFilesMax")
+
+internal object EmojiUploadGifLimitFingerprint : RemoteSettingFingerprint("emojiUploadGifLimitSize")
