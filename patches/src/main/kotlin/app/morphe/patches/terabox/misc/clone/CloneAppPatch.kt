@@ -21,6 +21,8 @@ private const val ACCOUNT_TYPE = "com.dubox.drive.jkeng.account_type"
 
 private val ACCOUNT_XML_FILES = listOf("res/xml/authenticator.xml", "res/xml/sync_adapter.xml")
 
+private val APP_LABELS = setOf("TeraBox", "@string/app_name")
+
 @Suppress("unused")
 val cloneAppPatch = bytecodePatch(
     name = "Clone app",
@@ -39,6 +41,15 @@ val cloneAppPatch = bytecodePatch(
         required = true,
     ) {
         it!!.matches(Regex("^[a-z]\\w*(\\.[a-z]\\w*)+$")) && it != AppCompatibilities.TERABOX.packageName
+    }
+
+    val appName by stringOption(
+        key = "appName",
+        title = "App name",
+        description = "Name shown on the launcher, in recent apps and in Settings. " +
+            "Leave empty for TeraBox followed by the last part of the package name.",
+    ) {
+        it.isNullOrBlank() || it.trim().first() !in "@?"
     }
 
     val renames = mutableMapOf<String, String>()
@@ -78,15 +89,13 @@ val cloneAppPatch = bytecodePatch(
                     rename("permission", "android:name", prefixedOnly = true)
                     rename("uses-permission", "android:name", prefixedOnly = true)
 
-                    val cloneLabel = "TeraBox ${clonePackageName.substringAfterLast('.')}"
+                    val cloneLabel = appName?.trim()?.takeIf { it.isNotEmpty() }
+                        ?: "TeraBox ${clonePackageName.substringAfterLast('.')}"
 
-                    (document.getNode("application") as Element).setAttribute("android:label", cloneLabel)
-
-                    document.getElementsByTagName("category").asSequence()
+                    document.getElementsByTagName("*").asSequence()
                         .filterIsInstance<Element>()
-                        .filter { it.getAttribute("android:name") == "android.intent.category.LAUNCHER" }
-                        .map { category -> category.parentNode.parentNode as Element }
-                        .forEach { launcherActivity -> launcherActivity.setAttribute("android:label", cloneLabel) }
+                        .filter { it.getAttribute("android:label") in APP_LABELS }
+                        .forEach { it.setAttribute("android:label", cloneLabel) }
                 }
 
                 ACCOUNT_XML_FILES.forEach { path ->
