@@ -1048,6 +1048,14 @@ ok = no_package["package"] == "" and no_package["comment"] == ""
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a website domain is not read as a package name and nothing is posted")
 
+freeform = {"number": 9, "title": "Pixlr AI Art Photo Editor", "state": "OPEN", "comments": [],
+            "body": "Remove ads, subscription upsell, AI elements in the homepage. Make a clean homepage."}
+no_form = app_verdict(9, [freeform])
+ok = (no_form["verdict"], no_form["labels"]) == ("flag", ["app request", "needs info"]) \
+    and "didn't use the app request form" in no_form["comment"] and "category=app-requests" in no_form["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a discussion opened without the form is labelled and asked to use it")
+
 registry_hit = app_verdict(9, [request(9, "Proton VPN", "ch.protonvpn.android")])
 ok = (registry_hit["matches"] == ["someone/patches"] and registry_hit["verdict"] == "flag"
       and registry_hit["labels"] == ["needs info", "other bundle"]
@@ -1187,7 +1195,7 @@ foreign_link = request(7, "Unknown https://example.com/a?id=com.atlogis.atlomaps
 no_app_field = {**request(8, "x", ""), "body": "### Details\n\nhttps://play.google.com/store/apps/details?id=com.atlogis.atlomaps\n"}
 ok = [app_verdict(101, eg_requests)["verdict"], app_verdict(5, [prose_package])["verdict"],
       app_verdict(6, [linked_package])["verdict"], app_verdict(7, [foreign_link])["verdict"],
-      app_verdict(8, [no_app_field])["verdict"]] == ["pass"] * 5
+      app_verdict(8, [no_app_field])["verdict"]] == ["pass"] * 4 + ["flag"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} only a store link in the App field is read as its package")
 
