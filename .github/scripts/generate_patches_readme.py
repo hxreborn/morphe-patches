@@ -287,6 +287,7 @@ ICONS = {
     "com.viber.voip": "viber.png",
     "com.telug.keyboard.for.android": "deshtelugu.png",
     "com.fillobotto.mp3tagger": "automatag.png",
+    "com.droid27.transparentclockweather": "transparentclock.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

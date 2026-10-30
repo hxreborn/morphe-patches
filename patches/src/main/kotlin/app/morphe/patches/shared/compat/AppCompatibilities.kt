@@ -1482,6 +1482,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "438.1.0.184284", versionCode = 1284284, minSdk = 26)),
     )
 
+    val TRANSPARENT_CLOCK = Compatibility(
+        name = "Transparent clock & weather",
+        packageName = "com.droid27.transparentclockweather",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0050A1,
+        signatures = setOf(
+            "297e4716a4c6bc8814cd699dc0bf0bb9834fca22719676856d004b658339181f",
+        ),
+        targets = listOf(AppTarget(version = "9.18.2", versionCode = 1431, minSdk = 32)),
+    )
+
     val VIDEO_EDITOR = Compatibility(
         name = "Video Editor",
         packageName = "videoeditor.videomaker.videoeditorforyoutube",
