@@ -41,3 +41,11 @@ internal fun inviteChatEntryFingerprint() = Fingerprint(
 )
 
 internal object CallShareGuideFingerprint : RemoteSettingFingerprint("isCallShareGuideEnable")
+
+internal object DownloadFreeImoDialogFingerprint : RemoteSettingFingerprint("downloadFreeImoDialog")
+
+internal object DownloadFreeImoTipsFingerprint : RemoteSettingFingerprint("downloadFreeImoTips")
+
+internal object DownloadFreeImoTips2Fingerprint : RemoteSettingFingerprint("downloadFreeImoTips2")
+
+internal object ContactsInviteFingerprint : RemoteSettingFingerprint("optContactsInvite")
