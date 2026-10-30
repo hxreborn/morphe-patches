@@ -5,9 +5,15 @@
 package app.morphe.patches.imo.misc.screenshot
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
+
+private const val WINDOW_LAYOUT_PARAMS = "Landroid/view/WindowManager\$LayoutParams;"
+private const val FLAG_SECURE = 0x2000
 
 internal object AddWindowFlagsFingerprint : Fingerprint(
     definingClass = "Lcom/imo/android/",
@@ -17,6 +23,17 @@ internal object AddWindowFlagsFingerprint : Fingerprint(
 internal object SetWindowFlagsFingerprint : Fingerprint(
     definingClass = "Lcom/imo/android/",
     filters = listOf(methodCall(definingClass = "Landroid/view/Window;", name = "setFlags")),
+)
+
+internal object SetLayoutParamsSecureFlagFingerprint : Fingerprint(
+    definingClass = "Lcom/imo/android/",
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "V",
+    parameters = listOf(WINDOW_LAYOUT_PARAMS),
+    filters = listOf(
+        literal(FLAG_SECURE, listOf(Opcode.OR_INT_LIT16)),
+        fieldAccess(definingClass = WINDOW_LAYOUT_PARAMS, name = "flags", opcode = Opcode.IPUT),
+    ),
 )
 
 internal object RegisterCaptureCallbacksFingerprint : Fingerprint(
