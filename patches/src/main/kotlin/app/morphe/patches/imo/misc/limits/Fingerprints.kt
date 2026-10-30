@@ -48,3 +48,5 @@ internal object GalleryMediaLimitFingerprint : RemoteSettingFingerprint("sendIMG
 internal object FileCountLimitFingerprint : RemoteSettingFingerprint("imSendFilesMax")
 
 internal object EmojiUploadGifLimitFingerprint : RemoteSettingFingerprint("emojiUploadGifLimitSize")
+
+internal object TimeMachineEraseLimitFingerprint : RemoteSettingFingerprint("getTimeMachineMaxDelCnt")
