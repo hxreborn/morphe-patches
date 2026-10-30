@@ -11,9 +11,12 @@ import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patches.imo.shared.RemoteSettingFingerprint
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val STOCK_CLOSE_FRIEND_LIMIT = 5L
+
+private const val STOCK_GALLERY_MAX_SIZE = 0x80000000L
 
 private const val CLOSE_FRIEND_PICKER_CLASS =
     "Lcom/imo/android/imoim/home/me/setting/chatbubble/ChatBubbleSelectContactsView;"
@@ -56,3 +59,23 @@ internal object FileCountLimitFingerprint : RemoteSettingFingerprint("imSendFile
 internal object EmojiUploadGifLimitFingerprint : RemoteSettingFingerprint("emojiUploadGifLimitSize")
 
 internal object TimeMachineEraseLimitFingerprint : RemoteSettingFingerprint("getTimeMachineMaxDelCnt")
+
+internal object GalleryPhotoMaxSizeFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "J",
+    parameters = emptyList(),
+    filters = listOf(
+        methodCall(name = "getPhotoMaxSize"),
+        literal(STOCK_GALLERY_MAX_SIZE),
+    ),
+)
+
+internal object GalleryVideoMaxSizeFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "J",
+    parameters = emptyList(),
+    filters = listOf(
+        methodCall(name = "getVideoMaxSize"),
+        literal(STOCK_GALLERY_MAX_SIZE),
+    ),
+)
