@@ -13,6 +13,13 @@ internal object SetCrashlyticsCollectionEnabledFingerprint : Fingerprint(
     parameters = listOf("Z"),
 )
 
+internal object SingularInitFingerprint : Fingerprint(
+    definingClass = "Lcom/singular/sdk/Singular;",
+    name = "init",
+    returnType = "Z",
+    parameters = listOf("Landroid/content/Context;", "Lcom/singular/sdk/SingularConfig;"),
+)
+
 internal object SurvicateInitFingerprint : Fingerprint(
     definingClass = "Lcom/survicate/surveys/Survicate;",
     name = "init",
