@@ -98,6 +98,8 @@ if args[:2] == ["api", "graphql"]:
         elif operation == "Close":
             issue["state"] = "CLOSED"
             issue["closed_as"] = fields["reason"][0]
+        elif operation == "Lock":
+            issue["locked"] = True
         state["mutations"].append(f"{operation} {number}")
         json.dump(state, open(path, "w"))
         emit({"data": {}})
@@ -390,6 +392,13 @@ status, issues, mutations = run(formless, SWEEP)
 check(status == 0 and mutations == ["AddLabels 50", "AddComment 50", "Close 50", "Lock 50"]
       and issues["50"]["labels"] == ["app request"] and issues["50"]["closed_as"] == "OUTDATED",
       "the sweep labels, answers, closes and locks a request opened without the form")
+
+# when
+status, issues, mutations = run(formless, SWEEP, fail_on="lockLockable")
+
+# then
+check(status != 0 and issues["50"]["state"] == "CLOSED" and not issues["50"].get("locked"),
+      "a failed lock fails the run and leaves the request closed")
 
 # when
 status, issues, mutations = run({"50": {**formless["50"], "association": "OWNER"}}, SWEEP)
