@@ -41,6 +41,12 @@ internal object CloseFriendPreselectionFingerprint : Fingerprint(
     ),
 )
 
+internal object GroupCallParticipantLimitFingerprint : Fingerprint(
+    returnType = "I",
+    parameters = listOf("Z"),
+    strings = listOf("getGroupCallMaxCount "),
+)
+
 internal object FamilyGuardContactLimitFingerprint : RemoteSettingFingerprint("familyGuardInviteMaxSelectionCount")
 
 internal object GalleryMediaLimitFingerprint : RemoteSettingFingerprint("sendIMGalleryLimitCount")
