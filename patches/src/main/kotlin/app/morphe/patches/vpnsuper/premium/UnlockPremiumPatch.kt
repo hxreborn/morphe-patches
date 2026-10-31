@@ -14,6 +14,7 @@ import app.morphe.patcher.string
 import app.morphe.patcher.util.findFreeRegister
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.liapp.liappPackageFilterPatch
 import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -74,6 +75,8 @@ val unlockPremiumPatch = bytecodePatch(
         "the Android TV sign-in screen.",
 ) {
     compatibleWith(AppCompatibilities.VPN_SUPER)
+
+    dependsOn(liappPackageFilterPatch)
 
     execute {
         val candidates = VipStatusFlowFingerprint.matchAll()

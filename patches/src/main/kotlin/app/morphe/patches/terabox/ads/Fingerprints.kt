@@ -18,10 +18,3 @@ internal object HasPrivilegeFingerprint : Fingerprint(
         methodCall(definingClass = "Lcom/dubox/drive/vip/domain/job/server/response/PrivilegeInfo;", name = "isValid"),
     ),
 )
-
-internal object AdSdkInitFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
-    returnType = "V",
-    parameters = listOf("Landroid/content/Context;"),
-    strings = listOf("key_ad_init_count"),
-)

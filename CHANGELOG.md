@@ -1,3 +1,70 @@
+## [1.68.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.6...v1.68.0-dev.7) (2026-10-31)
+
+### New Features
+
+* **TeraBox - Hide ads:** play rewarded ads requested from Benefits ([e960035](https://github.com/hxreborn/morphe-patches/commit/e960035a11f677e0bdfd9b1ae2fe7a0f0eb43f86)), closes [#506](https://github.com/hxreborn/morphe-patches/issues/506)
+
+### Updated App Support
+
+* **Public:** add support for `3.3.8` ([59a8383](https://github.com/hxreborn/morphe-patches/commit/59a83836a1305997bd80ca82eab3b06803e3185d))
+
+## [1.68.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.5...v1.68.0-dev.6) (2026-10-31)
+
+### Bug Fixes
+
+* **VPN Super Unlimited Proxy - Unlock premium:** stop the LIAPP alert ([62c3e88](https://github.com/hxreborn/morphe-patches/commit/62c3e8885d1472e134cc67caa45f4bd7d76cc194)), closes [#459](https://github.com/hxreborn/morphe-patches/issues/459)
+
+### New Features
+
+* **Audiobook Unlimited - GmsCore support:** sign in with Google ([bc0893d](https://github.com/hxreborn/morphe-patches/commit/bc0893d702a491e08e716ed9e710a4c26275dcd5)), closes [#444](https://github.com/hxreborn/morphe-patches/issues/444)
+
+## [1.68.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.4...v1.68.0-dev.5) (2026-10-31)
+
+### Updated App Support
+
+* **VPN Super Unlimited Proxy:** add support for `2.35.0` ([b448cc5](https://github.com/hxreborn/morphe-patches/commit/b448cc5cbfffde89610c7dd40e0b239664d564f1)), closes [#459](https://github.com/hxreborn/morphe-patches/issues/459)
+
+## [1.68.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.3...v1.68.0-dev.4) (2026-10-31)
+
+### New Features
+
+* update to Patcher 2.1.0 ([d3f3288](https://github.com/hxreborn/morphe-patches/commit/d3f3288a8840b58b42fa5b9ef524bb521a60eca4))
+
+### Updated App Support
+
+* **Audiobook Unlimited for Kindle:** add support for `1.7.24` ([d9e5d3f](https://github.com/hxreborn/morphe-patches/commit/d9e5d3fc149269dd9f628e64508c7c0c7140756f)), closes [#444](https://github.com/hxreborn/morphe-patches/issues/444)
+* **Proton Mail:** add support for `7.11.12` ([6e22f2e](https://github.com/hxreborn/morphe-patches/commit/6e22f2e7457e5f4c59d977bd72669415c06da1ca)), closes [#484](https://github.com/hxreborn/morphe-patches/issues/484)
+
+## [1.68.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.2...v1.68.0-dev.3) (2026-10-31)
+
+### Bug Fixes
+
+* **Pixlr - Unlock premium:** describe unlocked stickers and effects ([9b86bdd](https://github.com/hxreborn/morphe-patches/commit/9b86bddb1934b45c70c5f722825c9601ee67e545))
+
+## [1.68.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.1...v1.68.0-dev.2) (2026-10-31)
+
+### New Features
+
+* **Pixlr - Disable tracking:** stop analytics, crash reports and events ([cef8a99](https://github.com/hxreborn/morphe-patches/commit/cef8a991956b3243af6b77f0895db965ab190700))
+* **Pixlr - Hide home sections:** hide AI carousels and AI Video tiles ([1bbf808](https://github.com/hxreborn/morphe-patches/commit/1bbf8088cf874c88cd3e3de6419fed2163ac041e))
+* **Pixlr - Hide home sections:** hide Image to Video tiles ([876df96](https://github.com/hxreborn/morphe-patches/commit/876df962c8280b29de88d590f898c49f07f843a4))
+* **Pixlr - Remove ads:** remove ads and ad consent prompt ([6109510](https://github.com/hxreborn/morphe-patches/commit/6109510afe1679ce534535548214b0fa3d7f0505))
+* **Pixlr - Unlock premium:** hide crown button on home ([d54d0dd](https://github.com/hxreborn/morphe-patches/commit/d54d0ddc19751b9eb00d7f597b8fe55dc805319b))
+* **Pixlr - Unlock premium:** unlock paid content and skip paywalls ([f339ef1](https://github.com/hxreborn/morphe-patches/commit/f339ef1b0e81514723ded93fa389eea6fa9b3aac))
+
+## [1.68.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.67.1-dev.1...v1.68.0-dev.1) (2026-10-31)
+
+### New Features
+
+* **APNA Tunnel Lite - Disable tracking:** turn off Firebase collection ([406b722](https://github.com/hxreborn/morphe-patches/commit/406b7227ce429742139d0a5c8833db0764653480))
+* **APNA Tunnel Lite - Remove ads:** block ads and the consent form ([dfdfe39](https://github.com/hxreborn/morphe-patches/commit/dfdfe396fe27024227602127252ebaee65540560))
+
+## [1.67.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.67.0...v1.67.1-dev.1) (2026-10-31)
+
+### Bug Fixes
+
+* **MBC Shahid - Fix sign-in:** sign in with email, phone or social login ([a51dc9a](https://github.com/hxreborn/morphe-patches/commit/a51dc9a94d925c72b6334c164309a23df0113da2))
+
 ## [1.67.0](https://github.com/hxreborn/morphe-patches/compare/v1.66.0...v1.67.0) (2026-10-31)
 
 ### Bug Fixes

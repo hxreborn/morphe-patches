@@ -93,6 +93,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val APNA_TUNNEL_LITE = Compatibility(
+        name = "APNA Tunnel Lite",
+        packageName = "com.apnatunnel.lite",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "81183630b83ec0f67515e2dcb0834d9f33b0ef0b4ad785b1b01d50f6fb683415",
+        ),
+        targets = listOf(AppTarget(version = "APNA", versionCode = 51, minSdk = 24)),
+    )
+
     val ARC_PLAYER = Compatibility(
         name = "Arc Player",
         packageName = "com.videoplayer.arcplayer",
@@ -156,7 +167,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2c2c9d68b4564d29e20fea9a363b7597b15e246ddbc553f5353e07c2da956d0e",
         ),
-        targets = listOf(AppTarget(version = "1.7.23", versionCode = 196, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.7.24", versionCode = 199, minSdk = 24)),
     )
 
     val AUDIOLAB = Compatibility(
@@ -1066,6 +1077,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "13.4.0", versionCode = 21304000, minSdk = 24)),
     )
 
+    val PIXLR = Compatibility(
+        name = "Pixlr",
+        packageName = "com.pixlr.express",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0099CC,
+        signatures = setOf(
+            "a0b8e729cd652bbc754474e7e48b884704c5a3215e964e0900b6399a23b79e55",
+        ),
+        targets = listOf(AppTarget(version = "3.9.3", versionCode = 39300, minSdk = 29)),
+    )
+
     val PLECO = Compatibility(
         name = "Pleco",
         packageName = "com.pleco.chinesesystem",
@@ -1142,7 +1164,7 @@ internal object AppCompatibilities {
             "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
         ),
         targets = listOf(
-            AppTarget(version = "7.11.11", versionCode = 18326, minSdk = 29),
+            AppTarget(version = "7.11.12", versionCode = 18327, minSdk = 29),
         ),
     )
 
@@ -1208,7 +1230,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "38687807198e57d53bef507efdc11a6f9bf19bf7c7643b89650edff812ba2c00",
         ),
-        targets = listOf(AppTarget(version = "3.3.4", versionCode = 9070834, minSdk = 24)),
+        targets = listOf(AppTarget(version = "3.3.8", versionCode = 9070838, minSdk = 24)),
     )
 
     val PYDROID = Compatibility(
@@ -1573,12 +1595,7 @@ internal object AppCompatibilities {
         packageName = "com.free.vpn.super.hotspot.open",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x007DFF,
-        targets = listOf(
-            AppTarget(version = "2.32.0", versionCode = 23200, minSdk = 26),
-            AppTarget(version = "2.33.0", versionCode = 23300, minSdk = 26),
-            AppTarget(version = "2.33.1", versionCode = 23301, minSdk = 26),
-            AppTarget(version = "2.34.1", versionCode = 23401, minSdk = 26),
-        ),
+        targets = listOf(AppTarget(version = "2.35.0", versionCode = 23500, minSdk = 29)),
     )
 
     val WALLMAA = Compatibility(
