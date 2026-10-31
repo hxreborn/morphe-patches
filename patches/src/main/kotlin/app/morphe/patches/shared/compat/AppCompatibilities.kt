@@ -1077,6 +1077,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "13.4.0", versionCode = 21304000, minSdk = 24)),
     )
 
+    val PIXLR = Compatibility(
+        name = "Pixlr",
+        packageName = "com.pixlr.express",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0099CC,
+        signatures = setOf(
+            "a0b8e729cd652bbc754474e7e48b884704c5a3215e964e0900b6399a23b79e55",
+        ),
+        targets = listOf(AppTarget(version = "3.9.3", versionCode = 39300, minSdk = 29)),
+    )
+
     val PLECO = Compatibility(
         name = "Pleco",
         packageName = "com.pleco.chinesesystem",

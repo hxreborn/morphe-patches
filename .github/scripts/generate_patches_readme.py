@@ -290,6 +290,7 @@ ICONS = {
     "com.telug.keyboard.for.android": "deshtelugu.png",
     "com.fillobotto.mp3tagger": "automatag.png",
     "com.droid27.transparentclockweather": "transparentclock.png",
+    "com.pixlr.express": "pixlr.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")
