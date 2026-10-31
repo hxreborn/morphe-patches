@@ -1,3 +1,10 @@
+## [1.68.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.67.1-dev.1...v1.68.0-dev.1) (2026-10-31)
+
+### New Features
+
+* **APNA Tunnel Lite - Disable tracking:** turn off Firebase collection ([406b722](https://github.com/hxreborn/morphe-patches/commit/406b7227ce429742139d0a5c8833db0764653480))
+* **APNA Tunnel Lite - Remove ads:** block ads and the consent form ([dfdfe39](https://github.com/hxreborn/morphe-patches/commit/dfdfe396fe27024227602127252ebaee65540560))
+
 ## [1.67.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.67.0...v1.67.1-dev.1) (2026-10-31)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.67.1-dev.1",
+  "version": "1.68.0-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -2087,6 +2087,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
+      "description": "Stops Firebase Analytics, Crashlytics and Firebase Sessions from collecting usage data.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.apnatunnel.lite",
+          "name": "APNA Tunnel Lite",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#000000",
+          "signatures": [
+            "81183630b83ec0f67515e2dcb0834d9f33b0ef0b4ad785b1b01d50f6fb683415"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "APNA",
+              "versionCodes": {
+                "ARM64_V8A": 51,
+                "ARMEABI_V7A": 51,
+                "X86_64": 51,
+                "X86": 51
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]
@@ -8891,6 +8925,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
+      "description": "Removes app open, banner and interstitial ads and the ad consent form.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.apnatunnel.lite",
+          "name": "APNA Tunnel Lite",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#000000",
+          "signatures": [
+            "81183630b83ec0f67515e2dcb0834d9f33b0ef0b4ad785b1b01d50f6fb683415"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "APNA",
+              "versionCodes": {
+                "ARM64_V8A": 51,
+                "ARMEABI_V7A": 51,
+                "X86_64": 51,
+                "X86": 51
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]

@@ -44,6 +44,8 @@ body:
         - "AnyTracker 7.5.4"
         - "AnyTracker 7.5.6"
         - "AnyTracker (another version, type it below)"
+        - "APNA Tunnel Lite APNA"
+        - "APNA Tunnel Lite (another version, type it below)"
         - "Arc Player 1.4.2.141"
         - "Arc Player (another version, type it below)"
         - "Athan 11.0.6"
@@ -396,12 +398,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.68.0-dev.1"
         - "1.67.1-dev.1"
         - "1.67.0-dev.3"
         - "1.67.0-dev.2"
         - "1.67.0-dev.1"
         - "1.67.0"
-        - "1.66.0-dev.3"
         - "Older than these"
         # /generated
     validations:
@@ -473,6 +475,8 @@ body:
         - "Aloa \u00b7 Unlock premium"
         - "AlpineQuest \u00b7 Unlock full version"
         - "AnyTracker \u00b7 Unlock Platinum"
+        - "APNA Tunnel Lite \u00b7 Disable tracking"
+        - "APNA Tunnel Lite \u00b7 Remove ads"
         - "Arc Player \u00b7 Disable tracking"
         - "Arc Player \u00b7 Remove rating prompts"
         - "Arc Player \u00b7 Unlock premium"
