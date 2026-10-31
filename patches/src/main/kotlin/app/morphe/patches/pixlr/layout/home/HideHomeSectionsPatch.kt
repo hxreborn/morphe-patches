@@ -56,19 +56,19 @@ val hideHomeSectionsPatch = bytecodePatch(
         HomeSectionConstructorFingerprint.matchSingle().method.apply {
             val nameRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
-            val hideSections = hiddenSections.joinToString("\n") { section ->
+            val disableSectionCalls = hiddenSections.joinToString("\n") { section ->
                 """
                     const-string v$nameRegister, "${section.sectionName}"
                     invoke-static { p1, v$nameRegister }, $EXTENSION_CLASS_DESCRIPTOR->disable(Lorg/json/JSONObject;Ljava/lang/String;)V
                 """
             }
-            val removeAiVideo = if (hideAiVideo) {
+            val removeAiVideoCall = if (hideAiVideo) {
                 "invoke-static { p1 }, $EXTENSION_CLASS_DESCRIPTOR->removeAiVideo(Lorg/json/JSONObject;)V"
             } else {
                 ""
             }
 
-            addInstructions(0, "$removeAiVideo\n$hideSections")
+            addInstructions(0, "$removeAiVideoCall\n$disableSectionCalls")
         }
     }
 }

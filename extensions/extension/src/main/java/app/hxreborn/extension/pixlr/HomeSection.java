@@ -61,15 +61,15 @@ public final class HomeSection {
 
     private static boolean isAiVideo(Object item) {
         if (item instanceof String) {
-            return matches((String) item, AI_VIDEO_TOOLS);
+            return containsAny((String) item, AI_VIDEO_TOOLS);
         }
         if (item instanceof JSONObject) {
-            return matches(((JSONObject) item).optString("deeplink"), AI_VIDEO_DEEPLINKS);
+            return containsAny(((JSONObject) item).optString("deeplink"), AI_VIDEO_DEEPLINKS);
         }
         return false;
     }
 
-    private static boolean matches(String value, String[] needles) {
+    private static boolean containsAny(String value, String[] needles) {
         final String lowered = value.toLowerCase(Locale.ROOT);
         for (String needle : needles) {
             if (lowered.contains(needle)) {
