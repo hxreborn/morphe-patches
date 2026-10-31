@@ -37,8 +37,9 @@ private val hidePremiumButtonPatch = resourcePatch {
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks Premium tools and content, and removes ads and subscription screens. " +
-        "AI tools need a signed-in account with credits.",
+    description = "Unlocks premium stickers and effects. " +
+        "Removes ads, subscription screens, the daily save limit and the video watermark. " +
+        "AI tools need account credits.",
 ) {
     compatibleWith(AppCompatibilities.PIXLR)
 
