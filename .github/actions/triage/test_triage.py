@@ -1068,6 +1068,10 @@ FORM_CASES = {
                                                        "### Acknowledgements\n\n- [x] One\n- [x] Two"),
     "form labels written as bold text": ("close", "**App:**\nPixlr https://play.google.com/store/apps/details?id=com.pixlr.express"
                                          "\n\n**Requested features:**\n- Remove ads\n\n**Acknowledgements**\n- [ ]  One\n- [ ]  Two"),
+    "form labels written as bold text with every box checked pass": (
+        "pass", "**App:**\nPixlr https://play.google.com/store/apps/details?id=com.pixlr.express\n\n**Package name:**\n"
+        "com.pixlr.express\n\n**APK**:\nhttps://www.apkmirror.com/apk/inmagine-lab/pixlr/\n\n**Requested features:**\n"
+        "- Remove ads\n\n**Acknowledgements**\n- [x]  One\n- [x]  Two"),
     "an App heading alone": ("close", "### App\n\nPixlr\n\nRemove ads"),
     "requested features left empty": ("close", "### App\n\nPixlr\n\n### Requested features\n\n_No response_\n\n" + ACKNOWLEDGED),
     "an acknowledgement left unchecked": ("close", "### App\n\nPixlr\n\n### Requested features\n\nRemove ads\n\n"
