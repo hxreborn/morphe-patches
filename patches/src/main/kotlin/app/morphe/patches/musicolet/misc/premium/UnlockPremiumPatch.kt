@@ -36,6 +36,7 @@ val unlockPremiumPatch = bytecodePatch(
         restoreVirtualizedMethodsPatch,
         spoofSignaturePatch,
         castPluginAccessPatch,
+        unlockNativeLicenseLevelPatch,
     )
 
     execute {
