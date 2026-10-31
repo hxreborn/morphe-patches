@@ -93,6 +93,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val APNA_TUNNEL_LITE = Compatibility(
+        name = "APNA Tunnel Lite",
+        packageName = "com.apnatunnel.lite",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "81183630b83ec0f67515e2dcb0834d9f33b0ef0b4ad785b1b01d50f6fb683415",
+        ),
+        targets = listOf(AppTarget(version = "APNA", versionCode = 51, minSdk = 24)),
+    )
+
     val ARC_PLAYER = Compatibility(
         name = "Arc Player",
         packageName = "com.videoplayer.arcplayer",

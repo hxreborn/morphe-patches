@@ -156,6 +156,7 @@ ICONS = {
     "psyberia.alpinequest.free": "alpinequest.png",
     "com.atlogis.atlomaps": "atlomaps.png",
     "com.shervinkoushan.anyTracker": "anytracker.png",
+    "com.apnatunnel.lite": "apnatunnellite.png",
     "com.androholic.wallpapersdepthpix": "depthpix.png",
     "flar2.devcheck": "devcheck.png",
     "com.ferdinandobermeier.focusmate": "focusnow.png",
