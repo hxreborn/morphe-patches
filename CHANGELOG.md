@@ -1,3 +1,14 @@
+## [1.68.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.1...v1.68.0-dev.2) (2026-10-31)
+
+### New Features
+
+* **Pixlr - Disable tracking:** stop analytics, crash reports and events ([cef8a99](https://github.com/hxreborn/morphe-patches/commit/cef8a991956b3243af6b77f0895db965ab190700))
+* **Pixlr - Hide home sections:** hide AI carousels and AI Video tiles ([1bbf808](https://github.com/hxreborn/morphe-patches/commit/1bbf8088cf874c88cd3e3de6419fed2163ac041e))
+* **Pixlr - Hide home sections:** hide Image to Video tiles ([876df96](https://github.com/hxreborn/morphe-patches/commit/876df962c8280b29de88d590f898c49f07f843a4))
+* **Pixlr - Remove ads:** remove ads and ad consent prompt ([6109510](https://github.com/hxreborn/morphe-patches/commit/6109510afe1679ce534535548214b0fa3d7f0505))
+* **Pixlr - Unlock premium:** hide crown button on home ([d54d0dd](https://github.com/hxreborn/morphe-patches/commit/d54d0ddc19751b9eb00d7f597b8fe55dc805319b))
+* **Pixlr - Unlock premium:** unlock paid content and skip paywalls ([f339ef1](https://github.com/hxreborn/morphe-patches/commit/f339ef1b0e81514723ded93fa389eea6fa9b3aac))
+
 ## [1.68.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.67.1-dev.1...v1.68.0-dev.1) (2026-10-31)
 
 ### New Features
