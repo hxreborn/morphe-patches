@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
@@ -19,15 +18,13 @@ private const val PRIVILEGE_AD_FREE = 4
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
-    description = "Removes feed, banner, interstitial, app-open, video player and rewarded ads. " +
-        "Features unlocked by watching an ad are unavailable.",
+    description = "Removes feed, banner, interstitial, app-open and video player ads. " +
+        "Rewarded ads still play when requested from Benefits.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(spoofSignaturePatch)
 
     execute {
-        AdSdkInitFingerprint.matchSingle().method.returnEarly()
-
         HasPrivilegeFingerprint.matchSingle().method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
