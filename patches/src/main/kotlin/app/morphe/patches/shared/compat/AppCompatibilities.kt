@@ -167,7 +167,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2c2c9d68b4564d29e20fea9a363b7597b15e246ddbc553f5353e07c2da956d0e",
         ),
-        targets = listOf(AppTarget(version = "1.7.23", versionCode = 196, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.7.24", versionCode = 199, minSdk = 24)),
     )
 
     val AUDIOLAB = Compatibility(
