@@ -28,7 +28,7 @@ import org.json.JSONObject;
 @SuppressWarnings("unused")
 public final class HomeSection {
 
-    private static final String[] AI_VIDEO_TOOLS = { "videogenerator", "veo3", "seedance" };
+    private static final String[] AI_VIDEO_TOOLS = { "videogenerator", "imagetovideo", "veo3", "seedance" };
 
     private static final String[] AI_VIDEO_DEEPLINKS = { "videogen", "video-gen", "veo3", "seedance" };
 
