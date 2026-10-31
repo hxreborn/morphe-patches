@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.68.0-dev.5",
+  "version": "1.68.0-dev.6",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -4356,6 +4356,40 @@
                 "ARMEABI_V7A": 2017033171,
                 "X86_64": 2017033171,
                 "X86": 2017033171
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.oneletters.audiobooksai",
+          "name": "Audiobook Unlimited for Kindle",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#2890E9",
+          "signatures": [
+            "2c2c9d68b4564d29e20fea9a363b7597b15e246ddbc553f5353e07c2da956d0e"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.7.24",
+              "versionCodes": {
+                "ARM64_V8A": 199,
+                "ARMEABI_V7A": 199,
+                "X86_64": 199,
+                "X86": 199
               },
               "isExperimental": false,
               "minSdk": 24,

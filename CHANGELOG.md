@@ -1,3 +1,13 @@
+## [1.68.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.5...v1.68.0-dev.6) (2026-10-31)
+
+### Bug Fixes
+
+* **VPN Super Unlimited Proxy - Unlock premium:** stop the LIAPP alert ([62c3e88](https://github.com/hxreborn/morphe-patches/commit/62c3e8885d1472e134cc67caa45f4bd7d76cc194)), closes [#459](https://github.com/hxreborn/morphe-patches/issues/459)
+
+### New Features
+
+* **Audiobook Unlimited - GmsCore support:** sign in with Google ([bc0893d](https://github.com/hxreborn/morphe-patches/commit/bc0893d702a491e08e716ed9e710a4c26275dcd5)), closes [#444](https://github.com/hxreborn/morphe-patches/issues/444)
+
 ## [1.68.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.4...v1.68.0-dev.5) (2026-10-31)
 
 ### Updated App Support

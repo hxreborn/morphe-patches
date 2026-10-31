@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.68.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;413 patches total
+> **[v1.68.0-dev.6](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0-dev.6)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;414 patches total
 
 <table>
 <tr>
@@ -42,7 +42,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#atlomaps"><img src=".github/assets/icons/atlomaps.png" width="40"><br>AtloMaps</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#atvtools"><img src=".github/assets/icons/atvtools.png" width="40"><br>atvTools</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#audible"><img src=".github/assets/icons/audible.png" width="40"><br>Audible</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#audiobook-unlimited-for-kindle"><img src=".github/assets/icons/audiobookunlimited.png" width="40"><br>Audiobook Unlimited for Kindle</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#audiobook-unlimited-for-kindle"><img src=".github/assets/icons/audiobookunlimited.png" width="40"><br>Audiobook Unlimited for Kindle</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#audiolab"><img src=".github/assets/icons/audiolab.png" width="40"><br>AudioLab</a><br><sub>1 patch</sub></td>
@@ -516,7 +516,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="audiobook-unlimited-for-kindle"></a>
 <details>
-<summary><img src=".github/assets/icons/audiobookunlimited.png" width="18" align="top">&nbsp;&nbsp;Audiobook Unlimited for Kindle&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/audiobookunlimited.png" width="18" align="top">&nbsp;&nbsp;Audiobook Unlimited for Kindle&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -526,6 +526,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="audiobook-unlimited-for-kindle-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="audiobook-unlimited-for-kindle-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/audiobookunlimited/misc/premium/UnlockPremiumPatch.kt) | Unlocks Unlimited Books and skips the subscription offer shown after onboarding. Disables OTA updates. |
 
 </details>
