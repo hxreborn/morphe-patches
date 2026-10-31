@@ -1,3 +1,14 @@
+## [1.68.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.3...v1.68.0-dev.4) (2026-10-31)
+
+### New Features
+
+* update to Patcher 2.1.0 ([d3f3288](https://github.com/hxreborn/morphe-patches/commit/d3f3288a8840b58b42fa5b9ef524bb521a60eca4))
+
+### Updated App Support
+
+* **Audiobook Unlimited for Kindle:** add support for `1.7.24` ([d9e5d3f](https://github.com/hxreborn/morphe-patches/commit/d9e5d3fc149269dd9f628e64508c7c0c7140756f)), closes [#444](https://github.com/hxreborn/morphe-patches/issues/444)
+* **Proton Mail:** add support for `7.11.12` ([6e22f2e](https://github.com/hxreborn/morphe-patches/commit/6e22f2e7457e5f4c59d977bd72669415c06da1ca)), closes [#484](https://github.com/hxreborn/morphe-patches/issues/484)
+
 ## [1.68.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.2...v1.68.0-dev.3) (2026-10-31)
 
 ### Bug Fixes
