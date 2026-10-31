@@ -6,6 +6,7 @@ package app.morphe.patches.publicvideos.ads
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
@@ -14,7 +15,10 @@ import com.android.tools.smali.dexlib2.Opcode
 internal object InitializeMobileAdsFingerprint : Fingerprint(
     name = "invokeSuspend",
     returnType = "Ljava/lang/Object;",
-    strings = listOf("ca-app-pub-4482405035205548~9657278803"),
+    filters = listOf(
+        fieldAccess(definingClass = "Ljava/lang/Boolean;", name = "TRUE", opcode = Opcode.SGET_OBJECT),
+        string("ca-app-pub-4482405035205548~9657278803"),
+    ),
 )
 
 internal object RegisterAmazonAdsFingerprint : Fingerprint(
