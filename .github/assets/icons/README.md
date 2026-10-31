@@ -167,6 +167,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `com.dev2a.junk_journal.png` | Jujo (`com.dev2a.junk_journal`) | Dev2a Inc | Google Play listing icon, added 2026-10-14 |
 | `pl.neptis.yanosik.mobi.android.png` | Yanosik (`pl.neptis.yanosik.mobi.android`) | Yanosik S.A. | Google Play listing icon, added 2026-10-10 |
 | `com.videoplayer.arcplayer.png` | Arc Player (`com.videoplayer.arcplayer`) | Arc Video Player | Google Play listing icon, added 2026-10-26 |
+| `pixlr.png` | Pixlr (`com.pixlr.express`) | Pixlr Pte Ltd | APK 3.9.3, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_2025.xml`: vector `res/drawable/ic_launcher_2025_foreground.xml` on its `#0e0e0f` background, cut to a circle |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair
