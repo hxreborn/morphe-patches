@@ -278,7 +278,7 @@ body:
         - "Proton VPN (another version, type it below)"
         - "Psiphon 2.5.13"
         - "Psiphon (another version, type it below)"
-        - "Public 3.3.4"
+        - "Public 3.3.8"
         - "Public (another version, type it below)"
         - "Pydroid 3 8.6_arm64"
         - "Pydroid 3 (another version, type it below)"
@@ -397,12 +397,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.68.0-dev.7"
         - "1.68.0-dev.6"
         - "1.68.0-dev.5"
         - "1.68.0-dev.4"
         - "1.68.0-dev.3"
         - "1.68.0-dev.2"
-        - "1.68.0-dev.1"
         - "Older than these"
         # /generated
     validations:

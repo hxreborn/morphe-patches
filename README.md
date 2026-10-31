@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.68.0-dev.6](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0-dev.6)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;414 patches total
+> **[v1.68.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0-dev.7)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;414 patches total
 
 <table>
 <tr>
@@ -2184,7 +2184,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 3.3.4 |
+| 3.3.8 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2596,7 +2596,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|-----------|
 | <a id="terabox-clone-app"></a>[Clone app](patches/src/main/kotlin/app/morphe/patches/terabox/misc/clone/CloneAppPatch.kt) | Installs TeraBox as a separate app alongside the original, with its own account. Each copy needs a different clone number. | • Package name<br>• App name |
 | <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |  |
-| <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open, video player and rewarded ads. Features unlocked by watching an ad are unavailable. |  |
+| <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open and video player ads. Rewarded ads still play when requested from Benefits. |  |
 | <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |  |
 | <a id="terabox-hide-home-shortcuts"></a>[Hide home shortcuts](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Hides Translate, Short Drama and Trending from the home screen and the More screen. An option hides the Creative Generation tools too. | • Hide Creative Generation<br>• Hide Translate<br>• Hide Short Drama<br>• Hide Trending |
 | <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Hides Premium upgrade cards and banners, prize and campaign cards, speed-up prompts, floating invites, and sale, coupon and promotional popups. |  |

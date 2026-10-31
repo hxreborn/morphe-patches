@@ -1,3 +1,13 @@
+## [1.68.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.6...v1.68.0-dev.7) (2026-10-31)
+
+### New Features
+
+* **TeraBox - Hide ads:** play rewarded ads requested from Benefits ([e960035](https://github.com/hxreborn/morphe-patches/commit/e960035a11f677e0bdfd9b1ae2fe7a0f0eb43f86)), closes [#506](https://github.com/hxreborn/morphe-patches/issues/506)
+
+### Updated App Support
+
+* **Public:** add support for `3.3.8` ([59a8383](https://github.com/hxreborn/morphe-patches/commit/59a83836a1305997bd80ca82eab3b06803e3185d))
+
 ## [1.68.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.5...v1.68.0-dev.6) (2026-10-31)
 
 ### Bug Fixes

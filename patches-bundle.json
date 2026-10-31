@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-31T20:17:35",
-  "description": "## [1.68.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.5...v1.68.0-dev.6) (2026-10-31)\n\n### Bug Fixes\n\n* **VPN Super Unlimited Proxy - Unlock premium:** stop the LIAPP alert ([62c3e88](https://github.com/hxreborn/morphe-patches/commit/62c3e8885d1472e134cc67caa45f4bd7d76cc194)), closes [#459](https://github.com/hxreborn/morphe-patches/issues/459)\n\n### New Features\n\n* **Audiobook Unlimited - GmsCore support:** sign in with Google ([bc0893d](https://github.com/hxreborn/morphe-patches/commit/bc0893d702a491e08e716ed9e710a4c26275dcd5)), closes [#444](https://github.com/hxreborn/morphe-patches/issues/444)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.68.0-dev.6/patches-1.68.0-dev.6.mpp",
+  "created_at": "2026-10-31T20:50:44",
+  "description": "## [1.68.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.6...v1.68.0-dev.7) (2026-10-31)\n\n### New Features\n\n* **TeraBox - Hide ads:** play rewarded ads requested from Benefits ([e960035](https://github.com/hxreborn/morphe-patches/commit/e960035a11f677e0bdfd9b1ae2fe7a0f0eb43f86)), closes [#506](https://github.com/hxreborn/morphe-patches/issues/506)\n\n### Updated App Support\n\n* **Public:** add support for `3.3.8` ([59a8383](https://github.com/hxreborn/morphe-patches/commit/59a83836a1305997bd80ca82eab3b06803e3185d))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.68.0-dev.7/patches-1.68.0-dev.7.mpp",
   "signature_download_url": "",
-  "version": "1.68.0-dev.6"
+  "version": "1.68.0-dev.7"
 }

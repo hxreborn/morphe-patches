@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.68.0-dev.6",
+  "version": "1.68.0-dev.7",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -3141,12 +3141,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "3.3.4",
+              "version": "3.3.8",
               "versionCodes": {
-                "ARM64_V8A": 9070834,
-                "ARMEABI_V7A": 9070834,
-                "X86_64": 9070834,
-                "X86": 9070834
+                "ARM64_V8A": 9070838,
+                "ARMEABI_V7A": 9070838,
+                "X86_64": 9070838,
+                "X86": 9070838
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -4804,12 +4804,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "3.3.4",
+              "version": "3.3.8",
               "versionCodes": {
-                "ARM64_V8A": 9070834,
-                "ARMEABI_V7A": 9070834,
-                "X86_64": 9070834,
-                "X86": 9070834
+                "ARM64_V8A": 9070838,
+                "ARMEABI_V7A": 9070838,
+                "X86_64": 9070838,
+                "X86": 9070838
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -6006,12 +6006,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "3.3.4",
+              "version": "3.3.8",
               "versionCodes": {
-                "ARM64_V8A": 9070834,
-                "ARMEABI_V7A": 9070834,
-                "X86_64": 9070834,
-                "X86": 9070834
+                "ARM64_V8A": 9070838,
+                "ARMEABI_V7A": 9070838,
+                "X86_64": 9070838,
+                "X86": 9070838
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -6104,7 +6104,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Removes feed, banner, interstitial, app-open, video player and rewarded ads. Features unlocked by watching an ad are unavailable.",
+      "description": "Removes feed, banner, interstitial, app-open and video player ads. Rewarded ads still play when requested from Benefits.",
       "default": true,
       "category": null,
       "compatiblePackages": [
