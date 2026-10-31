@@ -396,12 +396,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.67.0"
+        - "1.67.1-dev.1"
         - "1.67.0-dev.3"
         - "1.67.0-dev.2"
         - "1.67.0-dev.1"
+        - "1.67.0"
         - "1.66.0-dev.3"
-        - "1.66.0-dev.2"
         - "Older than these"
         # /generated
     validations:
@@ -644,6 +644,7 @@ body:
         - "Magic Earth \u00b7 Unlock premium"
         - "May: Beautiful Bullet Journal \u00b7 Unlock premium"
         - "MBC Shahid \u00b7 Disable tracking"
+        - "MBC Shahid \u00b7 Fix sign-in"
         - "MBC Shahid \u00b7 GmsCore support"
         - "MBC Shahid \u00b7 Remove ads"
         - "MBC Shahid \u00b7 Remove root detection"

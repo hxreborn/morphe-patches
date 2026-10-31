@@ -1,3 +1,9 @@
+## [1.67.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.67.0...v1.67.1-dev.1) (2026-10-31)
+
+### Bug Fixes
+
+* **MBC Shahid - Fix sign-in:** sign in with email, phone or social login ([a51dc9a](https://github.com/hxreborn/morphe-patches/commit/a51dc9a94d925c72b6334c164309a23df0113da2))
+
 ## [1.67.0](https://github.com/hxreborn/morphe-patches/compare/v1.66.0...v1.67.0) (2026-10-31)
 
 ### Bug Fixes

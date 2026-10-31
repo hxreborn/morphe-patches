@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.67.0",
+  "version": "1.67.1-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -4019,6 +4019,40 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fix sign-in",
+      "description": "Fixes signing in with an email, phone number or social account.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "net.mbc.shahid",
+          "name": "MBC Shahid",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#01CD91",
+          "signatures": [
+            "74cacd21c9b4949fbf4840992052dacb9e45fdd9da10134404f238a9d38318ae"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "8.11.0",
+              "versionCodes": {
+                "ARM64_V8A": 4464,
+                "ARMEABI_V7A": 4464,
+                "X86_64": 4464,
+                "X86": 4464
+              },
+              "isExperimental": false,
+              "minSdk": 28,
               "description": null
             }
           ]

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.67.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.67.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;406 patches total
+> **[v1.67.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.67.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;407 patches total
 
 <table>
 <tr>
@@ -120,7 +120,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#lingodeer"><img src=".github/assets/icons/lingodeer.png" width="40"><br>LingoDeer</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#magic-earth"><img src=".github/assets/icons/magicearth.png" width="40"><br>Magic Earth</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#may-beautiful-bullet-journal"><img src=".github/assets/icons/com.azeravn.bulletjournal.png" width="40"><br>May: Beautiful Bullet Journal</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#mbc-shahid"><img src=".github/assets/icons/shahid.png" width="40"><br>MBC Shahid</a><br><sub>5 patches</sub></td>
+<td align="center" width="25%"><a href="#mbc-shahid"><img src=".github/assets/icons/shahid.png" width="40"><br>MBC Shahid</a><br><sub>6 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#medicneet"><img src=".github/assets/icons/medicneet.png" width="40"><br>MedicNEET</a><br><sub>2 patches</sub></td>
@@ -1448,7 +1448,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="mbc-shahid"></a>
 <details>
-<summary><img src=".github/assets/icons/shahid.png" width="18" align="top">&nbsp;&nbsp;MBC Shahid&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<summary><img src=".github/assets/icons/shahid.png" width="18" align="top">&nbsp;&nbsp;MBC Shahid&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1459,6 +1459,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="mbc-shahid-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/shahid/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, mParticle, CleverTap, NPAW, Bugsnag, Firebase Analytics and Facebook from collecting usage data. |
+| <a id="mbc-shahid-fix-sign-in"></a>[Fix sign-in](patches/src/main/kotlin/app/morphe/patches/shahid/misc/signin/FixSignInPatch.kt) | Fixes signing in with an email, phone number or social account. |
 | <a id="mbc-shahid-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="mbc-shahid-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/shahid/ads/RemoveAdsPatch.kt) | Removes video ads, pause ads and sponsored cards on the home, show and Shorts pages. |
 | <a id="mbc-shahid-remove-root-detection"></a>[Remove root detection](patches/src/main/kotlin/app/morphe/patches/shahid/misc/root/RemoveRootDetectionPatch.kt) | Opens the app and plays videos on rooted devices. |
