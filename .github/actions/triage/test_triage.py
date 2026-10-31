@@ -64,6 +64,16 @@ COLLIDING_APPS = {
     ]}],
 }
 
+NESTED_NAME_APPS = {
+    "version": "test",
+    "patches": [{"compatiblePackages": [
+        {"name": "Cast Plug-in for Musicolet", "packageName": "in.krosbits.castplugin",
+         "targets": [{"version": "1.9"}]},
+        {"name": "Musicolet", "packageName": "in.krosbits.musicolet",
+         "targets": [{"version": "6.14.1 build540"}]},
+    ]}],
+}
+
 ONE_AND_TWO_PATCH_APPS = {"version": "test", "patches": [
     {"compatiblePackages": [{"name": "Etsy", "packageName": "com.etsy.android", "targets": [{"version": "7.97.0"}]}]},
     {"compatiblePackages": [{"name": "Fddb", "packageName": "com.fddb",
@@ -114,6 +124,18 @@ block blast
 
 {LONG}
 """, COLLIDING_APPS)),
+    "app whose name another app's name contains": ("pass", (f"""### App and version
+
+Musicolet 6.14.1 build540
+
+### Other version
+
+_No response_
+
+### Bug description
+
+{LONG}
+""", NESTED_NAME_APPS)),
     "app and version picked from the dropdown": ("pass", f"""### App and version
 
 Proton Mail 7.10.4

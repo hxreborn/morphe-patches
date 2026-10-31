@@ -140,14 +140,15 @@ if fields and not report_attached and len(description) < MIN_CHARS:
     labels.append("needs info")
 
 matched = None
-best = 0
+best = (0, 0)
 normalized_app = normalize(app_haystack)
 for (name, package), versions in apps.items():
-    signals = [normalize(name), normalize(package)]
-    signals += [normalize(word) for word in name.split() if len(word) > 3]
+    words = [normalize(word) for word in name.split() if len(word) > 3]
+    signals = [normalize(name), normalize(package)] + words
     score = max((len(sig) for sig in signals if sig and sig in normalized_app), default=0)
-    if score > best:
-        best, matched = score, (name, versions)
+    rank = (score, -sum(word not in normalized_app for word in words))
+    if score and rank > best:
+        best, matched = rank, (name, versions)
 
 if repackager_host:
     blockers.append(
