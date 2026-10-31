@@ -37,7 +37,7 @@ case "$command" in
           discussions(first: 100, after: $after, categoryId: $category, orderBy: {field: CREATED_AT, direction: ASC}) {
             pageInfo { hasNextPage endCursor }
             nodes {
-              number title body closed url createdAt updatedAt
+              number title body closed url createdAt updatedAt authorAssociation
               author { login }
               labels(first: 20) { nodes { name } }
               comments(first: 100) { nodes { author { login } body createdAt url } }
@@ -53,6 +53,7 @@ case "$command" in
       number, title, body, url, createdAt, updatedAt,
       state: (if .closed then "CLOSED" else "OPEN" end),
       author: {login: (.author.login // "")},
+      association: .authorAssociation,
       labels: [.labels.nodes[] | {name}],
       comments: [.comments.nodes[] | {author: {login: (.author.login // "")}, body, createdAt, url}]
     }]'
@@ -95,6 +96,10 @@ case "$command" in
   close)
     graphql -f id="$(discussion_id "$1")" -f reason="$2" -f query='mutation Close($id: ID!, $reason: DiscussionCloseReason!) {
       closeDiscussion(input: {discussionId: $id, reason: $reason}) { clientMutationId } }' --silent
+    ;;
+  lock)
+    graphql -f id="$(discussion_id "$1")" -f query='mutation Lock($id: ID!) {
+      lockLockable(input: {lockableId: $id, lockReason: RESOLVED}) { clientMutationId } }' --silent
     ;;
   *)
     echo "discussion.sh: unknown command $command" >&2

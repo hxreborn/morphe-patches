@@ -228,6 +228,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val BIWENGER = Compatibility(
+        name = "Biwenger",
+        packageName = "com.biwenger.app",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xC80A00,
+        signatures = setOf(
+            "b3901a058ccf0d6ffd3b825cb9ea17075c1f80a50aea5776a911aea620ec58f7",
+        ),
+        targets = listOf(AppTarget(version = "4.0.4", versionCode = 237, minSdk = 24)),
+    )
+
     val BLOCKIT = Compatibility(
         name = "blockit",
         packageName = "com.hypenet.focused",
@@ -1174,10 +1185,7 @@ internal object AppCompatibilities {
             "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
         ),
         targets = listOf(
-            AppTarget(version = "5.20.39.0", versionCode = 605203900, minSdk = 26),
-            AppTarget(version = "5.20.57.0", versionCode = 605205700, minSdk = 26),
-            AppTarget(version = "5.20.74.0", versionCode = 605207400, minSdk = 26),
-            AppTarget(version = "5.20.98.0", versionCode = 605209800, minSdk = 26),
+            AppTarget(version = "5.21.9.0", versionCode = 605210900, minSdk = 26),
         ),
     )
 
@@ -1189,7 +1197,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "76dbef15f67726d451a12359b8579c0d7a9f635d526aa37424df131632f17810",
         ),
-        targets = listOf(AppTarget(version = "2.5.11", versionCode = 506, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.5.13", versionCode = 509, minSdk = 24)),
     )
 
     val PUBLIC = Compatibility(
@@ -1304,6 +1312,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val RIDMIK_KEYBOARD = Compatibility(
+        name = "Ridmik Keyboard",
+        packageName = "ridmik.keyboard",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x037238,
+        signatures = setOf("f5f1ac10f17936cfa2da8f8073b6065e3341feca502c04014b8f6d08852ef881"),
+        targets = listOf(AppTarget(version = "19.1.2", versionCode = 329, minSdk = 23)),
+    )
+
     val RINGTONE_MAKER = Compatibility(
         name = "Ringtone Maker",
         packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
@@ -1349,6 +1366,17 @@ internal object AppCompatibilities {
             "497a36a272a57be44383a0d2f21c532c968ea9d0e6b93ae66afd53c1d3aefa55",
         ),
         targets = listOf(AppTarget(version = "1.992", versionCode = 1992, minSdk = 24)),
+    )
+
+    val SHAHID = Compatibility(
+        name = "MBC Shahid",
+        packageName = "net.mbc.shahid",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x01CD91,
+        signatures = setOf(
+            "74cacd21c9b4949fbf4840992052dacb9e45fdd9da10134404f238a9d38318ae",
+        ),
+        targets = listOf(AppTarget(version = "8.11.0", versionCode = 4464, minSdk = 28)),
     )
 
     val SHEYTOON = Compatibility(
@@ -1465,6 +1493,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "438.1.0.184284", versionCode = 1284284, minSdk = 26)),
     )
 
+    val TRANSPARENT_CLOCK = Compatibility(
+        name = "Transparent clock & weather",
+        packageName = "com.droid27.transparentclockweather",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0050A1,
+        signatures = setOf(
+            "297e4716a4c6bc8814cd699dc0bf0bb9834fca22719676856d004b658339181f",
+        ),
+        targets = listOf(AppTarget(version = "9.18.2", versionCode = 1431, minSdk = 32)),
+    )
+
     val VIDEO_EDITOR = Compatibility(
         name = "Video Editor",
         packageName = "videoeditor.videomaker.videoeditorforyoutube",
@@ -1560,6 +1599,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "10.2.4", versionCode = 172, minSdk = 32)),
     )
 
+    val WATCH_IT = Compatibility(
+        name = "WATCH IT",
+        packageName = "com.watchit.vod",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE0AF32,
+        signatures = setOf("bc5f2a6254cb58ce31b43b4d1efb1b257c3ed0576f32568ca30bc4536cbdd01a"),
+        targets = listOf(AppTarget(version = "5.26.2", versionCode = 1028, minSdk = 21)),
+    )
+
     val WATTPAD = Compatibility(
         name = "Wattpad",
         packageName = "wp.wattpad",
@@ -1567,6 +1615,15 @@ internal object AppCompatibilities {
         appIconColor = 0xFF500A,
         signatures = setOf("012de45837d20561255a02bbc22334c1f681d01b366fe31bef418baf535903ef"),
         targets = listOf(AppTarget(version = "11.42.0", versionCode = 3836, minSdk = 24)),
+    )
+
+    val WEATHER24 = Compatibility(
+        name = "weather24",
+        packageName = "com.wetter.androidclient",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFBBF31,
+        signatures = setOf("0d4facb5aedccec85e26512473ca51d63d8b415059d4ce8b0a387e0ba8b32f04"),
+        targets = listOf(AppTarget(version = "2.78.1", versionCode = 1515278101, minSdk = 24)),
     )
 
     val YANOSIK = Compatibility(

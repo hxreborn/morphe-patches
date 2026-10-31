@@ -23,6 +23,7 @@ package app.hxreborn.extension.bereal;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.hxreborn.extension.bereal.backup.MemoriesBackup;
 import app.hxreborn.extension.bereal.blur.FriendsPosts;
 import app.hxreborn.extension.bereal.download.DownloadFolder;
 import app.hxreborn.extension.bereal.download.DownloadWatermark;
@@ -125,6 +126,10 @@ final class PatchCatalog {
         }
         if (DownloadFolder.isPatchIncluded()) {
             group.addFolder("ic_folder", "Download folder", "BeReals you download save to this folder.");
+        }
+        if (MemoriesBackup.isPatchIncluded()) {
+            group.addAction("ic_square_and_arrow_down", "Back up all memories",
+                    MemoriesBackup.summary(), MemoriesBackup::start);
         }
         return group;
     }

@@ -41,6 +41,7 @@ MAX_LISTED = 5
 QUIET_DAYS = 14
 OPEN_LIMIT = 3
 EXEMPT_ASSOCIATIONS = {"OWNER", "MEMBER", "COLLABORATOR"}
+CHECKBOX = re.compile(r"^\s*[-*]\s+\[([ xX])\]", re.M)
 
 
 def is_package(text):
@@ -171,6 +172,15 @@ def author(issue):
     return (issue.get("author") or {}).get("login") or ""
 
 
+def missing_form_parts(body):
+    fields = parse_fields(body)
+    missing = [f"the {name} field" for name in ("App", "Requested features") if not field(fields, name)]
+    boxes = CHECKBOX.findall(field(fields, "Acknowledgements"))
+    if not boxes or " " in boxes:
+        missing.append("the checked acknowledgements")
+    return missing
+
+
 def open_requests_at_limit(this, requests):
     login = author(this)
     others = [r for r in requests if login and r is not this and r["state"] == "OPEN" and author(r) == login]
@@ -209,6 +219,16 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
         )
 
     this = next((r for r in requests if r["number"] == number), {})
+    missing = missing_form_parts(body)
+    if verdict == "pass" and missing and this.get("association") not in EXEMPT_ASSOCIATIONS:
+        verdict, reason, labels = "close", "no form", ["app request"]
+        parts = f"{', '.join(missing[:-1])} and {missing[-1]}" if len(missing) > 1 else missing[0]
+        lines.append(
+            f"This request didn't use the app request form, so it's missing {parts}. "
+            "This discussion is now closed and locked. Please open a new request with the form:\n\n"
+            f"https://github.com/{REPO}/discussions/new?category=app-requests"
+        )
+
     if verdict == "close" and discussed_recently(this, now or datetime.now(timezone.utc)):
         verdict, reason, duplicate_of, labels, lines = "hold", "", 0, [], []
 

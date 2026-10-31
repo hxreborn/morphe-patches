@@ -13,6 +13,7 @@ package app.morphe.patches.shared.misc.gms
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
@@ -62,6 +63,17 @@ internal object GetCredentialHandlerFingerprint : Fingerprint(
 
 internal object CredentialProviderFrameworkFingerprint : Fingerprint(
     filters = listOf(string("In CredentialProviderFrameworkImpl onClearCredential")),
+)
+
+private const val PRE_U_MIN_GMS_APK_VERSION = 252400000
+
+internal object PlayServicesGetCredentialRoutingFingerprint : Fingerprint(
+    name = "onGetCredential",
+    returnType = "V",
+    filters = listOf(
+        literal(PRE_U_MIN_GMS_APK_VERSION),
+        methodCall(name = "isAvailableOnDevice", parameters = listOf("I"), returnType = "Z"),
+    ),
 )
 
 internal object CredentialProviderFrameworkAvailabilityFingerprint : Fingerprint(

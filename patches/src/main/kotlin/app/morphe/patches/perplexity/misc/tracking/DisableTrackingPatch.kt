@@ -12,6 +12,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.perplexity.misc.returnUnitEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.analytics.SingularInitFingerprint
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData

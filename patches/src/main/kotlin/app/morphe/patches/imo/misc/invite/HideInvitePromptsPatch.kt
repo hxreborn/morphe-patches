@@ -21,7 +21,8 @@ private const val INVITE_ENTRY_ID = "entrance.inviteFriends"
 @Suppress("unused")
 val hideInvitePromptsPatch = bytecodePatch(
     name = "Hide invite prompts",
-    description = "Hides the invite friends dialog, the invite entry in the chat list and the call sharing banner.",
+    description = "Hides the invite friends dialog, the invite entry in the chat list, the call sharing banner " +
+        "and the Invite to Official imo dialog for unregistered numbers.",
 ) {
     compatibleWith(AppCompatibilities.IMO)
 
@@ -62,5 +63,9 @@ val hideInvitePromptsPatch = bytecodePatch(
         }
 
         CallShareGuideFingerprint.matchSingle().method.returnEarly(false)
+        ContactsInviteFingerprint.matchSingle().method.returnEarly(false)
+        DownloadFreeImoDialogFingerprint.matchSingle().method.returnEarly(false)
+        DownloadFreeImoTipsFingerprint.matchSingle().method.returnEarly(false)
+        DownloadFreeImoTips2Fingerprint.matchSingle().method.returnEarly(false)
     }
 }

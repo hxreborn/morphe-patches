@@ -68,6 +68,12 @@ public final class PatchSettings {
 
     public static final StringSetting DOWNLOAD_FOLDER = new StringSetting("bereal_download_folder", "");
 
+    public static final StringSetting BACKUP_SAVED_IDS = new StringSetting("bereal_backup_saved_ids", "");
+
+    public static final StringSetting BACKUP_LAST_RUN = new StringSetting("bereal_backup_last_run", "");
+
+    public static final StringSetting BACKUP_LAST_COUNT = new StringSetting("bereal_backup_last_count", "");
+
     private PatchSettings() {
     }
 

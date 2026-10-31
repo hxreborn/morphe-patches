@@ -27,26 +27,24 @@ body:
       placeholder: com.duolingo
     validations:
       required: false
-  - type: dropdown
+  - type: textarea
     id: features
     attributes:
       label: Requested features
-      multiple: true
-      options:
-        - Unlock premium
-        - Remove ads
-        - Disable tracking
-        - Bypass a check the app does locally
-        - Something else, described below
+      description: What should the patch do? Name the locked features as the app names them.
+      placeholder: |
+        Unlimited hearts
+        Offline lessons
+        No ads between lessons
     validations:
       required: true
   - type: textarea
     id: additional
     attributes:
       label: Additional info
-      description: Anything else useful, such as which features sit behind the paywall.
+      description: Anything else useful, such as screenshots of the paywall.
     validations:
-      required: false
+      required: true
   - type: checkboxes
     id: acknowledgements
     attributes:

@@ -77,4 +77,8 @@ if [ "$verdict" = close ]; then
     *) reason=OUTDATED ;;
   esac
   discussion close "$n" "$reason"
+  if [ "$(jq -r .reason verdict.json)" = "no form" ] && ! discussion lock "$n"; then
+    echo "::error::#$n is closed but not locked"
+    exit 1
+  fi
 fi

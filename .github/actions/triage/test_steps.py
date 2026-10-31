@@ -12,6 +12,7 @@ HERE = Path(__file__).resolve().parent
 BOT = "github-actions[bot]"
 PERSON = "hxreborn"
 LONG = "Patching stops with an error dialog partway through and never writes an output file."
+ACKNOWLEDGED = "### Acknowledgements\n\n- [X] I searched open and closed requests and this isn't a duplicate.\n"
 
 PATCHES_LIST = {"version": "test", "patches": [{"compatiblePackages": [
     {"name": "Supported", "packageName": "com.supported.app", "targets": [{"version": "1.0.0"}]},
@@ -73,7 +74,7 @@ if args[:2] == ["api", "graphql"]:
         emit({"data": {"repository": {"discussionCategory": {"id": "C1"}}}})
     elif operation == "RequestList":
         emit({"data": {"repository": {"discussions": {"pageInfo": {"hasNextPage": False, "endCursor": None},
-              "nodes": [{**discussion(n, i), "closed": i["state"] == "CLOSED",
+              "nodes": [{**discussion(n, i), "closed": i["state"] == "CLOSED", "authorAssociation": i.get("association", "NONE"),
                          "labels": {"nodes": [{"name": label} for label in i["labels"]]},
                          "comments": {"nodes": discussion(n, i)["comments"]}} for n, i in issues.items()]}}}})
     elif operation == "DiscussionId":
@@ -97,6 +98,8 @@ if args[:2] == ["api", "graphql"]:
         elif operation == "Close":
             issue["state"] = "CLOSED"
             issue["closed_as"] = fields["reason"][0]
+        elif operation == "Lock":
+            issue["locked"] = True
         state["mutations"].append(f"{operation} {number}")
         json.dump(state, open(path, "w"))
         emit({"data": {}})
@@ -148,7 +151,7 @@ def issue(title, body, labels=("app request",), state="OPEN", comments=(), timel
 
 
 def request(app, package):
-    return f"### App\n\n{app}\n\n### Package name\n\n{package}\n\n### Requested features\n\nUnlock premium\n"
+    return f"### App\n\n{app}\n\n### Package name\n\n{package}\n\n### Requested features\n\nUnlock premium\n\n{ACKNOWLEDGED}"
 
 
 def labeled(label, actor):
@@ -378,6 +381,30 @@ status, issues, mutations = run(requests_by(PERSON, 4), SWEEP, issue_number=43, 
 
 # then
 check(status == 0 and issues["43"]["state"] == "OPEN" and mutations == [], "the owner is not limited")
+
+# given
+formless = {"50": issue("Pixlr", "Remove ads and make a clean homepage.", labels=())}
+
+# when
+status, issues, mutations = run(formless, SWEEP)
+
+# then
+check(status == 0 and mutations == ["AddLabels 50", "AddComment 50", "Close 50", "Lock 50"]
+      and issues["50"]["labels"] == ["app request"] and issues["50"]["closed_as"] == "OUTDATED",
+      "the sweep labels, answers, closes and locks a request opened without the form")
+
+# when
+status, issues, mutations = run(formless, SWEEP, fail_on="lockLockable")
+
+# then
+check(status != 0 and issues["50"]["state"] == "CLOSED" and not issues["50"].get("locked"),
+      "a failed lock fails the run and leaves the request closed")
+
+# when
+status, issues, mutations = run({"50": {**formless["50"], "association": "OWNER"}}, SWEEP)
+
+# then
+check(status == 0 and mutations == [] and issues["50"]["state"] == "OPEN", "the owner's announcement is left alone")
 
 unknown_update = "### App\n\nUnknown\n\n### New version\n\n2.0\n"
 update_payload = {"number": 30, "state": "open", "title": "[App Update]: Unknown 2.0", "body": unknown_update,

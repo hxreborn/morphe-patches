@@ -169,9 +169,12 @@ ICONS = {
     "org.withouthat.acalendar": "acalendar.png",
     "com.quickcursor": "quickcursor.png",
     "com.biobird.exvee": "biobird.png",
+    "com.biwenger.app": "biwenger.png",
     "com.stresscodes.wallp": "walp.png",
     "com.fengeon.resprite_desktop": "resprite.png",
     "wp.wattpad": "wattpad.png",
+    "com.wetter.androidclient": "weather24.png",
+    "com.watchit.vod": "watchit.png",
     "com.wallmaa.minimal.wallpapers": "wallmaa.png",
     "com.spocky.projengmenu": "projectivy.png",
     "app.privacynotes": "privacynotes.png",
@@ -228,6 +231,7 @@ ICONS = {
     "com.soulbreakers.mymoveset": "mymoveset.png",
     "com.realme.link": "realmelink.png",
     "ringtonemaker.musiccutter.customringtones.freeringtonemaker": "ringtonemaker.png",
+    "ridmik.keyboard": "ridmik.png",
     "com.vpn.free.hotspot.secure.vpnify": "vpnify.png",
     "ch.protonvpn.android": "protonvpn.png",
     "com.alokmandavgane.hinducalendar": "hinducalendar.png",
@@ -263,6 +267,7 @@ ICONS = {
     "com.lagguy.wallpapers": "lagguy.png",
     "net.techet.netanalyzerlite.an": "netanalyzer.png",
     "com.radiojavan.androidradio": "radiojavan.png",
+    "net.mbc.shahid": "shahid.png",
     "com.triovent.datingapp": "sheytoon.png",
     "com.serializdmobile": "serializd.png",
     "in.krosbits.musicolet": "musicolet.png",
@@ -283,6 +288,7 @@ ICONS = {
     "com.viber.voip": "viber.png",
     "com.telug.keyboard.for.android": "deshtelugu.png",
     "com.fillobotto.mp3tagger": "automatag.png",
+    "com.droid27.transparentclockweather": "transparentclock.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

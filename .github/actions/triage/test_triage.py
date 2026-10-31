@@ -962,6 +962,8 @@ REGISTRY = {"bundles": [
      "stars": 42, "targetApps": ["com.duolingo", "ch.protonvpn.android"]},
 ]}
 
+ACKNOWLEDGED = "### Acknowledgements\n\n- [X] I searched open and closed requests and this isn't a duplicate.\n"
+
 SUPPORTED = {"version": "test", "patches": [{"compatiblePackages": [
     {"name": "MovieBox", "packageName": "com.community.oneroom"},
     {"name": "AtloMaps", "packageName": "com.atlogis.atlomaps"},
@@ -972,7 +974,7 @@ NOW = datetime(2026, 9, 25, tzinfo=timezone.utc)
 
 
 def request(number, app, package, state="OPEN", comments=()):
-    body = f"### App\n\n{app}\n\n### Package name\n\n{package}\n\n### Requested features\n\nUnlock premium\n"
+    body = f"### App\n\n{app}\n\n### Package name\n\n{package}\n\n### Requested features\n\nUnlock premium\n\n{ACKNOWLEDGED}"
     return {"number": number, "title": f"[App Request]: {app}", "body": body, "state": state,
             "comments": [{"author": {"login": who}, "createdAt": when} for who, when in comments]}
 
@@ -1047,6 +1049,47 @@ no_package = app_verdict(5, [request(5, "Moviebox.ph", "idk")])
 ok = no_package["package"] == "" and no_package["comment"] == ""
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a website domain is not read as a package name and nothing is posted")
+
+freeform = {"number": 9, "title": "Pixlr AI Art Photo Editor", "state": "OPEN", "comments": [],
+            "body": "Remove ads, subscription upsell, AI elements in the homepage. Make a clean homepage."}
+no_form = app_verdict(9, [freeform])
+ok = (no_form["verdict"], no_form["reason"], no_form["labels"]) == ("close", "no form", ["app request"]) \
+    and "category=app-requests" in no_form["comment"] and "missing the App field, the Requested features field " \
+    "and the checked acknowledgements." in no_form["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a discussion opened without the form is closed and the reporter is pointed to it")
+
+FORM_CASES = {
+    "the form's own output passes": ("pass", "### App\r\n\r\nPixlr https://play.google.com/store/apps/details?id=com.pixlr.express"
+                                     "\r\n\r\n### Package name\r\n\r\n_No response_\r\n\r\n### Requested features\r\n\r\n"
+                                     "Remove ads\r\n\r\n### Additional info\r\n\r\n_No response_\r\n\r\n### Acknowledgements"
+                                     "\r\n\r\n- [X] One\r\n- [X] Two\r\n- [X] Three\r\n- [X] Four"),
+    "an older form with two acknowledgements passes": ("pass", "### App\n\nPixlr\n\n### Requested features\n\nRemove ads\n\n"
+                                                       "### Acknowledgements\n\n- [x] One\n- [x] Two"),
+    "form labels written as bold text": ("close", "**App:**\nPixlr https://play.google.com/store/apps/details?id=com.pixlr.express"
+                                         "\n\n**Requested features:**\n- Remove ads\n\n**Acknowledgements**\n- [ ]  One\n- [ ]  Two"),
+    "an App heading alone": ("close", "### App\n\nPixlr\n\nRemove ads"),
+    "requested features left empty": ("close", "### App\n\nPixlr\n\n### Requested features\n\n_No response_\n\n" + ACKNOWLEDGED),
+    "an acknowledgement left unchecked": ("close", "### App\n\nPixlr\n\n### Requested features\n\nRemove ads\n\n"
+                                          "### Acknowledgements\n\n- [X] One\n- [ ] Two"),
+    "acknowledgements missing": ("close", "### App\n\nPixlr\n\n### Requested features\n\nRemove ads\n"),
+}
+for name, (expected, body) in FORM_CASES.items():
+    actual = app_verdict(9, [{**freeform, "body": body}])["verdict"]
+    record(actual == expected)
+    print(f"{'ok  ' if actual == expected else 'FAIL'} {name}: expected {expected}, got {actual}")
+
+partial = app_verdict(9, [{**freeform, "body": "### App\n\nPixlr\n\n### Requested features\n\nRemove ads\n"}])["comment"]
+ok = "so it's missing the checked acknowledgements." in partial
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the close comment names only what is missing")
+
+by_owner = app_verdict(9, [{**freeform, "association": "OWNER"}])
+by_collaborator = app_verdict(9, [{**freeform, "association": "COLLABORATOR"}])
+by_other = app_verdict(9, [{**freeform, "association": "NONE"}])
+ok = by_owner["verdict"] == "pass" and by_collaborator["verdict"] == "pass" and by_other["verdict"] == "close"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a maintainer's own thread without the form is left open")
 
 registry_hit = app_verdict(9, [request(9, "Proton VPN", "ch.protonvpn.android")])
 ok = (registry_hit["matches"] == ["someone/patches"] and registry_hit["verdict"] == "flag"
@@ -1186,8 +1229,8 @@ linked_package = {**request(6, "GearUP", ""), "body": request(6, "GearUP", "")["
 foreign_link = request(7, "Unknown https://example.com/a?id=com.atlogis.atlomaps", "")
 no_app_field = {**request(8, "x", ""), "body": "### Details\n\nhttps://play.google.com/store/apps/details?id=com.atlogis.atlomaps\n"}
 ok = [app_verdict(101, eg_requests)["verdict"], app_verdict(5, [prose_package])["verdict"],
-      app_verdict(6, [linked_package])["verdict"], app_verdict(7, [foreign_link])["verdict"],
-      app_verdict(8, [no_app_field])["verdict"]] == ["pass"] * 5
+      app_verdict(6, [linked_package])["verdict"], app_verdict(7, [foreign_link])["verdict"]] == ["pass"] * 4 \
+    and app_verdict(8, [no_app_field])["package"] == ""
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} only a store link in the App field is read as its package")
 

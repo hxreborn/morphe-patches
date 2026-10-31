@@ -135,6 +135,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `lagguy.png` | Lagguy Wallpapers (`com.lagguy.wallpapers`) | Lagguy | APK 40.0.44, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `netanalyzer.png` | Network Analyzer (`net.techet.netanalyzerlite.an`) | Jiri Techet | APK 5.1, adaptive icon `res/mipmap-xxxhdpi-v4/lite_background.png` under `lite_foreground.png` |
 | `radiojavan.png` | Radio Javan (`com.radiojavan.androidradio`) | Radio Javan | APK 11.20.1, `res/mipmap-xxxhdpi-v4/ic_launcher_red_head.png` |
+| `shahid.png` | MBC Shahid (`net.mbc.shahid`) | MBC Group | Play 8.11.0, `res/mipmap-xxxhdpi/ic_launcher_round` |
 | `sheytoon.png` | Sheytoon (`com.triovent.datingapp`) | Sheytoon Inc. | APK 6.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `serializd.png` | Serializd (`com.serializdmobile`) | Serializd | Play 1.992, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `musicolet.png` | Musicolet (`in.krosbits.musicolet`) | Krosbits | APK 6.14.1 build540, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_ex4.xml`, cut to a circle |
@@ -144,6 +145,8 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `minishare.png` | MiniShare (`com.omniashare.minishare`) | Not on Google Play | APK 1.6.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `narababy.png` | Nara Baby (`com.naraorganics.nara`) | Nara Organics | APK 2.8.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `wattpad.png` | Wattpad (`wp.wattpad`) | Wattpad.com | APK 11.41.1, `res/mipmap-xxxhdpi-v4/ic_launcher.webp` (round icon cropped to the circle) |
+| `watchit.png` | WATCH IT (`com.watchit.vod`) | WATCH iT! | APK 5.26.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `ridmik.png` | Ridmik Keyboard (`ridmik.keyboard`) | Ridmik Labs | APK 19.1.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `graphmessenger.png` | Graph Messenger (`ir.ilmili.telegraph`) | Databite | APK 13.0.2.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `glasswidgets.png` | Glass Widgets (`com.jndapp.glass.widgets`) | JustNewDesigns | APK 1.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `yuka.png` | Yuka (`io.yuka.android`) | Yuka SAS | APK 5.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |

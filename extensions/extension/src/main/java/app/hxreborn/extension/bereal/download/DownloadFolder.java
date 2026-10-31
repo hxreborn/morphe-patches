@@ -20,14 +20,24 @@
  */
 package app.hxreborn.extension.bereal.download;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.UriPermission;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -36,6 +46,7 @@ import android.util.Log;
 import app.hxreborn.extension.bereal.PatchSettings;
 
 @SuppressWarnings("unused")
+@TargetApi(Build.VERSION_CODES.S_V2)
 public final class DownloadFolder {
 
     public static final String PICTURES_FOLDER = Environment.DIRECTORY_PICTURES + "/BeReal";
@@ -45,6 +56,10 @@ public final class DownloadFolder {
     public static final String INTERNAL_STORAGE = "Internal storage";
 
     private static final String TAG = "DownloadFolder";
+
+    private static final String JSON_MIME = "application/json";
+
+    private static final String JSON_FOLDER = Environment.DIRECTORY_DOWNLOADS + "/BeReal";
 
     private static final String TREE_SCHEME = "content:";
 
@@ -146,6 +161,161 @@ public final class DownloadFolder {
         }
         final Uri document = createDocument(resolver, tree, values);
         return (document != null) ? document : resolver.insert(collection, values);
+    }
+
+    public static Uri create(ContentResolver resolver, Uri collection, String displayName, String mimeType,
+            long takenAt) {
+        final ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DISPLAY_NAME, displayName);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
+        if (takenAt > 0) {
+            values.put(MediaStore.MediaColumns.DATE_TAKEN, takenAt);
+        }
+        values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+        if (JSON_MIME.equals(mimeType) && chosenTree() == null) {
+            // Pictures and DCIM refuse non-media files, so skip the collection that would throw
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, JSON_FOLDER + "/");
+            return resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+        }
+        try {
+            return insert(resolver, collection, values);
+        } catch (IllegalArgumentException ex) {
+            // Pictures and DCIM refuse non-media files (eg. application/json)
+            Log.e(TAG, "MediaStore rejected " + displayName + ", using Download", ex);
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, JSON_FOLDER + "/");
+            return resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+        }
+    }
+
+    public static OutputStream open(ContentResolver resolver, Uri file) throws IOException {
+        final OutputStream out = resolver.openOutputStream(file);
+        if (out == null) {
+            throw new IOException("No stream for " + file);
+        }
+        return out;
+    }
+
+    public static void finish(ContentResolver resolver, Uri file) {
+        if (MediaStore.AUTHORITY.equals(file.getAuthority())) {
+            final ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.IS_PENDING, 0);
+            resolver.update(file, values, null, null);
+        }
+    }
+
+    public static void discard(ContentResolver resolver, Uri file) {
+        try {
+            if (MediaStore.AUTHORITY.equals(file.getAuthority())) {
+                resolver.delete(file, null, null);
+            } else {
+                DocumentsContract.deleteDocument(resolver, file);
+            }
+        } catch (FileNotFoundException | RuntimeException ex) {
+            Log.e(TAG, "Download not discarded: " + file, ex);
+        }
+    }
+
+    /** Names in the picked folder, or null when no usable folder is picked. */
+    public static Set<String> treeChildNames(ContentResolver resolver) {
+        final Uri tree = chosenTree();
+        if (tree == null || !isAvailable(resolver, tree)) {
+            return null;
+        }
+        final Set<String> names = new HashSet<>();
+        final Uri children = DocumentsContract.buildChildDocumentsUriUsingTree(tree,
+                DocumentsContract.getTreeDocumentId(tree));
+        try (Cursor rows = resolver.query(children,
+                new String[] { DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null)) {
+            while (rows != null && rows.moveToNext()) {
+                names.add(rows.getString(0));
+            }
+        } catch (RuntimeException ex) {
+            Log.e(TAG, "Folder not listed: " + tree, ex);
+        }
+        return names;
+    }
+
+    public static boolean existsInMediaStore(ContentResolver resolver, Uri collection, String displayName) {
+        final Uri tree = chosenTree();
+        String path = presetFolder();
+        if (tree != null && isAvailable(resolver, tree)) {
+            path = primaryVolumePath(tree);
+        }
+        return path != null && mediaStoreId(resolver, collection, displayName, path) >= 0;
+    }
+
+    /** Reads a small text file saved by this class, or returns null when it is missing or unreadable. */
+    public static String readText(ContentResolver resolver, String displayName) {
+        final Uri tree = chosenTree();
+        String treePath = null;
+        if (tree != null && isAvailable(resolver, tree)) {
+            final String text = read(resolver, treeChild(resolver, tree, displayName));
+            if (text != null) {
+                return text;
+            }
+            treePath = primaryVolumePath(tree);
+        }
+        if (treePath != null) {
+            final Uri files = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+            final String text = read(resolver, mediaStoreUri(resolver, files, displayName, treePath));
+            if (text != null) {
+                return text;
+            }
+        }
+        return read(resolver,
+                mediaStoreUri(resolver, MediaStore.Downloads.EXTERNAL_CONTENT_URI, displayName, JSON_FOLDER));
+    }
+
+    private static String read(ContentResolver resolver, Uri file) {
+        if (file == null) {
+            return null;
+        }
+        try (InputStream in = resolver.openInputStream(file)) {
+            if (in == null) {
+                return null;
+            }
+            final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            final byte[] buffer = new byte[4096];
+            int count;
+            while ((count = in.read(buffer)) >= 0) {
+                out.write(buffer, 0, count);
+            }
+            return new String(out.toByteArray(), StandardCharsets.UTF_8);
+        } catch (IOException | RuntimeException ex) {
+            Log.e(TAG, "Not read: " + file, ex);
+            return null;
+        }
+    }
+
+    private static Uri treeChild(ContentResolver resolver, Uri tree, String displayName) {
+        final Uri children = DocumentsContract.buildChildDocumentsUriUsingTree(tree,
+                DocumentsContract.getTreeDocumentId(tree));
+        try (Cursor rows = resolver.query(children, new String[] { DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                DocumentsContract.Document.COLUMN_DISPLAY_NAME }, null, null, null)) {
+            while (rows != null && rows.moveToNext()) {
+                if (displayName.equals(rows.getString(1))) {
+                    return DocumentsContract.buildDocumentUriUsingTree(tree, rows.getString(0));
+                }
+            }
+        } catch (RuntimeException ex) {
+            Log.e(TAG, "Folder not listed: " + tree, ex);
+        }
+        return null;
+    }
+
+    private static Uri mediaStoreUri(ContentResolver resolver, Uri collection, String displayName, String path) {
+        final long id = mediaStoreId(resolver, collection, displayName, path);
+        return (id < 0) ? null : ContentUris.withAppendedId(collection, id);
+    }
+
+    private static long mediaStoreId(ContentResolver resolver, Uri collection, String displayName, String path) {
+        try (Cursor rows = resolver.query(collection, new String[] { MediaStore.MediaColumns._ID },
+                MediaStore.MediaColumns.DISPLAY_NAME + "=? AND " + MediaStore.MediaColumns.RELATIVE_PATH + "=?",
+                new String[] { displayName, path + "/" }, null)) {
+            return (rows != null && rows.moveToFirst()) ? rows.getLong(0) : -1;
+        } catch (RuntimeException ex) {
+            return -1;
+        }
     }
 
     private static Uri createDocument(ContentResolver resolver, Uri tree, ContentValues values) {

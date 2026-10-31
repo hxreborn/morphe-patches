@@ -21,8 +21,8 @@ private const val CONTACT_LIMIT = 999
 @Suppress("unused")
 val removeContactSelectionLimitPatch = bytecodePatch(
     name = "Remove contact selection limit",
-    description = "Raises the limit on contacts selected for iBubble close friends and Family Guard invites to 999. " +
-        "Experimental.",
+    description = "Raises the limit on contacts selected for iBubble close friends, Family Guard invites and " +
+        "group calls to 999. Experimental.",
 ) {
     compatibleWith(AppCompatibilities.IMO)
 
@@ -38,5 +38,6 @@ val removeContactSelectionLimitPatch = bytecodePatch(
             addInstruction(countIndex, "const/16 v$limitRegister, $STOCK_CLOSE_FRIEND_LIMIT")
         }
         FamilyGuardContactLimitFingerprint.matchSingle().method.returnEarly(CONTACT_LIMIT)
+        GroupCallParticipantLimitFingerprint.matchSingle().method.returnEarly(CONTACT_LIMIT)
     }
 }

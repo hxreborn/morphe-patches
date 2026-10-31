@@ -35,10 +35,3 @@ internal fun analyticsEventSinkFingerprint(sinkType: String) = Fingerprint(
         sinkType in classDef.interfaces && method.parameterTypes.firstOrNull() == EVENT_PAYLOAD_TYPE
     },
 )
-
-internal object SingularInitFingerprint : Fingerprint(
-    definingClass = "Lcom/singular/sdk/Singular;",
-    name = "init",
-    returnType = "Z",
-    parameters = listOf("Landroid/content/Context;", "Lcom/singular/sdk/SingularConfig;"),
-)
