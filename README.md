@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.68.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;413 patches total
+> **[v1.68.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;413 patches total
 
 <table>
 <tr>
@@ -1941,7 +1941,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="pixlr-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/pixlr/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Singular, Facebook App Events, Crashlytics and the app's own usage events. |  |
 | <a id="pixlr-hide-home-sections"></a>[Hide home sections](patches/src/main/kotlin/app/morphe/patches/pixlr/layout/home/HideHomeSectionsPatch.kt) | Hides the selected sections from the home screen. | • Hide featured carousel<br>• Hide AI Create<br>• Hide AI Tools<br>• Hide AI Video |
 | <a id="pixlr-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/pixlr/ads/RemoveAdsPatch.kt) | Removes ads and the advertising consent prompt. |  |
-| <a id="pixlr-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/pixlr/misc/premium/UnlockPremiumPatch.kt) | Unlocks Premium tools and content, and removes ads and subscription screens. AI tools need a signed-in account with credits. |  |
+| <a id="pixlr-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/pixlr/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium stickers and effects. Removes ads, subscription screens, the daily save limit and the video watermark. AI tools need account credits. |  |
 
 </details>
 

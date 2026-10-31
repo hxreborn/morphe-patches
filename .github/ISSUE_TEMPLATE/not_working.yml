@@ -400,12 +400,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.68.0-dev.3"
         - "1.68.0-dev.2"
         - "1.68.0-dev.1"
         - "1.67.1-dev.1"
         - "1.67.0-dev.3"
         - "1.67.0-dev.2"
-        - "1.67.0-dev.1"
         - "Older than these"
         # /generated
     validations:
