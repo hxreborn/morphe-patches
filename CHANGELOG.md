@@ -1,3 +1,9 @@
+## [1.68.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.4...v1.68.0-dev.5) (2026-10-31)
+
+### Updated App Support
+
+* **VPN Super Unlimited Proxy:** add support for `2.35.0` ([b448cc5](https://github.com/hxreborn/morphe-patches/commit/b448cc5cbfffde89610c7dd40e0b239664d564f1)), closes [#459](https://github.com/hxreborn/morphe-patches/issues/459)
+
 ## [1.68.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.3...v1.68.0-dev.4) (2026-10-31)
 
 ### New Features

@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-31T16:23:03",
-  "description": "## [1.68.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.3...v1.68.0-dev.4) (2026-10-31)\n\n### New Features\n\n* update to Patcher 2.1.0 ([d3f3288](https://github.com/hxreborn/morphe-patches/commit/d3f3288a8840b58b42fa5b9ef524bb521a60eca4))\n\n### Updated App Support\n\n* **Audiobook Unlimited for Kindle:** add support for `1.7.24` ([d9e5d3f](https://github.com/hxreborn/morphe-patches/commit/d9e5d3fc149269dd9f628e64508c7c0c7140756f)), closes [#444](https://github.com/hxreborn/morphe-patches/issues/444)\n* **Proton Mail:** add support for `7.11.12` ([6e22f2e](https://github.com/hxreborn/morphe-patches/commit/6e22f2e7457e5f4c59d977bd72669415c06da1ca)), closes [#484](https://github.com/hxreborn/morphe-patches/issues/484)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.68.0-dev.4/patches-1.68.0-dev.4.mpp",
+  "created_at": "2026-10-31T16:45:06",
+  "description": "## [1.68.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.4...v1.68.0-dev.5) (2026-10-31)\n\n### Updated App Support\n\n* **VPN Super Unlimited Proxy:** add support for `2.35.0` ([b448cc5](https://github.com/hxreborn/morphe-patches/commit/b448cc5cbfffde89610c7dd40e0b239664d564f1)), closes [#459](https://github.com/hxreborn/morphe-patches/issues/459)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.68.0-dev.5/patches-1.68.0-dev.5.mpp",
   "signature_download_url": "",
-  "version": "1.68.0-dev.4"
+  "version": "1.68.0-dev.5"
 }

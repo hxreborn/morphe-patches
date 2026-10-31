@@ -361,10 +361,7 @@ body:
         - "VLLO (another version, type it below)"
         - "VPN India 1.172"
         - "VPN India (another version, type it below)"
-        - "VPN Super Unlimited Proxy 2.32.0"
-        - "VPN Super Unlimited Proxy 2.33.0"
-        - "VPN Super Unlimited Proxy 2.33.1"
-        - "VPN Super Unlimited Proxy 2.34.1"
+        - "VPN Super Unlimited Proxy 2.35.0"
         - "VPN Super Unlimited Proxy (another version, type it below)"
         - "vpnify 2.3.0"
         - "vpnify (another version, type it below)"
@@ -400,12 +397,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.68.0-dev.5"
         - "1.68.0-dev.4"
         - "1.68.0-dev.3"
         - "1.68.0-dev.2"
         - "1.68.0-dev.1"
         - "1.67.1-dev.1"
-        - "1.67.0-dev.3"
         - "Older than these"
         # /generated
     validations:
