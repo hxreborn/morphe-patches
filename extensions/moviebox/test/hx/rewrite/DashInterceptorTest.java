@@ -61,6 +61,10 @@ public final class DashInterceptorTest {
 
     private static final String BOTTOM_TAB = "/wefeed-mobile-bff/subject-api/bottom-tab";
 
+    private static final String OPERATING_PAGE = "/wefeed-mobile-bff/tab-operating-page";
+
+    private static final String SKU_PROMOTION = "/wefeed-mobile-bff/activity/marketing/sku-promotion";
+
     private static final String MEMBER = "{\"data\":{\"daysLeft\":3,\"memberType\":\"FREE\","
             + "\"expiryDate\":\"2026-01-01\"}}";
 
@@ -226,6 +230,37 @@ public final class DashInterceptorTest {
 
         // then
         Assertions.assertThat(body).isEqualTo(tabs);
+    }
+
+    @Test
+    public void removesThePromotionBannersFromTheHomeFeed()
+            throws ClassNotFoundException, IOException, ReflectiveOperationException {
+        // given
+        String feed = "{\"data\":{\"items\":[{\"type\":\"BANNER\",\"banner\":{\"banners\":["
+                + "{\"deepLink\":\"oneroom://x?type=/member/MemberActivity\"},"
+                + "{\"deepLink\":\"oneroom://x?type=/movie/detail&id=1\"}]}}]}}";
+        this.server.put(OPERATING_PAGE, feed.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetch(OPERATING_PAGE, true, Collections.<String>emptySet());
+
+        // then
+        Assertions.assertThat(body.contains("MemberActivity")).as(body).isFalse();
+        Assertions.assertThat(body.contains("movie")).as(body).isTrue();
+    }
+
+    @Test
+    public void emptiesTheSkuPromotion() throws JSONException, ClassNotFoundException, IOException,
+            ReflectiveOperationException {
+        // given
+        String promotion = "{\"code\":0,\"data\":{\"marketingActivityId\":\"1\",\"items\":[]}}";
+        this.server.put(SKU_PROMOTION, promotion.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetch(SKU_PROMOTION, true, Collections.<String>emptySet());
+
+        // then
+        Assertions.assertThat(new JSONObject(body).isNull("data")).as(body).isTrue();
     }
 
     private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs) throws IOException {
