@@ -211,7 +211,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2efdbd738f3fdae901ecb96ead2d7b9b1ee6d2ceab911bdf7b1a3df812f3cfc4",
         ),
-        targets = listOf(AppTarget(version = "3.98.0", versionCode = 3600852, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "3.97.1", versionCode = 3599414, minSdk = 26),
+            AppTarget(version = "3.98.0", versionCode = 3600852, minSdk = 26),
+        ),
     )
 
     val BETTERSLEEP = Compatibility(
