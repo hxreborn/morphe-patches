@@ -34,7 +34,7 @@ private fun successReturnFilters() = listOf(
 internal fun markPostsAsSeenRepositoryFingerprint(requestType: String) = Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "Ljava/lang/Object;",
-    parameters = listOf("Ljava/util/ArrayList;", "L"),
+    parameters = listOf("Ljava/util/List;", "L"),
     filters = listOf(
         methodCall(definingClass = requestType, parameters = listOf(requestType, "Ljava/lang/Iterable;")),
     ) + successReturnFilters(),

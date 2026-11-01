@@ -43,7 +43,7 @@ internal fun feedFriendMenuItemsFingerprint(feedMenuClass: String) = Fingerprint
         methodCall(
             opcodes = listOf(Opcode.INVOKE_STATIC),
             parameters = listOf("[Ljava/lang/Object;"),
-            returnType = "Ljava/util/ArrayList;",
+            returnType = "Ljava/util/List;",
             location = MatchAfterWithin(6),
         ),
         opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),

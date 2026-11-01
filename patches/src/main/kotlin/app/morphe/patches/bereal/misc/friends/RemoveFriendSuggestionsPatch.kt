@@ -102,7 +102,10 @@ val removeFriendSuggestionsPatch = bytecodePatch(
                 .map { popularAccounts.method.getInstruction(it) }
                 .filter { it.opcode == Opcode.SGET_OBJECT }
                 .map { (it as ReferenceInstruction).getReference<FieldReference>()!! }
-                .single { it.type != visibleType.type && classDefBy(it.type).interfaces.contains(stateInterface) }
+                .single {
+                    it.type != visibleType.type &&
+                        classDefByOrNull(it.type)?.interfaces?.contains(stateInterface) == true
+                }
             popularAccounts.method.filterRegisterAfter(constructionIndex) { register, temp ->
                 """
                     $IS_REMOVED
