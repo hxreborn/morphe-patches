@@ -9,6 +9,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.apnatunnel.misc.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.ads.ConsentInfoUpdateFingerprint
 
 @Suppress("unused")
 val removeAdsPatch = bytecodePatch(
