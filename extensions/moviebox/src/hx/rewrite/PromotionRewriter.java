@@ -29,6 +29,14 @@ import org.json.JSONObject;
 
 final class PromotionRewriter {
 
+    private static final String BANNER_SECTION = "BANNER";
+
+    private static final String CUSTOM_SECTION = "CUSTOM";
+
+    private static final String SINGLE_IMAGE_SECTION = "SINGLE_IMAGE";
+
+    private static final String TARGET_PARAMETER = "type";
+
     private static final String[] PROMOTION_TARGETS = { "/member", "/web", "/profile" };
 
     private PromotionRewriter() {
@@ -37,14 +45,10 @@ final class PromotionRewriter {
     static String withoutFeedPromotions(String body) {
         try {
             JSONObject root = new JSONObject(body);
-            JSONObject data = root.optJSONObject("data");
-            JSONArray items = (data != null) ? data.optJSONArray("items") : null;
-            if (items == null) {
-                return body;
-            }
+            JSONArray sections = root.getJSONObject("data").getJSONArray("items");
             boolean changed = false;
-            for (int i = items.length() - 1; i >= 0; i--) {
-                changed |= prune(items, i);
+            for (int i = sections.length() - 1; i >= 0; i--) {
+                changed |= removePromotions(sections, i);
             }
             return changed ? root.toString() : body;
         } catch (JSONException ex) {
@@ -67,59 +71,70 @@ final class PromotionRewriter {
         }
     }
 
-    private static boolean prune(JSONArray items, int index) {
-        JSONObject item = items.optJSONObject(index);
-        if (item == null) {
-            return false;
+    private static boolean removePromotions(JSONArray sections, int index) throws JSONException {
+        JSONObject section = sections.getJSONObject(index);
+        switch (section.optString("type")) {
+            case BANNER_SECTION:
+                return removePromotionEntries(sections, index, section.getJSONObject("banner").getJSONArray("banners"));
+            case CUSTOM_SECTION:
+                return removePromotionEntries(sections, index,
+                        section.getJSONObject("customData").getJSONArray("items"));
+            case SINGLE_IMAGE_SECTION:
+                return removePromotionImage(sections, index, section.getJSONObject("page"));
+            default:
+                return false;
         }
-        JSONObject banner = item.optJSONObject("banner");
-        JSONObject custom = item.optJSONObject("customData");
-        int removed = removePromotions(banner, "banners") + removePromotions(custom, "items");
-        boolean emptied = removed > 0 && length(banner, "banners") + length(custom, "items") == 0;
-        if (emptied || isPromotion(item.optJSONObject("page"))) {
-            items.remove(index);
-            return true;
-        }
-        return removed > 0;
     }
 
-    private static int removePromotions(JSONObject holder, String listKey) {
-        JSONArray list = (holder != null) ? holder.optJSONArray(listKey) : null;
-        if (list == null) {
-            return 0;
-        }
-        int removed = 0;
-        for (int i = list.length() - 1; i >= 0; i--) {
-            if (isPromotion(list.optJSONObject(i))) {
-                list.remove(i);
-                removed++;
+    private static boolean removePromotionEntries(JSONArray sections, int index, JSONArray entries)
+            throws JSONException {
+        boolean removed = false;
+        for (int i = entries.length() - 1; i >= 0; i--) {
+            if (isPromotion(entries.getJSONObject(i))) {
+                entries.remove(i);
+                removed = true;
             }
+        }
+        if (removed && entries.length() == 0) {
+            sections.remove(index);
         }
         return removed;
     }
 
-    private static int length(JSONObject holder, String listKey) {
-        JSONArray list = (holder != null) ? holder.optJSONArray(listKey) : null;
-        return (list != null) ? list.length() : 0;
+    private static boolean removePromotionImage(JSONArray sections, int index, JSONObject page) {
+        boolean promotion = isPromotion(page);
+        if (promotion) {
+            sections.remove(index);
+        }
+        return promotion;
     }
 
     private static boolean isPromotion(JSONObject entry) {
-        return entry != null && leadsToPromotion(entry.optString("deepLink"));
+        Uri deepLink = Uri.parse(entry.optString("deepLink"));
+        return isWebLink(deepLink) || (deepLink.isHierarchical() && isPromotionTarget(deepLink));
     }
 
-    private static boolean leadsToPromotion(String deepLink) {
-        Uri uri = Uri.parse(deepLink);
-        String scheme = uri.getScheme();
-        if ("http".equals(scheme) || "https".equals(scheme)) {
-            return true;
+    private static boolean isWebLink(Uri deepLink) {
+        return "http".equals(deepLink.getScheme()) || "https".equals(deepLink.getScheme());
+    }
+
+    private static boolean isPromotionTarget(Uri deepLink) {
+        String target = deepLink.getQueryParameter(TARGET_PARAMETER);
+        if (target == null) {
+            return false;
         }
-        String target = uri.getQueryParameter("type");
         for (String promotion : PROMOTION_TARGETS) {
-            if (target != null && target.startsWith(promotion)) {
+            if (startsAtBoundary(target, promotion)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static boolean startsAtBoundary(String target, String promotion) {
+        int end = promotion.length();
+        return target.startsWith(promotion)
+                && (target.length() == end || target.charAt(end) == '/' || target.charAt(end) == '?');
     }
 
 }
