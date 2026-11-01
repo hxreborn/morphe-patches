@@ -18,22 +18,28 @@ def code_span(text, limit=80):
     return f"`{flat[:limit]}`"
 
 
-def parse_fields(body, track_fences=True):
+FORM_HEADING = re.compile(r"###\s+(\S.*)")
+BOLD_LABEL = re.compile(r"\*\*([^*:]+?):?\*\*:?(.*)")
+
+
+def parse_fields(body, track_fences=True, heading=FORM_HEADING):
     fields = {}
     current = None
     fenced = False
     for line in re.split(r"\r\n|\r|\n", body):
         if track_fences and line.lstrip().startswith(("```", "~~~")):
             fenced = not fenced
-        heading = None if fenced else re.match(r"###\s+(\S.*)", line)
-        name = heading.group(1).rstrip() if heading else None
+        match = None if fenced else heading.match(line)
+        name = match.group(1).strip() if match else None
         if name and name not in fields:
             current = name
-            fields[current] = []
+            fields[current] = [match.group(2)] if match.re is BOLD_LABEL else []
         elif current:
             fields[current].append(line)
     if fenced:
-        return parse_fields(body, track_fences=False)
+        return parse_fields(body, track_fences=False, heading=heading)
+    if not fields and heading is FORM_HEADING:
+        return parse_fields(body, track_fences, heading=BOLD_LABEL)
     return {k: "\n".join(v).strip() for k, v in fields.items()}
 
 

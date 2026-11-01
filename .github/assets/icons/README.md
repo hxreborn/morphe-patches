@@ -74,6 +74,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `atlomaps.png` | AtloMaps (`com.atlogis.atlomaps`) | ATLOGIS Geoinformatics GmbH & Co. KG | APK 1.0.6, adaptive icon `res/mipmap-anydpi-v26/icon.xml` |
 | `wallmaa.png` | Wallmaa (`com.wallmaa.minimal.wallpapers`) | Bract Studio | APK 1.0.1, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `anytracker.png` | AnyTracker (`com.shervinkoushan.anyTracker`) | Shervin Koushan | APK 7.5.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `apnatunnellite.png` | APNA Tunnel Lite (`com.apnatunnel.lite`) | APNA TUNNEL | APK APNA (51), round icon `res/drawable/ic_app_icon.png` |
 | `atvtools.png` | atvTools (`dev.vodik7.atvtools`) | tvDev | APK 1.3.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `bettersleep.png` | BetterSleep (`ipnossoft.rma.free`) | BetterSleep Health | APK 26.15, `res/mipmap-xxxhdpi/ic_launcher_round.png` |
 | `dwgfastview.png` | DWG FastView (`com.gstarmc.android`) | Gstarsoft Co., Ltd. | APK 5.21.0, `drawable/ic_launcher`, xxxhdpi, cut to a circle |
@@ -166,6 +167,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `com.dev2a.junk_journal.png` | Jujo (`com.dev2a.junk_journal`) | Dev2a Inc | Google Play listing icon, added 2026-10-14 |
 | `pl.neptis.yanosik.mobi.android.png` | Yanosik (`pl.neptis.yanosik.mobi.android`) | Yanosik S.A. | Google Play listing icon, added 2026-10-10 |
 | `com.videoplayer.arcplayer.png` | Arc Player (`com.videoplayer.arcplayer`) | Arc Video Player | Google Play listing icon, added 2026-10-26 |
+| `pixlr.png` | Pixlr (`com.pixlr.express`) | Pixlr Pte Ltd | APK 3.9.3, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_2025.xml`: vector `res/drawable/ic_launcher_2025_foreground.xml` on its `#0e0e0f` background, cut to a circle |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

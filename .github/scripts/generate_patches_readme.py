@@ -156,6 +156,7 @@ ICONS = {
     "psyberia.alpinequest.free": "alpinequest.png",
     "com.atlogis.atlomaps": "atlomaps.png",
     "com.shervinkoushan.anyTracker": "anytracker.png",
+    "com.apnatunnel.lite": "apnatunnellite.png",
     "com.androholic.wallpapersdepthpix": "depthpix.png",
     "flar2.devcheck": "devcheck.png",
     "com.ferdinandobermeier.focusmate": "focusnow.png",
@@ -289,6 +290,7 @@ ICONS = {
     "com.telug.keyboard.for.android": "deshtelugu.png",
     "com.fillobotto.mp3tagger": "automatag.png",
     "com.droid27.transparentclockweather": "transparentclock.png",
+    "com.pixlr.express": "pixlr.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")
