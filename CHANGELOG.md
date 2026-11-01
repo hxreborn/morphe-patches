@@ -1,3 +1,10 @@
+## [1.69.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.68.0...v1.69.0-dev.1) (2026-11-01)
+
+### New Features
+
+* **TunnelDOOM VPN - Remove ads:** remove banner and full-screen ads ([406707f](https://github.com/hxreborn/morphe-patches/commit/406707fbe9ab74dab05ded2d21286c7d9ce4814b))
+* **TunnelDOOM VPN - Remove time limit:** stop the connection countdown ([63f701b](https://github.com/hxreborn/morphe-patches/commit/63f701b224c1f29cd20963d4dca7863139499337))
+
 ## [1.68.0](https://github.com/hxreborn/morphe-patches/compare/v1.67.0...v1.68.0) (2026-11-01)
 
 ### Bug Fixes

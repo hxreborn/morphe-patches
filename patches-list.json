@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.68.0",
+  "version": "1.69.0-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -9556,6 +9556,40 @@
     },
     {
       "name": "Remove ads",
+      "description": "Removes app open, banner, interstitial and rewarded ads and the ad consent form.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tunneldoom.http",
+          "name": "TunnelDOOM VPN",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#000000",
+          "signatures": [
+            "12704504f5711f22d78ee436f38baeb90557c2fa72c4dfb281c766f59800461d"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.3.0",
+              "versionCodes": {
+                "ARM64_V8A": 430,
+                "ARMEABI_V7A": 430,
+                "X86_64": 430,
+                "X86": 430
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove ads",
       "description": "Removes video ads, pause ads, sponsor overlays, interactive ads and advertiser logos.",
       "default": true,
       "category": null,
@@ -10673,6 +10707,40 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove time limit",
+      "description": "Keeps the VPN connected without adding time by watching ads.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tunneldoom.http",
+          "name": "TunnelDOOM VPN",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#000000",
+          "signatures": [
+            "12704504f5711f22d78ee436f38baeb90557c2fa72c4dfb281c766f59800461d"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.3.0",
+              "versionCodes": {
+                "ARM64_V8A": 430,
+                "ARMEABI_V7A": 430,
+                "X86_64": 430,
+                "X86": 430
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]

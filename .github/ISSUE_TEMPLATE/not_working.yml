@@ -346,6 +346,8 @@ body:
         - "Trainline (another version, type it below)"
         - "Transparent clock & weather 9.18.2"
         - "Transparent clock & weather (another version, type it below)"
+        - "TunnelDOOM VPN 4.3.0"
+        - "TunnelDOOM VPN (another version, type it below)"
         - "U Dictionary 6.7.5"
         - "U Dictionary (another version, type it below)"
         - "UPTCL 11.0.41"
@@ -397,7 +399,7 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.68.0"
+        - "1.69.0-dev.1"
         - "1.68.0-dev.8"
         - "1.68.0-dev.7"
         - "1.68.0-dev.6"
@@ -844,6 +846,8 @@ body:
         - "Trainline \u00b7 Hide ads"
         - "Transparent clock & weather \u00b7 Disable tracking"
         - "Transparent clock & weather \u00b7 Unlock premium"
+        - "TunnelDOOM VPN \u00b7 Remove ads"
+        - "TunnelDOOM VPN \u00b7 Remove time limit"
         - "U Dictionary \u00b7 Unlock premium"
         - "UPTCL \u00b7 Disable tracking"
         - "UPTCL \u00b7 Hide ads"
