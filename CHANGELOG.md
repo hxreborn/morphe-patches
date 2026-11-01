@@ -1,3 +1,14 @@
+## [1.69.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.1...v1.69.0-dev.2) (2026-11-01)
+
+### Bug Fixes
+
+* **NEETprep Essential - Unlock premium:** unlock marked PYQ questions ([91e9cf0](https://github.com/hxreborn/morphe-patches/commit/91e9cf035afb9a6fad35ecc0ed373c96c0fb94e2))
+
+### New Features
+
+* **NEETprep Essential - GmsCore support:** sign in with Google ([faf2a7f](https://github.com/hxreborn/morphe-patches/commit/faf2a7f741c3cea000bb0c196cbb2624bb2ee920))
+* **NEETprep Essential - Remove screenshot restriction:** allow capture ([0e4cdad](https://github.com/hxreborn/morphe-patches/commit/0e4cdad90ca65db8ac20589e9ef54f0c78260361))
+
 ## [1.69.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.68.0...v1.69.0-dev.1) (2026-11-01)
 
 ### New Features
