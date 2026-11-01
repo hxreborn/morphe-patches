@@ -1,3 +1,9 @@
+## [1.69.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.6...v1.69.0-dev.7) (2026-11-01)
+
+### Bug Fixes
+
+* **Yuka - Sign-in token:** link the README steps when no token is set ([e9a3efd](https://github.com/hxreborn/morphe-patches/commit/e9a3efd09cd52e04b037e8e0c34aa70ddbfbca25)), closes [#529](https://github.com/hxreborn/morphe-patches/issues/529)
+
 ## [1.69.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.5...v1.69.0-dev.6) (2026-11-01)
 
 ### Bug Fixes
