@@ -1526,6 +1526,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.18.2", versionCode = 1431, minSdk = 32)),
     )
 
+    val TUNNELDOOM_VPN = Compatibility(
+        name = "TunnelDOOM VPN",
+        packageName = "com.tunneldoom.http",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "12704504f5711f22d78ee436f38baeb90557c2fa72c4dfb281c766f59800461d",
+        ),
+        targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
+    )
+
     val VIDEO_EDITOR = Compatibility(
         name = "Video Editor",
         packageName = "videoeditor.videomaker.videoeditorforyoutube",

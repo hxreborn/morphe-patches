@@ -75,6 +75,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `wallmaa.png` | Wallmaa (`com.wallmaa.minimal.wallpapers`) | Bract Studio | APK 1.0.1, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `anytracker.png` | AnyTracker (`com.shervinkoushan.anyTracker`) | Shervin Koushan | APK 7.5.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `apnatunnellite.png` | APNA Tunnel Lite (`com.apnatunnel.lite`) | APNA TUNNEL | APK APNA (51), round icon `res/drawable/ic_app_icon.png` |
+| `tunneldoomvpn.png` | TunnelDOOM VPN (`com.tunneldoom.http`) | richardbum | APK 4.3.0, `res/drawable-xxhdpi-v4/ic_launcher.png` cropped around the glyph and cut to a circle |
 | `atvtools.png` | atvTools (`dev.vodik7.atvtools`) | tvDev | APK 1.3.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `bettersleep.png` | BetterSleep (`ipnossoft.rma.free`) | BetterSleep Health | APK 26.15, `res/mipmap-xxxhdpi/ic_launcher_round.png` |
 | `dwgfastview.png` | DWG FastView (`com.gstarmc.android`) | Gstarsoft Co., Ltd. | APK 5.21.0, `drawable/ic_launcher`, xxxhdpi, cut to a circle |
