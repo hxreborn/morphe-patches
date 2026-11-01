@@ -35,10 +35,20 @@ internal val LOAD_PAID_STATUS_AND_JUMP_TO_STORE = "60e7409100c841f9140000141f200
 
 private const val COURSE_STATUS_STORE_OFFSET = 32
 
+internal val PYQ_ACCESS_GATE =
+    "e00301aafe0300aabe7a7ef8c0033fd600002037a0035ff8c1820091017001b8".hexToByteArray()
+
+internal val PYQ_ACCESS_GATE_MASK =
+    "ffffffffffffffffffffffffffffffff1f00f8ffffffffffffffffffffffffff".hexToByteArray()
+
+private val ARM64_NOP = "1f2003d5".hexToByteArray()
+
+private const val PYQ_ACCESS_GATE_BRANCH_OFFSET = 16
+
 @Suppress("unused")
 val unlockPremiumPatch = resourcePatch(
     name = "Unlock premium",
-    description = "Unlocks all chapters, practice sets, flashcards, hardest questions and mock tests.",
+    description = "Unlocks all chapters, practice sets, flashcards, hardest questions, mock tests and PYQ Marked NCERT questions.",
 ) {
     compatibleWith(AppCompatibilities.NEETPREP_ESSENTIAL)
     availability(requireArm64)
@@ -61,5 +71,12 @@ val unlockPremiumPatch = resourcePatch(
             mapOf(COURSE_STATUS_STORE_OFFSET to LOAD_PAID_STATUS_AND_JUMP_TO_STORE),
         )
         if (!courseStatusReplaced) throw PatchException("Could not find the course status assignment in $DART_AOT_LIBRARY")
+
+        val pyqAccessReplaced = library.replaceMasked(
+            PYQ_ACCESS_GATE,
+            PYQ_ACCESS_GATE_MASK,
+            mapOf(PYQ_ACCESS_GATE_BRANCH_OFFSET to ARM64_NOP),
+        )
+        if (!pyqAccessReplaced) throw PatchException("Could not find the PYQ access check in $DART_AOT_LIBRARY")
     }
 }
