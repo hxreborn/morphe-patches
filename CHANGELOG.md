@@ -1,3 +1,9 @@
+## [1.69.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.5...v1.69.0-dev.6) (2026-11-01)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** guard opaque and prefixed deep links ([c71cf87](https://github.com/hxreborn/morphe-patches/commit/c71cf875181325baf1b23493f09c5c255d9ce2f2))
+
 ## [1.69.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.4...v1.69.0-dev.5) (2026-11-01)
 
 ### Bug Fixes
