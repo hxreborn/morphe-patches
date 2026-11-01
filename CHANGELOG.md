@@ -1,3 +1,9 @@
+## [1.69.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.4...v1.69.0-dev.5) (2026-11-01)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** remove the offer popup and Home promotions ([a6e8030](https://github.com/hxreborn/morphe-patches/commit/a6e80305998a43c4dab5333ca0b70304c4394434)), closes [#523](https://github.com/hxreborn/morphe-patches/issues/523)
+
 ## [1.69.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.3...v1.69.0-dev.4) (2026-11-01)
 
 ### Bug Fixes
