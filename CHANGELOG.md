@@ -1,3 +1,9 @@
+## [1.69.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.2...v1.69.0-dev.3) (2026-11-01)
+
+### Updated App Support
+
+* **BeReal:** add support for `3.98.0` ([ce1c17c](https://github.com/hxreborn/morphe-patches/commit/ce1c17ca9530b67e76b9146d875ed15d9672d4e2)), closes [#514](https://github.com/hxreborn/morphe-patches/issues/514)
+
 ## [1.69.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.1...v1.69.0-dev.2) (2026-11-01)
 
 ### Bug Fixes

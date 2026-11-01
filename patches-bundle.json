@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-01T09:27:39",
-  "description": "## [1.69.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.1...v1.69.0-dev.2) (2026-11-01)\n\n### Bug Fixes\n\n* **NEETprep Essential - Unlock premium:** unlock marked PYQ questions ([91e9cf0](https://github.com/hxreborn/morphe-patches/commit/91e9cf035afb9a6fad35ecc0ed373c96c0fb94e2))\n\n### New Features\n\n* **NEETprep Essential - GmsCore support:** sign in with Google ([faf2a7f](https://github.com/hxreborn/morphe-patches/commit/faf2a7f741c3cea000bb0c196cbb2624bb2ee920))\n* **NEETprep Essential - Remove screenshot restriction:** allow capture ([0e4cdad](https://github.com/hxreborn/morphe-patches/commit/0e4cdad90ca65db8ac20589e9ef54f0c78260361))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.69.0-dev.2/patches-1.69.0-dev.2.mpp",
+  "created_at": "2026-11-01T11:03:57",
+  "description": "## [1.69.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.2...v1.69.0-dev.3) (2026-11-01)\n\n### Updated App Support\n\n* **BeReal:** add support for `3.98.0` ([ce1c17c](https://github.com/hxreborn/morphe-patches/commit/ce1c17ca9530b67e76b9146d875ed15d9672d4e2)), closes [#514](https://github.com/hxreborn/morphe-patches/issues/514)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.69.0-dev.3/patches-1.69.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.69.0-dev.2"
+  "version": "1.69.0-dev.3"
 }
