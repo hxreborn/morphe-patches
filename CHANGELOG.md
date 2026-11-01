@@ -1,3 +1,9 @@
+## [1.68.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.7...v1.68.0-dev.8) (2026-11-01)
+
+### Bug Fixes
+
+* **Musicolet - Unlock premium:** calculate ReplayGain values ([5265f59](https://github.com/hxreborn/morphe-patches/commit/5265f59f2c8317846cce01dabbd7b43a36e9c624)), closes [#508](https://github.com/hxreborn/morphe-patches/issues/508)
+
 ## [1.68.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.68.0-dev.6...v1.68.0-dev.7) (2026-10-31)
 
 ### New Features
