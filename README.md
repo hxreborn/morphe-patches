@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.69.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.69.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;418 patches total
+> **[v1.69.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.69.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
 
 <table>
 <tr>
@@ -180,7 +180,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#proton-pass"><img src=".github/assets/icons/protonpass.png" width="40"><br>Proton Pass</a><br><sub>8 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>13 patches</sub></td>
 <td align="center" width="25%"><a href="#psiphon"><img src=".github/assets/icons/psiphon.png" width="40"><br>Psiphon</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#public"><img src=".github/assets/icons/publicvideos.png" width="40"><br>Public</a><br><sub>3 patches</sub></td>
+<td align="center" width="25%"><a href="#public"><img src=".github/assets/icons/publicvideos.png" width="40"><br>Public</a><br><sub>5 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#pydroid-3"><img src=".github/assets/icons/pydroid.png" width="40"><br>Pydroid 3</a><br><sub>3 patches</sub></td>
@@ -588,8 +588,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 3.98.0 |
-| :---: |
+| 3.97.1 | 3.98.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2182,7 +2182,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="public"></a>
 <details>
-<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2195,6 +2195,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="public-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/publicvideos/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Flurry, comScore, Firebase Analytics and Facebook from collecting usage data. |
 | <a id="public-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="public-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/publicvideos/ads/HideAdsPatch.kt) | Removes ads from the feed, app open, interstitial and rewarded placements, and the sponsor banner on the launch screen. |
+| <a id="public-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts and the VIP package and advertising offers on the profile. |
+| <a id="public-remove-screenshot-restriction"></a>[Remove screenshot restriction](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots and screen recording on every screen. |
 
 </details>
 

@@ -69,6 +69,7 @@ body:
         - "AutomaTag (another version, type it below)"
         - "Bangla Calendar 3.0.01e"
         - "Bangla Calendar (another version, type it below)"
+        - "BeReal 3.97.1"
         - "BeReal 3.98.0"
         - "BeReal (another version, type it below)"
         - "BetterSleep 26.18"
@@ -399,12 +400,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.69.0-dev.4"
         - "1.69.0-dev.3"
         - "1.69.0-dev.2"
         - "1.69.0-dev.1"
         - "1.68.0-dev.8"
         - "1.68.0-dev.7"
-        - "1.68.0-dev.6"
         - "Older than these"
         # /generated
     validations:
@@ -780,6 +781,8 @@ body:
         - "Public \u00b7 Disable tracking"
         - "Public \u00b7 GmsCore support"
         - "Public \u00b7 Hide ads"
+        - "Public \u00b7 Remove promotions"
+        - "Public \u00b7 Remove screenshot restriction"
         - "Pydroid 3 \u00b7 AMOLED dark theme"
         - "Pydroid 3 \u00b7 Disable tracking"
         - "Pydroid 3 \u00b7 Unlock premium"

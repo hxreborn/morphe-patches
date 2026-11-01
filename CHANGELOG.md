@@ -1,3 +1,14 @@
+## [1.69.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.3...v1.69.0-dev.4) (2026-11-01)
+
+### Bug Fixes
+
+* **BeReal:** restore `3.97.1` app target ([273605c](https://github.com/hxreborn/morphe-patches/commit/273605c598149230335002d36dbcc828ea229791))
+
+### New Features
+
+* **Public - Remove promotions:** remove ad banners and profile offers ([0fc4d59](https://github.com/hxreborn/morphe-patches/commit/0fc4d597c400199258bffda487061ac58ba4ac70)), closes [#516](https://github.com/hxreborn/morphe-patches/issues/516)
+* **Public - Remove screenshot restriction:** allow capture ([e546518](https://github.com/hxreborn/morphe-patches/commit/e5465186ad6fe1e626e2b5914c35c063ada91a34))
+
 ## [1.69.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.2...v1.69.0-dev.3) (2026-11-01)
 
 ### Updated App Support
