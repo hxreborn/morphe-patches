@@ -20,6 +20,8 @@ val fixSignInPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.BOTIM)
 
+    dependsOn(spoofSignaturePatch)
+
     execute {
         val warmUp = IntegrityWarmUpFingerprint.matchSingle()
         val boxIndex = warmUp.instructionMatches.single().index
