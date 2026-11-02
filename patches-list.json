@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.70.0-dev.2",
+  "version": "1.70.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -6270,12 +6270,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "438.1.0.184284",
+              "version": "439.0.0.184323",
               "versionCodes": {
-                "ARM64_V8A": 1284284,
-                "ARMEABI_V7A": 1284284,
-                "X86_64": 1284284,
-                "X86": 1284284
+                "ARM64_V8A": 1284323,
+                "ARMEABI_V7A": 1284323,
+                "X86_64": 1284323,
+                "X86": 1284323
               },
               "isExperimental": false,
               "minSdk": 26,
@@ -13344,12 +13344,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.3.0.10",
+              "version": "2.3.0.14",
               "versionCodes": {
-                "ARM64_V8A": 797,
-                "ARMEABI_V7A": 797,
-                "X86_64": 797,
-                "X86": 797
+                "ARM64_V8A": 801,
+                "ARMEABI_V7A": 801,
+                "X86_64": 801,
+                "X86": 801
               },
               "isExperimental": false,
               "minSdk": 24,

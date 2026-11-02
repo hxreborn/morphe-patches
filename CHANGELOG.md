@@ -1,3 +1,10 @@
+## [1.70.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.2...v1.70.0-dev.3) (2026-11-02)
+
+### Updated App Support
+
+* **AutomaTag:** add support for `2.3.0.14` ([1fe60f5](https://github.com/hxreborn/morphe-patches/commit/1fe60f59164807288f8b42166a56f0f4b2e136e9))
+* **Trainline:** add support for `439.0.0.184323` ([b2c23e5](https://github.com/hxreborn/morphe-patches/commit/b2c23e52d771af91aa3857f33020eca18820bc9d))
+
 ## [1.70.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.1...v1.70.0-dev.2) (2026-11-02)
 
 ### Updated App Support

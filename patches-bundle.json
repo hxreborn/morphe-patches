@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-02T17:39:39",
-  "description": "## [1.70.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.1...v1.70.0-dev.2) (2026-11-02)\n\n### Updated App Support\n\n* **Musixmatch:** add support for `8.5.0` ([1d36555](https://github.com/hxreborn/morphe-patches/commit/1d36555fec38e49a9908036b1bcef101771f5f16))\n* **Wallmaa:** add support for `1.0.4` ([c9ab158](https://github.com/hxreborn/morphe-patches/commit/c9ab158114b8eff77d442ebfc3d9af68e6fb0215))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.70.0-dev.2/patches-1.70.0-dev.2.mpp",
+  "created_at": "2026-11-02T17:53:39",
+  "description": "## [1.70.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.2...v1.70.0-dev.3) (2026-11-02)\n\n### Updated App Support\n\n* **AutomaTag:** add support for `2.3.0.14` ([1fe60f5](https://github.com/hxreborn/morphe-patches/commit/1fe60f59164807288f8b42166a56f0f4b2e136e9))\n* **Trainline:** add support for `439.0.0.184323` ([b2c23e5](https://github.com/hxreborn/morphe-patches/commit/b2c23e52d771af91aa3857f33020eca18820bc9d))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.70.0-dev.3/patches-1.70.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.70.0-dev.2"
+  "version": "1.70.0-dev.3"
 }
