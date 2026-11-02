@@ -41,7 +41,6 @@ REPORT = re.compile(
 )
 
 OPTIONS_PATCHING_FAILED = ("patchingfailed", "patchingstartedandstoppedwithanerror")
-OPTIONS_CRASH = ("theappwillnotopenatall", "theappopensthencrashes")
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
 OPTIONS_PATCH_INEFFECTIVE = (
@@ -220,7 +219,7 @@ if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_a
     labels.append("needs info")
 
 failure = normalize(field(fields, "What does not work"))
-if failure.startswith(OPTIONS_CRASH) and not report_attached:
+if failure and not report_attached:
     flags.append(
         "The Error logs field has no log. Please attach the `adb logcat` file or the LogFox export."
     )

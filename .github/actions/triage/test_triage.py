@@ -885,7 +885,7 @@ The paywall shows
 
 [log.txt](https://github.com/user-attachments/files/1/log.txt)
 """),
-    "a no-effect report without a log passes": ("pass", f"""### App name
+    "not-working report with no log in the required field": ("flag", f"""### App name
 
 Showly
 
@@ -1289,12 +1289,6 @@ ok = placeholder["verdict"] == blank["verdict"] == "flag" and placeholder["label
     and "The Steps to reproduce field says `.`." in blank["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce asks for the steps")
-
-crash = triage(report("Showly 3.70.0", failure="The app will not open at all").replace(
-    "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "."))
-ok = crash["verdict"] == "flag" and "The Error logs field has no log." in crash["comment"]
-record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} an app that will not open still needs a log")
 
 hostile = triage(f"""### App name
 
