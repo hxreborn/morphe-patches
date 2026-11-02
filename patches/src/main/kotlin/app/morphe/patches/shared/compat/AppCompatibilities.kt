@@ -687,7 +687,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "43329e3a67415def40f307e5a7b3343498db9a821f436785d0a5487c636b9bcd",
         ),
-        targets = listOf(AppTarget(version = "6.5.1", versionCode = 57461, minSdk = 30)),
+        targets = listOf(AppTarget(version = "6.6.0", versionCode = 57856, minSdk = 30)),
     )
 
     val KLASSIK_RADIO = Compatibility(
