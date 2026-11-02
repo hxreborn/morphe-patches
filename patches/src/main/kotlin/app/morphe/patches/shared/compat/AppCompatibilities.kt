@@ -1291,7 +1291,7 @@ internal object AppCompatibilities {
         signatures = setOf("9ed9acdad7d1e0b3eb51e1e06cccdef979624cb3b6bc18fddcf7165e36b06c44"),
         targets = listOf(
             AppTarget(version = "11.20.1", versionCode = 452, minSdk = 29),
-            AppTarget(version = "11.22.1", versionCode = 467, minSdk = 32),
+            AppTarget(version = "11.23.0", versionCode = 470, minSdk = 32),
         ),
     )
 
