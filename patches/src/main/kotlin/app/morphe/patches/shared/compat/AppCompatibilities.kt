@@ -881,7 +881,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6696e2cf978935c637f52aaefe196760bc3d62b4ff92bcc5e3f7ed015a6d9b23",
         ),
-        targets = listOf(AppTarget(version = "8.4.2", versionCode = 2026061901, minSdk = 24)),
+        targets = listOf(AppTarget(version = "8.5.0", versionCode = 2026102201, minSdk = 24)),
     )
 
     val MYMOVESET = Compatibility(
