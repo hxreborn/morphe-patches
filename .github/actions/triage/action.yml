@@ -227,7 +227,7 @@ runs:
 
         app=$(jq -r .app verdict.json)
         if [ -n "$app" ] && [ "$verdict" != "pass" ] && [ "$ACTION" = "opened" ]; then
-          dupes=$(gh search issues "$app" --repo "$REPO" --label bug --limit 4 --json number,title --jq \
+          dupes=$(gh search issues "$app" --repo "$REPO" --label bug --match title --limit 4 --json number,title --jq \
             "map(select(.number != $ISSUE)) | .[0:3] | map(\"- [#\(.number)](https://redirect.github.com/$REPO/issues/\(.number)) \`\(.title | gsub(\"\`\"; \"'\") | gsub(\"\\\\s+\"; \" \"))\`\") | join(\"\n\")") ||
             { echo "::warning::Searching for issues about $app failed"; dupes=""; }
           if [ -n "$dupes" ]; then
