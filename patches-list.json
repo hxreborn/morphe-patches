@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.70.0-dev.7",
+  "version": "1.70.0-dev.8",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -13186,36 +13186,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.0.6",
+              "version": "2.0.2",
               "versionCodes": {
-                "ARM64_V8A": 153,
-                "ARMEABI_V7A": 153,
-                "X86_64": 153,
-                "X86": 153
-              },
-              "isExperimental": false,
-              "minSdk": 26,
-              "description": null
-            },
-            {
-              "version": "1.1.0",
-              "versionCodes": {
-                "ARM64_V8A": 172,
-                "ARMEABI_V7A": 172,
-                "X86_64": 172,
-                "X86": 172
-              },
-              "isExperimental": false,
-              "minSdk": 26,
-              "description": null
-            },
-            {
-              "version": "2.0.0",
-              "versionCodes": {
-                "ARM64_V8A": 174,
-                "ARMEABI_V7A": 174,
-                "X86_64": 174,
-                "X86": 174
+                "ARM64_V8A": 178,
+                "ARMEABI_V7A": 178,
+                "X86_64": 178,
+                "X86": 178
               },
               "isExperimental": false,
               "minSdk": 26,
@@ -15476,12 +15452,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "13.4.0",
+              "version": "13.4.1",
               "versionCodes": {
-                "ARM64_V8A": 21304000,
-                "ARMEABI_V7A": 21304000,
-                "X86_64": 21304000,
-                "X86": 21304000
+                "ARM64_V8A": 21304010,
+                "ARMEABI_V7A": 21304010,
+                "X86_64": 21304010,
+                "X86": 21304010
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -16468,6 +16444,18 @@
               "isExperimental": false,
               "minSdk": 23,
               "description": null
+            },
+            {
+              "version": "6.7.6",
+              "versionCodes": {
+                "ARM64_V8A": 403,
+                "ARMEABI_V7A": 403,
+                "X86_64": 403,
+                "X86": 403
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
             }
           ]
         }
@@ -16551,12 +16539,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.621.196",
+              "version": "1.630.199",
               "versionCodes": {
-                "ARM64_V8A": 196,
-                "ARMEABI_V7A": 196,
-                "X86_64": 196,
-                "X86": 196
+                "ARM64_V8A": 199,
+                "ARMEABI_V7A": 199,
+                "X86_64": 199,
+                "X86": 199
               },
               "isExperimental": false,
               "minSdk": 26,

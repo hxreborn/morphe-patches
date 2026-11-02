@@ -1,3 +1,12 @@
+## [1.70.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.7...v1.70.0-dev.8) (2026-11-02)
+
+### Updated App Support
+
+* **AtloMaps:** add support for `2.0.2` ([27d8788](https://github.com/hxreborn/morphe-patches/commit/27d8788662dcc21beac22f742cb8436a82d79567))
+* **Period Tracker and Calendar:** add support for `13.4.1` ([e2181ed](https://github.com/hxreborn/morphe-patches/commit/e2181ed95ae14e36473dcda581982821a6db290f))
+* **U Dictionary:** add support for `6.7.6` ([bf8c2b6](https://github.com/hxreborn/morphe-patches/commit/bf8c2b6dc80c2052a46265d6bd1fc8c80f9c111f))
+* **Video Editor:** add support for `1.630.199` ([a34ad37](https://github.com/hxreborn/morphe-patches/commit/a34ad37576c6cf7ae4b0129a8e6297b90ac87a15))
+
 ## [1.70.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.6...v1.70.0-dev.7) (2026-11-02)
 
 ### Updated App Support
