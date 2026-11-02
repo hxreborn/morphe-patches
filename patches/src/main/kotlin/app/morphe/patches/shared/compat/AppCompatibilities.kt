@@ -1555,7 +1555,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "544b87c75e50d264962b1379931af73c85a75f7416ec3672d4afb261e553eb6c",
         ),
-        targets = listOf(AppTarget(version = "6.7.5", versionCode = 399, minSdk = 23)),
+        targets = listOf(
+            AppTarget(version = "6.7.5", versionCode = 399, minSdk = 23),
+            AppTarget(version = "6.7.6", versionCode = 403, minSdk = 24),
+        ),
     )
 
     val UPTCL = Compatibility(
