@@ -36,3 +36,9 @@ internal object VipUpsellCardFingerprint : Fingerprint(
         ),
     ),
 )
+
+internal object SduiCollectionItemsFingerprint : Fingerprint(
+    returnType = "Ljava/util/List;",
+    parameters = listOf("Lim/thebot/cep/sdui/model/SduiCollectionData;", "L"),
+    strings = listOf("dataContext"),
+)
