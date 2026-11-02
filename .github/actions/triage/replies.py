@@ -26,6 +26,7 @@ APK_SOURCES = ("[APKMirror](https://www.apkmirror.com/), [APKPure](https://apkpu
 STAR = f"A ⭐ on the [repo](https://github.com/{REPO}) helps more people find these patches."
 MISSING_HEADER = "This report is missing information:"
 MISSING_FOOTER = "Please edit the issue to add it. It closes automatically after 7 days without activity."
+CLOSED_FOOTER = "Please edit the issue to correct it, and it reopens automatically."
 
 
 def release_link(tag):
@@ -56,6 +57,10 @@ def updated(thing, consequence=""):
 
 def missing(lines):
     return "\n\n".join([MISSING_HEADER, "\n".join(f"- {line}" for line in lines), MISSING_FOOTER])
+
+
+def closed(lines, footer):
+    return "\n\n".join(["This issue is now closed:", "\n".join(f"- {line}" for line in lines), footer])
 
 
 REPLIES = {

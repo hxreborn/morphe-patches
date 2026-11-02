@@ -865,7 +865,7 @@ The paywall shows
 
 [log.txt](https://github.com/user-attachments/files/1/log.txt)
 """),
-    "not-working report with no log in the required field": ("flag", f"""### App name
+    "none in the required log field closes the report": ("close", f"""### App name
 
 Showly
 
@@ -1244,10 +1244,12 @@ The paywall shows
 
 contradicted = triage(report("Showly 3.70.0", "https://apkpure.com/proton-mail/ch.protonmail.android"),
                       title="[Not working]:  Proton Mail I'm not receiving notifications.")
-ok = (contradicted["verdict"], contradicted["labels"], contradicted["app"]) == ("flag", ["needs info"], "Proton Mail") \
-    and "The app field says `Showly 3.70.0`, but the title or the APK source names Proton Mail." in contradicted["comment"]
+ok = (contradicted["verdict"], contradicted["labels"], contradicted["app"]) == ("close", [], "Proton Mail") \
+    and "- The app field says `Showly 3.70.0`, but the title or the APK source names Proton Mail. " \
+        "Please pick the app you patched in that field." in contradicted["comment"] \
+    and contradicted["comment"].endswith("Please edit the issue to correct it, and it reopens automatically.")
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} an app named by the title and the APK source but not picked asks for the app you patched")
+print(f"{'ok  ' if ok else 'FAIL'} an app named by the title and the APK source but not picked closes the report")
 
 spared = [triage(report("Showly 3.70.0"), title="[Not working]: Showly crashes like Proton Mail did"),
           triage(report("MovieBox TV 1.2.0.0923.web_socialmedia"), title="[Not working]: MovieBox black screen"),
@@ -1258,17 +1260,41 @@ print(f"{'ok  ' if ok else 'FAIL'} the picked app in the title, a shorter app in
       f"{[r['verdict'] for r in spared]}")
 
 nested = triage(report("Showly 3.70.0"), title="[Not working]: MovieBox TV black screen")
-ok = nested["verdict"] == "flag" and "names MovieBox TV." in nested["comment"]
+ok = nested["verdict"] == "close" and "names MovieBox TV." in nested["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the longer of two nested app names is the one the title names")
 
 placeholder = triage(report("Showly 3.70.0", steps="0"))
 blank = triage(report("Showly 3.70.0", steps="."))
-ok = placeholder["verdict"] == blank["verdict"] == "flag" and placeholder["labels"] == ["needs info"] \
-    and "The Steps to reproduce field says `0`. Please fill it in." in placeholder["comment"] \
-    and "The Steps to reproduce field says `.`." in blank["comment"]
+ok = placeholder["verdict"] == blank["verdict"] == "close" \
+    and "- The Steps to reproduce field says `0`, which isn't an answer." in placeholder["comment"] \
+    and "- The Steps to reproduce field says `.`, which isn't an answer." in blank["comment"]
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce asks for the steps")
+print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce closes the report")
+
+did_not_start = triage(f"""### What happened
+
+Patching did not start: a patch is greyed out, missing or says Not available
+
+### App and version
+
+Showly 3.70.0
+
+### APK source
+
+https://www.apkmirror.com/apk/x/y/
+
+### Bug description
+
+{LONG}
+
+### Error logs
+
+none
+""")
+ok = did_not_start["verdict"] == "pass"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} none in Error logs passes when patching did not start, as the form asks")
 
 hostile = triage(f"""### App name
 

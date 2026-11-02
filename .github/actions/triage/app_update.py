@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import app_packages, contradicting_app, field, normalize, parse_fields
 from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, same_variant, targets, tracked_version,
                       version_key)
-from replies import BROKEN_FORMS, bundle
+from replies import BROKEN_FORMS, NEW_ISSUE, bundle
 
 MARKER = "<!-- app-update-bot -->"
 VERSION_CODE = re.compile(r"\s*\(([\w.+-]*)\)\s*$")
@@ -59,9 +59,10 @@ def decide(number, body, issues, patches_list, issue_title=""):
         verdict, labels = "flag", ["needs info"]
         lines.append("The App field doesn't match an app this bundle supports. Please edit the issue and pick it from the list.")
     elif contradicted:
-        verdict, labels = "flag", ["needs info"]
+        verdict, reason = "close", "not planned"
         lines.append(f"The App field says {app}, but the title or the APK source names {contradicted}. "
-                     "Please edit the issue and pick the app you want updated.")
+                     f"This issue is now closed. Please open a new [app update request]({NEW_ISSUE}app_update.yml) "
+                     "with the app you want updated.")
     elif not re.search(r"\d", version):
         verdict, labels = "flag", ["needs info"]
         example = max(apps[app], key=version_key, default="1.2.3")

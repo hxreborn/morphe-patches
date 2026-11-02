@@ -10,9 +10,10 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import code_span, contradicting_app, field, has_any, normalize, normalize_version, parse_fields
+from fields import (code_span, contradicting_app, field, has_any, normalize, normalize_version, parse_fields,
+                    placeholder_answers)
 from versions import prerelease_words, same_variant
-from replies import APK_SOURCES, BROKEN_FORMS, bundle, code_list, missing
+from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing
 
 MIN_CHARS = 60
 
@@ -24,6 +25,7 @@ APP_VERSION_FIELDS = ("Other version", "App version", "Broken app version", "App
                       "App and version")
 DESCRIPTION_FIELDS = ("Bug description", "What happens", "Describe the bug", "Summary")
 STEP_FIELDS = ("Steps to reproduce", "Expected behaviour", "Actual behaviour")
+ANSWER_FIELDS = ("Bug description", *STEP_FIELDS, "Screenshots", "Device and Android version", "APK source")
 LOG_FIELDS = ("Debug log", "Error logs", "Morphe logs", "Logs")
 SOURCE_FIELDS = ("APK source", "APK source and type", "APK source and architecture")
 
@@ -32,8 +34,6 @@ REPACKAGERS = ("softonic", "happymod", "apkmod", "apkmody", "modyolo", "moddroid
 
 MARKER = "<!-- triage-bot -->"
 
-PLACEHOLDERS = {"", "0", "na", "no", "none", "null", "nil", "nothing", "x", "idk"}
-
 REPORT = re.compile(
     r"Exception|Error|INSTALL_FAILED|Failed to match|Manager:|manager=|\(API \d+\)|^[ \t]+at \S"
     r"|Fatal signal|SIG(?:SEGV|ABRT|BUS|ILL)|backtrace:|user-attachments/files/"
@@ -41,6 +41,7 @@ REPORT = re.compile(
 )
 
 OPTIONS_PATCHING_FAILED = ("patchingfailed", "patchingstartedandstoppedwithanerror")
+OPTION_DID_NOT_START = "patchingdidnotstart"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
 OPTIONS_PATCH_INEFFECTIVE = (
@@ -136,12 +137,10 @@ if not fields:
     )
     labels.append("needs info")
 
-for name in STEP_FIELDS:
-    value = field(fields, name)
-    if has_any(fields, name) and normalize(value) in PLACEHOLDERS:
-        answer = f"says {code_span(value)}" if value else "is empty"
-        flags.append(f"The {name} field {answer}. Please fill it in.")
-        labels.append("needs info")
+answer_fields = list(ANSWER_FIELDS)
+if not normalize(what_happened).startswith(OPTION_DID_NOT_START):
+    answer_fields.append("Error logs")
+blockers += placeholder_answers(fields, *answer_fields)
 
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(
@@ -189,11 +188,10 @@ elif not matched:
     )
     labels.append("needs info")
 elif contradicted:
-    flags.append(
+    blockers.append(
         f"The app field says {code_span(shown_name)}, but the title or the APK source names {contradicted}. "
         "Please pick the app you patched in that field."
     )
-    labels.append("needs info")
 elif another_version:
     flags.append(
         "\"Another version\" is selected, but the Other version field is empty."
@@ -242,7 +240,7 @@ elif stock.startswith(OPTION_NOT_TRIED):
 if blockers:
     verdict = "close"
     labels = []
-    sections = ["This issue is now closed:\n\n" + "\n".join(f"- {line}" for line in blockers + flags)]
+    sections = [closed(blockers + flags, CLOSED_FOOTER)]
 elif flags or notes:
     verdict = "flag"
     sections = notes + ([missing(flags)] if flags else [])

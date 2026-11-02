@@ -18,6 +18,8 @@ def code_span(text, limit=80):
     return f"`{flat[:limit]}`"
 
 
+PLACEHOLDERS = {"", "0", "na", "no", "none", "null", "nil", "nothing", "x", "idk", "same", "seetitle", "seeabove"}
+
 FORM_HEADING = re.compile(r"###\s+(\S.*)")
 BOLD_LABEL = re.compile(r"\*\*([^*:]+?):?\*\*:?(.*)")
 
@@ -54,6 +56,16 @@ def field(fields, *names):
             if normalize(key) == normalize(name):
                 return "" if value.lower() == "_no response_" else value
     return ""
+
+
+def placeholder_answers(fields, *names):
+    lines = []
+    for name in names:
+        value = field(fields, name)
+        letters = re.sub(r"[\W_]+", "", unicodedata.normalize("NFKC", value).casefold())
+        if value and letters in PLACEHOLDERS:
+            lines.append(f"The {name} field says {code_span(value)}, which isn't an answer.")
+    return lines
 
 
 def words(text):

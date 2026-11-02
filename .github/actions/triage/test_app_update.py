@@ -124,10 +124,11 @@ print(f"{'ok  ' if ok else 'FAIL'} a flag carries the needs info label")
 contradicted = [decide(9, body("Proton VPN", "3.98.0"), [], PATCHES, "[App Update]: Showly 3.98.0"),
                 decide(9, body("Proton VPN", "3.98.0").replace("https://apkmirror.com/x",
                        "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2&hl=ja"), [], PATCHES)]
-ok = [(r["verdict"], r["labels"]) for r in contradicted] == [("flag", ["needs info"])] * 2 \
-    and "The App field says Proton VPN, but the title or the APK source names Showly." in contradicted[0]["comment"]
+ok = [(r["verdict"], r["reason"]) for r in contradicted] == [("close", "not planned")] * 2 \
+    and "The App field says Proton VPN, but the title or the APK source names Showly. This issue is now closed. " \
+        "Please open a new [app update request]" in contradicted[0]["comment"]
 failures += not ok
-print(f"{'ok  ' if ok else 'FAIL'} an app the title or the APK source names instead of the picked one asks instead of closing")
+print(f"{'ok  ' if ok else 'FAIL'} an app the title or the APK source names instead of the picked one closes the request")
 
 spared = [decide(9, body("Proton VPN", "5.20.57.0"), [], PATCHES, "[App Update]: Proton VPN like Showly")["verdict"],
           decide(9, body("MovieBox TV", "1.2.1.0930"), [], PATCHES, "[App Update]: MovieBox 1.2.1")["verdict"]]
