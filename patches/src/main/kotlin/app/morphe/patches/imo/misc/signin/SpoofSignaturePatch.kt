@@ -5,15 +5,18 @@
 package app.morphe.patches.imo.misc.signin
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.rawResourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
 
 private const val SECURITY_LIBRARY = "lib/arm64-v8a/libanti.so"
+private const val APPLICATION_CLASS = "Lcom/imo/android/imoim/IMO;"
 
 private const val BL_MASK = 0xfc000000.toInt()
 private const val BL = 0x94000000.toInt()
@@ -43,14 +46,7 @@ private fun ByteBuffer.matchesAt(offset: Int) = CERTIFICATE_DIGEST_FUNCTION.with
     if (word == BL) actual and BL_MASK == BL else actual == word
 }
 
-@Suppress("unused")
-val spoofSignaturePatch = rawResourcePatch(
-    name = "Spoof signature",
-    description = "Restores phone verification by call when signing in.",
-) {
-    compatibleWith(AppCompatibilities.IMO)
-    availability(requireArm64)
-
+private val spoofSecurityLibrarySignaturePatch = rawResourcePatch {
     execute {
         val library = get(SECURITY_LIBRARY, true)
         if (!library.exists()) throw PatchException("$SECURITY_LIBRARY not found")
@@ -67,5 +63,22 @@ val spoofSignaturePatch = rawResourcePatch(
         words.position(site + RETURN_STOCK_DIGEST.size * Int.SIZE_BYTES)
         words.put(stockDigest)
         library.writeBytes(bytes)
+    }
+}
+
+@Suppress("unused")
+val spoofSignaturePatch = bytecodePatch(
+    name = "Spoof signature",
+    description = "Restores phone verification by call when signing in and lets the app get its push token.",
+) {
+    compatibleWith(AppCompatibilities.IMO)
+    availability(requireArm64)
+
+    dependsOn(spoofSecurityLibrarySignaturePatch)
+
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        spoofSignature(APPLICATION_CLASS)
     }
 }
