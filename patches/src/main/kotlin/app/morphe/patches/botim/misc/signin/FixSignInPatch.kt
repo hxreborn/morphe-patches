@@ -15,8 +15,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 @Suppress("unused")
 val fixSignInPatch = bytecodePatch(
     name = "Fix sign-in",
-    description = "Fixes sending the verification code when signing in with a phone number. " +
-        "A number signs in when it was already used with botim on the same device.",
+    description = "Fixes sending the verification code when signing in with a phone number.",
 ) {
     compatibleWith(AppCompatibilities.BOTIM)
 

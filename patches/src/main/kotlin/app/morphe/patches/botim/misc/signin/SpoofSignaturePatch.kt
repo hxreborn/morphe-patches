@@ -13,7 +13,7 @@ private const val APPLICATION_CLASS = "Lim/thebot/messenger/bot/BotApplication;"
 @Suppress("unused")
 val spoofSignaturePatch = bytecodePatch(
     name = "Spoof signature",
-    description = "Lets the app's security module start.",
+    description = "Lets a new phone number receive the verification code and sign in.",
 ) {
     compatibleWith(AppCompatibilities.BOTIM)
 
