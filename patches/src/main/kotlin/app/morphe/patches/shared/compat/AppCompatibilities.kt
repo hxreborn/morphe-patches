@@ -1544,7 +1544,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "97c78f212f647fc96059ef8b81f239bc047be8f285ae59486a53a5e1ed09349a",
         ),
-        targets = listOf(AppTarget(version = "1.621.196", versionCode = 196, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.630.199", versionCode = 199, minSdk = 26)),
     )
 
     val U_DICTIONARY = Compatibility(
