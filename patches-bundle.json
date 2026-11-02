@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-02T18:01:54",
-  "description": "## [1.70.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.3...v1.70.0-dev.4) (2026-11-02)\n\n### Updated App Support\n\n* **Klassik Radio+:** add support for `p5.12.1` ([defe47e](https://github.com/hxreborn/morphe-patches/commit/defe47e715e91730763f9e96ff7219a0a93313bb))\n* **Radio Javan:** add support for `11.23.0` ([32acf3d](https://github.com/hxreborn/morphe-patches/commit/32acf3dc67c127d5bd239b4a320d488187c07aa4))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.70.0-dev.4/patches-1.70.0-dev.4.mpp",
+  "created_at": "2026-11-02T18:19:57",
+  "description": "## [1.70.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.4...v1.70.0-dev.5) (2026-11-02)\n\n### Updated App Support\n\n* **Rubber Bands:** add support for `3.16` ([3d6dcd3](https://github.com/hxreborn/morphe-patches/commit/3d6dcd3c090d12b582746c396b42647fbc537fc2))\n* **WATCH IT:** add support for `5.30.0` ([ddb0bff](https://github.com/hxreborn/morphe-patches/commit/ddb0bffba553a94fc02291527c83db72994de9a1))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.70.0-dev.5/patches-1.70.0-dev.5.mpp",
   "signature_download_url": "",
-  "version": "1.70.0-dev.4"
+  "version": "1.70.0-dev.5"
 }

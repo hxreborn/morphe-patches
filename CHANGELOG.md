@@ -1,3 +1,10 @@
+## [1.70.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.4...v1.70.0-dev.5) (2026-11-02)
+
+### Updated App Support
+
+* **Rubber Bands:** add support for `3.16` ([3d6dcd3](https://github.com/hxreborn/morphe-patches/commit/3d6dcd3c090d12b582746c396b42647fbc537fc2))
+* **WATCH IT:** add support for `5.30.0` ([ddb0bff](https://github.com/hxreborn/morphe-patches/commit/ddb0bffba553a94fc02291527c83db72994de9a1))
+
 ## [1.70.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.3...v1.70.0-dev.4) (2026-11-02)
 
 ### Updated App Support
