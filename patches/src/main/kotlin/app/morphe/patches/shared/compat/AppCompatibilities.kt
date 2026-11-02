@@ -1636,7 +1636,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xE0AF32,
         signatures = setOf("bc5f2a6254cb58ce31b43b4d1efb1b257c3ed0576f32568ca30bc4536cbdd01a"),
-        targets = listOf(AppTarget(version = "5.26.2", versionCode = 1028, minSdk = 21)),
+        targets = listOf(AppTarget(version = "5.30.0", versionCode = 1037, minSdk = 21)),
     )
 
     val WATTPAD = Compatibility(
