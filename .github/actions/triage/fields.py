@@ -18,6 +18,8 @@ def code_span(text, limit=80):
     return f"`{flat[:limit]}`"
 
 
+PLACEHOLDERS = {"", "0", "na", "no", "none", "null", "nil", "nothing", "x", "idk", "same", "seetitle", "seeabove"}
+
 FORM_HEADING = re.compile(r"###\s+(\S.*)")
 BOLD_LABEL = re.compile(r"\*\*([^*:]+?):?\*\*:?(.*)")
 
@@ -54,3 +56,44 @@ def field(fields, *names):
             if normalize(key) == normalize(name):
                 return "" if value.lower() == "_no response_" else value
     return ""
+
+
+def placeholder_answers(fields, *names):
+    lines = []
+    for name in names:
+        value = field(fields, name)
+        letters = re.sub(r"[\W_]+", "", unicodedata.normalize("NFKC", value).casefold())
+        if value and letters in PLACEHOLDERS:
+            lines.append(f"The {name} field says {code_span(value)}, which isn't an answer.")
+    return lines
+
+
+def words(text):
+    return re.findall(r"[a-z0-9]+", unicodedata.normalize("NFKC", text).lower())
+
+
+def joined(text):
+    return "".join(words(text))
+
+
+def mentions(text, name, package):
+    spaced = f" {' '.join(words(text))} "
+    return (f" {' '.join(words(name))} " in spaced or f" {joined(name)} " in spaced
+            or bool(re.search(rf"(?<![\w.]){re.escape(package)}(?![\w.])", text, re.I)))
+
+
+def nested(name, other):
+    return joined(name) in joined(other) or joined(other) in joined(name)
+
+
+def contradicting_app(chosen, text, apps):
+    if not chosen or any(mentions(text, name, package) for name, package in apps if name == chosen):
+        return ""
+    named = {name for name, package in apps if mentions(text, name, package) and not nested(name, chosen)}
+    longest = {name for name in named if not any(name != other and joined(name) in joined(other) for other in named)}
+    return longest.pop() if len(longest) == 1 else ""
+
+
+def app_packages(patches_list):
+    return {(package["name"], package["packageName"])
+            for patch in patches_list["patches"] for package in patch.get("compatiblePackages") or []}

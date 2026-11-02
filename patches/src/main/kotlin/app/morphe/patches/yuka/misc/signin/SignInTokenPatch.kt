@@ -5,6 +5,7 @@
 package app.morphe.patches.yuka.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.OptionException
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.stringOption
@@ -51,7 +52,15 @@ val signInTokenPatch = bytecodePatch(
     }
 
     execute {
-        val token = appCheckToken!!.trim()
+        val token = try {
+            appCheckToken!!.trim()
+        } catch (e: OptionException) {
+            throw PatchException(
+                "App Check token is missing or malformed. Copy it from Yuka installed from Google Play " +
+                    "on a rooted phone. Steps: github.com/hxreborn/morphe-patches#yuka",
+                e,
+            )
+        }
         val claims = String(Base64.getUrlDecoder().decode(token.split('.')[1].trimEnd('=')))
         val expiry = EXPIRY_CLAIM.find(claims)?.groupValues?.get(1)?.toLong()
             ?: throw PatchException("App Check token has no expiry")

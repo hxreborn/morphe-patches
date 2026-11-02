@@ -1,3 +1,56 @@
+## [1.69.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.6...v1.69.0-dev.7) (2026-11-01)
+
+### Bug Fixes
+
+* **Yuka - Sign-in token:** link the README steps when no token is set ([e9a3efd](https://github.com/hxreborn/morphe-patches/commit/e9a3efd09cd52e04b037e8e0c34aa70ddbfbca25)), closes [#529](https://github.com/hxreborn/morphe-patches/issues/529)
+
+## [1.69.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.5...v1.69.0-dev.6) (2026-11-01)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** guard opaque and prefixed deep links ([c71cf87](https://github.com/hxreborn/morphe-patches/commit/c71cf875181325baf1b23493f09c5c255d9ce2f2))
+
+## [1.69.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.4...v1.69.0-dev.5) (2026-11-01)
+
+### Bug Fixes
+
+* **MovieBox - All-In-One:** remove the offer popup and Home promotions ([a6e8030](https://github.com/hxreborn/morphe-patches/commit/a6e80305998a43c4dab5333ca0b70304c4394434)), closes [#523](https://github.com/hxreborn/morphe-patches/issues/523)
+
+## [1.69.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.3...v1.69.0-dev.4) (2026-11-01)
+
+### Bug Fixes
+
+* **BeReal:** restore `3.97.1` app target ([273605c](https://github.com/hxreborn/morphe-patches/commit/273605c598149230335002d36dbcc828ea229791))
+
+### New Features
+
+* **Public - Remove promotions:** remove ad banners and profile offers ([0fc4d59](https://github.com/hxreborn/morphe-patches/commit/0fc4d597c400199258bffda487061ac58ba4ac70)), closes [#516](https://github.com/hxreborn/morphe-patches/issues/516)
+* **Public - Remove screenshot restriction:** allow capture ([e546518](https://github.com/hxreborn/morphe-patches/commit/e5465186ad6fe1e626e2b5914c35c063ada91a34))
+
+## [1.69.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.2...v1.69.0-dev.3) (2026-11-01)
+
+### Updated App Support
+
+* **BeReal:** add support for `3.98.0` ([ce1c17c](https://github.com/hxreborn/morphe-patches/commit/ce1c17ca9530b67e76b9146d875ed15d9672d4e2)), closes [#514](https://github.com/hxreborn/morphe-patches/issues/514)
+
+## [1.69.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.69.0-dev.1...v1.69.0-dev.2) (2026-11-01)
+
+### Bug Fixes
+
+* **NEETprep Essential - Unlock premium:** unlock marked PYQ questions ([91e9cf0](https://github.com/hxreborn/morphe-patches/commit/91e9cf035afb9a6fad35ecc0ed373c96c0fb94e2))
+
+### New Features
+
+* **NEETprep Essential - GmsCore support:** sign in with Google ([faf2a7f](https://github.com/hxreborn/morphe-patches/commit/faf2a7f741c3cea000bb0c196cbb2624bb2ee920))
+* **NEETprep Essential - Remove screenshot restriction:** allow capture ([0e4cdad](https://github.com/hxreborn/morphe-patches/commit/0e4cdad90ca65db8ac20589e9ef54f0c78260361))
+
+## [1.69.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.68.0...v1.69.0-dev.1) (2026-11-01)
+
+### New Features
+
+* **TunnelDOOM VPN - Remove ads:** remove banner and full-screen ads ([406707f](https://github.com/hxreborn/morphe-patches/commit/406707fbe9ab74dab05ded2d21286c7d9ce4814b))
+* **TunnelDOOM VPN - Remove time limit:** stop the connection countdown ([63f701b](https://github.com/hxreborn/morphe-patches/commit/63f701b224c1f29cd20963d4dca7863139499337))
+
 ## [1.68.0](https://github.com/hxreborn/morphe-patches/compare/v1.67.0...v1.68.0) (2026-11-01)
 
 ### Bug Fixes

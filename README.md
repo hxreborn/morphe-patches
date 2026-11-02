@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.68.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.68.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;414 patches total
+> **[v1.69.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.69.0-dev.7)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
 
 <table>
 <tr>
@@ -147,7 +147,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#neetprep"><img src=".github/assets/icons/neetprep.png" width="40"><br>NEETprep</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
-<td align="center" width="25%"><a href="#neetprep-essential"><img src=".github/assets/icons/neetprepessential.png" width="40"><br>NEETprep Essential</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#neetprep-essential"><img src=".github/assets/icons/neetprepessential.png" width="40"><br>NEETprep Essential</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#network-analyzer"><img src=".github/assets/icons/netanalyzer.png" width="40"><br>Network Analyzer</a><br><sub>18 patches</sub></td>
 <td align="center" width="25%"><a href="#notein"><img src=".github/assets/icons/notein.png" width="40"><br>Notein</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#notesnook"><img src=".github/assets/icons/notesnook.png" width="40"><br>Notesnook</a><br><sub>2 patches</sub></td>
@@ -180,7 +180,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#proton-pass"><img src=".github/assets/icons/protonpass.png" width="40"><br>Proton Pass</a><br><sub>8 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>13 patches</sub></td>
 <td align="center" width="25%"><a href="#psiphon"><img src=".github/assets/icons/psiphon.png" width="40"><br>Psiphon</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#public"><img src=".github/assets/icons/publicvideos.png" width="40"><br>Public</a><br><sub>3 patches</sub></td>
+<td align="center" width="25%"><a href="#public"><img src=".github/assets/icons/publicvideos.png" width="40"><br>Public</a><br><sub>5 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#pydroid-3"><img src=".github/assets/icons/pydroid.png" width="40"><br>Pydroid 3</a><br><sub>3 patches</sub></td>
@@ -220,29 +220,30 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#transparent-clock-weather"><img src=".github/assets/icons/transparentclock.png" width="40"><br>Transparent clock & weather</a><br><sub>2 patches</sub></td>
+<td align="center" width="25%"><a href="#tunneldoom-vpn"><img src=".github/assets/icons/tunneldoomvpn.png" width="40"><br>TunnelDOOM VPN</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#u-dictionary"><img src=".github/assets/icons/udictionary.png" width="40"><br>U Dictionary</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>5 patches</sub></td>
-<td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#vpn-india"><img src=".github/assets/icons/vpnindia.png" width="40"><br>VPN India</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#vpn-india"><img src=".github/assets/icons/vpnindia.png" width="40"><br>VPN India</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpn-super-unlimited-proxy"><img src=".github/assets/icons/vpnsuper.png" width="40"><br>VPN Super Unlimited Proxy</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpnify"><img src=".github/assets/icons/vpnify.png" width="40"><br>vpnify</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#walp"><img src=".github/assets/icons/walp.png" width="40"><br>WalP</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#walp"><img src=".github/assets/icons/walp.png" width="40"><br>WalP</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#watch-it"><img src=".github/assets/icons/watchit.png" width="40"><br>WATCH IT</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#wattpad"><img src=".github/assets/icons/wattpad.png" width="40"><br>Wattpad</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#weather24"><img src=".github/assets/icons/weather24.png" width="40"><br>weather24</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#yanosik"><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="40"><br>Yanosik</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#yanosik"><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="40"><br>Yanosik</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#universal">🌐<br>Universal</a><br><sub>1 patch</sub></td>
@@ -587,8 +588,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 3.97.1 |
-| :---: |
+| 3.97.1 | 3.98.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1742,7 +1743,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="neetprep-essential"></a>
 <details>
-<summary><img src=".github/assets/icons/neetprepessential.png" width="18" align="top">&nbsp;&nbsp;NEETprep Essential&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/neetprepessential.png" width="18" align="top">&nbsp;&nbsp;NEETprep Essential&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1752,7 +1753,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="neetprep-essential-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/neetprepessential/misc/premium/UnlockPremiumPatch.kt) | Unlocks all chapters, practice sets, flashcards, hardest questions and mock tests. |
+| <a id="neetprep-essential-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="neetprep-essential-remove-screenshot-restriction"></a>[Remove screenshot restriction](patches/src/main/kotlin/app/morphe/patches/neetprepessential/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots and screen recording on every screen. |
+| <a id="neetprep-essential-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/neetprepessential/misc/premium/UnlockPremiumPatch.kt) | Unlocks all chapters, practice sets, flashcards, hardest questions, mock tests and PYQ Marked NCERT questions. |
 
 </details>
 
@@ -2179,7 +2182,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="public"></a>
 <details>
-<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2192,6 +2195,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="public-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/publicvideos/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Flurry, comScore, Firebase Analytics and Facebook from collecting usage data. |
 | <a id="public-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="public-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/publicvideos/ads/HideAdsPatch.kt) | Removes ads from the feed, app open, interstitial and rewarded placements, and the sponsor banner on the launch screen. |
+| <a id="public-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts and the VIP package and advertising offers on the profile. |
+| <a id="public-remove-screenshot-restriction"></a>[Remove screenshot restriction](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots and screen recording on every screen. |
 
 </details>
 
@@ -2635,6 +2640,23 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="transparent-clock-weather-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/transparentclock/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics and Singular from collecting usage data, and disables Crashlytics. |
 | <a id="transparent-clock-weather-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/transparentclock/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features and removes ads. Premium themes and widgets downloaded from Google Play are not included. |
+
+</details>
+
+<a id="tunneldoom-vpn"></a>
+<details>
+<summary><img src=".github/assets/icons/tunneldoomvpn.png" width="18" align="top">&nbsp;&nbsp;TunnelDOOM VPN&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.3.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="tunneldoom-vpn-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/tunneldoom/misc/ads/RemoveAdsPatch.kt) | Removes app open, banner, interstitial and rewarded ads and the ad consent form. |
+| <a id="tunneldoom-vpn-remove-time-limit"></a>[Remove time limit](patches/src/main/kotlin/app/morphe/patches/tunneldoom/misc/time/RemoveTimeLimitPatch.kt) | Keeps the VPN connected without adding time by watching ads. |
 
 </details>
 

@@ -89,7 +89,7 @@ val saveFriendsBeRealsPatch = bytecodePatch(
                 sget-object v$type, $downloadType
                 new-instance v$item, ${menuItemInit.definingClass}
                 invoke-direct/range { v$item .. v$type }, $initSignature
-                invoke-virtual { v$list, v$flag, v$item }, Ljava/util/ArrayList;->add(ILjava/lang/Object;)V
+                invoke-interface { v$list, v$flag, v$item }, Ljava/util/List;->add(ILjava/lang/Object;)V
             """,
             ExternalLabel("skip_download", method.getInstruction(listIndex + 1)),
         )

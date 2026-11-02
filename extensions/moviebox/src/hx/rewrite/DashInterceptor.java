@@ -90,6 +90,12 @@ public final class DashInterceptor extends ChainInterceptor {
         if (url.contains(Endpoints.RESOURCE_LIST_SEGMENT)) {
             return Endpoint.RESOURCE_LIST;
         }
+        if (url.contains(Endpoints.OPERATING_PAGE)) {
+            return Endpoint.OPERATING_PAGE;
+        }
+        if (url.contains(Endpoints.SKU_PROMOTION)) {
+            return Endpoint.SKU_PROMOTION;
+        }
         boolean appTab = !this.hiddenHomeTabs.isEmpty() && url.contains(Endpoints.APP_TAB);
         boolean memberInfo = url.contains(Endpoints.USER_PROFILE) || url.contains(Endpoints.MEMBER_DETAIL);
         if (!appTab && !memberInfo) {
@@ -125,6 +131,10 @@ public final class DashInterceptor extends ChainInterceptor {
                 return HomeTabs.withoutTabs(text, this.hiddenHomeTabs);
             case MEMBER_INFO:
                 return MemberInfoRewriter.rewrite(text);
+            case OPERATING_PAGE:
+                return PromotionRewriter.withoutFeedPromotions(text);
+            case SKU_PROMOTION:
+                return PromotionRewriter.withoutSkuPromotion(text);
             default:
                 throw new IllegalArgumentException("no rewrite for " + endpoint);
         }
@@ -195,7 +205,7 @@ public final class DashInterceptor extends ChainInterceptor {
 
     private enum Endpoint {
 
-        PLAY_INFO, RESOURCE_LIST, APP_TAB, MEMBER_INFO, OTHER
+        PLAY_INFO, RESOURCE_LIST, APP_TAB, MEMBER_INFO, OPERATING_PAGE, SKU_PROMOTION, OTHER
 
     }
 

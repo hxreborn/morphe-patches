@@ -11,6 +11,7 @@ body:
         Before creating a new feature request, please keep the following in mind:
 
         - 🚨 **Requesting a patch for an app not supported yet? You're in the wrong place**: open an [app request](https://github.com/hxreborn/morphe-patches/discussions/new?category=app-requests) in Discussions instead, or upvote the [existing one](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests?discussions_q=is%3Aopen+category%3A%22App+Requests%22+sort%3Atop).
+        - **Broken patches and crashes are bugs**: open a [Patched app broken](https://github.com/hxreborn/morphe-patches/issues/new?template=not_working.yml) report instead.
         - **Support for a newer app version is not a feature**: open an [app update request](https://github.com/hxreborn/morphe-patches/issues/new?template=app_update.yml) instead.
         - **Do not submit a duplicate feature request**: Search for existing feature requests [here](https://github.com/hxreborn/morphe-patches/issues?q=is%3Aissue+label%3Aenhancement).
   - type: input

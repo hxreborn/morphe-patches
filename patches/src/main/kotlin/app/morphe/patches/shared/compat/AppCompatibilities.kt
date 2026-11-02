@@ -211,7 +211,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2efdbd738f3fdae901ecb96ead2d7b9b1ee6d2ceab911bdf7b1a3df812f3cfc4",
         ),
-        targets = listOf(AppTarget(version = "3.97.1", versionCode = 3599414, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "3.97.1", versionCode = 3599414, minSdk = 26),
+            AppTarget(version = "3.98.0", versionCode = 3600852, minSdk = 26),
+        ),
     )
 
     val BETTERSLEEP = Compatibility(
@@ -1524,6 +1527,17 @@ internal object AppCompatibilities {
             "297e4716a4c6bc8814cd699dc0bf0bb9834fca22719676856d004b658339181f",
         ),
         targets = listOf(AppTarget(version = "9.18.2", versionCode = 1431, minSdk = 32)),
+    )
+
+    val TUNNELDOOM_VPN = Compatibility(
+        name = "TunnelDOOM VPN",
+        packageName = "com.tunneldoom.http",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "12704504f5711f22d78ee436f38baeb90557c2fa72c4dfb281c766f59800461d",
+        ),
+        targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
     )
 
     val VIDEO_EDITOR = Compatibility(

@@ -10,9 +10,10 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import code_span, field, has_any, normalize, normalize_version, parse_fields
+from fields import (code_span, contradicting_app, field, has_any, normalize, normalize_version, parse_fields,
+                    placeholder_answers)
 from versions import prerelease_words, same_variant
-from replies import APK_SOURCES, BROKEN_FORMS, bundle, code_list, missing
+from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing
 
 MIN_CHARS = 60
 
@@ -24,6 +25,7 @@ APP_VERSION_FIELDS = ("Other version", "App version", "Broken app version", "App
                       "App and version")
 DESCRIPTION_FIELDS = ("Bug description", "What happens", "Describe the bug", "Summary")
 STEP_FIELDS = ("Steps to reproduce", "Expected behaviour", "Actual behaviour")
+ANSWER_FIELDS = ("Bug description", *STEP_FIELDS, "Screenshots", "Device and Android version", "APK source")
 LOG_FIELDS = ("Debug log", "Error logs", "Morphe logs", "Logs")
 SOURCE_FIELDS = ("APK source", "APK source and type", "APK source and architecture")
 
@@ -39,6 +41,7 @@ REPORT = re.compile(
 )
 
 OPTIONS_PATCHING_FAILED = ("patchingfailed", "patchingstartedandstoppedwithanerror")
+OPTION_DID_NOT_START = "patchingdidnotstart"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
 OPTIONS_PATCH_INEFFECTIVE = (
@@ -113,6 +116,7 @@ apk_source = field(fields, *SOURCE_FIELDS)
 source_hosts = [host(url) for url in re.findall(r"https?://\S+", apk_source, re.I)]
 repackager_host = repackager_in(" ".join(source_hosts)) if all(map(repackager_in, source_hosts)) else ""
 repackager_named = repackager_in(apk_source)
+title = os.environ.get("ISSUE_TITLE", "")
 debug_log = field(fields, *LOG_FIELDS)
 report_attached = bool(REPORT.search(debug_log))
 
@@ -133,6 +137,11 @@ if not fields:
     )
     labels.append("needs info")
 
+answer_fields = list(ANSWER_FIELDS)
+if not normalize(what_happened).startswith(OPTION_DID_NOT_START):
+    answer_fields.append("Error logs")
+blockers += placeholder_answers(fields, *answer_fields)
+
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(
         f"The description has {len(description)} characters. It needs at least {MIN_CHARS}."
@@ -149,6 +158,8 @@ for (name, package), versions in apps.items():
     rank = (score, -sum(word not in normalized_app for word in words))
     if score and rank > best:
         best, matched = rank, (name, versions)
+
+contradicted = contradicting_app(matched[0], f"{title}\n{apk_source}", apps) if matched and shown_name else ""
 
 if repackager_host:
     blockers.append(
@@ -176,6 +187,11 @@ elif not matched:
         f"{lead} {bundle(data['version'])} supports {supported}."
     )
     labels.append("needs info")
+elif contradicted:
+    blockers.append(
+        f"The app field says {code_span(shown_name)}, but the title or the APK source names {contradicted}. "
+        "Please pick the app you patched in that field."
+    )
 elif another_version:
     flags.append(
         "\"Another version\" is selected, but the Other version field is empty."
@@ -224,7 +240,7 @@ elif stock.startswith(OPTION_NOT_TRIED):
 if blockers:
     verdict = "close"
     labels = []
-    sections = ["This issue is now closed:\n\n" + "\n".join(f"- {line}" for line in blockers + flags)]
+    sections = [closed(blockers + flags, CLOSED_FOOTER)]
 elif flags or notes:
     verdict = "flag"
     sections = notes + ([missing(flags)] if flags else [])
@@ -235,6 +251,6 @@ else:
 print(json.dumps({
     "verdict": verdict,
     "labels": list(dict.fromkeys(labels)),
-    "app": matched[0] if matched else "",
+    "app": contradicted or (matched[0] if matched else ""),
     "comment": MARKER + "\n" + "\n\n".join(sections) if sections else "",
 }))

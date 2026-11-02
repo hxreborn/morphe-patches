@@ -39,3 +39,11 @@ internal object BannerLoadAdFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("Lcom/google/android/gms/ads/AdRequest;"),
 )
+
+internal object ConsentInfoUpdateFingerprint : Fingerprint(
+    returnType = "V",
+    strings = listOf(
+        "Use new ConsentDebugSettings.Builder().addTestDeviceHashedId(\"",
+        "RequestConsentUpdate RuntimeException. ",
+    ),
+)

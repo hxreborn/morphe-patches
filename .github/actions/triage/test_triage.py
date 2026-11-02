@@ -2,6 +2,7 @@
 """python3 .github/actions/triage/test_triage.py"""
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -827,26 +828,6 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """),
-    "two-patch app not tried with one patch passes": ("pass", (f"""### App and version
-
-Fddb v7.8.4-Build-1-gms-release
-
-### What does not work
-
-Something else the app used to do stopped working
-
-### Does it still happen with only one patch selected
-
-I have not tried it
-
-### Bug description
-
-{LONG}
-
-### Error logs
-
-[log.txt](https://github.com/user-attachments/files/1/log.txt)
-""", ONE_AND_TWO_PATCH_APPS)),
     "steps, expected and actual behaviour count as the description": ("pass", f"""### App name
 
 Showly
@@ -884,7 +865,7 @@ The paywall shows
 
 [log.txt](https://github.com/user-attachments/files/1/log.txt)
 """),
-    "not-working report with no log in the required field": ("flag", f"""### App name
+    "none in the required log field closes the report": ("close", f"""### App name
 
 Showly
 
@@ -959,7 +940,7 @@ https://pastebin.com/Xy12Ab34
 }
 
 
-def triage(body, patches_list=None):
+def triage(body, patches_list=None, title=""):
     with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:
         f.write(body)
         path = f.name
@@ -968,7 +949,7 @@ def triage(body, patches_list=None):
         list_path = f.name
     try:
         out = subprocess.run([sys.executable, str(SCRIPT), path, list_path],
-                             capture_output=True, text=True, check=True)
+                             capture_output=True, text=True, check=True, env={**os.environ, "ISSUE_TITLE": title})
         return json.loads(out.stdout)
     finally:
         Path(path).unlink()
@@ -1229,6 +1210,91 @@ Proton Mail (another version, type it below)
 ok = "but not `7.5.6 (388)` yet" in untargeted
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} untargeted version quotes only the typed version")
+
+def report(app, source="https://www.apkmirror.com/apk/x/y/", steps=LONG, failure="The patch has no visible effect"):
+    return f"""### App and version
+
+{app}
+
+### What does not work
+
+{failure}
+
+### APK source
+
+{source}
+
+### Steps to reproduce
+
+{steps}
+
+### Expected behaviour
+
+The premium screen opens unlocked
+
+### Actual behaviour
+
+The paywall shows
+
+### Error logs
+
+[log.txt](https://github.com/user-attachments/files/1/log.txt)
+"""
+
+
+contradicted = triage(report("Showly 3.70.0", "https://apkpure.com/proton-mail/ch.protonmail.android"),
+                      title="[Not working]:  Proton Mail I'm not receiving notifications.")
+ok = (contradicted["verdict"], contradicted["labels"], contradicted["app"]) == ("close", [], "Proton Mail") \
+    and "- The app field says `Showly 3.70.0`, but the title or the APK source names Proton Mail. " \
+        "Please pick the app you patched in that field." in contradicted["comment"] \
+    and contradicted["comment"].endswith("Please edit the issue to correct it, and it reopens automatically.")
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} an app named by the title and the APK source but not picked closes the report")
+
+spared = [triage(report("Showly 3.70.0"), title="[Not working]: Showly crashes like Proton Mail did"),
+          triage(report("MovieBox TV 1.2.0.0923.web_socialmedia"), title="[Not working]: MovieBox black screen"),
+          triage(report("Showly 3.70.0"), title="[Not working]: Proton Mail and Etsy crash")]
+ok = [r["verdict"] for r in spared] == ["pass"] * 3
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the picked app in the title, a shorter app inside its name and two other apps pass, got "
+      f"{[r['verdict'] for r in spared]}")
+
+nested = triage(report("Showly 3.70.0"), title="[Not working]: MovieBox TV black screen")
+ok = nested["verdict"] == "close" and "names MovieBox TV." in nested["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the longer of two nested app names is the one the title names")
+
+placeholder = triage(report("Showly 3.70.0", steps="0"))
+blank = triage(report("Showly 3.70.0", steps="."))
+ok = placeholder["verdict"] == blank["verdict"] == "close" \
+    and "- The Steps to reproduce field says `0`, which isn't an answer." in placeholder["comment"] \
+    and "- The Steps to reproduce field says `.`, which isn't an answer." in blank["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce closes the report")
+
+did_not_start = triage(f"""### What happened
+
+Patching did not start: a patch is greyed out, missing or says Not available
+
+### App and version
+
+Showly 3.70.0
+
+### APK source
+
+https://www.apkmirror.com/apk/x/y/
+
+### Bug description
+
+{LONG}
+
+### Error logs
+
+none
+""")
+ok = did_not_start["verdict"] == "pass"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} none in Error logs passes when patching did not start, as the form asks")
 
 hostile = triage(f"""### App name
 

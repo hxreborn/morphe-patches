@@ -70,6 +70,7 @@ body:
         - "Bangla Calendar 3.0.01e"
         - "Bangla Calendar (another version, type it below)"
         - "BeReal 3.97.1"
+        - "BeReal 3.98.0"
         - "BeReal (another version, type it below)"
         - "BetterSleep 26.18"
         - "BetterSleep (another version, type it below)"
@@ -346,6 +347,8 @@ body:
         - "Trainline (another version, type it below)"
         - "Transparent clock & weather 9.18.2"
         - "Transparent clock & weather (another version, type it below)"
+        - "TunnelDOOM VPN 4.3.0"
+        - "TunnelDOOM VPN (another version, type it below)"
         - "U Dictionary 6.7.5"
         - "U Dictionary (another version, type it below)"
         - "UPTCL 11.0.41"
@@ -397,12 +400,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.69.0-dev.7"
+        - "1.69.0-dev.6"
+        - "1.69.0-dev.5"
+        - "1.69.0-dev.4"
+        - "1.69.0-dev.3"
         - "1.68.0"
-        - "1.68.0-dev.8"
-        - "1.68.0-dev.7"
-        - "1.68.0-dev.6"
-        - "1.68.0-dev.5"
-        - "1.68.0-dev.4"
         - "Older than these"
         # /generated
     validations:
@@ -430,19 +433,6 @@ body:
         - The unpatched app works fine, only the patched one fails
         - The unpatched app fails the same way
         - I have not tried the unpatched app
-    validations:
-      required: true
-  - type: dropdown
-    id: single-patch
-    attributes:
-      label: Does it still happen with only one patch selected
-      description: |
-        Patch again with only that one patch selected. If that build works, turn the others back
-        on one at a time until it breaks.
-      options:
-        - Yes, it happens with only that one patch
-        - No, that build works, and I picked the patch that breaks it below
-        - I have not tried it
     validations:
       required: true
   - type: dropdown
@@ -679,6 +669,8 @@ body:
         - "Nara Baby \u00b7 Disable tracking"
         - "Nara Baby \u00b7 Remove forced update"
         - "Nara Baby \u00b7 Unlock premium"
+        - "NEETprep Essential \u00b7 GmsCore support"
+        - "NEETprep Essential \u00b7 Remove screenshot restriction"
         - "NEETprep Essential \u00b7 Unlock premium"
         - "NEETprep \u00b7 GmsCore support"
         - "NEETprep \u00b7 Unlock premium"
@@ -776,6 +768,8 @@ body:
         - "Public \u00b7 Disable tracking"
         - "Public \u00b7 GmsCore support"
         - "Public \u00b7 Hide ads"
+        - "Public \u00b7 Remove promotions"
+        - "Public \u00b7 Remove screenshot restriction"
         - "Pydroid 3 \u00b7 AMOLED dark theme"
         - "Pydroid 3 \u00b7 Disable tracking"
         - "Pydroid 3 \u00b7 Unlock premium"
@@ -844,6 +838,8 @@ body:
         - "Trainline \u00b7 Hide ads"
         - "Transparent clock & weather \u00b7 Disable tracking"
         - "Transparent clock & weather \u00b7 Unlock premium"
+        - "TunnelDOOM VPN \u00b7 Remove ads"
+        - "TunnelDOOM VPN \u00b7 Remove time limit"
         - "U Dictionary \u00b7 Unlock premium"
         - "UPTCL \u00b7 Disable tracking"
         - "UPTCL \u00b7 Hide ads"

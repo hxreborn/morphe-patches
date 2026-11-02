@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fields import code_span, field, normalize, parse_fields
-from replies import REPO
+from fields import code_span, field, normalize, parse_fields, placeholder_answers
+from replies import NEW_ISSUE, REPO, closed
 
 MARKER = "<!-- feature-request-bot -->"
 MIN_SIGNAL = 4
@@ -31,7 +31,15 @@ def names_supported_app(app, patches_list):
 
 
 def decide(body, patches_list, category="app-requests"):
-    app = field(parse_fields(body), "App")
+    fields = parse_fields(body)
+    junk = placeholder_answers(fields, "Feature description", "Motivation")
+    if junk:
+        return {
+            "verdict": "close",
+            "comment": f"{MARKER}\n" + closed(junk, f"Please open a new [feature request]({NEW_ISSUE}feature_request.yml) "
+                                                    "with each field answered."),
+        }
+    app = field(fields, "App")
     if not app or names_supported_app(app, patches_list):
         return {"verdict": "pass", "comment": ""}
     requests = f"https://github.com/{REPO}/discussions/new?category={category}"

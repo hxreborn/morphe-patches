@@ -33,13 +33,17 @@ for app in sorted(targets, key=str.lower):
 
 tags = subprocess.run(["git", "tag", "--sort=-v:refname"], capture_output=True, text=True).stdout.split()
 versions = [data["version"]] + [t.lstrip("v") for t in tags if t.lstrip("v") != data["version"]]
+recent = versions[:RECENT_RELEASES]
+stable = next((v for v in versions if "-" not in v), "")
+if stable and stable not in recent:
+    recent[-1] = stable
 
 sets = {
     "apps": sorted(apps, key=str.lower),
     "targets": app_versions,
     "patches": sorted(patches, key=str.lower) + ["Not narrowed down yet"],
     "abis": [ABI_NAMES.get(a, a.lower()) for a in sorted(abis)] + ["All of them (universal)", "Don't know"],
-    "versions": versions[:RECENT_RELEASES] + ["Older than these"],
+    "versions": recent + ["Older than these"],
 }
 
 def render(key):

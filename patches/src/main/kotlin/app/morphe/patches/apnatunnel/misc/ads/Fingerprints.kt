@@ -19,11 +19,3 @@ internal object AdLoadFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("L"),
 )
-
-internal object ConsentInfoUpdateFingerprint : Fingerprint(
-    returnType = "V",
-    strings = listOf(
-        "Use new ConsentDebugSettings.Builder().addTestDeviceHashedId(\"",
-        "RequestConsentUpdate RuntimeException. ",
-    ),
-)
