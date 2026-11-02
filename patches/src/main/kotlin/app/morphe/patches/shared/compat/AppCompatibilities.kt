@@ -131,11 +131,7 @@ internal object AppCompatibilities {
         packageName = "com.atlogis.atlomaps",
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0x0683DF,
-        targets = listOf(
-            AppTarget(version = "1.0.6", versionCode = 153, minSdk = 26),
-            AppTarget(version = "1.1.0", versionCode = 172, minSdk = 26),
-            AppTarget(version = "2.0.0", versionCode = 174, minSdk = 26),
-        ),
+        targets = listOf(AppTarget(version = "2.0.2", versionCode = 178, minSdk = 26)),
     )
 
     val ATVTOOLS = Compatibility(
