@@ -25,7 +25,7 @@ APK_SOURCES = ("[APKMirror](https://www.apkmirror.com/), [APKPure](https://apkpu
                "[Uptodown](https://www.uptodown.com/) or [APKCombo](https://apkcombo.com/)")
 STAR = f"A ⭐ on the [repo](https://github.com/{REPO}) helps more people find these patches."
 MISSING_HEADER = "This report is missing information:"
-MISSING_FOOTER = "Please edit the issue to add it. It closes automatically after 7 days without activity."
+MISSING_FOOTER = "Please edit the issue to add it. It closes automatically after 3 days without activity."
 CLOSED_FOOTER = "Please edit the issue to correct it, and it reopens automatically."
 
 
@@ -69,12 +69,12 @@ REPLIES = {
     "report-passes": lambda: updated("report"),
     "report-reopened": lambda: updated("report", ", and the issue is open again"),
     "update-passes": lambda: updated("request"),
-    "request-stale": lambda: ("This discussion is now closed because the missing details weren't added within 7 days. "
+    "request-stale": lambda: ("This discussion is now closed because the missing details weren't added within 3 days. "
                               "Feel free to open a new request with them."),
     "issue-stale": lambda: "This issue has had no activity for 30 days. It closes automatically in 7 days unless someone comments.",
     "issue-stale-closed": lambda: ("This issue is now closed after 37 days without activity. "
                                    f"If it still happens, please open a new issue:\n\n{ALL_FORMS}"),
-    "issue-needs-info-closed": lambda: ("This issue is now closed because the missing information wasn't added within 7 days. "
+    "issue-needs-info-closed": lambda: ("This issue is now closed because the missing information wasn't added within 3 days. "
                                         f"Feel free to open a new issue with it:\n\n{ALL_FORMS}"),
     "related": lambda issues: ("These issues may be about the same problem:\n\n"
                                f"{issues}\n\nIf one of them matches, please comment there and close this one. Thanks!"),

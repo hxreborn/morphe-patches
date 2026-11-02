@@ -126,7 +126,7 @@ author_association,created_at}` and `changes.body` on `edited`. The reference pa
 
 What runs here: `issue_triage.yml` (request step on `discussion` events and the daily sweep),
 `issue_comments.yml` `request` job (status pings, `needs info` removal), `stale.yml` `requests` job
-(closes `needs info` requests as `OUTDATED` after 7 days without an update, skipping `bot-wrong` and
+(closes `needs info` requests as `OUTDATED` after 3 days without an update, skipping `bot-wrong` and
 `in progress`), and the last step of `release.yml`. Discussion events carry no timeline, so the bots
 keep no "a human reopened this" guard: the sweep skips a close whose comment equals the bot comment
 already on the thread, and retitles only on `created`.
