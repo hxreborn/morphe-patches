@@ -32,6 +32,8 @@ REPACKAGERS = ("softonic", "happymod", "apkmod", "apkmody", "modyolo", "moddroid
 
 MARKER = "<!-- triage-bot -->"
 
+PLACEHOLDERS = {"", "0", "na", "no", "none", "null", "nil", "nothing", "x", "idk"}
+
 REPORT = re.compile(
     r"Exception|Error|INSTALL_FAILED|Failed to match|Manager:|manager=|\(API \d+\)|^[ \t]+at \S"
     r"|Fatal signal|SIG(?:SEGV|ABRT|BUS|ILL)|backtrace:|user-attachments/files/"
@@ -133,6 +135,13 @@ if not fields:
         f"This issue has no form fields, so it can't be checked. Please open it again from one of the forms:\n\n{BROKEN_FORMS}"
     )
     labels.append("needs info")
+
+for name in STEP_FIELDS:
+    value = field(fields, name)
+    if has_any(fields, name) and normalize(value) in PLACEHOLDERS:
+        answer = f"says {code_span(value)}" if value else "is empty"
+        flags.append(f"The {name} field {answer}. Please fill it in.")
+        labels.append("needs info")
 
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(

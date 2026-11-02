@@ -1282,6 +1282,14 @@ ok = nested["verdict"] == "flag" and "names MovieBox TV." in nested["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the longer of two nested app names is the one the title names")
 
+placeholder = triage(report("Showly 3.70.0", steps="0"))
+blank = triage(report("Showly 3.70.0", steps="."))
+ok = placeholder["verdict"] == blank["verdict"] == "flag" and placeholder["labels"] == ["needs info"] \
+    and "The Steps to reproduce field says `0`. Please fill it in." in placeholder["comment"] \
+    and "The Steps to reproduce field says `.`." in blank["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce asks for the steps")
+
 hostile = triage(f"""### App name
 
 Zzz` @octocat [Install the fix](https://example.com/fix.apk)
