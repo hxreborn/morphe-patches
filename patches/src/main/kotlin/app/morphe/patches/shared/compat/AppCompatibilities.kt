@@ -288,7 +288,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "4a75cf385d6aa8530a1a34ba4ed089da6bf1ae6989f62757839fd01e4f2fcd99",
         ),
-        targets = listOf(AppTarget(version = "4.20.1", versionCode = 7150, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "4.20.1", versionCode = 7150, minSdk = 24),
+            AppTarget(version = "4.21.0", versionCode = 7170, minSdk = 24),
+        ),
     )
 
     val CALCNOTE = Compatibility(
