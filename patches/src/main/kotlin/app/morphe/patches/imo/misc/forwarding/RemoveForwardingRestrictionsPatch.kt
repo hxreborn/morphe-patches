@@ -15,6 +15,8 @@ import app.morphe.util.indexOfFirstInstructionReversed
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
+private const val SHAREABLE_PARAMETER_INDEX = 2
+
 @Suppress("unused")
 val removeForwardingRestrictionsPatch = bytecodePatch(
     name = "Remove forwarding restrictions",
@@ -24,9 +26,9 @@ val removeForwardingRestrictionsPatch = bytecodePatch(
 
     execute {
         ShareAvailabilityFingerprint.matchSingle().method.apply {
-            val shareableParameter = implementation!!.registerCount - 1
+            val shareableRegister = implementation!!.registerCount - parameterTypes.size + SHAREABLE_PARAMETER_INDEX
             val shareableCheckIndex = indexOfFirstInstructionOrThrow {
-                opcode == Opcode.IF_EQZ && (this as OneRegisterInstruction).registerA == shareableParameter
+                opcode == Opcode.IF_EQZ && (this as OneRegisterInstruction).registerA == shareableRegister
             }
             val afterEarlyReturnIndex = indexOfFirstInstructionReversed(shareableCheckIndex, Opcode.RETURN_VOID) + 1
             addInstructionsAtControlFlowLabel(

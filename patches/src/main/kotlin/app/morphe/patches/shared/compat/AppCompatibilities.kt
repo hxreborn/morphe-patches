@@ -606,6 +606,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "2026.08.1041", versionCode = 26081041, minSdk = 32),
             AppTarget(version = "2026.09.1051", versionCode = 26091051, minSdk = 32),
+            AppTarget(version = "2026.10.1021", versionCode = 26101021, minSdk = 32),
         ),
     )
 
