@@ -436,19 +436,6 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: single-patch
-    attributes:
-      label: Does it still happen with only one patch selected
-      description: |
-        Patch again with only that one patch selected. If that build works, turn the others back
-        on one at a time until it breaks.
-      options:
-        - Yes, it happens with only that one patch
-        - No, that build works, and I picked the patch that breaks it below
-        - I have not tried it
-    validations:
-      required: true
-  - type: dropdown
     id: breaking-patch
     attributes:
       label: Patch that breaks it

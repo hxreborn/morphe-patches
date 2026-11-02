@@ -828,26 +828,6 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """),
-    "two-patch app not tried with one patch passes": ("pass", (f"""### App and version
-
-Fddb v7.8.4-Build-1-gms-release
-
-### What does not work
-
-Something else the app used to do stopped working
-
-### Does it still happen with only one patch selected
-
-I have not tried it
-
-### Bug description
-
-{LONG}
-
-### Error logs
-
-[log.txt](https://github.com/user-attachments/files/1/log.txt)
-""", ONE_AND_TWO_PATCH_APPS)),
     "steps, expected and actual behaviour count as the description": ("pass", f"""### App name
 
 Showly
