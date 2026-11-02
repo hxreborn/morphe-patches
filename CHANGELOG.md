@@ -1,3 +1,9 @@
+## [1.70.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.5...v1.70.0-dev.6) (2026-11-02)
+
+### Updated App Support
+
+* **Coddy:** add support for `2.3.0` ([fcb42c5](https://github.com/hxreborn/morphe-patches/commit/fcb42c52ab9f59c616a33d89b59d65028fb39585))
+
 ## [1.70.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.4...v1.70.0-dev.5) (2026-11-02)
 
 ### Updated App Support
