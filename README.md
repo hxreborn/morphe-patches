@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.69.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.69.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
+> **[v1.70.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.70.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
 
 <table>
 <tr>
@@ -2603,7 +2603,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |  |
 | <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open and video player ads. Rewarded ads still play when requested from Benefits. |  |
 | <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |  |
-| <a id="terabox-hide-home-shortcuts"></a>[Hide home shortcuts](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Hides Translate, Short Drama and Trending from the home screen and the More screen. An option hides the Creative Generation tools too. | • Hide Creative Generation<br>• Hide Translate<br>• Hide Short Drama<br>• Hide Trending |
+| <a id="terabox-hide-home-shortcuts"></a>[Hide home shortcuts](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Hides Translate, Short Drama and Trending from the home screen and the More screen. Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too. | • Hide Creative Generation<br>• Hide Translate<br>• Hide Signature<br>• Hide PDF Encryption<br>• Hide Add Watermark<br>• Hide Short Drama<br>• Hide Trending |
 | <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Hides Premium upgrade cards and banners, prize and campaign cards, speed-up prompts, floating invites, and sale, coupon and promotional popups. |  |
 | <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Hides the recommended videos below the video player. |  |
 | <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD up to original quality, playback speeds up to 3x and video uploads. HD buffers faster over parallel connections. |  |

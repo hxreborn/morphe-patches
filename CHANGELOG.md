@@ -1,3 +1,9 @@
+## [1.70.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.69.0...v1.70.0-dev.1) (2026-11-02)
+
+### New Features
+
+* **TeraBox - Hide home shortcuts:** add Signature and PDF tool options ([65826e2](https://github.com/hxreborn/morphe-patches/commit/65826e2a1db3feb83c4e75fee456171b4ec98506)), closes [#485](https://github.com/hxreborn/morphe-patches/issues/485)
+
 ## [1.69.0](https://github.com/hxreborn/morphe-patches/compare/v1.68.0...v1.69.0) (2026-11-02)
 
 ### Bug Fixes
