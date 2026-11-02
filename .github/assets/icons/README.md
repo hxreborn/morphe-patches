@@ -9,7 +9,7 @@ use: naming a product to refer to that product. No affiliation, sponsorship, or
 endorsement by any of these developers is claimed or implied, and none of them have
 reviewed or approved this patch bundle.
 
-Each file is the app's own launcher icon as a round launcher shows it, downscaled to 96x96.
+Each file is the app's own launcher icon as a round launcher shows it, downscaled to 96x96 with the circle filling the canvas.
 Where an app ships no round icon, its adaptive icon layers or square icon are cut to a
 circle. Nothing else is changed.
 
@@ -21,16 +21,17 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
-| `albo.png` | Albo (`com.thesortdapp.sortd`) | The Feel Good Project Ltd | APK 1.25.1, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
+| `albo.png` | Albo (`com.thesortdapp.sortd`) | The Feel Good Project Ltd | Google Play listing icon (the adaptive icon's white background under the foreground), cut to a circle |
 | `iototoy.png` | IoToToy No-Code IoT automation (`com.hardcodedjoy.iototoy`) | HARDCODED JOY S.R.L. | APK 1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `audiobookunlimited.png` | Audiobook Unlimited for Kindle (`com.oneletters.audiobooksai`) | Cee68 | APK 1.7.23, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `allinonecalculator.png` | All-In-One Calculator (`all.in.one.calculator`) | allinonecalculator.com | APK 3.4.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
-| `allvideoplayer.png` | All Video Player App (`com.allformatplayer.streamvideoplayer`) | Legend eSolution | APK 1.4, `res/drawable-xhdpi-v4/small_logo.png` |
+| `allvideoplayer.png` | All Video Player App (`com.allformatplayer.streamvideoplayer`) | Legend eSolution | APK 1.4, round icon `res/drawable-xhdpi-v4/round_logo.png` |
 | `aloa.png` | Aloa (`com.getaloa.app`) | Aloa | APK 1.3.3, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `alpinequest.png` | AlpineQuest (`psyberia.alpinequest.free`) | Psyberia | APK 2.4.0e, `res/drawable-xxxhdpi-v4/core_icon_free_round.png` |
 | `athan.png` | Athan: Prayer Times, Dua-Azkar (`com.athan`) | IslamicFinder.org | APK 11.0.6, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
 | `bereal.png` | BeReal (`com.bereal.ft`) | BeReal | APK 3.97.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
-| `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.19.1, adaptive icon `res/mipmap-anydpi-v26/botim_logo.xml` (square `res/mipmap-xxxhdpi-v4/botim_logo_square.png` cut to a circle) |
+| `biwenger.png` | Biwenger (`com.biwenger.app`) | Biwenger Fantasy | APK 4.0.4, rounded square `mipmap/ic_launcher` xxxhdpi (`res/sK.webp`) cut to a circle |
+| `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.21.0, `res/mipmap-xxxhdpi-v4/botim_logo_round.png` |
 | `clink.png` | Clink (`ltd.anti.clink`) | Anti Limited | APK 1.9.2, square icon `res/drawable-nodpi-v4/clink_icon.png` cut to a circle |
 | `clipstudiopaint.png` | Clip Studio Paint (`jp.co.celsys.clipstudiopaint.googleplay`) | CELSYS, Inc. | APK 5.1.4, `res/mipmap-xxhdpi-v4/ic_launcher_round.png` |
 | `cloneapp.png` | Clone App (`com.pengyou.cloneapp`) | SZPY Tech | APK 4.2.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
@@ -75,7 +76,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `wallmaa.png` | Wallmaa (`com.wallmaa.minimal.wallpapers`) | Bract Studio | APK 1.0.1, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `anytracker.png` | AnyTracker (`com.shervinkoushan.anyTracker`) | Shervin Koushan | APK 7.5.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `apnatunnellite.png` | APNA Tunnel Lite (`com.apnatunnel.lite`) | APNA TUNNEL | APK APNA (51), round icon `res/drawable/ic_app_icon.png` |
-| `tunneldoomvpn.png` | TunnelDOOM VPN (`com.tunneldoom.http`) | richardbum | APK 4.3.0, `res/drawable-xxhdpi-v4/ic_launcher.png` cropped around the glyph and cut to a circle |
+| `tunneldoomvpn.png` | TunnelDOOM VPN (`com.tunneldoom.http`) | richardbum | Google Play listing icon, cut to a circle |
 | `atvtools.png` | atvTools (`dev.vodik7.atvtools`) | tvDev | APK 1.3.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `bettersleep.png` | BetterSleep (`ipnossoft.rma.free`) | BetterSleep Health | APK 26.15, `res/mipmap-xxxhdpi/ic_launcher_round.png` |
 | `dwgfastview.png` | DWG FastView (`com.gstarmc.android`) | Gstarsoft Co., Ltd. | APK 5.21.0, `drawable/ic_launcher`, xxxhdpi, cut to a circle |
@@ -90,7 +91,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `protonvpn.png` | Proton VPN (`ch.protonvpn.android`) | Proton AG | APK 5.20.39.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `hinducalendar.png` | Hindu Calendar (`com.alokmandavgane.hinducalendar`) | Alok Mandavgane | APK 9.3.0, adaptive icon `res/drawable-v26/ic_launcher_vector.xml` |
 | `banglacalendar.png` | Bangla Calendar (`com.outscar.bd.bongcal`) | Outscar | APK 3.0.01c, `res/mipmap-xxxhdpi/ic_launcher.png` (square icon cut to a circle) |
-| `walp.png` | WalP - Stock HD Wallpapers (`com.stresscodes.wallp`) | Stress Codes | APK 10.2.1, adaptive icon `res/mipmap-anydpi/ic_launcher.xml` |
+| `walp.png` | WalP - Stock HD Wallpapers (`com.stresscodes.wallp`) | Stress Codes | APK 10.2.4, rounded square `res/mipmap-xxxhdpi-v4/ic_launcher.webp` cut to a circle |
 | `resprite.png` | Resprite: pixel art studio (`com.fengeon.resprite_desktop`) | Fengeon | APK 1.32.6, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.webp` cut to a circle |
 | `vllo.png` | VLLO (`com.darinsoft.vimo`) | vimosoft | APK 13.7.4, adaptive icon `res/mipmap-anydpi-v26/vllo_icon.xml` |
 | `videoeditor.png` | Video Editor (`videoeditor.videomaker.videoeditorforyoutube`) | InShot Inc. | APK 1.621.196, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
@@ -122,7 +123,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `memoneet.png` | MemoNeet (`com.adithya.memoneet`) | MemoNeet | APK 62.6, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `medicneet.png` | MedicNEET (`com.halalfire.medicneet`) | SkorA Labs | APK 1.5.137, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
 | `neetprep.png` | NEETprep (`com.lernr.app`) | NEETprep | APK 15.0.93, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
-| `neetprepessential.png` | NEETprep Essential (`com.gooded.essential`) | NEETprep | APK 1.2.95, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
+| `neetprepessential.png` | NEETprep Essential (`com.gooded.essential`) | NEETprep | Google Play listing icon, cut to a circle |
 | `biobird.png` | Biobird Flashcards (`com.biobird.exvee`) | Biobird | APK 2.0.2, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
 | `keepa.png` | Keepa (`com.keepa.mobile`) | Keepa.com | APK 6.2.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `joyn.png` | Joyn (`de.prosiebensat1digital.seventv`) | SevenOne Entertainment Group GmbH | APK 6.9.0-AOS-609012264, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
@@ -133,13 +134,13 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `steezy.png` | STEEZY (`co.steezy.app`) | STEEZY | APK 5.23.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `storywise.png` | Storywise (`com.storywise.storywise`) | Storywise | APK 1.0.3, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
 | `sqcom.png` | SQCOM (`com.sqcom.shangqing`) | Shenzhen SHANGQING INDUSTRIAL CO., LTD | APK 1.1.0, `mipmap/wd_path_executor` (round icon), xxxhdpi |
-| `publicvideos.png` | Public (`com.cardfeed.video_public`) | Public App | APK 3.3.4, vector `res/drawable/ic_public_app_icon.xml` rasterized at 96x96 |
+| `publicvideos.png` | Public (`com.cardfeed.video_public`) | Public App | Google Play listing icon, cut to a circle |
 | `lagguy.png` | Lagguy Wallpapers (`com.lagguy.wallpapers`) | Lagguy | APK 40.0.44, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `netanalyzer.png` | Network Analyzer (`net.techet.netanalyzerlite.an`) | Jiri Techet | APK 5.1, adaptive icon `res/mipmap-xxxhdpi-v4/lite_background.png` under `lite_foreground.png` |
 | `radiojavan.png` | Radio Javan (`com.radiojavan.androidradio`) | Radio Javan | APK 11.20.1, `res/mipmap-xxxhdpi-v4/ic_launcher_red_head.png` |
 | `shahid.png` | MBC Shahid (`net.mbc.shahid`) | MBC Group | Play 8.11.0, `res/mipmap-xxxhdpi/ic_launcher_round` |
 | `sheytoon.png` | Sheytoon (`com.triovent.datingapp`) | Sheytoon Inc. | APK 6.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
-| `serializd.png` | Serializd (`com.serializdmobile`) | Serializd | Play 1.992, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `serializd.png` | Serializd (`com.serializdmobile`) | Serializd | Play 1.992, square `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` cut to a circle |
 | `musicolet.png` | Musicolet (`in.krosbits.musicolet`) | Krosbits | APK 6.14.1 build540, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_ex4.xml`, cut to a circle |
 | `musicoletcastplugin.png` | Cast Plug-in for Musicolet (`in.krosbits.castplugin`) | Krosbits | APK 1.9, `res/mipmap-xxxhdpi-v4/ic_launcher.png` |
 | `connected2.png` | Connected2.me (`com.connected2.ozzy.c2m`) | C2M | APK 3.396, `res/mipmap-xxxhdpi-v4/app_launcher_round.png` |
@@ -160,7 +161,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `uptcl.png` | UPTCL (`com.ufoneselfcare`) | Pak Telecom Mobile Limited | APK 11.0.41, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` (stored as `b`) |
 | `magicearth.png` | Magic Earth (`com.generalmagic.magicearth`) | Magic Lane International | APK 7.1.26, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `3way.png` | 3way: Couples & Singles Hookup (`app.threesome.dating`) | 3way App | APK 3.1.0, `res/drawable-xxhdpi-v4/ic_launcher_round.png` |
-| `internetspeedmeterlite.png` | Internet Speed Meter Lite (`com.internet.speed.meter.lite`) | DynamicApps | APK 1.7.0-lite, square icon `res/drawable/app_icon.png` cut to a circle |
+| `internetspeedmeterlite.png` | Internet Speed Meter Lite (`com.internet.speed.meter.lite`) | DynamicApps | APK 1.7.0-lite, square icon `res/drawable/app_icon.png` cut to the largest circle inside its torn edge |
 | `com.andatsoft.myapk.fwa.png` | My APK (`com.andatsoft.myapk.fwa`) | Cards | Google Play listing icon, added 2026-10-12 |
 | `viber.png` | Viber (`com.viber.voip`) | Viber Media | APK 29.1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_viber_round.webp` |
 | `deshtelugu.png` | Desh Telugu Keyboard (`com.telug.keyboard.for.android`) | Desh Keyboard | APK 17.6.8, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
