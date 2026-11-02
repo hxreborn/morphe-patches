@@ -1515,7 +1515,7 @@ internal object AppCompatibilities {
         packageName = "com.thetrainline",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x00A88F,
-        targets = listOf(AppTarget(version = "438.1.0.184284", versionCode = 1284284, minSdk = 26)),
+        targets = listOf(AppTarget(version = "439.0.0.184323", versionCode = 1284323, minSdk = 26)),
     )
 
     val TRANSPARENT_CLOCK = Compatibility(
