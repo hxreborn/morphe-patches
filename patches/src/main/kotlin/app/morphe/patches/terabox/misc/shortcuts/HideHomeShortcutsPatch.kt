@@ -33,6 +33,9 @@ private enum class Shortcut(
         hiddenByDefault = false,
     ),
     TRANSLATE("hideTranslate", "Translate", listOf("ai_translate")),
+    SIGNATURE("hideSignature", "Signature", listOf("pdf_sign"), hiddenByDefault = false),
+    PDF_ENCRYPTION("hidePdfEncryption", "PDF Encryption", listOf("pdf_encrypt"), hiddenByDefault = false),
+    ADD_WATERMARK("hideAddWatermark", "Add Watermark", listOf("pdf_add_watermark"), hiddenByDefault = false),
     SHORT_DRAMA("hideShortDrama", "Short Drama", listOf("drama")),
     TRENDING("hideTrending", "Trending", listOf("hotlist")),
 }
@@ -41,7 +44,7 @@ private enum class Shortcut(
 val hideHomeShortcutsPatch = bytecodePatch(
     name = "Hide home shortcuts",
     description = "Hides Translate, Short Drama and Trending from the home screen and the More screen. " +
-        "An option hides the Creative Generation tools too.",
+        "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
 
