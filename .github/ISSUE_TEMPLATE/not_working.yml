@@ -171,7 +171,7 @@ body:
         - "Keepa 6.5.1"
         - "Keepa (another version, type it below)"
         - "Kick (another version, type it below)"
-        - "Klassik Radio+ p5.12.0"
+        - "Klassik Radio+ p5.12.1"
         - "Klassik Radio+ (another version, type it below)"
         - "Lagguy Wallpapers 40.0.44"
         - "Lagguy Wallpapers (another version, type it below)"
@@ -294,7 +294,7 @@ body:
         - "Quranify 2.2.91"
         - "Quranify (another version, type it below)"
         - "Radio Javan 11.20.1"
-        - "Radio Javan 11.22.1"
+        - "Radio Javan 11.23.0"
         - "Radio Javan (another version, type it below)"
         - "Raindrop.io 4.8.1"
         - "Raindrop.io (another version, type it below)"
@@ -400,11 +400,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.70.0-dev.4"
         - "1.70.0-dev.3"
         - "1.70.0-dev.2"
         - "1.70.0-dev.1"
         - "1.69.0-dev.7"
-        - "1.69.0-dev.6"
         - "1.69.0"
         - "Older than these"
         # /generated

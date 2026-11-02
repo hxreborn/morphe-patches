@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-02T17:53:39",
-  "description": "## [1.70.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.2...v1.70.0-dev.3) (2026-11-02)\n\n### Updated App Support\n\n* **AutomaTag:** add support for `2.3.0.14` ([1fe60f5](https://github.com/hxreborn/morphe-patches/commit/1fe60f59164807288f8b42166a56f0f4b2e136e9))\n* **Trainline:** add support for `439.0.0.184323` ([b2c23e5](https://github.com/hxreborn/morphe-patches/commit/b2c23e52d771af91aa3857f33020eca18820bc9d))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.70.0-dev.3/patches-1.70.0-dev.3.mpp",
+  "created_at": "2026-11-02T18:01:54",
+  "description": "## [1.70.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.3...v1.70.0-dev.4) (2026-11-02)\n\n### Updated App Support\n\n* **Klassik Radio+:** add support for `p5.12.1` ([defe47e](https://github.com/hxreborn/morphe-patches/commit/defe47e715e91730763f9e96ff7219a0a93313bb))\n* **Radio Javan:** add support for `11.23.0` ([32acf3d](https://github.com/hxreborn/morphe-patches/commit/32acf3dc67c127d5bd239b4a320d488187c07aa4))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.70.0-dev.4/patches-1.70.0-dev.4.mpp",
   "signature_download_url": "",
-  "version": "1.70.0-dev.3"
+  "version": "1.70.0-dev.4"
 }

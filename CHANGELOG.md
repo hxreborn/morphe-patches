@@ -1,3 +1,10 @@
+## [1.70.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.3...v1.70.0-dev.4) (2026-11-02)
+
+### Updated App Support
+
+* **Klassik Radio+:** add support for `p5.12.1` ([defe47e](https://github.com/hxreborn/morphe-patches/commit/defe47e715e91730763f9e96ff7219a0a93313bb))
+* **Radio Javan:** add support for `11.23.0` ([32acf3d](https://github.com/hxreborn/morphe-patches/commit/32acf3dc67c127d5bd239b4a320d488187c07aa4))
+
 ## [1.70.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.2...v1.70.0-dev.3) (2026-11-02)
 
 ### Updated App Support

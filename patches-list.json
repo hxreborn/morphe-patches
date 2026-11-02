@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.70.0-dev.3",
+  "version": "1.70.0-dev.4",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -3247,12 +3247,12 @@
               "description": null
             },
             {
-              "version": "11.22.1",
+              "version": "11.23.0",
               "versionCodes": {
-                "ARM64_V8A": 467,
-                "ARMEABI_V7A": 467,
-                "X86_64": 467,
-                "X86": 467
+                "ARM64_V8A": 470,
+                "ARMEABI_V7A": 470,
+                "X86_64": 470,
+                "X86": 470
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -6170,12 +6170,12 @@
               "description": null
             },
             {
-              "version": "11.22.1",
+              "version": "11.23.0",
               "versionCodes": {
-                "ARM64_V8A": 467,
-                "ARMEABI_V7A": 467,
-                "X86_64": 467,
-                "X86": 467
+                "ARM64_V8A": 470,
+                "ARMEABI_V7A": 470,
+                "X86_64": 470,
+                "X86": 470
               },
               "isExperimental": false,
               "minSdk": 32,
@@ -14667,12 +14667,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "p5.12.0",
+              "version": "p5.12.1",
               "versionCodes": {
-                "ARM64_V8A": 50138,
-                "ARMEABI_V7A": 50138,
-                "X86_64": 50138,
-                "X86": 50138
+                "ARM64_V8A": 50141,
+                "ARMEABI_V7A": 50141,
+                "X86_64": 50141,
+                "X86": 50141
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -15842,12 +15842,12 @@
               "description": null
             },
             {
-              "version": "11.22.1",
+              "version": "11.23.0",
               "versionCodes": {
-                "ARM64_V8A": 467,
-                "ARMEABI_V7A": 467,
-                "X86_64": 467,
-                "X86": 467
+                "ARM64_V8A": 470,
+                "ARMEABI_V7A": 470,
+                "X86_64": 470,
+                "X86": 470
               },
               "isExperimental": false,
               "minSdk": 32,
