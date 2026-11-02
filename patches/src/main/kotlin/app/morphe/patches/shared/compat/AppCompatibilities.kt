@@ -883,6 +883,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "8.5.0", versionCode = 2026102201, minSdk = 24)),
     )
 
+    val MUVIZ_WIDGETS = Compatibility(
+        name = "Muviz Widgets",
+        packageName = "com.sparkine.widgets",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF50614,
+        signatures = setOf(
+            "68050e20d07df18c28646c82840e03fbfaed377693997026f9d8904bf667f8a9",
+        ),
+        targets = listOf(AppTarget(version = "1.1.5.0", versionCode = 29, minSdk = 31)),
+    )
+
     val MYMOVESET = Compatibility(
         name = "MyMoveset",
         packageName = "com.soulbreakers.mymoveset",

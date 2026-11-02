@@ -151,6 +151,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `ridmik.png` | Ridmik Keyboard (`ridmik.keyboard`) | Ridmik Labs | APK 19.1.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `graphmessenger.png` | Graph Messenger (`ir.ilmili.telegraph`) | Databite | APK 13.0.2.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `glasswidgets.png` | Glass Widgets (`com.jndapp.glass.widgets`) | JustNewDesigns | APK 1.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `muvizwidgets.png` | Muviz Widgets (`com.sparkine.widgets`) | Sparkine Labs | APK 1.1.5.0, adaptive icon `res/mipmap-anydpi/ic_launcher.xml` (`ic_launcher_background` under `ic_launcher_foreground`, centre 72dp cut to a circle) |
 | `yuka.png` | Yuka (`io.yuka.android`) | Yuka SAS | APK 5.7, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `usavpn.png` | USA VPN (`vpn.usa_tap2free`) | AltApps | APK 1.168, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `vpnindia.png` | VPN India (`india.vpn_tap2free`) | AltApps | APK 1.172, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |

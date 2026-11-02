@@ -284,6 +284,7 @@ ICONS = {
     "com.omniashare.minishare": "minishare.png",
     "com.naraorganics.nara": "narababy.png",
     "com.jndapp.glass.widgets": "glasswidgets.png",
+    "com.sparkine.widgets": "muvizwidgets.png",
     "io.yuka.android": "yuka.png",
     "vpn.usa_tap2free": "usavpn.png",
     "india.vpn_tap2free": "vpnindia.png",
