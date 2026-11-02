@@ -204,7 +204,7 @@ body:
         - "MovieBox TV (another version, type it below)"
         - "Musicolet 6.14.1 build540"
         - "Musicolet (another version, type it below)"
-        - "Musixmatch 8.4.2"
+        - "Musixmatch 8.5.0"
         - "Musixmatch (another version, type it below)"
         - "My APK 4.1.1"
         - "My APK (another version, type it below)"
@@ -368,7 +368,7 @@ body:
         - "VPN Super Unlimited Proxy (another version, type it below)"
         - "vpnify 2.3.0"
         - "vpnify (another version, type it below)"
-        - "Wallmaa 1.0.1"
+        - "Wallmaa 1.0.4"
         - "Wallmaa (another version, type it below)"
         - "WalP 10.2.4"
         - "WalP (another version, type it below)"
@@ -400,11 +400,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.70.0-dev.2"
         - "1.70.0-dev.1"
         - "1.69.0-dev.7"
         - "1.69.0-dev.6"
         - "1.69.0-dev.5"
-        - "1.69.0-dev.4"
         - "1.69.0"
         - "Older than these"
         # /generated

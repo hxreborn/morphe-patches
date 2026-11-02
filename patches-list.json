@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.70.0-dev.1",
+  "version": "1.70.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -3495,12 +3495,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.0.1",
+              "version": "1.0.4",
               "versionCodes": {
-                "ARM64_V8A": 22,
-                "ARMEABI_V7A": 22,
-                "X86_64": 22,
-                "X86": 22
+                "ARM64_V8A": 25,
+                "ARMEABI_V7A": 25,
+                "X86_64": 25,
+                "X86": 25
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -15046,12 +15046,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "8.4.2",
+              "version": "8.5.0",
               "versionCodes": {
-                "ARM64_V8A": 2026061901,
-                "ARMEABI_V7A": 2026061901,
-                "X86_64": 2026061901,
-                "X86": 2026061901
+                "ARM64_V8A": 2026102201,
+                "ARMEABI_V7A": 2026102201,
+                "X86_64": 2026102201,
+                "X86": 2026102201
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -16690,12 +16690,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.0.1",
+              "version": "1.0.4",
               "versionCodes": {
-                "ARM64_V8A": 22,
-                "ARMEABI_V7A": 22,
-                "X86_64": 22,
-                "X86": 22
+                "ARM64_V8A": 25,
+                "ARMEABI_V7A": 25,
+                "X86_64": 25,
+                "X86": 25
               },
               "isExperimental": false,
               "minSdk": 24,

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.70.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.70.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
+> **[v1.70.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.70.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
 
 <table>
 <tr>
@@ -1630,7 +1630,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 8.4.2 |
+| 8.5.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2820,7 +2820,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.0.1 |
+| 1.0.4 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |

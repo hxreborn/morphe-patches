@@ -1,3 +1,10 @@
+## [1.70.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.1...v1.70.0-dev.2) (2026-11-02)
+
+### Updated App Support
+
+* **Musixmatch:** add support for `8.5.0` ([1d36555](https://github.com/hxreborn/morphe-patches/commit/1d36555fec38e49a9908036b1bcef101771f5f16))
+* **Wallmaa:** add support for `1.0.4` ([c9ab158](https://github.com/hxreborn/morphe-patches/commit/c9ab158114b8eff77d442ebfc3d9af68e6fb0215))
+
 ## [1.70.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.69.0...v1.70.0-dev.1) (2026-11-02)
 
 ### New Features
