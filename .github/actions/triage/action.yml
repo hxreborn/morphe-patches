@@ -95,7 +95,8 @@ runs:
         jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > body.md
         gh issue list --repo "$REPO" --label app-update --state open --limit 1000 \
           --json number,title,state,labels > updates.json
-        python3 "${{ github.action_path }}/app_update.py" "$ISSUE" body.md updates.json "$list" > verdict.json
+        ISSUE_TITLE=$(jq -r '.issue.title // ""' "$GITHUB_EVENT_PATH") \
+          python3 "${{ github.action_path }}/app_update.py" "$ISSUE" body.md updates.json "$list" > verdict.json
         verdict=$(jq -r .verdict verdict.json)
         jq -j .comment verdict.json > comment.md
         echo "#$ISSUE: $(jq -c 'del(.comment)' verdict.json)"
@@ -186,7 +187,7 @@ runs:
         if [ -n "$dev_bundle" ] && git show "v$dev_bundle:$PATCHES_LIST" > "$RUNNER_TEMP/reported-list.json" 2>/dev/null; then
           list=$RUNNER_TEMP/reported-list.json
         fi
-        python3 "${{ github.action_path }}/triage.py" \
+        ISSUE_TITLE=$(jq -r '.issue.title // ""' "$GITHUB_EVENT_PATH") python3 "${{ github.action_path }}/triage.py" \
           "$RUNNER_TEMP/issue-body.md" "$list" > "$RUNNER_TEMP/verdict.json"
 
     - name: Act on the verdict

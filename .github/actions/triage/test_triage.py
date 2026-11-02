@@ -2,6 +2,7 @@
 """python3 .github/actions/triage/test_triage.py"""
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -959,7 +960,7 @@ https://pastebin.com/Xy12Ab34
 }
 
 
-def triage(body, patches_list=None):
+def triage(body, patches_list=None, title=""):
     with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:
         f.write(body)
         path = f.name
@@ -968,7 +969,7 @@ def triage(body, patches_list=None):
         list_path = f.name
     try:
         out = subprocess.run([sys.executable, str(SCRIPT), path, list_path],
-                             capture_output=True, text=True, check=True)
+                             capture_output=True, text=True, check=True, env={**os.environ, "ISSUE_TITLE": title})
         return json.loads(out.stdout)
     finally:
         Path(path).unlink()
@@ -1229,6 +1230,57 @@ Proton Mail (another version, type it below)
 ok = "but not `7.5.6 (388)` yet" in untargeted
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} untargeted version quotes only the typed version")
+
+def report(app, source="https://www.apkmirror.com/apk/x/y/", steps=LONG, failure="The patch has no visible effect"):
+    return f"""### App and version
+
+{app}
+
+### What does not work
+
+{failure}
+
+### APK source
+
+{source}
+
+### Steps to reproduce
+
+{steps}
+
+### Expected behaviour
+
+The premium screen opens unlocked
+
+### Actual behaviour
+
+The paywall shows
+
+### Error logs
+
+[log.txt](https://github.com/user-attachments/files/1/log.txt)
+"""
+
+
+contradicted = triage(report("Showly 3.70.0", "https://apkpure.com/proton-mail/ch.protonmail.android"),
+                      title="[Not working]:  Proton Mail I'm not receiving notifications.")
+ok = (contradicted["verdict"], contradicted["labels"], contradicted["app"]) == ("flag", ["needs info"], "Proton Mail") \
+    and "The app field says `Showly 3.70.0`, but the title or the APK source names Proton Mail." in contradicted["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} an app named by the title and the APK source but not picked asks for the app you patched")
+
+spared = [triage(report("Showly 3.70.0"), title="[Not working]: Showly crashes like Proton Mail did"),
+          triage(report("MovieBox TV 1.2.0.0923.web_socialmedia"), title="[Not working]: MovieBox black screen"),
+          triage(report("Showly 3.70.0"), title="[Not working]: Proton Mail and Etsy crash")]
+ok = [r["verdict"] for r in spared] == ["pass"] * 3
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the picked app in the title, a shorter app inside its name and two other apps pass, got "
+      f"{[r['verdict'] for r in spared]}")
+
+nested = triage(report("Showly 3.70.0"), title="[Not working]: MovieBox TV black screen")
+ok = nested["verdict"] == "flag" and "names MovieBox TV." in nested["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the longer of two nested app names is the one the title names")
 
 hostile = triage(f"""### App name
 

@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import code_span, field, has_any, normalize, normalize_version, parse_fields
+from fields import code_span, contradicting_app, field, has_any, normalize, normalize_version, parse_fields
 from versions import prerelease_words, same_variant
 from replies import APK_SOURCES, BROKEN_FORMS, bundle, code_list, missing
 
@@ -113,6 +113,7 @@ apk_source = field(fields, *SOURCE_FIELDS)
 source_hosts = [host(url) for url in re.findall(r"https?://\S+", apk_source, re.I)]
 repackager_host = repackager_in(" ".join(source_hosts)) if all(map(repackager_in, source_hosts)) else ""
 repackager_named = repackager_in(apk_source)
+title = os.environ.get("ISSUE_TITLE", "")
 debug_log = field(fields, *LOG_FIELDS)
 report_attached = bool(REPORT.search(debug_log))
 
@@ -150,6 +151,8 @@ for (name, package), versions in apps.items():
     if score and rank > best:
         best, matched = rank, (name, versions)
 
+contradicted = contradicting_app(matched[0], f"{title}\n{apk_source}", apps) if matched and shown_name else ""
+
 if repackager_host:
     blockers.append(
         f"`{repackager_host}` repackages apps, which can break patching. "
@@ -174,6 +177,12 @@ elif not matched:
     )
     flags.append(
         f"{lead} {bundle(data['version'])} supports {supported}."
+    )
+    labels.append("needs info")
+elif contradicted:
+    flags.append(
+        f"The app field says {code_span(shown_name)}, but the title or the APK source names {contradicted}. "
+        "Please pick the app you patched in that field."
     )
     labels.append("needs info")
 elif another_version:
@@ -235,6 +244,6 @@ else:
 print(json.dumps({
     "verdict": verdict,
     "labels": list(dict.fromkeys(labels)),
-    "app": matched[0] if matched else "",
+    "app": contradicted or (matched[0] if matched else ""),
     "comment": MARKER + "\n" + "\n\n".join(sections) if sections else "",
 }))

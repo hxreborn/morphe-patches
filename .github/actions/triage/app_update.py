@@ -2,6 +2,7 @@
 """python3 app_update.py <issue-number> <issue-body-file> <updates.json> <patches-list.json>"""
 
 import json
+import os
 import re
 import sys
 import unicodedata
@@ -9,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import field, normalize, parse_fields
+from fields import app_packages, contradicting_app, field, normalize, parse_fields
 from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, same_variant, targets, tracked_version,
                       version_key)
 from replies import BROKEN_FORMS, bundle
@@ -46,15 +47,21 @@ def open_tracker(app, version, number, issues, apps):
                key=lambda iv: version_key(iv[1]), default=(None, ""))
 
 
-def decide(number, body, issues, patches_list):
+def decide(number, body, issues, patches_list, issue_title=""):
     apps = targets(patches_list)
     app = requested_app(body, apps)
     version = requested_version(body)
+    source = field(parse_fields(body), "APK source")
+    contradicted = contradicting_app(app, f"{issue_title}\n{source}", app_packages(patches_list))
     verdict, reason, duplicate_of, labels, title, retitle, lines = "pass", "", 0, [], "", None, []
 
     if not app:
         verdict, labels = "flag", ["needs info"]
         lines.append("The App field doesn't match an app this bundle supports. Please edit the issue and pick it from the list.")
+    elif contradicted:
+        verdict, labels = "flag", ["needs info"]
+        lines.append(f"The App field says {app}, but the title or the APK source names {contradicted}. "
+                     "Please edit the issue and pick the app you want updated.")
     elif not re.search(r"\d", version):
         verdict, labels = "flag", ["needs info"]
         example = max(apps[app], key=version_key, default="1.2.3")
@@ -98,4 +105,4 @@ if __name__ == "__main__":
     body = Path(sys.argv[2]).read_text(encoding="utf-8")
     issues = json.loads(Path(sys.argv[3]).read_text(encoding="utf-8"))
     patches_list = json.loads(Path(sys.argv[4]).read_text(encoding="utf-8"))
-    print(json.dumps(decide(number, body, issues, patches_list)))
+    print(json.dumps(decide(number, body, issues, patches_list, os.environ.get("ISSUE_TITLE", ""))))
