@@ -189,7 +189,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "538fbf04f304c4a9a6dc48638bcab88620e445c3be2b1d671bb3228fb04ff6d8",
         ),
-        targets = listOf(AppTarget(version = "2.3.0.10", versionCode = 797, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.3.0.14", versionCode = 801, minSdk = 24)),
     )
 
     val BANGLA_CALENDAR = Compatibility(
