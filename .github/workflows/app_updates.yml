@@ -7,7 +7,7 @@ on:
         description: Comma-separated package names, empty for every app
         required: false
   schedule:
-    - cron: "17 4 * * 1"
+    - cron: "17 4 * * 0"
 
 permissions: {}
 
@@ -16,8 +16,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  week:
+    name: Read the ISO week parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      even: ${{ steps.parity.outputs.even }}
+    steps:
+      - id: parity
+        run: echo "even=$(( 10#$(date -u +%V) % 2 == 0 ))" >> "$GITHUB_OUTPUT"
+
   check:
     name: Check upstream versions
+    needs: week
+    if: github.event_name != 'schedule' || needs.week.outputs.even == '1'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions:
