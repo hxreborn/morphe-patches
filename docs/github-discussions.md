@@ -72,6 +72,9 @@ categories or for pinning; introspection of the mutation type lists nothing matc
 `closeDiscussion` reasons are `DUPLICATE`, `OUTDATED` and `RESOLVED`. The triage bot maps its issue-era
 reasons as duplicate → `DUPLICATE`, completed → `RESOLVED`, anything else → `OUTDATED`.
 
+A request closed because the server enforces the gate also gets the `server-side` label, through
+`addLabelsToLabelable` with the discussion id and the label id (`~/Dev/repos/cc-stuff/shared/graphql/add-labels.graphql`).
+
 `discussion.sh` subcommands and the mutation each sends:
 
 | Subcommand | Mutation |
