@@ -30,7 +30,7 @@ gh api graphql -f category=DIC_... -F after=null -f query='query($category: ID!,
         comments(first: 100){ nodes{ author{ login } body createdAt url } } } } } }'
 ```
 
-One discussion, including the fields the bots and `feasibility.py` read:
+One discussion, including the fields the bots read:
 
 ```bash
 gh api graphql -F number=303 -f query='query($number: Int!){ repository(owner:"hxreborn",name:"morphe-patches"){
@@ -56,9 +56,9 @@ a requester's discussions.
 
 `.github/actions/triage/discussion.sh` wraps the reads the bots need, with `REPO=owner/name` in the
 environment: `list <slug>` prints one JSON array shaped like `gh issue list --json` (`number title body
-state labels comments author url createdAt updatedAt`, state `OPEN`/`CLOSED`, comment authors as
-`github-actions` without the `[bot]` suffix); `view <n>` prints one object with the same shape plus
-comments. Both cap comments at 100.
+url createdAt updatedAt state author association labels comments`, state `OPEN`/`CLOSED`, comment
+authors as `github-actions` without the `[bot]` suffix); `view <n>` prints one object with `number title
+url createdAt state author labels comments`. Both cap comments at 100.
 
 ## Writing through GraphQL
 
@@ -81,53 +81,20 @@ reasons as duplicate → `DUPLICATE`, completed → `RESOLVED`, anything else �
 | `add-labels <n> <label>...` | `addLabelsToLabelable(input:{labelableId, labelIds})`, ids passed as `-F 'labels[]=ID'` |
 | `remove-labels <n> <label>...` | `removeLabelsFromLabelable(...)` |
 | `close <n> DUPLICATE\|OUTDATED\|RESOLVED` | `closeDiscussion(input:{discussionId, reason})` |
+| `lock <n>` | `lockLockable(input:{lockableId, lockReason: RESOLVED})` |
 
 `gh discussion` (2.102, preview) has `create`, `list`, `view`, `edit` and `comment`, nothing for close,
-lock, labels or pins. `gh discussion create --category "App Requests" --title ... --body-file f.md`
-and `gh discussion edit N --body-file f.md` are what posted and edited `#303` and `#304`.
-
-## The public-post-gate hook
-
-`~/.claude/hooks/public-post-gate.py` runs on every Bash call. For `gh api graphql` it accepts a
-mutation only when its name is one of `createDiscussion`, `updateDiscussion`, `addDiscussionComment`,
-`updateDiscussionComment` (plus the issue and PR text mutations), the repo resolves to an own repo, and
-the text is literal. `closeDiscussion`, `lockLockable` and the label mutations are refused outright,
-so `discussion.sh close|add-labels|remove-labels` run only in CI. The repo is taken from a literal
-`GH_REPO=hxreborn/morphe-patches` prefix; `-F body=@file`, `-f body="$var"` and a heredoc piped into an
-interpreter are refused as non-literal. This call passed and returned the unchanged title:
-
-```bash
-GH_REPO=hxreborn/morphe-patches gh api graphql -f query='mutation { updateDiscussion(input: {discussionId: "D_kwDOTbTF584AqSwE", title: "Read this before you post"}) { discussion { number title } } }'
-```
-
-The gate also refuses `curl` to any GitHub host and `gh api` reads whose path contains `comments`,
-`payload` or similar publish-looking segments (the octokit `payload-examples` files had to be read with
-WebFetch on `raw.githubusercontent.com`), and any Bash call that pipes a script mentioning `gh` into
-`python3` or `bash`. Write such scripts to a file and run the file.
+lock, labels or pins. `gh discussion create --category app-requests --title ... --body-file f.md` and
+`gh discussion edit N --body-file f.md` post and edit a discussion.
 
 ## What has no API, and the browser route
 
-Creating and deleting categories, pinning, locking from a session, and converting issues are UI
-only. GitHub removed bulk label-based conversion on 2025-06-06, so each issue is one click.
+Creating and deleting categories, pinning and converting issues are UI only. GitHub removed bulk label-based conversion on 2025-06-06, so each issue is one click.
 
-The Claude extension lives in Chromium (`~/.config/chromium/Default/Extensions/fcoeoabg...`), which
-is not normally running. Start it on a hidden workspace so it never takes the user's screen, then
-connect the `open-claude-in-chrome` MCP:
-
-```bash
-export HYPRLAND_INSTANCE_SIGNATURE=$(ls /run/user/1000/hypr | head -1)
-hyprctl dispatch 'hl.dsp.exec_cmd("/usr/bin/chromium", { workspace = "special:chromium silent" })'
-```
-
-Then `tabs_context_mcp {createIfEmpty: true}`, `navigate`, `read_page {filter: interactive}`,
-`form_input` and `javascript_tool`. Screenshots time out on the hidden workspace (`CDP
-Page.captureScreenshot timed out`), so read the page tree or text instead. Finish with
-`tabs_close_mcp` and `pkill -x -TERM chromium`; `hl.dsp.closewindow` does not exist.
-
-Every write below is the page's own form submitted with `fetch` from `javascript_tool`. A response of
-`0 opaqueredirect` with `redirect: 'manual'` means GitHub accepted it; confirm with a GraphQL read.
-Wrap the code in `(async () => { ... })()`, since top-level `await` fails, and do not wait after a
-click that navigates: the eval dies with `Inspected target navigated` while the click still lands.
+Every write below is the page's own form, submitted from a logged-in github.com tab, either through
+the UI or with `fetch` from the page's JavaScript console. A response of `0 opaqueredirect` with
+`redirect: 'manual'` means GitHub accepted it; confirm with a GraphQL read. Do not wait after a click
+that navigates: the page unloads and the script dies while the click still lands.
 
 | Action | Form |
 | --- | --- |
@@ -144,13 +111,6 @@ the issue as completed and locks it with a "converted to" pointer, and fires `di
 `state: converting` plus one `discussion_comment created` per migrated comment. Both workflows have
 to tolerate that burst: the triage `if` requires `state == 'open'`, and the comment job posted nothing
 because the migrated pings were older than the bot's window or already answered.
-
-Headless screenshots of public pages need no login:
-
-```bash
-chromium --headless=new --user-data-dir=/tmp/profile --hide-scrollbars --window-size=1100,1400 \
-  --screenshot=out.png https://github.com/hxreborn/morphe-patches/discussions/302
-```
 
 ## Workflows
 
@@ -173,12 +133,12 @@ already on the thread, and retitles only on `created`.
 
 `Closes #N` must never name a discussion. `@semantic-release/github` resolves every footer number with
 `issueOrPullRequest(number:)` in one query, the error aborts the call, and the success step fails after
-the release is published. New-app commits carry no footer; `release.yml` instead runs
-`.github/scripts/shipped_requests.py` on a stable release, on the package names new since the previous
-stable tag (a `dev` pre-release never closes a request). Every open
-request naming one of them gets a comment that the app is supported, with links to the four issue
-forms, through `discussion.sh comment`, and is closed (`remove-labels "in progress"`,
-`close RESOLVED`) whatever its `Requested features` field says.
+the release is published. New-app commits carry no footer. `release.yml` runs
+`.github/scripts/shipped_requests.py` on the package names new since the previous release. On a `dev`
+pre-release it comments on each open request naming one that the app is in that pre-release and leaves
+the request open. On a `main` stable release it comments that the app is supported, with links to the
+four issue forms, through `discussion.sh comment`, then closes the request (`remove-labels "in
+progress"`, `close RESOLVED`) whatever its `Requested features` field says.
 
 ## Gotchas
 
