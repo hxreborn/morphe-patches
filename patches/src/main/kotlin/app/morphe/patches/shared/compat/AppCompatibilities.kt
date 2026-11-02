@@ -695,7 +695,7 @@ internal object AppCompatibilities {
         packageName = "de.klassikradio.app",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x000000,
-        targets = listOf(AppTarget(version = "p5.12.0", versionCode = 50138, minSdk = 24)),
+        targets = listOf(AppTarget(version = "p5.12.1", versionCode = 50141, minSdk = 24)),
     )
 
     val LAGGUY_WALLPAPERS = Compatibility(
