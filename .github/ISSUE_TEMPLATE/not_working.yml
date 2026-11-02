@@ -232,7 +232,7 @@ body:
         - "Notesnook (another version, type it below)"
         - "One4Home Launcher 0.5.104"
         - "One4Home Launcher (another version, type it below)"
-        - "Opal 4.16.0"
+        - "Opal 4.17.0"
         - "Opal (another version, type it below)"
         - "Period Tracker and Calendar 13.4.0"
         - "Period Tracker and Calendar (another version, type it below)"
@@ -400,11 +400,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.70.0-dev.7"
         - "1.70.0-dev.6"
         - "1.70.0-dev.5"
         - "1.70.0-dev.4"
         - "1.70.0-dev.3"
-        - "1.70.0-dev.2"
         - "1.69.0"
         - "Older than these"
         # /generated

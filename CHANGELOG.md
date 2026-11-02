@@ -1,3 +1,9 @@
+## [1.70.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.6...v1.70.0-dev.7) (2026-11-02)
+
+### Updated App Support
+
+* **Opal:** add support for `4.17.0` ([4892e95](https://github.com/hxreborn/morphe-patches/commit/4892e95d6bce75475e563a0f06811b5686506ed3))
+
 ## [1.70.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.5...v1.70.0-dev.6) (2026-11-02)
 
 ### Updated App Support
