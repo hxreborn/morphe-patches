@@ -1,3 +1,13 @@
+## [1.71.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.2...v1.71.0-dev.3) (2026-11-03)
+
+### Bug Fixes
+
+* **Proton Mail - AMOLED dark theme:** turn sale screens black ([5fb7dc6](https://github.com/hxreborn/morphe-patches/commit/5fb7dc6326c6379c60c51b5618f064bd0d806e8d))
+
+### Updated App Support
+
+* **Duolingo:** add support for `6.103.6` ([96f8fe7](https://github.com/hxreborn/morphe-patches/commit/96f8fe7f078445675bb30adb844647a5345700f9))
+
 ## [1.71.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.1...v1.71.0-dev.2) (2026-11-03)
 
 ### New Features

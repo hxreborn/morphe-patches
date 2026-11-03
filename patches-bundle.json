@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-03T19:09:00",
-  "description": "## [1.71.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.1...v1.71.0-dev.2) (2026-11-03)\n\n### New Features\n\n* **Duolingo - Disable dynamic app icon:** keep default launcher icon ([ca95381](https://github.com/hxreborn/morphe-patches/commit/ca9538157c9e3930cb5197ac9fb50eb7c8b1693a))\n* **Duolingo - Enable debug mode:** show debug menu and button ([8d017cd](https://github.com/hxreborn/morphe-patches/commit/8d017cd3a9315bd0b806e4be2af72e77abe6d95a))\n* **Duolingo - Unlimited RampUp time:** hold RampUp timer at one hour ([65f8661](https://github.com/hxreborn/morphe-patches/commit/65f8661464307268580a73aab27edbd52cf4cc44))\n* **Duolingo - Unlock premium:** remove ads and energy limit ([03710cc](https://github.com/hxreborn/morphe-patches/commit/03710ccd9244571b1ff66898cdaca635e1027d19))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.71.0-dev.2/patches-1.71.0-dev.2.mpp",
+  "created_at": "2026-11-03T20:07:50",
+  "description": "## [1.71.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.2...v1.71.0-dev.3) (2026-11-03)\n\n### Bug Fixes\n\n* **Proton Mail - AMOLED dark theme:** turn sale screens black ([5fb7dc6](https://github.com/hxreborn/morphe-patches/commit/5fb7dc6326c6379c60c51b5618f064bd0d806e8d))\n\n### Updated App Support\n\n* **Duolingo:** add support for `6.103.6` ([96f8fe7](https://github.com/hxreborn/morphe-patches/commit/96f8fe7f078445675bb30adb844647a5345700f9))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.71.0-dev.3/patches-1.71.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.71.0-dev.2"
+  "version": "1.71.0-dev.3"
 }

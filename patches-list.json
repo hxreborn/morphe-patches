@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.71.0-dev.2",
+  "version": "1.71.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -2091,6 +2091,18 @@
           "formFactor": "MOBILE",
           "targets": [
             {
+              "version": "6.103.6",
+              "versionCodes": {
+                "ARM64_V8A": 2488,
+                "ARMEABI_V7A": 2488,
+                "X86_64": 2488,
+                "X86": 2488
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
               "version": "6.104.4",
               "versionCodes": {
                 "ARM64_V8A": 2493,
@@ -4097,6 +4109,18 @@
           ],
           "formFactor": "MOBILE",
           "targets": [
+            {
+              "version": "6.103.6",
+              "versionCodes": {
+                "ARM64_V8A": 2488,
+                "ARMEABI_V7A": 2488,
+                "X86_64": 2488,
+                "X86": 2488
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
             {
               "version": "6.104.4",
               "versionCodes": {
@@ -13472,6 +13496,18 @@
           "formFactor": "MOBILE",
           "targets": [
             {
+              "version": "6.103.6",
+              "versionCodes": {
+                "ARM64_V8A": 2488,
+                "ARMEABI_V7A": 2488,
+                "X86_64": 2488,
+                "X86": 2488
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
+            {
               "version": "6.104.4",
               "versionCodes": {
                 "ARM64_V8A": 2493,
@@ -15006,6 +15042,18 @@
           ],
           "formFactor": "MOBILE",
           "targets": [
+            {
+              "version": "6.103.6",
+              "versionCodes": {
+                "ARM64_V8A": 2488,
+                "ARMEABI_V7A": 2488,
+                "X86_64": 2488,
+                "X86": 2488
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            },
             {
               "version": "6.104.4",
               "versionCodes": {
