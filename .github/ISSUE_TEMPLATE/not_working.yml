@@ -403,12 +403,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.70.0"
         - "1.70.0-dev.9"
         - "1.70.0-dev.8"
         - "1.70.0-dev.7"
         - "1.70.0-dev.6"
         - "1.70.0-dev.5"
-        - "1.69.0"
         - "Older than these"
         # /generated
     validations:
