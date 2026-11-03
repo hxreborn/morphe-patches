@@ -1,3 +1,28 @@
+## [1.70.0-dev.9](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.8...v1.70.0-dev.9) (2026-11-03)
+
+### Bug Fixes
+
+* **botim - Fix sign-in:** say a used number signs in on its device ([dc30321](https://github.com/hxreborn/morphe-patches/commit/dc3032151b3c8671293460e50edc4f3ce34530a4)), closes [#383](https://github.com/hxreborn/morphe-patches/issues/383)
+* **botim - Spoof signature:** sign in with a new phone number ([0570c86](https://github.com/hxreborn/morphe-patches/commit/0570c86a6b656b35d2216855b537c990e81bdc09)), closes [#383](https://github.com/hxreborn/morphe-patches/issues/383)
+* **botim - Unlock VIP:** remove the upgrade card from the home page ([482277c](https://github.com/hxreborn/morphe-patches/commit/482277c0e5f0227de02f122e6467c5899ddf877b))
+* **botim - Unlock VIP:** remove VIP upsell section from Home ([50d90e3](https://github.com/hxreborn/morphe-patches/commit/50d90e3bd22ccccc35291d782e55457773e987b6))
+* **imo - Spoof signature:** get the push token ([1051e8c](https://github.com/hxreborn/morphe-patches/commit/1051e8c2012dc65cfaccaff46159cdbc8b8a1ea1))
+
+### New Features
+
+* **botim - Spoof signature:** start the app's security module ([741fcc3](https://github.com/hxreborn/morphe-patches/commit/741fcc371ba496f83106aea61a8540b0079677cd))
+* **imo - Remove story notification limit:** show every story alert ([28fb64f](https://github.com/hxreborn/morphe-patches/commit/28fb64fd26cf83a9fee694847db9037eced0514c))
+* **Muviz Widgets - Unlock premium:** unlock Pro widgets and styles ([1f189b5](https://github.com/hxreborn/morphe-patches/commit/1f189b5da08632e7d4ae94a6c8d4385ea9857d0e))
+* **Viber - Spoof signature:** connect to send and receive messages ([6c95507](https://github.com/hxreborn/morphe-patches/commit/6c95507ad710ba470170c2859c678ca1933d2040)), closes [#364](https://github.com/hxreborn/morphe-patches/issues/364)
+
+### Updated App Support
+
+* **botim:** add support for `4.21.0` ([c69451b](https://github.com/hxreborn/morphe-patches/commit/c69451bd7c83c306d86d5fa36dd4b56c2e7336f5)), closes [#550](https://github.com/hxreborn/morphe-patches/issues/550)
+* **imo:** add support for `2026.10.1021` ([fb11a6a](https://github.com/hxreborn/morphe-patches/commit/fb11a6ae40bf9947f8e61afac11eb3f7bd2835d4)), closes [#559](https://github.com/hxreborn/morphe-patches/issues/559)
+* **Keepa:** add support for `6.6.0` ([91715b3](https://github.com/hxreborn/morphe-patches/commit/91715b327b53c7e6023b4cf517d69dc623d38623)), closes [#560](https://github.com/hxreborn/morphe-patches/issues/560)
+* **Keepa:** add support for `6.7.0` ([1753de0](https://github.com/hxreborn/morphe-patches/commit/1753de0adc82ecba5abc8bc0c410989e7e56f132))
+* **Viber:** add support for `29.3.1.0` ([3edcd11](https://github.com/hxreborn/morphe-patches/commit/3edcd11f4932738e8b923c582fe3814c9a925bac))
+
 ## [1.70.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.70.0-dev.7...v1.70.0-dev.8) (2026-11-02)
 
 ### Updated App Support
