@@ -22,7 +22,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 @Suppress("unused")
 val removeLateFlagPatch = bytecodePatch(
     name = "Remove late flag",
-    description = "Sends BeReals you take after the moment's window as on time. Friends don't see a late tag.",
+    description = "Sends BeReals you take after the moment's window as on time.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(settingsPatch)

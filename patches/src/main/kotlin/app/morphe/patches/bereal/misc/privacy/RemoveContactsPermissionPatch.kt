@@ -39,7 +39,7 @@ private val contactsPermissionExtensionPatch = bytecodePatch {
 @Suppress("unused")
 val removeContactsPermissionPatch = bytecodePatch(
     name = "Remove contacts permission",
-    description = "Removes the contacts permission. BeReal can't ask for or read your phone's contacts.",
+    description = "Stops BeReal from asking for or reading your phone's contacts.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
 

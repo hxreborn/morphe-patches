@@ -243,7 +243,8 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
 
     private String hostVersion() {
         try {
-            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            final String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            return (versionName != null) ? versionName : "";
         } catch (PackageManager.NameNotFoundException ex) {
             Log.e(TAG, "Host version not read", ex);
             return "";

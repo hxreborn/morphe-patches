@@ -20,7 +20,7 @@ private val updatePromptsExtensionPatch = bytecodePatch {
 @Suppress("unused")
 val removeUpdatePromptsPatch = bytecodePatch(
     name = "Remove update prompts",
-    description = "Removes BeReal's required and suggested update popups and the Play Store update prompt.",
+    description = "Removes BeReal's required and suggested update dialogs and the Play Store update prompt.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(removePairipProtectionPatch, updatePromptsExtensionPatch)

@@ -45,7 +45,7 @@ private fun MutableMethod.filterRegisterAfter(index: Int, body: (register: Int, 
 @Suppress("unused")
 val removeFriendSuggestionsPatch = bytecodePatch(
     name = "Remove friend suggestions",
-    description = "Removes suggested friends, contacts on BeReal and popular accounts from Friends and the feed.",
+    description = "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and the feed.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(settingsPatch)

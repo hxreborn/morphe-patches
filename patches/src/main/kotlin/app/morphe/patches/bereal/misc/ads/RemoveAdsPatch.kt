@@ -33,8 +33,8 @@ private val removeAdsExtensionPatch = bytecodePatch {
 @Suppress("unused")
 val removeAdsPatch = bytecodePatch(
     name = "Remove ads",
-    description = "Removes ads and sponsored BeReals from both feeds and the " +
-        "full-screen ad at launch, and stops the ad networks from loading.",
+    description = "Removes the full-screen ad at launch and sponsored BeReals in both feeds. " +
+        "Stops the ad networks from loading.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(removePairipProtectionPatch, removeAdsExtensionPatch, removeAdNetworkProvidersPatch)

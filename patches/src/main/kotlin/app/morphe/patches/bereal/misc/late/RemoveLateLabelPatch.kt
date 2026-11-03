@@ -68,7 +68,7 @@ private fun BytecodePatchContext.filterLateReads(methods: List<MutableMethod>, r
 @Suppress("unused")
 val removeLateLabelPatch = bytecodePatch(
     name = "Remove late label",
-    description = "Removes the late label from friends' BeReals. Each one shows how long ago your friend posted it.",
+    description = "Replaces the late label on friends' BeReals with how long ago they posted.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(settingsPatch)

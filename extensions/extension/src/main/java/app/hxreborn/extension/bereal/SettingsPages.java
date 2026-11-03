@@ -36,6 +36,8 @@ import app.hxreborn.extension.BuildConfig;
 
 final class SettingsPages {
 
+    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
+
     private final Activity activity;
 
     private final SettingsStyle style;
@@ -73,14 +75,13 @@ final class SettingsPages {
                 addRow(card, spec);
             }
         }
-        content.addView(this.rows.sectionHeader("Patches"));
+        content.addView(this.rows.sectionHeader("About"));
         final LinearLayout card = this.rows.card();
-        this.rows.actionRow(card, "ic_arrow_counterclockwise", "Reset to defaults",
-                "Every switch goes back to its default.",
-                () -> ConfirmDialog.show(this.activity, this.style, "Reset to defaults?",
-                        "Every switch goes back to its default.", "Cancel", "Reset", this.host::resetToDefaults));
-        this.rows.valueRow(card, "ic_info_circle", "Version",
-                "Patches " + BuildConfig.BUNDLE_VERSION + " \u00b7 BeReal " + this.hostVersion);
+        this.rows.actionRow(card, "ic_arrow_counterclockwise", "Reset to defaults", RESET_DESCRIPTION,
+                () -> ConfirmDialog.show(this.activity, this.style, "Reset to defaults?", RESET_DESCRIPTION, "Cancel",
+                        "Reset", this.host::resetToDefaults));
+        this.rows.valueRow(card, "ic_info_circle", "App version", this.hostVersion);
+        this.rows.valueRow(card, "ic_hammer_circle", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addCard(content, card);
     }
 
