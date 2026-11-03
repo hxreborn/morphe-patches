@@ -50,6 +50,8 @@ public final class HomeFeedFilter {
     private static final Set<String> MISSING_GETTERS = Collections
         .newSetFromMap(new ConcurrentHashMap<String, Boolean>());
 
+    private static final String QUIP_CARD_GETTER = "getQuickPostCard";
+
     private static final String EXPLORE_SECTION_TYPE = "chunked_explore";
 
     private static final String DATABASE_PREFIX = "room_primary_patreon_database_";
@@ -78,6 +80,19 @@ public final class HomeFeedFilter {
         List<Object> kept = new ArrayList<>(items.size());
         for (Object item : items) {
             if (!isRecommendation(item) && !nonMemberPosts.contains(postId(item))) {
+                kept.add(item);
+            }
+        }
+        return (kept.size() == items.size()) ? items : kept;
+    }
+
+    public static List<Object> removeQuipCards(List<Object> items) {
+        if (items == null || items.isEmpty() || !QuipsAndAutoplay.isPatched() || !QuipsAndAutoplay.isDisabled()) {
+            return items;
+        }
+        List<Object> kept = new ArrayList<>(items.size());
+        for (Object item : items) {
+            if (invokeGetter(item, QUIP_CARD_GETTER) == null) {
                 kept.add(item);
             }
         }

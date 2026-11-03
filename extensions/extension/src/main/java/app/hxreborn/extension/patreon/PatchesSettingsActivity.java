@@ -146,6 +146,14 @@ public final class PatchesSettingsActivity extends Activity {
                         confirmRestart();
                     });
         }
+        if (QuipsAndAutoplay.isPatched()) {
+            this.rows.switchRow(feed, "hx_patreon_ic_quips", "Disable Quips and autoplay",
+                    "Removes Quip cards and the Quip button, and stops feed videos from autoplaying or preloading.",
+                    QuipsAndAutoplay.isDisabled(), (button, disabled) -> {
+                        PatchSettings.setEnabled(QuipsAndAutoplay.DISABLE_QUIPS_AND_AUTOPLAY, disabled);
+                        confirmRestart();
+                    });
+        }
         addSection(column, "Feed", feed);
 
         LinearLayout navigation = this.rows.card();

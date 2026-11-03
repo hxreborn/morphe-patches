@@ -40,4 +40,11 @@ public final class HomeFeedFilterTest {
         assertSame(items, HomeFeedFilter.removeExploreSections(items));
     }
 
+    @Test
+    public void unpatchedQuipsKeepEveryItem() {
+        List<Object> items = Collections.singletonList(new Object());
+
+        assertSame(items, HomeFeedFilter.removeQuipCards(items));
+    }
+
 }

@@ -37,6 +37,9 @@ public final class FeatureFlags {
 
     private static final Set<String> TRACKING_FLAGS = Collections.singleton("AUDIO_MUX_STATS_COLLECTION_ENABLED");
 
+    private static final Set<String> QUIPS_AND_AUTOPLAY_FLAGS = new HashSet<>(
+            Arrays.asList("FAN_QUIPPING_ENABLED", "PRELOAD_FEED_MEDIA_ENABLED"));
+
     private FeatureFlags() {
     }
 
@@ -50,6 +53,9 @@ public final class FeatureFlags {
         }
         if (TRACKING_FLAGS.contains(name)) {
             return Tracking.isPatched() && Tracking.isDisabled();
+        }
+        if (QUIPS_AND_AUTOPLAY_FLAGS.contains(name)) {
+            return QuipsAndAutoplay.isPatched() && QuipsAndAutoplay.isDisabled();
         }
         return false;
     }
