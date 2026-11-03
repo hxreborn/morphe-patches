@@ -159,7 +159,8 @@ val bypassSessionExpiryPatch = bytecodePatch(
         }
 
         ReLoginToastFingerprint.matchSingle().apply {
-            method.removeInstruction(instructionMatches.last().index)
+            val (_, _, toastCall) = instructionMatches
+            method.removeInstruction(toastCall.index)
         }
     }
 }

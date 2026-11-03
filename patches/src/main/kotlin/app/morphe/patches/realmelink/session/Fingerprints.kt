@@ -29,6 +29,20 @@ internal object ReLoginPromptFingerprint : Fingerprint(
     ),
 )
 
+private const val CALL_RESULT_WINDOW = 2
+
+private const val SUCCESS_BRANCH_WINDOW = 5
+
+private const val SUCCESS_LOG_WINDOW = 20
+
+private const val ACCOUNT_HELPER_CAST_WINDOW = 6
+
+private const val LINK_TOKEN_NULL_CHECK_WINDOW = 4
+
+private const val ACCESS_TOKEN_APPEND_WINDOW = 4
+
+private const val LABEL_APPEND_WINDOW = 2
+
 internal object ReLoginToastFingerprint : Fingerprint(
     returnType = "V",
     filters = listOf(
@@ -53,26 +67,26 @@ internal val resultSuccessCall = methodCall(
     opcode = Opcode.INVOKE_VIRTUAL,
     parameters = emptyList(),
     returnType = "Z",
-    location = MatchAfterWithin(2),
+    location = MatchAfterWithin(CALL_RESULT_WINDOW),
 )
 
 internal val accountServiceCall = methodCall(
     opcode = Opcode.INVOKE_STATIC,
     parameters = emptyList(),
-    location = MatchAfterWithin(20),
+    location = MatchAfterWithin(SUCCESS_LOG_WINDOW),
 )
 
 internal val linkTokenRead = fieldAccess(
     opcode = Opcode.IGET_OBJECT,
     type = "Ljava/lang/Object;",
-    location = MatchAfterWithin(6),
+    location = MatchAfterWithin(ACCOUNT_HELPER_CAST_WINDOW),
 )
 
 internal val storeTokensCall = methodCall(
     opcode = Opcode.INVOKE_VIRTUAL,
     parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;"),
     returnType = "V",
-    location = MatchAfterWithin(4),
+    location = MatchAfterWithin(LINK_TOKEN_NULL_CHECK_WINDOW),
 )
 
 internal object LinkServerAuthFingerprint : Fingerprint(
@@ -85,10 +99,10 @@ internal object LinkServerAuthFingerprint : Fingerprint(
         methodCall(
             opcode = Opcode.INVOKE_STATIC,
             parameters = listOf("Ljava/lang/String;"),
-            location = MatchAfterWithin(2),
+            location = MatchAfterWithin(CALL_RESULT_WINDOW),
         ),
         resultSuccessCall,
-        string("authToServerLink success", location = MatchAfterWithin(5)),
+        string("authToServerLink success", location = MatchAfterWithin(SUCCESS_BRANCH_WINDOW)),
         accountServiceCall,
         linkTokenRead,
         storeTokensCall,
@@ -106,7 +120,7 @@ internal object SdkHeytapTokenFingerprint : Fingerprint(
 internal val heytapTokenRead = fieldAccess(
     opcode = Opcode.IGET_OBJECT,
     type = "Ljava/lang/String;",
-    location = MatchAfterWithin(2),
+    location = MatchAfterWithin(LABEL_APPEND_WINDOW),
 )
 
 internal object AccountTokensToStringFingerprint : Fingerprint(
@@ -115,7 +129,7 @@ internal object AccountTokensToStringFingerprint : Fingerprint(
     parameters = emptyList(),
     filters = listOf(
         string("AccountInfo(token="),
-        string(", oppoToken=", location = MatchAfterWithin(4)),
+        string(", oppoToken=", location = MatchAfterWithin(ACCESS_TOKEN_APPEND_WINDOW)),
         heytapTokenRead,
     ),
 )
