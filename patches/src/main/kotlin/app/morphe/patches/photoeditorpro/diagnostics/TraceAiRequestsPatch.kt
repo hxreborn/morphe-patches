@@ -30,7 +30,7 @@ private const val OBJECT = "Ljava/lang/Object;"
 val traceAiRequestsPatch = bytecodePatch(
     name = "Inspect AI requests",
     description = "Shows the network calls an AI tool makes, such as HTTP requests and " +
-        "Firebase uploads, and keeps a log.",
+        "Firebase uploads. Keeps a log of them.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)

@@ -73,7 +73,7 @@ public final class PatchPanel {
     static final int SURFACE = Color.parseColor("#1E1E22");
     static final int MUTED = Color.parseColor("#6E6E73");
 
-    private static final String TITLE = "hxreborn’s patches";
+    private static final String TITLE = "hxreborn patches";
 
     private static final String BUNDLE_VERSION = BuildConfig.BUNDLE_VERSION;
 
@@ -121,10 +121,10 @@ public final class PatchPanel {
 
     private static final String[][] ALWAYS_ON = {
             { SPOOF_SIGNATURE_KEY, "Spoof signature",
-                    "Spoofs the original app signature and disables the pairip client-side " + "license check" },
+                    "Spoofs the original app signature and disables the pairip client-side license check." },
             { SPOOF_IOS_PLATFORM_KEY, "Spoof iOS platform",
-                    "Reports the AI requests as coming from the iOS app, so the server does "
-                            + "not ask for a Play Integrity token" }, };
+                    "Sends the AI requests as the iOS app, which the server accepts without a Play Integrity "
+                            + "token." }, };
 
     private static final Set<String> SAFE_METHODS = Set.of("GET", "HEAD", "OPTIONS", "TRACE");
 
@@ -135,22 +135,19 @@ public final class PatchPanel {
 
     private static final List<Entry> ENTRIES = List.of(
             new Entry(PatchSettings.HIDE_ADS, GENERAL, "Hide ads",
-                    "Hides banner, interstitial, app-open and rewarded ads"),
+                    "Hides banner, interstitial, app-open and rewarded ads."),
             new Entry(PatchSettings.UNLOCK_PREMIUM, GENERAL, "Unlock premium",
-                    "Unlocks the pro tools, removes the export watermark and hides the " + "upgrade prompts"),
+                    "Unlocks the pro tools, removes the export watermark and hides the upgrade prompts."),
             new Entry(PatchSettings.HIDE_SHARE, GENERAL, "Hide share options",
-                    "Hides the share buttons on the save screen and centers the saved " + "photo"),
+                    "Hides the share buttons on the save screen and centers the saved photo."),
             new Entry(PatchSettings.SHOW_AI_PROGRESS, AI_TOOLS, "Show AI progress",
-                    "Reads the current stage off the real network activity instead of the "
-                            + "fake progress bar InShot ships"),
+                    "Shows the current stage of AI Remove and Enhance on their loading screens."),
             new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS, "Inspect AI requests",
-                    "Shows the network calls an AI tool makes, such as HTTP requests and "
-                            + "Firebase uploads, and keeps a log, so you can watch your photo "
-                            + "fly to China or the US"),
+                    "Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads."),
             new Entry(PatchSettings.OVERLAY_POSITION, DIAGNOSTICS, "Live overlay position",
-                    "Screen position of the live network request list", PatchSettings.LOG_ENDPOINTS),
+                    "Sets where the live network request list sits on the screen.", PatchSettings.LOG_ENDPOINTS),
             new Entry(PatchSettings.OVERLAY_LINGER, DIAGNOSTICS, "Live overlay hold time",
-                    "Delay before the overlay disappears", PatchSettings.LOG_ENDPOINTS));
+                    "Sets the delay before the overlay disappears.", PatchSettings.LOG_ENDPOINTS));
 
     private PatchPanel() {
     }
