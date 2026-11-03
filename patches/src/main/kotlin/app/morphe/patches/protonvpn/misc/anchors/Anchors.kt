@@ -32,7 +32,15 @@ internal open class ToStringFingerprint(prefix: String) : Fingerprint(
     strings = listOf(string(prefix, StringComparisonType.STARTS_WITH)),
 )
 
-internal object KotlinUnitToStringFingerprint : ToStringFingerprint("kotlin.Unit")
+private const val EXTENSION_KOTLIN_UNIT_TYPE = "Lkotlin/Unit;"
+
+internal object KotlinUnitToStringFingerprint : Fingerprint(
+    name = "toString",
+    returnType = "Ljava/lang/String;",
+    parameters = emptyList(),
+    strings = listOf("kotlin.Unit"),
+    custom = { _, classDef -> classDef.type != EXTENSION_KOTLIN_UNIT_TYPE },
+)
 
 internal val BytecodePatchContext.unitInstanceField
     get() = KotlinUnitToStringFingerprint.originalClassDef.let { unit ->
