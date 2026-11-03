@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.71.0-dev.1",
+  "version": "1.71.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -2074,6 +2074,40 @@
       "options": []
     },
     {
+      "name": "Disable dynamic app icon",
+      "description": "Keeps the default launcher icon.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.duolingo",
+          "name": "Duolingo",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#58CC02",
+          "signatures": [
+            "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.104.4",
+              "versionCodes": {
+                "ARM64_V8A": 2493,
+                "ARMEABI_V7A": 2493,
+                "X86_64": 2493,
+                "X86": 2493
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable rating prompt",
       "description": "Stops the Google Play rating prompt from appearing.",
       "default": true,
@@ -4039,6 +4073,40 @@
               },
               "isExperimental": false,
               "minSdk": 32,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable debug mode",
+      "description": "Shows the debug menu and debug button. Turn it on in the patches menu.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.duolingo",
+          "name": "Duolingo",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#58CC02",
+          "signatures": [
+            "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.104.4",
+              "versionCodes": {
+                "ARM64_V8A": 2493,
+                "ARMEABI_V7A": 2493,
+                "X86_64": 2493,
+                "X86": 2493
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -13387,6 +13455,40 @@
       "options": []
     },
     {
+      "name": "Unlimited RampUp time",
+      "description": "Holds the RampUp timer at one hour.",
+      "default": false,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.duolingo",
+          "name": "Duolingo",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#58CC02",
+          "signatures": [
+            "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.104.4",
+              "versionCodes": {
+                "ARM64_V8A": 2493,
+                "ARMEABI_V7A": 2493,
+                "X86_64": 2493,
+                "X86": 2493
+              },
+              "isExperimental": false,
+              "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlimited cat coins",
       "description": "Buys every store item without running out of cat coins.",
       "default": true,
@@ -14880,6 +14982,40 @@
               },
               "isExperimental": false,
               "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks Super, or Max from the patches menu, and keeps energy full. Max Video Call does not work.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.duolingo",
+          "name": "Duolingo",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#58CC02",
+          "signatures": [
+            "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "6.104.4",
+              "versionCodes": {
+                "ARM64_V8A": 2493,
+                "ARMEABI_V7A": 2493,
+                "X86_64": 2493,
+                "X86": 2493
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]

@@ -1,3 +1,12 @@
+## [1.71.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.1...v1.71.0-dev.2) (2026-11-03)
+
+### New Features
+
+* **Duolingo - Disable dynamic app icon:** keep default launcher icon ([ca95381](https://github.com/hxreborn/morphe-patches/commit/ca9538157c9e3930cb5197ac9fb50eb7c8b1693a))
+* **Duolingo - Enable debug mode:** show debug menu and button ([8d017cd](https://github.com/hxreborn/morphe-patches/commit/8d017cd3a9315bd0b806e4be2af72e77abe6d95a))
+* **Duolingo - Unlimited RampUp time:** hold RampUp timer at one hour ([65f8661](https://github.com/hxreborn/morphe-patches/commit/65f8661464307268580a73aab27edbd52cf4cc44))
+* **Duolingo - Unlock premium:** remove ads and energy limit ([03710cc](https://github.com/hxreborn/morphe-patches/commit/03710ccd9244571b1ff66898cdaca635e1027d19))
+
 ## [1.71.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.70.0...v1.71.0-dev.1) (2026-11-03)
 
 ### Bug Fixes
