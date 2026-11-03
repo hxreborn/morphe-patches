@@ -62,7 +62,7 @@ val traceAiRequestsPatch = bytecodePatch(
 
         requestClientInterceptorFingerprint(interceptorClass).matchSingle().let { match ->
             match.method.apply {
-                val newIndex = match.instructionMatches[0].index
+                val newIndex = match.instructionMatches.single().index
                 val register = getInstruction<OneRegisterInstruction>(newIndex).registerA
                 val constructorIndex = indexOfFirstInstructionOrThrow(newIndex) {
                     opcode == Opcode.INVOKE_DIRECT && (this as FiveRegisterInstruction).registerC == register
