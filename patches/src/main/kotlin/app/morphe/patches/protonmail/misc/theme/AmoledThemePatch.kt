@@ -242,8 +242,10 @@ val amoledThemePatch = bytecodePatch(
             transformShade40CopyRoles(this, shade40Palette)
         }
 
-        UpsellingDarkBackgroundFingerprint.instructionMatchesOrNull?.first()?.index?.let { index ->
-            UpsellingDarkBackgroundFingerprint.method.injectBackgroundTransformCall(index)
+        UpsellingDarkBackgroundFingerprint.matchAll(
+            UPSELLING_DARK_BACKGROUND_COUNT..UPSELLING_DARK_BACKGROUND_COUNT,
+        ).forEach { match ->
+            match.method.injectBackgroundTransformCall(match.instructionMatches.single().index)
         }
 
         CONTACTS_COLOR_TRANSFORMS.forEach { (fingerprint, transform) ->
