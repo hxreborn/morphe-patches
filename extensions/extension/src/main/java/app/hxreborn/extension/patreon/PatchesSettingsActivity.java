@@ -139,6 +139,13 @@ public final class PatchesSettingsActivity extends Activity {
                         confirmRestart();
                     });
         }
+        if (HomeTab.isPatched()) {
+            this.rows.switchRow(feed, "hx_patreon_ic_home_tab", "Hide Home tab",
+                    "Removes the Home tab and starts on Memberships.", HomeTab.isHidden(), (button, hidden) -> {
+                        PatchSettings.setEnabled(HomeTab.HIDE_HOME_TAB, hidden);
+                        confirmRestart();
+                    });
+        }
         addSection(column, "Feed", feed);
 
         LinearLayout about = this.rows.card();
