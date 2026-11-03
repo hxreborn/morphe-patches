@@ -172,6 +172,14 @@ public final class PatchesSettingsActivity extends Activity {
                         confirmRestart();
                     });
         }
+        if (AppPrompts.isPatched()) {
+            this.rows.switchRow(app, "hx_patreon_ic_prompts", "Remove app prompts",
+                    "Removes the rating prompt, the in-app update prompt and the notification request at startup.",
+                    AppPrompts.isRemoved(), (button, removed) -> {
+                        PatchSettings.setEnabled(AppPrompts.REMOVE_APP_PROMPTS, removed);
+                        confirmRestart();
+                    });
+        }
         addSection(column, "App", app);
 
         LinearLayout about = this.rows.card();

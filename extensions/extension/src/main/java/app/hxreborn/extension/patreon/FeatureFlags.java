@@ -31,6 +31,9 @@ public final class FeatureFlags {
             Arrays.asList("SOCIAL_PROOF_ENABLED", "FAN_TO_FAN_GIFTING_ENABLED", "ANDROID_EXPLORE_GIFTS_ENABLED",
                     "LAUNCHER_GIFTING_DISCOVERY_ENABLED", "FCE_IN_FEED_IMPRESSION_SURVEY_ENABLED"));
 
+    private static final Set<String> APP_PROMPT_FLAGS = new HashSet<>(
+            Arrays.asList("APP_REVIEW_PROMPT_ENABLED", "IN_APP_UPGRADE_UI_ENABLED"));
+
     private FeatureFlags() {
     }
 
@@ -38,6 +41,9 @@ public final class FeatureFlags {
         String name = flag.name();
         if (UPGRADE_PROMOTION_FLAGS.contains(name)) {
             return UpgradePromotions.isPatched() && UpgradePromotions.isHidden();
+        }
+        if (APP_PROMPT_FLAGS.contains(name)) {
+            return AppPrompts.isPatched() && AppPrompts.isRemoved();
         }
         return false;
     }
