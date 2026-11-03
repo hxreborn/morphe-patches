@@ -66,7 +66,7 @@ val removeAdsPatch = bytecodePatch(
 
         FeedPostEntryMessageFingerprint.matchAll(1..2).forEach { entry ->
             val loop = feedPostEntryLoopFingerprint(entry.classDef.type).matchSingle()
-            val iteratorCall = loop.instructionMatches.first()
+            val (iteratorCall, _) = loop.instructionMatches
             val items = iteratorCall.getInstruction<FiveRegisterInstruction>().registerC
             loop.method.addInstructions(
                 iteratorCall.index,
@@ -78,8 +78,8 @@ val removeAdsPatch = bytecodePatch(
         }
 
         val experiment = ServerFeedAdsExperimentFingerprint.matchSingle()
-        val resultType = experiment.instructionMatches.first().getInstruction<ReferenceInstruction>()
-            .getReference<TypeReference>()!!.type
+        val (resultInstance, _, _) = experiment.instructionMatches
+        val resultType = resultInstance.getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
         experiment.method.addInstructions(
             0,
             """

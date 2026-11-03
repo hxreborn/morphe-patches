@@ -32,7 +32,7 @@ val removeLateFlagPatch = bytecodePatch(
         val moment = MomentToStringFingerprint.matchSingle().classDef
         val instantType = moment.fields.single { it.name == "creationDate" }.type
         lateCheckFingerprint(moment.type).matchSingle().let { lateCheck ->
-            val momentCast = lateCheck.instructionMatches.first()
+            val momentCast = lateCheck.instructionMatches.single()
             val register = momentCast.getInstruction<OneRegisterInstruction>().registerA
             lateCheck.method.addInstruction(
                 momentCast.index + 1,
@@ -42,10 +42,11 @@ val removeLateFlagPatch = bytecodePatch(
 
         val retakeCounterSetter = CreatePostRetakeCounterSetterFingerprint.matchSingle().method
         val takenAtSetter = createPostTakenAtSetterFingerprint(retakeCounterSetter.definingClass).matchSingle().method
-        val timestampType = takenAtSetter.parameterTypes[1].toString()
+        val (_, timestampParameter) = takenAtSetter.parameterTypes
+        val timestampType = timestampParameter.toString()
         val builder = createPostRequestBuilderFingerprint(retakeCounterSetter).matchSingle()
-        val isMainField = CorePostToStringFingerprint.matchSingle().instructionMatches.last()
-            .getInstruction<ReferenceInstruction>().reference as FieldReference
+        val (_, isMainRead) = CorePostToStringFingerprint.matchSingle().instructionMatches
+        val isMainField = isMainRead.getInstruction<ReferenceInstruction>().reference as FieldReference
         val (takenAtRead, conversion) = createPostTakenAtConversionFingerprint(
             isMainField.definingClass,
             instantType,

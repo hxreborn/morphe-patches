@@ -90,7 +90,7 @@ val removeLateLabelPatch = bytecodePatch(
 
         val placeholder = PostPlaceholderToStringFingerprint.matchSingle().classDef
         val getter = placeholderLateSecondsGetterFingerprint(placeholder.type).matchSingle()
-        val read = getter.instructionMatches.first()
+        val read = getter.instructionMatches.single()
         val register = read.getInstruction<OneRegisterInstruction>().registerA
         getter.method.addInstructions(
             read.index + 1,
