@@ -148,6 +148,21 @@ public final class PatchesSettingsActivity extends Activity {
         }
         addSection(column, "Feed", feed);
 
+        LinearLayout navigation = this.rows.card();
+        if (NavigationButtons.isPatched()) {
+            for (int index = 0; index < NavigationButtons.TABS.length; index++) {
+                String tab = NavigationButtons.TABS[index];
+                String label = NavigationButtons.TAB_LABELS[index];
+                this.rows.switchRow(navigation, NavigationButtons.TAB_ICONS[index], "Hide " + label,
+                        "Removes " + label + " from the bottom bar.", NavigationButtons.isHiddenByUser(tab),
+                        (button, hidden) -> {
+                            NavigationButtons.setHiddenByUser(tab, hidden);
+                            confirmRestart();
+                        });
+            }
+        }
+        addSection(column, "Navigation bar", navigation);
+
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, "hx_patreon_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
         this.rows.valueRow(about, "hx_patreon_ic_info", "App version", appVersion());
