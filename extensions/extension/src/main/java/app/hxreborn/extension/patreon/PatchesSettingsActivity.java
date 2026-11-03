@@ -180,6 +180,14 @@ public final class PatchesSettingsActivity extends Activity {
                         confirmRestart();
                     });
         }
+        if (Tracking.isPatched()) {
+            this.rows.switchRow(app, "hx_patreon_ic_tracking", "Disable tracking",
+                    "Disables Amplitude, AppsFlyer, Sentry, Sift and Mux data collection.", Tracking.isDisabled(),
+                    (button, disabled) -> {
+                        PatchSettings.setEnabled(Tracking.DISABLE_TRACKING, disabled);
+                        confirmRestart();
+                    });
+        }
         addSection(column, "App", app);
 
         LinearLayout about = this.rows.card();

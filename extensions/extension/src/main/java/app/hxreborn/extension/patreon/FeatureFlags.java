@@ -21,6 +21,7 @@
 package app.hxreborn.extension.patreon;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,8 @@ public final class FeatureFlags {
     private static final Set<String> APP_PROMPT_FLAGS = new HashSet<>(
             Arrays.asList("APP_REVIEW_PROMPT_ENABLED", "IN_APP_UPGRADE_UI_ENABLED"));
 
+    private static final Set<String> TRACKING_FLAGS = Collections.singleton("AUDIO_MUX_STATS_COLLECTION_ENABLED");
+
     private FeatureFlags() {
     }
 
@@ -44,6 +47,9 @@ public final class FeatureFlags {
         }
         if (APP_PROMPT_FLAGS.contains(name)) {
             return AppPrompts.isPatched() && AppPrompts.isRemoved();
+        }
+        if (TRACKING_FLAGS.contains(name)) {
+            return Tracking.isPatched() && Tracking.isDisabled();
         }
         return false;
     }
