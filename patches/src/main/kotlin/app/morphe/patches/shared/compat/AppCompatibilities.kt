@@ -464,6 +464,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val DUOLINGO = Compatibility(
+        name = "Duolingo",
+        packageName = "com.duolingo",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x58CC02,
+        signatures = setOf(
+            "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731",
+        ),
+        targets = listOf(AppTarget(version = "6.104.4", versionCode = 2493, minSdk = 29)),
+    )
+
     val DWG_FASTVIEW = Compatibility(
         name = "DWG FastView",
         packageName = "com.gstarmc.android",

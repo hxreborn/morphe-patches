@@ -160,6 +160,7 @@ ICONS = {
     "com.tunneldoom.http": "tunneldoomvpn.png",
     "com.androholic.wallpapersdepthpix": "depthpix.png",
     "flar2.devcheck": "devcheck.png",
+    "com.duolingo": "duolingo.png",
     "com.ferdinandobermeier.focusmate": "focusnow.png",
     "com.adithya.memoneet": "memoneet.png",
     "com.halalfire.medicneet": "medicneet.png",

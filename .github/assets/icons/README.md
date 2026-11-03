@@ -37,6 +37,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `cloneapp.png` | Clone App (`com.pengyou.cloneapp`) | SZPY Tech | APK 4.2.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `depthpix.png` | DepthPix (`com.androholic.wallpapersdepthpix`) | Androholic | APK 1.0.12, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `devcheck.png` | DevCheck (`flar2.devcheck`) | flar2 | APK 6.57, adaptive icon `res/mipmap-xxxhdpi-v4/ic_launcher_background.webp` under `ic_launcher_foreground.webp` |
+| `duolingo.png` | Duolingo (`com.duolingo`) | Duolingo | Google Play listing icon (the adaptive icon's `#58CC02` background under the foreground), cut to a circle |
 | `psiphon.png` | Psiphon (`com.psiphon3.subscription`) | Psiphon Inc. | APK 2.5.11, `res/mipmap-xxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
 | `projectivy.png` | Projectivy Launcher (`com.spocky.projengmenu`) | Spocky | APK 4.71, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
 | `privacynotes.png` | Privacy Notes (`app.privacynotes`) | Lifetime Labs LLC | APK 0.654.2, adaptive icon `res/BW.xml` (`mipmap/ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi) |
