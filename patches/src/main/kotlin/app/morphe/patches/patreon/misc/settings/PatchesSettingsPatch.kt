@@ -37,7 +37,7 @@ private const val SETTINGS_ROW_METHOD = "patchesSettingsRow"
 private val ICON_RESOURCES = listOf(
     "hx_patreon_ic_patches", "hx_patreon_ic_recommended", "hx_patreon_ic_home_tab", "hx_patreon_ic_feed",
     "hx_patreon_ic_library", "hx_patreon_ic_quip", "hx_patreon_ic_community", "hx_patreon_ic_notifications",
-    "hx_patreon_ic_info", "hx_patreon_ic_reset",
+    "hx_patreon_ic_info", "hx_patreon_ic_reset", "hx_patreon_ic_promotions",
 )
 private const val HOST_ACTIVITY = "com.patreon.android.screens.profile.edit.EditProfileActivity"
 private const val CORE_COMPONENT_FACTORY_CLASS = "Landroidx/core/app/CoreComponentFactory;"

@@ -163,6 +163,17 @@ public final class PatchesSettingsActivity extends Activity {
         }
         addSection(column, "Navigation bar", navigation);
 
+        LinearLayout app = this.rows.card();
+        if (UpgradePromotions.isPatched()) {
+            this.rows.switchRow(app, "hx_patreon_ic_promotions", "Hide upgrade promotions",
+                    "Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey.",
+                    UpgradePromotions.isHidden(), (button, hidden) -> {
+                        PatchSettings.setEnabled(UpgradePromotions.HIDE_UPGRADE_PROMOTIONS, hidden);
+                        confirmRestart();
+                    });
+        }
+        addSection(column, "App", app);
+
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, "hx_patreon_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
         this.rows.valueRow(about, "hx_patreon_ic_info", "App version", appVersion());
