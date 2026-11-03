@@ -293,6 +293,7 @@ ICONS = {
     "com.fillobotto.mp3tagger": "automatag.png",
     "com.droid27.transparentclockweather": "transparentclock.png",
     "com.pixlr.express": "pixlr.png",
+    "com.patreon.android": "patreon.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

@@ -1045,6 +1045,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.17.0", versionCode = 4017000, minSdk = 29)),
     )
 
+    val PATREON = Compatibility(
+        name = "Patreon",
+        packageName = "com.patreon.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "58474964025470a3b95e2a1e319079a787180878af8915f81a2d1e77683ae23a",
+        ),
+        targets = listOf(AppTarget(version = "126.44.0.13", versionCode = 244013, minSdk = 32)),
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",
