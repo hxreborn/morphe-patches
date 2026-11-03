@@ -95,6 +95,14 @@ internal object LinkServerAuthFingerprint : Fingerprint(
     ),
 )
 
+internal object SdkHeytapTokenFingerprint : Fingerprint(
+    definingClass = "Lcom/heytap/msp/sdk/AccountSdk;",
+    name = "getToken",
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "Ljava/lang/String;",
+    parameters = emptyList(),
+)
+
 internal val heytapTokenRead = fieldAccess(
     opcode = Opcode.IGET_OBJECT,
     type = "Ljava/lang/String;",
