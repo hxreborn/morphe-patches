@@ -8,14 +8,12 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
-import app.morphe.util.indexOfFirstLiteralInstruction
 import org.w3c.dom.Element
 
 private val unhandledSidebarUpsellingPatch = resourcePatch {
@@ -62,14 +60,8 @@ val hideUpgradePromotionsPatch = bytecodePatch(
 
         rows.forEach { it.returnVoidWhenUpsellingHidden() }
 
-        val buttonDescriptionId = resourceId(ResourceType.STRING, "upselling_button_item_content_description")
-        val buttons = UpgradeUpsellingButtonFingerprint.classDef.methods.filter { method ->
-            method.returnType == "V" &&
-                method.indexOfFirstLiteralInstruction(buttonDescriptionId) >= 0
+        UpgradeUpsellingButtonFingerprint.matchAll(UPGRADE_BUTTON_COUNT..UPGRADE_BUTTON_COUNT).forEach {
+            it.method.returnVoidWhenUpsellingHidden()
         }
-
-        if (buttons.isEmpty()) throw PatchException("No upgrade buttons matched")
-
-        buttons.forEach { it.returnVoidWhenUpsellingHidden() }
     }
 }
