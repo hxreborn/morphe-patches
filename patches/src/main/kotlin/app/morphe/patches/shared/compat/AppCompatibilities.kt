@@ -131,11 +131,7 @@ internal object AppCompatibilities {
         packageName = "com.atlogis.atlomaps",
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0x0683DF,
-        targets = listOf(
-            AppTarget(version = "1.0.6", versionCode = 153, minSdk = 26),
-            AppTarget(version = "1.1.0", versionCode = 172, minSdk = 26),
-            AppTarget(version = "2.0.0", versionCode = 174, minSdk = 26),
-        ),
+        targets = listOf(AppTarget(version = "2.0.2", versionCode = 178, minSdk = 26)),
     )
 
     val ATVTOOLS = Compatibility(
@@ -189,7 +185,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "538fbf04f304c4a9a6dc48638bcab88620e445c3be2b1d671bb3228fb04ff6d8",
         ),
-        targets = listOf(AppTarget(version = "2.3.0.10", versionCode = 797, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.3.0.14", versionCode = 801, minSdk = 24)),
     )
 
     val BANGLA_CALENDAR = Compatibility(
@@ -288,7 +284,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "4a75cf385d6aa8530a1a34ba4ed089da6bf1ae6989f62757839fd01e4f2fcd99",
         ),
-        targets = listOf(AppTarget(version = "4.20.1", versionCode = 7150, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "4.20.1", versionCode = 7150, minSdk = 24),
+            AppTarget(version = "4.21.0", versionCode = 7170, minSdk = 24),
+        ),
     )
 
     val CALCNOTE = Compatibility(
@@ -381,7 +380,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728",
         ),
-        targets = listOf(AppTarget(version = "2.2.9", versionCode = 152, minSdk = 32)),
+        targets = listOf(AppTarget(version = "2.3.0", versionCode = 153, minSdk = 30)),
     )
 
     val CONNECTED2 = Compatibility(
@@ -607,6 +606,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "2026.08.1041", versionCode = 26081041, minSdk = 32),
             AppTarget(version = "2026.09.1051", versionCode = 26091051, minSdk = 32),
+            AppTarget(version = "2026.10.1021", versionCode = 26101021, minSdk = 32),
         ),
     )
 
@@ -687,7 +687,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "43329e3a67415def40f307e5a7b3343498db9a821f436785d0a5487c636b9bcd",
         ),
-        targets = listOf(AppTarget(version = "6.5.1", versionCode = 57461, minSdk = 30)),
+        targets = listOf(AppTarget(version = "6.7.0", versionCode = 58741, minSdk = 30)),
     )
 
     val KLASSIK_RADIO = Compatibility(
@@ -695,7 +695,7 @@ internal object AppCompatibilities {
         packageName = "de.klassikradio.app",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x000000,
-        targets = listOf(AppTarget(version = "p5.12.0", versionCode = 50138, minSdk = 24)),
+        targets = listOf(AppTarget(version = "p5.12.1", versionCode = 50141, minSdk = 24)),
     )
 
     val LAGGUY_WALLPAPERS = Compatibility(
@@ -881,7 +881,18 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6696e2cf978935c637f52aaefe196760bc3d62b4ff92bcc5e3f7ed015a6d9b23",
         ),
-        targets = listOf(AppTarget(version = "8.4.2", versionCode = 2026061901, minSdk = 24)),
+        targets = listOf(AppTarget(version = "8.5.0", versionCode = 2026102201, minSdk = 24)),
+    )
+
+    val MUVIZ_WIDGETS = Compatibility(
+        name = "Muviz Widgets",
+        packageName = "com.sparkine.widgets",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF50614,
+        signatures = setOf(
+            "68050e20d07df18c28646c82840e03fbfaed377693997026f9d8904bf667f8a9",
+        ),
+        targets = listOf(AppTarget(version = "1.1.5.0", versionCode = 29, minSdk = 31)),
     )
 
     val MYMOVESET = Compatibility(
@@ -1028,7 +1039,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "e9b037f4be157ee608de6aa922cda5cdbe614633171cc94544c40f08e9509286",
         ),
-        targets = listOf(AppTarget(version = "4.16.0", versionCode = 4016000, minSdk = 29)),
+        targets = listOf(AppTarget(version = "4.17.0", versionCode = 4017000, minSdk = 29)),
     )
 
     val PERPLEXITY = Compatibility(
@@ -1077,7 +1088,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "626c56a43dab2f279a257008783c7e752d1ad9ad46cfff9fd858ce68d3ff10ab",
         ),
-        targets = listOf(AppTarget(version = "13.4.0", versionCode = 21304000, minSdk = 24)),
+        targets = listOf(AppTarget(version = "13.4.1", versionCode = 21304010, minSdk = 24)),
     )
 
     val PIXLR = Compatibility(
@@ -1291,7 +1302,7 @@ internal object AppCompatibilities {
         signatures = setOf("9ed9acdad7d1e0b3eb51e1e06cccdef979624cb3b6bc18fddcf7165e36b06c44"),
         targets = listOf(
             AppTarget(version = "11.20.1", versionCode = 452, minSdk = 29),
-            AppTarget(version = "11.22.1", versionCode = 467, minSdk = 32),
+            AppTarget(version = "11.23.0", versionCode = 470, minSdk = 32),
         ),
     )
 
@@ -1378,7 +1389,7 @@ internal object AppCompatibilities {
         appIconColor = 0xFD8700,
         targets = listOf(
             AppTarget(version = "3.11", versionCode = 297, minSdk = 26),
-            AppTarget(version = "3.14", versionCode = 300, minSdk = 29),
+            AppTarget(version = "3.16", versionCode = 302, minSdk = 29),
         ),
     )
 
@@ -1515,7 +1526,7 @@ internal object AppCompatibilities {
         packageName = "com.thetrainline",
         apkFileType = ApkFileType.APK,
         appIconColor = 0x00A88F,
-        targets = listOf(AppTarget(version = "438.1.0.184284", versionCode = 1284284, minSdk = 26)),
+        targets = listOf(AppTarget(version = "439.0.0.184323", versionCode = 1284323, minSdk = 26)),
     )
 
     val TRANSPARENT_CLOCK = Compatibility(
@@ -1548,7 +1559,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "97c78f212f647fc96059ef8b81f239bc047be8f285ae59486a53a5e1ed09349a",
         ),
-        targets = listOf(AppTarget(version = "1.621.196", versionCode = 196, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.630.199", versionCode = 199, minSdk = 26)),
     )
 
     val U_DICTIONARY = Compatibility(
@@ -1559,7 +1570,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "544b87c75e50d264962b1379931af73c85a75f7416ec3672d4afb261e553eb6c",
         ),
-        targets = listOf(AppTarget(version = "6.7.5", versionCode = 399, minSdk = 23)),
+        targets = listOf(
+            AppTarget(version = "6.7.5", versionCode = 399, minSdk = 23),
+            AppTarget(version = "6.7.6", versionCode = 403, minSdk = 24),
+        ),
     )
 
     val UPTCL = Compatibility(
@@ -1581,7 +1595,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6e9857865c0d4568e02ef76dc838ed282a3d24b12c7027b3926190d99b42fe09",
         ),
-        targets = listOf(AppTarget(version = "29.2.0.0", versionCode = 1290200, minSdk = 32)),
+        targets = listOf(AppTarget(version = "29.3.1.0", versionCode = 1290301, minSdk = 32)),
     )
 
     val VLLO = Compatibility(
@@ -1618,7 +1632,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x000000,
         signatures = setOf("2da8b29136b6eb1735c32d87d56722bbd374ad8781119914bd7443adb64b0b0d"),
-        targets = listOf(AppTarget(version = "1.0.1", versionCode = 22, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.0.4", versionCode = 25, minSdk = 24)),
     )
 
     val WALP = Compatibility(
@@ -1636,7 +1650,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xE0AF32,
         signatures = setOf("bc5f2a6254cb58ce31b43b4d1efb1b257c3ed0576f32568ca30bc4536cbdd01a"),
-        targets = listOf(AppTarget(version = "5.26.2", versionCode = 1028, minSdk = 21)),
+        targets = listOf(AppTarget(version = "5.30.0", versionCode = 1037, minSdk = 21)),
     )
 
     val WATTPAD = Compatibility(

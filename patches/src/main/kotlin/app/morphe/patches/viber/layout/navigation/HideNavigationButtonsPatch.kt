@@ -13,6 +13,7 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.shared.addHiddenIdCheck
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
@@ -31,6 +32,8 @@ val hideNavigationButtonsPatch = bytecodePatch(
     description = "Hides the selected tabs from the bottom navigation bar.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
+
+    dependsOn(spoofSignaturePatch)
 
     val hideTabOptions = HomeTab.entries.associateWith { tab ->
         booleanOption(

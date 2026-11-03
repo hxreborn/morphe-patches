@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.69.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.69.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;420 patches total
+> **[v1.70.0-dev.9](https://github.com/hxreborn/morphe-patches/releases/tag/v1.70.0-dev.9)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;424 patches total
 
 <table>
 <tr>
@@ -58,7 +58,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#blurwall"><img src=".github/assets/icons/blurwall.png" width="40"><br>BlurWall</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#botim"><img src=".github/assets/icons/botim.png" width="40"><br>botim</a><br><sub>3 patches</sub></td>
+<td align="center" width="25%"><a href="#botim"><img src=".github/assets/icons/botim.png" width="40"><br>botim</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#calcnote"><img src=".github/assets/icons/calcnote.png" width="40"><br>CalcNote</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#cast-plug-in-for-musicolet"><img src=".github/assets/icons/musicoletcastplugin.png" width="40"><br>Cast Plug-in for Musicolet</a><br><sub>1 patch</sub></td>
 </tr>
@@ -100,7 +100,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#hindu-calendar"><img src=".github/assets/icons/hinducalendar.png" width="40"><br>Hindu Calendar</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#imo"><img src=".github/assets/icons/imo.png" width="40"><br>imo</a><br><sub>30 patches</sub></td>
+<td align="center" width="25%"><a href="#imo"><img src=".github/assets/icons/imo.png" width="40"><br>imo</a><br><sub>31 patches</sub></td>
 <td align="center" width="25%"><a href="#internet-speed-meter-lite"><img src=".github/assets/icons/internetspeedmeterlite.png" width="40"><br>Internet Speed Meter Lite</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#iototoy"><img src=".github/assets/icons/iototoy.png" width="40"><br>IoToToy</a><br><sub>2 patches</sub></td>
 </tr>
@@ -137,115 +137,118 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#musicolet"><img src=".github/assets/icons/musicolet.png" width="40"><br>Musicolet</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#musixmatch"><img src=".github/assets/icons/musixmatch.png" width="40"><br>Musixmatch</a><br><sub>1 patch</sub></td>
+<td align="center" width="25%"><a href="#muviz-widgets"><img src=".github/assets/icons/muvizwidgets.png" width="40"><br>Muviz Widgets</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#my-apk"><img src=".github/assets/icons/com.andatsoft.myapk.fwa.png" width="40"><br>My APK</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#mymoveset"><img src=".github/assets/icons/mymoveset.png" width="40"><br>MyMoveset</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#mymoveset"><img src=".github/assets/icons/mymoveset.png" width="40"><br>MyMoveset</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#myscript-math"><img src=".github/assets/icons/myscriptmath.png" width="40"><br>MyScript Math</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#myscript-notes"><img src=".github/assets/icons/myscriptnotes.png" width="40"><br>MyScript Notes</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#nara-baby"><img src=".github/assets/icons/narababy.png" width="40"><br>Nara Baby</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#neetprep"><img src=".github/assets/icons/neetprep.png" width="40"><br>NEETprep</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#neetprep"><img src=".github/assets/icons/neetprep.png" width="40"><br>NEETprep</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#neetprep-essential"><img src=".github/assets/icons/neetprepessential.png" width="40"><br>NEETprep Essential</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#network-analyzer"><img src=".github/assets/icons/netanalyzer.png" width="40"><br>Network Analyzer</a><br><sub>18 patches</sub></td>
 <td align="center" width="25%"><a href="#notein"><img src=".github/assets/icons/notein.png" width="40"><br>Notein</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#notesnook"><img src=".github/assets/icons/notesnook.png" width="40"><br>Notesnook</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#notesnook"><img src=".github/assets/icons/notesnook.png" width="40"><br>Notesnook</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#one4home-launcher"><img src=".github/assets/icons/one4home.png" width="40"><br>One4Home Launcher</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#opal"><img src=".github/assets/icons/opal.png" width="40"><br>Opal</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#period-tracker-and-calendar"><img src=".github/assets/icons/periodcalendar.png" width="40"><br>Period Tracker and Calendar</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#perplexity"><img src=".github/assets/icons/perplexity.png" width="40"><br>Perplexity</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#perplexity"><img src=".github/assets/icons/perplexity.png" width="40"><br>Perplexity</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#photo-editor-pro"><img src=".github/assets/icons/photoeditorpro.png" width="40"><br>Photo Editor Pro</a><br><sub>6 patches</sub></td>
 <td align="center" width="25%"><a href="#photone"><img src=".github/assets/icons/photone.png" width="40"><br>Photone</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#pixlr"><img src=".github/assets/icons/pixlr.png" width="40"><br>Pixlr</a><br><sub>4 patches</sub></td>
-<td align="center" width="25%"><a href="#pleco"><img src=".github/assets/icons/pleco.png" width="40"><br>Pleco</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#pleco"><img src=".github/assets/icons/pleco.png" width="40"><br>Pleco</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#pocket-whip"><img src=".github/assets/icons/pocketwhip.png" width="40"><br>Pocket Whip</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#poe"><img src=".github/assets/icons/poe.png" width="40"><br>Poe</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#prayer-times-and-qibla"><img src=".github/assets/icons/prayertimes.png" width="40"><br>Prayer Times and Qibla</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#privacy-notes"><img src=".github/assets/icons/privacynotes.png" width="40"><br>Privacy Notes</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#privacy-notes"><img src=".github/assets/icons/privacynotes.png" width="40"><br>Privacy Notes</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#projectivy-launcher"><img src=".github/assets/icons/projectivy.png" width="40"><br>Projectivy Launcher</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#proton-authenticator"><img src=".github/assets/icons/protonauthenticator.png" width="40"><br>Proton Authenticator</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-lumo"><img src=".github/assets/icons/lumo.png" width="40"><br>Proton Lumo</a><br><sub>4 patches</sub></td>
-<td align="center" width="25%"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-pass"><img src=".github/assets/icons/protonpass.png" width="40"><br>Proton Pass</a><br><sub>8 patches</sub></td>
 <td align="center" width="25%"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>13 patches</sub></td>
 <td align="center" width="25%"><a href="#psiphon"><img src=".github/assets/icons/psiphon.png" width="40"><br>Psiphon</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#public"><img src=".github/assets/icons/publicvideos.png" width="40"><br>Public</a><br><sub>5 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#public"><img src=".github/assets/icons/publicvideos.png" width="40"><br>Public</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#pydroid-3"><img src=".github/assets/icons/pydroid.png" width="40"><br>Pydroid 3</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#qr-barcode-scanner"><img src=".github/assets/icons/qrscanner.png" width="40"><br>QR & Barcode Scanner</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#quick-cursor"><img src=".github/assets/icons/quickcursor.png" width="40"><br>Quick Cursor</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#quranify"><img src=".github/assets/icons/quranify.png" width="40"><br>Quranify</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#quranify"><img src=".github/assets/icons/quranify.png" width="40"><br>Quranify</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#radio-javan"><img src=".github/assets/icons/radiojavan.png" width="40"><br>Radio Javan</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#raindrop-io"><img src=".github/assets/icons/raindrop.png" width="40"><br>Raindrop.io</a><br><sub>6 patches</sub></td>
 <td align="center" width="25%"><a href="#rateglance"><img src=".github/assets/icons/rateglance.png" width="40"><br>RateGlance</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#readera"><img src=".github/assets/icons/readera.png" width="40"><br>ReadEra</a><br><sub>13 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#readera"><img src=".github/assets/icons/readera.png" width="40"><br>ReadEra</a><br><sub>13 patches</sub></td>
 <td align="center" width="25%"><a href="#realme-link"><img src=".github/assets/icons/realmelink.png" width="40"><br>Realme Link</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#resprite"><img src=".github/assets/icons/resprite.png" width="40"><br>Resprite</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#ridmik-keyboard"><img src=".github/assets/icons/ridmik.png" width="40"><br>Ridmik Keyboard</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#ringtone-maker"><img src=".github/assets/icons/ringtonemaker.png" width="40"><br>Ringtone Maker</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#ringtone-maker"><img src=".github/assets/icons/ringtonemaker.png" width="40"><br>Ringtone Maker</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#rise-sleep-tracker"><img src=".github/assets/icons/risesleep.png" width="40"><br>RISE Sleep Tracker</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#rubber-bands"><img src=".github/assets/icons/rubberbands.png" width="40"><br>Rubber Bands</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#serializd"><img src=".github/assets/icons/serializd.png" width="40"><br>Serializd</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#sheytoon"><img src=".github/assets/icons/sheytoon.png" width="40"><br>Sheytoon</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#sheytoon"><img src=".github/assets/icons/sheytoon.png" width="40"><br>Sheytoon</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#showly"><img src=".github/assets/icons/showly.png" width="40"><br>Showly</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#sqcom"><img src=".github/assets/icons/sqcom.png" width="40"><br>SQCOM</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#steezy"><img src=".github/assets/icons/steezy.png" width="40"><br>STEEZY</a><br><sub>4 patches</sub></td>
-<td align="center" width="25%"><a href="#storywise"><img src=".github/assets/icons/storywise.png" width="40"><br>Storywise</a><br><sub>3 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#storywise"><img src=".github/assets/icons/storywise.png" width="40"><br>Storywise</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#sygic"><img src=".github/assets/icons/sygic.png" width="40"><br>Sygic</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#symfonium"><img src=".github/assets/icons/symfonium.png" width="40"><br>Symfonium</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>8 patches</sub></td>
-<td align="center" width="25%"><a href="#trainline"><img src=".github/assets/icons/trainline.png" width="40"><br>Trainline</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#trainline"><img src=".github/assets/icons/trainline.png" width="40"><br>Trainline</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#transparent-clock-weather"><img src=".github/assets/icons/transparentclock.png" width="40"><br>Transparent clock & weather</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#tunneldoom-vpn"><img src=".github/assets/icons/tunneldoomvpn.png" width="40"><br>TunnelDOOM VPN</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#u-dictionary"><img src=".github/assets/icons/udictionary.png" width="40"><br>U Dictionary</a><br><sub>1 patch</sub></td>
+</tr>
+<tr>
 <td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>5 patches</sub></td>
-</tr>
-<tr>
 <td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>4 patches</sub></td>
+<td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#vpn-india"><img src=".github/assets/icons/vpnindia.png" width="40"><br>VPN India</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpn-super-unlimited-proxy"><img src=".github/assets/icons/vpnsuper.png" width="40"><br>VPN Super Unlimited Proxy</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vpnify"><img src=".github/assets/icons/vpnify.png" width="40"><br>vpnify</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#wallmaa"><img src=".github/assets/icons/wallmaa.png" width="40"><br>Wallmaa</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#walp"><img src=".github/assets/icons/walp.png" width="40"><br>WalP</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#watch-it"><img src=".github/assets/icons/watchit.png" width="40"><br>WATCH IT</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#wattpad"><img src=".github/assets/icons/wattpad.png" width="40"><br>Wattpad</a><br><sub>3 patches</sub></td>
-<td align="center" width="25%"><a href="#weather24"><img src=".github/assets/icons/weather24.png" width="40"><br>weather24</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
+<td align="center" width="25%"><a href="#weather24"><img src=".github/assets/icons/weather24.png" width="40"><br>weather24</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#yanosik"><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="40"><br>Yanosik</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#yi-iot"><img src=".github/assets/icons/yiiot.png" width="40"><br>Yi iot</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#yuka"><img src=".github/assets/icons/yuka.png" width="40"><br>Yuka</a><br><sub>2 patches</sub></td>
+</tr>
+<tr>
 <td align="center" width="25%"><a href="#universal">🌐<br>Universal</a><br><sub>1 patch</sub></td>
 </tr>
 </table>
@@ -473,8 +476,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.0.6 | 1.1.0 | 2.0.0 |
-| :---: | :---: | :---: |
+| 2.0.2 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -555,7 +558,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 2.3.0.10 |
+| 2.3.0.14 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -705,18 +708,19 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="botim"></a>
 <details>
-<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 4.20.1 |
-| :---: |
+| 4.20.1 | 4.21.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="botim-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/botim/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data. |
 | <a id="botim-fix-sign-in"></a>[Fix sign-in](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/FixSignInPatch.kt) | Fixes sending the verification code when signing in with a phone number. |
+| <a id="botim-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/SpoofSignaturePatch.kt) | Lets a new phone number receive the verification code and sign in. |
 | <a id="botim-unlock-vip"></a>[Unlock VIP](patches/src/main/kotlin/app/morphe/patches/botim/misc/premium/UnlockVipPatch.kt) | Removes ads and upgrade prompts. Shows the VIP badge in the header. |
 
 </details>
@@ -868,7 +872,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 2.2.9 |
+| 2.3.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1188,13 +1192,13 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="imo"></a>
 <details>
-<summary><img src=".github/assets/icons/imo.png" width="18" align="top">&nbsp;&nbsp;imo&nbsp;&nbsp;•&nbsp;&nbsp;30 patches</summary>
+<summary><img src=".github/assets/icons/imo.png" width="18" align="top">&nbsp;&nbsp;imo&nbsp;&nbsp;•&nbsp;&nbsp;31 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 2026.08.1041 | 2026.09.1051 |
-| :---: | :---: |
+| 2026.08.1041 | 2026.09.1051 | 2026.10.1021 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1222,11 +1226,12 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="imo-remove-forwarding-restrictions"></a>[Remove forwarding restrictions](patches/src/main/kotlin/app/morphe/patches/imo/misc/forwarding/RemoveForwardingRestrictionsPatch.kt) | Allows forwarding disappearing and view-once text messages. |
 | <a id="imo-remove-premium-entry"></a>[Remove premium entry](patches/src/main/kotlin/app/morphe/patches/imo/misc/premium/RemovePremiumEntryPatch.kt) | Removes the imo Premium entry from the Me page. |
 | <a id="imo-remove-screenshot-restriction"></a>[Remove screenshot restriction](patches/src/main/kotlin/app/morphe/patches/imo/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots and screen recording in chats, calls, media and profiles. |
+| <a id="imo-remove-story-notification-limit"></a>[Remove story notification limit](patches/src/main/kotlin/app/morphe/patches/imo/misc/story/RemoveStoryNotificationLimitPatch.kt) | Removes the 5 minute spacing between story notifications from 18:00 to 23:59. |
 | <a id="imo-remove-story-video-limit"></a>[Remove story video limit](patches/src/main/kotlin/app/morphe/patches/imo/misc/story/RemoveStoryVideoLimitPatch.kt) | Removes the length limit on story videos picked from the gallery or recorded. |
 | <a id="imo-send-long-messages"></a>[Send long messages](patches/src/main/kotlin/app/morphe/patches/imo/misc/messages/SendLongMessagesPatch.kt) | Sends text longer than 2000 characters as consecutive messages. Raises the chat input limit to 10000 characters. Privacy Chat messages are cut at 2000 characters. |
 | <a id="imo-show-full-profile-photos"></a>[Show full profile photos](patches/src/main/kotlin/app/morphe/patches/imo/misc/privacy/ShowFullProfilePhotosPatch.kt) | Opens profile photos in full size when their owner restricts it. |
 | <a id="imo-show-invisible-friends-in-contacts"></a>[Show invisible friends in contacts](patches/src/main/kotlin/app/morphe/patches/imo/misc/invisiblefriends/ShowInvisibleFriendsInContactsPatch.kt) | Adds the Invisible Friends entry to the contacts list. Requires at least one invisible friend. |
-| <a id="imo-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/imo/misc/signin/SpoofSignaturePatch.kt) | Restores phone verification by call when signing in. |
+| <a id="imo-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/imo/misc/signin/SpoofSignaturePatch.kt) | Restores phone verification by call when signing in and lets the app get its push token. |
 | <a id="imo-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/imo/misc/premium/UnlockPremiumPatch.kt) | Unlocks imo Premium. |
 
 </details>
@@ -1340,7 +1345,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 6.5.1 |
+| 6.7.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1375,7 +1380,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| p5.12.0 |
+| p5.12.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1630,12 +1635,28 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 8.4.2 |
+| 8.5.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="musixmatch-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/musixmatch/misc/premium/UnlockPremiumPatch.kt) | Unlocks offline lyrics, animated backgrounds and Android Auto lyrics. |
+
+</details>
+
+<a id="muviz-widgets"></a>
+<details>
+<summary><img src=".github/assets/icons/muvizwidgets.png" width="18" align="top">&nbsp;&nbsp;Muviz Widgets&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.1.5.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="muviz-widgets-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/muvizwidgets/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro widgets and styles and removes ads. |
 
 </details>
 
@@ -1848,7 +1869,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.16.0 |
+| 4.17.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1865,7 +1886,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 13.4.0 |
+| 13.4.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2273,7 +2294,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 11.20.1 | 11.22.1 |
+| 11.20.1 | 11.23.0 |
 | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2440,7 +2461,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 3.11 | 3.14 |
+| 3.11 | 3.16 |
 | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2603,7 +2624,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |  |
 | <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner, interstitial, app-open and video player ads. Rewarded ads still play when requested from Benefits. |  |
 | <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |  |
-| <a id="terabox-hide-home-shortcuts"></a>[Hide home shortcuts](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Hides Translate, Short Drama and Trending from the home screen and the More screen. An option hides the Creative Generation tools too. | • Hide Creative Generation<br>• Hide Translate<br>• Hide Short Drama<br>• Hide Trending |
+| <a id="terabox-hide-home-shortcuts"></a>[Hide home shortcuts](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Hides Translate, Short Drama and Trending from the home screen and the More screen. Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too. | • Hide Creative Generation<br>• Hide Translate<br>• Hide Signature<br>• Hide PDF Encryption<br>• Hide Add Watermark<br>• Hide Short Drama<br>• Hide Trending |
 | <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Hides Premium upgrade cards and banners, prize and campaign cards, speed-up prompts, floating invites, and sale, coupon and promotional popups. |  |
 | <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Hides the recommended videos below the video player. |  |
 | <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD up to original quality, playback speeds up to 3x and video uploads. HD buffers faster over parallel connections. |  |
@@ -2617,7 +2638,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 438.1.0.184284 |
+| 439.0.0.184323 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2667,8 +2688,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 6.7.5 |
-| :---: |
+| 6.7.5 | 6.7.6 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2714,12 +2735,12 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 29.2.0.0 |
+| 29.3.1.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
@@ -2728,6 +2749,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="viber-hide-more-screen-items"></a>[Hide More screen items](patches/src/main/kotlin/app/morphe/patches/viber/layout/more/HideMoreItemsPatch.kt) | Hides Viber Dating, Your News, promotional banners and upsell entries from the More screen. | • Hide Business Account<br>• Hide Viber Dating<br>• Hide eSIM<br>• Hide Get free stickers<br>• Hide promotional banners<br>• Hide Rakuten account<br>• Hide Viber Out<br>• Hide Viber Plus<br>• Hide Your News |
 | <a id="viber-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/viber/ads/HideAdsPatch.kt) | Hides ads in the chat list, the More screen, Explore, search and after calls. |  |
 | <a id="viber-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar. | • Hide Calls<br>• Hide ChatGPT<br>• Hide Explore<br>• Hide Marketplace<br>• Hide Pay<br>• Hide Shortica |
+| <a id="viber-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/viber/misc/fix/signature/SpoofSignaturePatch.kt) | Lets the app send and receive messages and get its push token. |  |
 
 </details>
 
@@ -2738,7 +2760,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.621.196 |
+| 1.630.199 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2820,7 +2842,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.0.1 |
+| 1.0.4 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2853,7 +2875,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 5.26.2 |
+| 5.30.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |

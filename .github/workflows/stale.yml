@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |
           discussion=.github/actions/triage/discussion.sh
-          cutoff=$(date -u -d '7 days ago' +%FT%TZ)
+          cutoff=$(date -u -d '3 days ago' +%FT%TZ)
           python3 .github/actions/triage/replies.py request-stale > "$RUNNER_TEMP/comment.md"
           bash -eo pipefail "$discussion" list app-requests |
           jq -r --arg cutoff "$cutoff" '.[] | select(.state == "OPEN" and .updatedAt < $cutoff)
@@ -76,7 +76,7 @@ jobs:
         with:
           debug-only: ${{ inputs.dry-run || false }}
           only-labels: "needs info"
-          days-before-issue-stale: 7
+          days-before-issue-stale: 3
           days-before-issue-close: 0
           stale-issue-label: "stale"
           stale-issue-message: ${{ steps.replies.outputs.issue-needs-info-closed }}

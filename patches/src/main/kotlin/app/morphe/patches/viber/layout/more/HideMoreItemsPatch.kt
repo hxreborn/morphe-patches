@@ -17,6 +17,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.shared.addHiddenIdCheck
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -43,6 +44,8 @@ val hideMoreItemsPatch = bytecodePatch(
     description = "Hides Viber Dating, Your News, promotional banners and upsell entries from the More screen.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
+
+    dependsOn(spoofSignaturePatch)
 
     val hideItemOptions = MoreItem.entries.associateWith { item ->
         booleanOption(

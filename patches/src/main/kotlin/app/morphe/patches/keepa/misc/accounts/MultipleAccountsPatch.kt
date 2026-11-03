@@ -204,8 +204,8 @@ internal object MultipleAccountsAnchors {
         ),
         Edit(
             "NetworkService.request",
-            """}request(@{message}){""",
-            """}request(@{message}){{const hxRouted=hxAccountsRuntime.route(this,@{message});if(hxRouted)return hxRouted}""",
+            """}request(@{message},@{background}=!1){""",
+            """}request(@{message},@{background}=!1){{const hxRouted=hxAccountsRuntime.route(this,@{message});if(hxRouted)return hxRouted}""",
         ),
         Edit(
             "NetworkService forced logout",

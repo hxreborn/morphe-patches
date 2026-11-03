@@ -11,6 +11,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 internal object ShareAvailabilityFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "V",
-    parameters = listOf("L", "Ljava/util/LinkedHashSet;", "Z"),
     filters = listOf(methodCall(definingClass = "Ljava/util/Set;", name = "add")),
+    custom = { method, _ ->
+        method.parameterTypes.map(CharSequence::toString).drop(1).take(2) == listOf("Ljava/util/LinkedHashSet;", "Z")
+    },
 )

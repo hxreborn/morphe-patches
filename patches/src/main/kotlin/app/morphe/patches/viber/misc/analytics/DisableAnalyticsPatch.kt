@@ -16,6 +16,7 @@ import app.morphe.patches.shared.misc.analytics.SetCrashlyticsCollectionEnabledF
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
+import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
@@ -26,7 +27,12 @@ val disableAnalyticsPatch = bytecodePatch(
         "collecting and sending usage data.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
-    dependsOn(disableAnalyticsCollectionPatch, disableCrashlyticsCollectionPatch, disableFirebaseSessionsPatch)
+    dependsOn(
+        spoofSignaturePatch,
+        disableAnalyticsCollectionPatch,
+        disableCrashlyticsCollectionPatch,
+        disableFirebaseSessionsPatch,
+    )
 
     execute {
         TrackerAllowedFingerprint.matchSingle().method.returnEarly(false)
