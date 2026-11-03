@@ -39,7 +39,7 @@ public final class AppliedPatches {
     static final String LOADING_INDICATOR = "M3E loading indicator";
     static final String HIDE_NAVIGATION_BAR_ON_SCROLL = "Hide navigation bar on scroll";
 
-    static final String SWIPE_TO_SWITCH_ACCOUNTS = "Swipe to switch accounts";
+    private static final String SWIPE_TO_SWITCH_ACCOUNTS = "Swipe to switch accounts";
 
     private AppliedPatches() {
 
