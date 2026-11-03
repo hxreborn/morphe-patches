@@ -581,7 +581,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6566216a168c676d7290543751611e836d79c88a0c9e616c9ba3db9688c9737b",
         ),
-        targets = listOf(AppTarget(version = "1.0.10", versionCode = 11, minSdk = 32)),
+        targets = listOf(
+            AppTarget(version = "1.0.10", versionCode = 11, minSdk = 32),
+            AppTarget(version = "1.0.2", versionCode = 12, minSdk = 32),
+        ),
     )
 
     val HINDU_CALENDAR = Compatibility(
