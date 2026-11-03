@@ -78,7 +78,7 @@ final class SettingsRows {
         LinearLayout row = baseRow(card, iconName);
         addLabels(row, patchName, description);
 
-        boolean enabled = PatchSettings.isEnabled(patchName, PatchSettings.SWITCH_DEFAULT);
+        boolean enabled = PatchSettings.isEnabled(patchName, PatchSettings.defaultEnabled(patchName));
         SettingsStyle.Toggle toggle = new SettingsStyle.Toggle(this.style, enabled);
         LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

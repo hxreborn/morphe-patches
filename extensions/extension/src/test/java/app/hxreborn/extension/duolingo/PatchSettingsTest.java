@@ -73,7 +73,6 @@ public final class PatchSettingsTest {
     public void enablesPatchedFeaturesByDefault() {
         assertTrue(PatchSettings.isPremiumUnlocked());
         assertTrue(PatchSettings.isDynamicAppIconDisabled());
-        assertTrue(PatchSettings.isDebugModeEnabled());
         assertEquals(MAX_ENERGY, PatchSettings.energyOrMax(ENERGY, MAX_ENERGY));
         assertEquals(UNLIMITED_RAMPUP_SECONDS, PatchSettings.rampUpSecondsOrUnlimited(RAMPUP_SECONDS));
     }
@@ -87,14 +86,20 @@ public final class PatchSettingsTest {
         assertFalse(PatchSettings.isPremiumUnlocked());
         assertEquals(ENERGY, PatchSettings.energyOrMax(ENERGY, MAX_ENERGY));
         assertEquals(RAMPUP_SECONDS, PatchSettings.rampUpSecondsOrUnlimited(RAMPUP_SECONDS));
-        assertTrue(PatchSettings.isDebugModeEnabled());
+        assertTrue(PatchSettings.isDynamicAppIconDisabled());
     }
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
     public void persistsSwitchState() {
-        PatchSettings.setEnabled(AppliedPatches.ENABLE_DEBUG_MODE, false);
+        PatchSettings.setEnabled(AppliedPatches.ENABLE_DEBUG_MODE, true);
 
+        assertTrue(PatchSettings.isDebugModeEnabled());
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void keepsDebugModeOffByDefault() {
         assertFalse(PatchSettings.isDebugModeEnabled());
     }
 
@@ -150,7 +155,7 @@ public final class PatchSettingsTest {
     public void resetWritesEverySwitchBackToItsDefault() {
         // given
         storeEnabled(AppliedPatches.UNLOCK_PREMIUM, false);
-        storeEnabled(AppliedPatches.ENABLE_DEBUG_MODE, false);
+        storeEnabled(AppliedPatches.ENABLE_DEBUG_MODE, true);
         PatchSettings.setSubscription(PatchSettings.Subscription.MAX);
 
         // when
@@ -159,9 +164,10 @@ public final class PatchSettingsTest {
         // then
         assertEquals(PatchSettings.Subscription.SUPER, PatchSettings.subscription());
         for (String key : new String[] { AppliedPatches.UNLOCK_PREMIUM, AppliedPatches.DISABLE_DYNAMIC_APP_ICON,
-                AppliedPatches.ENABLE_DEBUG_MODE, AppliedPatches.UNLIMITED_RAMPUP_TIME }) {
+                AppliedPatches.UNLIMITED_RAMPUP_TIME }) {
             assertTrue(key, PatchSettings.isEnabled(key, false));
         }
+        assertFalse(PatchSettings.isEnabled(AppliedPatches.ENABLE_DEBUG_MODE, true));
     }
 
 }

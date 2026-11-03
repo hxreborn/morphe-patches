@@ -21,7 +21,9 @@
 package app.hxreborn.extension.duolingo;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,8 +37,6 @@ public final class PatchSettings {
 
     static final String PREFERENCES_NAME = "hx_duolingo_patches";
 
-    static final boolean SWITCH_DEFAULT = true;
-
     static final String SUBSCRIPTION_KEY = "Subscription";
 
     static final Subscription SUBSCRIPTION_DEFAULT = Subscription.SUPER;
@@ -44,6 +44,8 @@ public final class PatchSettings {
     private static final List<String> SWITCH_KEYS = Arrays.asList(AppliedPatches.UNLOCK_PREMIUM,
             AppliedPatches.DISABLE_DYNAMIC_APP_ICON, AppliedPatches.ENABLE_DEBUG_MODE,
             AppliedPatches.UNLIMITED_RAMPUP_TIME);
+
+    private static final Set<String> OFF_BY_DEFAULT = Collections.singleton(AppliedPatches.ENABLE_DEBUG_MODE);
 
     private static final int UNLIMITED_RAMPUP_SECONDS = 3600;
 
@@ -76,7 +78,11 @@ public final class PatchSettings {
     }
 
     static boolean isFeatureEnabled(boolean patched, String key) {
-        return patched && isEnabled(key, SWITCH_DEFAULT);
+        return patched && isEnabled(key, defaultEnabled(key));
+    }
+
+    static boolean defaultEnabled(String key) {
+        return !OFF_BY_DEFAULT.contains(key);
     }
 
     static boolean isEnabled(String key, boolean fallback) {
@@ -119,7 +125,7 @@ public final class PatchSettings {
         }
         SharedPreferences.Editor editor = preferences.edit();
         for (String key : SWITCH_KEYS) {
-            editor.putBoolean(key, SWITCH_DEFAULT);
+            editor.putBoolean(key, defaultEnabled(key));
         }
         editor.putString(SUBSCRIPTION_KEY, SUBSCRIPTION_DEFAULT.name());
         editor.commit();
