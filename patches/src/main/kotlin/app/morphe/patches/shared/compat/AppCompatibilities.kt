@@ -746,6 +746,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.01.08", versionCode = 12506, minSdk = 24)),
     )
 
+    val LIFTOFF = Compatibility(
+        name = "Liftoff",
+        packageName = "com.gymbros.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x24A8FF,
+        signatures = setOf(
+            "5fc760275f21c908355419006ad8022187cbf72d7ea701680fc4907cf234bc30",
+        ),
+        targets = listOf(AppTarget(version = "2.17.5", versionCode = 641, minSdk = 26)),
+    )
+
     val LINGODEER = Compatibility(
         name = "LingoDeer",
         packageName = "com.lingodeer",
