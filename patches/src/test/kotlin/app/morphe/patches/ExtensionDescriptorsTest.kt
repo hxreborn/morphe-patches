@@ -17,6 +17,8 @@ internal class ExtensionDescriptorsTest {
 
     private val classConstant = Regex("""(?:const\s+)?val\s+(\w+)\s*=\s*"(L[\w/$]+;)"""")
 
+    private val privateClassConstant = Regex("""private\s+(?:const\s+)?val\s+(\w+)\s*=\s*"L[\w/$]+;"""")
+
     private val constantReference = Regex("""[$]\{?(\w+)\}?""")
 
     private val extensionCall = Regex(
@@ -41,11 +43,19 @@ internal class ExtensionDescriptorsTest {
 
     private val sharedConstants by lazy {
         sources.values
-            .flatMap { text -> classConstant.findAll(text).map { it.groupValues[1] to it.groupValues[2] }.toList() }
+            .flatMap(::exportedClassConstants)
             .groupBy({ it.first }, { it.second })
             .mapValues { it.value.distinct() }
             .filterValues { it.size == 1 }
             .mapValues { it.value.single() }
+    }
+
+    private fun exportedClassConstants(text: String): List<Pair<String, String>> {
+        val privateNames = privateClassConstant.findAll(text).map { it.groupValues[1] }.toSet()
+        return classConstant.findAll(text)
+            .filter { it.groupValues[1] !in privateNames }
+            .map { it.groupValues[1] to it.groupValues[2] }
+            .toList()
     }
 
     private data class ScanResult(val calls: Int, val problems: List<String>)
@@ -83,6 +93,18 @@ internal class ExtensionDescriptorsTest {
         val problems = results.flatMap { (file, scanned) -> scanned.problems.map { "${file.path}: $it" } }
         assertEquals(emptyList(), problems)
         assertTrue(results.values.sumOf { it.calls } >= 50, "the scan found too few calls to trust")
+    }
+
+    @Test
+    fun `exclude private constants from cross-file resolution`() {
+        val constants = exportedClassConstants(
+            """
+                private const val MENU_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchesMenu;"
+                internal const val PUBLIC_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
+            """.trimIndent(),
+        )
+
+        assertEquals(listOf("PUBLIC_CLASS" to "Lapp/hxreborn/extension/aliexpress/PatchSettings;"), constants)
     }
 
     @Test

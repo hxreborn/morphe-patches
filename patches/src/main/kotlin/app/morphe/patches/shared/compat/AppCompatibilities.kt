@@ -35,6 +35,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.25.1", versionCode = 996, minSdk = 26)),
     )
 
+    val ALIEXPRESS = Compatibility(
+        name = "AliExpress",
+        packageName = "com.alibaba.aliexpresshd",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFF4747,
+        signatures = setOf(
+            "4fc3b267393ea2351c4716b37e6910517f197eb479bc43d9c9a5a46d49dd700e",
+        ),
+        targets = listOf(AppTarget(version = "8.180.1", versionCode = 80005998, minSdk = 21)),
+    )
+
     val ALL_IN_ONE_CALCULATOR = Compatibility(
         name = "All-In-One Calculator",
         packageName = "all.in.one.calculator",

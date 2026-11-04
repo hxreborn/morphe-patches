@@ -25,6 +25,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `mangatime.png` | MangaTime (`net.mangatime.app`) | Giorgio Bertolotti | APK 1.24.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `xplore.png` | X-plore File Manager (`com.lonelycatgames.Xplore`) | Lonely Cat Games | Play 4.50.05, adaptive icon `res/mipmap-anydpi/icon2.xml` (`icon2_background` under `icon2_foreground`, xxhdpi), cut to a circle |
 | `groundnews.png` | Ground News (`com.checkitt`) | Snapwise Inc. | APK 5.0.0, `res/GF.png` (`mipmap/ground_icon_app_round`, xxxhdpi) |
+| `aliexpress.png` | AliExpress (`com.alibaba.aliexpresshd`) | Alibaba Mobile | Play 8.180.1, adaptive icon foreground `res/al/b.png`, cut to a circle |
 | `albo.png` | Albo (`com.thesortdapp.sortd`) | The Feel Good Project Ltd | Google Play listing icon (the adaptive icon's white background under the foreground), cut to a circle |
 | `iototoy.png` | IoToToy No-Code IoT automation (`com.hardcodedjoy.iototoy`) | HARDCODED JOY S.R.L. | APK 1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `audiobookunlimited.png` | Audiobook Unlimited for Kindle (`com.oneletters.audiobooksai`) | Cee68 | APK 1.7.23, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |

@@ -150,6 +150,7 @@ ICONS = {
     "me.aap.fermatamod.dear.google.why.bingo2.rec": "xtreamplayer.png",
     "com.lonelycatgames.Xplore": "xplore.png",
     "com.checkitt": "groundnews.png",
+    "com.alibaba.aliexpresshd": "aliexpress.png",
     "com.thesortdapp.sortd": "albo.png",
     "com.hardcodedjoy.iototoy": "iototoy.png",
     "com.oneletters.audiobooksai": "audiobookunlimited.png",
