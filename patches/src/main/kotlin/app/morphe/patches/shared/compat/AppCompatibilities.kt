@@ -800,6 +800,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val MANGATIME = Compatibility(
+        name = "MangaTime",
+        packageName = "net.mangatime.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xEB654A,
+        signatures = setOf(
+            "f5fc7fee2657ed7afa5fc868803974b46c224618f6d7472befc993c7eceb3957",
+        ),
+        targets = listOf(AppTarget(version = "1.24.5", versionCode = 219, minSdk = 24)),
+    )
+
     val MEMONEET = Compatibility(
         name = "MemoNeet",
         packageName = "com.adithya.memoneet",

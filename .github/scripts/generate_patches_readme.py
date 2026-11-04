@@ -165,6 +165,7 @@ ICONS = {
     "com.duolingo": "duolingo.png",
     "com.ferdinandobermeier.focusmate": "focusnow.png",
     "com.adithya.memoneet": "memoneet.png",
+    "net.mangatime.app": "mangatime.png",
     "com.halalfire.medicneet": "medicneet.png",
     "com.lernr.app": "neetprep.png",
     "com.gooded.essential": "neetprepessential.png",
