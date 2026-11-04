@@ -1378,8 +1378,7 @@ internal object AppCompatibilities {
         appIconColor = 0x0061BD,
         targets = listOf(
             AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 21),
-            AppTarget(version = "26.09.29+2320", versionCode = 2320, minSdk = 23),
-            AppTarget(version = "26.10.18+2330", versionCode = 2330, minSdk = 23),
+            AppTarget(version = "26.10.28+2340", versionCode = 2340, minSdk = 23),
         ),
     )
 

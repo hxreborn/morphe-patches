@@ -21,6 +21,7 @@ import app.morphe.patches.readera.shared.showTtsPreferenceRow
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.addMethod
+import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -112,12 +113,12 @@ val skipHeadersPatch = bytecodePatch(
             classDefByOrNull(field.type)?.fields?.any { it.type == "[$pageType" } == true
         }
         val pages = classDefBy(pagesHolder.type).fields.single { it.type == "[$pageType" }
-        val sizes: FieldReference
-        val sizeOf: MethodReference
-        pageSizeLookupFingerprint(controller.type, sizeType).instructionMatches.let {
-            sizes = it[0].instruction.getReference<FieldReference>()!!
-            sizeOf = it[1].instruction.getReference<MethodReference>()!!
-        }
+        val (sizes, sizeOf) = pageSizeLookupFingerprint(controller.type, sizeType).matchAll(1..Int.MAX_VALUE)
+            .map { match ->
+                val (sizesRead, sizeLookup) = match.instructionMatches
+                sizesRead.instruction.getReference<FieldReference>()!! to
+                    sizeLookup.instruction.getReference<MethodReference>()!!
+            }.distinctBy { (field, method) -> descriptor(field) to descriptor(method) }.single()
 
         controller.fields.add(
             ImmutableField(controller.type, SPEECH_CROPS_FIELD, SPARSE_ARRAY_TYPE, AccessFlags.PRIVATE.value, null, null, null)

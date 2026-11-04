@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.readera.shared.TTS_FOOTNOTE_ROW
 import app.morphe.patches.readera.shared.TTS_UPSELL_ROW
 import app.morphe.patches.readera.shared.bindTtsPreference
@@ -54,9 +55,10 @@ val footnoteSpeechPatch = bytecodePatch(
             )
         }
 
-        SpeakFootnoteFingerprint.let { speak ->
-            val numberRegister = speak.method.getInstruction<OneRegisterInstruction>(speak.instructionMatches[1].index).registerA
-            val textIndex = speak.instructionMatches[3].index + 1
+        SpeakFootnoteFingerprint.matchSingle().let { speak ->
+            val (_, numberResult, _, textCall, _) = speak.instructionMatches
+            val numberRegister = speak.method.getInstruction<OneRegisterInstruction>(numberResult.index).registerA
+            val textIndex = textCall.index + 1
             val registers = speak.method.getFreeRegisterProvider(textIndex, 2, numberRegister)
             val textRegister = registers.getFreeRegister4Bit()
             val flagRegister = registers.getFreeRegister4Bit()

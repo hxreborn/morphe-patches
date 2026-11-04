@@ -7,6 +7,7 @@ package app.morphe.patches.readera.misc.highlightcolors
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
+import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -52,14 +53,15 @@ val dictionaryWordColorsPatch = bytecodePatch(
         val showWordHint = dictionaryWordHintFingerprint(DictionaryWordAddFingerprint.method)
             .instructionMatches[1].instruction.getReference<MethodReference>()!!
 
-        val unavailableCheck: MethodReference
-        val unavailableMessageId: Long
-        val showMessage: MethodReference
-        DictionaryUnavailableFingerprint.let {
-            unavailableCheck = it.instructionMatches[0].instruction.getReference<MethodReference>()!!
-            unavailableMessageId = it.method.getInstruction<WideLiteralInstruction>(it.instructionMatches[4].index).wideLiteral
-            showMessage = it.instructionMatches[5].instruction.getReference<MethodReference>()!!
-        }
+        val (unavailableCheck, unavailableMessageId, showMessage) = DictionaryUnavailableFingerprint.matchAll(2..2)
+            .map { match ->
+                val (checkCall, _, _, messageLiteral, messageCall) = match.instructionMatches
+                Triple(
+                    checkCall.instruction.getReference<MethodReference>()!!,
+                    match.method.getInstruction<WideLiteralInstruction>(messageLiteral.index).wideLiteral,
+                    messageCall.instruction.getReference<MethodReference>()!!,
+                )
+            }.distinctBy { (check, messageId, show) -> Triple(descriptor(check), messageId, descriptor(show)) }.single()
         val unavailableEvent: String
         val findStickyEvent: MethodReference
         dictionaryUnavailableCheckFingerprint(unavailableCheck).instructionMatches.let {
