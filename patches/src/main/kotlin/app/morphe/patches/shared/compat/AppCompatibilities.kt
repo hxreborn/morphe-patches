@@ -887,7 +887,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "8a4d4121f541e3644c1fd1e5c3502eb4bea49792cafd26e600d413cd1f10851f",
         ),
-        targets = listOf(AppTarget(version = "6.14.1 build540", versionCode = 54000, minSdk = 28)),
+        targets = listOf(AppTarget(version = "6.14.1 build540", versionCode = 54000, minSdk = 24)),
     )
 
     val MUSICOLET_CAST_PLUGIN = Compatibility(
