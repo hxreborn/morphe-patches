@@ -8,10 +8,12 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.restoreVirtualizedMethods
+import app.morphe.patches.shared.misc.smali.descriptor
 
 internal const val APP = "Lcom/vpn/lib/App;"
 internal const val SPLASH = "Lcom/vpn/lib/feature/splash/SplashActivity;"
@@ -58,10 +60,10 @@ internal fun stringId(name: String) = resourceIdHex(ResourceType.STRING, name)
 
 internal fun viewId(name: String) = resourceIdHex(ResourceType.ID, name)
 
-private fun restoredMethods() = listOf(
+private fun restoredMethods(landscapeInsetsCall: String) = listOf(
     RestoredMethod(APP, ON_CREATE, 6, appOnCreate()),
     RestoredMethod(SPLASH, ON_CREATE, 12, splashOnCreate()),
-    RestoredMethod(NAVIGATION, ON_CREATE, 9, navigationOnCreate()),
+    RestoredMethod(NAVIGATION, ON_CREATE, 9, navigationOnCreate(landscapeInsetsCall)),
     RestoredMethod(
         "Lcom/vpn/lib/feature/paywall/PaywallActivity;", ON_CREATE, 2,
         """
@@ -134,6 +136,15 @@ val restoreVirtualizedMethodsPatch = bytecodePatch {
 
     execute {
         checkMergedLambdaBindings()
-        restoreVirtualizedMethods(restoredMethods() + appRestoredMethods(packageMetadata.packageName))
+        val landscapeInsets = LandscapeInsetsFingerprint.matchSingle().originalMethod
+        val landscapeInsetsCall = when (landscapeInsets.parameterTypes.map { it.toString() }) {
+            emptyList<String>() -> "invoke-virtual {p0}, ${descriptor(landscapeInsets)}"
+            listOf("Ljava/lang/Boolean;") -> """
+                sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
+                invoke-virtual {p0, v0}, ${descriptor(landscapeInsets)}
+            """
+            else -> throw PatchException("Unexpected landscape insets parameters: ${landscapeInsets.parameterTypes}")
+        }
+        restoreVirtualizedMethods(restoredMethods(landscapeInsetsCall) + appRestoredMethods(packageMetadata.packageName))
     }
 }

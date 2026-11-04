@@ -6,7 +6,7 @@ package app.morphe.patches.usavpn.misc.pairip
 
 import app.morphe.patcher.resource.ResourceType
 
-internal fun navigationOnCreate(): String {
+internal fun navigationOnCreate(landscapeInsetsCall: String): String {
     val drawerItems = listOf("l", "m", "k", "o", "j", "p", "t", "u", "n", "q", "v").joinToString("") { field ->
         """
             iget-object v0, p0, $NAVIGATION->$field:Landroid/widget/TextView;
@@ -68,7 +68,7 @@ internal fun navigationOnCreate(): String {
         iget v0, v0, Landroid/content/res/Configuration;->orientation:I
         const/4 v1, 0x2
         if-ne v0, v1, :views
-        invoke-virtual {p0}, $NAVIGATION->s1()V
+        $landscapeInsetsCall
         invoke-static {p0}, Lcom/vpn/lib/util/ViewUtils;->a(Landroidx/appcompat/app/AppCompatActivity;)I
         move-result v3
         const v0, ${viewId("statusBar")}
