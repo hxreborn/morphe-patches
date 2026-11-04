@@ -81,6 +81,7 @@ dependencies {
     compileOnly(libs.androidx.compose.ui)
     compileOnly(libs.androidx.compose.runtime)
     compileOnly(libs.androidx.compose.foundation)
+    compileOnly(libs.androidx.webkit)
     testImplementation(libs.junit)
     testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)

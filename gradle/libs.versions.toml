@@ -12,6 +12,7 @@ robolectric = "4.17"
 json = "20260814"
 androidx-annotation = "1.9.1"
 androidx-compose = "1.7.6"
+androidx-webkit = "1.16.0"
 
 [libraries]
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
@@ -27,3 +28,4 @@ androidx-annotation = { module = "androidx.annotation:annotation", version.ref =
 androidx-compose-ui = { module = "androidx.compose.ui:ui-android", version.ref = "androidx-compose" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime-android", version.ref = "androidx-compose" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation-android", version.ref = "androidx-compose" }
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "androidx-webkit" }
