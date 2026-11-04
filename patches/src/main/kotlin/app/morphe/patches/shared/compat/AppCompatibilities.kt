@@ -1597,7 +1597,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "297e4716a4c6bc8814cd699dc0bf0bb9834fca22719676856d004b658339181f",
         ),
-        targets = listOf(AppTarget(version = "9.18.2", versionCode = 1431, minSdk = 32)),
+        targets = listOf(AppTarget(version = "9.18.2", versionCode = 1431, minSdk = 24)),
     )
 
     val TUNNELDOOM_VPN = Compatibility(
