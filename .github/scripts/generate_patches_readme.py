@@ -146,6 +146,7 @@ def versions_table(targets):
 
 
 ICONS = {
+    "me.aap.fermatamod.dear.google.why.bingo2.rec": "xtreamplayer.png",
     "com.lonelycatgames.Xplore": "xplore.png",
     "com.checkitt": "groundnews.png",
     "com.thesortdapp.sortd": "albo.png",

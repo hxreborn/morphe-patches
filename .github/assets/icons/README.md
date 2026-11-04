@@ -180,6 +180,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `pixlr.png` | Pixlr (`com.pixlr.express`) | Pixlr Pte Ltd | APK 3.9.3, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_2025.xml`: vector `res/drawable/ic_launcher_2025_foreground.xml` on its `#0e0e0f` background, cut to a circle |
 | `patreon.png` | Patreon (`com.patreon.android`) | Patreon | APK 126.44.0.13, adaptive icon `res/drawable/ic_launcher_foreground.xml` on `@color/ic_launcher_background` (black), cut to a circle |
 | `ultimateguitar.png` | Ultimate Guitar: Chords & Tabs (`com.ultimateguitar.tabs`) | Ultimate Guitar USA LLC | APK 7.3.36, square icon `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` cut to a circle |
+| `xtreamplayer.png` | Xtream Player (`me.aap.fermatamod.dear.google.why.bingo2.rec`) | malebuffy | GitHub 1.8.12, adaptive round icon `res/mipmap-anydpi-v26/xtream_launcher_round.xml` (`res/drawable-xxxhdpi-v4/xtream_icon_app.png`, cut to a circle) |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

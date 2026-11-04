@@ -1775,6 +1775,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "26.9.0", versionCode = 6001512, minSdk = 28)),
     )
 
+    val XTREAM_PLAYER = Compatibility(
+        name = "Xtream Player",
+        packageName = "me.aap.fermatamod.dear.google.why.bingo2.rec",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x7392A6,
+        signatures = setOf(
+            "54eff60e74a11da72c81ddf4001c548f66f316747e164310539256e965e3e429",
+        ),
+        targets = listOf(AppTarget(version = "1.8.12", versionCode = 614, minSdk = 28)),
+    )
+
     val YI_IOT = Compatibility(
         name = "Yi iot",
         packageName = "com.yunyi.smartcamera",
