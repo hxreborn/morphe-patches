@@ -1805,6 +1805,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.172", versionCode = 172, minSdk = 24)),
     )
 
+    val GROUND_NEWS = Compatibility(
+        name = "Ground News",
+        packageName = "com.checkitt",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x111111,
+        signatures = setOf("2d064f962bf658ca5a445219e9fb3e1afbc4fcf9592148d011f8b638ec9e6507"),
+        targets = listOf(AppTarget(version = "5.0.0", versionCode = 1210, minSdk = 24)),
+    )
+
     val GRAPH_MESSENGER = Compatibility(
         name = "Graph Messenger",
         packageName = "ir.ilmili.telegraph",

@@ -147,6 +147,7 @@ def versions_table(targets):
 
 ICONS = {
     "com.lonelycatgames.Xplore": "xplore.png",
+    "com.checkitt": "groundnews.png",
     "com.thesortdapp.sortd": "albo.png",
     "com.hardcodedjoy.iototoy": "iototoy.png",
     "com.oneletters.audiobooksai": "audiobookunlimited.png",
