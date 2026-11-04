@@ -1619,7 +1619,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "47448c666caa451f8e5febb3b69262081f4d495405bda9a4f22d079febbfaef8",
         ),
-        targets = listOf(AppTarget(version = "7.3.36", versionCode = 4009263, minSdk = 32)),
+        targets = listOf(AppTarget(version = "7.3.36", versionCode = 4009263, minSdk = 29)),
     )
 
     val VIDEO_EDITOR = Compatibility(
