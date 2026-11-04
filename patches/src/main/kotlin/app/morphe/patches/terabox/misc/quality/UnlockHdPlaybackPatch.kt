@@ -4,7 +4,6 @@
  */
 package app.morphe.patches.terabox.misc.quality
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
@@ -17,7 +16,10 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.terabox.misc.settings.PREMIUM_ENABLED
+import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
+import app.morphe.patches.terabox.misc.settings.overrideWhenEnabled
+import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -30,26 +32,40 @@ private const val RELOAD_METHOD = "reloadWithResolution"
 
 internal val unlockHdPlaybackPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.TERABOX)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(patchesSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
-        PremiumResolutionThresholdFingerprint.matchSingle().method.returnEarly(Int.MAX_VALUE)
+        PremiumResolutionThresholdFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(Int.MAX_VALUE) }
 
         OnlineVideoInfoRequestFingerprint.matchSingle().apply {
             val requestIndex = instructionMatches.first().index
             val waitingForMetadata = instructionMatches.last().instruction.getReference<FieldReference>()!!
 
             method.apply {
-                addInstruction(requestIndex + 1, "return-void")
+                val requestRegister = getFreeRegisterProvider(requestIndex + 1, 1).getFreeRegister4Bit()
+                addInstructionsWithLabels(
+                    requestIndex + 1,
+                    """
+                        invoke-static {}, $TERABOX_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z
+                        move-result v$requestRegister
+                        if-eqz v$requestRegister, :original_request
+                        return-void
+                    """,
+                    ExternalLabel("original_request", getInstruction(requestIndex + 1)),
+                )
 
                 val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
-                addInstructions(
+                addInstructionsWithLabels(
                     0,
                     """
+                        invoke-static {}, $TERABOX_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z
+                        move-result v$register
+                        if-eqz v$register, :original_metadata
                         const/4 v$register, 0x1
                         iput-boolean v$register, p0, ${descriptor(waitingForMetadata)}
                     """,
+                    ExternalLabel("original_metadata", getInstruction(0)),
                 )
             }
         }
@@ -80,13 +96,15 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             )
         }
 
-        SetMediaUrlFingerprint.matchSingle().method.addInstructions(
-            0,
-            """
+        SetMediaUrlFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) {
+            addInstructions(
+                0,
+                """
                 invoke-static { p0, p1 }, $EXTENSION_CLASS->selectPlaybackUrl(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/String;
                 move-result-object p1
             """,
-        )
+            )
+        }
 
         val reload = PlayerReloadFingerprint.matchSingle()
         val presenter = reload.classDef
@@ -101,6 +119,9 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             AccessFlags.PRIVATE.value or AccessFlags.FINAL.value,
             6,
             """
+                invoke-static {}, $TERABOX_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z
+                move-result v0
+                if-eqz v0, :keep_stream
                 invoke-static { p1 }, $EXTENSION_CLASS->requiresReload(Ljava/lang/Enum;)Z
                 move-result v0
                 if-eqz v0, :keep_stream

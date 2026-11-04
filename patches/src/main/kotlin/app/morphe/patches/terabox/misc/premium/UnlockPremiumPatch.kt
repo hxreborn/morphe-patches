@@ -13,9 +13,11 @@ import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.terabox.ads.HasPrivilegeFingerprint
-import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.terabox.misc.quality.unlockHdPlaybackPatch
-import app.morphe.util.findElementByAttributeValueOrThrow
+import app.morphe.patches.terabox.misc.settings.PREMIUM_ENABLED
+import app.morphe.patches.terabox.misc.settings.markPatchApplied
+import app.morphe.patches.terabox.misc.settings.overrideWhenEnabled
+import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -35,9 +37,10 @@ private val hideDataSaverOptionPatch = resourcePatch {
     execute {
         DATA_SAVER_LAYOUTS.forEach { layout ->
             document("res/layout/$layout.xml").use { document ->
-                document.getElementsByTagName("*")
-                    .findElementByAttributeValueOrThrow("android:id", "@id/video_rb_resolution_fluent_layout")
-                    .setAttribute("android:layout_height", "0dp")
+                val controller = document.createElement("app.hxreborn.extension.terabox.DataSaverOption")
+                controller.setAttribute("android:layout_width", "0dp")
+                controller.setAttribute("android:layout_height", "0dp")
+                document.documentElement.appendChild(controller)
             }
         }
     }
@@ -46,22 +49,23 @@ private val hideDataSaverOptionPatch = resourcePatch {
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock Premium Plus",
-    description = "Unlocks HD up to original quality, playback speeds up to 3x and video uploads. " +
+    description = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
         "HD buffers faster over parallel connections.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
-    dependsOn(spoofSignaturePatch, unlockHdPlaybackPatch, hideDataSaverOptionPatch)
+    dependsOn(patchesSettingsPatch, unlockHdPlaybackPatch, hideDataSaverOptionPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
-        VipInfoIsVipFingerprint.matchSingle().method.returnEarly(true)
-        VipInfoLevelFingerprint.matchSingle().method.returnEarly(PREMIUM_PLUS_LEVEL)
-        VipInfoIdentityFingerprint.matchSingle().method.returnEarly(PREMIUM_PLUS_LEVEL)
-        NamedPrivilegeCheckFingerprint.matchSingle().method.returnEarly(true)
-        HasPrivilegeFingerprint.matchSingle().method.returnEarly(true)
-        VideoUploadPremiumSwitchFingerprint.matchSingle().method.returnEarly(false)
-        PlaybackSpeedFreeLimitFingerprint.matchSingle().method.returnEarly(MAX_PLAYBACK_SPEED)
+        markPatchApplied("unlockPremium")
+        VipInfoIsVipFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
+        VipInfoLevelFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
+        VipInfoIdentityFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
+        NamedPrivilegeCheckFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
+        HasPrivilegeFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
+        VideoUploadPremiumSwitchFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(false) }
+        PlaybackSpeedFreeLimitFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(MAX_PLAYBACK_SPEED) }
 
         val currentVipInfo = CurrentVipInfoFingerprint.matchSingle()
         val vipManager = currentVipInfo.classDef

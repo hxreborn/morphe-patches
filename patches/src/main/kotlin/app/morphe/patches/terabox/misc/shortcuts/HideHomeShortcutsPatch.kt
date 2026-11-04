@@ -4,12 +4,17 @@
  */
 package app.morphe.patches.terabox.misc.shortcuts
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.findFreeRegister
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
+import app.morphe.patches.terabox.misc.settings.markPatchApplied
+import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/HomeShortcutFilter;"
@@ -43,10 +48,12 @@ private enum class Shortcut(
 @Suppress("unused")
 val hideHomeShortcutsPatch = bytecodePatch(
     name = "Hide home shortcuts",
-    description = "Hides Translate, Short Drama and Trending from the home screen and the More screen. " +
+    description = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
         "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
+
+    dependsOn(patchesSettingsPatch)
 
     extendWith("extensions/extension.mpe")
 
@@ -60,6 +67,7 @@ val hideHomeShortcutsPatch = bytecodePatch(
     }
 
     execute {
+        markPatchApplied("hideHomeShortcuts")
         val hidden = hideShortcutOptions.filterValues { it.value == true }.keys
         if (hidden.isEmpty()) return@execute
 
@@ -85,15 +93,20 @@ val hideHomeShortcutsPatch = bytecodePatch(
                     }
                 }
 
-                method.addInstructions(
+                method.addInstructionsWithLabels(
                     returnIndex,
-                    filterCalls.joinToString("\n") { (filterMethod, values) ->
+                    """
+                        invoke-static {}, $TERABOX_PATCH_SETTINGS_CLASS->isHomeShortcutsHidden()Z
+                        move-result v$valueRegister
+                        if-eqz v$valueRegister, :original
+                    """ + filterCalls.joinToString("\n") { (filterMethod, values) ->
                         """
                             const-string v$valueRegister, "$values"
                             invoke-static { v$configRegister, v$valueRegister }, $filterMethod
                             move-result-object v$configRegister
                         """
                     },
+                    ExternalLabel("original", method.getInstruction(returnIndex)),
                 )
             }
         }
