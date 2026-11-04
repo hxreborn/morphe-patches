@@ -18,6 +18,9 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
+private const val PRODUCT_READER_COUNT = 2
+private const val PRO_READER_COUNT = 4
+
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
@@ -27,16 +30,20 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.FAST_STL_VIEWER)
 
     execute {
-        forceBooleanFieldReadsTrue(ProductButtonTextFingerprint)
-        forceBooleanFieldReadsTrue(PurchasesUpdatedFingerprint)
+        forceBooleanFieldReadsTrue(ProductButtonTextFingerprint, PRODUCT_READER_COUNT)
+        forceBooleanFieldReadsTrue(PurchasesUpdatedFingerprint, PRO_READER_COUNT)
         RequestAdConsentFingerprint.matchSingle().method.returnEarly()
     }
 }
 
-private fun BytecodePatchContext.forceBooleanFieldReadsTrue(fieldAccessFingerprint: Fingerprint) {
+private fun BytecodePatchContext.forceBooleanFieldReadsTrue(
+    fieldAccessFingerprint: Fingerprint,
+    readerCount: Int,
+) {
     val anchor = fieldAccessFingerprint.matchSingle()
-    val field = anchor.instructionMatches.first().instruction.getReference<FieldReference>()!!
-    booleanFieldReadFingerprint(field).matchAll(anchor.originalClassDef).forEach { reader ->
+    val (fieldAccess) = anchor.instructionMatches
+    val field = fieldAccess.instruction.getReference<FieldReference>()!!
+    booleanFieldReadFingerprint(field).matchAll(anchor.originalClassDef, readerCount..readerCount).forEach { reader ->
         val method = reader.method
         method.findInstructionIndicesReversed {
             opcode == Opcode.IGET_BOOLEAN && getReference<FieldReference>() == field
