@@ -9,12 +9,16 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
+import app.morphe.patcher.util.proxy.mutableTypes.encodedValue.MutableStringEncodedValue
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
 import app.morphe.util.findMutableMethodOf
 import app.morphe.util.getNode
+import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
+import com.android.tools.smali.dexlib2.iface.value.StringEncodedValue
 import org.w3c.dom.Element
 
 private const val ACCOUNT_TYPE = "com.dubox.drive.jkeng.account_type"
@@ -22,6 +26,37 @@ private const val ACCOUNT_TYPE = "com.dubox.drive.jkeng.account_type"
 private val ACCOUNT_XML_FILES = listOf("res/xml/authenticator.xml", "res/xml/sync_adapter.xml")
 
 private val APP_LABELS = setOf("TeraBox", "@string/app_name")
+
+internal fun ClassDef.renameCloneStrings(renames: Map<String, String>, resolveMutableClass: () -> MutableClass) {
+    fun cloneString(string: String): String? {
+        renames[string]?.let { return it }
+        if (!string.startsWith("content://")) return null
+
+        val authority = string.removePrefix("content://").substringBefore('/')
+        return renames[authority]?.let { string.replaceFirst(authority, it) }
+    }
+
+    val mutableClass by lazy(resolveMutableClass)
+
+    staticFields.forEach { field ->
+        val string = (field.initialValue as? StringEncodedValue)?.value ?: return@forEach
+        val clone = cloneString(string) ?: return@forEach
+        val mutableField = mutableClass.staticFields.single { it.name == field.name && it.type == field.type }
+        (mutableField.initialValue as MutableStringEncodedValue).setValue(clone)
+    }
+
+    methods.forEach { method ->
+        val mutableMethod by lazy { mutableClass.findMutableMethodOf(method) }
+
+        method.implementation?.instructions?.forEachIndexed { index, instruction ->
+            val string = instruction.getReference<StringReference>()?.string ?: return@forEachIndexed
+            val clone = cloneString(string) ?: return@forEachIndexed
+            val register = (instruction as OneRegisterInstruction).registerA
+
+            mutableMethod.replaceInstruction(index, "const-string v$register, \"$clone\"")
+        }
+    }
+}
 
 @Suppress("unused")
 val cloneAppPatch = bytecodePatch(
@@ -111,28 +146,8 @@ val cloneAppPatch = bytecodePatch(
     )
 
     finalize {
-        fun cloneString(string: String): String? {
-            renames[string]?.let { return it }
-            if (!string.startsWith("content://")) return null
-
-            val authority = string.removePrefix("content://").substringBefore('/')
-            return renames[authority]?.let { string.replaceFirst(authority, it) }
-        }
-
-        getAllClassesWithStrings().forEach { classDef ->
-            val mutableClass by lazy { mutableClassDefBy(classDef) }
-
-            classDef.methods.forEach { method ->
-                val mutableMethod by lazy { mutableClass.findMutableMethodOf(method) }
-
-                method.implementation?.instructions?.forEachIndexed { index, instruction ->
-                    val string = instruction.getReference<StringReference>()?.string ?: return@forEachIndexed
-                    val clone = cloneString(string) ?: return@forEachIndexed
-                    val register = (instruction as OneRegisterInstruction).registerA
-
-                    mutableMethod.replaceInstruction(index, "const-string v$register, \"$clone\"")
-                }
-            }
+        classDefForEach { classDef ->
+            classDef.renameCloneStrings(renames) { mutableClassDefBy(classDef) }
         }
     }
 }
