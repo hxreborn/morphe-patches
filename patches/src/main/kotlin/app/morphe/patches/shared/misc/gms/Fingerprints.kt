@@ -81,3 +81,11 @@ internal object CredentialProviderFrameworkAvailabilityFingerprint : Fingerprint
     parameters = listOf(),
     filters = listOf(fieldAccess(type = "Landroid/credentials/CredentialManager;")),
 )
+
+internal object GooglePlayServicesPackageSignaturesFingerprint : Fingerprint(
+    returnType = "I",
+    strings = listOf(
+        " requires Google Play services, but their signature is invalid.",
+        " requires Google Play Store, but its signature is invalid.",
+    ),
+)
