@@ -369,7 +369,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "828b91795e6ef35a08c2fafe039bec74beffa824bf063167bc30257b14c81127",
         ),
-        targets = listOf(AppTarget(version = "4.2.2", versionCode = 820, minSdk = 32)),
+        targets = listOf(AppTarget(version = "4.2.2", versionCode = 820, minSdk = 24)),
     )
 
     val CODDY = Compatibility(
