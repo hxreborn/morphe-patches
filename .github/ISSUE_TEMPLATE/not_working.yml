@@ -206,6 +206,8 @@ body:
         - "MovieBox (another version, type it below)"
         - "MovieBox TV 1.2.0.0923.web_socialmedia"
         - "MovieBox TV (another version, type it below)"
+        - "MuscleWiki 3.2.7"
+        - "MuscleWiki (another version, type it below)"
         - "Musicolet 6.14.1 build540"
         - "Musicolet (another version, type it below)"
         - "Musixmatch 8.5.0"
@@ -410,11 +412,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.71.0-dev.4"
         - "1.71.0-dev.3"
         - "1.71.0-dev.2"
         - "1.71.0-dev.1"
         - "1.70.0-dev.9"
-        - "1.70.0-dev.8"
         - "1.70.0"
         - "Older than these"
         # /generated
@@ -673,6 +675,8 @@ body:
         - "MovieBox \u00b7 Hide BuzzBox"
         - "MovieBox \u00b7 Hide Midnight tab"
         - "MovieBox \u00b7 Hide permanent notification"
+        - "MuscleWiki \u00b7 GmsCore support"
+        - "MuscleWiki \u00b7 Unlock premium"
         - "Musicolet \u00b7 Unlock premium"
         - "Musixmatch \u00b7 Unlock premium"
         - "Muviz Widgets \u00b7 Fix weather"

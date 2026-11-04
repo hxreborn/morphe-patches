@@ -1,3 +1,14 @@
+## [1.71.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.3...v1.71.0-dev.4) (2026-11-04)
+
+### Bug Fixes
+
+* **Clip Studio Paint - Unlock premium:** remove monthly drawing limit ([9910992](https://github.com/hxreborn/morphe-patches/commit/9910992461e1ef599bb1b91645199a2c8278e6d6))
+
+### New Features
+
+* **MuscleWiki - GmsCore support:** sign in with Google ([21c4b7e](https://github.com/hxreborn/morphe-patches/commit/21c4b7e97d8178524b50eb9925dce6105b89e5b4))
+* **MuscleWiki - Unlock premium:** remove ads and launch paywall ([8b81d25](https://github.com/hxreborn/morphe-patches/commit/8b81d251cf23456418390eff61ef84a0e7175e22))
+
 ## [1.71.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.2...v1.71.0-dev.3) (2026-11-03)
 
 ### Bug Fixes

@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-03T20:07:50",
-  "description": "## [1.71.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.2...v1.71.0-dev.3) (2026-11-03)\n\n### Bug Fixes\n\n* **Proton Mail - AMOLED dark theme:** turn sale screens black ([5fb7dc6](https://github.com/hxreborn/morphe-patches/commit/5fb7dc6326c6379c60c51b5618f064bd0d806e8d))\n\n### Updated App Support\n\n* **Duolingo:** add support for `6.103.6` ([96f8fe7](https://github.com/hxreborn/morphe-patches/commit/96f8fe7f078445675bb30adb844647a5345700f9))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.71.0-dev.3/patches-1.71.0-dev.3.mpp",
+  "created_at": "2026-11-04T10:08:55",
+  "description": "## [1.71.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.71.0-dev.3...v1.71.0-dev.4) (2026-11-04)\n\n### Bug Fixes\n\n* **Clip Studio Paint - Unlock premium:** remove monthly drawing limit ([9910992](https://github.com/hxreborn/morphe-patches/commit/9910992461e1ef599bb1b91645199a2c8278e6d6))\n\n### New Features\n\n* **MuscleWiki - GmsCore support:** sign in with Google ([21c4b7e](https://github.com/hxreborn/morphe-patches/commit/21c4b7e97d8178524b50eb9925dce6105b89e5b4))\n* **MuscleWiki - Unlock premium:** remove ads and launch paywall ([8b81d25](https://github.com/hxreborn/morphe-patches/commit/8b81d251cf23456418390eff61ef84a0e7175e22))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.71.0-dev.4/patches-1.71.0-dev.4.mpp",
   "signature_download_url": "",
-  "version": "1.71.0-dev.3"
+  "version": "1.71.0-dev.4"
 }
