@@ -30,7 +30,7 @@ private const val OBJECT = "Ljava/lang/Object;"
 val traceAiRequestsPatch = bytecodePatch(
     name = "Inspect AI requests",
     description = "Shows the network calls an AI tool makes, such as HTTP requests and " +
-        "Firebase uploads, and keeps a log.",
+        "Firebase uploads. Keeps a log of them.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
@@ -62,7 +62,7 @@ val traceAiRequestsPatch = bytecodePatch(
 
         requestClientInterceptorFingerprint(interceptorClass).matchSingle().let { match ->
             match.method.apply {
-                val newIndex = match.instructionMatches[0].index
+                val newIndex = match.instructionMatches.single().index
                 val register = getInstruction<OneRegisterInstruction>(newIndex).registerA
                 val constructorIndex = indexOfFirstInstructionOrThrow(newIndex) {
                     opcode == Opcode.INVOKE_DIRECT && (this as FiveRegisterInstruction).registerC == register

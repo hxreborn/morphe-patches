@@ -56,9 +56,9 @@ private val addBackupServicePatch = resourcePatch {
 @Suppress("unused")
 val backupMemoriesPatch = bytecodePatch(
     name = "Back up memories",
-    description = "Adds Back up all memories to the patch settings. Saves every memory as separate back and front " +
-        "photos with the time, place and caption, plus the BTS video. The JSON sidecars hold location, friends' " +
-        "usernames and comments, and go to Download/BeReal unless a folder is picked.",
+    description = "Adds Back up memories to hxreborn patches. Saves every memory as separate back and front " +
+        "photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' " +
+        "usernames and comments to Download/BeReal unless a folder is picked.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(settingsPatch, addBackupServicePatch)

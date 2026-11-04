@@ -68,7 +68,7 @@ private fun BytecodePatchContext.filterLateReads(methods: List<MutableMethod>, r
 @Suppress("unused")
 val removeLateLabelPatch = bytecodePatch(
     name = "Remove late label",
-    description = "Removes the late label from friends' BeReals. Each one shows how long ago your friend posted it.",
+    description = "Replaces the late label on friends' BeReals with how long ago they posted.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(settingsPatch)
@@ -90,7 +90,7 @@ val removeLateLabelPatch = bytecodePatch(
 
         val placeholder = PostPlaceholderToStringFingerprint.matchSingle().classDef
         val getter = placeholderLateSecondsGetterFingerprint(placeholder.type).matchSingle()
-        val read = getter.instructionMatches.first()
+        val read = getter.instructionMatches.single()
         val register = read.getInstruction<OneRegisterInstruction>().registerA
         getter.method.addInstructions(
             read.index + 1,

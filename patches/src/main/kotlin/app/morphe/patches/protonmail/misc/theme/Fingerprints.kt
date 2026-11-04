@@ -99,9 +99,11 @@ internal fun colorGetterFingerprint(colorsClass: String, colorField: FieldRefere
     filters = listOf(fieldAccess(colorField, Opcode.IGET_OBJECT, InstructionLocation.MatchFirst())),
 )
 
+internal const val UPSELLING_DARK_BACKGROUND_COUNT = 3
+
 internal object UpsellingDarkBackgroundFingerprint : Fingerprint(
-    returnType = "Ljava/lang/Object;",
-    filters = listOf(literal(DARK_BACKGROUND_COLORS.first())),
+    definingClass = "Lch/protonmail/android/mailupselling/presentation/ui/",
+    filters = listOf(literal(MAILBOX_BACKGROUND)),
 )
 
 private const val DESIGN_THEME_PACKAGE = "Lch/protonmail/android/design/compose/theme/"

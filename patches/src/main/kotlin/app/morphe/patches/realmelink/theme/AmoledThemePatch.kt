@@ -392,7 +392,9 @@ private fun opaqueChannels(value: String): List<Int>? {
     val channels = when (digits.length) {
         3 -> digits.map { "$it$it" }
         6 -> digits.chunked(2)
-        8 -> if (digits.take(2) != "ff") return null else digits.chunked(2).drop(1)
+        8 -> digits.chunked(2).let { (alpha, red, green, blue) ->
+            if (alpha != "ff") return null else listOf(red, green, blue)
+        }
         else -> return null
     }
 
@@ -931,7 +933,7 @@ val amoledThemePatch = bytecodePatch(
 
     execute {
         CommonTitleBarBackIconFingerprint.matchSingle().apply {
-            val index = instructionMatches.first().index
+            val index = instructionMatches.single().index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
             val backIcon = resourceId(ResourceType.DRAWABLE, BACK_ICON_NAME)
 
@@ -949,7 +951,8 @@ val amoledThemePatch = bytecodePatch(
         }
 
         DefaultHomeBackgroundColorFingerprint.matchSingle().apply {
-            val index = instructionMatches.first().index
+            val (colorString, _) = instructionMatches
+            val index = colorString.index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
             method.replaceInstruction(index, "const-string v$register, \"$HOME_BACKGROUND_COLOR\"")
@@ -960,7 +963,8 @@ val amoledThemePatch = bytecodePatch(
             SpatialAudioPlayButtonTextColorFingerprint to OPAQUE_WHITE_ARGB,
         ).forEach { (fingerprint, color) ->
             fingerprint.matchSingle().apply {
-                val index = instructionMatches.first().index
+                val (colorLiteral, _) = instructionMatches
+                val index = colorLiteral.index
                 val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
                 method.replaceInstruction(index, "const v$register, $color")
@@ -972,7 +976,7 @@ val amoledThemePatch = bytecodePatch(
             HeadsetVirtualDeviceTitleFingerprint,
         ).forEach { fingerprint ->
             fingerprint.matchSingle().apply {
-                val index = instructionMatches.last().index
+                val index = instructionMatches.single().index
                 val titleRegister = method.getInstruction<FiveRegisterInstruction>(index).registerC
                 val backgroundRegister = method.getFreeRegisterProvider(index + 1, 1, titleRegister)
                     .getFreeRegister4Bit()
@@ -989,7 +993,8 @@ val amoledThemePatch = bytecodePatch(
 
         WebViewSettingsFingerprint.matchAll(WEB_VIEW_SETTINGS_SITES).forEach { match ->
             match.method.apply {
-                val settingsIndex = match.instructionMatches.last().index
+                val (_, settingsResult) = match.instructionMatches
+                val settingsIndex = settingsResult.index
                 val settingsRegister = getInstruction<OneRegisterInstruction>(settingsIndex).registerA
                 val allowedRegister = getFreeRegisterProvider(settingsIndex + 1, 1, settingsRegister)
                     .getFreeRegister4Bit()
@@ -1005,7 +1010,8 @@ val amoledThemePatch = bytecodePatch(
         }
 
         HomeHeaderTintFingerprint.matchAll(HOME_HEADER_TINT_SITES).forEach { match ->
-            val index = match.instructionMatches.last().index
+            val (_, colorLiteral) = match.instructionMatches
+            val index = colorLiteral.index
             val register = match.method.getInstruction<OneRegisterInstruction>(index).registerA
 
             match.method.replaceInstruction(index, "const v$register, $OPAQUE_WHITE_ARGB")

@@ -160,6 +160,7 @@ ICONS = {
     "com.tunneldoom.http": "tunneldoomvpn.png",
     "com.androholic.wallpapersdepthpix": "depthpix.png",
     "flar2.devcheck": "devcheck.png",
+    "com.duolingo": "duolingo.png",
     "com.ferdinandobermeier.focusmate": "focusnow.png",
     "com.adithya.memoneet": "memoneet.png",
     "com.halalfire.medicneet": "medicneet.png",
@@ -217,6 +218,7 @@ ICONS = {
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
     "com.community.oneroom": "moviebox.png",
     "com.community.mbox.tv": "movieboxtv.png",
+    "com.musclewiki.macro": "musclewiki.png",
     "com.musixmatch.android.lyrify": "musixmatch.png",
     "com.myscript.math": "myscriptmath.png",
     "com.myscript.nebo": "myscriptnotes.png",
@@ -293,6 +295,7 @@ ICONS = {
     "com.fillobotto.mp3tagger": "automatag.png",
     "com.droid27.transparentclockweather": "transparentclock.png",
     "com.pixlr.express": "pixlr.png",
+    "com.patreon.android": "patreon.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

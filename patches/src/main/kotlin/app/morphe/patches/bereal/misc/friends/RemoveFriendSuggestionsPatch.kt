@@ -45,7 +45,7 @@ private fun MutableMethod.filterRegisterAfter(index: Int, body: (register: Int, 
 @Suppress("unused")
 val removeFriendSuggestionsPatch = bytecodePatch(
     name = "Remove friend suggestions",
-    description = "Removes suggested friends, contacts on BeReal and popular accounts from Friends and the feed.",
+    description = "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and the feed.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(settingsPatch)
@@ -68,7 +68,7 @@ val removeFriendSuggestionsPatch = bytecodePatch(
 
         val carouselType = FeedCarouselToStringFingerprint.matchSingle().classDef.type
         feedCarouselConstructionFingerprint(carouselType).matchAll(2..2).forEach { match ->
-            val index = match.instructionMatches.first().index
+            val index = match.instructionMatches.single().index
             match.method.filterRegisterAfter(index) { register, temp ->
                 """
                     $IS_REMOVED
@@ -97,7 +97,7 @@ val removeFriendSuggestionsPatch = bytecodePatch(
             val visibleType = visible.classDef
             val stateInterface = visibleType.interfaces.single()
             val popularAccounts = popularAccountsConstructionFingerprint(visibleType.type).matchSingle()
-            val constructionIndex = popularAccounts.instructionMatches.first().index
+            val constructionIndex = popularAccounts.instructionMatches.single().index
             val removedState = (0 until constructionIndex)
                 .map { popularAccounts.method.getInstruction(it) }
                 .filter { it.opcode == Opcode.SGET_OBJECT }

@@ -83,26 +83,23 @@ final class PatchCatalog {
     private static PatchGroup posting() {
         final PatchGroup group = new PatchGroup("Your posts");
         if (GalleryPhotos.isPatchIncluded()) {
-            group.addToggle("ic_photo", "Post photos from your gallery",
-                    "Tap the gallery button at the top of the camera to pick a back photo, a front photo or both, "
-                            + "then tap the shutter. Sides you don't pick use the camera.",
+            group.addToggle("ic_photo", "Post from gallery",
+                    "Adds a gallery button to the camera for picking the back and front photo of your BeReal.",
                     PatchSettings.GALLERY_PHOTOS);
         }
         if (CustomLocation.isPatchIncluded()) {
-            group.addLocation("ic_location_fill", "Use a custom location",
-                    "Your BeReal shows the place you pick on the map below or find by name.",
+            group.addLocation("ic_location_fill", "Custom location",
+                    "Sets the location shown on your BeReal to a place you choose on a map or by name.",
                     PatchSettings.CUSTOM_LOCATION);
         }
         if (RetakeCount.isPatchIncluded()) {
-            group.addToggle("ic_retake", "Choose your retake count",
-                    "Each time you send a BeReal, you pick the retake count your friends see. Tap Use real count to "
-                            + "send your true number of retakes.",
+            group.addToggle("ic_retake", "Custom retake count",
+                    "Asks before each BeReal how many retakes your friends see on it.",
                     PatchSettings.CUSTOM_RETAKE_COUNT);
         }
         if (LateFlag.isPatchIncluded()) {
-            group.addToggle("ic_clock", "Send late BeReals as on time",
-                    "Your friends see no late tag on BeReals you take after the moment's window.",
-                    PatchSettings.REMOVE_LATE_FLAG);
+            group.addToggle("ic_clock", "Remove late flag",
+                    "Sends BeReals you take after the moment's window as on time.", PatchSettings.REMOVE_LATE_FLAG);
         }
         return group;
     }
@@ -110,26 +107,25 @@ final class PatchCatalog {
     private static PatchGroup friends() {
         final PatchGroup group = new PatchGroup("Friends' posts");
         if (FriendsPosts.isPatchIncluded()) {
-            group.addToggle("ic_eyes", "See friends' BeReals before posting",
-                    "You see friends' BeReals in My Friends and Friends of Friends before you post your own. Restart "
-                            + "BeReal to apply this.",
+            group.addToggle("ic_eyes", "Show friends' posts before posting",
+                    "Shows friends' BeReals in My Friends and Friends of Friends before you post your own.",
                     PatchSettings.SHOW_FRIENDS_POSTS, true);
         }
         if (FriendsPostDownload.isPatchIncluded()) {
             group.addToggle("ic_square_and_arrow_down", "Save friends' BeReals",
-                    "Download appears in the 3-dot menu of friends' BeReals in the feed and on the RealMoji screen.",
+                    "Adds Download to the 3-dot menu of friends' BeReals in the feed and on the RealMoji screen.",
                     PatchSettings.SAVE_FRIENDS_BEREALS);
         }
         if (DownloadWatermark.isPatchIncluded()) {
-            group.addToggle("ic_photo_on_rectangle_angled", "Remove BeReal logo from downloads",
-                    "BeReals you download save at full size without the BeReal logo.", PatchSettings.REMOVE_WATERMARK);
+            group.addToggle("ic_photo_on_rectangle_angled", "Remove watermark",
+                    "Saves downloaded BeReals at full size without the BeReal logo.", PatchSettings.REMOVE_WATERMARK);
         }
         if (DownloadFolder.isPatchIncluded()) {
-            group.addFolder("ic_folder", "Download folder", "BeReals you download save to this folder.");
+            group.addFolder("ic_folder", "Download folder", "Saves downloaded BeReals to this folder.");
         }
         if (MemoriesBackup.isPatchIncluded()) {
-            group.addAction("ic_square_and_arrow_down", "Back up all memories",
-                    MemoriesBackup.summary(), MemoriesBackup::start);
+            group.addAction("ic_square_and_arrow_down", "Back up memories", MemoriesBackup.summary(),
+                    MemoriesBackup::start);
         }
         return group;
     }
@@ -138,8 +134,7 @@ final class PatchCatalog {
         final PatchGroup group = new PatchGroup("Feed");
         if (SponsoredPosts.isPatchIncluded()) {
             group.addAlwaysOn("ic_grid_view", "Remove ads",
-                    "Removes ads and sponsored BeReals from My Friends and Friends of Friends and the full-screen ad "
-                            + "at launch, and stops the ad networks from loading.");
+                    "Removes the full-screen ad at launch and sponsored BeReals in both feeds.");
         }
         if (FriendSuggestions.isPatchIncluded()) {
             group.addToggle("ic_person_2_foreground_fill", "Remove friend suggestions",
@@ -148,31 +143,29 @@ final class PatchCatalog {
                     PatchSettings.REMOVE_FRIEND_SUGGESTIONS);
         }
         if (StreakPrompts.isPatchIncluded()) {
-            group.addExperimentalToggle("ic_bell_slash_fill", "Remove streak offers",
-                    "Removes the offers to recover your streak and the Save your streak sheet. Your streak count "
-                            + "doesn't change.",
+            group.addExperimentalToggle("ic_bell_slash_fill", "Remove streak prompts",
+                    "Removes the offers to recover your streak and the Save your streak sheet.",
                     PatchSettings.REMOVE_STREAK_PROMPTS);
         }
         if (Promotions.isPatchIncluded()) {
-            group.addToggle("ic_rating_star_fill", "Remove BeReal promos",
-                    "Removes Recap cards, the How's BeReal? review prompt, the profile completion card, the "
-                            + "notifications banner and the add music tooltip.",
+            group.addToggle("ic_rating_star_fill", "Remove promotions",
+                    "Removes Recap cards, the \"How's BeReal?\" review prompt, the profile completion card, the "
+                            + "notifications banner and the music tooltip.",
                     PatchSettings.REMOVE_PROMOTIONS);
         }
         if (FriendsOfFriendsPrompts.isPatchIncluded()) {
             group.addExperimentalToggle("ic_person_2_badge_plus_fill", "Remove Friends of Friends prompts",
-                    "Removes the Share with Friends of Friends card and the messages at the end of the feed.",
+                    "Removes the \"Share with Friends of Friends\" card and the end-of-feed messages.",
                     PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_PROMPTS);
         }
         if (LateLabel.isPatchIncluded()) {
-            group.addToggle("ic_tag_fill", "Remove late labels",
-                    "Removes the late label from friends' BeReals. Each one shows how long ago your friend posted it.",
+            group.addToggle("ic_tag_fill", "Remove late label",
+                    "Replaces the late label on friends' BeReals with how long ago they posted.",
                     PatchSettings.REMOVE_LATE_LABEL);
         }
         if (FriendsOfFriendsTab.isPatchIncluded()) {
-            group.addToggle("ic_person_fill_and_arrow_left_and_arrow_right_outward",
-                    "Remove the Friends of Friends tab",
-                    "The home screen shows My Friends only. Restart BeReal to apply this.",
+            group.addToggle("ic_person_fill_and_arrow_left_and_arrow_right_outward", "Remove Friends of Friends tab",
+                    "Removes the Friends of Friends tab from the home screen.",
                     PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB, true);
         }
         return group;
@@ -181,23 +174,22 @@ final class PatchCatalog {
     private static PatchGroup privacy() {
         final PatchGroup group = new PatchGroup("Privacy");
         if (ViewReceipts.isPatchIncluded()) {
-            group.addToggle("ic_eye_slash_fill", "Turn off seen status",
-                    "BeReal stops sending which BeReals you viewed and which chats you opened.",
+            group.addToggle("ic_eye_slash_fill", "Disable view receipts",
+                    "Stops sending which BeReals you viewed and which chats you opened.",
                     PatchSettings.DISABLE_VIEW_RECEIPTS);
         }
         if (TypingIndicator.isPatchIncluded()) {
-            group.addToggle("ic_bubble_fill", "Turn off typing indicator",
-                    "Friends don't see when you're typing in a chat. You still see when they type.",
-                    PatchSettings.DISABLE_TYPING_INDICATOR);
+            group.addToggle("ic_bubble_fill", "Disable typing indicator",
+                    "Stops showing friends that you're typing in a chat.", PatchSettings.DISABLE_TYPING_INDICATOR);
         }
         if (DataCollection.isPatchIncluded()) {
-            group.addAlwaysOn("ic_lock_shield", "Block tracking",
-                    "Turns off the advertising ID, Firebase crash reports and sessions, Amplitude and Datadog "
-                            + "analytics, Adjust attribution and the Shake bug reporter.");
+            group.addAlwaysOn("ic_lock_shield", "Disable data collection",
+                    "Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, "
+                            + "Adjust attribution and the Shake bug reporter.");
         }
         if (ContactsPermission.isPatchIncluded()) {
             group.addAlwaysOn("ic_person_crop_rectangle", "Remove contacts permission",
-                    "BeReal can't ask for or read your phone's contacts.");
+                    "Stops BeReal from asking for or reading your phone's contacts.");
         }
         return group;
     }
@@ -205,8 +197,8 @@ final class PatchCatalog {
     private static PatchGroup updates() {
         final PatchGroup group = new PatchGroup("Updates");
         if (UpdatePrompts.isPatchIncluded()) {
-            group.addAlwaysOn("ic_arrow_up_circle_fill", "Remove update popups",
-                    "Removes BeReal's required and suggested update popups and the Play Store update prompt.");
+            group.addAlwaysOn("ic_arrow_up_circle_fill", "Remove update prompts",
+                    "Removes BeReal's required and suggested update dialogs and the Play Store update prompt.");
         }
         return group;
     }

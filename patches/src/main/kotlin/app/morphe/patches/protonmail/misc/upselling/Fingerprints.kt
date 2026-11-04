@@ -28,6 +28,8 @@ internal val sidebarUpsellingRowFingerprints = SIDEBAR_UPSELLING_LABELS.map { la
     )
 }
 
+internal const val UPGRADE_BUTTON_COUNT = 7
+
 internal object UpgradeUpsellingButtonFingerprint : Fingerprint(
     returnType = "V",
     filters = listOf(

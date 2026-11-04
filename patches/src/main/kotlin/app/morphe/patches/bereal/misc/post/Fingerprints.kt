@@ -15,6 +15,12 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
+private const val INSTANT_CONVERSION_WINDOW = 4
+
+private const val TAKEN_AT_SETTER_WINDOW = 4
+
+private const val LABEL_STRINGS_WINDOW = 6
+
 internal object CreatePostRetakeCounterSetterFingerprint : Fingerprint(
     isStatic = true,
     returnType = "V",
@@ -52,9 +58,9 @@ internal fun createPostTakenAtConversionFingerprint(
             opcode = Opcode.INVOKE_STATIC,
             parameters = listOf(instantType),
             returnType = timestampType,
-            location = MatchAfterWithin(4),
+            location = MatchAfterWithin(INSTANT_CONVERSION_WINDOW),
         ),
-        methodCall(reference = takenAtSetter, location = MatchAfterWithin(4)),
+        methodCall(reference = takenAtSetter, location = MatchAfterWithin(TAKEN_AT_SETTER_WINDOW)),
     ),
 )
 
@@ -65,7 +71,7 @@ internal object CorePostToStringFingerprint : Fingerprint(
     strings = listOf("CorePost(id="),
     filters = listOf(
         string(", isMain="),
-        fieldAccess(type = "Z", opcode = Opcode.IGET_BOOLEAN, location = MatchAfterWithin(6)),
+        fieldAccess(type = "Z", opcode = Opcode.IGET_BOOLEAN, location = MatchAfterWithin(LABEL_STRINGS_WINDOW)),
     ),
 )
 

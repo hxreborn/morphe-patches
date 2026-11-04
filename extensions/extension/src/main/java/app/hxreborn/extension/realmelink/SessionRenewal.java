@@ -20,8 +20,12 @@
  */
 package app.hxreborn.extension.realmelink;
 
+import android.util.Log;
+
 @SuppressWarnings("unused")
 public final class SessionRenewal {
+
+    private static final String LOG_TAG = "hxRealmeLink";
 
     private SessionRenewal() {
 
@@ -30,23 +34,45 @@ public final class SessionRenewal {
     public static boolean renew() {
         try {
             Object accountService = accountService();
-            String heytapToken = heytapToken(accountService);
-            if (heytapToken == null) {
-                return false;
+            String storedToken = heytapToken(accountService);
+            String sdkToken = sdkHeytapTokenOrNull();
+            boolean sdkTokenDiffers = sdkToken != null && !sdkToken.isEmpty() && !sdkToken.equals(storedToken);
+            if (sdkTokenDiffers && exchangeAndStore(accountService, sdkToken)) {
+                return true;
             }
+            return storedToken != null && exchangeAndStore(accountService, storedToken);
+        } catch (RuntimeException ex) {
+            Log.e(LOG_TAG, "Cannot renew the session", ex);
+            return false;
+        }
+    }
 
+    private static String sdkHeytapTokenOrNull() {
+        try {
+            return sdkHeytapToken();
+        } catch (RuntimeException ex) {
+            Log.e(LOG_TAG, "Cannot read the HeyTap token from the account SDK", ex);
+            return null;
+        }
+    }
+
+    private static boolean exchangeAndStore(Object accountService, String heytapToken) {
+        try {
             Object result = exchange(heytapToken);
             if (!isSuccess(result)) {
+                Log.w(LOG_TAG, "The token exchange returned an unsuccessful result");
                 return false;
             }
 
             String linkToken = linkToken(result);
             if (linkToken == null) {
+                Log.w(LOG_TAG, "The token exchange returned no link token");
                 return false;
             }
             storeTokens(accountService, heytapToken, linkToken);
             return true;
         } catch (RuntimeException ex) {
+            Log.e(LOG_TAG, "Cannot exchange the HeyTap token", ex);
             return false;
         }
     }
@@ -56,6 +82,10 @@ public final class SessionRenewal {
     }
 
     static String heytapToken(Object accountService) {
+        return null;
+    }
+
+    static String sdkHeytapToken() {
         return null;
     }
 

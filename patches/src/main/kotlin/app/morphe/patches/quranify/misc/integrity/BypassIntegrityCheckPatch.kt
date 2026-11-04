@@ -16,7 +16,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
 private const val ANDROID_API_HOST = "api-android.quranify.pro"
-private const val WEB_API_HOST = "api-web.quranify.pro"
+private const val NEW_API_HOST = "api-new.quranify.pro"
 
 private val OBFUSCATION_KEY =
     "4fa27118e3059c6b2df74482b13960ce075aab21d4963f8812ef576dc04ba973".hexToBytes()
@@ -47,7 +47,7 @@ val bypassIntegrityCheckPatch = bytecodePatch {
             if (endpoint == null || !endpoint.contains(ANDROID_API_HOST)) return@count false
 
             val register = (instruction as OneRegisterInstruction).registerA
-            val replacement = endpoint.replace(ANDROID_API_HOST, WEB_API_HOST).obfuscate()
+            val replacement = endpoint.replace(ANDROID_API_HOST, NEW_API_HOST).obfuscate()
             method.replaceInstruction(
                 method.instructions.indexOf(instruction),
                 "const-string v$register, \"$replacement\"",
@@ -56,7 +56,7 @@ val bypassIntegrityCheckPatch = bytecodePatch {
         }
 
         if (redirected == 0) {
-            throw PatchException("Could not redirect $ANDROID_API_HOST to $WEB_API_HOST")
+            throw PatchException("Could not redirect $ANDROID_API_HOST to $NEW_API_HOST")
         }
 
         FetchSessionTokenFingerprint.matchSingle().method.addInstructions(

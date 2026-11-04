@@ -12,7 +12,6 @@ package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
-import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
@@ -51,11 +50,14 @@ internal object GooglePlayServicesUtilAvailabilityFingerprint : Fingerprint(
     strings = listOf("GooglePlayServicesUtil", " requires Google Play services, but their signature is invalid."),
 )
 
+private const val NO_ACTIVITY_FAILURE_WINDOW = 2
+
 internal object GetCredentialHandlerFingerprint : Fingerprint(
     returnType = "V",
     filters = listOf(
         methodCall(definingClass = "Ljava/lang/String;", name = "isEmpty"),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, location = MatchAfterWithin(3)),
+        opcode(Opcode.IF_NEZ),
+        string("No activity available", location = MatchAfterWithin(NO_ACTIVITY_FAILURE_WINDOW)),
         string("CredentialManager requires a serverClientId."),
         opcode(Opcode.INVOKE_STATIC, location = MatchAfterWithin(1)),
     ),

@@ -58,6 +58,7 @@ val bypassSessionExpiryPatch = bytecodePatch(
         val currentAccount = classDefBy(accountServiceGetter.returnType).methods.singleOrNull {
             it.returnType == heytapToken.definingClass && it.parameters.isEmpty()
         } ?: throw PatchException("No single account getter on ${accountServiceGetter.returnType}")
+        val sdkHeytapTokenGetter = SdkHeytapTokenFingerprint.matchSingle().method
 
         mutableClassDefBy(SESSION_RENEWAL_CLASS).apply {
             replaceStub(
@@ -81,6 +82,15 @@ val bypassSessionExpiryPatch = bytecodePatch(
                     return-object v0
                     :signed_out
                     const/4 v0, 0x0
+                    return-object v0
+                """,
+            )
+            replaceStub(
+                "sdkHeytapToken",
+                1,
+                """
+                    invoke-static { }, ${descriptor(sdkHeytapTokenGetter)}
+                    move-result-object v0
                     return-object v0
                 """,
             )
@@ -149,7 +159,8 @@ val bypassSessionExpiryPatch = bytecodePatch(
         }
 
         ReLoginToastFingerprint.matchSingle().apply {
-            method.removeInstruction(instructionMatches.last().index)
+            val (_, _, toastCall) = instructionMatches
+            method.removeInstruction(toastCall.index)
         }
     }
 }

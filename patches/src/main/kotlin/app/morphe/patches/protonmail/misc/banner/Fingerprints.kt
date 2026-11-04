@@ -7,6 +7,7 @@ package app.morphe.patches.protonmail.misc.banner
 import app.morphe.patcher.Fingerprint
 
 internal object AutoDeleteStatesFingerprint : Fingerprint(
+    name = "<clinit>",
     strings = listOf("AutoDeleteUpsell", "AutoDeleteDisabled", "AutoDeleteEnabled"),
 )
 

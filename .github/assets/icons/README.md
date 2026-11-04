@@ -37,6 +37,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `cloneapp.png` | Clone App (`com.pengyou.cloneapp`) | SZPY Tech | APK 4.2.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `depthpix.png` | DepthPix (`com.androholic.wallpapersdepthpix`) | Androholic | APK 1.0.12, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `devcheck.png` | DevCheck (`flar2.devcheck`) | flar2 | APK 6.57, adaptive icon `res/mipmap-xxxhdpi-v4/ic_launcher_background.webp` under `ic_launcher_foreground.webp` |
+| `duolingo.png` | Duolingo (`com.duolingo`) | Duolingo | Google Play listing icon (the adaptive icon's `#58CC02` background under the foreground), cut to a circle |
 | `psiphon.png` | Psiphon (`com.psiphon3.subscription`) | Psiphon Inc. | APK 2.5.11, `res/mipmap-xxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
 | `projectivy.png` | Projectivy Launcher (`com.spocky.projengmenu`) | Spocky | APK 4.71, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
 | `privacynotes.png` | Privacy Notes (`app.privacynotes`) | Lifetime Labs LLC | APK 0.654.2, adaptive icon `res/BW.xml` (`mipmap/ic_launcher_background` under `ic_launcher_foreground`, xxxhdpi) |
@@ -116,6 +117,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `movieboxtv.png` | MovieBox TV (`com.community.mbox.tv`) | Not on Google Play | APK 1.2.0.0923, `res/d2.webp` (square icon cut to a circle) |
+| `musclewiki.png` | MuscleWiki (`com.musclewiki.macro`) | MuscleWiki SEZC | Play 3.2.7, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `musixmatch.png` | Musixmatch (`com.musixmatch.android.lyrify`) | Musixmatch | APK 8.4.2, `mipmap/mxm_icon_manifest_round` xxxhdpi (`res/raw/MZ`) |
 | `myscriptmath.png` | MyScript Math (`com.myscript.math`) | MyScript | APK 1.11.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` (white background under vector `res/drawable/ic_launcher_foreground.xml`) rasterized and cut to a circle |
 | `myscriptnotes.png` | MyScript Notes (`com.myscript.nebo`) | MyScript | APK 7.4.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
@@ -171,6 +173,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `pl.neptis.yanosik.mobi.android.png` | Yanosik (`pl.neptis.yanosik.mobi.android`) | Yanosik S.A. | Google Play listing icon, added 2026-10-10 |
 | `com.videoplayer.arcplayer.png` | Arc Player (`com.videoplayer.arcplayer`) | Arc Video Player | Google Play listing icon, added 2026-10-26 |
 | `pixlr.png` | Pixlr (`com.pixlr.express`) | Pixlr Pte Ltd | APK 3.9.3, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_2025.xml`: vector `res/drawable/ic_launcher_2025_foreground.xml` on its `#0e0e0f` background, cut to a circle |
+| `patreon.png` | Patreon (`com.patreon.android`) | Patreon | APK 126.44.0.13, adaptive icon `res/drawable/ic_launcher_foreground.xml` on `@color/ic_launcher_background` (black), cut to a circle |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

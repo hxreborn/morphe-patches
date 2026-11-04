@@ -172,7 +172,7 @@ public final class PatchesSettingsActivity extends Activity {
         if (AppliedPatches.swipeToSwitchAccounts()) {
             accountRows.add(row(AvatarSwitchStyleDialog.TITLE, AccountAvatarSwipe.getSwitchStyle().getLabel(),
                     () -> AvatarSwitchStyleDialog.show(this, this::recreateContent)));
-            accountRows.add(switchRow("Vibrate on switch", "Tick when the account changes.",
+            accountRows.add(switchRow("Vibrate on switch", "Vibrates when the account changes.",
                     AccountAvatarSwipe.isHapticFeedbackEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
@@ -180,7 +180,7 @@ public final class PatchesSettingsActivity extends Activity {
                         }
                     }));
         }
-        addSection(column, AppliedPatches.SWIPE_TO_SWITCH_ACCOUNTS, accountRows);
+        addSection(column, "Accounts", accountRows);
 
         final List<View> generalRows = new ArrayList<>();
         if (AppliedPatches.scheduledDeletion()) {
@@ -188,32 +188,33 @@ public final class PatchesSettingsActivity extends Activity {
                     () -> ScheduledDeletionEditor.show(this, this::recreateContent)));
         }
         if (UpsellingVisibility.isPatched()) {
-            generalRows.add(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS, "Upgrade buttons, banners and offers.",
-                    UpsellingVisibility.isHidden(), new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean hidden) {
-                            UpsellingVisibility.setHidden(hidden);
-                            confirmRestart();
-                        }
-                    }));
+            generalRows
+                .add(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS, "Hides upgrade buttons, banners and offers.",
+                        UpsellingVisibility.isHidden(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean hidden) {
+                                UpsellingVisibility.setHidden(hidden);
+                                confirmRestart();
+                            }
+                        }));
         }
         addSection(column, "General", generalRows);
 
         final List<View> layoutRows = new ArrayList<>();
         if (LayoutComponents.isPatched()) {
-            layoutRows.add(layoutSwitchRow("Hide Help center", "Feedback, import/export and tutorial links.",
+            layoutRows.add(layoutSwitchRow("Hide Help center", "Hides the feedback, import/export and tutorial links.",
                     LayoutComponents.HELP_CENTER));
             if (LayoutComponents.hasSpreadTheWord()) {
-                layoutRows.add(layoutSwitchRow("Hide Spread the word", "Tell a friend and Rate app.",
+                layoutRows.add(layoutSwitchRow("Hide Spread the word", "Hides Tell a friend and Rate app.",
                         LayoutComponents.SPREAD_THE_WORD));
             }
-            layoutRows
-                .add(layoutSwitchRow("Hide About", "Privacy policy and Terms of service.", LayoutComponents.ABOUT));
+            layoutRows.add(layoutSwitchRow("Hide About", "Hides Privacy policy and Terms of service.",
+                    LayoutComponents.ABOUT));
         }
         if (NavigationBarAutoHide.isPatched()) {
             layoutRows.add(switchRow(AppliedPatches.HIDE_NAVIGATION_BAR_ON_SCROLL,
-                    "Hides on scroll down and shows on scroll up.", NavigationBarAutoHide.isEnabled(),
-                    new CheckedChangeListener() {
+                    "Hides the bottom navigation bar on scroll down and shows it on scroll up.",
+                    NavigationBarAutoHide.isEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
                             NavigationBarAutoHide.setEnabled(enabled);
@@ -221,18 +222,18 @@ public final class PatchesSettingsActivity extends Activity {
                     }));
         }
         if (SidebarEntries.isPatched()) {
-            layoutRows.add(layoutSwitchRow("Hide Subscription", "Plan and billing entry in the sidebar.",
+            layoutRows.add(layoutSwitchRow("Hide Subscription", "Hides the plan and billing entry in the sidebar.",
                     SidebarEntries.SUBSCRIPTION));
-            layoutRows.add(layoutSwitchRow("Hide Report a problem", "Bug report entry in the sidebar.",
+            layoutRows.add(layoutSwitchRow("Hide Report a problem", "Hides the bug report entry in the sidebar.",
                     SidebarEntries.REPORT_A_PROBLEM));
         }
         if (SettingsSections.isPatched()) {
-            layoutRows.add(layoutSwitchRow("Hide Spread the word", "Tell a friend and Rate app.",
+            layoutRows.add(layoutSwitchRow("Hide Spread the word", "Hides Tell a friend and Rate app.",
                     SettingsSections.SPREAD_THE_WORD));
-            layoutRows.add(layoutSwitchRow("Hide Discover Proton", "Proton Mail, Pass, VPN, Drive and Calendar cards.",
-                    SettingsSections.DISCOVER_PROTON));
-            layoutRows.add(layoutSwitchRow("Hide Proton Pass banner", "Promotion card at the top of Settings.",
-                    SettingsSections.PASS_BANNER));
+            layoutRows.add(layoutSwitchRow("Hide Discover Proton",
+                    "Hides the Proton Mail, Pass, VPN, Drive and Calendar cards.", SettingsSections.DISCOVER_PROTON));
+            layoutRows.add(layoutSwitchRow("Hide Proton Pass banner",
+                    "Hides the promotion card at the top of Settings.", SettingsSections.PASS_BANNER));
         }
         addSection(column, "Layout", layoutRows);
 
@@ -246,17 +247,18 @@ public final class PatchesSettingsActivity extends Activity {
                         })));
         }
         if (AmoledTheme.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Pure black backgrounds.",
-                    AmoledTheme.isEnabled(), new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean enabled) {
-                            AmoledTheme.setEnabled(enabled);
-                            recreateContent();
-                            confirmRestart();
-                        }
-                    }));
+            appearanceRows
+                .add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Replaces the dark theme background with pure black.",
+                        AmoledTheme.isEnabled(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean enabled) {
+                                AmoledTheme.setEnabled(enabled);
+                                recreateContent();
+                                confirmRestart();
+                            }
+                        }));
             if (AmoledTheme.isEnabled()) {
-                appearanceRows.add(switchRow("Dim raised surfaces", "Darker bars, cards, buttons and sheets.",
+                appearanceRows.add(switchRow("Dim raised surfaces", "Dims bars, cards, buttons and sheets.",
                         AmoledTheme.isDimRaisedSurfacesEnabled(), new CheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(boolean enabled) {
@@ -267,7 +269,7 @@ public final class PatchesSettingsActivity extends Activity {
             }
         }
         if (MaterialSwitches.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.MATERIAL_SWITCHES, "Check and close icons in switches.",
+            appearanceRows.add(switchRow(AppliedPatches.MATERIAL_SWITCHES, "Adds check and close icons to switches.",
                     MaterialSwitches.isEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
@@ -277,17 +279,18 @@ public final class PatchesSettingsActivity extends Activity {
                     }));
         }
         if (LoadingIndicator.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.LOADING_INDICATOR, "Shape-morphing pull to refresh indicator.",
-                    LoadingIndicator.isEnabled(), new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean enabled) {
-                            LoadingIndicator.setEnabled(enabled);
-                        }
-                    }));
+            appearanceRows
+                .add(switchRow(AppliedPatches.LOADING_INDICATOR, "Shows a shape-morphing pull to refresh indicator.",
+                        LoadingIndicator.isEnabled(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean enabled) {
+                                LoadingIndicator.setEnabled(enabled);
+                            }
+                        }));
         }
         addSection(column, "Appearance", appearanceRows);
 
-        addSection(column, "App", Collections.singletonList(appFields()));
+        addSection(column, "About", Collections.singletonList(appFields()));
 
         this.content.addView(column,
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

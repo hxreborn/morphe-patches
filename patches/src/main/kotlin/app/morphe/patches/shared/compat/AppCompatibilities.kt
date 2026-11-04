@@ -464,6 +464,20 @@ internal object AppCompatibilities {
         ),
     )
 
+    val DUOLINGO = Compatibility(
+        name = "Duolingo",
+        packageName = "com.duolingo",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x58CC02,
+        signatures = setOf(
+            "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731",
+        ),
+        targets = listOf(
+            AppTarget(version = "6.103.6", versionCode = 2488, minSdk = 29),
+            AppTarget(version = "6.104.4", versionCode = 2493, minSdk = 29),
+        ),
+    )
+
     val DWG_FASTVIEW = Compatibility(
         name = "DWG FastView",
         packageName = "com.gstarmc.android",
@@ -581,7 +595,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6566216a168c676d7290543751611e836d79c88a0c9e616c9ba3db9688c9737b",
         ),
-        targets = listOf(AppTarget(version = "1.0.10", versionCode = 11, minSdk = 32)),
+        targets = listOf(
+            AppTarget(version = "1.0.10", versionCode = 11, minSdk = 32),
+            AppTarget(version = "1.0.2", versionCode = 12, minSdk = 32),
+        ),
     )
 
     val HINDU_CALENDAR = Compatibility(
@@ -873,6 +890,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.9", versionCode = 9, minSdk = 24)),
     )
 
+    val MUSCLEWIKI = Compatibility(
+        name = "MuscleWiki",
+        packageName = "com.musclewiki.macro",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x264294,
+        signatures = setOf("349b485d627caaf4498794ec066b43928bf8b8cc6c9de6410b2b5ba5643c6f93"),
+        targets = listOf(AppTarget(version = "3.2.7", versionCode = 327001, minSdk = 26)),
+    )
+
     val MUSIXMATCH = Compatibility(
         name = "Musixmatch",
         packageName = "com.musixmatch.android.lyrify",
@@ -1040,6 +1066,17 @@ internal object AppCompatibilities {
             "e9b037f4be157ee608de6aa922cda5cdbe614633171cc94544c40f08e9509286",
         ),
         targets = listOf(AppTarget(version = "4.17.0", versionCode = 4017000, minSdk = 29)),
+    )
+
+    val PATREON = Compatibility(
+        name = "Patreon",
+        packageName = "com.patreon.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf(
+            "58474964025470a3b95e2a1e319079a787180878af8915f81a2d1e77683ae23a",
+        ),
+        targets = listOf(AppTarget(version = "126.44.0.13", versionCode = 244013, minSdk = 32)),
     )
 
     val PERPLEXITY = Compatibility(
@@ -1280,6 +1317,7 @@ internal object AppCompatibilities {
             AppTarget(version = "2.2.8", versionCode = 77, minSdk = 33),
             AppTarget(version = "2.2.9", versionCode = 78, minSdk = 33),
             AppTarget(version = "2.2.91", versionCode = 82, minSdk = 33),
+            AppTarget(version = "2.3.0", versionCode = 84, minSdk = 33),
         ),
     )
 
