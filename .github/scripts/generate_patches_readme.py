@@ -201,6 +201,7 @@ ICONS = {
     "ai.perplexity.app.android": "perplexity.png",
     "com.poe.android": "poe.png",
     "com.thetrainline": "trainline.png",
+    "com.tradingview.tradingviewapp": "tradingview.png",
     "org.readera": "readera.png",
     "com.pleco.chinesesystem": "pleco.png",
     "com.kick.mobile": "kick.png",

@@ -52,6 +52,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `perplexity.png` | Perplexity (`ai.perplexity.app.android`) | PerplexityAI | APK 2.95.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `poe.png` | Poe (`com.poe.android`) | Quora, Inc. | APK a3.77.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `trainline.png` | Trainline (`com.thetrainline`) | trainline | APK 414.0.0.182041, adaptive icon `mipmap/ttl_ic_launcher` |
+| `tradingview.png` | TradingView (`com.tradingview.tradingviewapp`) | TradingView Inc. | Google Play listing icon (the adaptive icon's `#131722` background under the foreground), cut to a circle |
 | `readera.png` | ReadEra (`org.readera`) | READERA LLC | APK 26.05.20, `mipmap/d` (round icon), xxxhdpi |
 | `pleco.png` | Pleco (`com.pleco.chinesesystem`) | Pleco Software | APK 3.2.101, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `moonreader.png` | Moon+ Reader (`com.flyersoft.moonreader`) | Moon+ | APK 10.7, adaptive icon `res/drawable-anydpi-v26/icon.xml` |
