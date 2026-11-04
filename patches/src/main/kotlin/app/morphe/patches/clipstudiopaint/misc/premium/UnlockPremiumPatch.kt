@@ -25,6 +25,8 @@ private val clearDoodleFlagStore: (ByteBuffer, Int) -> Unit = { buffer, start ->
     buffer.putInt(store, buffer.getInt(store) or ZERO_REGISTER)
 }
 
+private val clearDrawingTimeLimitFlagStore: (ByteBuffer, Int) -> Unit = clearDoodleFlagStore
+
 private val redirectDoodleFlagStore: (ByteBuffer, Int) -> Unit = { buffer, start ->
     buffer.putInt(start + WORD_SIZE, ADRP_X8_REDIRECT_PAGE.toInt())
     buffer.putInt(start + 2 * WORD_SIZE, ADD_X8_REDIRECT_OFFSET.toInt())
@@ -45,6 +47,8 @@ private val patchSites = listOf(
         intArrayOf(0x54000081, 0x90025528u.toInt(), 0x912c2108u.toInt(), 0x14000018),
         redirectDoodleFlagStore,
     ),
+    PatchSite(intArrayOf(0x52800c00, 0xb90be302u.toInt(), 0xa90423eau.toInt()), clearDrawingTimeLimitFlagStore),
+    PatchSite(intArrayOf(0x5280002a, 0xb90be12au.toInt(), 0x34000288), clearDrawingTimeLimitFlagStore),
     PatchSite(
         intArrayOf(
             0xd102c3ffu.toInt(),
@@ -65,7 +69,8 @@ private val patchSites = listOf(
 @Suppress("unused")
 val unlockPremiumPatch = rawResourcePatch(
     name = "Unlock premium",
-    description = "Unlocks saving and exporting in doodle mode, including full-length timelapse export with an optional logo.",
+    description = "Removes the monthly drawing time limit. " +
+        "Unlocks saving and exporting in doodle mode and full-length timelapse export with an optional logo.",
 ) {
     compatibleWith(AppCompatibilities.CLIP_STUDIO_PAINT)
     availability(requireArm64)
