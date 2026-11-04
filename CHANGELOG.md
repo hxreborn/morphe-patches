@@ -1,3 +1,48 @@
+## [1.72.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.71.0...v1.72.0-dev.1) (2026-11-04)
+
+### Bug Fixes
+
+* **AlpineQuest:** set Android requirement to 2.1 ([c392c1e](https://github.com/hxreborn/morphe-patches/commit/c392c1e4ec583005e40987fce8a6e98211b6e68f))
+* **Clone App:** lower Android requirement from 12L to 7 ([eec8799](https://github.com/hxreborn/morphe-patches/commit/eec8799775195007758d83586b66b625e2068a52))
+* **Cxxdroid:** raise Android requirement for 6.0 from 5 to 7 ([eb4b6a5](https://github.com/hxreborn/morphe-patches/commit/eb4b6a51ef4c95aece1dcb5415a8346fc4dd0cf0))
+* **Desh Telugu Keyboard:** lower Android requirement from 12L to 6 ([22e6cac](https://github.com/hxreborn/morphe-patches/commit/22e6cac4cedd4a30c6aab5557e241be250f2220c))
+* **imo:** lower Android requirement from 12L to 6 ([bc35d7b](https://github.com/hxreborn/morphe-patches/commit/bc35d7b6c7d932e46227cc5bc726730df75ddba2))
+* **Magic Earth:** lower Android requirement for 7.1.26.38 from 12L to 9 ([1008ad9](https://github.com/hxreborn/morphe-patches/commit/1008ad93ffe451ece77b446149e724abc9fedaae))
+* **Musicolet:** lower Android requirement from 9 to 7 ([70e7214](https://github.com/hxreborn/morphe-patches/commit/70e7214548df970c3057bd16d4b4b47fa3e13df3))
+* **Patreon:** lower Android requirement from 12L to 8 ([08b50fc](https://github.com/hxreborn/morphe-patches/commit/08b50fc64bee74b30cc23613c7f8c8ffafb88216))
+* **Pixlr:** lower Android requirement from 10 to 9 ([1f33016](https://github.com/hxreborn/morphe-patches/commit/1f33016c10f470c2e07928997dcf99ed2aac01eb))
+* **Radio Javan:** lower Android requirement for 11.23.0 from 12L to 12 ([53b6fc6](https://github.com/hxreborn/morphe-patches/commit/53b6fc6af879f0092008c4d4740b517fbba62ec1))
+* **Raindrop.io:** lower Android requirement from 9 to 7 ([28ecbc3](https://github.com/hxreborn/morphe-patches/commit/28ecbc3c6a2b090930fa76103122652114d8c58a))
+* **ReadEra:** raise Android requirement for 26.05.20 from 4.1 to 5 ([9c7d13e](https://github.com/hxreborn/morphe-patches/commit/9c7d13ece997938a2fa40df5650edbedc43b1ddf))
+* **Transparent clock & weather:** lower Android requirement to 7 ([f137477](https://github.com/hxreborn/morphe-patches/commit/f1374773d6aced0f6623c889a82c3ceaa750d2d9))
+* **Ultimate Guitar:** lower Android requirement from 12L to 10 ([f25ec94](https://github.com/hxreborn/morphe-patches/commit/f25ec94a4808927a12ef14e8bd499beb79da0a09))
+* **Viber - GmsCore support:** connect Google Drive for chat backups ([f1038b1](https://github.com/hxreborn/morphe-patches/commit/f1038b1c79c32fb45e8f1554f1e5cecc545212a5))
+* **Viber:** lower Android requirement from 12L to 6 ([d44e657](https://github.com/hxreborn/morphe-patches/commit/d44e6576481297a4051f231a4a212466f1ca8902))
+* **vpnify:** lower Android requirement from 10 to 7 ([6ed0486](https://github.com/hxreborn/morphe-patches/commit/6ed04864cec785e437bfe9a739f2b3af55ea7784))
+
+### New Features
+
+* **Ground News - Disable tracking:** stop usage and crash reporting ([05ba404](https://github.com/hxreborn/morphe-patches/commit/05ba404424918b9641f6df0abeeb3b18bcd717f0))
+* **Ground News - Remove article ads:** block publisher ad requests ([c744fe3](https://github.com/hxreborn/morphe-patches/commit/c744fe3cdc8f7ce9e9db565ade017a94a54ad3f8))
+* **Ground News - Remove promotions:** remove trial banner ([58c4915](https://github.com/hxreborn/morphe-patches/commit/58c4915d36021b9f01823c75955348b834fd9ffe))
+* **Ground News - Unlock premium:** show bias and ownership ratings ([38d1e3e](https://github.com/hxreborn/morphe-patches/commit/38d1e3e8ef29a30b4131e4b3007e00d4dbca5600))
+* **Hypic - GmsCore support:** sign in with Google ([5860c71](https://github.com/hxreborn/morphe-patches/commit/5860c7195a9bffa7b9ef81c9326fbbd2b7e5acb5))
+* **Hypic - Hide upgrade promotions:** remove Pro buttons and paywalls ([6f970f4](https://github.com/hxreborn/morphe-patches/commit/6f970f4c883f148569cb3c6bd1333f441557656c))
+* **Hypic - Remove reinstall prompt:** open editor and keep saved data ([eaceb3d](https://github.com/hxreborn/morphe-patches/commit/eaceb3dff39012fa52997ccfff8c19f21833cccb))
+* **Hypic - Unlock premium:** unlock Pro filters, effects and templates ([91b3263](https://github.com/hxreborn/morphe-patches/commit/91b3263fdea779b098893c79a386b984d2d36e1e))
+* **MangaTime - GmsCore support:** sign in with Google ([98d6e17](https://github.com/hxreborn/morphe-patches/commit/98d6e17d435a4c4083924fab550367d50eda023f))
+* **MangaTime - Unlock premium:** remove ads and chapter limits ([a30ef03](https://github.com/hxreborn/morphe-patches/commit/a30ef03a644bcbeac35d2d3f7c9dfea695f5a50a))
+* **TradingView - GmsCore support:** sign in with Google ([ed6af4c](https://github.com/hxreborn/morphe-patches/commit/ed6af4c0d6a807481a6705664c3f66d462f20c28))
+* **TradingView - Hide ads:** remove ads and upgrade cards from feeds ([fadf6f7](https://github.com/hxreborn/morphe-patches/commit/fadf6f7c5bdc1afc9dd9052291d83229c943494d))
+* **TradingView - Hide upgrade promotions:** remove banners and paywalls ([3213da1](https://github.com/hxreborn/morphe-patches/commit/3213da1c3f9a6a2571f44ece3b1ba89990c79f1d))
+* **TradingView - Unlock multi-chart layouts:** show up to 8 charts ([a545cd8](https://github.com/hxreborn/morphe-patches/commit/a545cd8c65e5fe3b8dc76f8b65c2e13c4709682a))
+* **Ultimate Guitar - GmsCore support:** sign in with Google ([affc743](https://github.com/hxreborn/morphe-patches/commit/affc7430196ff57a9c90d93be5e7c296b05a3fab))
+* **Ultimate Guitar - Unlock premium:** unlock Pro and remove ads ([2441d83](https://github.com/hxreborn/morphe-patches/commit/2441d837a198b34ffb1ae342145544a67961761b))
+* **X-plore - GmsCore support:** sign in with Google ([a4697c7](https://github.com/hxreborn/morphe-patches/commit/a4697c7a87d64003909dca1f967d2e6799f2c074))
+* **X-plore - Unlock premium:** enable paid tools and remove ads ([d0df8ce](https://github.com/hxreborn/morphe-patches/commit/d0df8ce202f9fd4247b8082f4e70a713ae4d04b6))
+* **Xtream Player - Disable tracking:** stop usage reporting ([23951f2](https://github.com/hxreborn/morphe-patches/commit/23951f2658c4cd1b367c2c1db0d82f4bc7175e2a))
+* **Xtream Player - Unlock premium:** open media and visualizers ([05a5d75](https://github.com/hxreborn/morphe-patches/commit/05a5d7577490f0bbcdce3b355a9122423ed3564f))
+
 ## [1.71.0](https://github.com/hxreborn/morphe-patches/compare/v1.70.0...v1.71.0) (2026-11-04)
 
 ### Bug Fixes
