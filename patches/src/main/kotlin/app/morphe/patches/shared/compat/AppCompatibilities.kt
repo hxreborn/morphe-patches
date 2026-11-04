@@ -612,6 +612,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.4.0", versionCode = 177, minSdk = 28)),
     )
 
+    val HYPIC = Compatibility(
+        name = "Hypic",
+        packageName = "com.xt.retouchoversea",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xADFF02,
+        signatures = setOf(
+            "bb3afb81a8a2c4fd8cdb786f09afe378d29859ecbcef82365590bf3787e64a7c",
+        ),
+        targets = listOf(AppTarget(version = "9.9.0", versionCode = 99080, minSdk = 23)),
+    )
+
     val IMO = Compatibility(
         name = "imo",
         packageName = "com.imo.android.imoim",

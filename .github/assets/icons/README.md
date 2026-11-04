@@ -118,6 +118,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `movieboxtv.png` | MovieBox TV (`com.community.mbox.tv`) | Not on Google Play | APK 1.2.0.0923, `res/d2.webp` (square icon cut to a circle) |
 | `musclewiki.png` | MuscleWiki (`com.musclewiki.macro`) | MuscleWiki SEZC | Play 3.2.7, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
+| `hypic.png` | Hypic (`com.xt.retouchoversea`) | Bytedance Pte. Ltd. | Play 9.9.0, `res/mipmap-xxxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
 | `musixmatch.png` | Musixmatch (`com.musixmatch.android.lyrify`) | Musixmatch | APK 8.4.2, `mipmap/mxm_icon_manifest_round` xxxhdpi (`res/raw/MZ`) |
 | `myscriptmath.png` | MyScript Math (`com.myscript.math`) | MyScript | APK 1.11.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` (white background under vector `res/drawable/ic_launcher_foreground.xml`) rasterized and cut to a circle |
 | `myscriptnotes.png` | MyScript Notes (`com.myscript.nebo`) | MyScript | APK 7.4.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
