@@ -1611,6 +1611,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
     )
 
+    val ULTIMATE_GUITAR = Compatibility(
+        name = "Ultimate Guitar",
+        packageName = "com.ultimateguitar.tabs",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x141417,
+        signatures = setOf(
+            "47448c666caa451f8e5febb3b69262081f4d495405bda9a4f22d079febbfaef8",
+        ),
+        targets = listOf(AppTarget(version = "7.3.36", versionCode = 4009263, minSdk = 32)),
+    )
+
     val VIDEO_EDITOR = Compatibility(
         name = "Video Editor",
         packageName = "videoeditor.videomaker.videoeditorforyoutube",

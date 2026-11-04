@@ -298,6 +298,7 @@ ICONS = {
     "com.droid27.transparentclockweather": "transparentclock.png",
     "com.pixlr.express": "pixlr.png",
     "com.patreon.android": "patreon.png",
+    "com.ultimateguitar.tabs": "ultimateguitar.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")
