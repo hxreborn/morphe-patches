@@ -5,6 +5,7 @@
 package app.morphe.patches.poe.misc.pairip
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.methodCall
 
 internal object DownloadCompleteReceiverFingerprint : Fingerprint(
     name = "onReceive",
@@ -15,4 +16,22 @@ internal object DownloadCompleteReceiverFingerprint : Fingerprint(
             classDef.methods.any { it.name.startsWith("getLongExtra$") } &&
             classDef.methods.any { it.name.startsWith("longValue$") }
     },
+)
+
+internal object DownloadCallbackFingerprint : Fingerprint(
+    filters = listOf(
+        methodCall(
+            parameters = emptyList(),
+            returnType = "Ljava/lang/Object;",
+        ),
+    ),
+)
+
+internal object DownloadResumeFingerprint : Fingerprint(
+    filters = listOf(
+        methodCall(
+            parameters = listOf("Ljava/lang/Object;"),
+            returnType = "V",
+        ),
+    ),
 )
