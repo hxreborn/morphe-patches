@@ -890,6 +890,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.9", versionCode = 9, minSdk = 24)),
     )
 
+    val MUSCLEWIKI = Compatibility(
+        name = "MuscleWiki",
+        packageName = "com.musclewiki.macro",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x264294,
+        signatures = setOf("349b485d627caaf4498794ec066b43928bf8b8cc6c9de6410b2b5ba5643c6f93"),
+        targets = listOf(AppTarget(version = "3.2.7", versionCode = 327001, minSdk = 26)),
+    )
+
     val MUSIXMATCH = Compatibility(
         name = "Musixmatch",
         packageName = "com.musixmatch.android.lyrify",

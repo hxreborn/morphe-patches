@@ -218,6 +218,7 @@ ICONS = {
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
     "com.community.oneroom": "moviebox.png",
     "com.community.mbox.tv": "movieboxtv.png",
+    "com.musclewiki.macro": "musclewiki.png",
     "com.musixmatch.android.lyrify": "musixmatch.png",
     "com.myscript.math": "myscriptmath.png",
     "com.myscript.nebo": "myscriptnotes.png",
