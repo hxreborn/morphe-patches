@@ -21,6 +21,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `liftoff.png` | Liftoff (`com.gymbros.app`) | Liftoff Labs Inc. | Play 2.17.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `mangatime.png` | MangaTime (`net.mangatime.app`) | Giorgio Bertolotti | APK 1.24.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `xplore.png` | X-plore File Manager (`com.lonelycatgames.Xplore`) | Lonely Cat Games | Play 4.50.05, adaptive icon `res/mipmap-anydpi/icon2.xml` (`icon2_background` under `icon2_foreground`, xxhdpi), cut to a circle |
 | `groundnews.png` | Ground News (`com.checkitt`) | Snapwise Inc. | APK 5.0.0, `res/GF.png` (`mipmap/ground_icon_app_round`, xxxhdpi) |
