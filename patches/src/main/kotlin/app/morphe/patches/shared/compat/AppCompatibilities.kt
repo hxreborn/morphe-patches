@@ -1742,6 +1742,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.78.1", versionCode = 1515278101, minSdk = 24)),
     )
 
+    val XPLORE = Compatibility(
+        name = "X-plore File Manager",
+        packageName = "com.lonelycatgames.Xplore",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFFDD00,
+        signatures = setOf(
+            "d46cd5fa44ae52141346da0e2c21d0cea7c6e0587b1ee5ad121d909031efec57",
+        ),
+        targets = listOf(AppTarget(version = "4.50.05", versionCode = 45005, minSdk = 26)),
+    )
+
     val YANOSIK = Compatibility(
         name = "Yanosik",
         packageName = "pl.neptis.yanosik.mobi.android",

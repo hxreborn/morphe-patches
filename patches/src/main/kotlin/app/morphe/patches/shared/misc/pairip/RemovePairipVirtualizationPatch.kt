@@ -283,6 +283,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
         AppCompatibilities.USA_VPN,
         AppCompatibilities.VLLO,
         AppCompatibilities.VPN_INDIA,
+        AppCompatibilities.XPLORE,
         AppCompatibilities.YUKA,
     )
 
