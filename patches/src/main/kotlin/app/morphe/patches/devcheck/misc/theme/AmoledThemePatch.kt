@@ -71,7 +71,7 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Adds a pure black option to the dark theme.",
 ) {
-    compatibleWith(AppCompatibilities.DEVCHECK)
+    compatibleWith(AppCompatibilities.DEVCHECK.excluding("6.62"))
     dependsOn(unlockPremiumPatch, amoledThemeResourcesPatch)
     availability(requireArm64)
     extendWith("extensions/extension.mpe")

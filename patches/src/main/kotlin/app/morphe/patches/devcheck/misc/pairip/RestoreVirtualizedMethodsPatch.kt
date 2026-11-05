@@ -397,7 +397,24 @@ internal val restoreVirtualizedMethodsPatch = bytecodePatch {
             val call = "invoke-static/range {p0 .. p${method.parameterTypes.size}}, " +
                 "$RESTORED_CLASS->$restoredName($parameters)${method.returnType}"
             val returnSmali = if (method.returnType == "V") "return-void" else "move-result-object v0\nreturn-object v0"
-            method.replaceVirtualizedBody("$call\n$returnSmali")
+            val batteryUpdate = if (restoredName == "shizukuBinderReceive") {
+                dashboardBatteryRegistrationFingerprint(method.definingClass).matchOrNull()?.let { registration ->
+                    val (_, batteryIntentWrite) = registration.instructionMatches
+                    val batteryIntent = batteryIntentWrite.getInstruction<ReferenceInstruction>().reference as FieldReference
+                    """
+                        invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+                        move-result-object v0
+                        const-string v1, "android.intent.action.BATTERY_CHANGED"
+                        invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+                        move-result v0
+                        if-eqz v0, :shizuku
+                        sput-object p2, ${descriptor(batteryIntent)}
+                        return-void
+                        :shizuku
+                    """
+                }.orEmpty()
+            } else ""
+            method.replaceVirtualizedBody("$batteryUpdate\n$call\n$returnSmali")
         }
     }
 }
