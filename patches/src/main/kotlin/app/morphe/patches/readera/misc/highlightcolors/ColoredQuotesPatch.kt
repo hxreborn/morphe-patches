@@ -65,6 +65,7 @@ val coloredQuotesPatch = bytecodePatch(
         val quoteColorField = classDefBy(quoteType).fields.single { field ->
             field.type == "I" && field.accessFlags and AccessFlags.STATIC.value == 0
         }
+        val nightHighlight = NightHighlightFingerprint.method
 
         QuoteHighlightColorFingerprint.let {
             val highlight = it.method
@@ -80,7 +81,7 @@ val coloredQuotesPatch = bytecodePatch(
                             iget v0, p1, $quoteColorField
                             invoke-static { v0 }, $paletteByIndex
                             move-result-object v0
-                            invoke-direct { p0 }, ${NightHighlightFingerprint.method}
+                            invoke-direct { p0 }, $nightHighlight
                             move-result v1
                             if-eqz v1, :day
                             iget v0, v0, $nightColorField

@@ -94,7 +94,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     private static final String LOGIN_PAGE_SCRIPT = """
             (function(){if(window.__tbFix)return;window.__tbFix=1;\
-            var rawFetch=window.fetch?window.fetch.bind(window):null;\
+            var rawFetch=window.fetch?window.fetch.bind(window):null,receivedCredential=null;\
             function send(d){try{var p={state:1,ndus:d.ndus,uid:String(d.userid||''),\
             displayName:d.displayName||'',headUrl:d.headUrl||'',\
             region_domain_prefix:d.region_domain_prefix||'www',cur_country:d.cur_country||'',\
@@ -115,7 +115,8 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             var o=JSON.parse(t.slice(a,b+1));\
             var ok=o&&o.code===0&&o.data&&o.data.ndus;\
             if(ok)send(o.data);\
-            if(!ok&&cb&&window[cb])window[cb](o);}).catch(function(e){});\
+            if(!ok){receivedCredential=null;if(cb&&window[cb])window[cb](o);}})\
+            .catch(function(e){receivedCredential=null;});\
             return 'data:text/javascript,';}\
             try{var d=Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,'src');\
             if(d&&d.set)Object.defineProperty(HTMLScriptElement.prototype,'src',{configurable:true,\
@@ -137,7 +138,12 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             var w=false,n=0,t=setInterval(function(){\
             var g=window.google&&window.google.accounts&&window.google.accounts.id;\
             if(g&&!w){w=true;var o2=g.initialize;\
-            g.initialize=function(c){if(c&&c.callback)window.__tbCb=c.callback;return o2.apply(this,arguments)};}\
+            g.initialize=function(c){if(!c||!c.callback)return o2.apply(this,arguments);\
+            var cb=c.callback;window.__tbCb=function(r){var credential=r&&r.credential;\
+            if(credential&&credential===receivedCredential)return;receivedCredential=credential;\
+            try{return cb(r);}catch(e){receivedCredential=null;throw e;}};\
+            var config={};Object.keys(c).forEach(function(k){config[k]=c[k]});\
+            config.callback=window.__tbCb;return o2.call(this,config);};}\
             var h=document.querySelector('.hidden-google-btn');\
             if(h){var d2=h.firstElementChild||h;if(!d2.id)d2.id='google_login_button';\
             if(g&&window.__tbCb&&!d2.__tb){d2.__tb=1;try{d2.innerHTML='';\

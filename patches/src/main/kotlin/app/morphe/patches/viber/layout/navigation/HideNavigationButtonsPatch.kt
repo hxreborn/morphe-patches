@@ -14,7 +14,10 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
+import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
 import app.morphe.patches.viber.shared.addHiddenIdCheck
+import app.morphe.patches.viber.shared.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private enum class HomeTab(val label: String, val default: Boolean, vararg val ids: Int) {
@@ -26,14 +29,16 @@ private enum class HomeTab(val label: String, val default: Boolean, vararg val i
     SHORTICA("Shortica", true, 10),
 }
 
+private const val DESCRIPTION = "Hides the selected tabs from the bottom navigation bar."
+
 @Suppress("unused")
 val hideNavigationButtonsPatch = bytecodePatch(
     name = "Hide navigation buttons",
-    description = "Hides the selected tabs from the bottom navigation bar.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.VIBER)
 
-    dependsOn(spoofSignaturePatch)
+    dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 
     val hideTabOptions = HomeTab.entries.associateWith { tab ->
         booleanOption(
@@ -45,11 +50,12 @@ val hideNavigationButtonsPatch = bytecodePatch(
     }
 
     execute {
+        markPatchApplied("hideNavigationButtons", DESCRIPTION)
         val hiddenIds = hideTabOptions.filterValues { it.value == true }.keys.flatMap { it.ids.toList() }
         if (hiddenIds.isEmpty()) return@execute
 
-        val tabVisibilityMethod = BuildHomeTabsFingerprint.matchSingle().instructionMatches.first()
-            .instruction.getReference<MethodReference>()!!
+        val (visibilityCall, _) = BuildHomeTabsFingerprint.matchSingle().instructionMatches
+        val tabVisibilityMethod = visibilityCall.instruction.getReference<MethodReference>()!!
         val tabVisibility = tabVisibilityFingerprint(tabVisibilityMethod).matchSingle()
         val isHiddenTab = mutableClassDefBy(tabVisibility.classDef).addHiddenIdCheck("isHiddenTab", hiddenIds)
 
@@ -59,6 +65,9 @@ val hideNavigationButtonsPatch = bytecodePatch(
             addInstructionsWithLabels(
                 0,
                 """
+                    invoke-static {}, $VIBER_SETTINGS_CLASS->hideNavigationButtons()Z
+                    move-result v$resultRegister
+                    if-eqz v$resultRegister, :show
                     invoke-static { p1 }, $isHiddenTab
                     move-result v$resultRegister
                     if-eqz v$resultRegister, :show

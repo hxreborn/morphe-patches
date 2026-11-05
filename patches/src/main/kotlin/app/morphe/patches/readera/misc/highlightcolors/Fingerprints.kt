@@ -192,8 +192,7 @@ internal object DictionaryUnavailableFingerprint : Fingerprint(
     filters = listOf(
         methodCall(opcode = Opcode.INVOKE_DIRECT, returnType = "Z", parameters = listOf()),
         opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
-        opcode(Opcode.IF_EQZ, MatchAfterImmediately()),
-        opcode(Opcode.IGET_OBJECT, MatchAfterImmediately()),
+        fieldAccess(opcode = Opcode.IGET_OBJECT, type = READ_ACTIVITY_CLASS),
         opcode(Opcode.CONST, MatchAfterImmediately()),
         methodCall(
             opcode = Opcode.INVOKE_STATIC,

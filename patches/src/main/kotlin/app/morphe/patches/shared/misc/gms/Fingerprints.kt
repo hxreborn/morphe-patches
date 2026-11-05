@@ -12,6 +12,7 @@ package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
@@ -63,10 +64,6 @@ internal object GetCredentialHandlerFingerprint : Fingerprint(
     ),
 )
 
-internal object CredentialProviderFrameworkFingerprint : Fingerprint(
-    filters = listOf(string("In CredentialProviderFrameworkImpl onClearCredential")),
-)
-
 private const val PRE_U_MIN_GMS_APK_VERSION = 252400000
 
 internal object PlayServicesGetCredentialRoutingFingerprint : Fingerprint(
@@ -79,8 +76,16 @@ internal object PlayServicesGetCredentialRoutingFingerprint : Fingerprint(
 )
 
 internal object CredentialProviderFrameworkAvailabilityFingerprint : Fingerprint(
-    classFingerprint = CredentialProviderFrameworkFingerprint,
     name = "isAvailableOnDevice",
     returnType = "Z",
     parameters = listOf(),
+    filters = listOf(fieldAccess(type = "Landroid/credentials/CredentialManager;")),
+)
+
+internal object GooglePlayServicesPackageSignaturesFingerprint : Fingerprint(
+    returnType = "I",
+    strings = listOf(
+        " requires Google Play services, but their signature is invalid.",
+        " requires Google Play Store, but its signature is invalid.",
+    ),
 )

@@ -146,6 +146,12 @@ def versions_table(targets):
 
 
 ICONS = {
+    "com.gymbros.app": "liftoff.png",
+    "co.unstatic.habitify": "habitify.png",
+    "me.aap.fermatamod.dear.google.why.bingo2.rec": "xtreamplayer.png",
+    "com.lonelycatgames.Xplore": "xplore.png",
+    "com.checkitt": "groundnews.png",
+    "com.alibaba.aliexpresshd": "aliexpress.png",
     "com.thesortdapp.sortd": "albo.png",
     "com.hardcodedjoy.iototoy": "iototoy.png",
     "com.oneletters.audiobooksai": "audiobookunlimited.png",
@@ -163,6 +169,7 @@ ICONS = {
     "com.duolingo": "duolingo.png",
     "com.ferdinandobermeier.focusmate": "focusnow.png",
     "com.adithya.memoneet": "memoneet.png",
+    "net.mangatime.app": "mangatime.png",
     "com.halalfire.medicneet": "medicneet.png",
     "com.lernr.app": "neetprep.png",
     "com.gooded.essential": "neetprepessential.png",
@@ -201,6 +208,7 @@ ICONS = {
     "ai.perplexity.app.android": "perplexity.png",
     "com.poe.android": "poe.png",
     "com.thetrainline": "trainline.png",
+    "com.tradingview.tradingviewapp": "tradingview.png",
     "org.readera": "readera.png",
     "com.pleco.chinesesystem": "pleco.png",
     "com.kick.mobile": "kick.png",
@@ -219,6 +227,7 @@ ICONS = {
     "com.community.oneroom": "moviebox.png",
     "com.community.mbox.tv": "movieboxtv.png",
     "com.musclewiki.macro": "musclewiki.png",
+    "com.xt.retouchoversea": "hypic.png",
     "com.musixmatch.android.lyrify": "musixmatch.png",
     "com.myscript.math": "myscriptmath.png",
     "com.myscript.nebo": "myscriptnotes.png",
@@ -296,6 +305,7 @@ ICONS = {
     "com.droid27.transparentclockweather": "transparentclock.png",
     "com.pixlr.express": "pixlr.png",
     "com.patreon.android": "patreon.png",
+    "com.ultimateguitar.tabs": "ultimateguitar.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

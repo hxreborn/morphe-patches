@@ -21,6 +21,12 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `liftoff.png` | Liftoff (`com.gymbros.app`) | Liftoff Labs Inc. | Play 2.17.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `habitify.png` | Habitify (`co.unstatic.habitify`) | Unstatic Ltd Co | Play 50.2.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, white background under foreground, cut to a circle |
+| `mangatime.png` | MangaTime (`net.mangatime.app`) | Giorgio Bertolotti | APK 1.24.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `xplore.png` | X-plore File Manager (`com.lonelycatgames.Xplore`) | Lonely Cat Games | Play 4.50.05, adaptive icon `res/mipmap-anydpi/icon2.xml` (`icon2_background` under `icon2_foreground`, xxhdpi), cut to a circle |
+| `groundnews.png` | Ground News (`com.checkitt`) | Snapwise Inc. | APK 5.0.0, `res/GF.png` (`mipmap/ground_icon_app_round`, xxxhdpi) |
+| `aliexpress.png` | AliExpress (`com.alibaba.aliexpresshd`) | Alibaba Mobile | Play 8.180.1, adaptive icon foreground `res/al/b.png`, cut to a circle |
 | `albo.png` | Albo (`com.thesortdapp.sortd`) | The Feel Good Project Ltd | Google Play listing icon (the adaptive icon's white background under the foreground), cut to a circle |
 | `iototoy.png` | IoToToy No-Code IoT automation (`com.hardcodedjoy.iototoy`) | HARDCODED JOY S.R.L. | APK 1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `audiobookunlimited.png` | Audiobook Unlimited for Kindle (`com.oneletters.audiobooksai`) | Cee68 | APK 1.7.23, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
@@ -52,6 +58,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `perplexity.png` | Perplexity (`ai.perplexity.app.android`) | PerplexityAI | APK 2.95.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `poe.png` | Poe (`com.poe.android`) | Quora, Inc. | APK a3.77.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `trainline.png` | Trainline (`com.thetrainline`) | trainline | APK 414.0.0.182041, adaptive icon `mipmap/ttl_ic_launcher` |
+| `tradingview.png` | TradingView (`com.tradingview.tradingviewapp`) | TradingView Inc. | Google Play listing icon (the adaptive icon's `#131722` background under the foreground), cut to a circle |
 | `readera.png` | ReadEra (`org.readera`) | READERA LLC | APK 26.05.20, `mipmap/d` (round icon), xxxhdpi |
 | `pleco.png` | Pleco (`com.pleco.chinesesystem`) | Pleco Software | APK 3.2.101, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `moonreader.png` | Moon+ Reader (`com.flyersoft.moonreader`) | Moon+ | APK 10.7, adaptive icon `res/drawable-anydpi-v26/icon.xml` |
@@ -118,6 +125,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `movieboxtv.png` | MovieBox TV (`com.community.mbox.tv`) | Not on Google Play | APK 1.2.0.0923, `res/d2.webp` (square icon cut to a circle) |
 | `musclewiki.png` | MuscleWiki (`com.musclewiki.macro`) | MuscleWiki SEZC | Play 3.2.7, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
+| `hypic.png` | Hypic (`com.xt.retouchoversea`) | Bytedance Pte. Ltd. | Play 9.9.0, `res/mipmap-xxxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
 | `musixmatch.png` | Musixmatch (`com.musixmatch.android.lyrify`) | Musixmatch | APK 8.4.2, `mipmap/mxm_icon_manifest_round` xxxhdpi (`res/raw/MZ`) |
 | `myscriptmath.png` | MyScript Math (`com.myscript.math`) | MyScript | APK 1.11.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` (white background under vector `res/drawable/ic_launcher_foreground.xml`) rasterized and cut to a circle |
 | `myscriptnotes.png` | MyScript Notes (`com.myscript.nebo`) | MyScript | APK 7.4.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
@@ -174,6 +182,8 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `com.videoplayer.arcplayer.png` | Arc Player (`com.videoplayer.arcplayer`) | Arc Video Player | Google Play listing icon, added 2026-10-26 |
 | `pixlr.png` | Pixlr (`com.pixlr.express`) | Pixlr Pte Ltd | APK 3.9.3, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_2025.xml`: vector `res/drawable/ic_launcher_2025_foreground.xml` on its `#0e0e0f` background, cut to a circle |
 | `patreon.png` | Patreon (`com.patreon.android`) | Patreon | APK 126.44.0.13, adaptive icon `res/drawable/ic_launcher_foreground.xml` on `@color/ic_launcher_background` (black), cut to a circle |
+| `ultimateguitar.png` | Ultimate Guitar: Chords & Tabs (`com.ultimateguitar.tabs`) | Ultimate Guitar USA LLC | APK 7.3.36, square icon `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` cut to a circle |
+| `xtreamplayer.png` | Xtream Player (`me.aap.fermatamod.dear.google.why.bingo2.rec`) | malebuffy | GitHub 1.8.12, adaptive round icon `res/mipmap-anydpi-v26/xtream_launcher_round.xml` (`res/drawable-xxxhdpi-v4/xtream_icon_app.png`, cut to a circle) |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

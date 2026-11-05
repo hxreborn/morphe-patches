@@ -24,6 +24,7 @@ android {
             isIncludeAndroidResources = true
             all {
                 it.systemProperty("user.timezone", "UTC")
+                it.maxHeapSize = "2g"
                 it.jvmArgs(
                     "--add-opens=java.base/java.lang=ALL-UNNAMED",
                     "--add-opens=java.base/java.util=ALL-UNNAMED",
@@ -81,6 +82,7 @@ dependencies {
     compileOnly(libs.androidx.compose.ui)
     compileOnly(libs.androidx.compose.runtime)
     compileOnly(libs.androidx.compose.foundation)
+    compileOnly(libs.androidx.webkit)
     testImplementation(libs.junit)
     testImplementation(libs.assertj.core)
     testImplementation(libs.robolectric)

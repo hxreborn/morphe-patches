@@ -15,6 +15,8 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.terabox.misc.settings.markPatchApplied
+import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import app.morphe.util.findElementByAttributeValueOrThrow
 import app.morphe.util.findInstructionIndicesReversed
 import com.android.tools.smali.dexlib2.Opcode
@@ -24,6 +26,8 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/GoogleLoginChromeClient;"
 
 private const val LOADING_INDICATOR_SIZE = "64.0dp"
+
+private const val DESCRIPTION = "Restores signing in with a Google account."
 
 private val loginLoadingIndicatorPatch = resourcePatch {
     execute {
@@ -43,13 +47,14 @@ private val loginLoadingIndicatorPatch = resourcePatch {
 @Suppress("unused")
 val fixGoogleLoginPatch = bytecodePatch(
     name = "Fix Google login",
-    description = "Restores signing in with a Google account.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
-    dependsOn(loginLoadingIndicatorPatch, spoofSignaturePatch)
+    dependsOn(loginLoadingIndicatorPatch, spoofSignaturePatch, patchesSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchApplied("fixGoogleLogin", DESCRIPTION)
         NativeAccountPageFingerprint.matchSingle().method.returnEarly(false)
 
         OfflinePackageManifestFingerprint.matchSingle().method.returnEarly(null)

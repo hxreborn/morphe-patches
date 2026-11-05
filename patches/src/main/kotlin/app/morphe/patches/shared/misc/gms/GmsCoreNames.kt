@@ -304,7 +304,9 @@ private val CLOUD_MESSAGING_NAMES: Map<String, String> =
     }
 
 internal fun BytecodePatchContext.renameGmsReferencesToGmsCore() {
-    (GooglePlayServicesAvailabilityFingerprint.methodOrNull ?: GooglePlayServicesUtilAvailabilityFingerprint.method)
+    (GooglePlayServicesAvailabilityFingerprint.methodOrNull
+        ?: GooglePlayServicesUtilAvailabilityFingerprint.methodOrNull
+        ?: GooglePlayServicesPackageSignaturesFingerprint.method)
         .returnEarly(0)
 
     replaceStringConstants(::gmsCoreName)

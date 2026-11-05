@@ -11,20 +11,25 @@ import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
+import app.morphe.patches.terabox.misc.settings.markPatchApplied
+import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 
 private const val PRIVILEGE_AD_FREE = 4
+
+private const val DESCRIPTION = "Removes feed, banner and video ads, plus interstitial and app-open ads. " +
+    "Rewarded ads still play when requested from Benefits."
 
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
-    description = "Removes feed, banner, interstitial, app-open and video player ads. " +
-        "Rewarded ads still play when requested from Benefits.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchApplied("hideAds", DESCRIPTION)
         HasPrivilegeFingerprint.matchSingle().method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
@@ -33,6 +38,9 @@ val hideAdsPatch = bytecodePatch(
                 """
                     const/4 v$register, $PRIVILEGE_AD_FREE
                     if-ne p0, v$register, :check
+                    invoke-static {}, $TERABOX_PATCH_SETTINGS_CLASS->isAdsHidden()Z
+                    move-result v$register
+                    if-eqz v$register, :check
                     const/4 v$register, 0x1
                     return v$register
                 """,

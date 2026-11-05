@@ -110,6 +110,20 @@ final class SettingsRows {
         row.addView(valueView, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
     }
 
+    void textRow(LinearLayout card, String title) {
+        if (card.getChildCount() > 0) {
+            View divider = new View(this.context);
+            divider.setBackgroundColor(this.style.divider);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
+            params.setMarginStart(this.style.dp(SettingsStyle.SCREEN_INSET_DP));
+            card.addView(divider, params);
+        }
+        TextView text = this.style.text(title, SettingsStyle.BODY_SP, this.style.primaryText, null);
+        text.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP),
+                this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP));
+        card.addView(text);
+    }
+
     private LinearLayout baseRow(LinearLayout card, String iconName) {
         if (card.getChildCount() > 0) {
             divider(card);
