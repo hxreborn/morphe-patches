@@ -26,10 +26,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 final class SettingsRows {
@@ -84,7 +84,7 @@ final class SettingsRows {
 
     void switchRow(LinearLayout card, PatchSetting setting, boolean checked,
             CompoundButton.OnCheckedChangeListener listener) {
-        CheckBox toggle = new CheckBox(this.context);
+        Switch toggle = new Switch(this.context);
         toggle.setChecked(checked);
         toggle.setMinWidth(this.style.dp(SWITCH_TOUCH_TARGET_DP));
         toggle.setMinHeight(this.style.dp(SWITCH_TOUCH_TARGET_DP));
