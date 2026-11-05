@@ -132,6 +132,39 @@ public class PatchSettingsTest {
 
     }
 
+    @Test
+    public void showPromotionWithoutAppliedPatch() {
+        Assert.assertTrue(PatchSettings.showPromotion(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedPromotions.class)
+    public void hidePromotionWithAppliedPatch() {
+        Assert.assertFalse(PatchSettings.showPromotion(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedPromotions.class)
+    public void showPromotionWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.HIDE_PROMOTIONS.key, false);
+        Assert.assertTrue(PatchSettings.showPromotion(true));
+    }
+
+    @Test
+    public void keepHiddenPromotionHidden() {
+        Assert.assertFalse(PatchSettings.showPromotion(false));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedPromotions {
+
+        @Implementation
+        protected static boolean hidePromotions() {
+            return true;
+        }
+
+    }
+
     @Implements(AppliedPatches.class)
     public static class AppliedPlus {
 

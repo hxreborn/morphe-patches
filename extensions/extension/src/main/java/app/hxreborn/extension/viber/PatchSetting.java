@@ -28,6 +28,7 @@ enum PatchSetting {
     DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
     UNFILED_CHATS("Chats", "unfiledChats", "Shows chats outside your folders.", true),
     HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
+    HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promo banners.", true),
     HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
     HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "Removes selected tabs.", true),
     FILTER_BUSINESS_CHATS("Business messages", "filterBusinessChats",
@@ -57,6 +58,7 @@ enum PatchSetting {
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsName();
             case HIDE_ADS -> AppliedPatches.hideAdsName();
+            case HIDE_PROMOTIONS -> AppliedPatches.hidePromotionsName();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsName();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsName();
@@ -72,6 +74,7 @@ enum PatchSetting {
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
             case UNFILED_CHATS -> AppliedPatches.unfiledChats();
             case HIDE_ADS -> AppliedPatches.hideAds();
+            case HIDE_PROMOTIONS -> AppliedPatches.hidePromotions();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtons();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChats();

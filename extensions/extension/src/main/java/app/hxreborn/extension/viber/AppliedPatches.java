@@ -138,6 +138,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean hidePromotions() {
+        return false;
+    }
+
+    public static String hidePromotionsName() {
+        return null;
+    }
+
+    public static String hidePromotionsDescription() {
+        return null;
+    }
+
     public static boolean spoofSignature() {
         return false;
     }
@@ -179,6 +191,7 @@ public final class AppliedPatches {
         add(applied, disableAiFeatures(), disableAiFeaturesName(), disableAiFeaturesDescription());
         add(applied, removeChatPayments(), removeChatPaymentsName(), removeChatPaymentsDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
+        add(applied, hidePromotions(), hidePromotionsName(), hidePromotionsDescription());
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
