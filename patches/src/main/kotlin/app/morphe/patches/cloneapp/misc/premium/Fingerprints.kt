@@ -97,7 +97,8 @@ internal fun staticInitializerFingerprint(definingClass: String) = Fingerprint(
 
 internal object DiscountOfferPopupFingerprint : Fingerprint(
     filters = listOf(
-        string("default-50off"),
+        fieldAccess(type = "Ljava/lang/String;", opcode = Opcode.IGET_OBJECT),
+        string("default-50off", location = MatchAfterImmediately()),
         methodCall(definingClass = "Ljava/lang/String;", name = "equals", location = MatchAfterWithin(2)),
         opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
     ),
