@@ -1,3 +1,16 @@
+## [1.72.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.72.0-dev.2...v1.72.0-dev.3) (2026-11-05)
+
+### Bug Fixes
+
+* **TeraBox - Fix Google login:** stop account expired after sign-in ([65a3aa8](https://github.com/hxreborn/morphe-patches/commit/65a3aa8bc8af36e8dc1ff20a831cfc5ca81034dc))
+
+### New Features
+
+* **Liftoff:** show applied patches in hxreborn patches menu ([c33bd2e](https://github.com/hxreborn/morphe-patches/commit/c33bd2e6378657cdbd79c1916d4dfa8a0d0c2680))
+* **Patreon - Hide search suggestions:** remove creator and topic picks ([fd44ca9](https://github.com/hxreborn/morphe-patches/commit/fd44ca97ab340a67bba9a31038fee62ea04282cb)), closes [#642](https://github.com/hxreborn/morphe-patches/issues/642)
+* **TeraBox:** show applied patches in hxreborn patches menu ([cd5b0cd](https://github.com/hxreborn/morphe-patches/commit/cd5b0cd0e326d2a116016dfcf0b632c7e7afccaa))
+* **Viber - Hide More screen items:** toggle removals in settings ([152addc](https://github.com/hxreborn/morphe-patches/commit/152addce8c81b17c1a526125191659269a9a9a0f))
+
 ## [1.72.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.72.0-dev.1...v1.72.0-dev.2) (2026-11-05)
 
 ### Bug Fixes

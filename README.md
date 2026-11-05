@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.72.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.72.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;473 patches total
+> **[v1.72.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.72.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;474 patches total
 
 <table>
 <tr>
@@ -168,7 +168,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#notesnook"><img src=".github/assets/icons/notesnook.png" width="40"><br>Notesnook</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#one4home-launcher"><img src=".github/assets/icons/one4home.png" width="40"><br>One4Home Launcher</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#opal"><img src=".github/assets/icons/opal.png" width="40"><br>Opal</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#patreon"><img src=".github/assets/icons/patreon.png" width="40"><br>Patreon</a><br><sub>7 patches</sub></td>
+<td align="center" width="25%"><a href="#patreon"><img src=".github/assets/icons/patreon.png" width="40"><br>Patreon</a><br><sub>8 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#period-tracker-and-calendar"><img src=".github/assets/icons/periodcalendar.png" width="40"><br>Period Tracker and Calendar</a><br><sub>1 patch</sub></td>
@@ -2050,7 +2050,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="patreon"></a>
 <details>
-<summary><img src=".github/assets/icons/patreon.png" width="18" align="top">&nbsp;&nbsp;Patreon&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<summary><img src=".github/assets/icons/patreon.png" width="18" align="top">&nbsp;&nbsp;Patreon&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2065,6 +2065,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="patreon-hide-home-tab"></a>[Hide Home tab](patches/src/main/kotlin/app/morphe/patches/patreon/layout/launcher/HideHomeTabPatch.kt) | Removes the Home tab and starts on Memberships. Accounts without memberships keep the tab. |  |
 | <a id="patreon-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/patreon/layout/navigation/HideNavigationButtonsPatch.kt) | Removes chosen tabs from the bottom bar. | • Hide Feed<br>• Hide Library<br>• Hide Quip<br>• Hide Community<br>• Hide Notifications |
 | <a id="patreon-hide-recommended-creators"></a>[Hide recommended creators](patches/src/main/kotlin/app/morphe/patches/patreon/layout/home/HideRecommendedCreatorsPatch.kt) | Limits Home to creators you're a member of. |  |
+| <a id="patreon-hide-search-suggestions"></a>[Hide search suggestions](patches/src/main/kotlin/app/morphe/patches/patreon/layout/search/HideSearchSuggestionsPatch.kt) | Removes suggested creators and topics from Explore. |  |
 | <a id="patreon-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/patreon/layout/promotions/HideUpgradePromotionsPatch.kt) | Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey. |  |
 | <a id="patreon-remove-app-prompts"></a>[Remove app prompts](patches/src/main/kotlin/app/morphe/patches/patreon/misc/prompts/RemoveAppPromptsPatch.kt) | Removes the rating prompt, the in-app update prompt and the notification request at startup. |  |
 

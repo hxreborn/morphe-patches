@@ -427,11 +427,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.72.0-dev.3"
         - "1.72.0-dev.2"
         - "1.72.0-dev.1"
         - "1.71.0-dev.4"
         - "1.71.0-dev.3"
-        - "1.71.0-dev.2"
         - "1.71.0"
         - "Older than these"
         # /generated
@@ -763,6 +763,7 @@ body:
         - "Patreon \u00b7 Hide Home tab"
         - "Patreon \u00b7 Hide navigation buttons"
         - "Patreon \u00b7 Hide recommended creators"
+        - "Patreon \u00b7 Hide search suggestions"
         - "Patreon \u00b7 Hide upgrade promotions"
         - "Patreon \u00b7 Remove app prompts"
         - "Period Tracker and Calendar \u00b7 Unlock premium"
