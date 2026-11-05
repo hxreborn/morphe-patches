@@ -84,7 +84,7 @@ private fun restoredMethods(landscapeInsetsCall: String) = listOf(
             return-void
         """,
     ),
-    RestoredMethod("Lcom/android/billingclient/api/zzaa;", ON_RECEIVE, 3, IGNORE_BROADCAST),
+    RestoredMethod("Lcom/android/billingclient/api/zzy;", ON_RECEIVE, 3, IGNORE_BROADCAST),
     RestoredMethod("Lcom/google/firebase/auth/internal/GenericIdpActivity;", ON_RESUME, 1, FINISH_ON_RESUME),
     RestoredMethod("Lcom/google/firebase/auth/internal/RecaptchaActivity;", ON_RESUME, 1, FINISH_ON_RESUME),
     RestoredMethod(INMOBI_AD_ACTIVITY, ON_CREATE, 2, FINISH_ON_CREATE),
@@ -113,7 +113,7 @@ private fun appRestoredMethods(packageName: String) = when (packageName) {
             INDIA_APP, ON_CREATE, 2,
             """
                 invoke-super {p0}, $APP->onCreate()V
-                sput-object p0, $APP->F:$APP
+                sput-object p0, $APP->G:$APP
                 invoke-virtual {p0}, $INDIA_APP->m()V
                 invoke-static {}, Lcom/vpn/lib/injection/DaggerAppComponent;->a()Lcom/vpn/lib/injection/AppComponent${'$'}Builder;
                 move-result-object v0

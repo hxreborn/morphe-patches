@@ -98,16 +98,16 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         invoke-virtual {p0, v0}, $FIND_VIEW
         move-result-object v0
         if-eqz v0, :landscape_search
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/f;
         const/4 v2, 0x2
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/f;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnClickListener(Landroid/view/View${'$'}OnClickListener;)V
         :landscape_search
         iget-object v0, p0, $NAVIGATION->K:Landroid/view/View;
         if-eqz v0, :views
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/f;
         const/4 v2, 0x3
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/f;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnClickListener(Landroid/view/View${'$'}OnClickListener;)V
         :views
         const v0, ${viewId("drawer_layout")}
@@ -143,9 +143,9 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         move-result-object v0
         iput-object v0, p0, $NAVIGATION->z:Landroid/view/View;
         if-eqz v0, :share
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/f;
         const/4 v2, 0x5
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/f;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnClickListener(Landroid/view/View${'$'}OnClickListener;)V
         :share
         const v0, ${viewId("btnShare")}
@@ -153,9 +153,9 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         move-result-object v0
         iput-object v0, p0, $NAVIGATION->A:Landroid/view/View;
         if-eqz v0, :home
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/f;
         const/4 v2, 0x7
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/f;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnClickListener(Landroid/view/View${'$'}OnClickListener;)V
         :home
         const v0, ${viewId("home")}
@@ -192,9 +192,9 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         iget-object v0, p0, $NAVIGATION->f:Landroidx/appcompat/widget/Toolbar;
         const v1, ${resourceIdHex(ResourceType.MENU, "navigation")}
         invoke-virtual {v0, v1}, Landroidx/appcompat/widget/Toolbar;->n(I)V
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/c;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/d;
         const/4 v2, 0x4
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/c;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/d;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroidx/appcompat/widget/Toolbar;->setOnMenuItemClickListener(Landroidx/appcompat/widget/Toolbar${'$'}OnMenuItemClickListener;)V
         :emergency
         sget-object v0, Lcom/vpn/lib/troubleshooting/EmergencyModeProvider;->a:Lcom/vpn/lib/troubleshooting/EmergencyMode;
@@ -202,9 +202,9 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         if-eqz v0, :presenter
         new-instance v0, Lcom/github/shadowsocks/utils/StartService;
         invoke-direct {v0}, Landroidx/activity/result/contract/ActivityResultContract;-><init>()V
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/c;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/d;
         const/4 v2, 0x5
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/c;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/d;-><init>(${NAVIGATION}I)V
         invoke-virtual {p0, v0, v1}, Landroidx/activity/ComponentActivity;->registerForActivityResult(Landroidx/activity/result/contract/ActivityResultContract;Landroidx/activity/result/ActivityResultCallback;)Landroidx/activity/result/ActivityResultLauncher;
         move-result-object v0
         iput-object v0, p0, $NAVIGATION->I:Landroidx/activity/result/ActivityResultLauncher;
@@ -221,7 +221,7 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         if-eqz v4, :intent_action
         invoke-virtual {v0, v1, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
         invoke-virtual {p0, v0}, Landroid/app/Activity;->setIntent(Landroid/content/Intent;)V
-        invoke-virtual {p0}, $NAVIGATION->m1()V
+        invoke-virtual {p0}, $NAVIGATION->n1()V
         :intent_action
         const-string v1, "action"
         invoke-virtual {v0, v1}, Landroid/content/Intent;->getStringExtra(Ljava/lang/String;)Ljava/lang/String;
@@ -239,40 +239,40 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         invoke-virtual {v0, v1}, Lcom/vpn/lib/dialog/CodeActivationDialog;->setCode(Ljava/lang/String;)V
         :pro
         const/4 v4, 0x1
-        sput-boolean v4, $APP->P:Z
+        sput-boolean v4, $APP->Q:Z
         if-eqz v3, :post
         iget-object v0, p0, $NAVIGATION->x:Landroid/view/View;
         if-eqz v0, :tv_close
         invoke-virtual {v0}, Landroid/view/View;->requestFocus()Z
-        invoke-virtual {p0, v4}, $NAVIGATION->r1(Z)V
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/d;
-        const/4 v2, 0x0
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/d;-><init>(${NAVIGATION}I)V
-        invoke-virtual {v0, v1}, Landroid/view/View;->setOnFocusChangeListener(Landroid/view/View${'$'}OnFocusChangeListener;)V
+        invoke-virtual {p0, v4}, $NAVIGATION->s1(Z)V
         new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
+        const/4 v2, 0x0
         invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
+        invoke-virtual {v0, v1}, Landroid/view/View;->setOnFocusChangeListener(Landroid/view/View${'$'}OnFocusChangeListener;)V
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/f;
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/f;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnClickListener(Landroid/view/View${'$'}OnClickListener;)V
         const v0, ${viewId("forceHome")}
         invoke-virtual {p0, v0}, $FIND_VIEW
         move-result-object v0
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/d;
-        invoke-direct {v1, p0, v4}, Lcom/vpn/lib/feature/naviagation/d;-><init>(${NAVIGATION}I)V
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
+        invoke-direct {v1, p0, v4}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnFocusChangeListener(Landroid/view/View${'$'}OnFocusChangeListener;)V
         :tv_close
         iget-object v0, p0, $NAVIGATION->B:Landroid/view/View;
         if-eqz v0, :post
         invoke-virtual {v0, p0}, Landroid/view/View;->setOnClickListener(Landroid/view/View${'$'}OnClickListener;)V
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/d;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/e;
         const/4 v2, 0x2
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/d;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/e;-><init>(${NAVIGATION}I)V
         invoke-virtual {v0, v1}, Landroid/view/View;->setOnFocusChangeListener(Landroid/view/View${'$'}OnFocusChangeListener;)V
         :post
         invoke-static {p0}, $APP->q(Landroid/content/Context;)V
         new-instance v0, Landroid/os/Handler;
         invoke-direct {v0}, Landroid/os/Handler;-><init>()V
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/a;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/b;
         const/4 v2, 0x4
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/a;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/b;-><init>(${NAVIGATION}I)V
         const-wide/16 v5, 0x1f4
         invoke-virtual {v0, v1, v5, v6}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
         iget-boolean v0, p0, $NAVIGATION->J:Z
@@ -288,15 +288,15 @@ internal fun navigationOnCreate(landscapeInsetsCall: String): String {
         invoke-virtual {v0, v1}, Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;
         :welcome
         if-nez p1, :refresh
-        invoke-virtual {p0}, $NAVIGATION->w1()V
+        invoke-virtual {p0}, $NAVIGATION->x1()V
         :refresh
         new-instance v0, Landroid/os/Handler;
         invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
         move-result-object v1
         invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
-        new-instance v1, Lcom/vpn/lib/feature/naviagation/a;
+        new-instance v1, Lcom/vpn/lib/feature/naviagation/b;
         const/16 v2, 0x8
-        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/a;-><init>(${NAVIGATION}I)V
+        invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/naviagation/b;-><init>(${NAVIGATION}I)V
         const-wide/16 v5, 0x3e8
         invoke-virtual {v0, v1, v5, v6}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
         sget v0, Landroid/os/Build${'$'}VERSION;->SDK_INT:I

@@ -1846,7 +1846,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b52d663c4612475b293ca0ec4ca84e00da9c77d55a28cc655ba2dd4bf33ae9fb",
         ),
-        targets = listOf(AppTarget(version = "1.168", versionCode = 168, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.171", versionCode = 171, minSdk = 24)),
     )
 
     val VPN_INDIA = Compatibility(

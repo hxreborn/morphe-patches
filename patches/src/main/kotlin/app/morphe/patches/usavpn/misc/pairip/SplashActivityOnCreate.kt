@@ -22,7 +22,7 @@ internal fun splashOnCreate() = """
     const/16 v1, 0x64
     invoke-virtual {v0, v1}, Landroid/widget/ProgressBar;->setMax(I)V
     const-string v1, ""
-    sput-object v1, $APP->I:Ljava/lang/String;
+    sput-object v1, $APP->J:Ljava/lang/String;
     iget-object v2, p0, $SPLASH->c:$SETTINGS
     iget-object v3, v2, $SETTINGS->a:$SHARED_PREFERENCES
     const-string v4, "key_theme"
@@ -71,25 +71,25 @@ internal fun splashOnCreate() = """
     if-nez v4, :activation
     invoke-interface {v2, v3}, $REPOSITORY->f(Ljava/lang/String;)V
     :activation
-    sget-boolean v2, $APP->p:Z
+    sget-boolean v2, $APP->q:Z
     if-eqz v2, :billing
-    invoke-virtual {p0}, $SPLASH->i1()V
+    invoke-virtual {p0}, $SPLASH->j1()V
     goto :progress
     :billing
     sget-object v2, $PREPARING_STEPS->c:$PREPARING_STEPS
     const/4 v3, 0x0
-    invoke-virtual {p0, v2, v3}, $SPLASH->j1(${PREPARING_STEPS}Ljava/lang/Throwable;)V
+    invoke-virtual {p0, v2, v3}, $SPLASH->k1(${PREPARING_STEPS}Ljava/lang/Throwable;)V
     new-instance v0, Lcom/services/RemoteConfigHelper;
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
     iput-object v0, p0, $SPLASH->d:Lcom/services/RemoteConfigHelper;
     invoke-virtual {v0}, Lcom/services/RemoteConfigHelper;->b()V
-    new-instance v2, Lcom/vpn/lib/feature/splash/d;
+    new-instance v2, Lcom/vpn/lib/feature/splash/f;
     const/4 v3, 0x1
-    invoke-direct {v2, p0, v3}, Lcom/vpn/lib/feature/splash/d;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
+    invoke-direct {v2, p0, v3}, Lcom/vpn/lib/feature/splash/f;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
     iput-object v2, v0, Lcom/services/RemoteConfigHelper;->b:Lcom/services/RemoteConfigHelper${'$'}RemoteConfigHelperCompleteListener;
-    new-instance v2, Lcom/vpn/lib/feature/splash/d;
+    new-instance v2, Lcom/vpn/lib/feature/splash/f;
     const/4 v3, 0x2
-    invoke-direct {v2, p0, v3}, Lcom/vpn/lib/feature/splash/d;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
+    invoke-direct {v2, p0, v3}, Lcom/vpn/lib/feature/splash/f;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
     iput-object v2, v0, Lcom/services/RemoteConfigHelper;->c:Lcom/services/RemoteConfigHelper${'$'}RemoteConfigHelperFailureListener;
     invoke-virtual {v0, p0}, Lcom/services/RemoteConfigHelper;->a(Landroid/app/Activity;)V
     new-instance v0, $PREFERENCES
@@ -122,16 +122,16 @@ internal fun splashOnCreate() = """
     invoke-virtual {v0}, $PREFERENCES->b()I
     :sticky_off
     const/4 v0, 0x0
-    sput-boolean v0, $APP->d0:Z
+    sput-boolean v0, $APP->e0:Z
     goto :load
     :sticky
     const/4 v0, 0x1
-    sput-boolean v0, $APP->d0:Z
+    sput-boolean v0, $APP->e0:Z
     iput-boolean v0, p0, $SPLASH->l:Z
     const v0, ${stringId("app_settings_loading")}
     invoke-virtual {p0, v0}, Landroid/content/Context;->getString(I)Ljava/lang/String;
     move-result-object v0
-    invoke-virtual {p0, v0}, $SPLASH->s1(Ljava/lang/String;)V
+    invoke-virtual {p0, v0}, $SPLASH->u1(Ljava/lang/String;)V
     iget-object v0, p0, $SPLASH->b:$REPOSITORY
     invoke-interface {v0}, $REPOSITORY->N()V
     :load
@@ -150,9 +150,9 @@ internal fun splashOnCreate() = """
     const v1, ${viewId("body")}
     invoke-virtual {p0, v1}, $FIND_VIEW
     move-result-object v1
-    new-instance v2, Lcom/vpn/lib/feature/splash/d;
+    new-instance v2, Lcom/vpn/lib/feature/splash/f;
     const/16 v3, 0xd
-    invoke-direct {v2, v1, v3}, Lcom/vpn/lib/feature/splash/d;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
+    invoke-direct {v2, v1, v3}, Lcom/vpn/lib/feature/splash/f;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
     invoke-static {v0, v2}, Landroidx/core/view/ViewCompat;->G(Landroid/view/View;Landroidx/core/view/OnApplyWindowInsetsListener;)V
     :diagnostics
     new-instance v0, Lcom/vpn/lib/troubleshooting/ConnectionDiagnosticManager;
@@ -163,28 +163,28 @@ internal fun splashOnCreate() = """
     invoke-virtual {p0}, Landroidx/fragment/app/FragmentActivity;->getSupportFragmentManager()Landroidx/fragment/app/FragmentManager;
     move-result-object v1
     iput-object v1, v0, Lcom/vpn/lib/troubleshooting/ConnectionDiagnosticManager;->u:Landroidx/fragment/app/FragmentManager;
-    new-instance v1, Lcom/vpn/lib/feature/splash/b;
+    new-instance v1, Lcom/vpn/lib/feature/splash/c;
     const/4 v2, 0x0
-    invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/splash/b;-><init>(${SPLASH}I)V
-    iput-object v1, v0, Lcom/vpn/lib/troubleshooting/ConnectionDiagnosticManager;->x:Lcom/vpn/lib/feature/splash/b;
+    invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/splash/c;-><init>(${SPLASH}I)V
+    iput-object v1, v0, Lcom/vpn/lib/troubleshooting/ConnectionDiagnosticManager;->x:Lcom/vpn/lib/feature/splash/c;
     new-instance v0, Lcom/vpn/lib/troubleshooting/EmergencyModeConnectionManager;
     invoke-direct {v0, p0}, Lcom/vpn/lib/troubleshooting/EmergencyModeConnectionManager;-><init>($SPLASH)V
     iput-object v0, p0, $SPLASH->x:Lcom/vpn/lib/troubleshooting/EmergencyModeConnectionManager;
     new-instance v1, Lcom/vpn/lib/troubleshooting/EmergencyMode;
-    new-instance v2, Lcom/vpn/lib/feature/splash/d;
+    new-instance v2, Lcom/vpn/lib/feature/splash/f;
     const/4 v3, 0x4
-    invoke-direct {v2, p0, v3}, Lcom/vpn/lib/feature/splash/d;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
-    new-instance v3, Lcom/vpn/lib/feature/splash/b;
+    invoke-direct {v2, p0, v3}, Lcom/vpn/lib/feature/splash/f;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
+    new-instance v3, Lcom/vpn/lib/feature/splash/c;
     const/4 v4, 0x1
-    invoke-direct {v3, p0, v4}, Lcom/vpn/lib/feature/splash/b;-><init>(${SPLASH}I)V
-    invoke-direct {v1, v2, v0, v3}, Lcom/vpn/lib/troubleshooting/EmergencyMode;-><init>(Lcom/vpn/lib/feature/splash/d;Lcom/vpn/lib/troubleshooting/EmergencyModeConnectionManager;Lcom/vpn/lib/feature/splash/b;)V
+    invoke-direct {v3, p0, v4}, Lcom/vpn/lib/feature/splash/c;-><init>(${SPLASH}I)V
+    invoke-direct {v1, v2, v0, v3}, Lcom/vpn/lib/troubleshooting/EmergencyMode;-><init>(Lcom/vpn/lib/feature/splash/f;Lcom/vpn/lib/troubleshooting/EmergencyModeConnectionManager;Lcom/vpn/lib/feature/splash/c;)V
     iput-object v1, p0, $SPLASH->y:Lcom/vpn/lib/troubleshooting/EmergencyMode;
     sput-object v1, Lcom/vpn/lib/troubleshooting/EmergencyModeProvider;->a:Lcom/vpn/lib/troubleshooting/EmergencyMode;
     new-instance v0, Lcom/github/shadowsocks/utils/StartService;
     invoke-direct {v0}, Landroidx/activity/result/contract/ActivityResultContract;-><init>()V
-    new-instance v1, Lcom/vpn/lib/feature/splash/d;
+    new-instance v1, Lcom/vpn/lib/feature/splash/f;
     const/4 v2, 0x5
-    invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/splash/d;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
+    invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/splash/f;-><init>(Landroid/view/KeyEvent${'$'}Callback;I)V
     invoke-virtual {p0, v0, v1}, Landroidx/activity/ComponentActivity;->registerForActivityResult(Landroidx/activity/result/contract/ActivityResultContract;Landroidx/activity/result/ActivityResultCallback;)Landroidx/activity/result/ActivityResultLauncher;
     move-result-object v0
     iput-object v0, p0, $SPLASH->z:Landroidx/activity/result/ActivityResultLauncher;
@@ -192,11 +192,11 @@ internal fun splashOnCreate() = """
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
     move-result-object v1
     invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
-    new-instance v1, Lcom/vpn/lib/feature/splash/k;
-    const/4 v2, 0x2
-    invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/splash/k;-><init>(${SPLASH}I)V
+    new-instance v1, Lcom/vpn/lib/feature/splash/b;
+    const/4 v2, 0x4
+    invoke-direct {v1, p0, v2}, Lcom/vpn/lib/feature/splash/b;-><init>(${SPLASH}I)V
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
     const/4 v0, 0x1
-    sput-boolean v0, $APP->c0:Z
+    sput-boolean v0, $APP->d0:Z
     return-void
 """
