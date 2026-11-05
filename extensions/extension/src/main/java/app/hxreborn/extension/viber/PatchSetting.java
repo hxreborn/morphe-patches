@@ -32,6 +32,7 @@ enum PatchSetting {
     HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "Removes selected tabs.", true),
     FILTER_BUSINESS_CHATS("Business messages", "filterBusinessChats",
             "Filters selected read chats and removes inbox prompts.", true),
+    REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", "Allows online status changes any time.", false),
     DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true),
     UNLOCK_VIBER_PLUS("Viber Plus", "Unlock Viber Plus", "Unlocks icons and typing privacy.", true);
 
@@ -59,6 +60,7 @@ enum PatchSetting {
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsName();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsName();
+            case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimitName();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusName();
         };
@@ -73,6 +75,7 @@ enum PatchSetting {
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtons();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChats();
+            case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimit();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalytics();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlus();
         };

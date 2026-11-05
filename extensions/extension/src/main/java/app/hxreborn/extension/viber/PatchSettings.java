@@ -82,6 +82,14 @@ public final class PatchSettings {
         return original || unlockViberPlus();
     }
 
+    public static boolean removeOnlineStatusLimit() {
+        return AppliedPatches.removeOnlineStatusLimit() && isEnabled(PatchSetting.REMOVE_ONLINE_STATUS_LIMIT.key);
+    }
+
+    public static long lastOnlineChangeTime(long lastChanged) {
+        return removeOnlineStatusLimit() ? 0L : lastChanged;
+    }
+
     public static boolean hideMoreItems() {
         return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }

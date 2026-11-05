@@ -39,6 +39,8 @@ public class PatchSettingsTest {
 
     private static final String ADS = "Hide ads";
 
+    private static final long LAST_CHANGE_TIME = 1_793_917_000_000L;
+
     @Before
     public void initializePreferences() {
         PatchSettings.initialize(RuntimeEnvironment.getApplication());
@@ -100,6 +102,34 @@ public class PatchSettingsTest {
         PatchSettings.setEnabled(PatchSetting.UNLOCK_VIBER_PLUS.key, false);
         Assert.assertFalse(PatchSettings.unlockTypingPrivacy(false));
         Assert.assertTrue(PatchSettings.unlockTypingPrivacy(true));
+    }
+
+    @Test
+    public void keepOnlineStatusChangeTimeWithoutAppliedPatch() {
+        Assert.assertEquals(LAST_CHANGE_TIME, PatchSettings.lastOnlineChangeTime(LAST_CHANGE_TIME));
+    }
+
+    @Test
+    @Config(shadows = AppliedOnlineStatusLimit.class)
+    public void clearOnlineStatusChangeTimeWithAppliedPatch() {
+        Assert.assertEquals(0L, PatchSettings.lastOnlineChangeTime(LAST_CHANGE_TIME));
+    }
+
+    @Test
+    @Config(shadows = AppliedOnlineStatusLimit.class)
+    public void keepOnlineStatusChangeTimeWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.REMOVE_ONLINE_STATUS_LIMIT.key, false);
+        Assert.assertEquals(LAST_CHANGE_TIME, PatchSettings.lastOnlineChangeTime(LAST_CHANGE_TIME));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedOnlineStatusLimit {
+
+        @Implementation
+        protected static boolean removeOnlineStatusLimit() {
+            return true;
+        }
+
     }
 
     @Implements(AppliedPatches.class)

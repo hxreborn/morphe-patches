@@ -70,7 +70,7 @@ public final class PatchesSettingsActivityTest {
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title",
                 "Hide ads", "Hide More screen items", "Hide navigation buttons", "Injected business name",
-                "Disable analytics", PLUS_TITLE), titles);
+                "Injected online status title", "Disable analytics", PLUS_TITLE), titles);
     }
 
     @Test
@@ -289,6 +289,16 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String filterBusinessChatsName() {
             return "Injected business name";
+        }
+
+        @Implementation
+        protected static boolean removeOnlineStatusLimit() {
+            return true;
+        }
+
+        @Implementation
+        protected static String removeOnlineStatusLimitName() {
+            return "Injected online status title";
         }
 
         @Implementation

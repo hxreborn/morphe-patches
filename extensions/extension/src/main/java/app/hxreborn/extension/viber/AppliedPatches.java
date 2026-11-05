@@ -126,6 +126,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean removeOnlineStatusLimit() {
+        return false;
+    }
+
+    public static String removeOnlineStatusLimitName() {
+        return null;
+    }
+
+    public static String removeOnlineStatusLimitDescription() {
+        return null;
+    }
+
     public static boolean spoofSignature() {
         return false;
     }
@@ -171,6 +183,7 @@ public final class AppliedPatches {
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
         add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
+        add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
