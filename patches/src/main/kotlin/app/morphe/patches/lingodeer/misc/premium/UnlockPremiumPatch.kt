@@ -4,7 +4,6 @@
  */
 package app.morphe.patches.lingodeer.misc.premium
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
@@ -28,8 +27,8 @@ val unlockPremiumPatch = bytecodePatch(
 
     execute {
         val match = PremiumStateFingerprint.matchSingle()
-        val isEmptyResultIndex = match.instructionMatches.last().index + 1
-        val register = match.method.getInstruction<OneRegisterInstruction>(isEmptyResultIndex).registerA
-        match.method.replaceInstruction(isEmptyResultIndex, "const/4 v$register, 0x0")
+        val (_, _, _, isEmptyResult) = match.instructionMatches
+        val register = isEmptyResult.getInstruction<OneRegisterInstruction>().registerA
+        match.method.replaceInstruction(isEmptyResult.index, "const/4 v$register, 0x0")
     }
 }
