@@ -610,6 +610,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val HABITIFY = Compatibility(
+        name = "Habitify",
+        packageName = "co.unstatic.habitify",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x2E6EED,
+        signatures = setOf(
+            "df8b4b20196d12964c51fec02f8f83e332cc7b1bcbce8f1eb3a708c7ec051d50",
+        ),
+        targets = listOf(AppTarget(version = "50.2.0", versionCode = 273, minSdk = 24)),
+    )
+
     val HINDU_CALENDAR = Compatibility(
         name = "Hindu Calendar",
         packageName = "com.alokmandavgane.hinducalendar",

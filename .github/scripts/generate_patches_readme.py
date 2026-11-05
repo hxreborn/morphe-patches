@@ -147,6 +147,7 @@ def versions_table(targets):
 
 ICONS = {
     "com.gymbros.app": "liftoff.png",
+    "co.unstatic.habitify": "habitify.png",
     "me.aap.fermatamod.dear.google.why.bingo2.rec": "xtreamplayer.png",
     "com.lonelycatgames.Xplore": "xplore.png",
     "com.checkitt": "groundnews.png",
