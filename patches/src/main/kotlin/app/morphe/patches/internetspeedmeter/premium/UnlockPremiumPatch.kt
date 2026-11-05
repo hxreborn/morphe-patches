@@ -11,12 +11,16 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.internetspeedmeter.ads.removeAdsPatch
 import app.morphe.patches.internetspeedmeter.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.internetspeedmeter.misc.settings.removeSettingsRow
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.util.adoptChild
 import app.morphe.util.getNode
 import app.morphe.util.insertFirst
@@ -79,6 +83,14 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(removeAppProtectionPatch, removeAdsPatch, addPremiumComponentsPatch, sessionCounterPatch)
 
     execute {
+        mutableClassDefBy(SETTINGS_CLASS_DESCRIPTOR).apply {
+            replaceTitleStub("notificationPreferenceTitle", "notif_pref_title")
+            replaceTitleStub("tapActionTitle", "notif_action_title")
+            replaceTitleStub("startingHourTitle", "startingHour_title")
+            replaceTitleStub("accentTitle", "Notification_accent_title")
+            replaceTitleStub("themeTitle", "theme_title")
+        }
+
         PremiumRowClickFingerprint.method.apply {
             val buyDialogIndex = PremiumRowClickFingerprint.instructionMatches.first().index
             val rowViewRegister = getInstruction<OneRegisterInstruction>(buyDialogIndex).registerA
@@ -135,3 +147,12 @@ val unlockPremiumPatch = bytecodePatch(
         removeSettingsRow("buy_app_title")
     }
 }
+
+private fun MutableClass.replaceTitleStub(stub: String, titleName: String) = replaceStub(
+    stub,
+    1,
+    """
+        const v0, ${resourceId(ResourceType.STRING, titleName)}
+        return v0
+    """,
+)

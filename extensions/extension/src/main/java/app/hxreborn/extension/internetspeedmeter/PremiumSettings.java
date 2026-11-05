@@ -56,74 +56,89 @@ public final class PremiumSettings {
 
     private static final String DATE_RECEIVER = "com.internet.speed.meter.lite.PermanentBroadcast";
 
-    private static final String[] PREMIUM_ROWS = { "notif_pref_title", "notif_action_title", "startingHour_title",
-            "Notification_accent_title", "theme_title" };
-
     private PremiumSettings() {
 
     }
 
+    static int notificationPreferenceTitle() {
+        return 0;
+    }
+
+    static int tapActionTitle() {
+        return 0;
+    }
+
+    static int startingHourTitle() {
+        return 0;
+    }
+
+    static int accentTitle() {
+        return 0;
+    }
+
+    static int themeTitle() {
+        return 0;
+    }
+
     public static boolean onRowClick(View row) {
         Activity activity = (Activity) row.getContext();
-        switch (rowTitleName(row)) {
-            case "notif_pref_title":
-                showNotificationPreference(activity, row);
-                return true;
-            case "notif_action_title":
-                showTapAction(activity, row);
-                return true;
-            case "startingHour_title":
-                showStartingHour(activity);
-                return true;
-            case "Notification_accent_title":
-                showAccent(activity, row);
-                return true;
-            case "theme_title":
-                ThemeEditor.show(activity);
-                return true;
-            default:
-                return false;
+        int title = rowTitle(row);
+        if (title == notificationPreferenceTitle()) {
+            showNotificationPreference(activity, row);
+        } else if (title == tapActionTitle()) {
+            showTapAction(activity, row);
+        } else if (title == startingHourTitle()) {
+            showStartingHour(activity);
+        } else if (title == accentTitle()) {
+            showAccent(activity, row);
+        } else if (title == themeTitle()) {
+            ThemeEditor.show(activity);
+        } else {
+            return false;
         }
+        return true;
     }
 
     public static void bindRow(View row) {
         Context context = row.getContext();
         row.findViewById(AppResources.id(context, "id", "promo_ribbon")).setVisibility(View.GONE);
-        String summary = summary(context, rowTitleName(row));
+        String summary = summary(context, rowTitle(row));
         if (summary != null) {
             summaryView(row).setText(summary);
         }
     }
 
-    private static String rowTitleName(View row) {
-        TextView title = row.findViewById(AppResources.id(row.getContext(), "id", "textView1"));
+    private static int rowTitle(View row) {
+        Context context = row.getContext();
+        TextView title = row.findViewById(AppResources.id(context, "id", "textView1"));
         CharSequence text = title.getText();
-        for (String name : PREMIUM_ROWS) {
-            if (AppResources.string(row.getContext(), name).contentEquals(text)) {
-                return name;
+        int[] titles = { notificationPreferenceTitle(), tapActionTitle(), startingHourTitle(), accentTitle(),
+                themeTitle() };
+        for (int titleId : titles) {
+            if (context.getString(titleId).contentEquals(text)) {
+                return titleId;
             }
         }
-        return "";
+        return 0;
     }
 
     static int notificationPreference(Context context) {
         return AppResources.preferences(context).getInt(NOTIFICATION_PREFERENCE, SHOW_ALWAYS);
     }
 
-    private static String summary(Context context, String titleName) {
+    private static String summary(Context context, int title) {
         SharedPreferences preferences = AppResources.preferences(context);
-        switch (titleName) {
-            case "notif_pref_title":
-                return AppResources.array(context, "notification_pref_dialog_array")[notificationPreference(context)];
-            case "notif_action_title":
-                return AppResources.array(context, "notif_tap_action_array")[preferences.getInt(TAP_ACTION,
-                        TAP_SHOWS_DIALOG)];
-            case "Notification_accent_title":
-                return AppResources.array(context, "notification_accent_array")[preferences.getInt(ACCENT,
-                        ACCENT_THEME)];
-            default:
-                return null;
+        if (title == notificationPreferenceTitle()) {
+            return AppResources.array(context, "notification_pref_dialog_array")[notificationPreference(context)];
         }
+        if (title == tapActionTitle()) {
+            return AppResources.array(context, "notif_tap_action_array")[preferences.getInt(TAP_ACTION,
+                    TAP_SHOWS_DIALOG)];
+        }
+        if (title == accentTitle()) {
+            return AppResources.array(context, "notification_accent_array")[preferences.getInt(ACCENT, ACCENT_THEME)];
+        }
+        return null;
     }
 
     private static TextView summaryView(View row) {
@@ -145,7 +160,7 @@ public final class PremiumSettings {
     private static void showTapAction(Activity activity, View row) {
         String[] items = AppResources.array(activity, "notif_tap_action_array");
         SharedPreferences preferences = AppResources.preferences(activity);
-        new AlertDialog.Builder(activity).setTitle(AppResources.string(activity, "notif_action_title"))
+        new AlertDialog.Builder(activity).setTitle(activity.getString(tapActionTitle()))
             .setSingleChoiceItems(items, preferences.getInt(TAP_ACTION, TAP_SHOWS_DIALOG), (dialog, which) -> {
                 preferences.edit().putInt(TAP_ACTION, which).apply();
                 summaryView(row).setText(items[which]);
@@ -156,7 +171,7 @@ public final class PremiumSettings {
 
     private static void showStartingHour(Activity activity) {
         SharedPreferences preferences = AppResources.preferences(activity);
-        new AlertDialog.Builder(activity).setTitle(AppResources.string(activity, "startingHour_title"))
+        new AlertDialog.Builder(activity).setTitle(activity.getString(startingHourTitle()))
             .setSingleChoiceItems(AppResources.array(activity, "starting_hour_array"),
                     preferences.getInt(STARTING_HOUR, 0), (dialog, which) -> {
                         preferences.edit().putInt(STARTING_HOUR, which).apply();
@@ -179,7 +194,7 @@ public final class PremiumSettings {
         spinner.setSelection(preferences.getInt(ACCENT, ACCENT_THEME));
         CheckBox background = content.findViewById(AppResources.id(activity, "id", "accentIsBgCheckbox"));
         background.setChecked(preferences.getBoolean(ACCENT_BACKGROUND, false));
-        new AlertDialog.Builder(activity).setTitle(AppResources.string(activity, "Notification_accent_title"))
+        new AlertDialog.Builder(activity).setTitle(activity.getString(accentTitle()))
             .setView(content)
             .setPositiveButton(AppResources.string(activity, "OK"), (dialog, which) -> {
                 preferences.edit()
