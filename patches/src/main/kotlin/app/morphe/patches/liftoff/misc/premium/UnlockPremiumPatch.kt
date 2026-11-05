@@ -13,19 +13,20 @@ import app.morphe.patches.liftoff.misc.settings.patchesSettingsPatch
 
 private const val ENTITLEMENT = "gymbros_plus_v1"
 private const val PRODUCT = "gymbros_plus_v1"
+private const val DESCRIPTION = "Unlocks rank analysis, bodygraph, full chart history and nutrition tools. " +
+    "Requires a Liftoff account."
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks rank analysis, bodygraph, full chart history and nutrition tools. " +
-        "Requires a Liftoff account.",
+    description = DESCRIPTION,
 ) {
     dependsOn(patchesSettingsPatch)
     compatibleWith(AppCompatibilities.LIFTOFF)
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("unlockPremium")
+        markPatchApplied("unlockPremium", DESCRIPTION)
         grantRevenueCatEntitlements(
             ENTITLEMENT to PRODUCT,
             enabledMethod = "$LIFTOFF_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z",

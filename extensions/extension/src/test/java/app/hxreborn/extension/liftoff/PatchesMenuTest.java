@@ -164,6 +164,34 @@ public final class PatchesMenuTest {
     }
 
     @Test
+    public void listsAppliedPatchesCollapsedAfterAbout() {
+        attachEntry();
+        clickEntry();
+        View menu = ShadowDialog.getLatestDialog().getWindow().getDecorView();
+
+        Assert.assertNotNull(text(menu, "Applied patches"));
+        Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_CUSTOMIZATIONS));
+        Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_PREMIUM));
+        Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION).getVisibility());
+        Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION).getVisibility());
+    }
+
+    @Test
+    public void expandsAndCollapsesAppliedPatchDescription() {
+        attachEntry();
+        clickEntry();
+        View menu = ShadowDialog.getLatestDialog().getWindow().getDecorView();
+        TextView details = text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION);
+        View row = (View) details.getParent().getParent();
+
+        row.performClick();
+        Assert.assertEquals(View.VISIBLE, details.getVisibility());
+
+        row.performClick();
+        Assert.assertEquals(View.GONE, details.getVisibility());
+    }
+
+    @Test
     public void confirmsRestartAfterSwitchChange() {
         attachEntry();
         clickEntry();

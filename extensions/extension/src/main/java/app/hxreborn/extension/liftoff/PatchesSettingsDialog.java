@@ -136,16 +136,16 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         LinearLayout features = this.rows.card();
         if (AppliedPatches.unlockPremium()) {
             this.rows.switchRow(features, "hx_liftoff_ic_premium", AppliedPatches.UNLOCK_PREMIUM,
-                    "Unlocks training and nutrition.", PatchSettings.isEnabled(AppliedPatches.UNLOCK_PREMIUM),
-                    (button, enabled) -> {
+                    "Unlocks rank analysis and nutrition tools.",
+                    PatchSettings.isEnabled(AppliedPatches.UNLOCK_PREMIUM), (button, enabled) -> {
                         PatchSettings.setEnabled(AppliedPatches.UNLOCK_PREMIUM, enabled);
                         confirmRestart();
                     });
         }
         if (AppliedPatches.unlockCustomizations()) {
             this.rows.switchRow(features, "hx_liftoff_ic_customizations", AppliedPatches.UNLOCK_CUSTOMIZATIONS,
-                    "Unlocks themes and cosmetics.", PatchSettings.isEnabled(AppliedPatches.UNLOCK_CUSTOMIZATIONS),
-                    (button, enabled) -> {
+                    "Unlocks themes, profile borders and profile banners.",
+                    PatchSettings.isEnabled(AppliedPatches.UNLOCK_CUSTOMIZATIONS), (button, enabled) -> {
                         PatchSettings.setEnabled(AppliedPatches.UNLOCK_CUSTOMIZATIONS, enabled);
                         confirmRestart();
                     });
@@ -158,6 +158,12 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         this.rows.valueRow(about, "hx_liftoff_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_liftoff_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
+
+        LinearLayout applied = this.rows.card();
+        for (String name : AppliedPatches.names()) {
+            this.rows.expandableRow(applied, name, AppliedPatches.description(name));
+        }
+        addSection(column, "Applied patches", applied);
         return column;
     }
 

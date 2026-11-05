@@ -21,10 +21,11 @@ private const val LIFTOFF_PATCH_CONTEXT_CLASS = "Lapp/hxreborn/extension/liftoff
 private const val LIFTOFF_PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/liftoff/PatchesMenu;"
 private const val LIFTOFF_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/liftoff/AppliedPatches;"
 private const val CACHE_INVALIDATION_REGISTERS = 0
-private val ICON_NAMES = listOf("back", "premium", "customizations", "reset", "info", "patches", "entry")
+private val ICON_NAMES = listOf("back", "premium", "customizations", "reset", "info", "patches", "entry", "expand")
 
-internal fun BytecodePatchContext.markPatchApplied(name: String) =
-    mutableClassDefBy(LIFTOFF_APPLIED_PATCHES_CLASS).methods.single { it.name == name }.returnEarly(true)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, description: String) =
+    mutableClassDefBy(LIFTOFF_APPLIED_PATCHES_CLASS).methods.single { it.name == methodName + "Description" }
+        .returnEarly(description)
 
 internal val patchesSettingsPatch = run {
     lateinit var applicationType: String

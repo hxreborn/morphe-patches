@@ -17,18 +17,19 @@ import app.morphe.patches.shared.misc.reactnative.TextResponseReceivedFingerprin
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/liftoff/Customizations;"
+private const val DESCRIPTION = "Unlocks themes, profile borders and profile banners."
 
 @Suppress("unused")
 val unlockCustomizationsPatch = bytecodePatch(
     name = "Unlock customizations",
-    description = "Unlocks themes, profile borders and profile banners.",
+    description = DESCRIPTION,
 ) {
     dependsOn(patchesSettingsPatch)
     compatibleWith(AppCompatibilities.LIFTOFF)
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("unlockCustomizations")
+        markPatchApplied("unlockCustomizations", DESCRIPTION)
         NetworkResponseReceivedFingerprint.matchSingle().method.addInstructions(
             0,
             "invoke-static/range { p4 .. p4 }, $EXTENSION_CLASS->onResponse(Ljava/lang/String;)V",

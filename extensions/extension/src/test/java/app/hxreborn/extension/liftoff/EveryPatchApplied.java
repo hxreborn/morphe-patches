@@ -26,6 +26,10 @@ import org.robolectric.annotation.Implements;
 @Implements(AppliedPatches.class)
 public final class EveryPatchApplied {
 
+    static final String PREMIUM_DESCRIPTION = "Unlocks rank analysis, bodygraph and nutrition tools. Requires an account.";
+
+    static final String CUSTOMIZATIONS_DESCRIPTION = "Unlocks every theme, border and banner.";
+
     @Implementation
     protected static boolean unlockPremium() {
         return true;
@@ -34,6 +38,16 @@ public final class EveryPatchApplied {
     @Implementation
     protected static boolean unlockCustomizations() {
         return true;
+    }
+
+    @Implementation
+    protected static String unlockPremiumDescription() {
+        return PREMIUM_DESCRIPTION;
+    }
+
+    @Implementation
+    protected static String unlockCustomizationsDescription() {
+        return CUSTOMIZATIONS_DESCRIPTION;
     }
 
 }

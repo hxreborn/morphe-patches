@@ -20,21 +20,59 @@
  */
 package app.hxreborn.extension.liftoff;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public final class AppliedPatches {
 
-    static final String UNLOCK_PREMIUM = "Unlock premium";
     static final String UNLOCK_CUSTOMIZATIONS = "Unlock customizations";
+
+    static final String UNLOCK_PREMIUM = "Unlock premium";
+
+    private static final List<String> NAMES = Collections
+        .unmodifiableList(Arrays.asList(UNLOCK_CUSTOMIZATIONS, UNLOCK_PREMIUM));
 
     private AppliedPatches() {
     }
 
+    static List<String> names() {
+        List<String> names = new ArrayList<>();
+        for (String name : NAMES) {
+            if (description(name) != null) {
+                names.add(name);
+            }
+        }
+        return names;
+    }
+
+    static String description(String name) {
+        switch (name) {
+            case UNLOCK_CUSTOMIZATIONS:
+                return unlockCustomizationsDescription();
+            case UNLOCK_PREMIUM:
+                return unlockPremiumDescription();
+            default:
+                return null;
+        }
+    }
+
     public static boolean unlockPremium() {
-        return false;
+        return unlockPremiumDescription() != null;
+    }
+
+    public static String unlockPremiumDescription() {
+        return null;
     }
 
     public static boolean unlockCustomizations() {
-        return false;
+        return unlockCustomizationsDescription() != null;
+    }
+
+    public static String unlockCustomizationsDescription() {
+        return null;
     }
 
 }
