@@ -59,3 +59,19 @@ internal object SnapKitInitFingerprint : Fingerprint(
     returnType = "Z",
     parameters = listOf(),
 )
+
+internal object FirebaseSessionsEnabledFingerprint : Fingerprint(
+    returnType = "Ljava/lang/Boolean;",
+    filters = listOf(string("firebase_sessions_enabled")),
+)
+
+internal object CrashlyticsEnabledFingerprint : Fingerprint(
+    returnType = "Z",
+    filters = listOf(string("firebase_crashlytics_collection_enabled manifest flag")),
+)
+
+internal object FirebaseMetadataFingerprint : Fingerprint(
+    returnType = "Ljava/lang/Boolean;",
+    parameters = listOf("Ljava/lang/String;"),
+    filters = listOf(string("Failed to load metadata: Metadata bundle is null")),
+)

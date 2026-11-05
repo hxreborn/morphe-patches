@@ -6,11 +6,13 @@ package app.morphe.patches.viber.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.viber.shared.markPatchApplied
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -21,6 +23,7 @@ private val systemAccountChooserPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchApplied("gmsCoreSupport", checkNotNull(gmsCoreSupportPatch.description))
         GmsAccountPickerIntentFingerprint.matchSingle().method.apply {
             val returnIndex = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
             val intentRegister = getInstruction<OneRegisterInstruction>(returnIndex).registerA
@@ -37,5 +40,5 @@ private val systemAccountChooserPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val gmsCoreSupportPatch =
+val gmsCoreSupportPatch: BytecodePatch =
     gmsCoreSupportPatchFor(AppCompatibilities.VIBER, spoofSignaturePatch, systemAccountChooserPatch)

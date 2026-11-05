@@ -11,6 +11,7 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 internal object BuildMoreItemsFingerprint : Fingerprint(
     returnType = "Ljava/util/List;",
@@ -51,4 +52,29 @@ internal fun itemIdCopyFingerprint(itemType: String, builderIdField: FieldRefere
         fieldAccess(reference = builderIdField, opcode = Opcode.IGET),
         fieldAccess(definingClass = "this", type = "I", opcode = Opcode.IPUT, location = MatchAfterImmediately()),
     ),
+)
+
+internal fun moreViewAttachedFingerprint(itemsMethod: MethodReference) = Fingerprint(
+    name = "onViewAttached",
+    returnType = "V",
+    parameters = listOf("Lcom/viber/voip/user/more/MoreState;"),
+    filters = listOf(
+        fieldAccess(name = "mView", opcode = Opcode.IGET_OBJECT),
+        fieldAccess(type = itemsMethod.definingClass, opcode = Opcode.IGET_OBJECT),
+        methodCall(reference = itemsMethod),
+        methodCall(
+            definingClass = "Lcom/viber/voip/user/more/MoreView;",
+            name = "setItems",
+            parameters = listOf("Ljava/util/List;"),
+            returnType = "V",
+        ),
+    ),
+)
+
+internal fun moreResumeFingerprint(presenterType: String) = Fingerprint(
+    definingClass = presenterType,
+    name = "onResume",
+    returnType = "V",
+    parameters = listOf("L"),
+    filters = listOf(methodCall(opcode = Opcode.INVOKE_SUPER, name = "onResume")),
 )
