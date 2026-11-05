@@ -3,7 +3,7 @@ Landroidx/media3/exoplayer/offline/DownloadService;->onStartCommand(Landroid/con
 Landroidx/profileinstaller/ProfileInstallReceiver;->onReceive(Landroid/content/Context;Landroid/content/Intent;)V
 Lcom/android/billingclient/api/ProxyBillingActivity;->onCreate(Landroid/os/Bundle;)V
 Lcom/android/billingclient/api/ProxyBillingActivityV2;->onCreate(Landroid/os/Bundle;)V
-Lcom/android/billingclient/api/zzaa;->onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+Lcom/android/billingclient/api/zzy;->onReceive(Landroid/content/Context;Landroid/content/Intent;)V
 Lcom/google/firebase/auth/internal/GenericIdpActivity;->onResume()V
 Lcom/google/firebase/auth/internal/RecaptchaActivity;->onResume()V
 Lcom/inmobi/ads/rendering/InMobiAdActivity;->onCreate(Landroid/os/Bundle;)V

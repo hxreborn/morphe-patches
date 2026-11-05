@@ -1857,7 +1857,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "efa80db96fc21e9c6345584d3fab947c4cde2838937463d6fdd402c9458898c0",
         ),
-        targets = listOf(AppTarget(version = "1.172", versionCode = 172, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.175", versionCode = 175, minSdk = 24)),
     )
 
     val GROUND_NEWS = Compatibility(
