@@ -40,32 +40,31 @@ public class AiPreferencesTest {
     }
 
     @Test
-    public void disableAiControlsWhenEnabled() {
-        Assert.assertFalse(AiPreferences.showImageRemix(true));
-        String[] keys = { "display_chat_summary_feature_key", "display_image_remix_feature_key",
-                "display_ai_in_chat_feature_key", "ai_reply_is_display_feature_setting_enabled",
-                "smart_recap_is_enabled" };
-        for (String key : keys) {
-            Assert.assertEquals(Boolean.FALSE, AiPreferences.overrideValue(key, Boolean.TRUE));
-        }
-        Assert.assertTrue(AiPreferences.overrideBoolean("general_ai_features_banner_dismissed_key", false));
+    public void redirectsPreferenceKeyWhenEnabled() {
+        Assert.assertEquals(AiPreferences.DISABLED_KEY_PREFIX + "some_key", AiPreferences.preferenceKey("some_key"));
     }
 
     @Test
-    public void preserveHostValuesWhenDisabled() {
+    public void hidesFeatureWhenEnabled() {
+        Assert.assertFalse(AiPreferences.showImageRemix(true));
+        Assert.assertFalse(AiPreferences.hideFeature(true));
+    }
+
+    @Test
+    public void marksBannerDismissedWhenEnabled() {
+        Assert.assertTrue(AiPreferences.markDismissed(false));
+    }
+
+    @Test
+    public void preservesHostValuesWhenDisabled() {
         EnabledSettings.enabled = false;
+        Assert.assertEquals("some_key", AiPreferences.preferenceKey("some_key"));
         Assert.assertTrue(AiPreferences.showImageRemix(true));
         Assert.assertFalse(AiPreferences.showImageRemix(false));
-        Assert.assertTrue(AiPreferences.overrideBoolean("display_chat_summary_feature_key", true));
-        Assert.assertFalse(AiPreferences.overrideBoolean("general_ai_features_banner_dismissed_key", false));
-    }
-
-    @Test
-    public void preserveUnrelatedAndNonBooleanValues() {
-        Assert.assertTrue(AiPreferences.overrideBoolean("notifications_enabled", true));
-        Assert.assertFalse(AiPreferences.overrideBoolean("notifications_enabled", false));
-        Assert.assertNull(AiPreferences.overrideValue("display_chat_summary_feature_key", null));
-        Assert.assertEquals("value", AiPreferences.overrideValue("display_chat_summary_feature_key", "value"));
+        Assert.assertTrue(AiPreferences.hideFeature(true));
+        Assert.assertFalse(AiPreferences.hideFeature(false));
+        Assert.assertFalse(AiPreferences.markDismissed(false));
+        Assert.assertTrue(AiPreferences.markDismissed(true));
     }
 
     @Implements(value = PatchSettings.class, isInAndroidSdk = false)

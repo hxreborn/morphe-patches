@@ -23,6 +23,8 @@ package app.hxreborn.extension.viber;
 @SuppressWarnings("unused")
 public final class AiPreferences {
 
+    static final String DISABLED_KEY_PREFIX = "hx_disabled_";
+
     private AiPreferences() {
     }
 
@@ -30,29 +32,16 @@ public final class AiPreferences {
         return visible && !PatchSettings.disableAiFeatures();
     }
 
-    public static Object overrideValue(String key, Object value) {
-        if (!(value instanceof Boolean)) {
-            return value;
-        }
-        return overrideBoolean(key, (Boolean) value);
+    public static String preferenceKey(String key) {
+        return PatchSettings.disableAiFeatures() ? DISABLED_KEY_PREFIX + key : key;
     }
 
-    public static boolean overrideBoolean(String key, boolean value) {
-        if (!PatchSettings.disableAiFeatures()) {
-            return value;
-        }
-        switch (key) {
-            case "display_chat_summary_feature_key":
-            case "display_image_remix_feature_key":
-            case "display_ai_in_chat_feature_key":
-            case "ai_reply_is_display_feature_setting_enabled":
-            case "smart_recap_is_enabled":
-                return false;
-            case "general_ai_features_banner_dismissed_key":
-                return true;
-            default:
-                return value;
-        }
+    public static boolean hideFeature(boolean original) {
+        return original && !PatchSettings.disableAiFeatures();
+    }
+
+    public static boolean markDismissed(boolean original) {
+        return original || PatchSettings.disableAiFeatures();
     }
 
 }

@@ -69,7 +69,7 @@ public final class PatchSettings {
     }
 
     public static boolean disableAiFeatures() {
-        return AppliedPatches.disableAiFeatures() && isEnabled("Disable AI features");
+        return AppliedPatches.disableAiFeatures() && isEnabled(PatchSetting.DISABLE_AI_FEATURES.key);
     }
 
     public static boolean hideAds() {
