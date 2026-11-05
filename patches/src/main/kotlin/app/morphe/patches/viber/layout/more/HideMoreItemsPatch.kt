@@ -6,6 +6,7 @@ package app.morphe.patches.viber.layout.more
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
@@ -44,12 +45,10 @@ private enum class MoreItem(val label: String, val resourceName: String) {
     YOUR_NEWS("Your News", "ai_news_brief"),
 }
 
-private const val DESCRIPTION = "Hides Viber Dating, Your News, promotional banners and upsell entries from the More screen."
-
 @Suppress("unused")
-val hideMoreItemsPatch = bytecodePatch(
+val hideMoreItemsPatch: BytecodePatch = bytecodePatch(
     name = "Hide More screen items",
-    description = DESCRIPTION,
+    description = "Hides Viber Dating, Your News, promotional banners and upsell entries from the More screen.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
 
@@ -65,7 +64,7 @@ val hideMoreItemsPatch = bytecodePatch(
     }
 
     execute {
-        markPatchApplied("hideMoreItems", DESCRIPTION)
+        markPatchApplied("hideMoreItems", hideMoreItemsPatch)
         val hiddenIds = hideItemOptions.filterValues { it.value == true }.keys
             .map { resourceId(ResourceType.ID, it.resourceName) }
         if (hiddenIds.isEmpty()) return@execute

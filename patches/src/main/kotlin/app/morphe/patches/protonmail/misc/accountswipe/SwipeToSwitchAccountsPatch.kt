@@ -6,6 +6,7 @@ package app.morphe.patches.protonmail.misc.accountswipe
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
@@ -28,7 +29,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/accountswipe/AccountAvatarSwipe;"
 
 @Suppress("unused")
-val swipeToSwitchAccountsPatch = bytecodePatch(
+val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
     name = "Swipe to switch accounts",
     description = "Switches between signed-in accounts by swiping up or down on the account avatar.",
 ) {
@@ -38,7 +39,7 @@ val swipeToSwitchAccountsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("swipeToSwitchAccounts")
+        markPatchApplied("swipeToSwitchAccounts", swipeToSwitchAccountsPatch)
 
         val onTouchEventField = PointerInteropFilterTouchFingerprint.matchSingle()
             .instructionMatches[2].getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!

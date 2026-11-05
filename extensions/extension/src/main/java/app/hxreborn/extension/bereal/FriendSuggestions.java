@@ -45,4 +45,12 @@ public final class FriendSuggestions {
         return original && !removed();
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

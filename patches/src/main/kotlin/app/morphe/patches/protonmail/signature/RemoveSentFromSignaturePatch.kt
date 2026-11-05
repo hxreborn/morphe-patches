@@ -11,6 +11,7 @@
 package app.morphe.patches.protonmail.signature
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.ResourcePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.ARM32
@@ -83,10 +84,10 @@ private val PAID_ACCOUNT_CALL_SITES = mapOf(
 )
 
 private val removeSentFromSignatureMarkerPatch =
-    appliedPatchMarkerPatch("removeSentFromSignature")
+    appliedPatchMarkerPatch("removeSentFromSignature") { removeSentFromSignaturePatch }
 
 @Suppress("unused")
-val removeSentFromSignaturePatch = resourcePatch(
+val removeSentFromSignaturePatch: ResourcePatch = resourcePatch(
     name = "Remove 'Sent from' signature",
     description = "Removes the 'Sent from Proton Mail' signature and unlocks the mobile signature setting.",
 ) {

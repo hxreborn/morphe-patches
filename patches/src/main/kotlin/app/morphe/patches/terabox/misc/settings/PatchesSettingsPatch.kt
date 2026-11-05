@@ -7,6 +7,7 @@ package app.morphe.patches.terabox.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
@@ -18,6 +19,7 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.ResourceGroup
 import app.morphe.util.copyResources
+import com.android.tools.smali.util.StringUtils.escapeString
 
 internal const val TERABOX_PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/terabox/PatchSettings;"
 internal const val PREMIUM_ENABLED = "$TERABOX_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z"
@@ -28,9 +30,12 @@ private const val TERABOX_PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/terabox/
 private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "reset", "info", "patches", "expand")
     .map { "hx_terabox_ic_$it" }
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, description: String) =
-    mutableClassDefBy(TERABOX_APPLIED_PATCHES_CLASS).methods.single { it.name == methodName + "Description" }
-        .returnEarly(description)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) {
+    val methods = mutableClassDefBy(TERABOX_APPLIED_PATCHES_CLASS).methods
+    methods.single { it.name == methodName }.returnEarly(true)
+    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
+}
 
 internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: MutableMethod.() -> Unit) {
     val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()

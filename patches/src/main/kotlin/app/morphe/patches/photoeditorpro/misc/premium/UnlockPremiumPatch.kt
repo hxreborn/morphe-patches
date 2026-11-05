@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.photoeditorpro.misc.premium
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
@@ -12,11 +13,12 @@ import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.ProGateFingerprint
 import app.morphe.patches.photoeditorpro.shared.RemoveAdsPurchasedFingerprint
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
+import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.photoeditorpro.shared.returnTrueWhileEnabled
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
     description = "Adds an option to unlock the pro tools, remove the export watermark and " +
         "hide the upgrade prompts.",
@@ -26,6 +28,7 @@ val unlockPremiumPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchMetadata("unlockPremium", unlockPremiumPatch)
         val adsRemoved = RemoveAdsPurchasedFingerprint.matchSingle().method.name
 
         ProGateFingerprint.matchAll(2..2)

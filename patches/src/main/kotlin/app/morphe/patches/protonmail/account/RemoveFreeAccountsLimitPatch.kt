@@ -11,14 +11,15 @@
 package app.morphe.patches.protonmail.account
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.ResourcePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64
 import app.morphe.patches.protonmail.shared.MAIL_UNIFFI_LIBRARY
 import app.morphe.patches.protonmail.shared.X86_64
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.shared.replaceTrailingMasked
 
 private class LimitCheck(pattern: String, mask: String, bypass: String) {
@@ -46,10 +47,10 @@ private val LIMIT_CHECKS = mapOf(
 )
 
 private val removeFreeAccountsLimitMarkerPatch =
-    appliedPatchMarkerPatch("removeFreeAccountsLimit")
+    appliedPatchMarkerPatch("removeFreeAccountsLimit") { removeFreeAccountsLimitPatch }
 
 @Suppress("unused")
-val removeFreeAccountsLimitPatch = resourcePatch(
+val removeFreeAccountsLimitPatch: ResourcePatch = resourcePatch(
     name = "Remove free accounts limit",
     description = "Removes the limit on signed-in free accounts.",
 ) {

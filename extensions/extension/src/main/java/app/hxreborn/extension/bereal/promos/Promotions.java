@@ -44,4 +44,12 @@ public final class Promotions {
         return original || removed();
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

@@ -12,6 +12,7 @@ package app.morphe.patches.aliexpress.misc.splash
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
@@ -22,18 +23,16 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 
-private const val DESCRIPTION = "Skips the full-screen promotion shown at launch."
-
 @Suppress("unused")
-val skipSplashPromotionsPatch = bytecodePatch(
+val skipSplashPromotionsPatch: BytecodePatch = bytecodePatch(
     name = "Skip splash promotions",
-    description = DESCRIPTION,
+    description = "Skips the full-screen promotion shown at launch.",
 ) {
     compatibleWith(AppCompatibilities.ALIEXPRESS)
     dependsOn(spoofSignaturePatch)
 
     execute {
-        markPatchApplied("skipSplashPromotions", DESCRIPTION)
+        markPatchApplied("skipSplashPromotions", skipSplashPromotionsPatch)
         val promotion = SplashPromotionFingerprint.matchOrNull()
         if (promotion != null) {
             promotion.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->skipSplashPromotions()Z")

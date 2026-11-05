@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
@@ -51,18 +52,16 @@ private val themeResourcesPatch = resourcePatch {
     }
 }
 
-private const val DESCRIPTION = "Fixes the screens and web pages the built-in Dark mode leaves white. Requires Android 10 or later."
-
 @Suppress("unused")
-val darkThemePatch = bytecodePatch(
+val darkThemePatch: BytecodePatch = bytecodePatch(
     name = "Fix dark mode",
-    description = DESCRIPTION,
+    description = "Fixes the screens and web pages the built-in Dark mode leaves white. Requires Android 10 or later.",
 ) {
     compatibleWith(AppCompatibilities.ALIEXPRESS)
     dependsOn(spoofSignaturePatch, themeResourcesPatch)
 
     execute {
-        markPatchApplied("darkTheme", DESCRIPTION)
+        markPatchApplied("darkTheme", darkThemePatch)
         ActivityConfigurationFingerprint.matchSingle().method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
         DefaultNightModeFingerprint.matchSingle().method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
         val darkModeEnabledMatch = DarkModeEnabledFingerprint.matchOrNull(DefaultNightModeFingerprint.matchSingle().classDef)

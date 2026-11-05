@@ -133,21 +133,22 @@ final class PatchesSettingsDialog {
         int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
         column.setPadding(inset, 0, inset, this.style.dp(CONTENT_BOTTOM_PADDING_DP));
         LinearLayout home = this.rows.card();
-        addSwitch(home, AppliedPatches.hideHomeShortcuts(), AppliedPatches.HIDE_HOME_SHORTCUTS,
+        addSwitch(home, AppliedPatches.hideHomeShortcuts(), "hideHomeShortcuts", AppliedPatches.HIDE_HOME_SHORTCUTS,
                 "Removes Trending and Short Drama.", "hx_terabox_ic_shortcuts", true);
-        addSwitch(home, AppliedPatches.removeRecentPanel(), AppliedPatches.REMOVE_RECENT_PANEL,
+        addSwitch(home, AppliedPatches.removeRecentPanel(), "removeRecentPanel", AppliedPatches.REMOVE_RECENT_PANEL,
                 "Removes Recent, Starred and Offline.", "hx_terabox_ic_recent", false);
         addSection(column, "Home", home);
         LinearLayout videos = this.rows.card();
-        addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS,
-                "Removes the Recommendations grid.", "hx_terabox_ic_video", false);
-        addSwitch(videos, AppliedPatches.unlockPremium(), AppliedPatches.UNLOCK_PREMIUM,
+        addSwitch(videos, AppliedPatches.hideVideoRecommendations(), "hideVideoRecommendations",
+                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, "Removes the Recommendations grid.", "hx_terabox_ic_video",
+                false);
+        addSwitch(videos, AppliedPatches.unlockPremium(), "unlockPremium", AppliedPatches.UNLOCK_PREMIUM,
                 "Unlocks HD, 3x speed and uploads.", "hx_terabox_ic_premium", false);
         addSection(column, "Videos", videos);
         LinearLayout ads = this.rows.card();
-        addSwitch(ads, AppliedPatches.hideAds(), AppliedPatches.HIDE_ADS, "Removes feed, banner and video ads.",
-                "hx_terabox_ic_ads", false);
-        addSwitch(ads, AppliedPatches.hidePromotions(), AppliedPatches.HIDE_PROMOTIONS,
+        addSwitch(ads, AppliedPatches.hideAds(), "hideAds", AppliedPatches.HIDE_ADS,
+                "Removes feed, banner and video ads.", "hx_terabox_ic_ads", false);
+        addSwitch(ads, AppliedPatches.hidePromotions(), "hidePromotions", AppliedPatches.HIDE_PROMOTIONS,
                 "Removes Premium and sale offers.", "hx_terabox_ic_promotions", false);
         addSection(column, "Ads", ads);
         LinearLayout about = this.rows.card();
@@ -156,24 +157,25 @@ final class PatchesSettingsDialog {
         this.rows.valueRow(about, "hx_terabox_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         LinearLayout applied = this.rows.card();
-        for (String name : AppliedPatches.names()) {
-            this.rows.expandableRow(applied, name, AppliedPatches.description(name));
+        for (String identifier : AppliedPatches.identifiers()) {
+            this.rows.expandableRow(applied, AppliedPatches.name(identifier), AppliedPatches.description(identifier));
         }
         addSection(column, "Applied patches", applied);
         return column;
     }
 
-    private void addSwitch(LinearLayout card, boolean applied, String key, String description, String icon,
-            boolean restartRequired) {
+    private void addSwitch(LinearLayout card, boolean applied, String identifier, String key, String description,
+            String icon, boolean restartRequired) {
         if (!applied) {
             return;
         }
-        this.rows.switchRow(card, icon, key, description, PatchSettings.isEnabled(key), (button, enabled) -> {
-            PatchSettings.setEnabled(key, enabled);
-            if (restartRequired) {
-                confirmRestart();
-            }
-        });
+        this.rows.switchRow(card, icon, AppliedPatches.name(identifier), description, PatchSettings.isEnabled(key),
+                (button, enabled) -> {
+                    PatchSettings.setEnabled(key, enabled);
+                    if (restartRequired) {
+                        confirmRestart();
+                    }
+                });
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {

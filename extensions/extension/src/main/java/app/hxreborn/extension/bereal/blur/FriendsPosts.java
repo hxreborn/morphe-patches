@@ -40,4 +40,12 @@ public final class FriendsPosts {
         return original && !show;
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

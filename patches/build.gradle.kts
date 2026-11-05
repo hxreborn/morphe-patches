@@ -28,6 +28,8 @@ dependencies {
     implementation(libs.morphe.patches.library)
     implementation(libs.pngj)
     testImplementation(kotlin("test"))
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
 }
 
 tasks {

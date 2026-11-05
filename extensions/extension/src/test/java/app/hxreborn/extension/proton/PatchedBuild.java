@@ -116,6 +116,116 @@ public final class PatchedBuild {
     public static final class Applied {
 
         @Implementation
+        public static String hidePromotionalMessagesName() {
+            return "Hide promotional messages";
+        }
+
+        @Implementation
+        public static String hideUpgradePromotionsName() {
+            return "Hide upgrade promotions";
+        }
+
+        @Implementation
+        public static String accentColorName() {
+            return "Custom accent color";
+        }
+
+        @Implementation
+        public static String amoledDarkThemeName() {
+            return "AMOLED dark theme";
+        }
+
+        @Implementation
+        public static String materialSwitchesName() {
+            return "Material 3 switches";
+        }
+
+        @Implementation
+        public static String loadingIndicatorName() {
+            return "M3E loading indicator";
+        }
+
+        @Implementation
+        public static String hideLayoutComponentsName() {
+            return "Hide layout components";
+        }
+
+        @Implementation
+        public static String hideNavigationBarOnScrollName() {
+            return "Hide navigation bar on scroll";
+        }
+
+        @Implementation
+        public static String removeFreeAccountsLimitName() {
+            return "Remove free accounts limit";
+        }
+
+        @Implementation
+        public static String removeSentFromSignatureName() {
+            return "Remove 'Sent from' signature";
+        }
+
+        @Implementation
+        public static String unlockCustomTimePickerName() {
+            return "Unlock custom time picker";
+        }
+
+        @Implementation
+        public static String swipeToSwitchAccountsName() {
+            return "Swipe to switch accounts";
+        }
+
+        @Implementation
+        public static String scheduledDeletionName() {
+            return "Scheduled Trash and Spam deletion";
+        }
+
+        @Implementation
+        public static String removeServerChangeDelayName() {
+            return "Remove server change delay";
+        }
+
+        @Implementation
+        public static String unlockCustomDnsName() {
+            return "Unlock custom DNS";
+        }
+
+        @Implementation
+        public static String unlockLanConnectionsName() {
+            return "Unlock LAN connections";
+        }
+
+        @Implementation
+        public static String showFreeServerLocationsName() {
+            return "Show free server locations";
+        }
+
+        @Implementation
+        public static String unlockSplitTunnelingName() {
+            return "Unlock split tunneling";
+        }
+
+        @Implementation
+        public static String disableTelemetryName() {
+            return "Disable telemetry";
+        }
+
+        @Implementation
+        public static String unlockNetShieldName() {
+            return "Unlock NetShield";
+        }
+
+        @Implementation
+        public static String unlockConnectionPreferencesName() {
+            return "Unlock connection preferences";
+        }
+
+        @Implementation
+        public static String unlockProfilesName() {
+            return "Unlock profiles";
+        }
+
+        @Implementation
         public static boolean hidePromotionalMessages() {
             return true;
         }

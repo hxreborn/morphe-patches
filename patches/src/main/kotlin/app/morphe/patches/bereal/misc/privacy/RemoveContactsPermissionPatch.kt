@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.bereal.misc.privacy
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
-import app.morphe.util.setExtensionIsPatchIncluded
 import org.w3c.dom.Element
 
 private val contactsPermissions = setOf(
@@ -37,7 +38,7 @@ private val contactsPermissionExtensionPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val removeContactsPermissionPatch = bytecodePatch(
+val removeContactsPermissionPatch: BytecodePatch = bytecodePatch(
     name = "Remove contacts permission",
     description = "Stops BeReal from asking for or reading your phone's contacts.",
 ) {
@@ -46,6 +47,6 @@ val removeContactsPermissionPatch = bytecodePatch(
     dependsOn(removeContactsPermissionsResourcePatch, contactsPermissionExtensionPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}ContactsPermission;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}ContactsPermission;", removeContactsPermissionPatch)
     }
 }

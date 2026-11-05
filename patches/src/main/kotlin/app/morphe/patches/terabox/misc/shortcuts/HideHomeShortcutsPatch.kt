@@ -6,6 +6,7 @@ package app.morphe.patches.terabox.misc.shortcuts
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.findFreeRegister
@@ -45,13 +46,11 @@ private enum class Shortcut(
     TRENDING("hideTrending", "Trending", listOf("hotlist")),
 }
 
-private const val DESCRIPTION = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
-    "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too."
-
 @Suppress("unused")
-val hideHomeShortcutsPatch = bytecodePatch(
+val hideHomeShortcutsPatch: BytecodePatch = bytecodePatch(
     name = "Hide home shortcuts",
-    description = DESCRIPTION,
+    description = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
+        "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
 
@@ -69,7 +68,7 @@ val hideHomeShortcutsPatch = bytecodePatch(
     }
 
     execute {
-        markPatchApplied("hideHomeShortcuts", DESCRIPTION)
+        markPatchApplied("hideHomeShortcuts", hideHomeShortcutsPatch)
         val hidden = hideShortcutOptions.filterValues { it.value == true }.keys
         if (hidden.isEmpty()) return@execute
 

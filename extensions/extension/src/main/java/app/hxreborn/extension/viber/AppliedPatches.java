@@ -30,7 +30,23 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    public static boolean hideAds() {
+        return false;
+    }
+
+    public static String hideAdsName() {
+        return null;
+    }
+
     public static String hideAdsDescription() {
+        return null;
+    }
+
+    public static boolean hideMoreItems() {
+        return false;
+    }
+
+    public static String hideMoreItemsName() {
         return null;
     }
 
@@ -38,7 +54,23 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean hideNavigationButtons() {
+        return false;
+    }
+
+    public static String hideNavigationButtonsName() {
+        return null;
+    }
+
     public static String hideNavigationButtonsDescription() {
+        return null;
+    }
+
+    public static boolean disableAnalytics() {
+        return false;
+    }
+
+    public static String disableAnalyticsName() {
         return null;
     }
 
@@ -46,7 +78,23 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean spoofSignature() {
+        return false;
+    }
+
+    public static String spoofSignatureName() {
+        return null;
+    }
+
     public static String spoofSignatureDescription() {
+        return null;
+    }
+
+    public static boolean gmsCoreSupport() {
+        return false;
+    }
+
+    public static String gmsCoreSupportName() {
         return null;
     }
 
@@ -54,43 +102,62 @@ public final class AppliedPatches {
         return null;
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        if (hideAdsDescription() != null) {
-            names.add("Hide ads");
+    static List<String> identifiers() {
+        List<String> identifiers = new ArrayList<>();
+        if (hideAds()) {
+            identifiers.add("hideAds");
         }
-        if (hideMoreItemsDescription() != null) {
-            names.add("Hide More screen items");
+        if (hideMoreItems()) {
+            identifiers.add("hideMoreItems");
         }
-        if (hideNavigationButtonsDescription() != null) {
-            names.add("Hide navigation buttons");
+        if (hideNavigationButtons()) {
+            identifiers.add("hideNavigationButtons");
         }
-        if (disableAnalyticsDescription() != null) {
-            names.add("Disable analytics");
+        if (disableAnalytics()) {
+            identifiers.add("disableAnalytics");
         }
-        if (spoofSignatureDescription() != null) {
-            names.add("Spoof signature");
+        if (spoofSignature()) {
+            identifiers.add("spoofSignature");
         }
-        if (gmsCoreSupportDescription() != null) {
-            names.add("GmsCore support");
+        if (gmsCoreSupport()) {
+            identifiers.add("gmsCoreSupport");
         }
-        Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
-        return names;
+        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
+        return identifiers;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case "Hide ads":
+    static String name(String identifier) {
+        switch (identifier) {
+            case "hideAds":
+                return hideAdsName();
+            case "hideMoreItems":
+                return hideMoreItemsName();
+            case "hideNavigationButtons":
+                return hideNavigationButtonsName();
+            case "disableAnalytics":
+                return disableAnalyticsName();
+            case "spoofSignature":
+                return spoofSignatureName();
+            case "gmsCoreSupport":
+                return gmsCoreSupportName();
+            default:
+                return null;
+        }
+    }
+
+    static String description(String identifier) {
+        switch (identifier) {
+            case "hideAds":
                 return hideAdsDescription();
-            case "Hide More screen items":
+            case "hideMoreItems":
                 return hideMoreItemsDescription();
-            case "Hide navigation buttons":
+            case "hideNavigationButtons":
                 return hideNavigationButtonsDescription();
-            case "Disable analytics":
+            case "disableAnalytics":
                 return disableAnalyticsDescription();
-            case "Spoof signature":
+            case "spoofSignature":
                 return spoofSignatureDescription();
-            case "GmsCore support":
+            case "gmsCoreSupport":
                 return gmsCoreSupportDescription();
             default:
                 return "";

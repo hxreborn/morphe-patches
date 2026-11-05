@@ -6,13 +6,14 @@ package app.morphe.patches.bereal.misc.post
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -20,7 +21,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val removeLateFlagPatch = bytecodePatch(
+val removeLateFlagPatch: BytecodePatch = bytecodePatch(
     name = "Remove late flag",
     description = "Sends BeReals you take after the moment's window as on time.",
 ) {
@@ -28,7 +29,7 @@ val removeLateFlagPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}LateFlag;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}LateFlag;", removeLateFlagPatch)
         val moment = MomentToStringFingerprint.matchSingle().classDef
         val instantType = moment.fields.single { it.name == "creationDate" }.type
         lateCheckFingerprint(moment.type).matchSingle().let { lateCheck ->

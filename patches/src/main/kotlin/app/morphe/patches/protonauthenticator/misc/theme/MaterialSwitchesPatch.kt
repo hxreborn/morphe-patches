@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.protonauthenticator.misc.theme
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
@@ -11,12 +12,13 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 
 private const val ENABLED_PARAMETER = 4
 private const val COMPOSER_PARAMETER = 7
 
 @Suppress("unused")
-val materialSwitchesPatch = bytecodePatch(
+val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Adds check and close icons to switches.",
 ) {
@@ -24,6 +26,7 @@ val materialSwitchesPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("materialSwitches", materialSwitchesPatch)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         drawSwitchAsView(
             MaterialSwitchFingerprint.matchSingle().method,

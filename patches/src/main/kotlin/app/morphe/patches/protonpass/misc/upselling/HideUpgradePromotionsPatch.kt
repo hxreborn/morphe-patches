@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
@@ -16,9 +17,10 @@ import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutab
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
-import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
+import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
+import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -69,7 +71,7 @@ private fun Match.readOriginalUpgradeAvailable() {
 }
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = bytecodePatch(
+val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide upgrade promotions",
     description = "Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. " +
         "Plan limits still apply.",
@@ -78,6 +80,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch)
         markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
 
         UpgradeInfoConstructorFingerprint.matchSingle().preserveAndResolveUpgradeAvailable()

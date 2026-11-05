@@ -31,16 +31,6 @@ import app.hxreborn.extension.protonpass.NavigationBarAutoHide;
 @SuppressWarnings("unused")
 public final class AppliedPatches {
 
-    static final String SCHEDULED_DELETION = "Scheduled Trash and Spam deletion";
-    static final String AMOLED_DARK_THEME = "AMOLED dark theme";
-    static final String ACCENT_COLOR = "Custom accent color";
-    static final String HIDE_UPGRADE_PROMOTIONS = "Hide upgrade promotions";
-    static final String MATERIAL_SWITCHES = "Material 3 switches";
-    static final String LOADING_INDICATOR = "M3E loading indicator";
-    static final String HIDE_NAVIGATION_BAR_ON_SCROLL = "Hide navigation bar on scroll";
-
-    private static final String SWIPE_TO_SWITCH_ACCOUNTS = "Swipe to switch accounts";
-
     private AppliedPatches() {
 
     }
@@ -120,72 +110,248 @@ public final class AppliedPatches {
     static List<String> names() {
         final List<String> names = new ArrayList<>();
         if (accentColor()) {
-            names.add(ACCENT_COLOR);
+            names.add(accentColorName());
         }
         if (amoledDarkTheme()) {
-            names.add(AMOLED_DARK_THEME);
+            names.add(amoledDarkThemeName());
         }
         if (hideUpgradePromotions()) {
-            names.add(HIDE_UPGRADE_PROMOTIONS);
+            names.add(hideUpgradePromotionsName());
         }
         if (MaterialSwitches.isPatched()) {
-            names.add(MATERIAL_SWITCHES);
+            names.add(materialSwitchesName());
         }
         if (LoadingIndicator.isPatched()) {
-            names.add(LOADING_INDICATOR);
+            names.add(loadingIndicatorName());
         }
         if (LayoutComponents.isPatched() || SidebarEntries.isPatched() || SettingsSections.isPatched()) {
-            names.add("Hide layout components");
+            names.add(hideLayoutComponentsName());
         }
         if (NavigationBarAutoHide.isPatched()) {
-            names.add(HIDE_NAVIGATION_BAR_ON_SCROLL);
+            names.add(hideNavigationBarOnScrollName());
         }
         if (hidePromotionalMessages()) {
-            names.add("Hide promotional messages");
+            names.add(hidePromotionalMessagesName());
         }
         if (removeSentFromSignature()) {
-            names.add("Remove 'Sent from' signature");
+            names.add(removeSentFromSignatureName());
         }
         if (removeFreeAccountsLimit()) {
-            names.add("Remove free accounts limit");
+            names.add(removeFreeAccountsLimitName());
         }
         if (scheduledDeletion()) {
-            names.add(SCHEDULED_DELETION);
+            names.add(scheduledDeletionName());
         }
         if (unlockCustomTimePicker()) {
-            names.add("Unlock custom time picker");
+            names.add(unlockCustomTimePickerName());
         }
         if (swipeToSwitchAccounts()) {
-            names.add(SWIPE_TO_SWITCH_ACCOUNTS);
+            names.add(swipeToSwitchAccountsName());
         }
         if (removeServerChangeDelay()) {
-            names.add("Remove server change delay");
+            names.add(removeServerChangeDelayName());
         }
         if (unlockSplitTunneling()) {
-            names.add("Unlock split tunneling");
+            names.add(unlockSplitTunnelingName());
         }
         if (unlockLanConnections()) {
-            names.add("Unlock LAN connections");
+            names.add(unlockLanConnectionsName());
         }
         if (unlockCustomDns()) {
-            names.add("Unlock custom DNS");
+            names.add(unlockCustomDnsName());
         }
         if (unlockNetShield()) {
-            names.add("Unlock NetShield");
+            names.add(unlockNetShieldName());
         }
         if (unlockConnectionPreferences()) {
-            names.add("Unlock connection preferences");
+            names.add(unlockConnectionPreferencesName());
         }
         if (unlockProfiles()) {
-            names.add("Unlock profiles");
+            names.add(unlockProfilesName());
         }
         if (showFreeServerLocations()) {
-            names.add("Show free server locations");
+            names.add(showFreeServerLocationsName());
         }
         if (disableTelemetry()) {
-            names.add("Disable telemetry");
+            names.add(disableTelemetryName());
         }
         return names;
+    }
+
+    public static String accentColorName() {
+        return null;
+    }
+
+    public static String accentColorDescription() {
+        return null;
+    }
+
+    public static String amoledDarkThemeName() {
+        return null;
+    }
+
+    public static String amoledDarkThemeDescription() {
+        return null;
+    }
+
+    public static String hideUpgradePromotionsName() {
+        return null;
+    }
+
+    public static String hideUpgradePromotionsDescription() {
+        return null;
+    }
+
+    public static String materialSwitchesName() {
+        return null;
+    }
+
+    public static String materialSwitchesDescription() {
+        return null;
+    }
+
+    public static String loadingIndicatorName() {
+        return null;
+    }
+
+    public static String loadingIndicatorDescription() {
+        return null;
+    }
+
+    public static String hideLayoutComponentsName() {
+        return null;
+    }
+
+    public static String hideLayoutComponentsDescription() {
+        return null;
+    }
+
+    public static String hideNavigationBarOnScrollName() {
+        return null;
+    }
+
+    public static String hideNavigationBarOnScrollDescription() {
+        return null;
+    }
+
+    public static String hidePromotionalMessagesName() {
+        return null;
+    }
+
+    public static String hidePromotionalMessagesDescription() {
+        return null;
+    }
+
+    public static String removeSentFromSignatureName() {
+        return null;
+    }
+
+    public static String removeSentFromSignatureDescription() {
+        return null;
+    }
+
+    public static String removeFreeAccountsLimitName() {
+        return null;
+    }
+
+    public static String removeFreeAccountsLimitDescription() {
+        return null;
+    }
+
+    public static String scheduledDeletionName() {
+        return null;
+    }
+
+    public static String scheduledDeletionDescription() {
+        return null;
+    }
+
+    public static String unlockCustomTimePickerName() {
+        return null;
+    }
+
+    public static String unlockCustomTimePickerDescription() {
+        return null;
+    }
+
+    public static String swipeToSwitchAccountsName() {
+        return null;
+    }
+
+    public static String swipeToSwitchAccountsDescription() {
+        return null;
+    }
+
+    public static String removeServerChangeDelayName() {
+        return null;
+    }
+
+    public static String removeServerChangeDelayDescription() {
+        return null;
+    }
+
+    public static String unlockSplitTunnelingName() {
+        return null;
+    }
+
+    public static String unlockSplitTunnelingDescription() {
+        return null;
+    }
+
+    public static String unlockLanConnectionsName() {
+        return null;
+    }
+
+    public static String unlockLanConnectionsDescription() {
+        return null;
+    }
+
+    public static String unlockCustomDnsName() {
+        return null;
+    }
+
+    public static String unlockCustomDnsDescription() {
+        return null;
+    }
+
+    public static String unlockNetShieldName() {
+        return null;
+    }
+
+    public static String unlockNetShieldDescription() {
+        return null;
+    }
+
+    public static String unlockConnectionPreferencesName() {
+        return null;
+    }
+
+    public static String unlockConnectionPreferencesDescription() {
+        return null;
+    }
+
+    public static String unlockProfilesName() {
+        return null;
+    }
+
+    public static String unlockProfilesDescription() {
+        return null;
+    }
+
+    public static String showFreeServerLocationsName() {
+        return null;
+    }
+
+    public static String showFreeServerLocationsDescription() {
+        return null;
+    }
+
+    public static String disableTelemetryName() {
+        return null;
+    }
+
+    public static String disableTelemetryDescription() {
+        return null;
     }
 
 }

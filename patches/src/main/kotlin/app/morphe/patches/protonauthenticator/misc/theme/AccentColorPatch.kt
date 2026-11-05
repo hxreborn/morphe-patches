@@ -5,6 +5,7 @@
 package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
@@ -12,6 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.ACCENT_COLOR_CLASS
 import app.morphe.patches.shared.misc.proton.CORE_BRAND_COLORS
 import app.morphe.patches.shared.misc.proton.accentOverlayPatch
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.transformBrandColors
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -32,7 +34,7 @@ private val AUTHENTICATOR_BRAND_COLORS = listOf(
 )
 
 @Suppress("unused")
-val accentColorPatch = bytecodePatch(
+val accentColorPatch: BytecodePatch = bytecodePatch(
     name = "Custom accent color",
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
@@ -40,6 +42,7 @@ val accentColorPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, accentOverlayPatch)
 
     execute {
+        markPatchMetadata("accentColor", accentColorPatch)
         transformBrandColors(CORE_BRAND_COLORS + AUTHENTICATOR_BRAND_COLORS)
 
         ButtonShadowColorFingerprint.matchSingle().let { match ->

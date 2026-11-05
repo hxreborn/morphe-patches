@@ -9,16 +9,17 @@
 package app.morphe.patches.protonmail.misc.scheduling
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.returnEarly
-import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 @Suppress("unused")
-val unlockCustomTimePickerPatch = bytecodePatch(
+val unlockCustomTimePickerPatch: BytecodePatch = bytecodePatch(
     name = "Unlock custom time picker",
     description = "Enables picking a custom date and time when snoozing conversations and scheduling messages.",
 ) {
@@ -28,7 +29,7 @@ val unlockCustomTimePickerPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("unlockCustomTimePicker")
+        markPatchApplied("unlockCustomTimePicker", unlockCustomTimePickerPatch)
 
         SnoozeOptionsFingerprint.instructionMatches.let { matches ->
             val customUnset = matches[1].getInstruction<ReferenceInstruction>().reference

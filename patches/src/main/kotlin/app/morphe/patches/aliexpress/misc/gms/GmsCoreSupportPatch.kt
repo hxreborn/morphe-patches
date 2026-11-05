@@ -15,7 +15,7 @@ private val gmsCoreSupportMarkerPatch = bytecodePatch {
     dependsOn(spoofSignaturePatch)
 
     execute {
-        markPatchApplied("gmsCoreSupport", checkNotNull(gmsCoreSupportPatch.description))
+        markPatchApplied("gmsCoreSupport", gmsCoreSupportPatch)
     }
 }
 

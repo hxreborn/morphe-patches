@@ -21,7 +21,6 @@
 package app.hxreborn.extension.liftoff;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,27 +31,37 @@ public final class AppliedPatches {
 
     static final String UNLOCK_PREMIUM = "Unlock premium";
 
-    private static final List<String> NAMES = Collections
-        .unmodifiableList(Arrays.asList(UNLOCK_CUSTOMIZATIONS, UNLOCK_PREMIUM));
-
     private AppliedPatches() {
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        for (String name : NAMES) {
-            if (description(name) != null) {
-                names.add(name);
-            }
+    static List<String> identifiers() {
+        List<String> identifiers = new ArrayList<>();
+        if (unlockPremium()) {
+            identifiers.add("unlockPremium");
         }
-        return names;
+        if (unlockCustomizations()) {
+            identifiers.add("unlockCustomizations");
+        }
+        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
+        return identifiers;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case UNLOCK_CUSTOMIZATIONS:
+    static String name(String identifier) {
+        switch (identifier) {
+            case "unlockCustomizations":
+                return unlockCustomizationsName();
+            case "unlockPremium":
+                return unlockPremiumName();
+            default:
+                return null;
+        }
+    }
+
+    static String description(String identifier) {
+        switch (identifier) {
+            case "unlockCustomizations":
                 return unlockCustomizationsDescription();
-            case UNLOCK_PREMIUM:
+            case "unlockPremium":
                 return unlockPremiumDescription();
             default:
                 return null;
@@ -60,7 +69,11 @@ public final class AppliedPatches {
     }
 
     public static boolean unlockPremium() {
-        return unlockPremiumDescription() != null;
+        return false;
+    }
+
+    public static String unlockPremiumName() {
+        return null;
     }
 
     public static String unlockPremiumDescription() {
@@ -68,7 +81,11 @@ public final class AppliedPatches {
     }
 
     public static boolean unlockCustomizations() {
-        return unlockCustomizationsDescription() != null;
+        return false;
+    }
+
+    public static String unlockCustomizationsName() {
+        return null;
     }
 
     public static String unlockCustomizationsDescription() {

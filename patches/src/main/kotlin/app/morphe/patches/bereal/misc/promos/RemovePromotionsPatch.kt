@@ -6,15 +6,16 @@ package app.morphe.patches.bereal.misc.promos
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.returnEarlyWhen
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -29,7 +30,7 @@ private fun MutableMethod.filterBoolean(index: Int, register: String, filter: St
 )
 
 @Suppress("unused")
-val removePromotionsPatch = bytecodePatch(
+val removePromotionsPatch: BytecodePatch = bytecodePatch(
     name = "Remove promotions",
     description = "Removes Recap cards, the \"How's BeReal?\" review prompt, the " +
         "profile completion card, the notifications banner and the music tooltip.",
@@ -38,7 +39,7 @@ val removePromotionsPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded(EXTENSION_CLASS)
+        markFeaturePatched(EXTENSION_CLASS, removePromotionsPatch)
 
         val yearRecapType = YearRecapWidgetToStringFingerprint.matchSingle().classDef.type
         yearRecapWidgetConstructorFingerprint(yearRecapType).matchSingle().method.filterBoolean(0, "p1", "shown")

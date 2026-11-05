@@ -6,6 +6,7 @@ package app.morphe.patches.viber.misc.analytics
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
@@ -19,17 +20,15 @@ import app.morphe.patches.viber.shared.markPatchApplied
 import app.morphe.patches.viber.shared.returnWhenEnabled
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-private const val DESCRIPTION = "Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data."
-
 @Suppress("unused")
-val disableAnalyticsPatch = bytecodePatch(
+val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
     name = "Disable analytics",
-    description = DESCRIPTION,
+    description = "Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
     execute {
-        markPatchApplied("disableAnalytics", DESCRIPTION)
+        markPatchApplied("disableAnalytics", disableAnalyticsPatch)
         TrackerAllowedFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
         SnapKitInitFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
         FirebaseSessionsEnabledFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")

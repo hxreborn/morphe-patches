@@ -61,4 +61,12 @@ public final class SponsoredPosts {
         return field.getBoolean(item);
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

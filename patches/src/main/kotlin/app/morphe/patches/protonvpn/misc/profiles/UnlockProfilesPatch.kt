@@ -6,6 +6,7 @@ package app.morphe.patches.protonvpn.misc.profiles
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
@@ -24,7 +25,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"
 
 @Suppress("unused")
-val unlockProfilesPatch = bytecodePatch(
+val unlockProfilesPatch: BytecodePatch = bytecodePatch(
     name = "Unlock profiles",
     description = "Unlocks profiles on free plans and limits them to free locations. " +
         "Profiles for other locations are hidden.",
@@ -33,7 +34,7 @@ val unlockProfilesPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, freeAccountStatePatch)
 
     execute {
-        markPatchApplied("unlockProfiles")
+        markPatchApplied("unlockProfiles", unlockProfilesPatch)
         setExtensionMember(
             "profileAvailability",
             findPropertyField(ProfileViewItemToStringFingerprint, "availability").name,

@@ -39,34 +39,68 @@ public final class AppliedPatchesTest {
     private static final String ADS_DESCRIPTION = "Removes feed, banner and video ads.";
 
     @Test
-    public void listsNothingBeforePatchesFillTheirDescriptions() {
-        Assert.assertTrue(AppliedPatches.names().isEmpty());
+    public void listNothingBeforePatchesAreApplied() {
+        Assert.assertTrue(AppliedPatches.identifiers().isEmpty());
     }
 
     @Test
-    public void returnsNoDescriptionForUnknownName() {
+    public void returnNoDescriptionForUnknownIdentifier() {
         Assert.assertNull(AppliedPatches.description("Unknown patch"));
     }
 
     @Test
     @Config(shadows = AppliedAds.class)
-    public void listsOnlyThePatchWhoseDescriptionWasFilled() {
-        Assert.assertEquals(Collections.singletonList(AppliedPatches.HIDE_ADS), AppliedPatches.names());
-        Assert.assertEquals(ADS_DESCRIPTION, AppliedPatches.description(AppliedPatches.HIDE_ADS));
+    public void listOnlySelectedPatch() {
+        Assert.assertEquals(Collections.singletonList("hideAds"), AppliedPatches.identifiers());
+        Assert.assertEquals(ADS_DESCRIPTION, AppliedPatches.description("hideAds"));
     }
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
-    public void listsEveryAppliedPatchAlphabetically() {
-        List<String> sorted = new ArrayList<>(AppliedPatches.names());
-        Collections.sort(sorted);
+    public void listEveryAppliedPatchAlphabetically() {
+        List<String> sorted = new ArrayList<>(AppliedPatches.identifiers());
+        Collections.sort(sorted,
+                (first, second) -> AppliedPatches.name(first).compareToIgnoreCase(AppliedPatches.name(second)));
 
-        Assert.assertEquals(9, AppliedPatches.names().size());
-        Assert.assertEquals(sorted, AppliedPatches.names());
+        Assert.assertEquals(9, AppliedPatches.identifiers().size());
+        Assert.assertEquals(sorted, AppliedPatches.identifiers());
+    }
+
+    @Test
+    @Config(shadows = AppliedWithoutDescription.class)
+    public void keepSelectedPatchWhenDescriptionIsMissing() {
+        Assert.assertEquals(Collections.singletonList("hideAds"), AppliedPatches.identifiers());
+        Assert.assertEquals("Renamed feature", AppliedPatches.name("hideAds"));
+        Assert.assertNull(AppliedPatches.description("hideAds"));
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class AppliedWithoutDescription {
+
+        @Implementation
+        protected static boolean hideAds() {
+            return true;
+        }
+
+        @Implementation
+        protected static String hideAdsName() {
+            return "Renamed feature";
+        }
+
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static class AppliedAds {
+
+        @Implementation
+        protected static boolean hideAds() {
+            return true;
+        }
+
+        @Implementation
+        protected static String hideAdsName() {
+            return "Hide ads";
+        }
 
         @Implementation
         protected static String hideAdsDescription() {

@@ -37,24 +37,57 @@ public class AppliedPatchesTest {
     private static final String ANALYTICS_DESCRIPTION = "Stops usage statistics and affiliate link reports.";
 
     @Test
-    public void listNothingBeforePatchesFillTheirDescriptions() {
-        Assert.assertTrue(AppliedPatches.names().isEmpty());
+    public void listNothingBeforePatchesAreApplied() {
+        Assert.assertTrue(AppliedPatches.identifiers().isEmpty());
     }
 
     @Test
-    public void returnNoDescriptionForUnknownName() {
+    public void returnNoDescriptionForUnknownIdentifier() {
         Assert.assertNull(AppliedPatches.description("Unknown patch"));
     }
 
     @Test
     @Config(shadows = AppliedAnalytics.class)
-    public void listPatchWhoseDescriptionWasFilled() {
-        Assert.assertEquals(Collections.singletonList(AppliedPatches.DISABLE_ANALYTICS), AppliedPatches.names());
-        Assert.assertEquals(ANALYTICS_DESCRIPTION, AppliedPatches.description(AppliedPatches.DISABLE_ANALYTICS));
+    public void listOnlySelectedPatch() {
+        Assert.assertEquals(Collections.singletonList("disableAnalytics"), AppliedPatches.identifiers());
+        Assert.assertEquals(ANALYTICS_DESCRIPTION, AppliedPatches.description("disableAnalytics"));
+    }
+
+    @Test
+    @Config(shadows = AppliedWithoutDescription.class)
+    public void keepSelectedPatchWhenDescriptionIsMissing() {
+        Assert.assertEquals(Collections.singletonList("disableAnalytics"), AppliedPatches.identifiers());
+        Assert.assertEquals("Renamed feature", AppliedPatches.name("disableAnalytics"));
+        Assert.assertNull(AppliedPatches.description("disableAnalytics"));
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class AppliedWithoutDescription {
+
+        @Implementation
+        protected static boolean disableAnalytics() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableAnalyticsName() {
+            return "Renamed feature";
+        }
+
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static class AppliedAnalytics {
+
+        @Implementation
+        protected static boolean disableAnalytics() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableAnalyticsName() {
+            return "Disable analytics";
+        }
 
         @Implementation
         protected static String disableAnalyticsDescription() {

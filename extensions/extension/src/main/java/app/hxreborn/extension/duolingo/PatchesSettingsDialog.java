@@ -141,24 +141,27 @@ final class PatchesSettingsDialog {
         if (AppliedPatches.unlockPremium()) {
             PatchSettings.Subscription subscription = PatchSettings.subscription();
             this.rows.switchRow(learning, "hx_duolingo_ic_premium", AppliedPatches.UNLOCK_PREMIUM,
-                    unlockPremiumDescription(subscription), this::confirmRestart);
+                    AppliedPatches.unlockPremiumName(), unlockPremiumDescription(subscription), this::confirmRestart);
             this.rows.actionRow(learning, "hx_duolingo_ic_premium", SUBSCRIPTION_TITLE, subscription.description,
                     this::chooseSubscription);
         }
         if (AppliedPatches.unlimitedRampUpTime()) {
             this.rows.switchRow(learning, "hx_duolingo_ic_rampup", AppliedPatches.UNLIMITED_RAMPUP_TIME,
-                    "Holds the RampUp timer at one hour.", this::confirmRestart);
+                    AppliedPatches.unlimitedRampUpTimeName(), AppliedPatches.unlimitedRampUpTimeDescription(),
+                    this::confirmRestart);
         }
         addSection(column, "Learning", learning);
 
         LinearLayout app = this.rows.card();
         if (AppliedPatches.disableDynamicAppIcon()) {
             this.rows.switchRow(app, "hx_duolingo_ic_dynamic_icon", AppliedPatches.DISABLE_DYNAMIC_APP_ICON,
-                    "Keeps the default launcher icon.", this::confirmRestart);
+                    AppliedPatches.disableDynamicAppIconName(), AppliedPatches.disableDynamicAppIconDescription(),
+                    this::confirmRestart);
         }
         if (AppliedPatches.enableDebugMode()) {
             this.rows.switchRow(app, "hx_duolingo_ic_debug", AppliedPatches.ENABLE_DEBUG_MODE,
-                    "Shows the debug menu and debug button.", this::confirmRestart);
+                    AppliedPatches.enableDebugModeName(), "Shows the debug menu and debug button.",
+                    this::confirmRestart);
         }
         addSection(column, "App", app);
 

@@ -5,6 +5,7 @@
 package app.morphe.patches.terabox.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getReference
@@ -46,13 +47,11 @@ private val hideDataSaverOptionPatch = resourcePatch {
     }
 }
 
-private const val DESCRIPTION = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
-    "HD buffers faster over parallel connections."
-
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock Premium Plus",
-    description = DESCRIPTION,
+    description = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
+        "HD buffers faster over parallel connections.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch, unlockHdPlaybackPatch, hideDataSaverOptionPatch)
@@ -60,7 +59,7 @@ val unlockPremiumPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("unlockPremium", DESCRIPTION)
+        markPatchApplied("unlockPremium", unlockPremiumPatch)
         VipInfoIsVipFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
         VipInfoLevelFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
         VipInfoIdentityFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }

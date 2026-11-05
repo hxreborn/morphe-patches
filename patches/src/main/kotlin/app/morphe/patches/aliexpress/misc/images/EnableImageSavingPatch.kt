@@ -10,8 +10,9 @@
  */
 package app.morphe.patches.aliexpress.misc.images
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
@@ -20,18 +21,16 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 
-private const val DESCRIPTION = "Shows the save button in the full-screen image viewer."
-
 @Suppress("unused")
-val enableImageSavingPatch = bytecodePatch(
+val enableImageSavingPatch: BytecodePatch = bytecodePatch(
     name = "Enable image saving",
-    description = DESCRIPTION,
+    description = "Shows the save button in the full-screen image viewer.",
 ) {
     compatibleWith(AppCompatibilities.ALIEXPRESS)
     dependsOn(spoofSignaturePatch)
 
     execute {
-        markPatchApplied("enableImageSaving", DESCRIPTION)
+        markPatchApplied("enableImageSaving", enableImageSavingPatch)
         ImageSaveButtonFingerprint.matchAll(3..3).forEach { match ->
             val (_, _, saveButtonState) = match.instructionMatches
             val register = match.method.getInstruction<OneRegisterInstruction>(saveButtonState.index).registerA

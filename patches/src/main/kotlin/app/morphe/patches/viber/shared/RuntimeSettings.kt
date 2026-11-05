@@ -6,18 +6,22 @@ package app.morphe.patches.viber.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
+import com.android.tools.smali.util.StringUtils.escapeString
 
 internal const val VIBER_SETTINGS_CLASS = "Lapp/hxreborn/extension/viber/PatchSettings;"
 
-internal fun BytecodePatchContext.markPatchApplied(name: String, description: String) {
-    mutableClassDefBy("Lapp/hxreborn/extension/viber/AppliedPatches;")
-        .methods.single { it.name == "${name}Description" }.returnEarly(description)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) {
+    val methods = mutableClassDefBy("Lapp/hxreborn/extension/viber/AppliedPatches;").methods
+    methods.single { it.name == methodName }.returnEarly(true)
+    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
 }
 
 context(_: BytecodePatchContext)

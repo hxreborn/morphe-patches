@@ -6,6 +6,7 @@ package app.morphe.patches.duolingo.misc.icon
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
@@ -18,7 +19,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val disableDynamicAppIconPatch = bytecodePatch(
+val disableDynamicAppIconPatch: BytecodePatch = bytecodePatch(
     name = "Disable dynamic app icon",
     description = "Keeps the default launcher icon.",
     default = false,
@@ -28,7 +29,7 @@ val disableDynamicAppIconPatch = bytecodePatch(
     dependsOn(disableLoginIntegrityPatch, patchesSettingsPatch)
 
     execute {
-        markPatchApplied("disableDynamicAppIcon")
+        markPatchApplied("disableDynamicAppIcon", disableDynamicAppIconPatch)
 
         val (_, _, defaultDisplayWrite) = DefaultAppDisplayFingerprint.instructionMatches
         val defaultDisplay = defaultDisplayWrite.instruction.getReference<FieldReference>()!!

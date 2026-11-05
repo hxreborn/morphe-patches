@@ -87,4 +87,12 @@ public final class NavigationButtons {
         return Arrays.asList(defaultHiddenTabs().split(","));
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

@@ -6,6 +6,7 @@ package app.morphe.patches.viber.layout.navigation
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -29,12 +30,10 @@ private enum class HomeTab(val label: String, val default: Boolean, vararg val i
     SHORTICA("Shortica", true, 10),
 }
 
-private const val DESCRIPTION = "Hides the selected tabs from the bottom navigation bar."
-
 @Suppress("unused")
-val hideNavigationButtonsPatch = bytecodePatch(
+val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
     name = "Hide navigation buttons",
-    description = DESCRIPTION,
+    description = "Hides the selected tabs from the bottom navigation bar.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
 
@@ -50,7 +49,7 @@ val hideNavigationButtonsPatch = bytecodePatch(
     }
 
     execute {
-        markPatchApplied("hideNavigationButtons", DESCRIPTION)
+        markPatchApplied("hideNavigationButtons", hideNavigationButtonsPatch)
         val hiddenIds = hideTabOptions.filterValues { it.value == true }.keys.flatMap { it.ids.toList() }
         if (hiddenIds.isEmpty()) return@execute
 

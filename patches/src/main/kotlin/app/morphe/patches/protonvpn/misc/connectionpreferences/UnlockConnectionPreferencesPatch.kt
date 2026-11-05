@@ -8,15 +8,16 @@ import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.VpnUserIsFreeUserFingerprint
+import app.morphe.patches.protonvpn.misc.restrictions.clearConstructorProperty
 import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
 import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheckInLambdaOf
-import app.morphe.patches.protonvpn.misc.restrictions.clearConstructorProperty
 import app.morphe.patches.protonvpn.misc.restrictions.keepUserSetting
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -28,7 +29,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Suppress("unused")
-val unlockConnectionPreferencesPatch = bytecodePatch(
+val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
     name = "Unlock connection preferences",
     description = "Unlocks the default connection, recent connections and excluded locations on free plans.",
 ) {
@@ -36,7 +37,7 @@ val unlockConnectionPreferencesPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockConnectionPreferences")
+        markPatchApplied("unlockConnectionPreferences", unlockConnectionPreferencesPatch)
         clearConstructorProperty(ConnectionPreferencesToStringFingerprint, "isFreeUser")
         keepUserSetting(defaultConnectionRestrictionFingerprint())
         clearFreeUserCheck(recentsRecordingFingerprint())

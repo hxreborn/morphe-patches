@@ -7,6 +7,7 @@ package app.morphe.patches.terabox.misc.promotions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
@@ -22,19 +23,17 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PREMIUM_HOME_CARD_TYPE = 6
 
-private const val DESCRIPTION = "Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, " +
-    "floating invites and coupon popups."
-
 @Suppress("unused")
-val hidePromotionsPatch = bytecodePatch(
+val hidePromotionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide promotions",
-    description = DESCRIPTION,
+    description = "Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, " +
+        "floating invites and coupon popups.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("hidePromotions", DESCRIPTION)
+        markPatchApplied("hidePromotions", hidePromotionsPatch)
         listOf(
             VipStatusSectionFingerprint,
             CreditsUnlockDividerFingerprint,

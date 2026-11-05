@@ -6,30 +6,29 @@ package app.morphe.patches.liftoff.misc.customizations
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.liftoff.misc.settings.markPatchApplied
 import app.morphe.patches.liftoff.misc.settings.patchesSettingsPatch
+import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.reactnative.BlobResponseDataFingerprint
 import app.morphe.patches.shared.misc.reactnative.NetworkResponseReceivedFingerprint
 import app.morphe.patches.shared.misc.reactnative.TextResponseReceivedFingerprint
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/liftoff/Customizations;"
-private const val DESCRIPTION = "Unlocks themes, profile borders and profile banners."
-
 @Suppress("unused")
-val unlockCustomizationsPatch = bytecodePatch(
+val unlockCustomizationsPatch: BytecodePatch = bytecodePatch(
     name = "Unlock customizations",
-    description = DESCRIPTION,
+    description = "Unlocks themes, profile borders and profile banners.",
 ) {
     dependsOn(patchesSettingsPatch)
     compatibleWith(AppCompatibilities.LIFTOFF)
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("unlockCustomizations", DESCRIPTION)
+        markPatchApplied("unlockCustomizations", unlockCustomizationsPatch)
         NetworkResponseReceivedFingerprint.matchSingle().method.addInstructions(
             0,
             "invoke-static/range { p4 .. p4 }, $EXTENSION_CLASS->onResponse(Ljava/lang/String;)V",

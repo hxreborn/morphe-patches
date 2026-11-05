@@ -137,23 +137,22 @@ public final class PatchesSettingsActivity extends Activity {
 
         LinearLayout feed = this.rows.card();
         if (HomeFeedFilter.isPatched()) {
-            this.rows.switchRow(feed, "hx_patreon_ic_recommended", "Hide recommended creators",
-                    "Limits Home to creators you're a member of.", HomeFeedFilter.isEnabled(), (button, enabled) -> {
+            this.rows.switchRow(feed, "hx_patreon_ic_recommended", HomeFeedFilter.patchName(),
+                    HomeFeedFilter.patchDescription(), HomeFeedFilter.isEnabled(), (button, enabled) -> {
                         PatchSettings.setEnabled(HomeFeedFilter.HIDE_RECOMMENDED_CREATORS, enabled);
                         confirmRestart();
                     });
         }
         if (HomeTab.isPatched()) {
-            this.rows.switchRow(feed, "hx_patreon_ic_home_tab", "Hide Home tab",
+            this.rows.switchRow(feed, "hx_patreon_ic_home_tab", HomeTab.patchName(),
                     "Removes the Home tab and starts on Memberships.", HomeTab.isHidden(), (button, hidden) -> {
                         PatchSettings.setEnabled(HomeTab.HIDE_HOME_TAB, hidden);
                         confirmRestart();
                     });
         }
         if (QuipsAndAutoplay.isPatched()) {
-            this.rows.switchRow(feed, "hx_patreon_ic_quips", "Disable Quips and autoplay",
-                    "Removes Quip cards and the Quip button, and stops feed videos from autoplaying or preloading.",
-                    QuipsAndAutoplay.isDisabled(), (button, disabled) -> {
+            this.rows.switchRow(feed, "hx_patreon_ic_quips", QuipsAndAutoplay.patchName(),
+                    QuipsAndAutoplay.patchDescription(), QuipsAndAutoplay.isDisabled(), (button, disabled) -> {
                         PatchSettings.setEnabled(QuipsAndAutoplay.DISABLE_QUIPS_AND_AUTOPLAY, disabled);
                         confirmRestart();
                     });
@@ -162,9 +161,8 @@ public final class PatchesSettingsActivity extends Activity {
 
         LinearLayout search = this.rows.card();
         if (SearchSuggestions.isPatched()) {
-            this.rows.switchRow(search, "hx_patreon_ic_search", "Hide search suggestions",
-                    "Removes suggested creators and topics from Explore.", SearchSuggestions.isEnabled(),
-                    (button, enabled) -> {
+            this.rows.switchRow(search, "hx_patreon_ic_search", SearchSuggestions.patchName(),
+                    SearchSuggestions.patchDescription(), SearchSuggestions.isEnabled(), (button, enabled) -> {
                         PatchSettings.setEnabled(SearchSuggestions.HIDE_SEARCH_SUGGESTIONS, enabled);
                         confirmRestart();
                     });
@@ -188,25 +186,22 @@ public final class PatchesSettingsActivity extends Activity {
 
         LinearLayout app = this.rows.card();
         if (UpgradePromotions.isPatched()) {
-            this.rows.switchRow(app, "hx_patreon_ic_promotions", "Hide upgrade promotions",
-                    "Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey.",
-                    UpgradePromotions.isHidden(), (button, hidden) -> {
+            this.rows.switchRow(app, "hx_patreon_ic_promotions", UpgradePromotions.patchName(),
+                    UpgradePromotions.patchDescription(), UpgradePromotions.isHidden(), (button, hidden) -> {
                         PatchSettings.setEnabled(UpgradePromotions.HIDE_UPGRADE_PROMOTIONS, hidden);
                         confirmRestart();
                     });
         }
         if (AppPrompts.isPatched()) {
-            this.rows.switchRow(app, "hx_patreon_ic_prompts", "Remove app prompts",
-                    "Removes the rating prompt, the in-app update prompt and the notification request at startup.",
+            this.rows.switchRow(app, "hx_patreon_ic_prompts", AppPrompts.patchName(), AppPrompts.patchDescription(),
                     AppPrompts.isRemoved(), (button, removed) -> {
                         PatchSettings.setEnabled(AppPrompts.REMOVE_APP_PROMPTS, removed);
                         confirmRestart();
                     });
         }
         if (Tracking.isPatched()) {
-            this.rows.switchRow(app, "hx_patreon_ic_tracking", "Disable tracking",
-                    "Disables Amplitude, AppsFlyer, Sentry, Sift and Mux data collection.", Tracking.isDisabled(),
-                    (button, disabled) -> {
+            this.rows.switchRow(app, "hx_patreon_ic_tracking", Tracking.patchName(), Tracking.patchDescription(),
+                    Tracking.isDisabled(), (button, disabled) -> {
                         PatchSettings.setEnabled(Tracking.DISABLE_TRACKING, disabled);
                         confirmRestart();
                     });
@@ -222,28 +217,28 @@ public final class PatchesSettingsActivity extends Activity {
         LinearLayout applied = this.rows.card();
         List<String> names = new ArrayList<>();
         if (QuipsAndAutoplay.isPatched()) {
-            names.add("Disable Quips and autoplay");
+            names.add(QuipsAndAutoplay.patchName());
         }
         if (Tracking.isPatched()) {
-            names.add("Disable tracking");
+            names.add(Tracking.patchName());
         }
         if (HomeTab.isPatched()) {
-            names.add("Hide Home tab");
+            names.add(HomeTab.patchName());
         }
         if (NavigationButtons.isPatched()) {
-            names.add("Hide navigation buttons");
+            names.add(NavigationButtons.patchName());
         }
         if (HomeFeedFilter.isPatched()) {
-            names.add("Hide recommended creators");
+            names.add(HomeFeedFilter.patchName());
         }
         if (SearchSuggestions.isPatched()) {
-            names.add("Hide search suggestions");
+            names.add(SearchSuggestions.patchName());
         }
         if (UpgradePromotions.isPatched()) {
-            names.add("Hide upgrade promotions");
+            names.add(UpgradePromotions.patchName());
         }
         if (AppPrompts.isPatched()) {
-            names.add("Remove app prompts");
+            names.add(AppPrompts.patchName());
         }
         Collections.sort(names);
         for (String name : names) {

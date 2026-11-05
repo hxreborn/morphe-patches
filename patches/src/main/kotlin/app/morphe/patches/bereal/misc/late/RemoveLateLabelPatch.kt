@@ -6,6 +6,7 @@ package app.morphe.patches.bereal.misc.late
 
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -14,9 +15,9 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -66,7 +67,7 @@ private fun BytecodePatchContext.filterLateReads(methods: List<MutableMethod>, r
 }
 
 @Suppress("unused")
-val removeLateLabelPatch = bytecodePatch(
+val removeLateLabelPatch: BytecodePatch = bytecodePatch(
     name = "Remove late label",
     description = "Replaces the late label on friends' BeReals with how long ago they posted.",
 ) {
@@ -74,7 +75,7 @@ val removeLateLabelPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded(EXTENSION_CLASS)
+        markFeaturePatched(EXTENSION_CLASS, removeLateLabelPatch)
         val reads = lateReads()
 
         val formatter = LateDurationFormatterFingerprint.matchSingle()

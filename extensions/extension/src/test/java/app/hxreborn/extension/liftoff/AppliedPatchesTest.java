@@ -36,38 +36,69 @@ import org.robolectric.annotation.Implements;
 public final class AppliedPatchesTest {
 
     @Test
-    public void listsNothingBeforePatchesFillTheirDescriptions() {
-        Assert.assertTrue(AppliedPatches.names().isEmpty());
+    public void listNothingBeforePatchesAreApplied() {
+        Assert.assertTrue(AppliedPatches.identifiers().isEmpty());
         Assert.assertFalse(AppliedPatches.unlockPremium());
         Assert.assertFalse(AppliedPatches.unlockCustomizations());
     }
 
     @Test
-    public void returnsNoDescriptionForUnknownName() {
+    public void returnNoDescriptionForUnknownIdentifier() {
         Assert.assertNull(AppliedPatches.description("Unknown patch"));
     }
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
-    public void listsEveryAppliedPatchAlphabeticallyWithItsDescription() {
-        Assert.assertEquals(Arrays.asList(AppliedPatches.UNLOCK_CUSTOMIZATIONS, AppliedPatches.UNLOCK_PREMIUM),
-                AppliedPatches.names());
-        Assert.assertEquals(EveryPatchApplied.PREMIUM_DESCRIPTION,
-                AppliedPatches.description(AppliedPatches.UNLOCK_PREMIUM));
+    public void listEveryAppliedPatchAlphabeticallyWithItsDescription() {
+        Assert.assertEquals(Arrays.asList("unlockCustomizations", "unlockPremium"), AppliedPatches.identifiers());
+        Assert.assertEquals(EveryPatchApplied.PREMIUM_DESCRIPTION, AppliedPatches.description("unlockPremium"));
         Assert.assertEquals(EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION,
-                AppliedPatches.description(AppliedPatches.UNLOCK_CUSTOMIZATIONS));
+                AppliedPatches.description("unlockCustomizations"));
     }
 
     @Test
     @Config(shadows = OnlyCustomizationsApplied.class)
-    public void listsOnlyPatchWhoseDescriptionWasFilled() {
-        Assert.assertEquals(Collections.singletonList(AppliedPatches.UNLOCK_CUSTOMIZATIONS), AppliedPatches.names());
+    public void listOnlySelectedPatch() {
+        Assert.assertEquals(Collections.singletonList("unlockCustomizations"), AppliedPatches.identifiers());
         Assert.assertTrue(AppliedPatches.unlockCustomizations());
         Assert.assertFalse(AppliedPatches.unlockPremium());
     }
 
+    @Test
+    @Config(shadows = AppliedWithoutDescription.class)
+    public void keepSelectedPatchWhenDescriptionIsMissing() {
+        Assert.assertEquals(Collections.singletonList("unlockCustomizations"), AppliedPatches.identifiers());
+        Assert.assertEquals("Renamed feature", AppliedPatches.name("unlockCustomizations"));
+        Assert.assertNull(AppliedPatches.description("unlockCustomizations"));
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class AppliedWithoutDescription {
+
+        @Implementation
+        protected static boolean unlockCustomizations() {
+            return true;
+        }
+
+        @Implementation
+        protected static String unlockCustomizationsName() {
+            return "Renamed feature";
+        }
+
+    }
+
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class OnlyCustomizationsApplied {
+
+        @Implementation
+        protected static boolean unlockCustomizations() {
+            return true;
+        }
+
+        @Implementation
+        protected static String unlockCustomizationsName() {
+            return "Unlock customizations";
+        }
 
         @Implementation
         protected static String unlockCustomizationsDescription() {

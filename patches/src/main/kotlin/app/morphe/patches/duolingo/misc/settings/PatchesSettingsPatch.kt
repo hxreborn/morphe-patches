@@ -8,6 +8,7 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -27,6 +28,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.util.StringUtils.escapeString
 import java.util.logging.Logger
 
 internal const val DUOLINGO_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/duolingo/"
@@ -50,8 +52,12 @@ internal val ICON_RESOURCES = listOf("patches", "premium", "dynamic_icon", "debu
 
 private val logger = Logger.getLogger("app.morphe.patches.duolingo.misc.settings")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String) =
-    mutableClassDefBy(APPLIED_PATCHES_CLASS).methods.single { it.name == methodName }.returnEarly(true)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) {
+    val methods = mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
+    methods.single { it.name == methodName }.returnEarly(true)
+    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
+}
 
 private fun resource(path: String) = DuolingoBundleResources::class.java.getResourceAsStream(path)
     ?: throw PatchException("Missing patch resource $path")

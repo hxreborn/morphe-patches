@@ -110,6 +110,14 @@ public final class LateFlag {
         return field;
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
     private static final class MomentWindow {
 
         private final Instant start;

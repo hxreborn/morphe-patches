@@ -5,15 +5,16 @@
 package app.morphe.patches.bereal.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
@@ -31,7 +32,7 @@ private val removeAdsExtensionPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch: BytecodePatch = bytecodePatch(
     name = "Remove ads",
     description = "Removes the full-screen ad at launch and sponsored BeReals in both feeds. " +
         "Stops the ad networks from loading.",
@@ -40,7 +41,7 @@ val removeAdsPatch = bytecodePatch(
     dependsOn(removePairipProtectionPatch, removeAdsExtensionPatch, removeAdNetworkProvidersPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;", removeAdsPatch)
 
         val adRequestType = AdRequestIdToStringFingerprint.matchSingle().classDef.type
         val adSelector = adSelectorFingerprint(adRequestType).matchSingle()

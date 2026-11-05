@@ -36,4 +36,12 @@ public final class UpgradePromotions {
         return PatchSettings.isEnabled(HIDE_UPGRADE_PROMOTIONS, true);
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

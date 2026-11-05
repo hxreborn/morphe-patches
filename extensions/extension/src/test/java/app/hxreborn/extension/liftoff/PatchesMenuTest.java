@@ -172,7 +172,8 @@ public final class PatchesMenuTest {
         Assert.assertNotNull(text(menu, "Applied patches"));
         Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_CUSTOMIZATIONS));
         Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_PREMIUM));
-        Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION).getVisibility());
+        Assert.assertEquals(View.GONE,
+                text(appliedCard(menu), EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION).getVisibility());
         Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION).getVisibility());
     }
 
@@ -336,6 +337,12 @@ public final class PatchesMenuTest {
             }
         }
         return null;
+    }
+
+    private View appliedCard(View menu) {
+        View heading = text(menu, "Applied patches");
+        LinearLayout column = (LinearLayout) heading.getParent();
+        return column.getChildAt(column.indexOfChild(heading) + 1);
     }
 
 }

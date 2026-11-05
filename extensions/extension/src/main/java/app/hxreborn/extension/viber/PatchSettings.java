@@ -57,19 +57,19 @@ public final class PatchSettings {
     }
 
     public static boolean hideAds() {
-        return AppliedPatches.hideAdsDescription() != null && isEnabled("Hide ads");
+        return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
     }
 
     public static boolean hideMoreItems() {
-        return AppliedPatches.hideMoreItemsDescription() != null && isEnabled("Hide More screen items");
+        return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }
 
     public static boolean hideNavigationButtons() {
-        return AppliedPatches.hideNavigationButtonsDescription() != null && isEnabled("Hide navigation buttons");
+        return AppliedPatches.hideNavigationButtons() && isEnabled(PatchSetting.HIDE_NAVIGATION_BUTTONS.key);
     }
 
     public static boolean disableAnalytics() {
-        return AppliedPatches.disableAnalyticsDescription() != null && isEnabled("Disable analytics");
+        return AppliedPatches.disableAnalytics() && isEnabled(PatchSetting.DISABLE_ANALYTICS.key);
     }
 
     public static List<?> filterMoreItems(List<?> original) {

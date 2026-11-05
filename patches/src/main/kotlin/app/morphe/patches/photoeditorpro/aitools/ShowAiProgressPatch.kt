@@ -7,6 +7,7 @@ package app.morphe.patches.photoeditorpro.aitools
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -22,6 +23,7 @@ import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.REMOVAL_CALLBACK_CLASS
 import app.morphe.patches.photoeditorpro.shared.SubmitRequestFingerprint
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
+import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.photoeditorpro.shared.methodMatching
 import app.morphe.patches.photoeditorpro.shared.taskClass
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -60,7 +62,7 @@ private val TRACED_TOOLS = mapOf(
 )
 
 @Suppress("unused")
-val showAiProgressPatch = bytecodePatch(
+val showAiProgressPatch: BytecodePatch = bytecodePatch(
     name = "Show AI progress",
     description = "Shows the current stage of AI Remove and Enhance on their loading screens.",
 ) {
@@ -69,6 +71,7 @@ val showAiProgressPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchMetadata("showAiProgress", showAiProgressPatch)
         val submit = SubmitRequestFingerprint.matchSingle().method
 
         TRACED_TOOLS.forEach { (callbackClass, tool) ->

@@ -5,21 +5,22 @@
 package app.morphe.patches.bereal.misc.post
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val customLocationPatch = bytecodePatch(
+val customLocationPatch: BytecodePatch = bytecodePatch(
     name = "Custom location",
     description = "Sets the location shown on your BeReal to a place you choose on a map or by name.",
 ) {
@@ -27,7 +28,7 @@ val customLocationPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}CustomLocation;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}CustomLocation;", customLocationPatch)
         FusedLocationClientGetterFingerprint.matchSingle().let { getter ->
             val cast = getter.instructionMatches.single()
             val client = cast.getInstruction<OneRegisterInstruction>().registerA

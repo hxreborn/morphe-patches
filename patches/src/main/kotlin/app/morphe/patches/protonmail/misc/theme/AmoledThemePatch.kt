@@ -6,6 +6,7 @@ package app.morphe.patches.protonmail.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -18,19 +19,20 @@ import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.InlineMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.webSettingsThemePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
-import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.patches.shared.misc.proton.indexOfLastWrite
 import app.morphe.patches.shared.misc.proton.indexOfLastWriteOrNull
 import app.morphe.patches.shared.misc.proton.injectColorTransformCall
+import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.paletteFieldAssignedFrom
+import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.util.adoptChild
 import app.morphe.util.findElementByAttributeValueOrThrow
 import app.morphe.util.getNode
 import app.morphe.util.indexOfFirstInstructionOrThrow
-import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversed
+import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -220,7 +222,7 @@ private fun MutableMethod.replaceInlineMessageBackground(index: Int) {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
@@ -228,6 +230,7 @@ val amoledThemePatch = bytecodePatch(
     dependsOn(webSettingsThemePatch, amoledSplashBackgroundPatch)
 
     execute {
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch)
         DarkPaletteFingerprint.matchSingle().method.apply {
             DARK_BACKGROUND_COLORS.forEach { color ->
                 injectBackgroundTransformCall(indexOfFirstLiteralInstructionOrThrow(color))

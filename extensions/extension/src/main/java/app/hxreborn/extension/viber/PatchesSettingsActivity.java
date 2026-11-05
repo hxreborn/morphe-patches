@@ -142,20 +142,20 @@ public final class PatchesSettingsActivity extends Activity {
         this.rows.valueRow(about, "hx_viber_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         LinearLayout applied = this.rows.card();
-        for (String name : AppliedPatches.names()) {
-            this.rows.plainRow(applied, name, AppliedPatches.description(name));
+        for (String identifier : AppliedPatches.identifiers()) {
+            this.rows.plainRow(applied, AppliedPatches.name(identifier), AppliedPatches.description(identifier));
         }
         addSection(column, "Applied patches", applied);
         return column;
     }
 
     private void addSwitch(LinearLayout column, PatchSetting setting) {
-        if (AppliedPatches.description(setting.title) == null) {
+        if (AppliedPatches.name(setting.identifier) == null) {
             return;
         }
         LinearLayout card = this.rows.card();
-        this.rows.switchRow(card, setting, PatchSettings.isEnabled(setting.title), (button, enabled) -> {
-            PatchSettings.setEnabled(setting.title, enabled);
+        this.rows.switchRow(card, setting, PatchSettings.isEnabled(setting.key), (button, enabled) -> {
+            PatchSettings.setEnabled(setting.key, enabled);
             if (setting.restart) {
                 confirmRestart();
             }

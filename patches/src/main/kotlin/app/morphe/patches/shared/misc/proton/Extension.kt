@@ -8,11 +8,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
+import com.android.tools.smali.util.StringUtils.escapeString
 
 internal const val PROTON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/proton/"
 internal const val ACCENT_COLOR_CLASS = "${PROTON_EXTENSION_PACKAGE}AccentColor;"
@@ -53,13 +55,21 @@ internal fun MutableMethod.returnVoidWhen(condition: String) {
     )
 }
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String) =
-    mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
-        .single { it.name == methodName }
-        .returnEarly(true)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch<*>) {
+    mutableClassDefBy(APPLIED_PATCHES_CLASS).methods.single { it.name == methodName }.returnEarly(true)
+    markPatchMetadata(methodName, patch)
+}
 
-internal fun appliedPatchMarkerPatch(methodName: String) = bytecodePatch {
+internal fun appliedPatchMarkerPatch(methodName: String, patch: () -> Patch<*>) = bytecodePatch {
     extendWith("extensions/extension.mpe")
 
-    execute { markPatchApplied(methodName) }
+    execute {
+        markPatchApplied(methodName, patch())
+    }
+}
+
+internal fun BytecodePatchContext.markPatchMetadata(methodName: String, patch: Patch<*>) {
+    val methods = mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
+    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
 }

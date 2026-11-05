@@ -10,6 +10,7 @@
  */
 package app.morphe.patches.protonvpn.misc.lan
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonvpn.misc.restrictions.unlockUserSetting
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -17,7 +18,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
-val unlockLanConnectionsPatch = bytecodePatch(
+val unlockLanConnectionsPatch: BytecodePatch = bytecodePatch(
     name = "Unlock LAN connections",
     description = "Unlocks LAN connections on free plans.",
 ) {
@@ -25,7 +26,7 @@ val unlockLanConnectionsPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockLanConnections")
+        markPatchApplied("unlockLanConnections", unlockLanConnectionsPatch)
         unlockUserSetting(
             LanConnectionsViewStateFingerprint,
             lanConnectionsRestrictionFingerprint(),

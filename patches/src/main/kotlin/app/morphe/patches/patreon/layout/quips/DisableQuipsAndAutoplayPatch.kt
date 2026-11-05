@@ -7,6 +7,7 @@ package app.morphe.patches.patreon.layout.quips
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.layout.home.launcherSectionItemsFingerprint
@@ -21,7 +22,7 @@ private const val QUIPS_AND_AUTOPLAY_CLASS = "${PATREON_EXTENSION_PACKAGE}QuipsA
 private const val HOME_FEED_FILTER_CLASS = "${PATREON_EXTENSION_PACKAGE}HomeFeedFilter;"
 
 @Suppress("unused")
-val disableQuipsAndAutoplayPatch = bytecodePatch(
+val disableQuipsAndAutoplayPatch: BytecodePatch = bytecodePatch(
     name = "Disable Quips and autoplay",
     description = "Removes Quip cards and the Quip button, and stops feed videos from autoplaying or preloading.",
 ) {
@@ -31,7 +32,7 @@ val disableQuipsAndAutoplayPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(QUIPS_AND_AUTOPLAY_CLASS)
+        markFeaturePatched(QUIPS_AND_AUTOPLAY_CLASS, disableQuipsAndAutoplayPatch)
 
         val sectionItems = launcherSectionItemsFingerprint("LauncherFeedSectionSchema")
         val returnIndex = sectionItems.instructionMatches.single().index

@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -23,6 +24,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.literalWrittenTo
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -324,7 +326,7 @@ private fun BytecodePatchContext.styleSettingsSwitchViews() {
 }
 
 @Suppress("unused")
-val materialSwitchesPatch = bytecodePatch(
+val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Adds check and close icons to switches.",
 ) {
@@ -332,6 +334,7 @@ val materialSwitchesPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, resourceFieldsPatch)
 
     execute {
+        markPatchMetadata("materialSwitches", materialSwitchesPatch)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         addDrawIconMethod()
         styleSettingsSwitchViews()

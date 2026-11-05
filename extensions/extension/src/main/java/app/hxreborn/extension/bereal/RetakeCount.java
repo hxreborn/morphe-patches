@@ -96,4 +96,12 @@ public final class RetakeCount {
         }
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

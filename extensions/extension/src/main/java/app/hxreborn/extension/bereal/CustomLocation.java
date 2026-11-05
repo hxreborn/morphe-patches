@@ -111,4 +111,12 @@ public final class CustomLocation {
         return Coordinates.parse(PatchSettings.LOCATION_LATITUDE.get(), PatchSettings.LOCATION_LONGITUDE.get());
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

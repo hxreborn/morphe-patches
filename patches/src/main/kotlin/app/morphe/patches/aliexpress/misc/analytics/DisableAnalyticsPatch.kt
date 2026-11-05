@@ -10,6 +10,7 @@
  */
 package app.morphe.patches.aliexpress.misc.analytics
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
@@ -32,18 +33,16 @@ private val analyticsDefaultsPatch = resourcePatch {
     }
 }
 
-private const val DESCRIPTION = "Stops usage statistics and affiliate link reports."
-
 @Suppress("unused")
-val disableAnalyticsPatch = bytecodePatch(
+val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
     name = "Disable analytics",
-    description = DESCRIPTION,
+    description = "Stops usage statistics and affiliate link reports.",
 ) {
     compatibleWith(AppCompatibilities.ALIEXPRESS)
     dependsOn(spoofSignaturePatch, analyticsDefaultsPatch)
 
     execute {
-        markPatchApplied("disableAnalytics", DESCRIPTION)
+        markPatchApplied("disableAnalytics", disableAnalyticsPatch)
         val firebaseInstance = FirebaseInstanceFingerprint.matchSingle().method
         val firebaseCollection = FirebaseCollectionFingerprint.matchSingle().method
         mutableClassDefBy(PATCH_SETTINGS_CLASS).replaceStub(

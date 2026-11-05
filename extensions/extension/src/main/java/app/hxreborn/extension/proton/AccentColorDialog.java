@@ -200,7 +200,7 @@ final class AccentColorDialog {
 
         void show() {
             final LinearLayout contentLayout = PatchesDialog.createContentLayout(this.activity);
-            contentLayout.addView(PatchesDialog.createTitle(this.activity, AppliedPatches.ACCENT_COLOR));
+            contentLayout.addView(PatchesDialog.createTitle(this.activity, AppliedPatches.accentColorName()));
 
             final LinearLayout content = new LinearLayout(this.activity);
             content.setOrientation(LinearLayout.VERTICAL);

@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.protonpass.misc.loadingindicator
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
@@ -11,6 +12,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -19,7 +21,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val ANDROID_VIEW_PARAMETERS = 5
 
 @Suppress("unused")
-val loadingIndicatorPatch = bytecodePatch(
+val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
@@ -27,6 +29,7 @@ val loadingIndicatorPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("loadingIndicator", loadingIndicatorPatch)
         val progressReads = PullRefreshProgressFingerprint.matchAll().map { match ->
             val instructions = match.instructionMatches.map { it.instruction }
             Triple(

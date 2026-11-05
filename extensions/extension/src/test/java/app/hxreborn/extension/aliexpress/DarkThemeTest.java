@@ -313,6 +313,16 @@ public class DarkThemeTest {
     public static class AppliedTheme {
 
         @Implementation
+        protected static boolean darkTheme() {
+            return true;
+        }
+
+        @Implementation
+        protected static String darkThemeName() {
+            return "Fix dark mode";
+        }
+
+        @Implementation
         protected static String darkThemeDescription() {
             return "Fixes the screens and web pages the built-in Dark mode leaves white.";
         }

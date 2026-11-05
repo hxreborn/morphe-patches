@@ -21,20 +21,13 @@
 package app.hxreborn.extension.terabox;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public final class AppliedPatches {
 
-    static final String CLONE_APP = "Clone app";
-
-    static final String FIX_GOOGLE_LOGIN = "Fix Google login";
-
     static final String HIDE_ADS = "Hide ads";
-
-    static final String HIDE_CONSENT_FORM = "Hide consent form";
 
     static final String HIDE_HOME_SHORTCUTS = "Hide home shortcuts";
 
@@ -46,49 +39,109 @@ public final class AppliedPatches {
 
     static final String UNLOCK_PREMIUM = "Unlock Premium Plus";
 
-    private static final List<String> NAMES = Collections
-        .unmodifiableList(Arrays.asList(CLONE_APP, FIX_GOOGLE_LOGIN, HIDE_ADS, HIDE_CONSENT_FORM, HIDE_HOME_SHORTCUTS,
-                HIDE_PROMOTIONS, HIDE_VIDEO_RECOMMENDATIONS, REMOVE_RECENT_PANEL, UNLOCK_PREMIUM));
-
     private AppliedPatches() {
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        for (String name : NAMES) {
-            if (description(name) != null) {
-                names.add(name);
-            }
+    static List<String> identifiers() {
+        List<String> identifiers = new ArrayList<>();
+        if (cloneApp()) {
+            identifiers.add("cloneApp");
         }
-        return names;
+        if (fixGoogleLogin()) {
+            identifiers.add("fixGoogleLogin");
+        }
+        if (hideAds()) {
+            identifiers.add("hideAds");
+        }
+        if (hideConsentForm()) {
+            identifiers.add("hideConsentForm");
+        }
+        if (hideHomeShortcuts()) {
+            identifiers.add("hideHomeShortcuts");
+        }
+        if (hidePromotions()) {
+            identifiers.add("hidePromotions");
+        }
+        if (hideVideoRecommendations()) {
+            identifiers.add("hideVideoRecommendations");
+        }
+        if (removeRecentPanel()) {
+            identifiers.add("removeRecentPanel");
+        }
+        if (unlockPremium()) {
+            identifiers.add("unlockPremium");
+        }
+        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
+        return identifiers;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case CLONE_APP:
+    static String name(String identifier) {
+        switch (identifier) {
+            case "cloneApp":
+                return cloneAppName();
+            case "fixGoogleLogin":
+                return fixGoogleLoginName();
+            case "hideAds":
+                return hideAdsName();
+            case "hideConsentForm":
+                return hideConsentFormName();
+            case "hideHomeShortcuts":
+                return hideHomeShortcutsName();
+            case "hidePromotions":
+                return hidePromotionsName();
+            case "hideVideoRecommendations":
+                return hideVideoRecommendationsName();
+            case "removeRecentPanel":
+                return removeRecentPanelName();
+            case "unlockPremium":
+                return unlockPremiumName();
+            default:
+                return null;
+        }
+    }
+
+    static String description(String identifier) {
+        switch (identifier) {
+            case "cloneApp":
                 return cloneAppDescription();
-            case FIX_GOOGLE_LOGIN:
+            case "fixGoogleLogin":
                 return fixGoogleLoginDescription();
-            case HIDE_ADS:
+            case "hideAds":
                 return hideAdsDescription();
-            case HIDE_CONSENT_FORM:
+            case "hideConsentForm":
                 return hideConsentFormDescription();
-            case HIDE_HOME_SHORTCUTS:
+            case "hideHomeShortcuts":
                 return hideHomeShortcutsDescription();
-            case HIDE_PROMOTIONS:
+            case "hidePromotions":
                 return hidePromotionsDescription();
-            case HIDE_VIDEO_RECOMMENDATIONS:
+            case "hideVideoRecommendations":
                 return hideVideoRecommendationsDescription();
-            case REMOVE_RECENT_PANEL:
+            case "removeRecentPanel":
                 return removeRecentPanelDescription();
-            case UNLOCK_PREMIUM:
+            case "unlockPremium":
                 return unlockPremiumDescription();
             default:
                 return null;
         }
     }
 
+    public static boolean cloneApp() {
+        return false;
+    }
+
+    public static String cloneAppName() {
+        return null;
+    }
+
     public static String cloneAppDescription() {
+        return null;
+    }
+
+    public static boolean fixGoogleLogin() {
+        return false;
+    }
+
+    public static String fixGoogleLoginName() {
         return null;
     }
 
@@ -96,11 +149,23 @@ public final class AppliedPatches {
         return null;
     }
 
-    static boolean hideAds() {
-        return hideAdsDescription() != null;
+    public static boolean hideAds() {
+        return false;
+    }
+
+    public static String hideAdsName() {
+        return null;
     }
 
     public static String hideAdsDescription() {
+        return null;
+    }
+
+    public static boolean hideConsentForm() {
+        return false;
+    }
+
+    public static String hideConsentFormName() {
         return null;
     }
 
@@ -108,40 +173,60 @@ public final class AppliedPatches {
         return null;
     }
 
-    static boolean hideHomeShortcuts() {
-        return hideHomeShortcutsDescription() != null;
+    public static boolean hideHomeShortcuts() {
+        return false;
+    }
+
+    public static String hideHomeShortcutsName() {
+        return null;
     }
 
     public static String hideHomeShortcutsDescription() {
         return null;
     }
 
-    static boolean hidePromotions() {
-        return hidePromotionsDescription() != null;
+    public static boolean hidePromotions() {
+        return false;
+    }
+
+    public static String hidePromotionsName() {
+        return null;
     }
 
     public static String hidePromotionsDescription() {
         return null;
     }
 
-    static boolean hideVideoRecommendations() {
-        return hideVideoRecommendationsDescription() != null;
+    public static boolean hideVideoRecommendations() {
+        return false;
+    }
+
+    public static String hideVideoRecommendationsName() {
+        return null;
     }
 
     public static String hideVideoRecommendationsDescription() {
         return null;
     }
 
-    static boolean removeRecentPanel() {
-        return removeRecentPanelDescription() != null;
+    public static boolean removeRecentPanel() {
+        return false;
+    }
+
+    public static String removeRecentPanelName() {
+        return null;
     }
 
     public static String removeRecentPanelDescription() {
         return null;
     }
 
-    static boolean unlockPremium() {
-        return unlockPremiumDescription() != null;
+    public static boolean unlockPremium() {
+        return false;
+    }
+
+    public static String unlockPremiumName() {
+        return null;
     }
 
     public static String unlockPremiumDescription() {

@@ -36,4 +36,12 @@ public final class QuipsAndAutoplay {
         return PatchSettings.isEnabled(DISABLE_QUIPS_AND_AUTOPLAY, true);
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

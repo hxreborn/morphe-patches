@@ -204,24 +204,26 @@ public final class PatchesSettingsDialogTest {
         List<String> texts = latestDialogTexts();
         assertInOrder(texts, "About", "Patch bundle", "Applied patches");
         List<String> appliedRows = texts.subList(texts.indexOf("Applied patches") + 1, texts.size());
-        for (String name : AppliedPatches.names()) {
+        for (String identifier : AppliedPatches.identifiers()) {
+            String name = AppliedPatches.name(identifier);
             Assert.assertTrue(name + " is missing", appliedRows.contains(name));
-            Assert.assertEquals(View.GONE, latestDialogTextView(AppliedPatches.description(name)).getVisibility());
+            Assert.assertEquals(View.GONE,
+                    latestDialogTextView(AppliedPatches.description(identifier)).getVisibility());
         }
-        Assert.assertEquals(AppliedPatches.names().size() * 2, appliedRows.size());
+        Assert.assertEquals(AppliedPatches.identifiers().size() * 2, appliedRows.size());
     }
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
     public void showsDescriptionWhenAppliedPatchRowIsClicked() {
         showDialog();
-        String description = AppliedPatches.description(AppliedPatches.CLONE_APP);
+        String description = AppliedPatches.description("cloneApp");
 
-        clickText(AppliedPatches.CLONE_APP);
+        clickText(AppliedPatches.cloneAppName());
 
         Assert.assertEquals(View.VISIBLE, latestDialogTextView(description).getVisibility());
         Assert.assertEquals(View.GONE,
-                latestDialogTextView(AppliedPatches.description(AppliedPatches.HIDE_CONSENT_FORM)).getVisibility());
+                latestDialogTextView(AppliedPatches.description("hideConsentForm")).getVisibility());
     }
 
     private static TextView latestDialogTextView(String text) {

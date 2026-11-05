@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -25,6 +26,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.util.StringUtils.escapeString
 import java.util.logging.Logger
 import org.w3c.dom.Element
 
@@ -50,8 +52,12 @@ private const val ROW_COMPOSER_PARAMETER = 6
 
 private val logger = Logger.getLogger("app.morphe.patches.patreon.misc.settings")
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
-    mutableClassDefBy(featureClass).methods.single { it.name == "isPatched" }.returnEarly(true)
+internal fun BytecodePatchContext.markFeaturePatched(featureClass: String, patch: BytecodePatch) {
+    val methods = mutableClassDefBy(featureClass).methods
+    methods.single { it.name == "isPatched" }.returnEarly(true)
+    methods.single { it.name == "patchName" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
+}
 
 private fun MethodReference.isSettingsNavigationRow() =
     returnType == "V" && parameterTypes.map(CharSequence::toString).let { types ->

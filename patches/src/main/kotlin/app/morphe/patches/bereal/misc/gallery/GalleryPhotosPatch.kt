@@ -7,15 +7,16 @@ package app.morphe.patches.bereal.misc.gallery
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.insertFirst
-import app.morphe.util.setExtensionIsPatchIncluded
 
 private val mediaPermissions = listOf(
     "android.permission.READ_MEDIA_IMAGES",
@@ -38,7 +39,7 @@ private val addMediaPermissionsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val galleryPhotosPatch = bytecodePatch(
+val galleryPhotosPatch: BytecodePatch = bytecodePatch(
     name = "Post from gallery",
     description = "Adds a gallery button to the camera for picking the back and front photo of your BeReal.",
 ) {
@@ -46,7 +47,7 @@ val galleryPhotosPatch = bytecodePatch(
     dependsOn(settingsPatch, addMediaPermissionsPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}GalleryPhotos;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}GalleryPhotos;", galleryPhotosPatch)
         val cameraViewModel = CameraViewModelFingerprint.matchSingle().classDef
         cameraBindFingerprint(cameraViewModel.type).matchSingle().method.addInstruction(
             0,

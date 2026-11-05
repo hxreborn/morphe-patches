@@ -34,93 +34,155 @@ public final class AppliedPatches {
 
     static final String ENABLE_IMAGE_SAVING = "Enable image saving";
 
-    static final String FIX_DARK_MODE = "Fix dark mode";
-
-    static final String GMSCORE_SUPPORT = "GmsCore support";
-
     static final String REMOVE_PROMOTIONAL_POPUPS = "Remove promotional popups";
 
     static final String REMOVE_SPONSORED_ITEMS = "Remove sponsored items";
 
     static final String SKIP_SPLASH_PROMOTIONS = "Skip splash promotions";
 
-    static final String SPOOF_SIGNATURE = "Spoof signature";
-
     static final List<String> SWITCH_KEYS = Collections
         .unmodifiableList(Arrays.asList(REMOVE_SPONSORED_ITEMS, DISABLE_ANALYTICS, DISABLE_UPDATE_PROMPTS,
                 ENABLE_IMAGE_SAVING, REMOVE_PROMOTIONAL_POPUPS, SKIP_SPLASH_PROMOTIONS));
 
-    private static final List<String> NAMES = Collections.unmodifiableList(Arrays.asList(DISABLE_ANALYTICS,
-            DISABLE_UPDATE_PROMPTS, ENABLE_IMAGE_SAVING, FIX_DARK_MODE, GMSCORE_SUPPORT, REMOVE_PROMOTIONAL_POPUPS,
-            REMOVE_SPONSORED_ITEMS, SKIP_SPLASH_PROMOTIONS, SPOOF_SIGNATURE));
-
     private AppliedPatches() {
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        for (String name : NAMES) {
-            if (description(name) != null) {
-                names.add(name);
-            }
+    static List<String> identifiers() {
+        List<String> identifiers = new ArrayList<>();
+        if (disableAnalytics()) {
+            identifiers.add("disableAnalytics");
         }
-        return names;
+        if (disableUpdatePrompts()) {
+            identifiers.add("disableUpdatePrompts");
+        }
+        if (enableImageSaving()) {
+            identifiers.add("enableImageSaving");
+        }
+        if (darkTheme()) {
+            identifiers.add("darkTheme");
+        }
+        if (gmsCoreSupport()) {
+            identifiers.add("gmsCoreSupport");
+        }
+        if (removePromotionalPopups()) {
+            identifiers.add("removePromotionalPopups");
+        }
+        if (removeSponsoredItems()) {
+            identifiers.add("removeSponsoredItems");
+        }
+        if (skipSplashPromotions()) {
+            identifiers.add("skipSplashPromotions");
+        }
+        if (spoofSignature()) {
+            identifiers.add("spoofSignature");
+        }
+        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
+        return identifiers;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case DISABLE_ANALYTICS:
+    static String name(String identifier) {
+        switch (identifier) {
+            case "disableAnalytics":
+                return disableAnalyticsName();
+            case "disableUpdatePrompts":
+                return disableUpdatePromptsName();
+            case "enableImageSaving":
+                return enableImageSavingName();
+            case "darkTheme":
+                return darkThemeName();
+            case "gmsCoreSupport":
+                return gmsCoreSupportName();
+            case "removePromotionalPopups":
+                return removePromotionalPopupsName();
+            case "removeSponsoredItems":
+                return removeSponsoredItemsName();
+            case "skipSplashPromotions":
+                return skipSplashPromotionsName();
+            case "spoofSignature":
+                return spoofSignatureName();
+            default:
+                return null;
+        }
+    }
+
+    static String description(String identifier) {
+        switch (identifier) {
+            case "disableAnalytics":
                 return disableAnalyticsDescription();
-            case DISABLE_UPDATE_PROMPTS:
+            case "disableUpdatePrompts":
                 return disableUpdatePromptsDescription();
-            case ENABLE_IMAGE_SAVING:
+            case "enableImageSaving":
                 return enableImageSavingDescription();
-            case FIX_DARK_MODE:
+            case "darkTheme":
                 return darkThemeDescription();
-            case GMSCORE_SUPPORT:
+            case "gmsCoreSupport":
                 return gmsCoreSupportDescription();
-            case REMOVE_PROMOTIONAL_POPUPS:
+            case "removePromotionalPopups":
                 return removePromotionalPopupsDescription();
-            case REMOVE_SPONSORED_ITEMS:
+            case "removeSponsoredItems":
                 return removeSponsoredItemsDescription();
-            case SKIP_SPLASH_PROMOTIONS:
+            case "skipSplashPromotions":
                 return skipSplashPromotionsDescription();
-            case SPOOF_SIGNATURE:
+            case "spoofSignature":
                 return spoofSignatureDescription();
             default:
                 return null;
         }
     }
 
-    static boolean disableAnalytics() {
-        return disableAnalyticsDescription() != null;
+    public static boolean disableAnalytics() {
+        return false;
+    }
+
+    public static String disableAnalyticsName() {
+        return null;
     }
 
     public static String disableAnalyticsDescription() {
         return null;
     }
 
-    static boolean disableUpdatePrompts() {
-        return disableUpdatePromptsDescription() != null;
+    public static boolean disableUpdatePrompts() {
+        return false;
+    }
+
+    public static String disableUpdatePromptsName() {
+        return null;
     }
 
     public static String disableUpdatePromptsDescription() {
         return null;
     }
 
-    static boolean enableImageSaving() {
-        return enableImageSavingDescription() != null;
+    public static boolean enableImageSaving() {
+        return false;
+    }
+
+    public static String enableImageSavingName() {
+        return null;
     }
 
     public static String enableImageSavingDescription() {
         return null;
     }
 
-    static boolean darkTheme() {
-        return darkThemeDescription() != null;
+    public static boolean darkTheme() {
+        return false;
+    }
+
+    public static String darkThemeName() {
+        return null;
     }
 
     public static String darkThemeDescription() {
+        return null;
+    }
+
+    public static boolean gmsCoreSupport() {
+        return false;
+    }
+
+    public static String gmsCoreSupportName() {
         return null;
     }
 
@@ -128,27 +190,47 @@ public final class AppliedPatches {
         return null;
     }
 
-    static boolean removePromotionalPopups() {
-        return removePromotionalPopupsDescription() != null;
+    public static boolean removePromotionalPopups() {
+        return false;
+    }
+
+    public static String removePromotionalPopupsName() {
+        return null;
     }
 
     public static String removePromotionalPopupsDescription() {
         return null;
     }
 
-    static boolean removeSponsoredItems() {
-        return removeSponsoredItemsDescription() != null;
+    public static boolean removeSponsoredItems() {
+        return false;
+    }
+
+    public static String removeSponsoredItemsName() {
+        return null;
     }
 
     public static String removeSponsoredItemsDescription() {
         return null;
     }
 
-    static boolean skipSplashPromotions() {
-        return skipSplashPromotionsDescription() != null;
+    public static boolean skipSplashPromotions() {
+        return false;
+    }
+
+    public static String skipSplashPromotionsName() {
+        return null;
     }
 
     public static String skipSplashPromotionsDescription() {
+        return null;
+    }
+
+    public static boolean spoofSignature() {
+        return false;
+    }
+
+    public static String spoofSignatureName() {
         return null;
     }
 

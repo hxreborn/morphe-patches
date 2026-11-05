@@ -11,18 +11,20 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.literalWrittenTo
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
@@ -41,7 +43,7 @@ private const val LAST_FIVE_REGISTER_INVOKE_REGISTER = 15
 private const val PADDING_BOTTOM_ARGUMENT = 4
 
 @Suppress("unused")
-val hideNavigationBarOnScrollPatch = bytecodePatch(
+val hideNavigationBarOnScrollPatch: BytecodePatch = bytecodePatch(
     name = "Hide navigation bar on scroll",
     description = "Hides the bottom navigation bar on scroll down and shows it on scroll up.",
 ) {
@@ -49,6 +51,7 @@ val hideNavigationBarOnScrollPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("hideNavigationBarOnScroll", hideNavigationBarOnScrollPatch)
         markFeaturePatched(NAVIGATION_BAR_CLASS)
         requireAppMethods(NAVIGATION_BAR_CLASS, SCROLL_HANDLER_CLASS, HIDDEN_OFFSET_CLASS)
         VelocityConstructorFingerprint.matchSingle()

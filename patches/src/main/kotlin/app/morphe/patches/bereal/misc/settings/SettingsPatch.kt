@@ -6,6 +6,7 @@ package app.morphe.patches.bereal.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -14,12 +15,14 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.util.StringUtils.escapeString
 import org.w3c.dom.Element
 
 internal const val BEREAL_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/bereal/"
@@ -116,4 +119,11 @@ internal val settingsPatch = bytecodePatch {
 
         addSettingsRow()
     }
+}
+
+internal fun BytecodePatchContext.markFeaturePatched(featureClass: String, patch: BytecodePatch) {
+    val methods = mutableClassDefBy(featureClass).methods
+    methods.single { it.name == "isPatchIncluded" }.returnEarly(true)
+    methods.single { it.name == "patchName" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
 }

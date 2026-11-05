@@ -88,12 +88,12 @@ final class SettingsRows {
         toggle.setChecked(checked);
         toggle.setMinWidth(this.style.dp(SWITCH_TOUCH_TARGET_DP));
         toggle.setMinHeight(this.style.dp(SWITCH_TOUCH_TARGET_DP));
-        toggle.setContentDescription(setting.title);
+        toggle.setContentDescription(setting.title());
 
         toggle.setOnCheckedChangeListener(listener);
         LinearLayout row = baseRow(card, setting.icon());
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        addTitleAndDescription(row, setting.title, setting.description);
+        addTitleAndDescription(row, setting.title(), setting.description);
         LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         toggleParams.setMarginStart(this.style.dp(SWITCH_START_MARGIN_DP));
@@ -133,14 +133,25 @@ final class SettingsRows {
                 this.style.dp(SettingsStyle.ICON_DP)));
         column.addView(header);
         TextView body = this.style.text(description, SettingsStyle.BODY_SP, this.style.secondaryText, null);
+        body.setSingleLine(false);
+        body.setEllipsize(null);
         body.setVisibility(View.GONE);
         column.addView(body);
         column.setBackground(this.style.ripple(0));
-        column.setOnClickListener((view) -> {
-            boolean expanded = body.getVisibility() == View.VISIBLE;
-            body.setVisibility(expanded ? View.GONE : View.VISIBLE);
-            chevron.setRotation(expanded ? 0 : HALF_TURN_DEGREES);
-        });
+        boolean hasDescription = description != null && !description.isEmpty();
+        chevron.setVisibility(hasDescription ? View.VISIBLE : View.GONE);
+        column.setContentDescription(hasDescription ? title + ". Collapsed." : title);
+        header.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        body.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        column.setFocusable(hasDescription);
+        if (hasDescription) {
+            column.setOnClickListener((view) -> {
+                boolean expanded = body.getVisibility() == View.VISIBLE;
+                body.setVisibility(expanded ? View.GONE : View.VISIBLE);
+                chevron.setRotation(expanded ? 0 : HALF_TURN_DEGREES);
+                column.setContentDescription(expanded ? title + ". Collapsed." : title + ". Expanded. " + description);
+            });
+        }
         if (card.getChildCount() > 0) {
             View divider = new View(this.context);
             divider.setBackgroundColor(this.style.divider);

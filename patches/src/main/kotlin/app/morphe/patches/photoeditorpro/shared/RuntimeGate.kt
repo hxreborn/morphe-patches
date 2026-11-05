@@ -6,11 +6,14 @@ package app.morphe.patches.photoeditorpro.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patcher.util.returnEarly
+import com.android.tools.smali.util.StringUtils.escapeString
 
 internal const val STRING = "Ljava/lang/String;"
 internal const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/photoeditorpro"
@@ -78,4 +81,10 @@ internal fun BytecodePatchContext.markPatchInstalled(settingKey: String) {
                 """,
             )
         }
+}
+
+internal fun BytecodePatchContext.markPatchMetadata(methodName: String, patch: BytecodePatch) {
+    val methods = mutableClassDefBy(PATCH_PANEL_CLASS).methods
+    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
+    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
 }

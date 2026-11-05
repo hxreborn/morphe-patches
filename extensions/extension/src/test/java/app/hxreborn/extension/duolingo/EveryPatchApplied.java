@@ -46,4 +46,44 @@ public final class EveryPatchApplied {
         return true;
     }
 
+    @Implementation
+    public static String unlockPremiumName() {
+        return "Unlock premium";
+    }
+
+    @Implementation
+    public static String unlockPremiumDescription() {
+        return "Full premium description.";
+    }
+
+    @Implementation
+    public static String disableDynamicAppIconName() {
+        return "Disable dynamic app icon";
+    }
+
+    @Implementation
+    public static String disableDynamicAppIconDescription() {
+        return "Keeps the default launcher icon.";
+    }
+
+    @Implementation
+    public static String enableDebugModeName() {
+        return "Enable debug mode";
+    }
+
+    @Implementation
+    public static String enableDebugModeDescription() {
+        return "Shows the debug menu and debug button. Turn it on in the patches menu.";
+    }
+
+    @Implementation
+    public static String unlimitedRampUpTimeName() {
+        return "Unlimited RampUp time";
+    }
+
+    @Implementation
+    public static String unlimitedRampUpTimeDescription() {
+        return "Holds the RampUp timer at one hour.";
+    }
+
 }
