@@ -74,4 +74,10 @@ public class PatchSettingsTest {
         Assert.assertSame(original, PatchSettings.filterMoreItems(original));
     }
 
+    @Test
+    public void preserveVisibilityWithoutMenuItem() {
+        Assert.assertTrue(PatchSettings.mainMenuItemVisible(null, true));
+        Assert.assertFalse(PatchSettings.mainMenuItemVisible(null, false));
+    }
+
 }

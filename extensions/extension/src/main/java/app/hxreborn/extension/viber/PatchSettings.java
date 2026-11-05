@@ -25,6 +25,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.MenuItem;
 
 @SuppressWarnings("unused")
 public final class PatchSettings {
@@ -99,6 +100,17 @@ public final class PatchSettings {
 
     public static boolean isHiddenMoreItem(int id) {
         return false;
+    }
+
+    public static boolean isHiddenMainMenuItem(int id) {
+        return false;
+    }
+
+    public static boolean mainMenuItemVisible(MenuItem item, boolean visible) {
+        if (!visible || item == null || !hideMoreItems()) {
+            return visible;
+        }
+        return !isHiddenMainMenuItem(item.getItemId());
     }
 
     public static boolean disableAnalyticsKey(String key) {

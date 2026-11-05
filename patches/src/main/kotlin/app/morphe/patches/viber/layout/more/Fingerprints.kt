@@ -78,3 +78,17 @@ internal fun moreResumeFingerprint(presenterType: String) = Fingerprint(
     parameters = listOf("L"),
     filters = listOf(methodCall(opcode = Opcode.INVOKE_SUPER, name = "onResume")),
 )
+
+internal object MainMenuItemVisibilityFingerprint : Fingerprint(
+    isStatic = true,
+    returnType = "V",
+    parameters = listOf("Landroid/view/MenuItem;", "Z"),
+    filters = listOf(
+        methodCall(
+            definingClass = "Landroid/view/MenuItem;",
+            name = "setVisible",
+            parameters = listOf("Z"),
+            returnType = "Landroid/view/MenuItem;",
+        ),
+    ),
+)
