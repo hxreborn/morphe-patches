@@ -69,7 +69,8 @@ public final class PatchesSettingsActivityTest {
         }
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title",
-                "Hide ads", "Hide More screen items", "Hide navigation buttons", "Disable analytics", PLUS_TITLE), titles);
+                "Hide ads", "Hide More screen items", "Hide navigation buttons", "Injected business name",
+                "Disable analytics", PLUS_TITLE), titles);
     }
 
     @Test
@@ -107,10 +108,25 @@ public final class PatchesSettingsActivityTest {
     public void showInjectedPlusMetadataInMenu() {
         List<String> texts = shownTexts();
 
-        Assert.assertEquals(Arrays.asList("Viber Plus", PLUS_TITLE, "Unlocks icons and typing privacy."), texts.subList(1, 4));
+        Assert.assertEquals(Arrays.asList("Viber Plus", PLUS_TITLE, "Unlocks icons and typing privacy."),
+                texts.subList(1, 4));
         int appliedIndex = texts.indexOf("Applied patches");
         Assert.assertEquals(Arrays.asList(PLUS_TITLE, PLUS_DESCRIPTION),
                 texts.subList(appliedIndex + 1, appliedIndex + 3));
+    }
+
+    @Test
+    @Config(shadows = OnlyBusinessChatsApplied.class)
+    public void showInjectedBusinessMetadataAndChatPicker() {
+        List<String> texts = shownTexts();
+
+        Assert.assertTrue(texts.contains("Business messages"));
+        Assert.assertTrue(texts.contains("Business chats"));
+        Assert.assertFalse(texts.contains("Ads"));
+        int appliedIndex = texts.indexOf("Applied patches");
+        Assert.assertEquals(Arrays.asList("Injected business name", "Injected business description."),
+                texts.subList(appliedIndex + 1, appliedIndex + 3));
+        Assert.assertEquals(2, Collections.frequency(texts, "Injected business name"));
     }
 
     private static List<String> shownTexts() {
@@ -183,6 +199,26 @@ public final class PatchesSettingsActivityTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class OnlyBusinessChatsApplied {
+
+        @Implementation
+        protected static boolean filterBusinessChats() {
+            return true;
+        }
+
+        @Implementation
+        protected static String filterBusinessChatsName() {
+            return "Injected business name";
+        }
+
+        @Implementation
+        protected static String filterBusinessChatsDescription() {
+            return "Injected business description.";
+        }
+
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class EveryPatchApplied {
 
         @Implementation
@@ -243,6 +279,16 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String hideNavigationButtonsName() {
             return "Hide navigation buttons";
+        }
+
+        @Implementation
+        protected static boolean filterBusinessChats() {
+            return true;
+        }
+
+        @Implementation
+        protected static String filterBusinessChatsName() {
+            return "Injected business name";
         }
 
         @Implementation

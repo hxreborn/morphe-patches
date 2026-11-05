@@ -21,7 +21,10 @@
 package app.hxreborn.extension.viber;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -31,6 +34,8 @@ import android.view.MenuItem;
 public final class PatchSettings {
 
     static final String LOG_TAG = "hxViber";
+
+    private static final String SELECTED_BUSINESS_CHATS = "selected_business_chats";
 
     private static SharedPreferences preferences;
 
@@ -87,6 +92,22 @@ public final class PatchSettings {
 
     public static boolean unfiledChats() {
         return AppliedPatches.unfiledChats() && isEnabled(PatchSetting.UNFILED_CHATS.key);
+    }
+
+    static Set<String> selectedBusinessChats() {
+        return (preferences != null)
+                ? new HashSet<>(preferences.getStringSet(SELECTED_BUSINESS_CHATS, Collections.emptySet()))
+                : Collections.emptySet();
+    }
+
+    static void setSelectedBusinessChats(Set<String> selected) {
+        if (preferences != null) {
+            preferences.edit().putStringSet(SELECTED_BUSINESS_CHATS, selected).commit();
+        }
+    }
+
+    public static boolean filterBusinessChats() {
+        return AppliedPatches.filterBusinessChats() && isEnabled(PatchSetting.FILTER_BUSINESS_CHATS.key);
     }
 
     public static boolean disableAnalytics() {

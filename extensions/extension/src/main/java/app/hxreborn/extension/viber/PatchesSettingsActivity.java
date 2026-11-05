@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -62,6 +63,8 @@ public final class PatchesSettingsActivity extends Activity {
 
     private SettingsRows rows;
 
+    private BusinessChatSelection businessChatSelection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(SettingsStyle.theme(this));
@@ -69,6 +72,7 @@ public final class PatchesSettingsActivity extends Activity {
         PatchSettings.initialize(this);
         this.style = new SettingsStyle(this);
         this.rows = new SettingsRows(this, this.style);
+        this.businessChatSelection = new BusinessChatSelection(this, this::confirmRestart);
         styleSystemBars(getWindow());
         setContentView(screen());
     }
@@ -172,6 +176,10 @@ public final class PatchesSettingsActivity extends Activity {
                 confirmRestart();
             }
         });
+        if (setting == PatchSetting.FILTER_BUSINESS_CHATS) {
+            this.rows.actionRow(card, setting.icon(), "Business chats", "Choose chats to filter after reading.",
+                    this.businessChatSelection::show);
+        }
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {
@@ -203,13 +211,17 @@ public final class PatchesSettingsActivity extends Activity {
             .setNegativeButton("Cancel", null));
     }
 
-    private void showDialog(AlertDialog.Builder builder) {
+    AlertDialog showDialog(AlertDialog.Builder builder) {
         AlertDialog dialog = builder.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+        Button negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        if (negative != null) {
+            negative.setAllCaps(false);
+        }
+        return dialog;
     }
 
-    private int dialogTheme() {
+    int dialogTheme() {
         return this.style.dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
                 : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
     }

@@ -102,6 +102,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean filterBusinessChats() {
+        return false;
+    }
+
+    public static String filterBusinessChatsName() {
+        return null;
+    }
+
+    public static String filterBusinessChatsDescription() {
+        return null;
+    }
+
     public static boolean disableAnalytics() {
         return false;
     }
@@ -158,6 +170,7 @@ public final class AppliedPatches {
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
+        add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
