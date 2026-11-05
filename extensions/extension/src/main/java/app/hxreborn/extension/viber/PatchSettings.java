@@ -65,7 +65,7 @@ public final class PatchSettings {
     }
 
     public static boolean removeChatPayments() {
-        return AppliedPatches.removeChatPayments() && isEnabled("Remove chat payment actions");
+        return AppliedPatches.removeChatPayments() && isEnabled(PatchSetting.REMOVE_CHAT_PAYMENTS.key);
     }
 
     public static boolean disableAiFeatures() {

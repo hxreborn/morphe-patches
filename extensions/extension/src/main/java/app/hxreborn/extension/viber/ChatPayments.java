@@ -33,19 +33,15 @@ public final class ChatPayments {
         return visible && !PatchSettings.removeChatPayments();
     }
 
-    public static List<?> filterAttachments(List<?> items) {
+    public static List<?> filterAttachments(List<?> items, Object bankAttachment, Object payAttachment) {
         if (!PatchSettings.removeChatPayments() || items == null) {
             return items;
         }
         List<Object> filtered = new ArrayList<>(items.size());
         for (Object item : items) {
-            if (item instanceof Enum<?>) {
-                String name = ((Enum<?>) item).name();
-                if ("RAKUTEN_BANK".equals(name) || "VIBER_PAY".equals(name)) {
-                    continue;
-                }
+            if (item != bankAttachment && item != payAttachment) {
+                filtered.add(item);
             }
-            filtered.add(item);
         }
         return filtered;
     }

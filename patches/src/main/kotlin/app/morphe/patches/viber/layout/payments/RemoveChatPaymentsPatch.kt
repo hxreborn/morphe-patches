@@ -7,6 +7,7 @@ package app.morphe.patches.viber.layout.payments
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -35,14 +36,21 @@ val removeChatPaymentsPatch: BytecodePatch = bytecodePatch(
                 move-result p1
             """,
         )
-        val (_, bankField) = AttachmentTypesFingerprint.matchSingle().instructionMatches
-        attachmentListFingerprint(bankField.instruction.getReference<FieldReference>()!!).matchSingle().apply {
+        val (_, bankField, _, payField) = AttachmentTypesFingerprint.matchSingle().instructionMatches
+        val bank = bankField.instruction.getReference<FieldReference>()!!
+        val pay = payField.instruction.getReference<FieldReference>()!!
+        attachmentListFingerprint(bank).matchSingle().apply {
             val (_, returnList) = instructionMatches
             val register = (returnList.instruction as OneRegisterInstruction).registerA
+            val registers = method.getFreeRegisterProvider(returnList.index, 2, register)
+            val bankRegister = registers.getFreeRegister4Bit()
+            val payRegister = registers.getFreeRegister4Bit()
             method.addInstructions(
                 returnList.index,
                 """
-                    invoke-static { v$register }, $EXTENSION_CLASS_DESCRIPTOR->filterAttachments(Ljava/util/List;)Ljava/util/List;
+                    sget-object v$bankRegister, $bank
+                    sget-object v$payRegister, $pay
+                    invoke-static { v$register, v$bankRegister, v$payRegister }, $EXTENSION_CLASS_DESCRIPTOR->filterAttachments(Ljava/util/List;Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/List;
                     move-result-object v$register
                 """,
             )

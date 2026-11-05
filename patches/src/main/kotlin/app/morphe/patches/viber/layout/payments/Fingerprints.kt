@@ -24,7 +24,12 @@ internal object SendMoneyConstructorFingerprint : Fingerprint(
 
 internal object AttachmentTypesFingerprint : Fingerprint(
     name = "<clinit>",
-    filters = listOf(string("RAKUTEN_BANK"), fieldAccess(opcode = Opcode.SPUT_OBJECT)),
+    filters = listOf(
+        string("RAKUTEN_BANK"),
+        fieldAccess(opcode = Opcode.SPUT_OBJECT),
+        string("VIBER_PAY"),
+        fieldAccess(opcode = Opcode.SPUT_OBJECT),
+    ),
 )
 
 internal fun attachmentListFingerprint(bankField: FieldReference) = Fingerprint(

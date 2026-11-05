@@ -52,7 +52,7 @@ public class ChatPaymentsTest {
         List<Attachment> original = Arrays.asList(Attachment.RAKUTEN_BANK, Attachment.GALLERY, Attachment.VIBER_PAY,
                 Attachment.CAMERA, Attachment.FILE);
         Assert.assertEquals(Arrays.asList(Attachment.GALLERY, Attachment.CAMERA, Attachment.FILE),
-                ChatPayments.filterAttachments(original));
+                ChatPayments.filterAttachments(original, Attachment.RAKUTEN_BANK, Attachment.VIBER_PAY));
         Assert.assertEquals(5, original.size());
         Assert.assertFalse(ChatPayments.showSendMoney(true));
     }
@@ -61,16 +61,18 @@ public class ChatPaymentsTest {
     public void preserveHostBehaviorWhenDisabled() {
         EnabledSettings.enabled = false;
         List<Attachment> original = Arrays.asList(Attachment.VIBER_PAY, Attachment.FILE);
-        Assert.assertSame(original, ChatPayments.filterAttachments(original));
+        Assert.assertSame(original,
+                ChatPayments.filterAttachments(original, Attachment.RAKUTEN_BANK, Attachment.VIBER_PAY));
         Assert.assertTrue(ChatPayments.showSendMoney(true));
         Assert.assertFalse(ChatPayments.showSendMoney(false));
     }
 
     @Test
-    public void retainUnknownItemsAndNullInput() {
-        Assert.assertNull(ChatPayments.filterAttachments(null));
+    public void retainEqualNamedItemsAndNullInput() {
+        Assert.assertNull(ChatPayments.filterAttachments(null, Attachment.RAKUTEN_BANK, Attachment.VIBER_PAY));
         List<Object> original = Arrays.asList("VIBER_PAY", null, Attachment.FILE);
-        Assert.assertEquals(original, ChatPayments.filterAttachments(original));
+        Assert.assertEquals(original,
+                ChatPayments.filterAttachments(original, Attachment.RAKUTEN_BANK, Attachment.VIBER_PAY));
     }
 
     @Implements(value = PatchSettings.class, isInAndroidSdk = false)
