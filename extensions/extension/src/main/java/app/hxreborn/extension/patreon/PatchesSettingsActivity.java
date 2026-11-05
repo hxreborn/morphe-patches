@@ -20,6 +20,10 @@
  */
 package app.hxreborn.extension.patreon;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -156,6 +160,17 @@ public final class PatchesSettingsActivity extends Activity {
         }
         addSection(column, "Feed", feed);
 
+        LinearLayout search = this.rows.card();
+        if (SearchSuggestions.isPatched()) {
+            this.rows.switchRow(search, "hx_patreon_ic_search", "Hide search suggestions",
+                    "Removes suggested creators and topics from Explore.", SearchSuggestions.isEnabled(),
+                    (button, enabled) -> {
+                        PatchSettings.setEnabled(SearchSuggestions.HIDE_SEARCH_SUGGESTIONS, enabled);
+                        confirmRestart();
+                    });
+        }
+        addSection(column, "Search", search);
+
         LinearLayout navigation = this.rows.card();
         if (NavigationButtons.isPatched()) {
             for (int index = 0; index < NavigationButtons.TABS.length; index++) {
@@ -203,6 +218,38 @@ public final class PatchesSettingsActivity extends Activity {
         this.rows.valueRow(about, "hx_patreon_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_patreon_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
+
+        LinearLayout applied = this.rows.card();
+        List<String> names = new ArrayList<>();
+        if (QuipsAndAutoplay.isPatched()) {
+            names.add("Disable Quips and autoplay");
+        }
+        if (Tracking.isPatched()) {
+            names.add("Disable tracking");
+        }
+        if (HomeTab.isPatched()) {
+            names.add("Hide Home tab");
+        }
+        if (NavigationButtons.isPatched()) {
+            names.add("Hide navigation buttons");
+        }
+        if (HomeFeedFilter.isPatched()) {
+            names.add("Hide recommended creators");
+        }
+        if (SearchSuggestions.isPatched()) {
+            names.add("Hide search suggestions");
+        }
+        if (UpgradePromotions.isPatched()) {
+            names.add("Hide upgrade promotions");
+        }
+        if (AppPrompts.isPatched()) {
+            names.add("Remove app prompts");
+        }
+        Collections.sort(names);
+        for (String name : names) {
+            this.rows.textRow(applied, name);
+        }
+        addSection(column, "Applied patches", applied);
         return column;
     }
 
