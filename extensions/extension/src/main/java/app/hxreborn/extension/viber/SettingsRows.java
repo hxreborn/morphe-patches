@@ -93,7 +93,11 @@ final class SettingsRows {
         toggle.setOnCheckedChangeListener(listener);
         LinearLayout row = baseRow(card, setting.icon());
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        addTitleAndDescription(row, setting.title(), setting.description);
+        TextView description = addTitleAndDescription(row, setting.title(), setting.description);
+        if (setting == PatchSetting.UNLOCK_VIBER_PLUS) {
+            description.setSingleLine(false);
+            description.setEllipsize(null);
+        }
         LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         toggleParams.setMarginStart(this.style.dp(SWITCH_START_MARGIN_DP));
@@ -184,7 +188,7 @@ final class SettingsRows {
         return row;
     }
 
-    private void addTitleAndDescription(LinearLayout row, String title, String description) {
+    private TextView addTitleAndDescription(LinearLayout row, String title, String description) {
         LinearLayout labels = new LinearLayout(this.context);
         labels.setOrientation(LinearLayout.VERTICAL);
         row.addView(labels, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
@@ -194,6 +198,7 @@ final class SettingsRows {
         body.setEllipsize(TextUtils.TruncateAt.END);
         body.setPadding(0, this.style.dp(DESCRIPTION_TOP_PADDING_DP), 0, 0);
         labels.addView(body);
+        return body;
     }
 
     private void divider(LinearLayout card) {

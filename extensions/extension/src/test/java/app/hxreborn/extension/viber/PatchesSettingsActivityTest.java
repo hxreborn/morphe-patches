@@ -48,6 +48,10 @@ public final class PatchesSettingsActivityTest {
 
     private static final String ADS_DESCRIPTION = "Removes ads from the feed.";
 
+    private static final String PLUS_TITLE = "Alternative icons";
+
+    private static final String PLUS_DESCRIPTION = "Uses selected icons.";
+
     @Test
     public void answerNotAppliedForEverySettingBeforePatchesAreApplied() {
         for (PatchSetting setting : PatchSetting.values()) {
@@ -65,7 +69,7 @@ public final class PatchesSettingsActivityTest {
         }
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Hide ads",
-                "Hide More screen items", "Hide navigation buttons", "Disable analytics"), titles);
+                "Hide More screen items", "Hide navigation buttons", "Disable analytics", PLUS_TITLE), titles);
     }
 
     @Test
@@ -95,6 +99,17 @@ public final class PatchesSettingsActivityTest {
         Assert.assertFalse(texts.contains("Navigation bar"));
         int appliedIndex = texts.indexOf("Applied patches");
         Assert.assertEquals(Arrays.asList(ADS_TITLE, ADS_DESCRIPTION),
+                texts.subList(appliedIndex + 1, appliedIndex + 3));
+    }
+
+    @Test
+    @Config(shadows = OnlyPlusApplied.class)
+    public void showInjectedPlusMetadataInMenu() {
+        List<String> texts = shownTexts();
+
+        Assert.assertEquals(Arrays.asList("Viber Plus", PLUS_TITLE, "Unlocks icons and typing privacy."), texts.subList(1, 4));
+        int appliedIndex = texts.indexOf("Applied patches");
+        Assert.assertEquals(Arrays.asList(PLUS_TITLE, PLUS_DESCRIPTION),
                 texts.subList(appliedIndex + 1, appliedIndex + 3));
     }
 
@@ -143,6 +158,26 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String hideAdsDescription() {
             return ADS_DESCRIPTION;
+        }
+
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class OnlyPlusApplied {
+
+        @Implementation
+        protected static boolean unlockViberPlus() {
+            return true;
+        }
+
+        @Implementation
+        protected static String unlockViberPlusName() {
+            return PLUS_TITLE;
+        }
+
+        @Implementation
+        protected static String unlockViberPlusDescription() {
+            return PLUS_DESCRIPTION;
         }
 
     }
@@ -208,6 +243,16 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String disableAnalyticsName() {
             return "Disable analytics";
+        }
+
+        @Implementation
+        protected static boolean unlockViberPlus() {
+            return true;
+        }
+
+        @Implementation
+        protected static String unlockViberPlusName() {
+            return PLUS_TITLE;
         }
 
     }

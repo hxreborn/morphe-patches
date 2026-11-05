@@ -5,10 +5,12 @@
 package app.morphe.patches.viber.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import org.w3c.dom.Element
 
 private const val ACTIVITY = "app.hxreborn.extension.viber.PatchesSettingsActivity"
@@ -47,6 +49,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 "disable_ai_features" to "ai",
                 "hide_ads" to "promotions", "hide_more_items" to "more_items",
                 "hide_navigation_buttons" to "home_tab", "disable_analytics" to "tracking",
+                "unlock_viber_plus" to "premium",
                 "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "back",
             ).forEach { (target, source) ->
                 val stream = SettingsResources::class.java.getResourceAsStream("/viber/drawable/hx_viber_ic_$source.xml")
@@ -57,6 +60,14 @@ internal val patchesSettingsPatch = bytecodePatch {
         }
     })
     execute {
+        PlusAdSwitchFingerprint.matchSingle().let { match ->
+            val (_, _, setChecked) = match.instructionMatches
+            val toggle = match.method.getInstruction<FiveRegisterInstruction>(setChecked.index).registerC
+            match.method.addInstruction(
+                setChecked.index + 1,
+                "invoke-static/range { v$toggle .. v$toggle }, Lapp/hxreborn/extension/viber/PlusAdRow;->bind(Landroid/widget/CompoundButton;)V",
+            )
+        }
         ApplicationContextFingerprint.matchSingle().method.addInstruction(
             0,
             "invoke-static/range { p1 .. p1 }, $VIBER_SETTINGS_CLASS->initialize(Landroid/content/Context;)V",

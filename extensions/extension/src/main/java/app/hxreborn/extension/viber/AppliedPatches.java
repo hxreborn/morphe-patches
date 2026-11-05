@@ -126,6 +126,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean unlockViberPlus() {
+        return false;
+    }
+
+    public static String unlockViberPlusName() {
+        return null;
+    }
+
+    public static String unlockViberPlusDescription() {
+        return null;
+    }
+
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
         add(applied, disableAiFeatures(), disableAiFeaturesName(), disableAiFeaturesDescription());
@@ -136,6 +148,7 @@ public final class AppliedPatches {
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
+        add(applied, unlockViberPlus(), unlockViberPlusName(), unlockViberPlusDescription());
         Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
         return applied;
     }

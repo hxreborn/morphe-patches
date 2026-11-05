@@ -29,7 +29,8 @@ enum PatchSetting {
     HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
     HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
     HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "Removes selected tabs.", true),
-    DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true);
+    DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true),
+    UNLOCK_VIBER_PLUS("Viber Plus", "Unlock Viber Plus", "Unlocks icons and typing privacy.", true);
 
     final String section;
 
@@ -54,6 +55,7 @@ enum PatchSetting {
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsName();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
+            case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusName();
         };
     }
 
@@ -65,6 +67,7 @@ enum PatchSetting {
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtons();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalytics();
+            case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlus();
         };
     }
 

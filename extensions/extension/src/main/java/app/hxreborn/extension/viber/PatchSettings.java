@@ -69,6 +69,14 @@ public final class PatchSettings {
         return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
     }
 
+    public static boolean unlockViberPlus() {
+        return AppliedPatches.unlockViberPlus() && isEnabled(PatchSetting.UNLOCK_VIBER_PLUS.key);
+    }
+
+    public static boolean unlockTypingPrivacy(boolean original) {
+        return original || unlockViberPlus();
+    }
+
     public static boolean hideMoreItems() {
         return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }
