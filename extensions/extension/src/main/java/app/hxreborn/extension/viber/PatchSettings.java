@@ -56,6 +56,10 @@ public final class PatchSettings {
         }
     }
 
+    public static boolean removeChatPayments() {
+        return AppliedPatches.removeChatPayments() && isEnabled("Remove chat payment actions");
+    }
+
     public static boolean hideAds() {
         return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
     }

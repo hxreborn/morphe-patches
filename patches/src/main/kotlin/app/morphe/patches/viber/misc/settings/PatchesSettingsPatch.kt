@@ -43,6 +43,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 </vector>
             """.trimIndent())
             mapOf(
+                "remove_chat_payments" to "payments",
                 "hide_ads" to "promotions", "hide_more_items" to "more_items",
                 "hide_navigation_buttons" to "home_tab", "disable_analytics" to "tracking",
                 "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "back",

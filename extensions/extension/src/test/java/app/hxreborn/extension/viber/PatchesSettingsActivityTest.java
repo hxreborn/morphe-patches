@@ -63,9 +63,8 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(
-                Arrays.asList("Hide ads", "Hide More screen items", "Hide navigation buttons", "Disable analytics"),
-                titles);
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Hide ads", "Hide More screen items",
+                "Hide navigation buttons", "Disable analytics"), titles);
     }
 
     @Test
@@ -141,6 +140,16 @@ public final class PatchesSettingsActivityTest {
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class EveryPatchApplied {
+
+        @Implementation
+        protected static boolean removeChatPayments() {
+            return true;
+        }
+
+        @Implementation
+        protected static String removeChatPaymentsName() {
+            return "Remove chat payment actions";
+        }
 
         @Implementation
         protected static boolean hideAds() {

@@ -30,6 +30,18 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    public static boolean removeChatPayments() {
+        return false;
+    }
+
+    public static String removeChatPaymentsName() {
+        return null;
+    }
+
+    public static String removeChatPaymentsDescription() {
+        return null;
+    }
+
     public static boolean hideAds() {
         return false;
     }
@@ -104,6 +116,7 @@ public final class AppliedPatches {
 
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, removeChatPayments(), removeChatPaymentsName(), removeChatPaymentsDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
