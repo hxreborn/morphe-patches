@@ -1556,7 +1556,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "a8434fb26c0ef24c8bffe4cca13ad81322adfb580854db3a7adf7ee783a60512",
         ),
-        targets = listOf(AppTarget(version = "1.0.3", versionCode = 34, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "1.0.3", versionCode = 34, minSdk = 24),
+            AppTarget(version = "1.0.5", versionCode = 38, minSdk = 24),
+        ),
     )
 
     val SYGIC = Compatibility(

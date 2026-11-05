@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.replaceMasked
 
@@ -29,14 +30,14 @@ private val PASS_STATUS_EDITS = listOf(
     ),
     AotEdit(
         "inactive pass",
-        "c3c20091a0031ef8f1d21294a1035ef8",
-        "ffffffffffffffff000000fcffffffff",
+        "c3c20091a0831df89bbe2194a1835df8a3035ff862374091420445f996be2194a1835df8a2035ef861fd0594a0835df8ef031daafd79c1a8c0035fd6",
+        "ffffffffff0fe0ff000000fcff0fe0ffff0fe0ffff03c0ffff03c0ff000000fcff0fe0ffff0fe0ff000000fcff0fe0ffffffffffffffffffffffffff",
         "c3820091",
     ),
     AotEdit(
         "expired pass",
-        "7bfcff97a0031ef8703b55f95e4b40f9fe4100a9ae90f597e10300aa",
-        "000000fcffffffffff03c0ffff03c0ffffffffff000000fcffffffff",
+        "23f52094a0831df8704b55f95e4b40f9fe4100a950c9fc97e10300aaa3835df862374091428443f9a0831df873be2194a1835df8a3035ff862374091420445f9",
+        "000000fcff0fe0ffff03c0ffff03c0ffffffffff000000fcffffffffff0fe0ffff03c0ffff03c0ffff0fe0ff000000fcff0fe0ffff0fe0ffff03c0ffff03c0ff",
         "c0820091",
     ),
 )
@@ -50,6 +51,7 @@ val unlockPremiumPatch = resourcePatch(
 ) {
     compatibleWith(AppCompatibilities.STORYWISE)
     availability(requireArm64)
+    dependsOn(removePairipProtectionPatch)
 
     execute {
         val library = dartAotLibrary()

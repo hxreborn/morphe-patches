@@ -4,12 +4,13 @@
  */
 package app.morphe.patches.shared.misc.pairip
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
-val removePairipProtectionPatch = bytecodePatch {
+val removePairipProtectionPatch: BytecodePatch = bytecodePatch {
     compatibleWith(
         AppCompatibilities.ALBO,
         AppCompatibilities.ALOA,
@@ -52,6 +53,7 @@ val removePairipProtectionPatch = bytecodePatch {
         AppCompatibilities.QURANIFY,
         AppCompatibilities.RATEGLANCE,
         AppCompatibilities.RUBBER_BANDS,
+        AppCompatibilities.STORYWISE,
         AppCompatibilities.TUNNELDOOM_VPN,
         AppCompatibilities.ULTIMATE_GUITAR,
         AppCompatibilities.USA_VPN,
