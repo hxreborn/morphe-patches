@@ -15,7 +15,7 @@ import app.morphe.patches.shared.replaceMasked
 
 private val NOP = "1f2003d5".hexToByteArray()
 
-private val LOAD_MAX_ENTITLEMENT_INTO_X0 = "7073409100f244f9106e45f9".hexToByteArray()
+private val LOAD_MAX_ENTITLEMENT_INTO_X0 = "7073409100be45f9103a46f9".hexToByteArray()
 
 private class CreditSite(
     val name: String,
@@ -28,8 +28,8 @@ private class CreditSite(
 private val BULK_IMPORT_CREDIT_SITES = listOf(
     CreditSite(
         name = "bulk import credits entitlement",
-        pattern = ("a0831ef82800009470734091106e45f9e04101a9" +
-            "705f409110ae45f97e734091de7345f9").hexToByteArray(),
+        pattern = ("a0831ef82800009470734091103a46f9e04101a9" +
+            "705f4091107a46f97e734091de3f46f9").hexToByteArray(),
         mask = ("ffffffff000000fcffffffffffffffffffffffff" +
             "ffffffffffffffffffffffffffffffff").hexToByteArray(),
         replacementOffset = 4,

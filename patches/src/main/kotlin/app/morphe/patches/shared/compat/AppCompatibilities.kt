@@ -32,7 +32,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "ae23b6062bfe3fea5e0372c58ee809e0ee3eb3b356350cfaa2734dd6742c15b9",
         ),
-        targets = listOf(AppTarget(version = "1.25.1", versionCode = 996, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.25.6", versionCode = 1037, minSdk = 26)),
     )
 
     val ALIEXPRESS = Compatibility(
