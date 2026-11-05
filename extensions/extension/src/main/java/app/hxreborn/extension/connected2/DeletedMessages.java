@@ -31,16 +31,12 @@ public final class DeletedMessages {
 
     }
 
-    public static void mark(Object message) {
-        if (message == null) {
+    public static void mark(Object message, Object contentType, Object textContentType) {
+        if (message == null || contentType != textContentType) {
             return;
         }
         try {
             Class<?> type = message.getClass();
-            Object contentType = type.getMethod("getMessageContentType").invoke(message);
-            if (contentType == null || !"TEXT".equals(((Enum<?>) contentType).name())) {
-                return;
-            }
             String body = (String) type.getMethod("getBody").invoke(message);
             if (body == null || body.endsWith(DELETED_MARK)) {
                 return;
