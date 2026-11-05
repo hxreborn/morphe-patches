@@ -134,8 +134,23 @@ public final class PatchesSettingsActivity extends Activity {
         column.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP),
                 this.style.dp(CONTENT_BOTTOM_PADDING_DP));
 
+        String section = null;
+        LinearLayout card = null;
         for (PatchSetting setting : PatchSetting.values()) {
-            addSwitch(column, setting);
+            if (!setting.applied()) {
+                continue;
+            }
+            if (!setting.section.equals(section)) {
+                if (card != null) {
+                    addSection(column, section, card);
+                }
+                section = setting.section;
+                card = this.rows.card();
+            }
+            addSwitch(card, setting);
+        }
+        if (card != null) {
+            addSection(column, section, card);
         }
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, "hx_viber_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
@@ -150,18 +165,13 @@ public final class PatchesSettingsActivity extends Activity {
         return column;
     }
 
-    private void addSwitch(LinearLayout column, PatchSetting setting) {
-        if (!setting.applied()) {
-            return;
-        }
-        LinearLayout card = this.rows.card();
+    private void addSwitch(LinearLayout card, PatchSetting setting) {
         this.rows.switchRow(card, setting, PatchSettings.isEnabled(setting.key), (button, enabled) -> {
             PatchSettings.setEnabled(setting.key, enabled);
             if (setting.restart) {
                 confirmRestart();
             }
         });
-        addSection(column, setting.section, card);
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {

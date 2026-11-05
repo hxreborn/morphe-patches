@@ -60,6 +60,10 @@ public final class PatchSettings {
         return AppliedPatches.removeChatPayments() && isEnabled("Remove chat payment actions");
     }
 
+    public static boolean disableAiFeatures() {
+        return AppliedPatches.disableAiFeatures() && isEnabled("Disable AI features");
+    }
+
     public static boolean hideAds() {
         return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
     }

@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -63,8 +64,16 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Hide ads", "Hide More screen items",
-                "Hide navigation buttons", "Disable analytics"), titles);
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Hide ads",
+                "Hide More screen items", "Hide navigation buttons", "Disable analytics"), titles);
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void showOneHeaderForSwitchesSharingSection() {
+        List<String> texts = shownTexts();
+
+        Assert.assertEquals(1, Collections.frequency(texts, "Chats"));
     }
 
     @Test
@@ -140,6 +149,16 @@ public final class PatchesSettingsActivityTest {
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class EveryPatchApplied {
+
+        @Implementation
+        protected static boolean disableAiFeatures() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableAiFeaturesName() {
+            return "Disable AI features";
+        }
 
         @Implementation
         protected static boolean removeChatPayments() {

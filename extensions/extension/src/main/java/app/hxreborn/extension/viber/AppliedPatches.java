@@ -30,6 +30,18 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    public static boolean disableAiFeatures() {
+        return false;
+    }
+
+    public static String disableAiFeaturesName() {
+        return null;
+    }
+
+    public static String disableAiFeaturesDescription() {
+        return null;
+    }
+
     public static boolean removeChatPayments() {
         return false;
     }
@@ -116,6 +128,7 @@ public final class AppliedPatches {
 
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, disableAiFeatures(), disableAiFeaturesName(), disableAiFeaturesDescription());
         add(applied, removeChatPayments(), removeChatPaymentsName(), removeChatPaymentsDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());

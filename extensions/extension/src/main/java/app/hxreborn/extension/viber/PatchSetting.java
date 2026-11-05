@@ -25,6 +25,7 @@ import java.util.Locale;
 enum PatchSetting {
 
     REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", "Removes send-money actions.", true),
+    DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
     HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
     HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
     HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "Removes selected tabs.", true),
@@ -48,6 +49,7 @@ enum PatchSetting {
     String title() {
         return switch (this) {
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsName();
+            case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
             case HIDE_ADS -> AppliedPatches.hideAdsName();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsName();
@@ -58,6 +60,7 @@ enum PatchSetting {
     boolean applied() {
         return switch (this) {
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPayments();
+            case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
             case HIDE_ADS -> AppliedPatches.hideAds();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtons();
