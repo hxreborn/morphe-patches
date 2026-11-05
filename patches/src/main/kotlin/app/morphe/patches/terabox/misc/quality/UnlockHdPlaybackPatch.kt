@@ -7,6 +7,7 @@ package app.morphe.patches.terabox.misc.quality
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
@@ -29,6 +30,9 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/TeraboxHdUnlock;"
 private const val MAIN_PLAYER_VIEW_ID = 115
 private const val RELOAD_METHOD = "reloadWithResolution"
+private const val FIRST_HD_HEIGHT = 720
+private const val ORIGINAL_RESOLUTION_LABEL = "ORIGIN"
+private const val KILO_RESOLUTION_SUFFIX = "K"
 
 internal val unlockHdPlaybackPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.TERABOX)
@@ -111,6 +115,10 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
         val finalInfoType = reload.method.parameterTypes[2]
         val finalInfo = presenter.fields.single { it.type == finalInfoType }
         val switchResult = ResolutionSwitchResultFingerprint.matchSingle().method
+        val hdResolutions = classDefBy(VIDEO_PLAY_RESOLUTION_CLASS).fields
+            .filter { AccessFlags.ENUM.isSet(it.accessFlags) && isHdResolution(it.name) }
+        if (hdResolutions.isEmpty()) throw PatchException("$VIDEO_PLAY_RESOLUTION_CLASS has no HD resolution")
+        val hdCheck = hdResolutions.joinToString("\n") { "sget-object v1, ${descriptor(it)}\nif-eq p1, v1, :hd_resolution" }
 
         presenter.addMethod(
             RELOAD_METHOD,
@@ -122,7 +130,11 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
                 invoke-static {}, $TERABOX_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z
                 move-result v0
                 if-eqz v0, :keep_stream
-                invoke-static { p1 }, $EXTENSION_CLASS->requiresReload(Ljava/lang/Enum;)Z
+                const/4 v0, 0x1
+                $hdCheck
+                const/4 v0, 0x0
+                :hd_resolution
+                invoke-static { v0 }, $EXTENSION_CLASS->requiresReload(Z)Z
                 move-result v0
                 if-eqz v0, :keep_stream
                 new-instance v1, Landroid/os/Bundle;
@@ -157,4 +169,11 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             }
         }
     }
+}
+
+private fun isHdResolution(constantName: String): Boolean {
+    val label = constantName.substringAfterLast('_')
+    if (label == ORIGINAL_RESOLUTION_LABEL || label.endsWith(KILO_RESOLUTION_SUFFIX)) return true
+    val height = label.takeWhile(Char::isDigit).toIntOrNull() ?: return false
+    return height >= FIRST_HD_HEIGHT
 }

@@ -34,6 +34,10 @@ public final class TeraboxHdUnlock {
 
     private static final int FIRST_HD_HEIGHT = 720;
 
+    private static final String UHD_TIER_SUFFIX = "K";
+
+    private static final String ORIGINAL_QUALITY_TIER = "ORIGIN";
+
     private static final int RECORDED_FILES = 32;
 
     private static final Map<String, String> ORIGINAL_LINKS = new LinkedHashMap<String, String>(16, 0.75f, true) {
@@ -91,8 +95,8 @@ public final class TeraboxHdUnlock {
         return proxyUrl;
     }
 
-    public static boolean requiresReload(Enum<?> resolution) {
-        return (isHdTier(resolution.name())) ? originalLink(streamingFileKey) != null : playingOriginal;
+    public static boolean requiresReload(boolean hdResolution) {
+        return hdResolution ? originalLink(streamingFileKey) != null : playingOriginal;
     }
 
     private static String fileKey(Uri uri) {
@@ -118,7 +122,7 @@ public final class TeraboxHdUnlock {
             return false;
         }
         String label = tier.substring(tier.lastIndexOf('_') + 1);
-        if (label.endsWith("K") || label.equals("ORIGIN")) {
+        if (label.endsWith(UHD_TIER_SUFFIX) || label.equals(ORIGINAL_QUALITY_TIER)) {
             return true;
         }
         int digits = 0;

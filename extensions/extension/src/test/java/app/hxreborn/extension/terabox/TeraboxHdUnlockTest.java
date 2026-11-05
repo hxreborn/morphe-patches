@@ -50,12 +50,12 @@ public final class TeraboxHdUnlockTest {
 
     private static boolean isRecorded(String path) {
         TeraboxHdUnlock.selectPlaybackUrl(null, streamingUrl(path, "M3U8_AUTO_480"));
-        return TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_720);
+        return TeraboxHdUnlock.requiresReload(true);
     }
 
     private static boolean isSharedFileRecorded(String fsId) {
         TeraboxHdUnlock.selectPlaybackUrl(null, sharedStreamingUrl(fsId, "M3U8_AUTO_480"));
-        return TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_720);
+        return TeraboxHdUnlock.requiresReload(true);
     }
 
     private static boolean unlocksTier(String tier) {
@@ -103,13 +103,13 @@ public final class TeraboxHdUnlockTest {
     public void requiresReloadForHdResolutionsOnlyWhileTheOriginalIsRecorded() {
         TeraboxHdUnlock.recordOriginalFile("/reload-hd.mp4", "https://dl/reload-hd");
         TeraboxHdUnlock.selectPlaybackUrl(null, streamingUrl("/reload-hd.mp4", "M3U8_AUTO_480"));
-        assertTrue(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_720));
-        assertTrue(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_1080));
-        assertTrue(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_ORIGIN));
-        assertFalse(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_480));
+        assertTrue(TeraboxHdUnlock.requiresReload(true));
+        assertTrue(TeraboxHdUnlock.requiresReload(true));
+        assertTrue(TeraboxHdUnlock.requiresReload(true));
+        assertFalse(TeraboxHdUnlock.requiresReload(false));
 
         TeraboxHdUnlock.selectPlaybackUrl(null, streamingUrl("/reload-unrecorded.mp4", "M3U8_AUTO_480"));
-        assertFalse(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_720));
+        assertFalse(TeraboxHdUnlock.requiresReload(true));
     }
 
     @Test
@@ -118,10 +118,10 @@ public final class TeraboxHdUnlockTest {
         final String selected = TeraboxHdUnlock.selectPlaybackUrl(new Player(),
                 streamingUrl("/reload-leave.mp4", "M3U8_AUTO_1080"));
         assertTrue(selected, selected.startsWith(PROXY_PREFIX));
-        assertTrue(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_480));
+        assertTrue(TeraboxHdUnlock.requiresReload(false));
 
         TeraboxHdUnlock.selectPlaybackUrl(null, streamingUrl("/reload-leave.mp4", "M3U8_AUTO_480"));
-        assertFalse(TeraboxHdUnlock.requiresReload(Resolution.M3U8_AUTO_480));
+        assertFalse(TeraboxHdUnlock.requiresReload(false));
     }
 
     @Test
@@ -134,9 +134,8 @@ public final class TeraboxHdUnlockTest {
         TeraboxHdUnlock.selectPlaybackUrl(null, "https://cdn.example/video.mp4");
 
         // then
-        for (Resolution resolution : Resolution.values()) {
-            assertFalse(resolution.name(), TeraboxHdUnlock.requiresReload(resolution));
-        }
+        assertFalse(TeraboxHdUnlock.requiresReload(true));
+        assertFalse(TeraboxHdUnlock.requiresReload(false));
     }
 
     @Test
@@ -357,12 +356,6 @@ public final class TeraboxHdUnlockTest {
             this.customHls = enabled;
             this.optionCalls++;
         }
-
-    }
-
-    private enum Resolution {
-
-        M3U8_AUTO_480, M3U8_AUTO_720, M3U8_AUTO_1080, M3U8_AUTO_ORIGIN
 
     }
 
