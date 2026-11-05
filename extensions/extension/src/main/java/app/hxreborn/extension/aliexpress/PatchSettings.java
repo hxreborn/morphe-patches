@@ -22,6 +22,7 @@ package app.hxreborn.extension.aliexpress;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 @SuppressWarnings("unused")
 public final class PatchSettings {
@@ -37,14 +38,24 @@ public final class PatchSettings {
     private PatchSettings() {
     }
 
+    static Context applicationContext() {
+        return applicationContext;
+    }
+
     public static void initialize(Context context) {
         SharedPreferences stored = context.getApplicationContext()
             .getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         preferences = stored;
         applicationContext = context.getApplicationContext();
+        if (DarkTheme.followsDarkMode()) {
+            initializeNightMode();
+        }
         if (AppliedPatches.disableAnalytics()) {
             initializeAnalytics(applicationContext, !disableAnalytics());
         }
+    }
+
+    private static void initializeNightMode() {
     }
 
     private static void initializeAnalytics(Context context, boolean enabled) {
@@ -72,6 +83,10 @@ public final class PatchSettings {
 
     public static boolean skipSplashPromotions() {
         return isFeatureEnabled(AppliedPatches.skipSplashPromotions(), AppliedPatches.SKIP_SPLASH_PROMOTIONS);
+    }
+
+    public static boolean darkTheme() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && AppliedPatches.darkTheme();
     }
 
     public static boolean saveButtonHidden(boolean hidden) {
