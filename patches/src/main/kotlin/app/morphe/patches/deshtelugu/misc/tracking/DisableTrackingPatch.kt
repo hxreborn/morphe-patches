@@ -49,7 +49,6 @@ val disableTrackingPatch = bytecodePatch(
             KeyboardActiveSenderFingerprint,
             PerformanceSenderFingerprint,
             PlayStoreSearchInstallSenderFingerprint,
-            QuickMessageEventSenderFingerprint,
             ContentShareEventSenderFingerprint,
             DiagnosticsSenderFingerprint,
             RawEventSenderFingerprint,
@@ -68,9 +67,11 @@ val disableTrackingPatch = bytecodePatch(
             match.method.addInstruction(match.instructionMatches.last().index + 1, "return-void")
         }
 
-        val pingerConstructor = HeartbeatPingerFingerprint.matchSingle().instructionMatches.last()
-            .getInstruction<ReferenceInstruction>().reference as MethodReference
+        val (pingerConstructorCall, _) = HeartbeatPingerFingerprint.matchSingle().instructionMatches
+        val pingerConstructor = pingerConstructorCall.getInstruction<ReferenceInstruction>().reference as MethodReference
         heartbeatPingFingerprint(pingerConstructor.definingClass).matchSingle().method.returnEarly()
         MetaRetentionPingFingerprint.method.returnEarly()
+        QuickMessageEventSenderFingerprint.method.returnEarly()
+        QuickMessageTrackingUrlSenderFingerprint.method.returnEarly()
     }
 }

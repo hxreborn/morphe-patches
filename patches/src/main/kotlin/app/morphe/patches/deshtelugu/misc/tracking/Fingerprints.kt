@@ -56,21 +56,26 @@ internal object PlayStoreSearchInstallSenderFingerprint : Fingerprint(
 internal object QuickMessageEventSenderFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "V",
-    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "L"),
+    parameters = listOf("Ljava/lang/String;", "L"),
     filters = listOf(string("quick_messages")),
+)
+
+internal object QuickMessageTrackingUrlSenderFingerprint : Fingerprint(
+    returnType = "V",
+    filters = listOf(string("{QUICK_MESSAGE_ID}"), string("{ACTIVE_PACKAGE}")),
 )
 
 internal object ContentShareEventSenderFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "V",
-    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "Ljava/lang/String;", "L"),
+    parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;", "L"),
     filters = listOf(string("StickerAnalytics")),
 )
 
 internal object HeartbeatPingerFingerprint : Fingerprint(
-    filters = remoteConfigUrl("heartbeat_analytics_url") + methodCall(
-        name = "<init>",
-        parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "L"),
+    filters = listOf(
+        methodCall(name = "<init>", parameters = listOf("L", "L")),
+        string("last_retention_sync_day"),
     ),
 )
 
