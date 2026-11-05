@@ -15,16 +15,18 @@ import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/terabox/RecentPanel;"
 
+private const val DESCRIPTION = "Removes Recent, Starred and Offline from Home."
+
 @Suppress("unused")
 val removeRecentPanelPatch = bytecodePatch(
     name = "Remove recent panel",
-    description = "Removes Recent, Starred and Offline from Home.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("removeRecentPanel")
+        markPatchApplied("removeRecentPanel", DESCRIPTION)
         val fragment = HomeCardFragmentFingerprint.matchSingle().classDef
         homeViewCreatedFingerprint(fragment.type).matchSingle().method.apply {
             addInstruction(

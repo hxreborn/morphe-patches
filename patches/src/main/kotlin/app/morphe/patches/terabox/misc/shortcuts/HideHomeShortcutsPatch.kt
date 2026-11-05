@@ -45,11 +45,13 @@ private enum class Shortcut(
     TRENDING("hideTrending", "Trending", listOf("hotlist")),
 }
 
+private const val DESCRIPTION = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
+    "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too."
+
 @Suppress("unused")
 val hideHomeShortcutsPatch = bytecodePatch(
     name = "Hide home shortcuts",
-    description = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
-        "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
 
@@ -67,7 +69,7 @@ val hideHomeShortcutsPatch = bytecodePatch(
     }
 
     execute {
-        markPatchApplied("hideHomeShortcuts")
+        markPatchApplied("hideHomeShortcuts", DESCRIPTION)
         val hidden = hideShortcutOptions.filterValues { it.value == true }.keys
         if (hidden.isEmpty()) return@execute
 

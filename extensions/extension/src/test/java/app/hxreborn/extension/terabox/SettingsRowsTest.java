@@ -24,6 +24,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,6 +61,36 @@ public final class SettingsRowsTest {
         Assert.assertTrue(control.isChecked());
         row.performClick();
         Assert.assertFalse(control.isChecked());
+    }
+
+    @Test
+    public void expandsAndCollapsesDescriptionOnRowClick() {
+        Context context = RuntimeEnvironment.getApplication();
+        SettingsRows rows = new SettingsRows(context, new SettingsStyle(context));
+        LinearLayout card = rows.card();
+        rows.expandableRow(card, TITLE, DESCRIPTION);
+        LinearLayout row = (LinearLayout) card.getChildAt(0);
+        LinearLayout labels = (LinearLayout) row.getChildAt(0);
+        TextView description = (TextView) labels.getChildAt(1);
+
+        Assert.assertEquals(TITLE, ((TextView) labels.getChildAt(0)).getText().toString());
+        Assert.assertEquals(DESCRIPTION, description.getText().toString());
+        Assert.assertEquals(View.GONE, description.getVisibility());
+        row.performClick();
+        Assert.assertEquals(View.VISIBLE, description.getVisibility());
+        row.performClick();
+        Assert.assertEquals(View.GONE, description.getVisibility());
+    }
+
+    @Test
+    public void separatesExpandableRowsWithADivider() {
+        Context context = RuntimeEnvironment.getApplication();
+        SettingsRows rows = new SettingsRows(context, new SettingsStyle(context));
+        LinearLayout card = rows.card();
+        rows.expandableRow(card, TITLE, DESCRIPTION);
+        rows.expandableRow(card, "Hide ads", "Removes ads.");
+
+        Assert.assertEquals(3, card.getChildCount());
     }
 
 }

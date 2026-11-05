@@ -25,10 +25,12 @@ internal const val PROMOTIONS_HIDDEN = "$TERABOX_PATCH_SETTINGS_CLASS->isPromoti
 internal const val VIDEO_RECOMMENDATIONS_HIDDEN = "$TERABOX_PATCH_SETTINGS_CLASS->isVideoRecommendationsHidden()Z"
 private const val TERABOX_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/terabox/AppliedPatches;"
 private const val TERABOX_PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/terabox/PatchesMenu;"
-private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "reset", "info", "patches")
+private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "reset", "info", "patches", "expand")
     .map { "hx_terabox_ic_$it" }
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String) = mutableClassDefBy(TERABOX_APPLIED_PATCHES_CLASS).methods.single { it.name == methodName }.returnEarly(true)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, description: String) =
+    mutableClassDefBy(TERABOX_APPLIED_PATCHES_CLASS).methods.single { it.name == methodName + "Description" }
+        .returnEarly(description)
 
 internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: MutableMethod.() -> Unit) {
     val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()

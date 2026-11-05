@@ -17,17 +17,19 @@ import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 
 private const val PRIVILEGE_AD_FREE = 4
 
+private const val DESCRIPTION = "Removes feed, banner and video ads, plus interstitial and app-open ads. " +
+    "Rewarded ads still play when requested from Benefits."
+
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
-    description = "Removes feed, banner and video ads, plus interstitial and app-open ads. " +
-        "Rewarded ads still play when requested from Benefits.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("hideAds")
+        markPatchApplied("hideAds", DESCRIPTION)
         HasPrivilegeFingerprint.matchSingle().method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 

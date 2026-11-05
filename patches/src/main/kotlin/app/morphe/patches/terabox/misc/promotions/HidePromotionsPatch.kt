@@ -22,17 +22,19 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PREMIUM_HOME_CARD_TYPE = 6
 
+private const val DESCRIPTION = "Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, " +
+    "floating invites and coupon popups."
+
 @Suppress("unused")
 val hidePromotionsPatch = bytecodePatch(
     name = "Hide promotions",
-    description = "Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, " +
-        "floating invites and coupon popups.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("hidePromotions")
+        markPatchApplied("hidePromotions", DESCRIPTION)
         listOf(
             VipStatusSectionFingerprint,
             CreditsUnlockDividerFingerprint,

@@ -41,6 +41,8 @@ final class SettingsRows {
 
     private static final int DESCRIPTION_TOP_PADDING_DP = 2;
 
+    private static final float EXPANDED_CHEVRON_DEGREES = 180f;
+
     private static final int ROW_MIN_HEIGHT_DP = 64;
 
     private static final int ROW_VERTICAL_PADDING_DP = 14;
@@ -52,6 +54,8 @@ final class SettingsRows {
     private static final int FIELD_LABEL_WIDTH_DP = 112;
 
     private static final int CONTROL_TOUCH_TARGET_DP = 48;
+
+    private static final int DIVIDER_HEIGHT_PX = 1;
 
     private final Context context;
 
@@ -115,9 +119,43 @@ final class SettingsRows {
         row.addView(valueView, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
     }
 
+    void expandableRow(LinearLayout card, String title, String description) {
+        if (card.getChildCount() > 0) {
+            divider(card, SettingsStyle.SCREEN_INSET_DP);
+        }
+        LinearLayout row = new LinearLayout(this.context);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setMinimumHeight(this.style.dp(ROW_MIN_HEIGHT_DP));
+        row.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP),
+                this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP));
+        LinearLayout labels = new LinearLayout(this.context);
+        labels.setOrientation(LinearLayout.VERTICAL);
+        labels.addView(this.style.text(title, SettingsStyle.BODY_SP, this.style.primaryText, null));
+        TextView details = this.style.text(description, SettingsStyle.BODY_SP, this.style.secondaryText, null);
+        details.setPadding(0, this.style.dp(DESCRIPTION_TOP_PADDING_DP), 0, 0);
+        details.setVisibility(View.GONE);
+        labels.addView(details);
+        row.addView(labels, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        ImageView chevron = new ImageView(this.context);
+        chevron.setImageDrawable(this.style.hostIcon("hx_terabox_ic_expand", this.style.secondaryText));
+        chevron.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(this.style.dp(SettingsStyle.ICON_DP),
+                this.style.dp(SettingsStyle.ICON_DP));
+        chevronParams.setMarginStart(this.style.dp(SWITCH_START_MARGIN_DP));
+        row.addView(chevron, chevronParams);
+        row.setBackground(this.style.ripple(0));
+        row.setOnClickListener((view) -> {
+            boolean expanding = details.getVisibility() == View.GONE;
+            details.setVisibility(expanding ? View.VISIBLE : View.GONE);
+            chevron.setRotation(expanding ? EXPANDED_CHEVRON_DEGREES : 0f);
+        });
+        card.addView(row, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
     private LinearLayout baseRow(LinearLayout card, String iconName) {
         if (card.getChildCount() > 0) {
-            divider(card);
+            divider(card, SettingsStyle.SCREEN_INSET_DP + SettingsStyle.ICON_DP + ICON_END_MARGIN_DP);
         }
         LinearLayout row = new LinearLayout(this.context);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -148,12 +186,12 @@ final class SettingsRows {
         labels.addView(body);
     }
 
-    private void divider(LinearLayout card) {
+    private void divider(LinearLayout card, int startInsetDp) {
         View divider = new View(this.context);
         divider.setBackgroundColor(this.style.divider);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        params
-            .setMarginStart(this.style.dp(SettingsStyle.SCREEN_INSET_DP + SettingsStyle.ICON_DP + ICON_END_MARGIN_DP));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                DIVIDER_HEIGHT_PX);
+        params.setMarginStart(this.style.dp(startInsetDp));
         card.addView(divider, params);
     }
 

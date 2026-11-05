@@ -27,33 +27,48 @@ import org.robolectric.annotation.Implements;
 public final class EveryPatchApplied {
 
     @Implementation
-    public static boolean hideAds() {
-        return true;
+    public static String cloneAppDescription() {
+        return "Installs a second copy.";
     }
 
     @Implementation
-    public static boolean hidePromotions() {
-        return true;
+    public static String fixGoogleLoginDescription() {
+        return "Restores Google sign-in.";
     }
 
     @Implementation
-    public static boolean hideHomeShortcuts() {
-        return true;
+    public static String hideAdsDescription() {
+        return "Removes ads.";
     }
 
     @Implementation
-    public static boolean hideVideoRecommendations() {
-        return true;
+    public static String hideConsentFormDescription() {
+        return "Hides the consent form.";
     }
 
     @Implementation
-    public static boolean unlockPremium() {
-        return true;
+    public static String hideHomeShortcutsDescription() {
+        return "Removes shortcuts.";
     }
 
     @Implementation
-    public static boolean removeRecentPanel() {
-        return true;
+    public static String hidePromotionsDescription() {
+        return "Removes offers.";
+    }
+
+    @Implementation
+    public static String hideVideoRecommendationsDescription() {
+        return "Removes recommendations.";
+    }
+
+    @Implementation
+    public static String removeRecentPanelDescription() {
+        return "Removes the panel.";
+    }
+
+    @Implementation
+    public static String unlockPremiumDescription() {
+        return "Unlocks Premium.";
     }
 
 }

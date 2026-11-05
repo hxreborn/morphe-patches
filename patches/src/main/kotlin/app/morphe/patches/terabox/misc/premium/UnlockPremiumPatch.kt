@@ -46,11 +46,13 @@ private val hideDataSaverOptionPatch = resourcePatch {
     }
 }
 
+private const val DESCRIPTION = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
+    "HD buffers faster over parallel connections."
+
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock Premium Plus",
-    description = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
-        "HD buffers faster over parallel connections.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch, unlockHdPlaybackPatch, hideDataSaverOptionPatch)
@@ -58,7 +60,7 @@ val unlockPremiumPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("unlockPremium")
+        markPatchApplied("unlockPremium", DESCRIPTION)
         VipInfoIsVipFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
         VipInfoLevelFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
         VipInfoIdentityFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }

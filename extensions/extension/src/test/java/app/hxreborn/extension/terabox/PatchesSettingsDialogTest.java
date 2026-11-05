@@ -132,8 +132,8 @@ public final class PatchesSettingsDialogTest {
         List<String> texts = shownTexts();
         Assert.assertFalse(texts.contains("Patches"));
         assertInOrder(texts, "Home", AppliedPatches.HIDE_HOME_SHORTCUTS, AppliedPatches.REMOVE_RECENT_PANEL, "Videos",
-                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.UNLOCK_PREMIUM, "Ads", AppliedPatches.HIDE_ADS,
-                AppliedPatches.HIDE_PROMOTIONS, "About");
+                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.UNLOCK_PREMIUM, "Ads",
+                AppliedPatches.HIDE_ADS, AppliedPatches.HIDE_PROMOTIONS, "About");
     }
 
     private static void assertInOrder(List<String> texts, String... expected) {
@@ -190,6 +190,47 @@ public final class PatchesSettingsDialogTest {
         clickText("Reset");
         Assert.assertTrue(PatchSettings.isRecentPanelRemoved());
         Assert.assertTrue(latestDialogTexts().contains("Restart required"));
+    }
+
+    @Test
+    public void omitsAppliedPatchesSectionWhenNothingIsApplied() {
+        Assert.assertFalse(shownTexts().contains("Applied patches"));
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void listsEveryAppliedPatchAfterAboutWithItsDescriptionCollapsed() {
+        showDialog();
+        List<String> texts = latestDialogTexts();
+        assertInOrder(texts, "About", "Patch bundle", "Applied patches");
+        List<String> appliedRows = texts.subList(texts.indexOf("Applied patches") + 1, texts.size());
+        for (String name : AppliedPatches.names()) {
+            Assert.assertTrue(name + " is missing", appliedRows.contains(name));
+            Assert.assertEquals(View.GONE, latestDialogTextView(AppliedPatches.description(name)).getVisibility());
+        }
+        Assert.assertEquals(AppliedPatches.names().size() * 2, appliedRows.size());
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void showsDescriptionWhenAppliedPatchRowIsClicked() {
+        showDialog();
+        String description = AppliedPatches.description(AppliedPatches.CLONE_APP);
+
+        clickText(AppliedPatches.CLONE_APP);
+
+        Assert.assertEquals(View.VISIBLE, latestDialogTextView(description).getVisibility());
+        Assert.assertEquals(View.GONE,
+                latestDialogTextView(AppliedPatches.description(AppliedPatches.HIDE_CONSENT_FORM)).getVisibility());
+    }
+
+    private static TextView latestDialogTextView(String text) {
+        for (TextView candidate : latestDialogTextViews()) {
+            if (text.equals(candidate.getText().toString())) {
+                return candidate;
+            }
+        }
+        throw new AssertionError("No view shows " + text);
     }
 
 }

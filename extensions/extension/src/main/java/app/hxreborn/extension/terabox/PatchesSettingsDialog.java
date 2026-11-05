@@ -155,6 +155,11 @@ final class PatchesSettingsDialog {
         this.rows.valueRow(about, "hx_terabox_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_terabox_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
+        LinearLayout applied = this.rows.card();
+        for (String name : AppliedPatches.names()) {
+            this.rows.expandableRow(applied, name, AppliedPatches.description(name));
+        }
+        addSection(column, "Applied patches", applied);
         return column;
     }
 

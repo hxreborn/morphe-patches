@@ -12,16 +12,18 @@ import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.overrideWhenEnabled
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 
+private const val DESCRIPTION = "Removes the Recommendations grid below the video player."
+
 @Suppress("unused")
 val hideVideoRecommendationsPatch = bytecodePatch(
     name = "Hide video recommendations",
-    description = "Removes the Recommendations grid below the video player.",
+    description = DESCRIPTION,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("hideVideoRecommendations")
+        markPatchApplied("hideVideoRecommendations", DESCRIPTION)
         VideoRecommendationsFingerprint.matchAll(2..2).forEach { it.method.overrideWhenEnabled(VIDEO_RECOMMENDATIONS_HIDDEN) { returnEarly() } }
     }
 }
