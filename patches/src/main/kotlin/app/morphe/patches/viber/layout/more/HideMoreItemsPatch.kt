@@ -11,7 +11,7 @@ import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
-import app.morphe.patcher.util.getFreeRegisterProvider
+import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -19,12 +19,10 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.shared.addHiddenIdCheck
-import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 private enum class MoreItem(val label: String, val resourceName: String) {
     BUSINESS_ACCOUNT("Business Account", "business_account"),
@@ -61,30 +59,24 @@ val hideMoreItemsPatch = bytecodePatch(
             .map { resourceId(ResourceType.ID, it.resourceName) }
         if (hiddenIds.isEmpty()) return@execute
 
-        val itemFilter = FilterMoreItemsFingerprint.matchSingle()
-        val itemCast = itemFilter.instructionMatches[2]
-        val applyIndex = itemFilter.instructionMatches[3].index
-        val itemType = itemCast.instruction.getReference<TypeReference>()!!.type
-        val itemRegister = (itemCast.instruction as OneRegisterInstruction).registerA
-        val isHiddenItem = mutableClassDefBy(itemFilter.classDef).addHiddenIdCheck("isHiddenItem", hiddenIds)
+        val listItems = BuildMoreItemsFingerprint.matchSingle()
+        val (createItem, itemResult, addItem, nextItem) = listItems.instructionMatches
+        val itemType = createItem.instruction.getReference<MethodReference>()!!.returnType
+        val itemRegister = (itemResult.instruction as OneRegisterInstruction).registerA
+        val isHiddenItem = mutableClassDefBy(listItems.classDef).addHiddenIdCheck("isHiddenItem", hiddenIds)
 
-        itemFilter.method.apply {
-            val idRegister = getFreeRegisterProvider(applyIndex, 1).getFreeRegister4Bit()
-            val nextIndex = indexOfFirstInstructionReversedOrThrow(itemCast.index) {
-                getReference<MethodReference>()?.name == "hasNext"
-            }
-
-            addInstructionsWithLabels(
-                applyIndex,
-                """
-                    iget v$idRegister, v$itemRegister, ${descriptor(itemIdField(itemType))}
-                    invoke-static { v$idRegister }, $isHiddenItem
-                    move-result v$idRegister
-                    if-nez v$idRegister, :next
-                """,
-                ExternalLabel("next", getInstruction(nextIndex)),
-            )
-        }
+        val idRegister = listItems.method.implementation!!.registerCount
+        val (method, parameterMoves) = listItems.method.addFreeRegisters(1)
+        method.addInstructionsWithLabels(
+            addItem.index + parameterMoves,
+            """
+                iget v$idRegister, v$itemRegister, ${descriptor(itemIdField(itemType))}
+                invoke-static { v$idRegister }, $isHiddenItem
+                move-result v$idRegister
+                if-nez v$idRegister, :next
+            """,
+            ExternalLabel("next", method.getInstruction(nextItem.index + parameterMoves)),
+        )
     }
 }
 
@@ -95,6 +87,6 @@ private fun BytecodePatchContext.itemIdField(itemType: String): FieldReference {
     val builderIdField = builderConstructor.instructionMatches
         .single { (it.instruction as TwoRegisterInstruction).registerA == idParameterRegister }
         .instruction.getReference<FieldReference>()!!
-    return itemIdCopyFingerprint(itemType, builderIdField).matchSingle()
-        .instructionMatches.last().instruction.getReference<FieldReference>()!!
+    val (_, itemIdWrite) = itemIdCopyFingerprint(itemType, builderIdField).matchSingle().instructionMatches
+    return itemIdWrite.instruction.getReference<FieldReference>()!!
 }

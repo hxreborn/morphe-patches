@@ -12,20 +12,19 @@ import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
-internal object FilterMoreItemsFingerprint : Fingerprint(
+internal object BuildMoreItemsFingerprint : Fingerprint(
     returnType = "Ljava/util/List;",
-    parameters = listOf("L"),
+    parameters = listOf(),
     filters = listOf(
-        methodCall(definingClass = "this", parameters = listOf(), returnType = "Ljava/util/List;"),
-        methodCall(definingClass = "Ljava/util/Iterator;", name = "next"),
-        opcode(Opcode.CHECK_CAST),
         methodCall(
             opcode = Opcode.INVOKE_INTERFACE,
-            name = "apply",
-            parameters = listOf("Ljava/lang/Object;"),
-            returnType = "Z",
+            parameters = listOf(),
+            returnType = "L",
         ),
-        methodCall(definingClass = "Ljava/util/ArrayList;", name = "add"),
+        opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),
+        methodCall(definingClass = "Ljava/util/List;", name = "add"),
+        opcode(Opcode.ADD_INT_LIT8, location = MatchAfterImmediately()),
+        methodCall(definingClass = "Ljava/util/Collections;", name = "sort"),
     ),
 )
 
