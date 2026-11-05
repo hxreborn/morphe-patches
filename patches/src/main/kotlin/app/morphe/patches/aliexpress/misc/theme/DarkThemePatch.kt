@@ -18,7 +18,11 @@ import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceStub
+import app.morphe.util.addInstructionsAtControlFlowLabel
+import app.morphe.util.findInstructionIndicesReversedOrThrow
+import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
@@ -61,9 +65,22 @@ val darkThemePatch = bytecodePatch(
         markPatchApplied("darkTheme", DESCRIPTION)
         ActivityConfigurationFingerprint.matchSingle().method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
         DefaultNightModeFingerprint.matchSingle().method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
-        DarkModeEnabledFingerprint.matchSingle().let { match ->
-            val (deviceSupportsDark, serverAllowsDark) = match.instructionMatches
-            val darkModeEnabled = match.method
+        val darkModeEnabledMatch = DarkModeEnabledFingerprint.matchOrNull(DefaultNightModeFingerprint.matchSingle().classDef)
+        if (darkModeEnabledMatch == null) {
+            val serverFlag = DarkModeServerFlagFingerprint.matchSingle().method
+            serverFlag.findInstructionIndicesReversedOrThrow(Opcode.RETURN).forEach { index ->
+                val register = serverFlag.getInstruction<OneRegisterInstruction>(index).registerA
+                serverFlag.addInstructionsAtControlFlowLabel(
+                    index,
+                    """
+                        invoke-static/range { v$register .. v$register }, $DARK_THEME_CLASS->enableDarkMode(Z)Z
+                        move-result v$register
+                    """.trimIndent(),
+                )
+            }
+        } else {
+            val (deviceSupportsDark, serverAllowsDark) = darkModeEnabledMatch.instructionMatches
+            val darkModeEnabled = darkModeEnabledMatch.method
             darkModeEnabled.addInstructionsWithLabels(
                 0,
                 """

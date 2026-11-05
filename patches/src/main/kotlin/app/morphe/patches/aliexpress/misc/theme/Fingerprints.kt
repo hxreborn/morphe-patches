@@ -115,3 +115,10 @@ internal object QuantityControlFingerprint : Fingerprint(
     parameters = listOf("Landroid/content/Context;", "Landroid/util/AttributeSet;", "I"),
     filters = listOf(opcode(Opcode.RETURN_VOID)),
 )
+
+internal object DarkModeServerFlagFingerprint : Fingerprint(
+    classFingerprint = DefaultNightModeFingerprint,
+    returnType = "Z",
+    parameters = emptyList(),
+    strings = listOf("global_enable_dark_mode_v2"),
+)

@@ -17,3 +17,9 @@ internal object PromotionActivityFingerprint : Fingerprint(
     parameters = listOf("Landroid/app/Activity;"),
     strings = listOf("isValidActivity, sForbiddenAllPopInDebugMode true, return false"),
 )
+
+internal object PromotionEventFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = listOf("Landroid/app/Activity;", "Ljava/lang/String;", "Ljava/lang/String;", "Z"),
+    strings = listOf("isValidActivity, sForbiddenAllPopInDebugMode true, return false"),
+)

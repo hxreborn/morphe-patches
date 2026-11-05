@@ -76,6 +76,11 @@ public final class DarkTheme {
         hostDarkMode = enabled;
     }
 
+    public static boolean enableDarkMode(boolean enabled) {
+        recordHostDarkMode(enabled);
+        return enabled || PatchSettings.darkTheme();
+    }
+
     public static boolean followsDarkMode() {
         return PatchSettings.darkTheme() && nativeSwitchOn();
     }

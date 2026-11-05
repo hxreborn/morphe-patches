@@ -12,10 +12,13 @@ package app.morphe.patches.aliexpress.misc.images
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.Opcode
+
+private const val SAVE_BUTTON_READ_WINDOW = 2
 
 internal object ImageSaveButtonFingerprint : Fingerprint(
     filters = listOf(
@@ -25,7 +28,7 @@ internal object ImageSaveButtonFingerprint : Fingerprint(
             name = "getBoolean",
             parameters = listOf("Ljava/lang/String;", "Z"),
             returnType = "Z",
-            location = MatchAfterImmediately(),
+            location = MatchAfterWithin(SAVE_BUTTON_READ_WINDOW),
         ),
         opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
     ),

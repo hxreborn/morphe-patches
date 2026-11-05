@@ -10,12 +10,15 @@
  */
 package app.morphe.patches.aliexpress.misc.splash
 
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 
@@ -31,6 +34,20 @@ val skipSplashPromotionsPatch = bytecodePatch(
 
     execute {
         markPatchApplied("skipSplashPromotions", DESCRIPTION)
-        SplashPromotionFingerprint.matchSingle().method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->skipSplashPromotions()Z")
+        val promotion = SplashPromotionFingerprint.matchOrNull()
+        if (promotion != null) {
+            promotion.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->skipSplashPromotions()Z")
+        } else {
+            val match = SplashIntentFingerprint.matchSingle()
+            val (_, _, skipSplash) = match.instructionMatches
+            val register = match.method.getInstruction<OneRegisterInstruction>(skipSplash.index).registerA
+            match.method.addInstructions(
+                skipSplash.index + 1,
+                """
+                    invoke-static/range { v$register .. v$register }, $PATCH_SETTINGS_CLASS->skipSplashRequested(Z)Z
+                    move-result v$register
+                """.trimIndent(),
+            )
+        }
     }
 }

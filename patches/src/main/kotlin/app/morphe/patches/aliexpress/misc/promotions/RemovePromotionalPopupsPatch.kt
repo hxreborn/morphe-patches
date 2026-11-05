@@ -31,6 +31,6 @@ val removePromotionalPopupsPatch = bytecodePatch(
 
     execute {
         markPatchApplied("removePromotionalPopups", DESCRIPTION)
-        PromotionActivityFingerprint.matchSingle().method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->removePromotionalPopups()Z")
+        (PromotionActivityFingerprint.matchOrNull() ?: PromotionEventFingerprint.matchSingle()).method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->removePromotionalPopups()Z")
     }
 }
