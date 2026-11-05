@@ -134,7 +134,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "9028baa741e6a6b2833e33ccca4db8bf9b82340f6093642ef3f1d569c942ede4",
         ),
-        targets = listOf(AppTarget(version = "11.0.6", versionCode = 2017033171, minSdk = 24)),
+        targets = listOf(AppTarget(version = "11.0.7", versionCode = 2017033173, minSdk = 24)),
     )
 
     val ATLOMAPS = Compatibility(
