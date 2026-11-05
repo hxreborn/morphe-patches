@@ -42,86 +42,24 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
-    static List<String> identifiers() {
-        List<String> identifiers = new ArrayList<>();
-        if (cloneApp()) {
-            identifiers.add("cloneApp");
-        }
-        if (fixGoogleLogin()) {
-            identifiers.add("fixGoogleLogin");
-        }
-        if (hideAds()) {
-            identifiers.add("hideAds");
-        }
-        if (hideConsentForm()) {
-            identifiers.add("hideConsentForm");
-        }
-        if (hideHomeShortcuts()) {
-            identifiers.add("hideHomeShortcuts");
-        }
-        if (hidePromotions()) {
-            identifiers.add("hidePromotions");
-        }
-        if (hideVideoRecommendations()) {
-            identifiers.add("hideVideoRecommendations");
-        }
-        if (removeRecentPanel()) {
-            identifiers.add("removeRecentPanel");
-        }
-        if (unlockPremium()) {
-            identifiers.add("unlockPremium");
-        }
-        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
-        return identifiers;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, cloneApp(), cloneAppName(), cloneAppDescription());
+        add(applied, fixGoogleLogin(), fixGoogleLoginName(), fixGoogleLoginDescription());
+        add(applied, hideAds(), hideAdsName(), hideAdsDescription());
+        add(applied, hideConsentForm(), hideConsentFormName(), hideConsentFormDescription());
+        add(applied, hideHomeShortcuts(), hideHomeShortcutsName(), hideHomeShortcutsDescription());
+        add(applied, hidePromotions(), hidePromotionsName(), hidePromotionsDescription());
+        add(applied, hideVideoRecommendations(), hideVideoRecommendationsName(), hideVideoRecommendationsDescription());
+        add(applied, removeRecentPanel(), removeRecentPanelName(), removeRecentPanelDescription());
+        add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String name(String identifier) {
-        switch (identifier) {
-            case "cloneApp":
-                return cloneAppName();
-            case "fixGoogleLogin":
-                return fixGoogleLoginName();
-            case "hideAds":
-                return hideAdsName();
-            case "hideConsentForm":
-                return hideConsentFormName();
-            case "hideHomeShortcuts":
-                return hideHomeShortcutsName();
-            case "hidePromotions":
-                return hidePromotionsName();
-            case "hideVideoRecommendations":
-                return hideVideoRecommendationsName();
-            case "removeRecentPanel":
-                return removeRecentPanelName();
-            case "unlockPremium":
-                return unlockPremiumName();
-            default:
-                return null;
-        }
-    }
-
-    static String description(String identifier) {
-        switch (identifier) {
-            case "cloneApp":
-                return cloneAppDescription();
-            case "fixGoogleLogin":
-                return fixGoogleLoginDescription();
-            case "hideAds":
-                return hideAdsDescription();
-            case "hideConsentForm":
-                return hideConsentFormDescription();
-            case "hideHomeShortcuts":
-                return hideHomeShortcutsDescription();
-            case "hidePromotions":
-                return hidePromotionsDescription();
-            case "hideVideoRecommendations":
-                return hideVideoRecommendationsDescription();
-            case "removeRecentPanel":
-                return removeRecentPanelDescription();
-            case "unlockPremium":
-                return unlockPremiumDescription();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
     }
 
@@ -231,6 +169,19 @@ public final class AppliedPatches {
 
     public static String unlockPremiumDescription() {
         return null;
+    }
+
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
     }
 
 }

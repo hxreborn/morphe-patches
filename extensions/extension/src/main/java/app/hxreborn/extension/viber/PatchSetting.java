@@ -24,32 +24,42 @@ import java.util.Locale;
 
 enum PatchSetting {
 
-    HIDE_ADS("Ads", "Hide ads", "hideAds", "Removes ads.", false),
-    HIDE_MORE_ITEMS("More screen", "Hide More screen items", "hideMoreItems", "Removes selected entries.", false),
-    HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "hideNavigationButtons",
-            "Removes selected tabs.", true),
-    DISABLE_ANALYTICS("Privacy", "Disable analytics", "disableAnalytics", "Stops usage tracking.", true);
+    HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
+    HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
+    HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "Removes selected tabs.", true),
+    DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true);
 
     final String section;
 
     final String key;
 
-    final String identifier;
-
     final String description;
 
     final boolean restart;
 
-    PatchSetting(String section, String key, String identifier, String description, boolean restart) {
+    PatchSetting(String section, String key, String description, boolean restart) {
         this.section = section;
         this.key = key;
-        this.identifier = identifier;
         this.description = description;
         this.restart = restart;
     }
 
     String title() {
-        return AppliedPatches.name(this.identifier);
+        return switch (this) {
+            case HIDE_ADS -> AppliedPatches.hideAdsName();
+            case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
+            case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsName();
+            case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
+        };
+    }
+
+    boolean applied() {
+        return switch (this) {
+            case HIDE_ADS -> AppliedPatches.hideAds();
+            case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
+            case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtons();
+            case DISABLE_ANALYTICS -> AppliedPatches.disableAnalytics();
+        };
     }
 
     String icon() {

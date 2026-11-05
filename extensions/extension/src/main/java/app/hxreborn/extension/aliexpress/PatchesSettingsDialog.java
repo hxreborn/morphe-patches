@@ -40,6 +40,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.BuildConfig;
+import app.hxreborn.extension.aliexpress.AppliedPatches.AppliedPatch;
 
 final class PatchesSettingsDialog {
 
@@ -146,29 +147,32 @@ final class PatchesSettingsDialog {
         column.setPadding(inset, 0, inset, inset);
         LinearLayout browsing = this.rows.card();
         if (AppliedPatches.removeSponsoredItems()) {
-            addSwitch(browsing, "hx_aliexpress_ic_sponsored", "removeSponsoredItems",
-                    AppliedPatches.REMOVE_SPONSORED_ITEMS);
+            addSwitch(browsing, "hx_aliexpress_ic_sponsored", AppliedPatches.removeSponsoredItemsName(),
+                    AppliedPatches.removeSponsoredItemsDescription(), AppliedPatches.REMOVE_SPONSORED_ITEMS);
         }
         if (AppliedPatches.removePromotionalPopups()) {
-            addSwitch(browsing, "hx_aliexpress_ic_promotions", "removePromotionalPopups",
-                    AppliedPatches.REMOVE_PROMOTIONAL_POPUPS);
+            addSwitch(browsing, "hx_aliexpress_ic_promotions", AppliedPatches.removePromotionalPopupsName(),
+                    AppliedPatches.removePromotionalPopupsDescription(), AppliedPatches.REMOVE_PROMOTIONAL_POPUPS);
         }
         if (AppliedPatches.enableImageSaving()) {
-            addSwitch(browsing, "hx_aliexpress_ic_images", "enableImageSaving", AppliedPatches.ENABLE_IMAGE_SAVING);
+            addSwitch(browsing, "hx_aliexpress_ic_images", AppliedPatches.enableImageSavingName(),
+                    AppliedPatches.enableImageSavingDescription(), AppliedPatches.ENABLE_IMAGE_SAVING);
         }
         addSection(column, "Browsing", browsing);
         LinearLayout launch = this.rows.card();
         if (AppliedPatches.skipSplashPromotions()) {
-            addSwitch(launch, "hx_aliexpress_ic_splash", "skipSplashPromotions", AppliedPatches.SKIP_SPLASH_PROMOTIONS);
+            addSwitch(launch, "hx_aliexpress_ic_splash", AppliedPatches.skipSplashPromotionsName(),
+                    AppliedPatches.skipSplashPromotionsDescription(), AppliedPatches.SKIP_SPLASH_PROMOTIONS);
         }
         if (AppliedPatches.disableUpdatePrompts()) {
-            addSwitch(launch, "hx_aliexpress_ic_updates", "disableUpdatePrompts",
-                    AppliedPatches.DISABLE_UPDATE_PROMPTS);
+            addSwitch(launch, "hx_aliexpress_ic_updates", AppliedPatches.disableUpdatePromptsName(),
+                    AppliedPatches.disableUpdatePromptsDescription(), AppliedPatches.DISABLE_UPDATE_PROMPTS);
         }
         addSection(column, "Launch", launch);
         LinearLayout privacy = this.rows.card();
         if (AppliedPatches.disableAnalytics()) {
-            addSwitch(privacy, "hx_aliexpress_ic_analytics", "disableAnalytics", AppliedPatches.DISABLE_ANALYTICS);
+            addSwitch(privacy, "hx_aliexpress_ic_analytics", AppliedPatches.disableAnalyticsName(),
+                    AppliedPatches.disableAnalyticsDescription(), AppliedPatches.DISABLE_ANALYTICS);
         }
         addSection(column, "Privacy", privacy);
         LinearLayout about = this.rows.card();
@@ -179,16 +183,16 @@ final class PatchesSettingsDialog {
         column.addView(this.rows.sectionHeader("About"));
         column.addView(about);
         LinearLayout applied = this.rows.card();
-        for (String identifier : AppliedPatches.identifiers()) {
-            this.rows.expandableRow(applied, AppliedPatches.name(identifier), AppliedPatches.description(identifier));
+        for (AppliedPatch patch : AppliedPatches.applied()) {
+            this.rows.expandableRow(applied, patch.name, patch.description);
         }
         addSection(column, "Applied patches", applied);
         return column;
     }
 
-    private void addSwitch(LinearLayout card, String icon, String identifier, String key) {
-        this.rows.switchRow(card, icon, AppliedPatches.name(identifier), AppliedPatches.description(identifier),
-                PatchSettings.isEnabled(key), (button, checked) -> PatchSettings.setEnabled(key, checked));
+    private void addSwitch(LinearLayout card, String icon, String title, String description, String key) {
+        this.rows.switchRow(card, icon, title, description, PatchSettings.isEnabled(key),
+                (button, checked) -> PatchSettings.setEnabled(key, checked));
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {

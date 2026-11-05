@@ -47,86 +47,24 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
-    static List<String> identifiers() {
-        List<String> identifiers = new ArrayList<>();
-        if (disableAnalytics()) {
-            identifiers.add("disableAnalytics");
-        }
-        if (disableUpdatePrompts()) {
-            identifiers.add("disableUpdatePrompts");
-        }
-        if (enableImageSaving()) {
-            identifiers.add("enableImageSaving");
-        }
-        if (darkTheme()) {
-            identifiers.add("darkTheme");
-        }
-        if (gmsCoreSupport()) {
-            identifiers.add("gmsCoreSupport");
-        }
-        if (removePromotionalPopups()) {
-            identifiers.add("removePromotionalPopups");
-        }
-        if (removeSponsoredItems()) {
-            identifiers.add("removeSponsoredItems");
-        }
-        if (skipSplashPromotions()) {
-            identifiers.add("skipSplashPromotions");
-        }
-        if (spoofSignature()) {
-            identifiers.add("spoofSignature");
-        }
-        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
-        return identifiers;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
+        add(applied, disableUpdatePrompts(), disableUpdatePromptsName(), disableUpdatePromptsDescription());
+        add(applied, enableImageSaving(), enableImageSavingName(), enableImageSavingDescription());
+        add(applied, darkTheme(), darkThemeName(), darkThemeDescription());
+        add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
+        add(applied, removePromotionalPopups(), removePromotionalPopupsName(), removePromotionalPopupsDescription());
+        add(applied, removeSponsoredItems(), removeSponsoredItemsName(), removeSponsoredItemsDescription());
+        add(applied, skipSplashPromotions(), skipSplashPromotionsName(), skipSplashPromotionsDescription());
+        add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String name(String identifier) {
-        switch (identifier) {
-            case "disableAnalytics":
-                return disableAnalyticsName();
-            case "disableUpdatePrompts":
-                return disableUpdatePromptsName();
-            case "enableImageSaving":
-                return enableImageSavingName();
-            case "darkTheme":
-                return darkThemeName();
-            case "gmsCoreSupport":
-                return gmsCoreSupportName();
-            case "removePromotionalPopups":
-                return removePromotionalPopupsName();
-            case "removeSponsoredItems":
-                return removeSponsoredItemsName();
-            case "skipSplashPromotions":
-                return skipSplashPromotionsName();
-            case "spoofSignature":
-                return spoofSignatureName();
-            default:
-                return null;
-        }
-    }
-
-    static String description(String identifier) {
-        switch (identifier) {
-            case "disableAnalytics":
-                return disableAnalyticsDescription();
-            case "disableUpdatePrompts":
-                return disableUpdatePromptsDescription();
-            case "enableImageSaving":
-                return enableImageSavingDescription();
-            case "darkTheme":
-                return darkThemeDescription();
-            case "gmsCoreSupport":
-                return gmsCoreSupportDescription();
-            case "removePromotionalPopups":
-                return removePromotionalPopupsDescription();
-            case "removeSponsoredItems":
-                return removeSponsoredItemsDescription();
-            case "skipSplashPromotions":
-                return skipSplashPromotionsDescription();
-            case "spoofSignature":
-                return spoofSignatureDescription();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
     }
 
@@ -236,6 +174,19 @@ public final class AppliedPatches {
 
     public static String spoofSignatureDescription() {
         return null;
+    }
+
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
     }
 
 }

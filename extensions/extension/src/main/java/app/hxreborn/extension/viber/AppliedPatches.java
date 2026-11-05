@@ -102,66 +102,35 @@ public final class AppliedPatches {
         return null;
     }
 
-    static List<String> identifiers() {
-        List<String> identifiers = new ArrayList<>();
-        if (hideAds()) {
-            identifiers.add("hideAds");
-        }
-        if (hideMoreItems()) {
-            identifiers.add("hideMoreItems");
-        }
-        if (hideNavigationButtons()) {
-            identifiers.add("hideNavigationButtons");
-        }
-        if (disableAnalytics()) {
-            identifiers.add("disableAnalytics");
-        }
-        if (spoofSignature()) {
-            identifiers.add("spoofSignature");
-        }
-        if (gmsCoreSupport()) {
-            identifiers.add("gmsCoreSupport");
-        }
-        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
-        return identifiers;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, hideAds(), hideAdsName(), hideAdsDescription());
+        add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
+        add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
+        add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
+        add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
+        add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String name(String identifier) {
-        switch (identifier) {
-            case "hideAds":
-                return hideAdsName();
-            case "hideMoreItems":
-                return hideMoreItemsName();
-            case "hideNavigationButtons":
-                return hideNavigationButtonsName();
-            case "disableAnalytics":
-                return disableAnalyticsName();
-            case "spoofSignature":
-                return spoofSignatureName();
-            case "gmsCoreSupport":
-                return gmsCoreSupportName();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
     }
 
-    static String description(String identifier) {
-        switch (identifier) {
-            case "hideAds":
-                return hideAdsDescription();
-            case "hideMoreItems":
-                return hideMoreItemsDescription();
-            case "hideNavigationButtons":
-                return hideNavigationButtonsDescription();
-            case "disableAnalytics":
-                return disableAnalyticsDescription();
-            case "spoofSignature":
-                return spoofSignatureDescription();
-            case "gmsCoreSupport":
-                return gmsCoreSupportDescription();
-            default:
-                return "";
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
         }
+
     }
 
 }

@@ -38,6 +38,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.BuildConfig;
+import app.hxreborn.extension.viber.AppliedPatches.AppliedPatch;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -142,15 +143,15 @@ public final class PatchesSettingsActivity extends Activity {
         this.rows.valueRow(about, "hx_viber_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         LinearLayout applied = this.rows.card();
-        for (String identifier : AppliedPatches.identifiers()) {
-            this.rows.plainRow(applied, AppliedPatches.name(identifier), AppliedPatches.description(identifier));
+        for (AppliedPatch patch : AppliedPatches.applied()) {
+            this.rows.plainRow(applied, patch.name, patch.description);
         }
         addSection(column, "Applied patches", applied);
         return column;
     }
 
     private void addSwitch(LinearLayout column, PatchSetting setting) {
-        if (AppliedPatches.name(setting.identifier) == null) {
+        if (!setting.applied()) {
             return;
         }
         LinearLayout card = this.rows.card();

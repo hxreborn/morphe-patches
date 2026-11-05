@@ -21,6 +21,7 @@
 package app.hxreborn.extension.terabox;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,38 +41,79 @@ public final class AppliedPatchesTest {
 
     @Test
     public void listNothingBeforePatchesAreApplied() {
-        Assert.assertTrue(AppliedPatches.identifiers().isEmpty());
-    }
-
-    @Test
-    public void returnNoDescriptionForUnknownIdentifier() {
-        Assert.assertNull(AppliedPatches.description("Unknown patch"));
+        Assert.assertTrue(AppliedPatches.applied().isEmpty());
     }
 
     @Test
     @Config(shadows = AppliedAds.class)
     public void listOnlySelectedPatch() {
-        Assert.assertEquals(Collections.singletonList("hideAds"), AppliedPatches.identifiers());
-        Assert.assertEquals(ADS_DESCRIPTION, AppliedPatches.description("hideAds"));
+        Assert.assertEquals(Collections.singletonList("Hide ads"), names());
+        Assert.assertEquals(ADS_DESCRIPTION, AppliedPatches.applied().get(0).description);
     }
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
     public void listEveryAppliedPatchAlphabetically() {
-        List<String> sorted = new ArrayList<>(AppliedPatches.identifiers());
-        Collections.sort(sorted,
-                (first, second) -> AppliedPatches.name(first).compareToIgnoreCase(AppliedPatches.name(second)));
+        Assert.assertEquals(
+                Arrays.asList("Clone app", "Fix Google login", "Hide ads", "Hide consent form", "Hide home shortcuts",
+                        "Hide promotions", "Hide video recommendations", "Remove recent panel", "Unlock Premium Plus"),
+                names());
+    }
 
-        Assert.assertEquals(9, AppliedPatches.identifiers().size());
-        Assert.assertEquals(sorted, AppliedPatches.identifiers());
+    @Test
+    @Config(shadows = MixedCaseTitles.class)
+    public void orderAppliedPatchesByTitleIgnoringCase() {
+        Assert.assertEquals(Arrays.asList("Alpha promotions", "beta premium", "zeta ads"), names());
     }
 
     @Test
     @Config(shadows = AppliedWithoutDescription.class)
     public void keepSelectedPatchWhenDescriptionIsMissing() {
-        Assert.assertEquals(Collections.singletonList("hideAds"), AppliedPatches.identifiers());
-        Assert.assertEquals("Renamed feature", AppliedPatches.name("hideAds"));
-        Assert.assertNull(AppliedPatches.description("hideAds"));
+        Assert.assertEquals(Collections.singletonList("Renamed feature"), names());
+        Assert.assertNull(AppliedPatches.applied().get(0).description);
+    }
+
+    private static List<String> names() {
+        List<String> names = new ArrayList<>();
+        for (AppliedPatches.AppliedPatch patch : AppliedPatches.applied()) {
+            names.add(patch.name);
+        }
+        return names;
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class MixedCaseTitles {
+
+        @Implementation
+        protected static boolean hideAds() {
+            return true;
+        }
+
+        @Implementation
+        protected static String hideAdsName() {
+            return "zeta ads";
+        }
+
+        @Implementation
+        protected static boolean hidePromotions() {
+            return true;
+        }
+
+        @Implementation
+        protected static String hidePromotionsName() {
+            return "Alpha promotions";
+        }
+
+        @Implementation
+        protected static boolean unlockPremium() {
+            return true;
+        }
+
+        @Implementation
+        protected static String unlockPremiumName() {
+            return "beta premium";
+        }
+
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)

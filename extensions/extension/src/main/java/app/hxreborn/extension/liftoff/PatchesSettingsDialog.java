@@ -38,6 +38,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.BuildConfig;
+import app.hxreborn.extension.liftoff.AppliedPatches.AppliedPatch;
 
 final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
 
@@ -160,8 +161,8 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         addSection(column, "About", about);
 
         LinearLayout applied = this.rows.card();
-        for (String identifier : AppliedPatches.identifiers()) {
-            this.rows.expandableRow(applied, AppliedPatches.name(identifier), AppliedPatches.description(identifier));
+        for (AppliedPatch patch : AppliedPatches.applied()) {
+            this.rows.expandableRow(applied, patch.name, patch.description);
         }
         addSection(column, "Applied patches", applied);
         return column;

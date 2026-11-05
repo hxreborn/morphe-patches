@@ -34,37 +34,17 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
-    static List<String> identifiers() {
-        List<String> identifiers = new ArrayList<>();
-        if (unlockPremium()) {
-            identifiers.add("unlockPremium");
-        }
-        if (unlockCustomizations()) {
-            identifiers.add("unlockCustomizations");
-        }
-        Collections.sort(identifiers, (first, second) -> name(first).compareToIgnoreCase(name(second)));
-        return identifiers;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
+        add(applied, unlockCustomizations(), unlockCustomizationsName(), unlockCustomizationsDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String name(String identifier) {
-        switch (identifier) {
-            case "unlockCustomizations":
-                return unlockCustomizationsName();
-            case "unlockPremium":
-                return unlockPremiumName();
-            default:
-                return null;
-        }
-    }
-
-    static String description(String identifier) {
-        switch (identifier) {
-            case "unlockCustomizations":
-                return unlockCustomizationsDescription();
-            case "unlockPremium":
-                return unlockPremiumDescription();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
     }
 
@@ -90,6 +70,19 @@ public final class AppliedPatches {
 
     public static String unlockCustomizationsDescription() {
         return null;
+    }
+
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
     }
 
 }
