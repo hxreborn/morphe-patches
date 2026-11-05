@@ -1,3 +1,9 @@
+## [1.72.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.72.0...v1.72.1-dev.1) (2026-11-05)
+
+### Bug Fixes
+
+* **AliExpress:** support Uptodown 8.180.1 builds ([abea4aa](https://github.com/hxreborn/morphe-patches/commit/abea4aaa24f3d3daabc48599478d4d3cdf41a4ed)), closes [#650](https://github.com/hxreborn/morphe-patches/issues/650)
+
 ## [1.72.0](https://github.com/hxreborn/morphe-patches/compare/v1.71.0...v1.72.0) (2026-11-05)
 
 ### Bug Fixes
