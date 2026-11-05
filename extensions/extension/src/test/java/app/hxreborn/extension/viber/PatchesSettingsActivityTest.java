@@ -68,8 +68,8 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Hide ads",
-                "Hide More screen items", "Hide navigation buttons", "Disable analytics", PLUS_TITLE), titles);
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title",
+                "Hide ads", "Hide More screen items", "Hide navigation buttons", "Disable analytics", PLUS_TITLE), titles);
     }
 
     @Test
@@ -184,6 +184,16 @@ public final class PatchesSettingsActivityTest {
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class EveryPatchApplied {
+
+        @Implementation
+        protected static boolean unfiledChats() {
+            return true;
+        }
+
+        @Implementation
+        protected static String unfiledChatsName() {
+            return "Injected folder title";
+        }
 
         @Implementation
         protected static boolean disableAiFeatures() {

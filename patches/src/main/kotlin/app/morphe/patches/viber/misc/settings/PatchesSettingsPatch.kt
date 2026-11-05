@@ -81,6 +81,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 "hide_ads" to "promotions", "hide_more_items" to "more_items",
                 "hide_navigation_buttons" to "home_tab", "disable_analytics" to "tracking",
                 "unlock_viber_plus" to "premium",
+                "unfiled_chats" to "home_tab",
                 "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "back",
             ).forEach { (target, source) ->
                 val stream = SettingsResources::class.java.getResourceAsStream("/viber/drawable/hx_viber_ic_$source.xml")

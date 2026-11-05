@@ -90,6 +90,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean unfiledChats() {
+        return false;
+    }
+
+    public static String unfiledChatsName() {
+        return null;
+    }
+
+    public static String unfiledChatsDescription() {
+        return null;
+    }
+
     public static boolean disableAnalytics() {
         return false;
     }
@@ -145,6 +157,7 @@ public final class AppliedPatches {
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
+        add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());

@@ -85,6 +85,10 @@ public final class PatchSettings {
         return AppliedPatches.hideNavigationButtons() && isEnabled(PatchSetting.HIDE_NAVIGATION_BUTTONS.key);
     }
 
+    public static boolean unfiledChats() {
+        return AppliedPatches.unfiledChats() && isEnabled(PatchSetting.UNFILED_CHATS.key);
+    }
+
     public static boolean disableAnalytics() {
         return AppliedPatches.disableAnalytics() && isEnabled(PatchSetting.DISABLE_ANALYTICS.key);
     }
