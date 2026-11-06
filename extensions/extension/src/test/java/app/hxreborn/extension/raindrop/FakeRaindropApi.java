@@ -41,6 +41,9 @@ final class FakeRaindropApi {
 
     private static volatile String lastCookie;
 
+    private static final String ROBOLECTRIC_REPOSITORY = System.getProperty("robolectric.dependency.repo.url",
+            "https://repo1.maven.org/maven2");
+
     private static boolean isInstalled;
 
     private FakeRaindropApi() {
@@ -87,8 +90,11 @@ final class FakeRaindropApi {
         @Override
         protected URLConnection openConnection(URL url) throws IOException {
             String address = url.toString();
-            if (!address.startsWith(RaindropApi.API_URL)) {
+            if (address.startsWith(ROBOLECTRIC_REPOSITORY)) {
                 return new URL(this.realHttps, address).openConnection();
+            }
+            if (!address.startsWith(RaindropApi.API_URL)) {
+                throw new IOException("No network in tests: " + address);
             }
             Response response = RESPONSES.get(address.substring(RaindropApi.API_URL.length()));
             return new Connection(url, (response != null) ? response : UNAUTHORIZED);
