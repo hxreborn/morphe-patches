@@ -441,6 +441,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String raiseFolderLimitDescription() {
+            return "Allows up to 10 chat folders.";
+        }
+
+        @Implementation
         protected static boolean saveDisappearingMedia() {
             return true;
         }

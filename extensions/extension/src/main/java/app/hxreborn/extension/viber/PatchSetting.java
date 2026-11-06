@@ -29,7 +29,7 @@ enum PatchSetting {
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", "Allows saving disappearing media.", false),
     FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", "Removes selected chats once read.", true),
     UNFILED_CHATS("Folders", "unfiledChats", "Adds a tab for chats outside your folders.", true),
-    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", "Allows up to 10 folders.", false),
+    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", AppliedPatches.raiseFolderLimitDescription(), false),
     HIDE_ADS("Ads", "Hide ads", "Removes ads across the app.", false),
     HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promos and suggestions.", true),
     HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", "Removes selected tabs.", true),
