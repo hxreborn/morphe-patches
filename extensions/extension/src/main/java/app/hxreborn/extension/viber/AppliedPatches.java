@@ -90,6 +90,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean startFolder() {
+        return false;
+    }
+
+    public static String startFolderName() {
+        return null;
+    }
+
+    public static String startFolderDescription() {
+        return null;
+    }
+
     public static boolean unfiledChats() {
         return false;
     }
@@ -242,6 +254,7 @@ public final class AppliedPatches {
         add(applied, hidePromotions(), hidePromotionsName(), hidePromotionsDescription());
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
+        add(applied, startFolder(), startFolderName(), startFolderDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
         add(applied, raiseFolderLimit(), raiseFolderLimitName(), raiseFolderLimitDescription());
         add(applied, saveDisappearingMedia(), saveDisappearingMediaName(), saveDisappearingMediaDescription());

@@ -90,9 +90,10 @@ public final class PatchesSettingsActivityTest {
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features",
                 "Injected disappearing media title", "Injected business name", "Injected folder title",
-                "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
-                "Hide More screen items", "Injected online status title", "Disable analytics",
-                "Injected update prompts title", "Injected secondary device title", PLUS_TITLE), titles);
+                "Injected start folder title", "Injected folder limit title", "Hide ads", "Injected promotions title",
+                "Hide navigation buttons", "Hide More screen items", "Injected online status title",
+                "Disable analytics", "Injected update prompts title", "Injected secondary device title", PLUS_TITLE),
+                titles);
     }
 
     @Test
@@ -171,6 +172,48 @@ public final class PatchesSettingsActivityTest {
         ShadowLooper.idleMainLooper();
 
         Assert.assertEquals(RESTART_TITLE, latestDialogTitle());
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void showStartFolderDescriptionInSettingsRow() {
+        List<String> texts = shownTexts();
+
+        int titleIndex = texts.indexOf("Injected start folder title");
+        Assert.assertEquals("Opens Chats in the selected folder.", texts.get(titleIndex + 1));
+    }
+
+    @Test
+    @Config(shadows = { EveryPatchApplied.class, StartFolderTest.HostFolderAccess.class },
+            instrumentedPackages = "app.hxreborn.extension.viber")
+    public void askForRestartAfterChangingStartFolder() {
+        AlertDialog picker = openStartFolderPicker();
+
+        picker.getListView().performItemClick(null, 1, 1);
+
+        Assert.assertEquals("Unread", PatchSettings.startFolder());
+        Assert.assertEquals(RESTART_TITLE, latestDialogTitle());
+    }
+
+    @Test
+    @Config(shadows = { EveryPatchApplied.class, StartFolderTest.HostFolderAccess.class },
+            instrumentedPackages = "app.hxreborn.extension.viber")
+    public void dismissUnchangedStartFolderWithoutRestartPrompt() {
+        AlertDialog picker = openStartFolderPicker();
+
+        picker.getListView().performItemClick(null, 0, 0);
+
+        Assert.assertFalse(picker.isShowing());
+        Assert.assertNotEquals(RESTART_TITLE, latestDialogTitle());
+    }
+
+    private static AlertDialog openStartFolderPicker() {
+        PatchSettings.initialize(RuntimeEnvironment.getApplication());
+        PatchSettings.setStartFolder("All");
+        StartFolder.initialIndex(Arrays.asList("All", "Unread"), -1, new Object());
+        PatchesSettingsActivity activity = Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get();
+        clickableParent(findText(activity.getWindow().getDecorView(), "Injected start folder title")).performClick();
+        return (AlertDialog) ShadowDialog.getLatestDialog();
     }
 
     private static AlertDialog openBusinessChatPicker() {
@@ -324,6 +367,21 @@ public final class PatchesSettingsActivityTest {
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class EveryPatchApplied {
+
+        @Implementation
+        protected static boolean startFolder() {
+            return true;
+        }
+
+        @Implementation
+        protected static String startFolderName() {
+            return "Injected start folder title";
+        }
+
+        @Implementation
+        protected static String startFolderDescription() {
+            return "Opens Chats in the selected folder.";
+        }
 
         @Implementation
         protected static boolean unfiledChats() {

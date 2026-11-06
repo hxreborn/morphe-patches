@@ -37,6 +37,8 @@ public final class PatchSettings {
 
     static final String DISABLED_KEY_PREFIX = "hx_disabled_";
 
+    private static final String START_FOLDER = "start_folder";
+
     private static final String SELECTED_BUSINESS_CHATS = "selected_business_chats";
 
     private static final int RAISED_FOLDER_LIMIT = 10;
@@ -144,6 +146,16 @@ public final class PatchSettings {
 
     public static int folderLimit(int limit) {
         return raiseFolderLimit() ? Math.max(limit, RAISED_FOLDER_LIMIT) : limit;
+    }
+
+    static String startFolder() {
+        return (preferences != null) ? preferences.getString(START_FOLDER, "") : "";
+    }
+
+    static void setStartFolder(String folderId) {
+        if (preferences != null) {
+            preferences.edit().putString(START_FOLDER, folderId).commit();
+        }
     }
 
     static Set<String> selectedBusinessChats() {

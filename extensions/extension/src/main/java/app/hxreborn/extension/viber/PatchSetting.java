@@ -28,8 +28,8 @@ enum PatchSetting {
     DISABLE_AI_FEATURES("Chats", "Disable AI features", true),
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", false),
     FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", true), UNFILED_CHATS("Folders", "unfiledChats", true),
-    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", false), HIDE_ADS("Ads", "Hide ads", false),
-    HIDE_PROMOTIONS("Ads", "hidePromotions", true),
+    START_FOLDER("Folders", "startFolder", true, true), RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", false),
+    HIDE_ADS("Ads", "Hide ads", false), HIDE_PROMOTIONS("Ads", "hidePromotions", true),
     HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", true),
     HIDE_MORE_ITEMS("Navigation", "Hide More screen items", false),
     REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", false),
@@ -43,7 +43,14 @@ enum PatchSetting {
 
     final boolean restart;
 
+    final boolean choice;
+
     PatchSetting(String section, String key, boolean restart) {
+        this(section, key, restart, false);
+    }
+
+    PatchSetting(String section, String key, boolean restart, boolean choice) {
+        this.choice = choice;
         this.section = section;
         this.key = key;
         this.restart = restart;
@@ -53,6 +60,7 @@ enum PatchSetting {
         return switch (this) {
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsName();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
+            case START_FOLDER -> AppliedPatches.startFolderName();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsName();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitName();
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaName();
@@ -75,6 +83,7 @@ enum PatchSetting {
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesDescription();
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaDescription();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsDescription();
+            case START_FOLDER -> AppliedPatches.startFolderDescription();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsDescription();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitDescription();
             case HIDE_ADS -> AppliedPatches.hideAdsDescription();
@@ -93,6 +102,7 @@ enum PatchSetting {
         return switch (this) {
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPayments();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
+            case START_FOLDER -> AppliedPatches.startFolder();
             case UNFILED_CHATS -> AppliedPatches.unfiledChats();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimit();
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMedia();

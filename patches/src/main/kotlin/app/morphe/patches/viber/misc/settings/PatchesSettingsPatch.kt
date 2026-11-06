@@ -91,6 +91,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 "disable_update_prompts" to "update_disabled",
                 "link_as_secondary_device" to "devices",
                 "raise_folder_limit" to "create_new_folder",
+                "start_folder" to "drive_file_move",
                 "save_disappearing_media" to "download",
                 "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "arrow_back",
                 "expand" to "expand_more",

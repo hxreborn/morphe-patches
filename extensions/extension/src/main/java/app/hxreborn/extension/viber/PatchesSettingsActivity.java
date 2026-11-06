@@ -20,6 +20,8 @@
  */
 package app.hxreborn.extension.viber;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -151,7 +153,7 @@ public final class PatchesSettingsActivity extends Activity {
                 section = setting.section;
                 card = this.rows.card();
             }
-            addSwitch(card, setting);
+            addSetting(card, setting);
         }
         if (card != null) {
             addSection(column, section, card);
@@ -169,7 +171,12 @@ public final class PatchesSettingsActivity extends Activity {
         return column;
     }
 
-    private void addSwitch(LinearLayout card, PatchSetting setting) {
+    private void addSetting(LinearLayout card, PatchSetting setting) {
+        if (setting.choice) {
+            this.rows.actionRow(card, setting.icon(), setting.title(), setting.description(),
+                    () -> showStartFolderSelection(setting));
+            return;
+        }
         this.rows.switchRow(card, setting, PatchSettings.isEnabled(setting.key), (button, enabled) -> {
             PatchSettings.setEnabled(setting.key, enabled);
             if (setting.restart) {
@@ -180,6 +187,31 @@ public final class PatchesSettingsActivity extends Activity {
             this.rows.actionRow(card, "hx_viber_ic_select_business_chats", "Business chats",
                     "Choose chats to filter after reading.", this.businessChatSelection::show);
         }
+    }
+
+    private void showStartFolderSelection(PatchSetting setting) {
+        List<Object> choices = StartFolder.folders();
+        if (choices.isEmpty()) {
+            showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle(setting.title())
+                .setMessage("Open Chats to load folders, then try again.")
+                .setPositiveButton("OK", null));
+            return;
+        }
+        String[] names = new String[choices.size()];
+        for (int index = 0; index < choices.size(); index++) {
+            names[index] = StartFolder.folderTitle(choices.get(index), getResources());
+        }
+        showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle(setting.title())
+            .setSingleChoiceItems(names, StartFolder.savedFolderIndexOrAll(), (dialog, index) -> {
+                String folderId = StartFolder.folderId(choices.get(index));
+                boolean changed = !folderId.equals(PatchSettings.startFolder());
+                PatchSettings.setStartFolder(folderId);
+                dialog.dismiss();
+                if (changed && setting.restart) {
+                    confirmRestart();
+                }
+            })
+            .setNegativeButton("Cancel", null));
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {
