@@ -35,6 +35,14 @@ dependencies {
 tasks {
     jar {
         exclude("ar/com/hjg/pngj/pixels/ImageLine*.class")
+        exclude(
+            "com/google/gson/**",
+            "META-INF/maven/com.google.code.gson/**",
+            "META-INF/proguard/gson.pro",
+            "app/morphe/util/PatchListGeneratorKt*.class",
+            "app/morphe/util/JsonPatch*.class",
+            "app/morphe/util/JsonCompatibility*.class",
+        )
         exclude("LICENSE.txt", "NOTICE.txt")
         from(rootProject.file("LICENSE"))
         from(rootProject.file("NOTICE"))
