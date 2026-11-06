@@ -102,6 +102,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean raiseFolderLimit() {
+        return false;
+    }
+
+    public static String raiseFolderLimitName() {
+        return null;
+    }
+
+    public static String raiseFolderLimitDescription() {
+        return null;
+    }
+
     public static boolean filterBusinessChats() {
         return false;
     }
@@ -207,6 +219,7 @@ public final class AppliedPatches {
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
+        add(applied, raiseFolderLimit(), raiseFolderLimitName(), raiseFolderLimitDescription());
         add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
         add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());

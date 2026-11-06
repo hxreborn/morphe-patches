@@ -41,6 +41,12 @@ public class PatchSettingsTest {
 
     private static final long LAST_CHANGE_TIME = 1_793_917_000_000L;
 
+    private static final int SERVER_FOLDER_LIMIT = 5;
+
+    private static final int RAISED_FOLDER_LIMIT = 10;
+
+    private static final int HIGHER_SERVER_FOLDER_LIMIT = 12;
+
     @Before
     public void initializePreferences() {
         PatchSettings.initialize(RuntimeEnvironment.getApplication());
@@ -186,6 +192,40 @@ public class PatchSettingsTest {
     @Test
     public void keepServerDisabledUpdatePromptOff() {
         Assert.assertFalse(PatchSettings.allowUpdatePrompt(false));
+    }
+
+    @Test
+    public void keepServerFolderLimitWithoutAppliedPatch() {
+        Assert.assertEquals(SERVER_FOLDER_LIMIT, PatchSettings.folderLimit(SERVER_FOLDER_LIMIT));
+    }
+
+    @Test
+    @Config(shadows = AppliedFolderLimit.class)
+    public void raiseFolderLimitWithAppliedPatch() {
+        Assert.assertEquals(RAISED_FOLDER_LIMIT, PatchSettings.folderLimit(SERVER_FOLDER_LIMIT));
+    }
+
+    @Test
+    @Config(shadows = AppliedFolderLimit.class)
+    public void keepServerFolderLimitWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.RAISE_FOLDER_LIMIT.key, false);
+        Assert.assertEquals(SERVER_FOLDER_LIMIT, PatchSettings.folderLimit(SERVER_FOLDER_LIMIT));
+    }
+
+    @Test
+    @Config(shadows = AppliedFolderLimit.class)
+    public void keepHigherServerFolderLimit() {
+        Assert.assertEquals(HIGHER_SERVER_FOLDER_LIMIT, PatchSettings.folderLimit(HIGHER_SERVER_FOLDER_LIMIT));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedFolderLimit {
+
+        @Implementation
+        protected static boolean raiseFolderLimit() {
+            return true;
+        }
+
     }
 
     @Implements(AppliedPatches.class)

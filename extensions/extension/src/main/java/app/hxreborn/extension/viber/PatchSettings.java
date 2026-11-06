@@ -37,6 +37,8 @@ public final class PatchSettings {
 
     private static final String SELECTED_BUSINESS_CHATS = "selected_business_chats";
 
+    private static final int RAISED_FOLDER_LIMIT = 10;
+
     private static SharedPreferences preferences;
 
     private PatchSettings() {
@@ -116,6 +118,14 @@ public final class PatchSettings {
 
     public static boolean unfiledChats() {
         return AppliedPatches.unfiledChats() && isEnabled(PatchSetting.UNFILED_CHATS.key);
+    }
+
+    public static boolean raiseFolderLimit() {
+        return AppliedPatches.raiseFolderLimit() && isEnabled(PatchSetting.RAISE_FOLDER_LIMIT.key);
+    }
+
+    public static int folderLimit(int limit) {
+        return raiseFolderLimit() ? Math.max(limit, RAISED_FOLDER_LIMIT) : limit;
     }
 
     static Set<String> selectedBusinessChats() {

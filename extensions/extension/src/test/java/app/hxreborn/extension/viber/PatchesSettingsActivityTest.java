@@ -69,9 +69,9 @@ public final class PatchesSettingsActivityTest {
         }
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title",
-                "Hide ads", "Injected promotions title", "Hide More screen items", "Hide navigation buttons",
-                "Injected business name", "Injected online status title", "Disable analytics",
-                "Injected update prompts title", PLUS_TITLE), titles);
+                "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide More screen items",
+                "Hide navigation buttons", "Injected business name", "Injected online status title",
+                "Disable analytics", "Injected update prompts title", PLUS_TITLE), titles);
     }
 
     @Test
@@ -320,6 +320,16 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String disableAnalyticsName() {
             return "Disable analytics";
+        }
+
+        @Implementation
+        protected static boolean raiseFolderLimit() {
+            return true;
+        }
+
+        @Implementation
+        protected static String raiseFolderLimitName() {
+            return "Injected folder limit title";
         }
 
         @Implementation

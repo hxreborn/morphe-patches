@@ -27,6 +27,7 @@ enum PatchSetting {
     REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", "Removes send-money actions.", true),
     DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
     UNFILED_CHATS("Chats", "unfiledChats", "Shows chats outside your folders.", true),
+    RAISE_FOLDER_LIMIT("Chats", "raiseFolderLimit", "Allows up to 10 folders.", false),
     HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
     HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promo banners.", true),
     HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
@@ -58,6 +59,7 @@ enum PatchSetting {
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsName();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsName();
+            case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitName();
             case HIDE_ADS -> AppliedPatches.hideAdsName();
             case HIDE_PROMOTIONS -> AppliedPatches.hidePromotionsName();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
@@ -75,6 +77,7 @@ enum PatchSetting {
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPayments();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
             case UNFILED_CHATS -> AppliedPatches.unfiledChats();
+            case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimit();
             case HIDE_ADS -> AppliedPatches.hideAds();
             case HIDE_PROMOTIONS -> AppliedPatches.hidePromotions();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
