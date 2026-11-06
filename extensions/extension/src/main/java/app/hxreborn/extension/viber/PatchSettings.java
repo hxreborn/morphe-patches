@@ -53,7 +53,8 @@ public final class PatchSettings {
     }
 
     static boolean isEnabled(String key) {
-        return preferences == null || preferences.getBoolean(key, true);
+        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key);
+        return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
     static void setEnabled(String key, boolean enabled) {
@@ -110,6 +111,10 @@ public final class PatchSettings {
 
     public static long lastOnlineChangeTime(long lastChanged) {
         return removeOnlineStatusLimit() ? 0L : lastChanged;
+    }
+
+    public static boolean disappearingMediaPrivacy() {
+        return AppliedPatches.disappearingMediaPrivacy() && isEnabled(PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key);
     }
 
     public static boolean saveDisappearingMedia() {

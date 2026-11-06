@@ -34,6 +34,7 @@ enum PatchSetting {
     HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", true),
     HIDE_MORE_ITEMS("Navigation", "Hide More screen items", false),
     REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", false),
+    DISAPPEARING_MEDIA_PRIVACY("Privacy", "disappearingMediaPrivacy", false),
     DISABLE_ANALYTICS("Privacy", "Disable analytics", true),
     DISABLE_UPDATE_PROMPTS("App", "disableUpdatePrompts", false),
     LINK_AS_SECONDARY_DEVICE("App", "linkAsSecondaryDevice", true), UNLOCK_VIBER_PLUS("App", "Unlock Viber Plus", true);
@@ -66,6 +67,7 @@ enum PatchSetting {
             case START_FOLDER -> AppliedPatches.startFolderName();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsName();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitName();
+            case DISAPPEARING_MEDIA_PRIVACY -> AppliedPatches.disappearingMediaPrivacyName();
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaName();
             case HIDE_ADS -> AppliedPatches.hideAdsName();
             case HIDE_PROMOTIONS -> AppliedPatches.hidePromotionsName();
@@ -86,6 +88,11 @@ enum PatchSetting {
             case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBannerDescription();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsDescription();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesDescription();
+            case DISAPPEARING_MEDIA_PRIVACY -> {
+                String description = AppliedPatches.disappearingMediaPrivacyDescription();
+                int sentenceEnd = description.indexOf('.');
+                yield (sentenceEnd < 0) ? description : description.substring(0, sentenceEnd + 1);
+            }
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaDescription();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsDescription();
             case START_FOLDER -> AppliedPatches.startFolderDescription();
@@ -112,6 +119,7 @@ enum PatchSetting {
             case START_FOLDER -> AppliedPatches.startFolder();
             case UNFILED_CHATS -> AppliedPatches.unfiledChats();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimit();
+            case DISAPPEARING_MEDIA_PRIVACY -> AppliedPatches.disappearingMediaPrivacy();
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMedia();
             case HIDE_ADS -> AppliedPatches.hideAds();
             case HIDE_PROMOTIONS -> AppliedPatches.hidePromotions();

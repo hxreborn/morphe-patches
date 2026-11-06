@@ -95,6 +95,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 "raise_folder_limit" to "create_new_folder",
                 "start_folder" to "drive_file_move",
                 "save_disappearing_media" to "download",
+                "disappearing_media_privacy" to "tracking",
                 "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "arrow_back",
                 "expand" to "expand_more",
             ).forEach { (target, source) ->

@@ -162,6 +162,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean disappearingMediaPrivacy() {
+        return false;
+    }
+
+    public static String disappearingMediaPrivacyName() {
+        return null;
+    }
+
+    public static String disappearingMediaPrivacyDescription() {
+        return null;
+    }
+
     public static boolean saveDisappearingMedia() {
         return false;
     }
@@ -284,6 +296,7 @@ public final class AppliedPatches {
         add(applied, startFolder(), startFolderName(), startFolderDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
         add(applied, raiseFolderLimit(), raiseFolderLimitName(), raiseFolderLimitDescription());
+        add(applied, disappearingMediaPrivacy(), disappearingMediaPrivacyName(), disappearingMediaPrivacyDescription());
         add(applied, saveDisappearingMedia(), saveDisappearingMediaName(), saveDisappearingMediaDescription());
         add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
         add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());

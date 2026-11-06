@@ -92,8 +92,8 @@ public final class PatchesSettingsActivityTest {
                 "Remove list gaps", "Disable AI features", "Injected disappearing media title",
                 "Injected business name", "Injected folder title", "Injected start folder title",
                 "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
-                "Hide More screen items", "Injected online status title", "Disable analytics",
-                "Injected update prompts title", "Injected secondary device title", PLUS_TITLE), titles);
+                "Hide More screen items", "Injected online status title", "Injected media privacy title",
+                "Disable analytics", "Injected update prompts title", "Injected secondary device title", PLUS_TITLE), titles);
     }
 
     @Test
@@ -181,6 +181,17 @@ public final class PatchesSettingsActivityTest {
 
         int titleIndex = texts.indexOf("Injected start folder title");
         Assert.assertEquals("Opens Chats in the selected folder.", texts.get(titleIndex + 1));
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void keepMediaPrivacyCaveatInAppliedDetails() {
+        List<String> texts = shownTexts();
+
+        int titleIndex = texts.indexOf("Injected media privacy title");
+        Assert.assertEquals("Injected media privacy description.", texts.get(titleIndex + 1));
+        Assert.assertTrue(
+                texts.contains("Injected media privacy description. Reports resume after a newer message is read."));
     }
 
     @Test
@@ -576,6 +587,21 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String raiseFolderLimitDescription() {
             return "Allows up to 10 chat folders.";
+        }
+
+        @Implementation
+        protected static boolean disappearingMediaPrivacy() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disappearingMediaPrivacyName() {
+            return "Injected media privacy title";
+        }
+
+        @Implementation
+        protected static String disappearingMediaPrivacyDescription() {
+            return "Injected media privacy description. Reports resume after a newer message is read.";
         }
 
         @Implementation
