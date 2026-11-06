@@ -246,8 +246,21 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean removeListGaps() {
+        return false;
+    }
+
+    public static String removeListGapsName() {
+        return null;
+    }
+
+    public static String removeListGapsDescription() {
+        return null;
+    }
+
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, removeListGaps(), removeListGapsName(), removeListGapsDescription());
         add(applied, disableAiFeatures(), disableAiFeaturesName(), disableAiFeaturesDescription());
         add(applied, removeChatPayments(), removeChatPaymentsName(), removeChatPaymentsDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());

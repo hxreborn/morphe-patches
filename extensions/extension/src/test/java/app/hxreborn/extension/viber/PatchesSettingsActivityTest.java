@@ -88,7 +88,7 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features",
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove list gaps", "Disable AI features",
                 "Injected disappearing media title", "Injected business name", "Injected folder title",
                 "Injected start folder title", "Injected folder limit title", "Hide ads", "Injected promotions title",
                 "Hide navigation buttons", "Hide More screen items", "Injected online status title",
@@ -367,6 +367,21 @@ public final class PatchesSettingsActivityTest {
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static final class EveryPatchApplied {
+
+        @Implementation
+        protected static boolean removeListGaps() {
+            return true;
+        }
+
+        @Implementation
+        protected static String removeListGapsName() {
+            return "Remove list gaps";
+        }
+
+        @Implementation
+        protected static String removeListGapsDescription() {
+            return "Removes list gaps and extra scrolling.";
+        }
 
         @Implementation
         protected static boolean startFolder() {

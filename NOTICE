@@ -30,8 +30,9 @@ META-INF/third-party/licenses/):
   sun.misc.Unsafe, in patches/src/main/java/app/morphe/patches/shared/misc/jiagu/zstd/. Each file keeps its
   Apache-2.0 header.
 - Material Symbols, https://github.com/google/material-design-icons, Copyright Google LLC. Icon path data in
-  patches/src/main/kotlin/app/morphe/patches/netanalyzer/shared/MaterialIcons.kt and
-  extensions/extension/src/main/java/app/hxreborn/extension/netanalyzer/MaterialIcons.java.
+  patches/src/main/kotlin/app/morphe/patches/netanalyzer/shared/MaterialIcons.kt,
+  extensions/extension/src/main/java/app/hxreborn/extension/netanalyzer/MaterialIcons.java, and
+  Viber settings drawables in patches/src/main/resources/viber/drawable/.
 - Material Components for Android, https://github.com/material-components/material-components-android,
   Copyright 2024 The Android Open Source Project. The loading indicator animation and the MaterialShapes
   outlines, morphed with androidx.graphics:graphics-shapes 1.0.1, in

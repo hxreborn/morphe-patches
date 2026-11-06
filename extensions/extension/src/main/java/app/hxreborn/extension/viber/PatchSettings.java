@@ -76,6 +76,10 @@ public final class PatchSettings {
         return AppliedPatches.disableAiFeatures() && isEnabled(PatchSetting.DISABLE_AI_FEATURES.key);
     }
 
+    public static boolean removeListGaps() {
+        return AppliedPatches.removeListGaps() && isEnabled(PatchSetting.REMOVE_LIST_GAPS.key);
+    }
+
     public static boolean hideAds() {
         return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
     }
