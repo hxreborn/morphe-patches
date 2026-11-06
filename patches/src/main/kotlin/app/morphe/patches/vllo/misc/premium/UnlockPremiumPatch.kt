@@ -48,9 +48,8 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        val allFeatures = EntitlementEnumFingerprint.matchSingle()
-            .instructionMatches.first().getInstruction<ReferenceInstruction>()
-            .getReference<FieldReference>()!!
+        val (allFeaturesWrite) = EntitlementEnumFingerprint.matchSingle().instructionMatches
+        val allFeatures = allFeaturesWrite.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
 
         premiumEntitlementCheckFingerprint(allFeatures.definingClass, allFeatures.name)
             .matchSingle().method.returnEarly(true)
