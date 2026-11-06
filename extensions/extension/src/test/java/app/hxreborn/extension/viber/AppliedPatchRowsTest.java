@@ -34,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.GraphicsMode;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.Implementation;
 
@@ -46,6 +47,37 @@ public final class AppliedPatchRowsTest {
     private static final String DESCRIPTION = "Explains the selected feature. Includes its full caveat on another line. Needs no shortened text.";
 
     private static final float EXPANDED_ROTATION = 180f;
+
+    private static final int NARROW_ROW_WIDTH_PX = 320;
+
+    private static final float LARGE_TEXT_SP = 24f;
+
+    @Test
+    @Config(sdk = { 28, 36 }, shadows = { HostIcons.class, LongPatchDescription.class })
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    public void wrapSwitchDescriptionWithoutEllipsisAtLargeTextSize() {
+        Context context = RuntimeEnvironment.getApplication();
+        SettingsRows rows = new SettingsRows(context, new SettingsStyle(context));
+        LinearLayout card = rows.card();
+        rows.switchRow(card, PatchSetting.REMOVE_CHAT_PAYMENTS, true, (button, checked) -> {
+        });
+        LinearLayout row = (LinearLayout) card.getChildAt(0);
+        LinearLayout labels = (LinearLayout) row.getChildAt(1);
+        TextView description = (TextView) labels.getChildAt(1);
+        description.setTextSize(LARGE_TEXT_SP);
+
+        card.measure(View.MeasureSpec.makeMeasureSpec(NARROW_ROW_WIDTH_PX, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        card.layout(0, 0, card.getMeasuredWidth(), card.getMeasuredHeight());
+
+        Assert.assertEquals(DESCRIPTION, description.getText().toString());
+        Assert.assertNull(description.getEllipsize());
+        Assert.assertTrue(description.getLineCount() > 1);
+        for (int line = 0; line < description.getLineCount(); line++) {
+            Assert.assertEquals(0, description.getLayout().getEllipsisCount(line));
+        }
+        Assert.assertTrue(description.getHeight() >= description.getLayout().getHeight());
+    }
 
     @Test
     public void expandDescriptionWithAccessibleState() {
@@ -103,6 +135,16 @@ public final class AppliedPatchRowsTest {
         @Implementation
         protected Drawable hostIcon(String name, int tint) {
             return new ColorDrawable(tint);
+        }
+
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class LongPatchDescription {
+
+        @Implementation
+        protected static String removeChatPaymentsDescription() {
+            return DESCRIPTION;
         }
 
     }

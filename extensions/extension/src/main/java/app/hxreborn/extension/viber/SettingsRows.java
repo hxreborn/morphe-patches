@@ -21,7 +21,6 @@
 package app.hxreborn.extension.viber;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,11 +92,7 @@ final class SettingsRows {
         toggle.setOnCheckedChangeListener(listener);
         LinearLayout row = baseRow(card, setting.icon());
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        TextView description = addTitleAndDescription(row, setting.title(), setting.description());
-        if (setting == PatchSetting.UNLOCK_VIBER_PLUS) {
-            description.setSingleLine(false);
-            description.setEllipsize(null);
-        }
+        addTitleAndDescription(row, setting.title(), setting.description());
         LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         toggleParams.setMarginStart(this.style.dp(SWITCH_START_MARGIN_DP));
@@ -188,17 +183,16 @@ final class SettingsRows {
         return row;
     }
 
-    private TextView addTitleAndDescription(LinearLayout row, String title, String description) {
+    private void addTitleAndDescription(LinearLayout row, String title, String description) {
         LinearLayout labels = new LinearLayout(this.context);
         labels.setOrientation(LinearLayout.VERTICAL);
         row.addView(labels, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         labels.addView(this.style.text(title, SettingsStyle.ROW_TITLE_SP, this.style.primaryText, this.style.medium));
         TextView body = this.style.text(description, SettingsStyle.BODY_SP, this.style.secondaryText, null);
-        body.setSingleLine(true);
-        body.setEllipsize(TextUtils.TruncateAt.END);
+        body.setSingleLine(false);
+        body.setEllipsize(null);
         body.setPadding(0, this.style.dp(DESCRIPTION_TOP_PADDING_DP), 0, 0);
         labels.addView(body);
-        return body;
     }
 
     private void divider(LinearLayout card) {
