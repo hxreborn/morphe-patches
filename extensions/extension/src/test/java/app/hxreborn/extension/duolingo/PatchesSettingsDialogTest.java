@@ -43,6 +43,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowDialog;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = FakeHostResources.class)
 public final class PatchesSettingsDialogTest {
 
     private Activity activity;

@@ -13,11 +13,13 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -36,6 +38,7 @@ internal const val PATCH_SETTINGS_CLASS = "${DUOLINGO_EXTENSION_PACKAGE}PatchSet
 private const val APPLIED_PATCHES_CLASS = "${DUOLINGO_EXTENSION_PACKAGE}AppliedPatches;"
 private const val PATCH_CONTEXT_CLASS = "${DUOLINGO_EXTENSION_PACKAGE}PatchContext;"
 private const val PATCHES_MENU_CLASS = "${DUOLINGO_EXTENSION_PACKAGE}PatchesMenu;"
+private const val SETTINGS_STYLE_CLASS = "${DUOLINGO_EXTENSION_PACKAGE}SettingsStyle;"
 private const val APPLICATION_CLASS = "Lcom/duolingo/core/DuoApp;"
 private const val PATCHES_ROW_TAG = "hxrebornPatchesRowItem"
 private const val PATCHES_SECTION_METHOD = "hxrebornPatchesSection"
@@ -173,10 +176,33 @@ internal val patchesSettingsPatch = bytecodePatch {
     execute {
         attachPatchContext()
         try {
+            replaceSettingsStyleStubs()
             addPatchesSettingsSection()
         } catch (ex: PatchException) {
             logger.warning("Skipped the hxreborn patches section: ${ex.message}")
         }
+    }
+}
+
+private fun BytecodePatchContext.replaceSettingsStyleStubs() {
+    with(mutableClassDefBy(SETTINGS_STYLE_CLASS)) {
+        replaceResourceIdStubs(
+            ResourceType.COLOR,
+            mapOf(
+                "snowColor" to "juicySnow",
+                "polarColor" to "juicyPolar",
+                "swanColor" to "juicySwan",
+                "eelColor" to "juicyEel",
+                "wolfColor" to "juicyWolf",
+                "macawColor" to "juicyMacaw",
+                "whaleColor" to "juicyWhale",
+            ),
+        )
+        replaceResourceIdStubs(
+            ResourceType.FONT,
+            mapOf("boldFont" to "din_next_for_duolingo_bold", "regularFont" to "din_next_for_duolingo"),
+        )
+        replaceResourceIdStubs(ResourceType.DRAWABLE, mapOf("backIconDrawable" to "ic_arrow_back_black_24dp"))
     }
 }
 

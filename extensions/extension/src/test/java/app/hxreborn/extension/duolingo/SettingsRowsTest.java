@@ -34,9 +34,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = FakeHostResources.class)
 public final class SettingsRowsTest {
 
     private static final String KEY = AppliedPatches.UNLOCK_PREMIUM;
