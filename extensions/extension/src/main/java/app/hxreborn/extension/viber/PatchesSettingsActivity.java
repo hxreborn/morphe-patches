@@ -177,8 +177,8 @@ public final class PatchesSettingsActivity extends Activity {
             }
         });
         if (setting == PatchSetting.FILTER_BUSINESS_CHATS) {
-            this.rows.actionRow(card, setting.icon(), "Business chats", "Choose chats to filter after reading.",
-                    this.businessChatSelection::show);
+            this.rows.actionRow(card, "hx_viber_ic_select_business_chats", "Business chats",
+                    "Choose chats to filter after reading.", this.businessChatSelection::show);
         }
     }
 

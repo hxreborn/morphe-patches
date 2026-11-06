@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
@@ -76,29 +77,26 @@ internal val patchesSettingsPatch = bytecodePatch {
                 activity.setAttribute("android:theme", "@style/Theme.Viber.NoActionBar")
                 application.appendChild(activity)
             }
-            get("res/drawable/hx_viber_ic_expand.xml").writeText("""
-                <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
-                    <path android:fillColor="@android:color/transparent" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:pathData="M6,9 L12,15 L18,9" />
-                </vector>
-            """.trimIndent())
             mapOf(
-                "remove_chat_payments" to "payments",
-                "disable_ai_features" to "ai",
-                "hide_ads" to "promotions", "hide_more_items" to "more_items",
+                "remove_chat_payments" to "money_off",
+                "disable_ai_features" to "auto_awesome",
+                "hide_ads" to "ad_off", "hide_more_items" to "more_items",
                 "hide_navigation_buttons" to "home_tab", "disable_analytics" to "tracking",
                 "unlock_viber_plus" to "premium",
-                "unfiled_chats" to "home_tab",
-                "filter_business_chats" to "more_items",
-                "remove_online_status_limit" to "tracking",
+                "unfiled_chats" to "folder_off",
+                "filter_business_chats" to "business_messages",
+                "select_business_chats" to "checklist",
+                "remove_online_status_limit" to "timer_off",
                 "hide_promotions" to "promotions",
-                "disable_update_prompts" to "updates",
-                "raise_folder_limit" to "home_tab",
-                "save_disappearing_media" to "images",
-                "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "back",
+                "disable_update_prompts" to "update_disabled",
+                "raise_folder_limit" to "create_new_folder",
+                "save_disappearing_media" to "download",
+                "reset" to "reset", "info" to "info", "patches" to "patches", "back" to "arrow_back",
+                "expand" to "expand_more",
             ).forEach { (target, source) ->
                 val stream = SettingsResources::class.java.getResourceAsStream("/viber/drawable/hx_viber_ic_$source.xml")
                     ?: SettingsResources::class.java.getResourceAsStream("/patreon/drawable/hx_patreon_ic_$source.xml")
-                    ?: SettingsResources::class.java.getResourceAsStream("/aliexpress/drawable/hx_aliexpress_ic_$source.xml")!!
+                    ?: throw PatchException("No hx_viber_ic_$source or hx_patreon_ic_$source drawable in the bundle")
                 stream.use { get("res/drawable/hx_viber_ic_$target.xml").outputStream().use(it::copyTo) }
             }
         }
