@@ -356,6 +356,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String removeChatPaymentsDescription() {
+            return "Removes payment actions from chat menus.";
+        }
+
+        @Implementation
         protected static boolean hideAds() {
             return true;
         }

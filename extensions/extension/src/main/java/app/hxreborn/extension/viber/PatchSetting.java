@@ -24,7 +24,7 @@ import java.util.Locale;
 
 enum PatchSetting {
 
-    REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", "Removes send-money actions.", true),
+    REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", AppliedPatches.removeChatPaymentsDescription(), true),
     DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", "Allows saving disappearing media.", false),
     FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", "Removes selected chats once read.", true),
