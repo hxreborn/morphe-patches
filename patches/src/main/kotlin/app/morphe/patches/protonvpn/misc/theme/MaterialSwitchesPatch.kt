@@ -27,6 +27,7 @@ import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.ClassDef
@@ -83,6 +84,10 @@ private fun BytecodePatchContext.addDrawIconMethod() {
         }
     }
 
+    mutableClassDefBy(SWITCH_THUMB_ICON_CLASS).replaceResourceIdStubs(
+        ResourceType.ATTR,
+        mapOf("thumbColorAttribute" to "proton_text_inverted"),
+    )
     mutableClassDefBy(SWITCH_THUMB_ICON_CLASS).replaceStub(
         "drawIcon",
         13,
