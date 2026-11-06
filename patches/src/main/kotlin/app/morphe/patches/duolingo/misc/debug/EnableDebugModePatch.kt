@@ -34,7 +34,7 @@ val enableDebugModePatch: BytecodePatch = bytecodePatch(
     dependsOn(disableLoginIntegrityPatch, patchesSettingsPatch)
 
     execute {
-        markPatchApplied("enableDebugMode", enableDebugModePatch)
+        markPatchApplied("enableDebugMode", enableDebugModePatch, withDescription = false)
 
         val (isDebugRead, _, _) = BuildTargetFingerprint.instructionMatches
         val isDebugField = isDebugRead.instruction.getReference<FieldReference>()!!

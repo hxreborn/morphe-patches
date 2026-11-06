@@ -83,8 +83,15 @@ internal fun BytecodePatchContext.markPatchInstalled(settingKey: String) {
         }
 }
 
-internal fun BytecodePatchContext.markPatchMetadata(methodName: String, patch: BytecodePatch) {
+internal fun BytecodePatchContext.markPatchMetadata(
+    methodName: String,
+    patch: BytecodePatch,
+    withDescription: Boolean = false,
+) {
     val methods = mutableClassDefBy(PATCH_PANEL_CLASS).methods
     methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
+    if (withDescription) {
+        methods.single { it.name == methodName + "Description" }
+            .returnEarly(escapeString(checkNotNull(patch.description)))
+    }
 }

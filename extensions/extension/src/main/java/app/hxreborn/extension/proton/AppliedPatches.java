@@ -182,15 +182,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String accentColorDescription() {
-        return null;
-    }
-
     public static String amoledDarkThemeName() {
-        return null;
-    }
-
-    public static String amoledDarkThemeDescription() {
         return null;
     }
 
@@ -198,15 +190,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String hideUpgradePromotionsDescription() {
-        return null;
-    }
-
     public static String materialSwitchesName() {
-        return null;
-    }
-
-    public static String materialSwitchesDescription() {
         return null;
     }
 
@@ -214,15 +198,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String loadingIndicatorDescription() {
-        return null;
-    }
-
     public static String hideLayoutComponentsName() {
-        return null;
-    }
-
-    public static String hideLayoutComponentsDescription() {
         return null;
     }
 
@@ -238,15 +214,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String hidePromotionalMessagesDescription() {
-        return null;
-    }
-
     public static String removeSentFromSignatureName() {
-        return null;
-    }
-
-    public static String removeSentFromSignatureDescription() {
         return null;
     }
 
@@ -254,15 +222,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String removeFreeAccountsLimitDescription() {
-        return null;
-    }
-
     public static String scheduledDeletionName() {
-        return null;
-    }
-
-    public static String scheduledDeletionDescription() {
         return null;
     }
 
@@ -270,15 +230,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String unlockCustomTimePickerDescription() {
-        return null;
-    }
-
     public static String swipeToSwitchAccountsName() {
-        return null;
-    }
-
-    public static String swipeToSwitchAccountsDescription() {
         return null;
     }
 
@@ -286,15 +238,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String removeServerChangeDelayDescription() {
-        return null;
-    }
-
     public static String unlockSplitTunnelingName() {
-        return null;
-    }
-
-    public static String unlockSplitTunnelingDescription() {
         return null;
     }
 
@@ -302,15 +246,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String unlockLanConnectionsDescription() {
-        return null;
-    }
-
     public static String unlockCustomDnsName() {
-        return null;
-    }
-
-    public static String unlockCustomDnsDescription() {
         return null;
     }
 
@@ -318,15 +254,7 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String unlockNetShieldDescription() {
-        return null;
-    }
-
     public static String unlockConnectionPreferencesName() {
-        return null;
-    }
-
-    public static String unlockConnectionPreferencesDescription() {
         return null;
     }
 
@@ -334,23 +262,11 @@ public final class AppliedPatches {
         return null;
     }
 
-    public static String unlockProfilesDescription() {
-        return null;
-    }
-
     public static String showFreeServerLocationsName() {
         return null;
     }
 
-    public static String showFreeServerLocationsDescription() {
-        return null;
-    }
-
     public static String disableTelemetryName() {
-        return null;
-    }
-
-    public static String disableTelemetryDescription() {
         return null;
     }
 

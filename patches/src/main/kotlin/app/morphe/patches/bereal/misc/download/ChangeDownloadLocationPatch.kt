@@ -29,7 +29,7 @@ val changeDownloadLocationPatch: BytecodePatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        markFeaturePatched(EXTENSION_CLASS, changeDownloadLocationPatch)
+        markFeaturePatched(EXTENSION_CLASS)
 
         val match = MediaStoreInsertFingerprint.matchSingle()
         val insertIndex = match.instructionMatch(Opcode.INVOKE_VIRTUAL).index

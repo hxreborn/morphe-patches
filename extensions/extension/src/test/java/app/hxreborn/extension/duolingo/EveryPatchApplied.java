@@ -52,11 +52,6 @@ public final class EveryPatchApplied {
     }
 
     @Implementation
-    public static String unlockPremiumDescription() {
-        return "Full premium description.";
-    }
-
-    @Implementation
     public static String disableDynamicAppIconName() {
         return "Disable dynamic app icon";
     }
@@ -69,11 +64,6 @@ public final class EveryPatchApplied {
     @Implementation
     public static String enableDebugModeName() {
         return "Enable debug mode";
-    }
-
-    @Implementation
-    public static String enableDebugModeDescription() {
-        return "Shows the debug menu and debug button. Turn it on in the patches menu.";
     }
 
     @Implementation

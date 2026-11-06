@@ -55,11 +55,17 @@ private const val ROW_COMPOSER_PARAMETER = 6
 
 private val logger = Logger.getLogger("app.morphe.patches.patreon.misc.settings")
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String, patch: BytecodePatch) {
+internal fun BytecodePatchContext.markFeaturePatched(
+    featureClass: String,
+    patch: BytecodePatch,
+    withDescription: Boolean = true,
+) {
     val methods = mutableClassDefBy(featureClass).methods
     methods.single { it.name == "isPatched" }.returnEarly(true)
     methods.single { it.name == "patchName" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
+    if (withDescription) {
+        methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
+    }
 }
 
 private fun MethodReference.isSettingsNavigationRow() =

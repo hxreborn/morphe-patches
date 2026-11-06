@@ -28,7 +28,7 @@ val disableTypingIndicatorPatch: BytecodePatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        markFeaturePatched(EXTENSION_CLASS, disableTypingIndicatorPatch)
+        markFeaturePatched(EXTENSION_CLASS, disableTypingIndicatorPatch, withDescription = false)
 
         val match = SendTypingStateFingerprint.matchSingle()
         val moveResult = match.instructionMatch(Opcode.MOVE_RESULT).index

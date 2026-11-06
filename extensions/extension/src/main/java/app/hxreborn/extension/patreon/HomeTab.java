@@ -40,8 +40,4 @@ public final class HomeTab {
         return null;
     }
 
-    public static String patchDescription() {
-        return null;
-    }
-
 }

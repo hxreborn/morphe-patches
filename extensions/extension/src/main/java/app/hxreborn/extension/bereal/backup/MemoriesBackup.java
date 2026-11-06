@@ -81,8 +81,4 @@ public final class MemoriesBackup {
         return null;
     }
 
-    public static String patchDescription() {
-        return null;
-    }
-
 }

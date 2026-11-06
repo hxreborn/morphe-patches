@@ -155,10 +155,6 @@ public final class PatchPanel {
         return null;
     }
 
-    public static String traceAiRequestsDescription() {
-        return null;
-    }
-
     public static String showAiProgressName() {
         return null;
     }
@@ -171,23 +167,11 @@ public final class PatchPanel {
         return null;
     }
 
-    public static String hideShareOptionsDescription() {
-        return null;
-    }
-
     public static String hideAdsName() {
         return null;
     }
 
-    public static String hideAdsDescription() {
-        return null;
-    }
-
     public static String unlockPremiumName() {
-        return null;
-    }
-
-    public static String unlockPremiumDescription() {
         return null;
     }
 

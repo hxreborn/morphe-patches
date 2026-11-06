@@ -51,8 +51,4 @@ public final class SponsoredPosts {
         return null;
     }
 
-    public static String patchDescription() {
-        return null;
-    }
-
 }

@@ -51,7 +51,7 @@ val hideNavigationBarOnScrollPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("hideNavigationBarOnScroll", hideNavigationBarOnScrollPatch)
+        markPatchMetadata("hideNavigationBarOnScroll", hideNavigationBarOnScrollPatch, withDescription = true)
         markFeaturePatched(NAVIGATION_BAR_CLASS)
         requireAppMethods(NAVIGATION_BAR_CLASS, SCROLL_HANDLER_CLASS, HIDDEN_OFFSET_CLASS)
         VelocityConstructorFingerprint.matchSingle()

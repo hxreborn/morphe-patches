@@ -40,8 +40,4 @@ public final class TypingIndicator {
         return null;
     }
 
-    public static String patchDescription() {
-        return null;
-    }
-
 }

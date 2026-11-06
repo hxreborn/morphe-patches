@@ -57,7 +57,7 @@ val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(NAVIGATION_BUTTONS_CLASS, hideNavigationButtonsPatch)
+        markFeaturePatched(NAVIGATION_BUTTONS_CLASS, hideNavigationButtonsPatch, withDescription = false)
 
         val defaultHiddenTabs = hideTabOptions.filterValues { it.value == true }.keys
         mutableClassDefBy(NAVIGATION_BUTTONS_CLASS).methods.single { it.name == "defaultHiddenTabs" }

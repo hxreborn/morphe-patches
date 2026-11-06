@@ -384,12 +384,4 @@ public final class DownloadFolder {
         return saved.startsWith(TREE_SCHEME) ? Uri.parse(saved) : null;
     }
 
-    public static String patchName() {
-        return null;
-    }
-
-    public static String patchDescription() {
-        return null;
-    }
-
 }

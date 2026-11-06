@@ -130,9 +130,18 @@ internal val settingsPatch = bytecodePatch {
     }
 }
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String, patch: BytecodePatch) {
+internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
+    mutableClassDefBy(featureClass).methods.single { it.name == "isPatchIncluded" }.returnEarly(true)
+
+internal fun BytecodePatchContext.markFeaturePatched(
+    featureClass: String,
+    patch: BytecodePatch,
+    withDescription: Boolean = true,
+) {
+    markFeaturePatched(featureClass)
     val methods = mutableClassDefBy(featureClass).methods
-    methods.single { it.name == "isPatchIncluded" }.returnEarly(true)
     methods.single { it.name == "patchName" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
+    if (withDescription) {
+        methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
+    }
 }

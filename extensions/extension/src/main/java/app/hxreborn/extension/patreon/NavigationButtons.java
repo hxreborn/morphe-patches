@@ -91,8 +91,4 @@ public final class NavigationButtons {
         return null;
     }
 
-    public static String patchDescription() {
-        return null;
-    }
-
 }

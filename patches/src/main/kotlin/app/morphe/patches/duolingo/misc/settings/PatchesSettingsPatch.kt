@@ -55,11 +55,18 @@ internal val ICON_RESOURCES = listOf("patches", "premium", "dynamic_icon", "debu
 
 private val logger = Logger.getLogger("app.morphe.patches.duolingo.misc.settings")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) {
+internal fun BytecodePatchContext.markPatchApplied(
+    methodName: String,
+    patch: BytecodePatch,
+    withDescription: Boolean = true,
+) {
     val methods = mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
     methods.single { it.name == methodName }.returnEarly(true)
     methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
+    if (withDescription) {
+        methods.single { it.name == methodName + "Description" }
+            .returnEarly(escapeString(checkNotNull(patch.description)))
+    }
 }
 
 private fun resource(path: String) = DuolingoBundleResources::class.java.getResourceAsStream(path)

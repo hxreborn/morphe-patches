@@ -40,7 +40,7 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     dependsOn(disableLoginIntegrityPatch, patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockPremium", unlockPremiumPatch)
+        markPatchApplied("unlockPremium", unlockPremiumPatch, withDescription = false)
 
         val (subscriberLevelRead, _, hasPlusRead, isPaidWrite) = UserIsPaidFingerprint.instructionMatches
         val (subscriberLevelField, hasPlusField, isPaidField) = listOf(subscriberLevelRead, hasPlusRead, isPaidWrite)
