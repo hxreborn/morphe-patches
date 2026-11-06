@@ -1,3 +1,13 @@
+## [1.73.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.73.0-dev.1...v1.73.0-dev.2) (2026-11-06)
+
+### New Features
+
+* **BeHisabi - Unlock premium:** add unlimited wallets and PDF exports ([8341b13](https://github.com/hxreborn/morphe-patches/commit/8341b133b922205edd1fb5bf613a9bb64c241bc1))
+* **Viber - Remove list gaps:** stop scrolling past last item ([21e429f](https://github.com/hxreborn/morphe-patches/commit/21e429f3ec783c2224afda5f0f604c21c32b518f))
+* **Viber - Remove typing privacy banner:** clear message box upsell ([7b4899c](https://github.com/hxreborn/morphe-patches/commit/7b4899c9f0a00f30fb5532a2d4199dee3c662e1f))
+* **Viber - Start folder:** open chats in chosen folder ([ca64571](https://github.com/hxreborn/morphe-patches/commit/ca64571bb441df1f175887e2ac288c633896c67b)), closes [#657](https://github.com/hxreborn/morphe-patches/issues/657)
+* **Xtream Player - Full Android Auto screen:** add TV, YouTube, games ([56f67fc](https://github.com/hxreborn/morphe-patches/commit/56f67fc9edf69202b6e838d477a9f0082197a8a1)), closes [#653](https://github.com/hxreborn/morphe-patches/issues/653)
+
 ## [1.73.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.72.1-dev.1...v1.73.0-dev.1) (2026-11-06)
 
 ### Bug Fixes
