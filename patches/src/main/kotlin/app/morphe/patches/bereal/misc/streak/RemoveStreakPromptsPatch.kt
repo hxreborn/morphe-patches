@@ -31,7 +31,7 @@ val removeStreakPromptsPatch: BytecodePatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        markFeaturePatched(EXTENSION_CLASS, removeStreakPromptsPatch, withDescription = false)
+        markFeaturePatched(EXTENSION_CLASS, removeStreakPromptsPatch)
 
         listOf(
             StreakRecoveryOfferEligibleToStringFingerprint,

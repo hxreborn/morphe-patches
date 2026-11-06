@@ -47,7 +47,7 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
     dependsOn(removePairipProtectionPatch, removeAdsExtensionPatch, removeAdNetworkProvidersPatch)
 
     execute {
-        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;", removeAdsPatch, withDescription = false)
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;", removeAdsPatch)
 
         val adRequestType = AdRequestIdToStringFingerprint.matchSingle().classDef.type
         val adSelector = adSelectorFingerprint(adRequestType).matchSingle()

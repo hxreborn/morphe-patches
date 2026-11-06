@@ -136,8 +136,7 @@ internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
 internal fun BytecodePatchContext.markFeaturePatched(
     featureClass: String,
     patch: BytecodePatch,
-    withDescription: Boolean = true,
 ) {
     markFeaturePatched(featureClass)
-    fillPatchDetails(featureClass, patch, "patchName", "patchDescription".takeIf { withDescription })
+    fillPatchDetails(featureClass, patch, "patchName", "patchDescription")
 }

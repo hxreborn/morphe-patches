@@ -65,7 +65,7 @@ val backupMemoriesPatch: BytecodePatch = bytecodePatch(
     dependsOn(settingsPatch, addBackupServicePatch)
 
     execute {
-        markFeaturePatched(EXTENSION_CLASS, backupMemoriesPatch, withDescription = false)
+        markFeaturePatched(EXTENSION_CLASS, backupMemoriesPatch)
 
         RetrofitCreateFingerprint.matchSingle().method.addInstructions(
             0,

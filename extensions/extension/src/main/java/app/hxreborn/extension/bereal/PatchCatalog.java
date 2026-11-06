@@ -128,8 +128,7 @@ final class PatchCatalog {
     private static PatchGroup feed() {
         final PatchGroup group = new PatchGroup("Feed");
         if (SponsoredPosts.isPatchIncluded()) {
-            group.addAlwaysOn("ic_grid_view", SponsoredPosts.patchName(),
-                    "Removes the full-screen ad at launch and sponsored BeReals in both feeds.");
+            group.addAlwaysOn("ic_grid_view", SponsoredPosts.patchName(), SponsoredPosts.patchDescription());
         }
         if (FriendSuggestions.isPatchIncluded()) {
             group.addToggle("ic_person_2_foreground_fill", FriendSuggestions.patchName(),
@@ -137,8 +136,7 @@ final class PatchCatalog {
         }
         if (StreakPrompts.isPatchIncluded()) {
             group.addExperimentalToggle("ic_bell_slash_fill", StreakPrompts.patchName(),
-                    "Removes the offers to recover your streak and the Save your streak sheet.",
-                    PatchSettings.REMOVE_STREAK_PROMPTS);
+                    StreakPrompts.patchDescription(), PatchSettings.REMOVE_STREAK_PROMPTS);
         }
         if (Promotions.isPatchIncluded()) {
             group.addToggle("ic_rating_star_fill", Promotions.patchName(), Promotions.patchDescription(),
@@ -166,8 +164,8 @@ final class PatchCatalog {
                     PatchSettings.DISABLE_VIEW_RECEIPTS);
         }
         if (TypingIndicator.isPatchIncluded()) {
-            group.addToggle("ic_bubble_fill", TypingIndicator.patchName(),
-                    "Stops showing friends that you're typing in a chat.", PatchSettings.DISABLE_TYPING_INDICATOR);
+            group.addToggle("ic_bubble_fill", TypingIndicator.patchName(), TypingIndicator.patchDescription(),
+                    PatchSettings.DISABLE_TYPING_INDICATOR);
         }
         if (DataCollection.isPatchIncluded()) {
             group.addAlwaysOn("ic_lock_shield", DataCollection.patchName(), DataCollection.patchDescription());

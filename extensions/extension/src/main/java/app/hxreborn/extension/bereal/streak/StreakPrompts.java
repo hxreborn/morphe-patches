@@ -36,6 +36,10 @@ public final class StreakPrompts {
         return PatchSettings.REMOVE_STREAK_PROMPTS.get();
     }
 
+    public static String patchDescription() {
+        return null;
+    }
+
     public static String patchName() {
         return null;
     }

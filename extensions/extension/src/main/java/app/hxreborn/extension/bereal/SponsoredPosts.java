@@ -47,6 +47,10 @@ public final class SponsoredPosts {
         return kept;
     }
 
+    public static String patchDescription() {
+        return null;
+    }
+
     public static String patchName() {
         return null;
     }

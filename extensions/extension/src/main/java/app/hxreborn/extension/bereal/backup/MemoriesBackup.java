@@ -36,8 +36,6 @@ import app.hxreborn.extension.bereal.PatchSettings;
 @SuppressWarnings("unused")
 public final class MemoriesBackup {
 
-    private static final String DEFAULT_SUMMARY = "Saves every memory to the download folder as separate photos.";
-
     private MemoriesBackup() {
     }
 
@@ -54,12 +52,10 @@ public final class MemoriesBackup {
             Toast.makeText(context, "Restart BeReal and try again", Toast.LENGTH_LONG).show();
             return;
         }
-        if (Build.VERSION.SDK_INT >= 33 && context instanceof Activity
-                && context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ((Activity) context).requestPermissions(new String[] {Manifest.permission.POST_NOTIFICATIONS}, 0);
+        if (Build.VERSION.SDK_INT >= 33 && context instanceof Activity && context
+            .checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ((Activity) context).requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, 0);
         }
-        // The service runs either way, a denied permission only hides its notification
         context.startForegroundService(new Intent(context, BackupService.class));
     }
 
@@ -67,14 +63,18 @@ public final class MemoriesBackup {
         final String lastRun = PatchSettings.BACKUP_LAST_RUN.get();
         final String count = PatchSettings.BACKUP_LAST_COUNT.get();
         if (lastRun.isEmpty() || count.isEmpty()) {
-            return DEFAULT_SUMMARY;
+            return patchDescription();
         }
         try {
             final String date = DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(Long.parseLong(lastRun)));
             return "Last backup: " + date + ", " + count + " memories";
         } catch (NumberFormatException ex) {
-            return DEFAULT_SUMMARY;
+            return patchDescription();
         }
+    }
+
+    public static String patchDescription() {
+        return null;
     }
 
     public static String patchName() {
