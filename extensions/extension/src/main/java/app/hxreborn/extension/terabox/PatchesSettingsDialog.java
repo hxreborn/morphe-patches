@@ -143,8 +143,8 @@ final class PatchesSettingsDialog {
         addSection(column, "Home", home);
         LinearLayout videos = this.rows.card();
         addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.hideVideoRecommendationsName(),
-                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, "Removes the Recommendations grid.", "hx_terabox_ic_video",
-                false);
+                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.hideVideoRecommendationsDescription(),
+                "hx_terabox_ic_video", false);
         addSwitch(videos, AppliedPatches.unlockPremium(), AppliedPatches.unlockPremiumName(),
                 AppliedPatches.UNLOCK_PREMIUM, "Unlocks HD, 3x speed and uploads.", "hx_terabox_ic_premium", false);
         addSection(column, "Videos", videos);

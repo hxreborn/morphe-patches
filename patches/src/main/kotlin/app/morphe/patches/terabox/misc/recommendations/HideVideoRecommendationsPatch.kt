@@ -16,7 +16,7 @@ import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 @Suppress("unused")
 val hideVideoRecommendationsPatch: BytecodePatch = bytecodePatch(
     name = "Hide video recommendations",
-    description = "Removes the Recommendations grid below the video player.",
+    description = "Removes recommendations below the player.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
