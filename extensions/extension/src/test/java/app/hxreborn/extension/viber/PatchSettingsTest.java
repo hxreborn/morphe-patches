@@ -165,6 +165,39 @@ public class PatchSettingsTest {
 
     }
 
+    @Test
+    public void allowUpdatePromptWithoutAppliedPatch() {
+        Assert.assertTrue(PatchSettings.allowUpdatePrompt(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedUpdatePrompts.class)
+    public void blockUpdatePromptWithAppliedPatch() {
+        Assert.assertFalse(PatchSettings.allowUpdatePrompt(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedUpdatePrompts.class)
+    public void allowUpdatePromptWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.DISABLE_UPDATE_PROMPTS.key, false);
+        Assert.assertTrue(PatchSettings.allowUpdatePrompt(true));
+    }
+
+    @Test
+    public void keepServerDisabledUpdatePromptOff() {
+        Assert.assertFalse(PatchSettings.allowUpdatePrompt(false));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedUpdatePrompts {
+
+        @Implementation
+        protected static boolean disableUpdatePrompts() {
+            return true;
+        }
+
+    }
+
     @Implements(AppliedPatches.class)
     public static class AppliedPlus {
 

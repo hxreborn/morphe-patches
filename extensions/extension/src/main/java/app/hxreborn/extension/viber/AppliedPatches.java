@@ -150,6 +150,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean disableUpdatePrompts() {
+        return false;
+    }
+
+    public static String disableUpdatePromptsName() {
+        return null;
+    }
+
+    public static String disableUpdatePromptsDescription() {
+        return null;
+    }
+
     public static boolean spoofSignature() {
         return false;
     }
@@ -198,6 +210,7 @@ public final class AppliedPatches {
         add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
         add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
+        add(applied, disableUpdatePrompts(), disableUpdatePromptsName(), disableUpdatePromptsDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
         add(applied, unlockViberPlus(), unlockViberPlusName(), unlockViberPlusDescription());

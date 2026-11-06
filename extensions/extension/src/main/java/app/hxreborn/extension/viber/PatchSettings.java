@@ -98,6 +98,14 @@ public final class PatchSettings {
         return removeOnlineStatusLimit() ? 0L : lastChanged;
     }
 
+    public static boolean disableUpdatePrompts() {
+        return AppliedPatches.disableUpdatePrompts() && isEnabled(PatchSetting.DISABLE_UPDATE_PROMPTS.key);
+    }
+
+    public static boolean allowUpdatePrompt(boolean allowed) {
+        return allowed && !disableUpdatePrompts();
+    }
+
     public static boolean hideMoreItems() {
         return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }

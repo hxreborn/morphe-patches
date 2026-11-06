@@ -35,6 +35,7 @@ enum PatchSetting {
             "Filters selected read chats and removes inbox prompts.", true),
     REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", "Allows online status changes any time.", false),
     DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true),
+    DISABLE_UPDATE_PROMPTS("Updates", "disableUpdatePrompts", "Stops optional update dialogs.", false),
     UNLOCK_VIBER_PLUS("Viber Plus", "Unlock Viber Plus", "Unlocks icons and typing privacy.", true);
 
     final String section;
@@ -64,6 +65,7 @@ enum PatchSetting {
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsName();
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimitName();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
+            case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePromptsName();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusName();
         };
     }
@@ -80,6 +82,7 @@ enum PatchSetting {
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChats();
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimit();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalytics();
+            case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePrompts();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlus();
         };
     }

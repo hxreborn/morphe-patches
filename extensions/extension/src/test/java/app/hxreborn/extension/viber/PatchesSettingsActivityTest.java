@@ -68,11 +68,10 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(
-                Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title", "Hide ads",
-                        "Injected promotions title", "Hide More screen items", "Hide navigation buttons",
-                        "Injected business name", "Injected online status title", "Disable analytics", PLUS_TITLE),
-                titles);
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title",
+                "Hide ads", "Injected promotions title", "Hide More screen items", "Hide navigation buttons",
+                "Injected business name", "Injected online status title", "Disable analytics",
+                "Injected update prompts title", PLUS_TITLE), titles);
     }
 
     @Test
@@ -321,6 +320,16 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String disableAnalyticsName() {
             return "Disable analytics";
+        }
+
+        @Implementation
+        protected static boolean disableUpdatePrompts() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableUpdatePromptsName() {
+            return "Injected update prompts title";
         }
 
         @Implementation
