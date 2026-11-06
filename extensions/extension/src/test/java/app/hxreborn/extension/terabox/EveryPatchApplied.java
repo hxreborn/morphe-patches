@@ -57,6 +57,21 @@ public final class EveryPatchApplied {
     }
 
     @Implementation
+    public static boolean fixTransfersOverVpn() {
+        return true;
+    }
+
+    @Implementation
+    public static String fixTransfersOverVpnName() {
+        return "Fix transfers over VPN";
+    }
+
+    @Implementation
+    public static String fixTransfersOverVpnDescription() {
+        return "Runs transfers on a VPN.";
+    }
+
+    @Implementation
     public static boolean hideAds() {
         return true;
     }

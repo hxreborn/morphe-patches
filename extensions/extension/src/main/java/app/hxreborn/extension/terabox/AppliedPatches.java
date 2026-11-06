@@ -46,6 +46,7 @@ public final class AppliedPatches {
         List<AppliedPatch> applied = new ArrayList<>();
         add(applied, cloneApp(), cloneAppName(), cloneAppDescription());
         add(applied, fixGoogleLogin(), fixGoogleLoginName(), fixGoogleLoginDescription());
+        add(applied, fixTransfersOverVpn(), fixTransfersOverVpnName(), fixTransfersOverVpnDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
         add(applied, hideConsentForm(), hideConsentFormName(), hideConsentFormDescription());
         add(applied, hideHomeShortcuts(), hideHomeShortcutsName(), hideHomeShortcutsDescription());
@@ -84,6 +85,18 @@ public final class AppliedPatches {
     }
 
     public static String fixGoogleLoginDescription() {
+        return null;
+    }
+
+    public static boolean fixTransfersOverVpn() {
+        return false;
+    }
+
+    public static String fixTransfersOverVpnName() {
+        return null;
+    }
+
+    public static String fixTransfersOverVpnDescription() {
         return null;
     }
 
