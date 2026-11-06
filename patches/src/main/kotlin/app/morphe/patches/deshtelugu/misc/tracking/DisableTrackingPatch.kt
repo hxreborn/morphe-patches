@@ -39,7 +39,7 @@ val disableTrackingPatch = bytecodePatch(
 
     execute {
         val fullSentenceSender = FullSentenceSenderFingerprint.matchSingle()
-        val fullSentenceEnqueue = fullSentenceSender.instructionMatches.last()
+        val (_, _, _, fullSentenceEnqueue) = fullSentenceSender.instructionMatches
         val enqueue = fullSentenceEnqueue.getInstruction<ReferenceInstruction>().reference as MethodReference
         fullSentenceSender.method.removeInstruction(fullSentenceEnqueue.index)
 
@@ -64,14 +64,15 @@ val disableTrackingPatch = bytecodePatch(
         ).forEach { it.matchSingle().removeRequestEnqueue(enqueue) }
 
         KeystrokeSuggestionSenderFingerprint.matchSingle().let { match ->
-            match.method.addInstruction(match.instructionMatches.last().index + 1, "return-void")
+            val (_, _, requestTagWrite) = match.instructionMatches
+            match.method.addInstruction(requestTagWrite.index + 1, "return-void")
         }
 
         val (pingerConstructorCall, _) = HeartbeatPingerFingerprint.matchSingle().instructionMatches
         val pingerConstructor = pingerConstructorCall.getInstruction<ReferenceInstruction>().reference as MethodReference
         heartbeatPingFingerprint(pingerConstructor.definingClass).matchSingle().method.returnEarly()
-        MetaRetentionPingFingerprint.method.returnEarly()
-        QuickMessageEventSenderFingerprint.method.returnEarly()
-        QuickMessageTrackingUrlSenderFingerprint.method.returnEarly()
+        MetaRetentionPingFingerprint.matchSingle().method.returnEarly()
+        QuickMessageEventSenderFingerprint.matchSingle().method.returnEarly()
+        QuickMessageTrackingUrlSenderFingerprint.matchSingle().method.returnEarly()
     }
 }
