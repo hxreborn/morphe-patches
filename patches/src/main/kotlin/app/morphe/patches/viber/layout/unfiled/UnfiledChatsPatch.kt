@@ -10,12 +10,14 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -49,6 +51,14 @@ val unfiledChatsPatch: BytecodePatch = bytecodePatch(
         val (idRead) = tabConstructor.instructionMatches
         val folderId = idRead.instruction.getReference<MethodReference>()!!
         val extension = mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR)
+        extension.replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf(
+                "addChatsButtonId" to "folders_empty_add_chats_button",
+                "emptyTitleId" to "folders_empty_title",
+                "emptySubtitleId" to "folders_empty_subtitle",
+            ),
+        )
         extension.replaceStub("createTab", 9, """
             new-instance v0, ${folder.type}
             const-string v1, "hx_unfiled_chats"

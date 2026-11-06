@@ -67,7 +67,7 @@ public final class PatchesSettingsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(SettingsStyle.theme(this));
+        setTheme(SettingsStyle.theme());
         super.onCreate(savedInstanceState);
         PatchSettings.initialize(this);
         this.style = new SettingsStyle(this);

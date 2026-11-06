@@ -48,25 +48,32 @@ public final class PlusAdRow {
     private PlusAdRow() {
     }
 
+    static int adsFreeRowId() {
+        return 0;
+    }
+
+    static int adsFreeTitleViewId() {
+        return 0;
+    }
+
+    static int adsFreeTitleText() {
+        return 0;
+    }
+
     public static void bind(CompoundButton toggle) {
         if (!AppliedPatches.hideAds()) {
             return;
         }
         Context context = toggle.getContext();
-        String packageName = context.getPackageName();
-        int rowId = context.getResources().getIdentifier("ads_free_btn", "id", packageName);
-        int titleId = context.getResources().getIdentifier("ads_free_title", "id", packageName);
-        int titleTextId = context.getResources()
-            .getIdentifier("viber_plus_settings_ads_free_title", "string", packageName);
         View root = toggle.getRootView();
-        View row = root.findViewById(rowId);
-        View titleView = root.findViewById(titleId);
-        if (row == null || !(titleView instanceof TextView) || titleTextId == 0) {
+        View row = root.findViewById(adsFreeRowId());
+        View titleView = root.findViewById(adsFreeTitleViewId());
+        if (row == null || !(titleView instanceof TextView)) {
             Log.w(PatchSettings.LOG_TAG, "Viber Plus ad row not found");
             return;
         }
         TextView title = (TextView) titleView;
-        String originalTitle = context.getString(titleTextId);
+        String originalTitle = context.getString(adsFreeTitleText());
         SpannableString titleText = new SpannableString(originalTitle + "  " + PATCHES_LABEL);
         int labelStart = titleText.length() - PATCHES_LABEL.length();
         titleText.setSpan(new PatchChip(new SettingsStyle(context)), labelStart, titleText.length(),

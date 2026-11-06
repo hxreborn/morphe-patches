@@ -11,6 +11,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -18,6 +19,7 @@ import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -28,6 +30,10 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
 
 private const val PATCHES_MENU = "Lapp/hxreborn/extension/viber/PatchesMenu;"
+
+private const val PLUS_AD_ROW = "Lapp/hxreborn/extension/viber/PlusAdRow;"
+
+private const val SETTINGS_STYLE = "Lapp/hxreborn/extension/viber/SettingsStyle;"
 
 private const val ACTIVITY = "app.hxreborn.extension.viber.PatchesSettingsActivity"
 
@@ -97,12 +103,47 @@ internal val patchesSettingsPatch = bytecodePatch {
         }
     })
     execute {
+        with(mutableClassDefBy(PLUS_AD_ROW)) {
+            replaceResourceIdStubs(
+                ResourceType.ID,
+                mapOf("adsFreeRowId" to "ads_free_btn", "adsFreeTitleViewId" to "ads_free_title"),
+            )
+            replaceResourceIdStubs(
+                ResourceType.STRING,
+                mapOf("adsFreeTitleText" to "viber_plus_settings_ads_free_title"),
+            )
+        }
+        val darknightTheme = DarknightThemeFingerprint.matchSingle().originalMethod
+        with(mutableClassDefBy(SETTINGS_STYLE)) {
+            replaceStub(
+                "isDarknightTheme",
+                1,
+                """
+                    invoke-static { }, ${descriptor(darknightTheme)}
+                    move-result v0
+                    return v0
+                """,
+            )
+            replaceResourceIdStubs(
+                ResourceType.STYLE,
+                mapOf("lightTheme" to "Theme.Viber.NoActionBar", "darknightTheme" to "Darknight.Theme.Viber.NoActionBar"),
+            )
+            replaceResourceIdStubs(
+                ResourceType.ATTR,
+                mapOf(
+                    "mainBackgroundAttribute" to "mainBackgroundColor",
+                    "secondaryBackgroundAttribute" to "secondaryBackgroundColor",
+                    "textPrimaryAttribute" to "textPrimaryColor",
+                    "textSecondaryAttribute" to "textSecondaryColor",
+                ),
+            )
+        }
         PlusAdSwitchFingerprint.matchSingle().let { match ->
             val (_, _, setChecked) = match.instructionMatches
             val toggle = match.method.getInstruction<FiveRegisterInstruction>(setChecked.index).registerC
             match.method.addInstruction(
                 setChecked.index + 1,
-                "invoke-static/range { v$toggle .. v$toggle }, Lapp/hxreborn/extension/viber/PlusAdRow;->bind(Landroid/widget/CompoundButton;)V",
+                "invoke-static/range { v$toggle .. v$toggle }, $PLUS_AD_ROW->bind(Landroid/widget/CompoundButton;)V",
             )
         }
         addMoreEntry()

@@ -22,7 +22,6 @@ package app.hxreborn.extension.viber;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -42,10 +41,6 @@ final class SettingsStyle {
     static final int SCREEN_INSET_DP = 16;
     static final int CARD_RADIUS_DP = 16;
     static final int ICON_DP = 24;
-
-    private static final String HOST_PREFERENCES = "com.viber.voip.ViberPrefs";
-
-    private static final String HOST_THEME = "current_theme";
 
     private static final int DIVIDER_ALPHA = 0x1F;
 
@@ -67,33 +62,51 @@ final class SettingsStyle {
 
     SettingsStyle(Context context) {
         this.context = context;
-        this.screenBackground = color("mainBackgroundColor");
-        this.cardSurface = color("secondaryBackgroundColor");
-        this.primaryText = color("textPrimaryColor");
-        this.secondaryText = color("textSecondaryColor");
+        this.screenBackground = color(mainBackgroundAttribute());
+        this.cardSurface = color(secondaryBackgroundAttribute());
+        this.primaryText = color(textPrimaryAttribute());
+        this.secondaryText = color(textSecondaryAttribute());
         this.divider = Color.argb(DIVIDER_ALPHA, Color.red(this.primaryText), Color.green(this.primaryText),
                 Color.blue(this.primaryText));
-        this.dark = "darknight".equals(themeName(context));
+        this.dark = isDarknightTheme();
         this.medium = Typeface.create(new TextView(context).getTypeface(), Typeface.BOLD);
     }
 
-    static int theme(Context context) {
-        String name = "darknight".equals(themeName(context)) ? "Darknight.Theme.Viber.NoActionBar"
-                : "Theme.Viber.NoActionBar";
-        return context.getResources().getIdentifier(name, "style", context.getPackageName());
+    static int lightTheme() {
+        return 0;
     }
 
-    private static String themeName(Context context) {
-        boolean night = (context.getResources().getConfiguration().uiMode
-                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-        return context.getSharedPreferences(HOST_PREFERENCES, Context.MODE_PRIVATE)
-            .getString(HOST_THEME, night ? "darknight" : "light");
+    static int darknightTheme() {
+        return 0;
     }
 
-    private int color(String name) {
-        int id = this.context.getResources().getIdentifier(name, "attr", this.context.getPackageName());
+    static int mainBackgroundAttribute() {
+        return 0;
+    }
+
+    static int secondaryBackgroundAttribute() {
+        return 0;
+    }
+
+    static int textPrimaryAttribute() {
+        return 0;
+    }
+
+    static int textSecondaryAttribute() {
+        return 0;
+    }
+
+    static boolean isDarknightTheme() {
+        return false;
+    }
+
+    static int theme() {
+        return isDarknightTheme() ? darknightTheme() : lightTheme();
+    }
+
+    private int color(int attribute) {
         TypedValue value = new TypedValue();
-        this.context.getTheme().resolveAttribute(id, value, true);
+        this.context.getTheme().resolveAttribute(attribute, value, true);
         return (value.resourceId != 0) ? this.context.getColor(value.resourceId) : value.data;
     }
 

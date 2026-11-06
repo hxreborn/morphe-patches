@@ -22,7 +22,7 @@ package app.hxreborn.extension.viber;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 import android.view.View;
@@ -35,23 +35,30 @@ public final class UnfiledChats {
 
     private static final int UNFILED_TAB_INDEX = 0;
 
-    private static final String UNFILED_MEMBERSHIP = """
-            NOT EXISTS (SELECT 1 FROM folders_to_chats AS membership
-            INNER JOIN folders AS folder ON folder.id = membership.folder_id
-            WHERE folder.type = 100 AND membership.conversation_id = [conversations].[_id])
-            """;
+    private static final int CUSTOM_FOLDER_TYPE = 100;
 
-    private static final String ADD_CHATS_BUTTON = "folders_empty_add_chats_button";
+    private static final String UNFILED_MEMBERSHIP = "NOT EXISTS (SELECT 1 FROM folders_to_chats AS membership\n"
+            + "INNER JOIN folders AS folder ON folder.id = membership.folder_id\n" + "WHERE folder.type = "
+            + CUSTOM_FOLDER_TYPE + " AND membership.conversation_id = [conversations].[_id])\n";
 
-    private static final String EMPTY_TITLE = "folders_empty_title";
-
-    private static final String EMPTY_SUBTITLE = "folders_empty_subtitle";
-
-    private static final Map<Object, Boolean> unfiledQueries = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Set<Object> unfiledQueries = Collections
+        .synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
 
     private static boolean selected;
 
     private UnfiledChats() {
+    }
+
+    static int addChatsButtonId() {
+        return 0;
+    }
+
+    static int emptyTitleId() {
+        return 0;
+    }
+
+    static int emptySubtitleId() {
+        return 0;
     }
 
     public static boolean addTabAndIsEmpty(List<Object> tabs) {
@@ -71,12 +78,12 @@ public final class UnfiledChats {
 
     public static void rememberQuery(String folderId, Object query) {
         if (query != null && FOLDER_ID.equals(folderId)) {
-            unfiledQueries.put(query, Boolean.TRUE);
+            unfiledQueries.add(query);
         }
     }
 
     public static String filterSelection(Object query, String original) {
-        if (original == null || !PatchSettings.unfiledChats() || !unfiledQueries.containsKey(query)) {
+        if (original == null || !PatchSettings.unfiledChats() || !unfiledQueries.contains(query)) {
             return original;
         }
         int suffix = original.lastIndexOf(" GROUP BY ");
@@ -101,18 +108,15 @@ public final class UnfiledChats {
         if (root == null) {
             return;
         }
-        View addChats = root.findViewById(
-                root.getResources().getIdentifier(ADD_CHATS_BUTTON, "id", root.getContext().getPackageName()));
+        View addChats = root.findViewById(addChatsButtonId());
         if (addChats != null) {
             addChats.setVisibility(selected ? View.GONE : View.VISIBLE);
         }
         if (!selected) {
             return;
         }
-        TextView title = root
-            .findViewById(root.getResources().getIdentifier(EMPTY_TITLE, "id", root.getContext().getPackageName()));
-        TextView subtitle = root
-            .findViewById(root.getResources().getIdentifier(EMPTY_SUBTITLE, "id", root.getContext().getPackageName()));
+        TextView title = root.findViewById(emptyTitleId());
+        TextView subtitle = root.findViewById(emptySubtitleId());
         if (title != null) {
             title.setText("No unfiled chats");
         }

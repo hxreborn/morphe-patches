@@ -9,6 +9,8 @@ import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object ApplicationContextFingerprint : Fingerprint(
@@ -67,5 +69,16 @@ internal object MoreClickFingerprint : Fingerprint(
     filters = listOf(
         methodCall(name = "getActivity", parameters = emptyList()),
         opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),
+    ),
+)
+
+internal object DarknightThemeFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "Z",
+    parameters = emptyList(),
+    filters = listOf(
+        string("darknight"),
+        methodCall(opcode = Opcode.INVOKE_STATIC, returnType = "Ljava/lang/String;"),
+        methodCall(definingClass = "Ljava/lang/String;", name = "equals"),
     ),
 )

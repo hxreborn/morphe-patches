@@ -25,8 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
@@ -262,29 +260,7 @@ public class UnfiledChatsTest {
     }
 
     private LinearLayout emptyView() {
-        Context application = RuntimeEnvironment.getApplication();
-        Resources resources = new Resources(application.getAssets(), application.getResources().getDisplayMetrics(),
-                application.getResources().getConfiguration()) {
-            @Override
-            public int getIdentifier(String name, String type, String packageName) {
-                switch (name) {
-                    case "folders_empty_add_chats_button":
-                        return ADD_CHATS_ID;
-                    case "folders_empty_title":
-                        return TITLE_ID;
-                    case "folders_empty_subtitle":
-                        return SUBTITLE_ID;
-                    default:
-                        return 0;
-                }
-            }
-        };
-        Context context = new ContextWrapper(application) {
-            @Override
-            public Resources getResources() {
-                return resources;
-            }
-        };
+        Context context = RuntimeEnvironment.getApplication();
         LinearLayout root = new LinearLayout(context);
         View addChats = new View(context);
         addChats.setId(ADD_CHATS_ID);
@@ -322,6 +298,21 @@ public class UnfiledChatsTest {
         @Implementation
         public static String folderId(Object folder) {
             return (String) folder;
+        }
+
+        @Implementation
+        public static int addChatsButtonId() {
+            return ADD_CHATS_ID;
+        }
+
+        @Implementation
+        public static int emptyTitleId() {
+            return TITLE_ID;
+        }
+
+        @Implementation
+        public static int emptySubtitleId() {
+            return SUBTITLE_ID;
         }
 
     }
