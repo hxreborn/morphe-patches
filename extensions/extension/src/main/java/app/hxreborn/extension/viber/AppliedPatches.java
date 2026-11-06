@@ -186,6 +186,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean linkAsSecondaryDevice() {
+        return false;
+    }
+
+    public static String linkAsSecondaryDeviceName() {
+        return null;
+    }
+
+    public static String linkAsSecondaryDeviceDescription() {
+        return null;
+    }
+
     public static boolean spoofSignature() {
         return false;
     }
@@ -237,6 +249,7 @@ public final class AppliedPatches {
         add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
         add(applied, disableUpdatePrompts(), disableUpdatePromptsName(), disableUpdatePromptsDescription());
+        add(applied, linkAsSecondaryDevice(), linkAsSecondaryDeviceName(), linkAsSecondaryDeviceDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
         add(applied, unlockViberPlus(), unlockViberPlusName(), unlockViberPlusDescription());

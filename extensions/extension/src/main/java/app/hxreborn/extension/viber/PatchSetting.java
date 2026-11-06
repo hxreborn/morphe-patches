@@ -34,7 +34,8 @@ enum PatchSetting {
     HIDE_MORE_ITEMS("Navigation", "Hide More screen items", false),
     REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", false),
     DISABLE_ANALYTICS("Privacy", "Disable analytics", true),
-    DISABLE_UPDATE_PROMPTS("App", "disableUpdatePrompts", false), UNLOCK_VIBER_PLUS("App", "Unlock Viber Plus", true);
+    DISABLE_UPDATE_PROMPTS("App", "disableUpdatePrompts", false),
+    LINK_AS_SECONDARY_DEVICE("App", "linkAsSecondaryDevice", true), UNLOCK_VIBER_PLUS("App", "Unlock Viber Plus", true);
 
     final String section;
 
@@ -63,6 +64,7 @@ enum PatchSetting {
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimitName();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
             case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePromptsName();
+            case LINK_AS_SECONDARY_DEVICE -> AppliedPatches.linkAsSecondaryDeviceName();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusName();
         };
     }
@@ -82,6 +84,7 @@ enum PatchSetting {
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimitDescription();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsDescription();
             case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePromptsDescription();
+            case LINK_AS_SECONDARY_DEVICE -> AppliedPatches.linkAsSecondaryDeviceDescription();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusDescription();
         };
     }
@@ -101,6 +104,7 @@ enum PatchSetting {
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimit();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalytics();
             case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePrompts();
+            case LINK_AS_SECONDARY_DEVICE -> AppliedPatches.linkAsSecondaryDevice();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlus();
         };
     }

@@ -195,6 +195,31 @@ public class PatchSettingsTest {
     }
 
     @Test
+    public void keepPhoneActivationWithoutAppliedPatch() {
+        Assert.assertFalse(PatchSettings.activateAsSecondary(false));
+    }
+
+    @Test
+    @Config(shadows = AppliedSecondaryDevice.class)
+    public void activatePhoneAsSecondaryWithAppliedPatch() {
+        Assert.assertTrue(PatchSettings.activateAsSecondary(false));
+    }
+
+    @Test
+    @Config(shadows = AppliedSecondaryDevice.class)
+    public void keepPhoneActivationWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.LINK_AS_SECONDARY_DEVICE.key, false);
+        Assert.assertFalse(PatchSettings.activateAsSecondary(false));
+    }
+
+    @Test
+    @Config(shadows = AppliedSecondaryDevice.class)
+    public void keepTabletActivationWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.LINK_AS_SECONDARY_DEVICE.key, false);
+        Assert.assertTrue(PatchSettings.activateAsSecondary(true));
+    }
+
+    @Test
     public void keepServerFolderLimitWithoutAppliedPatch() {
         Assert.assertEquals(SERVER_FOLDER_LIMIT, PatchSettings.folderLimit(SERVER_FOLDER_LIMIT));
     }
@@ -257,6 +282,16 @@ public class PatchSettingsTest {
 
         @Implementation
         protected static boolean raiseFolderLimit() {
+            return true;
+        }
+
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedSecondaryDevice {
+
+        @Implementation
+        protected static boolean linkAsSecondaryDevice() {
             return true;
         }
 

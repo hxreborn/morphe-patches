@@ -118,6 +118,14 @@ public final class PatchSettings {
         return allowed && !disableUpdatePrompts();
     }
 
+    public static boolean linkAsSecondaryDevice() {
+        return AppliedPatches.linkAsSecondaryDevice() && isEnabled(PatchSetting.LINK_AS_SECONDARY_DEVICE.key);
+    }
+
+    public static boolean activateAsSecondary(boolean tablet) {
+        return tablet || linkAsSecondaryDevice();
+    }
+
     public static boolean hideMoreItems() {
         return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }

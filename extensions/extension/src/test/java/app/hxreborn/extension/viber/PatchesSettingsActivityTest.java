@@ -92,7 +92,7 @@ public final class PatchesSettingsActivityTest {
                 "Injected disappearing media title", "Injected business name", "Injected folder title",
                 "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
                 "Hide More screen items", "Injected online status title", "Disable analytics",
-                "Injected update prompts title", PLUS_TITLE), titles);
+                "Injected update prompts title", "Injected secondary device title", PLUS_TITLE), titles);
     }
 
     @Test
@@ -518,6 +518,21 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String disableUpdatePromptsDescription() {
             return "Injected disableUpdatePrompts description.";
+        }
+
+        @Implementation
+        protected static boolean linkAsSecondaryDevice() {
+            return true;
+        }
+
+        @Implementation
+        protected static String linkAsSecondaryDeviceName() {
+            return "Injected secondary device title";
+        }
+
+        @Implementation
+        protected static String linkAsSecondaryDeviceDescription() {
+            return "Injected secondary device description.";
         }
 
         @Implementation
