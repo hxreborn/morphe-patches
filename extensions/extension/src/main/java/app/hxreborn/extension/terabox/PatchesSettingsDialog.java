@@ -138,8 +138,8 @@ final class PatchesSettingsDialog {
                 AppliedPatches.HIDE_HOME_SHORTCUTS, "Removes Trending and Short Drama.", "hx_terabox_ic_shortcuts",
                 true);
         addSwitch(home, AppliedPatches.removeRecentPanel(), AppliedPatches.removeRecentPanelName(),
-                AppliedPatches.REMOVE_RECENT_PANEL, "Removes Recent, Starred and Offline.", "hx_terabox_ic_recent",
-                false);
+                AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.removeRecentPanelDescription(),
+                "hx_terabox_ic_recent", false);
         addSection(column, "Home", home);
         LinearLayout videos = this.rows.card();
         addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.hideVideoRecommendationsName(),

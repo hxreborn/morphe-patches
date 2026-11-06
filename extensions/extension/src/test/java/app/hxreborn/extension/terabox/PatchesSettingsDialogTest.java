@@ -204,10 +204,11 @@ public final class PatchesSettingsDialogTest {
         List<String> texts = latestDialogTexts();
         assertInOrder(texts, "About", "Patch bundle", "Applied patches");
         List<String> appliedRows = texts.subList(texts.indexOf("Applied patches") + 1, texts.size());
+        List<TextView> textViews = latestDialogTextViews();
         List<AppliedPatches.AppliedPatch> applied = AppliedPatches.applied();
         for (AppliedPatches.AppliedPatch patch : applied) {
             Assert.assertTrue(patch.name + " is missing", appliedRows.contains(patch.name));
-            Assert.assertEquals(View.GONE, latestDialogTextView(patch.description).getVisibility());
+            Assert.assertEquals(View.GONE, textViews.get(texts.lastIndexOf(patch.description)).getVisibility());
         }
         Assert.assertEquals(applied.size() * 2, appliedRows.size());
     }
