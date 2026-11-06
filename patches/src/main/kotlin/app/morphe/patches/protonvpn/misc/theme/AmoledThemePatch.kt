@@ -83,7 +83,7 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, amoledBackgroundOverlayPatch, amoledSplashBackgroundPatch)
 
     execute {
-        markPatchMetadata("amoledDarkTheme", amoledThemePatch)
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
 

@@ -182,7 +182,15 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static String amoledDarkThemeDescription() {
+        return null;
+    }
+
     public static String amoledDarkThemeName() {
+        return null;
+    }
+
+    public static String hideUpgradePromotionsDescription() {
         return null;
     }
 
@@ -190,7 +198,15 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static String materialSwitchesDescription() {
+        return null;
+    }
+
     public static String materialSwitchesName() {
+        return null;
+    }
+
+    public static String loadingIndicatorDescription() {
         return null;
     }
 

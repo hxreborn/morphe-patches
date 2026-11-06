@@ -187,15 +187,15 @@ public final class PatchesSettingsActivity extends Activity {
                     () -> ScheduledDeletionEditor.show(this, this::recreateContent)));
         }
         if (UpsellingVisibility.isPatched()) {
-            generalRows
-                .add(switchRow(AppliedPatches.hideUpgradePromotionsName(), "Hides upgrade buttons, banners and offers.",
-                        UpsellingVisibility.isHidden(), new CheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(boolean hidden) {
-                                UpsellingVisibility.setHidden(hidden);
-                                confirmRestart();
-                            }
-                        }));
+            generalRows.add(switchRow(AppliedPatches.hideUpgradePromotionsName(),
+                    AppliedPatches.hideUpgradePromotionsDescription(), UpsellingVisibility.isHidden(),
+                    new CheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(boolean hidden) {
+                            UpsellingVisibility.setHidden(hidden);
+                            confirmRestart();
+                        }
+                    }));
         }
         addSection(column, "General", generalRows);
 
@@ -247,8 +247,7 @@ public final class PatchesSettingsActivity extends Activity {
         }
         if (AmoledTheme.isPatched()) {
             appearanceRows.add(switchRow(AppliedPatches.amoledDarkThemeName(),
-                    "Replaces the dark theme background with pure black.", AmoledTheme.isEnabled(),
-                    new CheckedChangeListener() {
+                    AppliedPatches.amoledDarkThemeDescription(), AmoledTheme.isEnabled(), new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
                             AmoledTheme.setEnabled(enabled);
@@ -269,7 +268,7 @@ public final class PatchesSettingsActivity extends Activity {
         }
         if (MaterialSwitches.isPatched()) {
             appearanceRows
-                .add(switchRow(AppliedPatches.materialSwitchesName(), "Adds check and close icons to switches.",
+                .add(switchRow(AppliedPatches.materialSwitchesName(), AppliedPatches.materialSwitchesDescription(),
                         MaterialSwitches.isEnabled(), new CheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(boolean enabled) {
@@ -279,14 +278,14 @@ public final class PatchesSettingsActivity extends Activity {
                         }));
         }
         if (LoadingIndicator.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.loadingIndicatorName(),
-                    "Shows a shape-morphing pull to refresh indicator.", LoadingIndicator.isEnabled(),
-                    new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean enabled) {
-                            LoadingIndicator.setEnabled(enabled);
-                        }
-                    }));
+            appearanceRows
+                .add(switchRow(AppliedPatches.loadingIndicatorName(), AppliedPatches.loadingIndicatorDescription(),
+                        LoadingIndicator.isEnabled(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean enabled) {
+                                LoadingIndicator.setEnabled(enabled);
+                            }
+                        }));
         }
         addSection(column, "Appearance", appearanceRows);
 

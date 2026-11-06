@@ -47,7 +47,7 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("loadingIndicator", loadingIndicatorPatch)
+        markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
         markFeaturePatched(LOADING_INDICATOR_CLASS)
 
         val pullingIconMatch = PullToRefreshPullingIconFingerprint.matchSingle()

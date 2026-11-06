@@ -54,7 +54,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch)
+        markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
         markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
 
         val rows = sidebarUpsellingRowFingerprints.mapNotNull { it.methodOrNull }

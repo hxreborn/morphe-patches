@@ -230,7 +230,7 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     dependsOn(webSettingsThemePatch, amoledSplashBackgroundPatch)
 
     execute {
-        markPatchMetadata("amoledDarkTheme", amoledThemePatch)
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
         DarkPaletteFingerprint.matchSingle().method.apply {
             DARK_BACKGROUND_COLORS.forEach { color ->
                 injectBackgroundTransformCall(indexOfFirstLiteralInstructionOrThrow(color))

@@ -29,7 +29,7 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("loadingIndicator", loadingIndicatorPatch)
+        markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
         val progressReads = PullRefreshProgressFingerprint.matchAll().map { match ->
             val instructions = match.instructionMatches.map { it.instruction }
             Triple(

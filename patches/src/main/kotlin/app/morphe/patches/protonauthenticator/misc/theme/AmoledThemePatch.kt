@@ -120,7 +120,7 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchMetadata("amoledDarkTheme", amoledThemePatch)
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
         tintEmptyStatePlaceholder()

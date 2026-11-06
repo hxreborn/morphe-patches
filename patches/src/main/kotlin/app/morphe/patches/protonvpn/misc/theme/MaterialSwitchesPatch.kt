@@ -339,7 +339,7 @@ val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, resourceFieldsPatch)
 
     execute {
-        markPatchMetadata("materialSwitches", materialSwitchesPatch)
+        markPatchMetadata("materialSwitches", materialSwitchesPatch, withDescription = true)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         addDrawIconMethod()
         styleSettingsSwitchViews()

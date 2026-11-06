@@ -126,6 +126,11 @@ public final class PatchedBuild {
         }
 
         @Implementation
+        public static String hideUpgradePromotionsDescription() {
+            return "Injected hideUpgradePromotions description.";
+        }
+
+        @Implementation
         public static String accentColorName() {
             return "Custom accent color";
         }
@@ -136,13 +141,28 @@ public final class PatchedBuild {
         }
 
         @Implementation
+        public static String amoledDarkThemeDescription() {
+            return "Injected amoledDarkTheme description.";
+        }
+
+        @Implementation
         public static String materialSwitchesName() {
             return "Material 3 switches";
         }
 
         @Implementation
+        public static String materialSwitchesDescription() {
+            return "Injected materialSwitches description.";
+        }
+
+        @Implementation
         public static String loadingIndicatorName() {
             return "M3E loading indicator";
+        }
+
+        @Implementation
+        public static String loadingIndicatorDescription() {
+            return "Injected loadingIndicator description.";
         }
 
         @Implementation

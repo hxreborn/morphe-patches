@@ -26,7 +26,7 @@ val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("materialSwitches", materialSwitchesPatch)
+        markPatchMetadata("materialSwitches", materialSwitchesPatch, withDescription = true)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         drawSwitchAsView(
             MaterialSwitchFingerprint.matchSingle().method,

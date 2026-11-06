@@ -42,7 +42,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch)
+        markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
         markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
 
         val plusBadgeId = resourceId(ResourceType.DRAWABLE, "vpn_plus_badge")

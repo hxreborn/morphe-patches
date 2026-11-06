@@ -38,7 +38,7 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("loadingIndicator", loadingIndicatorPatch)
+        markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
         drawPullRefreshAsLoadingIndicator(PullToRefreshContentFingerprint, ANDROID_VIEW_PARAMETERS) { producerType, producer, progress, _ ->
             val produce = classDefBy(producerType).methods.single { it.returnType == "F" && it.parameterTypes.isEmpty() }
             """
