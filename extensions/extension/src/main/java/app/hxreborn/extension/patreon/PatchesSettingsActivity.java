@@ -144,8 +144,8 @@ public final class PatchesSettingsActivity extends Activity {
                     });
         }
         if (HomeTab.isPatched()) {
-            this.rows.switchRow(feed, "hx_patreon_ic_home_tab", HomeTab.patchName(),
-                    "Removes the Home tab and starts on Memberships.", HomeTab.isHidden(), (button, hidden) -> {
+            this.rows.switchRow(feed, "hx_patreon_ic_home_tab", HomeTab.patchName(), HomeTab.patchDescription(),
+                    HomeTab.isHidden(), (button, hidden) -> {
                         PatchSettings.setEnabled(HomeTab.HIDE_HOME_TAB, hidden);
                         confirmRestart();
                     });
@@ -175,7 +175,7 @@ public final class PatchesSettingsActivity extends Activity {
                 String tab = NavigationButtons.TABS[index];
                 String label = NavigationButtons.TAB_LABELS[index];
                 this.rows.switchRow(navigation, NavigationButtons.TAB_ICONS[index], "Hide " + label,
-                        "Removes " + label + " from the bottom bar.", NavigationButtons.isHiddenByUser(tab),
+                        NavigationButtons.TAB_DESCRIPTIONS[index], NavigationButtons.isHiddenByUser(tab),
                         (button, hidden) -> {
                             NavigationButtons.setHiddenByUser(tab, hidden);
                             confirmRestart();

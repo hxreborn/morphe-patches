@@ -40,6 +40,9 @@ public final class NavigationButtons {
 
     static final String[] TAB_LABELS = { "Feed", "Library", "Quip", "Community", "Notifications" };
 
+    static final String[] TAB_DESCRIPTIONS = { feedDescription(), libraryDescription(), quipDescription(),
+            communityDescription(), notificationsDescription() };
+
     static final String[] TAB_ICONS = { "hx_patreon_ic_feed", "hx_patreon_ic_library", "hx_patreon_ic_quip",
             "hx_patreon_ic_community", "hx_patreon_ic_notifications" };
 
@@ -50,6 +53,26 @@ public final class NavigationButtons {
 
     public static boolean isPatched() {
         return false;
+    }
+
+    public static String feedDescription() {
+        return null;
+    }
+
+    public static String libraryDescription() {
+        return null;
+    }
+
+    public static String quipDescription() {
+        return null;
+    }
+
+    public static String communityDescription() {
+        return null;
+    }
+
+    public static String notificationsDescription() {
+        return null;
     }
 
     public static String defaultHiddenTabs() {

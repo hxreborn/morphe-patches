@@ -34,7 +34,7 @@ val hideHomeTabPatch: BytecodePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(HOME_TAB_CLASS, hideHomeTabPatch, withDescription = false)
+        markFeaturePatched(HOME_TAB_CLASS, hideHomeTabPatch)
 
         val membershipsTab = MembershipsTabToStringFingerprint.classDef
         val launcherTabs = launcherTabsFingerprint(membershipsTab.type)

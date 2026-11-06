@@ -25,6 +25,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.util.StringUtils.escapeString
 
 private enum class NavigationTab(val label: String, val tabName: String) {
     FEED("Feed", "MemberModeHomeTab"),
@@ -58,6 +59,12 @@ val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markFeaturePatched(NAVIGATION_BUTTONS_CLASS, hideNavigationButtonsPatch, withDescription = false)
+
+        val methodsByName = mutableClassDefBy(NAVIGATION_BUTTONS_CLASS).methods.associateBy { it.name }
+        hideTabOptions.forEach { (tab, option) ->
+            methodsByName.getValue("${tab.name.lowercase()}Description")
+                .returnEarly(escapeString(checkNotNull(option.description)))
+        }
 
         val defaultHiddenTabs = hideTabOptions.filterValues { it.value == true }.keys
         mutableClassDefBy(NAVIGATION_BUTTONS_CLASS).methods.single { it.name == "defaultHiddenTabs" }

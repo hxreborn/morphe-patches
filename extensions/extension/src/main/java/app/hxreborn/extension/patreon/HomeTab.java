@@ -36,6 +36,10 @@ public final class HomeTab {
         return PatchSettings.isEnabled(HIDE_HOME_TAB, true);
     }
 
+    public static String patchDescription() {
+        return null;
+    }
+
     public static String patchName() {
         return null;
     }
