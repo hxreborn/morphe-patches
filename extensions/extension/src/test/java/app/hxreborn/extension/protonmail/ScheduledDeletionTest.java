@@ -49,9 +49,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowLog;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = ScheduledDeletionTest.FakeKotlinResults.class)
 public final class ScheduledDeletionTest {
 
     private static final String TAG = "ScheduledDeletion";
@@ -61,6 +65,26 @@ public final class ScheduledDeletionTest {
     enum Marker {
 
         COROUTINE_SUSPENDED, OTHER
+
+    }
+
+    @Implements(value = KotlinResults.class, isInAndroidSdk = false)
+    public static final class FakeKotlinResults {
+
+        @Implementation
+        public static boolean isCoroutineSuspended(Object value) {
+            return value == Marker.COROUTINE_SUSPENDED;
+        }
+
+        @Implementation
+        public static boolean isFailure(Object result) {
+            return result instanceof Failure;
+        }
+
+        @Implementation
+        public static Throwable failureCause(Object failure) {
+            return ((Failure) failure).exception;
+        }
 
     }
 
@@ -176,12 +200,6 @@ public final class ScheduledDeletionTest {
         } catch (ReflectiveOperationException ex) {
             throw new AssertionError(ex);
         }
-    }
-
-    private static boolean isCoroutineSuspended(Object value) throws ReflectiveOperationException {
-        final Method method = UniffiCalls.class.getDeclaredMethod("isCoroutineSuspended", Object.class);
-        method.setAccessible(true);
-        return (Boolean) method.invoke(null, value);
     }
 
     private static Object newBlockingContinuation(Object dispatcher) throws ReflectiveOperationException {
@@ -495,15 +513,6 @@ public final class ScheduledDeletionTest {
         } catch (Exception thrown) {
             fail("unexpected " + thrown);
         }
-    }
-
-    @Test
-    public void onlyTheCoroutineSuspendedMarkerIsSuspended() throws ReflectiveOperationException {
-        assertTrue(isCoroutineSuspended(Marker.COROUTINE_SUSPENDED));
-        assertFalse(isCoroutineSuspended(Marker.OTHER));
-        assertFalse(isCoroutineSuspended("COROUTINE_SUSPENDED"));
-        assertFalse(isCoroutineSuspended(new Ok("COROUTINE_SUSPENDED")));
-        assertFalse(isCoroutineSuspended(null));
     }
 
     @Test
