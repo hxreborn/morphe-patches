@@ -212,6 +212,16 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.0.01e", versionCode = 302400131, minSdk = 29)),
     )
 
+    val BEHISABI = Compatibility(
+        name = "BeHisabi",
+        packageName = "com.neonbhoot.behisabi",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf(
+            "57bdbb354fcd5a663e3a88de1f308eb086411d1b2be85af6c1be89be5eeeea0e",
+        ),
+        targets = listOf(AppTarget(version = "1.0.7", versionCode = 10, minSdk = 24)),
+    )
+
     val BEREAL = Compatibility(
         name = "BeReal",
         packageName = "com.bereal.ft",
