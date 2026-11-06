@@ -135,8 +135,8 @@ final class PatchesSettingsDialog {
         column.setPadding(inset, 0, inset, this.style.dp(CONTENT_BOTTOM_PADDING_DP));
         LinearLayout home = this.rows.card();
         addSwitch(home, AppliedPatches.hideHomeShortcuts(), AppliedPatches.hideHomeShortcutsName(),
-                AppliedPatches.HIDE_HOME_SHORTCUTS, "Removes Trending and Short Drama.", "hx_terabox_ic_shortcuts",
-                true);
+                AppliedPatches.HIDE_HOME_SHORTCUTS, AppliedPatches.hideHomeShortcutsDescription(),
+                "hx_terabox_ic_shortcuts", true);
         addSwitch(home, AppliedPatches.removeRecentPanel(), AppliedPatches.removeRecentPanelName(),
                 AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.removeRecentPanelDescription(),
                 "hx_terabox_ic_recent", false);
@@ -146,13 +146,15 @@ final class PatchesSettingsDialog {
                 AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.hideVideoRecommendationsDescription(),
                 "hx_terabox_ic_video", false);
         addSwitch(videos, AppliedPatches.unlockPremium(), AppliedPatches.unlockPremiumName(),
-                AppliedPatches.UNLOCK_PREMIUM, "Unlocks HD, 3x speed and uploads.", "hx_terabox_ic_premium", false);
+                AppliedPatches.UNLOCK_PREMIUM, AppliedPatches.unlockPremiumDescription(), "hx_terabox_ic_premium",
+                false);
         addSection(column, "Videos", videos);
         LinearLayout ads = this.rows.card();
         addSwitch(ads, AppliedPatches.hideAds(), AppliedPatches.hideAdsName(), AppliedPatches.HIDE_ADS,
-                "Removes feed, banner and video ads.", "hx_terabox_ic_ads", false);
+                AppliedPatches.hideAdsDescription(), "hx_terabox_ic_ads", false);
         addSwitch(ads, AppliedPatches.hidePromotions(), AppliedPatches.hidePromotionsName(),
-                AppliedPatches.HIDE_PROMOTIONS, "Removes Premium and sale offers.", "hx_terabox_ic_promotions", false);
+                AppliedPatches.HIDE_PROMOTIONS, AppliedPatches.hidePromotionsDescription(), "hx_terabox_ic_promotions",
+                false);
         addSection(column, "Ads", ads);
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, "hx_terabox_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
