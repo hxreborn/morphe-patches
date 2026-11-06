@@ -71,7 +71,7 @@ val showAiProgressPatch: BytecodePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchMetadata("showAiProgress", showAiProgressPatch, withDescription = true)
+        markPatchMetadata("showAiProgress", showAiProgressPatch)
         val submit = SubmitRequestFingerprint.matchSingle().method
 
         TRACED_TOOLS.forEach { (callbackClass, tool) ->

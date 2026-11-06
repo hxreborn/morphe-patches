@@ -17,7 +17,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 @Suppress("unused")
 val hideAdsPatch: BytecodePatch = bytecodePatch(
     name = "Hide ads",
-    description = "Adds an option to hide banner, interstitial, app-open and rewarded ads.",
+    description = "Removes banner, interstitial, app-open and rewarded ads.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)

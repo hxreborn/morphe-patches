@@ -134,21 +134,21 @@ public final class PatchPanel {
     private static final float EQUAL_CONTRAST_LUMINANCE = (float) (Math.sqrt(1.05 * 0.05) - 0.05);
 
     private static final List<Entry> ENTRIES = List.of(
-            new Entry(PatchSettings.HIDE_ADS, GENERAL, hideAdsName(),
-                    "Hides banner, interstitial, app-open and rewarded ads."),
-            new Entry(PatchSettings.UNLOCK_PREMIUM, GENERAL, unlockPremiumName(),
-                    "Unlocks the pro tools, removes the export watermark and hides the upgrade prompts."),
-            new Entry(PatchSettings.HIDE_SHARE, GENERAL, hideShareOptionsName(),
-                    "Hides the share buttons on the save screen and centers the saved photo."),
+            new Entry(PatchSettings.HIDE_ADS, GENERAL, hideAdsName(), hideAdsDescription()),
+            new Entry(PatchSettings.UNLOCK_PREMIUM, GENERAL, unlockPremiumName(), unlockPremiumDescription()),
+            new Entry(PatchSettings.HIDE_SHARE, GENERAL, hideShareOptionsName(), hideShareOptionsDescription()),
             new Entry(PatchSettings.SHOW_AI_PROGRESS, AI_TOOLS, showAiProgressName(), showAiProgressDescription()),
-            new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS, traceAiRequestsName(),
-                    "Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads."),
+            new Entry(PatchSettings.LOG_ENDPOINTS, DIAGNOSTICS, traceAiRequestsName(), traceAiRequestsDescription()),
             new Entry(PatchSettings.OVERLAY_POSITION, DIAGNOSTICS, "Live overlay position",
                     "Sets where the live network request list sits on the screen.", PatchSettings.LOG_ENDPOINTS),
             new Entry(PatchSettings.OVERLAY_LINGER, DIAGNOSTICS, "Live overlay hold time",
                     "Sets the delay before the overlay disappears.", PatchSettings.LOG_ENDPOINTS));
 
     private PatchPanel() {
+    }
+
+    public static String traceAiRequestsDescription() {
+        return null;
     }
 
     public static String traceAiRequestsName() {
@@ -163,11 +163,23 @@ public final class PatchPanel {
         return null;
     }
 
+    public static String hideShareOptionsDescription() {
+        return null;
+    }
+
     public static String hideShareOptionsName() {
         return null;
     }
 
+    public static String hideAdsDescription() {
+        return null;
+    }
+
     public static String hideAdsName() {
+        return null;
+    }
+
+    public static String unlockPremiumDescription() {
         return null;
     }
 

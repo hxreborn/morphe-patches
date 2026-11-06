@@ -20,8 +20,7 @@ private const val RESULT_SCREEN_CLASS = "$EXTENSION_PACKAGE/ResultScreen;"
 @Suppress("unused")
 val hideShareOptionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide share options",
-    description = "Adds an option to hide the share buttons on the save screen " +
-        "and center the saved photo.",
+    description = "Removes share buttons from the save screen and centers the saved photo.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)

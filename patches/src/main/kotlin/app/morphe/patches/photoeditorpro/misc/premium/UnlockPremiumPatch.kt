@@ -20,8 +20,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 @Suppress("unused")
 val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Adds an option to unlock the pro tools, remove the export watermark and " +
-        "hide the upgrade prompts.",
+    description = "Unlocks pro tools and removes export watermarks and upgrade prompts.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)

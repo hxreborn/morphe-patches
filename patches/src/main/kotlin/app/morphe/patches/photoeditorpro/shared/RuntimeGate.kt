@@ -85,5 +85,4 @@ internal fun BytecodePatchContext.markPatchInstalled(settingKey: String) {
 internal fun BytecodePatchContext.markPatchMetadata(
     methodName: String,
     patch: BytecodePatch,
-    withDescription: Boolean = false,
-) = fillPatchMetadata(PATCH_PANEL_CLASS, methodName, patch, withDescription)
+) = fillPatchMetadata(PATCH_PANEL_CLASS, methodName, patch)
