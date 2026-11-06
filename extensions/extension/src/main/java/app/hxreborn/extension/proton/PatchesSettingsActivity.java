@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -127,13 +126,13 @@ public final class PatchesSettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final int backgroundNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_NORM);
+        final int backgroundNormColor = PatchesTheme.backgroundNorm(this);
         this.screenBackgroundColor = (AmoledTheme.isEnabled() && PatchesTheme.isDark(backgroundNormColor)) ? Color.BLACK
                 : backgroundNormColor;
-        this.cardBackgroundColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_SECONDARY);
-        this.textNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_NORM);
-        this.textWeakColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_WEAK);
-        this.iconDisabledColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.ICON_DISABLED);
+        this.cardBackgroundColor = PatchesTheme.backgroundSecondary(this);
+        this.textNormColor = PatchesTheme.textNorm(this);
+        this.textWeakColor = PatchesTheme.textWeak(this);
+        this.iconDisabledColor = PatchesTheme.iconDisabled(this);
 
         setContentView(buildScreen());
     }
@@ -397,8 +396,7 @@ public final class PatchesSettingsActivity extends Activity {
                 dp(APP_BAR_VERTICAL_PADDING_DP));
 
         final ImageView back = new ImageView(this);
-        final Drawable arrow = PatchesTheme.getDrawableByName(this, "ic_proton_arrow_left");
-        back.setImageDrawable((arrow != null) ? arrow : PatchesTheme.getDrawableByName(this, "ic_arrow_back"));
+        back.setImageDrawable(PatchesTheme.drawable(this, PatchesTheme.backArrowDrawable()));
         back.setColorFilter(this.textNormColor);
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         back.setPadding(dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP));
@@ -486,7 +484,7 @@ public final class PatchesSettingsActivity extends Activity {
         }
 
         final ImageView chevron = new ImageView(this);
-        chevron.setImageDrawable(PatchesTheme.getDrawableByName(this, "ic_proton_chevron_right"));
+        chevron.setImageDrawable(PatchesTheme.drawable(this, PatchesTheme.chevronRightDrawable()));
         chevron.setColorFilter(this.iconDisabledColor);
         chevron.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         final LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(dp(CHEVRON_SIZE_DP),

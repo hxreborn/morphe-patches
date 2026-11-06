@@ -18,15 +18,21 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import java.util.logging.Logger
 import org.w3c.dom.Element
+
+private val logger = Logger.getLogger("PatchesSettings")
 
 internal const val SETTINGS_ROW_TITLE = "hxreborn patches"
 private const val SETTINGS_ACTIVITY_CLASS = "app.hxreborn.extension.proton.PatchesSettingsActivity"
@@ -88,6 +94,11 @@ internal fun patchesSettingsActivityPatch(themeStyle: String, hostActivity: Stri
     extendWith("extensions/extension.mpe")
 
     execute {
+        try {
+            replacePatchesThemeStubs()
+        } catch (ex: PatchException) {
+            logger.warning("Skipped the patches screen theme: ${ex.message}")
+        }
         mutableClassDefBy(PATCHES_MENU_CLASS).methods.single { it.name == "hostActivity" }
             .returnEarly(hostActivity)
 
@@ -105,6 +116,34 @@ internal fun patchesSettingsActivityPatch(themeStyle: String, hostActivity: Stri
                 replaceInstruction(index, "invoke-direct { p0 }, $PATCHES_COMPONENT_FACTORY_CLASS-><init>()V")
             }
         }
+    }
+}
+
+private fun BytecodePatchContext.replacePatchesThemeStubs() {
+    with(mutableClassDefBy(PATCHES_THEME_CLASS)) {
+        replaceResourceIdStubs(
+            ResourceType.ATTR,
+            mapOf(
+                "backgroundNormAttribute" to "proton_background_norm",
+                "backgroundSecondaryAttribute" to "proton_background_secondary",
+                "textNormAttribute" to "proton_text_norm",
+                "textWeakAttribute" to "proton_text_weak",
+                "iconDisabledAttribute" to "proton_icon_disabled",
+            ),
+        )
+        val backArrow = if (hasResourceId(ResourceType.DRAWABLE, "ic_proton_arrow_left")) {
+            "ic_proton_arrow_left"
+        } else {
+            "ic_arrow_back"
+        }
+        replaceResourceIdStubs(
+            ResourceType.DRAWABLE,
+            mapOf(
+                "backArrowDrawable" to backArrow,
+                "chevronRightDrawable" to "ic_proton_chevron_right",
+                "checkmarkDrawable" to "ic_proton_checkmark",
+            ),
+        )
     }
 }
 

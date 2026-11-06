@@ -174,11 +174,10 @@ final class AccentColorDialog {
             this.activity = activity;
             this.onChanged = onChanged;
 
-            this.dialogBackgroundColor = PatchesTheme.resolveColorAttribute(activity,
-                    PatchesTheme.BACKGROUND_SECONDARY);
-            this.previewBackgroundColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_NORM);
-            this.textNormColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM);
-            this.textWeakColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
+            this.dialogBackgroundColor = PatchesTheme.backgroundSecondary(activity);
+            this.previewBackgroundColor = PatchesTheme.backgroundNorm(activity);
+            this.textNormColor = PatchesTheme.textNorm(activity);
+            this.textWeakColor = PatchesTheme.textWeak(activity);
 
             this.selectedPreset = AccentColor.getPreset();
             final int picked = AccentColor.resolvePresetColor(this.selectedPreset);
@@ -447,7 +446,7 @@ final class AccentColorDialog {
 
                 this.checkmark = new ImageView(Picker.this.activity);
                 this.checkmark
-                    .setImageDrawable(PatchesTheme.getDrawableByName(Picker.this.activity, "ic_proton_checkmark"));
+                    .setImageDrawable(PatchesTheme.drawable(Picker.this.activity, PatchesTheme.checkmarkDrawable()));
                 this.checkmark.setColorFilter((PatchesTheme.isDark(color)) ? Color.WHITE : Color.BLACK);
                 this.checkmark.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
