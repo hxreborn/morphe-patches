@@ -34,7 +34,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = { 23, 36 }, manifest = Config.NONE)
+@Config(sdk = { 23, 36 }, manifest = Config.NONE, shadows = FakeHostColors.class)
 public final class AppliedPatchRowsTest {
 
     private static final String TITLE = "Applied feature";

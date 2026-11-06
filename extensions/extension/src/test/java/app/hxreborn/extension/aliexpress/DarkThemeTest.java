@@ -52,7 +52,8 @@ import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.Q, manifest = Config.NONE, shadows = DarkThemeTest.AppliedTheme.class)
+@Config(sdk = Build.VERSION_CODES.Q, manifest = Config.NONE,
+        shadows = { DarkThemeTest.AppliedTheme.class, FakeTemplateNodes.class })
 public class DarkThemeTest {
 
     @Before

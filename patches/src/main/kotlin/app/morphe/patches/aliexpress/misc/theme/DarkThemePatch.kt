@@ -10,14 +10,18 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
@@ -28,6 +32,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 private const val DARK_THEME_CLASS = "Lapp/hxreborn/extension/aliexpress/DarkTheme;"
+private const val TEMPLATE_NODES_CLASS = "Lapp/hxreborn/extension/aliexpress/TemplateNodes;"
 private const val LIGHT_THEME_PARENT_PREFIX = "@android:style/Theme.Material.Light"
 private const val LIGHT_MARKER = ".Light"
 
@@ -151,6 +156,11 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
                 "invoke-static { p0 }, $DARK_THEME_CLASS->darkenQuantityControl(Landroid/widget/LinearLayout;)V",
             )
         }
+        mutableClassDefBy(DARK_THEME_CLASS).replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf("pageStatusId" to "page_status"),
+        )
+        replaceTemplateNodeStubs()
         mutableClassDefBy(PATCH_SETTINGS_CLASS).replaceStub(
             "initializeNightMode",
             1,
@@ -158,6 +168,53 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
                 const/4 v0, -0x1
                 invoke-static { v0 }, $SET_DEFAULT_NIGHT_MODE
                 return-void
+            """.trimIndent(),
+        )
+    }
+}
+
+private fun BytecodePatchContext.replaceTemplateNodeStubs() {
+    val parent = TemplateParentFingerprint.matchSingle().originalMethod
+    val children = TemplateChildrenFingerprint.matchSingle().originalMethod
+    val backgroundColor = TemplateBackgroundColorFingerprint.matchSingle().originalMethod
+    val homeImageNode = BackdropImageFingerprint.matchSingle().classDef.type
+    with(mutableClassDefBy(TEMPLATE_NODES_CLASS)) {
+        replaceStub(
+            "isHomeImageNode",
+            2,
+            """
+                instance-of v0, p0, $homeImageNode
+                return v0
+            """.trimIndent(),
+        )
+        replaceStub(
+            "parentOf",
+            1,
+            """
+                check-cast p0, ${parent.definingClass}
+                invoke-virtual { p0 }, ${descriptor(parent)}
+                move-result-object p0
+                return-object p0
+            """.trimIndent(),
+        )
+        replaceStub(
+            "childrenOf",
+            1,
+            """
+                check-cast p0, ${children.definingClass}
+                invoke-virtual { p0 }, ${descriptor(children)}
+                move-result-object p0
+                return-object p0
+            """.trimIndent(),
+        )
+        replaceStub(
+            "backgroundColorOf",
+            1,
+            """
+                check-cast p0, ${backgroundColor.definingClass}
+                invoke-virtual { p0 }, ${descriptor(backgroundColor)}
+                move-result p0
+                return p0
             """.trimIndent(),
         )
     }

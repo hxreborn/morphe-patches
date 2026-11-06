@@ -42,7 +42,7 @@ import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowDialog;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 28, manifest = Config.NONE)
+@Config(sdk = 28, manifest = Config.NONE, shadows = FakeHostColors.class)
 public class PatchSettingsTest {
 
     @Before
