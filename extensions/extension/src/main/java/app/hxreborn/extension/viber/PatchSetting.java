@@ -24,33 +24,27 @@ import java.util.Locale;
 
 enum PatchSetting {
 
-    REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", AppliedPatches.removeChatPaymentsDescription(), true),
-    DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
-    SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", "Allows saving disappearing media.", false),
-    FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", "Removes selected chats once read.", true),
-    UNFILED_CHATS("Folders", "unfiledChats", "Adds a tab for chats outside your folders.", true),
-    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", AppliedPatches.raiseFolderLimitDescription(), false),
-    HIDE_ADS("Ads", "Hide ads", "Removes ads across the app.", false),
-    HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promos and suggestions.", true),
-    HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", "Removes selected tabs.", true),
-    HIDE_MORE_ITEMS("Navigation", "Hide More screen items", "Removes selected entries.", false),
-    REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", "Allows online status changes any time.", false),
-    DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true),
-    DISABLE_UPDATE_PROMPTS("App", "disableUpdatePrompts", "Stops optional update dialogs.", false),
-    UNLOCK_VIBER_PLUS("App", "Unlock Viber Plus", "Unlocks icons and typing privacy.", true);
+    REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", true),
+    DISABLE_AI_FEATURES("Chats", "Disable AI features", true),
+    SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", false),
+    FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", true), UNFILED_CHATS("Folders", "unfiledChats", true),
+    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", false), HIDE_ADS("Ads", "Hide ads", false),
+    HIDE_PROMOTIONS("Ads", "hidePromotions", true),
+    HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", true),
+    HIDE_MORE_ITEMS("Navigation", "Hide More screen items", false),
+    REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", false),
+    DISABLE_ANALYTICS("Privacy", "Disable analytics", true),
+    DISABLE_UPDATE_PROMPTS("App", "disableUpdatePrompts", false), UNLOCK_VIBER_PLUS("App", "Unlock Viber Plus", true);
 
     final String section;
 
     final String key;
 
-    final String description;
-
     final boolean restart;
 
-    PatchSetting(String section, String key, String description, boolean restart) {
+    PatchSetting(String section, String key, boolean restart) {
         this.section = section;
         this.key = key;
-        this.description = description;
         this.restart = restart;
     }
 
@@ -70,6 +64,25 @@ enum PatchSetting {
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
             case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePromptsName();
             case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusName();
+        };
+    }
+
+    String description() {
+        return switch (this) {
+            case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsDescription();
+            case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesDescription();
+            case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaDescription();
+            case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsDescription();
+            case UNFILED_CHATS -> AppliedPatches.unfiledChatsDescription();
+            case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitDescription();
+            case HIDE_ADS -> AppliedPatches.hideAdsDescription();
+            case HIDE_PROMOTIONS -> AppliedPatches.hidePromotionsDescription();
+            case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsDescription();
+            case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsDescription();
+            case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimitDescription();
+            case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsDescription();
+            case DISABLE_UPDATE_PROMPTS -> AppliedPatches.disableUpdatePromptsDescription();
+            case UNLOCK_VIBER_PLUS -> AppliedPatches.unlockViberPlusDescription();
         };
     }
 

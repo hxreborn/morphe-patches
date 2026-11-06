@@ -117,7 +117,7 @@ public final class PatchesSettingsActivityTest {
     public void showSwitchAndAppliedRowOnlyForAppliedPatch() {
         List<String> texts = shownTexts();
 
-        Assert.assertEquals(Arrays.asList("Ads", ADS_TITLE, "Removes ads across the app."), texts.subList(1, 4));
+        Assert.assertEquals(Arrays.asList("Ads", ADS_TITLE, ADS_DESCRIPTION), texts.subList(1, 4));
         Assert.assertFalse(texts.contains("Privacy"));
         Assert.assertFalse(texts.contains("Navigation"));
         int appliedIndex = texts.indexOf("Applied patches");
@@ -130,7 +130,7 @@ public final class PatchesSettingsActivityTest {
     public void showInjectedPlusMetadataInMenu() {
         List<String> texts = shownTexts();
 
-        Assert.assertEquals(Arrays.asList("App", PLUS_TITLE, "Unlocks icons and typing privacy."), texts.subList(1, 4));
+        Assert.assertEquals(Arrays.asList("App", PLUS_TITLE, PLUS_DESCRIPTION), texts.subList(1, 4));
         int appliedIndex = texts.indexOf("Applied patches");
         Assert.assertEquals(Arrays.asList(PLUS_TITLE, PLUS_DESCRIPTION),
                 texts.subList(appliedIndex + 1, appliedIndex + 3));
@@ -336,6 +336,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String unfiledChatsDescription() {
+            return "Injected unfiledChats description.";
+        }
+
+        @Implementation
         protected static boolean disableAiFeatures() {
             return true;
         }
@@ -343,6 +348,11 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String disableAiFeaturesName() {
             return "Disable AI features";
+        }
+
+        @Implementation
+        protected static String disableAiFeaturesDescription() {
+            return "Injected disableAiFeatures description.";
         }
 
         @Implementation
@@ -371,6 +381,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String hideAdsDescription() {
+            return "Injected hideAds description.";
+        }
+
+        @Implementation
         protected static boolean hideMoreItems() {
             return true;
         }
@@ -378,6 +393,11 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String hideMoreItemsName() {
             return "Hide More screen items";
+        }
+
+        @Implementation
+        protected static String hideMoreItemsDescription() {
+            return "Injected hideMoreItems description.";
         }
 
         @Implementation
@@ -391,6 +411,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String hideNavigationButtonsDescription() {
+            return "Injected hideNavigationButtons description.";
+        }
+
+        @Implementation
         protected static boolean filterBusinessChats() {
             return true;
         }
@@ -398,6 +423,11 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String filterBusinessChatsName() {
             return "Injected business name";
+        }
+
+        @Implementation
+        protected static String filterBusinessChatsDescription() {
+            return "Injected filterBusinessChats description.";
         }
 
         @Implementation
@@ -411,6 +441,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String removeOnlineStatusLimitDescription() {
+            return "Injected removeOnlineStatusLimit description.";
+        }
+
+        @Implementation
         protected static boolean hidePromotions() {
             return true;
         }
@@ -421,6 +456,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String hidePromotionsDescription() {
+            return "Injected hidePromotions description.";
+        }
+
+        @Implementation
         protected static boolean disableAnalytics() {
             return true;
         }
@@ -428,6 +468,11 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String disableAnalyticsName() {
             return "Disable analytics";
+        }
+
+        @Implementation
+        protected static String disableAnalyticsDescription() {
+            return "Injected disableAnalytics description.";
         }
 
         @Implementation
@@ -456,6 +501,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String saveDisappearingMediaDescription() {
+            return "Injected saveDisappearingMedia description.";
+        }
+
+        @Implementation
         protected static boolean disableUpdatePrompts() {
             return true;
         }
@@ -466,6 +516,11 @@ public final class PatchesSettingsActivityTest {
         }
 
         @Implementation
+        protected static String disableUpdatePromptsDescription() {
+            return "Injected disableUpdatePrompts description.";
+        }
+
+        @Implementation
         protected static boolean unlockViberPlus() {
             return true;
         }
@@ -473,6 +528,11 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String unlockViberPlusName() {
             return PLUS_TITLE;
+        }
+
+        @Implementation
+        protected static String unlockViberPlusDescription() {
+            return "Injected unlockViberPlus description.";
         }
 
     }

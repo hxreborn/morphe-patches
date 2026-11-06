@@ -93,7 +93,7 @@ final class SettingsRows {
         toggle.setOnCheckedChangeListener(listener);
         LinearLayout row = baseRow(card, setting.icon());
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        TextView description = addTitleAndDescription(row, setting.title(), setting.description);
+        TextView description = addTitleAndDescription(row, setting.title(), setting.description());
         if (setting == PatchSetting.UNLOCK_VIBER_PLUS) {
             description.setSingleLine(false);
             description.setEllipsize(null);
