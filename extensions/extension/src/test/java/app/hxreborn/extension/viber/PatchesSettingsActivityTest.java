@@ -88,10 +88,10 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features", "Injected folder title",
-                "Injected folder limit title", "Injected disappearing media title", "Hide ads",
-                "Injected promotions title", "Hide More screen items", "Hide navigation buttons",
-                "Injected business name", "Injected online status title", "Disable analytics",
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Disable AI features",
+                "Injected disappearing media title", "Injected business name", "Injected folder title",
+                "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
+                "Hide More screen items", "Injected online status title", "Disable analytics",
                 "Injected update prompts title", PLUS_TITLE), titles);
     }
 
@@ -117,9 +117,9 @@ public final class PatchesSettingsActivityTest {
     public void showSwitchAndAppliedRowOnlyForAppliedPatch() {
         List<String> texts = shownTexts();
 
-        Assert.assertEquals(Arrays.asList("Ads", ADS_TITLE, "Removes ads."), texts.subList(1, 4));
+        Assert.assertEquals(Arrays.asList("Ads", ADS_TITLE, "Removes ads across the app."), texts.subList(1, 4));
         Assert.assertFalse(texts.contains("Privacy"));
-        Assert.assertFalse(texts.contains("Navigation bar"));
+        Assert.assertFalse(texts.contains("Navigation"));
         int appliedIndex = texts.indexOf("Applied patches");
         Assert.assertEquals(Arrays.asList(ADS_TITLE, ADS_DESCRIPTION),
                 texts.subList(appliedIndex + 1, appliedIndex + 3));
@@ -130,8 +130,7 @@ public final class PatchesSettingsActivityTest {
     public void showInjectedPlusMetadataInMenu() {
         List<String> texts = shownTexts();
 
-        Assert.assertEquals(Arrays.asList("Viber Plus", PLUS_TITLE, "Unlocks icons and typing privacy."),
-                texts.subList(1, 4));
+        Assert.assertEquals(Arrays.asList("App", PLUS_TITLE, "Unlocks icons and typing privacy."), texts.subList(1, 4));
         int appliedIndex = texts.indexOf("Applied patches");
         Assert.assertEquals(Arrays.asList(PLUS_TITLE, PLUS_DESCRIPTION),
                 texts.subList(appliedIndex + 1, appliedIndex + 3));
@@ -142,7 +141,7 @@ public final class PatchesSettingsActivityTest {
     public void showInjectedBusinessMetadataAndChatPicker() {
         List<String> texts = shownTexts();
 
-        Assert.assertTrue(texts.contains("Business messages"));
+        Assert.assertTrue(texts.contains("Chats"));
         Assert.assertTrue(texts.contains("Business chats"));
         Assert.assertFalse(texts.contains("Ads"));
         int appliedIndex = texts.indexOf("Applied patches");

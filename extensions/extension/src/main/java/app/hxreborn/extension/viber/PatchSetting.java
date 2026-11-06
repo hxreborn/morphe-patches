@@ -26,19 +26,18 @@ enum PatchSetting {
 
     REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", "Removes send-money actions.", true),
     DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
-    UNFILED_CHATS("Chats", "unfiledChats", "Shows chats outside your folders.", true),
-    RAISE_FOLDER_LIMIT("Chats", "raiseFolderLimit", "Allows up to 10 folders.", false),
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", "Allows saving disappearing media.", false),
-    HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
-    HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promo banners.", true),
-    HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
-    HIDE_NAVIGATION_BUTTONS("Navigation bar", "Hide navigation buttons", "Removes selected tabs.", true),
-    FILTER_BUSINESS_CHATS("Business messages", "filterBusinessChats",
-            "Filters selected read chats and removes inbox prompts.", true),
+    FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", "Removes selected chats once read.", true),
+    UNFILED_CHATS("Folders", "unfiledChats", "Adds a tab for chats outside your folders.", true),
+    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", "Allows up to 10 folders.", false),
+    HIDE_ADS("Ads", "Hide ads", "Removes ads across the app.", false),
+    HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promos and suggestions.", true),
+    HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", "Removes selected tabs.", true),
+    HIDE_MORE_ITEMS("Navigation", "Hide More screen items", "Removes selected entries.", false),
     REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", "Allows online status changes any time.", false),
     DISABLE_ANALYTICS("Privacy", "Disable analytics", "Stops usage tracking.", true),
-    DISABLE_UPDATE_PROMPTS("Updates", "disableUpdatePrompts", "Stops optional update dialogs.", false),
-    UNLOCK_VIBER_PLUS("Viber Plus", "Unlock Viber Plus", "Unlocks icons and typing privacy.", true);
+    DISABLE_UPDATE_PROMPTS("App", "disableUpdatePrompts", "Stops optional update dialogs.", false),
+    UNLOCK_VIBER_PLUS("App", "Unlock Viber Plus", "Unlocks icons and typing privacy.", true);
 
     final String section;
 
