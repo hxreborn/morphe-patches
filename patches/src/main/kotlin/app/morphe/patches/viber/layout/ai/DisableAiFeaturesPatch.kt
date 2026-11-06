@@ -23,7 +23,7 @@ private val AI_FEATURES_BANNER_PREFERENCE_SITES = 2..2
 @Suppress("unused")
 val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
     name = "Disable AI features",
-    description = "Removes AI reply suggestions, chat summaries and image remix controls.",
+    description = "Removes AI reply suggestions, chat summaries, image remix controls and the Your News banner.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
@@ -44,7 +44,10 @@ val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
             AiReplyPreferenceFingerprint,
             SmartRecapPreferenceFingerprint,
         ).map { it.matchSingle() }
-            .redirectPreferences(PREFERENCE_KEY_OVERRIDE, "$EXTENSION_CLASS_DESCRIPTOR->hideFeature(Z)Z")
+            .redirectPreferences(PREFERENCE_KEY_OVERRIDE, "$EXTENSION_CLASS_DESCRIPTOR->showFeature(Z)Z")
+        NewsBriefBannerEligibilityFingerprint.matchSingle().method.returnWhenEnabled(
+            "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
+        ) { register -> "sget-object v$register, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;\nreturn-object v$register" }
         AiFeaturesBannerPreferenceFingerprint.matchAll(AI_FEATURES_BANNER_PREFERENCE_SITES)
             .redirectPreferences(PREFERENCE_KEY_OVERRIDE, "$EXTENSION_CLASS_DESCRIPTOR->markDismissed(Z)Z")
     }

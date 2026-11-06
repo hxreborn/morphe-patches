@@ -47,7 +47,7 @@ public class AiPreferencesTest {
     @Test
     public void hidesFeatureWhenEnabled() {
         Assert.assertFalse(AiPreferences.showImageRemix(true));
-        Assert.assertFalse(AiPreferences.hideFeature(true));
+        Assert.assertFalse(AiPreferences.showFeature(true));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class AiPreferencesTest {
         Assert.assertEquals("some_key", AiPreferences.preferenceKey("some_key"));
         Assert.assertTrue(AiPreferences.showImageRemix(true));
         Assert.assertFalse(AiPreferences.showImageRemix(false));
-        Assert.assertTrue(AiPreferences.hideFeature(true));
-        Assert.assertFalse(AiPreferences.hideFeature(false));
+        Assert.assertTrue(AiPreferences.showFeature(true));
+        Assert.assertFalse(AiPreferences.showFeature(false));
         Assert.assertFalse(AiPreferences.markDismissed(false));
         Assert.assertTrue(AiPreferences.markDismissed(true));
     }

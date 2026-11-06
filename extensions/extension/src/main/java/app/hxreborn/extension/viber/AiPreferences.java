@@ -34,7 +34,7 @@ public final class AiPreferences {
         return PatchSettings.disableAiFeatures() ? PatchSettings.DISABLED_KEY_PREFIX + key : key;
     }
 
-    public static boolean hideFeature(boolean original) {
+    public static boolean showFeature(boolean original) {
         return original && !PatchSettings.disableAiFeatures();
     }
 

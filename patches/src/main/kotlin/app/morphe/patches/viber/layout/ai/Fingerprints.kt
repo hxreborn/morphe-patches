@@ -55,3 +55,16 @@ internal object ImageRemixPresetsFingerprint : Fingerprint(
         opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
     ),
 )
+
+internal object NewsBriefBannerManagerFingerprint : Fingerprint(
+    name = "<clinit>",
+    filters = listOf(
+        string("getBannerSettingsRepository()Lcom/viber/voip/feature/ai/news/brief/domain/BannerSettingsRepository;"),
+    ),
+)
+
+internal object NewsBriefBannerEligibilityFingerprint : Fingerprint(
+    classFingerprint = NewsBriefBannerManagerFingerprint,
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Lkotlin/coroutines/jvm/internal/ContinuationImpl;"),
+)
