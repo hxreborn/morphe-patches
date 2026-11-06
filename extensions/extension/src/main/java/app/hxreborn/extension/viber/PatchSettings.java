@@ -133,7 +133,7 @@ public final class PatchSettings {
     static Set<String> selectedBusinessChats() {
         return (preferences != null)
                 ? new HashSet<>(preferences.getStringSet(SELECTED_BUSINESS_CHATS, Collections.emptySet()))
-                : Collections.emptySet();
+                : new HashSet<>();
     }
 
     static void setSelectedBusinessChats(Set<String> selected) {

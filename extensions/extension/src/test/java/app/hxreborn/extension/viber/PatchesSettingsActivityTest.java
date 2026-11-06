@@ -20,25 +20,34 @@
  */
 package app.hxreborn.extension.viber;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
+import org.robolectric.shadows.ShadowDialog;
+import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = PatchesSettingsActivityTest.HostIcons.class)
@@ -51,6 +60,17 @@ public final class PatchesSettingsActivityTest {
     private static final String PLUS_TITLE = "Alternative icons";
 
     private static final String PLUS_DESCRIPTION = "Uses selected icons.";
+
+    private static final String PICKER_TITLE = "Filter read business chats";
+
+    private static final String RESTART_TITLE = "Restart required";
+
+    private static final long PICKER_TIMEOUT_MS = 5000;
+
+    @After
+    public void deleteMessagesDatabase() {
+        RuntimeEnvironment.getApplication().deleteDatabase("viber_messages");
+    }
 
     @Test
     public void answerNotAppliedForEverySettingBeforePatchesAreApplied() {
@@ -128,6 +148,89 @@ public final class PatchesSettingsActivityTest {
         Assert.assertEquals(Arrays.asList("Injected business name", "Injected business description."),
                 texts.subList(appliedIndex + 1, appliedIndex + 3));
         Assert.assertEquals(2, Collections.frequency(texts, "Injected business name"));
+    }
+
+    @Test
+    @Config(shadows = OnlyBusinessChatsApplied.class)
+    public void saveUnchangedBusinessChatsWithoutRestartPrompt() {
+        AlertDialog picker = openBusinessChatPicker();
+
+        picker.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+        ShadowLooper.idleMainLooper();
+
+        Assert.assertNotEquals(RESTART_TITLE, latestDialogTitle());
+    }
+
+    @Test
+    @Config(shadows = OnlyBusinessChatsApplied.class)
+    public void saveChangedBusinessChatsAsksForRestart() {
+        AlertDialog picker = openBusinessChatPicker();
+
+        picker.getListView().performItemClick(null, 0, 0);
+        picker.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+        ShadowLooper.idleMainLooper();
+
+        Assert.assertEquals(RESTART_TITLE, latestDialogTitle());
+    }
+
+    private static AlertDialog openBusinessChatPicker() {
+        createBusinessChat();
+        PatchesSettingsActivity activity = Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get();
+        clickableParent(findText(activity.getWindow().getDecorView(), "Business chats")).performClick();
+        long deadline = System.currentTimeMillis() + PICKER_TIMEOUT_MS;
+        while (!PICKER_TITLE.equals(latestDialogTitle()) && System.currentTimeMillis() < deadline) {
+            ShadowLooper.idleMainLooper();
+            Thread.yield();
+        }
+        Assert.assertEquals(PICKER_TITLE, latestDialogTitle());
+        return (AlertDialog) ShadowDialog.getLatestDialog();
+    }
+
+    private static void createBusinessChat() {
+        File path = RuntimeEnvironment.getApplication().getDatabasePath("viber_messages");
+        path.getParentFile().mkdirs();
+        try (SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(path, null)) {
+            database
+                .execSQL("CREATE TABLE conversations (_id INTEGER PRIMARY KEY, name TEXT, deleted INTEGER DEFAULT 0, "
+                        + "conversation_type INTEGER DEFAULT 0, business_inbox_flags INTEGER DEFAULT 1, "
+                        + "participant_id_1 INTEGER)");
+            database.execSQL("CREATE TABLE participants_info (_id INTEGER PRIMARY KEY, contact_name TEXT, "
+                    + "viber_name TEXT)");
+            database.execSQL("INSERT INTO conversations (_id, name) VALUES (1, 'Shop')");
+        }
+    }
+
+    private static String latestDialogTitle() {
+        Dialog dialog = ShadowDialog.getLatestDialog();
+        if (dialog == null) {
+            return null;
+        }
+        CharSequence title = Shadows.shadowOf(dialog).getTitle();
+        return (title != null) ? title.toString() : null;
+    }
+
+    private static View findText(View view, String text) {
+        if (view instanceof TextView && text.contentEquals(((TextView) view).getText())) {
+            return view;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int index = 0; index < group.getChildCount(); index++) {
+                View found = findText(group.getChildAt(index), text);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static View clickableParent(View view) {
+        View current = view;
+        while (!current.hasOnClickListeners()) {
+            current = (View) current.getParent();
+        }
+        return current;
     }
 
     private static List<String> shownTexts() {

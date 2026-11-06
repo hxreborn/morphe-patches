@@ -22,13 +22,13 @@ package app.hxreborn.extension.viber;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 final class BusinessChatSelection {
@@ -70,7 +70,7 @@ final class BusinessChatSelection {
                 while (cursor.moveToNext()) {
                     chats.add(new Chat(Long.toString(cursor.getLong(0)), cursor.getString(1)));
                 }
-            } catch (SQLiteException ex) {
+            } catch (RuntimeException ex) {
                 Log.w(PatchSettings.LOG_TAG, "Business chat list lookup failed");
                 this.activity.runOnUiThread(this::showError);
                 return;
@@ -100,13 +100,14 @@ final class BusinessChatSelection {
                 .setPositiveButton("OK", null));
             return;
         }
-        Set<String> selected = PatchSettings.selectedBusinessChats();
+        Set<String> saved = PatchSettings.selectedBusinessChats();
+        Set<String> selected = new HashSet<>(saved);
         String[] names = new String[chats.size()];
         boolean[] checked = new boolean[chats.size()];
         for (int index = 0; index < chats.size(); index++) {
             Chat chat = chats.get(index);
             names[index] = chat.name;
-            checked[index] = selected.contains(chat.id);
+            checked[index] = saved.contains(chat.id);
         }
         showDialog(new AlertDialog.Builder(this.activity, this.activity.dialogTheme())
             .setTitle("Filter read business chats")
@@ -119,6 +120,9 @@ final class BusinessChatSelection {
                 }
             })
             .setPositiveButton("Save", (dialog, which) -> {
+                if (selected.equals(saved)) {
+                    return;
+                }
                 PatchSettings.setSelectedBusinessChats(selected);
                 this.onSaved.run();
             })
