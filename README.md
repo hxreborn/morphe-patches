@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.72.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.72.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;474 patches total
+> **[v1.73.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.73.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;487 patches total
 
 <table>
 <tr>
@@ -83,7 +83,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#depthpix"><img src=".github/assets/icons/depthpix.png" width="40"><br>DepthPix</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#desh-telugu-keyboard"><img src=".github/assets/icons/deshtelugu.png" width="40"><br>Desh Telugu Keyboard</a><br><sub>2 patches</sub></td>
-<td align="center" width="25%"><a href="#devcheck"><img src=".github/assets/icons/devcheck.png" width="40"><br>DevCheck</a><br><sub>2 patches</sub></td>
+<td align="center" width="25%"><a href="#devcheck"><img src=".github/assets/icons/devcheck.png" width="40"><br>DevCheck</a><br><sub>3 patches</sub></td>
 <td align="center" width="25%"><a href="#duolingo"><img src=".github/assets/icons/duolingo.png" width="40"><br>Duolingo</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -231,7 +231,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="25%"><a href="#symfonium"><img src=".github/assets/icons/symfonium.png" width="40"><br>Symfonium</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
-<td align="center" width="25%"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>9 patches</sub></td>
+<td align="center" width="25%"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>10 patches</sub></td>
 <td align="center" width="25%"><a href="#tradingview"><img src=".github/assets/icons/tradingview.png" width="40"><br>TradingView</a><br><sub>4 patches</sub></td>
 <td align="center" width="25%"><a href="#trainline"><img src=".github/assets/icons/trainline.png" width="40"><br>Trainline</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#transparent-clock-weather"><img src=".github/assets/icons/transparentclock.png" width="40"><br>Transparent clock & weather</a><br><sub>2 patches</sub></td>
@@ -244,7 +244,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>6 patches</sub></td>
+<td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>17 patches</sub></td>
 <td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
 <td align="center" width="25%"><a href="#vllo"><img src=".github/assets/icons/vllo.png" width="40"><br>VLLO</a><br><sub>2 patches</sub></td>
 </tr>
@@ -332,7 +332,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.25.1 |
+| 1.25.6 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -358,7 +358,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="aliexpress-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/aliexpress/misc/analytics/DisableAnalyticsPatch.kt) | Stops usage statistics and affiliate link reports. |
 | <a id="aliexpress-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/aliexpress/misc/updates/DisableUpdatePromptsPatch.kt) | Removes automatic update dialogs. The Version row in Settings still checks manually. |
-| <a id="aliexpress-enable-image-saving"></a>[Enable image saving](patches/src/main/kotlin/app/morphe/patches/aliexpress/misc/images/EnableImageSavingPatch.kt) | Shows the save button in the full-screen image viewer. |
+| <a id="aliexpress-enable-image-saving"></a>[Enable image saving](patches/src/main/kotlin/app/morphe/patches/aliexpress/misc/images/EnableImageSavingPatch.kt) | Shows a save button on full-screen product and review photos. |
 | <a id="aliexpress-fix-dark-mode"></a>[Fix dark mode](patches/src/main/kotlin/app/morphe/patches/aliexpress/misc/theme/DarkThemePatch.kt) | Fixes the screens and web pages the built-in Dark mode leaves white. Requires Android 10 or later. |
 | <a id="aliexpress-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="aliexpress-remove-promotional-popups"></a>[Remove promotional popups](patches/src/main/kotlin/app/morphe/patches/aliexpress/misc/promotions/RemovePromotionalPopupsPatch.kt) | Stops coupon offers opening over Home and search results. |
@@ -413,8 +413,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.3.3 | 1.3.4 |
-| :---: | :---: |
+| 1.3.3 | 1.3.4 | 1.3.5 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -497,7 +497,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 11.0.6 |
+| 11.0.7 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -551,8 +551,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 26.30.05 | 26.38.08 | 26.41.06 | 26.41.07 |
-| :---: | :---: | :---: | :---: |
+| 26.30.05 | 26.38.08 | 26.41.06 | 26.41.07 | 26.43.17 |
+| :---: | :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -670,7 +670,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 26.18 |
+| 26.19 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -896,7 +896,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.2.2 |
+| 4.2.3 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1004,7 +1004,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.0.21 |
+| 1.0.34 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1022,7 +1022,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 17.6.8 |
+| 17.7.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1034,16 +1034,17 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="devcheck"></a>
 <details>
-<summary><img src=".github/assets/icons/devcheck.png" width="18" align="top">&nbsp;&nbsp;DevCheck&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/devcheck.png" width="18" align="top">&nbsp;&nbsp;DevCheck&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 6.57 | 6.60 |
-| :---: | :---: |
+| 6.57 | 6.60 | 6.62 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="devcheck-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/devcheck/misc/theme/AmoledThemePatch.kt) | Adds a pure black option to the dark theme. |
 | <a id="devcheck-hide-menu-items"></a>[Hide menu items](patches/src/main/kotlin/app/morphe/patches/devcheck/layout/menu/HideMenuItemsPatch.kt) | Hides Manage subscription, Share and About from the main menu. |
 | <a id="devcheck-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/devcheck/misc/premium/UnlockPremiumPatch.kt) | Unlocks the Pro tools, tests, themes and colors. |
 
@@ -1064,7 +1065,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="duolingo-disable-dynamic-app-icon"></a>[Disable dynamic app icon](patches/src/main/kotlin/app/morphe/patches/duolingo/misc/icon/DisableDynamicAppIconPatch.kt) | Keeps the default launcher icon. |
 | <a id="duolingo-enable-debug-mode"></a>[Enable debug mode](patches/src/main/kotlin/app/morphe/patches/duolingo/misc/debug/EnableDebugModePatch.kt) | Shows the debug menu and debug button. Turn it on in the patches menu. |
 | <a id="duolingo-unlimited-rampup-time"></a>[Unlimited RampUp time](patches/src/main/kotlin/app/morphe/patches/duolingo/misc/rampup/UnlimitedRampUpTimePatch.kt) | Holds the RampUp timer at one hour. |
-| <a id="duolingo-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/duolingo/misc/premium/UnlockPremiumPatch.kt) | Unlocks Super, or Max from the patches menu, and keeps energy full. Max Video Call does not work. |
+| <a id="duolingo-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/duolingo/misc/premium/UnlockPremiumPatch.kt) | Unlocks Super or Max and keeps energy full. Max Video Call does not work. |
 
 </details>
 
@@ -2067,7 +2068,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="patreon-hide-recommended-creators"></a>[Hide recommended creators](patches/src/main/kotlin/app/morphe/patches/patreon/layout/home/HideRecommendedCreatorsPatch.kt) | Limits Home to creators you're a member of. |  |
 | <a id="patreon-hide-search-suggestions"></a>[Hide search suggestions](patches/src/main/kotlin/app/morphe/patches/patreon/layout/search/HideSearchSuggestionsPatch.kt) | Removes suggested creators and topics from Explore. |  |
 | <a id="patreon-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/patreon/layout/promotions/HideUpgradePromotionsPatch.kt) | Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey. |  |
-| <a id="patreon-remove-app-prompts"></a>[Remove app prompts](patches/src/main/kotlin/app/morphe/patches/patreon/misc/prompts/RemoveAppPromptsPatch.kt) | Removes the rating prompt, the in-app update prompt and the notification request at startup. |  |
+| <a id="patreon-remove-app-prompts"></a>[Remove app prompts](patches/src/main/kotlin/app/morphe/patches/patreon/misc/prompts/RemoveAppPromptsPatch.kt) | Removes the rating prompt and the in-app update prompt. |  |
 
 </details>
 
@@ -2118,12 +2119,12 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="photo-editor-pro-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/ads/HideAdsPatch.kt) | Adds an option to hide banner, interstitial, app-open and rewarded ads. |
-| <a id="photo-editor-pro-hide-share-options"></a>[Hide share options](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/layout/HideShareOptionsPatch.kt) | Adds an option to hide the share buttons on the save screen and center the saved photo. |
+| <a id="photo-editor-pro-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/ads/HideAdsPatch.kt) | Removes banner, interstitial, app-open and rewarded ads. |
+| <a id="photo-editor-pro-hide-share-options"></a>[Hide share options](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/layout/HideShareOptionsPatch.kt) | Removes share buttons from the save screen and centers the saved photo. |
 | <a id="photo-editor-pro-inspect-ai-requests"></a>[Inspect AI requests](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/diagnostics/TraceAiRequestsPatch.kt) | Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads. Keeps a log of them. |
 | <a id="photo-editor-pro-show-ai-progress"></a>[Show AI progress](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/ShowAiProgressPatch.kt) | Shows the current stage of AI Remove and Enhance on their loading screens. |
 | <a id="photo-editor-pro-speed-up-ai-tools"></a>[Speed up AI tools](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/aitools/SpeedUpAiToolsPatch.kt) | Shortens the AI tool wait by polling for the result more often and uploading the photo in larger chunks. |
-| <a id="photo-editor-pro-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/premium/UnlockPremiumPatch.kt) | Adds an option to unlock the pro tools, remove the export watermark and hide the upgrade prompts. |
+| <a id="photo-editor-pro-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/premium/UnlockPremiumPatch.kt) | Unlocks pro tools and removes export watermarks and upgrade prompts. |
 
 </details>
 
@@ -2756,8 +2757,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.0.3 |
-| :---: |
+| 1.0.3 | 1.0.5 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2802,7 +2803,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="terabox"></a>
 <details>
-<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;10 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2814,11 +2815,12 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|-----------|
 | <a id="terabox-clone-app"></a>[Clone app](patches/src/main/kotlin/app/morphe/patches/terabox/misc/clone/CloneAppPatch.kt) | Installs TeraBox as a separate app alongside the original, with its own account. Each copy needs a different clone number. | • Package name<br>• App name |
 | <a id="terabox-fix-google-login"></a>[Fix Google login](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |  |
+| <a id="terabox-fix-transfers-over-vpn"></a>[Fix transfers over VPN](patches/src/main/kotlin/app/morphe/patches/terabox/misc/fix/vpn/FixTransfersOverVpnPatch.kt) | Runs uploads, downloads and saves from shared links while a VPN is active. |  |
 | <a id="terabox-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner and video ads, plus interstitial and app-open ads. Rewarded ads still play when requested from Benefits. |  |
 | <a id="terabox-hide-consent-form"></a>[Hide consent form](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |  |
 | <a id="terabox-hide-home-shortcuts"></a>[Hide home shortcuts](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Removes Trending and Short Drama from Home and More, and Translate where it appears. Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too. | • Hide Creative Generation<br>• Hide Translate<br>• Hide Signature<br>• Hide PDF Encryption<br>• Hide Add Watermark<br>• Hide Short Drama<br>• Hide Trending |
 | <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, floating invites and coupon popups. |  |
-| <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Removes the Recommendations grid below the video player. |  |
+| <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Removes recommendations below the player. |  |
 | <a id="terabox-remove-recent-panel"></a>[Remove recent panel](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recent/RemoveRecentPanelPatch.kt) | Removes Recent, Starred and Offline from Home. |  |
 | <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD, 3x speed and uploads, with HD up to original quality. HD buffers faster over parallel connections. |  |
 
@@ -2953,7 +2955,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.168 |
+| 1.171 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2964,7 +2966,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;17 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2974,12 +2976,23 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
+| <a id="viber-disable-ai-features"></a>[Disable AI features](patches/src/main/kotlin/app/morphe/patches/viber/layout/ai/DisableAiFeaturesPatch.kt) | Removes AI reply suggestions, chat summaries, image remix controls and the Your News banner. |  |
 | <a id="viber-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/viber/misc/analytics/DisableAnalyticsPatch.kt) | Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data. |  |
+| <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the optional Google Play update dialog. Required updates still show. |  |
+| <a id="viber-enable-viber-plus-features"></a>[Enable Viber Plus features](patches/src/main/kotlin/app/morphe/patches/viber/misc/premium/UnlockViberPlusPatch.kt) | Enables Viber Plus app icons and the typing privacy switch. The Plus badge and Invisible Mode need a paid subscription. |  |
+| <a id="viber-filter-business-chats"></a>[Filter business chats](patches/src/main/kotlin/app/morphe/patches/viber/layout/business/FilterBusinessChatsPatch.kt) | Filters selected business chats after reading and removes inbox discovery prompts. Shows unread chats and verification-code chats. |  |
 | <a id="viber-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |  |
-| <a id="viber-hide-more-screen-items"></a>[Hide More screen items](patches/src/main/kotlin/app/morphe/patches/viber/layout/more/HideMoreItemsPatch.kt) | Hides Viber Dating, Your News, promotional banners and upsell entries from the More screen. | • Hide Business Account<br>• Hide Viber Dating<br>• Hide eSIM<br>• Hide Get free stickers<br>• Hide promotional banners<br>• Hide Rakuten account<br>• Hide Viber Out<br>• Hide Viber Plus<br>• Hide Your News |
+| <a id="viber-hide-more-screen-items"></a>[Hide More screen items](patches/src/main/kotlin/app/morphe/patches/viber/layout/more/HideMoreItemsPatch.kt) | Hides selected entries from the main screen and More screen. | • Hide About and FAQ<br>• Hide Business Account<br>• Hide Caller ID<br>• Hide Viber Dating<br>• Hide eSIM<br>• Hide Get free stickers<br>• Hide Invite friends<br>• Hide Open Business Account<br>• Hide promotional banners<br>• Hide Rakuten account<br>• Hide Viber Lenses<br>• Hide Viber Out<br>• Hide Viber Plus<br>• Hide Your News |
+| <a id="viber-hide-viber-out-and-channel-promotions"></a>[Hide Viber Out and channel promotions](patches/src/main/kotlin/app/morphe/patches/viber/layout/promotions/HidePromotionsPatch.kt) | Hides the Viber Out banners and intro on the Calls tab and the channel and bot suggestions in the chat list. |  |
 | <a id="viber-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/viber/ads/HideAdsPatch.kt) | Hides ads in the chat list, the More screen, Explore, search and after calls. |  |
 | <a id="viber-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar. | • Hide Calls<br>• Hide ChatGPT<br>• Hide Explore<br>• Hide Marketplace<br>• Hide Pay<br>• Hide Shortica |
+| <a id="viber-link-as-secondary-device"></a>[Link as secondary device](patches/src/main/kotlin/app/morphe/patches/viber/misc/secondary/LinkAsSecondaryDevicePatch.kt) | Links to your main Viber phone. |  |
+| <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
+| <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
+| <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |
+| <a id="viber-save-disappearing-media"></a>[Save disappearing media](patches/src/main/kotlin/app/morphe/patches/viber/layout/media/SaveDisappearingMediaPatch.kt) | Shows Save to gallery for disappearing photos and videos. |  |
 | <a id="viber-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/viber/misc/fix/signature/SpoofSignaturePatch.kt) | Lets the app send and receive messages and get its push token. |  |
+| <a id="viber-unfiled-chats"></a>[Unfiled chats](patches/src/main/kotlin/app/morphe/patches/viber/layout/unfiled/UnfiledChatsPatch.kt) | Adds a folder tab for chats outside your custom folders. |  |
 
 </details>
 
@@ -3006,8 +3019,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 13.9.0 | 13.9.6 |
-| :---: | :---: |
+| 13.9.0 | 13.9.6 | 13.9.18 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -3023,7 +3036,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.172 |
+| 1.175 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3173,8 +3186,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.8.12 |
-| :---: |
+| 1.8.12 | 2.0.10 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
