@@ -37,3 +37,24 @@ internal fun textContentTypeFingerprint(contentType: String) = Fingerprint(
     name = "<clinit>",
     filters = listOf(string("TEXT"), fieldAccess(opcode = Opcode.SPUT_OBJECT)),
 )
+
+internal fun messageBodyGetterFingerprint(messageType: String) = Fingerprint(
+    definingClass = messageType,
+    name = "getBody",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf(),
+)
+
+internal fun messageBodySetterFingerprint(messageType: String) = Fingerprint(
+    definingClass = messageType,
+    name = "setBody",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;"),
+)
+
+internal fun recordSaveFingerprint(recordType: String) = Fingerprint(
+    definingClass = recordType,
+    name = "save",
+    returnType = "J",
+    parameters = listOf(),
+)

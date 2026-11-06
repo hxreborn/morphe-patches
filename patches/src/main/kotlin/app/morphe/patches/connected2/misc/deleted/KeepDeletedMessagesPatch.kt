@@ -16,6 +16,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -43,6 +44,31 @@ val keepDeletedMessagesPatch = bytecodePatch(
             val skipDelete = method.getInstruction<BuilderOffsetInstruction>(ageCheck).target.location.instruction!!
             val messageType = lookupCall.instruction.getReference<MethodReference>()!!.returnType
             val contentTypeGetter = messageContentTypeGetterFingerprint(messageType).matchSingle().originalMethod
+            val bodyGetter = messageBodyGetterFingerprint(messageType).matchSingle().originalMethod
+            val bodySetter = messageBodySetterFingerprint(messageType).matchSingle().originalMethod
+            val save = recordSaveFingerprint(classDefBy(messageType).superclass!!).matchSingle().originalMethod
+            with(mutableClassDefBy(EXTENSION_CLASS)) {
+                replaceStub(
+                    "bodyOf",
+                    1,
+                    """
+                        check-cast p0, $messageType
+                        invoke-virtual { p0 }, ${descriptor(bodyGetter)}
+                        move-result-object p0
+                        return-object p0
+                    """,
+                )
+                replaceStub(
+                    "saveBody",
+                    2,
+                    """
+                        check-cast p0, $messageType
+                        invoke-virtual { p0, p1 }, ${descriptor(bodySetter)}
+                        invoke-virtual { p0 }, ${descriptor(save)}
+                        return-void
+                    """,
+                )
+            }
             val (_, textField) = textContentTypeFingerprint(contentTypeGetter.returnType).matchSingle()
                 .instructionMatches
             val registers = method.getFreeRegisterProvider(ageCheck + 1, 2, message)
