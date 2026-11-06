@@ -25,6 +25,7 @@ import java.io.OutputStream;
 
 interface OriginResponder {
 
-    void respond(ParallelRangeProxyTest.FakeOrigin origin, ParallelRangeProxyTest.Seen request, OutputStream out) throws IOException;
+    void respond(ParallelRangeProxyTest.FakeOrigin origin, ParallelRangeProxyTest.Seen request, OutputStream out)
+            throws IOException;
 
 }

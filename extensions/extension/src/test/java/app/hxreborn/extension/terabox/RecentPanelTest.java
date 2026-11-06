@@ -37,9 +37,11 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = { 23, 36 }, shadows = EveryPatchApplied.class)
+@Config(sdk = { 23, 36 }, shadows = { EveryPatchApplied.class, RecentPanelTest.HostPanels.class })
 public final class RecentPanelTest {
 
     private static final int RECENT_TABS_ID = 0x7f010001;
@@ -139,6 +141,21 @@ public final class RecentPanelTest {
         Assert.assertEquals(View.GONE, this.recentContent.getVisibility());
     }
 
+    @Implements(value = RecentPanel.class, isInAndroidSdk = false)
+    public static final class HostPanels {
+
+        @Implementation
+        public static int panelTabsId() {
+            return RECENT_TABS_ID;
+        }
+
+        @Implementation
+        public static int panelContentId() {
+            return RECENT_CONTENT_ID;
+        }
+
+    }
+
     @SuppressWarnings("deprecation")
     private static final class HomeResources extends Resources {
 
@@ -150,10 +167,6 @@ public final class RecentPanelTest {
         public int getIdentifier(String name, String defType, String defPackage) {
             if ("id".equals(defType)) {
                 switch (name) {
-                    case "shortcut_tab":
-                        return RECENT_TABS_ID;
-                    case "shortcut_bottom_scroll":
-                        return RECENT_CONTENT_ID;
                     case "rb_trans_btn":
                         return TRANSFER_BUTTON_ID;
                     default:

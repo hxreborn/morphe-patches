@@ -34,7 +34,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = { 23, 36 })
+@Config(sdk = { 23, 36 }, shadows = FakeHostResources.class)
 public final class SettingsRowsTest {
 
     private static final int CONTROL_TOUCH_TARGET_DP = 48;

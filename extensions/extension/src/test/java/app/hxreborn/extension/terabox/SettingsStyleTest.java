@@ -21,8 +21,6 @@
 package app.hxreborn.extension.terabox;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.view.ContextThemeWrapper;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,43 +30,19 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = { 23, 36 })
+@Config(sdk = { 23, 36 }, shadows = FakeHostResources.class)
 public final class SettingsStyleTest {
 
     @Test
-    public void followsLightHostThemeDuringSystemDarkMode() {
-        RuntimeEnvironment.setQualifiers("+night");
-        Context context = new ContextThemeWrapper(RuntimeEnvironment.getApplication(),
-                android.R.style.Theme_Material_Light_NoActionBar);
+    public void readsSurfacesAndTextFromHostColors() {
+        Context context = RuntimeEnvironment.getApplication();
         SettingsStyle style = new SettingsStyle(context);
 
-        Assert.assertEquals(themeColor(context, android.R.attr.colorBackground), style.screenBackground);
-        Assert.assertEquals(themeColor(context, android.R.attr.colorBackgroundFloating), style.cardSurface);
-        Assert.assertEquals(themeColor(context, android.R.attr.textColorPrimary), style.primaryText);
-        Assert.assertEquals(themeColor(context, android.R.attr.textColorSecondary), style.secondaryText);
-    }
-
-    @Test
-    public void followsDarkHostThemeDuringSystemLightMode() {
-        RuntimeEnvironment.setQualifiers("+notnight");
-        Context context = new ContextThemeWrapper(RuntimeEnvironment.getApplication(),
-                android.R.style.Theme_Material_NoActionBar);
-        SettingsStyle style = new SettingsStyle(context);
-
-        Assert.assertEquals(themeColor(context, android.R.attr.colorBackground), style.screenBackground);
-        Assert.assertEquals(themeColor(context, android.R.attr.colorBackgroundFloating), style.cardSurface);
-        Assert.assertEquals(themeColor(context, android.R.attr.textColorPrimary), style.primaryText);
-        Assert.assertEquals(themeColor(context, android.R.attr.textColorSecondary), style.secondaryText);
-    }
-
-    private static int themeColor(Context context, int attribute) {
-        TypedArray values = context.obtainStyledAttributes(new int[] { attribute });
-        try {
-            Assert.assertTrue(values.hasValue(0));
-            return values.getColor(0, 0);
-        } finally {
-            values.recycle();
-        }
+        Assert.assertEquals(context.getColor(FakeHostResources.PAGE_BACKGROUND), style.screenBackground);
+        Assert.assertEquals(context.getColor(FakeHostResources.CARD_BACKGROUND), style.cardSurface);
+        Assert.assertEquals(context.getColor(FakeHostResources.DIVIDER), style.divider);
+        Assert.assertEquals(context.getColor(FakeHostResources.PRIMARY_TEXT), style.primaryText);
+        Assert.assertEquals(context.getColor(FakeHostResources.SECONDARY_TEXT), style.secondaryText);
     }
 
 }

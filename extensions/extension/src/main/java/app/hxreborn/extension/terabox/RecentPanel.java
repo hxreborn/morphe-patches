@@ -25,13 +25,17 @@ import android.view.View;
 @SuppressWarnings("unused")
 public final class RecentPanel {
 
-    private static final String PANEL_TABS = "shortcut_tab";
-
-    private static final String PANEL_CONTENT = "shortcut_bottom_scroll";
-
     private static final String REMOVED_TAG = "hx_terabox_recent_removed";
 
     private RecentPanel() {
+    }
+
+    static int panelTabsId() {
+        return 0;
+    }
+
+    static int panelContentId() {
+        return 0;
     }
 
     public static void updateRecentPanel(View root) {
@@ -39,13 +43,12 @@ public final class RecentPanel {
             return;
         }
         boolean removed = PatchSettings.isRecentPanelRemoved();
-        updateView(root, PANEL_TABS, removed);
-        updateView(root, PANEL_CONTENT, removed);
+        updateView(root, panelTabsId(), removed);
+        updateView(root, panelContentId(), removed);
     }
 
-    private static void updateView(View root, String name, boolean removed) {
-        int identifier = root.getResources().getIdentifier(name, "id", root.getContext().getPackageName());
-        View panel = (identifier == 0) ? null : root.findViewById(identifier);
+    private static void updateView(View root, int identifier, boolean removed) {
+        View panel = root.findViewById(identifier);
         if (panel == null) {
             return;
         }

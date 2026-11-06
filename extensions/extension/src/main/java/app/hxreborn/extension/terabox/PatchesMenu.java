@@ -36,11 +36,13 @@ public final class PatchesMenu {
 
     private static final String ENTRY_TAG = "hx_terabox_patches_entry";
 
-    private static final String TEMPLATE_ID = "setting_security";
-
     private static final int END_DRAWABLE = 2;
 
     private PatchesMenu() {
+    }
+
+    static int templateRowId() {
+        return 0;
     }
 
     public static void attach(Activity activity) {
@@ -48,8 +50,7 @@ public final class PatchesMenu {
         if (content == null || content.findViewWithTag(ENTRY_TAG) != null) {
             return;
         }
-        int identifier = activity.getResources().getIdentifier(TEMPLATE_ID, "id", activity.getPackageName());
-        View templateView = (identifier == 0) ? null : activity.findViewById(identifier);
+        View templateView = activity.findViewById(templateRowId());
         if (!(templateView instanceof TextView) || !(templateView.getParent() instanceof LinearLayout)) {
             Log.w(PatchSettings.LOG_TAG, "Settings row template missing");
             return;

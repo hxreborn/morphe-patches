@@ -106,7 +106,7 @@ final class PatchesSettingsDialog {
         bar.setPadding(this.style.dp(APP_BAR_START_PADDING_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0);
         bar.setMinimumHeight(this.style.dp(APP_BAR_HEIGHT_DP));
         ImageView back = new ImageView(this.activity);
-        back.setImageDrawable(this.style.hostIcon("ic_arrow_back_black_24", this.style.primaryText));
+        back.setImageDrawable(this.style.backIcon(this.style.primaryText));
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         int inset = this.style.dp(BACK_ICON_INSET_DP);
         back.setPadding(inset, inset, inset, inset);

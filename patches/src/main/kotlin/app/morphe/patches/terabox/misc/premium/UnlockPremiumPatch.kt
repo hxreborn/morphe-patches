@@ -8,11 +8,15 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.addFieldReader
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
+import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.terabox.ads.HasPrivilegeFingerprint
 import app.morphe.patches.terabox.misc.quality.unlockHdPlaybackPatch
 import app.morphe.patches.terabox.misc.settings.PREMIUM_ENABLED
@@ -21,10 +25,14 @@ import app.morphe.patches.terabox.misc.settings.overrideWhenEnabled
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.Method
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val PREMIUM_PLUS_LEVEL = 2
 private const val MAX_PLAYBACK_SPEED = 3.0
+private const val DATA_SAVER_OPTION_CLASS = "Lapp/hxreborn/extension/terabox/DataSaverOption;"
 private const val SERVER_MEMBERSHIP_CLASS = "Lapp/hxreborn/extension/terabox/TeraboxServerMembership;"
 
 private val DATA_SAVER_LAYOUTS = listOf(
@@ -60,6 +68,39 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("unlockPremium", unlockPremiumPatch)
+        mutableClassDefBy(DATA_SAVER_OPTION_CLASS).replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf("dataSaverRowId" to "video_rb_resolution_fluent_layout"),
+        )
+        val isVipGetter = VipInfoIsVipFingerprint.matchSingle()
+        val vipInfo = isVipGetter.classDef.type
+        val serverIsVip = isVipGetter.originalMethod.fieldRead()
+        val serverVipLevel = VipInfoLevelFingerprint.matchSingle().originalMethod.fieldRead()
+        val vipInfoClass = mutableClassDefBy(vipInfo)
+        val readServerIsVip = vipInfoClass.addFieldReader(serverIsVip)
+        val readServerVipLevel = vipInfoClass.addFieldReader(serverVipLevel)
+        mutableClassDefBy(SERVER_MEMBERSHIP_CLASS).apply {
+            replaceStub(
+                "serverIsVip",
+                1,
+                """
+                    check-cast p0, $vipInfo
+                    invoke-virtual { p0 }, $readServerIsVip
+                    move-result p0
+                    return p0
+                """,
+            )
+            replaceStub(
+                "serverVipLevel",
+                1,
+                """
+                    check-cast p0, $vipInfo
+                    invoke-virtual { p0 }, $readServerVipLevel
+                    move-result p0
+                    return p0
+                """,
+            )
+        }
         VipInfoIsVipFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
         VipInfoLevelFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
         VipInfoIdentityFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
@@ -102,3 +143,8 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
         )
     }
 }
+
+private fun Method.fieldRead(): FieldReference = implementation!!.instructions
+    .filterIsInstance<ReferenceInstruction>()
+    .single { it.reference is FieldReference }
+    .reference as FieldReference

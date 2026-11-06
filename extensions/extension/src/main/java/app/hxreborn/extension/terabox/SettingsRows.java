@@ -88,9 +88,9 @@ final class SettingsRows {
         CheckBox toggle = new CheckBox(this.context);
         toggle.setChecked(checked);
         toggle.setContentDescription(title + ". " + description);
+        this.style.styleSwitch(toggle);
         toggle.setMinWidth(this.style.dp(CONTROL_TOUCH_TARGET_DP));
         toggle.setMinHeight(this.style.dp(CONTROL_TOUCH_TARGET_DP));
-        this.style.styleSwitch(toggle);
         toggle.setOnCheckedChangeListener(listener);
         LinearLayout row = baseRow(card, iconName);
         addTitleAndDescription(row, title, description);

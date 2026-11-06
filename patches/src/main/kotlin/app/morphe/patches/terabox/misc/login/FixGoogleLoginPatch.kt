@@ -10,11 +10,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
@@ -54,6 +56,10 @@ val fixGoogleLoginPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("fixGoogleLogin", fixGoogleLoginPatch)
+        mutableClassDefBy(EXTENSION_CLASS).replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf("backButtonId" to "left_button"),
+        )
         NativeAccountPageFingerprint.matchSingle().method.returnEarly(false)
 
         OfflinePackageManifestFingerprint.matchSingle().method.returnEarly(null)

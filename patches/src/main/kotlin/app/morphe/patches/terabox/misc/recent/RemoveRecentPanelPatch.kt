@@ -8,9 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 
@@ -26,6 +28,10 @@ val removeRecentPanelPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("removeRecentPanel", removeRecentPanelPatch)
+        mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR).replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf("panelTabsId" to "shortcut_tab", "panelContentId" to "shortcut_bottom_scroll"),
+        )
         val fragment = HomeCardFragmentFingerprint.matchSingle().classDef
         homeViewCreatedFingerprint(fragment.type).matchSingle().method.apply {
             addInstruction(
