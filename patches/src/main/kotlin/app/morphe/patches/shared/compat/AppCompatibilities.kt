@@ -1816,7 +1816,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "54eff60e74a11da72c81ddf4001c548f66f316747e164310539256e965e3e429",
         ),
-        targets = listOf(AppTarget(version = "1.8.12", versionCode = 614, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "1.8.12", versionCode = 614, minSdk = 28),
+            AppTarget(version = "2.0.10", versionCode = 625, minSdk = 28),
+        ),
     )
 
     val YI_IOT = Compatibility(
