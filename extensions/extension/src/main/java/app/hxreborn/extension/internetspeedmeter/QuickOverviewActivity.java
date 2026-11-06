@@ -160,8 +160,8 @@ public final class QuickOverviewActivity extends Activity {
         header.setPadding(dp(PADDING_DP), dp(PADDING_DP), dp(PADDING_DP), dp(PADDING_DP));
         this.sessionTime = text(18, Color.WHITE);
         this.sessionUsage = text(18, Color.WHITE);
-        header.addView(column(AppResources.string(this, "session_time"), this.sessionTime), weighted());
-        header.addView(column(AppResources.string(this, "session_usage"), this.sessionUsage), weighted());
+        header.addView(column(this.getString(HostResources.sessionTimeLabel()), this.sessionTime), weighted());
+        header.addView(column(this.getString(HostResources.sessionUsageLabel()), this.sessionUsage), weighted());
         return header;
     }
 
@@ -178,8 +178,8 @@ public final class QuickOverviewActivity extends Activity {
     private View tabs() {
         LinearLayout tabs = new LinearLayout(this);
         tabs.setPadding(dp(PADDING_DP), dp(ROW_PADDING_DP), dp(PADDING_DP), 0);
-        this.mobileTab = tab(AppResources.string(this, "Mobile"), ConnectivityManager.TYPE_MOBILE);
-        this.wifiTab = tab(AppResources.string(this, "Wifi"), ConnectivityManager.TYPE_WIFI);
+        this.mobileTab = tab(this.getString(HostResources.mobileLabel()), ConnectivityManager.TYPE_MOBILE);
+        this.wifiTab = tab(this.getString(HostResources.wifiLabel()), ConnectivityManager.TYPE_WIFI);
         tabs.addView(this.mobileTab, weighted());
         tabs.addView(this.wifiTab, weighted());
         return tabs;
@@ -229,7 +229,7 @@ public final class QuickOverviewActivity extends Activity {
         this.usageRows.removeAllViews();
 
         if (!hasUsageAccess()) {
-            TextView request = text(14, this.headerColor, AppResources.string(this, "app_usage_permission_request"));
+            TextView request = text(14, this.headerColor, this.getString(HostResources.usagePermissionRequest()));
             request.setOnClickListener((view) -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)));
             this.usageRows.addView(request);
             return;
@@ -248,8 +248,8 @@ public final class QuickOverviewActivity extends Activity {
             return;
         }
         if (usage.isEmpty()) {
-            this.usageRows
-                .addView(text(14, Color.GRAY, AppResources.string(this, mobile ? "no_data_mobile" : "no_data_wifi")));
+            this.usageRows.addView(text(14, Color.GRAY,
+                    getString(mobile ? HostResources.noMobileData() : HostResources.noWifiData())));
             return;
         }
         for (Map.Entry<String, Long> entry : usage) {

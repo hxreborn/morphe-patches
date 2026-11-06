@@ -65,9 +65,9 @@ public final class NotificationSettings {
                 hsv[2] -= ACCENT_DARKENING;
                 return Color.HSVToColor(hsv);
             case ACCENT_LIGHT:
-                return context.getColor(AppResources.id(context, "color", "notif_bg_white"));
+                return context.getColor(HostResources.notificationLightColor());
             case ACCENT_DARK:
-                return context.getColor(AppResources.id(context, "color", "notif_bg_black"));
+                return context.getColor(HostResources.notificationDarkColor());
             default:
                 return Notification.COLOR_DEFAULT;
         }

@@ -20,6 +20,7 @@ import app.morphe.patches.internetspeedmeter.ads.removeAdsPatch
 import app.morphe.patches.internetspeedmeter.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.internetspeedmeter.misc.settings.removeSettingsRow
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.util.adoptChild
 import app.morphe.util.getNode
@@ -30,6 +31,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/internetspeedmeter"
 private const val SETTINGS_CLASS_DESCRIPTOR = "$EXTENSION_PACKAGE/PremiumSettings;"
+private const val HOST_RESOURCES_CLASS_DESCRIPTOR = "$EXTENSION_PACKAGE/HostResources;"
 private const val NOTIFICATION_CLASS_DESCRIPTOR = "$EXTENSION_PACKAGE/NotificationSettings;"
 private const val SMART_NOTIFICATION_CLASS_DESCRIPTOR = "$EXTENSION_PACKAGE/SmartNotification;"
 
@@ -89,6 +91,78 @@ val unlockPremiumPatch = bytecodePatch(
             replaceTitleStub("startingHourTitle", "startingHour_title")
             replaceTitleStub("accentTitle", "Notification_accent_title")
             replaceTitleStub("themeTitle", "theme_title")
+        }
+
+        mutableClassDefBy(HOST_RESOURCES_CLASS_DESCRIPTOR).apply {
+            replaceResourceIdStubs(
+                ResourceType.ID,
+                mapOf(
+                    "promoRibbonId" to "promo_ribbon",
+                    "rowTitleViewId" to "textView1",
+                    "rowSummaryViewId" to "textView2",
+                    "accentSpinnerId" to "NotificationAccentSpinner",
+                    "accentBackgroundCheckboxId" to "accentIsBgCheckbox",
+                    "themePresetSpinnerId" to "theme_spinner",
+                    "themeHueSliderId" to "Global_hue_slider",
+                    "themeHeaderSaturationSliderId" to "Header_saturation_slider",
+                    "themeHeaderValueSliderId" to "Header_value_slider",
+                    "themeValuesSaturationSliderId" to "Values_saturation_slider",
+                    "themeValuesValueSliderId" to "Values_value_slider",
+                    "themeWhiteTextId" to "WhiteText",
+                    "themeHeaderPreviewId" to "rel_layout_1",
+                    "themeValuesPreviewId" to "rel_layout_2",
+                    "themePeekId" to "Peek",
+                    "themeConfirmId" to "OK",
+                    "themeCancelId" to "Cancel",
+                    "themeGlobalSaturationSliderId" to "Global_saturation_slider",
+                    "themeGlobalValueSliderId" to "Global_value_slider",
+                ),
+            )
+            replaceResourceIdStubs(
+                ResourceType.LAYOUT,
+                mapOf(
+                    "notificationAccentLayout" to "notification_accent",
+                    "customThemeLayout" to "custom_theme",
+                ),
+            )
+            replaceResourceIdStubs(
+                ResourceType.DRAWABLE,
+                mapOf(
+                    "fullRainbowDrawable" to "full_rainbow",
+                ),
+            )
+            replaceResourceIdStubs(
+                ResourceType.ARRAY,
+                mapOf(
+                    "notificationPreferenceOptions" to "notification_pref_dialog_array",
+                    "tapActionOptions" to "notif_tap_action_array",
+                    "accentOptions" to "notification_accent_array",
+                    "startingHourOptions" to "starting_hour_array",
+                    "themeNames" to "theme_array",
+                ),
+            )
+            replaceResourceIdStubs(
+                ResourceType.STRING,
+                mapOf(
+                    "notificationPreferenceDialogTitle" to "Notification_Preference_dialog",
+                    "okLabel" to "OK",
+                    "cancelLabel" to "Cancel",
+                    "sessionTimeLabel" to "session_time",
+                    "sessionUsageLabel" to "session_usage",
+                    "mobileLabel" to "Mobile",
+                    "wifiLabel" to "Wifi",
+                    "usagePermissionRequest" to "app_usage_permission_request",
+                    "noMobileData" to "no_data_mobile",
+                    "noWifiData" to "no_data_wifi",
+                ),
+            )
+            replaceResourceIdStubs(
+                ResourceType.COLOR,
+                mapOf(
+                    "notificationLightColor" to "notif_bg_white",
+                    "notificationDarkColor" to "notif_bg_black",
+                ),
+            )
         }
 
         PremiumRowClickFingerprint.method.apply {
