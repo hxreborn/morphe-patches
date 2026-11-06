@@ -39,8 +39,12 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = AmoledThemeTest.FakeAmoledTheme.class)
 public final class AmoledThemeTest {
 
     private static final int THEME_LIST_ID = 0x7f010001;
@@ -50,6 +54,21 @@ public final class AmoledThemeTest {
     private static final int TITLE_ID = 0x7f020001;
 
     private static final String TITLE = "Prefer pure black in dark theme";
+
+    @Implements(value = AmoledTheme.class, isInAndroidSdk = false)
+    public static final class FakeAmoledTheme {
+
+        @Implementation
+        public static int dialogListId() {
+            return THEME_LIST_ID;
+        }
+
+        @Implementation
+        public static int lightThemeAttribute() {
+            return android.R.attr.windowIsFloating;
+        }
+
+    }
 
     @After
     public void clearPreference() {
@@ -212,14 +231,10 @@ public final class AmoledThemeTest {
         @Override
         public int getIdentifier(String name, String type, String packageName) {
             switch (name) {
-                case "select_dialog_listview":
-                    return THEME_LIST_ID;
                 case "hx_amoled_preference":
                     return PREFERENCE_ID;
                 case "hx_amoled_preference_title":
                     return TITLE_ID;
-                case "isLightTheme":
-                    return android.R.attr.windowIsFloating;
                 case "hx_amoled_theme_overlay":
                     return android.R.style.Theme_Material_Light;
                 default:

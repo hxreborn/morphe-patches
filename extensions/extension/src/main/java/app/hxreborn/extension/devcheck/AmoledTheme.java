@@ -50,11 +50,19 @@ public final class AmoledTheme {
     private AmoledTheme() {
     }
 
+    static int dialogListId() {
+        return 0;
+    }
+
+    static int lightThemeAttribute() {
+        return 0;
+    }
+
     public static void addPreference(Dialog dialog) {
         Context context = dialog.getContext();
         Resources resources = context.getResources();
         String packageName = context.getPackageName();
-        int listId = resources.getIdentifier("select_dialog_listview", "id", packageName);
+        int listId = dialogListId();
         int preferenceId = resources.getIdentifier(PREFERENCE_ID, "id", packageName);
         int titleId = resources.getIdentifier(PREFERENCE_TITLE, "string", packageName);
         View listView = dialog.findViewById(listId);
@@ -132,10 +140,8 @@ public final class AmoledTheme {
         }
         Resources resources = activity.getResources();
         String packageName = activity.getPackageName();
-        int lightThemeId = resources.getIdentifier("isLightTheme", "attr", packageName);
         TypedValue lightTheme = new TypedValue();
-        if (lightThemeId == 0 || !activity.getTheme().resolveAttribute(lightThemeId, lightTheme, true)
-                || lightTheme.data != 0) {
+        if (!activity.getTheme().resolveAttribute(lightThemeAttribute(), lightTheme, true) || lightTheme.data != 0) {
             return;
         }
         int overlay = resources.getIdentifier(OVERLAY_STYLE, "style", packageName);

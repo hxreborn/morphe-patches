@@ -11,17 +11,19 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.devcheck.misc.premium.unlockPremiumPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.util.adoptChild
 import app.morphe.util.getNode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 
-private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/devcheck/AmoledTheme;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/devcheck/AmoledTheme;"
 private const val OVERLAY_STYLE = "hx_amoled_theme_overlay"
 private val SET_CONTENT_VIEW_OVERLOADS = 3..3
 
@@ -77,6 +79,10 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        with(mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR)) {
+            replaceResourceIdStubs(ResourceType.ID, mapOf("dialogListId" to "select_dialog_listview"))
+            replaceResourceIdStubs(ResourceType.ATTR, mapOf("lightThemeAttribute" to "isLightTheme"))
+        }
         ThemesMenuFingerprint.matchSingle().useDialogThemePicker()
         val dialog = ThemesDialogFingerprint.matchSingle()
         dialog.useDialogThemePicker()
@@ -84,12 +90,12 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
         val call = dialog.method.getInstruction<FiveRegisterInstruction>(show.index)
         dialog.method.addInstructions(
             show.index + 1,
-            "invoke-static { v${call.registerC} }, $EXTENSION_CLASS->addPreference(Landroid/app/Dialog;)V",
+            "invoke-static { v${call.registerC} }, $EXTENSION_CLASS_DESCRIPTOR->addPreference(Landroid/app/Dialog;)V",
         )
         contentViewFingerprint(dialog.classDef.superclass!!).matchAll(SET_CONTENT_VIEW_OVERLOADS).forEach { match ->
             match.method.addInstructions(
                 0,
-                "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->applyOverlay(Landroid/app/Activity;)V",
+                "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->applyOverlay(Landroid/app/Activity;)V",
             )
         }
     }
