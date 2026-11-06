@@ -15,8 +15,8 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.shared.misc.fillAppliedPatch
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -24,7 +24,6 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.util.StringUtils.escapeString
 
 private const val SWITCH_FACTORY_REGISTERS = 3
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
@@ -33,12 +32,8 @@ private const val PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/aliexpress/Patch
 
 private val ICON_NAMES = listOf("promotions", "splash", "sponsored", "images", "analytics", "updates", "reset", "info", "bundle", "expand", "back")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) {
-    val methods = mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
-    methods.single { it.name == methodName }.returnEarly(true)
-    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    methods.single { it.name == methodName + "Description" }.returnEarly(escapeString(checkNotNull(patch.description)))
-}
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
     val returnInstructions = when (returnType) {

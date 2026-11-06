@@ -12,9 +12,10 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
-import com.android.tools.smali.util.StringUtils.escapeString
+import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.fillPatchMetadata
+import app.morphe.patches.shared.misc.returnTrueFrom
 
 internal const val PROTON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/proton/"
 internal const val ACCENT_COLOR_CLASS = "${PROTON_EXTENSION_PACKAGE}AccentColor;"
@@ -33,10 +34,7 @@ internal fun BytecodePatchContext.attachPatchContext(applicationClass: String) =
             "invoke-static/range { p0 .. p0 }, $PATCH_CONTEXT_CLASS->attach(Landroid/app/Application;)V",
         )
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
-    mutableClassDefBy(featureClass).methods
-        .single { it.name == "isPatched" }
-        .returnEarly(true)
+internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) = returnTrueFrom(featureClass, "isPatched")
 
 internal fun MutableMethod.returnVoidWhenUpsellingHidden() = returnVoidWhen("$UPSELLING_VISIBILITY_CLASS->isHidden()Z")
 
@@ -55,10 +53,8 @@ internal fun MutableMethod.returnVoidWhen(condition: String) {
     )
 }
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch<*>) {
-    mutableClassDefBy(APPLIED_PATCHES_CLASS).methods.single { it.name == methodName }.returnEarly(true)
-    markPatchMetadata(methodName, patch)
-}
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch<*>) =
+    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch, withDescription = false)
 
 internal fun appliedPatchMarkerPatch(methodName: String, patch: () -> Patch<*>) = bytecodePatch {
     extendWith("extensions/extension.mpe")
@@ -72,11 +68,4 @@ internal fun BytecodePatchContext.markPatchMetadata(
     methodName: String,
     patch: Patch<*>,
     withDescription: Boolean = false,
-) {
-    val methods = mutableClassDefBy(APPLIED_PATCHES_CLASS).methods
-    methods.single { it.name == methodName + "Name" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    if (withDescription) {
-        methods.single { it.name == methodName + "Description" }
-            .returnEarly(escapeString(checkNotNull(patch.description)))
-    }
-}
+) = fillPatchMetadata(APPLIED_PATCHES_CLASS, methodName, patch, withDescription)

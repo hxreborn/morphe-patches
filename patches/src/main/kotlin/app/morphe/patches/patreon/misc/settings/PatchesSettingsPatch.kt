@@ -16,6 +16,8 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.shared.misc.fillPatchDetails
+import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -28,7 +30,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.util.StringUtils.escapeString
 import java.util.logging.Logger
 import org.w3c.dom.Element
 
@@ -60,12 +61,8 @@ internal fun BytecodePatchContext.markFeaturePatched(
     patch: BytecodePatch,
     withDescription: Boolean = true,
 ) {
-    val methods = mutableClassDefBy(featureClass).methods
-    methods.single { it.name == "isPatched" }.returnEarly(true)
-    methods.single { it.name == "patchName" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    if (withDescription) {
-        methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
-    }
+    returnTrueFrom(featureClass, "isPatched")
+    fillPatchDetails(featureClass, patch, "patchName", "patchDescription".takeIf { withDescription })
 }
 
 private fun MethodReference.isSettingsNavigationRow() =

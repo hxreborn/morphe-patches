@@ -9,8 +9,10 @@ import app.morphe.patcher.PatcherConfig
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
+import app.morphe.patches.shared.misc.fillAppliedPatch
 import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
+import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
@@ -25,6 +27,7 @@ import kotlin.test.assertNull
 internal class PatchMetadataTest {
     @Test
     fun `inject selected metadata with quotes and line breaks`() {
+        // given
         lateinit var patch: BytecodePatch
         patch = bytecodePatch(
             name = "Selected \"feature\"",
@@ -32,6 +35,47 @@ internal class PatchMetadataTest {
         ) {
             execute { markPatchApplied("disableAnalytics", patch) }
         }
+
+        // when
+        val methods = appliedPatchesMethods(patch)
+
+        // then
+        assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
+        assertEquals(patch.name,
+            ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
+        assertEquals(patch.description,
+            ((methods.getValue("disableAnalyticsDescription") as ReferenceInstruction).reference as StringReference).string)
+        for (name in listOf("removeSponsoredItems", "removeSponsoredItemsName", "removeSponsoredItemsDescription")) {
+            assertEquals(0, (methods.getValue(name) as NarrowLiteralInstruction).narrowLiteral)
+        }
+    }
+
+    @Test
+    fun `leave description unfilled when withDescription is false`() {
+        // given
+        lateinit var patch: BytecodePatch
+        patch = bytecodePatch(name = "Selected feature", description = "Unused description.") {
+            execute {
+                fillAppliedPatch(
+                    "Lapp/hxreborn/extension/aliexpress/AppliedPatches;",
+                    "disableAnalytics",
+                    patch,
+                    withDescription = false,
+                )
+            }
+        }
+
+        // when
+        val methods = appliedPatchesMethods(patch)
+
+        // then
+        assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
+        assertEquals(patch.name,
+            ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
+        assertEquals(0, (methods.getValue("disableAnalyticsDescription") as NarrowLiteralInstruction).narrowLiteral)
+    }
+
+    private fun appliedPatchesMethods(patch: BytecodePatch): Map<String, Instruction> {
         val directory = Files.createTempDirectory("patch-metadata").toFile()
         try {
             val apk = directory.resolve("fixture.apk")
@@ -48,19 +92,10 @@ internal class PatchMetadataTest {
             Patcher(PatcherConfig(apk, directory.resolve("work"))).use { patcher ->
                 patcher += setOf(patch)
                 runBlocking { patcher().collect { assertNull(it.exception) } }
-                val methods = patcher.get().dexFiles.flatMap { dex ->
+                return patcher.get().dexFiles.flatMap { dex ->
                     dex.stream.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes }
                 }.single { it.type == "Lapp/hxreborn/extension/aliexpress/AppliedPatches;" }.methods
                     .associate { it.name to it.implementation!!.instructions.first() }
-
-                assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
-                assertEquals(patch.name,
-                    ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
-                assertEquals(patch.description,
-                    ((methods.getValue("disableAnalyticsDescription") as ReferenceInstruction).reference as StringReference).string)
-                for (name in listOf("removeSponsoredItems", "removeSponsoredItemsName", "removeSponsoredItemsDescription")) {
-                    assertEquals(0, (methods.getValue(name) as NarrowLiteralInstruction).narrowLiteral)
-                }
             }
         } finally {
             directory.deleteRecursively()

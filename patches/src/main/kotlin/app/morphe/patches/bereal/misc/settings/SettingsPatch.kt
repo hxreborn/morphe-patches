@@ -15,15 +15,15 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.shared.misc.fillPatchDetails
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.util.StringUtils.escapeString
 import org.w3c.dom.Element
 
 internal const val BEREAL_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/bereal/"
@@ -131,7 +131,7 @@ internal val settingsPatch = bytecodePatch {
 }
 
 internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
-    mutableClassDefBy(featureClass).methods.single { it.name == "isPatchIncluded" }.returnEarly(true)
+    returnTrueFrom(featureClass, "isPatchIncluded")
 
 internal fun BytecodePatchContext.markFeaturePatched(
     featureClass: String,
@@ -139,9 +139,5 @@ internal fun BytecodePatchContext.markFeaturePatched(
     withDescription: Boolean = true,
 ) {
     markFeaturePatched(featureClass)
-    val methods = mutableClassDefBy(featureClass).methods
-    methods.single { it.name == "patchName" }.returnEarly(escapeString(checkNotNull(patch.name)))
-    if (withDescription) {
-        methods.single { it.name == "patchDescription" }.returnEarly(escapeString(checkNotNull(patch.description)))
-    }
+    fillPatchDetails(featureClass, patch, "patchName", "patchDescription".takeIf { withDescription })
 }
