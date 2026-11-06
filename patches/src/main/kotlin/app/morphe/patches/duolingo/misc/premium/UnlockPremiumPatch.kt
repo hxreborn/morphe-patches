@@ -32,7 +32,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 @Suppress("unused")
 val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks Super, or Max from the patches menu, and keeps energy full. " +
+    description = "Unlocks Super or Max and keeps energy full. " +
         "Max Video Call does not work.",
 ) {
     compatibleWith(AppCompatibilities.DUOLINGO)
@@ -40,7 +40,7 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     dependsOn(disableLoginIntegrityPatch, patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockPremium", unlockPremiumPatch, withDescription = false)
+        markPatchApplied("unlockPremium", unlockPremiumPatch)
 
         val (subscriberLevelRead, _, hasPlusRead, isPaidWrite) = UserIsPaidFingerprint.instructionMatches
         val (subscriberLevelField, hasPlusField, isPaidField) = listOf(subscriberLevelRead, hasPlusRead, isPaidWrite)

@@ -50,6 +50,10 @@ public final class AppliedPatches {
         return false;
     }
 
+    public static String unlockPremiumDescription() {
+        return null;
+    }
+
     public static String unlockPremiumName() {
         return null;
     }
@@ -59,6 +63,10 @@ public final class AppliedPatches {
     }
 
     public static String disableDynamicAppIconDescription() {
+        return null;
+    }
+
+    public static String enableDebugModeDescription() {
         return null;
     }
 

@@ -47,6 +47,11 @@ public final class EveryPatchApplied {
     }
 
     @Implementation
+    public static String unlockPremiumDescription() {
+        return "Unlocks Super or Max and keeps energy full. Max Video Call does not work.";
+    }
+
+    @Implementation
     public static String unlockPremiumName() {
         return "Unlock premium";
     }
@@ -64,6 +69,11 @@ public final class EveryPatchApplied {
     @Implementation
     public static String enableDebugModeName() {
         return "Enable debug mode";
+    }
+
+    @Implementation
+    public static String enableDebugModeDescription() {
+        return "Injected enableDebugMode description.";
     }
 
     @Implementation

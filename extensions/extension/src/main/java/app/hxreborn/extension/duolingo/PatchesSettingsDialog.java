@@ -141,7 +141,8 @@ final class PatchesSettingsDialog {
         if (AppliedPatches.unlockPremium()) {
             PatchSettings.Subscription subscription = PatchSettings.subscription();
             this.rows.switchRow(learning, "hx_duolingo_ic_premium", AppliedPatches.UNLOCK_PREMIUM,
-                    AppliedPatches.unlockPremiumName(), unlockPremiumDescription(subscription), this::confirmRestart);
+                    AppliedPatches.unlockPremiumName(), AppliedPatches.unlockPremiumDescription(),
+                    this::confirmRestart);
             this.rows.actionRow(learning, "hx_duolingo_ic_premium", SUBSCRIPTION_TITLE, subscription.description,
                     this::chooseSubscription);
         }
@@ -160,7 +161,7 @@ final class PatchesSettingsDialog {
         }
         if (AppliedPatches.enableDebugMode()) {
             this.rows.switchRow(app, "hx_duolingo_ic_debug", AppliedPatches.ENABLE_DEBUG_MODE,
-                    AppliedPatches.enableDebugModeName(), "Shows the debug menu and debug button.",
+                    AppliedPatches.enableDebugModeName(), AppliedPatches.enableDebugModeDescription(),
                     this::confirmRestart);
         }
         addSection(column, "App", app);
@@ -171,10 +172,6 @@ final class PatchesSettingsDialog {
         this.rows.valueRow(about, "hx_duolingo_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         return column;
-    }
-
-    static String unlockPremiumDescription(PatchSettings.Subscription subscription) {
-        return "Unlocks " + subscription.label + " and keeps energy full.";
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {

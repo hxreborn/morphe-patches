@@ -57,8 +57,7 @@ private val logger = Logger.getLogger("app.morphe.patches.duolingo.misc.settings
 internal fun BytecodePatchContext.markPatchApplied(
     methodName: String,
     patch: BytecodePatch,
-    withDescription: Boolean = true,
-) = fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch, withDescription)
+) = fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
 
 private fun resource(path: String) = DuolingoBundleResources::class.java.getResourceAsStream(path)
     ?: throw PatchException("Missing patch resource $path")
