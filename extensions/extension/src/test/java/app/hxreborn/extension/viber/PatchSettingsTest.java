@@ -218,6 +218,40 @@ public class PatchSettingsTest {
         Assert.assertEquals(HIGHER_SERVER_FOLDER_LIMIT, PatchSettings.folderLimit(HIGHER_SERVER_FOLDER_LIMIT));
     }
 
+    @Test
+    public void blockDisappearingMediaSaveWithoutAppliedPatch() {
+        Assert.assertTrue(PatchSettings.blocksMediaSave(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedDisappearingMediaSave.class)
+    public void allowDisappearingMediaSaveWithAppliedPatch() {
+        Assert.assertFalse(PatchSettings.blocksMediaSave(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedDisappearingMediaSave.class)
+    public void blockDisappearingMediaSaveWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.SAVE_DISAPPEARING_MEDIA.key, false);
+        Assert.assertTrue(PatchSettings.blocksMediaSave(true));
+    }
+
+    @Test
+    @Config(shadows = AppliedDisappearingMediaSave.class)
+    public void allowOrdinaryMediaSave() {
+        Assert.assertFalse(PatchSettings.blocksMediaSave(false));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedDisappearingMediaSave {
+
+        @Implementation
+        protected static boolean saveDisappearingMedia() {
+            return true;
+        }
+
+    }
+
     @Implements(AppliedPatches.class)
     public static class AppliedFolderLimit {
 

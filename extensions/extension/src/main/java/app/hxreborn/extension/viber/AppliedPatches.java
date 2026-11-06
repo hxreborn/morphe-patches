@@ -150,6 +150,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean saveDisappearingMedia() {
+        return false;
+    }
+
+    public static String saveDisappearingMediaName() {
+        return null;
+    }
+
+    public static String saveDisappearingMediaDescription() {
+        return null;
+    }
+
     public static boolean hidePromotions() {
         return false;
     }
@@ -220,6 +232,7 @@ public final class AppliedPatches {
         add(applied, hideNavigationButtons(), hideNavigationButtonsName(), hideNavigationButtonsDescription());
         add(applied, unfiledChats(), unfiledChatsName(), unfiledChatsDescription());
         add(applied, raiseFolderLimit(), raiseFolderLimitName(), raiseFolderLimitDescription());
+        add(applied, saveDisappearingMedia(), saveDisappearingMediaName(), saveDisappearingMediaDescription());
         add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
         add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());

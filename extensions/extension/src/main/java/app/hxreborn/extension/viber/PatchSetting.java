@@ -28,6 +28,7 @@ enum PatchSetting {
     DISABLE_AI_FEATURES("Chats", "Disable AI features", "Removes AI replies and summaries.", true),
     UNFILED_CHATS("Chats", "unfiledChats", "Shows chats outside your folders.", true),
     RAISE_FOLDER_LIMIT("Chats", "raiseFolderLimit", "Allows up to 10 folders.", false),
+    SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", "Allows saving disappearing media.", false),
     HIDE_ADS("Ads", "Hide ads", "Removes ads.", false),
     HIDE_PROMOTIONS("Ads", "hidePromotions", "Removes promo banners.", true),
     HIDE_MORE_ITEMS("More screen", "Hide More screen items", "Removes selected entries.", false),
@@ -60,6 +61,7 @@ enum PatchSetting {
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsName();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitName();
+            case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaName();
             case HIDE_ADS -> AppliedPatches.hideAdsName();
             case HIDE_PROMOTIONS -> AppliedPatches.hidePromotionsName();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
@@ -78,6 +80,7 @@ enum PatchSetting {
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
             case UNFILED_CHATS -> AppliedPatches.unfiledChats();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimit();
+            case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMedia();
             case HIDE_ADS -> AppliedPatches.hideAds();
             case HIDE_PROMOTIONS -> AppliedPatches.hidePromotions();
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();

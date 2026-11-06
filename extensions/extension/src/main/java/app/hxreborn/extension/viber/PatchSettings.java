@@ -102,6 +102,14 @@ public final class PatchSettings {
         return removeOnlineStatusLimit() ? 0L : lastChanged;
     }
 
+    public static boolean saveDisappearingMedia() {
+        return AppliedPatches.saveDisappearingMedia() && isEnabled(PatchSetting.SAVE_DISAPPEARING_MEDIA.key);
+    }
+
+    public static boolean blocksMediaSave(boolean disappearing) {
+        return disappearing && !saveDisappearingMedia();
+    }
+
     public static boolean disableUpdatePrompts() {
         return AppliedPatches.disableUpdatePrompts() && isEnabled(PatchSetting.DISABLE_UPDATE_PROMPTS.key);
     }
