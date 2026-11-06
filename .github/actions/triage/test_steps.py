@@ -98,6 +98,9 @@ if args[:2] == ["api", "graphql"]:
         elif operation == "Close":
             issue["state"] = "CLOSED"
             issue["closed_as"] = fields["reason"][0]
+        elif operation == "Lock" and "lockReason" in fields["query"][0]:
+            sys.stderr.write("gh: You cannot specify a reason when locking a discussion.\n")
+            sys.exit(1)
         elif operation == "Lock":
             issue["locked"] = True
         state["mutations"].append(f"{operation} {number}")
@@ -284,6 +287,20 @@ status_empty, issues_empty, _ = run(titles, SWEEP, issue_number=13, action="crea
 # then
 check(status == 0 and issues["12"]["title"] == "my app" and status_empty == 0 and issues_empty["13"]["title"] == "Other",
       "a new request loses the form prefix and an empty title takes the app name")
+
+# when
+status, issues, mutations = run(pair(), SWEEP, issue_number=11, action="created", fail_on="updateDiscussion")
+
+# then
+check(status == 0 and issues["11"]["title"] == "[App Request]: New again" and issues["11"]["state"] == "CLOSED",
+      "a new request that cannot be retitled is still closed as a duplicate")
+
+# when
+status, issues, mutations = run(pair(), SWEEP)
+
+# then
+check(status == 0 and issues["11"].get("locked") and not issues["10"].get("locked"),
+      "the sweep locks the duplicate it closes")
 
 # when
 status, issues, _ = run({**pair(), "14": issue("[App Request]: Other", request("Other", "com.other.app"))}, SWEEP,

@@ -18,7 +18,8 @@ def code_span(text, limit=80):
     return f"`{flat[:limit]}`"
 
 
-PLACEHOLDERS = {"", "0", "na", "no", "none", "null", "nil", "nothing", "x", "idk", "same", "seetitle", "seeabove"}
+PLACEHOLDERS = {"na", "no", "none", "null", "nil", "nothing", "idk", "same", "seetitle", "seeabove", "asdf", "test",
+                "ok", "lol", "noidea", "dunno", "unknown", "notsure", "nope", "nah", "yes", "abc", "qwerty"}
 
 FORM_HEADING = re.compile(r"###\s+(\S.*)")
 BOLD_LABEL = re.compile(r"\*\*([^*:]+?):?\*\*:?(.*)")
@@ -58,14 +59,44 @@ def field(fields, *names):
     return ""
 
 
+MIN_ANSWER_LETTERS = 8
+MIN_ANSWER_WORDS = 2
+IMAGE = re.compile(r"user-attachments/|!\[|<img\b|https?://\S+", re.I)
+FEATURE_ASK = re.compile(
+    r"\b(?:please|pls|plz|can you|could you|would you|kindly)\s+(?:also\s+)?add\b|\bwould be (?:nice|great|cool|awesome)\b"
+    r"|\bfeature request\b|\badd (?:an? )?(?:option|feature|patch|toggle|setting)\b|\bi(?: would)? (?:want|like|wish)\b",
+    re.I,
+)
+
+
+def is_placeholder(value):
+    letters = re.sub(r"[\W_]+", "", unicodedata.normalize("NFKC", value).casefold())
+    return letters in PLACEHOLDERS or letters.isdigit() or len(letters) < 2
+
+
+def is_thin(value):
+    text = unicodedata.normalize("NFKC", value)
+    words = {w.casefold() for w in re.findall(r"[^\W\d_]{2,}", text)}
+    spaced = len(text.split()) > 1
+    return sum(c.isalpha() for c in text) < MIN_ANSWER_LETTERS or (spaced and len(words) < MIN_ANSWER_WORDS)
+
+
 def placeholder_answers(fields, *names):
-    lines = []
-    for name in names:
-        value = field(fields, name)
-        letters = re.sub(r"[\W_]+", "", unicodedata.normalize("NFKC", value).casefold())
-        if value and letters in PLACEHOLDERS:
-            lines.append(f"The {name} field says {code_span(value)}, which isn't an answer.")
-    return lines
+    return [f"The {name} field says {code_span(value)}, which isn't an answer."
+            for name in names if (value := field(fields, name)) and is_placeholder(value)]
+
+
+def thin_answers(fields, *names):
+    return [f"The {name} field says {code_span(value)}, which doesn't describe anything."
+            for name in names if (value := field(fields, name)) and not is_placeholder(value) and is_thin(value)]
+
+
+def has_image(value):
+    return bool(IMAGE.search(value))
+
+
+def asks_for_feature(text):
+    return bool(FEATURE_ASK.search(text))
 
 
 def words(text):

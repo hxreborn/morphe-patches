@@ -41,6 +41,7 @@ jobs:
             if [ "$DRY_RUN" = true ]; then echo "would close #$n"; continue; fi
             bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/comment.md" >/dev/null
             bash -eo pipefail "$discussion" close "$n" OUTDATED
+            bash -eo pipefail "$discussion" lock "$n"
             echo "closed #$n"
           done
 

@@ -358,7 +358,7 @@ Proton Mail 7.10.4
 
 修补过程在中途停止并且显示一个错误对话框，最终没有生成任何输出文件，我已经尝试了多次并且每次都是同样的结果，请帮忙看看。
 """),
-    "junk in the log field": ("flag", """### App and version
+    "junk in the log field": ("close", """### App and version
 
 Proton Mail 7.10.4
 
@@ -1271,6 +1271,59 @@ ok = placeholder["verdict"] == blank["verdict"] == "close" \
     and "- The Steps to reproduce field says `.`, which isn't an answer." in blank["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce closes the report")
+
+digit = triage(report("Showly 3.70.0").replace("The paywall shows", "1"))
+letter = triage(report("Showly 3.70.0", steps="a"))
+ok = digit["verdict"] == letter["verdict"] == "close" \
+    and "- The Actual behaviour field says `1`, which isn't an answer." in digit["comment"] \
+    and "- The Steps to reproduce field says `a`, which isn't an answer." in letter["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a lone digit or letter in an answer field closes the report")
+
+filler = triage(report("Showly 3.70.0", steps="No idea."))
+ok = filler["verdict"] == "close" \
+    and "- The Steps to reproduce field says `No idea.`, which isn't an answer." in filler["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a filler phrase in an answer field closes the report")
+
+thin = triage(report("Showly 3.70.0", steps="open app"))
+repeated = triage(report("Showly 3.70.0", steps="crash crash crash"))
+ok = thin["verdict"] == repeated["verdict"] == "close" \
+    and "- The Steps to reproduce field says `open app`, which doesn't describe anything." in thin["comment"] \
+    and "- The Steps to reproduce field says `crash crash crash`, which doesn't describe anything." in repeated["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} steps with too few letters or one repeated word close the report")
+
+no_image = triage(report("Showly 3.70.0") + "\n### Screenshots\n\nAttached: the paywall on the home screen\n")
+with_image = triage(report("Showly 3.70.0") + "\n### Screenshots\n\n![paywall](https://github.com/user-attachments/assets/1)\n")
+ok = no_image["verdict"] == "close" and with_image["verdict"] == "pass" \
+    and "- The Screenshots field has no image. Please drag the screenshots into it." in no_image["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a Screenshots field without an image closes the report, got "
+      f"{no_image['verdict']} and {with_image['verdict']}")
+
+no_version = triage(report("Showly 3.70.0") + "\n### Device and Android version\n\nSamsung Galaxy\n")
+ok = no_version["verdict"] == "close" \
+    and "- The Device and Android version field doesn't say which Android version." in no_version["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a device without an Android version closes the report")
+
+prose_log = triage(report("Showly 3.70.0").replace(
+    "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "Logs will be attached if needed."))
+image_log = triage(report("Showly 3.70.0").replace(
+    "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "<img src=\"https://github.com/user-attachments/assets/2\" />"))
+ok = prose_log["verdict"] == "close" and "text instead of a log" in prose_log["comment"] \
+    and "The Error logs field has no log" not in prose_log["comment"] and "text instead of a log" not in image_log["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} prose in the log field closes the report, a screenshot there does not count as prose")
+
+feature_log = triage(report("Showly 3.70.0").replace(
+    "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "Please add an option to hide the trending tab"))
+feature_steps = triage(report("Showly 3.70.0", steps=f"{LONG} It would be nice to also remove the banner."))
+ok = feature_log["verdict"] == feature_steps["verdict"] == "close" \
+    and all("This reads as a feature request." in r["comment"] for r in (feature_log, feature_steps))
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a feature request written into a bug report closes it with the feature form link")
 
 did_not_start = triage(f"""### What happened
 

@@ -99,7 +99,7 @@ case "$command" in
     ;;
   lock)
     graphql -f id="$(discussion_id "$1")" -f query='mutation Lock($id: ID!) {
-      lockLockable(input: {lockableId: $id, lockReason: RESOLVED}) { clientMutationId } }' --silent
+      lockLockable(input: {lockableId: $id}) { clientMutationId } }' --silent
     ;;
   *)
     echo "discussion.sh: unknown command $command" >&2

@@ -149,6 +149,7 @@ jobs:
               bash -eo pipefail "$discussion" remove-labels "$n" "in progress"
             fi
             bash -eo pipefail "$discussion" close "$n" RESOLVED
+            bash -eo pipefail "$discussion" lock "$n"
             echo "closed #$n ($app) as shipped in $TAG"
           done
 

@@ -56,8 +56,8 @@ fi
 echo "#$n: $(jq -c 'del(.comment)' verdict.json) unchanged=$unchanged"
 [ "$DRY_RUN" = true ] && exit 0
 
-if [ "$ACTION" = created ] && [ "$title" != "$current" ]; then
-  discussion title "$n" "$title"
+if [ "$ACTION" = created ] && [ "$title" != "$current" ] && ! discussion title "$n" "$title"; then
+  echo "::warning::#$n keeps its title"
 fi
 if [ -s comment.md ] && [ "$unchanged" != true ]; then
   mapfile -t labels < <(jq -r '.labels[]' verdict.json)
@@ -77,7 +77,7 @@ if [ "$verdict" = close ]; then
     *) reason=OUTDATED ;;
   esac
   discussion close "$n" "$reason"
-  if [ "$(jq -r .reason verdict.json)" = "no form" ] && ! discussion lock "$n"; then
+  if ! discussion lock "$n"; then
     echo "::error::#$n is closed but not locked"
     exit 1
   fi

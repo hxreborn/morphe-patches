@@ -84,7 +84,7 @@ A request closed because the server enforces the gate also gets the `server-side
 | `add-labels <n> <label>...` | `addLabelsToLabelable(input:{labelableId, labelIds})`, ids passed as `-F 'labels[]=ID'` |
 | `remove-labels <n> <label>...` | `removeLabelsFromLabelable(...)` |
 | `close <n> DUPLICATE\|OUTDATED\|RESOLVED` | `closeDiscussion(input:{discussionId, reason})` |
-| `lock <n>` | `lockLockable(input:{lockableId, lockReason: RESOLVED})` |
+| `lock <n>` | `lockLockable(input:{lockableId})`, no `lockReason`: GitHub refuses one on a discussion ("You cannot specify a reason when locking a discussion") and records `RESOLVED` itself |
 
 `gh discussion` (2.102, preview) has `create`, `list`, `view`, `edit` and `comment`, nothing for close,
 lock, labels or pins. `gh discussion create --category app-requests --title ... --body-file f.md` and
@@ -129,10 +129,12 @@ author_association,created_at}` and `changes.body` on `edited`. The reference pa
 
 What runs here: `issue_triage.yml` (request step on `discussion` events and the daily sweep),
 `issue_comments.yml` `request` job (status pings, `needs info` removal), `stale.yml` `requests` job
-(closes `needs info` requests as `OUTDATED` after 3 days without an update, skipping `bot-wrong` and
+(closes and locks `needs info` requests as `OUTDATED` after 3 days without an update, skipping `bot-wrong` and
 `in progress`), and the last step of `release.yml`. Discussion events carry no timeline, so the bots
 keep no "a human reopened this" guard: the sweep skips a close whose comment equals the bot comment
-already on the thread, and retitles only on `created`.
+already on the thread, and retitles only on `created`. Every bot close is followed by `discussion.sh lock`, and
+a failed lock fails the run. A failed retitle only warns: `updateDiscussion` with `GITHUB_TOKEN` returned
+`Resource not accessible by integration` in 12 triage runs from 2026-10-21 to 2026-11-04.
 
 `Closes #N` must never name a discussion. `@semantic-release/github` resolves every footer number with
 `issueOrPullRequest(number:)` in one query, the error aborts the call, and the success step fails after
@@ -140,8 +142,8 @@ the release is published. New-app commits carry no footer. `release.yml` runs
 `.github/scripts/shipped_requests.py` on the package names new since the previous release. On a `dev`
 pre-release it comments on each open request naming one that the app is in that pre-release and leaves
 the request open. On a `main` stable release it comments that the app is supported, with links to the
-four issue forms, through `discussion.sh comment`, then closes the request (`remove-labels "in
-progress"`, `close RESOLVED`) whatever its `Requested features` field says.
+four issue forms, through `discussion.sh comment`, then closes and locks the request (`remove-labels "in
+progress"`, `close RESOLVED`, `lock`) whatever its `Requested features` field says.
 
 ## Gotchas
 
