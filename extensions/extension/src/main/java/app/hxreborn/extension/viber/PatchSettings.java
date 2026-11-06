@@ -182,10 +182,8 @@ public final class PatchSettings {
         return !isHiddenMainMenuItem(item.getItemId());
     }
 
-    public static boolean disableAnalyticsKey(String key) {
-        return disableAnalytics() && ("firebase_analytics_collection_enabled".equals(key)
-                || "google_analytics_adid_collection_enabled".equals(key)
-                || "google_analytics_ssaid_collection_enabled".equals(key));
+    public static Boolean analyticsCollectionEnabled(Boolean enabled) {
+        return disableAnalytics() ? Boolean.FALSE : enabled;
     }
 
 }

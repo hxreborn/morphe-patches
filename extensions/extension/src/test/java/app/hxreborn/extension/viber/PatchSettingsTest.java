@@ -238,6 +238,36 @@ public class PatchSettingsTest {
 
     }
 
+    @Test
+    public void keepAnalyticsCollectionWithoutAppliedPatch() {
+        Assert.assertEquals(Boolean.TRUE, PatchSettings.analyticsCollectionEnabled(Boolean.TRUE));
+        Assert.assertNull(PatchSettings.analyticsCollectionEnabled(null));
+    }
+
+    @Test
+    @Config(shadows = AppliedAnalytics.class)
+    public void disableAnalyticsCollectionWithAppliedPatch() {
+        Assert.assertEquals(Boolean.FALSE, PatchSettings.analyticsCollectionEnabled(Boolean.TRUE));
+        Assert.assertEquals(Boolean.FALSE, PatchSettings.analyticsCollectionEnabled(null));
+    }
+
+    @Test
+    @Config(shadows = AppliedAnalytics.class)
+    public void keepAnalyticsCollectionWithDisabledPatch() {
+        PatchSettings.setEnabled(PatchSetting.DISABLE_ANALYTICS.key, false);
+        Assert.assertEquals(Boolean.TRUE, PatchSettings.analyticsCollectionEnabled(Boolean.TRUE));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedAnalytics {
+
+        @Implementation
+        protected static boolean disableAnalytics() {
+            return true;
+        }
+
+    }
+
     @Implements(AppliedPatches.class)
     public static class AppliedPlus {
 
