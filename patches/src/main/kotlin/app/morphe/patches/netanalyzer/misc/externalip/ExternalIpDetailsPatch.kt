@@ -42,6 +42,7 @@ val externalIpDetailsPatch = bytecodePatch(
         val parameters = buttonRowMatch.composableParameters()
         val externalIpRow = externalIpRowFingerprint(buttonRow).matchSingle()
         val (_, stateRead, buttonCall) = externalIpRow.instructionMatches
+        replaceExternalIpStateStub(stateRead)
         val method = externalIpRow.method
         val callIndex = buttonCall.index
         val call = method.getInstruction<RegisterRangeInstruction>(callIndex)
