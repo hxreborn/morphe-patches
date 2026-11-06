@@ -28,6 +28,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +77,7 @@ public final class ProUnlockTest {
     private LinkStore seeds;
 
     @BeforeClass
-    public static void installFakeApi() {
+    public static void installFakeApi() throws IOException {
         FakeRaindropApi.install();
     }
 

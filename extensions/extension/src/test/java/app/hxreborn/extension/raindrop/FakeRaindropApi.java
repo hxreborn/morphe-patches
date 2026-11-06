@@ -24,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -45,11 +46,12 @@ final class FakeRaindropApi {
     private FakeRaindropApi() {
     }
 
-    static synchronized void install() {
+    static synchronized void install() throws IOException {
         if (isInstalled) {
             return;
         }
-        URL.setURLStreamHandlerFactory((protocol) -> "https".equals(protocol) ? new Handler() : null);
+        URL realHttps = URI.create("https://localhost/").toURL();
+        URL.setURLStreamHandlerFactory((protocol) -> "https".equals(protocol) ? new Handler(realHttps) : null);
         isInstalled = true;
     }
 
@@ -76,11 +78,17 @@ final class FakeRaindropApi {
 
     private static final class Handler extends URLStreamHandler {
 
+        private final URL realHttps;
+
+        Handler(URL realHttps) {
+            this.realHttps = realHttps;
+        }
+
         @Override
         protected URLConnection openConnection(URL url) throws IOException {
             String address = url.toString();
             if (!address.startsWith(RaindropApi.API_URL)) {
-                throw new IOException("No network in tests: " + address);
+                return new URL(this.realHttps, address).openConnection();
             }
             Response response = RESPONSES.get(address.substring(RaindropApi.API_URL.length()));
             return new Connection(url, (response != null) ? response : UNAUTHORIZED);
