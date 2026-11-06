@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -16,6 +17,7 @@ import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.util.insertFirst
 
 private val mediaPermissions = listOf(
@@ -48,6 +50,10 @@ val galleryPhotosPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}GalleryPhotos;", galleryPhotosPatch)
+        mutableClassDefBy("${BEREAL_EXTENSION_PACKAGE}GalleryButton;").replaceResourceIdStubs(
+            ResourceType.DRAWABLE,
+            mapOf("photoIconId" to "ic_photo"),
+        )
         val cameraViewModel = CameraViewModelFingerprint.matchSingle().classDef
         cameraBindFingerprint(cameraViewModel.type).matchSingle().method.addInstruction(
             0,

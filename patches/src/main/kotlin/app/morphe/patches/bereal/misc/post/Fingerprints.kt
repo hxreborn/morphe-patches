@@ -64,6 +64,12 @@ internal fun createPostTakenAtConversionFingerprint(
     ),
 )
 
+internal fun timestampConstructorFingerprint(timestampType: String) = Fingerprint(
+    definingClass = timestampType,
+    name = "<init>",
+    parameters = listOf("Ljava/time/Instant;"),
+)
+
 internal object CorePostToStringFingerprint : Fingerprint(
     name = "toString",
     returnType = "Ljava/lang/String;",

@@ -66,8 +66,6 @@ final class GalleryButton {
 
     private static final String VIEW_TAG = "hxreborn_gallery_button";
 
-    private static final String HOST_ICON = "ic_photo";
-
     private static final long HOST_STATE_CHECK_MS = 500;
 
     private static final int RECENT_LIMIT = 60;
@@ -175,6 +173,10 @@ final class GalleryButton {
         this.badge.setVisibility(View.GONE);
         this.button.addView(this.badge, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, dp(BADGE_DP),
                 Gravity.BOTTOM | Gravity.END));
+    }
+
+    static int photoIconId() {
+        return 0;
     }
 
     static void show(Activity activity, Object lifecycleOwner, Object cameraViewModel) {
@@ -510,7 +512,7 @@ final class GalleryButton {
     }
 
     private Drawable hostIcon() {
-        final Drawable icon = SettingsStyle.hostIcon(this.activity, HOST_ICON);
+        final Drawable icon = SettingsStyle.hostIcon(this.activity, photoIconId());
         return (icon != null) ? icon : new PhotoGlyph(Dimensions.dpExact(this.activity, 2));
     }
 

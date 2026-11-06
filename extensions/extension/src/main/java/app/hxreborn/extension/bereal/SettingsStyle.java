@@ -133,9 +133,10 @@ final class SettingsStyle {
 
     static Drawable hostIcon(Context context, String name) {
         final int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        if (id == 0) {
-            return null;
-        }
+        return (id != 0) ? hostIcon(context, id) : null;
+    }
+
+    static Drawable hostIcon(Context context, int id) {
         try {
             final Drawable icon = context.getDrawable(id);
             if (icon == null) {
@@ -145,7 +146,7 @@ final class SettingsStyle {
             tinted.setColorFilter(PRIMARY_TEXT, PorterDuff.Mode.SRC_IN);
             return tinted;
         } catch (Resources.NotFoundException ex) {
-            Log.e(TAG, "Host icon not loaded: " + name, ex);
+            Log.e(TAG, "Host icon not loaded: " + id, ex);
             return null;
         }
     }

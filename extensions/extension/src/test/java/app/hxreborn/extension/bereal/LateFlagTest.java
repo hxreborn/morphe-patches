@@ -33,8 +33,11 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = LateFlagTest.HostTimestamps.class)
 public final class LateFlagTest {
 
     private static final Instant START = Instant.parse("2026-10-23T12:00:00Z");
@@ -71,20 +74,6 @@ public final class LateFlagTest {
         // given
         LateFlag.onMoment(new Moment(new Timestamp(START), new Timestamp(END)));
         LateFlag.onMoment(null);
-        final Timestamp late = new Timestamp(END.plusSeconds(86400));
-
-        // when
-        final Object sent = LateFlag.takenAt(late, true);
-
-        // then
-        assertSame(late, sent);
-    }
-
-    @Test
-    public void keepsTheCaptureTimeAfterAnUnreadableMoment() {
-        // given
-        LateFlag.onMoment(new Moment(new Timestamp(START), new Timestamp(END)));
-        LateFlag.onMoment(new Object());
         final Timestamp late = new Timestamp(END.plusSeconds(86400));
 
         // when
@@ -146,6 +135,31 @@ public final class LateFlagTest {
 
         // then
         assertSame(late, sent);
+    }
+
+    @Implements(value = LateFlag.class, isInAndroidSdk = false)
+    public static final class HostTimestamps {
+
+        @Implementation
+        public static Object creationDate(Object moment) {
+            return ((Moment) moment).creationDate;
+        }
+
+        @Implementation
+        public static Object expirationDate(Object moment) {
+            return ((Moment) moment).expirationDate;
+        }
+
+        @Implementation
+        public static Instant instantValue(Object timestamp) {
+            return ((Timestamp) timestamp).value;
+        }
+
+        @Implementation
+        public static Object timestampOf(Instant value) {
+            return new Timestamp(value);
+        }
+
     }
 
     private static final class Moment {

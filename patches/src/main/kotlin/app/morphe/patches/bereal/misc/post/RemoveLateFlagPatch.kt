@@ -14,11 +14,25 @@ import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.addFieldReader
+import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+
+private const val CREATION_DATE_FIELD = "creationDate"
+private const val EXPIRATION_DATE_FIELD = "expirationDate"
+private const val JAVA_INSTANT_TYPE = "Ljava/time/Instant;"
+
+private fun readFieldSmali(ownerType: String, reader: String) = """
+    check-cast p0, $ownerType
+    invoke-virtual { p0 }, $reader
+    move-result-object p0
+    return-object p0
+"""
 
 @Suppress("unused")
 val removeLateFlagPatch: BytecodePatch = bytecodePatch(
@@ -31,7 +45,28 @@ val removeLateFlagPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}LateFlag;", removeLateFlagPatch)
         val moment = MomentToStringFingerprint.matchSingle().classDef
-        val instantType = moment.fields.single { it.name == "creationDate" }.type
+        val creationDate = moment.fields.single { it.name == CREATION_DATE_FIELD }
+        val expirationDate = moment.fields.single { it.name == EXPIRATION_DATE_FIELD }
+        val instantType = creationDate.type
+        val instantValue = classDefBy(instantType).fields.single { it.type == JAVA_INSTANT_TYPE }
+        val instantConstructor = timestampConstructorFingerprint(instantType).matchSingle().originalMethod
+        val readCreationDate = mutableClassDefBy(moment.type).addFieldReader(creationDate)
+        val readExpirationDate = mutableClassDefBy(moment.type).addFieldReader(expirationDate)
+        val readInstantValue = mutableClassDefBy(instantType).addFieldReader(instantValue)
+        mutableClassDefBy("${BEREAL_EXTENSION_PACKAGE}LateFlag;").apply {
+            replaceStub("creationDate", 1, readFieldSmali(moment.type, readCreationDate))
+            replaceStub("expirationDate", 1, readFieldSmali(moment.type, readExpirationDate))
+            replaceStub("instantValue", 1, readFieldSmali(instantType, readInstantValue))
+            replaceStub(
+                "timestampOf",
+                2,
+                """
+                    new-instance v0, $instantType
+                    invoke-direct { v0, p0 }, ${descriptor(instantConstructor)}
+                    return-object v0
+                """,
+            )
+        }
         lateCheckFingerprint(moment.type).matchSingle().let { lateCheck ->
             val momentCast = lateCheck.instructionMatches.single()
             val register = momentCast.getInstruction<OneRegisterInstruction>().registerA
