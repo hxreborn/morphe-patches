@@ -15,6 +15,11 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
+private const val PREFERENCE_READ_WINDOW = 2
+private const val OFFER_FLAG_WRITE_WINDOW = 5
+private const val ENGINE_VIP_SETTER_CALL_WINDOW = 8
+private const val OFFER_ID_EQUALS_WINDOW = 2
+
 private val USER_STATE_STRINGS = listOf("LAST_USER_INIT_TIME", "SUBS_TP")
 
 internal object UserStateParseFingerprint : Fingerprint(
@@ -41,7 +46,7 @@ internal object FCodeOfferFlagFingerprint : Fingerprint(
             definingClass = "this",
             type = "Z",
             opcode = Opcode.IPUT_BOOLEAN,
-            location = MatchAfterWithin(5),
+            location = MatchAfterWithin(OFFER_FLAG_WRITE_WINDOW),
         ),
     ),
 )
@@ -53,7 +58,7 @@ internal object UserStateRestoreFingerprint : Fingerprint(
     strings = USER_STATE_STRINGS,
     filters = listOf(
         string("IV"),
-        methodCall(name = "getBoolean", returnType = "Z", location = MatchAfterWithin(2)),
+        methodCall(name = "getBoolean", returnType = "Z", location = MatchAfterWithin(PREFERENCE_READ_WINDOW)),
         opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
         fieldAccess(
             definingClass = "this",
@@ -65,10 +70,10 @@ internal object UserStateRestoreFingerprint : Fingerprint(
             parameters = listOf("Z"),
             returnType = "V",
             opcode = Opcode.INVOKE_INTERFACE,
-            location = MatchAfterWithin(8),
+            location = MatchAfterWithin(ENGINE_VIP_SETTER_CALL_WINDOW),
         ),
         string("ET"),
-        methodCall(name = "getLong", returnType = "J", location = MatchAfterWithin(2)),
+        methodCall(name = "getLong", returnType = "J", location = MatchAfterWithin(PREFERENCE_READ_WINDOW)),
         opcode(Opcode.MOVE_RESULT_WIDE, location = MatchAfterImmediately()),
         fieldAccess(
             definingClass = "this",
@@ -99,7 +104,11 @@ internal object DiscountOfferPopupFingerprint : Fingerprint(
     filters = listOf(
         fieldAccess(type = "Ljava/lang/String;", opcode = Opcode.IGET_OBJECT),
         string("default-50off", location = MatchAfterImmediately()),
-        methodCall(definingClass = "Ljava/lang/String;", name = "equals", location = MatchAfterWithin(2)),
+        methodCall(
+            definingClass = "Ljava/lang/String;",
+            name = "equals",
+            location = MatchAfterWithin(OFFER_ID_EQUALS_WINDOW),
+        ),
         opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
     ),
 )
