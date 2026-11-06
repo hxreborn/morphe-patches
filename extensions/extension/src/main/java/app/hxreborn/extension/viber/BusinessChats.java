@@ -74,14 +74,12 @@ public final class BusinessChats {
                 + ") = 0 AND (conversations.flags2 & " + VERIFICATION_CHAT_FLAG + ") = 0), 0) = 0 AND ";
     }
 
-    public static boolean suppressPrompt(String key) {
-        return PatchSettings.filterBusinessChats() && isDiscoveryPrompt(key);
+    public static String preferenceKey(String key) {
+        return PatchSettings.filterBusinessChats() ? PatchSettings.DISABLED_KEY_PREFIX + key : key;
     }
 
-    static boolean isDiscoveryPrompt(String key) {
-        return "pref_business_chat_inbox_show_intro_dialog_ftue".equals(key)
-                || "pref_business_chat_inbox_show_tooltip_ftue".equals(key)
-                || "can_show_business_inbox_promotion_tooltip".equals(key);
+    public static boolean showPrompt(boolean original) {
+        return original && !PatchSettings.filterBusinessChats();
     }
 
 }

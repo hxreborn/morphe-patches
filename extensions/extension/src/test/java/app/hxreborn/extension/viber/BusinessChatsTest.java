@@ -48,6 +48,8 @@ public final class BusinessChatsTest {
 
     private static final Set<String> SELECTED = Collections.singleton("1");
 
+    private static final String PROMPT_KEY = "pref_business_chat_inbox_show_intro_dialog_ftue";
+
     private SQLiteDatabase database;
 
     @Before
@@ -141,13 +143,9 @@ public final class BusinessChatsTest {
     }
 
     @Test
-    public void suppressOnlyDiscoveryPreferenceKeys() {
-        Assert.assertTrue(BusinessChats.isDiscoveryPrompt("pref_business_chat_inbox_show_intro_dialog_ftue"));
-        Assert.assertTrue(BusinessChats.isDiscoveryPrompt("pref_business_chat_inbox_show_tooltip_ftue"));
-        Assert.assertTrue(BusinessChats.isDiscoveryPrompt("can_show_business_inbox_promotion_tooltip"));
-        Assert.assertFalse(BusinessChats.isDiscoveryPrompt("receive_business_messages_pref_"));
-        Assert.assertFalse(BusinessChats.isDiscoveryPrompt("pref_business_chat_inbox_pinned"));
-        Assert.assertFalse(BusinessChats.isDiscoveryPrompt(null));
+    public void redirectPromptPreferenceWhileFiltering() {
+        Assert.assertEquals(PatchSettings.DISABLED_KEY_PREFIX + PROMPT_KEY, BusinessChats.preferenceKey(PROMPT_KEY));
+        Assert.assertFalse(BusinessChats.showPrompt(true));
     }
 
     @Test
@@ -170,10 +168,11 @@ public final class BusinessChatsTest {
         PatchSettings.initialize(context);
         PatchSettings.setSelectedBusinessChats(SELECTED);
         Assert.assertNotEquals(SELECTION_PREFIX, BusinessChats.filterSelection(SELECTION_PREFIX));
-        Assert.assertTrue(BusinessChats.suppressPrompt("pref_business_chat_inbox_show_intro_dialog_ftue"));
+        Assert.assertFalse(BusinessChats.showPrompt(true));
         PatchSettings.setEnabled(PatchSetting.FILTER_BUSINESS_CHATS.key, false);
         Assert.assertSame(SELECTION_PREFIX, BusinessChats.filterSelection(SELECTION_PREFIX));
-        Assert.assertFalse(BusinessChats.suppressPrompt("pref_business_chat_inbox_show_intro_dialog_ftue"));
+        Assert.assertEquals(PROMPT_KEY, BusinessChats.preferenceKey(PROMPT_KEY));
+        Assert.assertTrue(BusinessChats.showPrompt(true));
     }
 
     @Test

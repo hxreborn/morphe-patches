@@ -41,7 +41,7 @@ public class AiPreferencesTest {
 
     @Test
     public void redirectsPreferenceKeyWhenEnabled() {
-        Assert.assertEquals(AiPreferences.DISABLED_KEY_PREFIX + "some_key", AiPreferences.preferenceKey("some_key"));
+        Assert.assertEquals(PatchSettings.DISABLED_KEY_PREFIX + "some_key", AiPreferences.preferenceKey("some_key"));
     }
 
     @Test

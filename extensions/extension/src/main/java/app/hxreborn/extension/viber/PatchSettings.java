@@ -35,6 +35,8 @@ public final class PatchSettings {
 
     static final String LOG_TAG = "hxViber";
 
+    static final String DISABLED_KEY_PREFIX = "hx_disabled_";
+
     private static final String SELECTED_BUSINESS_CHATS = "selected_business_chats";
 
     private static final int RAISED_FOLDER_LIMIT = 10;

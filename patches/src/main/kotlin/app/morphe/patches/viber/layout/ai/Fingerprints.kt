@@ -6,21 +6,11 @@ package app.morphe.patches.viber.layout.ai
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
-import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
+import app.morphe.patches.viber.shared.preferenceFilters
 import com.android.tools.smali.dexlib2.Opcode
-
-private const val PREFERENCE_CALL_WINDOW = 1
-
-private fun preferenceFilters(key: String) = listOf(
-    string(key),
-    methodCall(
-        parameters = listOf("Ljava/lang/String;", "Z"),
-        location = MatchAfterWithin(PREFERENCE_CALL_WINDOW),
-    ),
-)
 
 internal object ChatSummaryPreferenceFingerprint : Fingerprint(
     filters = preferenceFilters("display_chat_summary_feature_key"),

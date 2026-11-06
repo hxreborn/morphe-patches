@@ -4,17 +4,18 @@
  */
 package app.morphe.patches.viber.layout.promotions
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
 import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
+import app.morphe.patches.viber.shared.addFilterCall
+import app.morphe.patches.viber.shared.addFilterCallAfter
 import app.morphe.patches.viber.shared.markPatchApplied
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+
+private const val SHOW_PROMOTION = "$VIBER_SETTINGS_CLASS->showPromotion(Z)Z"
 
 @Suppress("unused")
 val hidePromotionsPatch: BytecodePatch = bytecodePatch(
@@ -25,30 +26,18 @@ val hidePromotionsPatch: BytecodePatch = bytecodePatch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
     execute {
         markPatchApplied("hidePromotions", hidePromotionsPatch)
-        ChatSuggestionsVisibilityFingerprint.matchSingle().method.filterPromotion(0, "p1")
+        ChatSuggestionsVisibilityFingerprint.matchSingle().method.addFilterCall(0, "p1", SHOW_PROMOTION)
         CallsBannerVisibilityFingerprint.matchSingle().apply {
             val (cardVisible, _, shadowVisible, _) = instructionMatches
-            listOf(shadowVisible, cardVisible).forEach {
-                method.filterPromotion(it.index + 1, "v${(it.instruction as OneRegisterInstruction).registerA}")
-            }
+            listOf(shadowVisible, cardVisible).forEach { method.addFilterCallAfter(it.index, SHOW_PROMOTION) }
         }
         ViberOutSectionVisibilityFingerprint.matchSingle().apply {
             val (_, _, sectionVisible, _) = instructionMatches
-            method.filterPromotion(sectionVisible.index + 1, "v${(sectionVisible.instruction as OneRegisterInstruction).registerA}")
+            method.addFilterCallAfter(sectionVisible.index, SHOW_PROMOTION)
         }
         CallsIntroFingerprint.matchSingle().apply {
             val (_, flagResult, _) = instructionMatches
-            method.filterPromotion(flagResult.index + 1, "v${(flagResult.instruction as OneRegisterInstruction).registerA}")
+            method.addFilterCallAfter(flagResult.index, SHOW_PROMOTION)
         }
     }
-}
-
-private fun MutableMethod.filterPromotion(index: Int, register: String) {
-    addInstructions(
-        index,
-        """
-            invoke-static/range { $register .. $register }, $VIBER_SETTINGS_CLASS->showPromotion(Z)Z
-            move-result $register
-        """,
-    )
 }

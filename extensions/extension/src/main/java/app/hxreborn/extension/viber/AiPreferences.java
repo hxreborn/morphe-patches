@@ -23,8 +23,6 @@ package app.hxreborn.extension.viber;
 @SuppressWarnings("unused")
 public final class AiPreferences {
 
-    static final String DISABLED_KEY_PREFIX = "hx_disabled_";
-
     private AiPreferences() {
     }
 
@@ -33,7 +31,7 @@ public final class AiPreferences {
     }
 
     public static String preferenceKey(String key) {
-        return PatchSettings.disableAiFeatures() ? DISABLED_KEY_PREFIX + key : key;
+        return PatchSettings.disableAiFeatures() ? PatchSettings.DISABLED_KEY_PREFIX + key : key;
     }
 
     public static boolean hideFeature(boolean original) {

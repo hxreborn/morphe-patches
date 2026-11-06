@@ -5,10 +5,8 @@
 package app.morphe.patches.viber.layout.business
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.fieldAccess
-import app.morphe.patcher.methodCall
 import app.morphe.patcher.string
-import com.android.tools.smali.dexlib2.Opcode
+import app.morphe.patches.viber.shared.preferenceFilters
 
 internal object ChatSelectionFingerprint : Fingerprint(
     returnType = "Ljava/lang/String;",
@@ -19,20 +17,10 @@ internal object ChatSelectionFingerprint : Fingerprint(
     ),
 )
 
-internal object BusinessInboxPreferencesFingerprint : Fingerprint(
-    name = "<clinit>",
-    filters = listOf(
-        string("pref_business_chat_inbox_show_intro_dialog_ftue"),
-        fieldAccess(opcode = Opcode.SPUT_OBJECT),
-    ),
+internal object BusinessInboxIntroPreferenceFingerprint : Fingerprint(
+    filters = preferenceFilters("pref_business_chat_inbox_show_intro_dialog_ftue"),
 )
 
-internal fun businessPreferenceReaderFingerprint(preferenceType: String) = Fingerprint(
-    definingClass = preferenceType,
-    returnType = "Z",
-    parameters = listOf(),
-    filters = listOf(
-        fieldAccess(type = "Ljava/lang/String;"),
-        methodCall(name = "getBoolean", parameters = listOf("Ljava/lang/String;", "Z"), returnType = "Z"),
-    ),
+internal object BusinessInboxTooltipPreferenceFingerprint : Fingerprint(
+    filters = preferenceFilters("pref_business_chat_inbox_show_tooltip_ftue"),
 )
