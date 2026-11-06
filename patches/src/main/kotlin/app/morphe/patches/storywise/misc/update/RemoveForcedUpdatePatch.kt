@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.replaceMasked
 
@@ -23,6 +24,7 @@ val removeForcedUpdatePatch = resourcePatch(
 ) {
     compatibleWith(AppCompatibilities.STORYWISE)
     availability(requireArm64)
+    dependsOn(removePairipProtectionPatch)
 
     execute {
         val library = dartAotLibrary()
