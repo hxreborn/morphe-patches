@@ -174,7 +174,7 @@ public final class PatchesMenuTest {
         Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_PREMIUM));
         Assert.assertEquals(View.GONE,
                 text(appliedCard(menu), EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION).getVisibility());
-        Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION).getVisibility());
+        Assert.assertEquals(View.GONE, text(appliedCard(menu), EveryPatchApplied.PREMIUM_DESCRIPTION).getVisibility());
     }
 
     @Test
@@ -182,7 +182,7 @@ public final class PatchesMenuTest {
         attachEntry();
         clickEntry();
         View menu = ShadowDialog.getLatestDialog().getWindow().getDecorView();
-        TextView details = text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION);
+        TextView details = text(appliedCard(menu), EveryPatchApplied.PREMIUM_DESCRIPTION);
         View row = (View) details.getParent().getParent();
 
         row.performClick();

@@ -137,8 +137,8 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         LinearLayout features = this.rows.card();
         if (AppliedPatches.unlockPremium()) {
             this.rows.switchRow(features, "hx_liftoff_ic_premium", AppliedPatches.unlockPremiumName(),
-                    "Unlocks rank analysis and nutrition tools.",
-                    PatchSettings.isEnabled(AppliedPatches.UNLOCK_PREMIUM), (button, enabled) -> {
+                    AppliedPatches.unlockPremiumDescription(), PatchSettings.isEnabled(AppliedPatches.UNLOCK_PREMIUM),
+                    (button, enabled) -> {
                         PatchSettings.setEnabled(AppliedPatches.UNLOCK_PREMIUM, enabled);
                         confirmRestart();
                     });
