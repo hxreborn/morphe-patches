@@ -80,6 +80,10 @@ public final class PatchSettings {
         return AppliedPatches.removeListGaps() && isEnabled(PatchSetting.REMOVE_LIST_GAPS.key);
     }
 
+    public static boolean removeTypingPrivacyBanner() {
+        return AppliedPatches.removeTypingPrivacyBanner() && isEnabled(PatchSetting.REMOVE_TYPING_PRIVACY_BANNER.key);
+    }
+
     public static boolean hideAds() {
         return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
     }

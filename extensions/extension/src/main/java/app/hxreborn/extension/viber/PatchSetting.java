@@ -25,6 +25,7 @@ import java.util.Locale;
 enum PatchSetting {
 
     REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", true),
+    REMOVE_TYPING_PRIVACY_BANNER("Chats", "removeTypingPrivacyBanner", true),
     REMOVE_LIST_GAPS("Chats", "removeListGaps", true), DISABLE_AI_FEATURES("Chats", "Disable AI features", true),
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", false),
     FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", true), UNFILED_CHATS("Folders", "unfiledChats", true),
@@ -59,6 +60,7 @@ enum PatchSetting {
     String title() {
         return switch (this) {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGapsName();
+            case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBannerName();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsName();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
             case START_FOLDER -> AppliedPatches.startFolderName();
@@ -81,6 +83,7 @@ enum PatchSetting {
     String description() {
         return switch (this) {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGapsDescription();
+            case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBannerDescription();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsDescription();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesDescription();
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaDescription();
@@ -103,6 +106,7 @@ enum PatchSetting {
     boolean applied() {
         return switch (this) {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGaps();
+            case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBanner();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPayments();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
             case START_FOLDER -> AppliedPatches.startFolder();

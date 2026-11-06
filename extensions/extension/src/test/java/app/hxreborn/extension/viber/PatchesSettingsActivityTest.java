@@ -88,12 +88,12 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove list gaps", "Disable AI features",
-                "Injected disappearing media title", "Injected business name", "Injected folder title",
-                "Injected start folder title", "Injected folder limit title", "Hide ads", "Injected promotions title",
-                "Hide navigation buttons", "Hide More screen items", "Injected online status title",
-                "Disable analytics", "Injected update prompts title", "Injected secondary device title", PLUS_TITLE),
-                titles);
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove typing privacy banner",
+                "Remove list gaps", "Disable AI features", "Injected disappearing media title",
+                "Injected business name", "Injected folder title", "Injected start folder title",
+                "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
+                "Hide More screen items", "Injected online status title", "Disable analytics",
+                "Injected update prompts title", "Injected secondary device title", PLUS_TITLE), titles);
     }
 
     @Test
@@ -381,6 +381,21 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String removeListGapsDescription() {
             return "Removes list gaps and extra scrolling.";
+        }
+
+        @Implementation
+        protected static boolean removeTypingPrivacyBanner() {
+            return true;
+        }
+
+        @Implementation
+        protected static String removeTypingPrivacyBannerName() {
+            return "Remove typing privacy banner";
+        }
+
+        @Implementation
+        protected static String removeTypingPrivacyBannerDescription() {
+            return "Removes typing privacy promotions.";
         }
 
         @Implementation

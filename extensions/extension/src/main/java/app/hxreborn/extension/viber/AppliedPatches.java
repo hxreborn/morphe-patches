@@ -258,9 +258,23 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean removeTypingPrivacyBanner() {
+        return false;
+    }
+
+    public static String removeTypingPrivacyBannerName() {
+        return null;
+    }
+
+    public static String removeTypingPrivacyBannerDescription() {
+        return null;
+    }
+
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
         add(applied, removeListGaps(), removeListGapsName(), removeListGapsDescription());
+        add(applied, removeTypingPrivacyBanner(), removeTypingPrivacyBannerName(),
+                removeTypingPrivacyBannerDescription());
         add(applied, disableAiFeatures(), disableAiFeaturesName(), disableAiFeaturesDescription());
         add(applied, removeChatPayments(), removeChatPaymentsName(), removeChatPaymentsDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());

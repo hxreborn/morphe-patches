@@ -73,6 +73,24 @@ public class PatchSettingsTest {
     }
 
     @Test
+    public void preserveTypingBannerWithoutAppliedPatch() {
+        Assert.assertFalse(PatchSettings.removeTypingPrivacyBanner());
+    }
+
+    @Test
+    @Config(shadows = AppliedTypingBanner.class)
+    public void removeTypingBannerByDefault() {
+        Assert.assertTrue(PatchSettings.removeTypingPrivacyBanner());
+    }
+
+    @Test
+    @Config(shadows = AppliedTypingBanner.class)
+    public void restoreTypingBannerWithDisabledSwitch() {
+        PatchSettings.setEnabled(PatchSetting.REMOVE_TYPING_PRIVACY_BANNER.key, false);
+        Assert.assertFalse(PatchSettings.removeTypingPrivacyBanner());
+    }
+
+    @Test
     public void keepUnappliedPatchDisabled() {
         PatchSettings.setEnabled(ADS, true);
         Assert.assertFalse(PatchSettings.hideAds());
@@ -126,6 +144,16 @@ public class PatchSettingsTest {
     public void keepOnlineStatusChangeTimeWithDisabledPatch() {
         PatchSettings.setEnabled(PatchSetting.REMOVE_ONLINE_STATUS_LIMIT.key, false);
         Assert.assertEquals(LAST_CHANGE_TIME, PatchSettings.lastOnlineChangeTime(LAST_CHANGE_TIME));
+    }
+
+    @Implements(AppliedPatches.class)
+    public static class AppliedTypingBanner {
+
+        @Implementation
+        protected static boolean removeTypingPrivacyBanner() {
+            return true;
+        }
+
     }
 
     @Implements(AppliedPatches.class)
