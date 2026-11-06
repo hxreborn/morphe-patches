@@ -5,8 +5,11 @@
 package app.morphe.patches.viber.misc.premium
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.opcode
+import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val TYPING_MEMBERSHIP_READ_WINDOW = 3
@@ -38,6 +41,7 @@ internal fun typingPrivacyStateFingerprint(controllerType: String, experimentNam
         methodCall(definingClass = controllerType, name = experimentName),
         methodCall(definingClass = controllerType, parameters = emptyList(), returnType = "Z"),
         methodCall(parameters = emptyList(), returnType = "Z", location = MatchAfterWithin(TYPING_MEMBERSHIP_READ_WINDOW)),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
     ),
 )
 
@@ -49,8 +53,10 @@ internal fun typingSendAllowedFingerprint(
     parameters = listOf("I"),
     returnType = "Z",
     filters = listOf(
-        methodCall(definingClass = membership.definingClass, name = membership.name, returnType = "Z"),
+        methodCall(membership),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
         methodCall(definingClass = controllerType, name = experimentName),
-        methodCall(definingClass = membership.definingClass, name = membership.name, returnType = "Z"),
+        methodCall(membership),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
     ),
 )
