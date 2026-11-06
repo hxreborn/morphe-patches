@@ -11,6 +11,7 @@ import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.layout.home.launcherSectionItemsFingerprint
+import app.morphe.patches.patreon.layout.home.replaceQuickPostCardStub
 import app.morphe.patches.patreon.misc.featureflags.featureFlagsPatch
 import app.morphe.patches.patreon.misc.settings.PATREON_EXTENSION_PACKAGE
 import app.morphe.patches.patreon.misc.settings.markFeaturePatched
@@ -33,6 +34,7 @@ val disableQuipsAndAutoplayPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markFeaturePatched(QUIPS_AND_AUTOPLAY_CLASS, disableQuipsAndAutoplayPatch)
+        replaceQuickPostCardStub(HOME_FEED_FILTER_CLASS)
 
         val sectionItems = launcherSectionItemsFingerprint("LauncherFeedSectionSchema")
         val returnIndex = sectionItems.instructionMatches.single().index

@@ -27,6 +27,7 @@ val hideRecommendedCreatorsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markFeaturePatched(EXTENSION_CLASS_DESCRIPTOR, hideRecommendedCreatorsPatch)
+        replaceHomeFeedStubs(EXTENSION_CLASS_DESCRIPTOR)
 
         LauncherFeedResponseConstructorFingerprint.method.addInstructions(
             0,
