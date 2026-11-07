@@ -6,11 +6,41 @@ package app.morphe.patches.viber.layout.ai
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import app.morphe.patches.viber.shared.preferenceFilters
 import com.android.tools.smali.dexlib2.Opcode
+
+private const val INLINE_TRANSLATE_VIEW_NULL_CHECK_WINDOW = 1
+
+internal object InlineTranslateBinderFingerprint : Fingerprint(
+    filters = listOf(
+        string("getKeyboardLanguagesProvider()Lcom/viber/voip/feature/translate/message/domain/TranslateKeyboardLanguagesProvider;"),
+    ),
+)
+
+internal object InlineTranslateVisibilityFingerprint : Fingerprint(
+    classFingerprint = InlineTranslateBinderFingerprint,
+    filters = listOf(
+        methodCall(
+            parameters = listOf("L", "L"),
+            returnType = "Z",
+            opcodes = listOf(Opcode.INVOKE_VIRTUAL, Opcode.INVOKE_VIRTUAL_RANGE),
+        ),
+        opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
+        fieldAccess(type = "Landroid/view/View;", opcode = Opcode.IGET_OBJECT, location = MatchAfterImmediately()),
+        methodCall(
+            definingClass = "Landroid/view/View;",
+            name = "getTag",
+            parameters = emptyList(),
+            returnType = "Ljava/lang/Object;",
+            location = MatchAfterWithin(INLINE_TRANSLATE_VIEW_NULL_CHECK_WINDOW),
+        ),
+    ),
+)
 
 internal object ChatSummaryPreferenceFingerprint : Fingerprint(
     filters = preferenceFilters("display_chat_summary_feature_key"),
