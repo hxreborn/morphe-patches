@@ -179,6 +179,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.7.24", versionCode = 199, minSdk = 24)),
     )
 
+    val AUDIOMACK = Compatibility(
+        name = "Audiomack",
+        packageName = "com.audiomack",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xFFA200,
+        signatures = setOf("3562a57fd9e67dc1ef9f3c35a2c5448069a1b4534b91a8c8f9fd8342fcc9fcd4"),
+        targets = listOf(AppTarget(version = "8.11.4", versionCode = 33762, minSdk = 24)),
+    )
+
     val AUDIOLAB = Compatibility(
         name = "AudioLab",
         packageName = "com.hitrolab.audioeditor",
