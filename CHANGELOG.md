@@ -1,3 +1,16 @@
+## [1.74.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.73.1-dev.1...v1.74.0-dev.1) (2026-11-07)
+
+### Bug Fixes
+
+* **Castle - Unlock premium:** play premium titles at 1080p ([705f700](https://github.com/hxreborn/morphe-patches/commit/705f70010c760ea08fe0776fe7690cf5c0860585))
+* **Castle for TV - Unlock premium:** play titles at 1080p ([725842a](https://github.com/hxreborn/morphe-patches/commit/725842aa72fcba88f73132354abf21a677985f3c)), closes [#664](https://github.com/hxreborn/morphe-patches/issues/664)
+* **MovieBoxTV - All-In-One:** fix quality selection ([3e6de74](https://github.com/hxreborn/morphe-patches/commit/3e6de7418106ffff291c748aabb598693e573613)), closes [#648](https://github.com/hxreborn/morphe-patches/issues/648)
+
+### New Features
+
+* **Viber - Disable AI features:** remove ChatGPT entry points ([cf1cf4a](https://github.com/hxreborn/morphe-patches/commit/cf1cf4af1f7c97367587c862acfa622b5c8cc7d4)), closes [#667](https://github.com/hxreborn/morphe-patches/issues/667)
+* **Viber - Disable AI features:** remove inline Translate buttons ([af4644b](https://github.com/hxreborn/morphe-patches/commit/af4644b4f2c256990b69883df4d86aa14440654c)), closes [#666](https://github.com/hxreborn/morphe-patches/issues/666)
+
 ## [1.73.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.73.0...v1.73.1-dev.1) (2026-11-07)
 
 ### Updated App Support

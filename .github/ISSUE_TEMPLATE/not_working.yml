@@ -435,12 +435,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.74.0-dev.1"
         - "1.73.1-dev.1"
         - "1.73.0-dev.3"
         - "1.73.0-dev.2"
         - "1.73.0-dev.1"
         - "1.73.0"
-        - "1.72.1-dev.1"
         - "Older than these"
         # /generated
     validations:
