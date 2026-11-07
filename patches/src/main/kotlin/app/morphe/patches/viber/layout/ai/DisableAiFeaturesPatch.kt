@@ -30,6 +30,13 @@ val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("disableAiFeatures", disableAiFeaturesPatch)
+        SearchChatGptEntryPointAvailabilityFingerprint.matchSingle().method.returnWhenEnabled(
+            "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
+        )
+        SettingsChatGptRowFingerprint.matchSingle().apply {
+            val (_, availability, _) = instructionMatches
+            method.addFilterCallAfter(availability.index, "$EXTENSION_CLASS_DESCRIPTOR->showFeature(Z)Z")
+        }
         InlineTranslateVisibilityFingerprint.matchSingle().apply {
             val (_, visibility, _, _) = instructionMatches
             method.addFilterCallAfter(visibility.index, "$EXTENSION_CLASS_DESCRIPTOR->showFeature(Z)Z")

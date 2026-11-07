@@ -10,11 +10,38 @@ import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.string
 import app.morphe.patches.viber.shared.preferenceFilters
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val INLINE_TRANSLATE_VIEW_NULL_CHECK_WINDOW = 1
+private const val CHATGPT_SETTINGS_ROW_CREATION_WINDOW = 2
+
+internal object SearchChatGptEntryPointProviderFingerprint : Fingerprint(
+    filters = listOf(
+        string("getEntryPointProvider()Lcom/viber/voip/feature/search/data/experiments/SearchChatGptEntryPointExperimentsProvider;"),
+    ),
+)
+
+internal object SearchChatGptEntryPointAvailabilityFingerprint : Fingerprint(
+    classFingerprint = SearchChatGptEntryPointProviderFingerprint,
+    returnType = "Z",
+    filters = listOf(methodCall(definingClass = "Ljava/lang/Boolean;", name = "booleanValue")),
+)
+
+internal object SettingsChatGptRowFingerprint : Fingerprint(
+    filters = listOf(
+        methodCall(parameters = listOf("Z"), returnType = "Z"),
+        opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
+        resourceLiteral(
+            ResourceType.STRING,
+            "pref_category_manage_ai_features_key",
+            location = MatchAfterWithin(CHATGPT_SETTINGS_ROW_CREATION_WINDOW),
+        ),
+    ),
+)
 
 internal object InlineTranslateBinderFingerprint : Fingerprint(
     filters = listOf(
