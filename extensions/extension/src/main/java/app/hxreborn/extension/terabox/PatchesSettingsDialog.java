@@ -141,6 +141,10 @@ final class PatchesSettingsDialog {
                 AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.removeRecentPanelDescription(),
                 "hx_terabox_ic_recent", false);
         addSection(column, "Home", home);
+        LinearLayout backup = this.rows.card();
+        addSwitch(backup, AppliedPatches.showBackupCount(), AppliedPatches.showBackupCountName(),
+                AppliedPatches.SHOW_BACKUP_COUNT, "Shows remaining backup files.", "hx_terabox_ic_backup", true);
+        addSection(column, "Backup", backup);
         LinearLayout videos = this.rows.card();
         addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.hideVideoRecommendationsName(),
                 AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.hideVideoRecommendationsDescription(),

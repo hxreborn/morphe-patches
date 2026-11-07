@@ -162,6 +162,21 @@ public final class EveryPatchApplied {
     }
 
     @Implementation
+    public static boolean showBackupCount() {
+        return true;
+    }
+
+    @Implementation
+    public static String showBackupCountName() {
+        return "Show backup count";
+    }
+
+    @Implementation
+    public static String showBackupCountDescription() {
+        return "Shows remaining backup files.";
+    }
+
+    @Implementation
     public static boolean unlockPremium() {
         return true;
     }

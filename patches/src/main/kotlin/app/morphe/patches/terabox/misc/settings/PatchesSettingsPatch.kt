@@ -29,7 +29,7 @@ internal const val VIDEO_RECOMMENDATIONS_HIDDEN = "$TERABOX_PATCH_SETTINGS_CLASS
 private const val TERABOX_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/terabox/AppliedPatches;"
 private const val SETTINGS_STYLE_CLASS = "Lapp/hxreborn/extension/terabox/SettingsStyle;"
 private const val TERABOX_PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/terabox/PatchesMenu;"
-private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "reset", "info", "patches", "expand")
+private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "backup", "reset", "info", "patches", "expand")
     .map { "hx_terabox_ic_$it" }
 
 internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
