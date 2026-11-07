@@ -855,6 +855,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.24.5", versionCode = 219, minSdk = 24)),
     )
 
+    val MARKS = Compatibility(
+        name = "MARKS",
+        packageName = "com.scoremarks.marks",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x1589EE,
+        signatures = setOf(
+            "ca15b496cb028d6b8424c79093db7ec866665f38c04d1786deb14919e3ad2540",
+        ),
+        targets = listOf(AppTarget(version = "2.0.8", versionCode = 119, minSdk = 21)),
+    )
+
     val MEMONEET = Compatibility(
         name = "MemoNeet",
         packageName = "com.adithya.memoneet",
