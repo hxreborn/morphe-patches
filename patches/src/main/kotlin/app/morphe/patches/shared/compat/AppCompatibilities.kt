@@ -1673,6 +1673,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
     )
 
+    val ULTIMEA = Compatibility(
+        name = "ULTIMEA",
+        packageName = "com.dynanic.ultimea",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x4A1C9B,
+        signatures = setOf(
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7",
+        ),
+        targets = listOf(AppTarget(version = "1.4.4", versionCode = 495, minSdk = 26)),
+    )
+
     val ULTIMATE_GUITAR = Compatibility(
         name = "Ultimate Guitar",
         packageName = "com.ultimateguitar.tabs",

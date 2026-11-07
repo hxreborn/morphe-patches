@@ -151,6 +151,7 @@ def versions_table(targets, package):
 
 ICONS = {
     "com.audiomack": "audiomack.png",
+    "com.dynanic.ultimea": "ultimea.png",
     "com.neonbhoot.behisabi": "behisabi.png",
     "com.gymbros.app": "liftoff.png",
     "co.unstatic.habitify": "habitify.png",
