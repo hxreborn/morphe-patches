@@ -47,6 +47,18 @@ jobs:
       - name: Check regexes for Android
         run: python3 .github/scripts/check_android_regex.py
 
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Run script tests
+        run: |
+          pip install requests
+          for test in .github/scripts/test_*.py .github/actions/triage/test_*.py; do
+            python "$test" || exit 1
+          done
+
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v6
 
