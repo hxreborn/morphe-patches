@@ -459,6 +459,16 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: worked-before
+    attributes:
+      label: Did this work before
+      options:
+        - Yes, with an older patches release on the same app version
+        - No, it has never worked for me
+        - I have not checked
+    validations:
+      required: true
+  - type: dropdown
     id: unpatched-app
     attributes:
       label: Does the unpatched app do the same thing
@@ -993,7 +1003,7 @@ body:
     attributes:
       label: APK source
       description: |
-        Link to the download if you have it. APKMirror, APKPure, Uptodown or APKCombo. Not
+        Link to the download if you have it. APKMirror, APKPure, Uptodown, APKCombo or APKCube. Not
         apkmod, Softonic, HappyMod or anything else that repackages APKs.
       placeholder: APKMirror, https://www.apkmirror.com/...
     validations:

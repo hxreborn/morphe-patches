@@ -252,16 +252,16 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             if "duplicate" not in labels:
                 labels.append("duplicate")
             apps = " or ".join(r["name"] for r in lookalikes if not r["number"])
-            requests = " or ".join(link(r) for r in lookalikes if r["number"])
+            request_links = " or ".join(link(r) for r in lookalikes if r["number"])
             if apps:
                 lines.append(
                     f"This looks like {apps}, which this bundle already supports. If it's a different app, edit this "
                     f"request and add its package name.\n\nIf it's {apps}, open an issue instead:\n\n{ALL_FORMS}"
                 )
-            if requests:
+            if request_links:
                 lines.append(
-                    f"This looks like the app requested in {requests}. If it's a different app, edit this request and "
-                    f"add its package name. If it's the same app, please upvote {requests} instead."
+                    f"This looks like the app requested in {request_links}. If it's a different app, edit this request and "
+                    f"add its package name. If it's the same app, please upvote {request_links} instead."
                 )
 
     bundles = []
@@ -310,6 +310,9 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
                 f"- **Prefer this one:** close {'that one' if len(posts) == 1 else 'the others'} and reply here\n\n"
                 "Thanks for helping keep requests in one place!"
             )
+
+    if "needs info" in labels:
+        lines.append("This discussion closes after 1 day without a reply.")
 
     facts = hashlib.sha256(json.dumps([
         package, verdict, reason, duplicate_of, sorted(labels), [b["repo"] for b in bundles], posts,

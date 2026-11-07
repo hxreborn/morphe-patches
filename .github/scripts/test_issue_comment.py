@@ -274,9 +274,9 @@ sys.exit(0 if valid else 1)
 '''
 
 
-def needs_info_script():
+def job_script(name):
     lines = WORKFLOW.read_text().splitlines()
-    start = lines.index("  needs-info:")
+    start = lines.index(f"  {name}:")
     begin = next(i for i in range(start, len(lines)) if lines[i].strip() == "run: |") + 1
     end = next((i for i in range(begin, len(lines)) if lines[i] and not lines[i].startswith(" " * 10)), len(lines))
     return "\n".join(line[10:] for line in lines[begin:end])
@@ -297,7 +297,7 @@ def run_needs_info(state, author="reporter", commenter="reporter", commenter_typ
         (temp / "event.json").write_text(json.dumps(event))
         env = {"PATH": f"{temp / 'bin'}:{os.environ['PATH']}", "FAKE_STATE": str(temp / "state.json"),
                "GITHUB_EVENT_PATH": str(temp / "event.json"), "ISSUE": "7", "REPO": "hxreborn/morphe-patches"}
-        done = subprocess.run(["bash", "-eo", "pipefail", "-c", needs_info_script()], env=env, cwd=HERE.parent.parent, capture_output=True, text=True)
+        done = subprocess.run(["bash", "-eo", "pipefail", "-c", job_script("needs-info")], env=env, cwd=HERE.parent.parent, capture_output=True, text=True)
         return done.returncode, json.loads((temp / "state.json").read_text())["calls"]
 
 
@@ -370,14 +370,6 @@ sys.exit(1)
 '''
 
 
-def reply_script():
-    lines = WORKFLOW.read_text().splitlines()
-    start = lines.index("  reply:")
-    begin = next(i for i in range(start, len(lines)) if lines[i].strip() == "run: |") + 1
-    end = next((i for i in range(begin, len(lines)) if lines[i] and not lines[i].startswith(" " * 10)), len(lines))
-    return "\n".join(line[10:] for line in lines[begin:end])
-
-
 UNRELEASED_SHA = "a" * 40
 RELEASED_SHA = "b" * 40
 MISSING_SHA = "c" * 40
@@ -403,7 +395,7 @@ def run_reply(body, state="closed", closing=(), bot_comments=(), labels=("app re
         (temp / "event.json").write_text(json.dumps(event))
         env = {"PATH": f"{temp / 'bin'}:{os.environ['PATH']}", "FAKE_STATE": str(temp / "state.json"), "GITHUB_EVENT_PATH": str(temp / "event.json"),
                "RUNNER_TEMP": str(temp), "ISSUE": "7", "REPO": "hxreborn/morphe-patches", "STATE": state}
-        done = subprocess.run(["bash", "-eo", "pipefail", "-c", reply_script()], env=env, cwd=HERE.parent.parent, capture_output=True, text=True)
+        done = subprocess.run(["bash", "-eo", "pipefail", "-c", job_script("reply")], env=env, cwd=HERE.parent.parent, capture_output=True, text=True)
         final = json.loads((temp / "state.json").read_text())
         return done.returncode, final["posted"], final["calls"]
 
@@ -491,14 +483,6 @@ if "--silent" not in args:
 '''
 
 
-def request_script():
-    lines = WORKFLOW.read_text().splitlines()
-    start = lines.index("  request:")
-    begin = next(i for i in range(start, len(lines)) if lines[i].strip() == "run: |") + 1
-    end = next((i for i in range(begin, len(lines)) if lines[i] and not lines[i].startswith(" " * 10)), len(lines))
-    return "\n".join(line[10:] for line in lines[begin:end])
-
-
 def run_request(body, labels=("app request",), commenter="asker", bot_comments=()):
     event = {
         "discussion": {"number": 7, "state": "open", "title": "Something", "created_at": "2026-10-01T00:00:00Z",
@@ -514,7 +498,7 @@ def run_request(body, labels=("app request",), commenter="asker", bot_comments=(
         (temp / "event.json").write_text(json.dumps(event))
         env = {"PATH": f"{temp / 'bin'}:{os.environ['PATH']}", "FAKE_STATE": str(temp / "state.json"), "GITHUB_EVENT_PATH": str(temp / "event.json"),
                "RUNNER_TEMP": str(temp), "NUMBER": "7", "REPO": "hxreborn/morphe-patches"}
-        done = subprocess.run(["bash", "-eo", "pipefail", "-c", request_script()], env=env, cwd=HERE.parent.parent, capture_output=True, text=True)
+        done = subprocess.run(["bash", "-eo", "pipefail", "-c", job_script("request")], env=env, cwd=HERE.parent.parent, capture_output=True, text=True)
         final = json.loads((temp / "state.json").read_text())
         return done.returncode, final["posted"], final["labels"]
 
