@@ -306,7 +306,12 @@ def extract_base_apk(path, package, workdir):
             raise ValueError(f"no base apk among {apks[:5]}")
         target = workdir / "base.apk"
         target.write_bytes(archive.read(candidates[0]))
-        kind = "apkm" if "info.json" in names else "xapk" if "manifest.json" in names else "apks"
+        if "info.json" in names:
+            kind = "apkm"
+        elif "manifest.json" in names:
+            kind = "xapk"
+        else:
+            kind = "apks"
         return target, kind
 
 
@@ -471,8 +476,12 @@ def classify(app, sources, ctx):
         verified = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")
                          and a.get("cert_ok") is not False), None)
         if verified:
-            cert = ("cert matches" if verified["cert_ok"] else
-                    "served by play" if verified["source"] == "play" else "cert unchecked")
+            if verified["cert_ok"]:
+                cert = "cert matches"
+            elif verified["source"] == "play":
+                cert = "served by play"
+            else:
+                cert = "cert unchecked"
             evidence.append(f"apk from {verified['source']} (vc {verified['version_code']}, {cert})")
         elif any(a.get("cert_ok") is False for a in attempts):
             record["notes"].append(f"{version}: apk signed by a foreign certificate")
@@ -551,7 +560,12 @@ def issue_body(app, record):
     attempts = record.get("verification", {}).get(candidate, [])
     verified = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")), {})
     check = verified.get("patch_check") or {}
-    cert = "cert matches" if verified.get("cert_ok") else "served by play" if verified.get("source") == "play" else "cert unchecked"
+    if verified.get("cert_ok"):
+        cert = "cert matches"
+    elif verified.get("source") == "play":
+        cert = "served by play"
+    else:
+        cert = "cert unchecked"
     patches = [f"{name} applied" for name in check.get("applied", [])] + [f"{name} failed" for name in check.get("failed", [])]
     lines = [f"package: `{app['package']}`",
              f"targeted: {app['current']} ({', '.join(map(str, app['current_version_codes']))})",
@@ -570,8 +584,10 @@ def sync_close_comment(app, bundle_version):
 
 
 def sync_issues(apps, results, bundle_version):
-    gh("label", "create", ISSUE_LABEL, "--force", "--color", "FBCA04",
-       "--description", "newer app version confirmed upstream")
+    catalog = json.loads(Path(__file__).resolve().parents[1].joinpath("labels.json").read_text())
+    label = catalog["labels"][ISSUE_LABEL]
+    gh("label", "create", ISSUE_LABEL, "--force", "--color", label["color"],
+       "--description", label["description"])
     issues = json.loads(gh("issue", "list", "--label", ISSUE_LABEL, "--state", "all", "--limit", "1000",
                            "--json", "number,title,state,author,labels"))
     by_title = {issue["title"]: issue for issue in issues}

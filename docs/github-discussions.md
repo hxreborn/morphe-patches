@@ -129,8 +129,10 @@ author_association,created_at}` and `changes.body` on `edited`. The reference pa
 
 What runs here: `issue_triage.yml` (request step on `discussion` events and the daily sweep),
 `issue_comments.yml` `request` job (status pings, `needs info` removal), `stale.yml` `requests` job
-(closes and locks `needs info` requests as `OUTDATED` after 3 days without an update, skipping `bot-wrong` and
-`in progress`), and the last step of `release.yml`. Discussion events carry no timeline, so the bots
+(checks hourly and closes and locks `needs info` requests as `OUTDATED` after 1 day without a reply,
+and `other bundle` requests after 7 days without an owner comment, reply or edit, skipping protected labels),
+and the last step of `release.yml`. Requests less than a week old keep their first week if the owner
+has never participated. Issue inactivity checks and locking still run daily. Discussion events carry no timeline, so the bots
 keep no "a human reopened this" guard: the sweep skips a close whose comment equals the bot comment
 already on the thread, and retitles only on `created`. Every bot close is followed by `discussion.sh lock`, and
 a failed lock fails the run. A failed retitle only warns: `updateDiscussion` with `GITHUB_TOKEN` returned

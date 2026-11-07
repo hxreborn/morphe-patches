@@ -22,6 +22,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val PREMIUM_VIP_INFO_CLASS = "Lapp/hxreborn/extension/castletv/PremiumVipInfo;"
 private const val VIP_INFO_CLASS = "Lcom/gxgx/base/bean/VipInfo;"
 private const val PREVIEW_PLAYLIST_CLASS = "Lapp/hxreborn/extension/castle/PreviewPlaylist;"
+private const val FULL_HD_PLAYLIST_CLASS = "Lapp/hxreborn/extension/castle/FullHdPlaylist;"
 
 private fun Method.indexOfFreeUserCheck(vipHelperType: String, startIndex: Int = 0) =
     indexOfFirstInstruction(startIndex) {
@@ -44,6 +45,14 @@ val unlockPremiumPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        VideoBodyConstructorFingerprint.matchSingle().method.addInstructions(
+            0,
+            """
+                invoke-static/range { p4 .. p4 }, $FULL_HD_PLAYLIST_CLASS->resolution(Ljava/lang/Integer;)Ljava/lang/Integer;
+                move-result-object p4
+            """,
+        )
+
         UserVipInfosFingerprint.matchSingle().method.addInstructions(
             0,
             """

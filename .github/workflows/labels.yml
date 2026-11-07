@@ -1,0 +1,59 @@
+name: Maintain labels
+
+on:
+  issues:
+    types: [opened, edited, labeled, unlabeled, closed, reopened]
+  pull_request_target:
+    types: [closed]
+  schedule:
+    - cron: "45 5 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/labels.json
+      - .github/scripts/labels.py
+      - .github/workflows/labels.yml
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  discussions: write
+
+concurrency:
+  group: labels-${{ github.event.issue.number || github.event.pull_request.number || 'sweep' }}
+  cancel-in-progress: false
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+          sparse-checkout: |
+            .github/labels.json
+            .github/scripts/labels.py
+            .github/scripts/versions.py
+            .github/actions/triage/fields.py
+            .github/actions/triage/discussion.sh
+            patches-list.json
+          sparse-checkout-cone-mode: false
+      - name: Sync label definitions
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/labels.py sync
+      - name: Label issue or pull request
+        if: github.event_name == 'issues' || github.event_name == 'pull_request_target'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/labels.py event
+      - name: Reconcile existing issues, pull requests and discussions
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/labels.py sweep

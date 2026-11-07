@@ -22,7 +22,8 @@ def form_list(*templates):
 BROKEN_FORMS = form_list("bug_report", "not_working")
 ALL_FORMS = form_list(*FORMS)
 APK_SOURCES = ("[APKMirror](https://www.apkmirror.com/), [APKPure](https://apkpure.com/), "
-               "[Uptodown](https://www.uptodown.com/) or [APKCombo](https://apkcombo.com/)")
+               "[Uptodown](https://www.uptodown.com/), [APKCombo](https://apkcombo.com/) "
+               "or [APKCube](https://apkcube.com/)")
 STAR = f"A ⭐ on the [repo](https://github.com/{REPO}) helps more people find these patches."
 MISSING_HEADER = "This report is missing information:"
 MISSING_FOOTER = "Please edit the issue to add it. It closes automatically after 3 days without activity."
@@ -69,7 +70,7 @@ REPLIES = {
     "report-passes": lambda: updated("report"),
     "report-reopened": lambda: updated("report", ", and the issue is open again"),
     "update-passes": lambda: updated("request"),
-    "request-stale": lambda: ("This discussion is now closed because the missing details weren't added within 3 days. "
+    "request-stale": lambda: ("This discussion is now closed because the missing details weren't added within 1 day. "
                               "Feel free to open a new request with them."),
     "issue-stale": lambda: "This issue has had no activity for 30 days. It closes automatically in 7 days unless someone comments.",
     "issue-stale-closed": lambda: ("This issue is now closed after 37 days without activity. "

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.73.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.73.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;493 patches total
+> **[v1.74.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.74.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;493 patches total
 
 <table>
 <tr>
@@ -2993,7 +2993,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
-| <a id="viber-disable-ai-features"></a>[Disable AI features](patches/src/main/kotlin/app/morphe/patches/viber/layout/ai/DisableAiFeaturesPatch.kt) | Removes AI reply suggestions, chat summaries, image remix controls and the Your News banner. |  |
+| <a id="viber-disable-ai-features"></a>[Disable AI features](patches/src/main/kotlin/app/morphe/patches/viber/layout/ai/DisableAiFeaturesPatch.kt) | Removes AI and inline Translate. |  |
 | <a id="viber-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/viber/misc/analytics/DisableAnalyticsPatch.kt) | Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data. |  |
 | <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the optional Google Play update dialog. Required updates still show. |  |
 | <a id="viber-disappearing-media-privacy"></a>[Disappearing media privacy](patches/src/main/kotlin/app/morphe/patches/viber/layout/mediaprivacy/DisappearingMediaPrivacyPatch.kt) | Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat. |  |

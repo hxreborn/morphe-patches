@@ -199,7 +199,7 @@ body:
     attributes:
       label: APK source
       description: |
-        Link to the stock build. APKMirror, APKPure, Uptodown or APKCombo. Not apkmod, Softonic,
+        Link to the stock build. APKMirror, APKPure, Uptodown, APKCombo or APKCube. Not apkmod, Softonic,
         HappyMod or anything else that repackages APKs.
       placeholder: https://www.apkmirror.com/...
     validations:

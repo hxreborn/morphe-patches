@@ -3,6 +3,7 @@ name: Close stale issues and lock closed ones
 on:
   schedule:
     - cron: "0 6 * * *"
+    - cron: "0 * * * *"
   workflow_dispatch:
     inputs:
       dry-run:
@@ -16,6 +17,7 @@ permissions:
 
 jobs:
   requests:
+    if: github.event_name != 'schedule' || github.event.schedule == '0 * * * *'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -24,28 +26,35 @@ jobs:
           sparse-checkout: |
             .github/actions/triage/discussion.sh
             .github/actions/triage/replies.py
+            .github/actions/triage/discussion_timeouts.py
           sparse-checkout-cone-mode: false
       - env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
           DRY_RUN: ${{ inputs.dry-run || false }}
         shell: bash
         run: |
           discussion=.github/actions/triage/discussion.sh
-          cutoff=$(date -u -d '3 days ago' +%FT%TZ)
           python3 .github/actions/triage/replies.py request-stale > "$RUNNER_TEMP/comment.md"
-          bash -eo pipefail "$discussion" list app-requests |
-          jq -r --arg cutoff "$cutoff" '.[] | select(.state == "OPEN" and .updatedAt < $cutoff)
-            | select((.labels | map(.name)) as $l | ($l | index("needs info")) and ($l | index("bot-wrong") | not) and ($l | index("in progress") | not)) | .number' |
-          while read -r n; do
-            if [ "$DRY_RUN" = true ]; then echo "would close #$n"; continue; fi
-            bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/comment.md" >/dev/null
+          bash -eo pipefail "$discussion" list app-requests > "$RUNNER_TEMP/requests.json"
+          python3 .github/actions/triage/discussion_timeouts.py "$RUNNER_TEMP/requests.json" "$OWNER" |
+          while read -r row; do
+            n=$(jq -r .number <<< "$row")
+            reason=$(jq -r .reason <<< "$row")
+            if [ "$DRY_RUN" = true ]; then echo "would close #$n ($reason)"; continue; fi
+            if [ "$reason" = needs-info ]; then
+              bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/comment.md" >/dev/null
+            fi
             bash -eo pipefail "$discussion" close "$n" OUTDATED
             bash -eo pipefail "$discussion" lock "$n"
+            mapfile -t labels < <(jq -r --argjson n "$n" '.[] | select(.number == $n) | .labels[].name | select(. == "needs info" or . == "stale")' "$RUNNER_TEMP/requests.json")
+            [ "${#labels[@]}" -eq 0 ] || bash -eo pipefail "$discussion" remove-labels "$n" "${labels[@]}"
             echo "closed #$n"
           done
 
   stale:
+    if: github.event_name != 'schedule' || github.event.schedule == '0 6 * * *'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -71,7 +80,7 @@ jobs:
           days-before-pr-close: -1
           exempt-all-assignees: true
           exempt-all-milestones: true
-          exempt-issue-labels: "needs info,app-update,in pre-release"
+          exempt-issue-labels: "needs info,app-update,in pre-release,in progress,bot-wrong,no-stale,P0,P1,confirmed"
           operations-per-run: 30
       - uses: actions/stale@v11
         with:
@@ -85,10 +94,11 @@ jobs:
           days-before-pr-stale: -1
           days-before-pr-close: -1
           exempt-all-assignees: true
-          exempt-issue-labels: "bot-wrong,app-update,in pre-release"
+          exempt-issue-labels: "bot-wrong,app-update,in pre-release,in progress,no-stale,P0,P1,confirmed"
           operations-per-run: 30
 
   lock:
+    if: github.event_name != 'schedule' || github.event.schedule == '0 6 * * *'
     runs-on: ubuntu-latest
     steps:
       - env:
@@ -97,11 +107,9 @@ jobs:
           DRY_RUN: ${{ inputs.dry-run || false }}
         shell: bash
         run: |
-          gh label create discussion --repo "$REPO" --force --color C5DEF5 \
-            --description "Not locked after closing, comments welcome"
           cutoff=$(date -u -d '7 days ago' +%F)
           gh issue list --repo "$REPO" --state closed --limit 50 --json number \
-            --search "is:unlocked -label:discussion updated:<$cutoff" --jq '.[].number' |
+            --search "is:unlocked -label:no-stale updated:<$cutoff" --jq '.[].number' |
           while read -r n; do
             if [ "$DRY_RUN" = true ]; then echo "would lock #$n"; continue; fi
             gh issue lock "$n" --repo "$REPO" --reason resolved || { echo "::warning::Could not lock #$n"; continue; }

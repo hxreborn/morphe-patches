@@ -61,6 +61,9 @@ app_updates.sync_issues(apps, [{**record, "package": "cx", "candidate": "2.7.9"}
                                {**record, "package": "moviebox", "candidate": None, "status": "current"},
                                {**record, "package": "held", "candidate": "2.0"},
                                {**record, "package": "tagged", "candidate": "6.1_arm64"}], "1.38.0")
+label = json.loads(Path(".github/labels.json").read_text())["labels"]["app-update"]
+assert calls[0] == ("label", "create", "app-update", "--force", "--color", label["color"],
+                    "--description", label["description"]), calls[0]
 actions = [c[1:3] for c in calls if c[0] == "issue" and c[1] != "list"]
 assert actions == [("edit", "1"), ("edit", "2"), ("close", "4"), ("edit", "7"), ("create", "--title"), ("create", "--title")], actions
 assert ("issue", "edit", "2", "--title", "[App Update]: Showly 3.72.0") == next(c for c in calls if c[1:3] == ("edit", "2"))

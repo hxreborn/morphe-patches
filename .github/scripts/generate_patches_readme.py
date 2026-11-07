@@ -51,7 +51,7 @@ for patch in data["patches"]:
 
 
 def slug(text):
-    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", text.lower())).strip("-")
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
 PATCHES_SRC  = Path("patches/src/main/kotlin")

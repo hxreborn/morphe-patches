@@ -54,8 +54,9 @@ public final class PreviewPlaylist {
     }
 
     public static InputStream expand(String location, InputStream playlist) throws IOException {
+        playlist = FullHdPlaylist.expand(playlist);
         if (location == null || !location.contains(PREVIEW_PATH)) {
-            return FullHdPlaylist.expand(playlist);
+            return playlist;
         }
         byte[] original = Streams.readAll(playlist);
         String expanded;

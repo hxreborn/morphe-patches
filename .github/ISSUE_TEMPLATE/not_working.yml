@@ -435,12 +435,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.73.0"
+        - "1.74.0-dev.1"
+        - "1.73.1-dev.1"
         - "1.73.0-dev.3"
         - "1.73.0-dev.2"
         - "1.73.0-dev.1"
-        - "1.72.1-dev.1"
-        - "1.72.0-dev.3"
+        - "1.73.0"
         - "Older than these"
         # /generated
     validations:
@@ -456,6 +456,16 @@ body:
         - The patch has no visible effect
         - A patch is missing from the list in Manager
         - Something else the app used to do stopped working
+    validations:
+      required: true
+  - type: dropdown
+    id: worked-before
+    attributes:
+      label: Did this work before
+      options:
+        - Yes, with an older patches release on the same app version
+        - No, it has never worked for me
+        - I have not checked
     validations:
       required: true
   - type: dropdown
@@ -993,7 +1003,7 @@ body:
     attributes:
       label: APK source
       description: |
-        Link to the download if you have it. APKMirror, APKPure, Uptodown or APKCombo. Not
+        Link to the download if you have it. APKMirror, APKPure, Uptodown, APKCombo or APKCube. Not
         apkmod, Softonic, HappyMod or anything else that repackages APKs.
       placeholder: APKMirror, https://www.apkmirror.com/...
     validations:

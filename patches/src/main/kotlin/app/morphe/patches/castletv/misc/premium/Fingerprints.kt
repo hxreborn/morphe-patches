@@ -5,6 +5,26 @@
 package app.morphe.patches.castletv.misc.premium
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.StringComparisonType
+import app.morphe.patcher.string
+
+private val VIDEO_REQUEST_PARAMETERS = listOf(
+    "Ljava/lang/String;", "Ljava/lang/String;", "Ljava/lang/Long;", "Ljava/lang/Integer;",
+)
+
+internal object VideoBodyClassFingerprint : Fingerprint(
+    name = "toString",
+    filters = listOf(string("VideoBody(episodeId=", StringComparisonType.STARTS_WITH)),
+)
+
+internal object VideoBodyConstructorFingerprint : Fingerprint(
+    classFingerprint = VideoBodyClassFingerprint,
+    name = "<init>",
+    custom = { method, _ ->
+        method.parameterTypes.take(VIDEO_REQUEST_PARAMETERS.size) == VIDEO_REQUEST_PARAMETERS &&
+            method.parameterTypes.lastOrNull()?.startsWith("Ljava/") == true
+    },
+)
 
 internal object UserVipInfosFingerprint : Fingerprint(
     definingClass = "Lcom/gxgx/base/bean/User;",

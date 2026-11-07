@@ -26,6 +26,16 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: worked-before
+    attributes:
+      label: Did this work before
+      options:
+        - Yes, with an older patches release on the same app version
+        - No, it has never worked for me
+        - I have not checked
+    validations:
+      required: true
+  - type: dropdown
     id: app
     attributes:
       label: App and version
@@ -453,7 +463,7 @@ body:
     attributes:
       label: APK source
       description: |
-        Link to the download if you have it. APKMirror, APKPure, Uptodown or APKCombo. Not
+        Link to the download if you have it. APKMirror, APKPure, Uptodown, APKCombo or APKCube. Not
         apkmod, Softonic, HappyMod or anything else that repackages APKs.
       placeholder: APKPure, https://apkpure.com/...
     validations:
