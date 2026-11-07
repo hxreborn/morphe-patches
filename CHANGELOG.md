@@ -1,3 +1,12 @@
+## [1.74.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.74.0-dev.1...v1.74.0-dev.2) (2026-11-07)
+
+### New Features
+
+* **MARKS - Fix edge-to-edge:** keep controls clear of system bars ([ded85bc](https://github.com/hxreborn/morphe-patches/commit/ded85bca3629214014d6cc18202bdbd425c3d0c9))
+* **MARKS - GmsCore support:** sign in with Google ([0b4b528](https://github.com/hxreborn/morphe-patches/commit/0b4b5289cf98ac4a92830d5c22374b0a1d7258de))
+* **MARKS - Remove ads:** remove promotional messages ([122b7cc](https://github.com/hxreborn/morphe-patches/commit/122b7cc4e5afec7f1d93d3109a707ab860db0142))
+* **MARKS - Unlock premium:** unlock premium practice features ([db17c67](https://github.com/hxreborn/morphe-patches/commit/db17c6796d84fdc3772fb92f26fb4329ad93c376))
+
 ## [1.74.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.73.1-dev.1...v1.74.0-dev.1) (2026-11-07)
 
 ### Bug Fixes

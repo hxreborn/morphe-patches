@@ -201,6 +201,8 @@ body:
         - "Magic Earth (another version, type it below)"
         - "MangaTime 1.24.5"
         - "MangaTime (another version, type it below)"
+        - "MARKS 2.0.8"
+        - "MARKS (another version, type it below)"
         - "May: Beautiful Bullet Journal 1.0.216"
         - "May: Beautiful Bullet Journal (another version, type it below)"
         - "MBC Shahid 8.11.0"
@@ -435,11 +437,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.74.0-dev.2"
         - "1.74.0-dev.1"
         - "1.73.1-dev.1"
         - "1.73.0-dev.3"
         - "1.73.0-dev.2"
-        - "1.73.0-dev.1"
         - "1.73.0"
         - "Older than these"
         # /generated
@@ -712,6 +714,10 @@ body:
         - "Magic Earth \u00b7 Unlock premium"
         - "MangaTime \u00b7 GmsCore support"
         - "MangaTime \u00b7 Unlock premium"
+        - "MARKS \u00b7 Fix edge-to-edge"
+        - "MARKS \u00b7 GmsCore support"
+        - "MARKS \u00b7 Remove ads"
+        - "MARKS \u00b7 Unlock premium"
         - "May: Beautiful Bullet Journal \u00b7 Unlock premium"
         - "MBC Shahid \u00b7 Disable tracking"
         - "MBC Shahid \u00b7 Fix sign-in"
