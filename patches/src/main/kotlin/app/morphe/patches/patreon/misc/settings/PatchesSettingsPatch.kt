@@ -8,14 +8,19 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.shared.misc.fillPatchDetails
+import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -30,6 +35,7 @@ import org.w3c.dom.Element
 
 internal const val PATREON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/patreon/"
 private const val PATCHES_MENU_CLASS = "${PATREON_EXTENSION_PACKAGE}PatchesMenu;"
+private const val SETTINGS_STYLE_CLASS = "${PATREON_EXTENSION_PACKAGE}SettingsStyle;"
 private const val PATCHES_COMPONENT_FACTORY_CLASS = "${PATREON_EXTENSION_PACKAGE}PatchesComponentFactory;"
 private const val SETTINGS_ACTIVITY_CLASS = "app.hxreborn.extension.patreon.PatchesSettingsActivity"
 private const val SETTINGS_ROW_TITLE = "hxreborn patches"
@@ -50,8 +56,14 @@ private const val ROW_COMPOSER_PARAMETER = 6
 
 private val logger = Logger.getLogger("app.morphe.patches.patreon.misc.settings")
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
-    mutableClassDefBy(featureClass).methods.single { it.name == "isPatched" }.returnEarly(true)
+internal fun BytecodePatchContext.markFeaturePatched(
+    featureClass: String,
+    patch: BytecodePatch,
+    withDescription: Boolean = true,
+) {
+    returnTrueFrom(featureClass, "isPatched")
+    fillPatchDetails(featureClass, patch, "patchName", "patchDescription".takeIf { withDescription })
+}
 
 private fun MethodReference.isSettingsNavigationRow() =
     returnType == "V" && parameterTypes.map(CharSequence::toString).let { types ->
@@ -167,11 +179,25 @@ internal val patchesSettingsPatch = bytecodePatch {
         }
 
         try {
+            replaceSettingsStyleStubs()
             addPatchesSettingsRow()
         } catch (ex: PatchException) {
             logger.warning("Skipped the patches settings row: ${ex.message}")
         }
     }
+}
+
+private fun BytecodePatchContext.replaceSettingsStyleStubs() {
+    mutableClassDefBy(SETTINGS_STYLE_CLASS).replaceResourceIdStubs(
+        ResourceType.DRAWABLE,
+        mapOf(
+            "backIconDrawable" to "ic_arrow_back_black_24",
+            "switchThumbDrawable" to "mtrl_switch_thumb",
+            "switchTrackDrawable" to "mtrl_switch_track",
+            "switchTrackDecorationDrawable" to "mtrl_switch_track_decoration",
+            "switchCheckDrawable" to "ic_m3_chip_check",
+        ),
+    )
 }
 
 private object PatreonResources

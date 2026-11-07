@@ -32,7 +32,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "ae23b6062bfe3fea5e0372c58ee809e0ee3eb3b356350cfaa2734dd6742c15b9",
         ),
-        targets = listOf(AppTarget(version = "1.25.1", versionCode = 996, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.25.6", versionCode = 1037, minSdk = 26)),
     )
 
     val ALIEXPRESS = Compatibility(
@@ -79,6 +79,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "1.3.3", versionCode = 29, minSdk = 24),
             AppTarget(version = "1.3.4", versionCode = 30, minSdk = 24),
+            AppTarget(version = "1.3.5", versionCode = 31, minSdk = 24),
         ),
     )
 
@@ -134,7 +135,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "9028baa741e6a6b2833e33ccca4db8bf9b82340f6093642ef3f1d569c942ede4",
         ),
-        targets = listOf(AppTarget(version = "11.0.6", versionCode = 2017033171, minSdk = 24)),
+        targets = listOf(AppTarget(version = "11.0.7", versionCode = 2017033173, minSdk = 24)),
     )
 
     val ATLOMAPS = Compatibility(
@@ -163,6 +164,7 @@ internal object AppCompatibilities {
             AppTarget(version = "26.38.08", versionCode = 2090263808, minSdk = 28),
             AppTarget(version = "26.41.06", versionCode = 2090264106, minSdk = 28),
             AppTarget(version = "26.41.07", versionCode = 2090264107, minSdk = 28),
+            AppTarget(version = "26.43.17", versionCode = 2090264317, minSdk = 28),
         ),
     )
 
@@ -210,6 +212,16 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.0.01e", versionCode = 302400131, minSdk = 29)),
     )
 
+    val BEHISABI = Compatibility(
+        name = "BeHisabi",
+        packageName = "com.neonbhoot.behisabi",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf(
+            "57bdbb354fcd5a663e3a88de1f308eb086411d1b2be85af6c1be89be5eeeea0e",
+        ),
+        targets = listOf(AppTarget(version = "1.0.7", versionCode = 10, minSdk = 24)),
+    )
+
     val BEREAL = Compatibility(
         name = "BeReal",
         packageName = "com.bereal.ft",
@@ -232,7 +244,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "22c4c3a7776a3b54b9380a6021fa86cea27fd6844792ea6c579ba9ad0d2dbd71",
         ),
-        targets = listOf(AppTarget(version = "26.18", versionCode = 27058, minSdk = 26)),
+        targets = listOf(AppTarget(version = "26.19", versionCode = 27176, minSdk = 26)),
     )
 
     val BIOBIRD = Compatibility(
@@ -380,7 +392,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "828b91795e6ef35a08c2fafe039bec74beffa824bf063167bc30257b14c81127",
         ),
-        targets = listOf(AppTarget(version = "4.2.2", versionCode = 820, minSdk = 24)),
+        targets = listOf(AppTarget(version = "4.2.3", versionCode = 838, minSdk = 24)),
     )
 
     val CODDY = Compatibility(
@@ -447,7 +459,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "73ddcf1fcf184dd559d6239ea2de84c2a6f08d4224b78c4491dc921b5f11d54e",
         ),
-        targets = listOf(AppTarget(version = "1.0.21", versionCode = 59, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.0.34", versionCode = 74, minSdk = 24)),
     )
 
     val DESH_TELUGU_KEYBOARD = Compatibility(
@@ -458,7 +470,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "26728e842b7473b4c79b72324ee107ece06bce213520028c8973aeb2edb987af",
         ),
-        targets = listOf(AppTarget(version = "17.6.8", versionCode = 11768, minSdk = 23)),
+        targets = listOf(AppTarget(version = "17.7.1", versionCode = 11771, minSdk = 23)),
     )
 
     val DEVCHECK = Compatibility(
@@ -472,6 +484,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "6.57", versionCode = 657, minSdk = 24),
             AppTarget(version = "6.60", versionCode = 660, minSdk = 24),
+            AppTarget(version = "6.62", versionCode = 662, minSdk = 24),
         ),
     )
 
@@ -1553,7 +1566,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "a8434fb26c0ef24c8bffe4cca13ad81322adfb580854db3a7adf7ee783a60512",
         ),
-        targets = listOf(AppTarget(version = "1.0.3", versionCode = 34, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "1.0.3", versionCode = 34, minSdk = 24),
+            AppTarget(version = "1.0.5", versionCode = 38, minSdk = 24),
+        ),
     )
 
     val SYGIC = Compatibility(
@@ -1714,6 +1730,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "13.9.0", versionCode = 130900, minSdk = 27),
             AppTarget(version = "13.9.6", versionCode = 130906, minSdk = 26),
+            AppTarget(version = "13.9.18", versionCode = 130918, minSdk = 29),
         ),
     )
 
@@ -1809,7 +1826,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "54eff60e74a11da72c81ddf4001c548f66f316747e164310539256e965e3e429",
         ),
-        targets = listOf(AppTarget(version = "1.8.12", versionCode = 614, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "1.8.12", versionCode = 614, minSdk = 28),
+            AppTarget(version = "2.0.10", versionCode = 625, minSdk = 28),
+        ),
     )
 
     val YI_IOT = Compatibility(
@@ -1839,7 +1859,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b52d663c4612475b293ca0ec4ca84e00da9c77d55a28cc655ba2dd4bf33ae9fb",
         ),
-        targets = listOf(AppTarget(version = "1.168", versionCode = 168, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.171", versionCode = 171, minSdk = 24)),
     )
 
     val VPN_INDIA = Compatibility(
@@ -1850,7 +1870,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "efa80db96fc21e9c6345584d3fab947c4cde2838937463d6fdd402c9458898c0",
         ),
-        targets = listOf(AppTarget(version = "1.172", versionCode = 172, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.175", versionCode = 175, minSdk = 24)),
     )
 
     val GROUND_NEWS = Compatibility(

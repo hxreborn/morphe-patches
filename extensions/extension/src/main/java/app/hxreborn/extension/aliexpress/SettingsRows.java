@@ -121,6 +121,8 @@ final class SettingsRows {
         labels.addView(this.style.text(title, SettingsStyle.BODY_SP, this.style.primaryText, null));
         TextView details = this.style.text(description, SettingsStyle.BODY_SP, this.style.secondaryText, null);
         details.setPadding(0, this.style.dp(DESCRIPTION_TOP_PADDING_DP), 0, 0);
+        details.setSingleLine(false);
+        details.setEllipsize(null);
         details.setVisibility(View.GONE);
         labels.addView(details);
         row.addView(labels, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
@@ -132,11 +134,19 @@ final class SettingsRows {
         chevronParams.setMarginStart(this.style.dp(SWITCH_START_MARGIN_DP));
         row.addView(chevron, chevronParams);
         row.setBackground(this.style.ripple(0));
-        row.setOnClickListener((view) -> {
-            boolean expanding = details.getVisibility() == View.GONE;
-            details.setVisibility(expanding ? View.VISIBLE : View.GONE);
-            chevron.setRotation(expanding ? EXPANDED_CHEVRON_DEGREES : 0f);
-        });
+        boolean hasDescription = description != null && !description.isEmpty();
+        chevron.setVisibility(hasDescription ? View.VISIBLE : View.GONE);
+        row.setContentDescription(hasDescription ? title + ". Collapsed." : title);
+        labels.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        row.setFocusable(hasDescription);
+        if (hasDescription) {
+            row.setOnClickListener((view) -> {
+                boolean expanding = details.getVisibility() == View.GONE;
+                details.setVisibility(expanding ? View.VISIBLE : View.GONE);
+                chevron.setRotation(expanding ? EXPANDED_CHEVRON_DEGREES : 0f);
+                row.setContentDescription(expanding ? title + ". Expanded. " + description : title + ". Collapsed.");
+            });
+        }
         card.addView(row, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
     }

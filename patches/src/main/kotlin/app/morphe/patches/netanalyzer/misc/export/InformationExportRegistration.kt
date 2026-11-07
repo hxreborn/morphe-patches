@@ -9,6 +9,8 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.netanalyzer.shared.propertyFields
 import app.morphe.patches.netanalyzer.shared.registerAtLaunch
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -17,6 +19,7 @@ import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val INFORMATION_EXPORT_CLASS = "Lapp/hxreborn/extension/netanalyzer/InformationExport;"
+private const val EXTERNAL_IP_CLASS = "Lapp/hxreborn/extension/netanalyzer/ExternalIp;"
 private const val REGISTRATION_SEPARATOR = ";"
 private const val LIST_SEPARATOR = ","
 private const val CONNECTION_SLOT_FIELDS = 8
@@ -83,6 +86,23 @@ internal fun registerInformationExport() = with(context) {
     if (holderStores.any { it.definingClass != holder.classDef.type }) {
         throw PatchException("${holder.classDef.type} stores its external IP holders in ${holderStores.map { it.definingClass }}, expected itself")
     }
+
+    val flowType = holderStores.map { it.type }.distinct().singleOrNull()
+        ?: throw PatchException("The external IP holders have types ${holderStores.map { it.type }}, expected one")
+    val flowValue = classDefBy(flowType).methods.singleOrNull { method ->
+        !AccessFlags.STATIC.isSet(method.accessFlags) && method.parameterTypes.isEmpty() &&
+            method.returnType == "Ljava/lang/Object;"
+    } ?: throw PatchException("$flowType has no single parameterless method returning Object")
+    mutableClassDefBy(EXTERNAL_IP_CLASS).replaceStub(
+        "flowValue",
+        1,
+        """
+            check-cast p0, $flowType
+            invoke-virtual { p0 }, ${descriptor(flowValue)}
+            move-result-object p0
+            return-object p0
+        """,
+    )
 
     val registration = listOf(
         getters.joinToString(LIST_SEPARATOR) { it.name },

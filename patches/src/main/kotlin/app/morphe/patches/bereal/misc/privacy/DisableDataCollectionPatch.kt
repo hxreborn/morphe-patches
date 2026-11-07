@@ -6,6 +6,7 @@ package app.morphe.patches.bereal.misc.privacy
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
@@ -14,13 +15,13 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.asSequence
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
@@ -56,7 +57,7 @@ private val dataCollectionExtensionPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val disableDataCollectionPatch = bytecodePatch(
+val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
     name = "Disable data collection",
     description = "Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, Adjust " +
         "attribution and the Shake bug reporter.",
@@ -72,7 +73,7 @@ val disableDataCollectionPatch = bytecodePatch(
     )
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}DataCollection;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}DataCollection;", disableDataCollectionPatch)
 
         val start = ShakeStartCallFingerprint.matchSingle()
         start.method.removeInstruction(start.instructionMatches.single().index)

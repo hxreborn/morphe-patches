@@ -7,6 +7,7 @@ package app.morphe.patches.patreon.misc.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -31,7 +32,7 @@ private fun MutableMethod.skipWhenTrackingDisabled(returnInstructions: String) =
 )
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch: BytecodePatch = bytecodePatch(
     name = "Disable tracking",
     description = "Disables Amplitude, AppsFlyer, Sentry, Sift and Mux data collection.",
 ) {
@@ -41,7 +42,7 @@ val disableTrackingPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(TRACKING_CLASS)
+        markFeaturePatched(TRACKING_CLASS, disableTrackingPatch)
 
         AmplitudeLogEventFingerprint.method.skipWhenTrackingDisabled(
             """

@@ -6,16 +6,17 @@ package app.morphe.patches.protonmail.misc.scheduleddeletion
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
-import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.uniffiCallsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -46,7 +47,7 @@ private val scheduledDeletionStringsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val scheduledDeletionPatch = bytecodePatch(
+val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
     name = "Scheduled Trash and Spam deletion",
     description = "Deletes all messages in Trash and Spam on separate configurable schedules. " +
         "Deleted messages cannot be recovered.",
@@ -61,7 +62,7 @@ val scheduledDeletionPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("scheduledDeletion")
+        markPatchApplied("scheduledDeletion", scheduledDeletionPatch)
 
         AutoDeleteBannerTextFingerprint.matchSingle().let { match ->
             val bannerTextIndex = match.instructionMatches.single().index

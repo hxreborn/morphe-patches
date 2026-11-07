@@ -12,12 +12,20 @@ internal fun appOnCreate() = """
     new-instance v0, Lcom/vpn/lib/util/MotionEventGuard${'$'}LifecycleCallbacks;
     invoke-direct {v0}, Ljava/lang/Object;-><init>()V
     invoke-virtual {p0, v0}, Landroid/app/Application;->registerActivityLifecycleCallbacks(Landroid/app/Application${'$'}ActivityLifecycleCallbacks;)V
+    new-instance v0, Landroid/os/Handler;
+    invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
+    move-result-object v1
+    invoke-direct {v0, v1}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+    new-instance v1, Landroidx/room/b;
+    const/4 v2, 0x7
+    invoke-direct {v1, v2}, Landroidx/room/b;-><init>(I)V
+    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
     sget-object v0, Lcom/vpn/lib/analytics/FirebaseAnalyticsHelper;->a:Ljava/util/concurrent/atomic/AtomicReference;
     invoke-virtual {p0}, Landroid/content/Context;->getApplicationContext()Landroid/content/Context;
     move-result-object v1
     const/4 v2, 0x0
     invoke-virtual {v0, v2, v1}, Ljava/util/concurrent/atomic/AtomicReference;->compareAndSet(Ljava/lang/Object;Ljava/lang/Object;)Z
-    sput-object p0, $APP->F:$APP
+    sput-object p0, $APP->G:$APP
     new-instance v0, Lcom/vpn/lib/AppOpenManager;
     invoke-direct {v0, p0}, Lcom/vpn/lib/AppOpenManager;-><init>($APP)V
     iput-object v0, p0, $APP->d:Lcom/vpn/lib/AppOpenManager;
@@ -56,7 +64,7 @@ internal fun appOnCreate() = """
     move-result-object v0
     const-string v1, "config.db"
     invoke-virtual {v0, p0, v1}, Landroid/content/Context;->moveDatabaseFrom(Landroid/content/Context;Ljava/lang/String;)Z
-    invoke-static {}, Lcom/github/shadowsocks/Core;->i()V
+    invoke-static {}, Lcom/github/shadowsocks/Core;->j()V
     new-instance v0, Lcom/google/gson/internal/c;
     const/4 v1, 0x4
     invoke-direct {v0, p0, v1}, Lcom/google/gson/internal/c;-><init>(${APP}I)V

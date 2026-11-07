@@ -36,4 +36,12 @@ public final class TypingIndicator {
         return typing && !PatchSettings.DISABLE_TYPING_INDICATOR.get();
     }
 
+    public static String patchDescription() {
+        return null;
+    }
+
+    public static String patchName() {
+        return null;
+    }
+
 }

@@ -34,17 +34,17 @@ private val GUEST_SIGN_IN_SITES = listOf(
     ),
     BranchSite(
         name = "guest button availability check",
-        pattern = ("640340f900000094e10300aa6203409142d040f90000009400002037" +
+        pattern = ("640340f900000094e10300aa62034091420040f90000009400002037" +
             "a0835ff800002037e00316aa00000014").hexToByteArray(),
-        mask = ("ff03c0ff000000fcffffffffff03c0ffffffffff000000fc1f00f8ff" +
+        mask = ("ff03c0ff000000fcffffffffff03c0ffff03c0ff000000fc1f00f8ff" +
             "ffffffff1f00f8ffffffffff000000fc").hexToByteArray(),
         replacement = NOP,
     ),
     BranchSite(
         name = "guest captcha token check",
-        pattern = ("a0035ff801f040b821801c8b6203409142e044f90000009400002037" +
+        pattern = ("a0035ff801f040b821801c8b62034091420040f90000009400002037" +
             "a0035ff8013041b821801c8b00000094e10300aa").hexToByteArray(),
-        mask = ("ffffffffffffffffffffffffff03c0ffffffffff000000fc1f00f8ff" +
+        mask = ("ffffffffffffffffffffffffff03c0ffff03c0ff000000fc1f00f8ff" +
             "ffffffffffffffffffffffff000000fcffffffff").hexToByteArray(),
         replacement = BRANCH_OVER_TOKEN_CHECK,
     ),

@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -127,13 +126,13 @@ public final class PatchesSettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final int backgroundNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_NORM);
+        final int backgroundNormColor = PatchesTheme.backgroundNorm(this);
         this.screenBackgroundColor = (AmoledTheme.isEnabled() && PatchesTheme.isDark(backgroundNormColor)) ? Color.BLACK
                 : backgroundNormColor;
-        this.cardBackgroundColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.BACKGROUND_SECONDARY);
-        this.textNormColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_NORM);
-        this.textWeakColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.TEXT_WEAK);
-        this.iconDisabledColor = PatchesTheme.resolveColorAttribute(this, PatchesTheme.ICON_DISABLED);
+        this.cardBackgroundColor = PatchesTheme.backgroundSecondary(this);
+        this.textNormColor = PatchesTheme.textNorm(this);
+        this.textWeakColor = PatchesTheme.textWeak(this);
+        this.iconDisabledColor = PatchesTheme.iconDisabled(this);
 
         setContentView(buildScreen());
     }
@@ -188,15 +187,15 @@ public final class PatchesSettingsActivity extends Activity {
                     () -> ScheduledDeletionEditor.show(this, this::recreateContent)));
         }
         if (UpsellingVisibility.isPatched()) {
-            generalRows
-                .add(switchRow(AppliedPatches.HIDE_UPGRADE_PROMOTIONS, "Hides upgrade buttons, banners and offers.",
-                        UpsellingVisibility.isHidden(), new CheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(boolean hidden) {
-                                UpsellingVisibility.setHidden(hidden);
-                                confirmRestart();
-                            }
-                        }));
+            generalRows.add(switchRow(AppliedPatches.hideUpgradePromotionsName(),
+                    AppliedPatches.hideUpgradePromotionsDescription(), UpsellingVisibility.isHidden(),
+                    new CheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(boolean hidden) {
+                            UpsellingVisibility.setHidden(hidden);
+                            confirmRestart();
+                        }
+                    }));
         }
         addSection(column, "General", generalRows);
 
@@ -212,9 +211,9 @@ public final class PatchesSettingsActivity extends Activity {
                     LayoutComponents.ABOUT));
         }
         if (NavigationBarAutoHide.isPatched()) {
-            layoutRows.add(switchRow(AppliedPatches.HIDE_NAVIGATION_BAR_ON_SCROLL,
-                    "Hides the bottom navigation bar on scroll down and shows it on scroll up.",
-                    NavigationBarAutoHide.isEnabled(), new CheckedChangeListener() {
+            layoutRows.add(switchRow(AppliedPatches.hideNavigationBarOnScrollName(),
+                    AppliedPatches.hideNavigationBarOnScrollDescription(), NavigationBarAutoHide.isEnabled(),
+                    new CheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(boolean enabled) {
                             NavigationBarAutoHide.setEnabled(enabled);
@@ -240,23 +239,22 @@ public final class PatchesSettingsActivity extends Activity {
         final List<View> appearanceRows = new ArrayList<>();
         if (AccentColor.isPatched()) {
             appearanceRows
-                .add(row(AppliedPatches.ACCENT_COLOR, AccentColorDialog.getPresetLabel(AccentColor.getPreset()),
+                .add(row(AppliedPatches.accentColorName(), AccentColorDialog.getPresetLabel(AccentColor.getPreset()),
                         AccentColor.getAccentColor(isDarkTheme()), () -> AccentColorDialog.show(this, () -> {
                             recreateContent();
                             confirmRestart();
                         })));
         }
         if (AmoledTheme.isPatched()) {
-            appearanceRows
-                .add(switchRow(AppliedPatches.AMOLED_DARK_THEME, "Replaces the dark theme background with pure black.",
-                        AmoledTheme.isEnabled(), new CheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(boolean enabled) {
-                                AmoledTheme.setEnabled(enabled);
-                                recreateContent();
-                                confirmRestart();
-                            }
-                        }));
+            appearanceRows.add(switchRow(AppliedPatches.amoledDarkThemeName(),
+                    AppliedPatches.amoledDarkThemeDescription(), AmoledTheme.isEnabled(), new CheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(boolean enabled) {
+                            AmoledTheme.setEnabled(enabled);
+                            recreateContent();
+                            confirmRestart();
+                        }
+                    }));
             if (AmoledTheme.isEnabled()) {
                 appearanceRows.add(switchRow("Dim raised surfaces", "Dims bars, cards, buttons and sheets.",
                         AmoledTheme.isDimRaisedSurfacesEnabled(), new CheckedChangeListener() {
@@ -269,18 +267,19 @@ public final class PatchesSettingsActivity extends Activity {
             }
         }
         if (MaterialSwitches.isPatched()) {
-            appearanceRows.add(switchRow(AppliedPatches.MATERIAL_SWITCHES, "Adds check and close icons to switches.",
-                    MaterialSwitches.isEnabled(), new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean enabled) {
-                            MaterialSwitches.setEnabled(enabled);
-                            confirmRestart();
-                        }
-                    }));
+            appearanceRows
+                .add(switchRow(AppliedPatches.materialSwitchesName(), AppliedPatches.materialSwitchesDescription(),
+                        MaterialSwitches.isEnabled(), new CheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(boolean enabled) {
+                                MaterialSwitches.setEnabled(enabled);
+                                confirmRestart();
+                            }
+                        }));
         }
         if (LoadingIndicator.isPatched()) {
             appearanceRows
-                .add(switchRow(AppliedPatches.LOADING_INDICATOR, "Shows a shape-morphing pull to refresh indicator.",
+                .add(switchRow(AppliedPatches.loadingIndicatorName(), AppliedPatches.loadingIndicatorDescription(),
                         LoadingIndicator.isEnabled(), new CheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(boolean enabled) {
@@ -396,8 +395,7 @@ public final class PatchesSettingsActivity extends Activity {
                 dp(APP_BAR_VERTICAL_PADDING_DP));
 
         final ImageView back = new ImageView(this);
-        final Drawable arrow = PatchesTheme.getDrawableByName(this, "ic_proton_arrow_left");
-        back.setImageDrawable((arrow != null) ? arrow : PatchesTheme.getDrawableByName(this, "ic_arrow_back"));
+        back.setImageDrawable(PatchesTheme.drawable(this, PatchesTheme.backArrowDrawable()));
         back.setColorFilter(this.textNormColor);
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         back.setPadding(dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP), dp(BACK_ICON_INSET_DP));
@@ -485,7 +483,7 @@ public final class PatchesSettingsActivity extends Activity {
         }
 
         final ImageView chevron = new ImageView(this);
-        chevron.setImageDrawable(PatchesTheme.getDrawableByName(this, "ic_proton_chevron_right"));
+        chevron.setImageDrawable(PatchesTheme.drawable(this, PatchesTheme.chevronRightDrawable()));
         chevron.setColorFilter(this.iconDisabledColor);
         chevron.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         final LinearLayout.LayoutParams chevronParams = new LinearLayout.LayoutParams(dp(CHEVRON_SIZE_DP),

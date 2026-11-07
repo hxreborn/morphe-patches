@@ -5,6 +5,7 @@
 package app.morphe.patches.protonauthenticator.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
@@ -12,6 +13,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -28,7 +30,7 @@ private const val LOADING_INDICATOR_CONTAINER_CLASS =
     "Lapp/hxreborn/extension/protonauthenticator/LoadingIndicatorContainer;"
 
 @Suppress("unused")
-val loadingIndicatorPatch = bytecodePatch(
+val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
@@ -36,6 +38,7 @@ val loadingIndicatorPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
         drawPullRefreshAsLoadingIndicator(PullToRefreshContentFingerprint, ANDROID_VIEW_PARAMETERS) { producerType, producer, progress, _ ->
             val produce = classDefBy(producerType).methods.single { it.returnType == "F" && it.parameterTypes.isEmpty() }
             """

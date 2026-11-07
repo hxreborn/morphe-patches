@@ -28,11 +28,21 @@ dependencies {
     implementation(libs.morphe.patches.library)
     implementation(libs.pngj)
     testImplementation(kotlin("test"))
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
 }
 
 tasks {
     jar {
         exclude("ar/com/hjg/pngj/pixels/ImageLine*.class")
+        exclude(
+            "com/google/gson/**",
+            "META-INF/maven/com.google.code.gson/**",
+            "META-INF/proguard/gson.pro",
+            "app/morphe/util/PatchListGeneratorKt*.class",
+            "app/morphe/util/JsonPatch*.class",
+            "app/morphe/util/JsonCompatibility*.class",
+        )
         exclude("LICENSE.txt", "NOTICE.txt")
         from(rootProject.file("LICENSE"))
         from(rootProject.file("NOTICE"))
@@ -70,7 +80,7 @@ tasks {
     register<JavaExec>("generatePatchesList") {
         description = "Build patch with patch list"
 
-        dependsOn(build)
+        dependsOn("buildAndroid")
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set("app.morphe.util.PatchListGeneratorKt")

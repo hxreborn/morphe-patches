@@ -172,8 +172,9 @@ public final class PatchesMenuTest {
         Assert.assertNotNull(text(menu, "Applied patches"));
         Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_CUSTOMIZATIONS));
         Assert.assertNotNull(text(menu, AppliedPatches.UNLOCK_PREMIUM));
-        Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION).getVisibility());
-        Assert.assertEquals(View.GONE, text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION).getVisibility());
+        Assert.assertEquals(View.GONE,
+                text(appliedCard(menu), EveryPatchApplied.CUSTOMIZATIONS_DESCRIPTION).getVisibility());
+        Assert.assertEquals(View.GONE, text(appliedCard(menu), EveryPatchApplied.PREMIUM_DESCRIPTION).getVisibility());
     }
 
     @Test
@@ -181,7 +182,7 @@ public final class PatchesMenuTest {
         attachEntry();
         clickEntry();
         View menu = ShadowDialog.getLatestDialog().getWindow().getDecorView();
-        TextView details = text(menu, EveryPatchApplied.PREMIUM_DESCRIPTION);
+        TextView details = text(appliedCard(menu), EveryPatchApplied.PREMIUM_DESCRIPTION);
         View row = (View) details.getParent().getParent();
 
         row.performClick();
@@ -336,6 +337,12 @@ public final class PatchesMenuTest {
             }
         }
         return null;
+    }
+
+    private View appliedCard(View menu) {
+        View heading = text(menu, "Applied patches");
+        LinearLayout column = (LinearLayout) heading.getParent();
+        return column.getChildAt(column.indexOfChild(heading) + 1);
     }
 
 }

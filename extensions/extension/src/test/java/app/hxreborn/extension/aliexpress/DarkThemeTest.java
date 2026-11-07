@@ -52,7 +52,8 @@ import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.Q, manifest = Config.NONE, shadows = DarkThemeTest.AppliedTheme.class)
+@Config(sdk = Build.VERSION_CODES.Q, manifest = Config.NONE,
+        shadows = { DarkThemeTest.AppliedTheme.class, FakeTemplateNodes.class })
 public class DarkThemeTest {
 
     @Before
@@ -311,6 +312,16 @@ public class DarkThemeTest {
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static class AppliedTheme {
+
+        @Implementation
+        protected static boolean darkTheme() {
+            return true;
+        }
+
+        @Implementation
+        protected static String darkThemeName() {
+            return "Fix dark mode";
+        }
 
         @Implementation
         protected static String darkThemeDescription() {

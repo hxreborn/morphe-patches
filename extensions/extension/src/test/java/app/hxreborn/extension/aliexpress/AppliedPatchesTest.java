@@ -20,7 +20,10 @@
  */
 package app.hxreborn.extension.aliexpress;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,24 +40,111 @@ public class AppliedPatchesTest {
     private static final String ANALYTICS_DESCRIPTION = "Stops usage statistics and affiliate link reports.";
 
     @Test
-    public void listNothingBeforePatchesFillTheirDescriptions() {
-        Assert.assertTrue(AppliedPatches.names().isEmpty());
-    }
-
-    @Test
-    public void returnNoDescriptionForUnknownName() {
-        Assert.assertNull(AppliedPatches.description("Unknown patch"));
+    public void listNothingBeforePatchesAreApplied() {
+        Assert.assertTrue(AppliedPatches.applied().isEmpty());
     }
 
     @Test
     @Config(shadows = AppliedAnalytics.class)
-    public void listPatchWhoseDescriptionWasFilled() {
-        Assert.assertEquals(Collections.singletonList(AppliedPatches.DISABLE_ANALYTICS), AppliedPatches.names());
-        Assert.assertEquals(ANALYTICS_DESCRIPTION, AppliedPatches.description(AppliedPatches.DISABLE_ANALYTICS));
+    public void listOnlySelectedPatch() {
+        Assert.assertEquals(Collections.singletonList("Disable analytics"), names());
+        Assert.assertEquals(ANALYTICS_DESCRIPTION, AppliedPatches.applied().get(0).description);
+    }
+
+    @Test
+    @Config(shadows = MixedCaseTitles.class)
+    public void orderAppliedPatchesByTitleIgnoringCase() {
+        Assert.assertEquals(Arrays.asList("Alpha analytics", "beta splash", "Gamma sponsored", "zeta updates"),
+                names());
+    }
+
+    @Test
+    @Config(shadows = AppliedWithoutDescription.class)
+    public void keepSelectedPatchWhenDescriptionIsMissing() {
+        Assert.assertEquals(Collections.singletonList("Renamed feature"), names());
+        Assert.assertNull(AppliedPatches.applied().get(0).description);
+    }
+
+    private static List<String> names() {
+        List<String> names = new ArrayList<>();
+        for (AppliedPatches.AppliedPatch patch : AppliedPatches.applied()) {
+            names.add(patch.name);
+        }
+        return names;
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class MixedCaseTitles {
+
+        @Implementation
+        protected static boolean disableAnalytics() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableAnalyticsName() {
+            return "Alpha analytics";
+        }
+
+        @Implementation
+        protected static boolean skipSplashPromotions() {
+            return true;
+        }
+
+        @Implementation
+        protected static String skipSplashPromotionsName() {
+            return "beta splash";
+        }
+
+        @Implementation
+        protected static boolean removeSponsoredItems() {
+            return true;
+        }
+
+        @Implementation
+        protected static String removeSponsoredItemsName() {
+            return "Gamma sponsored";
+        }
+
+        @Implementation
+        protected static boolean disableUpdatePrompts() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableUpdatePromptsName() {
+            return "zeta updates";
+        }
+
+    }
+
+    @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    public static final class AppliedWithoutDescription {
+
+        @Implementation
+        protected static boolean disableAnalytics() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableAnalyticsName() {
+            return "Renamed feature";
+        }
+
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
     public static class AppliedAnalytics {
+
+        @Implementation
+        protected static boolean disableAnalytics() {
+            return true;
+        }
+
+        @Implementation
+        protected static String disableAnalyticsName() {
+            return "Disable analytics";
+        }
 
         @Implementation
         protected static String disableAnalyticsDescription() {

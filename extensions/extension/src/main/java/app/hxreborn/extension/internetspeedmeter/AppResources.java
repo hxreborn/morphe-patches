@@ -38,22 +38,6 @@ final class AppResources {
         return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    static int id(Context context, String type, String name) {
-        int id = context.getResources().getIdentifier(name, type, context.getPackageName());
-        if (id == 0) {
-            throw new IllegalStateException("No " + type + "/" + name + " in " + context.getPackageName());
-        }
-        return id;
-    }
-
-    static String string(Context context, String name) {
-        return context.getString(id(context, "string", name));
-    }
-
-    static String[] array(Context context, String name) {
-        return context.getResources().getStringArray(id(context, "array", name));
-    }
-
     static float[] headerHsv(SharedPreferences preferences) {
         return new float[] { preferences.getFloat("global_hue", 215f), preferences.getFloat("header_saturation", 0.7f),
                 preferences.getFloat("header_value", 0.93f) };

@@ -15,12 +15,12 @@ import com.android.tools.smali.dexlib2.iface.instruction.SwitchPayload
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
-private const val SPLASH_CALLBACKS = "Lcom/vpn/lib/feature/splash/d;"
-private const val SPLASH_FUNCTIONS = "Lcom/vpn/lib/feature/splash/b;"
-private const val NAVIGATION_CLICKS = "Lcom/vpn/lib/feature/naviagation/e;"
-private const val NAVIGATION_CALLBACKS = "Lcom/vpn/lib/feature/naviagation/c;"
-private const val NAVIGATION_FOCUS = "Lcom/vpn/lib/feature/naviagation/d;"
-private const val NAVIGATION_RUNNABLES = "Lcom/vpn/lib/feature/naviagation/a;"
+private const val SPLASH_CALLBACKS = "Lcom/vpn/lib/feature/splash/f;"
+private const val SPLASH_FUNCTIONS = "Lcom/vpn/lib/feature/splash/c;"
+private const val NAVIGATION_CLICKS = "Lcom/vpn/lib/feature/naviagation/f;"
+private const val NAVIGATION_CALLBACKS = "Lcom/vpn/lib/feature/naviagation/d;"
+private const val NAVIGATION_FOCUS = "Lcom/vpn/lib/feature/naviagation/e;"
+private const val NAVIGATION_RUNNABLES = "Lcom/vpn/lib/feature/naviagation/b;"
 private const val RX_ERROR_HANDLERS = "Lcom/google/gson/internal/c;"
 private const val NAVIGATION_PRESENTER = "Lcom/vpn/lib/feature/naviagation/NavigationPresenter;"
 private const val EMERGENCY_MODE = "Lcom/vpn/lib/troubleshooting/EmergencyMode;"
@@ -37,7 +37,7 @@ private class MergedLambdaBinding(val type: String, val method: String, val sele
 
 private val MERGED_LAMBDA_BINDINGS = listOf(
     MergedLambdaBinding(RX_ERROR_HANDLERS, "accept(Ljava/lang/Object;)V", 4, "$APP->l(Ljava/lang/Throwable;)V"),
-    MergedLambdaBinding(RX_ERROR_HANDLERS, "accept(Ljava/lang/Object;)V", 5, "$SPLASH->J:I"),
+    MergedLambdaBinding(RX_ERROR_HANDLERS, "accept(Ljava/lang/Object;)V", 5, "$SPLASH->P:I"),
     MergedLambdaBinding(
         "Lcom/google/firebase/firestore/pipeline/evaluation/d;",
         "invoke(Ljava/lang/Object;)Ljava/lang/Object;",
@@ -48,13 +48,13 @@ private val MERGED_LAMBDA_BINDINGS = listOf(
         SPLASH_CALLBACKS,
         "a(Ljava/lang/String;Ljava/lang/Throwable;)V",
         1,
-        "$SPLASH->j1(${PREPARING_STEPS}Ljava/lang/Throwable;)V",
+        "$SPLASH->k1(${PREPARING_STEPS}Ljava/lang/Throwable;)V",
     ),
     MergedLambdaBinding(
         SPLASH_CALLBACKS,
         "onFailure(Ljava/lang/Throwable;)V",
         2,
-        "$SPLASH->j1(${PREPARING_STEPS}Ljava/lang/Throwable;)V",
+        "$SPLASH->k1(${PREPARING_STEPS}Ljava/lang/Throwable;)V",
     ),
     MergedLambdaBinding(
         SPLASH_CALLBACKS,
@@ -64,14 +64,15 @@ private val MERGED_LAMBDA_BINDINGS = listOf(
     ),
     MergedLambdaBinding(SPLASH_CALLBACKS, "c(Lcom/vpn/lib/troubleshooting/EmergencyMode\$State;)V", 4, "$SPLASH->d1()V"),
     MergedLambdaBinding(SPLASH_CALLBACKS, ON_ACTIVITY_RESULT, 5, "$EMERGENCY_MODE->d(Z)V"),
-    MergedLambdaBinding(SPLASH_FUNCTIONS, "invoke()Ljava/lang/Object;", 0, "$SPLASH->p1(I)V"),
+    MergedLambdaBinding(SPLASH_FUNCTIONS, "invoke()Ljava/lang/Object;", 0, "$SPLASH->q1(I)V"),
     MergedLambdaBinding(
         SPLASH_FUNCTIONS,
         "invoke()Ljava/lang/Object;",
         1,
         "Lcom/services/RemoteConfigHelper;->a(Landroid/app/Activity;)V",
     ),
-    MergedLambdaBinding("Lcom/vpn/lib/feature/splash/k;", RUN, 2, "$SPLASH->k1()V"),
+    MergedLambdaBinding("Lcom/vpn/lib/feature/splash/b;", RUN, 4, "$SPLASH->l1()V"),
+    MergedLambdaBinding("Landroidx/room/b;", RUN, 7, "Landroid/os/Looper;->loop()V"),
     MergedLambdaBinding(NAVIGATION_CLICKS, ON_CLICK, 0, "$DRAWER_LAYOUT->q()V"),
     MergedLambdaBinding(NAVIGATION_CLICKS, ON_CLICK, 2, "$NAVIGATION_PRESENTER->e()V"),
     MergedLambdaBinding(NAVIGATION_CLICKS, ON_CLICK, 3, "$NAVIGATION_PRESENTER->j()V"),

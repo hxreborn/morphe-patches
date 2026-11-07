@@ -10,6 +10,7 @@
  */
 package app.morphe.patches.protonvpn.misc.customdns
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonvpn.misc.restrictions.unlockUserSetting
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -17,7 +18,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
-val unlockCustomDnsPatch = bytecodePatch(
+val unlockCustomDnsPatch: BytecodePatch = bytecodePatch(
     name = "Unlock custom DNS",
     description = "Unlocks custom DNS on free plans.",
 ) {
@@ -25,7 +26,7 @@ val unlockCustomDnsPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockCustomDns")
+        markPatchApplied("unlockCustomDns", unlockCustomDnsPatch)
         unlockUserSetting(
             CustomDnsViewStateFingerprint,
             customDnsRestrictionFingerprint(),

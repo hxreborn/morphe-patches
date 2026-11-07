@@ -30,4 +30,12 @@ public final class DataCollection {
         return false;
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

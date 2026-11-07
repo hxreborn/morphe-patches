@@ -7,6 +7,7 @@ package app.morphe.patches.bereal.misc.download
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.resource.ResourceType
@@ -17,9 +18,9 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -33,7 +34,7 @@ private const val DOWNLOAD_ENABLED = "${BEREAL_EXTENSION_PACKAGE}download/Friend
 private const val LAST_FOUR_BIT_REGISTER = 15
 
 @Suppress("unused")
-val saveFriendsBeRealsPatch = bytecodePatch(
+val saveFriendsBeRealsPatch: BytecodePatch = bytecodePatch(
     name = "Save friends' BeReals",
     description = "Adds Download to the 3-dot menu of friends' BeReals in the feed and on the RealMoji screen.",
 ) {
@@ -41,7 +42,7 @@ val saveFriendsBeRealsPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}download/FriendsPostDownload;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}download/FriendsPostDownload;", saveFriendsBeRealsPatch)
 
         val feedMenu = FeedPostMenuFingerprint.matchSingle()
         val method = feedMenu.method

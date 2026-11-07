@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.protonpass.misc.theme
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -11,6 +12,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
 import app.morphe.patches.shared.misc.proton.amoledBackgroundOverlayPatch
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.util.findElementByAttributeValueOrThrow
 
@@ -43,7 +45,7 @@ private val amoledSplashBackgroundPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
@@ -51,6 +53,7 @@ val amoledThemePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, amoledSplashBackgroundPatch, amoledBackgroundOverlayPatch)
 
     execute {
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
 

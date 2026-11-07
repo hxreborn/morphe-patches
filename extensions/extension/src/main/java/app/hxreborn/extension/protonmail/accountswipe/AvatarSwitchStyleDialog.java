@@ -126,10 +126,10 @@ public final class AvatarSwitchStyleDialog {
         Chooser(Activity activity, Runnable onChanged) {
             this.activity = activity;
             this.onChanged = onChanged;
-            this.surfaceColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY);
-            this.previewColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_NORM);
-            this.textNormColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM);
-            this.textWeakColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
+            this.surfaceColor = PatchesTheme.backgroundSecondary(activity);
+            this.previewColor = PatchesTheme.backgroundNorm(activity);
+            this.textNormColor = PatchesTheme.textNorm(activity);
+            this.textWeakColor = PatchesTheme.textWeak(activity);
             this.accentColor = AccentColor.getAccentColor(PatchesTheme.isDark(this.surfaceColor));
         }
 

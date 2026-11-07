@@ -5,6 +5,7 @@
 package app.morphe.patches.vllo.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getReference
@@ -20,7 +21,9 @@ import org.w3c.dom.Element
 
 private val hideStoreButtonPatch = resourcePatch {
     execute {
-        listOf("res/layout/controller_main_v6.xml", "res/layout-land/controller_main_v6.xml").forEach { layout ->
+        val layouts = listDecodableFiles("res/layout*/controller_main_v6.xml")
+        check(layouts.isNotEmpty()) { "No main-screen layout found" }
+        layouts.forEach { layout ->
             document(layout).use { document ->
                 val images = document.getElementsByTagName("ImageView")
                 (0 until images.length)
@@ -33,7 +36,7 @@ private val hideStoreButtonPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks premium editing features, removes ads and the export watermark, and skips " +
         "the ad before importing audio. Hides the store button. The AI tools are not included.",
@@ -45,9 +48,8 @@ val unlockPremiumPatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        val allFeatures = EntitlementEnumFingerprint.matchSingle()
-            .instructionMatches.first().getInstruction<ReferenceInstruction>()
-            .getReference<FieldReference>()!!
+        val (allFeaturesWrite) = EntitlementEnumFingerprint.matchSingle().instructionMatches
+        val allFeatures = allFeaturesWrite.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
 
         premiumEntitlementCheckFingerprint(allFeatures.definingClass, allFeatures.name)
             .matchSingle().method.returnEarly(true)

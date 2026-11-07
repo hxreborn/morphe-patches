@@ -85,6 +85,10 @@ public final class PatchSettings {
         return isFeatureEnabled(AppliedPatches.skipSplashPromotions(), AppliedPatches.SKIP_SPLASH_PROMOTIONS);
     }
 
+    public static boolean skipSplashRequested(boolean requested) {
+        return requested || skipSplashPromotions();
+    }
+
     public static boolean darkTheme() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && AppliedPatches.darkTheme();
     }

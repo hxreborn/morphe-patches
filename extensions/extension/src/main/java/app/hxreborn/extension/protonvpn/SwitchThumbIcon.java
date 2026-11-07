@@ -36,8 +36,6 @@ public final class SwitchThumbIcon {
 
     private static final int TINT_FROM_CONTENT_COLOR = 0x8;
 
-    private static final String THUMB_COLOR_ATTRIBUTE = "proton_text_inverted";
-
     private static boolean checked;
 
     private static long tint;
@@ -66,6 +64,10 @@ public final class SwitchThumbIcon {
         return uncheckedContent;
     }
 
+    static int thumbColorAttribute() {
+        return 0;
+    }
+
     public static long checkedThumbColor(long original) {
         final Context context = Utils.getContext();
         if (context == null || !MaterialSwitches.isEnabled()) {
@@ -73,10 +75,8 @@ public final class SwitchThumbIcon {
         }
 
         final Context themed = PatchesTheme.withApplicationTheme(context);
-        final int attribute = themed.getResources()
-            .getIdentifier(THUMB_COLOR_ATTRIBUTE, "attr", themed.getPackageName());
         final TypedValue value = new TypedValue();
-        if (attribute == 0 || !themed.getTheme().resolveAttribute(attribute, value, true)) {
+        if (!themed.getTheme().resolveAttribute(thumbColorAttribute(), value, true)) {
             return original;
         }
         final int argb = (value.resourceId != 0) ? themed.getColor(value.resourceId) : value.data;

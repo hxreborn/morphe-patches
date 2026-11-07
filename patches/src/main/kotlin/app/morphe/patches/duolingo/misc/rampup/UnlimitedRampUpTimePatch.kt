@@ -11,6 +11,7 @@
 package app.morphe.patches.duolingo.misc.rampup
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.duolingo.misc.settings.PATCH_SETTINGS_CLASS
 import app.morphe.patches.duolingo.misc.settings.markPatchApplied
@@ -19,7 +20,7 @@ import app.morphe.patches.duolingo.shared.integrity.disableLoginIntegrityPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlimitedRampUpTimePatch = bytecodePatch(
+val unlimitedRampUpTimePatch: BytecodePatch = bytecodePatch(
     name = "Unlimited RampUp time",
     description = "Holds the RampUp timer at one hour.",
     default = false,
@@ -29,7 +30,7 @@ val unlimitedRampUpTimePatch = bytecodePatch(
     dependsOn(disableLoginIntegrityPatch, patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlimitedRampUpTime")
+        markPatchApplied("unlimitedRampUpTime", unlimitedRampUpTimePatch)
 
         rampupTimerStateConstructorFingerprints.forEach {
             it.method.addInstructions(

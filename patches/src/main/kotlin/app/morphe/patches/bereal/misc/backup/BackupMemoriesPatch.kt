@@ -5,14 +5,15 @@
 package app.morphe.patches.bereal.misc.backup
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
-import app.morphe.util.setExtensionIsPatchIncluded
 import org.w3c.dom.Element
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}backup/MemoriesBackup;"
@@ -54,7 +55,7 @@ private val addBackupServicePatch = resourcePatch {
 }
 
 @Suppress("unused")
-val backupMemoriesPatch = bytecodePatch(
+val backupMemoriesPatch: BytecodePatch = bytecodePatch(
     name = "Back up memories",
     description = "Adds Back up memories to hxreborn patches. Saves every memory as separate back and front " +
         "photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' " +
@@ -64,7 +65,7 @@ val backupMemoriesPatch = bytecodePatch(
     dependsOn(settingsPatch, addBackupServicePatch)
 
     execute {
-        setExtensionIsPatchIncluded(EXTENSION_CLASS)
+        markFeaturePatched(EXTENSION_CLASS, backupMemoriesPatch)
 
         RetrofitCreateFingerprint.matchSingle().method.addInstructions(
             0,

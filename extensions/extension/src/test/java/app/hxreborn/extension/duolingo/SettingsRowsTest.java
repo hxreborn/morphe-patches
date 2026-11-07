@@ -34,9 +34,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = FakeHostResources.class)
 public final class SettingsRowsTest {
 
     private static final String KEY = AppliedPatches.UNLOCK_PREMIUM;
@@ -52,7 +54,7 @@ public final class SettingsRowsTest {
     }
 
     private View addSwitchRow(LinearLayout card) {
-        this.rows.switchRow(card, "hx_duolingo_ic_premium", KEY, "Unlocks Super and keeps energy full.",
+        this.rows.switchRow(card, "hx_duolingo_ic_premium", KEY, KEY, "Unlocks Super and keeps energy full.",
                 () -> this.changes++);
         return card.getChildAt(card.getChildCount() - 1);
     }

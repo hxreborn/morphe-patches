@@ -63,15 +63,14 @@ public final class PatchesDialog {
         final LinearLayout contentLayout = new LinearLayout(activity);
         contentLayout.setOrientation(LinearLayout.VERTICAL);
         contentLayout.setBackground(PatchesTheme.createRoundedRectangle(activity,
-                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY), BACKGROUND_RADIUS_DP));
+                PatchesTheme.backgroundSecondary(activity), BACKGROUND_RADIUS_DP));
         contentLayout.setPadding(dp(activity, PADDING_DP), dp(activity, PADDING_DP), dp(activity, PADDING_DP),
                 dp(activity, BOTTOM_PADDING_DP));
         return contentLayout;
     }
 
     public static TextView createTitle(Activity activity, String titleText) {
-        return createTextView(activity, titleText, TITLE_SP,
-                PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
+        return createTextView(activity, titleText, TITLE_SP, PatchesTheme.textNorm(activity));
     }
 
     public static TextView createTextView(Activity activity, String value, int sizeSp, int color) {
@@ -120,7 +119,7 @@ public final class PatchesDialog {
             return;
         }
 
-        final int textWeakColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
+        final int textWeakColor = PatchesTheme.textWeak(activity);
         final LinearLayout contentLayout = createContentLayout(activity);
         contentLayout.addView(createTitle(activity, titleText));
 
@@ -137,8 +136,7 @@ public final class PatchesDialog {
                 () -> dialog.dismiss()));
         actions.addView(configureActionButton(activity,
                 createTextView(activity, confirmLabel, LABEL_SP,
-                        AccentColor.getAccentColor(PatchesTheme
-                            .isDark(PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY)))),
+                        AccentColor.getAccentColor(PatchesTheme.isDark(PatchesTheme.backgroundSecondary(activity)))),
                 () -> {
                     dialog.dismiss();
                     onConfirm.run();

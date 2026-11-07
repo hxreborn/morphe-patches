@@ -37,23 +37,31 @@ final class HostFonts {
     final Typeface semibold;
 
     HostFonts(Context context) {
-        this.regular = load(context, "inter_regular", Typeface.DEFAULT);
-        this.medium = load(context, "inter_medium", Typeface.DEFAULT);
-        this.semibold = load(context, "inter_semibold", Typeface.DEFAULT_BOLD);
+        this.regular = load(context, interRegular(), Typeface.DEFAULT);
+        this.medium = load(context, interMedium(), Typeface.DEFAULT);
+        this.semibold = load(context, interSemibold(), Typeface.DEFAULT_BOLD);
     }
 
-    private static Typeface load(Context context, String name, Typeface fallback) {
+    static int interRegular() {
+        return 0;
+    }
+
+    static int interMedium() {
+        return 0;
+    }
+
+    static int interSemibold() {
+        return 0;
+    }
+
+    private static Typeface load(Context context, int id, Typeface fallback) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return fallback;
-        }
-        final int id = context.getResources().getIdentifier(name, "font", context.getPackageName());
-        if (id == 0) {
             return fallback;
         }
         try {
             return context.getResources().getFont(id);
         } catch (Resources.NotFoundException ex) {
-            Log.e(TAG, "Host font not loaded: " + name, ex);
+            Log.e(TAG, "Host font not loaded: " + id, ex);
             return fallback;
         }
     }

@@ -39,6 +39,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.BuildConfig;
+import app.hxreborn.extension.terabox.AppliedPatches.AppliedPatch;
 
 final class PatchesSettingsDialog {
 
@@ -105,7 +106,7 @@ final class PatchesSettingsDialog {
         bar.setPadding(this.style.dp(APP_BAR_START_PADDING_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0);
         bar.setMinimumHeight(this.style.dp(APP_BAR_HEIGHT_DP));
         ImageView back = new ImageView(this.activity);
-        back.setImageDrawable(this.style.hostIcon("ic_arrow_back_black_24", this.style.primaryText));
+        back.setImageDrawable(this.style.backIcon(this.style.primaryText));
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         int inset = this.style.dp(BACK_ICON_INSET_DP);
         back.setPadding(inset, inset, inset, inset);
@@ -133,22 +134,27 @@ final class PatchesSettingsDialog {
         int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
         column.setPadding(inset, 0, inset, this.style.dp(CONTENT_BOTTOM_PADDING_DP));
         LinearLayout home = this.rows.card();
-        addSwitch(home, AppliedPatches.hideHomeShortcuts(), AppliedPatches.HIDE_HOME_SHORTCUTS,
-                "Removes Trending and Short Drama.", "hx_terabox_ic_shortcuts", true);
-        addSwitch(home, AppliedPatches.removeRecentPanel(), AppliedPatches.REMOVE_RECENT_PANEL,
-                "Removes Recent, Starred and Offline.", "hx_terabox_ic_recent", false);
+        addSwitch(home, AppliedPatches.hideHomeShortcuts(), AppliedPatches.hideHomeShortcutsName(),
+                AppliedPatches.HIDE_HOME_SHORTCUTS, AppliedPatches.hideHomeShortcutsDescription(),
+                "hx_terabox_ic_shortcuts", true);
+        addSwitch(home, AppliedPatches.removeRecentPanel(), AppliedPatches.removeRecentPanelName(),
+                AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.removeRecentPanelDescription(),
+                "hx_terabox_ic_recent", false);
         addSection(column, "Home", home);
         LinearLayout videos = this.rows.card();
-        addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS,
-                "Removes the Recommendations grid.", "hx_terabox_ic_video", false);
-        addSwitch(videos, AppliedPatches.unlockPremium(), AppliedPatches.UNLOCK_PREMIUM,
-                "Unlocks HD, 3x speed and uploads.", "hx_terabox_ic_premium", false);
+        addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.hideVideoRecommendationsName(),
+                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.hideVideoRecommendationsDescription(),
+                "hx_terabox_ic_video", false);
+        addSwitch(videos, AppliedPatches.unlockPremium(), AppliedPatches.unlockPremiumName(),
+                AppliedPatches.UNLOCK_PREMIUM, AppliedPatches.unlockPremiumDescription(), "hx_terabox_ic_premium",
+                false);
         addSection(column, "Videos", videos);
         LinearLayout ads = this.rows.card();
-        addSwitch(ads, AppliedPatches.hideAds(), AppliedPatches.HIDE_ADS, "Removes feed, banner and video ads.",
-                "hx_terabox_ic_ads", false);
-        addSwitch(ads, AppliedPatches.hidePromotions(), AppliedPatches.HIDE_PROMOTIONS,
-                "Removes Premium and sale offers.", "hx_terabox_ic_promotions", false);
+        addSwitch(ads, AppliedPatches.hideAds(), AppliedPatches.hideAdsName(), AppliedPatches.HIDE_ADS,
+                AppliedPatches.hideAdsDescription(), "hx_terabox_ic_ads", false);
+        addSwitch(ads, AppliedPatches.hidePromotions(), AppliedPatches.hidePromotionsName(),
+                AppliedPatches.HIDE_PROMOTIONS, AppliedPatches.hidePromotionsDescription(), "hx_terabox_ic_promotions",
+                false);
         addSection(column, "Ads", ads);
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, "hx_terabox_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
@@ -156,19 +162,19 @@ final class PatchesSettingsDialog {
         this.rows.valueRow(about, "hx_terabox_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         LinearLayout applied = this.rows.card();
-        for (String name : AppliedPatches.names()) {
-            this.rows.expandableRow(applied, name, AppliedPatches.description(name));
+        for (AppliedPatch patch : AppliedPatches.applied()) {
+            this.rows.expandableRow(applied, patch.name, patch.description);
         }
         addSection(column, "Applied patches", applied);
         return column;
     }
 
-    private void addSwitch(LinearLayout card, boolean applied, String key, String description, String icon,
-            boolean restartRequired) {
+    private void addSwitch(LinearLayout card, boolean applied, String title, String key, String description,
+            String icon, boolean restartRequired) {
         if (!applied) {
             return;
         }
-        this.rows.switchRow(card, icon, key, description, PatchSettings.isEnabled(key), (button, enabled) -> {
+        this.rows.switchRow(card, icon, title, description, PatchSettings.isEnabled(key), (button, enabled) -> {
             PatchSettings.setEnabled(key, enabled);
             if (restartRequired) {
                 confirmRestart();

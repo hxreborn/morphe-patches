@@ -6,6 +6,7 @@ package app.morphe.patches.patreon.layout.promotions
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.misc.featureflags.featureFlagsPatch
@@ -17,7 +18,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val UPGRADE_PROMOTIONS_CLASS = "${PATREON_EXTENSION_PACKAGE}UpgradePromotions;"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = bytecodePatch(
+val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide upgrade promotions",
     description = "Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey.",
 ) {
@@ -27,7 +28,7 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(UPGRADE_PROMOTIONS_CLASS)
+        markFeaturePatched(UPGRADE_PROMOTIONS_CLASS, hideUpgradePromotionsPatch)
 
         FeedBannerCardFingerprint.method.apply {
             addInstructionsWithLabels(

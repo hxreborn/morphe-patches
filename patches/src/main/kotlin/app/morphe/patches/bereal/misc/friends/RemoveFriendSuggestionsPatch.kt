@@ -7,6 +7,7 @@ package app.morphe.patches.bereal.misc.friends
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -15,10 +16,10 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.returnEarlyWhen
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -43,7 +44,7 @@ private fun MutableMethod.filterRegisterAfter(index: Int, body: (register: Int, 
 }
 
 @Suppress("unused")
-val removeFriendSuggestionsPatch = bytecodePatch(
+val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
     name = "Remove friend suggestions",
     description = "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and the feed.",
 ) {
@@ -51,7 +52,7 @@ val removeFriendSuggestionsPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded(EXTENSION_CLASS)
+        markFeaturePatched(EXTENSION_CLASS, removeFriendSuggestionsPatch)
 
         val recommendationType = FriendRecommendationToStringFingerprint.matchSingle().classDef.type
         friendRecommendationMapperFingerprint(recommendationType).matchSingle().method

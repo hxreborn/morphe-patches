@@ -5,12 +5,13 @@
 package app.morphe.patches.liftoff.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.shared.misc.fillAppliedPatch
 import app.morphe.patches.shared.misc.reactnative.ScrollViewLayoutFingerprint
 import app.morphe.patches.shared.misc.revenuecat.InvalidateCustomerInfoCacheFingerprint
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -23,9 +24,8 @@ private const val LIFTOFF_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/lifto
 private const val CACHE_INVALIDATION_REGISTERS = 0
 private val ICON_NAMES = listOf("back", "premium", "customizations", "reset", "info", "patches", "entry", "expand")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, description: String) =
-    mutableClassDefBy(LIFTOFF_APPLIED_PATCHES_CLASS).methods.single { it.name == methodName + "Description" }
-        .returnEarly(description)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+    fillAppliedPatch(LIFTOFF_APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal val patchesSettingsPatch = run {
     lateinit var applicationType: String

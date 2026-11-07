@@ -21,15 +21,11 @@
 package app.hxreborn.extension.patreon;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -41,16 +37,6 @@ import android.util.Log;
 public final class HomeFeedFilter {
 
     static final String HIDE_RECOMMENDED_CREATORS = "hide_recommended_creators";
-
-    private static final List<String> RECOMMENDATION_GETTERS = Arrays.asList("getRecsplanationData",
-            "getRecommendedCreatorCard");
-
-    private static final Map<String, Method> GETTER_METHODS = new ConcurrentHashMap<>();
-
-    private static final Set<String> MISSING_GETTERS = Collections
-        .newSetFromMap(new ConcurrentHashMap<String, Boolean>());
-
-    private static final String QUIP_CARD_GETTER = "getQuickPostCard";
 
     private static final String EXPLORE_SECTION_TYPE = "chunked_explore";
 
@@ -66,6 +52,34 @@ public final class HomeFeedFilter {
 
     public static boolean isPatched() {
         return false;
+    }
+
+    static Object postCardOf(Object item) {
+        return null;
+    }
+
+    static Object postOf(Object postCard) {
+        return null;
+    }
+
+    static Object stringIdOf(Object post) {
+        return null;
+    }
+
+    static Object recsplanationDataOf(Object item) {
+        return null;
+    }
+
+    static Object recommendedCreatorCardOf(Object item) {
+        return null;
+    }
+
+    static Object quickPostCardOf(Object item) {
+        return null;
+    }
+
+    static Object sectionTypeIdOf(Object section) {
+        return null;
     }
 
     static boolean isEnabled() {
@@ -92,7 +106,7 @@ public final class HomeFeedFilter {
         }
         List<Object> kept = new ArrayList<>(items.size());
         for (Object item : items) {
-            if (invokeGetter(item, QUIP_CARD_GETTER) == null) {
+            if (quickPostCardOf(item) == null) {
                 kept.add(item);
             }
         }
@@ -105,7 +119,7 @@ public final class HomeFeedFilter {
         }
         List<Object> kept = new ArrayList<>(sections.size());
         for (Object section : sections) {
-            if (!EXPLORE_SECTION_TYPE.equals(invokeGetter(section, "getRawSectionTypeId"))) {
+            if (!EXPLORE_SECTION_TYPE.equals(sectionTypeIdOf(section))) {
                 kept.add(section);
             }
         }
@@ -159,7 +173,7 @@ public final class HomeFeedFilter {
     }
 
     private static String postId(Object item) {
-        Object postId = invokeGetter(invokeGetter(invokeGetter(item, "getPostCard"), "getPost"), "getStringId");
+        Object postId = stringIdOf(postOf(postCardOf(item)));
         return (postId instanceof String) ? (String) postId : null;
     }
 
@@ -167,45 +181,15 @@ public final class HomeFeedFilter {
         if (item == null) {
             return false;
         }
-        for (String getter : RECOMMENDATION_GETTERS) {
-            if (invokeGetter(item, getter) != null) {
-                return true;
-            }
-        }
-        return false;
+        return recsplanationDataOf(item) != null || recommendedCreatorCardOf(item) != null;
     }
 
-    private static Object invokeGetter(Object target, String getter) {
-        if (target == null) {
-            return null;
-        }
-        Method method = getterMethod(target.getClass(), getter);
-        if (method == null) {
-            return null;
-        }
-        try {
-            return method.invoke(target);
-        } catch (ReflectiveOperationException ex) {
-            Log.w(PatchSettings.LOG_TAG, "Calling " + target.getClass().getName() + "." + getter + " failed", ex);
-            return null;
-        }
+    public static String patchName() {
+        return null;
     }
 
-    private static Method getterMethod(Class<?> type, String getter) {
-        String key = type.getName() + "." + getter;
-        Method method = GETTER_METHODS.get(key);
-        if (method != null || MISSING_GETTERS.contains(key)) {
-            return method;
-        }
-        try {
-            method = type.getMethod(getter);
-            GETTER_METHODS.put(key, method);
-            return method;
-        } catch (NoSuchMethodException ex) {
-            MISSING_GETTERS.add(key);
-            Log.w(PatchSettings.LOG_TAG, "No getter " + key, ex);
-            return null;
-        }
+    public static String patchDescription() {
+        return null;
     }
 
 }

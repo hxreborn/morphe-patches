@@ -26,7 +26,12 @@ import com.aliexpress.android.aehome.ahe.ahenode.HomeAHEAEImageViewWidgetNode;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE, shadows = FakeTemplateNodes.class)
 public class TemplateNodesTest {
 
     private static final int WHITE = 0xFFFFFFFF;

@@ -86,20 +86,19 @@ val unlockPremiumPatch = bytecodePatch(
         }
 
         val engineVipSetter = UserStateRestoreFingerprint.matchSingle().run {
-            val vipWrite = instructionMatches[3].index
-            val expiryWrite = instructionMatches.last().index
-            val setter = instructionMatches[4].getInstruction<ReferenceInstruction>()
-                .getReference<MethodReference>()!!
+            val (_, _, _, vipWrite, setterCall) = instructionMatches
+            val expiryWrite = instructionMatches.last()
+            val setter = setterCall.getInstruction<ReferenceInstruction>().getReference<MethodReference>()!!
 
-            method.overwriteFieldAfter(expiryWrite, expiry)
-            method.overwriteFieldAfter(vipWrite, "0x1")
+            method.overwriteFieldAfter(expiryWrite.index, expiry)
+            method.overwriteFieldAfter(vipWrite.index, "0x1")
             setter
         }
 
         engineVipStateSetterFingerprint(engineVipSetter).matchSingle().apply {
-            val vipStore = instructionMatches.last()
+            val (_, vipStore) = instructionMatches
             val vipField = vipStore.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
-            val parameterRegister = method.implementation!!.registerCount - 1
+            val parameterRegister = method.implementation!!.registerCount - method.parameters.size
             if (vipStore.getInstruction<OneRegisterInstruction>().registerA != parameterRegister) {
                 throw PatchException("$vipField is not set from the VIP parameter of ${method.name}")
             }
@@ -116,14 +115,15 @@ val unlockPremiumPatch = bytecodePatch(
         }
 
         FCodeOfferFlagFingerprint.matchSingle().apply {
-            method.overwriteFieldAfter(instructionMatches.last().index, "0x0")
+            val (_, offerFlagWrite) = instructionMatches
+            method.overwriteFieldAfter(offerFlagWrite.index, "0x0")
         }
 
         DiscountOfferPopupFingerprint.matchSingle().apply {
-            val offerCheck = instructionMatches.last().index
-            val register = method.getInstruction<OneRegisterInstruction>(offerCheck).registerA
+            val (_, _, _, offerCheck) = instructionMatches
+            val register = offerCheck.getInstruction<OneRegisterInstruction>().registerA
 
-            method.addInstruction(offerCheck + 1, "const/16 v$register, 0x0")
+            method.addInstruction(offerCheck.index + 1, "const/16 v$register, 0x0")
         }
     }
 }

@@ -42,4 +42,12 @@ public final class FriendsOfFriendsTab {
         return !removed && tabs.add(tab);
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

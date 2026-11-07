@@ -6,6 +6,7 @@ package app.morphe.patches.photoeditorpro.diagnostics
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
@@ -14,6 +15,7 @@ import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
+import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -27,7 +29,7 @@ private const val AI_TRACE_INTERCEPTOR_CLASS = "$EXTENSION_PACKAGE/AiTraceInterc
 private const val OBJECT = "Ljava/lang/Object;"
 
 @Suppress("unused")
-val traceAiRequestsPatch = bytecodePatch(
+val traceAiRequestsPatch: BytecodePatch = bytecodePatch(
     name = "Inspect AI requests",
     description = "Shows the network calls an AI tool makes, such as HTTP requests and " +
         "Firebase uploads. Keeps a log of them.",
@@ -37,6 +39,7 @@ val traceAiRequestsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchMetadata("traceAiRequests", traceAiRequestsPatch)
         val appInterceptor = AiRequestInterceptorFingerprint.matchSingle()
         val interceptorClass = appInterceptor.classDef.type
         val interceptorInterface = appInterceptor.classDef.interfaces.singleOrNull()

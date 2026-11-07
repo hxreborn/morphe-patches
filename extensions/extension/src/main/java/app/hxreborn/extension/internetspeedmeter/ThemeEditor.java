@@ -79,17 +79,17 @@ final class ThemeEditor {
 
     private ThemeEditor(Activity activity) {
         this.activity = activity;
-        this.content = View.inflate(activity, AppResources.id(activity, "layout", "custom_theme"), null);
+        this.content = View.inflate(activity, HostResources.customThemeLayout(), null);
         this.preferences = AppResources.preferences(activity);
-        this.presets = find("theme_spinner");
-        this.hue = find("Global_hue_slider");
-        this.headerSaturation = find("Header_saturation_slider");
-        this.headerValue = find("Header_value_slider");
-        this.valuesSaturation = find("Values_saturation_slider");
-        this.valuesValue = find("Values_value_slider");
-        this.whiteText = find("WhiteText");
-        this.headerPreview = find("rel_layout_1");
-        this.valuesPreview = find("rel_layout_2");
+        this.presets = find(HostResources.themePresetSpinnerId());
+        this.hue = find(HostResources.themeHueSliderId());
+        this.headerSaturation = find(HostResources.themeHeaderSaturationSliderId());
+        this.headerValue = find(HostResources.themeHeaderValueSliderId());
+        this.valuesSaturation = find(HostResources.themeValuesSaturationSliderId());
+        this.valuesValue = find(HostResources.themeValuesValueSliderId());
+        this.whiteText = find(HostResources.themeWhiteTextId());
+        this.headerPreview = find(HostResources.themeHeaderPreviewId());
+        this.valuesPreview = find(HostResources.themeValuesPreviewId());
     }
 
     static void show(Activity activity) {
@@ -106,8 +106,7 @@ final class ThemeEditor {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        this.hue
-            .setProgressDrawable(this.activity.getDrawable(AppResources.id(this.activity, "drawable", "full_rainbow")));
+        this.hue.setProgressDrawable(this.activity.getDrawable(HostResources.fullRainbowDrawable()));
         this.hue.setProgress((int) this.preferences.getFloat("global_hue", PRESET_HUES[0]));
         setPercent(this.headerSaturation, this.preferences.getFloat("header_saturation", HEADER_SATURATION / PERCENT));
         setPercent(this.headerValue, this.preferences.getFloat("header_value", HEADER_VALUE / PERCENT));
@@ -119,20 +118,20 @@ final class ThemeEditor {
         bindPresets();
         bindPreview();
 
-        find("Peek").setVisibility(View.GONE);
-        find("OK").setOnClickListener((view) -> {
+        find(HostResources.themePeekId()).setVisibility(View.GONE);
+        find(HostResources.themeConfirmId()).setOnClickListener((view) -> {
             save();
             dialog.dismiss();
             restartMainScreen();
         });
-        find("Cancel").setOnClickListener((view) -> dialog.dismiss());
+        find(HostResources.themeCancelId()).setOnClickListener((view) -> dialog.dismiss());
         preview();
         dialog.show();
     }
 
     private void bindGlobalSliders() {
-        SeekBar saturation = find("Global_saturation_slider");
-        SeekBar value = find("Global_value_slider");
+        SeekBar saturation = find(HostResources.themeGlobalSaturationSliderId());
+        SeekBar value = find(HostResources.themeGlobalValueSliderId());
         saturation.setProgress(this.headerSaturation.getProgress());
         value.setProgress(this.headerValue.getProgress());
         saturation.setOnSeekBarChangeListener(new SliderListener(() -> {
@@ -147,7 +146,7 @@ final class ThemeEditor {
     }
 
     private void bindPresets() {
-        String[] names = AppResources.array(this.activity, "theme_array");
+        String[] names = this.activity.getResources().getStringArray(HostResources.themeNames());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.activity, android.R.layout.simple_spinner_item, names);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.presets.setAdapter(adapter);
@@ -232,8 +231,8 @@ final class ThemeEditor {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends View> T find(String id) {
-        return (T) this.content.findViewById(AppResources.id(this.activity, "id", id));
+    private <T extends View> T find(int id) {
+        return (T) this.content.findViewById(id);
     }
 
     private static final class SliderListener implements SeekBar.OnSeekBarChangeListener {

@@ -5,27 +5,29 @@
 package app.morphe.patches.photoeditorpro.layout
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
+import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
 private const val RESULT_SCREEN_CLASS = "$EXTENSION_PACKAGE/ResultScreen;"
 
 @Suppress("unused")
-val hideShareOptionsPatch = bytecodePatch(
+val hideShareOptionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide share options",
-    description = "Adds an option to hide the share buttons on the save screen " +
-        "and center the saved photo.",
+    description = "Removes share buttons from the save screen and centers the saved photo.",
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchMetadata("hideShareOptions", hideShareOptionsPatch)
         SHARE_ROW_FINGERPRINTS.forEach { fingerprint ->
             val match = fingerprint.matchSingle()
             val setAdapterCall = match.instructionMatches.single()

@@ -52,13 +52,13 @@ public final class LoadingIndicatorTest {
     }
 
     @Test
-    @Config(shadows = PatchedBuild.Indicator.class)
+    @Config(shadows = { PatchedBuild.Indicator.class, PatchedBuild.Applied.class })
     public void turnsOnWhenPatched() {
         assertTrue(LoadingIndicator.isEnabled());
     }
 
     @Test
-    @Config(shadows = PatchedBuild.Indicator.class)
+    @Config(shadows = { PatchedBuild.Indicator.class, PatchedBuild.Applied.class })
     public void turnsOffFromSettings() {
         // given
         PatchedBuild.setLoadingIndicatorEnabled(false);
@@ -71,13 +71,13 @@ public final class LoadingIndicatorTest {
     }
 
     @Test
-    @Config(shadows = PatchedBuild.Indicator.class)
+    @Config(shadows = { PatchedBuild.Indicator.class, PatchedBuild.Applied.class })
     public void sizesTheContainerAt48DpWhenOn() {
         assertEquals(48f, LoadingIndicator.containerSize(40f), 0f);
     }
 
     @Test
-    @Config(shadows = PatchedBuild.Indicator.class)
+    @Config(shadows = { PatchedBuild.Indicator.class, PatchedBuild.Applied.class })
     public void keepsTheStockContainerSizeWhenTurnedOff() {
         // given
         PatchedBuild.setLoadingIndicatorEnabled(false);
@@ -103,7 +103,7 @@ public final class LoadingIndicatorTest {
     }
 
     @Test
-    @Config(shadows = PatchedBuild.Indicator.class)
+    @Config(shadows = { PatchedBuild.Indicator.class, PatchedBuild.Applied.class })
     public void listsItselfAmongAppliedPatches() {
         assertTrue(AppliedPatches.names().contains("M3E loading indicator"));
     }

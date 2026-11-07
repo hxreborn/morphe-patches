@@ -66,13 +66,41 @@ final class SettingsStyle {
 
     SettingsStyle(Context context) {
         this.context = context;
-        this.screenBackground = hostColor("bg_dn_home_page", android.R.attr.colorBackground);
-        this.cardSurface = hostColor("background_card", android.R.attr.colorBackgroundFloating);
-        this.divider = hostColor("color_GC04_alpha40", android.R.attr.textColorTertiary);
-        this.primaryText = hostColor("color_GC01", android.R.attr.textColorPrimary);
-        this.secondaryText = hostColor("color_GC02", android.R.attr.textColorSecondary);
+        this.screenBackground = context.getColor(pageBackgroundColor());
+        this.cardSurface = context.getColor(cardBackgroundColor());
+        this.divider = context.getColor(dividerColor());
+        this.primaryText = context.getColor(primaryTextColor());
+        this.secondaryText = context.getColor(secondaryTextColor());
         this.medium = Typeface.create("sans-serif-medium", Typeface.NORMAL);
-        this.ripple = hostColor("color_GC04_alpha40", android.R.attr.colorControlHighlight);
+        this.ripple = context.getColor(dividerColor());
+    }
+
+    static int pageBackgroundColor() {
+        return 0;
+    }
+
+    static int cardBackgroundColor() {
+        return 0;
+    }
+
+    static int dividerColor() {
+        return 0;
+    }
+
+    static int primaryTextColor() {
+        return 0;
+    }
+
+    static int secondaryTextColor() {
+        return 0;
+    }
+
+    static int switchButtonDrawable() {
+        return 0;
+    }
+
+    static int backIconDrawable() {
+        return 0;
     }
 
     int dp(float value) {
@@ -103,15 +131,15 @@ final class SettingsStyle {
     }
 
     Drawable hostIcon(String name, int tint) {
-        Drawable icon = hostDrawable(name);
-        if (icon != null) {
-            icon.setTint(tint);
-        }
-        return icon;
+        return tinted(hostDrawable(name), tint);
+    }
+
+    Drawable backIcon(int tint) {
+        return tinted(hostDrawable(backIconDrawable()), tint);
     }
 
     void styleSwitch(CheckBox control) {
-        Drawable button = hostDrawable("chb_on_off_selector");
+        Drawable button = hostDrawable(switchButtonDrawable());
         if (button != null) {
             control.setButtonDrawable(button);
         }
@@ -123,23 +151,21 @@ final class SettingsStyle {
         }
     }
 
-    private Drawable hostDrawable(String name) {
-        int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
-        Drawable drawable = (identifier != 0) ? this.context.getDrawable(identifier) : null;
-        return (drawable != null) ? drawable.mutate() : null;
+    private static Drawable tinted(Drawable icon, int tint) {
+        if (icon != null) {
+            icon.setTint(tint);
+        }
+        return icon;
     }
 
-    private int hostColor(String name, int attribute) {
-        int identifier = this.context.getResources().getIdentifier(name, "color", this.context.getPackageName());
-        if (identifier != 0) {
-            return this.context.getColor(identifier);
-        }
-        TypedValue value = new TypedValue();
-        if (!this.context.getTheme().resolveAttribute(attribute, value, true)) {
-            throw new android.content.res.Resources.NotFoundException("Host theme color missing: " + name);
-        }
-        return (value.resourceId != 0) ? this.context.getColorStateList(value.resourceId).getDefaultColor()
-                : value.data;
+    private Drawable hostDrawable(String name) {
+        int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
+        return (identifier != 0) ? hostDrawable(identifier) : null;
+    }
+
+    private Drawable hostDrawable(int identifier) {
+        Drawable drawable = this.context.getDrawable(identifier);
+        return (drawable != null) ? drawable.mutate() : null;
     }
 
 }

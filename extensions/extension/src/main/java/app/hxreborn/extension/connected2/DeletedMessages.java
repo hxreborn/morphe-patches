@@ -20,8 +20,6 @@
  */
 package app.hxreborn.extension.connected2;
 
-import android.util.Log;
-
 @SuppressWarnings("unused")
 public final class DeletedMessages {
 
@@ -31,25 +29,22 @@ public final class DeletedMessages {
 
     }
 
-    public static void mark(Object message) {
-        if (message == null) {
+    static String bodyOf(Object message) {
+        return null;
+    }
+
+    static void saveBody(Object message, String body) {
+    }
+
+    public static void mark(Object message, Object contentType, Object textContentType) {
+        if (message == null || contentType != textContentType) {
             return;
         }
-        try {
-            Class<?> type = message.getClass();
-            Object contentType = type.getMethod("getMessageContentType").invoke(message);
-            if (contentType == null || !"TEXT".equals(((Enum<?>) contentType).name())) {
-                return;
-            }
-            String body = (String) type.getMethod("getBody").invoke(message);
-            if (body == null || body.endsWith(DELETED_MARK)) {
-                return;
-            }
-            type.getMethod("setBody", String.class).invoke(message, body + DELETED_MARK);
-            type.getMethod("save").invoke(message);
-        } catch (ReflectiveOperationException | ClassCastException ex) {
-            Log.w("hx-connected2", "mark deleted message", ex);
+        String body = bodyOf(message);
+        if (body == null || body.endsWith(DELETED_MARK)) {
+            return;
         }
+        saveBody(message, body + DELETED_MARK);
     }
 
 }

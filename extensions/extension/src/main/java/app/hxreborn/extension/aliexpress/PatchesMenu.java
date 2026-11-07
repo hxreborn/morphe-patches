@@ -45,15 +45,21 @@ public final class PatchesMenu {
     private PatchesMenu() {
     }
 
+    static int versionRowId() {
+        return 0;
+    }
+
+    static int versionTitleId() {
+        return 0;
+    }
+
     public static void attach(View root) {
         if (root == null || root.findViewWithTag(ROW_TAG) != null) {
             return;
         }
         Context context = root.getContext();
-        int rowId = context.getResources().getIdentifier("rl_version_settings", "id", context.getPackageName());
-        int titleId = context.getResources().getIdentifier("tv_version_title", "id", context.getPackageName());
-        View reference = root.findViewById(rowId);
-        View nativeTitle = root.findViewById(titleId);
+        View reference = root.findViewById(versionRowId());
+        View nativeTitle = root.findViewById(versionTitleId());
         if (reference == null || !(nativeTitle instanceof TextView)
                 || !(reference.getParent() instanceof LinearLayout)) {
             Log.w(PatchSettings.LOG_TAG, "Settings row or title not found");

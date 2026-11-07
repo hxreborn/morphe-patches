@@ -6,6 +6,7 @@ package app.morphe.patches.patreon.layout.home
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.patreon.misc.settings.markFeaturePatched
 import app.morphe.patches.patreon.misc.settings.patchesSettingsPatch
@@ -15,7 +16,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/patreon/HomeFeedFilter;"
 
 @Suppress("unused")
-val hideRecommendedCreatorsPatch = bytecodePatch(
+val hideRecommendedCreatorsPatch: BytecodePatch = bytecodePatch(
     name = "Hide recommended creators",
     description = "Limits Home to creators you're a member of.",
 ) {
@@ -25,7 +26,8 @@ val hideRecommendedCreatorsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(EXTENSION_CLASS_DESCRIPTOR)
+        markFeaturePatched(EXTENSION_CLASS_DESCRIPTOR, hideRecommendedCreatorsPatch)
+        replaceHomeFeedStubs(EXTENSION_CLASS_DESCRIPTOR)
 
         LauncherFeedResponseConstructorFingerprint.method.addInstructions(
             0,

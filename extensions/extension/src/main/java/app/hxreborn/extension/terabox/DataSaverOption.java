@@ -28,10 +28,12 @@ import android.view.ViewGroup;
 @SuppressWarnings("unused")
 public final class DataSaverOption extends View {
 
-    private static final String DATA_SAVER_ROW = "video_rb_resolution_fluent_layout";
-
     public DataSaverOption(Context context, AttributeSet attributes) {
         super(context, attributes);
+    }
+
+    static int dataSaverRowId() {
+        return 0;
     }
 
     @Override
@@ -40,8 +42,7 @@ public final class DataSaverOption extends View {
         if (!PatchSettings.isPremiumUnlocked() || !(getParent() instanceof View)) {
             return;
         }
-        int identifier = getResources().getIdentifier(DATA_SAVER_ROW, "id", getContext().getPackageName());
-        View row = (identifier == 0) ? null : ((View) getParent()).findViewById(identifier);
+        View row = ((View) getParent()).findViewById(dataSaverRowId());
         if (row != null) {
             ViewGroup.LayoutParams parameters = row.getLayoutParams();
             parameters.height = 0;

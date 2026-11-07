@@ -4,10 +4,11 @@
  */
 package app.morphe.patches.patreon.layout.navigation
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.findFreeRegister
@@ -24,6 +25,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.util.StringUtils.escapeString
 
 private enum class NavigationTab(val label: String, val tabName: String) {
     FEED("Feed", "MemberModeHomeTab"),
@@ -36,7 +38,7 @@ private enum class NavigationTab(val label: String, val tabName: String) {
 private const val NAVIGATION_BUTTONS_CLASS = "${PATREON_EXTENSION_PACKAGE}NavigationButtons;"
 
 @Suppress("unused")
-val hideNavigationButtonsPatch = bytecodePatch(
+val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
     name = "Hide navigation buttons",
     description = "Removes chosen tabs from the bottom bar.",
     default = false,
@@ -56,7 +58,13 @@ val hideNavigationButtonsPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(NAVIGATION_BUTTONS_CLASS)
+        markFeaturePatched(NAVIGATION_BUTTONS_CLASS, hideNavigationButtonsPatch, withDescription = false)
+
+        val methodsByName = mutableClassDefBy(NAVIGATION_BUTTONS_CLASS).methods.associateBy { it.name }
+        hideTabOptions.forEach { (tab, option) ->
+            methodsByName.getValue("${tab.name.lowercase()}Description")
+                .returnEarly(escapeString(checkNotNull(option.description)))
+        }
 
         val defaultHiddenTabs = hideTabOptions.filterValues { it.value == true }.keys
         mutableClassDefBy(NAVIGATION_BUTTONS_CLASS).methods.single { it.name == "defaultHiddenTabs" }

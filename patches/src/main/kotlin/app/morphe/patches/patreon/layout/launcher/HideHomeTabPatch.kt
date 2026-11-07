@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -22,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val HOME_TAB_CLASS = "${PATREON_EXTENSION_PACKAGE}HomeTab;"
 
 @Suppress("unused")
-val hideHomeTabPatch = bytecodePatch(
+val hideHomeTabPatch: BytecodePatch = bytecodePatch(
     name = "Hide Home tab",
     description = "Removes the Home tab and starts on Memberships. " +
         "Accounts without memberships keep the tab.",
@@ -33,7 +34,7 @@ val hideHomeTabPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markFeaturePatched(HOME_TAB_CLASS)
+        markFeaturePatched(HOME_TAB_CLASS, hideHomeTabPatch)
 
         val membershipsTab = MembershipsTabToStringFingerprint.classDef
         val launcherTabs = launcherTabsFingerprint(membershipsTab.type)

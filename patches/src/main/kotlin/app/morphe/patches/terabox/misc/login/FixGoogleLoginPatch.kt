@@ -7,13 +7,16 @@ package app.morphe.patches.terabox.misc.login
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
@@ -26,8 +29,6 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/GoogleLoginChromeClient;"
 
 private const val LOADING_INDICATOR_SIZE = "64.0dp"
-
-private const val DESCRIPTION = "Restores signing in with a Google account."
 
 private val loginLoadingIndicatorPatch = resourcePatch {
     execute {
@@ -45,16 +46,20 @@ private val loginLoadingIndicatorPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val fixGoogleLoginPatch = bytecodePatch(
+val fixGoogleLoginPatch: BytecodePatch = bytecodePatch(
     name = "Fix Google login",
-    description = DESCRIPTION,
+    description = "Restores signing in with a Google account.",
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(loginLoadingIndicatorPatch, spoofSignaturePatch, patchesSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("fixGoogleLogin", DESCRIPTION)
+        markPatchApplied("fixGoogleLogin", fixGoogleLoginPatch)
+        mutableClassDefBy(EXTENSION_CLASS).replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf("backButtonId" to "left_button"),
+        )
         NativeAccountPageFingerprint.matchSingle().method.returnEarly(false)
 
         OfflinePackageManifestFingerprint.matchSingle().method.returnEarly(null)

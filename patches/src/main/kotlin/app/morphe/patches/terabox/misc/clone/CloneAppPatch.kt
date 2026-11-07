@@ -5,6 +5,7 @@
 package app.morphe.patches.terabox.misc.clone
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.patch.stringOption
@@ -28,9 +29,6 @@ private const val ACCOUNT_TYPE = "com.dubox.drive.jkeng.account_type"
 private val ACCOUNT_XML_FILES = listOf("res/xml/authenticator.xml", "res/xml/sync_adapter.xml")
 
 private val APP_LABELS = setOf("TeraBox", "@string/app_name")
-
-private const val DESCRIPTION = "Installs TeraBox as a separate app alongside the original, with its own account. " +
-    "Each copy needs a different clone number."
 
 internal fun ClassDef.renameCloneStrings(renames: Map<String, String>, resolveMutableClass: () -> MutableClass) {
     fun cloneString(string: String): String? {
@@ -64,9 +62,10 @@ internal fun ClassDef.renameCloneStrings(renames: Map<String, String>, resolveMu
 }
 
 @Suppress("unused")
-val cloneAppPatch = bytecodePatch(
+val cloneAppPatch: BytecodePatch = bytecodePatch(
     name = "Clone app",
-    description = DESCRIPTION,
+    description = "Installs TeraBox as a separate app alongside the original, with its own account. " +
+        "Each copy needs a different clone number.",
     default = false,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
@@ -151,7 +150,7 @@ val cloneAppPatch = bytecodePatch(
     )
 
     execute {
-        markPatchApplied("cloneApp", DESCRIPTION)
+        markPatchApplied("cloneApp", cloneAppPatch)
     }
 
     finalize {

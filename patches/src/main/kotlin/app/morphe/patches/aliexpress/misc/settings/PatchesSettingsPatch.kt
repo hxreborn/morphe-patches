@@ -4,19 +4,22 @@
  */
 package app.morphe.patches.aliexpress.misc.settings
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patches.shared.misc.smali.replaceStub
-import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
+import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -29,9 +32,8 @@ private const val PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/aliexpress/Patch
 
 private val ICON_NAMES = listOf("promotions", "splash", "sponsored", "images", "analytics", "updates", "reset", "info", "bundle", "expand", "back")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, description: String) =
-    mutableClassDefBy(APPLIED_PATCHES_CLASS).methods.single { it.name == methodName + "Description" }
-        .returnEarly(description)
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
     val returnInstructions = when (returnType) {
@@ -68,16 +70,30 @@ internal val patchesSettingsPatch = bytecodePatch {
 
     execute {
         val switchConstructor = SwitchConstructorFingerprint.matchSingle().method
-        mutableClassDefBy("Lapp/hxreborn/extension/aliexpress/SettingsStyle;").replaceStub(
-            "createSwitch",
-            SWITCH_FACTORY_REGISTERS,
-            """
-                new-instance v0, ${switchConstructor.definingClass}
-                const/4 v1, 0x0
-                invoke-direct { v0, p0, v1 }, ${descriptor(switchConstructor)}
-                return-object v0
-            """.trimIndent(),
+        mutableClassDefBy(PATCHES_MENU_CLASS).replaceResourceIdStubs(
+            ResourceType.ID,
+            mapOf("versionRowId" to "rl_version_settings", "versionTitleId" to "tv_version_title"),
         )
+        with(mutableClassDefBy("Lapp/hxreborn/extension/aliexpress/SettingsStyle;")) {
+            replaceResourceIdStubs(
+                ResourceType.COLOR,
+                mapOf(
+                    "whiteColor" to "ae_ui_color_white",
+                    "lightGrayColor" to "Gray_f3f3f3",
+                    "brandColor" to "ae_ui_color_brand_primary",
+                ),
+            )
+            replaceStub(
+                "createSwitch",
+                SWITCH_FACTORY_REGISTERS,
+                """
+                    new-instance v0, ${switchConstructor.definingClass}
+                    const/4 v1, 0x0
+                    invoke-direct { v0, p0, v1 }, ${descriptor(switchConstructor)}
+                    return-object v0
+                """.trimIndent(),
+            )
+        }
         ApplicationOnCreateFingerprint.matchSingle().method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, $PATCH_SETTINGS_CLASS->initialize(Landroid/content/Context;)V",

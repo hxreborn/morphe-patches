@@ -6,6 +6,7 @@ package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
@@ -18,6 +19,7 @@ import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
 import app.morphe.patches.shared.misc.proton.COMPOSER_TYPE
 import app.morphe.patches.shared.misc.proton.amoledBackgroundOverlayPatch
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -109,7 +111,7 @@ private fun BytecodePatchContext.tintEmptyStatePlaceholder() {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
@@ -118,6 +120,7 @@ val amoledThemePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
         tintEmptyStatePlaceholder()

@@ -5,6 +5,7 @@
 package app.morphe.patches.aliexpress.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
@@ -12,12 +13,10 @@ import app.morphe.patches.aliexpress.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 
-private const val DESCRIPTION = "Restores product loading on patched installs."
-
 @Suppress("unused")
-val spoofSignaturePatch = bytecodePatch(
+val spoofSignaturePatch: BytecodePatch = bytecodePatch(
     name = "Spoof signature",
-    description = DESCRIPTION,
+    description = "Restores product loading on patched installs.",
 ) {
     compatibleWith(AppCompatibilities.ALIEXPRESS)
 
@@ -26,7 +25,7 @@ val spoofSignaturePatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("spoofSignature", DESCRIPTION)
+        markPatchApplied("spoofSignature", spoofSignaturePatch)
         spoofSignature("Lcom/aliexpress/app/AliExpressApp;")
         SecurityContextInitializerFingerprint.matchSingle().method.addInstructions(
             0,

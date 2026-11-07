@@ -27,8 +27,6 @@ import java.util.List;
 
 final class ExternalIp {
 
-    private static final String STATE_VALUE_METHOD = "getValue";
-
     private static final String[] LOCATION_TEXT_FIELDS = { "country_code", "country_name", "region", "city",
             "region_name", "time_zone", "as_num", "as_name" };
 
@@ -70,8 +68,23 @@ final class ExternalIp {
         this.longitude = coordinate(coordinates, "longitude");
     }
 
+    static Object stateValue(Object stateHolder) {
+        return null;
+    }
+
+    static Object flowValue(Object flowHolder) {
+        return null;
+    }
+
     static ExternalIp read(Object stateHolder) throws ReflectiveOperationException {
-        final Object state = stateHolder.getClass().getMethod(STATE_VALUE_METHOD).invoke(stateHolder);
+        return fromState(stateValue(stateHolder));
+    }
+
+    static ExternalIp readFlow(Object flowHolder) throws ReflectiveOperationException {
+        return fromState(flowValue(flowHolder));
+    }
+
+    private static ExternalIp fromState(Object state) throws ReflectiveOperationException {
         if (state == null) {
             return null;
         }

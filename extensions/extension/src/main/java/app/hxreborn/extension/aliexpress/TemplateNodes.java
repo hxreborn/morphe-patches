@@ -21,162 +21,85 @@
 
 package app.hxreborn.extension.aliexpress;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
-import android.util.Log;
-
 final class TemplateNodes {
 
-    private static final String NODE_CLASS = "com.ahe.android.hybridengine.widget.AHEWidgetNode";
-
-    private static final String HOME_IMAGE_NODE_CLASS = "com.aliexpress.android.aehome.ahe.ahenode."
-            + "HomeAHEAEImageViewWidgetNode";
-
     private static final int MAX_ANCESTORS = 8;
-
-    private static volatile Accessors accessors;
-
-    private static volatile boolean unavailable;
 
     private TemplateNodes() {
     }
 
+    static boolean isHomeImageNode(Object node) {
+        return false;
+    }
+
+    static Object parentOf(Object node) {
+        return null;
+    }
+
+    static List<?> childrenOf(Object node) {
+        return null;
+    }
+
+    static int backgroundColorOf(Object node) {
+        return 0;
+    }
+
     static boolean keepsLightColors(Object node) {
-        Accessors resolved = accessors(node);
-        if (resolved == null) {
-            return false;
-        }
-        try {
-            return resolved.keepsLightColors(node);
-        } catch (IllegalAccessException | InvocationTargetException ex) {
-            return failed(ex);
-        }
+        return !hasImageChild(node) && hasImageGrandchild(node);
     }
 
     static boolean isBackdropImage(Object node) {
-        Accessors resolved = accessors(node);
-        if (resolved == null || !resolved.homeImageNode.isInstance(node)) {
+        if (!isHomeImageNode(node)) {
             return false;
         }
-        try {
-            Object frame = resolved.parent.invoke(node);
-            if (frame == null) {
-                return false;
-            }
-            return darkensToNight(resolved.backgroundColor(frame));
-        } catch (IllegalAccessException | InvocationTargetException ex) {
-            return failed(ex);
-        }
+        Object frame = parentOf(node);
+        return frame != null && hasNightColor(backgroundColorOf(frame));
     }
 
     static boolean hasLightSurface(Object node) {
-        Accessors resolved = accessors(node);
-        if (resolved == null) {
-            return false;
-        }
-        try {
-            return darkensToNight(resolved.backgroundColor(node));
-        } catch (IllegalAccessException | InvocationTargetException ex) {
-            return failed(ex);
-        }
+        return hasNightColor(backgroundColorOf(node));
     }
 
     static boolean drawnOnNightSurface(Object node) {
-        Accessors resolved = accessors(node);
-        if (resolved == null) {
-            return false;
-        }
-        try {
-            Object current = node;
-            for (int depth = 0; current != null && depth <= MAX_ANCESTORS; depth++) {
-                int surface = resolved.backgroundColor(current);
-                if (DarkColors.hasSurface(surface)) {
-                    return !resolved.keepsLightColors(current) && darkensToNight(surface);
-                }
-                current = resolved.parent.invoke(current);
+        Object current = node;
+        for (int depth = 0; current != null && depth <= MAX_ANCESTORS; depth++) {
+            int surface = backgroundColorOf(current);
+            if (DarkColors.hasSurface(surface)) {
+                return !keepsLightColors(current) && hasNightColor(surface);
             }
-        } catch (IllegalAccessException | InvocationTargetException ex) {
-            return failed(ex);
+            current = parentOf(current);
         }
         return false;
     }
 
-    private static boolean darkensToNight(int surface) {
+    private static boolean hasNightColor(int surface) {
         return DarkColors.hasSurface(surface) && DarkColors.night(DarkColors.BACKGROUND_TYPE, surface) != surface;
     }
 
-    private static boolean failed(ReflectiveOperationException ex) {
-        Log.w(PatchSettings.LOG_TAG, "Template tree read failed", ex);
-        unavailable = true;
+    private static boolean hasImageChild(Object node) {
+        for (Object child : children(node)) {
+            if (isHomeImageNode(child)) {
+                return true;
+            }
+        }
         return false;
     }
 
-    private static Accessors accessors(Object node) {
-        if (accessors == null && !unavailable) {
-            try {
-                ClassLoader loader = node.getClass().getClassLoader();
-                Class<?> nodeClass = Class.forName(NODE_CLASS, false, loader);
-                accessors = new Accessors(nodeClass.getMethod("getParentWidget"), nodeClass.getMethod("getChildren"),
-                        nodeClass.getMethod("getBackGroundColor"), Class.forName(HOME_IMAGE_NODE_CLASS, false, loader));
-            } catch (ReflectiveOperationException ex) {
-                Log.w(PatchSettings.LOG_TAG, "Template node lookup failed", ex);
-                unavailable = true;
+    private static boolean hasImageGrandchild(Object node) {
+        for (Object child : children(node)) {
+            if (hasImageChild(child)) {
+                return true;
             }
         }
-        return accessors;
+        return false;
     }
 
-    private static final class Accessors {
-
-        final Method parent;
-
-        final Method children;
-
-        final Method backgroundColor;
-
-        final Class<?> homeImageNode;
-
-        Accessors(Method parent, Method children, Method backgroundColor, Class<?> homeImageNode) {
-            this.parent = parent;
-            this.children = children;
-            this.backgroundColor = backgroundColor;
-            this.homeImageNode = homeImageNode;
-        }
-
-        int backgroundColor(Object node) throws IllegalAccessException, InvocationTargetException {
-            return (Integer) this.backgroundColor.invoke(node);
-        }
-
-        boolean keepsLightColors(Object node) throws IllegalAccessException, InvocationTargetException {
-            return !hasImageChild(node) && hasImageGrandchild(node);
-        }
-
-        private boolean hasImageChild(Object node) throws IllegalAccessException, InvocationTargetException {
-            for (Object child : childrenOf(node)) {
-                if (this.homeImageNode.isInstance(child)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private boolean hasImageGrandchild(Object node) throws IllegalAccessException, InvocationTargetException {
-            for (Object child : childrenOf(node)) {
-                if (hasImageChild(child)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private List<?> childrenOf(Object node) throws IllegalAccessException, InvocationTargetException {
-            Object nodes = this.children.invoke(node);
-            return (nodes instanceof List<?>) ? (List<?>) nodes : Collections.emptyList();
-        }
-
+    private static List<?> children(Object node) {
+        List<?> nodes = childrenOf(node);
+        return (nodes != null) ? nodes : Collections.emptyList();
     }
 
 }

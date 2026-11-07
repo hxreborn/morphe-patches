@@ -146,6 +146,7 @@ def versions_table(targets):
 
 
 ICONS = {
+    "com.neonbhoot.behisabi": "behisabi.png",
     "com.gymbros.app": "liftoff.png",
     "co.unstatic.habitify": "habitify.png",
     "me.aap.fermatamod.dear.google.why.bingo2.rec": "xtreamplayer.png",

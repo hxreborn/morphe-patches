@@ -74,11 +74,12 @@ final class SettingsRows {
         return card;
     }
 
-    void switchRow(LinearLayout card, String iconName, String patchName, String description, Runnable onChanged) {
+    void switchRow(LinearLayout card, String iconName, String key, String patchName, String description,
+            Runnable onChanged) {
         LinearLayout row = baseRow(card, iconName);
         addLabels(row, patchName, description);
 
-        boolean enabled = PatchSettings.isEnabled(patchName, PatchSettings.defaultEnabled(patchName));
+        boolean enabled = PatchSettings.isEnabled(key, PatchSettings.defaultEnabled(key));
         SettingsStyle.Toggle toggle = new SettingsStyle.Toggle(this.style, enabled);
         LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -88,7 +89,7 @@ final class SettingsRows {
         row.setBackground(this.style.pressedFeedback());
         row.setOnClickListener((view) -> {
             toggle.toggle();
-            PatchSettings.setEnabled(patchName, toggle.isChecked());
+            PatchSettings.setEnabled(key, toggle.isChecked());
             onChanged.run();
         });
     }

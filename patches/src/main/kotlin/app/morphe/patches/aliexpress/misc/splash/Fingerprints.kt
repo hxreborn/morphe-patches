@@ -11,9 +11,27 @@
 package app.morphe.patches.aliexpress.misc.splash
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.methodCall
+import app.morphe.patcher.opcode
+import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.Opcode
 
 internal object SplashPromotionFingerprint : Fingerprint(
     returnType = "Z",
     parameters = listOf("Lcom/alibaba/aliexpresshd/home/ui/MainActivity;"),
     strings = listOf("tryShowScreen, getNeedToShowScreen cost: "),
+)
+
+internal object SplashIntentFingerprint : Fingerprint(
+    returnType = "Lcom/alibaba/aliexpresshd/home/splash/pojo/SplashScreen\$Screen;",
+    parameters = listOf("Lcom/alibaba/aliexpresshd/home/ui/MainActivity;", "Z"),
+    filters = listOf(
+        string("skipSplash"),
+        methodCall(
+            smali = "Landroid/content/Intent;->getBooleanExtra(Ljava/lang/String;Z)Z",
+            location = MatchAfterImmediately(),
+        ),
+        opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
+    ),
 )

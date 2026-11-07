@@ -159,9 +159,9 @@ public final class ScheduledDeletionEditor {
         surface.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         final Dialog dialog = PatchesDialog.createDialog(activity, surface);
-        final int accentColor = AccentColor.getAccentColor(
-                PatchesTheme.isDark(PatchesTheme.resolveColorAttribute(activity, PatchesTheme.BACKGROUND_SECONDARY)));
-        final int textWeakColor = PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_WEAK);
+        final int accentColor = AccentColor
+            .getAccentColor(PatchesTheme.isDark(PatchesTheme.backgroundSecondary(activity)));
+        final int textWeakColor = PatchesTheme.textWeak(activity);
 
         final LinearLayout actions = PatchesDialog.createButtonRow(activity);
         actions.addView(PatchesDialog.configureActionButton(activity,
@@ -190,7 +190,7 @@ public final class ScheduledDeletionEditor {
         surface.addView(actions, matchWidth());
 
         SwitchStyle.apply(toastSwitch, accentColor);
-        toastSwitch.setTextColor(PatchesTheme.resolveColorAttribute(activity, PatchesTheme.TEXT_NORM));
+        toastSwitch.setTextColor(PatchesTheme.textNorm(activity));
         warningText.setTextColor(textWeakColor);
         for (LabelSection section : sections) {
             section.applyTheme(accentColor, textWeakColor);
@@ -332,11 +332,9 @@ public final class ScheduledDeletionEditor {
         void applyTheme(int accentColor, int textWeakColor) {
             SwitchStyle.apply(this.enabledSwitch, accentColor);
             PatchesTheme.tintTextInput(this.amountInput, accentColor);
-            this.enabledSwitch.setTextColor(
-                    PatchesTheme.resolveColorAttribute(this.enabledSwitch.getContext(), PatchesTheme.TEXT_NORM));
+            this.enabledSwitch.setTextColor(PatchesTheme.textNorm(this.enabledSwitch.getContext()));
             this.periodLabel.setTextColor(textWeakColor);
-            this.amountInput.setTextColor(
-                    PatchesTheme.resolveColorAttribute(this.amountInput.getContext(), PatchesTheme.TEXT_NORM));
+            this.amountInput.setTextColor(PatchesTheme.textNorm(this.amountInput.getContext()));
         }
 
         void addTo(LinearLayout content, boolean separated) {

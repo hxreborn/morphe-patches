@@ -50,7 +50,7 @@ public final class RaindropApiTest {
     }
 
     @BeforeClass
-    public static void installFakeApi() {
+    public static void installFakeApi() throws IOException {
         FakeRaindropApi.install();
     }
 

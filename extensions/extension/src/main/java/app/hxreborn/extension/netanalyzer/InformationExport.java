@@ -104,8 +104,6 @@ public final class InformationExport implements ExportSource {
 
     private static final String AS_NAME_SUFFIX = " AS Name";
 
-    private static final String STATE_VALUE_METHOD = "getValue";
-
     private static final String[] DATA_STATES = { "Disconnected", "Connecting", "Connected", "Suspended" };
 
     private static final String[] DATA_ACTIVITIES = { "None", "In", "Out", "InOut", "Dormant" };
@@ -209,7 +207,7 @@ public final class InformationExport implements ExportSource {
             final Field holderField = externalState.getDeclaredField(name);
             holderField.setAccessible(true);
             final Object holder = holderField.get(null);
-            final ExternalIp ip = ExternalIp.read(holder);
+            final ExternalIp ip = ExternalIp.readFlow(holder);
             if (ip == null || ip.address == null || (ip.address instanceof Inet6Address) != ipv6) {
                 continue;
             }
@@ -335,7 +333,7 @@ public final class InformationExport implements ExportSource {
     }
 
     private static boolean hasLocation(Object stateHolder) throws ReflectiveOperationException {
-        final Object state = stateHolder.getClass().getMethod(STATE_VALUE_METHOD).invoke(stateHolder);
+        final Object state = ExternalIp.flowValue(stateHolder);
         if (state == null) {
             return false;
         }

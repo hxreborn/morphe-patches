@@ -41,8 +41,18 @@ public final class EveryPatchApplied {
     }
 
     @Implementation
+    protected static String unlockPremiumName() {
+        return "Unlock premium";
+    }
+
+    @Implementation
     protected static String unlockPremiumDescription() {
         return PREMIUM_DESCRIPTION;
+    }
+
+    @Implementation
+    protected static String unlockCustomizationsName() {
+        return "Unlock customizations";
     }
 
     @Implementation

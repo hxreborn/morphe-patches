@@ -20,20 +20,15 @@
  */
 package app.hxreborn.extension.bereal;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.O)
 @SuppressWarnings("unused")
 public final class LateFlag {
-
-    private static final String TAG = "LateFlag";
 
     private static final long LATE_GRACE_SECONDS = 60;
 
@@ -50,6 +45,22 @@ public final class LateFlag {
         return false;
     }
 
+    static Object creationDate(Object moment) {
+        return null;
+    }
+
+    static Object expirationDate(Object moment) {
+        return null;
+    }
+
+    static Instant instantValue(Object timestamp) {
+        return null;
+    }
+
+    static Object timestampOf(Instant value) {
+        return null;
+    }
+
     public static void onMoment(Object moment) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return;
@@ -58,14 +69,9 @@ public final class LateFlag {
             window = null;
             return;
         }
-        try {
-            final Instant start = instantField(moment, "creationDate");
-            final Instant end = instantField(moment, "expirationDate");
-            window = (start != null && end != null) ? new MomentWindow(start, end) : null;
-        } catch (ReflectiveOperationException | RuntimeException ex) {
-            window = null;
-            Log.e(TAG, "Moment window not read", ex);
-        }
+        final Instant start = instantOf(creationDate(moment));
+        final Instant end = instantOf(expirationDate(moment));
+        window = (start != null && end != null) ? new MomentWindow(start, end) : null;
     }
 
     public static Object takenAt(Object original, boolean isMain) {
@@ -77,37 +83,29 @@ public final class LateFlag {
         if (current == null) {
             return original;
         }
-        try {
-            final Instant takenAt = (Instant) valueField(original.getClass()).get(original);
-            if (!takenAt.isAfter(current.end.plusSeconds(LATE_GRACE_SECONDS))) {
-                return original;
-            }
-            final long delay = ThreadLocalRandom.current()
-                .nextLong(ON_TIME_MIN_DELAY_SECONDS, ON_TIME_MAX_DELAY_SECONDS + 1);
-            Instant onTime = current.start.plusSeconds(delay);
-            if (onTime.isAfter(current.end)) {
-                onTime = current.end;
-            }
-            final Constructor<?> constructor = original.getClass().getDeclaredConstructor(Instant.class);
-            constructor.setAccessible(true);
-            return constructor.newInstance(onTime);
-        } catch (ReflectiveOperationException | RuntimeException ex) {
-            Log.e(TAG, "Capture time not changed", ex);
+        final Instant takenAt = instantValue(original);
+        if (!takenAt.isAfter(current.end.plusSeconds(LATE_GRACE_SECONDS))) {
             return original;
         }
+        final long delay = ThreadLocalRandom.current()
+            .nextLong(ON_TIME_MIN_DELAY_SECONDS, ON_TIME_MAX_DELAY_SECONDS + 1);
+        Instant onTime = current.start.plusSeconds(delay);
+        if (onTime.isAfter(current.end)) {
+            onTime = current.end;
+        }
+        return timestampOf(onTime);
     }
 
-    private static Instant instantField(Object owner, String name) throws ReflectiveOperationException {
-        final Field field = owner.getClass().getDeclaredField(name);
-        field.setAccessible(true);
-        final Object instant = field.get(owner);
-        return (instant != null) ? (Instant) valueField(instant.getClass()).get(instant) : null;
+    private static Instant instantOf(Object timestamp) {
+        return (timestamp != null) ? instantValue(timestamp) : null;
     }
 
-    private static Field valueField(Class<?> instantType) throws NoSuchFieldException {
-        final Field field = instantType.getDeclaredField("value");
-        field.setAccessible(true);
-        return field;
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
     }
 
     private static final class MomentWindow {

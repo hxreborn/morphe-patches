@@ -4,13 +4,15 @@
  */
 package app.morphe.patches.protonmail.misc.theme
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonmail.misc.theme.webview.webSettingsThemePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.transformBrandColors
 
 @Suppress("unused")
-val accentColorPatch = bytecodePatch(
+val accentColorPatch: BytecodePatch = bytecodePatch(
     name = "Custom accent color",
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
@@ -18,6 +20,7 @@ val accentColorPatch = bytecodePatch(
     dependsOn(webSettingsThemePatch)
 
     execute {
+        markPatchMetadata("accentColor", accentColorPatch)
         transformBrandColors(BRAND_COLORS)
     }
 }

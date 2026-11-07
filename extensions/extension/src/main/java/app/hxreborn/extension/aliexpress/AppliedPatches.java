@@ -34,93 +34,93 @@ public final class AppliedPatches {
 
     static final String ENABLE_IMAGE_SAVING = "Enable image saving";
 
-    static final String FIX_DARK_MODE = "Fix dark mode";
-
-    static final String GMSCORE_SUPPORT = "GmsCore support";
-
     static final String REMOVE_PROMOTIONAL_POPUPS = "Remove promotional popups";
 
     static final String REMOVE_SPONSORED_ITEMS = "Remove sponsored items";
 
     static final String SKIP_SPLASH_PROMOTIONS = "Skip splash promotions";
 
-    static final String SPOOF_SIGNATURE = "Spoof signature";
-
     static final List<String> SWITCH_KEYS = Collections
         .unmodifiableList(Arrays.asList(REMOVE_SPONSORED_ITEMS, DISABLE_ANALYTICS, DISABLE_UPDATE_PROMPTS,
                 ENABLE_IMAGE_SAVING, REMOVE_PROMOTIONAL_POPUPS, SKIP_SPLASH_PROMOTIONS));
 
-    private static final List<String> NAMES = Collections.unmodifiableList(Arrays.asList(DISABLE_ANALYTICS,
-            DISABLE_UPDATE_PROMPTS, ENABLE_IMAGE_SAVING, FIX_DARK_MODE, GMSCORE_SUPPORT, REMOVE_PROMOTIONAL_POPUPS,
-            REMOVE_SPONSORED_ITEMS, SKIP_SPLASH_PROMOTIONS, SPOOF_SIGNATURE));
-
     private AppliedPatches() {
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        for (String name : NAMES) {
-            if (description(name) != null) {
-                names.add(name);
-            }
-        }
-        return names;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
+        add(applied, disableUpdatePrompts(), disableUpdatePromptsName(), disableUpdatePromptsDescription());
+        add(applied, enableImageSaving(), enableImageSavingName(), enableImageSavingDescription());
+        add(applied, darkTheme(), darkThemeName(), darkThemeDescription());
+        add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
+        add(applied, removePromotionalPopups(), removePromotionalPopupsName(), removePromotionalPopupsDescription());
+        add(applied, removeSponsoredItems(), removeSponsoredItemsName(), removeSponsoredItemsDescription());
+        add(applied, skipSplashPromotions(), skipSplashPromotionsName(), skipSplashPromotionsDescription());
+        add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case DISABLE_ANALYTICS:
-                return disableAnalyticsDescription();
-            case DISABLE_UPDATE_PROMPTS:
-                return disableUpdatePromptsDescription();
-            case ENABLE_IMAGE_SAVING:
-                return enableImageSavingDescription();
-            case FIX_DARK_MODE:
-                return darkThemeDescription();
-            case GMSCORE_SUPPORT:
-                return gmsCoreSupportDescription();
-            case REMOVE_PROMOTIONAL_POPUPS:
-                return removePromotionalPopupsDescription();
-            case REMOVE_SPONSORED_ITEMS:
-                return removeSponsoredItemsDescription();
-            case SKIP_SPLASH_PROMOTIONS:
-                return skipSplashPromotionsDescription();
-            case SPOOF_SIGNATURE:
-                return spoofSignatureDescription();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
     }
 
-    static boolean disableAnalytics() {
-        return disableAnalyticsDescription() != null;
+    public static boolean disableAnalytics() {
+        return false;
+    }
+
+    public static String disableAnalyticsName() {
+        return null;
     }
 
     public static String disableAnalyticsDescription() {
         return null;
     }
 
-    static boolean disableUpdatePrompts() {
-        return disableUpdatePromptsDescription() != null;
+    public static boolean disableUpdatePrompts() {
+        return false;
+    }
+
+    public static String disableUpdatePromptsName() {
+        return null;
     }
 
     public static String disableUpdatePromptsDescription() {
         return null;
     }
 
-    static boolean enableImageSaving() {
-        return enableImageSavingDescription() != null;
+    public static boolean enableImageSaving() {
+        return false;
+    }
+
+    public static String enableImageSavingName() {
+        return null;
     }
 
     public static String enableImageSavingDescription() {
         return null;
     }
 
-    static boolean darkTheme() {
-        return darkThemeDescription() != null;
+    public static boolean darkTheme() {
+        return false;
+    }
+
+    public static String darkThemeName() {
+        return null;
     }
 
     public static String darkThemeDescription() {
+        return null;
+    }
+
+    public static boolean gmsCoreSupport() {
+        return false;
+    }
+
+    public static String gmsCoreSupportName() {
         return null;
     }
 
@@ -128,32 +128,65 @@ public final class AppliedPatches {
         return null;
     }
 
-    static boolean removePromotionalPopups() {
-        return removePromotionalPopupsDescription() != null;
+    public static boolean removePromotionalPopups() {
+        return false;
+    }
+
+    public static String removePromotionalPopupsName() {
+        return null;
     }
 
     public static String removePromotionalPopupsDescription() {
         return null;
     }
 
-    static boolean removeSponsoredItems() {
-        return removeSponsoredItemsDescription() != null;
+    public static boolean removeSponsoredItems() {
+        return false;
+    }
+
+    public static String removeSponsoredItemsName() {
+        return null;
     }
 
     public static String removeSponsoredItemsDescription() {
         return null;
     }
 
-    static boolean skipSplashPromotions() {
-        return skipSplashPromotionsDescription() != null;
+    public static boolean skipSplashPromotions() {
+        return false;
+    }
+
+    public static String skipSplashPromotionsName() {
+        return null;
     }
 
     public static String skipSplashPromotionsDescription() {
         return null;
     }
 
+    public static boolean spoofSignature() {
+        return false;
+    }
+
+    public static String spoofSignatureName() {
+        return null;
+    }
+
     public static String spoofSignatureDescription() {
         return null;
+    }
+
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
     }
 
 }

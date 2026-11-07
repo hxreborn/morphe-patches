@@ -21,20 +21,13 @@
 package app.hxreborn.extension.terabox;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public final class AppliedPatches {
 
-    static final String CLONE_APP = "Clone app";
-
-    static final String FIX_GOOGLE_LOGIN = "Fix Google login";
-
     static final String HIDE_ADS = "Hide ads";
-
-    static final String HIDE_CONSENT_FORM = "Hide consent form";
 
     static final String HIDE_HOME_SHORTCUTS = "Hide home shortcuts";
 
@@ -46,49 +39,48 @@ public final class AppliedPatches {
 
     static final String UNLOCK_PREMIUM = "Unlock Premium Plus";
 
-    private static final List<String> NAMES = Collections
-        .unmodifiableList(Arrays.asList(CLONE_APP, FIX_GOOGLE_LOGIN, HIDE_ADS, HIDE_CONSENT_FORM, HIDE_HOME_SHORTCUTS,
-                HIDE_PROMOTIONS, HIDE_VIDEO_RECOMMENDATIONS, REMOVE_RECENT_PANEL, UNLOCK_PREMIUM));
-
     private AppliedPatches() {
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        for (String name : NAMES) {
-            if (description(name) != null) {
-                names.add(name);
-            }
-        }
-        return names;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, cloneApp(), cloneAppName(), cloneAppDescription());
+        add(applied, fixGoogleLogin(), fixGoogleLoginName(), fixGoogleLoginDescription());
+        add(applied, fixTransfersOverVpn(), fixTransfersOverVpnName(), fixTransfersOverVpnDescription());
+        add(applied, hideAds(), hideAdsName(), hideAdsDescription());
+        add(applied, hideConsentForm(), hideConsentFormName(), hideConsentFormDescription());
+        add(applied, hideHomeShortcuts(), hideHomeShortcutsName(), hideHomeShortcutsDescription());
+        add(applied, hidePromotions(), hidePromotionsName(), hidePromotionsDescription());
+        add(applied, hideVideoRecommendations(), hideVideoRecommendationsName(), hideVideoRecommendationsDescription());
+        add(applied, removeRecentPanel(), removeRecentPanelName(), removeRecentPanelDescription());
+        add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case CLONE_APP:
-                return cloneAppDescription();
-            case FIX_GOOGLE_LOGIN:
-                return fixGoogleLoginDescription();
-            case HIDE_ADS:
-                return hideAdsDescription();
-            case HIDE_CONSENT_FORM:
-                return hideConsentFormDescription();
-            case HIDE_HOME_SHORTCUTS:
-                return hideHomeShortcutsDescription();
-            case HIDE_PROMOTIONS:
-                return hidePromotionsDescription();
-            case HIDE_VIDEO_RECOMMENDATIONS:
-                return hideVideoRecommendationsDescription();
-            case REMOVE_RECENT_PANEL:
-                return removeRecentPanelDescription();
-            case UNLOCK_PREMIUM:
-                return unlockPremiumDescription();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
+    }
+
+    public static boolean cloneApp() {
+        return false;
+    }
+
+    public static String cloneAppName() {
+        return null;
     }
 
     public static String cloneAppDescription() {
+        return null;
+    }
+
+    public static boolean fixGoogleLogin() {
+        return false;
+    }
+
+    public static String fixGoogleLoginName() {
         return null;
     }
 
@@ -96,11 +88,35 @@ public final class AppliedPatches {
         return null;
     }
 
-    static boolean hideAds() {
-        return hideAdsDescription() != null;
+    public static boolean fixTransfersOverVpn() {
+        return false;
+    }
+
+    public static String fixTransfersOverVpnName() {
+        return null;
+    }
+
+    public static String fixTransfersOverVpnDescription() {
+        return null;
+    }
+
+    public static boolean hideAds() {
+        return false;
+    }
+
+    public static String hideAdsName() {
+        return null;
     }
 
     public static String hideAdsDescription() {
+        return null;
+    }
+
+    public static boolean hideConsentForm() {
+        return false;
+    }
+
+    public static String hideConsentFormName() {
         return null;
     }
 
@@ -108,44 +124,77 @@ public final class AppliedPatches {
         return null;
     }
 
-    static boolean hideHomeShortcuts() {
-        return hideHomeShortcutsDescription() != null;
+    public static boolean hideHomeShortcuts() {
+        return false;
+    }
+
+    public static String hideHomeShortcutsName() {
+        return null;
     }
 
     public static String hideHomeShortcutsDescription() {
         return null;
     }
 
-    static boolean hidePromotions() {
-        return hidePromotionsDescription() != null;
+    public static boolean hidePromotions() {
+        return false;
+    }
+
+    public static String hidePromotionsName() {
+        return null;
     }
 
     public static String hidePromotionsDescription() {
         return null;
     }
 
-    static boolean hideVideoRecommendations() {
-        return hideVideoRecommendationsDescription() != null;
+    public static boolean hideVideoRecommendations() {
+        return false;
+    }
+
+    public static String hideVideoRecommendationsName() {
+        return null;
     }
 
     public static String hideVideoRecommendationsDescription() {
         return null;
     }
 
-    static boolean removeRecentPanel() {
-        return removeRecentPanelDescription() != null;
+    public static boolean removeRecentPanel() {
+        return false;
+    }
+
+    public static String removeRecentPanelName() {
+        return null;
     }
 
     public static String removeRecentPanelDescription() {
         return null;
     }
 
-    static boolean unlockPremium() {
-        return unlockPremiumDescription() != null;
+    public static boolean unlockPremium() {
+        return false;
+    }
+
+    public static String unlockPremiumName() {
+        return null;
     }
 
     public static String unlockPremiumDescription() {
         return null;
+    }
+
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
     }
 
 }

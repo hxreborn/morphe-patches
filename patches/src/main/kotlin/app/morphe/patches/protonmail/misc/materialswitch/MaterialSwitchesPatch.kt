@@ -5,6 +5,7 @@
 package app.morphe.patches.protonmail.misc.materialswitch
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
@@ -15,6 +16,7 @@ import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.PROTON_EXTENSION_PACKAGE
 import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 
 private const val EXTENSION_CLASS = "${PROTON_EXTENSION_PACKAGE}WebMaterialSwitch;"
 private const val COMPOSER_PARAMETER = 4
@@ -27,7 +29,7 @@ private fun BytecodePatchContext.drawNativeSwitchesAsViews() {
 }
 
 @Suppress("unused")
-val materialSwitchesPatch = bytecodePatch(
+val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
@@ -35,6 +37,7 @@ val materialSwitchesPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("materialSwitches", materialSwitchesPatch, withDescription = true)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         WebSettingsPageFinishedFingerprint.matchSingle().method.addInstructions(
             0,

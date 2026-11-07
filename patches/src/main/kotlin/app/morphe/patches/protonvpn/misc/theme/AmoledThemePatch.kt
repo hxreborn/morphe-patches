@@ -5,6 +5,7 @@
 package app.morphe.patches.protonvpn.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
@@ -14,8 +15,9 @@ import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
 import app.morphe.patches.shared.misc.proton.amoledBackgroundOverlayPatch
 import app.morphe.patches.shared.misc.proton.indexOfLastWrite
 import app.morphe.patches.shared.misc.proton.injectColorTransformCall
-import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
+import app.morphe.patches.shared.misc.proton.transformCoreDarkBackgrounds
 import app.morphe.util.adoptChild
 import app.morphe.util.findElementByAttributeValue
 import app.morphe.util.findElementByAttributeValueOrThrow
@@ -73,7 +75,7 @@ private val amoledSplashBackgroundPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
@@ -81,6 +83,7 @@ val amoledThemePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, amoledBackgroundOverlayPatch, amoledSplashBackgroundPatch)
 
     execute {
+        markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
 

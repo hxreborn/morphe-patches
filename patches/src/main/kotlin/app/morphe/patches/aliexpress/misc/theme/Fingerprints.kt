@@ -13,6 +13,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val BASE_ACTIVITY = "Lcom/aliexpress/framework/AlgBaseActivity;"
+private const val TEMPLATE_NODE = "Lcom/ahe/android/hybridengine/widget/AHEWidgetNode;"
 internal const val SET_DEFAULT_NIGHT_MODE = "Landroidx/appcompat/app/AppCompatDelegate;->setDefaultNightMode(I)V"
 
 internal object ActivityConfigurationFingerprint : Fingerprint(
@@ -75,10 +76,31 @@ internal object NavigationBarFillerFingerprint : Fingerprint(
 )
 
 internal object TemplateColorFingerprint : Fingerprint(
-    definingClass = "Lcom/ahe/android/hybridengine/widget/AHEWidgetNode;",
+    definingClass = TEMPLATE_NODE,
     name = "tryFetchDarkModeColor",
     returnType = "I",
     parameters = listOf("Ljava/lang/String;", "I", "I"),
+)
+
+internal object TemplateParentFingerprint : Fingerprint(
+    definingClass = TEMPLATE_NODE,
+    name = "getParentWidget",
+    returnType = TEMPLATE_NODE,
+    parameters = emptyList(),
+)
+
+internal object TemplateChildrenFingerprint : Fingerprint(
+    definingClass = TEMPLATE_NODE,
+    name = "getChildren",
+    returnType = "Ljava/util/List;",
+    parameters = emptyList(),
+)
+
+internal object TemplateBackgroundColorFingerprint : Fingerprint(
+    definingClass = TEMPLATE_NODE,
+    name = "getBackGroundColor",
+    returnType = "I",
+    parameters = emptyList(),
 )
 
 internal object WebPageAttachFingerprint : Fingerprint(
@@ -114,4 +136,11 @@ internal object QuantityControlFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.CONSTRUCTOR),
     parameters = listOf("Landroid/content/Context;", "Landroid/util/AttributeSet;", "I"),
     filters = listOf(opcode(Opcode.RETURN_VOID)),
+)
+
+internal object DarkModeServerFlagFingerprint : Fingerprint(
+    classFingerprint = DefaultNightModeFingerprint,
+    returnType = "Z",
+    parameters = emptyList(),
+    strings = listOf("global_enable_dark_mode_v2"),
 )

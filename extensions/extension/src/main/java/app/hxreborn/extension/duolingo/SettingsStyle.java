@@ -72,32 +72,6 @@ final class SettingsStyle {
 
     static final int MIN_TOUCH_TARGET_DP = 48;
 
-    private static final int SNOW_DAY = Color.WHITE;
-
-    private static final int SNOW_NIGHT = 0xFF131F22;
-
-    private static final int POLAR_DAY = 0xFFF7F7F7;
-
-    private static final int POLAR_NIGHT = 0xFF202F36;
-
-    private static final int SWAN_DAY = 0xFFE5E5E5;
-
-    private static final int SWAN_NIGHT = 0xFF37464F;
-
-    private static final int EEL_DAY = 0xFF4B4B4B;
-
-    private static final int EEL_NIGHT = 0xFFF1F7FB;
-
-    private static final int WOLF_DAY = 0xFF777777;
-
-    private static final int WOLF_NIGHT = 0xFFDCE6EC;
-
-    private static final int MACAW_DAY = 0xFF1CB0F6;
-
-    private static final int MACAW_NIGHT = 0xFF49C0F8;
-
-    private static final int WHALE = 0xFF1899D6;
-
     private static final int FACE_LAYER = 1;
 
     private static final int BUTTON_HORIZONTAL_PADDING_DP = 16;
@@ -130,15 +104,55 @@ final class SettingsStyle {
         this.context = context;
         this.night = (this.context.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-        this.snow = color("juicySnow", this.night ? SNOW_NIGHT : SNOW_DAY);
-        this.polar = color("juicyPolar", this.night ? POLAR_NIGHT : POLAR_DAY);
-        this.swan = color("juicySwan", this.night ? SWAN_NIGHT : SWAN_DAY);
-        this.eel = color("juicyEel", this.night ? EEL_NIGHT : EEL_DAY);
-        this.wolf = color("juicyWolf", this.night ? WOLF_NIGHT : WOLF_DAY);
-        this.macaw = color("juicyMacaw", this.night ? MACAW_NIGHT : MACAW_DAY);
-        this.whale = color("juicyWhale", WHALE);
-        this.bold = font("din_next_for_duolingo_bold", Typeface.DEFAULT_BOLD);
-        this.regular = font("din_next_for_duolingo", Typeface.DEFAULT);
+        this.snow = context.getColor(snowColor());
+        this.polar = context.getColor(polarColor());
+        this.swan = context.getColor(swanColor());
+        this.eel = context.getColor(eelColor());
+        this.wolf = context.getColor(wolfColor());
+        this.macaw = context.getColor(macawColor());
+        this.whale = context.getColor(whaleColor());
+        this.bold = font(boldFont(), Typeface.DEFAULT_BOLD);
+        this.regular = font(regularFont(), Typeface.DEFAULT);
+    }
+
+    static int snowColor() {
+        return 0;
+    }
+
+    static int polarColor() {
+        return 0;
+    }
+
+    static int swanColor() {
+        return 0;
+    }
+
+    static int eelColor() {
+        return 0;
+    }
+
+    static int wolfColor() {
+        return 0;
+    }
+
+    static int macawColor() {
+        return 0;
+    }
+
+    static int whaleColor() {
+        return 0;
+    }
+
+    static int boldFont() {
+        return 0;
+    }
+
+    static int regularFont() {
+        return 0;
+    }
+
+    static int backIconDrawable() {
+        return 0;
     }
 
     int dp(float value) {
@@ -193,9 +207,16 @@ final class SettingsStyle {
         return new RippleDrawable(ColorStateList.valueOf(this.swan), null, new ColorDrawable(Color.WHITE));
     }
 
+    Drawable backIcon(int tint) {
+        return tinted(this.context.getDrawable(backIconDrawable()), tint);
+    }
+
     Drawable hostIcon(String name, int tint) {
         int id = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
-        Drawable icon = (id != 0) ? this.context.getDrawable(id) : null;
+        return tinted((id != 0) ? this.context.getDrawable(id) : null, tint);
+    }
+
+    private static Drawable tinted(Drawable icon, int tint) {
         if (icon == null) {
             return null;
         }
@@ -233,23 +254,14 @@ final class SettingsStyle {
         return view;
     }
 
-    private int color(String name, int fallback) {
-        int id = this.context.getResources().getIdentifier(name, "color", this.context.getPackageName());
-        return (id != 0) ? this.context.getColor(id) : fallback;
-    }
-
-    private Typeface font(String name, Typeface fallback) {
+    private Typeface font(int id, Typeface fallback) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return fallback;
-        }
-        int id = this.context.getResources().getIdentifier(name, "font", this.context.getPackageName());
-        if (id == 0) {
             return fallback;
         }
         try {
             return this.context.getResources().getFont(id);
         } catch (Resources.NotFoundException ex) {
-            Log.w(PatchSettings.LOG_TAG, "Font lookup failed for " + name, ex);
+            Log.w(PatchSettings.LOG_TAG, "Font lookup failed for " + id, ex);
             return fallback;
         }
     }

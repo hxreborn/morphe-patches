@@ -5,6 +5,9 @@
 package app.morphe.patches.shared.misc.smali
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
@@ -103,6 +106,40 @@ internal fun MutableClass.replaceStub(name: String, registers: Int, smali: Strin
     methods.remove(stub)
     addStaticMethod(name, stub.parameterTypes.map(CharSequence::toString), stub.returnType, registers, smali)
 }
+
+internal fun MutableClass.addFieldReader(field: FieldReference): String {
+    val (read, returnInstruction) = when {
+        field.type == "Z" -> "iget-boolean" to "return"
+        field.type == "I" -> "iget" to "return"
+        field.type.startsWith("L") || field.type.startsWith("[") -> "iget-object" to "return-object"
+        else -> throw PatchException("${descriptor(field)} has type ${field.type}, expected Z, I, an object or an array")
+    }
+    return descriptor(
+        addMethod(
+            "hxRead${field.name.replaceFirstChar(Char::uppercaseChar)}",
+            emptyList(),
+            field.type,
+            AccessFlags.PUBLIC.value,
+            2,
+            """
+                $read v0, p0, ${descriptor(field)}
+                $returnInstruction v0
+            """,
+        ),
+    )
+}
+
+internal fun MutableClass.replaceResourceIdStubs(type: ResourceType, stubs: Map<String, String>) =
+    stubs.forEach { (stub, resourceName) ->
+        replaceStub(
+            stub,
+            1,
+            """
+                const v0, ${resourceId(type, resourceName)}
+                return v0
+            """,
+        )
+    }
 
 internal fun MutableClass.replaceMethod(name: String, registers: Int, smali: String) {
     val original = methods.single { it.name == name }

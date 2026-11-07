@@ -36,4 +36,12 @@ public final class ViewReceipts {
         return PatchSettings.DISABLE_VIEW_RECEIPTS.get();
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

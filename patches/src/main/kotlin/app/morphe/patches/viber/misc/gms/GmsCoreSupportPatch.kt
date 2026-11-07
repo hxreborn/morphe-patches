@@ -23,7 +23,7 @@ private val systemAccountChooserPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("gmsCoreSupport", checkNotNull(gmsCoreSupportPatch.description))
+        markPatchApplied("gmsCoreSupport", gmsCoreSupportPatch)
         GmsAccountPickerIntentFingerprint.matchSingle().method.apply {
             val returnIndex = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
             val intentRegister = getInstruction<OneRegisterInstruction>(returnIndex).registerA

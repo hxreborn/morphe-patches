@@ -36,4 +36,12 @@ public final class FriendsPostDownload {
         return PatchSettings.SAVE_FRIENDS_BEREALS.get();
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

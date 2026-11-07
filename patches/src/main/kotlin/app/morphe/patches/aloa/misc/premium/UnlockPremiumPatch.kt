@@ -26,21 +26,18 @@ val unlockPremiumPatch = bytecodePatch(
 
     execute {
         SetSubscriptionStatusFingerprint.matchSingle().method.apply {
-            val registers = getFreeRegisterProvider(0, 2)
-            val entitlementRegister = registers.getFreeRegister4Bit()
-            val statusRegister = registers.getFreeRegister4Bit()
+            val entitlementRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructions(
                 0,
                 """
                     new-instance v$entitlementRegister, $ENTITLEMENT_CLASS
-                    const-string v$statusRegister, "$ENTITLEMENT_ID"
-                    invoke-direct { v$entitlementRegister, v$statusRegister }, $ENTITLEMENT_CLASS-><init>(Ljava/lang/String;)V
+                    const-string p1, "$ENTITLEMENT_ID"
+                    invoke-direct { v$entitlementRegister, p1 }, $ENTITLEMENT_CLASS-><init>(Ljava/lang/String;)V
                     invoke-static { v$entitlementRegister }, Ljava/util/Collections;->singleton(Ljava/lang/Object;)Ljava/util/Set;
                     move-result-object v$entitlementRegister
-                    new-instance v$statusRegister, $ACTIVE_STATUS_CLASS
-                    invoke-direct { v$statusRegister, v$entitlementRegister }, $ACTIVE_STATUS_CLASS-><init>(Ljava/util/Set;)V
-                    move-object p1, v$statusRegister
+                    new-instance p1, $ACTIVE_STATUS_CLASS
+                    invoke-direct { p1, v$entitlementRegister }, $ACTIVE_STATUS_CLASS-><init>(Ljava/util/Set;)V
                 """,
             )
         }

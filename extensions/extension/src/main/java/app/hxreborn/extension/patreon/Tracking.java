@@ -40,4 +40,12 @@ public final class Tracking {
         return isDisabled() ? "" : dsn;
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

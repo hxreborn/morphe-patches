@@ -44,4 +44,12 @@ public final class LateLabel {
         return PatchSettings.REMOVE_LATE_LABEL.get() ? null : original;
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

@@ -20,38 +20,28 @@
  */
 package app.hxreborn.extension.terabox;
 
-import java.lang.reflect.Field;
-
-import android.util.Log;
-
 @SuppressWarnings("unused")
 public final class TeraboxServerMembership {
-
-    private static final String TAG = "TeraboxServerMembership";
 
     private static final String NOT_A_MEMBER = "0";
 
     private TeraboxServerMembership() {
     }
 
+    static boolean serverIsVip(Object vipInfo) {
+        return false;
+    }
+
+    static int serverVipLevel(Object vipInfo) {
+        return 0;
+    }
+
     public static boolean isVip(Object vipInfo) {
-        return vipInfo != null && readField(vipInfo, "isVip", Boolean.FALSE);
+        return vipInfo != null && serverIsVip(vipInfo);
     }
 
     public static String vipType(Object vipInfo) {
-        return (isVip(vipInfo)) ? String.valueOf(readField(vipInfo, "vipLevel", 0)) : NOT_A_MEMBER;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> T readField(Object target, String name, T fallback) {
-        try {
-            Field field = target.getClass().getDeclaredField(name);
-            field.setAccessible(true);
-            return (T) field.get(target);
-        } catch (ReflectiveOperationException | ClassCastException exception) {
-            Log.w(TAG, "Could not read " + name, exception);
-            return fallback;
-        }
+        return (isVip(vipInfo)) ? String.valueOf(serverVipLevel(vipInfo)) : NOT_A_MEMBER;
     }
 
 }

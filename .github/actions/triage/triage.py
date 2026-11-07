@@ -10,8 +10,8 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import (code_span, contradicting_app, field, has_any, normalize, normalize_version, parse_fields,
-                    placeholder_answers)
+from fields import (asks_for_feature, code_span, contradicting_app, field, has_any, has_image, is_placeholder, normalize,
+                    normalize_version, parse_fields, placeholder_answers, thin_answers)
 from versions import prerelease_words, same_variant
 from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing
 
@@ -141,6 +141,29 @@ answer_fields = list(ANSWER_FIELDS)
 if not normalize(what_happened).startswith(OPTION_DID_NOT_START):
     answer_fields.append("Error logs")
 blockers += placeholder_answers(fields, *answer_fields)
+blockers += thin_answers(fields, "Steps to reproduce")
+
+screenshots = field(fields, "Screenshots")
+if screenshots and not is_placeholder(screenshots) and not has_image(screenshots):
+    blockers.append("The Screenshots field has no image. Please drag the screenshots into it.")
+
+device = field(fields, "Device and Android version")
+if device and not is_placeholder(device) and not re.search(r"\d", device):
+    blockers.append("The Device and Android version field doesn't say which Android version.")
+
+log_text = re.sub(r"^\s*(?:```|~~~).*$", "", debug_log, flags=re.M).strip()
+log_is_prose = ("Error logs" in answer_fields and bool(log_text) and not report_attached and not has_image(log_text)
+                and not is_placeholder(log_text))
+if log_is_prose:
+    blockers.append(
+        "The Error logs field has text instead of a log. Please attach the `adb logcat` file, the LogFox export "
+        "or the text Manager's Copy button gives."
+    )
+
+if asks_for_feature("\n".join(filter(None, (description, debug_log)))):
+    blockers.append(
+        f"This reads as a feature request. Please open it with the [feature request form]({NEW_ISSUE}?template=feature_request.yml)."
+    )
 
 if fields and not report_attached and len(description) < MIN_CHARS:
     flags.append(
@@ -209,7 +232,7 @@ elif matched[1] and not (
     )
     labels.append("untargeted version")
 
-if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_attached:
+if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_attached and not log_is_prose:
     flags.append(
         "Patching failed, but the Error logs field has no error report. "
         "Please tap Copy on Manager's error dialog and paste it there."
@@ -217,7 +240,7 @@ if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_a
     labels.append("needs info")
 
 failure = normalize(field(fields, "What does not work"))
-if failure and not report_attached:
+if failure and not report_attached and not log_is_prose:
     flags.append(
         "The Error logs field has no log. Please attach the `adb logcat` file or the LogFox export."
     )

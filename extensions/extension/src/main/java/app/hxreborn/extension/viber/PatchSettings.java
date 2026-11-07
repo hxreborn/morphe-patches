@@ -21,15 +21,27 @@
 package app.hxreborn.extension.viber;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.MenuItem;
 
 @SuppressWarnings("unused")
 public final class PatchSettings {
 
     static final String LOG_TAG = "hxViber";
+
+    static final String DISABLED_KEY_PREFIX = "hx_disabled_";
+
+    private static final String START_FOLDER = "start_folder";
+
+    private static final String SELECTED_BUSINESS_CHATS = "selected_business_chats";
+
+    private static final int RAISED_FOLDER_LIMIT = 10;
 
     private static SharedPreferences preferences;
 
@@ -41,7 +53,8 @@ public final class PatchSettings {
     }
 
     static boolean isEnabled(String key) {
-        return preferences == null || preferences.getBoolean(key, true);
+        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key);
+        return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
     static void setEnabled(String key, boolean enabled) {
@@ -56,20 +69,126 @@ public final class PatchSettings {
         }
     }
 
+    public static boolean removeChatPayments() {
+        return AppliedPatches.removeChatPayments() && isEnabled(PatchSetting.REMOVE_CHAT_PAYMENTS.key);
+    }
+
+    public static boolean disableAiFeatures() {
+        return AppliedPatches.disableAiFeatures() && isEnabled(PatchSetting.DISABLE_AI_FEATURES.key);
+    }
+
+    public static boolean removeListGaps() {
+        return AppliedPatches.removeListGaps() && isEnabled(PatchSetting.REMOVE_LIST_GAPS.key);
+    }
+
+    public static boolean removeTypingPrivacyBanner() {
+        return AppliedPatches.removeTypingPrivacyBanner() && isEnabled(PatchSetting.REMOVE_TYPING_PRIVACY_BANNER.key);
+    }
+
     public static boolean hideAds() {
-        return AppliedPatches.hideAdsDescription() != null && isEnabled("Hide ads");
+        return AppliedPatches.hideAds() && isEnabled(PatchSetting.HIDE_ADS.key);
+    }
+
+    public static boolean hidePromotions() {
+        return AppliedPatches.hidePromotions() && isEnabled(PatchSetting.HIDE_PROMOTIONS.key);
+    }
+
+    public static boolean showPromotion(boolean shown) {
+        return shown && !hidePromotions();
+    }
+
+    public static boolean unlockViberPlus() {
+        return AppliedPatches.unlockViberPlus() && isEnabled(PatchSetting.UNLOCK_VIBER_PLUS.key);
+    }
+
+    public static boolean unlockTypingPrivacy(boolean original) {
+        return original || unlockViberPlus();
+    }
+
+    public static boolean removeOnlineStatusLimit() {
+        return AppliedPatches.removeOnlineStatusLimit() && isEnabled(PatchSetting.REMOVE_ONLINE_STATUS_LIMIT.key);
+    }
+
+    public static long lastOnlineChangeTime(long lastChanged) {
+        return removeOnlineStatusLimit() ? 0L : lastChanged;
+    }
+
+    public static boolean disappearingMediaPrivacy() {
+        return AppliedPatches.disappearingMediaPrivacy() && isEnabled(PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key);
+    }
+
+    public static boolean saveDisappearingMedia() {
+        return AppliedPatches.saveDisappearingMedia() && isEnabled(PatchSetting.SAVE_DISAPPEARING_MEDIA.key);
+    }
+
+    public static boolean blocksMediaSave(boolean disappearing) {
+        return disappearing && !saveDisappearingMedia();
+    }
+
+    public static boolean disableUpdatePrompts() {
+        return AppliedPatches.disableUpdatePrompts() && isEnabled(PatchSetting.DISABLE_UPDATE_PROMPTS.key);
+    }
+
+    public static boolean allowUpdatePrompt(boolean allowed) {
+        return allowed && !disableUpdatePrompts();
+    }
+
+    public static boolean linkAsSecondaryDevice() {
+        return AppliedPatches.linkAsSecondaryDevice() && isEnabled(PatchSetting.LINK_AS_SECONDARY_DEVICE.key);
+    }
+
+    public static boolean activateAsSecondary(boolean tablet) {
+        return tablet || linkAsSecondaryDevice();
     }
 
     public static boolean hideMoreItems() {
-        return AppliedPatches.hideMoreItemsDescription() != null && isEnabled("Hide More screen items");
+        return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }
 
     public static boolean hideNavigationButtons() {
-        return AppliedPatches.hideNavigationButtonsDescription() != null && isEnabled("Hide navigation buttons");
+        return AppliedPatches.hideNavigationButtons() && isEnabled(PatchSetting.HIDE_NAVIGATION_BUTTONS.key);
+    }
+
+    public static boolean unfiledChats() {
+        return AppliedPatches.unfiledChats() && isEnabled(PatchSetting.UNFILED_CHATS.key);
+    }
+
+    public static boolean raiseFolderLimit() {
+        return AppliedPatches.raiseFolderLimit() && isEnabled(PatchSetting.RAISE_FOLDER_LIMIT.key);
+    }
+
+    public static int folderLimit(int limit) {
+        return raiseFolderLimit() ? Math.max(limit, RAISED_FOLDER_LIMIT) : limit;
+    }
+
+    static String startFolder() {
+        return (preferences != null) ? preferences.getString(START_FOLDER, "") : "";
+    }
+
+    static void setStartFolder(String folderId) {
+        if (preferences != null) {
+            preferences.edit().putString(START_FOLDER, folderId).commit();
+        }
+    }
+
+    static Set<String> selectedBusinessChats() {
+        return (preferences != null)
+                ? new HashSet<>(preferences.getStringSet(SELECTED_BUSINESS_CHATS, Collections.emptySet()))
+                : new HashSet<>();
+    }
+
+    static void setSelectedBusinessChats(Set<String> selected) {
+        if (preferences != null) {
+            preferences.edit().putStringSet(SELECTED_BUSINESS_CHATS, selected).commit();
+        }
+    }
+
+    public static boolean filterBusinessChats() {
+        return AppliedPatches.filterBusinessChats() && isEnabled(PatchSetting.FILTER_BUSINESS_CHATS.key);
     }
 
     public static boolean disableAnalytics() {
-        return AppliedPatches.disableAnalyticsDescription() != null && isEnabled("Disable analytics");
+        return AppliedPatches.disableAnalytics() && isEnabled(PatchSetting.DISABLE_ANALYTICS.key);
     }
 
     public static List<?> filterMoreItems(List<?> original) {
@@ -93,10 +212,19 @@ public final class PatchSettings {
         return false;
     }
 
-    public static boolean disableAnalyticsKey(String key) {
-        return disableAnalytics() && ("firebase_analytics_collection_enabled".equals(key)
-                || "google_analytics_adid_collection_enabled".equals(key)
-                || "google_analytics_ssaid_collection_enabled".equals(key));
+    public static boolean isHiddenMainMenuItem(int id) {
+        return false;
+    }
+
+    public static boolean mainMenuItemVisible(MenuItem item, boolean visible) {
+        if (!visible || item == null || !hideMoreItems()) {
+            return visible;
+        }
+        return !isHiddenMainMenuItem(item.getItemId());
+    }
+
+    public static Boolean analyticsCollectionEnabled(Boolean enabled) {
+        return disableAnalytics() ? Boolean.FALSE : enabled;
     }
 
 }

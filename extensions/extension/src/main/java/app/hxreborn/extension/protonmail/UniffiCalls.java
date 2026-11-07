@@ -20,7 +20,6 @@
  */
 package app.hxreborn.extension.protonmail;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.concurrent.CountDownLatch;
@@ -58,7 +57,7 @@ public final class UniffiCalls {
         withContinuation[args.length] = continuation;
 
         final Object immediate = method.invoke(target, withContinuation);
-        if (!isCoroutineSuspended(immediate)) {
+        if (!KotlinResults.isCoroutineSuspended(immediate)) {
             return immediate;
         }
 
@@ -100,18 +99,12 @@ public final class UniffiCalls {
         return (value != null) ? value.getClass().getSimpleName() : "null";
     }
 
-    private static boolean isCoroutineSuspended(Object value) {
-        return value instanceof Enum && "COROUTINE_SUSPENDED".equals(((Enum<?>) value).name());
-    }
-
     private static void throwOnFailure(Object result) throws Exception {
-        if (result == null || !"Failure".equals(result.getClass().getSimpleName())) {
+        if (!KotlinResults.isFailure(result)) {
             return;
         }
 
-        final Field cause = result.getClass().getDeclaredField("exception");
-        cause.setAccessible(true);
-        final Object thrown = cause.get(result);
+        final Object thrown = KotlinResults.failureCause(result);
 
         if (thrown instanceof Exception) {
             throw (Exception) thrown;

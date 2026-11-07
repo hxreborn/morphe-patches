@@ -218,7 +218,8 @@ internal object OperatorFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = STRING,
     parameters = listOf("Landroid/content/Context;"),
-    strings = listOf("telephony_subscription_service", "android.permission.READ_PHONE_STATE"),
+    strings = listOf("telephony_subscription_service"),
+    filters = listOf(methodCall(definingClass = "Landroid/telephony/TelephonyManager;", name = "getNetworkOperatorName")),
 )
 
 internal object PhoneTypeFingerprint : Fingerprint(
@@ -328,9 +329,10 @@ internal object ShizukuBinderReceiverFingerprint : Fingerprint(
     filters = listOf(
         opcode(Opcode.NEW_INSTANCE),
         methodCall(
-            definingClass = "Landroid/content/BroadcastReceiver;",
-            name = "<init>",
-            location = MatchAfterImmediately(),
+            definingClass = "Landroid/content/Context;",
+            name = "registerReceiver",
+            parameters = listOf("Landroid/content/BroadcastReceiver;", "Landroid/content/IntentFilter;"),
+            returnType = "Landroid/content/Intent;",
         ),
     ),
 )
@@ -344,6 +346,16 @@ internal object ShizukuBinderReceivedFingerprint : Fingerprint(
             returnType = "V",
         ),
     ),
+)
+
+internal fun dashboardBatteryRegistrationFingerprint(receiverType: String) = Fingerprint(
+    returnType = "V",
+    strings = listOf(BATTERY_CHANGED),
+    filters = listOf(
+        methodCall(definingClass = "Landroid/content/Context;", name = "registerReceiver", returnType = "Landroid/content/Intent;"),
+        fieldAccess(opcode = Opcode.SPUT_OBJECT, type = "Landroid/content/Intent;", location = MatchAfterWithin(2)),
+    ),
+    custom = { _, classDef -> classDef.fields.any { it.type == receiverType } },
 )
 
 private const val ROOT_SERVICE_MANAGER_DESCRIPTOR = "com.topjohnwu.superuser.internal.IRootServiceManager"
@@ -405,7 +417,7 @@ internal fun nearbyScanFingerprint(fragmentClass: String) = Fingerprint(
         resourceLiteral(ResourceType.STRING, "scanning"),
         methodCall(returnType = STRING, parameters = listOf("I"), location = MatchAfterImmediately()),
         methodCall(name = "<init>", parameters = listOf("I", STRING, STRING)),
-        string("android.bluetooth.device.action.FOUND"),
+        methodCall(definingClass = "Landroid/content/IntentFilter;", name = "<init>", parameters = listOf(STRING)),
     ),
 )
 

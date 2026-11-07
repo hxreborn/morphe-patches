@@ -20,6 +20,8 @@
  */
 package app.hxreborn.extension.viber;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,12 +34,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.BuildConfig;
+import app.hxreborn.extension.viber.AppliedPatches.AppliedPatch;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -61,13 +65,16 @@ public final class PatchesSettingsActivity extends Activity {
 
     private SettingsRows rows;
 
+    private BusinessChatSelection businessChatSelection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(SettingsStyle.theme(this));
+        setTheme(SettingsStyle.theme());
         super.onCreate(savedInstanceState);
         PatchSettings.initialize(this);
         this.style = new SettingsStyle(this);
         this.rows = new SettingsRows(this, this.style);
+        this.businessChatSelection = new BusinessChatSelection(this, this::confirmRestart);
         styleSystemBars(getWindow());
         setContentView(screen());
     }
@@ -133,8 +140,23 @@ public final class PatchesSettingsActivity extends Activity {
         column.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP),
                 this.style.dp(CONTENT_BOTTOM_PADDING_DP));
 
+        String section = null;
+        LinearLayout card = null;
         for (PatchSetting setting : PatchSetting.values()) {
-            addSwitch(column, setting);
+            if (!setting.applied()) {
+                continue;
+            }
+            if (!setting.section.equals(section)) {
+                if (card != null) {
+                    addSection(column, section, card);
+                }
+                section = setting.section;
+                card = this.rows.card();
+            }
+            addSetting(card, setting);
+        }
+        if (card != null) {
+            addSection(column, section, card);
         }
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, "hx_viber_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
@@ -142,25 +164,54 @@ public final class PatchesSettingsActivity extends Activity {
         this.rows.valueRow(about, "hx_viber_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         LinearLayout applied = this.rows.card();
-        for (String name : AppliedPatches.names()) {
-            this.rows.plainRow(applied, name, AppliedPatches.description(name));
+        for (AppliedPatch patch : AppliedPatches.applied()) {
+            this.rows.plainRow(applied, patch.name, patch.description);
         }
         addSection(column, "Applied patches", applied);
         return column;
     }
 
-    private void addSwitch(LinearLayout column, PatchSetting setting) {
-        if (AppliedPatches.description(setting.title) == null) {
+    private void addSetting(LinearLayout card, PatchSetting setting) {
+        if (setting.choice) {
+            this.rows.actionRow(card, setting.icon(), setting.title(), setting.description(),
+                    () -> showStartFolderSelection(setting));
             return;
         }
-        LinearLayout card = this.rows.card();
-        this.rows.switchRow(card, setting, PatchSettings.isEnabled(setting.title), (button, enabled) -> {
-            PatchSettings.setEnabled(setting.title, enabled);
+        this.rows.switchRow(card, setting, PatchSettings.isEnabled(setting.key), (button, enabled) -> {
+            PatchSettings.setEnabled(setting.key, enabled);
             if (setting.restart) {
                 confirmRestart();
             }
         });
-        addSection(column, setting.section, card);
+        if (setting == PatchSetting.FILTER_BUSINESS_CHATS) {
+            this.rows.actionRow(card, "hx_viber_ic_select_business_chats", "Business chats",
+                    "Choose chats to filter after reading.", this.businessChatSelection::show);
+        }
+    }
+
+    private void showStartFolderSelection(PatchSetting setting) {
+        List<Object> choices = StartFolder.folders();
+        if (choices.isEmpty()) {
+            showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle(setting.title())
+                .setMessage("Open Chats to load folders, then try again.")
+                .setPositiveButton("OK", null));
+            return;
+        }
+        String[] names = new String[choices.size()];
+        for (int index = 0; index < choices.size(); index++) {
+            names[index] = StartFolder.folderTitle(choices.get(index), getResources());
+        }
+        showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle(setting.title())
+            .setSingleChoiceItems(names, StartFolder.savedFolderIndexOrAll(), (dialog, index) -> {
+                String folderId = StartFolder.folderId(choices.get(index));
+                boolean changed = !folderId.equals(PatchSettings.startFolder());
+                PatchSettings.setStartFolder(folderId);
+                dialog.dismiss();
+                if (changed && setting.restart) {
+                    confirmRestart();
+                }
+            })
+            .setNegativeButton("Cancel", null));
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {
@@ -192,13 +243,17 @@ public final class PatchesSettingsActivity extends Activity {
             .setNegativeButton("Cancel", null));
     }
 
-    private void showDialog(AlertDialog.Builder builder) {
+    AlertDialog showDialog(AlertDialog.Builder builder) {
         AlertDialog dialog = builder.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+        Button negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        if (negative != null) {
+            negative.setAllCaps(false);
+        }
+        return dialog;
     }
 
-    private int dialogTheme() {
+    int dialogTheme() {
         return this.style.dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
                 : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
     }

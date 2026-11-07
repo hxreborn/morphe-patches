@@ -6,6 +6,7 @@ package app.morphe.patches.bereal.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -14,7 +15,10 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.shared.misc.fillPatchDetails
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.returnTrueFrom
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -114,6 +118,25 @@ internal val settingsPatch = bytecodePatch {
             .single { it.name == "onCreate" && it.parameterTypes.isEmpty() && it.returnType == "V" }
             .addInstruction(0, "invoke-static/range { p0 .. p0 }, $PATCH_CONTEXT_CLASS->attach(Landroid/app/Application;)V")
 
+        mutableClassDefBy("${BEREAL_EXTENSION_PACKAGE}HostFonts;").replaceResourceIdStubs(
+            ResourceType.FONT,
+            mapOf(
+                "interRegular" to "inter_regular",
+                "interMedium" to "inter_medium",
+                "interSemibold" to "inter_semibold",
+            ),
+        )
         addSettingsRow()
     }
+}
+
+internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
+    returnTrueFrom(featureClass, "isPatchIncluded")
+
+internal fun BytecodePatchContext.markFeaturePatched(
+    featureClass: String,
+    patch: BytecodePatch,
+) {
+    markFeaturePatched(featureClass)
+    fillPatchDetails(featureClass, patch, "patchName", "patchDescription")
 }

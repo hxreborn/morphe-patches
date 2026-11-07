@@ -5,18 +5,25 @@
 package app.morphe.patches.bereal.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import app.morphe.util.setExtensionIsPatchIncluded
+import app.morphe.patches.shared.misc.smali.addFieldReader
+import app.morphe.patches.shared.misc.smali.replaceStub
+import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+
+private const val SPONSORED_FIELD = "isSponsored_"
 
 private fun MutableMethod.returnNull() = addInstructions(
     0,
@@ -31,7 +38,7 @@ private val removeAdsExtensionPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch: BytecodePatch = bytecodePatch(
     name = "Remove ads",
     description = "Removes the full-screen ad at launch and sponsored BeReals in both feeds. " +
         "Stops the ad networks from loading.",
@@ -40,7 +47,7 @@ val removeAdsPatch = bytecodePatch(
     dependsOn(removePairipProtectionPatch, removeAdsExtensionPatch, removeAdNetworkProvidersPatch)
 
     execute {
-        setExtensionIsPatchIncluded("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;")
+        markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;", removeAdsPatch)
 
         val adRequestType = AdRequestIdToStringFingerprint.matchSingle().classDef.type
         val adSelector = adSelectorFingerprint(adRequestType).matchSingle()
@@ -64,7 +71,8 @@ val removeAdsPatch = bytecodePatch(
             feedAddHasAdFingerprint(it.classDef.type).matchSingle().method.returnEarly(false)
         }
 
-        FeedPostEntryMessageFingerprint.matchAll(1..2).forEach { entry ->
+        val feedPostEntries = FeedPostEntryMessageFingerprint.matchAll(1..2)
+        feedPostEntries.forEach { entry ->
             val loop = feedPostEntryLoopFingerprint(entry.classDef.type).matchSingle()
             val (iteratorCall, _) = loop.instructionMatches
             val items = iteratorCall.getInstruction<FiveRegisterInstruction>().registerC
@@ -76,6 +84,8 @@ val removeAdsPatch = bytecodePatch(
                 """,
             )
         }
+
+        replaceSponsoredStub(feedPostEntries.map { it.classDef })
 
         val experiment = ServerFeedAdsExperimentFingerprint.matchSingle()
         val (resultInstance, _, _) = experiment.instructionMatches
@@ -90,4 +100,25 @@ val removeAdsPatch = bytecodePatch(
             """,
         )
     }
+}
+
+private fun BytecodePatchContext.replaceSponsoredStub(entries: List<ClassDef>) {
+    val checks = entries.mapIndexed { index, entry ->
+        val readSponsored = mutableClassDefBy(entry.type)
+            .addFieldReader(entry.fields.single { it.name == SPONSORED_FIELD })
+        """
+            instance-of v0, p0, ${entry.type}
+            if-eqz v0, :other$index
+            check-cast p0, ${entry.type}
+            invoke-virtual { p0 }, $readSponsored
+            move-result v0
+            return v0
+            :other$index
+        """.trimIndent()
+    }
+    mutableClassDefBy("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;").replaceStub(
+        "isSponsored",
+        2,
+        checks.joinToString("\n") + "\nconst/4 v0, 0x0\nreturn v0",
+    )
 }

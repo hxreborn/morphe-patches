@@ -7,6 +7,7 @@ package app.morphe.patches.protonauthenticator.misc.layout
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
@@ -14,6 +15,7 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.returnVoidWhen
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -21,7 +23,7 @@ private const val SETTINGS_SECTIONS_CLASS = "Lapp/hxreborn/extension/protonauthe
 private const val NEXT_INSTRUCTION = 1
 
 @Suppress("unused")
-val hideLayoutComponentsPatch = bytecodePatch(
+val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
     name = "Hide layout components",
     description = "Adds settings to hide the Spread the word section, the Discover Proton section " +
         "and the Proton Pass banner.",
@@ -30,6 +32,7 @@ val hideLayoutComponentsPatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(SETTINGS_SECTIONS_CLASS)
 
         PassBannerFingerprint.matchSingle().method

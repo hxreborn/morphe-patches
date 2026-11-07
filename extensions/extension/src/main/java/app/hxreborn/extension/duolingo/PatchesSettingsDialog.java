@@ -108,7 +108,7 @@ final class PatchesSettingsDialog {
         bar.setMinimumHeight(this.style.dp(APP_BAR_HEIGHT_DP));
 
         ImageView back = new ImageView(this.activity);
-        back.setImageDrawable(this.style.hostIcon("ic_arrow_back_black_24dp", this.style.eel));
+        back.setImageDrawable(this.style.backIcon(this.style.eel));
         back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         int inset = this.style.dp(BACK_ICON_INSET_DP);
         back.setPadding(inset, inset, inset, inset);
@@ -141,24 +141,28 @@ final class PatchesSettingsDialog {
         if (AppliedPatches.unlockPremium()) {
             PatchSettings.Subscription subscription = PatchSettings.subscription();
             this.rows.switchRow(learning, "hx_duolingo_ic_premium", AppliedPatches.UNLOCK_PREMIUM,
-                    unlockPremiumDescription(subscription), this::confirmRestart);
+                    AppliedPatches.unlockPremiumName(), AppliedPatches.unlockPremiumDescription(),
+                    this::confirmRestart);
             this.rows.actionRow(learning, "hx_duolingo_ic_premium", SUBSCRIPTION_TITLE, subscription.description,
                     this::chooseSubscription);
         }
         if (AppliedPatches.unlimitedRampUpTime()) {
             this.rows.switchRow(learning, "hx_duolingo_ic_rampup", AppliedPatches.UNLIMITED_RAMPUP_TIME,
-                    "Holds the RampUp timer at one hour.", this::confirmRestart);
+                    AppliedPatches.unlimitedRampUpTimeName(), AppliedPatches.unlimitedRampUpTimeDescription(),
+                    this::confirmRestart);
         }
         addSection(column, "Learning", learning);
 
         LinearLayout app = this.rows.card();
         if (AppliedPatches.disableDynamicAppIcon()) {
             this.rows.switchRow(app, "hx_duolingo_ic_dynamic_icon", AppliedPatches.DISABLE_DYNAMIC_APP_ICON,
-                    "Keeps the default launcher icon.", this::confirmRestart);
+                    AppliedPatches.disableDynamicAppIconName(), AppliedPatches.disableDynamicAppIconDescription(),
+                    this::confirmRestart);
         }
         if (AppliedPatches.enableDebugMode()) {
             this.rows.switchRow(app, "hx_duolingo_ic_debug", AppliedPatches.ENABLE_DEBUG_MODE,
-                    "Shows the debug menu and debug button.", this::confirmRestart);
+                    AppliedPatches.enableDebugModeName(), AppliedPatches.enableDebugModeDescription(),
+                    this::confirmRestart);
         }
         addSection(column, "App", app);
 
@@ -168,10 +172,6 @@ final class PatchesSettingsDialog {
         this.rows.valueRow(about, "hx_duolingo_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
         return column;
-    }
-
-    static String unlockPremiumDescription(PatchSettings.Subscription subscription) {
-        return "Unlocks " + subscription.label + " and keeps energy full.";
     }
 
     private void addSection(LinearLayout column, String title, LinearLayout card) {

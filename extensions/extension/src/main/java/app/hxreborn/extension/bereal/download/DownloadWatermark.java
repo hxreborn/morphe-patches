@@ -36,4 +36,12 @@ public final class DownloadWatermark {
         return PatchSettings.REMOVE_WATERMARK.get();
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

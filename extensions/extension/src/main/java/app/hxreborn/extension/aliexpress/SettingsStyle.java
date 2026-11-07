@@ -96,18 +96,30 @@ final class SettingsStyle {
         this.medium = Typeface.create(this.regular, Typeface.BOLD);
         View rowSurface = opaqueBackgroundOwner(nativeTitle);
         View pageSurface = (rowSurface != null) ? opaqueBackgroundOwner(parentView(rowSurface)) : null;
-        int row = (rowSurface != null) ? opaqueColor(rowSurface) : color("ae_ui_color_white", Color.WHITE);
+        int row = (rowSurface != null) ? opaqueColor(rowSurface) : color(whiteColor());
         this.lightScreen = isLight(row);
         int page = (pageSurface != null) ? opaqueColor(pageSurface) : row;
         if (page == row) {
-            page = this.lightScreen ? color("Gray_f3f3f3", row) : darker(row);
+            page = this.lightScreen ? color(lightGrayColor()) : darker(row);
         }
         this.screenBackground = this.lightScreen ? row : page;
         this.cardSurface = this.lightScreen ? page : row;
         this.secondaryText = withAlpha(this.primaryText, SECONDARY_TEXT_ALPHA);
         this.divider = withAlpha(this.primaryText, DIVIDER_ALPHA);
         this.rippleColor = themeColor(android.R.attr.colorControlHighlight, this.secondaryText);
-        this.accent = color("ae_ui_color_brand_primary", themeColor(android.R.attr.colorAccent, this.primaryText));
+        this.accent = color(brandColor());
+    }
+
+    static int whiteColor() {
+        return 0;
+    }
+
+    static int lightGrayColor() {
+        return 0;
+    }
+
+    static int brandColor() {
+        return 0;
     }
 
     int dp(float value) {
@@ -195,9 +207,8 @@ final class SettingsStyle {
     }
 
     @SuppressWarnings("deprecation")
-    private int color(String name, int fallback) {
-        int id = this.context.getResources().getIdentifier(name, "color", this.context.getPackageName());
-        return (id == 0) ? fallback : this.context.getResources().getColor(id);
+    private int color(int id) {
+        return this.context.getResources().getColor(id);
     }
 
 }

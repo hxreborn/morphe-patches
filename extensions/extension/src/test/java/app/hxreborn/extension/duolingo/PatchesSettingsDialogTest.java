@@ -43,6 +43,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowDialog;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = FakeHostResources.class)
 public final class PatchesSettingsDialogTest {
 
     private Activity activity;
@@ -126,21 +127,21 @@ public final class PatchesSettingsDialogTest {
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
-    public void describesSuperInUnlockPremiumRowByDefault() {
+    public void showsSharedPremiumDescriptionAndSelectedSuperSubscription() {
         List<String> texts = shownTexts();
 
-        assertTrue(texts.contains("Unlocks Super and keeps energy full."));
+        assertTrue(texts.contains(AppliedPatches.unlockPremiumDescription()));
         assertTrue(texts.contains(PatchSettings.Subscription.SUPER.description));
     }
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
-    public void describesMaxInUnlockPremiumRowWhenMaxIsChosen() {
+    public void showsSharedPremiumDescriptionAndSelectedMaxSubscription() {
         PatchSettings.setSubscription(PatchSettings.Subscription.MAX);
 
         List<String> texts = shownTexts();
 
-        assertTrue(texts.contains("Unlocks Max and keeps energy full."));
+        assertTrue(texts.contains(AppliedPatches.unlockPremiumDescription()));
         assertTrue(texts.contains(PatchSettings.Subscription.MAX.description));
     }
 

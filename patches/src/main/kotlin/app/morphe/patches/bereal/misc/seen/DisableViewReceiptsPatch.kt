@@ -7,6 +7,7 @@ package app.morphe.patches.bereal.misc.seen
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
@@ -14,9 +15,9 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
+import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.setExtensionIsPatchIncluded
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -48,7 +49,7 @@ private fun Match.returnSuccessWhenSkipped() {
 }
 
 @Suppress("unused")
-val disableViewReceiptsPatch = bytecodePatch(
+val disableViewReceiptsPatch: BytecodePatch = bytecodePatch(
     name = "Disable view receipts",
     description = "Stops sending which BeReals you viewed and which chats you opened.",
 ) {
@@ -56,7 +57,7 @@ val disableViewReceiptsPatch = bytecodePatch(
     dependsOn(settingsPatch)
 
     execute {
-        setExtensionIsPatchIncluded(EXTENSION_CLASS)
+        markFeaturePatched(EXTENSION_CLASS, disableViewReceiptsPatch)
 
         val requestType = MarkPostsAsSeenRpcFingerprint.matchSingle().method.parameterTypes.first().toString()
         markPostsAsSeenRepositoryFingerprint(requestType).matchSingle().returnSuccessWhenSkipped()

@@ -21,7 +21,6 @@
 package app.hxreborn.extension.liftoff;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,35 +31,29 @@ public final class AppliedPatches {
 
     static final String UNLOCK_PREMIUM = "Unlock premium";
 
-    private static final List<String> NAMES = Collections
-        .unmodifiableList(Arrays.asList(UNLOCK_CUSTOMIZATIONS, UNLOCK_PREMIUM));
-
     private AppliedPatches() {
     }
 
-    static List<String> names() {
-        List<String> names = new ArrayList<>();
-        for (String name : NAMES) {
-            if (description(name) != null) {
-                names.add(name);
-            }
-        }
-        return names;
+    static List<AppliedPatch> applied() {
+        List<AppliedPatch> applied = new ArrayList<>();
+        add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
+        add(applied, unlockCustomizations(), unlockCustomizationsName(), unlockCustomizationsDescription());
+        Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
+        return applied;
     }
 
-    static String description(String name) {
-        switch (name) {
-            case UNLOCK_CUSTOMIZATIONS:
-                return unlockCustomizationsDescription();
-            case UNLOCK_PREMIUM:
-                return unlockPremiumDescription();
-            default:
-                return null;
+    private static void add(List<AppliedPatch> applied, boolean patchApplied, String name, String description) {
+        if (patchApplied) {
+            applied.add(new AppliedPatch(name, description));
         }
     }
 
     public static boolean unlockPremium() {
-        return unlockPremiumDescription() != null;
+        return false;
+    }
+
+    public static String unlockPremiumName() {
+        return null;
     }
 
     public static String unlockPremiumDescription() {
@@ -68,11 +61,28 @@ public final class AppliedPatches {
     }
 
     public static boolean unlockCustomizations() {
-        return unlockCustomizationsDescription() != null;
+        return false;
+    }
+
+    public static String unlockCustomizationsName() {
+        return null;
     }
 
     public static String unlockCustomizationsDescription() {
         return null;
+    }
+
+    static final class AppliedPatch {
+
+        final String name;
+
+        final String description;
+
+        AppliedPatch(String name, String description) {
+            this.name = name;
+            this.description = description;
+        }
+
     }
 
 }

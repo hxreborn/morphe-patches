@@ -133,6 +133,26 @@ final class SettingsStyle {
         this.ripple = this.dark ? DARK_RIPPLE : LIGHT_RIPPLE;
     }
 
+    static int backIconDrawable() {
+        return 0;
+    }
+
+    static int switchThumbDrawable() {
+        return 0;
+    }
+
+    static int switchTrackDrawable() {
+        return 0;
+    }
+
+    static int switchTrackDecorationDrawable() {
+        return 0;
+    }
+
+    static int switchCheckDrawable() {
+        return 0;
+    }
+
     int dp(float value) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,
                 this.context.getResources().getDisplayMetrics()));
@@ -166,14 +186,17 @@ final class SettingsStyle {
         return icon;
     }
 
+    Drawable backIcon(int tint) {
+        Drawable icon = hostDrawable(backIconDrawable());
+        icon.setTint(tint);
+        return icon;
+    }
+
     void styleSwitch(Switch control) {
-        Drawable thumbShape = hostDrawable("mtrl_switch_thumb");
-        Drawable trackShape = hostDrawable("mtrl_switch_track");
-        Drawable trackOutline = hostDrawable("mtrl_switch_track_decoration");
-        Drawable checkIcon = hostDrawable("ic_m3_chip_check");
-        if (thumbShape == null || trackShape == null || trackOutline == null || checkIcon == null) {
-            return;
-        }
+        Drawable thumbShape = hostDrawable(switchThumbDrawable());
+        Drawable trackShape = hostDrawable(switchTrackDrawable());
+        Drawable trackOutline = hostDrawable(switchTrackDecorationDrawable());
+        Drawable checkIcon = hostDrawable(switchCheckDrawable());
         thumbShape.setTintList(checkedTint(this.switchOnThumb, this.switchOffThumb));
         trackShape.setTintList(checkedTint(this.primaryText, this.switchOffTrack));
         trackOutline.setTintList(checkedTint(Color.TRANSPARENT, this.switchOffThumb));
@@ -203,7 +226,11 @@ final class SettingsStyle {
 
     private Drawable hostDrawable(String name) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
-        Drawable drawable = (identifier != 0) ? this.context.getDrawable(identifier) : null;
+        return (identifier != 0) ? hostDrawable(identifier) : null;
+    }
+
+    private Drawable hostDrawable(int identifier) {
+        Drawable drawable = this.context.getDrawable(identifier);
         return (drawable != null) ? drawable.mutate() : null;
     }
 

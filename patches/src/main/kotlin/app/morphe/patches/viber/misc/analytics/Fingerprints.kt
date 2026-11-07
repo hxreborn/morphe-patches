@@ -5,12 +5,14 @@
 package app.morphe.patches.viber.misc.analytics
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 internal object TrackerStateRefreshFingerprint : Fingerprint(
     filters = listOf(
@@ -74,4 +76,12 @@ internal object FirebaseMetadataFingerprint : Fingerprint(
     returnType = "Ljava/lang/Boolean;",
     parameters = listOf("Ljava/lang/String;"),
     filters = listOf(string("Failed to load metadata: Metadata bundle is null")),
+)
+
+internal fun metadataFlagFingerprint(key: String, reader: MethodReference) = Fingerprint(
+    filters = listOf(
+        string(key),
+        methodCall(reference = reader, location = MatchAfterImmediately()),
+        opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),
+    ),
 )

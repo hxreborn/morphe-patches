@@ -36,15 +36,6 @@ import app.hxreborn.extension.shared.NightMode;
 
 public final class PatchesTheme {
 
-    public static final String BACKGROUND_SECONDARY = "proton_background_secondary";
-
-    public static final String TEXT_NORM = "proton_text_norm";
-
-    public static final String TEXT_WEAK = "proton_text_weak";
-
-    public static final String BACKGROUND_NORM = "proton_background_norm";
-    static final String ICON_DISABLED = "proton_icon_disabled";
-
     private static final int FALLBACK_BACKGROUND_NORM = 0xFF1C1B24;
 
     private static final int FALLBACK_BACKGROUND_SECONDARY = 0xFF292733;
@@ -69,6 +60,38 @@ public final class PatchesTheme {
 
     }
 
+    public static int backgroundNormAttribute() {
+        return 0;
+    }
+
+    public static int backgroundSecondaryAttribute() {
+        return 0;
+    }
+
+    public static int textNormAttribute() {
+        return 0;
+    }
+
+    public static int textWeakAttribute() {
+        return 0;
+    }
+
+    public static int iconDisabledAttribute() {
+        return 0;
+    }
+
+    public static int backArrowDrawable() {
+        return 0;
+    }
+
+    public static int chevronRightDrawable() {
+        return 0;
+    }
+
+    public static int checkmarkDrawable() {
+        return 0;
+    }
+
     public static int appCompatDefaultNightMode() {
         return APP_COMPAT_MODE_NIGHT_UNSPECIFIED;
     }
@@ -84,16 +107,34 @@ public final class PatchesTheme {
         }
     }
 
-    public static int resolveColorAttribute(Context context, String attribute) {
-        final int fallbackColor = fallbackColor(attribute);
-        try {
-            final int identifier = context.getResources().getIdentifier(attribute, "attr", context.getPackageName());
-            if (identifier == 0) {
-                return fallbackColor;
-            }
+    public static int backgroundNorm(Context context) {
+        return resolveColorAttribute(context, backgroundNormAttribute(), FALLBACK_BACKGROUND_NORM);
+    }
 
+    public static int backgroundSecondary(Context context) {
+        return resolveColorAttribute(context, backgroundSecondaryAttribute(), FALLBACK_BACKGROUND_SECONDARY);
+    }
+
+    public static int textNorm(Context context) {
+        return resolveColorAttribute(context, textNormAttribute(), FALLBACK_TEXT_NORM);
+    }
+
+    public static int textWeak(Context context) {
+        return resolveColorAttribute(context, textWeakAttribute(), FALLBACK_TEXT_WEAK);
+    }
+
+    static int iconDisabled(Context context) {
+        return resolveColorAttribute(context, iconDisabledAttribute(), FALLBACK_ICON_DISABLED);
+    }
+
+    static Drawable drawable(Context context, int id) {
+        return (id != 0) ? context.getDrawable(id) : null;
+    }
+
+    private static int resolveColorAttribute(Context context, int attribute, int fallbackColor) {
+        try {
             final TypedValue value = new TypedValue();
-            if (!context.getTheme().resolveAttribute(identifier, value, true)) {
+            if (!context.getTheme().resolveAttribute(attribute, value, true)) {
                 return fallbackColor;
             }
             if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
@@ -103,26 +144,6 @@ public final class PatchesTheme {
         } catch (Throwable ex) {
             return fallbackColor;
         }
-    }
-
-    private static int fallbackColor(String attribute) {
-        switch (attribute) {
-            case BACKGROUND_NORM:
-                return FALLBACK_BACKGROUND_NORM;
-            case TEXT_NORM:
-                return FALLBACK_TEXT_NORM;
-            case TEXT_WEAK:
-                return FALLBACK_TEXT_WEAK;
-            case ICON_DISABLED:
-                return FALLBACK_ICON_DISABLED;
-            default:
-                return FALLBACK_BACKGROUND_SECONDARY;
-        }
-    }
-
-    static Drawable getDrawableByName(Context context, String name) {
-        final int identifier = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        return (identifier != 0) ? context.getDrawable(identifier) : null;
     }
 
     public static GradientDrawable createRoundedRectangle(Context context, int color, int radiusDp) {
@@ -148,7 +169,7 @@ public final class PatchesTheme {
     }
 
     public static void tintTextInput(EditText input, int accentColor) {
-        final int inactiveColor = resolveColorAttribute(input.getContext(), ICON_DISABLED);
+        final int inactiveColor = iconDisabled(input.getContext());
 
         input.setBackgroundTintList(new ColorStateList(new int[][] { { android.R.attr.state_focused }, {} },
                 new int[] { accentColor, inactiveColor }));

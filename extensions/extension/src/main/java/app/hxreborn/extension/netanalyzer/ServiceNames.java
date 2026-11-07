@@ -33,7 +33,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 final class ServiceNames {
 
-    private static final String RESOURCE = "port_database";
+    private static final String CACHE_PREFIX = "port_database";
 
     private static final int COPY_BUFFER_SIZE = 16384;
 
@@ -43,14 +43,15 @@ final class ServiceNames {
         this.database = database;
     }
 
+    static int portDatabase() {
+        return 0;
+    }
+
     static ServiceNames open(Context context) {
         try {
-            final int id = context.getResources().getIdentifier(RESOURCE, "raw", context.getPackageName());
-            if (id == 0) {
-                return new ServiceNames(null);
-            }
+            final int id = portDatabase();
             final long stamp = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).lastUpdateTime;
-            final File target = new File(context.getCacheDir(), RESOURCE + "_" + stamp + ".db");
+            final File target = new File(context.getCacheDir(), CACHE_PREFIX + "_" + stamp + ".db");
             if (!target.exists()) {
                 copy(context, id, target);
             }

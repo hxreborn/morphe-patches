@@ -11,9 +11,11 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -21,6 +23,7 @@ import org.w3c.dom.Element
 
 internal const val FEATURES_CLASS = "Lapp/hxreborn/extension/netanalyzer/Features;"
 internal const val EXTENSION_PACKAGE = "app.hxreborn.extension.netanalyzer"
+private const val SERVICE_NAMES_CLASS = "Lapp/hxreborn/extension/netanalyzer/ServiceNames;"
 private const val ACTIVITY_THEME = "@android:style/Theme.DeviceDefault.DayNight"
 private const val PATCHES_SECTION_METHOD = "hxPatchesSection"
 private const val PATCHES_SECTION_HEADER = "Patches"
@@ -91,6 +94,10 @@ internal val patchesMenuPatch = bytecodePatch {
     execute {
         menuEntries.clear()
         featureActivities.clear()
+        mutableClassDefBy(SERVICE_NAMES_CLASS).replaceResourceIdStubs(
+            ResourceType.RAW,
+            mapOf("portDatabase" to "port_database"),
+        )
         addFeatureActivity(PATCHES_MENU_ACTIVITY)
         MainActivityOnCreateFingerprint.matchSingle().method.addInstructions(
             0,

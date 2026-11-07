@@ -188,6 +188,10 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         }
     }
 
+    static int backButtonId() {
+        return 0;
+    }
+
     private static void applyDarkTheme(WebView view) {
         view.setBackgroundColor(DARK_BACKGROUND);
         view.evaluateJavascript(DARK_THEME_SCRIPT, null);
@@ -197,8 +201,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             return;
         }
 
-        int backButtonId = activity.getResources().getIdentifier("left_button", "id", activity.getPackageName());
-        View backButton = (backButtonId != 0) ? activity.findViewById(backButtonId) : null;
+        View backButton = activity.findViewById(backButtonId());
         if (backButton instanceof ImageView) {
             ((ImageView) backButton).setColorFilter(Color.WHITE);
         }

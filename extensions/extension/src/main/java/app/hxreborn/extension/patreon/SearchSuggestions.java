@@ -58,4 +58,12 @@ public final class SearchSuggestions {
         return items;
     }
 
+    public static String patchName() {
+        return null;
+    }
+
+    public static String patchDescription() {
+        return null;
+    }
+
 }

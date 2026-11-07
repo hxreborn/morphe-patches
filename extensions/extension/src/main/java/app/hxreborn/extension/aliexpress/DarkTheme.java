@@ -52,8 +52,6 @@ public final class DarkTheme {
 
     private static final String NATIVE_FALSE = "false";
 
-    private static final String PAGE_STATUS_ID = "page_status";
-
     private static final int PAGE_LOADED_MESSAGE = 401;
 
     private static final long PAGE_COVER_TIMEOUT_MS = 12000;
@@ -72,8 +70,17 @@ public final class DarkTheme {
     private DarkTheme() {
     }
 
+    static int pageStatusId() {
+        return 0;
+    }
+
     public static void recordHostDarkMode(boolean enabled) {
         hostDarkMode = enabled;
+    }
+
+    public static boolean enableDarkMode(boolean enabled) {
+        recordHostDarkMode(enabled);
+        return enabled || PatchSettings.darkTheme();
     }
 
     public static boolean followsDarkMode() {
@@ -196,9 +203,7 @@ public final class DarkTheme {
     }
 
     private static View pageStatus(View page) {
-        Context context = page.getContext();
-        int id = context.getResources().getIdentifier(PAGE_STATUS_ID, "id", context.getPackageName());
-        return (id == 0) ? null : page.getRootView().findViewById(id);
+        return page.getRootView().findViewById(pageStatusId());
     }
 
     private static boolean templatesNeedNightColors() {
