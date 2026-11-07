@@ -11,6 +11,7 @@
 package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
@@ -72,6 +73,7 @@ internal object PlayServicesGetCredentialRoutingFingerprint : Fingerprint(
     filters = listOf(
         literal(PRE_U_MIN_GMS_APK_VERSION),
         methodCall(name = "isAvailableOnDevice", parameters = listOf("I"), returnType = "Z"),
+        opcode(Opcode.MOVE_RESULT, location = MatchAfterImmediately()),
     ),
 )
 

@@ -5,7 +5,6 @@
 package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -16,9 +15,9 @@ internal val playServicesCredentialProviderPatch = bytecodePatch {
         CredentialProviderFrameworkAvailabilityFingerprint.matchSingle().method.returnEarly(false)
 
         PlayServicesGetCredentialRoutingFingerprint.matchOrNull()?.let { match ->
-            val moveResultIndex = match.instructionMatches.last().index + 1
-            val register = match.method.getInstruction<OneRegisterInstruction>(moveResultIndex).registerA
-            match.method.addInstruction(moveResultIndex + 1, "const/4 v$register, 0x0")
+            val (_, _, availabilityResult) = match.instructionMatches
+            val register = (availabilityResult.instruction as OneRegisterInstruction).registerA
+            match.method.addInstruction(availabilityResult.index + 1, "const/4 v$register, 0x0")
         }
     }
 }
