@@ -6,6 +6,7 @@ package app.morphe.patches.viber.layout.navigation
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.bytecodePatch
@@ -19,7 +20,10 @@ import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
 import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
 import app.morphe.patches.viber.shared.addHiddenIdCheck
 import app.morphe.patches.viber.shared.markPatchApplied
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+
+private const val MINIMUM_HOME_TAB_COUNT = 2
 
 private enum class HomeTab(val label: String, val default: Boolean, vararg val ids: Int) {
     CALLS("Calls", false, 1, 7),
@@ -57,6 +61,17 @@ val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
         val tabVisibilityMethod = visibilityCall.instruction.getReference<MethodReference>()!!
         val tabVisibility = tabVisibilityFingerprint(tabVisibilityMethod).matchSingle()
         val isHiddenTab = mutableClassDefBy(tabVisibility.classDef).addHiddenIdCheck("isHiddenTab", hiddenIds)
+
+        homeTabCountRangeFingerprint(tabVisibilityMethod.definingClass).matchSingle().let { range ->
+            val (minimumCount, _) = range.instructionMatches
+            val register = (minimumCount.instruction as OneRegisterInstruction).registerA
+            range.method.replaceInstruction(minimumCount.index, "const/4 v$register, $MINIMUM_HOME_TAB_COUNT")
+        }
+        InflateHomeTabsFingerprint.matchSingle().let { inflation ->
+            val (_, minimumCount, _) = inflation.instructionMatches
+            val register = (minimumCount.instruction as OneRegisterInstruction).registerA
+            inflation.method.replaceInstruction(minimumCount.index, "const/4 v$register, $MINIMUM_HOME_TAB_COUNT")
+        }
 
         tabVisibility.method.apply {
             val resultRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
