@@ -1,3 +1,9 @@
+## [1.74.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.74.0-dev.2...v1.74.0-dev.3) (2026-11-07)
+
+### New Features
+
+* **TeraBox - Show backup count:** include paused and waiting files ([8e08749](https://github.com/hxreborn/morphe-patches/commit/8e087499894d9f3415404c000f3cf4d4a953fef0)), closes [#606](https://github.com/hxreborn/morphe-patches/issues/606)
+
 ## [1.74.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.74.0-dev.1...v1.74.0-dev.2) (2026-11-07)
 
 ### New Features

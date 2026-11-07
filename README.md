@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.74.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.74.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;497 patches total
+> **[v1.74.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.74.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
 
 <table>
 <tr>
@@ -233,7 +233,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#sygic"><img src=".github/assets/icons/sygic.png" width="40"><br>Sygic</a><br><sub>2 patches</sub></td>
 <td align="center" width="25%"><a href="#symfonium"><img src=".github/assets/icons/symfonium.png" width="40"><br>Symfonium</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>10 patches</sub></td>
+<td align="center" width="25%"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>11 patches</sub></td>
 <td align="center" width="25%"><a href="#tradingview"><img src=".github/assets/icons/tradingview.png" width="40"><br>TradingView</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -2840,7 +2840,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="terabox"></a>
 <details>
-<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;10 patches</summary>
+<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2859,6 +2859,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="terabox-hide-promotions"></a>[Hide promotions](patches/src/main/kotlin/app/morphe/patches/terabox/misc/promotions/HidePromotionsPatch.kt) | Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, floating invites and coupon popups. |  |
 | <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Removes recommendations below the player. |  |
 | <a id="terabox-remove-recent-panel"></a>[Remove recent panel](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recent/RemoveRecentPanelPatch.kt) | Removes Recent, Starred and Offline from Home. |  |
+| <a id="terabox-show-backup-count"></a>[Show backup count](patches/src/main/kotlin/app/morphe/patches/terabox/misc/backup/ShowBackupCountPatch.kt) | Shows remaining files on Home and Photos, including paused backups. |  |
 | <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD, 3x speed and uploads, with HD up to original quality. HD buffers faster over parallel connections. |  |
 
 </details>

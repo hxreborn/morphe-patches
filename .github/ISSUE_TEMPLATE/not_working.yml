@@ -437,11 +437,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.74.0-dev.3"
         - "1.74.0-dev.2"
         - "1.74.0-dev.1"
         - "1.73.1-dev.1"
         - "1.73.0-dev.3"
-        - "1.73.0-dev.2"
         - "1.73.0"
         - "Older than these"
         # /generated
@@ -930,6 +930,7 @@ body:
         - "TeraBox \u00b7 Hide promotions"
         - "TeraBox \u00b7 Hide video recommendations"
         - "TeraBox \u00b7 Remove recent panel"
+        - "TeraBox \u00b7 Show backup count"
         - "TeraBox \u00b7 Unlock Premium Plus"
         - "TradingView \u00b7 GmsCore support"
         - "TradingView \u00b7 Hide ads"

@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.74.0-dev.2",
+  "version": "1.74.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -13779,6 +13779,40 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show backup count",
+      "description": "Shows remaining files on Home and Photos, including paused backups.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dubox.drive",
+          "name": "TeraBox",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#226DF6",
+          "signatures": [
+            "b75fd2b70084d7e0813b8f74dd74b62ab79b2aa0ce1372331a1841bd88eed993"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.27.5",
+              "versionCodes": {
+                "ARM64_V8A": 702,
+                "ARMEABI_V7A": 702,
+                "X86_64": 702,
+                "X86": 702
+              },
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]
