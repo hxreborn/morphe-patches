@@ -311,6 +311,20 @@ ICONS = {
 }
 
 ICON_DIR = Path(".github/assets/icons")
+FEATURED_PACKAGES = [
+    "com.viber.voip",
+    "com.bereal.ft",
+    "com.community.oneroom",
+    "ch.protonmail.android",
+    "ch.protonvpn.android",
+    "com.keepa.mobile",
+    "com.dubox.drive",
+    "com.imo.android.imoim",
+    "com.duolingo",
+    "com.alibaba.aliexpresshd",
+    "photo.editor.photoeditor.photoeditorpro",
+    "com.cxinventor.file.explorer",
+]
 PLAY_URL = "https://play.google.com/store/apps/details?id={}&hl=en&gl=US"
 def icon_file(pkg):
     for filename in (ICONS.get(pkg), f"{pkg}.png"):
@@ -384,7 +398,8 @@ def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
 </details>"""
 
 
-GRID_COLUMNS = 4
+GRID_COLUMNS = 3
+GRID_CELL_WIDTH = 160
 
 
 def patch_count(n):
@@ -394,14 +409,14 @@ def patch_count(n):
 def grid_cell(label, caption, pkg=None):
     filename = icon_file(pkg) if pkg else None
     icon = f'<img src=".github/assets/icons/{filename}" width="40">' if filename else "🌐"
-    return (f'<td align="center" width="{100 // GRID_COLUMNS}%"><a href="#{slug(label)}">{icon}<br>{label}</a>'
+    return (f'<td align="center" width="{GRID_CELL_WIDTH}"><a href="#{slug(label)}">{icon}<br>{label}</a>'
             f"<br><sub>{caption}</sub></td>")
 
 
 def app_grid(cells):
     rows = [cells[i:i + GRID_COLUMNS] for i in range(0, len(cells), GRID_COLUMNS)]
     body = "\n".join("<tr>\n" + "\n".join(row) + "\n</tr>" for row in rows)
-    return f'<table>\n{body}\n</table>\n\n## <img src="https://raw.githubusercontent.com/{owner}/{repo}/assets/aqua/icons/full-list.png" height="48" align="absmiddle" alt="Full list"> Full list\n'
+    return f'<table>\n{body}\n</table>\n'
 
 
 def build_content(expanded=False):
@@ -413,11 +428,11 @@ def build_content(expanded=False):
     fetch_missing_icons(list(by_pkg))
 
     apps = sorted(by_pkg.items(), key=lambda item: item[1]["name"].lower())
-    cells = [grid_cell(e["name"], patch_count(len(e["patches"])), pkg) for pkg, e in apps]
-    if universal:
-        cells.append(grid_cell("Universal", patch_count(len(universal))))
+    cells = [grid_cell(by_pkg[pkg]["name"], patch_count(len(by_pkg[pkg]["patches"])), pkg) for pkg in FEATURED_PACKAGES]
     lines.append("")
+    lines.append("### Featured apps\n")
     lines.append(app_grid(cells))
+    lines.append(f'## <img src="https://raw.githubusercontent.com/{owner}/{repo}/assets/aqua/icons/full-list.png" height="48" align="absmiddle" alt=""> Full list\n\n<details open>\n<summary>click to expand or collapse</summary>\n')
 
     for pkg, entry in apps:
         patches = list(entry["patches"].values())
@@ -439,6 +454,7 @@ def build_content(expanded=False):
 </details>""")
         lines.append("")
 
+    lines.append("</details>\n")
     return "\n".join(lines)
 
 

@@ -54,6 +54,22 @@ def strip_svg(picture, mode):
 """
 
 
+def button_svg(icon):
+    width, height = 380, 76
+    font = base64.b64encode(FONT_FILE.read_bytes()).decode()
+    subtitle_font = base64.b64encode(SUBTITLE_FONT_FILE.read_bytes()).decode()
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}" role="img" aria-label="Add this source to Morphe">
+<defs><style>@font-face{{font-family:Label;src:url(data:font/woff2;base64,{font}) format("woff2")}}@font-face{{font-family:Caption;src:url(data:font/woff2;base64,{subtitle_font}) format("woff2")}}</style>
+<linearGradient id="fill" x1="0" x2="1"><stop offset="0" stop-color="#2aa7e0"/><stop offset="1" stop-color="#5fd0d8"/></linearGradient></defs>
+<rect x="2" y="2" width="{width - 4}" height="{height - 4}" rx="{(height - 4) // 2}" fill="url(#fill)" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+<image href="{data_uri(icon)}" x="12" y="6" width="64" height="64"/>
+<text x="92" y="38" font-family="Label" font-size="28" fill="#ffffff">Add this source</text>
+<text x="93" y="59" font-family="Caption" font-size="16" fill="#ffffff" fill-opacity="0.9">for Morphe</text>
+<path d="M326 26l14 12-14 12" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+"""
+
+
 def main():
     if len(sys.argv) < 2:
         raise SystemExit("Usage: generate_banner.py <assets-dir>")
@@ -64,6 +80,7 @@ def main():
     for mode in THEMES:
         (assets / f"banner-{mode}.svg").write_text(strip_svg(top, mode), encoding="utf-8")
     shutil.copyfile(bottom, assets / "request.png")
+    (assets / "add-source.svg").write_text(button_svg(assets / "aqua" / "icons" / "installing.png"), encoding="utf-8")
     print(f"banner: {top.name}; request.png: {bottom.name}")
 
 
