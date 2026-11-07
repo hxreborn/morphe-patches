@@ -23,17 +23,69 @@ package app.hxreborn.extension.castle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.After;
 import org.junit.Test;
+
+import hx.testing.LocalCdn;
 
 public final class PreviewPlaylistTest {
 
     private static final String SEGMENT = "https://cdn.test/hls/480/%d.jpg?t=1";
+
+    @After
+    public void clearsTheFullHdRequest() {
+        FullHdPlaylist.resolution(2);
+    }
+
+    @Test
+    public void expandsTheFullHdSegmentsWhenAPreviewWasServed() throws IOException {
+        try (LocalCdn cdn = new LocalCdn(null)) {
+            for (int number = 0; number <= 5; number++) {
+                cdn.put("/hls/1080/" + number + ".jpg", new byte[] { 0 });
+            }
+            String preview = paddedPreview().replace("https://cdn.test", cdn.url(""));
+            FullHdPlaylist.resolution(3);
+
+            InputStream result = PreviewPlaylist.expand(cdn.url("/hls/480/index_preview_1.m3u8"),
+                    new ByteArrayInputStream(preview.getBytes(StandardCharsets.UTF_8)));
+
+            String expanded = new String(result.readAllBytes(), StandardCharsets.UTF_8);
+            assertEquals(preview.replace("/480/", "/1080/")
+                .replace("#EXTINF:20.000000,\n" + cdn.url("/hls/1080/1.jpg?t=1"),
+                        "#EXTINF:5.000000,\n" + cdn.url("/hls/1080/2.jpg?t=1") + "\n#EXTINF:5.000000,\n"
+                                + cdn.url("/hls/1080/3.jpg?t=1") + "\n#EXTINF:5.000000,\n"
+                                + cdn.url("/hls/1080/4.jpg?t=1") + "\n#EXTINF:5.000000,\n"
+                                + cdn.url("/hls/1080/5.jpg?t=1")),
+                    expanded);
+            assertTrue(cdn.hitsOn("/hls/1080/5.jpg") > 0);
+        }
+    }
+
+    @Test
+    public void expandsTheOriginalPreviewWhenTheFullHdSegmentsAreMissing() throws IOException {
+        try (LocalCdn cdn = new LocalCdn(null)) {
+            for (int number = 0; number <= 5; number++) {
+                cdn.put("/hls/480/" + number + ".jpg", new byte[] { 0 });
+            }
+            String preview = paddedPreview().replace("https://cdn.test", cdn.url(""));
+            FullHdPlaylist.resolution(3);
+
+            InputStream result = PreviewPlaylist.expand(cdn.url("/hls/480/index_preview_1.m3u8"),
+                    new ByteArrayInputStream(preview.getBytes(StandardCharsets.UTF_8)));
+
+            String expanded = new String(result.readAllBytes(), StandardCharsets.UTF_8);
+            assertTrue(expanded.contains(cdn.url("/hls/480/5.jpg?t=1")));
+            assertTrue(expanded.endsWith("#EXT-X-ENDLIST\n"));
+            assertTrue(cdn.hitsOn("/hls/1080/0.jpg") > 0);
+        }
+    }
 
     private static String paddedPreview() {
         return "#EXTM3U\n#EXT-X-TARGETDURATION:12\n#EXTINF:3.000000,\n" + String.format(SEGMENT, 0) + "\n"

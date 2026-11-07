@@ -38,7 +38,7 @@ public final class FullHdPlaylist {
 
     private static final int FULL_HD = 3;
 
-    private static final Pattern HD_DIRECTORY = Pattern.compile("([/_])720(ts)?/");
+    private static final Pattern HD_DIRECTORY = Pattern.compile("([/_])(?:480|720)(ts|P)?/");
 
     private static volatile boolean requested;
 
