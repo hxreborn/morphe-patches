@@ -435,11 +435,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.73.0-dev.3"
         - "1.73.0-dev.2"
         - "1.73.0-dev.1"
         - "1.72.1-dev.1"
         - "1.72.0-dev.3"
-        - "1.72.0-dev.2"
         - "1.72.0"
         - "Older than these"
         # /generated
@@ -936,6 +936,7 @@ body:
         - "Viber \u00b7 Disable AI features"
         - "Viber \u00b7 Disable analytics"
         - "Viber \u00b7 Disable update prompts"
+        - "Viber \u00b7 Disappearing media privacy"
         - "Viber \u00b7 Enable Viber Plus features"
         - "Viber \u00b7 Filter business chats"
         - "Viber \u00b7 GmsCore support"

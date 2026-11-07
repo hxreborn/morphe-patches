@@ -1,3 +1,13 @@
+## [1.73.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.73.0-dev.2...v1.73.0-dev.3) (2026-11-07)
+
+### Bug Fixes
+
+* **Viber - Hide navigation buttons:** keep Chats and More reachable ([59864ee](https://github.com/hxreborn/morphe-patches/commit/59864ee5538c08a47985155ec99e653a0687763d)), closes [#658](https://github.com/hxreborn/morphe-patches/issues/658)
+
+### New Features
+
+* **Viber - Disappearing media privacy:** stop screenshot alerts ([a442301](https://github.com/hxreborn/morphe-patches/commit/a4423012262e24753569b808d2c72a035e958f05))
+
 ## [1.73.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.73.0-dev.1...v1.73.0-dev.2) (2026-11-06)
 
 ### New Features

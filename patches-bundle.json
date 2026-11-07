@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-06T18:54:36",
-  "description": "## [1.73.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.73.0-dev.1...v1.73.0-dev.2) (2026-11-06)\n\n### New Features\n\n* **BeHisabi - Unlock premium:** add unlimited wallets and PDF exports ([8341b13](https://github.com/hxreborn/morphe-patches/commit/8341b133b922205edd1fb5bf613a9bb64c241bc1))\n* **Viber - Remove list gaps:** stop scrolling past last item ([21e429f](https://github.com/hxreborn/morphe-patches/commit/21e429f3ec783c2224afda5f0f604c21c32b518f))\n* **Viber - Remove typing privacy banner:** clear message box upsell ([7b4899c](https://github.com/hxreborn/morphe-patches/commit/7b4899c9f0a00f30fb5532a2d4199dee3c662e1f))\n* **Viber - Start folder:** open chats in chosen folder ([ca64571](https://github.com/hxreborn/morphe-patches/commit/ca64571bb441df1f175887e2ac288c633896c67b)), closes [#657](https://github.com/hxreborn/morphe-patches/issues/657)\n* **Xtream Player - Full Android Auto screen:** add TV, YouTube, games ([56f67fc](https://github.com/hxreborn/morphe-patches/commit/56f67fc9edf69202b6e838d477a9f0082197a8a1)), closes [#653](https://github.com/hxreborn/morphe-patches/issues/653)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.73.0-dev.2/patches-1.73.0-dev.2.mpp",
+  "created_at": "2026-11-07T00:30:57",
+  "description": "## [1.73.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.73.0-dev.2...v1.73.0-dev.3) (2026-11-07)\n\n### Bug Fixes\n\n* **Viber - Hide navigation buttons:** keep Chats and More reachable ([59864ee](https://github.com/hxreborn/morphe-patches/commit/59864ee5538c08a47985155ec99e653a0687763d)), closes [#658](https://github.com/hxreborn/morphe-patches/issues/658)\n\n### New Features\n\n* **Viber - Disappearing media privacy:** stop screenshot alerts ([a442301](https://github.com/hxreborn/morphe-patches/commit/a4423012262e24753569b808d2c72a035e958f05))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.73.0-dev.3/patches-1.73.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.73.0-dev.2"
+  "version": "1.73.0-dev.3"
 }

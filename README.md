@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.73.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.73.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;492 patches total
+> **[v1.73.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.73.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;493 patches total
 
 <table>
 <tr>
@@ -245,7 +245,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <tr>
 <td align="center" width="25%"><a href="#uptcl"><img src=".github/assets/icons/uptcl.png" width="40"><br>UPTCL</a><br><sub>5 patches</sub></td>
 <td align="center" width="25%"><a href="#usa-vpn"><img src=".github/assets/icons/usavpn.png" width="40"><br>USA VPN</a><br><sub>1 patch</sub></td>
-<td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>20 patches</sub></td>
+<td align="center" width="25%"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>21 patches</sub></td>
 <td align="center" width="25%"><a href="#video-editor"><img src=".github/assets/icons/videoeditor.png" width="40"><br>Video Editor</a><br><sub>1 patch</sub></td>
 </tr>
 <tr>
@@ -2983,7 +2983,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;20 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2996,6 +2996,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="viber-disable-ai-features"></a>[Disable AI features](patches/src/main/kotlin/app/morphe/patches/viber/layout/ai/DisableAiFeaturesPatch.kt) | Removes AI reply suggestions, chat summaries, image remix controls and the Your News banner. |  |
 | <a id="viber-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/viber/misc/analytics/DisableAnalyticsPatch.kt) | Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data. |  |
 | <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the optional Google Play update dialog. Required updates still show. |  |
+| <a id="viber-disappearing-media-privacy"></a>[Disappearing media privacy](patches/src/main/kotlin/app/morphe/patches/viber/layout/mediaprivacy/DisappearingMediaPrivacyPatch.kt) | Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat. |  |
 | <a id="viber-enable-viber-plus-features"></a>[Enable Viber Plus features](patches/src/main/kotlin/app/morphe/patches/viber/misc/premium/UnlockViberPlusPatch.kt) | Enables Viber Plus app icons and the typing privacy switch. The Plus badge and Invisible Mode need a paid subscription. |  |
 | <a id="viber-filter-business-chats"></a>[Filter business chats](patches/src/main/kotlin/app/morphe/patches/viber/layout/business/FilterBusinessChatsPatch.kt) | Filters selected business chats after reading and removes inbox discovery prompts. Shows unread chats and verification-code chats. |  |
 | <a id="viber-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |  |
