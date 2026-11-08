@@ -22,6 +22,6 @@ package app.hxreborn.extension.ultimea.equalizer;
 
 interface PresetSelection {
 
-    void selected(EqualizerCurve curve);
+    void selected(EqualizerPreset preset);
 
 }

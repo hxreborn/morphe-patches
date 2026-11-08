@@ -20,15 +20,17 @@
  */
 package app.hxreborn.extension.ultimea.equalizer;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +38,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -59,6 +62,8 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
 
     private static final int TEXT_SP = 14;
 
+    private static final int TITLE_SP = 20;
+
     private static final int RIPPLE = 0x22541597;
 
     private static final int DISABLED_ALPHA = 0x61000000;
@@ -77,11 +82,21 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
 
     private final Button entry;
 
-    private AlertDialog dialog;
+    private Dialog dialog;
+
+    private Button close;
 
     private EqualizerHistory history;
 
-    private EqualizerCurve edited;
+    private SoundState edited;
+
+    private Object connection;
+
+    private EqualizerPreset stagedPreset;
+
+    private Button remoteEntry;
+
+    private boolean grouped;
 
     private TextView status;
 
@@ -103,7 +118,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         this.activity = activity;
         this.style = new EqualizerStyle(activity);
         this.entry = entry;
-        entry.setOnClickListener((view) -> open());
+        entry.setOnClickListener((view) -> open(false));
     }
 
     public static void attach(Activity activity) {
@@ -130,10 +145,23 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         entry.setVisibility(View.GONE);
         content.removeView(host);
         wrapper.addView(host, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        wrapper.addView(entry, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                Math.round(ROW_HEIGHT_DP * activity.getResources().getDisplayMetrics().density)));
+        LinearLayout entries = new LinearLayout(activity);
+        entries.addView(entry, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        Button remote = new Button(activity);
+        remote.setText("Remote controls");
+        remote.setAllCaps(false);
+        remote.setTextColor(style.buttonText);
+        remote.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SP);
+        remote.setBackground(
+                new RippleDrawable(ColorStateList.valueOf(RIPPLE), new ColorDrawable(style.background), null));
+        remote.setVisibility(View.GONE);
+        entries.addView(remote, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+        wrapper.addView(entries, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         content.addView(wrapper, original);
         FineEqualizer controller = new FineEqualizer(activity, entry);
+        controller.remoteEntry = remote;
+        remote.setOnClickListener((view) -> controller.open(true));
         current = new WeakReference<>(controller);
         activity.getApplication().registerActivityLifecycleCallbacks(controller);
     }
@@ -156,6 +184,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
                 FineEqualizer controller = current.get();
                 if (controller != null) {
                     controller.entry.setVisibility(visible ? View.VISIBLE : View.GONE);
+                    controller.remoteEntry.setVisibility(visible ? View.VISIBLE : View.GONE);
                 }
             });
         } catch (JSONException ex) {
@@ -179,16 +208,28 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         return button;
     }
 
-    private void open() {
+    private void open(boolean grouped) {
         if (this.dialog != null || this.activity.isFinishing()) {
             return;
         }
+        EqualizerBases.configure(this.activity);
+        this.grouped = grouped;
+        this.presets = null;
+        this.stagedPreset = null;
         final int opening = ++this.generation;
+        this.connection = EqualizerConnection.connection();
         this.readFailed = false;
         LinearLayout content = new LinearLayout(this.activity);
         content.setOrientation(LinearLayout.VERTICAL);
         content.setPadding(dp(INSET_DP), 0, dp(INSET_DP), 0);
         content.setBackgroundColor(this.style.background);
+        String title = grouped ? "Remote controls" : "Fine equalizer";
+        TextView heading = new TextView(this.activity);
+        heading.setText(title);
+        heading.setTextColor(this.style.text);
+        heading.setTextSize(TypedValue.COMPLEX_UNIT_SP, TITLE_SP);
+        heading.setPadding(0, dp(INSET_DP), 0, dp(INSET_DP));
+        content.addView(heading);
         this.status = new TextView(this.activity);
         this.status.setTextColor(this.style.text);
         this.status.setText("Reading equalizer…");
@@ -197,7 +238,8 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         this.bands.setOrientation(LinearLayout.VERTICAL);
         ScrollView scroll = new ScrollView(this.activity);
         scroll.addView(this.bands);
-        content.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        content.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         LinearLayout actions = new LinearLayout(this.activity);
         this.apply = button("Apply");
         this.undo = button("Undo");
@@ -208,89 +250,158 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         actions.addView(this.apply, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         actions.addView(this.undo, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         content.addView(actions);
-        if (AppliedPatches.localEqualizerPresets()) {
+        if (!grouped && AppliedPatches.localEqualizerPresets()) {
             this.presets = button("Presets");
             this.presets.setEnabled(false);
-            this.presets.setOnClickListener((view) -> LocalPresets.open(this.activity, this.edited, (curve) -> {
-                this.edited = curve;
+            this.presets.setOnClickListener((view) -> LocalPresets.open(this.activity, this.edited.curve, (preset) -> {
+                if (this.dialog == null || opening != this.generation) {
+                    return;
+                }
+                this.stagedPreset = preset;
+                SoundState state = EqualizerBases.playable(preset.state);
+                this.edited = (state.xupmix < 0) ? state.withXupmix(this.history.current().xupmix) : state;
                 render();
                 this.status.setText("Preset staged. Apply to confirm.");
             }));
             content.addView(this.presets);
         }
-        this.dialog = new AlertDialog.Builder(this.activity, this.style.dialogTheme).setTitle("Fine equalizer")
-            .setView(content)
-            .setNegativeButton("Close", null)
-            .create();
-        this.dialog.setOnDismissListener((ignored) -> this.dialog = null);
+        Dialog editor = new Dialog(this.activity, this.style.dialogTheme);
+        editor.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        editor.setTitle(title);
+        this.close = button("Close");
+        this.close.setMinimumWidth(dp(ROW_HEIGHT_DP));
+        this.close.setOnClickListener((view) -> editor.dismiss());
+        LinearLayout footer = new LinearLayout(this.activity);
+        footer.setGravity(Gravity.END);
+        footer.addView(this.close);
+        content.addView(footer);
+        editor.setContentView(content);
+        this.dialog = editor;
+        this.dialog.setOnDismissListener((ignored) -> {
+            this.dialog = null;
+            this.generation++;
+            LocalPresets.close(this.activity);
+        });
         this.dialog.show();
-        this.dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        EqualizerConnection.read((curve) -> {
+        Window window = this.dialog.getWindow();
+        Drawable background = window.getDecorView().getBackground();
+        if (background == null) {
+            background = new ColorDrawable(this.style.background);
+        } else {
+            background = background.mutate();
+            background.setTint(this.style.background);
+        }
+        window.setBackgroundDrawable(background);
+        window.getDecorView().setClipToOutline(true);
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                grouped ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT);
+        EqualizerConnection.readState((state) -> {
             if (this.dialog == null || opening != this.generation) {
                 return;
             }
-            if (curve == null) {
+            if (state == null || this.connection != EqualizerConnection.connection()) {
                 this.status.setText("Equalizer read failed. Close and try again.");
                 return;
             }
-            this.history = new EqualizerHistory(curve);
-            this.edited = curve;
+            this.history = new EqualizerHistory(state);
+            this.edited = state;
             render();
         });
     }
 
     private void render() {
         this.bands.removeAllViews();
-        for (int band = 0; band < EqualizerCurve.BAND_COUNT; band++) {
-            final int index = band;
-            LinearLayout row = new LinearLayout(this.activity);
-            row.setGravity(Gravity.CENTER_VERTICAL);
-            TextView label = new TextView(this.activity);
-            label.setText(BANDS[band] + "  " + String.format(Locale.ROOT, "%+.1f dB", this.edited.gain(band) / 10.0));
-            label.setTextColor(this.style.text);
-            label.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SP);
-            row.addView(label, new LinearLayout.LayoutParams(0, dp(ROW_HEIGHT_DP), 1f));
-            Button minus = button("−");
-            Button plus = button("+");
-            minus.setContentDescription(BANDS[band] + " decrease 0.1 dB");
-            plus.setContentDescription(BANDS[band] + " increase 0.1 dB");
-            minus.setEnabled(!this.busy && !this.readFailed && this.edited.gain(band) > EqualizerCurve.MIN_GAIN_TENTHS);
-            plus.setEnabled(!this.busy && !this.readFailed && this.edited.gain(band) < EqualizerCurve.MAX_GAIN_TENTHS);
-            minus.setOnClickListener((view) -> edit(index, -1));
-            plus.setOnClickListener((view) -> edit(index, 1));
-            row.addView(minus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
-            row.addView(plus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
-            this.bands.addView(row);
+        if (this.grouped) {
+            for (EqualizerGroup group : EqualizerGroup.values()) {
+                LinearLayout row = new LinearLayout(this.activity);
+                row.setGravity(Gravity.CENTER_VERTICAL);
+                TextView label = new TextView(this.activity);
+                label.setText(group.values(this.edited.curve));
+                label.setTextColor(this.style.text);
+                label.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SP);
+                row.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                Button minus = button("−");
+                Button plus = button("+");
+                minus.setContentDescription(group.title + " decrease 0.1 dB");
+                plus.setContentDescription(group.title + " increase 0.1 dB");
+                minus.setEnabled(!this.busy && !this.readFailed && group.canAdjust(this.edited.curve, -1));
+                plus.setEnabled(!this.busy && !this.readFailed && group.canAdjust(this.edited.curve, 1));
+                minus.setOnClickListener((view) -> editGroup(group, -1));
+                plus.setOnClickListener((view) -> editGroup(group, 1));
+                row.addView(minus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
+                row.addView(plus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
+                this.bands.addView(row);
+            }
+        } else {
+            for (int band = 0; band < EqualizerCurve.BAND_COUNT; band++) {
+                final int index = band;
+                LinearLayout row = new LinearLayout(this.activity);
+                row.setGravity(Gravity.CENTER_VERTICAL);
+                TextView label = new TextView(this.activity);
+                label.setText(BANDS[band] + "  "
+                        + String.format(Locale.ROOT, "%+.1f dB", this.edited.curve.gain(band) / 10.0));
+                label.setTextColor(this.style.text);
+                label.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SP);
+                row.addView(label, new LinearLayout.LayoutParams(0, dp(ROW_HEIGHT_DP), 1f));
+                Button minus = button("−");
+                Button plus = button("+");
+                minus.setContentDescription(BANDS[band] + " decrease 0.1 dB");
+                plus.setContentDescription(BANDS[band] + " increase 0.1 dB");
+                minus.setEnabled(!this.busy && !this.readFailed
+                        && this.edited.curve.gain(band) > EqualizerCurve.MIN_GAIN_TENTHS);
+                plus.setEnabled(!this.busy && !this.readFailed
+                        && this.edited.curve.gain(band) < EqualizerCurve.MAX_GAIN_TENTHS);
+                minus.setOnClickListener((view) -> edit(index, -1));
+                plus.setOnClickListener((view) -> edit(index, 1));
+                row.addView(minus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
+                row.addView(plus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
+                this.bands.addView(row);
+            }
         }
         if (this.presets != null) {
             this.presets.setEnabled(!this.busy && !this.readFailed);
         }
-        this.apply.setEnabled(!this.busy && !this.readFailed && !this.edited.equals(this.history.current()));
+        this.apply.setEnabled(!this.busy && !this.readFailed
+                && (this.stagedPreset != null || !this.edited.equals(this.history.current())));
         this.undo.setEnabled(!this.busy && !this.readFailed && this.history.canUndo());
         this.status.setText(this.busy ? "Waiting for equalizer readback…" : "0.1 dB steps (−6 to +6 dB)");
     }
 
-    private void edit(int band, int direction) {
-        this.edited = this.edited.withGain(band, this.edited.gain(band) + direction);
+    private void editGroup(EqualizerGroup group, int direction) {
+        this.edited = this.edited.withCurve(group.adjust(this.edited.curve, direction));
         render();
     }
 
-    private void change(EqualizerCurve curve) {
+    private void edit(int band, int direction) {
+        this.edited = this.edited.withCurve(this.edited.curve.withGain(band, this.edited.curve.gain(band) + direction));
+        render();
+    }
+
+    private void change(SoundState state) {
         this.busy = true;
-        this.history.request(curve);
+        this.history.request(state);
         render();
         this.dialog.setCancelable(false);
-        this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(false);
-        EqualizerConnection.read((before) -> {
-            if (before == null || !before.equals(this.history.current())) {
-                completeChange(null);
+        this.close.setEnabled(false);
+        final int changing = this.generation;
+        EqualizerConnection.readState((before) -> {
+            if (this.activity.isDestroyed() || changing != this.generation || this.dialog == null) {
+                this.busy = false;
                 return;
             }
-            EqualizerConnection.apply(curve, this::completeChange);
+            synchronized (EqualizerConnection.class) {
+                if (before == null || this.connection != EqualizerConnection.connection()
+                        || !before.equals(this.history.current())) {
+                    completeChange(null);
+                    return;
+                }
+                EqualizerConnection.applyState(before, state, (readback) -> completeChange(
+                        (this.connection == EqualizerConnection.connection()) ? readback : null));
+            }
         });
     }
 
-    private void completeChange(EqualizerCurve readback) {
+    private void completeChange(SoundState readback) {
         this.busy = false;
         boolean confirmed = readback != null && this.history.confirm(readback);
         if (!confirmed) {
@@ -299,12 +410,27 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         } else {
             this.edited = readback;
         }
+        boolean selectionSaved = true;
+        if (confirmed && this.stagedPreset != null) {
+            try {
+                EqualizerPreset preset = this.stagedPreset;
+                boolean matches = preset.state.curve.equals(readback.curve)
+                        && (preset.state.xupmix < 0 || preset.state.xupmix == readback.xupmix);
+                new EqualizerPresetStore(this.activity).setCurrent(matches ? preset.id : null);
+                this.stagedPreset = null;
+            } catch (IOException | JSONException ex) {
+                selectionSaved = false;
+            }
+        }
         if (this.dialog != null) {
             render();
             this.dialog.setCancelable(true);
-            this.dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(true);
+            this.close.setEnabled(true);
             this.status
                 .setText(confirmed ? "Equalizer confirmed" : "Change not confirmed. Close and read equalizer again.");
+            if (confirmed && !selectionSaved) {
+                this.status.setText("Equalizer confirmed. Preset selection could not be saved.");
+            }
             if (!confirmed) {
                 this.apply.setEnabled(false);
                 this.undo.setEnabled(false);
@@ -319,7 +445,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
 
     @Override
     public void onActivityPaused(Activity activity) {
-        if (activity == this.activity && this.dialog != null && !this.busy && !LocalPresets.hasFileRequest(activity)) {
+        if (activity == this.activity && this.dialog != null && !this.busy && !LocalPresets.isOpen(activity)) {
             this.dialog.dismiss();
         }
     }
@@ -327,6 +453,10 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
     @Override
     public void onActivityDestroyed(Activity activity) {
         if (activity == this.activity) {
+            this.generation++;
+            if (this.dialog != null) {
+                this.dialog.dismiss();
+            }
             activity.getApplication().unregisterActivityLifecycleCallbacks(this);
             if (current.get() == this) {
                 current = new WeakReference<>(null);

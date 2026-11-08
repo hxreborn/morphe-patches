@@ -12,6 +12,9 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.ultimea.misc.controls.xupmixPatch
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
+import app.morphe.patches.ultimea.misc.settings.nativeMethods
+import app.morphe.patches.shared.misc.smali.replaceStub
+import com.android.tools.smali.util.StringUtils.escapeString
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction3rc
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.Opcode
@@ -28,17 +31,31 @@ internal val equalizerConnectionPatch = bytecodePatch {
     dependsOn(xupmixPatch)
     execute {
         markPatchApplied("fineEqualizer", fineEqualizerPatch)
+        val bases = nativeMethods.snapshot.stringsByPoolOffset.values.distinct().single {
+            "\"default_mode\"" in it && "\"style\"" in it
+        }
+        mutableClassDefBy("Lapp/hxreborn/extension/ultimea/equalizer/EqualizerBases;").replaceStub("definitions", 1,
+            """
+                const-string/jumbo v0, "${escapeString(bases)}"
+                return-object v0
+            """.trimIndent())
         listOf(
             listOf("Landroid/bluetooth/BluetoothGatt;", "Landroid/bluetooth/BluetoothGattCharacteristic;"),
             listOf("Landroid/bluetooth/BluetoothGatt;", "Landroid/bluetooth/BluetoothGattCharacteristic;", "[B", "I"),
         ).forEach { parameters ->
             val match = ReadbackCallFingerprint("writeCharacteristic", parameters).matchSingle()
             val (write) = match.instructionMatches
-            val call = match.method.getInstruction<FiveRegisterInstruction>(write.index)
-            val reference = (call as ReferenceInstruction).reference as MethodReference
-            match.method.replaceInstruction(write.index, BuilderInstruction35c(Opcode.INVOKE_STATIC,
-                call.registerCount, call.registerC, call.registerD, call.registerE, call.registerF, call.registerG,
-                ImmutableMethodReference(CONNECTION_CLASS_DESCRIPTOR, reference.name, reference.parameterTypes, reference.returnType)))
+            val call = match.method.getInstruction<ReferenceInstruction>(write.index)
+            val reference = call.reference as MethodReference
+            val target = ImmutableMethodReference(CONNECTION_CLASS_DESCRIPTOR, reference.name, reference.parameterTypes, reference.returnType)
+            val replacement = when (call) {
+                is RegisterRangeInstruction -> BuilderInstruction3rc(Opcode.INVOKE_STATIC_RANGE,
+                    call.startRegister, call.registerCount, target)
+                is FiveRegisterInstruction -> BuilderInstruction35c(Opcode.INVOKE_STATIC,
+                    call.registerCount, call.registerC, call.registerD, call.registerE, call.registerF, call.registerG, target)
+                else -> throw PatchException("Expected Bluetooth write invocation")
+            }
+            match.method.replaceInstruction(write.index, replacement)
         }
         listOf("onCharacteristicWrite", "onCharacteristicReceived", "onConnectionStateChanged").forEach { name ->
             val match = ReadbackCallFingerprint(name).matchSingle()

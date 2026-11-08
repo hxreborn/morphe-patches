@@ -25,12 +25,12 @@ import org.junit.Assert;
 
 public class EqualizerHistoryTest {
 
-    private final EqualizerCurve original = new EqualizerCurve(8, new int[EqualizerCurve.BAND_COUNT]);
+    private final SoundState original = new SoundState(new EqualizerCurve(8, new int[EqualizerCurve.BAND_COUNT]), 0);
 
     @Test
     public void undoRestoresFullOriginalModeAndCurve() {
         EqualizerHistory history = new EqualizerHistory(this.original);
-        EqualizerCurve changed = this.original.withGain(5, -1);
+        SoundState changed = this.original.withCurve(this.original.curve.withGain(5, -1));
         history.request(changed);
         Assert.assertFalse(history.canUndo());
         Assert.assertTrue(history.confirm(changed));
@@ -43,7 +43,7 @@ public class EqualizerHistoryTest {
     @Test
     public void mismatchedReadbackDoesNotConfirmChange() {
         EqualizerHistory history = new EqualizerHistory(this.original);
-        history.request(this.original.withGain(5, -1));
+        history.request(this.original.withCurve(this.original.curve.withGain(5, -1)));
         Assert.assertFalse(history.confirm(this.original));
         Assert.assertEquals(this.original, history.current());
         Assert.assertFalse(history.canUndo());
@@ -52,20 +52,33 @@ public class EqualizerHistoryTest {
     @Test
     public void failedChangePreservesPreviousUndo() {
         EqualizerHistory history = new EqualizerHistory(this.original);
-        EqualizerCurve changed = this.original.withGain(5, -1);
+        SoundState changed = this.original.withCurve(this.original.curve.withGain(5, -1));
         history.request(changed);
         history.confirm(changed);
-        history.request(changed.withGain(0, 1));
+        history.request(changed.withCurve(changed.curve.withGain(0, 1)));
         history.failed();
         Assert.assertEquals(this.original, history.undoTarget());
         Assert.assertEquals(changed, history.current());
     }
 
+    @Test
+    public void confirmsAndUndoesXupmixOnlyChange() {
+        EqualizerHistory history = new EqualizerHistory(this.original);
+        SoundState changed = this.original.withXupmix(1);
+        history.request(changed);
+        Assert.assertFalse(history.confirm(this.original));
+        Assert.assertTrue(history.confirm(changed));
+        Assert.assertEquals(this.original, history.undoTarget());
+        history.request(history.undoTarget());
+        Assert.assertTrue(history.confirm(this.original));
+        Assert.assertEquals(this.original, history.current());
+    }
+
     @Test(expected = IllegalStateException.class)
     public void rejectOverlappingChange() {
         EqualizerHistory history = new EqualizerHistory(this.original);
-        history.request(this.original.withGain(5, -1));
-        history.request(this.original.withGain(5, -2));
+        history.request(this.original.withCurve(this.original.curve.withGain(5, -1)));
+        history.request(this.original.withCurve(this.original.curve.withGain(5, -2)));
     }
 
 }

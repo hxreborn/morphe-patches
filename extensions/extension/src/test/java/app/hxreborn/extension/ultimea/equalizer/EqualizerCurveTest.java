@@ -25,6 +25,21 @@ import org.junit.Assert;
 
 public class EqualizerCurveTest {
 
+    private static final byte[] SIGNED_CURVE = { 8, 31, 0, -60, -1, 62, 0, -1, -1, 125, 0, 0, 0, -6, 0, 1, 0, -12, 1,
+            60, 0, -24, 3, -1, -1, -48, 7, 12, 0, -96, 15, -12, -1, 64, 31, 3, 0, -128, 62, -3, -1 };
+
+    @Test
+    public void parseIndependentSignedCurve() {
+        Assert.assertEquals(new EqualizerCurve(8, new int[] { -60, -1, 0, 1, 60, -1, 12, -12, 3, -3 }),
+                EqualizerCurve.fromPayload(SIGNED_CURVE));
+    }
+
+    @Test
+    public void serializeIndependentSignedCurve() {
+        Assert.assertArrayEquals(SIGNED_CURVE,
+                new EqualizerCurve(8, new int[] { -60, -1, 0, 1, 60, -1, 12, -12, 3, -3 }).payload());
+    }
+
     @Test
     public void roundTripSignedTenthsAndMode() {
         int[] gains = { -60, -1, 0, 1, 60, -1, 12, -12, 3, -3 };

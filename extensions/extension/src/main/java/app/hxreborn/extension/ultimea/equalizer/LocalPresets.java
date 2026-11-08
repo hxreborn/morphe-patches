@@ -183,7 +183,20 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
                 .setNegativeButton("Close", (dialog, which) -> dispose())
                 .show();
         } catch (JSONException | IllegalArgumentException ex) {
-            message("Local presets could not be read");
+            this.dialog = new AlertDialog.Builder(this.activity, this.style.dialogTheme)
+                .setTitle("Recover local presets")
+                .setMessage("Some saved presets could not be read. Recover readable presets and keep original data?")
+                .setPositiveButton("Recover", (dialog, which) -> {
+                    try {
+                        this.store.recover();
+                        message("Presets recovered. Original data kept.");
+                        showList();
+                    } catch (JSONException | IOException recovery) {
+                        message("Local presets could not be recovered");
+                    }
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dispose())
+                .show();
         }
     }
 
@@ -198,7 +211,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
                 switch (actions[which]) {
                     case USE:
                         if (this.selection != null) {
-                            this.selection.selected(preset.curve);
+                            this.selection.selected(preset);
                         }
                         dispose();
                         break;
@@ -244,7 +257,11 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
             .show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
             try {
-                this.store.add(input.getText().toString(), (source != null) ? source.curve : this.curve);
+                if (source == null) {
+                    this.store.add(input.getText().toString(), this.curve);
+                } else {
+                    this.store.duplicate(source, input.getText().toString());
+                }
                 dialog.dismiss();
                 showList();
             } catch (IllegalArgumentException ex) {
@@ -367,7 +384,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
                     .toString();
                 file = EqualizerPresetFile.parse(document);
             }
-            new EqualizerPresetStore(context).add(file.name, file.curve);
+            new EqualizerPresetStore(context).add(file.playable());
             MAIN.post(() -> {
                 LocalPresets presets = owner.get();
                 if (presets == null) {
@@ -408,8 +425,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
             if (output == null) {
                 throw new IOException("Preset file could not be opened");
             }
-            output.write(
-                    EqualizerPresetFile.json(preset.name, preset.curve).toString(2).getBytes(StandardCharsets.UTF_8));
+            output.write(preset.json().toString(2).getBytes(StandardCharsets.UTF_8));
         } catch (IOException | JSONException | SecurityException ex) {
             postMessage(owner, "Preset could not be exported");
             return;

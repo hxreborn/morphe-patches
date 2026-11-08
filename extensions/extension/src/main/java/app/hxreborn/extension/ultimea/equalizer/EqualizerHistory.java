@@ -22,17 +22,17 @@ package app.hxreborn.extension.ultimea.equalizer;
 
 final class EqualizerHistory {
 
-    private EqualizerCurve confirmed;
+    private SoundState confirmed;
 
-    private EqualizerCurve undo;
+    private SoundState undo;
 
-    private EqualizerCurve requested;
+    private SoundState requested;
 
-    EqualizerHistory(EqualizerCurve initial) {
+    EqualizerHistory(SoundState initial) {
         this.confirmed = initial;
     }
 
-    EqualizerCurve current() {
+    SoundState current() {
         return this.confirmed;
     }
 
@@ -40,21 +40,21 @@ final class EqualizerHistory {
         return this.undo != null && this.requested == null;
     }
 
-    void request(EqualizerCurve curve) {
+    void request(SoundState curve) {
         if (this.requested != null) {
             throw new IllegalStateException("Equalizer change is still pending");
         }
         this.requested = curve;
     }
 
-    EqualizerCurve undoTarget() {
+    SoundState undoTarget() {
         if (!canUndo()) {
             throw new IllegalStateException("No confirmed equalizer change to undo");
         }
         return this.undo;
     }
 
-    boolean confirm(EqualizerCurve readback) {
+    boolean confirm(SoundState readback) {
         if (this.requested == null || !this.requested.equals(readback)) {
             return false;
         }

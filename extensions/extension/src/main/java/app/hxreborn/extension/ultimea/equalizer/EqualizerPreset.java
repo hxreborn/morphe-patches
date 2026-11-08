@@ -26,21 +26,43 @@ final class EqualizerPreset {
 
     static final int MAX_NAME_LENGTH = 80;
 
+    static final int MAX_MODE = 8;
+
     final String id;
 
     final String name;
 
     final EqualizerCurve curve;
 
+    final SoundState state;
+
+    final String baseName;
+
+    final SoundState base;
+
     EqualizerPreset(String id, String name, EqualizerCurve curve) {
+        this(id, name, new SoundState(curve.asCustom(), -1), "Custom", new SoundState(curve.asCustom(), -1));
+    }
+
+    EqualizerPreset(String id, String name, SoundState state, String baseName, SoundState base) {
         UUID.fromString(id);
+        if (state.curve.mode() > MAX_MODE || base.curve.mode() > MAX_MODE) {
+            throw new IllegalArgumentException("Unsupported equalizer preset mode");
+        }
         this.id = id;
         this.name = validName(name);
-        this.curve = curve.asCustom();
+        this.state = state;
+        this.curve = this.state.curve;
+        this.baseName = validName(baseName);
+        this.base = base;
     }
 
     static EqualizerPreset create(String name, EqualizerCurve curve) {
         return new EqualizerPreset(UUID.randomUUID().toString(), name, curve);
+    }
+
+    static EqualizerPreset create(String name, SoundState state, String baseName, SoundState base) {
+        return new EqualizerPreset(UUID.randomUUID().toString(), name, state, baseName, base);
     }
 
     static String validName(String name) {

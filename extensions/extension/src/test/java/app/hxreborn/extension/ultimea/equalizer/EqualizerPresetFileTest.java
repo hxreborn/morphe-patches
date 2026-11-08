@@ -43,6 +43,92 @@ public class EqualizerPresetFileTest {
     }
 
     @Test
+    public void roundTripSoundStateAndBase() throws JSONException {
+        SoundState base = movie();
+        SoundState state = new SoundState(base.curve, 0);
+        EqualizerPreset preset = EqualizerPreset.create("Movie custom", state, "Movie", base);
+        JSONObject json = EqualizerPresetFile.json(preset);
+        EqualizerPresetFile file = EqualizerPresetFile.parse(json.toString());
+        Assert.assertEquals(2, json.getInt("formatVersion"));
+        Assert.assertEquals(1, json.getInt("mode"));
+        Assert.assertEquals(1, json.getInt("baseMode"));
+        Assert.assertEquals("Movie", file.baseName);
+        Assert.assertEquals(state.curve, file.state.curve);
+        Assert.assertEquals(0, file.state.xupmix);
+        Assert.assertEquals(base.curve, file.base.curve);
+        Assert.assertEquals(1, file.base.xupmix);
+        Assert.assertEquals(0, file.ignoredFields);
+        EqualizerPresetFile exported = EqualizerPresetFile.parse(file.json().toString());
+        Assert.assertEquals(state.curve, exported.state.curve);
+        Assert.assertEquals(base.curve, exported.base.curve);
+        Assert.assertEquals(0, exported.state.xupmix);
+        Assert.assertEquals(1, exported.base.xupmix);
+    }
+
+    @Test
+    public void defaultMissingSoundStateModesToCustom() throws JSONException {
+        SoundState base = movie();
+        JSONObject json = EqualizerPresetFile.json(EqualizerPreset.create("Movie custom", base, "Movie", base));
+        json.remove("mode");
+        json.remove("baseMode");
+        EqualizerPresetFile file = EqualizerPresetFile.parse(json.toString());
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, file.state.curve.mode());
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, file.base.curve.mode());
+        Assert.assertEquals(1, file.state.xupmix);
+        Assert.assertEquals(1, file.base.xupmix);
+    }
+
+    @Test(expected = JSONException.class)
+    public void rejectUnverifiedSoundStateMode() throws JSONException {
+        SoundState base = movie();
+        JSONObject json = EqualizerPresetFile.json(EqualizerPreset.create("Movie custom", base, "Movie", base));
+        json.put("mode", 9);
+        EqualizerPresetFile.parse(json.toString());
+    }
+
+    @Test(expected = JSONException.class)
+    public void rejectUnverifiedBaseMode() throws JSONException {
+        SoundState base = movie();
+        JSONObject json = EqualizerPresetFile.json(EqualizerPreset.create("Movie custom", base, "Movie", base));
+        json.put("baseMode", 9);
+        EqualizerPresetFile.parse(json.toString());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectUnverifiedModeInFullPreset() {
+        EqualizerPreset.create("Unsupported", new SoundState(new EqualizerCurve(9, new int[10]), 0), "Movie", movie());
+    }
+
+    @Test
+    public void preserveUnknownXupmixInLegacyFiles() throws JSONException {
+        JSONObject json = fixture();
+        json.put("xupmix", true);
+        EqualizerPresetFile file = EqualizerPresetFile.parse(json.toString());
+        Assert.assertEquals(-1, file.state.xupmix);
+        Assert.assertEquals(-1, file.base.xupmix);
+        Assert.assertFalse(file.json().has("xupmix"));
+        Assert.assertFalse(file.json().has("baseXupmix"));
+        Assert.assertEquals(1, file.ignoredFields);
+    }
+
+    @Test(expected = JSONException.class)
+    public void rejectNumericXupmixState() throws JSONException {
+        EqualizerPreset preset = EqualizerPreset.create("Movie custom",
+                new SoundState(new EqualizerCurve(7, new int[10]), 1), "Movie",
+                new SoundState(new EqualizerCurve(7, new int[10]), 0));
+        JSONObject json = EqualizerPresetFile.json(preset);
+        json.put("xupmix", 1);
+        EqualizerPresetFile.parse(json.toString());
+    }
+
+    @Test(expected = JSONException.class)
+    public void rejectMissingBaseInSoundStateFile() throws JSONException {
+        JSONObject json = fixture();
+        json.put("formatVersion", 2);
+        EqualizerPresetFile.parse(json.toString());
+    }
+
+    @Test
     public void exportOnlyNameAndBands() throws JSONException {
         JSONObject json = fixture();
         Assert.assertEquals(5, json.length());
@@ -100,7 +186,7 @@ public class EqualizerPresetFileTest {
     @Test(expected = JSONException.class)
     public void rejectNewerFormat() throws JSONException {
         JSONObject json = fixture();
-        json.put("formatVersion", 2);
+        json.put("formatVersion", 3);
         EqualizerPresetFile.parse(json.toString());
     }
 
@@ -127,6 +213,10 @@ public class EqualizerPresetFileTest {
 
     private static JSONObject fixture() throws JSONException {
         return EqualizerPresetFile.json("Dialogue", new EqualizerCurve(8, new int[10]));
+    }
+
+    private static SoundState movie() {
+        return new SoundState(new EqualizerCurve(1, new int[] { 30, 40, 20, 10, 0, 10, 10, 0, -20, -20 }), 1);
     }
 
 }

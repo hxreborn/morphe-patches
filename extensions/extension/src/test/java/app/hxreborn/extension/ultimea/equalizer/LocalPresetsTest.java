@@ -42,7 +42,7 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowAlertDialog;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 33, shadows = LocalPresetsTest.PollShadow.class)
+@Config(sdk = 33, shadows = { EqualizerPresetTransferTest.BasesShadow.class, LocalPresetsTest.PollShadow.class })
 public class LocalPresetsTest {
 
     private ActivityController<Activity> controller;
@@ -65,6 +65,49 @@ public class LocalPresetsTest {
     public void destroyActivity() {
         this.controller.pause().stop().destroy();
         this.activity.getSharedPreferences("hx_ultimea_equalizer_presets", 0).edit().clear().commit();
+    }
+
+    @Test
+    public void importsCompleteVersionTwoPreset() throws Exception {
+        SoundState state = new SoundState(new EqualizerCurve(3, new int[10]), 1);
+        SoundState base = new SoundState(new EqualizerCurve(5, new int[10]), 0);
+        EqualizerPreset original = EqualizerPreset.create("Imported", state, "Night", base);
+        java.io.File file = java.io.File.createTempFile("preset", ".json", this.activity.getCacheDir());
+        try {
+            try (java.io.FileOutputStream output = new java.io.FileOutputStream(file)) {
+                output.write(EqualizerPresetFile.json(original)
+                    .toString()
+                    .getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            }
+            LocalPresets.open(this.activity, this.curve, (curve) -> {
+            });
+            choose("Import");
+            org.robolectric.shadows.ShadowActivity.IntentForResult request = Shadows.shadowOf(this.activity)
+                .getNextStartedActivityForResult();
+            LocalPresets.onActivityResult(this.activity, request.requestCode, Activity.RESULT_OK,
+                    new android.content.Intent().setData(android.net.Uri.fromFile(file)));
+            long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+            while (this.store.load().isEmpty() && System.nanoTime() < deadline) {
+                Shadows.shadowOf(Looper.getMainLooper()).idle();
+                Thread.yield();
+            }
+            List<EqualizerPreset> saved = this.store.load();
+            Assert.assertEquals(1, saved.size());
+            Assert.assertEquals(state.withCurve(state.curve.asCustom()), saved.get(0).state);
+            Assert.assertEquals(base.withCurve(base.curve.asCustom()), saved.get(0).base);
+            Assert.assertEquals("Night", saved.get(0).baseName);
+            Object[] selected = { null };
+            LocalPresets.open(this.activity, this.curve, (preset) -> selected[0] = preset);
+            choose("Imported");
+            choose("Use curve");
+            Assert.assertTrue(selected[0] instanceof EqualizerPreset);
+            EqualizerPreset used = (EqualizerPreset) selected[0];
+            Assert.assertEquals(state.withCurve(state.curve.asCustom()), used.state);
+            Assert.assertEquals(base.withCurve(base.curve.asCustom()), used.base);
+            Assert.assertEquals("Night", used.baseName);
+        } finally {
+            Assert.assertTrue(file.delete());
+        }
     }
 
     @Test
@@ -176,6 +219,76 @@ public class LocalPresetsTest {
         Assert.assertEquals(1, saved.size());
         Assert.assertEquals(original.id, saved.get(0).id);
         Assert.assertEquals(original.curve, saved.get(0).curve);
+    }
+
+    @Test
+    public void duplicatesCompletePresetThroughDialog() throws Exception {
+        SoundState state = new SoundState(new EqualizerCurve(3, new int[10]), 1);
+        SoundState base = new SoundState(new EqualizerCurve(5, new int[10]), 0);
+        EqualizerPreset original = this.store.add(EqualizerPresetFile
+            .parse(EqualizerPresetFile.json(EqualizerPreset.create("Original", state, "Night", base)).toString()));
+        LocalPresets.open(this.activity, this.curve, (curve) -> Assert.fail());
+        choose("Original");
+        choose("Duplicate");
+        ShadowAlertDialog.getLatestAlertDialog().getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
+        List<EqualizerPreset> saved = this.store.load();
+        Assert.assertEquals(2, saved.size());
+        EqualizerPreset duplicate = saved.stream().filter(preset -> !preset.id.equals(original.id)).findFirst().get();
+        Assert.assertEquals(state, duplicate.state);
+        Assert.assertEquals(base, duplicate.base);
+        Assert.assertEquals("Night", duplicate.baseName);
+    }
+
+    @Test
+    public void exportsCompletePresetThroughDocumentPicker() throws Exception {
+        SoundState state = new SoundState(new EqualizerCurve(3, new int[10]), 1);
+        SoundState base = new SoundState(new EqualizerCurve(5, new int[10]), 0);
+        this.store.add(EqualizerPresetFile
+            .parse(EqualizerPresetFile.json(EqualizerPreset.create("Exported", state, "Night", base)).toString()));
+        java.io.File file = java.io.File.createTempFile("preset-export", ".json", this.activity.getCacheDir());
+        try {
+            LocalPresets.open(this.activity, this.curve, (curve) -> Assert.fail());
+            choose("Exported");
+            choose("Export");
+            org.robolectric.shadows.ShadowActivity.IntentForResult request = Shadows.shadowOf(this.activity)
+                .getNextStartedActivityForResult();
+            LocalPresets.onActivityResult(this.activity, request.requestCode, Activity.RESULT_OK,
+                    new android.content.Intent().setData(android.net.Uri.fromFile(file)));
+            long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+            while (!"Preset exported".equals(org.robolectric.shadows.ShadowToast.getTextOfLatestToast())
+                    && System.nanoTime() < deadline) {
+                Shadows.shadowOf(Looper.getMainLooper()).idle();
+                Thread.yield();
+            }
+            Assert.assertEquals("Preset exported", org.robolectric.shadows.ShadowToast.getTextOfLatestToast());
+            EqualizerPresetFile exported = EqualizerPresetFile.parse(new String(
+                    java.nio.file.Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8));
+            Assert.assertEquals(state, exported.state);
+            Assert.assertEquals(base, exported.base);
+            Assert.assertEquals("Night", exported.baseName);
+        } finally {
+            Assert.assertTrue(file.delete());
+        }
+    }
+
+    @Test
+    public void recoverInvalidPresetThroughConfirmation() throws Exception {
+        EqualizerPreset original = this.store.add("Retained", this.curve);
+        android.content.SharedPreferences preferences = this.activity
+            .getSharedPreferences("hx_ultimea_equalizer_presets", 0);
+        String malformed = new org.json.JSONArray(preferences.getString("presets", "[]")).put(new org.json.JSONObject())
+            .toString();
+        preferences.edit().putString("presets", malformed).commit();
+        LocalPresets.open(this.activity, this.curve, (curve) -> Assert.fail());
+        AlertDialog recovery = ShadowAlertDialog.getLatestAlertDialog();
+        Assert.assertEquals("Recover local presets", org.robolectric.Shadows.shadowOf(recovery).getTitle());
+        recovery.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
+        choose("Retained");
+        Assert.assertEquals(original.id, this.store.load().get(0).id);
+        Assert.assertEquals(malformed,
+                new org.json.JSONArray(preferences.getString("recovery_backups", "[]")).getString(0));
     }
 
     private void choose(String title) {
