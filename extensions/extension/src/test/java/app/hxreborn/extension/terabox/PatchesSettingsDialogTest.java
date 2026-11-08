@@ -123,6 +123,7 @@ public final class PatchesSettingsDialogTest {
         Assert.assertFalse(texts.contains(AppliedPatches.UNLOCK_PREMIUM));
         Assert.assertFalse(texts.contains("Home"));
         Assert.assertFalse(texts.contains("Videos"));
+        Assert.assertFalse(texts.contains("Backup"));
         Assert.assertFalse(texts.contains("Ads"));
     }
 
@@ -131,9 +132,9 @@ public final class PatchesSettingsDialogTest {
     public void groupsSwitchesUnderSectionsNamedAfterWhereTheyShow() {
         List<String> texts = shownTexts();
         Assert.assertFalse(texts.contains("Patches"));
-        assertInOrder(texts, "Home", AppliedPatches.HIDE_HOME_SHORTCUTS, AppliedPatches.REMOVE_RECENT_PANEL, "Videos",
-                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.UNLOCK_PREMIUM, "Ads",
-                AppliedPatches.HIDE_ADS, AppliedPatches.HIDE_PROMOTIONS, "About");
+        assertInOrder(texts, "Home", AppliedPatches.HIDE_HOME_SHORTCUTS, AppliedPatches.REMOVE_RECENT_PANEL, "Backup",
+                AppliedPatches.SHOW_BACKUP_COUNT, "Videos", AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS,
+                AppliedPatches.UNLOCK_PREMIUM, "Ads", AppliedPatches.HIDE_ADS, AppliedPatches.HIDE_PROMOTIONS, "About");
     }
 
     private static void assertInOrder(List<String> texts, String... expected) {
@@ -148,7 +149,7 @@ public final class PatchesSettingsDialogTest {
 
     @Test
     @Config(shadows = EveryPatchApplied.class)
-    public void showsAllSixAppliedSwitches() {
+    public void showsAllAppliedSwitches() {
         List<String> texts = shownTexts();
         Assert.assertTrue(texts.contains(AppliedPatches.HIDE_ADS));
         Assert.assertTrue(texts.contains(AppliedPatches.HIDE_PROMOTIONS));
@@ -156,6 +157,7 @@ public final class PatchesSettingsDialogTest {
         Assert.assertTrue(texts.contains(AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS));
         Assert.assertTrue(texts.contains(AppliedPatches.UNLOCK_PREMIUM));
         Assert.assertTrue(texts.contains(AppliedPatches.REMOVE_RECENT_PANEL));
+        Assert.assertTrue(texts.contains(AppliedPatches.SHOW_BACKUP_COUNT));
     }
 
     @Test
@@ -168,6 +170,15 @@ public final class PatchesSettingsDialogTest {
         Assert.assertTrue(latestDialogTexts().contains("TeraBox must restart to apply the change."));
         Assert.assertTrue(latestDialogTexts().contains("Later"));
         Assert.assertTrue(latestDialogTexts().contains("Restart"));
+    }
+
+    @Test
+    @Config(shadows = EveryPatchApplied.class)
+    public void requestsRestartAfterDisablingBackupCount() {
+        showDialog();
+        clickText(AppliedPatches.SHOW_BACKUP_COUNT);
+        Assert.assertFalse(PatchSettings.isBackupCountShown());
+        Assert.assertTrue(latestDialogTexts().contains("Restart required"));
     }
 
     @Test

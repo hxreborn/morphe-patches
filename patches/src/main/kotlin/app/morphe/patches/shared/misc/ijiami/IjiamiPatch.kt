@@ -143,6 +143,10 @@ private fun ResourcePatchContext.freeDexEntry() =
         .first { !get(it).exists() }
 
 internal fun ResourcePatchContext.installAppHook(hookDex: ByteArray, hookClass: String) {
-    get(freeDexEntry(), copy = false).writeBytes(hookDex)
+    installIjiamiExtension(hookDex)
     get(APP_HOOK_ASSET, copy = false).writeText(hookClass)
+}
+
+internal fun ResourcePatchContext.installIjiamiExtension(dex: ByteArray) {
+    get(freeDexEntry(), copy = false).writeBytes(dex)
 }

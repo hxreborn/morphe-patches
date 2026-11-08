@@ -57,12 +57,42 @@ public final class FullHdPlaylistTest {
     }
 
     @Test
-    public void ignoresASegmentOutsideTheHdTier() {
+    public void swapsThePreviewTierDirectory() {
         // when
         String url = FullHdPlaylist.fullHdUrl("https://cdn.test/hls_mps/abc/480/12.jpg?t=1");
 
         // then
-        assertNull(url);
+        assertEquals("https://cdn.test/hls_mps/abc/1080/12.jpg?t=1", url);
+    }
+
+    @Test
+    public void swapsTheUppercaseTierDirectory() {
+        String url = FullHdPlaylist.fullHdUrl("https://cdn.test/myhls/Film_Hindi_480P/12.jpg?t=1");
+
+        assertEquals("https://cdn.test/myhls/Film_Hindi_1080P/12.jpg?t=1", url);
+    }
+
+    @Test
+    public void keepsThePaddingUntilTheFullHdPreviewIsExpanded() throws IOException {
+        String preview = "#EXTM3U\n#EXT-X-TARGETDURATION:10\n"
+                + "#EXTINF:3.000000,\nhttps://cdn.test/hls/abc/480/0.jpg?t=1\n"
+                + "#EXTINF:2.000000,\nhttps://cdn.test/hls/abc/480/1.jpg?t=1\n"
+                + "#EXTINF:15.000000,\nhttps://cdn.test/hls/abc/480/1.jpg?t=1\n#EXT-X-ENDLIST\n";
+
+        String upgraded = FullHdPlaylist.fullHd(preview, existingUpTo(4));
+        PreviewPlaylist.Padding padding = PreviewPlaylist.Padding.of(upgraded);
+        String expanded = padding.expanded(4);
+
+        assertEquals(15.0, padding.seconds, 0.0);
+        assertEquals("#EXTM3U\n#EXT-X-TARGETDURATION:10\n" + segment(3.0, 0) + segment(2.0, 1) + segment(5.0, 2)
+                + segment(5.0, 3) + segment(5.0, 4) + "#EXT-X-ENDLIST\n", expanded);
+    }
+
+    @Test
+    public void keepsTheSdPlaylistWhenTheFullHdTierIsMissing() throws IOException {
+        String preview = hdPlaylist(2).replace("/720/", "/480/");
+
+        assertNull(FullHdPlaylist.fullHd(preview, existingUpTo(-1)));
     }
 
     @Test

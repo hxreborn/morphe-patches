@@ -40,6 +40,7 @@ val allInOnePatch = resourcePatch(
     }
 
     execute {
+        installQualityStreams()
         editIjiamiPayload {
             method(SERVICE_LOCATOR, IS_VIP).returnEarly(true)
             method(VIP_USER_INFO, "isVip").returnBoxed(true)

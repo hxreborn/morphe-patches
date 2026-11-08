@@ -37,7 +37,7 @@ public final class PatchSettings {
     private static final List<String> SWITCH_KEYS = Arrays.asList(AppliedPatches.HIDE_ADS,
             AppliedPatches.HIDE_PROMOTIONS, AppliedPatches.HIDE_HOME_SHORTCUTS,
             AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.UNLOCK_PREMIUM,
-            AppliedPatches.REMOVE_RECENT_PANEL);
+            AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.SHOW_BACKUP_COUNT);
 
     private PatchSettings() {
     }
@@ -64,6 +64,10 @@ public final class PatchSettings {
 
     public static boolean isRecentPanelRemoved() {
         return isFeatureEnabled(AppliedPatches.removeRecentPanel(), AppliedPatches.REMOVE_RECENT_PANEL);
+    }
+
+    public static boolean isBackupCountShown() {
+        return isFeatureEnabled(AppliedPatches.showBackupCount(), AppliedPatches.SHOW_BACKUP_COUNT);
     }
 
     public static long promotionAutoShow(long configured) {

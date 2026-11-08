@@ -34,13 +34,16 @@ case "$command" in
     while :; do
       page=$(graphql -f category="$category" -F after="$after" -f query='query RequestList($owner: String!, $name: String!, $category: ID!, $after: String) {
         repository(owner: $owner, name: $name) {
-          discussions(first: 100, after: $after, categoryId: $category, orderBy: {field: CREATED_AT, direction: ASC}) {
+          discussions(first: 40, after: $after, categoryId: $category, orderBy: {field: CREATED_AT, direction: ASC}) {
             pageInfo { hasNextPage endCursor }
             nodes {
-              number title body closed url createdAt updatedAt authorAssociation
+              number title body closed url createdAt updatedAt authorAssociation lastEditedAt editor { login }
               author { login }
               labels(first: 20) { nodes { name } }
-              comments(first: 100) { nodes { author { login } body createdAt url } }
+              comments(first: 100) { totalCount nodes {
+                author { login } body createdAt url lastEditedAt editor { login }
+                replies(first: 100) { totalCount nodes { author { login } body createdAt url lastEditedAt editor { login } } }
+              } }
             }
           }
         }
@@ -50,12 +53,15 @@ case "$command" in
       after=$(jq -r .pageInfo.endCursor <<< "$page")
     done
     printf '%s\n' "${pages[@]}" | jq -s '[.[].nodes[] | {
-      number, title, body, url, createdAt, updatedAt,
+      number, title, body, url, createdAt, updatedAt, lastEditedAt, editor,
       state: (if .closed then "CLOSED" else "OPEN" end),
       author: {login: (.author.login // "")},
       association: .authorAssociation,
       labels: [.labels.nodes[] | {name}],
-      comments: [.comments.nodes[] | {author: {login: (.author.login // "")}, body, createdAt, url}]
+      commentsComplete: ((.comments.totalCount // (.comments.nodes | length)) == (.comments.nodes | length)
+        and all(.comments.nodes[]; (.replies.totalCount // (.replies.nodes // [] | length)) == (.replies.nodes // [] | length))),
+      comments: [.comments.nodes[] | {author: {login: (.author.login // "")}, body, createdAt, url, lastEditedAt, editor,
+        replies: [.replies.nodes[]? | {author: {login: (.author.login // "")}, body, createdAt, url, lastEditedAt, editor}]}]
     }]'
     ;;
   view)

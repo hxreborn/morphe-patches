@@ -941,19 +941,14 @@ https://pastebin.com/Xy12Ab34
 
 
 def triage(body, patches_list=None, title=""):
-    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:
-        f.write(body)
-        path = f.name
-    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
-        json.dump(BUNDLE_APPS if patches_list is None else patches_list, f)
-        list_path = f.name
-    try:
-        out = subprocess.run([sys.executable, str(SCRIPT), path, list_path],
+    with tempfile.TemporaryDirectory() as temp:
+        body_path = Path(temp) / "body.md"
+        list_path = Path(temp) / "patches.json"
+        body_path.write_text(body)
+        list_path.write_text(json.dumps(BUNDLE_APPS if patches_list is None else patches_list))
+        out = subprocess.run([sys.executable, str(SCRIPT), str(body_path), str(list_path)],
                              capture_output=True, text=True, check=True, env={**os.environ, "ISSUE_TITLE": title})
         return json.loads(out.stdout)
-    finally:
-        Path(path).unlink()
-        Path(list_path).unlink()
 
 
 def verdict_for(body, patches_list=None):

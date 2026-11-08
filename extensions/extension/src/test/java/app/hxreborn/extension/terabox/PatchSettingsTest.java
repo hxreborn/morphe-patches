@@ -60,6 +60,7 @@ public final class PatchSettingsTest {
         Assert.assertFalse(PatchSettings.isVideoRecommendationsHidden());
         Assert.assertFalse(PatchSettings.isPremiumUnlocked());
         Assert.assertFalse(PatchSettings.isRecentPanelRemoved());
+        Assert.assertFalse(PatchSettings.isBackupCountShown());
         Assert.assertEquals(AUTO_SHOW_DELAY, PatchSettings.promotionAutoShow(AUTO_SHOW_DELAY));
     }
 
@@ -72,6 +73,7 @@ public final class PatchSettingsTest {
         Assert.assertTrue(PatchSettings.isVideoRecommendationsHidden());
         Assert.assertTrue(PatchSettings.isPremiumUnlocked());
         Assert.assertTrue(PatchSettings.isRecentPanelRemoved());
+        Assert.assertTrue(PatchSettings.isBackupCountShown());
         Assert.assertEquals(0, PatchSettings.promotionAutoShow(AUTO_SHOW_DELAY));
     }
 
@@ -81,16 +83,19 @@ public final class PatchSettingsTest {
         PatchSettings.setEnabled(AppliedPatches.UNLOCK_PREMIUM, false);
         PatchSettings.setEnabled(AppliedPatches.HIDE_PROMOTIONS, false);
         PatchSettings.setEnabled(AppliedPatches.REMOVE_RECENT_PANEL, false);
+        PatchSettings.setEnabled(AppliedPatches.SHOW_BACKUP_COUNT, false);
 
         Assert.assertFalse(PatchSettings.isPremiumUnlocked());
         Assert.assertFalse(PatchSettings.isPromotionsHidden());
         Assert.assertFalse(PatchSettings.isRecentPanelRemoved());
+        Assert.assertFalse(PatchSettings.isBackupCountShown());
         Assert.assertTrue(PatchSettings.isHomeShortcutsHidden());
         Assert.assertEquals(AUTO_SHOW_DELAY, PatchSettings.promotionAutoShow(AUTO_SHOW_DELAY));
         PatchSettings.resetToDefaults();
         Assert.assertTrue(PatchSettings.isPremiumUnlocked());
         Assert.assertTrue(PatchSettings.isPromotionsHidden());
         Assert.assertTrue(PatchSettings.isRecentPanelRemoved());
+        Assert.assertTrue(PatchSettings.isBackupCountShown());
     }
 
 }

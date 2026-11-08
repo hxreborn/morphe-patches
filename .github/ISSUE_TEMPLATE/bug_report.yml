@@ -26,6 +26,16 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: worked-before
+    attributes:
+      label: Did this work before
+      options:
+        - Yes, with an older patches release on the same app version
+        - No, it has never worked for me
+        - I have not checked
+    validations:
+      required: true
+  - type: dropdown
     id: app
     attributes:
       label: App and version
@@ -211,6 +221,8 @@ body:
         - "Magic Earth (another version, type it below)"
         - "MangaTime 1.24.5"
         - "MangaTime (another version, type it below)"
+        - "MARKS 2.0.8"
+        - "MARKS (another version, type it below)"
         - "May: Beautiful Bullet Journal 1.0.216"
         - "May: Beautiful Bullet Journal (another version, type it below)"
         - "MBC Shahid 8.11.0"
@@ -453,7 +465,7 @@ body:
     attributes:
       label: APK source
       description: |
-        Link to the download if you have it. APKMirror, APKPure, Uptodown or APKCombo. Not
+        Link to the download if you have it. APKMirror, APKPure, Uptodown, APKCombo or APKCube. Not
         apkmod, Softonic, HappyMod or anything else that repackages APKs.
       placeholder: APKPure, https://apkpure.com/...
     validations:

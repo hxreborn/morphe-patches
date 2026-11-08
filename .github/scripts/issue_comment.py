@@ -167,7 +167,7 @@ def unreleased_reply():
     )
 
 
-def closed_issue_reply(commented_at, issue_title="", patches_list=None, discussion=False, issue_body=""):
+def closed_issue_reply(commented_at, issue_title="", patches_list=None, keep_unlocked=False, issue_body=""):
     lock_day = commented_at + LOCK_DELAY
     lead = "This issue is closed. For anything new, please open a new issue:"
     if patches_list:
@@ -180,7 +180,7 @@ def closed_issue_reply(commented_at, issue_title="", patches_list=None, discussi
         f"{lead}\n"
         "\n"
         f"{ALL_FORMS}\n"
-        + ("" if discussion else
+        + ("" if keep_unlocked else
            f"\nThis issue will be locked on {lock_day:%B} {lock_day.day}, {lock_day.year} unless someone comments first.\n")
     )
 
@@ -206,4 +206,4 @@ if __name__ == "__main__":
             sys.exit(NO_REPLY)
         patches_list = json.loads(Path(args[1]).read_text(encoding="utf-8")) if len(args) > 1 else None
         labels = {label["name"] for label in issue.get("labels") or []}
-        print(closed_issue_reply(timestamp(comment["created_at"]), issue.get("title") or "", patches_list, "discussion" in labels, issue.get("body") or ""), end="")
+        print(closed_issue_reply(timestamp(comment["created_at"]), issue.get("title") or "", patches_list, "no-stale" in labels, issue.get("body") or ""), end="")

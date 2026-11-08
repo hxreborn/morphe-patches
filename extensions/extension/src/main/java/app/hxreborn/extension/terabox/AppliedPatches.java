@@ -37,6 +37,8 @@ public final class AppliedPatches {
 
     static final String REMOVE_RECENT_PANEL = "Remove recent panel";
 
+    static final String SHOW_BACKUP_COUNT = "Show backup count";
+
     static final String UNLOCK_PREMIUM = "Unlock Premium Plus";
 
     private AppliedPatches() {
@@ -53,6 +55,7 @@ public final class AppliedPatches {
         add(applied, hidePromotions(), hidePromotionsName(), hidePromotionsDescription());
         add(applied, hideVideoRecommendations(), hideVideoRecommendationsName(), hideVideoRecommendationsDescription());
         add(applied, removeRecentPanel(), removeRecentPanelName(), removeRecentPanelDescription());
+        add(applied, showBackupCount(), showBackupCountName(), showBackupCountDescription());
         add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
         Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
         return applied;
@@ -169,6 +172,18 @@ public final class AppliedPatches {
     }
 
     public static String removeRecentPanelDescription() {
+        return null;
+    }
+
+    public static boolean showBackupCount() {
+        return false;
+    }
+
+    public static String showBackupCountName() {
+        return null;
+    }
+
+    public static String showBackupCountDescription() {
         return null;
     }
 
