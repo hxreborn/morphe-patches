@@ -4,70 +4,56 @@
  */
 package app.morphe.patches.xtreamplayer.misc.androidauto
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.InstallerType
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.xtreamplayer.misc.premium.unlockPremiumPatch
+import app.morphe.util.asSequence
 import org.w3c.dom.Element
 
-private const val EXTENSION_PACKAGE = "app.hxreborn.extension.xtreamplayer"
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/xtreamplayer/AndroidAutoInstaller;"
-private const val SOURCE_APK_PROVIDER = "$EXTENSION_PACKAGE.SourceApkProvider"
-private const val AUTHORITY_SUFFIX = ".hxreborn.installer"
-private const val PACKAGE_INSTALLER = "com.google.android.packageinstaller"
-private const val ANDROID_AUTO = "com.google.android.projection.gearhead"
+private val carServiceActions = setOf(
+    "android.media.browse.MediaBrowserService",
+    "androidx.car.app.CarAppService",
+)
 
-private val androidAutoResourcesPatch = resourcePatch {
-    finalize {
+@Suppress("unused")
+val androidAutoSupportPatch = resourcePatch(
+    name = "Full Android Auto screen",
+    description = "Shows full app in Android Auto while parked. " +
+        "Requires Android 15 or newer and Unknown sources in Android Auto developer settings.",
+) {
+    compatibleWith(AppCompatibilities.XTREAM_PLAYER)
+    dependsOn(unlockPremiumPatch)
+
+    execute {
         document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as? Element
                 ?: throw PatchException("AndroidManifest.xml has no <application>")
-            val provider = document.createElement("provider")
-            provider.setAttribute("android:name", SOURCE_APK_PROVIDER)
-            provider.setAttribute("android:authorities", document.documentElement.getAttribute("package") + AUTHORITY_SUFFIX)
-            provider.setAttribute("android:exported", "false")
-            provider.setAttribute("android:grantUriPermissions", "true")
-            application.appendChild(provider)
-            val queries = document.getElementsByTagName("queries").item(0) as? Element
-                ?: document.createElement("queries").also(document.documentElement::appendChild)
-            for (packageName in listOf(PACKAGE_INSTALLER, ANDROID_AUTO)) {
-                val packageQuery = document.createElement("package")
-                packageQuery.setAttribute("android:name", packageName)
-                queries.appendChild(packageQuery)
+            val filters = application.getElementsByTagName("intent-filter").asSequence()
+                .filterIsInstance<Element>().toList()
+            val launcher = filters.singleOrNull { filter ->
+                filter.parentNode.nodeName == "activity" &&
+                    filter.getElementsByTagName("action").asSequence().filterIsInstance<Element>().any {
+                        it.getAttribute("android:name") == "android.intent.action.MAIN"
+                    } && filter.getElementsByTagName("category").asSequence().filterIsInstance<Element>().any {
+                        it.getAttribute("android:name") == "android.intent.category.LAUNCHER"
+                    }
+            } ?: throw PatchException("Expected one main launcher activity")
+            val carFilters = filters.filter { filter ->
+                filter.parentNode.nodeName == "service" && (
+                    filter.getElementsByTagName("action").asSequence().filterIsInstance<Element>().any {
+                        it.getAttribute("android:name") in carServiceActions
+                    } || filter.getElementsByTagName("category").asSequence().filterIsInstance<Element>().any {
+                        it.getAttribute("android:name").startsWith("com.google.android.gms.car.category.")
+                    }
+                )
             }
+            if (carFilters.isEmpty()) throw PatchException("Android Auto service filters not found")
+            application.setAttribute("android:appCategory", "game")
+            launcher.appendChild(document.createElement("category").apply {
+                setAttribute("android:name", "android.intent.category.CAR_LAUNCHER")
+            })
+            carFilters.forEach { it.parentNode.removeChild(it) }
         }
-    }
-}
-
-@Suppress("unused")
-val androidAutoSupportPatch = bytecodePatch(
-    name = "Full Android Auto screen",
-    description = "Shows full car screen in Android Auto. Requires Unlock premium, Android 16 or newer and one-time installation confirmation.",
-) {
-    compatibleWith(AppCompatibilities.XTREAM_PLAYER)
-    availability { installer, _ ->
-        if (installer == InstallerType.MOUNT) PatchAvailability.UNAVAILABLE else PatchAvailability.ENABLED
-    }
-    dependsOn(unlockPremiumPatch, androidAutoResourcesPatch)
-    extendWith("extensions/extension.mpe")
-
-    execute {
-        mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR).replaceResourceIdStubs(
-            ResourceType.ATTR,
-            mapOf("accentColorAttribute" to "colorAccent"),
-        )
-        val resumed = MainActivityResumeFingerprint.matchSingle()
-        val (superResume) = resumed.instructionMatches
-        resumed.method.addInstruction(
-            superResume.index + 1,
-            "invoke-static { p0 }, $EXTENSION_CLASS_DESCRIPTOR->promptIfNeeded(Landroid/app/Activity;)V",
-        )
     }
 }
