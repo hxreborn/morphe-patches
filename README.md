@@ -3101,7 +3101,7 @@ signs in without a token.
 
 <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/request.png" width="96" align="left" alt="">
 
-**Want an app patched?**<br>Upvote it in the [open requests](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests?discussions_q=is%3Aopen+category%3A%22App+Requests%22+sort%3Atop) or [request an app](https://github.com/hxreborn/morphe-patches/discussions/new?category=app-requests) with its Play Store link and the features you want.<br>Unlikely to make it: server-enforced features, region locks, TV apps and apps another bundle already patches.
+**Want an app patched?**<br>Upvote it in the [open requests](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests?discussions_q=is%3Aopen+category%3A%22App+Requests%22+sort%3Atop), or [submit a new request](https://github.com/hxreborn/morphe-patches/discussions/new?category=app-requests) with its Play Store link and the features you want.<br>I’m unlikely to take on server-enforced features, region unlocks, TV or Android Auto apps, or apps another bundle already patches. I’m not taking requests for more movie and series apps or exam prep apps for now.
 
 <br clear="left">
 
