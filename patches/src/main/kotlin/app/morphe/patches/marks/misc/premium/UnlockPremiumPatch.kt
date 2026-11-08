@@ -27,7 +27,7 @@ private const val INSTALL_REFERRER_LISTENER_SELECTOR = 0x18
 @Suppress("unused")
 val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks premium practice features. Paid books, NCERT questions, and videos are not unlocked. " +
+    description = "Unlocks premium practice features. Paid books, DPPs, NCERT questions, and videos are not unlocked. " +
         "Requires a signed-in account.",
 ) {
     compatibleWith(AppCompatibilities.MARKS)
@@ -63,6 +63,7 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
             premiumPropertyFingerprint(property).matchAll(count..count).forEach matches@{ match ->
                 if (
                     match.classDef.type.contains("/data/models/marks_selected/") ||
+                    match.classDef.type.contains("/data/models/dpp/") ||
                     match.classDef.type == MEDICAL_DASHBOARD_DATA ||
                     match.classDef.type == HOME_DASHBOARD_DATA
                 ) return@matches
