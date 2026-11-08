@@ -117,7 +117,12 @@ def reconcile_issue(repo, item, patches_list):
             args.extend(("-f", f"labels[]={label}"))
         api(repo, f"issues/{number}/labels", *args)
     for label in sorted(removed):
-        api(repo, f"issues/{number}/labels/{quote(label, safe='')}", "--method", "DELETE")
+        try:
+            api(repo, f"issues/{number}/labels/{quote(label, safe='')}", "--method", "DELETE")
+        except subprocess.CalledProcessError:
+            remaining = api(repo, f"issues/{number}/labels?per_page=100", paginated=True)
+            if any(item["name"] == label for item in remaining):
+                raise
     print(f"#{number}: added {sorted(added)}, removed {sorted(removed)}")
 
 
