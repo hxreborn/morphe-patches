@@ -1,3 +1,9 @@
+## [1.75.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.74.0...v1.75.0-dev.1) (2026-11-08)
+
+### New Features
+
+* **ReadEra - Text-to-speech filter:** omit words and symbols ([adabe87](https://github.com/hxreborn/morphe-patches/commit/adabe87ad5aff2d002447cd29a1272d8098abde0)), closes [#671](https://github.com/hxreborn/morphe-patches/issues/671)
+
 ## [1.74.0](https://github.com/hxreborn/morphe-patches/compare/v1.73.0...v1.74.0) (2026-11-08)
 
 ### Bug Fixes

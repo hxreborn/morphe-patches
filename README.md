@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.74.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.74.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
+> **[v1.75.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;499 patches total
 
 ### Featured apps
 
@@ -2347,7 +2347,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="readera"></a>
 <details>
-<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;13 patches</summary>
+<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2370,6 +2370,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog, the promotional dialogs shown on startup and the Go to Premium buttons in the toolbar and its menu. |
 | <a id="readera-skip-headers-and-footers"></a>[Skip headers and footers](patches/src/main/kotlin/app/morphe/patches/readera/misc/skipheaders/SkipHeadersPatch.kt) | Adds an option to skip headers, footers and page numbers during text-to-speech. Applies to PDF and DjVu documents. |
 | <a id="readera-speech-rate-slider"></a>[Speech rate slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechrate/SpeechRateSliderPatch.kt) | Adds a text-to-speech speed slider from 0.1x to 4x, saved per voice. |
+| <a id="readera-text-to-speech-filter"></a>[Text-to-speech filter](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechfilter/SpeechTextFilterPatch.kt) | Adds "Omit words and symbols" to Settings > Text to speech (TTS). Read aloud skips listed words, phrases and symbols without changing book text. Includes bracket symbols by default. |
 
 </details>
 

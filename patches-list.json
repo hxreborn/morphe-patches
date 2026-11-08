@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.74.0",
+  "version": "1.75.0-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -14868,6 +14868,50 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Text-to-speech filter",
+      "description": "Adds \"Omit words and symbols\" to Settings > Text to speech (TTS). Read aloud skips listed words, phrases and symbols without changing book text. Includes bracket symbols by default.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]

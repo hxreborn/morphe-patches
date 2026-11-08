@@ -437,12 +437,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.74.0"
+        - "1.75.0-dev.1"
         - "1.74.0-dev.3"
         - "1.74.0-dev.2"
         - "1.74.0-dev.1"
+        - "1.74.0"
         - "1.73.1-dev.1"
-        - "1.73.0-dev.3"
         - "Older than these"
         # /generated
     validations:
@@ -893,6 +893,7 @@ body:
         - "ReadEra \u00b7 Remove nags"
         - "ReadEra \u00b7 Skip headers and footers"
         - "ReadEra \u00b7 Speech rate slider"
+        - "ReadEra \u00b7 Text-to-speech filter"
         - "Realme Link \u00b7 AMOLED dark theme"
         - "Realme Link \u00b7 Bypass session expiry"
         - "Resprite \u00b7 Unlock premium"
