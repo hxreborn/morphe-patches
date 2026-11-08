@@ -46,6 +46,10 @@ private const val BACK_ICON_NAME = "verify_sys_color_actionbar_back_white"
 private const val OPAQUE_BLACK = "#ff000000"
 
 private const val HOME_BANNER_DRAWABLE = "res/drawable/ic_home_bg_default_v2.xml"
+private const val ME_LAYOUT = "res/layout/fragment_user2.xml"
+private const val DEVICE_COUNT_ID = "@id/device_count"
+private const val SECONDARY_INK_ALPHA = "0.6"
+private const val UNCHECKED_RADIO_ICON = "sp_device_radio_unselect.png"
 private const val MIN_SDK_ATTRIBUTE = "android:minSdkVersion"
 
 private val ADDED_COLORS = mapOf(
@@ -170,7 +174,7 @@ private val HEADSET_COLORS = mapOf(
     "color_check_box_grey" to "#33ffffff",
     "color_bg_grey" to "#33ffffff",
     "headset_bg_grey" to "#1effffff",
-    "text_grey" to "#66ffffff",
+    "text_grey" to "#99ffffff",
 )
 
 private val SURFACE_VALUES = setOf(
@@ -259,6 +263,10 @@ private val STYLE_ON_SURFACE_ATTRIBUTES = setOf(
 )
 
 private val STYLE_CARD_ATTRIBUTES = setOf("cardBackgroundColor")
+
+private val STYLE_ARROW_ATTRIBUTES = setOf("right_arrow")
+
+private val ARROW_REPLACEMENTS = mapOf("@mipmap/v_right_s" to "@drawable/v_right_s")
 
 private val CARD_REPLACEMENTS = mapOf(
     "?android:attr/colorBackgroundFloating" to SURFACE_COLOR,
@@ -744,6 +752,32 @@ private val amoledThemeResourcesPatch = resourcePatch {
         requireReplaced("black monochrome icon", invertMonochromeVectors(app, ON_SURFACE_COLOR))
         requireReplaced("black tab animation", invertTabAnimations())
         requireReplaced("dark glyph icon", app.whitenDarkGlyphIcons())
+        requireReplaced(
+            "scene template card surface",
+            replaceAttributes(
+                app,
+                "layout",
+                listOf("android:backgroundTint"),
+                mapOf("@color/white_alpha60" to SURFACE_COLOR),
+                fileNamePrefix = "item_scene_recommend",
+            ),
+        )
+        requireReplaced(
+            "notification illustration",
+            replaceAttributes(
+                app,
+                "layout",
+                listOf("android:src"),
+                mapOf("@mipmap/add_device_icon" to "@drawable/link_ic_notify"),
+                fileNamePrefix = "activity_sys_notify",
+            ),
+        )
+
+        val uncheckedRadio = app.iconImageFiles().single { it.name == UNCHECKED_RADIO_ICON }
+        PngImage.read(uncheckedRadio).apply {
+            whitenOpaquePixels(applyInkAlphaFloor = true)
+            write(uncheckedRadio)
+        }
 
         val ink = { _: Element, _: String, value: String ->
             if (value in overriddenReferences) null else appPalettes.invertedInk(value)
@@ -777,6 +811,19 @@ private val amoledThemeResourcesPatch = resourcePatch {
             "framework card background",
             replaceStyleItems(app, STYLE_CARD_ATTRIBUTES, CARD_REPLACEMENTS),
         )
+        requireReplaced(
+            "settings row arrow",
+            replaceStyleItems(app, STYLE_ARROW_ATTRIBUTES, ARROW_REPLACEMENTS),
+        )
+
+        document(ME_LAYOUT).use { document ->
+            val textViews = document.getElementsByTagName("TextView")
+            val deviceCount = (0 until textViews.length)
+                .map { textViews.item(it) as Element }
+                .single { it.getAttribute("android:id") == DEVICE_COUNT_ID }
+
+            deviceCount.setAttribute("android:alpha", SECONDARY_INK_ALPHA)
+        }
 
         val headsetInk = { _: Element, _: String, value: String ->
             if (value in headsetOverriddenReferences) null else headsetPalettes.invertedInk(value)
@@ -875,6 +922,26 @@ private val amoledThemeResourcesPatch = resourcePatch {
         requireReplaced(
             "opaque headset check mark",
             replaceAttributes(headset, "drawable", SELECTOR_ATTRIBUTES, HEADSET_CHECK_MARK_REPLACEMENTS),
+        )
+        requireReplaced(
+            "headset unchecked radio contrast",
+            replaceAttributes(
+                headset,
+                "drawable",
+                listOf("android:strokeAlpha"),
+                mapOf("0.2" to SECONDARY_INK_ALPHA),
+                fileNamePrefix = "ic_radio_uncheck",
+            ),
+        )
+        requireReplaced(
+            "headset empty record caption contrast",
+            replaceAttributes(
+                headset,
+                "layout",
+                listOf("android:alpha"),
+                mapOf("0.3" to SECONDARY_INK_ALPHA),
+                fileNamePrefix = "activity_hear_id_detection_list",
+            ),
         )
 
         document(HOME_BANNER_DRAWABLE).use { document ->
