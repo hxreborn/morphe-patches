@@ -127,6 +127,9 @@ public final class AppliedPatches {
         if (LayoutComponents.isPatched() || SidebarEntries.isPatched() || SettingsSections.isPatched()) {
             names.add(hideLayoutComponentsName());
         }
+        if (FloatingNavigationBar.isPatched()) {
+            names.add(floatingNavigationBarName());
+        }
         if (NavigationBarAutoHide.isPatched()) {
             names.add(hideNavigationBarOnScrollName());
         }
@@ -215,6 +218,10 @@ public final class AppliedPatches {
     }
 
     public static String hideLayoutComponentsName() {
+        return null;
+    }
+
+    public static String floatingNavigationBarName() {
         return null;
     }
 

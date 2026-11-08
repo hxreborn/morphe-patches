@@ -26,9 +26,11 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -40,6 +42,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -84,6 +87,8 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int ROW_TITLE_SP = 16;
 
     private static final int ROW_SUMMARY_SP = 14;
+
+    private static final float DISABLED_ROW_ALPHA = 0.5f;
 
     private static final int CHEVRON_SIZE_DP = 24;
 
@@ -200,6 +205,12 @@ public final class PatchesSettingsActivity extends Activity {
         addSection(column, "General", generalRows);
 
         final List<View> layoutRows = new ArrayList<>();
+        if (FloatingNavigationBar.isPatched()) {
+            layoutRows.add(layoutSwitchRow(AppliedPatches.floatingNavigationBarName(),
+                    "Uses Proton Mail's floating toolbar style.", FloatingNavigationBar.KEY));
+            layoutRows.add(navigationBlurStrengthRow());
+            layoutRows.add(navigationGlassRow());
+        }
         if (LayoutComponents.isPatched()) {
             layoutRows.add(layoutSwitchRow("Hide Help center", "Hides the feedback, import/export and tutorial links.",
                     LayoutComponents.HELP_CENTER));
@@ -328,16 +339,116 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private View layoutSwitchRow(String title, String summary, final String key) {
-        return switchRow(title, summary, PatchSettings.isEnabled(key, false), new CheckedChangeListener() {
+        return layoutSwitchRow(title, summary, key, true);
+    }
+
+    private View navigationBlurStrengthRow() {
+        final boolean supported = NavigationBarBackdrop.isSupported();
+        final boolean floating = FloatingNavigationBar.isEnabled();
+        String summary = blurStrengthLabel(NavigationBarBackdrop.blurStrengthDp());
+        if (!supported) {
+            summary = "Requires Android 12 or later.";
+        } else if (!floating) {
+            summary = "Requires floating navigation bar.";
+        }
+        final View row = row("Blur strength", summary, this::showBlurStrength);
+        row.setEnabled(supported && floating);
+        if (!row.isEnabled()) {
+            row.setAlpha(DISABLED_ROW_ALPHA);
+        }
+        return row;
+    }
+
+    private void showBlurStrength() {
+        if (!NavigationBarBackdrop.isSupported()) {
+            return;
+        }
+        final int minimum = PatchSettings.isEnabled(NavigationBarBackdrop.GLASS_KEY, false)
+                ? NavigationBarBackdrop.MIN_GLASS_BLUR_STRENGTH_DP : 0;
+        final LinearLayout contentLayout = PatchesDialog.createContentLayout(this);
+        contentLayout.addView(PatchesDialog.createTitle(this, "Blur strength"));
+        final TextView amount = PatchesDialog.createTextView(this,
+                blurStrengthLabel(NavigationBarBackdrop.blurStrengthDp()), PatchesDialog.LABEL_SP, this.textWeakColor);
+        amount.setPadding(0, dp(PatchesDialog.GAP_DP), 0, dp(PatchesDialog.GAP_DP));
+        contentLayout.addView(amount);
+        final SeekBar strength = new SeekBar(this);
+        strength.setMin(minimum);
+        strength.setMax(NavigationBarBackdrop.MAX_BLUR_STRENGTH_DP);
+        strength.setProgress(NavigationBarBackdrop.blurStrengthDp());
+        strength.setMinimumHeight(dp(BACK_TOUCH_TARGET_DP));
+        strength.setContentDescription("Blur strength. " + amount.getText());
+        final ColorStateList accent = ColorStateList.valueOf(AccentColor.getAccentColor(isDarkTheme()));
+        strength.setProgressTintList(accent);
+        strength.setThumbTintList(accent);
+        strength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onCheckedChanged(boolean hidden) {
-                PatchSettings.setEnabled(key, hidden);
-                confirmRestart();
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                amount.setText(blurStrengthLabel(progress));
+                seekBar.setContentDescription("Blur strength. " + amount.getText());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+        contentLayout.addView(strength, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        final Dialog dialog = PatchesDialog.createDialog(this, contentLayout);
+        final LinearLayout actions = PatchesDialog.createButtonRow(this);
+        actions.addView(PatchesDialog.configureActionButton(this,
+                PatchesDialog.createTextView(this, "Cancel", PatchesDialog.LABEL_SP, this.textWeakColor),
+                dialog::dismiss));
+        actions.addView(PatchesDialog.configureActionButton(this, PatchesDialog.createTextView(this, "Save",
+                PatchesDialog.LABEL_SP, AccentColor.getAccentColor(isDarkTheme())), () -> {
+                    NavigationBarBackdrop.setBlurStrengthDp(strength.getProgress());
+                    dialog.dismiss();
+                    recreateContent();
+                    confirmRestart();
+                }));
+        contentLayout.addView(actions, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        dialog.show();
+    }
+
+    private static String blurStrengthLabel(int strength) {
+        return (strength == 0) ? "Off" : strength + " / " + NavigationBarBackdrop.MAX_BLUR_STRENGTH_DP;
+    }
+
+    private View navigationGlassRow() {
+        String summary = "Adds blur, translucency and highlights to the floating navigation bar.";
+        final boolean supported = NavigationBarBackdrop.isSupported();
+        final boolean floating = FloatingNavigationBar.isEnabled();
+        if (!supported) {
+            summary = "Requires Android 12 or later.";
+        } else if (!floating) {
+            summary = "Requires floating navigation bar.";
+        }
+        return layoutSwitchRow("Glass navigation bar", summary, NavigationBarBackdrop.GLASS_KEY, supported && floating);
+    }
+
+    private View layoutSwitchRow(String title, String summary, final String key, boolean enabled) {
+        return switchRow(title, summary, PatchSettings.isEnabled(key, false), new CheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(boolean checked) {
+                PatchSettings.setEnabled(key, checked);
+                if (FloatingNavigationBar.KEY.equals(key) || NavigationBarBackdrop.GLASS_KEY.equals(key)) {
+                    setContentView(buildScreen());
+                }
+                confirmRestart();
+            }
+        }, enabled);
     }
 
     private View switchRow(String title, String summary, boolean checked, final CheckedChangeListener onChange) {
+        return switchRow(title, summary, checked, onChange, true);
+    }
+
+    private View switchRow(String title, String summary, boolean checked, final CheckedChangeListener onChange,
+            boolean enabled) {
         final LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -366,6 +477,7 @@ public final class PatchesSettingsActivity extends Activity {
         final Switch control = new Switch(this);
         control.setContentDescription(title + ". " + summary);
         control.setChecked(checked);
+        control.setEnabled(enabled);
         final LinearLayout.LayoutParams controlParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         controlParams.setMarginStart(dp(ROW_CONTROL_START_MARGIN_DP));
@@ -376,6 +488,10 @@ public final class PatchesSettingsActivity extends Activity {
 
         row.setOnClickListener((ignored) -> control.performClick());
         PatchesTheme.makeClickable(row);
+        row.setEnabled(enabled);
+        if (!enabled) {
+            row.setAlpha(DISABLED_ROW_ALPHA);
+        }
         return row;
     }
 

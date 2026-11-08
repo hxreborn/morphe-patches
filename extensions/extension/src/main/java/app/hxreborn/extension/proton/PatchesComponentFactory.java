@@ -36,7 +36,9 @@ public class PatchesComponentFactory extends AppComponentFactory {
         if (intent != null && PatchesMenu.ACTION_SHOW_PATCHES_SETTINGS.equals(intent.getAction())) {
             return new PatchesSettingsActivity();
         }
-        return super.instantiateActivity(classLoader, className, intent);
+        final Activity activity = super.instantiateActivity(classLoader, className, intent);
+        NavigationBarBackdrop.watch(activity);
+        return activity;
     }
 
 }
