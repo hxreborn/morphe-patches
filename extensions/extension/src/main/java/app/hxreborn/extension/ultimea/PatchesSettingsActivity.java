@@ -154,6 +154,10 @@ public final class PatchesSettingsActivity extends Activity {
                 this.style.dp(CONTENT_BOTTOM_PADDING_DP));
 
         LinearLayout app = this.rows.card();
+        if (AppliedPatches.accentColor()) {
+            this.rows.actionRow(app, "hx_ultimea_ic_patches", "Accent color", AccentPalette.label(this),
+                    () -> AccentColorDialog.show(this));
+        }
         if (AppliedPatches.removeDistractions()) {
             this.rows.switchRow(app, "hx_ultimea_ic_distractions", AppliedPatches.removeDistractionsName(),
                     "Removes social and support entries.", PatchSettings.removeDistractions(), (button, enabled) -> {
@@ -205,6 +209,9 @@ public final class PatchesSettingsActivity extends Activity {
         }
         if (AppliedPatches.localEqualizerPresets()) {
             names.add(AppliedPatches.localEqualizerPresetsName());
+        }
+        if (AppliedPatches.accentColor()) {
+            names.add(AppliedPatches.accentColorName());
         }
         Collections.sort(names);
         for (String name : names) {

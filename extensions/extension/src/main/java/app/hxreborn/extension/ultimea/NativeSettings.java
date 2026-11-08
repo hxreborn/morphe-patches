@@ -46,6 +46,7 @@ public final class NativeSettings {
     }
 
     public static String[] prepare(Context context, String[] arguments) {
+        AccentColor.prepare(context);
         if (!PatchSettings.removeDistractions() && !PatchSettings.removePopups()
                 && !PatchSettings.stopFirmwareReminders()) {
             return arguments;

@@ -262,4 +262,71 @@ public class ThemeSettingsTest {
 
     }
 
+    @Test
+    public void retainAppliedThemeDuringAccentRecreation() throws IOException {
+        ThemeSettings.initialize(this.activity);
+        Assert.assertTrue(ThemeSettings.setMode(this.activity, AMOLED));
+        try (ActivityController<Activity> second = Robolectric.buildActivity(Activity.class).setup()) {
+            ThemeSettings.initialize(second.get());
+            Assert.assertEquals(DARK_BACKGROUND, second.get().getWindow().getStatusBarColor());
+            Assert.assertEquals(DARK_BACKGROUND, second.get().getWindow().getNavigationBarColor());
+        }
+        Assert.assertEquals(DARK_BACKGROUND, ThemeSettings.pageBackground());
+        Assert.assertEquals(AMOLED, ThemeSettings.getMode(this.activity));
+        try (FileInputStream input = new FileInputStream(new File(this.activity.getFilesDir(), "hx_ultimea_theme"))) {
+            Assert.assertEquals(DARK, input.read());
+        }
+    }
+
+    @Test
+    public void retainAppliedThemeAfterAccentRefreshRecreatesActivity() throws Exception {
+        try (ActivityController<AccentRefreshActivity> controller = Robolectric
+            .buildActivity(AccentRefreshActivity.class)
+            .setup()) {
+            AccentRefreshActivity activity = controller.get();
+            AccentObserver observer = new AccentObserver(activity.getApplication());
+            observer.attach(activity);
+            observer.onActivityResumed(activity);
+            Assert.assertTrue(ThemeSettings.setMode(activity, AMOLED));
+            Assert.assertTrue(AccentPalette.setPreset(activity, AccentPalette.Fixed.BLUE.preset));
+            observer.changed();
+            org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle();
+            Assert.assertEquals(1, activity.recreations);
+            Assert.assertEquals(DARK_BACKGROUND, ThemeSettings.pageBackground());
+            Assert.assertEquals(AMOLED, ThemeSettings.getMode(activity));
+            try (FileInputStream input = new FileInputStream(new File(activity.getFilesDir(), "hx_ultimea_theme"))) {
+                Assert.assertEquals(DARK, input.read());
+            }
+        }
+    }
+
+    public static class AccentRefreshActivity extends Activity {
+
+        private int recreations;
+
+        @Override
+        public void recreate() {
+            this.recreations++;
+            super.recreate();
+        }
+
+    }
+
+    @Test
+    public void retainAppliedAmoledAfterPendingReset() throws IOException {
+        Assert.assertTrue(ThemeSettings.setMode(this.activity, AMOLED));
+        org.robolectric.util.ReflectionHelpers.setStaticField(ThemeSettings.class, "initialized", false);
+        ThemeSettings.initialize(this.activity);
+        this.activity.getSharedPreferences(PatchSettings.PREFERENCES_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .commit();
+        ThemeSettings.initialize(this.activity);
+        Assert.assertEquals(AMOLED_BACKGROUND, ThemeSettings.pageBackground());
+        Assert.assertEquals(DARK, ThemeSettings.getMode(this.activity));
+        try (FileInputStream input = new FileInputStream(new File(this.activity.getFilesDir(), "hx_ultimea_theme"))) {
+            Assert.assertEquals(AMOLED, input.read());
+        }
+    }
+
 }

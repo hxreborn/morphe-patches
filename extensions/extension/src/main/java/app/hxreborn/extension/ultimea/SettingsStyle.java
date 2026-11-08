@@ -149,7 +149,8 @@ final class SettingsStyle {
     }
 
     void styleSwitch(Switch control) {
-        SwitchColors colors = new SwitchColors(ACCENT, this.cardSurface, this.dark);
+        SwitchColors colors = new SwitchColors(AccentColor.transform(this.context, ACCENT), this.cardSurface,
+                this.dark);
         control.setThumbTintMode(PorterDuff.Mode.SRC_IN);
         control.setThumbTintList(ColorStateList.valueOf(colors.thumb));
         control.setTrackDrawable(switchTrack(control.getTrackDrawable(), colors));
