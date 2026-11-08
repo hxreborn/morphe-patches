@@ -21,7 +21,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 ### Featured apps
 
-<table>
+<table align="center">
 <tr>
 <td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>21 patches</sub></td>
 <td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
