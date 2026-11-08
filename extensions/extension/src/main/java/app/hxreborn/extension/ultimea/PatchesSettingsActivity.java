@@ -162,7 +162,7 @@ public final class PatchesSettingsActivity extends Activity {
                     });
         }
         if (AppliedPatches.removePopups()) {
-            this.rows.switchRow(app, "hx_ultimea_ic_distractions", AppliedPatches.removePopupsName(),
+            this.rows.switchRow(app, "hx_ultimea_ic_popups", AppliedPatches.removePopupsName(),
                     "Removes promotions and ratings.", PatchSettings.removePopups(), (button, enabled) -> {
                         PatchSettings.setEnabled(PatchSettings.REMOVE_POPUPS, enabled);
                         confirmRestart();

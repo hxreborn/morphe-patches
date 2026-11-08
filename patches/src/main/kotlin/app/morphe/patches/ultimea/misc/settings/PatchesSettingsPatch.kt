@@ -27,6 +27,7 @@ private val icons = listOf(
     "hx_ultimea_ic_info",
     "hx_ultimea_ic_patches",
     "hx_ultimea_ic_distractions",
+    "hx_ultimea_ic_popups",
 )
 
 internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch<*>) =
@@ -42,6 +43,25 @@ internal val patchesSettingsPatch = bytecodePatch {
                     ?: throw PatchException("Missing patches menu icon $name")
                 stream.use { get("res/drawable/$name.xml").outputStream().use(it::copyTo) }
             }
+            listOf("values" to false, "values-night" to true).forEach { (qualifier, dark) ->
+                document("res/$qualifier/styles.xml").use { document ->
+                    val style = document.createElement("style")
+                    style.setAttribute("name", "hx_ultimea_menu")
+                    style.setAttribute("parent", if (dark) "@android:style/Theme.DeviceDefault.NoActionBar"
+                        else "@android:style/Theme.DeviceDefault.Light.NoActionBar")
+                    mapOf(
+                        "android:statusBarColor" to if (dark) "#FF121212" else "#FFF6F6F6",
+                        "android:navigationBarColor" to if (dark) "#FF121212" else "#FFF6F6F6",
+                        "android:windowLightStatusBar" to (!dark).toString(),
+                    ).forEach { (name, value) ->
+                        val item = document.createElement("item")
+                        item.setAttribute("name", name)
+                        item.textContent = value
+                        style.appendChild(item)
+                    }
+                    document.documentElement.appendChild(style)
+                }
+            }
             val library = dartAotLibrary()
             library.writeBytes(library.readBytes().apply { addPatchesMenu() })
             document("AndroidManifest.xml").use { document ->
@@ -49,7 +69,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 val activity = document.createElement("activity")
                 activity.setAttribute("android:name", ACTIVITY)
                 activity.setAttribute("android:exported", "false")
-                activity.setAttribute("android:theme", "@android:style/Theme.DeviceDefault.NoActionBar")
+                activity.setAttribute("android:theme", "@style/hx_ultimea_menu")
                 application.appendChild(activity)
             }
         }
