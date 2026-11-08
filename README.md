@@ -17,13 +17,13 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;499 patches total
+> **[v1.75.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;503 patches total
 
 ### Featured apps
 
 <table align="center">
 <tr>
-<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>21 patches</sub></td>
+<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>22 patches</sub></td>
 <td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
 <td align="center" width="160"><a href="#moviebox"><img src=".github/assets/icons/moviebox.png" width="40"><br>MovieBox</a><br><sub>4 patches</sub></td>
 </tr>
@@ -366,6 +366,23 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="audiolab-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/audiolab/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro tools and removes ads, reward videos and upgrade prompts. The AI tools are not included. |
+
+</details>
+
+<a id="audiomack"></a>
+<details>
+<summary><img src=".github/assets/icons/audiomack.png" width="18" align="top">&nbsp;&nbsp;Audiomack&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.11.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="audiomack-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="audiomack-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/premium/UnlockPremiumPatch.kt) | Unlocks Plus features. Region-limited songs are still restricted. |
 
 </details>
 
@@ -1401,7 +1418,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="marks"></a>
 <details>
-<summary><img src=".github/assets/icons/marks.png" width="18" align="top">&nbsp;&nbsp;MARKS&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/marks.png" width="18" align="top">&nbsp;&nbsp;MARKS&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1414,7 +1431,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="marks-fix-edge-to-edge"></a>[Fix edge-to-edge](patches/src/main/kotlin/app/morphe/patches/marks/misc/layout/FixEdgeToEdgePatch.kt) | Keeps the medical interface clear of system bars. |
 | <a id="marks-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="marks-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/marks/misc/ads/RemoveAdsPatch.kt) | Removes promotional banners and in-app messages. |
-| <a id="marks-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/marks/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium practice features. Paid NCERT questions and videos are not unlocked. Requires a signed-in account. |
+| <a id="marks-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/marks/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium practice features. Paid books, NCERT questions, and videos are not unlocked. Requires a signed-in account. |
+| <a id="marks-unlock-question-filters"></a>[Unlock question filters](patches/src/main/kotlin/app/morphe/patches/marks/misc/questionfilters/UnlockQuestionFiltersPatch.kt) | Shows question formats using questions already available in the chapter. |
 
 </details>
 
@@ -2778,7 +2796,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;22 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2803,6 +2821,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
+| <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |
 | <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |
 | <a id="viber-remove-typing-privacy-banner"></a>[Remove typing privacy banner](patches/src/main/kotlin/app/morphe/patches/viber/layout/typingbanner/RemoveTypingPrivacyBannerPatch.kt) | Removes typing privacy promotions. |  |
 | <a id="viber-save-disappearing-media"></a>[Save disappearing media](patches/src/main/kotlin/app/morphe/patches/viber/layout/media/SaveDisappearingMediaPatch.kt) | Shows Save to gallery for disappearing photos and videos. |  |
@@ -3008,7 +3027,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="xtream-player-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/tracking/DisableTrackingPatch.kt) | Disables ML Kit usage reporting. |
-| <a id="xtream-player-full-android-auto-screen"></a>[Full Android Auto screen](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/androidauto/AndroidAutoSupportPatch.kt) | Shows full car screen in Android Auto. Requires Unlock premium, Android 16 or newer and one-time installation confirmation. |
+| <a id="xtream-player-full-android-auto-screen"></a>[Full Android Auto screen](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/androidauto/AndroidAutoSupportPatch.kt) | Shows full app in Android Auto while parked. Requires Android 15 or newer and Unknown sources in Android Auto developer settings. |
 | <a id="xtream-player-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium media features and visualizers. |
 
 </details>
