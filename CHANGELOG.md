@@ -1,3 +1,10 @@
+## [1.75.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.4...v1.75.0-dev.5) (2026-11-08)
+
+### Bug Fixes
+
+* **AliExpress:** keep patches working when settings colours are missing ([f674a40](https://github.com/hxreborn/morphe-patches/commit/f674a40c2b190803b5f9dc3e089dc1383e88ae14))
+* **AliExpress:** stop every patch failing on Windows and macOS ([d2797fd](https://github.com/hxreborn/morphe-patches/commit/d2797fd63623560585bde608b264b6685ead0a44)), closes [#685](https://github.com/hxreborn/morphe-patches/issues/685)
+
 ## [1.75.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.3...v1.75.0-dev.4) (2026-11-08)
 
 ### Bug Fixes

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
+> **[v1.75.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
 
 ### Featured apps
 
@@ -634,8 +634,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.1.5 |
+| [1.1.5](https://download.sxwon.com/CastleTV_v1.1.5_0929_19_30_official.apk "Download stock APK") |
 | :---: |
+
+Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1563,8 +1565,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.2.0.0923.web_socialmedia |
+| [1.2.0.0923.web_socialmedia](https://apk.aoneroom.com/apk/moviebox/release/1.2.0.0923/com.community.mbox.tv-release-1.2.0.0923-ws-50040018-h.apk "Download stock APK") |
 | :---: |
+
+Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2601,8 +2605,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 14.0.0 | 14.1.0 | 15.0.1 | 15.1.0 | 14.0.0 TV | 15.1.0 TV |
+| 14.0.0 | 14.1.0 | 15.0.1 | 15.1.0 | [14.0.0 TV](https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast-android-tv/symfonium-music-player-cast-android-tv-14-0-0-tv-release/ "Download stock APK") | [15.1.0 TV](https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast-android-tv/symfonium-music-player-cast-android-tv-15-1-0-tv-release/ "Download stock APK") |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+
+Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
