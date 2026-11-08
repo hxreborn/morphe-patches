@@ -79,7 +79,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 ResourceType.COLOR,
                 mapOf(
                     "whiteColor" to "ae_ui_color_white",
-                    "lightGrayColor" to "Gray_f3f3f3",
+                    "lightGrayColor" to "ae_ui_color_grey_1",
                     "brandColor" to "ae_ui_color_brand_primary",
                 ),
             )
