@@ -66,4 +66,12 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean fineEqualizer() {
+        return false;
+    }
+
+    public static String fineEqualizerName() {
+        return null;
+    }
+
 }

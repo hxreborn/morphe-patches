@@ -200,6 +200,9 @@ public final class PatchesSettingsActivity extends Activity {
         if (AppliedPatches.xupmix()) {
             names.add(AppliedPatches.xupmixName());
         }
+        if (AppliedPatches.fineEqualizer()) {
+            names.add(AppliedPatches.fineEqualizerName());
+        }
         Collections.sort(names);
         for (String name : names) {
             this.rows.textRow(applied, name);
