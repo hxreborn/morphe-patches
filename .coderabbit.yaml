@@ -14,6 +14,7 @@ reviews:
     drafts: false
     base_branches:
       - "^dev$"
+      - "^feat/"
     ignore_title_keywords:
       - "Merge branch `dev` to `main`"
     ignore_usernames:
