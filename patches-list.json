@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.75.0-dev.2",
+  "version": "1.75.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -17902,7 +17902,7 @@
     },
     {
       "name": "Unlock premium",
-      "description": "Unlocks premium practice features. Paid books, NCERT questions, and videos are not unlocked. Requires a signed-in account.",
+      "description": "Unlocks premium practice features. Paid books, DPPs, NCERT questions, and videos are not unlocked. Requires a signed-in account.",
       "default": true,
       "category": null,
       "compatiblePackages": [

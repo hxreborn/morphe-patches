@@ -1,3 +1,9 @@
+## [1.75.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.2...v1.75.0-dev.3) (2026-11-08)
+
+### Bug Fixes
+
+* **MARKS - Unlock premium:** stop errors on locked DPPs ([9d65089](https://github.com/hxreborn/morphe-patches/commit/9d65089e22e73106ef20ad5c6701ba9b89fa31fe))
+
 ## [1.75.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.1...v1.75.0-dev.2) (2026-11-08)
 
 ### Bug Fixes
