@@ -1442,7 +1442,7 @@ internal object AppCompatibilities {
         packageName = "com.realme.link",
         apkFileType = ApkFileType.XAPK_REQUIRED,
         appIconColor = 0x3575C4,
-        targets = listOf(AppTarget(version = "5.5.514.11421", versionCode = 530121, minSdk = 33)),
+        targets = listOf(AppTarget(version = "5.8.811.2814", versionCode = 530214, minSdk = 33)),
     )
 
     val RESPRITE = Compatibility(
