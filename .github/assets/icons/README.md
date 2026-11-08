@@ -22,7 +22,6 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | File | App | Developer | Source |
 |---|---|---|---|
 | `audiomack.png` | Audiomack (`com.audiomack`) | Audiomack Music Apps | APK 8.11.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
-| `marks.png` | MARKS (`com.scoremarks.marks`) | MARKS App | Play 2.0.8, `res/mipmap-xxxhdpi-v4/ic_launcher.png`, cut to a circle |
 | `behisabi.png` | BeHisabi (`com.neonbhoot.behisabi`) | Neon Bhoot | Google Play listing icon, cut to a circle |
 | `liftoff.png` | Liftoff (`com.gymbros.app`) | Liftoff Labs Inc. | Play 2.17.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `habitify.png` | Habitify (`co.unstatic.habitify`) | Unstatic Ltd Co | Play 50.2.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, white background under foreground, cut to a circle |

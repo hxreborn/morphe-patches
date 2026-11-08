@@ -147,7 +147,6 @@ def versions_table(targets):
 
 ICONS = {
     "com.audiomack": "audiomack.png",
-    "com.scoremarks.marks": "marks.png",
     "com.neonbhoot.behisabi": "behisabi.png",
     "com.gymbros.app": "liftoff.png",
     "co.unstatic.habitify": "habitify.png",
