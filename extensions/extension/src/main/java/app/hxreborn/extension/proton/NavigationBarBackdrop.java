@@ -24,8 +24,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
 import android.graphics.RecordingCanvas;
 import android.graphics.RenderEffect;
 import android.graphics.RenderNode;
@@ -175,20 +173,6 @@ public final class NavigationBarBackdrop {
     private static final class Renderer
             implements Application.ActivityLifecycleCallbacks, ViewTreeObserver.OnPreDrawListener {
 
-        private static final float CORNER_RADIUS_DP = 28f;
-
-        private static final float BORDER_WIDTH_DP = 1f;
-
-        private static final float BLUR_TINT_ALPHA = 0.55f;
-
-        private static final float GLASS_TINT_ALPHA = 0.38f;
-
-        private static final int GLASS_EDGE_COLOR = 0x65ffffff;
-
-        private static final int GLASS_TOP_COLOR = 0x1fffffff;
-
-        private static final int GLASS_BOTTOM_COLOR = 0x0f000000;
-
         private final float blurRadiusPx;
 
         private final boolean glass;
@@ -199,7 +183,7 @@ public final class NavigationBarBackdrop {
 
         private final RenderNode blurNode = new RenderNode("navigation blur");
 
-        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final NavigationBarAppearance appearance = new NavigationBarAppearance(this.density);
 
         private final DrawCallback sourceDraw = new DrawCallback(this, true);
 
@@ -275,19 +259,8 @@ public final class NavigationBarBackdrop {
                     && isAttached(this.sourceCoordinates) && isAttached(this.barCoordinates);
             if (ready) {
                 recordBlur();
-                destination.drawRenderNode(this.blurNode);
             }
-            this.paint.setShader(null);
-            this.paint.setStyle(Paint.Style.FILL);
-            this.paint.setColor(this.color);
-            this.paint.setAlpha(
-                    ready ? Math.round(Color.alpha(this.color) * (this.glass ? GLASS_TINT_ALPHA : BLUR_TINT_ALPHA))
-                            : Color.alpha(this.color));
-            final float corner = CORNER_RADIUS_DP * this.density;
-            destination.drawRoundRect(0f, 0f, width, height, corner, corner, this.paint);
-            if (ready && this.glass) {
-                drawGlass(destination, width, height, corner);
-            }
+            this.appearance.draw(destination, this.blurNode, width, height, this.color, this.glass, ready);
             drawContent(scope);
         }
 
@@ -310,22 +283,6 @@ public final class NavigationBarBackdrop {
             } finally {
                 this.blurNode.endRecording();
             }
-        }
-
-        private void drawGlass(Canvas destination, float width, float height, float corner) {
-            this.paint.setColor(Color.WHITE);
-            this.paint.setAlpha(Color.alpha(Color.WHITE));
-            this.paint.setShader(
-                    new LinearGradient(0f, 0f, 0f, height, GLASS_TOP_COLOR, GLASS_BOTTOM_COLOR, Shader.TileMode.CLAMP));
-            destination.drawRoundRect(0f, 0f, width, height, corner, corner, this.paint);
-            this.paint.setShader(null);
-            this.paint.setColor(GLASS_EDGE_COLOR);
-            this.paint.setStyle(Paint.Style.STROKE);
-            final float border = BORDER_WIDTH_DP * this.density;
-            this.paint.setStrokeWidth(border);
-            final float inset = border / 2f;
-            destination.drawRoundRect(inset, inset, width - inset, height - inset, corner - inset, corner - inset,
-                    this.paint);
         }
 
         private void fail() {

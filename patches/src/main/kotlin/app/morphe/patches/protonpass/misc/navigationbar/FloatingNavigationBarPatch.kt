@@ -18,6 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstructio
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.FLOATING_NAVIGATION_BAR_CLASS
+import app.morphe.patches.shared.misc.proton.bindNavigationBarPreview
 import app.morphe.patches.shared.misc.proton.injectFloatingNavigationBar
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
@@ -36,6 +37,21 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
     var contentPadding: Match? = null
 
     execute {
+        bindNavigationBarPreview(
+            icons = listOf(
+                "ic_proton_list_bullets",
+                "ic_proton_plus",
+                "ic_shield_monitor_ok",
+                "ic_proton_user",
+            ),
+            labels = listOf(
+                "bottom_bar_list_items_icon_content_description",
+                "bottom_bar_add_item_icon_content_description",
+                "bottom_bar_security_center_icon_content_description",
+                "bottom_bar_profile_icon_content_description",
+            ),
+            showLabels = false,
+        )
         contentPadding = AppContentPaddingFingerprint.matchSingle()
         markPatchMetadata("floatingNavigationBar", floatingNavigationBarPatch)
         markFeaturePatched(FLOATING_NAVIGATION_BAR_CLASS)

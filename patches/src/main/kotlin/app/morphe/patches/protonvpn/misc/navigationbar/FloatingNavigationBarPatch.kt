@@ -18,6 +18,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.FLOATING_NAVIGATION_BAR_CLASS
 import app.morphe.patches.shared.misc.proton.NAVIGATION_BAR_BACKDROP_CLASS
 import app.morphe.patches.shared.misc.proton.GraphicsLayerElementFingerprint
+import app.morphe.patches.shared.misc.proton.bindNavigationBarPreview
 import app.morphe.patches.shared.misc.proton.injectFloatingNavigationBar
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
@@ -58,6 +59,21 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
+        bindNavigationBarPreview(
+            icons = listOf(
+                "ic_proton_house",
+                "ic_proton_earth",
+                "ic_proton_window_terminal",
+                "ic_proton_cog_wheel_filled",
+            ),
+            labels = listOf(
+                "bottom_nav_home",
+                "bottom_nav_countries",
+                "bottom_nav_profiles",
+                "botton_nav_settings",
+            ),
+            showLabels = true,
+        )
         markPatchMetadata("floatingNavigationBar", floatingNavigationBarPatch)
         markFeaturePatched(FLOATING_NAVIGATION_BAR_CLASS)
         val mainBar = MainBottomBarFingerprint.matchSingle()

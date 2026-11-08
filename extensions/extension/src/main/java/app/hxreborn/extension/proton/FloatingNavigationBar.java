@@ -55,6 +55,10 @@ public final class FloatingNavigationBar {
         return NavigationBarBackdrop.background((AmoledTheme.isDark(original)) ? DARK_SURFACE : LIGHT_SURFACE);
     }
 
+    static int surfaceColor(boolean dark) {
+        return (int) ((dark ? DARK_SURFACE : LIGHT_SURFACE) >>> Integer.SIZE);
+    }
+
     public static float elevation(float original) {
         return isEnabled() ? 0f : original;
     }

@@ -21,7 +21,6 @@
 package app.hxreborn.extension.proton;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +36,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.GraphicsMode;
+import org.robolectric.annotation.Implementation;
+import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowDialog;
+import org.robolectric.shadows.ShadowViewGroup;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 31, shadows = FloatingNavigationBarTest.Patched.class)
+@Config(manifest = Config.NONE, sdk = 31,
+        shadows = { FloatingNavigationBarTest.Patched.class, NavigationBarBackdropTest.PreviewResources.class })
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 public final class NavigationBarBackdropTest {
 
     private static final long SURFACE = 0xff2b2b3800000000L;
@@ -92,13 +97,16 @@ public final class NavigationBarBackdropTest {
         Assert.assertTrue(glass.isChecked());
         Assert.assertFalse(((View) glass.getParent()).isEnabled());
         Assert.assertFalse(blurStrengthRow(activity).isEnabled());
+        Assert.assertFalse(findSlider(activity.findViewById(android.R.id.content)).isEnabled());
+        Assert.assertFalse(findPreview(activity.findViewById(android.R.id.content)).isEnabled());
+        Assert.assertFalse(findText(activity.findViewById(android.R.id.content), "Scroll content").isEnabled());
         Assert.assertEquals(12, NavigationBarBackdrop.blurStrengthDp());
         Assert.assertTrue(PatchSettings.isEnabled(NavigationBarBackdrop.GLASS_KEY, false));
     }
 
     @Test
-    @Config(sdk = 30)
-    public void explainDisabledEffectRowsOnAndroid11() {
+    @Config(sdk = { 26, 30 })
+    public void explainDisabledEffectRowsBelowAndroid12() {
         PatchSettings.setEnabled(FloatingNavigationBar.KEY, true);
         Activity activity = settings();
         Switch glass = effectSwitch(activity, "Glass navigation bar");
@@ -106,6 +114,7 @@ public final class NavigationBarBackdropTest {
         Assert.assertFalse(blurStrengthRow(activity).isEnabled());
         Assert.assertEquals("Glass navigation bar. Requires Android 12 or later.", glass.getContentDescription());
         Assert.assertTrue(containsText(blurStrengthRow(activity), "Requires Android 12 or later."));
+        Assert.assertTrue(findText(activity.findViewById(android.R.id.content), "Restart").isClickable());
     }
 
     @Test
@@ -147,34 +156,37 @@ public final class NavigationBarBackdropTest {
     }
 
     @Test
-    public void saveOffFromSliderWithoutEnablingGlass() {
+    public void persistInlineSliderChangesAndRefreshPreviewWithoutDialog() {
         PatchSettings.setEnabled(FloatingNavigationBar.KEY, true);
         NavigationBarBackdrop.setBlurStrengthDp(12);
         Activity activity = settings();
-        blurStrengthRow(activity).performClick();
-        Dialog dialog = ShadowDialog.getLatestDialog();
-        SeekBar slider = findSlider(dialog.findViewById(android.R.id.content));
+        View content = activity.findViewById(android.R.id.content);
+        SeekBar slider = findSlider(content);
         Assert.assertNotNull(slider);
         Assert.assertEquals(0, slider.getMin());
         Assert.assertEquals(25, slider.getMax());
         Assert.assertEquals(12, slider.getProgress());
-        slider.setProgress(0);
-        Assert.assertTrue(containsText(dialog.findViewById(android.R.id.content), "Off"));
-        clickText(dialog, "Save");
+        NavigationBarPreview preview = findPreview(content);
+        Assert.assertNotNull(preview);
+        Assert.assertEquals("Navigation bar preview. Blur strength 12 of 25. Glass off.",
+                preview.getContentDescription());
+        changeStrength(slider, 0);
+        Assert.assertTrue(containsText(content, "Off"));
         Assert.assertEquals(0, NavigationBarBackdrop.blurStrengthDp());
+        Assert.assertEquals("Navigation bar preview. Blur strength 0 of 25. Glass off.",
+                preview.getContentDescription());
         Assert.assertFalse(PatchSettings.isEnabled(NavigationBarBackdrop.GLASS_KEY, false));
-        dismissRestart();
+        Assert.assertNull(ShadowDialog.getLatestDialog());
     }
 
     @Test
-    public void keepGlassSliderAboveZeroAndRequestRestartOnSave() {
+    public void exposeGlassSliderRangeAndPersistUserChanges() {
         PatchSettings.setEnabled(FloatingNavigationBar.KEY, true);
         PatchSettings.setEnabled(NavigationBarBackdrop.GLASS_KEY, true);
         NavigationBarBackdrop.setBlurStrengthDp(7);
         Activity activity = settings();
-        blurStrengthRow(activity).performClick();
-        Dialog dialog = ShadowDialog.getLatestDialog();
-        SeekBar slider = findSlider(dialog.findViewById(android.R.id.content));
+        View content = activity.findViewById(android.R.id.content);
+        SeekBar slider = findSlider(content);
         Assert.assertNotNull(slider);
         Assert.assertEquals(1, slider.getMin());
         Assert.assertEquals(25, slider.getMax());
@@ -184,12 +196,12 @@ public final class NavigationBarBackdropTest {
         Assert.assertEquals(1f, range.getMin(), 0f);
         Assert.assertEquals(25f, range.getMax(), 0f);
         Assert.assertEquals(7f, range.getCurrent(), 0f);
-        slider.setProgress(0);
-        Assert.assertTrue(containsText(dialog.findViewById(android.R.id.content), "1 / 25"));
-        clickText(dialog, "Save");
-        Assert.assertEquals(1, NavigationBarBackdrop.blurStrengthDp());
-        Assert.assertTrue(PatchSettings.isEnabled(NavigationBarBackdrop.GLASS_KEY, false));
-        dismissRestart();
+        changeStrength(slider, 20);
+        Assert.assertEquals(20, NavigationBarBackdrop.blurStrengthDp());
+        Assert.assertTrue(containsText(content, "20 / 25"));
+        Assert.assertEquals("Navigation bar preview. Blur strength 20 of 25. Glass on.",
+                findPreview(content).getContentDescription());
+        Assert.assertNull(ShadowDialog.getLatestDialog());
     }
 
     @Test
@@ -201,22 +213,24 @@ public final class NavigationBarBackdropTest {
         effectSwitch(activity, "Glass navigation bar").performClick();
         Assert.assertTrue(PatchSettings.isEnabled(NavigationBarBackdrop.GLASS_KEY, false));
         Assert.assertTrue(containsText(blurStrengthRow(activity), "7 / 25"));
-        dismissRestart();
+        SeekBar slider = findSlider(activity.findViewById(android.R.id.content));
+        Assert.assertEquals(1, slider.getMin());
+        Assert.assertEquals(7, slider.getProgress());
+        Assert.assertEquals("Navigation bar preview. Blur strength 7 of 25. Glass on.",
+                findPreview(activity.findViewById(android.R.id.content)).getContentDescription());
+        Assert.assertNull(ShadowDialog.getLatestDialog());
     }
 
     @Test
-    public void leaveSavedStrengthUnchangedWhenSliderIsCancelled() {
+    public void showExplicitRestartActionAlongsideInlineControls() {
         PatchSettings.setEnabled(FloatingNavigationBar.KEY, true);
-        NavigationBarBackdrop.setBlurStrengthDp(7);
         Activity activity = settings();
-        blurStrengthRow(activity).performClick();
-        Dialog dialog = ShadowDialog.getLatestDialog();
-        SeekBar slider = findSlider(dialog.findViewById(android.R.id.content));
-        Assert.assertNotNull(slider);
-        slider.setProgress(20);
-        clickText(dialog, "Cancel");
-        Assert.assertEquals(7, NavigationBarBackdrop.blurStrengthDp());
-        Assert.assertFalse(dialog.isShowing());
+        View content = activity.findViewById(android.R.id.content);
+        Assert.assertTrue(containsText(content, "Restart to apply changes."));
+        TextView restart = findText(content, "Restart");
+        Assert.assertNotNull(restart);
+        Assert.assertTrue(restart.isClickable());
+        Assert.assertNull(ShadowDialog.getLatestDialog());
     }
 
     @Test
@@ -273,7 +287,8 @@ public final class NavigationBarBackdropTest {
     private static View blurStrengthRow(Activity activity) {
         TextView title = findText(activity.findViewById(android.R.id.content), "Blur strength");
         Assert.assertNotNull(title);
-        return (View) title.getParent().getParent();
+        View parent = (View) title.getParent();
+        return containsText(parent, "Requires Android 12 or later.") ? parent : (View) parent.getParent();
     }
 
     private static SeekBar findSlider(View view) {
@@ -308,18 +323,25 @@ public final class NavigationBarBackdropTest {
         return null;
     }
 
-    private static void clickText(Dialog dialog, String text) {
-        TextView label = findText(dialog.findViewById(android.R.id.content), text);
-        Assert.assertNotNull(text, label);
-        label.performClick();
+    private static void changeStrength(SeekBar slider, int progress) {
+        slider.setProgress(progress);
+        Shadows.shadowOf(slider).getOnSeekBarChangeListener().onProgressChanged(slider, slider.getProgress(), true);
     }
 
-    private static void dismissRestart() {
-        Dialog dialog = ShadowDialog.getLatestDialog();
-        Assert.assertNotNull(dialog);
-        Assert.assertTrue(dialog.isShowing());
-        Assert.assertTrue(containsText(dialog.findViewById(android.R.id.content), "Restart required"));
-        dialog.dismiss();
+    private static NavigationBarPreview findPreview(View view) {
+        if (view instanceof NavigationBarPreview) {
+            return (NavigationBarPreview) view;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int index = 0; index < group.getChildCount(); index++) {
+                NavigationBarPreview preview = findPreview(group.getChildAt(index));
+                if (preview != null) {
+                    return preview;
+                }
+            }
+        }
+        return null;
     }
 
     private static boolean containsText(View view, String text) {
@@ -330,6 +352,28 @@ public final class NavigationBarBackdropTest {
         Field field = type.getDeclaredField(name);
         field.setAccessible(true);
         return field;
+    }
+
+    @Implements(NavigationBarPreview.class)
+    public static final class PreviewResources extends ShadowViewGroup {
+
+        @Implementation
+        protected static int[] iconResources() {
+            return new int[] { android.R.drawable.ic_menu_view, android.R.drawable.ic_input_add,
+                    android.R.drawable.ic_lock_lock, android.R.drawable.ic_menu_preferences };
+        }
+
+        @Implementation
+        protected static int[] labelResources() {
+            return new int[] { android.R.string.copy, android.R.string.paste, android.R.string.cut,
+                    android.R.string.selectAll };
+        }
+
+        @Implementation
+        protected static boolean showLabels() {
+            return true;
+        }
+
     }
 
 }
