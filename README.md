@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;503 patches total
+> **[v1.75.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
 
 ### Featured apps
 
@@ -1413,26 +1413,6 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="mangatime-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="mangatime-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/mangatime/misc/premium/UnlockPremiumPatch.kt) | Removes ads and chapter limits, and unlocks reading history, binge mode and section settings. AI recommendation refresh and custom explore views are not unlocked. |
-
-</details>
-
-<a id="marks"></a>
-<details>
-<summary><img src=".github/assets/icons/marks.png" width="18" align="top">&nbsp;&nbsp;MARKS&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 2.0.8 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="marks-fix-edge-to-edge"></a>[Fix edge-to-edge](patches/src/main/kotlin/app/morphe/patches/marks/misc/layout/FixEdgeToEdgePatch.kt) | Keeps the medical interface clear of system bars. |
-| <a id="marks-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="marks-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/marks/misc/ads/RemoveAdsPatch.kt) | Removes promotional banners and in-app messages. |
-| <a id="marks-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/marks/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium practice features. Paid books, DPPs, NCERT questions, and videos are not unlocked. Requires a signed-in account. |
-| <a id="marks-unlock-question-filters"></a>[Unlock question filters](patches/src/main/kotlin/app/morphe/patches/marks/misc/questionfilters/UnlockQuestionFiltersPatch.kt) | Shows question formats using questions already available in the chapter. |
 
 </details>
 
