@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import (asks_for_feature, code_span, contradicting_app, field, has_any, has_image, is_placeholder, normalize,
                     normalize_version, parse_fields, placeholder_answers, thin_answers)
 from versions import prerelease_words, same_variant
-from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing
+from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing, supported_downloads
 
 MIN_CHARS = 60
 
@@ -230,6 +230,8 @@ elif matched[1] and not (
         f"{bundle(data['version'])} supports {name} {code_list(versions)}, but not {typed} yet. Please either:\n\n"
         f"- patch one of the supported versions\n- open an [app update request]({NEW_ISSUE}?template=app_update.yml) for {typed}"
     )
+    if downloads := supported_downloads(data, name):
+        notes.append(downloads)
     labels.append("untargeted version")
 
 if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_attached and not log_is_prose:

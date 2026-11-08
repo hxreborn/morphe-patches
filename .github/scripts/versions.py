@@ -3,6 +3,24 @@ import re
 ABIS = {"arm64", "armeabi", "armv7", "x86", "x86_64"}
 PRERELEASE = {"alpha", "beta", "rc", "pre", "preview", "dev", "canary", "snapshot"}
 APP_UPDATE_TITLE_PREFIX = "[App Update]: "
+APK_DOWNLOAD_WARNING = "Always verify the downloaded APK's SHA-256 against a trusted checksum before patching."
+APK_VERSION_URLS = {
+    ("com.community.mbox.tv", "1.2.0.0923.web_socialmedia"): (
+        "https://apk.aoneroom.com/apk/moviebox/release/1.2.0.0923/"
+        "com.community.mbox.tv-release-1.2.0.0923-ws-50040018-h.apk"
+    ),
+    ("com.gxnet.castle.indiatv", "1.1.5"): (
+        "https://download.sxwon.com/CastleTV_v1.1.5_0929_19_30_official.apk"
+    ),
+    ("app.symfonik.music.player", "14.0.0 TV"): (
+        "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast-android-tv/"
+        "symfonium-music-player-cast-android-tv-14-0-0-tv-release/"
+    ),
+    ("app.symfonik.music.player", "15.1.0 TV"): (
+        "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast-android-tv/"
+        "symfonium-music-player-cast-android-tv-15-1-0-tv-release/"
+    ),
+}
 BUILD_TAG = re.compile(r"(?<![a-z0-9])(arm64(-v8a)?|armeabi(-v7a)?|armv7|x86(_64)?|tv|universal)(?![a-z0-9])")
 
 
