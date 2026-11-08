@@ -44,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.hxreborn.extension.shared.ActivityCallbacksAdapter;
+import app.hxreborn.extension.ultimea.AppliedPatches;
 import app.hxreborn.extension.ultimea.EqualizerStyle;
 
 @SuppressWarnings("unused")
@@ -89,6 +90,8 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
     private Button apply;
 
     private Button undo;
+
+    private Button presets;
 
     private boolean busy;
 
@@ -205,6 +208,16 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         actions.addView(this.apply, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         actions.addView(this.undo, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         content.addView(actions);
+        if (AppliedPatches.localEqualizerPresets()) {
+            this.presets = button("Presets");
+            this.presets.setEnabled(false);
+            this.presets.setOnClickListener((view) -> LocalPresets.open(this.activity, this.edited, (curve) -> {
+                this.edited = curve;
+                render();
+                this.status.setText("Preset staged. Apply to confirm.");
+            }));
+            content.addView(this.presets);
+        }
         this.dialog = new AlertDialog.Builder(this.activity, this.style.dialogTheme).setTitle("Fine equalizer")
             .setView(content)
             .setNegativeButton("Close", null)
@@ -248,6 +261,9 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
             row.addView(minus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
             row.addView(plus, new LinearLayout.LayoutParams(dp(ROW_HEIGHT_DP), dp(ROW_HEIGHT_DP)));
             this.bands.addView(row);
+        }
+        if (this.presets != null) {
+            this.presets.setEnabled(!this.busy && !this.readFailed);
         }
         this.apply.setEnabled(!this.busy && !this.readFailed && !this.edited.equals(this.history.current()));
         this.undo.setEnabled(!this.busy && !this.readFailed && this.history.canUndo());
@@ -303,7 +319,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
 
     @Override
     public void onActivityPaused(Activity activity) {
-        if (activity == this.activity && this.dialog != null && !this.busy) {
+        if (activity == this.activity && this.dialog != null && !this.busy && !LocalPresets.hasFileRequest(activity)) {
             this.dialog.dismiss();
         }
     }

@@ -84,10 +84,18 @@ final class EqualizerCurve {
         return payload;
     }
 
+    EqualizerCurve asCustom() {
+        return new EqualizerCurve(CUSTOM_MODE, this.gains);
+    }
+
     EqualizerCurve withGain(int band, int gain) {
         int[] changed = this.gains.clone();
         changed[band] = gain;
         return new EqualizerCurve(CUSTOM_MODE, changed);
+    }
+
+    static int frequency(int band) {
+        return FREQUENCIES[band];
     }
 
     int mode() {

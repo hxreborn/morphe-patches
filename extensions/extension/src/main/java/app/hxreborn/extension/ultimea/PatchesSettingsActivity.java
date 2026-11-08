@@ -203,6 +203,9 @@ public final class PatchesSettingsActivity extends Activity {
         if (AppliedPatches.fineEqualizer()) {
             names.add(AppliedPatches.fineEqualizerName());
         }
+        if (AppliedPatches.localEqualizerPresets()) {
+            names.add(AppliedPatches.localEqualizerPresetsName());
+        }
         Collections.sort(names);
         for (String name : names) {
             this.rows.textRow(applied, name);

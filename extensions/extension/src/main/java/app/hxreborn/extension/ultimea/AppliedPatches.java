@@ -74,4 +74,12 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean localEqualizerPresets() {
+        return false;
+    }
+
+    public static String localEqualizerPresetsName() {
+        return null;
+    }
+
 }
