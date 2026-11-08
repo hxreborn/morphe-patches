@@ -20,12 +20,14 @@ import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 private const val AUTH_ACTIVITY = "Lcom/scoremarks/marks/ui/onboarding_flow/auth/AuthActivity;"
 private const val MEDICAL_ACTIVITY = "Lcom/scoremarks/marks/medical/MedicalActivity;"
+private const val MEDICAL_DASHBOARD_DATA = "Lcom/scoremarks/marks/data/models/medical/dashboard/MedicalDashboardResponse\$Data;"
+private const val HOME_DASHBOARD_DATA = "Lcom/scoremarks/marks/data/models/dashboardItems/GetNewHomeDashboardResponse\$Data;"
 private const val INSTALL_REFERRER_LISTENER_SELECTOR = 0x18
 
 @Suppress("unused")
 val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks premium practice features. Paid NCERT questions and videos are not unlocked. " +
+    description = "Unlocks premium practice features. Paid books, NCERT questions, and videos are not unlocked. " +
         "Requires a signed-in account.",
 ) {
     compatibleWith(AppCompatibilities.MARKS)
@@ -58,7 +60,12 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
         }
         PremiumProperty.entries.forEach { property ->
             val count = property.expectedCount(packageMetadata.versionName)
-            premiumPropertyFingerprint(property).matchAll(count..count).forEach { match ->
+            premiumPropertyFingerprint(property).matchAll(count..count).forEach matches@{ match ->
+                if (
+                    match.classDef.type.contains("/data/models/marks_selected/") ||
+                    match.classDef.type == MEDICAL_DASHBOARD_DATA ||
+                    match.classDef.type == HOME_DASHBOARD_DATA
+                ) return@matches
                 match.classDef.methods.single {
                     it.name == property.getterName && it.parameterTypes.isEmpty()
                 }.apply {
