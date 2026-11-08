@@ -28,12 +28,12 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import java.io.File
 import org.w3c.dom.Element
 
-private const val APP_COMPAT_DELEGATE_CLASS = "Landroidx/appcompat/app/AppCompatDelegate;"
 private const val WEB_SETTINGS_CLASS = "Landroid/webkit/WebSettings;"
 private const val TITLE_VIEW_CLASS = "Lcom/realme/iot/common/widgets/TitleView;"
 private const val MODE_NIGHT_YES = 2
 private val WEB_VIEW_SETTINGS_SITES = 4..4
 private val HOME_HEADER_TINT_SITES = 2..2
+private val LIGHT_SYSTEM_BARS_SETTERS = 2..2
 private const val ALGORITHMIC_DARKENING_MIN_SDK = 33
 private const val HOME_BACKGROUND_COLOR = "#000000"
 private const val OPAQUE_WHITE_ARGB = "-0x1"
@@ -42,7 +42,7 @@ private const val OPAQUE_BLACK_ARGB = "-0x1000000"
 private const val SURFACE_COLOR = "@color/hx_surface"
 private const val PAGE_COLOR = "@color/hx_page"
 private const val ON_SURFACE_COLOR = "@color/hx_on_surface"
-private const val BACK_ICON_NAME = "color_actionbar_back_white"
+private const val BACK_ICON_NAME = "verify_sys_color_actionbar_back_white"
 private const val OPAQUE_BLACK = "#ff000000"
 
 private const val HOME_BANNER_DRAWABLE = "res/drawable/ic_home_bg_default_v2.xml"
@@ -59,8 +59,6 @@ private val NIGHT_COLORS = mapOf(
     "hx_surface" to "#1a1a1a",
     "white" to "#1a1a1a",
     "ac_color_global_bg" to "#000000",
-    "ac_ui_color_FAFAFA" to "#000000",
-    "activity_bg_white" to "#000000",
     "appshell_tab_bg" to "#000000",
     "background_device_panel" to "#000000",
     "background_floating_material_dark" to "#1a1a1a",
@@ -76,8 +74,6 @@ private val NIGHT_COLORS = mapOf(
     "color_FFFAFAFA" to "#000000",
     "color_f8f8f8" to "#000000",
     "color_f9f9f9" to "#000000",
-    "color_fafafa" to "#000000",
-    "color_setting_userinfo_FAFAFA" to "#000000",
     "color_theme_bg" to "#000000",
     "country_ac_os12_background" to "#000000",
     "design_dark_default_color_background" to "#000000",
@@ -88,7 +84,6 @@ private val NIGHT_COLORS = mapOf(
     "material_grey_50" to "#000000",
     "material_grey_800" to "#1a1a1a",
     "mine_item_bg" to "#000000",
-    "nx_toolbar_background" to "#000000",
     "pb_bg" to "#000000",
     "scan_public_bg" to "#000000",
     "sport_indoor_pb_bg_color" to "#000000",
@@ -104,9 +99,6 @@ private val NIGHT_COLORS = mapOf(
     "device_bg" to "#000000",
     "lib_common_bg" to "#000000",
     "realme_common_gray2_F5F5F5" to "#000000",
-    "bg_sign_dialog_gray" to "#1a1a1a",
-    "col_white" to "#1a1a1a",
-    "nx_color_white" to "#1a1a1a",
     "white_alpha80" to "#1a1a1a",
     "lib_common_status_color" to "#1a1a1a",
     "color_EEEEEE" to "#33ffffff",
@@ -123,8 +115,6 @@ private val NIGHT_COLORS = mapOf(
     "color_22242C" to "#ffffff",
     "color_333333" to "#ffffff",
     "normal_font_color" to "#ffffff",
-    "nx_preference_category_focus" to "#ffffff",
-    "nx_searchview_cancel_text_color" to "#ffffff",
     "realme_common_black_000000" to "#ffffff",
     "run_gps_text_color" to "#ffffff",
     "searchbox_text_color2" to "#ffffff",
@@ -137,7 +127,6 @@ private val NIGHT_COLORS = mapOf(
     "color_737373" to "#b3b3b3",
     "text_color" to "#b3b3b3",
     "ty_base_ui_default_number_color" to "#b3b3b3",
-    "account_color_4D000000" to "#4dffffff",
     "color_4C000000" to "#4cffffff",
     "color_4D000000" to "#4dffffff",
     "color_0D000000" to "#0dffffff",
@@ -149,21 +138,8 @@ private val NIGHT_COLORS = mapOf(
     "normal_tip_color" to "#77ffffff",
     "sp_device_item_value_color" to "#80ffffff",
     "sp_device_tip_color" to "#80ffffff",
-    "nx_color_shape_btn_check_fill_color_off_normal" to "#4dffffff",
-    "nx_shape_btn_check_fill_color_off_normal" to "#4dffffff",
     "realme_common_grey_27000000" to "#27ffffff",
-    "nx_toolbar_title_text_color" to "#e6ffffff",
-    "usercenter_ui_color_85_000000" to "#d9ffffff",
-    "nx_hint_text_color" to "#66ffffff",
     "text_grey" to "#66ffffff",
-)
-
-private const val NIGHT_V29_COLORS_FILE = "res/values-night-v29/colors.xml"
-
-private val NIGHT_V29_COLORS = mapOf(
-    "nx_color_surface" to "#1a1a1a",
-    "nx_color_surface_top" to "#1a1a1a",
-    "nx_color_surface_with_card" to "#1a1a1a",
 )
 
 private const val HEADSET_PACKAGE = "com.realme.link.realmeHeadset"
@@ -712,10 +688,6 @@ private val amoledThemeResourcesPatch = resourcePatch {
         }
         requireDeclared("night override", NIGHT_COLORS.keys - ADDED_COLORS.keys, palette.keys)
         document("res/values-night/colors.xml").use { it.setColors(NIGHT_COLORS) }
-        document(NIGHT_V29_COLORS_FILE).use { document ->
-            requireDeclared("night v29 override", NIGHT_V29_COLORS.keys, document.readColors().keys)
-            document.setColors(NIGHT_V29_COLORS)
-        }
 
         val headsetPalette = document("res/values/colors.xml", HEADSET_PACKAGE).use { document ->
             val declared = document.readColors()
@@ -940,14 +912,11 @@ val amoledThemePatch = bytecodePatch(
             method.replaceInstruction(index, "const v$register, 0x${backIcon.toString(16)}")
         }
 
-        SetDefaultNightModeFingerprint.matchSingle().method
-            .addInstructions(0, "const/4 p0, 0x${MODE_NIGHT_YES.toString(16)}")
+        val setDefaultNightMode = SetDefaultNightModeFingerprint.matchSingle().method
+        setDefaultNightMode.addInstructions(0, "const/4 p0, 0x${MODE_NIGHT_YES.toString(16)}")
 
-        listOf(
-            SetAppearanceLightStatusBarsFingerprint,
-            SetAppearanceLightNavigationBarsFingerprint,
-        ).forEach { fingerprint ->
-            fingerprint.matchSingle().method.addInstructions(0, "const/4 p1, 0x0")
+        SetAppearanceLightSystemBarsFingerprint.matchAll(LIGHT_SYSTEM_BARS_SETTERS).forEach { match ->
+            match.method.addInstructions(0, "const/4 p1, 0x0")
         }
 
         DefaultHomeBackgroundColorFingerprint.matchSingle().apply {
@@ -1024,7 +993,7 @@ val amoledThemePatch = bytecodePatch(
                 0,
                 """
                     const/4 v$modeRegister, 0x${MODE_NIGHT_YES.toString(16)}
-                    invoke-static { v$modeRegister }, $APP_COMPAT_DELEGATE_CLASS->setDefaultNightMode(I)V
+                    invoke-static { v$modeRegister }, ${setDefaultNightMode.definingClass}->${setDefaultNightMode.name}(I)V
                 """,
             )
         }
