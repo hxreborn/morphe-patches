@@ -169,7 +169,7 @@ public final class PatchesSettingsActivity extends Activity {
                     });
         }
         if (AppliedPatches.stopFirmwareReminders()) {
-            this.rows.switchRow(app, "hx_ultimea_ic_distractions", AppliedPatches.stopFirmwareRemindersName(),
+            this.rows.switchRow(app, "hx_ultimea_ic_firmware", AppliedPatches.stopFirmwareRemindersName(),
                     "Stops automatic update reminders.", PatchSettings.stopFirmwareReminders(), (button, enabled) -> {
                         PatchSettings.setEnabled(PatchSettings.STOP_FIRMWARE_REMINDERS, enabled);
                         confirmRestart();
@@ -196,6 +196,9 @@ public final class PatchesSettingsActivity extends Activity {
         }
         if (AppliedPatches.stopFirmwareReminders()) {
             names.add(AppliedPatches.stopFirmwareRemindersName());
+        }
+        if (AppliedPatches.xupmix()) {
+            names.add(AppliedPatches.xupmixName());
         }
         Collections.sort(names);
         for (String name : names) {

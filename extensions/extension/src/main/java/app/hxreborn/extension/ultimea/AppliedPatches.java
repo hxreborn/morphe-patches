@@ -58,4 +58,12 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean xupmix() {
+        return false;
+    }
+
+    public static String xupmixName() {
+        return null;
+    }
+
 }

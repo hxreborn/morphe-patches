@@ -28,6 +28,7 @@ private val icons = listOf(
     "hx_ultimea_ic_patches",
     "hx_ultimea_ic_distractions",
     "hx_ultimea_ic_popups",
+    "hx_ultimea_ic_firmware",
 )
 
 internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch<*>) =

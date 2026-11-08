@@ -35,6 +35,23 @@ val darkThemePatch = resourcePatch(
     dependsOn(themeSettingsPatch)
 
     execute {
+        listOf("values", "values-night").forEach { qualifier ->
+            document("res/$qualifier/styles.xml").use { document ->
+                val styles = document.getElementsByTagName("style")
+                val style = (0 until styles.length).map { styles.item(it) as org.w3c.dom.Element }
+                    .single { it.getAttribute("name") == "hx_ultimea_menu" }
+                style.setAttribute("parent", "@android:style/Theme.DeviceDefault.NoActionBar")
+                val items = style.getElementsByTagName("item")
+                (0 until items.length).forEach { index ->
+                    val item = items.item(index) as org.w3c.dom.Element
+                    item.textContent = when (item.getAttribute("name")) {
+                        "android:statusBarColor", "android:navigationBarColor" -> "#FF121216"
+                        "android:windowLightStatusBar" -> "false"
+                        else -> item.textContent
+                    }
+                }
+            }
+        }
         val library = dartAotLibrary()
         val image = ThemeElfImage(library.readBytes())
         val stock = ThemeElfImage(nativeMethods.bytes)
