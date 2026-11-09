@@ -1,3 +1,9 @@
+## [1.76.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.5...v1.76.0-dev.6) (2026-11-09)
+
+### Bug Fixes
+
+* **Proton VPN - Unlock connection preferences:** save excluded locations ([9df36d1](https://github.com/hxreborn/morphe-patches/commit/9df36d17ccb0868ed5f0916d1581137a62226cf4)), closes [#702](https://github.com/hxreborn/morphe-patches/issues/702)
+
 ## [1.76.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.4...v1.76.0-dev.5) (2026-11-09)
 
 ### Bug Fixes
