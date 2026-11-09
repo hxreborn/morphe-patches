@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.76.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;514 patches total
+> **[v1.76.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;517 patches total
 
 ### Featured apps
 
@@ -725,7 +725,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.3.0 |
+| 2.3.4 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -920,7 +920,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.0.7.0 |
+| 1.1.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1008,6 +1008,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="forusapp-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/forus/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<a id="freedom"></a>
+<details>
+<summary><img src=".github/assets/icons/freedom.png" width="18" align="top">&nbsp;&nbsp;Freedom&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 7.18.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="freedom-remove-upsells"></a>[Remove upsells](patches/src/main/kotlin/app/morphe/patches/freedom/misc/upsell/RemoveUpsellsPatch.kt) | Removes the sign-up trial offers and the Unlock Premium prompts on Today and in Settings. |
+| <a id="freedom-unlock-locked-mode"></a>[Unlock Locked Mode](patches/src/main/kotlin/app/morphe/patches/freedom/misc/lockedmode/UnlockLockedModePatch.kt) | Unlocks Locked Mode on free accounts. |
 
 </details>
 
@@ -2899,16 +2916,17 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="vpn-super-unlimited-proxy"></a>
 <details>
-<summary><img src=".github/assets/icons/vpnsuper.png" width="18" align="top">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/vpnsuper.png" width="18" align="top">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 2.35.0 |
+| 2.36.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="vpn-super-unlimited-proxy-disconnect-from-notification"></a>[Disconnect from notification](patches/src/main/kotlin/app/morphe/patches/vpnsuper/misc/notification/DisconnectFromNotificationPatch.kt) | Skips opening the app when Disconnect is tapped in the notification. Doesn't work on Android TV. |
 | <a id="vpn-super-unlimited-proxy-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/vpnsuper/premium/UnlockPremiumPatch.kt) | Unlocks premium servers and removes ads, upgrade banners, the launch paywall and the Android TV sign-in screen. |
 
 </details>

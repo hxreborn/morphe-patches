@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.76.0-dev.3",
+  "version": "1.76.0-dev.4",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -4271,6 +4271,38 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disconnect from notification",
+      "description": "Skips opening the app when Disconnect is tapped in the notification. Doesn't work on Android TV.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.free.vpn.super.hotspot.open",
+          "name": "VPN Super Unlimited Proxy",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#007DFF",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "2.36.0",
+              "versionCodes": {
+                "ARM64_V8A": 23600,
+                "ARMEABI_V7A": 23600,
+                "X86_64": 23600,
+                "X86": 23600
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
@@ -13831,6 +13863,40 @@
       "options": []
     },
     {
+      "name": "Remove upsells",
+      "description": "Removes the sign-up trial offers and the Unlock Premium prompts on Today and in Settings.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "to.freedom.android2",
+          "name": "Freedom",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#366A4B",
+          "signatures": [
+            "b279c5ef7c476e8ac4f6c4acf5dca4ada9b0375da328dc98400745300080c536"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.18.2",
+              "versionCodes": {
+                "ARM64_V8A": 9634,
+                "ARMEABI_V7A": 9634,
+                "X86_64": 9634,
+                "X86": 9634
+              },
+              "isExperimental": false,
+              "minSdk": 25,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove usage limits",
       "description": "Removes daily caps on store refreshes, blind boxes, feeding, petting and the Book of Answers. Opens the Item Recycling Center every day and shortens pet exploration to three minutes.",
       "default": true,
@@ -15694,6 +15760,40 @@
       "options": []
     },
     {
+      "name": "Unlock Locked Mode",
+      "description": "Unlocks Locked Mode on free accounts.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "to.freedom.android2",
+          "name": "Freedom",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#366A4B",
+          "signatures": [
+            "b279c5ef7c476e8ac4f6c4acf5dca4ada9b0375da328dc98400745300080c536"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.18.2",
+              "versionCodes": {
+                "ARM64_V8A": 9634,
+                "ARMEABI_V7A": 9634,
+                "X86_64": 9634,
+                "X86": 9634
+              },
+              "isExperimental": false,
+              "minSdk": 25,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Unlock NetShield",
       "description": "Unlocks NetShield ad and tracker blocking on free plans.",
       "default": true,
@@ -17054,12 +17154,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.3.0",
+              "version": "2.3.4",
               "versionCodes": {
-                "ARM64_V8A": 153,
-                "ARMEABI_V7A": 153,
-                "X86_64": 153,
-                "X86": 153
+                "ARM64_V8A": 157,
+                "ARMEABI_V7A": 157,
+                "X86_64": 157,
+                "X86": 157
               },
               "isExperimental": false,
               "minSdk": 30,
@@ -17384,12 +17484,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "1.0.7.0",
+              "version": "1.1.0",
               "versionCodes": {
-                "ARM64_V8A": 138,
-                "ARMEABI_V7A": 138,
-                "X86_64": 138,
-                "X86": 138
+                "ARM64_V8A": 143,
+                "ARMEABI_V7A": 143,
+                "X86_64": 143,
+                "X86": 143
               },
               "isExperimental": false,
               "minSdk": 26,
@@ -20283,12 +20383,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "2.35.0",
+              "version": "2.36.0",
               "versionCodes": {
-                "ARM64_V8A": 23500,
-                "ARMEABI_V7A": 23500,
-                "X86_64": 23500,
-                "X86": 23500
+                "ARM64_V8A": 23600,
+                "ARMEABI_V7A": 23600,
+                "X86_64": 23600,
+                "X86": 23600
               },
               "isExperimental": false,
               "minSdk": 29,

@@ -1,3 +1,21 @@
+## [1.76.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.3...v1.76.0-dev.4) (2026-11-09)
+
+### Bug Fixes
+
+* **Viber - GmsCore support:** experimental microG Backup account pick ([5e53927](https://github.com/hxreborn/morphe-patches/commit/5e53927b8a7afed3694040972fc9981a736147e3))
+
+### New Features
+
+* **Freedom - Remove upsells:** skip trial offers and premium prompts ([a0d5329](https://github.com/hxreborn/morphe-patches/commit/a0d532923113e0e7d9a6b37c92e7e5c85e15a64f))
+* **Freedom - Unlock Locked Mode:** lock sessions on free accounts ([87b83a0](https://github.com/hxreborn/morphe-patches/commit/87b83a0fbc468e5692dbed8feff685e64954b5de))
+* **VPN Super Unlimited Proxy - Disconnect from notification:** skip app ([348b952](https://github.com/hxreborn/morphe-patches/commit/348b952fcb6a2a9acc9aa663783ea7843325900a)), closes [#697](https://github.com/hxreborn/morphe-patches/issues/697)
+
+### Updated App Support
+
+* **Coddy:** add support for `2.3.4` ([e0bce3f](https://github.com/hxreborn/morphe-patches/commit/e0bce3f537bab54e6e534f32741e41e6915e6a68)), closes [#552](https://github.com/hxreborn/morphe-patches/issues/552)
+* **Echogram:** add support for `1.1.0` ([7cd0e6d](https://github.com/hxreborn/morphe-patches/commit/7cd0e6d0f8a2df903a3e02aa4dfd595ea4afb43f)), closes [#694](https://github.com/hxreborn/morphe-patches/issues/694)
+* **VPN Super Unlimited Proxy:** add support for `2.36.0` ([10a9cd2](https://github.com/hxreborn/morphe-patches/commit/10a9cd20a8cfb2948bd8d69cba618b807a000897)), closes [#698](https://github.com/hxreborn/morphe-patches/issues/698)
+
 ## [1.76.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.2...v1.76.0-dev.3) (2026-11-09)
 
 ### Bug Fixes
