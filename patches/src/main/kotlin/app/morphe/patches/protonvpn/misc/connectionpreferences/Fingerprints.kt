@@ -7,6 +7,7 @@ package app.morphe.patches.protonvpn.misc.connectionpreferences
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.instanceOf
 import app.morphe.patcher.opcode
@@ -25,6 +26,29 @@ internal object ConnectionPreferencesToStringFingerprint : Fingerprint(
     name = "toString",
     strings = listOf("ConnectionPreferencesState(isFeatureDiscovered="),
 )
+
+internal fun BytecodePatchContext.addExcludedLocationFingerprint() = freeUserCheckFingerprint(
+    strings = listOf("Cannot add excluded location: free VPN user is not allowed"),
+)
+
+internal fun BytecodePatchContext.removeExcludedLocationFingerprint() = freeUserCheckFingerprint(
+    strings = listOf("Cannot remove excluded location: free VPN user is not allowed"),
+)
+
+internal object ExcludedLocationsToStringFingerprint : ToStringFingerprint("ExcludedLocations(allLocations=")
+
+internal fun BytecodePatchContext.excludedLocationsFlowFingerprint(): Fingerprint {
+    val excludedLocations = ExcludedLocationsToStringFingerprint.originalClassDef.type
+    return freeUserCheckFingerprint(
+        name = "invokeSuspend",
+        followingFilters = arrayOf(
+            anyInstruction(
+                fieldAccess(opcode = Opcode.SGET_OBJECT, definingClass = excludedLocations, type = excludedLocations),
+                methodCall(returnType = excludedLocations),
+            ),
+        ),
+    )
+}
 
 internal fun BytecodePatchContext.defaultConnectionRestrictionFingerprint() = restrictionGuardFingerprint("getDefaultProfileId")
 

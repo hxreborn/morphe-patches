@@ -44,6 +44,9 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
         clearFreeUserCheckInLambdaOf(RecentsListViewStateFlowFingerprint)
         clearLastFreeUserCheckBefore(defaultConnectionRecentsFingerprint().matchSingle())
         clearFreeUserCheck(quickConnectIntentFingerprint())
+        clearFreeUserCheck(addExcludedLocationFingerprint())
+        clearFreeUserCheck(removeExcludedLocationFingerprint())
+        clearFreeUserCheck(excludedLocationsFlowFingerprint())
         val connectionCardLabel = connectionCardLabelFingerprint()
         if (connectionCardLabel.matchOrNull() != null) {
             clearFreeUserCheck(connectionCardLabel)
@@ -53,8 +56,8 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
 
         val recentIdLookup = defaultConnectionSettingFingerprint().matchOrNull()
         if (recentIdLookup != null) {
-            val recentIdLookupIndex = recentIdLookup.instructionMatches[1].index
-            recentIdLookup.alwaysTakeLastIfEqz { it.target.location.index == recentIdLookupIndex }
+            val (_, recentIdLookupCall) = recentIdLookup.instructionMatches
+            recentIdLookup.alwaysTakeLastIfEqz { it.target.location.index == recentIdLookupCall.index }
         } else {
             inlinedDefaultConnectionSettingFingerprint().matchSingle().run {
                 val recentCheck = instructionMatches.first().index
