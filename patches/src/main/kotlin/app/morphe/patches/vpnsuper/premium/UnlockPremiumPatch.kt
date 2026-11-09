@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.string
@@ -15,6 +16,7 @@ import app.morphe.patcher.util.findFreeRegister
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.liapp.liappPackageFilterPatch
+import app.morphe.patches.vpnsuper.misc.settings.markPatchApplied
 import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -69,7 +71,7 @@ private fun ClassDef.hasInstanceFields() =
     fields.any { !AccessFlags.STATIC.isSet(it.accessFlags) }
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks premium servers and removes ads, upgrade banners, the launch paywall and " +
         "the Android TV sign-in screen.",
@@ -77,8 +79,10 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.VPN_SUPER)
 
     dependsOn(liappPackageFilterPatch)
+    extendWith("extensions/extension.mpe")
 
     execute {
+        markPatchApplied("unlockPremium", unlockPremiumPatch)
         val candidates = VipStatusFlowFingerprint.matchAll()
             .filter { FUNCTION0_CLASS !in it.classDef.interfaces }
         val vipStatus = candidates.singleOrNull()
