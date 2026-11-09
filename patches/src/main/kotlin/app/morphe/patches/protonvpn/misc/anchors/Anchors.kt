@@ -39,11 +39,15 @@ internal object KotlinUnitToStringFingerprint : Fingerprint(
     returnType = "Ljava/lang/String;",
     parameters = emptyList(),
     strings = listOf("kotlin.Unit"),
-    custom = { _, classDef -> classDef.type != EXTENSION_KOTLIN_UNIT_TYPE },
 )
 
+internal val BytecodePatchContext.unitClass
+    get() = KotlinUnitToStringFingerprint.matchAll().map { it.originalClassDef }.let { classes ->
+        classes.singleOrNull { it.type != EXTENSION_KOTLIN_UNIT_TYPE } ?: classes.single()
+    }
+
 internal val BytecodePatchContext.unitInstanceField
-    get() = KotlinUnitToStringFingerprint.originalClassDef.let { unit ->
+    get() = unitClass.let { unit ->
         "${unit.type}->${unit.staticFields.single { it.type == unit.type }.name}:${unit.type}"
     }
 

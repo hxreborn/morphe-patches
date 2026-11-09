@@ -13,9 +13,9 @@ import app.morphe.patcher.opcode
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patches.protonvpn.misc.anchors.KotlinUnitToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
+import app.morphe.patches.protonvpn.misc.anchors.unitClass
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.patches.protonvpn.misc.restrictions.restrictionGuardFingerprint
 import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
@@ -34,7 +34,7 @@ internal fun BytecodePatchContext.recentsRecordingFingerprint() = Fingerprint(
         isFreeUserCall(),
         opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
         opcode(Opcode.IF_NEZ, MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.SGET_OBJECT, definingClass = KotlinUnitToStringFingerprint.originalClassDef.type),
+        fieldAccess(opcode = Opcode.SGET_OBJECT, definingClass = unitClass.type),
     ),
 )
 
