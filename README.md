@@ -17,19 +17,19 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.74.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.74.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
+> **[v1.75.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.8)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;503 patches total
 
 ### Featured apps
 
-<table>
+<table align="center">
 <tr>
-<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>21 patches</sub></td>
+<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>23 patches</sub></td>
 <td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
 <td align="center" width="160"><a href="#moviebox"><img src=".github/assets/icons/moviebox.png" width="40"><br>MovieBox</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>13 patches</sub></td>
+<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -369,6 +369,23 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
+<a id="audiomack"></a>
+<details>
+<summary><img src=".github/assets/icons/audiomack.png" width="18" align="top">&nbsp;&nbsp;Audiomack&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.11.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="audiomack-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="audiomack-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/premium/UnlockPremiumPatch.kt) | Unlocks Plus features. Region-limited songs are still restricted. |
+
+</details>
+
 <a id="automatag"></a>
 <details>
 <summary><img src=".github/assets/icons/automatag.png" width="18" align="top">&nbsp;&nbsp;AutomaTag&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
@@ -617,8 +634,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.1.5 |
+| [1.1.5](https://download.sxwon.com/CastleTV_v1.1.5_0929_19_30_official.apk "Download stock APK") |
 | :---: |
+
+Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1010,7 +1029,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="graph-messenger"></a>
 <details>
-<summary><img src=".github/assets/icons/graphmessenger.png" width="18" align="top">&nbsp;&nbsp;Graph Messenger&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/graphmessenger.png" width="18" align="top">&nbsp;&nbsp;Graph Messenger&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1021,8 +1040,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="graph-messenger-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics and AppMetrica from collecting and sending usage data. |
+| <a id="graph-messenger-keep-timed-media"></a>[Keep timed media](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/timedmedia/KeepTimedMediaPatch.kt) | Stops photos, videos and voice messages with a timer from self-destructing after you open them. Media Telegram's servers already deleted can't be restored. |
 | <a id="graph-messenger-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/ads/RemoveAdsPatch.kt) | Removes banner, interstitial, native, app open and rewarded ads, Graph's own promotions, Telegram sponsored messages and the proxy sponsor channel. |
 | <a id="graph-messenger-remove-forced-update"></a>[Remove forced update](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/update/RemoveForcedUpdatePatch.kt) | Removes the dialog that blocks the app when Graph marks this version unsupported. |
+| <a id="graph-messenger-remove-restrictions"></a>[Remove restrictions](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/restrictions/RemoveRestrictionsPatch.kt) | Allows copying, forwarding, saving and screenshots in chats and channels that restrict them. |
 | <a id="graph-messenger-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/premium/UnlockPremiumPatch.kt) | Unlocks Graph Premium and Telegram Premium features in the client. Features Telegram's servers meter still need a Premium account. |
 
 </details>
@@ -1399,25 +1420,6 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="marks"></a>
-<details>
-<summary><img src=".github/assets/icons/marks.png" width="18" align="top">&nbsp;&nbsp;MARKS&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 2.0.8 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="marks-fix-edge-to-edge"></a>[Fix edge-to-edge](patches/src/main/kotlin/app/morphe/patches/marks/misc/layout/FixEdgeToEdgePatch.kt) | Keeps the medical interface clear of system bars. |
-| <a id="marks-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="marks-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/marks/misc/ads/RemoveAdsPatch.kt) | Removes promotional banners and in-app messages. |
-| <a id="marks-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/marks/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium practice features. Paid NCERT questions and videos are not unlocked. Requires a signed-in account. |
-
-</details>
-
 <a id="may-beautiful-bullet-journal"></a>
 <details>
 <summary><img src=".github/assets/icons/com.azeravn.bulletjournal.png" width="18" align="top">&nbsp;&nbsp;May: Beautiful Bullet Journal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
@@ -1565,8 +1567,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.2.0.0923.web_socialmedia |
+| [1.2.0.0923.web_socialmedia](https://apk.aoneroom.com/apk/moviebox/release/1.2.0.0923/com.community.mbox.tv-release-1.2.0.0923-ws-50040018-h.apk "Download stock APK") |
 | :---: |
+
+Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2139,7 +2143,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="proton-pass"></a>
 <details>
-<summary><img src=".github/assets/icons/protonpass.png" width="18" align="top">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
+<summary><img src=".github/assets/icons/protonpass.png" width="18" align="top">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2151,6 +2155,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="proton-pass-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
 | <a id="proton-pass-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
+| <a id="proton-pass-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
 | <a id="proton-pass-hide-layout-components"></a>[Hide layout components](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/layout/HideLayoutComponentsPatch.kt) | Adds settings to hide the Help center, Spread the word and About sections. |
 | <a id="proton-pass-hide-navigation-bar-on-scroll"></a>[Hide navigation bar on scroll](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/navigationbar/HideNavigationBarOnScrollPatch.kt) | Hides the bottom navigation bar on scroll down and shows it on scroll up. |
 | <a id="proton-pass-hide-promotional-messages"></a>[Hide promotional messages](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/inappmessages/HidePromotionalMessagesPatch.kt) | Hides promotional banners, offers and pop-up messages. |
@@ -2162,7 +2167,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;13 patches</summary>
+<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2175,6 +2180,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="proton-vpn-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
 | <a id="proton-vpn-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/telemetry/DisableTelemetryPatch.kt) | Stops sending usage statistics and diagnostics to Proton. |
+| <a id="proton-vpn-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
 | <a id="proton-vpn-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[Remove server change delay](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |
@@ -2347,7 +2353,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="readera"></a>
 <details>
-<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;13 patches</summary>
+<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2370,6 +2376,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog, the promotional dialogs shown on startup and the Go to Premium buttons in the toolbar and its menu. |
 | <a id="readera-skip-headers-and-footers"></a>[Skip headers and footers](patches/src/main/kotlin/app/morphe/patches/readera/misc/skipheaders/SkipHeadersPatch.kt) | Adds an option to skip headers, footers and page numbers during text-to-speech. Applies to PDF and DjVu documents. |
 | <a id="readera-speech-rate-slider"></a>[Speech rate slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechrate/SpeechRateSliderPatch.kt) | Adds a text-to-speech speed slider from 0.1x to 4x, saved per voice. |
+| <a id="readera-text-to-speech-filter"></a>[Text-to-speech filter](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechfilter/SpeechTextFilterPatch.kt) | Adds "Omit words and symbols" to Settings > Text to speech (TTS). Read aloud skips listed words, phrases and symbols without changing book text. Includes bracket symbols by default. |
 
 </details>
 
@@ -2380,7 +2387,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 5.5.514.11421 |
+| 5.8.811.2814 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2602,8 +2609,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 14.0.0 | 14.1.0 | 15.0.1 | 15.1.0 | 14.0.0 TV | 15.1.0 TV |
+| 14.0.0 | 14.1.0 | 15.0.1 | 15.1.0 | [14.0.0 TV](https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast-android-tv/symfonium-music-player-cast-android-tv-14-0-0-tv-release/ "Download stock APK") | [15.1.0 TV](https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast-android-tv/symfonium-music-player-cast-android-tv-15-1-0-tv-release/ "Download stock APK") |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+
+Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2777,7 +2786,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;23 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2800,8 +2809,10 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="viber-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar. | • Hide Calls<br>• Hide ChatGPT<br>• Hide Explore<br>• Hide Marketplace<br>• Hide Pay<br>• Hide Shortica |
 | <a id="viber-link-as-secondary-device"></a>[Link as secondary device](patches/src/main/kotlin/app/morphe/patches/viber/misc/secondary/LinkAsSecondaryDevicePatch.kt) | Links to your main Viber phone. |  |
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
+| <a id="viber-remove-caller-id-prompts"></a>[Remove Caller ID prompts](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
+| <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |
 | <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |
 | <a id="viber-remove-typing-privacy-banner"></a>[Remove typing privacy banner](patches/src/main/kotlin/app/morphe/patches/viber/layout/typingbanner/RemoveTypingPrivacyBannerPatch.kt) | Removes typing privacy promotions. |  |
 | <a id="viber-save-disappearing-media"></a>[Save disappearing media](patches/src/main/kotlin/app/morphe/patches/viber/layout/media/SaveDisappearingMediaPatch.kt) | Shows Save to gallery for disappearing photos and videos. |  |
@@ -3007,7 +3018,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="xtream-player-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/tracking/DisableTrackingPatch.kt) | Disables ML Kit usage reporting. |
-| <a id="xtream-player-full-android-auto-screen"></a>[Full Android Auto screen](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/androidauto/AndroidAutoSupportPatch.kt) | Shows full car screen in Android Auto. Requires Unlock premium, Android 16 or newer and one-time installation confirmation. |
+| <a id="xtream-player-full-android-auto-screen"></a>[Full Android Auto screen](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/androidauto/AndroidAutoSupportPatch.kt) | Shows full app in Android Auto while parked. Requires Android 15 or newer and Unknown sources in Android Auto developer settings. |
 | <a id="xtream-player-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/xtreamplayer/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium media features and visualizers. |
 
 </details>
@@ -3101,7 +3112,7 @@ signs in without a token.
 
 <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/request.png" width="96" align="left" alt="">
 
-**Want an app patched?**<br>Upvote it in the [open requests](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests?discussions_q=is%3Aopen+category%3A%22App+Requests%22+sort%3Atop) or [request an app](https://github.com/hxreborn/morphe-patches/discussions/new?category=app-requests) with its Play Store link and the features you want.<br>Unlikely to make it: server-enforced features, region locks, TV apps and apps another bundle already patches.
+**Want an app patched?**<br>Upvote it in the [open requests](https://github.com/hxreborn/morphe-patches/discussions/categories/app-requests?discussions_q=is%3Aopen+category%3A%22App+Requests%22+sort%3Atop), or [submit a new request](https://github.com/hxreborn/morphe-patches/discussions/new?category=app-requests) with its Play Store link and the features you want.<br>I’m unlikely to take on server-enforced features, region unlocks, TV or Android Auto apps, or apps another bundle already patches. I’m not taking requests for more movie and series apps or exam prep apps for now.
 
 <br clear="left">
 

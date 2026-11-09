@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import app_packages, contradicting_app, field, normalize, parse_fields
 from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, same_variant, targets, tracked_version,
                       version_key)
-from replies import BROKEN_FORMS, NEW_ISSUE, bundle
+from replies import BROKEN_FORMS, NEW_ISSUE, bundle, supported_downloads
 
 MARKER = "<!-- app-update-bot -->"
 VERSION_CODE = re.compile(r"\s*\(([\w.+-]*)\)\s*$")
@@ -89,6 +89,9 @@ def decide(number, body, issues, patches_list, issue_title=""):
                              f"Please follow #{tracker['number']} for updates.")
         else:
             title = f"{APP_UPDATE_TITLE_PREFIX}{app} {version}"
+
+        if downloads := supported_downloads(patches_list, app):
+            lines.append(downloads)
 
     return {
         "verdict": verdict,

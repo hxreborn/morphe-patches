@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.viber.layout.business.ChatSelectionFingerprint
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
 import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
@@ -30,6 +31,10 @@ val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("disableAiFeatures", disableAiFeaturesPatch)
+        ChatSelectionFingerprint.matchSingle().apply {
+            val (selectionPrefix, _) = instructionMatches
+            method.addFilterCallAfter(selectionPrefix.index, "$EXTENSION_CLASS_DESCRIPTOR->filterSelection(Ljava/lang/String;)Ljava/lang/String;")
+        }
         SearchChatGptEntryPointAvailabilityFingerprint.matchSingle().method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
         )

@@ -48,7 +48,6 @@ internal object HeadsetSubScreenTitleFingerprint : Fingerprint(
 )
 
 internal object HeadsetVirtualDeviceTitleFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "V",
     parameters = listOf(),
     definingClass = "Lcom/realme/iot/headset/activity/device/HeadsetVirtualDeviceActivity;",
@@ -89,27 +88,21 @@ internal object SetDefaultNightModeFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("I"),
     definingClass = "Landroidx/appcompat/app/AppCompatDelegate;",
-    name = "setDefaultNightMode",
+    filters = listOf(
+        string("setDefaultNightMode() called with an unknown mode"),
+    ),
 )
 
-internal object SetAppearanceLightStatusBarsFingerprint : Fingerprint(
+internal object SetAppearanceLightSystemBarsFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC),
     returnType = "V",
     parameters = listOf("Z"),
     definingClass = "Landroidx/core/view/WindowInsetsControllerCompat;",
-    name = "setAppearanceLightStatusBars",
-)
-
-internal object SetAppearanceLightNavigationBarsFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC),
-    returnType = "V",
-    parameters = listOf("Z"),
-    definingClass = "Landroidx/core/view/WindowInsetsControllerCompat;",
-    name = "setAppearanceLightNavigationBars",
 )
 
 internal object CommonTitleBarBackIconFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.CONSTRUCTOR),
+    isStatic = true,
+    name = "<clinit>",
     returnType = "V",
     parameters = listOf(),
     definingClass = "Lcom/realme/iot/common/mvp/CommonTitleBarHelper;",

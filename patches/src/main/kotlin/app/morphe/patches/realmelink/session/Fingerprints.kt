@@ -9,6 +9,7 @@ import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.opcode
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.string
@@ -109,10 +110,45 @@ internal object LinkServerAuthFingerprint : Fingerprint(
     ),
 )
 
-internal object SdkHeytapTokenFingerprint : Fingerprint(
-    definingClass = "Lcom/heytap/msp/sdk/AccountSdk;",
-    name = "getToken",
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+private const val SDK_TOKEN_CALLBACK_WINDOW = 3
+
+internal val sdkClientAppId = opcode(Opcode.CONST_STRING)
+
+internal val sdkClientCall = methodCall(
+    opcode = Opcode.INVOKE_STATIC,
+    name = "getClient",
+    parameters = listOf("Ljava/lang/String;"),
+    location = MatchAfterImmediately(),
+)
+
+internal val sdkTokenRequestCall = methodCall(
+    opcode = Opcode.INVOKE_INTERFACE,
+    name = "getSdkToken",
+    returnType = "V",
+    location = MatchAfterWithin(SDK_TOKEN_CALLBACK_WINDOW),
+)
+
+internal object SdkTokenRequestFingerprint : Fingerprint(
+    isStatic = true,
+    returnType = "Ljava/lang/Object;",
+    filters = listOf(
+        string(" getSdkToken begin"),
+        sdkClientAppId,
+        sdkClientCall,
+        sdkTokenRequestCall,
+    ),
+)
+
+internal object SdkTokenResponseDataFingerprint : Fingerprint(
+    definingClass = "Lcom/platform/usercenter/account/ams/apis/beans/AcApiResponse;",
+    name = "getData",
+    returnType = "Ljava/lang/Object;",
+    parameters = emptyList(),
+)
+
+internal object SdkAccessTokenFingerprint : Fingerprint(
+    definingClass = "Lcom/platform/usercenter/account/ams/apis/beans/AcAccountToken;",
+    name = "getAccessToken",
     returnType = "Ljava/lang/String;",
     parameters = emptyList(),
 )

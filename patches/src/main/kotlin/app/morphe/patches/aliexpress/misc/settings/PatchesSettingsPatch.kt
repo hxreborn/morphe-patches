@@ -13,6 +13,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -79,9 +80,9 @@ internal val patchesSettingsPatch = bytecodePatch {
                 ResourceType.COLOR,
                 mapOf(
                     "whiteColor" to "ae_ui_color_white",
-                    "lightGrayColor" to "Gray_f3f3f3",
+                    "lightGrayColor" to "ae_ui_color_grey_1",
                     "brandColor" to "ae_ui_color_brand_primary",
-                ),
+                ).filterValues { hasResourceId(ResourceType.COLOR, it) },
             )
             replaceStub(
                 "createSwitch",

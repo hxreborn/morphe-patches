@@ -16,6 +16,7 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.patreon.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.fillPatchDetails
 import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -128,6 +129,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 
 internal val patchesSettingsPatch = bytecodePatch {
     dependsOn(
+        spoofSignaturePatch,
         resourcePatch {
             execute {
                 ICON_RESOURCES.forEach { name ->

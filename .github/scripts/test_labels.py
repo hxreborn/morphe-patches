@@ -1,4 +1,5 @@
 import json
+import subprocess
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -106,6 +107,45 @@ calls.clear()
 labels.reconcile_issue("example/repo", issue("in pre-release", "bug", state="closed"), PATCHES)
 assert calls == [("issues/9/labels/in%20pre-release", ("--method", "DELETE"))]
 print("Issue label mutations pass")
+
+removal_error = subprocess.CalledProcessError(1, ["gh", "api"], stderr="Label removal failed")
+remaining_labels = []
+read_error = None
+
+
+def failed_removal_api(repo, path, *args, paginated=False):
+    assert repo == "example/repo"
+    calls.append((path, args))
+    if path == "issues/9/labels/in%20pre-release":
+        assert args == ("--method", "DELETE")
+        raise removal_error
+    assert path == "issues/9/labels?per_page=100" and paginated
+    if read_error:
+        raise read_error
+    return remaining_labels
+
+
+labels.api = failed_removal_api
+calls.clear()
+remaining_labels[:] = [{"name": "bug"}, {"name": "P1"}]
+labels.reconcile_issue("example/repo", issue("in pre-release", "bug", "P1", state="closed"), PATCHES)
+assert calls == [("issues/9/labels/in%20pre-release", ("--method", "DELETE")),
+                 ("issues/9/labels?per_page=100", ())]
+remaining_labels.append({"name": "in pre-release"})
+try:
+    labels.reconcile_issue("example/repo", issue("in pre-release", state="closed"), PATCHES)
+except subprocess.CalledProcessError as error:
+    assert error is removal_error
+else:
+    raise AssertionError("Label removal failure was suppressed while the label was present")
+read_error = subprocess.CalledProcessError(1, ["gh", "api"], stderr="Label lookup failed")
+try:
+    labels.reconcile_issue("example/repo", issue("in pre-release", state="closed"), PATCHES)
+except subprocess.CalledProcessError as error:
+    assert error is read_error
+else:
+    raise AssertionError("Label lookup failure was suppressed")
+print("Concurrent label removal and API failure handling pass")
 
 discussion_calls = []
 

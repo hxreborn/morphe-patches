@@ -8,6 +8,8 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from versions import APK_DOWNLOAD_WARNING, APK_VERSION_URLS
+
 
 if len(sys.argv) < 3:
     print("Usage: generate_patches_readme.py <owner/repo> <branch> [json] [readme]")
@@ -121,11 +123,13 @@ def patches_table(patches, app_slug, pkg=None):
 ANY_VERSION = "Any version"
 
 
-def versions_table(targets):
+def versions_table(targets, package):
     columns = []
     for t in targets:
         ver = t["version"] or ANY_VERSION
         label = f"🧪&nbsp;{ver}" if t.get("isExperimental") else ver
+        if url := APK_VERSION_URLS.get((package, ver)):
+            label = f'[{label}]({url} "Download stock APK")'
         if label not in [c[0] for c in columns]:
             columns.append((label, (t.get("description") or "").replace("\n", "<br>")))
 
@@ -146,7 +150,7 @@ def versions_table(targets):
 
 
 ICONS = {
-    "com.scoremarks.marks": "marks.png",
+    "com.audiomack": "audiomack.png",
     "com.neonbhoot.behisabi": "behisabi.png",
     "com.gymbros.app": "liftoff.png",
     "co.unstatic.habitify": "habitify.png",
@@ -385,8 +389,10 @@ def app_notes(pkg):
 
 def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     noun = "patch" if count == 1 else "patches"
-    vtbl = versions_table(targets)
+    vtbl = versions_table(targets, pkg)
     versions_section = f"**🎯 Supported versions:**\n\n{vtbl}\n\n" if vtbl else ""
+    if any((pkg, target.get("version")) in APK_VERSION_URLS for target in targets):
+        versions_section += APK_DOWNLOAD_WARNING + "\n\n"
     tag = "<details open>" if expanded else "<details>"
     return f"""<a id="{slug(label)}"></a>
 {tag}
@@ -416,7 +422,7 @@ def grid_cell(label, caption, pkg=None):
 def app_grid(cells):
     rows = [cells[i:i + GRID_COLUMNS] for i in range(0, len(cells), GRID_COLUMNS)]
     body = "\n".join("<tr>\n" + "\n".join(row) + "\n</tr>" for row in rows)
-    return f'<table>\n{body}\n</table>\n'
+    return f'<table align="center">\n{body}\n</table>\n'
 
 
 def build_content(expanded=False):

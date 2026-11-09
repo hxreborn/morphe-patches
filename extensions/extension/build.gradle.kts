@@ -78,6 +78,7 @@ dependencies {
     checkstyle(libs.spring.javaformat.checkstyle)
     implementation(libs.morphe.extensions.library)
     compileOnly(libs.okhttp)
+    compileOnly(libs.gson)
     compileOnly(libs.androidx.annotation)
     compileOnly(libs.androidx.compose.ui)
     compileOnly(libs.androidx.compose.runtime)

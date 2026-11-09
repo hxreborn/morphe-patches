@@ -135,15 +135,28 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             g.renderButton(d,{type:'standard',theme:'outline',size:'large',\
             width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});\
             }}catch(e){}};\
-            var w=false,n=0,t=setInterval(function(){\
-            var g=window.google&&window.google.accounts&&window.google.accounts.id;\
-            if(g&&!w){w=true;var o2=g.initialize;\
-            g.initialize=function(c){if(!c||!c.callback)return o2.apply(this,arguments);\
+            function captureGoogleCallback(googleId){\
+            if(!googleId||typeof googleId.initialize!=='function'||googleId.initialize.__tb)return;\
+            var originalInitialize=googleId.initialize;\
+            function initialize(c){if(!c||!c.callback)return originalInitialize.apply(this,arguments);\
             var cb=c.callback;window.__tbCb=function(r){var credential=r&&r.credential;\
             if(credential&&credential===receivedCredential)return;receivedCredential=credential;\
             try{return cb(r);}catch(e){receivedCredential=null;throw e;}};\
             var config={};Object.keys(c).forEach(function(k){config[k]=c[k]});\
-            config.callback=window.__tbCb;return o2.call(this,config);};}\
+            config.callback=window.__tbCb;return originalInitialize.call(this,config);}\
+            initialize.__tb=1;googleId.initialize=initialize;}\
+            function watchProperty(object,key,onValue){\
+            var value=object[key],descriptor=Object.getOwnPropertyDescriptor(object,key);\
+            if(!descriptor||descriptor.configurable&&!descriptor.get&&!descriptor.set)\
+            Object.defineProperty(object,key,{configurable:true,enumerable:!descriptor||descriptor.enumerable,\
+            get:function(){return value},set:function(next){value=next;onValue(next)}});\
+            if(value)onValue(value);}\
+            watchProperty(window,'google',function(g){if(g)watchProperty(g,'accounts',function(a){\
+            if(a)watchProperty(a,'id',function(id){\
+            if(id)watchProperty(id,'initialize',function(){captureGoogleCallback(id)})})})});\
+            var n=0,t=setInterval(function(){\
+            var g=window.google&&window.google.accounts&&window.google.accounts.id;\
+            captureGoogleCallback(g);\
             var h=document.querySelector('.hidden-google-btn');\
             if(h){var d2=h.firstElementChild||h;if(!d2.id)d2.id='google_login_button';\
             if(g&&window.__tbCb&&!d2.__tb){d2.__tb=1;try{d2.innerHTML='';\

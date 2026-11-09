@@ -90,7 +90,7 @@ public final class AmoledTheme {
         return ((long) halved << 32) | (original & COLOR_SPACE_MASK);
     }
 
-    private static boolean isDark(long packedColor) {
+    static boolean isDark(long packedColor) {
         final int argb = (int) (packedColor >>> 32);
         return ((argb >> 16) & 0xFF) + ((argb >> 8) & 0xFF) + (argb & 0xFF) < DARK_CHANNEL_SUM;
     }

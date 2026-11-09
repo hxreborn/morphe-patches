@@ -4,6 +4,10 @@
 import os
 import re
 import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
+from versions import APK_DOWNLOAD_WARNING, APK_VERSION_URLS
 
 REPO = os.environ.get("GITHUB_REPOSITORY") or os.environ.get("REPO") or "hxreborn/morphe-patches"
 NEW_ISSUE = f"https://github.com/{REPO}/issues/new?template="
@@ -45,6 +49,22 @@ def version_order(version):
 def code_list(versions):
     items = [f"`{v}`" for v in sorted(versions, key=version_order)]
     return " and ".join([", ".join(items[:-1]), items[-1]]) if len(items) > 1 else "".join(items)
+
+
+def supported_downloads(patches_list, app):
+    links = {}
+    for patch in patches_list["patches"]:
+        for package in patch.get("compatiblePackages") or []:
+            if package.get("name") != app:
+                continue
+            for target in package.get("targets") or []:
+                version = target.get("version")
+                url = APK_VERSION_URLS.get((package["packageName"], version))
+                if url:
+                    links[version] = f"[{app} {version}]({url})"
+    if not links:
+        return ""
+    return "Supported stock APK downloads: " + ", ".join(links.values()) + ".\n\n" + APK_DOWNLOAD_WARNING
 
 
 def prerelease_request(app, link):

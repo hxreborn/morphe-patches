@@ -23,6 +23,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.Reference
+import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 private const val SESSION_RENEWAL_CLASS = "Lapp/hxreborn/extension/realmelink/SessionRenewal;"
@@ -58,7 +59,14 @@ val bypassSessionExpiryPatch = bytecodePatch(
         val currentAccount = classDefBy(accountServiceGetter.returnType).methods.singleOrNull {
             it.returnType == heytapToken.definingClass && it.parameters.isEmpty()
         } ?: throw PatchException("No single account getter on ${accountServiceGetter.returnType}")
-        val sdkHeytapTokenGetter = SdkHeytapTokenFingerprint.matchSingle().method
+        val sdkTokenRequest = SdkTokenRequestFingerprint.matchSingle()
+        val sdkAppId = sdkTokenRequest.referenceOf<StringReference>(sdkClientAppId).string
+        val sdkClientGetter = sdkTokenRequest.referenceOf<MethodReference>(sdkClientCall)
+        val sdkTokenRequestMethod = sdkTokenRequest.referenceOf<MethodReference>(sdkTokenRequestCall)
+        val sdkTokenCallbackType = sdkTokenRequestMethod.parameterTypes.singleOrNull()
+            ?: throw PatchException("The SDK token request does not take a single callback")
+        val sdkResponseData = SdkTokenResponseDataFingerprint.matchSingle().method
+        val sdkAccessToken = SdkAccessTokenFingerprint.matchSingle().method
 
         mutableClassDefBy(SESSION_RENEWAL_CLASS).apply {
             replaceStub(
@@ -86,11 +94,40 @@ val bypassSessionExpiryPatch = bytecodePatch(
                 """,
             )
             replaceStub(
-                "sdkHeytapToken",
+                "sdkTokenCallbackType",
                 1,
                 """
-                    invoke-static { }, ${descriptor(sdkHeytapTokenGetter)}
+                    const-class v0, $sdkTokenCallbackType
+                    return-object v0
+                """,
+            )
+            replaceStub(
+                "requestSdkToken",
+                2,
+                """
+                    const-string v0, "$sdkAppId"
+                    invoke-static { v0 }, ${descriptor(sdkClientGetter)}
                     move-result-object v0
+                    check-cast p0, $sdkTokenCallbackType
+                    invoke-interface { v0, p0 }, ${descriptor(sdkTokenRequestMethod)}
+                    return-void
+                """,
+            )
+            replaceStub(
+                "sdkAccessToken",
+                2,
+                """
+                    check-cast p0, ${sdkResponseData.definingClass}
+                    invoke-virtual { p0 }, ${descriptor(sdkResponseData)}
+                    move-result-object v0
+                    instance-of p0, v0, ${sdkAccessToken.definingClass}
+                    if-eqz p0, :no_token
+                    check-cast v0, ${sdkAccessToken.definingClass}
+                    invoke-virtual { v0 }, ${descriptor(sdkAccessToken)}
+                    move-result-object v0
+                    return-object v0
+                    :no_token
+                    const/4 v0, 0x0
                     return-object v0
                 """,
             )

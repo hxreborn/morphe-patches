@@ -67,6 +67,10 @@ final class SettingsStyle {
 
     private static final float DARK_PAGE_BRIGHTNESS = 0.6f;
 
+    private static final int MISSING_COLOR_ID = 0;
+
+    private static final int LIGHT_PAGE_FALLBACK = 0xFFF5F5F5;
+
     final Context context;
 
     final int screenBackground;
@@ -96,18 +100,18 @@ final class SettingsStyle {
         this.medium = Typeface.create(this.regular, Typeface.BOLD);
         View rowSurface = opaqueBackgroundOwner(nativeTitle);
         View pageSurface = (rowSurface != null) ? opaqueBackgroundOwner(parentView(rowSurface)) : null;
-        int row = (rowSurface != null) ? opaqueColor(rowSurface) : color(whiteColor());
+        int row = (rowSurface != null) ? opaqueColor(rowSurface) : color(whiteColor(), Color.WHITE);
         this.lightScreen = isLight(row);
         int page = (pageSurface != null) ? opaqueColor(pageSurface) : row;
         if (page == row) {
-            page = this.lightScreen ? color(lightGrayColor()) : darker(row);
+            page = this.lightScreen ? color(lightGrayColor(), LIGHT_PAGE_FALLBACK) : darker(row);
         }
         this.screenBackground = this.lightScreen ? row : page;
         this.cardSurface = this.lightScreen ? page : row;
         this.secondaryText = withAlpha(this.primaryText, SECONDARY_TEXT_ALPHA);
         this.divider = withAlpha(this.primaryText, DIVIDER_ALPHA);
         this.rippleColor = themeColor(android.R.attr.colorControlHighlight, this.secondaryText);
-        this.accent = color(brandColor());
+        this.accent = color(brandColor(), themeColor(android.R.attr.colorAccent, this.primaryText));
     }
 
     static int whiteColor() {
@@ -207,8 +211,8 @@ final class SettingsStyle {
     }
 
     @SuppressWarnings("deprecation")
-    private int color(int id) {
-        return this.context.getResources().getColor(id);
+    private int color(int id, int fallback) {
+        return (id != MISSING_COLOR_ID) ? this.context.getResources().getColor(id) : fallback;
     }
 
 }

@@ -179,6 +179,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.7.24", versionCode = 199, minSdk = 24)),
     )
 
+    val AUDIOMACK = Compatibility(
+        name = "Audiomack",
+        packageName = "com.audiomack",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xFFA200,
+        signatures = setOf("3562a57fd9e67dc1ef9f3c35a2c5448069a1b4534b91a8c8f9fd8342fcc9fcd4"),
+        targets = listOf(AppTarget(version = "8.11.4", versionCode = 33762, minSdk = 24)),
+    )
+
     val AUDIOLAB = Compatibility(
         name = "AudioLab",
         packageName = "com.hitrolab.audioeditor",
@@ -855,17 +864,6 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.24.5", versionCode = 219, minSdk = 24)),
     )
 
-    val MARKS = Compatibility(
-        name = "MARKS",
-        packageName = "com.scoremarks.marks",
-        apkFileType = ApkFileType.APKS_REQUIRED,
-        appIconColor = 0x1589EE,
-        signatures = setOf(
-            "ca15b496cb028d6b8424c79093db7ec866665f38c04d1786deb14919e3ad2540",
-        ),
-        targets = listOf(AppTarget(version = "2.0.8", versionCode = 119, minSdk = 21)),
-    )
-
     val MEMONEET = Compatibility(
         name = "MemoNeet",
         packageName = "com.adithya.memoneet",
@@ -1444,7 +1442,7 @@ internal object AppCompatibilities {
         packageName = "com.realme.link",
         apkFileType = ApkFileType.XAPK_REQUIRED,
         appIconColor = 0x3575C4,
-        targets = listOf(AppTarget(version = "5.5.514.11421", versionCode = 530121, minSdk = 33)),
+        targets = listOf(AppTarget(version = "5.8.811.2814", versionCode = 530214, minSdk = 33)),
     )
 
     val RESPRITE = Compatibility(

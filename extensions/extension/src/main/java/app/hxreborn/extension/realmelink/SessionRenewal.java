@@ -20,12 +20,21 @@
  */
 package app.hxreborn.extension.realmelink;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import android.util.Log;
+
+import app.hxreborn.extension.shared.ProxyHandler;
 
 @SuppressWarnings("unused")
 public final class SessionRenewal {
 
     private static final String LOG_TAG = "hxRealmeLink";
+
+    private static final long SDK_TOKEN_TIMEOUT_SECONDS = 10L;
 
     private SessionRenewal() {
 
@@ -53,7 +62,24 @@ public final class SessionRenewal {
         } catch (RuntimeException ex) {
             Log.e(LOG_TAG, "Cannot read the HeyTap token from the account SDK", ex);
             return null;
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            Log.w(LOG_TAG, "Interrupted while waiting for the account SDK token", ex);
+            return null;
         }
+    }
+
+    private static String sdkHeytapToken() throws InterruptedException {
+        SdkTokenCallback callback = new SdkTokenCallback();
+        Class<?> callbackType = sdkTokenCallbackType();
+        requestSdkToken(
+                Proxy.newProxyInstance(callbackType.getClassLoader(), new Class<?>[] { callbackType }, callback));
+        if (!callback.received.await(SDK_TOKEN_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+            Log.w(LOG_TAG, "The account SDK did not return a token in time");
+            return null;
+        }
+        Object response = callback.response;
+        return (response != null) ? sdkAccessToken(response) : null;
     }
 
     private static boolean exchangeAndStore(Object accountService, String heytapToken) {
@@ -85,7 +111,14 @@ public final class SessionRenewal {
         return null;
     }
 
-    static String sdkHeytapToken() {
+    static Class<?> sdkTokenCallbackType() {
+        return null;
+    }
+
+    static void requestSdkToken(Object callback) {
+    }
+
+    static String sdkAccessToken(Object response) {
         return null;
     }
 
@@ -102,6 +135,28 @@ public final class SessionRenewal {
     }
 
     static void storeTokens(Object accountService, String heytapToken, String linkToken) {
+    }
+
+    private static final class SdkTokenCallback extends ProxyHandler {
+
+        private final CountDownLatch received = new CountDownLatch(1);
+
+        private volatile Object response;
+
+        @Override
+        protected String describe() {
+            return "hxRealmeLinkSdkToken";
+        }
+
+        @Override
+        protected Object handle(Method method, Object[] args) {
+            if (args != null && args.length == 1) {
+                this.response = args[0];
+                this.received.countDown();
+            }
+            return null;
+        }
+
     }
 
 }

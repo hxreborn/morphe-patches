@@ -23,7 +23,16 @@ package app.hxreborn.extension.viber;
 @SuppressWarnings("unused")
 public final class AiPreferences {
 
+    private static final long CHATGPT_ASSISTANT_FLAG = 1L << 29;
+
     private AiPreferences() {
+    }
+
+    public static String filterSelection(String prefix) {
+        if (prefix == null || !PatchSettings.disableAiFeatures()) {
+            return prefix;
+        }
+        return prefix + "(COALESCE(conversations.flags2, 0) & " + CHATGPT_ASSISTANT_FLAG + ") = 0 AND ";
     }
 
     public static boolean showImageRemix(boolean visible) {
