@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.76.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;505 patches total
+> **[v1.76.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;514 patches total
 
 ### Featured apps
 
@@ -2747,6 +2747,30 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="ultimate-guitar-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="ultimate-guitar-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/ultimateguitar/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro, Courses, Sing and Practice features and removes ads. Songbooks are not unlocked. |
+
+</details>
+
+<a id="ultimea"></a>
+<details>
+<summary><img src=".github/assets/icons/ultimea.png" width="18" align="top">&nbsp;&nbsp;ULTIMEA&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.4.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="ultimea-accent-color"></a>[Accent color](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/AccentColorPatch.kt) | Changes accent colors with a chosen color or Material You. |
+| <a id="ultimea-dark-theme"></a>[Dark theme](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/DarkThemePatch.kt) | Adds dark and AMOLED themes with light text and controls. |
+| <a id="ultimea-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Crashlytics, Logan and usage event uploads. |
+| <a id="ultimea-fine-equalizer"></a>[Fine equalizer](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB adjustment, band values and Undo. |
+| <a id="ultimea-local-equalizer-presets"></a>[Local equalizer presets](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/presets/LocalEqualizerPresetsPatch.kt) | Adds named local curves with duplicate, export and import actions. |
+| <a id="ultimea-remove-distractions"></a>[Remove distractions](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/distractions/RemoveDistractionsPatch.kt) | Removes community, message and support entries. |
+| <a id="ultimea-remove-popups"></a>[Remove popups](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/popups/RemovePopupsPatch.kt) | Removes promotional and rating popups. |
+| <a id="ultimea-stop-firmware-reminders"></a>[Stop firmware reminders](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/firmware/StopFirmwareRemindersPatch.kt) | Stops automatic firmware reminders. Keeps manual update checks. |
+| <a id="ultimea-xupmix"></a>[Xupmix](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/controls/XupmixPatch.kt) | Enables Xupmix control on Poseidon D80. |
 
 </details>
 

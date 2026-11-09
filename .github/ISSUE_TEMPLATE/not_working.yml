@@ -382,6 +382,8 @@ body:
         - "U Dictionary (another version, type it below)"
         - "Ultimate Guitar 7.3.36"
         - "Ultimate Guitar (another version, type it below)"
+        - "ULTIMEA 1.4.4"
+        - "ULTIMEA (another version, type it below)"
         - "UPTCL 11.0.41"
         - "UPTCL (another version, type it below)"
         - "USA VPN 1.171"
@@ -437,12 +439,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.76.0-dev.2"
         - "1.76.0-dev.1"
         - "1.75.1-dev.1"
         - "1.75.1"
         - "1.75.0-dev.8"
         - "1.75.0-dev.7"
-        - "1.75.0-dev.6"
         - "Older than these"
         # /generated
     validations:
@@ -949,6 +951,15 @@ body:
         - "U Dictionary \u00b7 Unlock premium"
         - "Ultimate Guitar \u00b7 GmsCore support"
         - "Ultimate Guitar \u00b7 Unlock premium"
+        - "ULTIMEA \u00b7 Accent color"
+        - "ULTIMEA \u00b7 Dark theme"
+        - "ULTIMEA \u00b7 Disable tracking"
+        - "ULTIMEA \u00b7 Fine equalizer"
+        - "ULTIMEA \u00b7 Local equalizer presets"
+        - "ULTIMEA \u00b7 Remove distractions"
+        - "ULTIMEA \u00b7 Remove popups"
+        - "ULTIMEA \u00b7 Stop firmware reminders"
+        - "ULTIMEA \u00b7 Xupmix"
         - "UPTCL \u00b7 Disable tracking"
         - "UPTCL \u00b7 Hide ads"
         - "UPTCL \u00b7 Hide launch promotion"

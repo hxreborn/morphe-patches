@@ -1,3 +1,18 @@
+## [1.76.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.1...v1.76.0-dev.2) (2026-11-09)
+
+### New Features
+
+* **ULTIMEA - Accent color:** add Material You and custom colors ([5376ed0](https://github.com/hxreborn/morphe-patches/commit/5376ed0f36d19334aebea98632025bd91d14db6a))
+* **ULTIMEA - Dark theme:** add dark and AMOLED themes ([0d0a885](https://github.com/hxreborn/morphe-patches/commit/0d0a885bf317617779fc84e7108b2f4900680610))
+* **ULTIMEA - Disable tracking:** stop usage and crash reports ([d21a0b2](https://github.com/hxreborn/morphe-patches/commit/d21a0b2abe88059b615c8feb1f94a9b32f0bb1e7))
+* **ULTIMEA - Fine equalizer:** add band values and Undo ([88504c7](https://github.com/hxreborn/morphe-patches/commit/88504c71526412ee12155388e13ca2cb891d88b9))
+* **ULTIMEA - Fine equalizer:** add grouped remote controls ([4ef525b](https://github.com/hxreborn/morphe-patches/commit/4ef525b43009dd0ea3e2be7187c7f17077606e1c))
+* **ULTIMEA - Local equalizer presets:** add names and file sharing ([139769e](https://github.com/hxreborn/morphe-patches/commit/139769e421fc821e74a07495cbf472bc46bda651))
+* **ULTIMEA - Remove distractions:** remove social and support entries ([fdf3ff5](https://github.com/hxreborn/morphe-patches/commit/fdf3ff588699acaf703dbb84d3e2613070863f3a))
+* **ULTIMEA - Remove popups:** remove promotions and rating requests ([4760818](https://github.com/hxreborn/morphe-patches/commit/47608188d111f4b333ffaff2a82fb4090bca320b))
+* **ULTIMEA - Stop firmware reminders:** keep manual updates available ([23fe13f](https://github.com/hxreborn/morphe-patches/commit/23fe13f16671dd5155e7e1c60975661851e3946a))
+* **ULTIMEA - Xupmix:** add Poseidon D80 control ([0c93830](https://github.com/hxreborn/morphe-patches/commit/0c938304a7014b7b670f5520f8ca7fd688aae25e))
+
 ## [1.76.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.75.1...v1.76.0-dev.1) (2026-11-09)
 
 ### New Features

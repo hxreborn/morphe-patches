@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.76.0-dev.1",
+  "version": "1.76.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -703,6 +703,40 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Accent color",
+      "description": "Changes accent colors with a chosen color or Material You.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     },
     {
       "name": "All-In-One",
@@ -1768,6 +1802,40 @@
               },
               "isExperimental": false,
               "minSdk": 21,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Dark theme",
+      "description": "Adds dark and AMOLED themes with light text and controls.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -3615,6 +3683,40 @@
     },
     {
       "name": "Disable tracking",
+      "description": "Disables Firebase Analytics, Crashlytics, Logan and usage event uploads.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable tracking",
       "description": "Stops Firebase Analytics, Crashlytics, Firebase Sessions, Facebook, TikTok and the app's own event reporting from collecting usage data.",
       "default": true,
       "category": null,
@@ -4685,6 +4787,40 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Fine equalizer",
+      "description": "Adds 0.1 dB adjustment, band values and Undo.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -9820,6 +9956,40 @@
       "options": []
     },
     {
+      "name": "Local equalizer presets",
+      "description": "Adds named local curves with duplicate, export and import actions.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "M3E loading indicator",
       "description": "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
       "default": true,
@@ -12041,6 +12211,40 @@
       "options": []
     },
     {
+      "name": "Remove distractions",
+      "description": "Removes community, message and support entries.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Remove forced update",
       "description": "Removes the dialog that blocks the app when Graph marks this version unsupported.",
       "default": true,
@@ -12557,6 +12761,40 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove popups",
+      "description": "Removes promotional and rating popups.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -15038,6 +15276,40 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Stop firmware reminders",
+      "description": "Stops automatic firmware reminders. Keeps manual update checks.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
@@ -20724,6 +20996,40 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Xupmix",
+      "description": "Enables Xupmix control on Poseidon D80.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dynanic.ultimea",
+          "name": "ULTIMEA",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#4A1C9B",
+          "signatures": [
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.4.4",
+              "versionCodes": {
+                "ARM64_V8A": 495,
+                "ARMEABI_V7A": 495,
+                "X86_64": 495,
+                "X86": 495
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]
