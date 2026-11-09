@@ -1,3 +1,9 @@
+## [1.76.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.4...v1.76.0-dev.5) (2026-11-09)
+
+### Bug Fixes
+
+* **Coddy:** remove `2.3.4` app target ([7d92ba4](https://github.com/hxreborn/morphe-patches/commit/7d92ba4a9a3c6e447bb379e9d779d116e6d5b529))
+
 ## [1.76.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.3...v1.76.0-dev.4) (2026-11-09)
 
 ### Bug Fixes
