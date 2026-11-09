@@ -81,6 +81,17 @@ def version_cores(version):
     return {normalize(m.group(0)) for m in re.finditer(r"(?<![\d.])\d+(?:\.\d+)+", version)}
 
 
+def version_key(version):
+    match = re.search(r"\d+(?:\.\d+)+", version)
+    return tuple(int(part) for part in match.group(0).split(".")) if match else None
+
+
+def newer_than_all(version, targets):
+    key = version_key(version)
+    target_keys = [k for k in map(version_key, targets) if k]
+    return bool(key and target_keys and key > max(target_keys))
+
+
 def matches_target(target):
     if prerelease_words(typed_version) != prerelease_words(target):
         return False
@@ -226,10 +237,15 @@ elif matched[1] and not (
 ):
     name, versions = matched
     typed = code_span(typed_version or reported)
-    notes.append(
-        f"{bundle(data['version'])} supports {name} {code_list(versions)}, but not {typed} yet. Please either:\n\n"
-        f"- patch one of the supported versions\n- open an [app update request]({NEW_ISSUE}?template=app_update.yml) for {typed}"
-    )
+    newer = newer_than_all(typed_version, versions)
+    lead = f"{bundle(data['version'])} supports {name} {code_list(versions)}, but not {typed}{' yet' if newer else ''}."
+    if newer:
+        notes.append(
+            f"{lead} Please either:\n\n"
+            f"- patch one of the supported versions\n- open an [app update request]({NEW_ISSUE}?template=app_update.yml) for {typed}"
+        )
+    else:
+        notes.append(f"{lead} Please patch one of the supported versions.")
     if downloads := supported_downloads(data, name):
         notes.append(downloads)
     labels.append("untargeted version")

@@ -1202,9 +1202,25 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """)["comment"]
-ok = "but not `7.5.6 (388)` yet" in untargeted
+ok = "but not `7.5.6 (388)`. Please patch one of the supported versions." in untargeted and "app update request" not in untargeted
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} untargeted version quotes only the typed version")
+
+newer = triage(f"""### App and version
+
+Proton Mail (another version, type it below)
+
+### Other version
+
+7.99.0
+
+### Bug description
+
+{LONG}
+""")["comment"]
+ok = "but not `7.99.0` yet. Please either" in newer and "app update request" in newer
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} untargeted version newer than every target says yet")
 
 def report(app, source="https://www.apkmirror.com/apk/x/y/", steps=LONG, failure="The patch has no visible effect"):
     return f"""### App and version
