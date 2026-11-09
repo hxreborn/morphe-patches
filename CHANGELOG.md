@@ -1,3 +1,39 @@
+## [1.75.0](https://github.com/hxreborn/morphe-patches/compare/v1.74.0...v1.75.0) (2026-11-09)
+
+### Bug Fixes
+
+* **AliExpress:** keep patches working when settings colours are missing ([f674a40](https://github.com/hxreborn/morphe-patches/commit/f674a40c2b190803b5f9dc3e089dc1383e88ae14))
+* **AliExpress:** stop every patch failing on Windows and macOS ([d2797fd](https://github.com/hxreborn/morphe-patches/commit/d2797fd63623560585bde608b264b6685ead0a44)), closes [#685](https://github.com/hxreborn/morphe-patches/issues/685)
+* **MARKS - Unlock premium:** open free book chapters ([7fa918f](https://github.com/hxreborn/morphe-patches/commit/7fa918fde5316697814408a2726906accaae1111))
+* **MARKS - Unlock premium:** stop errors on locked DPPs ([9d65089](https://github.com/hxreborn/morphe-patches/commit/9d65089e22e73106ef20ad5c6701ba9b89fa31fe))
+* **MARKS:** remove `2.0.8` app target ([b15af18](https://github.com/hxreborn/morphe-patches/commit/b15af18293a1d03da52c0e88a6fa64973d108487))
+* **Patreon:** receive push notifications ([b6d1a3e](https://github.com/hxreborn/morphe-patches/commit/b6d1a3ebdc24f2219e8e1249cabccfc910127bbe)), closes [#693](https://github.com/hxreborn/morphe-patches/issues/693)
+* **Proton VPN - Floating navigation bar:** show home behind bar ([78e192b](https://github.com/hxreborn/morphe-patches/commit/78e192b85449d100f55de518cfb49de8cea1ea59))
+* **Realme Link - AMOLED dark theme:** apply the theme on 5.8.811.2814 ([6a076a8](https://github.com/hxreborn/morphe-patches/commit/6a076a890b1b0917888fc74dfadedb5c1d5b1b83))
+* **Realme Link - AMOLED dark theme:** fix card colors and contrast ([4c938cd](https://github.com/hxreborn/morphe-patches/commit/4c938cd1847c3be491d5ac8b4da23588219fb163))
+* **Realme Link - Bypass session expiry:** renew sessions on 5.8.811.2814 ([e6867b5](https://github.com/hxreborn/morphe-patches/commit/e6867b5e0038ea2dd372dc931b0956ff023e883b))
+* **TeraBox - Fix Google login:** restore sign-in on fast page loads ([f3e190e](https://github.com/hxreborn/morphe-patches/commit/f3e190e5fb9c53adcd141e679f03fdd9156d975f)), closes [#676](https://github.com/hxreborn/morphe-patches/issues/676)
+* **Viber - Disable AI features:** remove ChatGPT from Chats ([85b698e](https://github.com/hxreborn/morphe-patches/commit/85b698ecc4c23f7c178b879318cb9eb596a7e025)), closes [#667](https://github.com/hxreborn/morphe-patches/issues/667)
+* **Xtream Player - Full Android Auto screen:** skip the install prompt ([55ed5ec](https://github.com/hxreborn/morphe-patches/commit/55ed5ecb90eb85a03cd5edf98284193842fe5883))
+
+### New Features
+
+* **Audiomack - GmsCore support:** enable Google sign-in ([daf688d](https://github.com/hxreborn/morphe-patches/commit/daf688d7b65647e243d7dab0cb6ae4067274e4f1))
+* **Audiomack - Unlock premium:** unlock Plus features ([d27a74c](https://github.com/hxreborn/morphe-patches/commit/d27a74c1006b8dbdce393a1af6b24366144b84c2))
+* **Graph Messenger - Keep timed media:** keep media after its timer ([e62cc7c](https://github.com/hxreborn/morphe-patches/commit/e62cc7c4d3ea442099be817829a5d6b9cf1e146f))
+* **Graph Messenger - Remove restrictions:** allow copy, forward, save ([55eb57f](https://github.com/hxreborn/morphe-patches/commit/55eb57fdc8877709ea25ea567d4d146ce54d10d4)), closes [#678](https://github.com/hxreborn/morphe-patches/issues/678)
+* **MARKS - Unlock question filters:** show matching PYQs ([e58fff7](https://github.com/hxreborn/morphe-patches/commit/e58fff792c5d37b4b902ee2ff44f59c5d2856c47))
+* **Proton - Floating navigation bar:** add inline appearance preview ([0eddfaf](https://github.com/hxreborn/morphe-patches/commit/0eddfafb1646021c2da7d20b3f2c7f2297203358))
+* **Proton Pass - Floating navigation bar:** add blur and glass options ([20a81a1](https://github.com/hxreborn/morphe-patches/commit/20a81a143ca0dc784df1e12fa43a3445014e9bbe))
+* **Proton VPN - Floating navigation bar:** add blur and glass options ([0f52361](https://github.com/hxreborn/morphe-patches/commit/0f5236175167bf878e69a7d98eb35c02b12266b2)), closes [#675](https://github.com/hxreborn/morphe-patches/issues/675)
+* **ReadEra - Text-to-speech filter:** omit words and symbols ([adabe87](https://github.com/hxreborn/morphe-patches/commit/adabe87ad5aff2d002447cd29a1272d8098abde0)), closes [#671](https://github.com/hxreborn/morphe-patches/issues/671)
+* **Viber - Remove Caller ID prompts:** stop Caller ID promotions ([608dc58](https://github.com/hxreborn/morphe-patches/commit/608dc58c4a53496ac745de56dc186aa52ddd0c9d)), closes [#683](https://github.com/hxreborn/morphe-patches/issues/683)
+* **Viber - Remove locked Plus items:** show usable settings ([751efbb](https://github.com/hxreborn/morphe-patches/commit/751efbbff74192b99863d2dc469d87be53fbe6a1)), closes [#674](https://github.com/hxreborn/morphe-patches/issues/674)
+
+### Updated App Support
+
+* **Realme Link:** retarget to 5.8.811.2814 ([c43d014](https://github.com/hxreborn/morphe-patches/commit/c43d014d86f9b1d00beb66f42ed557f9c47593b9)), closes [#420](https://github.com/hxreborn/morphe-patches/issues/420)
+
 ## [1.75.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.7...v1.75.0-dev.8) (2026-11-09)
 
 ### New Features
