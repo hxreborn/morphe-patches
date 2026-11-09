@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.75.0-dev.7",
+  "version": "1.75.0-dev.8",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -9528,6 +9528,40 @@
       "options": []
     },
     {
+      "name": "Keep timed media",
+      "description": "Stops photos, videos and voice messages with a timer from self-destructing after you open them. Media Telegram's servers already deleted can't be restored.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ir.ilmili.telegraph",
+          "name": "Graph Messenger",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B6D790",
+          "signatures": [
+            "e7d5ad736aeecd2fe237679e4deaf2a40bb32fc07837fe48778a5b41c0418862"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "13.0.2.0",
+              "versionCodes": {
+                "ARM64_V8A": 71751,
+                "ARMEABI_V7A": 71751,
+                "X86_64": 71751,
+                "X86": 71751
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "LAN device details",
       "description": "Adds a details page for each device in the LAN scan with its names, Wake on LAN, Bonjour and UPnP services and web interface, plus text and CSV export of the scan.",
       "default": true,
@@ -12860,6 +12894,40 @@
                 "ARMEABI_V7A": 99080,
                 "X86_64": 99080,
                 "X86": 99080
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Remove restrictions",
+      "description": "Allows copying, forwarding, saving and screenshots in chats and channels that restrict them.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ir.ilmili.telegraph",
+          "name": "Graph Messenger",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#B6D790",
+          "signatures": [
+            "e7d5ad736aeecd2fe237679e4deaf2a40bb32fc07837fe48778a5b41c0418862"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "13.0.2.0",
+              "versionCodes": {
+                "ARM64_V8A": 71751,
+                "ARMEABI_V7A": 71751,
+                "X86_64": 71751,
+                "X86": 71751
               },
               "isExperimental": false,
               "minSdk": 23,

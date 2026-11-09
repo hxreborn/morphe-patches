@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.7)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;501 patches total
+> **[v1.75.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.8)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;503 patches total
 
 ### Featured apps
 
@@ -1029,7 +1029,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="graph-messenger"></a>
 <details>
-<summary><img src=".github/assets/icons/graphmessenger.png" width="18" align="top">&nbsp;&nbsp;Graph Messenger&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/graphmessenger.png" width="18" align="top">&nbsp;&nbsp;Graph Messenger&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1040,8 +1040,10 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="graph-messenger-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics and AppMetrica from collecting and sending usage data. |
+| <a id="graph-messenger-keep-timed-media"></a>[Keep timed media](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/timedmedia/KeepTimedMediaPatch.kt) | Stops photos, videos and voice messages with a timer from self-destructing after you open them. Media Telegram's servers already deleted can't be restored. |
 | <a id="graph-messenger-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/ads/RemoveAdsPatch.kt) | Removes banner, interstitial, native, app open and rewarded ads, Graph's own promotions, Telegram sponsored messages and the proxy sponsor channel. |
 | <a id="graph-messenger-remove-forced-update"></a>[Remove forced update](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/update/RemoveForcedUpdatePatch.kt) | Removes the dialog that blocks the app when Graph marks this version unsupported. |
+| <a id="graph-messenger-remove-restrictions"></a>[Remove restrictions](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/restrictions/RemoveRestrictionsPatch.kt) | Allows copying, forwarding, saving and screenshots in chats and channels that restrict them. |
 | <a id="graph-messenger-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/graphmessenger/misc/premium/UnlockPremiumPatch.kt) | Unlocks Graph Premium and Telegram Premium features in the client. Features Telegram's servers meter still need a Premium account. |
 
 </details>

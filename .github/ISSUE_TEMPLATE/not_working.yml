@@ -437,11 +437,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.75.0-dev.8"
         - "1.75.0-dev.7"
         - "1.75.0-dev.6"
         - "1.75.0-dev.5"
         - "1.75.0-dev.4"
-        - "1.75.0-dev.3"
         - "1.74.0"
         - "Older than these"
         # /generated
@@ -641,8 +641,10 @@ body:
         - "ForusApp \u00b7 Unlock premium"
         - "Glass Widgets \u00b7 Unlock premium"
         - "Graph Messenger \u00b7 Disable tracking"
+        - "Graph Messenger \u00b7 Keep timed media"
         - "Graph Messenger \u00b7 Remove ads"
         - "Graph Messenger \u00b7 Remove forced update"
+        - "Graph Messenger \u00b7 Remove restrictions"
         - "Graph Messenger \u00b7 Unlock premium"
         - "Ground News \u00b7 Disable tracking"
         - "Ground News \u00b7 Remove article ads"

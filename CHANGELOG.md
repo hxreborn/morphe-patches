@@ -1,3 +1,10 @@
+## [1.75.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.7...v1.75.0-dev.8) (2026-11-09)
+
+### New Features
+
+* **Graph Messenger - Keep timed media:** keep media after its timer ([e62cc7c](https://github.com/hxreborn/morphe-patches/commit/e62cc7c4d3ea442099be817829a5d6b9cf1e146f))
+* **Graph Messenger - Remove restrictions:** allow copy, forward, save ([55eb57f](https://github.com/hxreborn/morphe-patches/commit/55eb57fdc8877709ea25ea567d4d146ce54d10d4)), closes [#678](https://github.com/hxreborn/morphe-patches/issues/678)
+
 ## [1.75.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.6...v1.75.0-dev.7) (2026-11-09)
 
 ### Bug Fixes
