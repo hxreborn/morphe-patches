@@ -253,6 +253,7 @@ private fun BytecodePatchContext.installFloatingContentPadding(navType: String, 
             invoke-static {}, $FLOATING_NAVIGATION_BAR_CLASS->isEnabled()Z
             move-result v0
             if-eqz v0, :original
+            if-eqz p0, :original
             sput-object p0, ${descriptor(footprint)}
             new-instance v0, $FLOATING_NAVIGATION_BAR_CLASS
             const/4 v1, 0x0
@@ -371,11 +372,15 @@ private fun BytecodePatchContext.installContentClearance(modifier: String, paddi
         "recentsList",
         listParameters,
         "V",
-        listParameters.size,
+        listParameters.size + 1,
         """
+            invoke-static {}, $FLOATING_NAVIGATION_BAR_CLASS->isEnabled()Z
+            move-result v0
+            if-eqz v0, :original
             invoke-static/range { p$LIST_CONTENT_PADDING_ARGUMENT .. p$LIST_CONTENT_PADDING_ARGUMENT }, $reserve
             move-result-object p$LIST_CONTENT_PADDING_ARGUMENT
             and-int/lit8 p${listParameters.lastIndex}, p${listParameters.lastIndex}, $CLEAR_DEFAULT_CONTENT_PADDING
+            :original
             invoke-static/range { p0 .. p${listParameters.lastIndex} }, ${descriptor(list)}
             return-void
         """,

@@ -1,3 +1,9 @@
+## [1.75.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.75.0...v1.75.1-dev.1) (2026-11-09)
+
+### Bug Fixes
+
+* **Proton VPN - Floating navigation bar:** stop crash on launch ([03c27df](https://github.com/hxreborn/morphe-patches/commit/03c27df1942fd1ff3099392142161a38f372c5c7)), closes [#696](https://github.com/hxreborn/morphe-patches/issues/696)
+
 ## [1.75.0](https://github.com/hxreborn/morphe-patches/compare/v1.74.0...v1.75.0) (2026-11-09)
 
 ### Bug Fixes
