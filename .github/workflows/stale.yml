@@ -27,6 +27,7 @@ jobs:
             .github/actions/triage/discussion.sh
             .github/actions/triage/replies.py
             .github/actions/triage/discussion_timeouts.py
+            .github/scripts/versions.py
           sparse-checkout-cone-mode: false
       - env:
           GH_TOKEN: ${{ github.token }}
@@ -60,7 +61,9 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-          sparse-checkout: .github/actions/triage/replies.py
+          sparse-checkout: |
+            .github/actions/triage/replies.py
+            .github/scripts/versions.py
           sparse-checkout-cone-mode: false
       - id: replies
         shell: bash
