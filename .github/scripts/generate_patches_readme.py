@@ -313,6 +313,7 @@ ICONS = {
     "com.pixlr.express": "pixlr.png",
     "com.patreon.android": "patreon.png",
     "com.ultimateguitar.tabs": "ultimateguitar.png",
+    "to.freedom.android2": "freedom.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

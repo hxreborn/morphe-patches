@@ -606,6 +606,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val FREEDOM = Compatibility(
+        name = "Freedom",
+        packageName = "to.freedom.android2",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x366A4B,
+        signatures = setOf(
+            "b279c5ef7c476e8ac4f6c4acf5dca4ada9b0375da328dc98400745300080c536",
+        ),
+        targets = listOf(AppTarget(version = "7.18.2", versionCode = 9634, minSdk = 25)),
+    )
+
     val GAMMA_SCAN = Compatibility(
         name = "QR & Barcode Scanner",
         packageName = "com.gamma.scan",
