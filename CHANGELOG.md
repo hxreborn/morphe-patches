@@ -1,3 +1,9 @@
+## [1.75.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.6...v1.75.0-dev.7) (2026-11-09)
+
+### Bug Fixes
+
+* **Proton VPN - Floating navigation bar:** show home behind bar ([78e192b](https://github.com/hxreborn/morphe-patches/commit/78e192b85449d100f55de518cfb49de8cea1ea59))
+
 ## [1.75.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.5...v1.75.0-dev.6) (2026-11-09)
 
 ### Bug Fixes
