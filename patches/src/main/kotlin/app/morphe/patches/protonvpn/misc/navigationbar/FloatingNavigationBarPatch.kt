@@ -49,6 +49,7 @@ private const val PADDING_VALUES_ARGUMENT = 1
 private const val CALLBACK_ARGUMENT = 1
 private const val LIST_CONTENT_PADDING_ARGUMENT = 2
 private const val PROFILE_BUTTON_COUNT = 2
+private const val CLEAR_DEFAULT_CONTENT_PADDING = -5
 
 @Suppress("unused")
 val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
@@ -364,33 +365,25 @@ private fun BytecodePatchContext.installContentClearance(modifier: String, paddi
     val recents = recentsListFingerprint(list).matchSingle()
     val (recentsCall) = recents.instructionMatches
     val recentsRange = recentsCall.instruction as RegisterRangeInstruction
-    transformArgument(recents.method, recentsCall.index, recentsRange.startRegister, append)
-    val expandType = recents.method.parameterTypes.dropLast(2).last().toString()
-    val measurement = recentsHeightFingerprint(recents.method, expandType).matchSingle()
-    val (toPixels) = measurement.instructionMatches
-    val density = toPixels.instruction.getReference<MethodReference>()!!
-    val height = extension.addStaticMethod("recentsHeight", listOf(density.definingClass, "F"), "F", 3, """
-        invoke-static {}, $FLOATING_NAVIGATION_BAR_CLASS->isEnabled()Z
-        move-result v0
-        if-eqz v0, :original
-        invoke-static {}, $footprintHeight
-        move-result v0
-        sub-float/2addr p1, v0
-        const/4 v0, 0x0
-        invoke-static { p1, v0 }, Ljava/lang/Math;->max(FF)F
-        move-result p1
-        :original
-        invoke-interface { p0, p1 }, ${descriptor(density)}
-        move-result p1
-        return p1
-    """)
-    val call = toPixels.instruction
-    val invocation = if (call is RegisterRangeInstruction) {
-        "invoke-static/range { v${call.startRegister} .. v${call.startRegister + call.registerCount - 1} }, $height"
-    } else {
-        "invoke-static { v${call.argumentRegister(0)}, v${call.argumentRegister(1)} }, $height"
-    }
-    measurement.method.replaceInstruction(toPixels.index, invocation)
+    check(recentsCall.instruction.opcode == Opcode.INVOKE_STATIC_RANGE) { "Expected static recents list call" }
+    val listParameters = list.parameterTypes.map(CharSequence::toString)
+    val recentsBridge = extension.addStaticMethod(
+        "recentsList",
+        listParameters,
+        "V",
+        listParameters.size,
+        """
+            invoke-static/range { p$LIST_CONTENT_PADDING_ARGUMENT .. p$LIST_CONTENT_PADDING_ARGUMENT }, $reserve
+            move-result-object p$LIST_CONTENT_PADDING_ARGUMENT
+            and-int/lit8 p${listParameters.lastIndex}, p${listParameters.lastIndex}, $CLEAR_DEFAULT_CONTENT_PADDING
+            invoke-static/range { p0 .. p${listParameters.lastIndex} }, ${descriptor(list)}
+            return-void
+        """,
+    )
+    recents.method.replaceInstruction(
+        recentsCall.index,
+        "invoke-static/range { v${recentsRange.startRegister} .. v${recentsRange.startRegister + recentsRange.registerCount - 1} }, $recentsBridge",
+    )
 }
 
 private fun Instruction.argumentRegister(index: Int): Int = when (this) {

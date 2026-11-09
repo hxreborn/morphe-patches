@@ -139,17 +139,3 @@ internal fun recentsListFingerprint(list: MethodReference) = Fingerprint(
     strings = listOf("item IDs"),
     filters = listOf(methodCall(definingClass = list.definingClass, name = list.name, parameters = list.parameterTypes.map(CharSequence::toString))),
 )
-
-internal fun recentsHeightFingerprint(recents: MethodReference, expandType: String) = Fingerprint(
-    strings = listOf("\$this\$BoxWithConstraints"),
-    filters = listOf(
-        methodCall(opcode = Opcode.INVOKE_INTERFACE, parameters = listOf("F"), returnType = "F"),
-        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, type = expandType, location = MatchAfterImmediately()),
-        methodCall(parameters = listOf("F"), returnType = "I", location = MatchAfterImmediately()),
-        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = expandType, location = MatchAfterImmediately()),
-        methodCall(parameters = listOf("I"), returnType = "V", location = MatchAfterImmediately()),
-        methodCall(definingClass = recents.definingClass, name = recents.name, parameters = recents.parameterTypes.map(CharSequence::toString)),
-    ),
-)
