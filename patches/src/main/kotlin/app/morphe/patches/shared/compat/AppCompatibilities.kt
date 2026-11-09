@@ -546,7 +546,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "331fa00a81a7f2e70aeaec25ee709aa4f1f17062d61e7aa6048f14abc47f0d1a",
         ),
-        targets = listOf(AppTarget(version = "1.0.7.0", versionCode = 138, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.1.0", versionCode = 143, minSdk = 26)),
     )
 
     val ETSY = Compatibility(
