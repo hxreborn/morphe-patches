@@ -27,19 +27,13 @@ internal val EMPTY_SUBSCRIPTION_SKIP =
     "e10302aa1edc1d91be7a7ef8c0033fd6e0012037f1238092a06b71f803f04ab8".hexToByteArray()
 
 internal val EMPTY_SUBSCRIPTION_SKIP_MASK =
-    "ffffffffff03c0ffffffffffffffffff1f00f8ffffffffffffffffffffffffff".hexToByteArray()
+    "ffffffffff03c0ffffffffffffffffff1f00f8ffffffffffffffffffe0ffffff".hexToByteArray()
 
 internal val INITIAL_SUBSCRIPTION =
     "2dbaf59770674091101645f9e04100a9647f47f943fbff97a1835ff820f00ab8".hexToByteArray()
 
 internal val INITIAL_SUBSCRIPTION_MASK =
     "000000fcff03c0ffff03c0ffffffffffff03c0ff000000fcffffffffffffffff".hexToByteArray()
-
-internal val EMPTY_SUBSCRIPTION_FACTORY =
-    "fd79bfa9fd030faae056f097ef031daafd79c1a8c0035fd6".hexToByteArray()
-
-internal val EMPTY_SUBSCRIPTION_FACTORY_MASK =
-    "ffffffffffffffff000000fcffffffffffffffffffffffff".hexToByteArray()
 
 internal val GUEST_PREMIUM_ACCOUNT_PROMPT =
     "41f04ab821801c8bd4ac1494013041b821801c8bd08200913f00106ba1020054".hexToByteArray()
@@ -75,7 +69,7 @@ internal val AI_TUTOR_LIMIT_CHECK =
 internal val AI_TUTOR_LIMIT_CHECK_MASK =
     ("ffffffffffffffffff03c0ffffffffffffffffffffffffffffffffff1f0000ffffffffff" +
         "ffffffff000000fcffffffff000000fc1f00f8ffffffffffffffffffffffffffffffffff" +
-        "ffffffffffffffffffffffff000000fcffffffffffffffffffffffffffffffffffffffff" +
+        "ffffffffffffffffffffffff000000fcff0fe0ffffffffffffffffffffffffffffffffff" +
         "ffffffff").hexToByteArray()
 
 internal val FREE_PROJECT_LIMIT =
@@ -104,9 +98,19 @@ private const val BRANCH = 0x14000000
 
 private const val BRANCH_WITH_LINK = 0x94000000.toInt()
 
-private val RETURN_TRUE = intArrayOf(0x910082c0.toInt(), 0xd65f03c0.toInt())
+private const val PUSH_FRAME_RECORD = 0xa9bf79fd.toInt()
 
-private val RETURN_FALSE = intArrayOf(0x9100c2c0.toInt(), 0xd65f03c0.toInt())
+private const val SET_FRAME_POINTER = 0xaa0f03fd.toInt()
+
+private const val RESTORE_STACK_POINTER = 0xaa1d03ef.toInt()
+
+private const val POP_FRAME_RECORD = 0xa8c179fd.toInt()
+
+private const val RETURN = 0xd65f03c0.toInt()
+
+private val RETURN_TRUE = intArrayOf(0x910082c0.toInt(), RETURN)
+
+private val RETURN_FALSE = intArrayOf(0x9100c2c0.toInt(), RETURN)
 
 internal const val ARMEABI_V7A_DART_AOT_LIBRARY = "lib/armeabi-v7a/libapp.so"
 
@@ -148,26 +152,22 @@ private fun ByteArray.unlockPremiumArm64() {
     val promptSkipTarget = accountPromptBranch + (((readInt(accountPromptBranch) shl 8) shr 13) shl 2)
     writeInstructions(accountPromptBranch, branch(accountPromptBranch, promptSkipTarget, BRANCH))
 
-    val emptyFactory = branchTarget(find("the initial subscription", INITIAL_SUBSCRIPTION, INITIAL_SUBSCRIPTION_MASK))
-    val emptyFactoryCode = copyOfRange(emptyFactory, emptyFactory + EMPTY_SUBSCRIPTION_FACTORY.size)
-    if (emptyFactoryCode.indexOfMasked(EMPTY_SUBSCRIPTION_FACTORY, EMPTY_SUBSCRIPTION_FACTORY_MASK) != 0) {
-        throw PatchException("The initial subscription is not built by the empty factory")
-    }
-    val allocationStub = branchTarget(emptyFactory + FACTORY_ALLOCATION_OFFSET)
+    val initialAllocationCall = find("the initial subscription", INITIAL_SUBSCRIPTION, INITIAL_SUBSCRIPTION_MASK)
+    val allocationStub = branchTarget(initialAllocationCall)
 
     val premiumFactory = isPro + RETURN_FALSE.size * 4
     writeInstructions(
         premiumFactory,
-        emptyFactoryCode.readInt(0),
-        emptyFactoryCode.readInt(4),
+        PUSH_FRAME_RECORD,
+        SET_FRAME_POINTER,
         branch(premiumFactory + FACTORY_ALLOCATION_OFFSET, allocationStub, BRANCH_WITH_LINK),
         LOAD_TRUE_INTO_X1,
         PREMIUM_FIELD_STORE,
-        emptyFactoryCode.readInt(12),
-        emptyFactoryCode.readInt(16),
-        emptyFactoryCode.readInt(20),
+        RESTORE_STACK_POINTER,
+        POP_FRAME_RECORD,
+        RETURN,
     )
-    writeInstructions(emptyFactory, branch(emptyFactory, premiumFactory, BRANCH))
+    writeInstructions(initialAllocationCall, branch(initialAllocationCall, premiumFactory, BRANCH_WITH_LINK))
 }
 
 @Suppress("unused")

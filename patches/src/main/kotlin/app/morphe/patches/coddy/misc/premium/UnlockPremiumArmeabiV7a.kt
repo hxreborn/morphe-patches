@@ -4,8 +4,6 @@
  */
 package app.morphe.patches.coddy.misc.premium
 
-import app.morphe.patcher.patch.PatchException
-import app.morphe.patches.shared.indexOfMasked
 import app.morphe.patches.shared.readInt
 
 private val ARMEABI_V7A_SUBSCRIPTION_FIELD_STORES =
@@ -20,19 +18,13 @@ private val ARMEABI_V7A_EMPTY_SUBSCRIPTION_SKIP =
     "0210a0e100e187e016e98ee2a8e99ee53eff2fe10010a0e148009ae5000051e10800001a84301be5ab4093e5".hexToByteArray()
 
 private val ARMEABI_V7A_EMPTY_SUBSCRIPTION_SKIP_MASK =
-    "ffffffffffffffff00f0ffff00f0ffffffffffffffffffffffffffffffffffff000000ffffffffffffffffff".hexToByteArray()
+    "ffffffffffffffff00f0ffff00f0ffffffffffffffffffffffffffffffffffff000000ffff0fffffff0ff0ff".hexToByteArray()
 
 private val ARMEABI_V7A_INITIAL_SUBSCRIPTION =
     "e30df5eb0dea85e2b3ec9ee501408de8834795e54ffbffeb04101be5ab0081e5".hexToByteArray()
 
 private val ARMEABI_V7A_INITIAL_SUBSCRIPTION_MASK =
     "000000ff00f0ffff00f0ffffffffffff00f0ffff000000ffffffffffffffffff".hexToByteArray()
-
-private val ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY =
-    "00482de900b08de2000000eb00d04be20088bde8".hexToByteArray()
-
-private val ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY_MASK =
-    "ffffffffffffffff000000ffffffffffffffffff".hexToByteArray()
 
 private val ARMEABI_V7A_GUEST_PREMIUM_ACCOUNT_PROMPT =
     "ab1092e51ac115eb0f1090e548309ae5030051e11100001a".hexToByteArray()
@@ -91,13 +83,21 @@ private const val CONDITION_MASK = 0x0fffffff
 
 private const val CONDITION_ALWAYS = 0xe0000000.toInt()
 
-private const val BRANCH = 0xea000000.toInt()
-
 private const val BRANCH_WITH_LINK = 0xeb000000.toInt()
 
-private val RETURN_TRUE = intArrayOf(0xe59a0048.toInt(), 0xe12fff1e.toInt())
+private const val PUSH_FRAME_RECORD = 0xe92d4800.toInt()
 
-private val RETURN_FALSE = intArrayOf(0xe59a004c.toInt(), 0xe12fff1e.toInt())
+private const val SET_FRAME_POINTER = 0xe28db000.toInt()
+
+private const val RESTORE_STACK_POINTER = 0xe24bd000.toInt()
+
+private const val POP_FRAME_RECORD = 0xe8bd8800.toInt()
+
+private const val RETURN = 0xe12fff1e.toInt()
+
+private val RETURN_TRUE = intArrayOf(0xe59a0048.toInt(), RETURN)
+
+private val RETURN_FALSE = intArrayOf(0xe59a004c.toInt(), RETURN)
 
 internal fun ByteArray.unlockPremiumArmeabiV7a() {
     fun find(what: String, pattern: ByteArray, mask: ByteArray) =
@@ -140,29 +140,20 @@ internal fun ByteArray.unlockPremiumArmeabiV7a() {
     ) + ACCOUNT_PROMPT_BRANCH_OFFSET
     writeInstructions(accountPromptBranch, (readInt(accountPromptBranch) and CONDITION_MASK) or CONDITION_ALWAYS)
 
-    val emptyFactory = branchTarget(
-        find("the initial subscription", ARMEABI_V7A_INITIAL_SUBSCRIPTION, ARMEABI_V7A_INITIAL_SUBSCRIPTION_MASK),
-    )
-    val emptyFactoryCode = copyOfRange(emptyFactory, emptyFactory + ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY.size)
-    val isEmptyFactory = emptyFactoryCode.indexOfMasked(
-        ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY,
-        ARMEABI_V7A_EMPTY_SUBSCRIPTION_FACTORY_MASK,
-    ) == 0
-    if (!isEmptyFactory) {
-        throw PatchException("The initial subscription is not built by the empty factory")
-    }
-    val allocationStub = branchTarget(emptyFactory + FACTORY_ALLOCATION_OFFSET)
+    val initialAllocationCall =
+        find("the initial subscription", ARMEABI_V7A_INITIAL_SUBSCRIPTION, ARMEABI_V7A_INITIAL_SUBSCRIPTION_MASK)
+    val allocationStub = branchTarget(initialAllocationCall)
 
     val premiumFactory = isPro + RETURN_FALSE.size * 4
     writeInstructions(
         premiumFactory,
-        emptyFactoryCode.readInt(0),
-        emptyFactoryCode.readInt(4),
+        PUSH_FRAME_RECORD,
+        SET_FRAME_POINTER,
         branch(premiumFactory + FACTORY_ALLOCATION_OFFSET, allocationStub, BRANCH_WITH_LINK),
         LOAD_TRUE_INTO_R1,
         PREMIUM_FIELD_STORE,
-        emptyFactoryCode.readInt(12),
-        emptyFactoryCode.readInt(16),
+        RESTORE_STACK_POINTER,
+        POP_FRAME_RECORD,
     )
-    writeInstructions(emptyFactory, branch(emptyFactory, premiumFactory, BRANCH))
+    writeInstructions(initialAllocationCall, branch(initialAllocationCall, premiumFactory, BRANCH_WITH_LINK))
 }
