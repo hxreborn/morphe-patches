@@ -1,3 +1,23 @@
+## [1.75.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.5...v1.75.0-dev.6) (2026-11-09)
+
+### Bug Fixes
+
+* **Patreon:** receive push notifications ([b6d1a3e](https://github.com/hxreborn/morphe-patches/commit/b6d1a3ebdc24f2219e8e1249cabccfc910127bbe)), closes [#693](https://github.com/hxreborn/morphe-patches/issues/693)
+* **Realme Link - AMOLED dark theme:** apply the theme on 5.8.811.2814 ([6a076a8](https://github.com/hxreborn/morphe-patches/commit/6a076a890b1b0917888fc74dfadedb5c1d5b1b83))
+* **Realme Link - AMOLED dark theme:** fix card colors and contrast ([4c938cd](https://github.com/hxreborn/morphe-patches/commit/4c938cd1847c3be491d5ac8b4da23588219fb163))
+* **Realme Link - Bypass session expiry:** renew sessions on 5.8.811.2814 ([e6867b5](https://github.com/hxreborn/morphe-patches/commit/e6867b5e0038ea2dd372dc931b0956ff023e883b))
+
+### New Features
+
+* **Proton - Floating navigation bar:** add inline appearance preview ([0eddfaf](https://github.com/hxreborn/morphe-patches/commit/0eddfafb1646021c2da7d20b3f2c7f2297203358))
+* **Proton Pass - Floating navigation bar:** add blur and glass options ([20a81a1](https://github.com/hxreborn/morphe-patches/commit/20a81a143ca0dc784df1e12fa43a3445014e9bbe))
+* **Proton VPN - Floating navigation bar:** add blur and glass options ([0f52361](https://github.com/hxreborn/morphe-patches/commit/0f5236175167bf878e69a7d98eb35c02b12266b2)), closes [#675](https://github.com/hxreborn/morphe-patches/issues/675)
+* **Viber - Remove Caller ID prompts:** stop Caller ID promotions ([608dc58](https://github.com/hxreborn/morphe-patches/commit/608dc58c4a53496ac745de56dc186aa52ddd0c9d)), closes [#683](https://github.com/hxreborn/morphe-patches/issues/683)
+
+### Updated App Support
+
+* **Realme Link:** retarget to 5.8.811.2814 ([c43d014](https://github.com/hxreborn/morphe-patches/commit/c43d014d86f9b1d00beb66f42ed557f9c47593b9)), closes [#420](https://github.com/hxreborn/morphe-patches/issues/420)
+
 ## [1.75.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.75.0-dev.4...v1.75.0-dev.5) (2026-11-08)
 
 ### Bug Fixes

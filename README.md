@@ -17,19 +17,19 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;498 patches total
+> **[v1.75.0-dev.6](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.0-dev.6)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;501 patches total
 
 ### Featured apps
 
 <table align="center">
 <tr>
-<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>22 patches</sub></td>
+<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>23 patches</sub></td>
 <td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
 <td align="center" width="160"><a href="#moviebox"><img src=".github/assets/icons/moviebox.png" width="40"><br>MovieBox</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
 <td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>13 patches</sub></td>
+<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -2141,7 +2141,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="proton-pass"></a>
 <details>
-<summary><img src=".github/assets/icons/protonpass.png" width="18" align="top">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
+<summary><img src=".github/assets/icons/protonpass.png" width="18" align="top">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2153,6 +2153,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="proton-pass-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
 | <a id="proton-pass-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
+| <a id="proton-pass-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
 | <a id="proton-pass-hide-layout-components"></a>[Hide layout components](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/layout/HideLayoutComponentsPatch.kt) | Adds settings to hide the Help center, Spread the word and About sections. |
 | <a id="proton-pass-hide-navigation-bar-on-scroll"></a>[Hide navigation bar on scroll](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/navigationbar/HideNavigationBarOnScrollPatch.kt) | Hides the bottom navigation bar on scroll down and shows it on scroll up. |
 | <a id="proton-pass-hide-promotional-messages"></a>[Hide promotional messages](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/inappmessages/HidePromotionalMessagesPatch.kt) | Hides promotional banners, offers and pop-up messages. |
@@ -2164,7 +2165,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;13 patches</summary>
+<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2177,6 +2178,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
 | <a id="proton-vpn-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/telemetry/DisableTelemetryPatch.kt) | Stops sending usage statistics and diagnostics to Proton. |
+| <a id="proton-vpn-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
 | <a id="proton-vpn-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[Remove server change delay](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |
@@ -2383,7 +2385,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 5.5.514.11421 |
+| 5.8.811.2814 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2782,7 +2784,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;22 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;23 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2805,6 +2807,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar. | • Hide Calls<br>• Hide ChatGPT<br>• Hide Explore<br>• Hide Marketplace<br>• Hide Pay<br>• Hide Shortica |
 | <a id="viber-link-as-secondary-device"></a>[Link as secondary device](patches/src/main/kotlin/app/morphe/patches/viber/misc/secondary/LinkAsSecondaryDevicePatch.kt) | Links to your main Viber phone. |  |
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
+| <a id="viber-remove-caller-id-prompts"></a>[Remove Caller ID prompts](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
 | <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |

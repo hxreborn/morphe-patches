@@ -330,7 +330,7 @@ body:
         - "ReadEra 26.05.20+2300"
         - "ReadEra 26.10.28+2340"
         - "ReadEra (another version, type it below)"
-        - "Realme Link 5.5.514.11421"
+        - "Realme Link 5.8.811.2814"
         - "Realme Link (another version, type it below)"
         - "Resprite 1.32.6"
         - "Resprite (another version, type it below)"
@@ -437,11 +437,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.75.0-dev.6"
         - "1.75.0-dev.5"
         - "1.75.0-dev.4"
         - "1.75.0-dev.3"
         - "1.75.0-dev.2"
-        - "1.75.0-dev.1"
         - "1.74.0"
         - "Older than these"
         # /generated
@@ -837,6 +837,7 @@ body:
         - "Proton Mail \u00b7 Unlock custom time picker"
         - "Proton Pass \u00b7 AMOLED dark theme"
         - "Proton Pass \u00b7 Custom accent color"
+        - "Proton Pass \u00b7 Floating navigation bar"
         - "Proton Pass \u00b7 Hide layout components"
         - "Proton Pass \u00b7 Hide navigation bar on scroll"
         - "Proton Pass \u00b7 Hide promotional messages"
@@ -846,6 +847,7 @@ body:
         - "Proton VPN \u00b7 AMOLED dark theme"
         - "Proton VPN \u00b7 Custom accent color"
         - "Proton VPN \u00b7 Disable telemetry"
+        - "Proton VPN \u00b7 Floating navigation bar"
         - "Proton VPN \u00b7 Hide upgrade promotions"
         - "Proton VPN \u00b7 Material 3 switches"
         - "Proton VPN \u00b7 Remove server change delay"
@@ -962,6 +964,7 @@ body:
         - "Viber \u00b7 Hide Viber Out and channel promotions"
         - "Viber \u00b7 Link as secondary device"
         - "Viber \u00b7 Raise folder limit"
+        - "Viber \u00b7 Remove Caller ID prompts"
         - "Viber \u00b7 Remove chat payment actions"
         - "Viber \u00b7 Remove list gaps"
         - "Viber \u00b7 Remove locked Plus items"
