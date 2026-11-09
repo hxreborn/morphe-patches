@@ -1,3 +1,9 @@
+## [1.76.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.2...v1.76.0-dev.3) (2026-11-09)
+
+### Bug Fixes
+
+* **Realme Link - Bypass session expiry:** renew signed-in sessions ([ac6140b](https://github.com/hxreborn/morphe-patches/commit/ac6140b43c94f807f3d3e9fa90ac06eba7fda95a)), closes [#701](https://github.com/hxreborn/morphe-patches/issues/701)
+
 ## [1.76.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.1...v1.76.0-dev.2) (2026-11-09)
 
 ### New Features
