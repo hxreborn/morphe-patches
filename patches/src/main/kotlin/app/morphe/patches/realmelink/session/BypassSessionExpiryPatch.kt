@@ -67,6 +67,8 @@ val bypassSessionExpiryPatch = bytecodePatch(
             ?: throw PatchException("The SDK token request does not take a single callback")
         val sdkResponseData = SdkTokenResponseDataFingerprint.matchSingle().method
         val sdkAccessToken = SdkAccessTokenFingerprint.matchSingle().method
+        val userCenterToken = UserCenterTokenFingerprint.matchSingle().method
+        val applicationContext = AccountApplicationContextFingerprint.matchSingle().method
 
         mutableClassDefBy(SESSION_RENEWAL_CLASS).apply {
             replaceStub(
@@ -98,6 +100,18 @@ val bypassSessionExpiryPatch = bytecodePatch(
                 1,
                 """
                     const-class v0, $sdkTokenCallbackType
+                    return-object v0
+                """,
+            )
+            replaceStub(
+                "userCenterToken",
+                2,
+                """
+                    invoke-static { }, ${descriptor(applicationContext)}
+                    move-result-object v0
+                    const-string v1, ""
+                    invoke-static { v0, v1 }, ${descriptor(userCenterToken)}
+                    move-result-object v0
                     return-object v0
                 """,
             )

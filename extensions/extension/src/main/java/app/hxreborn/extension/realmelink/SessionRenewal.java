@@ -44,8 +44,14 @@ public final class SessionRenewal {
         try {
             Object accountService = accountService();
             String storedToken = heytapToken(accountService);
+            String userCenterToken = userCenterTokenOrNull();
+            if (userCenterToken != null && !userCenterToken.isEmpty() && !userCenterToken.equals(storedToken)
+                    && exchangeAndStore(accountService, userCenterToken)) {
+                return true;
+            }
             String sdkToken = sdkHeytapTokenOrNull();
-            boolean sdkTokenDiffers = sdkToken != null && !sdkToken.isEmpty() && !sdkToken.equals(storedToken);
+            boolean sdkTokenDiffers = sdkToken != null && !sdkToken.isEmpty() && !sdkToken.equals(storedToken)
+                    && !sdkToken.equals(userCenterToken);
             if (sdkTokenDiffers && exchangeAndStore(accountService, sdkToken)) {
                 return true;
             }
@@ -53,6 +59,15 @@ public final class SessionRenewal {
         } catch (RuntimeException ex) {
             Log.e(LOG_TAG, "Cannot renew the session", ex);
             return false;
+        }
+    }
+
+    private static String userCenterTokenOrNull() {
+        try {
+            return userCenterToken();
+        } catch (RuntimeException ex) {
+            Log.e(LOG_TAG, "Cannot read the HeyTap token from User Center", ex);
+            return null;
         }
     }
 
@@ -108,6 +123,10 @@ public final class SessionRenewal {
     }
 
     static String heytapToken(Object accountService) {
+        return null;
+    }
+
+    static String userCenterToken() {
         return null;
     }
 

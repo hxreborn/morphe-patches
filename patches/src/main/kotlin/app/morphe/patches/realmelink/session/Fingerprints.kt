@@ -153,6 +153,22 @@ internal object SdkAccessTokenFingerprint : Fingerprint(
     parameters = emptyList(),
 )
 
+internal object UserCenterTokenFingerprint : Fingerprint(
+    definingClass = "Lcom/heytap/usercenter/accountsdk/AccountAgent;",
+    name = "getToken",
+    isStatic = true,
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;"),
+)
+
+internal object AccountApplicationContextFingerprint : Fingerprint(
+    definingClass = "Lcom/platform/usercenter/account/ams/AcAccountManager;",
+    name = "getApplicationContext",
+    isStatic = true,
+    returnType = "Landroid/content/Context;",
+    parameters = emptyList(),
+)
+
 internal val heytapTokenRead = fieldAccess(
     opcode = Opcode.IGET_OBJECT,
     type = "Ljava/lang/String;",
