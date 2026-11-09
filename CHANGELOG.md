@@ -1,3 +1,10 @@
+## [1.76.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.75.1...v1.76.0-dev.1) (2026-11-09)
+
+### New Features
+
+* **Public - Disable video preloading:** stop loading unplayed videos ([3895521](https://github.com/hxreborn/morphe-patches/commit/3895521fa06ef95cad879d754bea68718f5a235a)), closes [#692](https://github.com/hxreborn/morphe-patches/issues/692)
+* **Public - Follow system theme:** match system light and dark mode ([73c52b9](https://github.com/hxreborn/morphe-patches/commit/73c52b9eac5e3fb06790652cee16d927c1eb6ef4))
+
 ## [1.75.1](https://github.com/hxreborn/morphe-patches/compare/v1.75.0...v1.75.1) (2026-11-09)
 
 ### Bug Fixes

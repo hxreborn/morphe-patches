@@ -437,12 +437,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.75.1"
+        - "1.76.0-dev.1"
         - "1.75.1-dev.1"
+        - "1.75.1"
         - "1.75.0-dev.8"
         - "1.75.0-dev.7"
         - "1.75.0-dev.6"
-        - "1.75.0-dev.5"
         - "Older than these"
         # /generated
     validations:
@@ -862,6 +862,8 @@ body:
         - "Proton VPN \u00b7 Unlock split tunneling"
         - "Psiphon \u00b7 Unlock premium"
         - "Public \u00b7 Disable tracking"
+        - "Public \u00b7 Disable video preloading"
+        - "Public \u00b7 Follow system theme"
         - "Public \u00b7 GmsCore support"
         - "Public \u00b7 Hide ads"
         - "Public \u00b7 Remove promotions"

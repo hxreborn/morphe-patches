@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.75.1",
+  "version": "1.76.0-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -4063,6 +4063,40 @@
       "options": []
     },
     {
+      "name": "Disable video preloading",
+      "description": "Stops preloading upcoming videos in the feed and in dramas.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.cardfeed.video_public",
+          "name": "Public",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#EA1A1A",
+          "signatures": [
+            "38687807198e57d53bef507efdc11a6f9bf19bf7c7643b89650edff812ba2c00"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.3.8",
+              "versionCodes": {
+                "ARM64_V8A": 9070838,
+                "ARMEABI_V7A": 9070838,
+                "X86_64": 9070838,
+                "X86": 9070838
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Disable view receipts",
       "description": "Stops sending which BeReals you viewed and which chats you opened.",
       "default": true,
@@ -5017,6 +5051,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Follow system theme",
+      "description": "Switches the app between light and dark with the system theme. The app's Night Mode setting has no effect.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.cardfeed.video_public",
+          "name": "Public",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#EA1A1A",
+          "signatures": [
+            "38687807198e57d53bef507efdc11a6f9bf19bf7c7643b89650edff812ba2c00"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.3.8",
+              "versionCodes": {
+                "ARM64_V8A": 9070838,
+                "ARMEABI_V7A": 9070838,
+                "X86_64": 9070838,
+                "X86": 9070838
+              },
+              "isExperimental": false,
+              "minSdk": 24,
               "description": null
             }
           ]

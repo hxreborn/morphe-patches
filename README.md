@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;503 patches total
+> **[v1.76.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;505 patches total
 
 ### Featured apps
 
@@ -2212,7 +2212,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="public"></a>
 <details>
-<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2223,6 +2223,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="public-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/publicvideos/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Flurry, comScore, Firebase Analytics and Facebook from collecting usage data. |
+| <a id="public-disable-video-preloading"></a>[Disable video preloading](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/preload/DisableVideoPreloadingPatch.kt) | Stops preloading upcoming videos in the feed and in dramas. |
+| <a id="public-follow-system-theme"></a>[Follow system theme](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/theme/FollowSystemThemePatch.kt) | Switches the app between light and dark with the system theme. The app's Night Mode setting has no effect. |
 | <a id="public-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="public-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/publicvideos/ads/HideAdsPatch.kt) | Removes ads from the feed, app open, interstitial and rewarded placements, and the sponsor banner on the launch screen. |
 | <a id="public-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts and the VIP package and advertising offers on the profile. |
