@@ -18,9 +18,15 @@ import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
 import app.morphe.patches.protonvpn.misc.anchors.unitClass
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
+import app.morphe.patches.protonvpn.misc.profiles.VpnCountryToStringFingerprint
+import app.morphe.patches.protonvpn.misc.restrictions.SERVER
 import app.morphe.patches.protonvpn.misc.restrictions.restrictionGuardFingerprint
 import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+
+private const val SERVER_MANAGER = "Lcom/protonvpn/android/utils/ServerManager;"
+private const val PROTOCOL_SELECTION = "Lcom/protonvpn/android/vpn/ProtocolSelection;"
 
 internal object ConnectionPreferencesToStringFingerprint : Fingerprint(
     name = "toString",
@@ -49,6 +55,37 @@ internal fun BytecodePatchContext.excludedLocationsFlowFingerprint(): Fingerprin
         ),
     )
 }
+
+internal object ExcludedLocationsConstructorFingerprint : Fingerprint(
+    classFingerprint = ExcludedLocationsToStringFingerprint,
+    name = "<init>",
+    parameters = listOf("Ljava/util/List;"),
+    filters = listOf(opcode(Opcode.RETURN_VOID)),
+)
+
+internal fun BytecodePatchContext.serverIsExcludedFingerprint() = Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    returnType = "Z",
+    parameters = listOf(SERVER, ExcludedLocationsToStringFingerprint.originalClassDef.type),
+    filters = listOf(methodCall(definingClass = SERVER, name = "getExitCountry")),
+)
+
+internal object VpnCountryConstructorFingerprint : Fingerprint(
+    classFingerprint = VpnCountryToStringFingerprint,
+    name = "<init>",
+    parameters = listOf("Ljava/lang/String;", "Ljava/util/List;"),
+)
+
+internal fun BytecodePatchContext.randomServerFingerprint() = Fingerprint(
+    definingClass = SERVER_MANAGER,
+    returnType = SERVER,
+    parameters = listOf(vpnUserType, PROTOCOL_SELECTION, "Ljava/util/List;"),
+    filters = listOf(
+        methodCall(definingClass = SERVER_MANAGER, parameters = listOf("Z"), returnType = "Ljava/util/List;"),
+        opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
+        methodCall(name = "hasAccessibleOnlineServer"),
+    ),
+)
 
 internal fun BytecodePatchContext.defaultConnectionRestrictionFingerprint() = restrictionGuardFingerprint("getDefaultProfileId")
 
@@ -98,6 +135,21 @@ internal fun BytecodePatchContext.quickConnectIntentFingerprint() = freeUserChec
     returnType = "Ljava/lang/Object;",
     parameters = listOf("L"),
 )
+
+internal fun BytecodePatchContext.bestServerForConnectIntentCallFingerprint(): Fingerprint {
+    val excludedLocations = ExcludedLocationsToStringFingerprint.originalClassDef.type
+    return Fingerprint(
+        parameters = listOf("L", vpnUserType, PROTOCOL_SELECTION, excludedLocations, "L"),
+        filters = listOf(
+            methodCall(
+                definingClass = SERVER_MANAGER,
+                parameters = listOf("L", vpnUserType, PROTOCOL_SELECTION, "Ljava/util/List;", excludedLocations),
+                returnType = SERVER,
+            ),
+            opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
+        ),
+    )
+}
 
 internal object DefaultConnectionSettingStateToStringFingerprint :
     ToStringFingerprint("DefaultConnectionSettingState(iconRes=")

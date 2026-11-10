@@ -110,6 +110,10 @@ private fun BytecodePatchContext.propertyGetters(toString: Fingerprint, field: F
             } == true
     }
 
+internal fun BytecodePatchContext.propertyGetter(toString: Fingerprint, property: String) =
+    propertyGetters(toString, findPropertyField(toString, property)).firstOrNull()
+        ?: throw PatchException("No getter for $property in ${toString.originalClassDef.type}")
+
 internal fun BytecodePatchContext.propertyGetterCall(toString: Fingerprint, property: String): InstructionFilter {
     val field = findPropertyField(toString, property)
     val getters = propertyGetters(toString, field)
