@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.76.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.7)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;517 patches total
+> **[v1.76.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.8)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;520 patches total
 
 ### Featured apps
 
@@ -383,22 +383,6 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="audiomack-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="audiomack-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/premium/UnlockPremiumPatch.kt) | Unlocks Plus features. Region-limited songs are still restricted. |
-
-</details>
-
-<a id="automatag"></a>
-<details>
-<summary><img src=".github/assets/icons/automatag.png" width="18" align="top">&nbsp;&nbsp;AutomaTag&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 2.3.0.14 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="automatag-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/automatag/misc/premium/UnlockPremiumPatch.kt) | Unlocks AutomaTag Pro, including batch modes, audio fingerprinting and duplicate detection, and removes ads. |
 
 </details>
 
@@ -974,6 +958,24 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="fddb-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/fddb/misc/premium/UnlockPremiumPatch.kt) | Unlocks the weekly report, intermittent fasting, the calorie and nutrient planners, and custom nutrient targets. |
+
+</details>
+
+<a id="flights25"></a>
+<details>
+<summary><img src=".github/assets/icons/flights25.png" width="18" align="top">&nbsp;&nbsp;Flights25&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.4.7 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="flights25-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="flights25-remove-calendar-import-limit"></a>[Remove calendar import limit](patches/src/main/kotlin/app/morphe/patches/flights25/misc/premium/CalendarImportPatch.kt) | Removes limit on single-flight calendar imports. |
+| <a id="flights25-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/flights25/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features. AI imports, Gmail scans and automatic calendar imports are not unlocked. |
 
 </details>
 
@@ -2047,16 +2049,17 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="prayer-times-and-qibla"></a>
 <details>
-<summary><img src=".github/assets/icons/prayertimes.png" width="18" align="top">&nbsp;&nbsp;Prayer Times and Qibla&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/prayertimes.png" width="18" align="top">&nbsp;&nbsp;Prayer Times and Qibla&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 3.8.3 |
-| :---: |
+| 1.3.2 | 3.8.3 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="prayer-times-and-qibla-remove-app-protection"></a>[Remove app protection](patches/src/main/kotlin/app/morphe/patches/prayertimes/misc/protection/RemoveAppProtectionPatch.kt) | Lets a patched build of the Wear OS app start. Syncing with the phone app requires both apps patched with the same signing key. |
 | <a id="prayer-times-and-qibla-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/prayertimes/misc/premium/UnlockPremiumPatch.kt) | Unlocks random Adhan, unlimited personal reminders, theme colors and other Pro settings. |
 
 </details>

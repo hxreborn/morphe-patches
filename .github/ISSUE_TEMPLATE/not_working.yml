@@ -148,6 +148,8 @@ body:
         - "Fast STL Viewer (another version, type it below)"
         - "Fddb v7.8.7-Build-1-gms-release"
         - "Fddb (another version, type it below)"
+        - "Flights25 1.4.7"
+        - "Flights25 (another version, type it below)"
         - "FocusNow 3.8.0"
         - "FocusNow (another version, type it below)"
         - "ForusApp 3.0.15"
@@ -279,6 +281,7 @@ body:
         - "Pocket Whip (another version, type it below)"
         - "Poe a3.78.4"
         - "Poe (another version, type it below)"
+        - "Prayer Times and Qibla 1.3.2"
         - "Prayer Times and Qibla 3.8.3"
         - "Prayer Times and Qibla (another version, type it below)"
         - "Privacy Notes 0.654.2"
@@ -439,11 +442,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.76.0-dev.8"
         - "1.76.0-dev.7"
         - "1.76.0-dev.6"
         - "1.76.0-dev.5"
         - "1.76.0-dev.4"
-        - "1.76.0-dev.3"
         - "1.75.1"
         - "Older than these"
         # /generated
@@ -636,6 +639,9 @@ body:
         - "Etsy \u00b7 Hide ads"
         - "Fast STL Viewer \u00b7 Unlock premium"
         - "Fddb \u00b7 Unlock premium"
+        - "Flights25 \u00b7 GmsCore support"
+        - "Flights25 \u00b7 Remove calendar import limit"
+        - "Flights25 \u00b7 Unlock premium"
         - "FocusNow \u00b7 Disable tracking"
         - "FocusNow \u00b7 GmsCore support"
         - "FocusNow \u00b7 Unlock premium"
@@ -817,6 +823,7 @@ body:
         - "Pocket Whip \u00b7 Unlock premium"
         - "Poe \u00b7 Disable tracking"
         - "Poe \u00b7 Spoof signature"
+        - "Prayer Times and Qibla \u00b7 Remove app protection"
         - "Prayer Times and Qibla \u00b7 Unlock premium"
         - "Privacy Notes \u00b7 Unlock premium"
         - "Projectivy Launcher \u00b7 Disable tracking"

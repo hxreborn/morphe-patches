@@ -1,3 +1,18 @@
+## [1.76.0-dev.8](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.7...v1.76.0-dev.8) (2026-11-10)
+
+### Bug Fixes
+
+* **AutomaTag:** remove patches ([8c3c4c4](https://github.com/hxreborn/morphe-patches/commit/8c3c4c49378e1cf3459d01e7010dbf235d28dcbd))
+* **Proton VPN - Unlock connection preferences:** skip excluded locations ([909cf6b](https://github.com/hxreborn/morphe-patches/commit/909cf6b787b16ad49042e17ac9627d1d74dd0a03)), closes [#702](https://github.com/hxreborn/morphe-patches/issues/702)
+* **VPN Super Unlimited Proxy:** end reconnect on notification Disconnect ([779813e](https://github.com/hxreborn/morphe-patches/commit/779813e09953f09c13538e14d5f1b00ed67eafe1)), closes [#697](https://github.com/hxreborn/morphe-patches/issues/697) [#706](https://github.com/hxreborn/morphe-patches/issues/706)
+
+### New Features
+
+* **Flights25 - GmsCore support:** restore Google sign-in ([23f0fda](https://github.com/hxreborn/morphe-patches/commit/23f0fda8020dad7f9deb881ee9cdc31e0988c42f))
+* **Flights25 - Remove calendar import limit:** import more flights ([917d1ab](https://github.com/hxreborn/morphe-patches/commit/917d1abcc208763fa892b9f5ff8bde55ff2300f2))
+* **Flights25 - Unlock premium:** enable historical flight searches ([afcb4ff](https://github.com/hxreborn/morphe-patches/commit/afcb4ffb5a4709f7baa392b0cedf94879a3ddfbd))
+* **Prayer Times - Remove app protection:** sync watch app with phone ([0311596](https://github.com/hxreborn/morphe-patches/commit/0311596d4c7a3949d50f9c9c2021799802f728fb)), closes [#709](https://github.com/hxreborn/morphe-patches/issues/709)
+
 ## [1.76.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.6...v1.76.0-dev.7) (2026-11-10)
 
 ### Bug Fixes
