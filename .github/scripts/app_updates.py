@@ -23,6 +23,7 @@ from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare, tracked_versi
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
 from replies import BROKEN_FORMS, bundle
+from app_update import reports_failure
 
 TRACKER_REPO = "https://github.com/rushiranpise/patches-tracker"
 TRACKER_SHA = "b41567ad88e784f04c8a60f1cd11e4c956d8e57a"
@@ -589,7 +590,7 @@ def sync_issues(apps, results, bundle_version):
     gh("label", "create", ISSUE_LABEL, "--force", "--color", label["color"],
        "--description", label["description"])
     issues = json.loads(gh("issue", "list", "--label", ISSUE_LABEL, "--state", "all", "--limit", "1000",
-                           "--json", "number,title,state,author,labels"))
+                           "--json", "number,title,state,author,labels,body"))
     by_title = {issue["title"]: issue for issue in issues}
     names = [app["name"] for app in apps.values()]
     for record in results:
@@ -604,6 +605,8 @@ def sync_issues(apps, results, bundle_version):
             if issue["state"] != "OPEN" or version is None or excluded:
                 continue
             if compare(app["current"], version) >= 0:
+                if reports_failure(issue.get("body") or ""):
+                    continue
                 gh("issue", "close", str(issue["number"]), "--comment", sync_close_comment(app, bundle_version))
             elif not candidate or build_tags(candidate) != build_tags(version):
                 continue

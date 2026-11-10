@@ -126,8 +126,13 @@ runs:
             fi
             ;;
           flag)
+            mapfile -t outdated < <(jq -r --slurpfile verdict verdict.json \
+              '.issue.labels[].name | select(. == "needs info")
+               | select(. as $label | $verdict[0].labels | index($label) | not)' "$GITHUB_EVENT_PATH")
+            bash -eo pipefail "${{ github.action_path }}/remove_bot_labels.sh" "$ISSUE" "${outdated[@]}"
             if [ "$(cat comment.md)" != "$previous" ]; then
-              gh issue edit "$ISSUE" --repo "$REPO" --add-label "$(jq -r '.labels | join(",")' verdict.json)"
+              labels=$(jq -r '.labels | join(",")' verdict.json)
+              [ -z "$labels" ] || gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
               gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
             fi
             ;;

@@ -47,7 +47,11 @@ issues = [{"number": 1, "state": "OPEN", "title": "[App Update]: Cx File Explore
           {"number": 7, "state": "OPEN", "title": "[App Update]: Newcomer 1.0.5", "author": {"is_bot": False}},
           {"number": 8, "state": "OPEN", "title": "[App Update]: Held 1.5", "labels": [{"name": "needs info"}]},
           {"number": 9, "state": "OPEN", "title": "[App Update]: Held 0.9", "labels": [{"name": "bot-wrong"}]},
-          {"number": 10, "state": "OPEN", "title": "[App Update]: Tagged 6.2_x86_64"}]
+          {"number": 10, "state": "OPEN", "title": "[App Update]: Tagged 6.2_x86_64"},
+          {"number": 11, "state": "OPEN", "title": "[App Update]: Audible 26.38.08",
+           "body": "### Patching this version\n\nPatching works, the app misbehaves\n"},
+          {"number": 12, "state": "OPEN", "title": "[App Update]: Audible 26.38.08",
+           "body": "### Patching this version\n\nTried but patching failed\n"}]
 app_updates.gh = lambda *args, **kw: calls.append(args) or (json.dumps(issues) if args[:2] == ("issue", "list") else "")
 apps = {p: {"package": p, "name": n, "current": c, "current_version_codes": []} for p, n, c in [
     ("cx", "Cx File Explorer", "2.7.8"), ("showly", "Showly", "3.70.0"), ("audible", "Audible", "26.38.08"),

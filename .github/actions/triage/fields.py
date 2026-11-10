@@ -68,6 +68,20 @@ FEATURE_ASK = re.compile(
     re.I,
 )
 
+ADDITIONAL_FEATURE = re.compile(
+    r"\b(?:please|pls|plz|can you|could you|would you|kindly)\s+(?:also\s+)?add\s+"
+    r"(?:(?:an?|another|new|the)\s+)*(?:feature|option|patch|setting|toggle)\b(?!\s+back\b)"
+    r"|\badd\s+(?:an?|another|new)\s+(?:feature|option|patch|setting|toggle)\b(?!\s+back\b)", re.I,
+)
+
+
+def asks_for_additional_feature(text):
+    for match in ADDITIONAL_FEATURE.finditer(text):
+        remainder = re.split(r"[.!?\n]", text[match.end():], maxsplit=1)[0]
+        if not re.search(r"\bback\b", remainder, re.I):
+            return True
+    return False
+
 
 def is_placeholder(value):
     letters = re.sub(r"[\W_]+", "", unicodedata.normalize("NFKC", value).casefold())

@@ -1116,10 +1116,11 @@ body:
     attributes:
       label: Error logs
       description: |
-        Run `adb logcat -d > log.txt` right after the problem and attach the file. Without a PC, record it with [LogFox](https://github.com/F0x1d/LogFox) and attach the export.
+        For a crash or an app that will not open, run `adb logcat -d > log.txt` right after the problem and attach the file. Without a PC, record it with [LogFox](https://github.com/F0x1d/LogFox) and attach the export.
+        Logs are optional for other problems. Describe what happens in the fields above.
       placeholder: Drag the log file here, or paste a link to it (Pastebin, GitHub Gist).
     validations:
-      required: true
+      required: false
   - type: checkboxes
     id: acknowledgements
     attributes:

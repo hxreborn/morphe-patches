@@ -47,6 +47,12 @@ def open_tracker(app, version, number, issues, apps):
                key=lambda iv: version_key(iv[1]), default=(None, ""))
 
 
+def reports_failure(body):
+    return normalize(field(parse_fields(body), "Patching this version")) in {
+        "triedbutpatchingfailed", "patchingworkstheappmisbehaves",
+    }
+
+
 def decide(number, body, issues, patches_list, issue_title=""):
     apps = targets(patches_list)
     app = requested_app(body, apps)
@@ -70,7 +76,12 @@ def decide(number, body, issues, patches_list, issue_title=""):
     else:
         current = max((t for t in apps[app] if same_variant(version, t)), key=version_key, default="")
         tracker, tracked = open_tracker(app, version, number, issues, apps)
-        if any(compare(version, target) == 0 and same_variant(version, target) for target in apps[app]):
+        already_targeted = any(compare(version, target) == 0 and same_variant(version, target) for target in apps[app])
+        if already_targeted and reports_failure(body):
+            verdict = "flag"
+            lines.append(f"This report describes a problem with supported {app} `{version}`. "
+                         f"Patching or runtime failures can be reported with these forms:\n\n{BROKEN_FORMS}")
+        elif already_targeted:
             verdict, reason = "close", "completed"
             lines.append(f"{bundle(patches_list['version'])} already supports {app} `{version}`. This issue is now closed. "
                          f"If it doesn't patch or work, open an issue:\n\n{BROKEN_FORMS}")
