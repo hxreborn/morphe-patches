@@ -23,6 +23,7 @@ package app.hxreborn.extension.vpnsuper;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 @SuppressWarnings("unused")
 public final class NotificationDisconnect {
@@ -34,8 +35,21 @@ public final class NotificationDisconnect {
         if (!PatchSettings.isDisconnectFromNotificationEnabled(context)) {
             return PendingIntent.getActivity(context, requestCode, openAppIntent, flags);
         }
+        Intent disconnectBroadcast = new Intent(context, NotificationDisconnectReceiver.class);
+        return PendingIntent.getBroadcast(context, requestCode, disconnectBroadcast, flags);
+    }
+
+    static void disconnect(Context context) {
+        markUserDisconnected();
         Intent stopConnection = new Intent(context, connectionService()).setAction(stopConnectionAction());
-        return PendingIntent.getService(context, requestCode, stopConnection, flags);
+        try {
+            context.startService(stopConnection);
+        } catch (IllegalStateException ex) {
+            Log.e(PatchSettings.LOG_TAG, "Cannot start the VPN service to stop the connection", ex);
+        }
+    }
+
+    static void markUserDisconnected() {
     }
 
     static Class<?> connectionService() {
