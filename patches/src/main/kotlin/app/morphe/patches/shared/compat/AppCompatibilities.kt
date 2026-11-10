@@ -791,6 +791,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "40.0.44", versionCode = 37, minSdk = 24)),
     )
 
+    val LAUNCHBOX = Compatibility(
+        name = "LaunchBox",
+        packageName = "com.unbrokensoftware.launchbox",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xFF4A00,
+        signatures = setOf(
+            "3cdff8f43287a0a12493eacc46fe75ca589a75e49bc52cc716e6bf0307bca186",
+        ),
+        targets = listOf(AppTarget(version = "1.23", versionCode = 194, minSdk = 26)),
+    )
+
     val LED_BLINKER = Compatibility(
         name = "LED Blinker",
         packageName = "com.ledblinker",
