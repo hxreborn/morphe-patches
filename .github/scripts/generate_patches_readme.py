@@ -150,6 +150,7 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "de.app.flighttracker": "flights25.png",
     "com.audiomack": "audiomack.png",
     "com.dynanic.ultimea": "ultimea.png",
     "com.neonbhoot.behisabi": "behisabi.png",

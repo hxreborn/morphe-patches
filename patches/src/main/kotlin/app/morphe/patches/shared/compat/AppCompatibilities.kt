@@ -584,6 +584,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val FLIGHTS25 = Compatibility(
+        name = "Flights25",
+        packageName = "de.app.flighttracker",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x324A5D,
+        signatures = setOf(
+            "0f3d745866700174774015eca5da32a5b385fd9d6d4212253ac70f5962f6105b",
+        ),
+        targets = listOf(AppTarget(version = "1.4.7", versionCode = 82, minSdk = 24)),
+    )
+
     val FOCUS_NOW = Compatibility(
         name = "FocusNow",
         packageName = "com.ferdinandobermeier.focusmate",
