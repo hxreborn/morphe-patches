@@ -150,7 +150,9 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "de.app.flighttracker": "flights25.png",
     "com.audiomack": "audiomack.png",
+    "com.dynanic.ultimea": "ultimea.png",
     "com.neonbhoot.behisabi": "behisabi.png",
     "com.gymbros.app": "liftoff.png",
     "co.unstatic.habitify": "habitify.png",
@@ -307,11 +309,11 @@ ICONS = {
     "india.vpn_tap2free": "vpnindia.png",
     "com.viber.voip": "viber.png",
     "com.telug.keyboard.for.android": "deshtelugu.png",
-    "com.fillobotto.mp3tagger": "automatag.png",
     "com.droid27.transparentclockweather": "transparentclock.png",
     "com.pixlr.express": "pixlr.png",
     "com.patreon.android": "patreon.png",
     "com.ultimateguitar.tabs": "ultimateguitar.png",
+    "to.freedom.android2": "freedom.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

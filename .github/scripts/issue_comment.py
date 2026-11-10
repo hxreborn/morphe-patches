@@ -11,6 +11,7 @@ from pathlib import Path
 from versions import targets
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
 from replies import ALL_FORMS, bundle, code_list
+from fields import asks_for_additional_feature
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "hxreborn/morphe-patches")
 CLOSED_MARKER = "<!-- closed-issue-bot -->"
@@ -30,10 +31,15 @@ REQUEST = re.compile(
 )
 PROBLEM = re.compile(
     r"\b(not|doesn'?t|does not|didn'?t|did not|won'?t|isn'?t|stopped|no longer) work"
-    r"|\b(still|again|broken|crash|error|fail|failure)",
+    r"|\b(still|again|broken|crash|error|fail|failure|missing)",
     re.I,
 )
-UPDATE_DEMAND = re.compile(r"\b(updated?|upgrade[ds]?|latest|newest|newer)\b|\bnew version\b", re.I)
+UPDATE_DEMAND = re.compile(
+    r"\b(?:please|pls|plz|can you|could you)\s+(?:also\s+)?(?:update|upgrade)\b(?!\s+(?:me|us)\b)"
+    r"|\b(?:update|upgrade)\s+(?:patches?\s+)?(?:to|for)\s+v?\d"
+    r"|\b(?:support|add)\s+(?:for\s+)?(?:the\s+)?(?:latest|newest|newer|new)\s+(?:app\s+)?version\b",
+    re.I,
+)
 RESOLVED = re.compile(r"\b(work(s|ing)? (fine|perfectly|great|now)|now (it )?works|it works|fixed now|solved)\b", re.I)
 QUOTED = re.compile(r"^[ \t]*>.*$", re.M)
 MENTION = re.compile(r"@[\w-]+")
@@ -97,11 +103,12 @@ def is_fix_follow_up(issue, comment):
     own = CODE.sub("", QUOTED.sub("", comment["body"] or ""))
     closed_at = issue.get("closed_at")
     return (
-        "bug" in labels
+        bool(labels & {"bug", "enhancement"})
         and bool(closed_at)
-        and timestamp(comment["created_at"]) - timestamp(closed_at) <= LOCK_DELAY
+        and timedelta(0) <= timestamp(comment["created_at"]) - timestamp(closed_at) <= LOCK_DELAY
         and bool(PROBLEM.search(own))
         and not UPDATE_DEMAND.search(own)
+        and not asks_for_additional_feature(own)
     )
 
 

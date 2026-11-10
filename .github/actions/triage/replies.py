@@ -28,7 +28,7 @@ ALL_FORMS = form_list(*FORMS)
 APK_SOURCES = ("[APKMirror](https://www.apkmirror.com/), [APKPure](https://apkpure.com/), "
                "[Uptodown](https://www.uptodown.com/), [APKCombo](https://apkcombo.com/) "
                "or [APKCube](https://apkcube.com/)")
-STAR = f"A ⭐ on the [repo](https://github.com/{REPO}) helps more people find these patches."
+RELEASES = f"Release notes are available on the [releases page](https://github.com/{REPO}/releases)."
 MISSING_HEADER = "This report is missing information:"
 MISSING_FOOTER = "Please edit the issue to add it. It closes automatically after 3 days without activity."
 CLOSED_FOOTER = "Please edit the issue to correct it, and it reopens automatically."
@@ -85,7 +85,7 @@ def closed(lines, footer):
 
 
 REPLIES = {
-    "star": lambda: STAR,
+    "releases": lambda: RELEASES,
     "request-passes": lambda: updated("request", ", and the request is open for votes"),
     "report-passes": lambda: updated("report"),
     "report-reopened": lambda: updated("report", ", and the issue is open again"),
@@ -100,7 +100,7 @@ REPLIES = {
     "related": lambda issues: ("These issues may be about the same problem:\n\n"
                                f"{issues}\n\nIf one of them matches, please comment there and close this one. Thanks!"),
     "shipped": lambda app, tag: (f"{app} has been added in {release_link(tag)}. This discussion is now closed. "
-                                 f"For anything else about {app}, open an issue:\n\n{ALL_FORMS}\n\n{STAR}"),
+                                 f"For anything else about {app}, open an issue:\n\n{ALL_FORMS}\n\n{RELEASES}"),
 }
 
 

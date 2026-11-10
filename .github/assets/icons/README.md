@@ -21,7 +21,9 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `flights25.png` | Flights25 (`de.app.flighttracker`) | Rocketech sp. z o.o. | Play 1.4.7, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, foreground over `ic_launcher_background`, cut to a circle |
 | `audiomack.png` | Audiomack (`com.audiomack`) | Audiomack Music Apps | APK 8.11.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
+| `ultimea.png` | ULTIMEA (`com.dynanic.ultimea`) | Ultimea | Play 1.4.4, adaptive icon foreground over background, cut to a circle |
 | `behisabi.png` | BeHisabi (`com.neonbhoot.behisabi`) | Neon Bhoot | Google Play listing icon, cut to a circle |
 | `liftoff.png` | Liftoff (`com.gymbros.app`) | Liftoff Labs Inc. | Play 2.17.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `habitify.png` | Habitify (`co.unstatic.habitify`) | Unstatic Ltd Co | Play 50.2.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, white background under foreground, cut to a circle |
@@ -177,7 +179,6 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `com.andatsoft.myapk.fwa.png` | My APK (`com.andatsoft.myapk.fwa`) | Cards | Google Play listing icon, added 2026-10-12 |
 | `viber.png` | Viber (`com.viber.voip`) | Viber Media | APK 29.1.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_viber_round.webp` |
 | `deshtelugu.png` | Desh Telugu Keyboard (`com.telug.keyboard.for.android`) | Desh Keyboard | APK 17.6.8, square icon `res/mipmap-xxxhdpi-v4/ic_launcher.png` cut to a circle |
-| `automatag.png` | AutomaTag (`com.fillobotto.mp3tagger`) | fillobotto | APK 2.3.0.10, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `com.azeravn.bulletjournal.png` | May: Beautiful Bullet Journal (`com.azeravn.bulletjournal`) | AZ Family | Google Play listing icon, added 2026-10-10 |
 | `com.dev2a.junk_journal.png` | Jujo (`com.dev2a.junk_journal`) | Dev2a Inc | Google Play listing icon, added 2026-10-14 |
 | `pl.neptis.yanosik.mobi.android.png` | Yanosik (`pl.neptis.yanosik.mobi.android`) | Yanosik S.A. | Google Play listing icon, added 2026-10-10 |
@@ -186,6 +187,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `patreon.png` | Patreon (`com.patreon.android`) | Patreon | APK 126.44.0.13, adaptive icon `res/drawable/ic_launcher_foreground.xml` on `@color/ic_launcher_background` (black), cut to a circle |
 | `ultimateguitar.png` | Ultimate Guitar: Chords & Tabs (`com.ultimateguitar.tabs`) | Ultimate Guitar USA LLC | APK 7.3.36, square icon `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` cut to a circle |
 | `xtreamplayer.png` | Xtream Player (`me.aap.fermatamod.dear.google.why.bingo2.rec`) | malebuffy | GitHub 1.8.12, adaptive round icon `res/mipmap-anydpi-v26/xtream_launcher_round.xml` (`res/drawable-xxxhdpi-v4/xtream_icon_app.png`, cut to a circle) |
+| `freedom.png` | Freedom (`to.freedom.android2`) | Eighty Percent Solutions Corporation | Play 7.18.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

@@ -7,6 +7,7 @@ package app.morphe.patches.shared.compat
 import app.morphe.patcher.patch.ApkFileType
 import app.morphe.patcher.patch.AppTarget
 import app.morphe.patcher.patch.Compatibility
+import app.morphe.patcher.patch.FormFactor
 
 @Suppress("MemberVisibilityCanBePrivate")
 internal object AppCompatibilities {
@@ -197,17 +198,6 @@ internal object AppCompatibilities {
             "d441c034a8cd999a79ec5b09f0d03627d8689a53e0441a04aaa4a16315e5cec0",
         ),
         targets = listOf(AppTarget(version = "1.3.33", versionCode = 5163, minSdk = 26)),
-    )
-
-    val AUTOMATAG = Compatibility(
-        name = "AutomaTag",
-        packageName = "com.fillobotto.mp3tagger",
-        apkFileType = ApkFileType.APKS_REQUIRED,
-        appIconColor = 0x0288D1,
-        signatures = setOf(
-            "538fbf04f304c4a9a6dc48638bcab88620e445c3be2b1d671bb3228fb04ff6d8",
-        ),
-        targets = listOf(AppTarget(version = "2.3.0.14", versionCode = 801, minSdk = 24)),
     )
 
     val BANGLA_CALENDAR = Compatibility(
@@ -546,7 +536,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "331fa00a81a7f2e70aeaec25ee709aa4f1f17062d61e7aa6048f14abc47f0d1a",
         ),
-        targets = listOf(AppTarget(version = "1.0.7.0", versionCode = 138, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.1.0", versionCode = 143, minSdk = 26)),
     )
 
     val ETSY = Compatibility(
@@ -584,6 +574,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val FLIGHTS25 = Compatibility(
+        name = "Flights25",
+        packageName = "de.app.flighttracker",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x324A5D,
+        signatures = setOf(
+            "0f3d745866700174774015eca5da32a5b385fd9d6d4212253ac70f5962f6105b",
+        ),
+        targets = listOf(AppTarget(version = "1.4.7", versionCode = 82, minSdk = 24)),
+    )
+
     val FOCUS_NOW = Compatibility(
         name = "FocusNow",
         packageName = "com.ferdinandobermeier.focusmate",
@@ -604,6 +605,17 @@ internal object AppCompatibilities {
             AppTarget(version = "3.0.15", versionCode = 96, minSdk = 26),
             AppTarget(version = "3.0.18", versionCode = 99, minSdk = 26),
         ),
+    )
+
+    val FREEDOM = Compatibility(
+        name = "Freedom",
+        packageName = "to.freedom.android2",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x366A4B,
+        signatures = setOf(
+            "b279c5ef7c476e8ac4f6c4acf5dca4ada9b0375da328dc98400745300080c536",
+        ),
+        targets = listOf(AppTarget(version = "7.18.2", versionCode = 9634, minSdk = 25)),
     )
 
     val GAMMA_SCAN = Compatibility(
@@ -1254,6 +1266,18 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.8.3", versionCode = 742, minSdk = 24)),
     )
 
+    val PRAYER_TIMES_WEAR = Compatibility(
+        name = "Prayer Times and Qibla",
+        packageName = "com.reworewo.prayertimes",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x0E9567,
+        signatures = setOf(
+            "cd1f0d9a62d0479c4b71bbc4d519698269d6dc499d3953de7528087e515a1968",
+        ),
+        targets = listOf(AppTarget(version = "1.3.2", versionCode = 717, minSdk = 26)),
+        formFactor = FormFactor.WEARABLE,
+    )
+
     val PRIVACY_NOTES = Compatibility(
         name = "Privacy Notes",
         packageName = "app.privacynotes",
@@ -1673,6 +1697,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
     )
 
+    val ULTIMEA = Compatibility(
+        name = "ULTIMEA",
+        packageName = "com.dynanic.ultimea",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x4A1C9B,
+        signatures = setOf(
+            "36987ec86e2b19ec63ff1cb1108de901d43d6ea74844a7f68f76fab74e5f73e7",
+        ),
+        targets = listOf(AppTarget(version = "1.4.4", versionCode = 495, minSdk = 26)),
+    )
+
     val ULTIMATE_GUITAR = Compatibility(
         name = "Ultimate Guitar",
         packageName = "com.ultimateguitar.tabs",
@@ -1757,7 +1792,7 @@ internal object AppCompatibilities {
         packageName = "com.free.vpn.super.hotspot.open",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x007DFF,
-        targets = listOf(AppTarget(version = "2.35.0", versionCode = 23500, minSdk = 29)),
+        targets = listOf(AppTarget(version = "2.36.0", versionCode = 23600, minSdk = 29)),
     )
 
     val WALLMAA = Compatibility(

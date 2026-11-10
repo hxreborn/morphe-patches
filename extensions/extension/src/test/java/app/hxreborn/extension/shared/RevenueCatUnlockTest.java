@@ -103,6 +103,44 @@ public final class RevenueCatUnlockTest {
     }
 
     @Test
+    public void includesRequiredNullableSubscriptionFields() throws JSONException {
+        final JSONObject subscription = subscriber(grant(body(new JSONObject()))).getJSONObject("subscriptions")
+            .getJSONObject(PRODUCT);
+
+        assertEquals(JSONObject.NULL, subscription.get("unsubscribe_detected_at"));
+        assertEquals(JSONObject.NULL, subscription.get("billing_issues_detected_at"));
+        assertEquals(JSONObject.NULL, subscription.get("grace_period_expires_date"));
+        assertEquals(JSONObject.NULL, subscription.get("refunded_at"));
+        assertEquals(JSONObject.NULL, subscription.get("store_transaction_id"));
+    }
+
+    @Test
+    public void completesAnExistingSubscription() throws JSONException {
+        final JSONObject existing = new JSONObject().put("purchase_date", PURCHASE_DATE);
+        final JSONObject subscriber = new JSONObject().put("subscriptions", new JSONObject().put(PRODUCT, existing));
+
+        final JSONObject subscription = subscriber(grant(body(subscriber))).getJSONObject("subscriptions")
+            .getJSONObject(PRODUCT);
+
+        assertEquals(JSONObject.NULL, subscription.get("unsubscribe_detected_at"));
+        assertEquals(JSONObject.NULL, subscription.get("billing_issues_detected_at"));
+        assertEquals(JSONObject.NULL, subscription.get("grace_period_expires_date"));
+        assertEquals(JSONObject.NULL, subscription.get("refunded_at"));
+        assertEquals(JSONObject.NULL, subscription.get("store_transaction_id"));
+    }
+
+    @Test
+    public void preservesNullGracePeriod() throws JSONException {
+        final JSONObject existing = new JSONObject().put("grace_period_expires_date", JSONObject.NULL);
+        final JSONObject subscriber = new JSONObject().put("subscriptions", new JSONObject().put(PRODUCT, existing));
+
+        final JSONObject subscription = subscriber(grant(body(subscriber))).getJSONObject("subscriptions")
+            .getJSONObject(PRODUCT);
+
+        assertEquals(JSONObject.NULL, subscription.get("grace_period_expires_date"));
+    }
+
+    @Test
     public void extendsAnExistingSubscriptionInPlace() throws JSONException {
         // given
         final JSONObject existing = new JSONObject().put("store", "app_store")
@@ -122,12 +160,12 @@ public final class RevenueCatUnlockTest {
         assertEquals("2025-05-05T00:00:00Z", subscription.getString("purchase_date"));
         assertEquals(EXPIRES_DATE, subscription.getString("expires_date"));
         assertEquals(EXPIRES_DATE, subscription.getString("grace_period_expires_date"));
-        assertFalse(subscription.has("billing_issues_detected_at"));
-        assertFalse(subscription.has("unsubscribe_detected_at"));
+        assertTrue(subscription.isNull("billing_issues_detected_at"));
+        assertTrue(subscription.isNull("unsubscribe_detected_at"));
     }
 
     @Test
-    public void addsNoGracePeriodWhereThereWasNone() throws JSONException {
+    public void setsMissingGracePeriodToNull() throws JSONException {
         // given
         final JSONObject subscriber = new JSONObject().put("subscriptions",
                 new JSONObject().put(PRODUCT, new JSONObject().put("expires_date", "2025-06-05T00:00:00Z")));
@@ -137,7 +175,7 @@ public final class RevenueCatUnlockTest {
             .getJSONObject(PRODUCT);
 
         // then
-        assertFalse(subscription.has("grace_period_expires_date"));
+        assertEquals(JSONObject.NULL, subscription.get("grace_period_expires_date"));
     }
 
     @Test
@@ -160,11 +198,11 @@ public final class RevenueCatUnlockTest {
         // then
         final JSONObject otherSubscription = result.getJSONObject("subscriptions").getJSONObject("other_product");
         assertEquals(EXPIRES_DATE, otherSubscription.getString("expires_date"));
-        assertFalse(otherSubscription.has("billing_issues_detected_at"));
+        assertTrue(otherSubscription.isNull("billing_issues_detected_at"));
         final JSONObject otherEntitlement = result.getJSONObject("entitlements").getJSONObject("other_entitlement");
         assertEquals(EXPIRES_DATE, otherEntitlement.getString("expires_date"));
         assertEquals(EXPIRES_DATE, otherEntitlement.getString("grace_period_expires_date"));
-        assertFalse(otherEntitlement.has("unsubscribe_detected_at"));
+        assertTrue(otherEntitlement.isNull("unsubscribe_detected_at"));
         assertTrue(result.getJSONObject("subscriptions").has(PRODUCT));
         assertTrue(result.getJSONObject("entitlements").has(ENTITLEMENT));
     }

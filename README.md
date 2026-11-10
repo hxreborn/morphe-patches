@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.75.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.75.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;503 patches total
+> **[v1.76.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0-dev.8)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;520 patches total
 
 ### Featured apps
 
@@ -383,22 +383,6 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="audiomack-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="audiomack-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/premium/UnlockPremiumPatch.kt) | Unlocks Plus features. Region-limited songs are still restricted. |
-
-</details>
-
-<a id="automatag"></a>
-<details>
-<summary><img src=".github/assets/icons/automatag.png" width="18" align="top">&nbsp;&nbsp;AutomaTag&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 2.3.0.14 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="automatag-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/automatag/misc/premium/UnlockPremiumPatch.kt) | Unlocks AutomaTag Pro, including batch modes, audio fingerprinting and duplicate detection, and removes ads. |
 
 </details>
 
@@ -920,7 +904,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.0.7.0 |
+| 1.1.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -977,6 +961,24 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
+<a id="flights25"></a>
+<details>
+<summary><img src=".github/assets/icons/flights25.png" width="18" align="top">&nbsp;&nbsp;Flights25&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.4.7 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="flights25-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="flights25-remove-calendar-import-limit"></a>[Remove calendar import limit](patches/src/main/kotlin/app/morphe/patches/flights25/misc/premium/CalendarImportPatch.kt) | Removes limit on single-flight calendar imports. |
+| <a id="flights25-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/flights25/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features. AI imports, Gmail scans and automatic calendar imports are not unlocked. |
+
+</details>
+
 <a id="focusnow"></a>
 <details>
 <summary><img src=".github/assets/icons/focusnow.png" width="18" align="top">&nbsp;&nbsp;FocusNow&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
@@ -1008,6 +1010,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="forusapp-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/forus/misc/premium/UnlockPremiumPatch.kt) | Unlocks all premium features. |
+
+</details>
+
+<a id="freedom"></a>
+<details>
+<summary><img src=".github/assets/icons/freedom.png" width="18" align="top">&nbsp;&nbsp;Freedom&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 7.18.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="freedom-remove-upsells"></a>[Remove upsells](patches/src/main/kotlin/app/morphe/patches/freedom/misc/upsell/RemoveUpsellsPatch.kt) | Removes the sign-up trial offers and the Unlock Premium prompts on Today and in Settings. |
+| <a id="freedom-unlock-locked-mode"></a>[Unlock Locked Mode](patches/src/main/kotlin/app/morphe/patches/freedom/misc/lockedmode/UnlockLockedModePatch.kt) | Unlocks Locked Mode on free accounts. |
 
 </details>
 
@@ -2030,16 +2049,17 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="prayer-times-and-qibla"></a>
 <details>
-<summary><img src=".github/assets/icons/prayertimes.png" width="18" align="top">&nbsp;&nbsp;Prayer Times and Qibla&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/prayertimes.png" width="18" align="top">&nbsp;&nbsp;Prayer Times and Qibla&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 3.8.3 |
-| :---: |
+| 1.3.2 | 3.8.3 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="prayer-times-and-qibla-remove-app-protection"></a>[Remove app protection](patches/src/main/kotlin/app/morphe/patches/prayertimes/misc/protection/RemoveAppProtectionPatch.kt) | Lets a patched build of the Wear OS app start. Syncing with the phone app requires both apps patched with the same signing key. |
 | <a id="prayer-times-and-qibla-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/prayertimes/misc/premium/UnlockPremiumPatch.kt) | Unlocks random Adhan, unlimited personal reminders, theme colors and other Pro settings. |
 
 </details>
@@ -2212,7 +2232,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="public"></a>
 <details>
-<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2223,6 +2243,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="public-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/publicvideos/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Flurry, comScore, Firebase Analytics and Facebook from collecting usage data. |
+| <a id="public-disable-video-preloading"></a>[Disable video preloading](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/preload/DisableVideoPreloadingPatch.kt) | Stops preloading upcoming videos in the feed and in dramas. |
+| <a id="public-follow-system-theme"></a>[Follow system theme](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/theme/FollowSystemThemePatch.kt) | Switches the app between light and dark with the system theme. The app's Night Mode setting has no effect. |
 | <a id="public-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="public-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/publicvideos/ads/HideAdsPatch.kt) | Removes ads from the feed, app open, interstitial and rewarded placements, and the sponsor banner on the launch screen. |
 | <a id="public-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts and the VIP package and advertising offers on the profile. |
@@ -2393,7 +2415,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="realme-link-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/realmelink/theme/AmoledThemePatch.kt) | Replaces the light theme with a pure black dark theme. Requires Android 13 or later. |
-| <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Keeps the account signed in after the session expires. Asks to sign in again only if renewal fails. |
+| <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Stops the session expired prompt and toast. |
 
 </details>
 
@@ -2748,6 +2770,30 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
+<a id="ultimea"></a>
+<details>
+<summary><img src=".github/assets/icons/ultimea.png" width="18" align="top">&nbsp;&nbsp;ULTIMEA&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.4.4 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="ultimea-accent-color"></a>[Accent color](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/AccentColorPatch.kt) | Changes accent colors with a chosen color or Material You. |
+| <a id="ultimea-dark-theme"></a>[Dark theme](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/DarkThemePatch.kt) | Adds dark and AMOLED themes with light text and controls. |
+| <a id="ultimea-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Crashlytics, Logan and usage event uploads. |
+| <a id="ultimea-fine-equalizer"></a>[Fine equalizer](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB adjustment, band values and Undo. |
+| <a id="ultimea-local-equalizer-presets"></a>[Local equalizer presets](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/presets/LocalEqualizerPresetsPatch.kt) | Adds named local curves with duplicate, export and import actions. |
+| <a id="ultimea-remove-distractions"></a>[Remove distractions](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/distractions/RemoveDistractionsPatch.kt) | Removes community, message and support entries. |
+| <a id="ultimea-remove-popups"></a>[Remove popups](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/popups/RemovePopupsPatch.kt) | Removes promotional and rating popups. |
+| <a id="ultimea-stop-firmware-reminders"></a>[Stop firmware reminders](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/firmware/StopFirmwareRemindersPatch.kt) | Stops automatic firmware reminders. Keeps manual update checks. |
+| <a id="ultimea-xupmix"></a>[Xupmix](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/controls/XupmixPatch.kt) | Enables Xupmix control on Poseidon D80. |
+
+</details>
+
 <a id="uptcl"></a>
 <details>
 <summary><img src=".github/assets/icons/uptcl.png" width="18" align="top">&nbsp;&nbsp;UPTCL&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
@@ -2873,16 +2919,17 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="vpn-super-unlimited-proxy"></a>
 <details>
-<summary><img src=".github/assets/icons/vpnsuper.png" width="18" align="top">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/vpnsuper.png" width="18" align="top">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 2.35.0 |
+| 2.36.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="vpn-super-unlimited-proxy-disconnect-from-notification"></a>[Disconnect from notification](patches/src/main/kotlin/app/morphe/patches/vpnsuper/misc/notification/DisconnectFromNotificationPatch.kt) | Skips opening the app when Disconnect is tapped in the notification. Doesn't work on Android TV. |
 | <a id="vpn-super-unlimited-proxy-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/vpnsuper/premium/UnlockPremiumPatch.kt) | Unlocks premium servers and removes ads, upgrade banners, the launch paywall and the Android TV sign-in screen. |
 
 </details>

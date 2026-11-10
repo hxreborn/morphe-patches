@@ -439,6 +439,29 @@ status, issues, mutations = run(issues, UPDATE, issue_number=30, event_issue=upd
 check(status == 0 and mutations == [] and issues["30"]["labels"] == ["app-update"],
       "an app update label a person removed is not added back while the comment is unchanged")
 
+supported_failure = ("### App\n\nSupported\n\n### New version\n\n1.0.0\n\n"
+                     "### Patching this version\n\nPatching works, the app misbehaves\n\n"
+                     "### Error logs\n\nBackup does not restore saved data on the patched app.\n")
+failure_payload = {"number": 30, "state": "open", "title": "[App Update]: Supported 1.0.0",
+                   "body": supported_failure, "labels": ["app-update"]}
+status, issues, mutations = run({"30": issue("[App Update]: Supported 1.0.0", supported_failure,
+                                            labels=("app-update",))}, UPDATE,
+                                issue_number=30, event_issue=failure_payload, action="opened")
+check(status == 0 and issues["30"]["state"] == "OPEN" and issues["30"]["labels"] == ["app-update"]
+      and mutations == ["issue comment 30"],
+      "an already-targeted version with a reported failure gets no close or needs info label")
+
+for actor in (BOT, PERSON):
+    previous = "<!-- app-update-bot -->\nEarlier missing information"
+    corrected_payload = {**failure_payload, "labels": ["app-update", "needs info"]}
+    status, issues, mutations = run({"30": issue("[App Update]: Supported 1.0.0", supported_failure,
+                                                labels=("app-update", "needs info"), comments=(previous,),
+                                                timeline=[labeled("needs info", actor)])}, UPDATE,
+                                    issue_number=30, event_issue=corrected_payload)
+    expected_labels = ["app-update"] if actor == BOT else ["app-update", "needs info"]
+    check(status == 0 and issues["30"]["state"] == "OPEN" and issues["30"]["labels"] == expected_labels,
+          f"a corrected supported-version failure removes only obsolete bot labels, label actor={actor}")
+
 bug_body = f"### App and version\n\nSupported 1.0.0\n\n### Bug description\n\n{LONG}\n"
 short_body = "### App and version\n\nSupported 1.0.0\n\n### Bug description\n\nbroken\n"
 
@@ -528,6 +551,26 @@ status, issues, mutations = run(issues, BUG, issue_number=20, event_issue=payloa
 # then
 check(status == 0 and issues["20"]["state"] == "CLOSED" and issues["20"]["labels"] == ["bug", "incomplete"],
       "a triage close removes the stale label so a later fix reopens the report")
+
+runtime_body = ("### App and version\n\nSupported 1.0.0\n\n"
+                "### What does not work\n\nThe patch has no visible effect\n\n"
+                "### Steps to reproduce\n\nOpen connection settings and exclude a location from the list.\n\n"
+                "### Expected behaviour\n\nConnections skip the selected location.\n\n"
+                "### Actual behaviour\n\nConnections still use the selected location.\n\n"
+                "### Error logs\n\nNone\n")
+runtime_payload = {"number": 20, "state": "open", "title": "[Bug]: x", "body": runtime_body, "labels": ["bug"]}
+status, issues, mutations = run({"20": issue("[Bug]: x", runtime_body, labels=("bug",))}, BUG,
+                                issue_number=20, event_issue=runtime_payload, action="opened")
+check(status == 0 and mutations == [] and issues["20"]["state"] == "OPEN"
+      and issues["20"]["labels"] == ["bug"],
+      "a documented non-crashing failure without logs gets no close or needs info label")
+
+issues, payload = bug(("bug", "incomplete", "needs info"), BOT, runtime_body,
+                      timeline=[labeled("incomplete", BOT), labeled("needs info", BOT)])
+issues["20"]["comments"] = [{"user": {"login": BOT}, "body": "<!-- triage-bot -->\nEarlier log requirement"}]
+status, issues, mutations = run(issues, BUG, issue_number=20, event_issue=payload)
+check(status == 0 and issues["20"]["state"] == "OPEN" and issues["20"]["labels"] == ["bug"],
+      "a non-crashing report closed for missing logs reopens and loses bot validation labels")
 
 DEV_LIST = {"version": "1.1.0-dev.1", "patches": [{"compatiblePackages": [
     {"name": "Supported", "packageName": "com.supported.app", "targets": [{"version": "2.0.0"}]},

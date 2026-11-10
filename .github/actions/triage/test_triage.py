@@ -865,7 +865,7 @@ The paywall shows
 
 [log.txt](https://github.com/user-attachments/files/1/log.txt)
 """),
-    "none in the required log field closes the report": ("close", f"""### App name
+    "an ineffective patch needs no error log": ("pass", f"""### App name
 
 Showly
 
@@ -1202,9 +1202,25 @@ Proton Mail (another version, type it below)
 
 {LONG}
 """)["comment"]
-ok = "but not `7.5.6 (388)` yet" in untargeted
+ok = "but not `7.5.6 (388)`. Please patch one of the supported versions." in untargeted and "app update request" not in untargeted
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} untargeted version quotes only the typed version")
+
+newer = triage(f"""### App and version
+
+Proton Mail (another version, type it below)
+
+### Other version
+
+7.99.0
+
+### Bug description
+
+{LONG}
+""")["comment"]
+ok = "but not `7.99.0` yet. Please either" in newer and "app update request" in newer
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} untargeted version newer than every target says yet")
 
 def report(app, source="https://www.apkmirror.com/apk/x/y/", steps=LONG, failure="The patch has no visible effect"):
     return f"""### App and version
@@ -1307,18 +1323,17 @@ prose_log = triage(report("Showly 3.70.0").replace(
     "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "Logs will be attached if needed."))
 image_log = triage(report("Showly 3.70.0").replace(
     "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "<img src=\"https://github.com/user-attachments/assets/2\" />"))
-ok = prose_log["verdict"] == "close" and "text instead of a log" in prose_log["comment"] \
-    and "The Error logs field has no log" not in prose_log["comment"] and "text instead of a log" not in image_log["comment"]
+ok = prose_log["verdict"] == image_log["verdict"] == "pass"
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} prose in the log field closes the report, a screenshot there does not count as prose")
+print(f"{'ok  ' if ok else 'FAIL'} an ineffective patch report needs no error log")
 
 feature_log = triage(report("Showly 3.70.0").replace(
     "[log.txt](https://github.com/user-attachments/files/1/log.txt)", "Please add an option to hide the trending tab"))
 feature_steps = triage(report("Showly 3.70.0", steps=f"{LONG} It would be nice to also remove the banner."))
-ok = feature_log["verdict"] == feature_steps["verdict"] == "close" \
-    and all("This reads as a feature request." in r["comment"] for r in (feature_log, feature_steps))
+ok = feature_log["verdict"] == "close" and feature_steps["verdict"] == "pass" \
+    and "This reads as a feature request." in feature_log["comment"]
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} a feature request written into a bug report closes it with the feature form link")
+print(f"{'ok  ' if ok else 'FAIL'} an explicit feature-only request closes, a wish alongside a documented failure does not")
 
 did_not_start = triage(f"""### What happened
 

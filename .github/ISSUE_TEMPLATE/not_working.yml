@@ -69,8 +69,6 @@ body:
         - "AudioLab (another version, type it below)"
         - "Audiomack 8.11.4"
         - "Audiomack (another version, type it below)"
-        - "AutomaTag 2.3.0.14"
-        - "AutomaTag (another version, type it below)"
         - "Bangla Calendar 3.0.01e"
         - "Bangla Calendar (another version, type it below)"
         - "BeHisabi 1.0.7"
@@ -141,7 +139,7 @@ body:
         - "DWG FastView (another version, type it below)"
         - "Echo Equalizer 9.7"
         - "Echo Equalizer (another version, type it below)"
-        - "Echogram 1.0.7.0"
+        - "Echogram 1.1.0"
         - "Echogram (another version, type it below)"
         - "Etsy 7.97.0"
         - "Etsy 8.1.0"
@@ -150,11 +148,15 @@ body:
         - "Fast STL Viewer (another version, type it below)"
         - "Fddb v7.8.7-Build-1-gms-release"
         - "Fddb (another version, type it below)"
+        - "Flights25 1.4.7"
+        - "Flights25 (another version, type it below)"
         - "FocusNow 3.8.0"
         - "FocusNow (another version, type it below)"
         - "ForusApp 3.0.15"
         - "ForusApp 3.0.18"
         - "ForusApp (another version, type it below)"
+        - "Freedom 7.18.2"
+        - "Freedom (another version, type it below)"
         - "Glass Widgets 1.0.10"
         - "Glass Widgets 1.0.2"
         - "Glass Widgets (another version, type it below)"
@@ -279,6 +281,7 @@ body:
         - "Pocket Whip (another version, type it below)"
         - "Poe a3.78.4"
         - "Poe (another version, type it below)"
+        - "Prayer Times and Qibla 1.3.2"
         - "Prayer Times and Qibla 3.8.3"
         - "Prayer Times and Qibla (another version, type it below)"
         - "Privacy Notes 0.654.2"
@@ -382,6 +385,8 @@ body:
         - "U Dictionary (another version, type it below)"
         - "Ultimate Guitar 7.3.36"
         - "Ultimate Guitar (another version, type it below)"
+        - "ULTIMEA 1.4.4"
+        - "ULTIMEA (another version, type it below)"
         - "UPTCL 11.0.41"
         - "UPTCL (another version, type it below)"
         - "USA VPN 1.171"
@@ -396,7 +401,7 @@ body:
         - "VLLO (another version, type it below)"
         - "VPN India 1.175"
         - "VPN India (another version, type it below)"
-        - "VPN Super Unlimited Proxy 2.35.0"
+        - "VPN Super Unlimited Proxy 2.36.0"
         - "VPN Super Unlimited Proxy (another version, type it below)"
         - "vpnify 2.3.0"
         - "vpnify (another version, type it below)"
@@ -437,12 +442,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.76.0-dev.8"
+        - "1.76.0-dev.7"
+        - "1.76.0-dev.6"
+        - "1.76.0-dev.5"
+        - "1.76.0-dev.4"
         - "1.75.1"
-        - "1.75.1-dev.1"
-        - "1.75.0-dev.8"
-        - "1.75.0-dev.7"
-        - "1.75.0-dev.6"
-        - "1.75.0-dev.5"
         - "Older than these"
         # /generated
     validations:
@@ -541,7 +546,6 @@ body:
         - "AudioLab \u00b7 Unlock premium"
         - "Audiomack \u00b7 GmsCore support"
         - "Audiomack \u00b7 Unlock premium"
-        - "AutomaTag \u00b7 Unlock premium"
         - "Bangla Calendar \u00b7 Disable tracking"
         - "Bangla Calendar \u00b7 Unlock premium"
         - "BeHisabi \u00b7 Unlock premium"
@@ -635,10 +639,15 @@ body:
         - "Etsy \u00b7 Hide ads"
         - "Fast STL Viewer \u00b7 Unlock premium"
         - "Fddb \u00b7 Unlock premium"
+        - "Flights25 \u00b7 GmsCore support"
+        - "Flights25 \u00b7 Remove calendar import limit"
+        - "Flights25 \u00b7 Unlock premium"
         - "FocusNow \u00b7 Disable tracking"
         - "FocusNow \u00b7 GmsCore support"
         - "FocusNow \u00b7 Unlock premium"
         - "ForusApp \u00b7 Unlock premium"
+        - "Freedom \u00b7 Remove upsells"
+        - "Freedom \u00b7 Unlock Locked Mode"
         - "Glass Widgets \u00b7 Unlock premium"
         - "Graph Messenger \u00b7 Disable tracking"
         - "Graph Messenger \u00b7 Keep timed media"
@@ -814,6 +823,7 @@ body:
         - "Pocket Whip \u00b7 Unlock premium"
         - "Poe \u00b7 Disable tracking"
         - "Poe \u00b7 Spoof signature"
+        - "Prayer Times and Qibla \u00b7 Remove app protection"
         - "Prayer Times and Qibla \u00b7 Unlock premium"
         - "Privacy Notes \u00b7 Unlock premium"
         - "Projectivy Launcher \u00b7 Disable tracking"
@@ -862,6 +872,8 @@ body:
         - "Proton VPN \u00b7 Unlock split tunneling"
         - "Psiphon \u00b7 Unlock premium"
         - "Public \u00b7 Disable tracking"
+        - "Public \u00b7 Disable video preloading"
+        - "Public \u00b7 Follow system theme"
         - "Public \u00b7 GmsCore support"
         - "Public \u00b7 Hide ads"
         - "Public \u00b7 Remove promotions"
@@ -947,6 +959,15 @@ body:
         - "U Dictionary \u00b7 Unlock premium"
         - "Ultimate Guitar \u00b7 GmsCore support"
         - "Ultimate Guitar \u00b7 Unlock premium"
+        - "ULTIMEA \u00b7 Accent color"
+        - "ULTIMEA \u00b7 Dark theme"
+        - "ULTIMEA \u00b7 Disable tracking"
+        - "ULTIMEA \u00b7 Fine equalizer"
+        - "ULTIMEA \u00b7 Local equalizer presets"
+        - "ULTIMEA \u00b7 Remove distractions"
+        - "ULTIMEA \u00b7 Remove popups"
+        - "ULTIMEA \u00b7 Stop firmware reminders"
+        - "ULTIMEA \u00b7 Xupmix"
         - "UPTCL \u00b7 Disable tracking"
         - "UPTCL \u00b7 Hide ads"
         - "UPTCL \u00b7 Hide launch promotion"
@@ -980,6 +1001,7 @@ body:
         - "VLLO \u00b7 Disable tracking"
         - "VLLO \u00b7 Unlock premium"
         - "VPN India \u00b7 Unlock premium"
+        - "VPN Super Unlimited Proxy \u00b7 Disconnect from notification"
         - "VPN Super Unlimited Proxy \u00b7 Unlock premium"
         - "vpnify \u00b7 Disable rating prompt"
         - "vpnify \u00b7 Unlock premium"
@@ -1098,10 +1120,11 @@ body:
     attributes:
       label: Error logs
       description: |
-        Run `adb logcat -d > log.txt` right after the problem and attach the file. Without a PC, record it with [LogFox](https://github.com/F0x1d/LogFox) and attach the export.
+        For a crash or an app that will not open, run `adb logcat -d > log.txt` right after the problem and attach the file. Without a PC, record it with [LogFox](https://github.com/F0x1d/LogFox) and attach the export.
+        Logs are optional for other problems. Describe what happens in the fields above.
       placeholder: Drag the log file here, or paste a link to it (Pastebin, GitHub Gist).
     validations:
-      required: true
+      required: false
   - type: checkboxes
     id: acknowledgements
     attributes:

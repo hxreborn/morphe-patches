@@ -55,7 +55,10 @@ internal val ijiamiPatch = resourcePatch {
     execute {
         val profiles = nativeProfiles()
         if (profiles.isEmpty()) {
-            throw PatchException("No supported Ijiami packer library in assets")
+            throw PatchException(
+                "No supported Ijiami packer library in assets of ${packageMetadata.packageName} " +
+                    "${packageMetadata.versionName}. Patch a version listed as supported for this app.",
+            )
         }
         profiles.forEach { (abi, profile) -> installNativeLibrary(abi, profile) }
 

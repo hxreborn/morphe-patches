@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import (asks_for_feature, code_span, contradicting_app, field, has_any, has_image, is_placeholder, normalize,
+from fields import (asks_for_additional_feature, asks_for_feature, code_span, contradicting_app, field, has_any, has_image, is_placeholder, normalize,
                     normalize_version, parse_fields, placeholder_answers, thin_answers)
 from versions import prerelease_words, same_variant
 from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing, supported_downloads
@@ -40,6 +40,7 @@ REPORT = re.compile(
     r"|https?://(?:www\.)?(?:pastebin\.com|gist\.github\.com|paste\.ee|hastebin\.com|dpaste\.org|rentry\.co)/\S+", re.I | re.M
 )
 
+OPTIONS_INSTALL_FAILED = ("patchingworkedinstallfailed", "patchingfinishedtheapkwouldnotinstall")
 OPTIONS_PATCHING_FAILED = ("patchingfailed", "patchingstartedandstoppedwithanerror")
 OPTION_DID_NOT_START = "patchingdidnotstart"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
@@ -49,6 +50,8 @@ OPTIONS_PATCH_INEFFECTIVE = (
     "thepatchhasnovisibleeffect",
     "apatchismissingfromthelistinmanager",
 )
+
+OPTIONS_RUNTIME_WITHOUT_LOGS = (*OPTIONS_PATCH_INEFFECTIVE, "somethingelsetheappusedtodostoppedworking")
 
 body_path = Path(sys.argv[1])
 list_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("patches-list.json")
@@ -79,6 +82,17 @@ def repackager_in(text):
 
 def version_cores(version):
     return {normalize(m.group(0)) for m in re.finditer(r"(?<![\d.])\d+(?:\.\d+)+", version)}
+
+
+def version_key(version):
+    match = re.search(r"\d+(?:\.\d+)+", version)
+    return tuple(int(part) for part in match.group(0).split(".")) if match else None
+
+
+def newer_than_all(version, targets):
+    key = version_key(version)
+    target_keys = [k for k in map(version_key, targets) if k]
+    return bool(key and target_keys and key > max(target_keys))
 
 
 def matches_target(target):
@@ -137,8 +151,10 @@ if not fields:
     )
     labels.append("needs info")
 
+failure = normalize(field(fields, "What does not work"))
+logs_required = bool(what_happened) or not failure.startswith(OPTIONS_RUNTIME_WITHOUT_LOGS)
 answer_fields = list(ANSWER_FIELDS)
-if not normalize(what_happened).startswith(OPTION_DID_NOT_START):
+if logs_required and not normalize(what_happened).startswith(OPTION_DID_NOT_START):
     answer_fields.append("Error logs")
 blockers += placeholder_answers(fields, *answer_fields)
 blockers += thin_answers(fields, "Steps to reproduce")
@@ -160,7 +176,10 @@ if log_is_prose:
         "or the text Manager's Copy button gives."
     )
 
-if asks_for_feature("\n".join(filter(None, (description, debug_log)))):
+feature_text = "\n".join(filter(None, (description, debug_log)))
+actual_behaviour = field(fields, "Actual behaviour")
+described_runtime_failure = not logs_required and bool(actual_behaviour) and not is_placeholder(actual_behaviour)
+if asks_for_feature(feature_text) and (not described_runtime_failure or asks_for_additional_feature(feature_text)):
     blockers.append(
         f"This reads as a feature request. Please open it with the [feature request form]({NEW_ISSUE}?template=feature_request.yml)."
     )
@@ -226,13 +245,22 @@ elif matched[1] and not (
 ):
     name, versions = matched
     typed = code_span(typed_version or reported)
-    notes.append(
-        f"{bundle(data['version'])} supports {name} {code_list(versions)}, but not {typed} yet. Please either:\n\n"
-        f"- patch one of the supported versions\n- open an [app update request]({NEW_ISSUE}?template=app_update.yml) for {typed}"
-    )
+    newer = newer_than_all(typed_version, versions)
+    lead = f"{bundle(data['version'])} supports {name} {code_list(versions)}, but not {typed}{' yet' if newer else ''}."
+    if newer:
+        notes.append(
+            f"{lead} Please either:\n\n"
+            f"- patch one of the supported versions\n- open an [app update request]({NEW_ISSUE}?template=app_update.yml) for {typed}"
+        )
+    else:
+        notes.append(f"{lead} Please patch one of the supported versions.")
     if downloads := supported_downloads(data, name):
         notes.append(downloads)
     labels.append("untargeted version")
+
+if normalize(what_happened).startswith(OPTIONS_INSTALL_FAILED) and not report_attached and not log_is_prose:
+    flags.append("Installation failed, but the Error logs field has no installer error.")
+    labels.append("needs info")
 
 if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_attached and not log_is_prose:
     flags.append(
@@ -241,8 +269,7 @@ if normalize(what_happened).startswith(OPTIONS_PATCHING_FAILED) and not report_a
     )
     labels.append("needs info")
 
-failure = normalize(field(fields, "What does not work"))
-if failure and not report_attached and not log_is_prose:
+if failure and logs_required and not report_attached and not log_is_prose:
     flags.append(
         "The Error logs field has no log. Please attach the `adb logcat` file or the LogFox export."
     )

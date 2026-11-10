@@ -20,7 +20,10 @@
  */
 package app.hxreborn.extension.shared;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +35,10 @@ public final class RevenueCatUnlock {
     private static final String PURCHASE_DATE = "2020-01-01T00:00:00Z";
 
     private static final String EXPIRES_DATE = "2099-01-01T00:00:00Z";
+
+    private static final List<String> NULLABLE_SUBSCRIPTION_FIELDS = Collections
+        .unmodifiableList(Arrays.asList("unsubscribe_detected_at", "billing_issues_detected_at",
+                "grace_period_expires_date", "refunded_at", "store_transaction_id"));
 
     private RevenueCatUnlock() {
 
@@ -56,8 +63,8 @@ public final class RevenueCatUnlock {
             JSONObject entitlements = getOrCreateObject(subscriber, "entitlements");
             entitlements.put(entitlement, buildEntitlement(product));
 
-            renew(subscriptions);
-            renew(entitlements);
+            renew(subscriptions, true);
+            renew(entitlements, false);
         } catch (Exception ignored) {
         }
     }
@@ -92,18 +99,28 @@ public final class RevenueCatUnlock {
         return child;
     }
 
-    private static void renew(JSONObject entriesById) throws JSONException {
+    private static void renew(JSONObject entriesById, boolean subscriptionEntries) throws JSONException {
         for (Iterator<String> keys = entriesById.keys(); keys.hasNext();) {
             JSONObject entry = entriesById.optJSONObject(keys.next());
             if (entry == null) {
                 continue;
             }
             entry.put("expires_date", EXPIRES_DATE);
-            if (entry.has("grace_period_expires_date")) {
+            if (!entry.isNull("grace_period_expires_date")) {
                 entry.put("grace_period_expires_date", EXPIRES_DATE);
             }
-            entry.remove("billing_issues_detected_at");
-            entry.remove("unsubscribe_detected_at");
+            renewNullableFields(entry, subscriptionEntries);
+        }
+    }
+
+    private static void renewNullableFields(JSONObject entry, boolean includeMissingFields) throws JSONException {
+        for (String field : NULLABLE_SUBSCRIPTION_FIELDS) {
+            boolean clearsBillingStatus = field.equals("billing_issues_detected_at")
+                    || field.equals("unsubscribe_detected_at");
+            boolean hasField = entry.has(field);
+            if ((clearsBillingStatus && hasField) || (includeMissingFields && !hasField)) {
+                entry.put(field, JSONObject.NULL);
+            }
         }
     }
 
