@@ -21,6 +21,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `launchbox.png` | LaunchBox (`com.unbrokensoftware.launchbox`) | Unbroken Software, LLC | APK 1.23, adaptive icon `res/mipmap-anydpi-v26/icon.xml`, white background under `launcher_foreground` (xxxhdpi), cut to a circle |
 | `flights25.png` | Flights25 (`de.app.flighttracker`) | Rocketech sp. z o.o. | Play 1.4.7, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, foreground over `ic_launcher_background`, cut to a circle |
 | `audiomack.png` | Audiomack (`com.audiomack`) | Audiomack Music Apps | APK 8.11.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `ultimea.png` | ULTIMEA (`com.dynanic.ultimea`) | Ultimea | Play 1.4.4, adaptive icon foreground over background, cut to a circle |
