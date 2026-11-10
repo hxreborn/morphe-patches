@@ -1,3 +1,9 @@
+## [1.76.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.6...v1.76.0-dev.7) (2026-11-10)
+
+### Bug Fixes
+
+* **Realme Link - Bypass session expiry:** stop session timed out prompt ([48077cf](https://github.com/hxreborn/morphe-patches/commit/48077cff468bb87f9735d35db4414836d1d456b6)), closes [#701](https://github.com/hxreborn/morphe-patches/issues/701)
+
 ## [1.76.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.76.0-dev.5...v1.76.0-dev.6) (2026-11-09)
 
 ### Bug Fixes
