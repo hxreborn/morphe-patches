@@ -1050,7 +1050,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "12645b76721993f0f3faf82dddecd6c96355260bf44d06ce6246caf2fcf3ada8",
         ),
-        targets = listOf(AppTarget(version = "7.4.6", versionCode = 182341, minSdk = 26)),
+        targets = listOf(AppTarget(version = "7.4.8", versionCode = 182801, minSdk = 26)),
     )
 
     val MY_APK = Compatibility(
