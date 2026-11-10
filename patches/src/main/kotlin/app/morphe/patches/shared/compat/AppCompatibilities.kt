@@ -7,6 +7,7 @@ package app.morphe.patches.shared.compat
 import app.morphe.patcher.patch.ApkFileType
 import app.morphe.patcher.patch.AppTarget
 import app.morphe.patcher.patch.Compatibility
+import app.morphe.patcher.patch.FormFactor
 
 @Suppress("MemberVisibilityCanBePrivate")
 internal object AppCompatibilities {
@@ -1274,6 +1275,18 @@ internal object AppCompatibilities {
             "cd1f0d9a62d0479c4b71bbc4d519698269d6dc499d3953de7528087e515a1968",
         ),
         targets = listOf(AppTarget(version = "3.8.3", versionCode = 742, minSdk = 24)),
+    )
+
+    val PRAYER_TIMES_WEAR = Compatibility(
+        name = "Prayer Times and Qibla",
+        packageName = "com.reworewo.prayertimes",
+        apkFileType = ApkFileType.APKS,
+        appIconColor = 0x0E9567,
+        signatures = setOf(
+            "cd1f0d9a62d0479c4b71bbc4d519698269d6dc499d3953de7528087e515a1968",
+        ),
+        targets = listOf(AppTarget(version = "1.3.2", versionCode = 717, minSdk = 26)),
+        formFactor = FormFactor.WEARABLE,
     )
 
     val PRIVACY_NOTES = Compatibility(
