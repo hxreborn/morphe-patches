@@ -309,7 +309,6 @@ ICONS = {
     "india.vpn_tap2free": "vpnindia.png",
     "com.viber.voip": "viber.png",
     "com.telug.keyboard.for.android": "deshtelugu.png",
-    "com.fillobotto.mp3tagger": "automatag.png",
     "com.droid27.transparentclockweather": "transparentclock.png",
     "com.pixlr.express": "pixlr.png",
     "com.patreon.android": "patreon.png",
