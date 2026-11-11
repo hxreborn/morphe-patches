@@ -17,6 +17,8 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.readera.shared.TTS_SKIP_HEADERS_ROW
 import app.morphe.patches.readera.shared.bindTtsPreference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.showTtsPreferenceRow
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -51,9 +53,10 @@ val skipHeadersPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     execute {
+        registerReadEraPatch("Skip headers and footers", "Skips page headers, footers and page numbers in PDF and DjVu files.")
         val skipHeaders = bindTtsPreference(TTS_SKIP_HEADERS_ROW)
         showTtsPreferenceRow(TTS_SKIP_HEADERS_ROW)
 

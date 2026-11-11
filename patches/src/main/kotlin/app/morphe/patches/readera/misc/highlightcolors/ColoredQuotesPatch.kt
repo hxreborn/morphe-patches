@@ -8,6 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -29,11 +31,12 @@ val coloredQuotesPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Colored quotes", "Saves selected text as a quote in one of five colors.")
         val prefs = highlightColorPrefs()
         val defaultColorField = QuoteColorIconFingerprint.instructionMatches[2].instruction.getReference<FieldReference>()!!
         val paletteClass = prefs.paletteFilter.definingClass

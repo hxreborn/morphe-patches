@@ -4,39 +4,36 @@
  */
 package app.morphe.patches.readera.misc.speechfilter
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patches.readera.shared.TtsPrefsViewFingerprint
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechFilterSettings;"
 
 @Suppress("unused")
 val speechTextFilterPatch = bytecodePatch(
     name = "Text-to-speech filter",
-    description = "Adds \"Omit words and symbols\" to Settings > Text to speech (TTS). " +
-        "Read aloud skips listed words, phrases and symbols without changing book text. " +
-        "Includes bracket symbols by default.",
+    description = "Makes Read aloud skip the words and symbols on a list, without changing the book. " +
+        "The list is edited in the patches menu.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Text-to-speech filter", "Read aloud skips these words and symbols. The book text is unchanged.")
         val speakMatch = SpeakTextFingerprint.matchSingle()
         val speechMatches = listOf(speakMatch) + SynthesizeTextFingerprint.matchAll(speakMatch.classDef, 0..1)
         speechMatches.forEach { speechMatch ->
@@ -55,16 +52,5 @@ val speechTextFilterPatch = bytecodePatch(
             )
         }
 
-        TtsPrefsViewFingerprint.method.apply {
-            implementation!!.instructions.withIndex().filter { it.value.opcode == Opcode.RETURN_OBJECT }
-                .reversed().forEach { (index, _) ->
-                    val rootRegister = getInstruction<OneRegisterInstruction>(index).registerA
-                    replaceInstruction(
-                        index,
-                        "invoke-static { v$rootRegister }, $EXTENSION_CLASS_DESCRIPTOR->attach(Landroid/view/View;)V",
-                    )
-                    addInstruction(index + 1, "return-object v$rootRegister")
-                }
-        }
     }
 }

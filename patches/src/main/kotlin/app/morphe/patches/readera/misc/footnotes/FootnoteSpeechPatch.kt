@@ -15,6 +15,8 @@ import app.morphe.patches.readera.shared.TTS_UPSELL_ROW
 import app.morphe.patches.readera.shared.bindTtsPreference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.hideTtsPreferenceRow
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.showTtsPreferenceRow
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -29,9 +31,10 @@ val footnoteSpeechPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     execute {
+        registerReadEraPatch("Footnote speech", "Reads each footnote where the book refers to it, in EPUB, FB2 and MOBI.")
         val speakFootnotes = bindTtsPreference(TTS_FOOTNOTE_ROW)
         showTtsPreferenceRow(TTS_FOOTNOTE_ROW)
         hideTtsPreferenceRow(TTS_UPSELL_ROW)

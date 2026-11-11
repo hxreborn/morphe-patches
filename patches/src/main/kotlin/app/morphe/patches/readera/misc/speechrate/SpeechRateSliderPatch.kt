@@ -12,6 +12,8 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -35,11 +37,12 @@ val speechRateSliderPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Speech rate slider", "Sets Read aloud speed from 0.1x to 4x with a slider.")
         val applyRate = ApplySpeechRateFingerprint.method
         val rateField = applyRate.implementation!!.instructions
             .first { it.opcode == Opcode.IGET && it.getReference<FieldReference>()?.type == "F" }

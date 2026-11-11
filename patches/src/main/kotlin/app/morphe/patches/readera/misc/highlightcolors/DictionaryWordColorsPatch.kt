@@ -7,6 +7,8 @@ package app.morphe.patches.readera.misc.highlightcolors
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -27,11 +29,12 @@ val dictionaryWordColorsPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Dictionary word colors", "Saves a selected word to Dictionary in one of five colors.")
         val prefs = highlightColorPrefs()
 
         val defaultColorField: FieldReference
