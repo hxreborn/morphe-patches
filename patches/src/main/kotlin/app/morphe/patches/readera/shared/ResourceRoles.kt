@@ -9,6 +9,16 @@ import app.morphe.util.asSequence
 import app.morphe.util.childElementsSequence
 import org.w3c.dom.Element
 
+private const val PANEL_COLOR = "#ff303030"
+
+private const val PANEL_COLOR_COUNT = 3
+
+private const val RGB_HEX_LENGTH = 7
+
+private const val CARD_OVERLAY_COLOR = "#17ffffff"
+
+private const val SELECTED_OVERLAY_COLOR = "#42ffffff"
+
 internal data class ReadEraResourceRoles(
     val theme: String,
     val surface: String,
@@ -18,6 +28,18 @@ internal data class ReadEraResourceRoles(
     val checkboxTint: String,
     val radioTint: String,
     val buttonTintAttribute: String,
+)
+
+internal data class ReadEraPalette(
+    val page: String,
+    val bar: String,
+    val raised: String,
+    val card: String,
+    val panels: List<String>,
+    val cardOverlay: String,
+    val selectedOverlay: String,
+    val accent: String,
+    val barAttribute: String,
 )
 
 private fun ResourcePatchContext.applicationTheme() = document("AndroidManifest.xml").use { document ->
@@ -45,6 +67,8 @@ private fun List<Element>.themeItem(styleName: String, attribute: String): Strin
     return style.childElementsSequence().singleOrNull { it.getAttribute("name") == attribute }?.textContent
         ?: themeItem(style.getAttribute("parent").removePrefix("@style/"), attribute)
 }
+
+private fun argb(value: String) = value.lowercase().let { if (it.length == RGB_HEX_LENGTH) "#ff${it.drop(1)}" else it }
 
 private fun ResourcePatchContext.styles() = document("res/values/styles.xml").use { document ->
     document.getElementsByTagName("style").asSequence().map { it as Element }.toList()
@@ -88,4 +112,47 @@ internal fun ResourcePatchContext.readEraResourceRoles(): ReadEraResourceRoles {
     val checkboxAccent = checkboxThemes.map { styles.themeItem(it, activated) }.distinct().single()
     return ReadEraResourceRoles(theme, app.item("android:windowBackground"), app.item(frameworkColors.getValue("android:colorAccent")),
         checkboxAccent, switchStyle, checkboxTint, radioTint, buttonTintAttributes.single())
+}
+
+internal fun ResourcePatchContext.readEraAccent(): String =
+    styles().themeItem(applicationTheme(), frameworkColorAttributes("android:colorAccent").getValue("android:colorAccent"))
+
+internal fun ResourcePatchContext.readEraPalette(): ReadEraPalette {
+    val theme = applicationTheme()
+    val attributes = frameworkColorAttributes("android:colorPrimary", "android:colorPrimaryDark")
+    val styles = styles()
+    fun colorName(reference: String): String {
+        check(reference.startsWith("@color/")) { "Expected a color reference, found $reference" }
+        return reference.removePrefix("@color/")
+    }
+    val page = colorName(styles.themeItem(theme, "android:windowBackground"))
+    val card = decode("res/drawable*/*.xml").mapNotNull { path ->
+        document(path).use { document ->
+            val shape = document.documentElement.takeIf { it.tagName == "shape" } ?: return@use null
+            val solid = shape.childElementsSequence().singleOrNull { it.tagName == "solid" } ?: return@use null
+            val stroke = shape.childElementsSequence().singleOrNull { it.tagName == "stroke" } ?: return@use null
+            stroke.getAttribute("android:color").takeIf {
+                solid.getAttribute("android:color") == "@color/$page" && it.startsWith("@color/")
+            }
+        }
+    }.single()
+    val colors = document("res/values/colors.xml").use { document ->
+        document.getElementsByTagName("color").asSequence().map { it as Element }
+            .map { it.getAttribute("name") to argb(it.textContent) }.toList()
+    }
+    fun colorsWithValue(value: String) = colors.filter { (_, color) -> color == value }.map { (name, _) -> name }
+    val panels = colorsWithValue(PANEL_COLOR)
+    check(panels.size == PANEL_COLOR_COUNT) { "Expected $PANEL_COLOR_COUNT panel colors, found $panels" }
+    val barAttribute = attributes.getValue("android:colorPrimary")
+    return ReadEraPalette(
+        page = page,
+        bar = colorName(styles.themeItem(theme, barAttribute)),
+        raised = colorName(styles.themeItem(theme, attributes.getValue("android:colorPrimaryDark"))),
+        card = colorName(card),
+        panels = panels,
+        cardOverlay = colorsWithValue(CARD_OVERLAY_COLOR).single(),
+        selectedOverlay = colorsWithValue(SELECTED_OVERLAY_COLOR).single(),
+        accent = readEraAccent(),
+        barAttribute = barAttribute,
+    )
 }

@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -60,13 +61,19 @@ public final class PatchesSettingsActivity extends Activity {
 
     private static final int DIALOG_THEME = android.R.style.Theme_DeviceDefault_Dialog_Alert;
 
-    private static final String RESET_DESCRIPTION = "Turns footnotes and header skipping back on.";
+    private static final String RESET_DESCRIPTION = "Turns footnotes and header skipping back on, and the theme "
+            + "back to its default.";
 
     private SettingsStyle style;
 
     private SettingsRows rows;
 
     private ScrollView scroll;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(AppTheme.wrap(base));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +149,14 @@ public final class PatchesSettingsActivity extends Activity {
                 explanations.put(pair[0], pair[1]);
             }
         }
+        LinearLayout appearance = this.rows.card();
+        if (explanations.containsKey("App theme")) {
+            View theme = this.rows.choiceRow(appearance, "theme", "App theme", explanations.get("App theme"),
+                    AppTheme.amoledSelected(this) ? "AMOLED ▾" : "Stock ▾");
+            theme.setOnClickListener(this::showThemeMenu);
+        }
+        addSection(column, "Appearance", appearance);
+
         LinearLayout speech = this.rows.card();
         addMirror(speech, explanations, "footnote", "Footnote speech", PatchSettings.FOOTNOTES);
         addMirror(speech, explanations, "headers", "Skip headers and footers", PatchSettings.SKIP_HEADERS);
@@ -174,6 +189,24 @@ public final class PatchesSettingsActivity extends Activity {
         }
         addSection(column, "Applied patches", applied);
         return column;
+    }
+
+    private void showThemeMenu(View anchor) {
+        boolean amoled = AppTheme.amoledSelected(this);
+        new MaterialMenu(this, this.style).show(anchor,
+                new MaterialMenu.Item("Stock", "stock", !amoled, () -> selectTheme(false)),
+                new MaterialMenu.Item("AMOLED", "amoled", amoled, () -> selectTheme(true)));
+    }
+
+    private void selectTheme(boolean amoled) {
+        if (amoled == AppTheme.amoledSelected(this)) {
+            return;
+        }
+        boolean saved = AppTheme.saveAmoledSelected(this, amoled);
+        refresh();
+        if (saved) {
+            confirmRestart();
+        }
     }
 
     private void showFullScreenMenu(View anchor) {

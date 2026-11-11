@@ -29,6 +29,8 @@ public final class PatchSettings {
 
     static final String LOG_TAG = "hxReadEra";
 
+    static final String PREFERENCES_NAME = "hx_readera_patches";
+
     static final String SPEECH_PREFERENCES_NAME = "hx_readera_speech";
 
     static final String FOOTNOTES = "pref_tts_speak_notes";
@@ -67,6 +69,10 @@ public final class PatchSettings {
     }
 
     static void resetToDefaults() {
+        SharedPreferences preferences = preferences();
+        if (preferences != null) {
+            preferences.edit().clear().commit();
+        }
         SharedPreferences nativePreferences = nativePreferences();
         if (nativePreferences != null) {
             nativePreferences.edit().putBoolean(FOOTNOTES, true).putBoolean(SKIP_HEADERS, true).commit();
@@ -84,8 +90,17 @@ public final class PatchSettings {
         }
     }
 
+    static SharedPreferences preferences(Context context) {
+        return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
     static SharedPreferences speechPreferences(Context context) {
         return context.getSharedPreferences(SPEECH_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    private static SharedPreferences preferences() {
+        Context context = application();
+        return (context != null) ? preferences(context) : null;
     }
 
 }

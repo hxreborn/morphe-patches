@@ -91,3 +91,14 @@ internal object DrawerMenuVisibilityFingerprint : Fingerprint(
         methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterImmediately()),
     ),
 )
+
+internal object AppCompatAttachBaseContextFingerprint : Fingerprint(
+    name = "attachBaseContext",
+    returnType = "V",
+    parameters = listOf(CONTEXT_CLASS),
+    custom = { _, classDef -> !classDef.type.startsWith("Lapp/hxreborn/extension/") },
+    filters = listOf(
+        methodCall(opcode = Opcode.INVOKE_VIRTUAL, parameters = listOf(CONTEXT_CLASS), returnType = CONTEXT_CLASS),
+        methodCall(opcode = Opcode.INVOKE_SUPER, definingClass = "Landroid/app/Activity;", name = "attachBaseContext"),
+    ),
+)
