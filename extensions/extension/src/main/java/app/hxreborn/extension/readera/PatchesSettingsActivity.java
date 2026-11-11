@@ -62,7 +62,7 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int DIALOG_THEME = android.R.style.Theme_DeviceDefault_Dialog_Alert;
 
     private static final String RESET_DESCRIPTION = "Turns footnotes and header skipping back on, and the theme "
-            + "back to its default.";
+            + "and accent back to their defaults.";
 
     private SettingsStyle style;
 
@@ -73,6 +73,7 @@ public final class PatchesSettingsActivity extends Activity {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(AppTheme.wrap(base));
+        AccentColor.applyToActivity(this);
     }
 
     @Override
@@ -155,6 +156,12 @@ public final class PatchesSettingsActivity extends Activity {
                     AppTheme.amoledSelected(this) ? "AMOLED ▾" : "Stock ▾");
             theme.setOnClickListener(this::showThemeMenu);
         }
+        if (explanations.containsKey(AccentColor.TITLE)) {
+            View accent = this.rows.choiceRow(appearance, "palette", AccentColor.TITLE,
+                    explanations.get(AccentColor.TITLE), AccentPalette.label(AccentPalette.getPreset(this)) + " ▾");
+            accent.setOnClickListener(
+                    (view) -> new AccentColorDialog(this, this.style, DIALOG_THEME, this::onAccentSaved).show());
+        }
         addSection(column, "Appearance", appearance);
 
         LinearLayout speech = this.rows.card();
@@ -207,6 +214,11 @@ public final class PatchesSettingsActivity extends Activity {
         if (saved) {
             confirmRestart();
         }
+    }
+
+    private void onAccentSaved() {
+        refresh();
+        confirmRestart();
     }
 
     private void showFullScreenMenu(View anchor) {
