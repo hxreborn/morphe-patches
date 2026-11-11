@@ -41,13 +41,19 @@ private fun ByteBuffer.findPatchSites(patchSites: List<PatchSite>): List<Int> {
 }
 
 internal fun ResourcePatchContext.rewriteNativeLibrary(patchSites: List<PatchSite>) {
+    rewriteNativeLibrary { buffer ->
+        buffer.findPatchSites(patchSites).forEachIndexed { index, start -> patchSites[index].rewrite(buffer, start) }
+    }
+}
+
+internal fun ResourcePatchContext.rewriteNativeLibrary(rewrite: (ByteBuffer) -> Unit) {
     val library = get(LIBRARY, true)
     if (!library.exists()) throw PatchException(MISSING_LIBRARY_MESSAGE)
 
     RandomAccessFile(library, "rw").use { file ->
         val mapped = file.channel.map(FileChannel.MapMode.READ_WRITE, 0, file.length())
         val buffer = mapped.duplicate().order(ByteOrder.LITTLE_ENDIAN)
-        buffer.findPatchSites(patchSites).forEachIndexed { index, start -> patchSites[index].rewrite(buffer, start) }
+        rewrite(buffer)
         mapped.force()
     }
 }
