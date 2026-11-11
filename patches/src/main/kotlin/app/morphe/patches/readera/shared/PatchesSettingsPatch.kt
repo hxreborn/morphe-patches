@@ -23,7 +23,7 @@ private const val SETTINGS_ACTIVITY = "app.hxreborn.extension.readera.PatchesSet
 private const val GENERAL_CATEGORY_TITLE = "General"
 private val appliedExplanations = sortedMapOf<String, String>()
 private val drawables = listOf(
-    "footnote", "headers", "omit", "fullscreen", "fullscreenExit",
+    "headphones", "footnote", "headers", "omit", "fullscreen", "fullscreenExit",
     "reset", "info", "bundle", "back", "check", "share", "switch_thumb", "switch_thumb_on", "switch_thumb_off", "switch_track",
 )
 
