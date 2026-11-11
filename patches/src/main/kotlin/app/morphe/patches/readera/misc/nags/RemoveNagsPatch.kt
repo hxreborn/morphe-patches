@@ -8,6 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 
@@ -21,9 +23,10 @@ val removeNagsPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     execute {
+        registerReadEraPatch("Remove nags", "Removes the rate-the-app and promotion pop-ups and the Go to Premium button.")
         StartupNagDispatchFingerprint.matchAll(1..1)
 
         StartupNagDispatchFingerprint.instructionMatches.forEach {

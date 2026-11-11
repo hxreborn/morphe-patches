@@ -11,6 +11,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -33,9 +35,10 @@ val customFontsPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     execute {
+        registerReadEraPatch("Custom fonts", "Adds reading fonts from a folder picked on the Fonts screen.")
         val (settings, fontFolder) = SaveCustomFontsCacheFingerprint.instructionMatches.let {
             it[0].instruction.getReference<MethodReference>()!! to it[2].instruction.getReference<FieldReference>()!!
         }
