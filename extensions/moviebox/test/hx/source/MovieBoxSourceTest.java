@@ -44,6 +44,8 @@ public final class MovieBoxSourceTest {
 
     private static final String POSITION = "/" + Endpoints.RESOURCE_POSITION;
 
+    private static final String UPGRADE_NOTICE = "/macdn." + Endpoints.UPGRADE_NOTICE_PATH + "notice.mp4";
+
     private static final int ORIGIN_SIZE = 2048;
 
     private LocalCdn server;
@@ -56,6 +58,7 @@ public final class MovieBoxSourceTest {
         this.server.put(PLAY_INFO, "{\"data\":{\"streams\":[]}}".getBytes(StandardCharsets.UTF_8));
         this.server.put(POSITION, "{\"data\":{\"list\":[]}}".getBytes(StandardCharsets.UTF_8));
         this.server.put("/origin.mp4", new byte[ORIGIN_SIZE]);
+        this.server.put(UPGRADE_NOTICE, new byte[ORIGIN_SIZE]);
         ApiClient api = new ApiClient(getClass().getClassLoader(), new OkHttpClient(), this.server.url("/"));
         this.source = new MovieBoxSource(api, (path, accepted) -> null);
     }
@@ -72,6 +75,16 @@ public final class MovieBoxSourceTest {
 
         // then
         Assertions.assertThat(file).isNull();
+    }
+
+    @Test
+    public void refusesToRedirectToTheUpgradeNoticeEvenWhenItsSizeMatches() {
+        // when
+        Throwable failure = Assertions.catchThrowable(
+                () -> this.source.open("77", 1, 2, 1080, this.server.url(UPGRADE_NOTICE), ORIGIN_SIZE, "r1", false));
+
+        // then
+        Assertions.assertThat(failure).isInstanceOf(DashServer.UnavailableException.class);
     }
 
     @Test

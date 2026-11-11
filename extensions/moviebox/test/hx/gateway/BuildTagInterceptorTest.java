@@ -111,6 +111,35 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
+    public void sendsTheDirectFileCarrierOnResourcePositionLookups()
+            throws JSONException, IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(request("https://example.com/wefeed-mobile-bff/subject-api/resource-position/v2?r=1",
+                "stock-tag", "{\"device_id\":\"d1\",\"sp_code\":\"40410\"}"));
+
+        // when
+        intercept(chain);
+
+        // then
+        JSONObject info = new JSONObject(chain.proceeded.header("X-Client-Info"));
+        Assertions.assertThat(info.getString("sp_code")).isEqualTo("21403");
+    }
+
+    @Test
+    public void keepsTheAppCarrierOnOtherRequests() throws JSONException, IOException, ClassNotFoundException {
+        // given
+        Chain chain = new Chain(request("https://example.com/wefeed-mobile-bff/subject-api/resource/v2?r=1",
+                "stock-tag", "{\"device_id\":\"d1\",\"sp_code\":\"40410\"}"));
+
+        // when
+        intercept(chain);
+
+        // then
+        JSONObject info = new JSONObject(chain.proceeded.header("X-Client-Info"));
+        Assertions.assertThat(info.getString("sp_code")).isEqualTo("40410");
+    }
+
+    @Test
     public void sendsAGaidWhenTheClientInfoHasNone() throws JSONException, IOException, ClassNotFoundException {
         // given
         Chain chain = new Chain(request("stock-tag", "{\"device_id\":\"d1\"}"));

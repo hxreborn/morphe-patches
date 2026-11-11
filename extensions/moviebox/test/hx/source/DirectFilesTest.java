@@ -43,6 +43,8 @@ public final class DirectFilesTest {
 
     private static final String POSITION = "/wefeed-mobile-bff/subject-api/resource-position";
 
+    private static final String POSITION_V2 = "/wefeed-mobile-bff/subject-api/resource-position/v2";
+
     private static final String LISTING = "/wefeed-mobile-bff/subject-api/resource";
 
     private static final String ORIGIN = "https://origin.example.com/o.mp4";
@@ -87,7 +89,8 @@ public final class DirectFilesTest {
         this.directFiles.resolveUrl("77", "r1", ORIGIN);
 
         // then
-        Assertions.assertThat(this.server.hitsOn(POSITION)).isEqualTo(1);
+        Assertions.assertThat(this.server.hitsOn(POSITION_V2)).isEqualTo(1);
+        Assertions.assertThat(this.server.hitsOn(POSITION)).isZero();
     }
 
     @Test
@@ -113,6 +116,36 @@ public final class DirectFilesTest {
 
         // then
         Assertions.assertThat(url).isNull();
+    }
+
+    @Test
+    public void fallsBackToTheFirstPositionVersionWhenTheSecondListsNothing() {
+        // given
+        this.server.put(POSITION_V2, "{\"data\":{\"list\":[]}}".getBytes(StandardCharsets.UTF_8));
+        this.server.put(POSITION, ("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\"}]}}")
+            .getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // then
+        Assertions.assertThat(url).isEqualTo(this.server.url("/f.mp4"));
+    }
+
+    @Test
+    public void asksTheSecondPositionVersionFirst() {
+        // given
+        this.server.put(POSITION, "{\"data\":{\"list\":[]}}".getBytes(StandardCharsets.UTF_8));
+        this.server.put(POSITION_V2,
+                ("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\"}]}}")
+                    .getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String url = this.directFiles.resolveUrl("77", "r1", ORIGIN);
+
+        // then
+        Assertions.assertThat(url).isEqualTo(this.server.url("/f.mp4"));
+        Assertions.assertThat(this.server.hitsOn(POSITION)).isZero();
     }
 
     @Test
@@ -255,6 +288,7 @@ public final class DirectFilesTest {
     }
 
     private void putPosition(String json) {
+        this.server.put(POSITION_V2, json.getBytes(StandardCharsets.UTF_8));
         this.server.put(POSITION, json.getBytes(StandardCharsets.UTF_8));
     }
 

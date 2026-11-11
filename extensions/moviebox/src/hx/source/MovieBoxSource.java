@@ -144,7 +144,8 @@ public final class MovieBoxSource implements DashFileSource {
     }
 
     private boolean matchesOrigin(String label, String origin, long originSize) {
-        if (origin == null || originSize <= 0 || originLength(origin) != originSize) {
+        if (origin == null || origin.contains(Endpoints.UPGRADE_NOTICE_PATH) || originSize <= 0
+                || originLength(origin) != originSize) {
             return false;
         }
         Log.i(Logs.TAG, label + ": redirect to origin, size " + originSize + " matches");

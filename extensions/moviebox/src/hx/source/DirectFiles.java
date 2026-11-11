@@ -243,8 +243,12 @@ final class DirectFiles {
     private JSONObject fetchFile(String subjectId, String resourceId, String origin) throws IOException, JSONException {
         String query = "?subjectId=" + subjectId + "&resourceId=" + resourceId + "&failUrl=" + Uri.encode(origin)
                 + "&failCode=404&resourceNum=0";
-        JSONArray list = new JSONObject(this.api.get(this.api.url(Endpoints.RESOURCE_POSITION + query)))
-            .getJSONObject("data")
+        JSONObject directFile = fetchFirstPosition(Endpoints.RESOURCE_POSITION_V2 + query);
+        return (directFile != null) ? directFile : fetchFirstPosition(Endpoints.RESOURCE_POSITION + query);
+    }
+
+    private JSONObject fetchFirstPosition(String pathAndQuery) throws IOException, JSONException {
+        JSONArray list = new JSONObject(this.api.get(this.api.url(pathAndQuery))).getJSONObject("data")
             .optJSONArray("list");
         return (list == null || list.length() == 0) ? null : list.getJSONObject(0);
     }
