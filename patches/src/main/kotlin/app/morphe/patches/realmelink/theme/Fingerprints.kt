@@ -19,6 +19,12 @@ private const val HOME_BACKGROUND_TINT_PREFERENCE = "home_background_tint_color"
 private const val OPAQUE_BLACK_ARGB = -0x1000000
 private const val OPAQUE_WHITE_ARGB = -0x1
 private const val TITLE_VIEW_CLASS = "Lcom/realme/iot/common/widgets/TitleView;"
+private const val STORE_PACKAGE_PREFIX = "Lcom/realme/link/store/"
+
+private val WEB_VIEW_SETTINGS_FILTERS = listOf(
+    methodCall(definingClass = "Landroid/webkit/WebView;", name = "getSettings"),
+    opcode(Opcode.MOVE_RESULT_OBJECT, location = InstructionLocation.MatchAfterImmediately()),
+)
 
 internal object HeadsetSubScreenBackgroundFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC),
@@ -128,14 +134,14 @@ internal object HomeHeaderTintFingerprint : Fingerprint(
 )
 
 internal object WebViewSettingsFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC),
-    returnType = "V",
-    parameters = listOf(),
     name = "initData",
-    filters = listOf(
-        methodCall(definingClass = "Landroid/webkit/WebView;", name = "getSettings"),
-        opcode(Opcode.MOVE_RESULT_OBJECT, location = InstructionLocation.MatchAfterImmediately()),
-    ),
+    filters = WEB_VIEW_SETTINGS_FILTERS,
+)
+
+internal object StoreWebViewSettingsFingerprint : Fingerprint(
+    name = "initData",
+    definingClass = STORE_PACKAGE_PREFIX,
+    filters = WEB_VIEW_SETTINGS_FILTERS,
 )
 
 internal object DefaultHomeBackgroundColorFingerprint : Fingerprint(
