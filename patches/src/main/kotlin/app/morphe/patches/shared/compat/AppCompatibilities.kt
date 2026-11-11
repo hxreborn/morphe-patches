@@ -458,7 +458,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "73ddcf1fcf184dd559d6239ea2de84c2a6f08d4224b78c4491dc921b5f11d54e",
         ),
-        targets = listOf(AppTarget(version = "1.0.34", versionCode = 74, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.0.35", versionCode = 77, minSdk = 24)),
     )
 
     val DESH_TELUGU_KEYBOARD = Compatibility(
