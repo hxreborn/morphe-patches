@@ -7,14 +7,20 @@ package app.morphe.patches.readera.shared
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.InstructionLocation.MatchFirst
+import app.morphe.patcher.checkCast
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.opcode
 import app.morphe.patches.readera.misc.highlightcolors.READ_ACTIVITY_CLASS
+import app.morphe.patches.readera.misc.highlightcolors.SelectionActionsFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+
+private const val SELECTION_TEXT_RESULT_WINDOW = 1
 
 internal object LinkCodecExecutableFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PRIVATE, AccessFlags.STATIC),
@@ -113,4 +119,78 @@ internal object ReadAloudFromCurrentPositionFingerprint : Fingerprint(
         methodCall(name = "<init>", location = MatchAfterImmediately()),
         methodCall(definingClass = READ_ACTIVITY_CLASS, parameters = listOf("L", "Z"), returnType = "V", location = MatchAfterImmediately()),
     ),
+)
+
+internal object ClipboardCopyFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "V",
+    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "Ljava/lang/String;"),
+    filters = listOf(methodCall(definingClass = "Landroid/content/ClipboardManager;", name = "setPrimaryClip")),
+)
+
+internal fun selectionCopyFingerprint(clipboard: MethodReference) = Fingerprint(
+    classFingerprint = SelectionActionsFingerprint,
+    accessFlags = listOf(AccessFlags.PRIVATE),
+    returnType = "V",
+    parameters = listOf(),
+    filters = listOf(
+        methodCall(opcode = Opcode.INVOKE_DIRECT, parameters = listOf(), returnType = "Z"),
+        methodCall(opcode = Opcode.INVOKE_DIRECT, parameters = listOf("Z"), returnType = "Ljava/lang/String;"),
+        methodCall(
+            opcode = Opcode.INVOKE_VIRTUAL,
+            parameters = listOf(),
+            returnType = "V",
+            location = MatchAfterWithin(SELECTION_TEXT_RESULT_WINDOW),
+        ),
+        fieldAccess(opcode = Opcode.IGET_OBJECT, type = READ_ACTIVITY_CLASS, location = MatchAfterImmediately()),
+        methodCall(
+            opcode = Opcode.INVOKE_VIRTUAL,
+            definingClass = READ_ACTIVITY_CLASS,
+            parameters = listOf(),
+            returnType = "V",
+            location = MatchAfterImmediately(),
+        ),
+        methodCall(opcode = Opcode.INVOKE_STATIC, definingClass = clipboard.definingClass, name = clipboard.name),
+        fieldAccess(opcode = Opcode.IGET_OBJECT, type = READ_ACTIVITY_CLASS, location = MatchAfterImmediately()),
+        opcode(Opcode.CONST, MatchAfterImmediately()),
+        methodCall(
+            opcode = Opcode.INVOKE_STATIC,
+            parameters = listOf("Landroid/content/Context;", "I"),
+            returnType = "V",
+            location = MatchAfterImmediately(),
+        ),
+    ),
+)
+
+internal object SelectionMenusFingerprint : Fingerprint(
+    classFingerprint = SelectionActionsFingerprint,
+    accessFlags = listOf(AccessFlags.PRIVATE),
+    returnType = "V",
+    parameters = listOf(),
+    filters = listOf(
+        checkCast("Landroid/widget/ScrollView;"),
+        fieldAccess(opcode = Opcode.IPUT_OBJECT, type = "Landroid/widget/ScrollView;", location = MatchAfterImmediately()),
+        checkCast("Landroid/widget/ScrollView;"),
+        fieldAccess(opcode = Opcode.IPUT_OBJECT, type = "Landroid/widget/ScrollView;", location = MatchAfterImmediately()),
+    ),
+)
+
+internal object SelectionPositionFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    parameters = listOf("L", "L"),
+    strings = listOf("PositionHelper create: %f: %s - %s [%f:%f]"),
+)
+
+internal fun documentAccessorFingerprint(documentType: String) = Fingerprint(
+    definingClass = READ_ACTIVITY_CLASS,
+    returnType = documentType,
+    parameters = listOf(),
+)
+
+internal fun selectionTextFingerprint(text: MethodReference) = Fingerprint(
+    definingClass = text.definingClass,
+    name = text.name,
+    returnType = text.returnType,
+    parameters = text.parameterTypes.map { it.toString() },
+    filters = listOf(fieldAccess(opcode = Opcode.IGET_OBJECT, location = MatchFirst())),
 )
