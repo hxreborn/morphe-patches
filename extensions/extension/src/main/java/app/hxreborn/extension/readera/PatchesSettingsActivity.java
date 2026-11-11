@@ -61,8 +61,8 @@ public final class PatchesSettingsActivity extends Activity {
 
     private static final int DIALOG_THEME = android.R.style.Theme_DeviceDefault_Dialog_Alert;
 
-    private static final String RESET_DESCRIPTION = "Turns footnotes and header skipping back on, and the theme "
-            + "and accent back to their defaults.";
+    private static final String RESET_DESCRIPTION = "Turns footnotes and header skipping back on, the screen lock "
+            + "off, and the theme and accent back to their defaults.";
 
     private SettingsStyle style;
 
@@ -165,6 +165,11 @@ public final class PatchesSettingsActivity extends Activity {
         addSection(column, "Appearance", appearance);
 
         LinearLayout speech = this.rows.card();
+        if (explanations.containsKey(SpeechScreenLock.TITLE)) {
+            this.rows.switchRow(speech, "lock", SpeechScreenLock.TITLE, explanations.get(SpeechScreenLock.TITLE),
+                    SpeechScreenLock.active(this),
+                    (button, enabled) -> SpeechScreenLock.onSwitchToggled(this, enabled));
+        }
         addMirror(speech, explanations, "footnote", "Footnote speech", PatchSettings.FOOTNOTES);
         addMirror(speech, explanations, "headers", "Skip headers and footers", PatchSettings.SKIP_HEADERS);
         if (explanations.containsKey("Text-to-speech filter")) {
@@ -243,6 +248,15 @@ public final class PatchesSettingsActivity extends Activity {
         if (applied.containsKey(title)) {
             this.rows.switchRow(card, icon, title, applied.get(title), PatchSettings.nativeEnabled(key, true),
                     (button, enabled) -> PatchSettings.setNativeEnabled(key, enabled));
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == SpeechScreenLock.ACTIVATION_REQUEST) {
+            SpeechScreenLock.onActivationResult(this);
+            refresh();
         }
     }
 
