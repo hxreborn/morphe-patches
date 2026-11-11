@@ -1,3 +1,14 @@
+## [1.76.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.76.0...v1.76.1-dev.1) (2026-11-11)
+
+### Bug Fixes
+
+* **DepthPix:** load wallpapers and collections again ([a7f00da](https://github.com/hxreborn/morphe-patches/commit/a7f00daeafd911fc380726c26f1adae5b1f268c1)), closes [#729](https://github.com/hxreborn/morphe-patches/issues/729)
+* **MovieBox - All-In-One:** stop downloads saving upgrade notice clip ([1d16f56](https://github.com/hxreborn/morphe-patches/commit/1d16f567f6818b895a100044bf59022378cee1c0)), closes [#728](https://github.com/hxreborn/morphe-patches/issues/728)
+
+### Updated App Support
+
+* **DepthPix:** add support for `1.0.35` ([4b4ebe7](https://github.com/hxreborn/morphe-patches/commit/4b4ebe766912edae0bd0df737293b96246a497de))
+
 ## [1.76.0](https://github.com/hxreborn/morphe-patches/compare/v1.75.1...v1.76.0) (2026-11-10)
 
 ### Bug Fixes

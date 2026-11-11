@@ -121,7 +121,7 @@ body:
         - "Cxxdroid 5.6_arm64"
         - "Cxxdroid 6.0_arm64"
         - "Cxxdroid (another version, type it below)"
-        - "DepthPix 1.0.34"
+        - "DepthPix 1.0.35"
         - "DepthPix (another version, type it below)"
         - "Desh Telugu Keyboard 17.7.1"
         - "Desh Telugu Keyboard (another version, type it below)"
@@ -442,12 +442,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.76.0"
+        - "1.76.1-dev.1"
         - "1.76.0-dev.8"
         - "1.76.0-dev.7"
         - "1.76.0-dev.6"
         - "1.76.0-dev.5"
-        - "1.76.0-dev.4"
+        - "1.76.0"
         - "Older than these"
         # /generated
     validations:
