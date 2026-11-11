@@ -6,6 +6,8 @@ package app.morphe.patches.readera.shared
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.resource.resourceId
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
 
@@ -18,3 +20,6 @@ internal fun ResourcePatchContext.stringNamesByEnglishText(): Map<String, List<S
 internal fun ResourcePatchContext.stringNameByEnglishText(text: String): String =
     stringNamesByEnglishText()[text]?.singleOrNull()
         ?: throw PatchException("Expected one \"$text\" string in res/values/strings.xml")
+
+internal fun ResourcePatchContext.stringResourceId(text: String): Long =
+    resourceId(ResourceType.STRING, stringNameByEnglishText(text))
