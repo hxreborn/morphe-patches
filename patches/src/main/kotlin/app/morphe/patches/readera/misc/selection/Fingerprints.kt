@@ -6,6 +6,7 @@ package app.morphe.patches.readera.misc.selection
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchFirst
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
@@ -49,5 +50,15 @@ internal fun textSearchShowFingerprint(dialog: String) = Fingerprint(
     filters = listOf(
         methodCall(parameters = listOf("Landroid/app/Dialog;"), returnType = "V"),
         methodCall(opcode = Opcode.INVOKE_SUPER, parameters = listOf(), returnType = "V", location = MatchAfterImmediately()),
+    ),
+)
+
+internal fun quoteShareFingerprint(subject: Long) = Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "V",
+    filters = listOf(
+        methodCall(opcode = Opcode.INVOKE_INTERFACE, parameters = listOf(), location = MatchFirst()),
+        literal(subject),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("L"), returnType = "Ljava/lang/String;"),
     ),
 )
