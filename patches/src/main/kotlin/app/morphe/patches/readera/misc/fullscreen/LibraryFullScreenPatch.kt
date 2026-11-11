@@ -23,7 +23,8 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 @Suppress("unused")
 val libraryFullScreenPatch = bytecodePatch(
     name = "Library full screen",
-    description = "Adds the option to use full-screen mode in the library as well as while reading.",
+    description = "Hides the status bar and navigation bar in the library, as full-screen mode does in the reader. " +
+        "Turned on in the patches menu.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
@@ -75,8 +76,9 @@ val libraryFullScreenPatch = bytecodePatch(
         }
 
         RootPreferencesFingerprint.let {
+            val (_, rootScreenCall) = it.instructionMatches
             it.method.addInstruction(
-                it.instructionMatches.last().index + 1,
+                rootScreenCall.index + 1,
                 "invoke-direct { p0 }, ${FullScreenPreferencesFingerprint.method}",
             )
         }

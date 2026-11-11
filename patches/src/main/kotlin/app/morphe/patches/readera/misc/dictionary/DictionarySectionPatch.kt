@@ -16,7 +16,7 @@ import app.morphe.patches.shared.misc.requireArm64
 @Suppress("unused")
 val dictionarySectionPatch = bytecodePatch(
     name = "Dictionary section",
-    description = "Adds the Dictionary section with all saved words to the main menu.",
+    description = "Adds a side menu page with the words saved from every book.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 

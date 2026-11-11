@@ -17,6 +17,7 @@ import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.showDrawerItem
+import app.morphe.patches.readera.shared.stringNamesByEnglishText
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.replaceMethod
@@ -57,13 +58,9 @@ private class NotePosition(val model: String, val position: String)
 
 private val notesStringsPatch = resourcePatch {
     execute {
-        val sourceNames = document("res/values/strings.xml").use { document ->
-            val namesByText = document.getElementsByTagName("string").asSequence()
-                .map { it as Element }
-                .groupBy({ it.textContent }, { it.getAttribute("name") })
-            ENGLISH_TEXT_BY_NOTES_STRING.mapValues { (name, text) ->
-                namesByText[text]?.first() ?: throw PatchException("No string \"$text\" in res/values/strings.xml for $name")
-            }
+        val namesByText = stringNamesByEnglishText()
+        val sourceNames = ENGLISH_TEXT_BY_NOTES_STRING.mapValues { (name, text) ->
+            namesByText[text]?.first() ?: throw PatchException("No string \"$text\" in res/values/strings.xml for $name")
         }
         decode("res/values*/strings.xml")
             .forEach { path ->
@@ -98,7 +95,8 @@ private val notesActivityManifestPatch = resourcePatch {
 @Suppress("unused")
 val quotesAndNotesPatch = bytecodePatch(
     name = "Quotes and notes section",
-    description = "Adds a section to the main menu with the quotes, bookmarks and reviews from all books.",
+    description = "Adds a side menu page with the quotes, bookmarks and reviews from every book. " +
+        "Tapping one opens the book at that spot.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
@@ -113,7 +111,8 @@ val quotesAndNotesPatch = bytecodePatch(
         showDrawerItem(DRAWER_QUOTES_ITEM)
 
         DrawerNotesClickFingerprint.let {
-            val openIndex = it.instructionMatches[0].index
+            val (openCall, _) = it.instructionMatches
+            val openIndex = openCall.index
             val activityRegister = it.method.getInstruction<FiveRegisterInstruction>(openIndex).registerC
             it.method.replaceInstruction(
                 openIndex,
@@ -123,7 +122,8 @@ val quotesAndNotesPatch = bytecodePatch(
 
         val quote = notePosition(QuoteJumpFingerprint)
         val bookmark = notePosition(BookmarkJumpFingerprint)
-        val postPosition = QuoteJumpFingerprint.instructionMatches[1].instruction.getReference<MethodReference>()!!
+        val (_, postPositionCall) = QuoteJumpFingerprint.instructionMatches
+        val postPosition = postPositionCall.instruction.getReference<MethodReference>()!!
 
         mutableClassDefBy(NOTES_ACTIVITY_TYPE).replaceMethod(
             "postNotePosition",
@@ -150,7 +150,8 @@ val quotesAndNotesPatch = bytecodePatch(
 }
 
 private fun BytecodePatchContext.notePosition(jump: Fingerprint): NotePosition {
-    val position = jump.instructionMatches[0].instruction.getReference<TypeReference>()!!.type
+    val (positionCast, _) = jump.instructionMatches
+    val position = positionCast.instruction.getReference<TypeReference>()!!.type
     val model = classDefBy(position).methods.single { method ->
         method.name == "<init>" && method.parameterTypes.size == 1 &&
             classDefByOrNull(method.parameterTypes[0].toString())?.methods?.any { modelMethod ->
