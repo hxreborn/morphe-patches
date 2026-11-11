@@ -33,6 +33,7 @@ private const val QUOTE_TYPE = 3
 private const val POSITION_BRIDGE_REGISTERS = 6
 
 private val ENGLISH_TEXT_BY_NOTES_STRING = mapOf(
+    "hx_notes_share" to "Share",
     "hx_notes_title" to "Quotes, notes ...",
     "hx_notes_search" to "Search quotes and notes",
     "hx_notes_back" to "Back",

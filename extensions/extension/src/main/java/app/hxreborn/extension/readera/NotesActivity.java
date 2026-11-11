@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -36,6 +37,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -44,6 +46,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -53,6 +56,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -69,6 +73,10 @@ public final class NotesActivity extends Activity {
     private static final String DOCS_URI = "content://org.readera.provider/docs/";
 
     private static final String STARTUP_MODE_EXTRA = "READERA_STARTUP_MODE";
+
+    private static final int SHARE_TARGET_DP = 48;
+
+    private static final int SHARE_ICON_PADDING_DP = 12;
 
     private static final int TYPE_REVIEW = 1;
 
@@ -406,6 +414,31 @@ public final class NotesActivity extends Activity {
         startActivity(intent);
     }
 
+    static boolean canShare(int type) {
+        return type == TYPE_QUOTE || type == TYPE_REVIEW;
+    }
+
+    private void share(Row row) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, shareText(row.body, row.extra));
+        intent.putExtra(Intent.EXTRA_SUBJECT, row.bookTitle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        try {
+            startActivity(Intent.createChooser(intent, string("hx_notes_share")));
+        } catch (ActivityNotFoundException ex) {
+            Log.w(PatchSettings.LOG_TAG, "No activity can share quotes and notes", ex);
+        }
+    }
+
+    static String shareText(String body, String extra) {
+        String text = (body != null) ? body : "";
+        if (TextUtils.isEmpty(extra)) {
+            return text;
+        }
+        return text.isEmpty() ? extra : text + "\n\n" + extra;
+    }
+
     private int stringId(String name) {
         return getResources().getIdentifier(name, "string", getPackageName());
     }
@@ -531,6 +564,20 @@ public final class NotesActivity extends Activity {
             meta.setPadding(0, dp(4), 0, 0);
             texts.addView(meta);
             item.addView(texts, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+            if (canShare(row.type)) {
+                ImageView share = new ImageView(NotesActivity.this);
+                share.setImageResource(getResources().getIdentifier("hx_readera_share", "drawable", getPackageName()));
+                share.setColorFilter(NotesActivity.this.secondaryTextColor, PorterDuff.Mode.SRC_IN);
+                share.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                share.setPadding(dp(SHARE_ICON_PADDING_DP), dp(SHARE_ICON_PADDING_DP), dp(SHARE_ICON_PADDING_DP),
+                        dp(SHARE_ICON_PADDING_DP));
+                share.setContentDescription(string("hx_notes_share"));
+                TypedValue background = new TypedValue();
+                getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, background, true);
+                share.setBackgroundResource(background.resourceId);
+                share.setOnClickListener((view) -> share(row));
+                item.addView(share, new LinearLayout.LayoutParams(dp(SHARE_TARGET_DP), dp(SHARE_TARGET_DP)));
+            }
             return item;
         }
 
