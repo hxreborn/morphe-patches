@@ -69,6 +69,10 @@ public final class PatchSettings {
     }
 
     static void resetToDefaults() {
+        Context context = application();
+        if (context != null) {
+            SpeechScreenLock.removeAdmin(context);
+        }
         SharedPreferences preferences = preferences();
         if (preferences != null) {
             preferences.edit().clear().commit();

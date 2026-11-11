@@ -112,6 +112,7 @@ public final class ChapterSpeech {
     }
 
     private static void showNotice(StopNotice notice) {
+        SpeechScreenLock.onChapterSpeechStart(application);
         String message;
         switch (notice) {
             case CHAPTER:
