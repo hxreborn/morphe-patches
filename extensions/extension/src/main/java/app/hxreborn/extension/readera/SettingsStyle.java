@@ -67,6 +67,16 @@ final class SettingsStyle {
 
     private static final int RIPPLE = 0x33FFFFFF;
 
+    private static final int AMOLED_APP_BAR_BACKGROUND = 0xFF0B0B0B;
+
+    private static final int AMOLED_SCREEN_BACKGROUND = Color.BLACK;
+
+    private static final int AMOLED_CARD_SURFACE = 0xFF171717;
+
+    private static final int AMOLED_MENU_SURFACE = 0xFF262626;
+
+    private static final int AMOLED_SECONDARY_TEXT = 0xFFBDBDBD;
+
     final int appBarBackground;
 
     final int screenBackground;
@@ -87,13 +97,14 @@ final class SettingsStyle {
 
     SettingsStyle(Context context) {
         this.context = context;
-        this.appBarBackground = APP_BAR_BACKGROUND;
-        this.screenBackground = SCREEN_BACKGROUND;
-        this.cardSurface = CARD_SURFACE;
-        this.menuSurface = MENU_SURFACE;
+        boolean amoled = AppTheme.amoledApplied();
+        this.appBarBackground = amoled ? AMOLED_APP_BAR_BACKGROUND : APP_BAR_BACKGROUND;
+        this.screenBackground = amoled ? AMOLED_SCREEN_BACKGROUND : SCREEN_BACKGROUND;
+        this.cardSurface = amoled ? AMOLED_CARD_SURFACE : CARD_SURFACE;
+        this.menuSurface = amoled ? AMOLED_MENU_SURFACE : MENU_SURFACE;
         this.divider = DIVIDER;
         this.primaryText = Color.WHITE;
-        this.secondaryText = SECONDARY_TEXT;
+        this.secondaryText = amoled ? AMOLED_SECONDARY_TEXT : SECONDARY_TEXT;
     }
 
     int dp(float value) {
