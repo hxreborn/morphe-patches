@@ -128,6 +128,9 @@ internal object ClipboardCopyFingerprint : Fingerprint(
     filters = listOf(methodCall(definingClass = "Landroid/content/ClipboardManager;", name = "setPrimaryClip")),
 )
 
+internal const val SELECTION_COPY_TOAST_MESSAGE_MATCH = 7
+internal const val SELECTION_COPY_TOAST_CALL_MATCH = 8
+
 internal fun selectionCopyFingerprint(clipboard: MethodReference) = Fingerprint(
     classFingerprint = SelectionActionsFingerprint,
     accessFlags = listOf(AccessFlags.PRIVATE),
