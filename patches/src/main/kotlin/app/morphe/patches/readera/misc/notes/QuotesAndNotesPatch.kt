@@ -14,6 +14,8 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.DRAWER_QUOTES_ITEM
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.showDrawerItem
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -101,11 +103,12 @@ val quotesAndNotesPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch, notesActivityManifestPatch, notesStringsPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, notesActivityManifestPatch, notesStringsPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Quotes and notes section", "Adds a side menu page with quotes, bookmarks and reviews from every book.")
         showDrawerItem(DRAWER_QUOTES_ITEM)
 
         DrawerNotesClickFingerprint.let {

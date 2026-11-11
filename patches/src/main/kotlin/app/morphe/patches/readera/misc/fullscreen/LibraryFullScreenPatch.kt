@@ -12,6 +12,8 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -27,9 +29,10 @@ val libraryFullScreenPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     execute {
+        registerReadEraPatch("Library full screen", "Always hides the status bar and navigation bar in the library.")
         val (readingModePreference, libraryModePreference) = SaveFullScreenModeFingerprint.instructionMatches
             .slice(1..2)
             .map { it.instruction.getReference<FieldReference>()!! }

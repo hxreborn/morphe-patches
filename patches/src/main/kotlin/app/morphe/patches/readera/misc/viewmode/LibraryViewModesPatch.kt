@@ -10,6 +10,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.util.findInstructionIndicesReversed
@@ -29,11 +31,12 @@ val libraryViewModesPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Library view modes", "Lists books as Full, Brief, Thumbnails or Grid, picked from the library menu.")
         val viewModeClass = ViewModeEnumFingerprint.classDef
         val savedViewMode = viewModeClass.fields.single {
             it.type == viewModeClass.type && AccessFlags.STATIC.isSet(it.accessFlags) &&
