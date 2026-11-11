@@ -20,6 +20,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
+private const val DRAWER_MENU_CALL_WINDOW = 1
 private const val SELECTION_TEXT_RESULT_WINDOW = 1
 
 internal object LinkCodecExecutableFingerprint : Fingerprint(
@@ -85,12 +86,12 @@ internal object DrawerMenuVisibilityFingerprint : Fingerprint(
     parameters = listOf(),
     filters = listOf(
         methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible"),
-        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible", location = MatchAfterWithin(1)),
-        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible", location = MatchAfterWithin(1)),
-        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterWithin(1)),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible", location = MatchAfterWithin(DRAWER_MENU_CALL_WINDOW)),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "setGroupVisible", location = MatchAfterWithin(DRAWER_MENU_CALL_WINDOW)),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterWithin(DRAWER_MENU_CALL_WINDOW)),
         opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
         methodCall(definingClass = "Landroid/view/MenuItem;", name = "setVisible", location = MatchAfterImmediately()),
-        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterWithin(1)),
+        methodCall(definingClass = "Landroid/view/Menu;", name = "findItem", location = MatchAfterWithin(DRAWER_MENU_CALL_WINDOW)),
         opcode(Opcode.MOVE_RESULT_OBJECT, MatchAfterImmediately()),
         methodCall(definingClass = "Landroid/view/MenuItem;", name = "setVisible", location = MatchAfterImmediately()),
         opcode(Opcode.IGET_OBJECT, MatchAfterImmediately()),

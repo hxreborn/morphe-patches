@@ -31,7 +31,7 @@ private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera
 @Suppress("unused")
 val speechRateSliderPatch = bytecodePatch(
     name = "Speech rate slider",
-    description = "Adds a text-to-speech speed slider from 0.1x to 4x, saved per voice.",
+    description = "Sets Read aloud speed from 0.1x to 4x with a slider on the Speech rate screen.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
@@ -66,9 +66,13 @@ val speechRateSliderPatch = bytecodePatch(
         }
 
         SpeechRateRowFingerprint.let {
-            val rootField = it.instructionMatches[0].instruction.getReference<FieldReference>()!!
-            val seekBarId = it.method.getInstruction<WideLiteralInstruction>(it.instructionMatches[1].index).wideLiteral
-            val labelId = it.method.getInstruction<WideLiteralInstruction>(it.instructionMatches[4].index).wideLiteral
+            val rootField = it.instructionMatches[SPEECH_RATE_ROOT_MATCH].instruction.getReference<FieldReference>()!!
+            val seekBarId = it.method.getInstruction<WideLiteralInstruction>(
+                it.instructionMatches[SPEECH_RATE_SEEK_BAR_ID_MATCH].index,
+            ).wideLiteral
+            val labelId = it.method.getInstruction<WideLiteralInstruction>(
+                it.instructionMatches[SPEECH_RATE_LABEL_ID_MATCH].index,
+            ).wideLiteral
             val returnIndex = it.method.indexOfFirstInstructionReversed(Opcode.RETURN_VOID)
             val registers = it.method.getFreeRegisterProvider(returnIndex, 3)
             val rootRegister = registers.getFreeRegister4Bit()
@@ -87,8 +91,9 @@ val speechRateSliderPatch = bytecodePatch(
         }
 
         SpeechRateViewFingerprint.let {
-            val sliderVisibilityIndex = it.instructionMatches[0].index
-            val upsellVisibilityIndex = it.instructionMatches[4].index
+            val (sliderGone, _, _, _, upsellVisibilityCall) = it.instructionMatches
+            val sliderVisibilityIndex = sliderGone.index
+            val upsellVisibilityIndex = upsellVisibilityCall.index
             it.method.apply {
                 val upsellRegister = getInstruction<FiveRegisterInstruction>(upsellVisibilityIndex).registerC
                 val goneRegister = getFreeRegisterProvider(upsellVisibilityIndex, 1, upsellRegister).getFreeRegister4Bit()

@@ -18,6 +18,11 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
+private const val SELECTION_GROUP_CAST_WINDOW = 1
+private const val FIRST_SELECTION_ACTION_ID_WINDOW = 1
+private const val SECOND_SELECTION_ACTION_ID_WINDOW = 2
+private const val WORD_HINT_CALL_WINDOW = 1
+
 private const val READ_WIDGET_PACKAGE = "Lorg/readera/read/widget/"
 internal const val DEFAULT_QUOTE_HIGHLIGHT = 0x601eabdf
 
@@ -43,10 +48,10 @@ internal object SelectionActionsFingerprint : Fingerprint(
     parameters = listOf(READ_ACTIVITY_CLASS, "L"),
     filters = listOf(
         methodCall(opcode = Opcode.INVOKE_INTERFACE, name = "findViewById"),
-        checkCast("Landroid/view/ViewGroup;", MatchAfterWithin(1)),
-        opcode(Opcode.CONST, MatchAfterWithin(1)),
+        checkCast("Landroid/view/ViewGroup;", MatchAfterWithin(SELECTION_GROUP_CAST_WINDOW)),
+        opcode(Opcode.CONST, MatchAfterWithin(FIRST_SELECTION_ACTION_ID_WINDOW)),
         methodCall(opcode = Opcode.INVOKE_INTERFACE, name = "findViewById", location = MatchAfterImmediately()),
-        opcode(Opcode.CONST, MatchAfterWithin(2)),
+        opcode(Opcode.CONST, MatchAfterWithin(SECOND_SELECTION_ACTION_ID_WINDOW)),
         methodCall(opcode = Opcode.INVOKE_INTERFACE, name = "findViewById", location = MatchAfterImmediately()),
         opcode(Opcode.NEW_INSTANCE),
         opcode(Opcode.INVOKE_DIRECT, MatchAfterImmediately()),
@@ -228,7 +233,7 @@ internal fun dictionaryWordHintFingerprint(addWord: MethodReference) = Fingerpri
             definingClass = READ_ACTIVITY_CLASS,
             parameters = listOf(),
             returnType = "V",
-            location = MatchAfterWithin(1),
+            location = MatchAfterWithin(WORD_HINT_CALL_WINDOW),
         ),
     ),
 )

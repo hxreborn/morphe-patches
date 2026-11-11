@@ -16,8 +16,7 @@ import app.morphe.patches.shared.misc.requireArm64
 @Suppress("unused")
 val removeNagsPatch = bytecodePatch(
     name = "Remove nags",
-    description = "Removes the rate this app dialog, the promotional dialogs shown on startup " +
-        "and the Go to Premium buttons in the toolbar and its menu.",
+    description = "Removes the rate-the-app and promotion pop-ups and the Go to Premium button.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
@@ -33,7 +32,8 @@ val removeNagsPatch = bytecodePatch(
             it.getMethodCalled().returnEarly()
         }
 
-        val promoDispatcher = StartupNagDispatchFingerprint.instructionMatches.last().getMethodCalled()
+        val (_, promoDispatchCall) = StartupNagDispatchFingerprint.instructionMatches
+        val promoDispatcher = promoDispatchCall.getMethodCalled()
         ToolbarPromoModeFingerprint.matchAll(classDefBy(promoDispatcher.definingClass), 1..1)
         ToolbarPromoModeFingerprint.method.returnEarly(FRESH_INSTALL_TOOLBAR_MODE)
 

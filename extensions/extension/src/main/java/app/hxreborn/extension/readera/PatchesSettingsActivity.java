@@ -170,11 +170,11 @@ public final class PatchesSettingsActivity extends Activity {
                     SpeechScreenLock.active(this),
                     (button, enabled) -> SpeechScreenLock.onSwitchToggled(this, enabled));
         }
-        addMirror(speech, explanations, "footnote", "Footnote speech", PatchSettings.FOOTNOTES);
+        addMirror(speech, explanations, "footnote", "Read footnotes aloud", PatchSettings.FOOTNOTES);
         addMirror(speech, explanations, "headers", "Skip headers and footers", PatchSettings.SKIP_HEADERS);
-        if (explanations.containsKey("Text-to-speech filter")) {
+        if (explanations.containsKey(SpeechFilterSettings.TITLE)) {
             View omit = this.rows.choiceRow(speech, "omit", SpeechFilterSettings.TITLE,
-                    explanations.get("Text-to-speech filter"),
+                    explanations.get(SpeechFilterSettings.TITLE),
                     Integer.toString(SpeechFilterSettings.count(this)) + " ›");
             omit.setOnClickListener((view) -> SpeechFilterSettings.open(this, this::refresh));
         }
