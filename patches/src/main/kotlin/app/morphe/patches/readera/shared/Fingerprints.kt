@@ -11,6 +11,7 @@ import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.opcode
+import app.morphe.patches.readera.misc.highlightcolors.READ_ACTIVITY_CLASS
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -100,5 +101,16 @@ internal object AppCompatAttachBaseContextFingerprint : Fingerprint(
     filters = listOf(
         methodCall(opcode = Opcode.INVOKE_VIRTUAL, parameters = listOf(CONTEXT_CLASS), returnType = CONTEXT_CLASS),
         methodCall(opcode = Opcode.INVOKE_SUPER, definingClass = "Landroid/app/Activity;", name = "attachBaseContext"),
+    ),
+)
+
+internal object ReadAloudFromCurrentPositionFingerprint : Fingerprint(
+    definingClass = READ_ACTIVITY_CLASS,
+    filters = listOf(
+        opcode(Opcode.NEW_INSTANCE),
+        fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = READ_ACTIVITY_CLASS, location = MatchAfterImmediately()),
+        fieldAccess(opcode = Opcode.IGET_OBJECT, location = MatchAfterImmediately()),
+        methodCall(name = "<init>", location = MatchAfterImmediately()),
+        methodCall(definingClass = READ_ACTIVITY_CLASS, parameters = listOf("L", "Z"), returnType = "V", location = MatchAfterImmediately()),
     ),
 )
