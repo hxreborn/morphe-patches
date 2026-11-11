@@ -677,6 +677,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.9.0", versionCode = 99080, minSdk = 23)),
     )
 
+    val IDLEFISH = Compatibility(
+        name = "Xianyu",
+        packageName = "com.taobao.idlefish",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFFE60F,
+        signatures = setOf(
+            "e4c15e30502f8da0e878e0fe73877403b8d99f8f761809507a6512ecfed84909",
+        ),
+        targets = listOf(AppTarget(version = "7.28.86.1", versionCode = 529, minSdk = 21)),
+    )
+
     val IMO = Compatibility(
         name = "imo",
         packageName = "com.imo.android.imoim",
