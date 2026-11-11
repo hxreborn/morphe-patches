@@ -1132,6 +1132,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val OK = Compatibility(
+        name = "OK",
+        packageName = "ru.ok.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xEE8208,
+        signatures = setOf("0bc473ae8f9488d0d610a3434880d11c198a81b91867a456ab373150e62d807e"),
+        targets = listOf(AppTarget(version = "26.9.24", versionCode = 26092400, minSdk = 24)),
+    )
+
     val ONE4HOME = Compatibility(
         name = "One4Home Launcher",
         packageName = "com.one4studio.one4home",

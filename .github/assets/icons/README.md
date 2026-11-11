@@ -127,6 +127,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `coddy.png` | Coddy (`tech.coddy.coddyapp`) | Coddy | Play 2.2.9, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `cubasisle3.png` | Cubasis LE 3 (`com.steinberg.cubasisle3`) | Steinberg Media Technologies | Play 3.8.6, adaptive icon `icon_le` (`res/drawable-xxhdpi-v4/icon_le_bg.png` under `icon_le_fg.png`, xxhdpi config split) |
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
+| `okru.png` | OK: Social Network (`ru.ok.android`) | VK | APK 26.9.24, adaptive icon `res/bVF.xml`, background and foreground layers composited in a circle |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `movieboxtv.png` | MovieBox TV (`com.community.mbox.tv`) | Not on Google Play | APK 1.2.0.0923, `res/d2.webp` (square icon cut to a circle) |
 | `musclewiki.png` | MuscleWiki (`com.musclewiki.macro`) | MuscleWiki SEZC | Play 3.2.7, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |

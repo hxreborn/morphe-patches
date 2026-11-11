@@ -284,6 +284,7 @@ ICONS = {
     "ltd.anti.clink": "clink.png",
     "com.steinberg.cubasisle3": "cubasisle3.png",
     "com.one4studio.one4home": "one4home.png",
+    "ru.ok.android": "okru.png",
     "com.keepa.mobile": "keepa.png",
     "com.hitrolab.audioeditor": "audiolab.png",
     "com.lagguy.wallpapers": "lagguy.png",
