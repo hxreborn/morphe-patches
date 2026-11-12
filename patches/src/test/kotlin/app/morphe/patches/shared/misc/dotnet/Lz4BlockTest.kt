@@ -29,4 +29,55 @@ class Lz4BlockTest {
 
         assertFailsWith<PatchException> { decompressLz4Block(block, 0, block.size, 10) }
     }
+
+    @Test
+    fun rejectLiteralsPastDeclaredEnd() {
+        val block = byteArrayOf(0x20, 65, 66)
+
+        assertFailsWith<PatchException> { decompressLz4Block(block, 0, 2, 2) }
+    }
+
+    @Test
+    fun rejectTruncatedLength() {
+        val block = byteArrayOf(0xf0.toByte(), 0xff.toByte())
+
+        assertFailsWith<PatchException> { decompressLz4Block(block, 0, block.size, 15) }
+    }
+
+    @Test
+    fun rejectTruncatedMatchOffset() {
+        val block = byteArrayOf(0x10, 65, 1)
+
+        assertFailsWith<PatchException> { decompressLz4Block(block, 0, block.size, 5) }
+    }
+
+    @Test
+    fun rejectLiteralsPastOutputSize() {
+        val block = byteArrayOf(0x20, 65, 66)
+
+        assertFailsWith<PatchException> { decompressLz4Block(block, 0, block.size, 1) }
+    }
+
+    @Test
+    fun rejectMatchPastOutputSize() {
+        val block = byteArrayOf(0x10, 65, 1, 0)
+
+        assertFailsWith<PatchException> { decompressLz4Block(block, 0, block.size, 4) }
+    }
+
+    @Test
+    fun rejectTruncatedMatchLength() {
+        val block = byteArrayOf(0x1f, 65, 1, 0)
+
+        assertFailsWith<PatchException> { decompressLz4Block(block, 0, block.size, 20) }
+    }
+
+    @Test
+    fun rejectInvalidBlockBounds() {
+        val block = byteArrayOf(0)
+
+        listOf(Triple(-1, 1, 0), Triple(0, 2, 0), Triple(1, 0, 0), Triple(0, 1, -1)).forEach { (start, end, size) ->
+            assertFailsWith<PatchException> { decompressLz4Block(block, start, end, size) }
+        }
+    }
 }
