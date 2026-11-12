@@ -136,8 +136,10 @@ internal object StartupHomeFingerprint {
                 if (instruction and ADD_MASK == ADD_IMMEDIATE && Arm64.baseRegister(instruction) == register) {
                     if (page + (instruction ushr IMMEDIATE_SHIFT and ADD_IMMEDIATE_MASK) == target) {
                         found += AddressReference(offset, next, Arm64.destination(instruction))
+                        break
                     }
-                    break
+                    if (Arm64.destination(instruction) == register) break
+                    continue
                 }
                 if (writesArm64GeneralRegister(instruction) && Arm64.destination(instruction) == register ||
                     arm64SecondLoadRegister(instruction) == register || Arm64.isBranchLink(instruction)

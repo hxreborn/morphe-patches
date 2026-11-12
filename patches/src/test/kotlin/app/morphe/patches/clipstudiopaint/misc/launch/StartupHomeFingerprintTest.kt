@@ -18,6 +18,27 @@ internal class StartupHomeFingerprintTest {
     }
 
     @Test
+    fun `continues past unrelated add that preserves page register`() {
+        val buffer = createLibraryBuffer()
+        buffer.putInt(CODE + WORD_SIZE, 0x91000128.toInt())
+        buffer.putInt(CODE + 2 * WORD_SIZE, 0x910c0129.toInt())
+        buffer.putInt(CODE + 3 * WORD_SIZE, 0xd000000a.toInt())
+        buffer.putInt(DESCRIPTOR_STORE, 0x9100014a.toInt())
+        buffer.putInt(DESCRIPTOR_STORE + WORD_SIZE, 0xa900a548.toInt())
+
+        assertEquals(HOME_CALL, StartupHomeFingerprint.match(buffer))
+    }
+
+    @Test
+    fun `rejects unrelated add that overwrites page register`() {
+        val buffer = createLibraryBuffer()
+        buffer.putInt(CODE + WORD_SIZE, 0x91000129.toInt())
+        buffer.putInt(CODE + 2 * WORD_SIZE, 0x910c0129.toInt())
+
+        assertFailsWith<PatchException> { StartupHomeFingerprint.match(buffer) }
+    }
+
+    @Test
     fun `ignores home calls outside matching event handler`() {
         val buffer = createLibraryBuffer()
         putHomeCall(buffer, UNRELATED_CALL)
