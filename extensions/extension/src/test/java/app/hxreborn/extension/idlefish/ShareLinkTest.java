@@ -64,6 +64,21 @@ public final class ShareLinkTest {
     }
 
     @Test
+    public void returnsNullForAShopLinkWithAnItemId() {
+        assertNull(ShareLink.publicItemUrl("{\"sceneType\":\"shop\",\"url\":\"fleamarket://shop?itemId=123\"}"));
+    }
+
+    @Test
+    public void returnsNullForAnUnrelatedSchemeWithAnItemId() {
+        assertNull(ShareLink.publicItemUrl(shareInfoWithUrl("https://awesome_detail?itemId=123")));
+    }
+
+    @Test
+    public void returnsNullForAnUnrelatedPathWithAnItemId() {
+        assertNull(ShareLink.publicItemUrl(shareInfoWithUrl("fleamarket://awesome_detail/shop?itemId=123")));
+    }
+
+    @Test
     public void returnsNullForAnOpaqueLink() {
         assertNull(ShareLink.publicItemUrl(shareInfoWithUrl("mailto:someone")));
     }

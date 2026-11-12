@@ -5,12 +5,14 @@
 package app.morphe.patches.idlefish.misc.share
 
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.idlefish.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 
 private const val SHARE_LINK = "Lapp/hxreborn/extension/idlefish/ShareLink;"
 
@@ -33,7 +35,11 @@ val shareWithoutLoginPatch = bytecodePatch(
 internal fun BytecodePatchContext.rewriteShareRoute() {
     val shareRoute = ShareRouteFingerprint.matchSingle()
     val (queryParameterRead, sharePageParse) = shareRoute.instructionMatches
-    val shareInfoKey = (queryParameterRead.instruction as FiveRegisterInstruction).registerD
+    val shareInfoKey = when (val instruction = queryParameterRead.instruction) {
+        is FiveRegisterInstruction -> instruction.registerD
+        is RegisterRangeInstruction -> instruction.startRegister + 1
+        else -> throw PatchException("Unexpected Uri.getQueryParameter instruction: ${instruction.opcode}")
+    }
 
     shareRoute.method.addInstructionsAtControlFlowLabel(
         sharePageParse.index,

@@ -12,6 +12,7 @@ import app.morphe.patches.idlefish.patchedClasses
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.Method
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OffsetInstruction
@@ -151,6 +152,21 @@ internal class ShareRouteRewriteTest {
 
     private fun List<Instruction>.conditionalBranches(range: IntRange) = range.filter {
         this[it] is OffsetInstruction && !this[it].opcode.name.startsWith("goto")
+    }
+
+    @Test
+    fun `reads share info key from range invoke`() {
+        val rangeSmali = routeSmali.replace(
+            "invoke-virtual {p2, v2}, Landroid/net/Uri;->getQueryParameter",
+            "move-object v1, p2\n    invoke-virtual/range {v1 .. v2}, Landroid/net/Uri;->getQueryParameter",
+        )
+        val instructions = patchedClasses(rewriteOnly, listOf(rangeSmali)).routeMethod(3).body()
+        val injectedStart = instructions.injectedStart()
+        val parse = instructions.rewrittenParse()
+        val bundleRead = instructions.callsTo("getString").single { it in injectedStart until parse }
+
+        assertEquals(SHARE_INFO_KEY_REGISTER,
+            (instructions[bundleRead] as FiveRegisterInstruction).registerD)
     }
 
     @Test

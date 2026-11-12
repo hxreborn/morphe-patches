@@ -34,6 +34,10 @@ public final class ShareLink {
 
     private static final String SHARE_URL_KEY = "url";
 
+    private static final String ITEM_DETAIL_SCHEME = "fleamarket";
+
+    private static final String ITEM_DETAIL_HOST = "awesome_detail";
+
     private static final String ITEM_ID_PARAMETER = "itemId";
 
     private ShareLink() {
@@ -54,7 +58,8 @@ public final class ShareLink {
             return null;
         }
         Uri link = Uri.parse((String) deepLink);
-        if (link.isOpaque()) {
+        if (link.isOpaque() || !ITEM_DETAIL_SCHEME.equals(link.getScheme()) || !ITEM_DETAIL_HOST.equals(link.getHost())
+                || (link.getPath() != null && !link.getPath().isEmpty())) {
             return null;
         }
         String itemId = link.getQueryParameter(ITEM_ID_PARAMETER);
