@@ -1,3 +1,9 @@
+## [1.77.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.77.0-dev.1...v1.77.0-dev.2) (2026-11-12)
+
+### Bug Fixes
+
+* undo v1.77.0-dev.1 changes ([9ece60f](https://github.com/hxreborn/morphe-patches/commit/9ece60fb2374347ea37a5e23bbbaf5bfb788a356))
+
 ## [1.77.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.76.1-dev.1...v1.77.0-dev.1) (2026-11-12)
 
 ### Bug Fixes

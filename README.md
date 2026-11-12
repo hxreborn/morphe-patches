@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.77.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.77.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;539 patches total
+> **[v1.77.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.77.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;520 patches total
 
 ### Featured apps
 
@@ -29,7 +29,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>15 patches</sub></td>
+<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -668,7 +668,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="clip-studio-paint"></a>
 <details>
-<summary><img src=".github/assets/icons/clipstudiopaint.png" width="18" align="top">&nbsp;&nbsp;Clip Studio Paint&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/clipstudiopaint.png" width="18" align="top">&nbsp;&nbsp;Clip Studio Paint&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -678,7 +678,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="clip-studio-paint-open-drawing-on-launch"></a>[Open drawing on launch](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/launch/OpenDrawingOnLaunchPatch.kt) | Opens the selected Studio or Simple Mode workspace on launch. |
 | <a id="clip-studio-paint-skip-plan-selection"></a>[Skip plan selection](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/launch/SkipPlanSelectionPatch.kt) | Opens the app in doodle mode without showing the plan selection screen. Log in from the home screen to use a plan. |
 | <a id="clip-studio-paint-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/premium/UnlockPremiumPatch.kt) | Removes the monthly drawing time limit. Unlocks saving and exporting in doodle mode and full-length timelapse export with an optional logo. |
 
@@ -1356,22 +1355,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="launchbox"></a>
-<details>
-<summary><img src=".github/assets/icons/launchbox.png" width="18" align="top">&nbsp;&nbsp;LaunchBox&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 1.23 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="launchbox-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/launchbox/misc/premium/UnlockPremiumPatch.kt) | Removes the 100-game limit and the license prompts. |
-
-</details>
-
 <a id="led-blinker"></a>
 <details>
 <summary><img src=".github/assets/icons/ledblinker.png" width="18" align="top">&nbsp;&nbsp;LED Blinker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
@@ -1737,7 +1720,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.4.8 |
+| 7.4.6 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1863,22 +1846,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="notesnook-material-you-theme"></a>[Material You theme](patches/src/main/kotlin/app/morphe/patches/notesnook/theme/MaterialYouThemePatch.kt) | Applies the system accent colours to the default light and dark themes. Colours refresh when the app restarts, and start from the second launch. Requires Android 12 or later. |
 | <a id="notesnook-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/notesnook/misc/premium/UnlockProPatch.kt) | Unlocks task lists, callouts, app lock, and the notebook, tag, colour and reminder limits. Requires a signed-in account. The server still enforces storage, attachment size, monographs and SMS 2FA. |
-
-</details>
-
-<a id="ok"></a>
-<details>
-<summary><img src=".github/assets/icons/okru.png" width="18" align="top">&nbsp;&nbsp;OK&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 26.9.24 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="ok-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/okru/ads/RemoveAdsPatch.kt) | Removes sponsored posts, video and clip ads, and ads in messages, notifications, discussions, games, music and Dzen. |
 
 </details>
 
@@ -2220,7 +2187,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;15 patches</summary>
+<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2234,7 +2201,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/telemetry/DisableTelemetryPatch.kt) | Stops sending usage statistics and diagnostics to Proton. |
 | <a id="proton-vpn-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
-| <a id="proton-vpn-frosted-glass"></a>[Frosted glass](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/glass/FrostedGlassPatch.kt) | Blurs the map behind home screen panels and sheets. Requires Android 12 or later. |
 | <a id="proton-vpn-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[Remove server change delay](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |
@@ -2271,8 +2237,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.3.8 | 3.4.0 |
-| :---: | :---: |
+| 3.3.8 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2409,7 +2375,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="readera"></a>
 <details>
-<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;27 patches</summary>
+<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2419,33 +2385,20 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="readera-accent-color"></a>[Accent color](patches/src/main/kotlin/app/morphe/patches/readera/misc/accent/AccentColorPatch.kt) | Replaces ReadEra's yellow with the wallpaper color on Android 12 and later, or green below 12. Another color can be picked in the patches menu. |
-| <a id="readera-app-theme"></a>[App theme](patches/src/main/kotlin/app/morphe/patches/readera/misc/theme/AppThemePatch.kt) | Adds a black AMOLED theme for the library, menus and Settings, picked in the patches menu. Book pages keep their own colors. |
-| <a id="readera-background-listening"></a>[Background listening](patches/src/main/kotlin/app/morphe/patches/readera/misc/background/BackgroundListeningPatch.kt) | Keeps Read aloud playing after switching apps or turning the screen off. |
-| <a id="readera-colored-quotes"></a>[Colored quotes](patches/src/main/kotlin/app/morphe/patches/readera/misc/highlightcolors/ColoredQuotesPatch.kt) | Saves selected text as a quote in one of five colors, picked from the text selection menu. |
-| <a id="readera-copy-with-source"></a>[Copy with source](patches/src/main/kotlin/app/morphe/patches/readera/misc/selection/CopyWithSourcePatch.kt) | Copies selected text with the book title and author. Found under More in the text selection menu. |
-| <a id="readera-custom-fonts"></a>[Custom fonts](patches/src/main/kotlin/app/morphe/patches/readera/misc/fonts/CustomFontsPatch.kt) | Adds reading fonts from a folder on the device. The folder is picked on ReadEra's Fonts screen. |
-| <a id="readera-dictionary-section"></a>[Dictionary section](patches/src/main/kotlin/app/morphe/patches/readera/misc/dictionary/DictionarySectionPatch.kt) | Adds a side menu page with the words saved from every book. |
-| <a id="readera-dictionary-word-colors"></a>[Dictionary word colors](patches/src/main/kotlin/app/morphe/patches/readera/misc/highlightcolors/DictionaryWordColorsPatch.kt) | Saves a selected word to Dictionary in one of five colors. |
-| <a id="readera-full-book-descriptions"></a>[Full book descriptions](patches/src/main/kotlin/app/morphe/patches/readera/misc/descriptions/FullBookDescriptionsPatch.kt) | Shows the whole book description in About document, including very short and very long ones. |
-| <a id="readera-library-full-screen"></a>[Library full screen](patches/src/main/kotlin/app/morphe/patches/readera/misc/fullscreen/LibraryFullScreenPatch.kt) | Hides the status bar and navigation bar in the library, as full-screen mode does in the reader. Turned on in the patches menu. |
-| <a id="readera-library-view-modes"></a>[Library view modes](patches/src/main/kotlin/app/morphe/patches/readera/misc/viewmode/LibraryViewModesPatch.kt) | Adds Full, Brief, Thumbnails and Grid layouts for book lists to the library menu. |
-| <a id="readera-lock-screen-on-read-chapter-aloud"></a>Lock screen on Read chapter aloud | Locks the phone when Read chapter aloud starts, and the chapter keeps playing. Turned on in the patches menu. Needs device admin access. |
-| <a id="readera-material-3-controls"></a>[Material 3 controls](patches/src/main/kotlin/app/morphe/patches/readera/misc/materialcontrols/MaterialControlsPatch.kt) | Gives switches, checkboxes and radio buttons in Settings and dialogs the Material 3 look. |
-| <a id="readera-more-sleep-timer-choices"></a>[More sleep timer choices](patches/src/main/kotlin/app/morphe/patches/readera/misc/sleeptimer/MoreSleepTimerChoicesPatch.kt) | Adds 5 and 10 minute options to the Read aloud sleep timer. |
-| <a id="readera-omit-words-and-symbols"></a>[Omit words and symbols](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechfilter/OmitWordsAndSymbolsPatch.kt) | Makes Read aloud skip the words and symbols on a list, without changing the book. The list is edited in the patches menu. |
-| <a id="readera-page-counter-in-long-chapters"></a>[Page counter in long chapters](patches/src/main/kotlin/app/morphe/patches/readera/misc/pagecounter/PageCounterInLongChaptersPatch.kt) | Keeps the page counter next to the chapter title in chapters of 1,000 pages or more. |
-| <a id="readera-page-thumbnails"></a>[Page thumbnails](patches/src/main/kotlin/app/morphe/patches/readera/misc/minipages/PageThumbnailsPatch.kt) | Adds a button next to the page slider that shows the book's pages as thumbnails. |
-| <a id="readera-quotes-and-notes-section"></a>[Quotes and notes section](patches/src/main/kotlin/app/morphe/patches/readera/misc/notes/QuotesAndNotesPatch.kt) | Adds a side menu page with the quotes, bookmarks and reviews from every book. Tapping one opens the book at that spot. |
-| <a id="readera-read-aloud-from-selection"></a>[Read aloud from selection](patches/src/main/kotlin/app/morphe/patches/readera/misc/selection/ReadAloudFromSelectionPatch.kt) | Starts Read aloud from the selected text. Found under More in the text selection menu. |
-| <a id="readera-read-aloud-notification-controls"></a>[Read aloud notification controls](patches/src/main/kotlin/app/morphe/patches/readera/misc/notification/ReadAloudNotificationControlsPatch.kt) | Adds Stop, Previous and Next buttons to the Read aloud notification. On Android 7 to 10 it also counts down the sleep timer. |
-| <a id="readera-read-chapter-aloud"></a>[Read chapter aloud](patches/src/main/kotlin/app/morphe/patches/readera/misc/chapterspeech/ReadChapterAloudPatch.kt) | Reads one chapter aloud and stops at its end. Long-press the chapter in Contents to start. |
-| <a id="readera-read-footnotes-aloud"></a>[Read footnotes aloud](patches/src/main/kotlin/app/morphe/patches/readera/misc/footnotes/ReadFootnotesAloudPatch.kt) | Reads each footnote aloud where the book refers to it, in place of its number. Works in EPUB, FB2 and MOBI books. |
-| <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate-the-app and promotion pop-ups and the Go to Premium button. |
-| <a id="readera-search-selection-in-book"></a>[Search selection in book](patches/src/main/kotlin/app/morphe/patches/readera/misc/selection/SearchSelectionInBookPatch.kt) | Searches the book for the selected text and lists every match. Found under More in the text selection menu. |
-| <a id="readera-skip-headers-and-footers"></a>[Skip headers and footers](patches/src/main/kotlin/app/morphe/patches/readera/misc/skipheaders/SkipHeadersPatch.kt) | Makes Read aloud skip page headers, footers and page numbers in PDF and DjVu files. |
-| <a id="readera-speech-pitch-slider"></a>[Speech pitch slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechpitch/SpeechPitchSliderPatch.kt) | Adds a voice pitch slider from 0.5x to 2x to Settings > Text to speech (TTS). |
-| <a id="readera-speech-rate-slider"></a>[Speech rate slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechrate/SpeechRateSliderPatch.kt) | Sets Read aloud speed from 0.1x to 4x with a slider on the Speech rate screen. |
+| <a id="readera-background-listening"></a>[Background listening](patches/src/main/kotlin/app/morphe/patches/readera/misc/background/BackgroundListeningPatch.kt) | Keeps text-to-speech playing while the app is in the background or the screen is off. |
+| <a id="readera-colored-quotes"></a>[Colored quotes](patches/src/main/kotlin/app/morphe/patches/readera/misc/highlightcolors/ColoredQuotesPatch.kt) | Adds a color picker for quotes and highlights each quote in its own color. |
+| <a id="readera-custom-fonts"></a>[Custom fonts](patches/src/main/kotlin/app/morphe/patches/readera/misc/fonts/CustomFontsPatch.kt) | Adds fonts from a folder you choose to the reading fonts. |
+| <a id="readera-dictionary-section"></a>[Dictionary section](patches/src/main/kotlin/app/morphe/patches/readera/misc/dictionary/DictionarySectionPatch.kt) | Adds the Dictionary section with all saved words to the main menu. |
+| <a id="readera-dictionary-word-colors"></a>[Dictionary word colors](patches/src/main/kotlin/app/morphe/patches/readera/misc/highlightcolors/DictionaryWordColorsPatch.kt) | Adds a color picker for dictionary words. |
+| <a id="readera-footnote-speech"></a>[Footnote speech](patches/src/main/kotlin/app/morphe/patches/readera/misc/footnotes/FootnoteSpeechPatch.kt) | Adds an option to read footnotes aloud during text-to-speech. |
+| <a id="readera-library-full-screen"></a>[Library full screen](patches/src/main/kotlin/app/morphe/patches/readera/misc/fullscreen/LibraryFullScreenPatch.kt) | Adds the option to use full-screen mode in the library as well as while reading. |
+| <a id="readera-library-view-modes"></a>[Library view modes](patches/src/main/kotlin/app/morphe/patches/readera/misc/viewmode/LibraryViewModesPatch.kt) | Adds the Full, Brief, Thumbnails and Grid views to book lists. |
+| <a id="readera-page-thumbnails"></a>[Page thumbnails](patches/src/main/kotlin/app/morphe/patches/readera/misc/minipages/PageThumbnailsPatch.kt) | Adds the page thumbnails button to the reader for browsing all pages of a book. |
+| <a id="readera-quotes-and-notes-section"></a>[Quotes and notes section](patches/src/main/kotlin/app/morphe/patches/readera/misc/notes/QuotesAndNotesPatch.kt) | Adds a section to the main menu with the quotes, bookmarks and reviews from all books. |
+| <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog, the promotional dialogs shown on startup and the Go to Premium buttons in the toolbar and its menu. |
+| <a id="readera-skip-headers-and-footers"></a>[Skip headers and footers](patches/src/main/kotlin/app/morphe/patches/readera/misc/skipheaders/SkipHeadersPatch.kt) | Adds an option to skip headers, footers and page numbers during text-to-speech. Applies to PDF and DjVu documents. |
+| <a id="readera-speech-rate-slider"></a>[Speech rate slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechrate/SpeechRateSliderPatch.kt) | Adds a text-to-speech speed slider from 0.1x to 4x, saved per voice. |
+| <a id="readera-text-to-speech-filter"></a>[Text-to-speech filter](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechfilter/SpeechTextFilterPatch.kt) | Adds "Omit words and symbols" to Settings > Text to speech (TTS). Read aloud skips listed words, phrases and symbols without changing book text. Includes bracket symbols by default. |
 
 </details>
 
@@ -3096,23 +3049,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="x-plore-file-manager-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="x-plore-file-manager-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/xplore/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features and removes ads. |
-
-</details>
-
-<a id="xianyu"></a>
-<details>
-<summary><img src=".github/assets/icons/idlefish.png" width="18" align="top">&nbsp;&nbsp;Xianyu&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 7.28.86.1 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description |
-|----------|----------------|
-| <a id="xianyu-allow-sharing-without-login"></a>[Allow sharing without login](patches/src/main/kotlin/app/morphe/patches/idlefish/misc/share/ShareWithoutLoginPatch.kt) | Shares a public listing link through the Android share sheet when signed out. |
-| <a id="xianyu-skip-login-prompts"></a>[Skip login prompts](patches/src/main/kotlin/app/morphe/patches/idlefish/misc/login/SkipLoginPromptsPatch.kt) | Skips login screens that open at launch, on search and listing taps and during background requests. |
 
 </details>
 
