@@ -21,7 +21,6 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
-| `launchbox.png` | LaunchBox (`com.unbrokensoftware.launchbox`) | Unbroken Software, LLC | APK 1.23, adaptive icon `res/mipmap-anydpi-v26/icon.xml`, white background under `launcher_foreground` (xxxhdpi), cut to a circle |
 | `flights25.png` | Flights25 (`de.app.flighttracker`) | Rocketech sp. z o.o. | Play 1.4.7, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, foreground over `ic_launcher_background`, cut to a circle |
 | `audiomack.png` | Audiomack (`com.audiomack`) | Audiomack Music Apps | APK 8.11.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `ultimea.png` | ULTIMEA (`com.dynanic.ultimea`) | Ultimea | Play 1.4.4, adaptive icon foreground over background, cut to a circle |
@@ -127,12 +126,10 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `coddy.png` | Coddy (`tech.coddy.coddyapp`) | Coddy | Play 2.2.9, `res/mipmap-xxxhdpi-v4/launcher_icon.png` (square icon cut to a circle) |
 | `cubasisle3.png` | Cubasis LE 3 (`com.steinberg.cubasisle3`) | Steinberg Media Technologies | Play 3.8.6, adaptive icon `icon_le` (`res/drawable-xxhdpi-v4/icon_le_bg.png` under `icon_le_fg.png`, xxhdpi config split) |
 | `one4home.png` | One4Home Launcher (`com.one4studio.one4home`) | One4Studio | APK 0.4.72, adaptive icon `res/mipmap-anydpi-v26/ic_launcher_round.xml` |
-| `okru.png` | OK: Social Network (`ru.ok.android`) | VK | APK 26.9.24, adaptive icon `res/bVF.xml`, background and foreground layers composited in a circle |
 | `moviebox.png` | MovieBox (`com.community.oneroom`) | Not on Google Play | APK 4.0.03.0918.03, adaptive round icon |
 | `movieboxtv.png` | MovieBox TV (`com.community.mbox.tv`) | Not on Google Play | APK 1.2.0.0923, `res/d2.webp` (square icon cut to a circle) |
 | `musclewiki.png` | MuscleWiki (`com.musclewiki.macro`) | MuscleWiki SEZC | Play 3.2.7, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `hypic.png` | Hypic (`com.xt.retouchoversea`) | Bytedance Pte. Ltd. | Play 9.9.0, `res/mipmap-xxxhdpi-v4/ic_launcher.webp` (square icon cut to a circle) |
-| `idlefish.png` | Xianyu (`com.taobao.idlefish`) | Taobao | Play 7.28.86.1, `res/drawable-xxhdpi-v4/idlefish_ic_launcher.png` (square icon cut to a circle) |
 | `musixmatch.png` | Musixmatch (`com.musixmatch.android.lyrify`) | Musixmatch | APK 8.4.2, `mipmap/mxm_icon_manifest_round` xxxhdpi (`res/raw/MZ`) |
 | `myscriptmath.png` | MyScript Math (`com.myscript.math`) | MyScript | APK 1.11.0, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` (white background under vector `res/drawable/ic_launcher_foreground.xml`) rasterized and cut to a circle |
 | `myscriptnotes.png` | MyScript Notes (`com.myscript.nebo`) | MyScript | APK 7.4.5, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |

@@ -9,8 +9,6 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
-import app.morphe.patches.readera.shared.patchesSettingsPatch
-import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
@@ -23,36 +21,37 @@ private const val DICTIONARY_WORD_COLOR_KEY = "pref_dict_word_color"
 @Suppress("unused")
 val dictionaryWordColorsPatch = bytecodePatch(
     name = "Dictionary word colors",
-    description = "Saves a selected word to Dictionary in one of five colors.",
+    description = "Adds a color picker for dictionary words.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
+    dependsOn(disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
-        registerReadEraPatch("Dictionary word colors", "Saves a selected word to Dictionary in one of five colors.")
         val prefs = highlightColorPrefs()
 
-        val (_, _, defaultColorRead, addColoredWordCall) = DictionaryWordAddFingerprint.instructionMatches
-        val defaultColorField = defaultColorRead.instruction.getReference<FieldReference>()!!
-        val addColoredWord = addColoredWordCall.instruction.getReference<MethodReference>()!!
+        val defaultColorField: FieldReference
+        val addColoredWord: MethodReference
+        DictionaryWordAddFingerprint.instructionMatches.let {
+            defaultColorField = it[2].instruction.getReference<FieldReference>()!!
+            addColoredWord = it[3].instruction.getReference<MethodReference>()!!
+        }
         readDefaultColorFromPreference(defaultColorField, DICTIONARY_WORD_COLOR_KEY)
 
         val selectionType = addColoredWord.parameterTypes[1].toString()
         val wordType = addColoredWord.returnType
         val saveWordColor = DictionaryWordColorFingerprint.method
-        val (wordColorWrite) = DictionaryWordColorFingerprint.instructionMatches
-        val wordColorField = wordColorWrite.instruction.getReference<FieldReference>()!!
+        val wordColorField = DictionaryWordColorFingerprint.instructionMatches[0].instruction
+            .getReference<FieldReference>()!!
         val postWordEvent = DictionaryWordEventFingerprint.method
         val wordEventType = postWordEvent.parameterTypes[2].toString()
-        val (_, eventBusCall, _, _, _) = CreateQuoteFingerprint.instructionMatches
-        val eventBusAccessor = eventBusCall.instruction.getReference<MethodReference>()!!
-        val (_, showWordHintCall) = dictionaryWordHintFingerprint(DictionaryWordAddFingerprint.method).instructionMatches
-        val showWordHint = showWordHintCall.instruction.getReference<MethodReference>()!!
+        val eventBusAccessor = CreateQuoteFingerprint.instructionMatches[1].instruction.getReference<MethodReference>()!!
+        val showWordHint = dictionaryWordHintFingerprint(DictionaryWordAddFingerprint.method)
+            .instructionMatches[1].instruction.getReference<MethodReference>()!!
 
         val (unavailableCheck, unavailableMessageId, showMessage) = DictionaryUnavailableFingerprint.matchAll(2..2)
             .map { match ->
@@ -63,9 +62,12 @@ val dictionaryWordColorsPatch = bytecodePatch(
                     messageCall.instruction.getReference<MethodReference>()!!,
                 )
             }.distinctBy { (check, messageId, show) -> Triple(descriptor(check), messageId, descriptor(show)) }.single()
-        val (unavailableEventClass, findStickyEventCall) = dictionaryUnavailableCheckFingerprint(unavailableCheck).instructionMatches
-        val unavailableEvent = unavailableEventClass.instruction.getReference<TypeReference>()!!.type
-        val findStickyEvent = findStickyEventCall.instruction.getReference<MethodReference>()!!
+        val unavailableEvent: String
+        val findStickyEvent: MethodReference
+        dictionaryUnavailableCheckFingerprint(unavailableCheck).instructionMatches.let {
+            unavailableEvent = it[0].instruction.getReference<TypeReference>()!!.type
+            findStickyEvent = it[1].instruction.getReference<MethodReference>()!!
+        }
 
         val selectedWordType = selectionStateClass().fields.single { field ->
             classDefByOrNull(field.type)?.fields?.any { it.type == wordType } == true

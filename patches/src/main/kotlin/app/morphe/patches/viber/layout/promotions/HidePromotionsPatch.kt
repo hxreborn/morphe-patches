@@ -35,10 +35,6 @@ val hidePromotionsPatch: BytecodePatch = bytecodePatch(
             val (_, _, sectionVisible, _) = instructionMatches
             method.addFilterCallAfter(sectionVisible.index, SHOW_PROMOTION)
         }
-        ViberOutBannerVisibilityFingerprint.matchSingle().apply {
-            val (_, banner2Visible, _, bannerVisible, _) = instructionMatches
-            listOf(bannerVisible, banner2Visible).forEach { method.addFilterCallAfter(it.index, SHOW_PROMOTION) }
-        }
         CallsIntroFingerprint.matchSingle().apply {
             val (_, flagResult, _) = instructionMatches
             method.addFilterCallAfter(flagResult.index, SHOW_PROMOTION)

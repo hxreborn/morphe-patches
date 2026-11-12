@@ -15,8 +15,6 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
-private const val FULL_SCREEN_FLAG_WRITE_WINDOW = 4
-
 private const val PREFS_FRAGMENT_CLASS = "Lorg/readera/pref/PrefsFragment;"
 
 internal object SaveFullScreenModeFingerprint : Fingerprint(
@@ -71,7 +69,7 @@ internal fun fullScreenFlagsInitFingerprint(definingClass: String, readingModePr
         fieldAccess(readingModePreference, Opcode.SGET_OBJECT),
         fieldAccess(opcode = Opcode.SGET_OBJECT, type = "Landroid/content/SharedPreferences;", location = MatchAfterImmediately()),
         methodCall(returnType = "Ljava/lang/Boolean;", location = MatchAfterImmediately()),
-        opcode(Opcode.IPUT_BOOLEAN, MatchAfterWithin(FULL_SCREEN_FLAG_WRITE_WINDOW)),
+        opcode(Opcode.IPUT_BOOLEAN, MatchAfterWithin(4)),
         opcode(Opcode.CONST_4, MatchAfterImmediately()),
         opcode(Opcode.IPUT_BOOLEAN, MatchAfterImmediately()),
     ),

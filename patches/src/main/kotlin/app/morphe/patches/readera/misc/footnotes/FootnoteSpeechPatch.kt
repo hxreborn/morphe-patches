@@ -14,8 +14,6 @@ import app.morphe.patches.readera.shared.TTS_FOOTNOTE_ROW
 import app.morphe.patches.readera.shared.TTS_UPSELL_ROW
 import app.morphe.patches.readera.shared.bindTtsPreference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
-import app.morphe.patches.readera.shared.patchesSettingsPatch
-import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.hideTtsPreferenceRow
 import app.morphe.patches.readera.shared.showTtsPreferenceRow
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -23,19 +21,17 @@ import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val readFootnotesAloudPatch = bytecodePatch(
-    name = "Read footnotes aloud",
-    description = "Reads each footnote aloud where the book refers to it, in place of its number. " +
-        "Works in EPUB, FB2 and MOBI books.",
+val footnoteSpeechPatch = bytecodePatch(
+    name = "Footnote speech",
+    description = "Adds an option to read footnotes aloud during text-to-speech.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
+    dependsOn(disableSignatureChecksPatch)
 
     execute {
-        registerReadEraPatch("Read footnotes aloud", "Reads each footnote where the book refers to it, in EPUB, FB2 and MOBI.")
         val speakFootnotes = bindTtsPreference(TTS_FOOTNOTE_ROW)
         showTtsPreferenceRow(TTS_FOOTNOTE_ROW)
         hideTtsPreferenceRow(TTS_UPSELL_ROW)

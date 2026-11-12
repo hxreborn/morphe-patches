@@ -5,11 +5,8 @@
 package app.morphe.patches.myscriptnotes.misc.tracking
 
 import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patches.myscriptnotes.misc.pairip.restoreStartupPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
-import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
 val disableTrackingPatch = resourcePatch(
@@ -18,8 +15,6 @@ val disableTrackingPatch = resourcePatch(
         "collecting usage data.",
 ) {
     compatibleWith(AppCompatibilities.MYSCRIPT_NOTES)
-    dependsOn(removePairipProtectionPatch, restoreStartupPatch)
-    availability(requireArm64)
 
     execute {
         document("AndroidManifest.xml").use { document ->

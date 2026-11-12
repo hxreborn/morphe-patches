@@ -11,9 +11,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.Opcode
 
-internal const val SPEECH_PAUSE_EVENT_MATCH = 2
-internal const val SPEECH_PAUSE_RETURN_MATCH = 5
-
 internal object SpeechPingFingerprint : Fingerprint(
     definingClass = "Lorg/readera/SpeechService;",
     name = "onEventMainThread",

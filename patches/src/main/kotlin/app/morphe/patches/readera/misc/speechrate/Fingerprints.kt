@@ -15,17 +15,10 @@ import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-private const val SPEECH_RATE_VIEW_CAST_WINDOW = 1
-private const val SPEECH_RATE_LABEL_ID_WINDOW = 1
-
 internal object ApplySpeechRateFingerprint : Fingerprint(
     returnType = "V",
     strings = listOf("PrefsTtsRateFragment setSpeechRate %f"),
 )
-
-internal const val SPEECH_RATE_ROOT_MATCH = 0
-internal const val SPEECH_RATE_SEEK_BAR_ID_MATCH = 1
-internal const val SPEECH_RATE_LABEL_ID_MATCH = 4
 
 internal object SpeechRateRowFingerprint : Fingerprint(
     classFingerprint = ApplySpeechRateFingerprint,
@@ -36,10 +29,10 @@ internal object SpeechRateRowFingerprint : Fingerprint(
         fieldAccess(opcode = Opcode.IGET_OBJECT, type = "Landroid/view/View;"),
         opcode(Opcode.CONST, MatchAfterImmediately()),
         methodCall(definingClass = "Landroid/view/View;", name = "findViewById", location = MatchAfterImmediately()),
-        checkCast("Landroid/widget/SeekBar;", MatchAfterWithin(SPEECH_RATE_VIEW_CAST_WINDOW)),
-        opcode(Opcode.CONST, MatchAfterWithin(SPEECH_RATE_LABEL_ID_WINDOW)),
+        checkCast("Landroid/widget/SeekBar;", MatchAfterWithin(1)),
+        opcode(Opcode.CONST, MatchAfterWithin(1)),
         methodCall(definingClass = "Landroid/view/View;", name = "findViewById", location = MatchAfterImmediately()),
-        checkCast("Landroid/widget/TextView;", MatchAfterWithin(SPEECH_RATE_VIEW_CAST_WINDOW)),
+        checkCast("Landroid/widget/TextView;", MatchAfterWithin(1)),
         methodCall(definingClass = "Landroid/widget/ProgressBar;", name = "setProgress"),
         methodCall(definingClass = "Landroid/view/View;", name = "setOnClickListener"),
     ),

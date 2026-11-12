@@ -1,4 +1,0 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:state_checked="true" android:drawable="@drawable/hx_readera_control_check_on" />
-<item android:drawable="@drawable/hx_readera_control_check_off" />
-</selector>

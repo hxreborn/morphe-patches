@@ -46,9 +46,8 @@ internal class HighlightColorStub(
 )
 
 internal fun BytecodePatchContext.highlightColorPrefs(): HighlightColorPrefs {
-    val (prefsAccessorCall, _, _, paletteFilterCall) = QuoteColorIconFingerprint.instructionMatches
-    val prefsAccessor = prefsAccessorCall.instruction.getReference<MethodReference>()!!
-    val paletteFilter = paletteFilterCall.instruction.getReference<MethodReference>()!!
+    val prefsAccessor = QuoteColorIconFingerprint.instructionMatches[0].instruction.getReference<MethodReference>()!!
+    val paletteFilter = QuoteColorIconFingerprint.instructionMatches[3].instruction.getReference<MethodReference>()!!
     val prefsClass = prefsAccessor.definingClass
     return HighlightColorPrefs(
         prefsAccessor,
@@ -60,9 +59,8 @@ internal fun BytecodePatchContext.highlightColorPrefs(): HighlightColorPrefs {
 
 internal fun BytecodePatchContext.readDefaultColorFromPreference(defaultColorField: FieldReference, key: String) {
     defaultColorWriteFingerprint(defaultColorField).let {
-        val (storeRead, defaultColorWrite) = it.instructionMatches
-        val storeField = storeRead.instruction.getReference<FieldReference>()!!
-        val writeIndex = defaultColorWrite.index
+        val storeField = it.instructionMatches[0].instruction.getReference<FieldReference>()!!
+        val writeIndex = it.instructionMatches[1].index
         val registers = it.method.getFreeRegisterProvider(writeIndex, 2)
         val colorRegister = registers.getFreeRegister4Bit()
         val keyRegister = registers.getFreeRegister4Bit()
@@ -82,8 +80,8 @@ internal fun BytecodePatchContext.readDefaultColorFromPreference(defaultColorFie
 internal fun BytecodePatchContext.selectionStateClass(): ClassDef {
     val stubType = SelectionActionsFingerprint.instructionMatches[QUOTE_PICKER_MATCH].instruction
         .getReference<TypeReference>()!!.type
-    val (colorModeCall, _, _, _) = NightHighlightFingerprint.instructionMatches
-    val colorModeType = colorModeCall.instruction.getReference<MethodReference>()!!.returnType
+    val colorModeType = NightHighlightFingerprint.instructionMatches[0].instruction
+        .getReference<MethodReference>()!!.returnType
     val bindMethod = stubBindMethod(classDefBy(classDefBy(stubType).superclass!!), colorModeType)
     return classDefBy(bindMethod.parameterTypes[0].toString())
 }
@@ -112,9 +110,9 @@ internal fun BytecodePatchContext.fillHighlightColorStub(
         selectionActions.instructionMatches[stubMatchIndex].instruction.getReference<TypeReference>()!!.type,
     )
 
-    val (colorModeCall, _, nightRead, _) = NightHighlightFingerprint.instructionMatches
-    val colorModeType = colorModeCall.instruction.getReference<MethodReference>()!!.returnType
-    val nightField = nightRead.instruction.getReference<FieldReference>()!!
+    val colorModeType = NightHighlightFingerprint.instructionMatches[0].instruction
+        .getReference<MethodReference>()!!.returnType
+    val nightField = NightHighlightFingerprint.instructionMatches[2].instruction.getReference<FieldReference>()!!
 
     val stubBase = classDefBy(stub.superclass!!)
     fun stubMethod(parameters: List<String>) = stubBase.methods.single { method ->

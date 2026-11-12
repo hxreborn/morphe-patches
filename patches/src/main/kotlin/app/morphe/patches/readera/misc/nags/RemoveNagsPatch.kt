@@ -8,32 +8,29 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
-import app.morphe.patches.readera.shared.patchesSettingsPatch
-import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
 val removeNagsPatch = bytecodePatch(
     name = "Remove nags",
-    description = "Removes the rate-the-app and promotion pop-ups and the Go to Premium button.",
+    description = "Removes the rate this app dialog, the promotional dialogs shown on startup " +
+        "and the Go to Premium buttons in the toolbar and its menu.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
+    dependsOn(disableSignatureChecksPatch)
 
     execute {
-        registerReadEraPatch("Remove nags", "Removes the rate-the-app and promotion pop-ups and the Go to Premium button.")
         StartupNagDispatchFingerprint.matchAll(1..1)
 
         StartupNagDispatchFingerprint.instructionMatches.forEach {
             it.getMethodCalled().returnEarly()
         }
 
-        val (_, promoDispatchCall) = StartupNagDispatchFingerprint.instructionMatches
-        val promoDispatcher = promoDispatchCall.getMethodCalled()
+        val promoDispatcher = StartupNagDispatchFingerprint.instructionMatches.last().getMethodCalled()
         ToolbarPromoModeFingerprint.matchAll(classDefBy(promoDispatcher.definingClass), 1..1)
         ToolbarPromoModeFingerprint.method.returnEarly(FRESH_INSTALL_TOOLBAR_MODE)
 

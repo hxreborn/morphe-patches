@@ -24,14 +24,23 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.InputType;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 @SuppressWarnings("unused")
 public final class SpeechFilterSettings {
 
-    static final String TITLE = "Omit words and symbols";
+    private static final String PREFERENCES = "hx_readera_speech";
 
     private static final String OMITTED_TEXT = "omitted_text";
+
+    private static final String TITLE = "Omit words and symbols";
+
+    private static final int MIN_ROW_HEIGHT_DP = 48;
 
     private static final int EDITOR_LINES = 6;
 
@@ -41,27 +50,57 @@ public final class SpeechFilterSettings {
 
     private SpeechFilterSettings(Context context) {
         this.context = context;
-        this.preferences = PatchSettings.speechPreferences(context);
+        this.preferences = preferences(context);
     }
 
     public static String filter(Context context, String text) {
-        return savedFilter(context).filter(text);
+        return new SpeechTextFilter(
+                preferences(context).getString(OMITTED_TEXT, SpeechTextFilter.DEFAULT_CONFIGURATION))
+            .filter(text);
     }
 
-    static void open(Context context, Runnable saved) {
-        new SpeechFilterSettings(context).edit(saved);
+    public static void attach(View root) {
+        if (!(root instanceof ScrollView)) {
+            return;
+        }
+        View content = ((ScrollView) root).getChildAt(0);
+        if (!(content instanceof LinearLayout)) {
+            return;
+        }
+        LinearLayout rows = (LinearLayout) content;
+        if (rows.findViewWithTag(TITLE) != null) {
+            return;
+        }
+        new SpeechFilterSettings(root.getContext()).addRow(rows);
     }
 
-    static int count(Context context) {
-        return savedFilter(context).entryCount();
+    private static SharedPreferences preferences(Context context) {
+        return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    private static SpeechTextFilter savedFilter(Context context) {
-        return new SpeechTextFilter(PatchSettings.speechPreferences(context)
-            .getString(OMITTED_TEXT, SpeechTextFilter.DEFAULT_CONFIGURATION));
+    private void addRow(LinearLayout rows) {
+        TextView row = new TextView(this.context);
+        row.setTag(TITLE);
+        row.setFocusable(true);
+        row.setText(TITLE);
+        TypedValue appearance = new TypedValue();
+        this.context.getTheme().resolveAttribute(android.R.attr.textAppearanceListItem, appearance, true);
+        row.setTextAppearance(this.context, appearance.resourceId);
+        row.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        View template = rows.getChildAt(0);
+        row.setPaddingRelative(template.getPaddingStart(), template.getPaddingTop(), template.getPaddingEnd(),
+                template.getPaddingBottom());
+        int minimumHeight = Math.round(MIN_ROW_HEIGHT_DP * this.context.getResources().getDisplayMetrics().density);
+        row.setMinHeight(Math.max(minimumHeight, template.getMinimumHeight()));
+        TypedValue background = new TypedValue();
+        this.context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, background, true);
+        row.setBackgroundResource(background.resourceId);
+        row.setOnClickListener((view) -> edit());
+        rows.addView(row, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
-    private void edit(Runnable saved) {
+    private void edit() {
         EditText editor = new EditText(this.context);
         editor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
                 | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -71,13 +110,11 @@ public final class SpeechFilterSettings {
         editor.setContentDescription(TITLE);
         editor.setText(this.preferences.getString(OMITTED_TEXT, SpeechTextFilter.DEFAULT_CONFIGURATION));
         new AlertDialog.Builder(this.context).setTitle(TITLE)
-            .setMessage("One word, phrase or symbol per line. A word matches only as a whole word, in any case. "
-                    + "An empty list reads everything.")
+            .setMessage("Enter one word, phrase or symbol per line. Words match regardless of case. "
+                    + "Leave empty to read everything.")
             .setView(editor)
-            .setPositiveButton("Save", (dialog, which) -> {
-                this.preferences.edit().putString(OMITTED_TEXT, editor.getText().toString()).apply();
-                saved.run();
-            })
+            .setPositiveButton("Save", (dialog,
+                    which) -> this.preferences.edit().putString(OMITTED_TEXT, editor.getText().toString()).apply())
             .setNegativeButton(android.R.string.cancel, null)
             .show();
     }

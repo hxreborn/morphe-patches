@@ -677,17 +677,6 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.9.0", versionCode = 99080, minSdk = 23)),
     )
 
-    val IDLEFISH = Compatibility(
-        name = "Xianyu",
-        packageName = "com.taobao.idlefish",
-        apkFileType = ApkFileType.APKS_REQUIRED,
-        appIconColor = 0xFFE60F,
-        signatures = setOf(
-            "e4c15e30502f8da0e878e0fe73877403b8d99f8f761809507a6512ecfed84909",
-        ),
-        targets = listOf(AppTarget(version = "7.28.86.1", versionCode = 529, minSdk = 21)),
-    )
-
     val IMO = Compatibility(
         name = "imo",
         packageName = "com.imo.android.imoim",
@@ -800,17 +789,6 @@ internal object AppCompatibilities {
             "d39a40cf5446332eff3e40b9b203b5a8aa9b1f1d834f683df5bb1cc4d1d45edf",
         ),
         targets = listOf(AppTarget(version = "40.0.44", versionCode = 37, minSdk = 24)),
-    )
-
-    val LAUNCHBOX = Compatibility(
-        name = "LaunchBox",
-        packageName = "com.unbrokensoftware.launchbox",
-        apkFileType = ApkFileType.APK,
-        appIconColor = 0xFF4A00,
-        signatures = setOf(
-            "3cdff8f43287a0a12493eacc46fe75ca589a75e49bc52cc716e6bf0307bca186",
-        ),
-        targets = listOf(AppTarget(version = "1.23", versionCode = 194, minSdk = 26)),
     )
 
     val LED_BLINKER = Compatibility(
@@ -1061,7 +1039,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "12645b76721993f0f3faf82dddecd6c96355260bf44d06ce6246caf2fcf3ada8",
         ),
-        targets = listOf(AppTarget(version = "7.4.8", versionCode = 182801, minSdk = 26)),
+        targets = listOf(AppTarget(version = "7.4.6", versionCode = 182341, minSdk = 26)),
     )
 
     val MY_APK = Compatibility(
@@ -1141,15 +1119,6 @@ internal object AppCompatibilities {
             AppTarget(version = "3.4.14", versionCode = 4197424, minSdk = 24),
             AppTarget(version = "3.4.15", versionCode = 4197425, minSdk = 24),
         ),
-    )
-
-    val OK = Compatibility(
-        name = "OK",
-        packageName = "ru.ok.android",
-        apkFileType = ApkFileType.APKS_REQUIRED,
-        appIconColor = 0xEE8208,
-        signatures = setOf("0bc473ae8f9488d0d610a3434880d11c198a81b91867a456ab373150e62d807e"),
-        targets = listOf(AppTarget(version = "26.9.24", versionCode = 26092400, minSdk = 24)),
     )
 
     val ONE4HOME = Compatibility(
@@ -1407,10 +1376,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "38687807198e57d53bef507efdc11a6f9bf19bf7c7643b89650edff812ba2c00",
         ),
-        targets = listOf(
-            AppTarget(version = "3.3.8", versionCode = 9070838, minSdk = 24),
-            AppTarget(version = "3.4.0", versionCode = 9070840, minSdk = 24),
-        ),
+        targets = listOf(AppTarget(version = "3.3.8", versionCode = 9070838, minSdk = 24)),
     )
 
     val PYDROID = Compatibility(

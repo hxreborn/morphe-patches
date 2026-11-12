@@ -17,8 +17,6 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.readera.shared.TTS_SKIP_HEADERS_ROW
 import app.morphe.patches.readera.shared.bindTtsPreference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
-import app.morphe.patches.readera.shared.patchesSettingsPatch
-import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.showTtsPreferenceRow
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -40,21 +38,22 @@ private const val SPEECH_CROP_SIGNATURE = "(IIFFFFFF[F)I"
 private const val SPEECH_CROP_RECT_METHOD = "speechCropRect"
 private const val SPEECH_CROP_PAGE_METHOD = "ingestCroppedPage"
 private const val SPEECH_CROPS_FIELD = "speechCrops"
+private const val RECT_TYPE = "Landroid/graphics/RectF;"
 private const val SPARSE_ARRAY_TYPE = "Landroid/util/SparseArray;"
 
 @Suppress("unused")
 val skipHeadersPatch = bytecodePatch(
     name = "Skip headers and footers",
-    description = "Makes Read aloud skip page headers, footers and page numbers in PDF and DjVu files.",
+    description = "Adds an option to skip headers, footers and page numbers during text-to-speech. " +
+        "Applies to PDF and DjVu documents.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
+    dependsOn(disableSignatureChecksPatch)
 
     execute {
-        registerReadEraPatch("Skip headers and footers", "Skips page headers, footers and page numbers in PDF and DjVu files.")
         val skipHeaders = bindTtsPreference(TTS_SKIP_HEADERS_ROW)
         showTtsPreferenceRow(TTS_SKIP_HEADERS_ROW)
 
@@ -109,8 +108,7 @@ val skipHeadersPatch = bytecodePatch(
         }
         controller.methods.add(speechCropRect)
 
-        val pageIndexes = SpeechPagesFingerprint.instructionMatches[SPEECH_PAGE_INDEXES_MATCH].instruction
-            .getReference<FieldReference>()!!
+        val pageIndexes = SpeechPagesFingerprint.instructionMatches[5].instruction.getReference<FieldReference>()!!
         val pagesHolder = classDefBy(controller.superclass!!).fields.single { field ->
             classDefByOrNull(field.type)?.fields?.any { it.type == "[$pageType" } == true
         }
@@ -169,10 +167,9 @@ val skipHeadersPatch = bytecodePatch(
         )
 
         SpeechPagesFingerprint.let { match ->
-            val (_, firstPageResult, _, lastPageResult, rectCreation) = match.instructionMatches
-            val firstPage = match.method.getInstruction<OneRegisterInstruction>(firstPageResult.index).registerA
-            val lastPage = match.method.getInstruction<OneRegisterInstruction>(lastPageResult.index).registerA
-            val rectIndex = rectCreation.index
+            val firstPage = match.method.getInstruction<OneRegisterInstruction>(match.instructionMatches[1].index).registerA
+            val lastPage = match.method.getInstruction<OneRegisterInstruction>(match.instructionMatches[3].index).registerA
+            val rectIndex = match.instructionMatches[4].index
             val flagRegister = match.method.getInstruction<OneRegisterInstruction>(rectIndex).registerA
             match.method.addInstructionsWithLabels(
                 rectIndex,

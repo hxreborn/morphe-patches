@@ -31,8 +31,7 @@ import org.w3c.dom.Element
 private const val WEB_SETTINGS_CLASS = "Landroid/webkit/WebSettings;"
 private const val TITLE_VIEW_CLASS = "Lcom/realme/iot/common/widgets/TitleView;"
 private const val MODE_NIGHT_YES = 2
-private const val BASE_WEB_VIEW_SETTINGS_SITES = 4
-private const val STORE_WEB_VIEW_SETTINGS_SITES = 3
+private val WEB_VIEW_SETTINGS_SITES = 4..4
 private val HOME_HEADER_TINT_SITES = 2..2
 private val LIGHT_SYSTEM_BARS_SETTERS = 2..2
 private const val ALGORITHMIC_DARKENING_MIN_SDK = 33
@@ -1028,11 +1027,7 @@ val amoledThemePatch = bytecodePatch(
             }
         }
 
-        val hasStoreWebViews = StoreWebViewSettingsFingerprint.matchAllOrNull() != null
-        val webViewSettingsSiteCount = BASE_WEB_VIEW_SETTINGS_SITES +
-            if (hasStoreWebViews) STORE_WEB_VIEW_SETTINGS_SITES else 0
-
-        WebViewSettingsFingerprint.matchAll(webViewSettingsSiteCount..webViewSettingsSiteCount).forEach { match ->
+        WebViewSettingsFingerprint.matchAll(WEB_VIEW_SETTINGS_SITES).forEach { match ->
             match.method.apply {
                 val (_, settingsResult) = match.instructionMatches
                 val settingsIndex = settingsResult.index

@@ -15,9 +15,6 @@ import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-private const val SYSTEM_FONTS_CALL_WINDOW = 1
-private const val LOAD_FONTS_CALL_WINDOW = 1
-
 internal const val FONTS_ACTIVITY_CLASS = "Lorg/readera/FontsActivity;"
 
 internal object SaveCustomFontsCacheFingerprint : Fingerprint(
@@ -31,14 +28,6 @@ internal object SaveCustomFontsCacheFingerprint : Fingerprint(
     ),
 )
 
-internal const val SYSTEM_FONTS_READ_CACHE_MATCH = 1
-internal const val SYSTEM_FONTS_CREATE_ANALYZER_MATCH = 2
-internal const val SYSTEM_FONTS_READ_LIGATURE_MAPS_MATCH = 4
-internal const val SYSTEM_FONTS_APPLY_LIGATURE_MAPS_MATCH = 5
-internal const val SYSTEM_FONTS_CLOSE_MATCH = 7
-internal const val SYSTEM_FONTS_FONT_CAST_MATCH = 8
-internal const val SYSTEM_FONTS_PREPARE_FONT_MATCH = 9
-
 internal object SystemFontsFingerprint : Fingerprint(
     classFingerprint = SaveCustomFontsCacheFingerprint,
     accessFlags = listOf(AccessFlags.PRIVATE, AccessFlags.STATIC),
@@ -48,9 +37,9 @@ internal object SystemFontsFingerprint : Fingerprint(
         string("system"),
         methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/lang/String;"), returnType = "Ljava/util/List;"),
         methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf()),
-        methodCall(opcode = Opcode.INVOKE_STATIC, returnType = "Ljava/util/List;", location = MatchAfterWithin(SYSTEM_FONTS_CALL_WINDOW)),
-        methodCall(opcode = Opcode.INVOKE_STATIC, returnType = "Ljava/util/Map;", location = MatchAfterWithin(SYSTEM_FONTS_CALL_WINDOW)),
-        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/util/List;", "Ljava/util/Map;"), location = MatchAfterWithin(SYSTEM_FONTS_CALL_WINDOW)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, returnType = "Ljava/util/List;", location = MatchAfterWithin(1)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, returnType = "Ljava/util/Map;", location = MatchAfterWithin(1)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/util/List;", "Ljava/util/Map;"), location = MatchAfterWithin(1)),
         methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/util/List;"), returnType = "V", location = MatchAfterImmediately()),
         methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("Ljava/io/Closeable;"), location = MatchAfterImmediately()),
         opcode(Opcode.CHECK_CAST),
@@ -121,9 +110,9 @@ internal object LoadFontsFingerprint : Fingerprint(
     parameters = listOf(),
     filters = listOf(
         methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V"),
-        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V", location = MatchAfterWithin(LOAD_FONTS_CALL_WINDOW)),
-        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V", location = MatchAfterWithin(LOAD_FONTS_CALL_WINDOW)),
-        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V", location = MatchAfterWithin(LOAD_FONTS_CALL_WINDOW)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V", location = MatchAfterWithin(1)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V", location = MatchAfterWithin(1)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("I", "I"), returnType = "V", location = MatchAfterWithin(1)),
     ),
 )
 

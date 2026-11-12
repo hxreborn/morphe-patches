@@ -14,7 +14,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val JNI_DOC_CLASS = "Lorg/readera/jni/JniDoc;"
-internal const val RECT_TYPE = "Landroid/graphics/RectF;"
+private const val RECT_TYPE = "Landroid/graphics/RectF;"
 
 internal object SpeechTextIngestFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PRIVATE),
@@ -24,8 +24,6 @@ internal object SpeechTextIngestFingerprint : Fingerprint(
         methodCall(definingClass = JNI_DOC_CLASS, parameters = listOf("I", "I", "F", "F"), returnType = "I"),
     ),
 )
-
-internal const val SPEECH_PAGE_INDEXES_MATCH = 5
 
 internal object SpeechPagesFingerprint : Fingerprint(
     classFingerprint = SpeechTextIngestFingerprint,
