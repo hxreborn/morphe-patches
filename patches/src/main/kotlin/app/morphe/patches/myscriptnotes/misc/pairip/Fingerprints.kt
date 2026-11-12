@@ -5,9 +5,11 @@
 package app.morphe.patches.myscriptnotes.misc.pairip
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.string
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.Opcode
@@ -433,7 +435,12 @@ internal fun BytecodePatchContext.laserObserverClass(): String {
 
 internal fun BytecodePatchContext.paywallContentClass(): String = Fingerprint(
     classFingerprint = Fingerprint(
-        filters = listOf(methodCall(definingClass = "Landroidx/compose/material3/MaterialThemeKt;", name = "MaterialTheme")),
+        filters = listOf(
+            string(
+                "com.revenuecat.purchases.ui.revenuecatui.activity.PaywallActivity.onCreate.<anonymous> (PaywallActivity.kt:",
+                StringComparisonType.STARTS_WITH,
+            ),
+        ),
     ),
     name = "<init>",
     parameters = listOf(
