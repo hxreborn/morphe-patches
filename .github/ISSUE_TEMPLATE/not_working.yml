@@ -93,6 +93,8 @@ body:
         - "botim (another version, type it below)"
         - "CalcNote 2.25.111"
         - "CalcNote (another version, type it below)"
+        - "Candy Crush Saga 1.340.0.1"
+        - "Candy Crush Saga (another version, type it below)"
         - "Cast Plug-in for Musicolet 1.9"
         - "Cast Plug-in for Musicolet (another version, type it below)"
         - "Castle 2.1.1"
@@ -449,12 +451,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.78.0-dev.1"
         - "1.77.1-dev.1"
         - "1.77.0-dev.2"
         - "1.77.0-dev.1"
         - "1.77.0"
         - "1.76.1-dev.1"
-        - "1.76.0-dev.8"
         - "Older than these"
         # /generated
     validations:
@@ -593,6 +595,7 @@ body:
         - "botim \u00b7 Spoof signature"
         - "botim \u00b7 Unlock VIP"
         - "CalcNote \u00b7 Unlock pro"
+        - "Candy Crush Saga \u00b7 Add boosters"
         - "Cast Plug-in for Musicolet \u00b7 Remove app protection"
         - "Castle for TV \u00b7 Remove ads"
         - "Castle for TV \u00b7 Spoof signature"
@@ -816,6 +819,7 @@ body:
         - "Perplexity \u00b7 Disable tracking"
         - "Perplexity \u00b7 GmsCore support"
         - "Perplexity \u00b7 Hide upgrade promotions"
+        - "Photo Editor Pro \u00b7 Disable push notifications"
         - "Photo Editor Pro \u00b7 Hide ads"
         - "Photo Editor Pro \u00b7 Hide share options"
         - "Photo Editor Pro \u00b7 Inspect AI requests"
@@ -970,6 +974,7 @@ body:
         - "TeraBox \u00b7 Remove recent panel"
         - "TeraBox \u00b7 Show backup count"
         - "TeraBox \u00b7 Unlock Premium Plus"
+        - "TradingView \u00b7 Fix Google sign-in"
         - "TradingView \u00b7 GmsCore support"
         - "TradingView \u00b7 Hide ads"
         - "TradingView \u00b7 Hide upgrade promotions"

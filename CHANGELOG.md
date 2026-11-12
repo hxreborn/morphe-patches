@@ -1,3 +1,15 @@
+## [1.78.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.77.1-dev.1...v1.78.0-dev.1) (2026-11-12)
+
+### Bug Fixes
+
+* **TradingView - Fix Google sign-in:** remove GmsCore requirement ([85539ee](https://github.com/hxreborn/morphe-patches/commit/85539ee30ce80ea4d0f68b89c9c1e93730023016)), closes [#748](https://github.com/hxreborn/morphe-patches/issues/748)
+* **Viber - Link as secondary device:** enable backup settings ([adffc62](https://github.com/hxreborn/morphe-patches/commit/adffc6267f62e2a9ab8ada3a9672d16d4225a481))
+
+### New Features
+
+* **Candy Crush Saga - Add boosters:** grant 1,000 of each per launch ([e8d7f44](https://github.com/hxreborn/morphe-patches/commit/e8d7f449770a44afc308e0a4765a94165da5b502))
+* **Photo Editor Pro - Disable push notifications:** skip opt-in prompt ([6a96225](https://github.com/hxreborn/morphe-patches/commit/6a96225a48416ef6a03a53b40ebea4addb14605e))
+
 ## [1.77.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.77.0...v1.77.1-dev.1) (2026-11-12)
 
 ### Bug Fixes

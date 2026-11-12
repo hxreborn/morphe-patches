@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.77.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.77.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;538 patches total
+> **[v1.78.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;541 patches total
 
 ### Featured apps
 
@@ -39,7 +39,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="160"><a href="#aliexpress"><img src=".github/assets/icons/aliexpress.png" width="40"><br>AliExpress</a><br><sub>9 patches</sub></td>
-<td align="center" width="160"><a href="#photo-editor-pro"><img src=".github/assets/icons/photoeditorpro.png" width="40"><br>Photo Editor Pro</a><br><sub>6 patches</sub></td>
+<td align="center" width="160"><a href="#photo-editor-pro"><img src=".github/assets/icons/photoeditorpro.png" width="40"><br>Photo Editor Pro</a><br><sub>7 patches</sub></td>
 <td align="center" width="160"><a href="#cx-file-explorer"><img src=".github/assets/icons/cx.png" width="40"><br>Cx File Explorer</a><br><sub>3 patches</sub></td>
 </tr>
 </table>
@@ -573,6 +573,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="calcnote-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/calcnote/misc/premium/UnlockProPatch.kt) | Unlocks Pro features and removes ads. |
+
+</details>
+
+<a id="candy-crush-saga"></a>
+<details>
+<summary><img src=".github/assets/icons/candycrushsaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Saga&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.340.0.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each of ten boosters every time the game starts. Each booster unlocks at its usual level. Requires a standard install. |
 
 </details>
 
@@ -1975,7 +1991,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="photo-editor-pro"></a>
 <details>
-<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1985,6 +2001,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="photo-editor-pro-disable-push-notifications"></a>[Disable push notifications](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/notifications/DisablePushNotificationsPatch.kt) | Blocks push notifications and the prompt asking to allow them. |
 | <a id="photo-editor-pro-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/ads/HideAdsPatch.kt) | Removes banner, interstitial, app-open and rewarded ads. |
 | <a id="photo-editor-pro-hide-share-options"></a>[Hide share options](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/layout/HideShareOptionsPatch.kt) | Removes share buttons from the save screen and centers the saved photo. |
 | <a id="photo-editor-pro-inspect-ai-requests"></a>[Inspect AI requests](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/diagnostics/TraceAiRequestsPatch.kt) | Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads. Keeps a log of them. |
@@ -2716,7 +2733,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="tradingview"></a>
 <details>
-<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2726,6 +2743,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="tradingview-fix-google-sign-in"></a>[Fix Google sign-in](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/signin/FixGoogleSignInPatch.kt) | Signs in with Google through a web page. |
 | <a id="tradingview-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="tradingview-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
 | <a id="tradingview-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade button, plan banners, subscription card and paywalls. Extra indicators, watchlists, flag colors, alerts, second and tick intervals, and intraday replay are not unlocked. |
