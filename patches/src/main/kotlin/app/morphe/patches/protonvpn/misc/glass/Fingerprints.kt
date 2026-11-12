@@ -27,7 +27,11 @@ internal fun backgroundDrawFingerprint(node: String, drawContent: MethodReferenc
 
 internal fun mapViewFingerprint(modifier: String) = Fingerprint(
     strings = listOf("mapState"),
-    filters = listOf(methodCall(parameters = listOf("L", modifier, "L", "L", "I"), returnType = "V")),
+    filters = listOf(methodCall(
+        parameters = listOf("L", modifier, "L", "L", "I"),
+        returnType = "V",
+        opcodes = listOf(Opcode.INVOKE_STATIC, Opcode.INVOKE_STATIC_RANGE),
+    )),
 )
 
 internal fun backgroundFieldsFingerprint(element: String, node: String, shape: String) = Fingerprint(

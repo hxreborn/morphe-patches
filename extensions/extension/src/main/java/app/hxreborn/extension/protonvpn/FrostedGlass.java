@@ -211,6 +211,8 @@ public final class FrostedGlass {
 
         private Object fadeCoordinates;
 
+        private boolean fadeCrossRoot;
+
         private float fadeHeight;
 
         private long fadeVersion;
@@ -224,7 +226,11 @@ public final class FrostedGlass {
         }
 
         private void drawMap(Object scope) {
-            this.mapCoordinates = coordinates(scope);
+            final Object mapCoordinates = coordinates(scope);
+            if (this.mapCoordinates != mapCoordinates) {
+                this.mapCoordinates = mapCoordinates;
+                this.fadeCrossRoot = false;
+            }
             final Canvas destination = canvas(scope);
             final long packedSize = size(scope);
             final int width = (int) Math.ceil(Float.intBitsToFloat((int) (packedSize >>> Integer.SIZE)));
@@ -262,7 +268,11 @@ public final class FrostedGlass {
             if (!destination.isHardwareAccelerated() || width <= 0 || height <= 0) {
                 return false;
             }
-            this.fadeCoordinates = coordinates(scope);
+            final Object fadeCoordinates = coordinates(scope);
+            if (this.fadeCoordinates != fadeCoordinates) {
+                this.fadeCoordinates = fadeCoordinates;
+                this.fadeCrossRoot = false;
+            }
             this.fadeHeight = FrostedGlass.fadeHeight(callback, scope);
             this.fade.setPosition(0, 0, width, height);
             final RecordingCanvas recording = this.fade.beginRecording(width, height);
@@ -382,8 +392,23 @@ public final class FrostedGlass {
                     surface.crossRoot = true;
                 }
             }
+            return screenOffset(surfaceCoordinates);
+        }
+
+        private long fadePosition() {
+            if (!this.fadeCrossRoot) {
+                try {
+                    return relativePosition(this.mapCoordinates, this.fadeCoordinates);
+                } catch (IllegalArgumentException | IllegalStateException ex) {
+                    this.fadeCrossRoot = true;
+                }
+            }
+            return screenOffset(this.fadeCoordinates);
+        }
+
+        private long screenOffset(Object coordinates) {
             final long source = screenPosition(this.mapCoordinates);
-            final long destination = screenPosition(surfaceCoordinates);
+            final long destination = screenPosition(coordinates);
             final float x = Float.intBitsToFloat((int) (destination >>> Integer.SIZE))
                     - Float.intBitsToFloat((int) (source >>> Integer.SIZE));
             final float y = Float.intBitsToFloat((int) destination) - Float.intBitsToFloat((int) source);
@@ -393,8 +418,7 @@ public final class FrostedGlass {
         private boolean recordSurface(Surface surface) {
             final long position = surfacePosition(surface);
             final boolean fadeReady = this.fade.hasDisplayList() && isAttached(this.fadeCoordinates);
-            final long fadePosition = fadeReady ? relativePosition(this.mapCoordinates, this.fadeCoordinates)
-                    : Long.MIN_VALUE;
+            final long fadePosition = fadeReady ? fadePosition() : Long.MIN_VALUE;
             if (surface.position == position && surface.fadePosition == fadePosition
                     && surface.fadeVersion == this.fadeVersion) {
                 return false;
