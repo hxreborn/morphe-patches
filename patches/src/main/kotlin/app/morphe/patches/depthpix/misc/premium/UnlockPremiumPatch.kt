@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.depthpix.misc.installer.playStoreInstallerHeaderPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.findInstructionIndicesReversedOrThrow
@@ -24,7 +25,7 @@ val unlockPremiumPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.DEPTHPIX)
 
-    dependsOn(removePairipProtectionPatch)
+    dependsOn(removePairipProtectionPatch, playStoreInstallerHeaderPatch)
 
     execute {
         val userToString = UserToStringFingerprint.matchSingle()

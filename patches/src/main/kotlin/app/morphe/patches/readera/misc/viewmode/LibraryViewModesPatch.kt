@@ -10,6 +10,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.util.findInstructionIndicesReversed
@@ -23,17 +25,18 @@ private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/
 @Suppress("unused")
 val libraryViewModesPatch = bytecodePatch(
     name = "Library view modes",
-    description = "Adds the Full, Brief, Thumbnails and Grid views to book lists.",
+    description = "Adds Full, Brief, Thumbnails and Grid layouts for book lists to the library menu.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Library view modes", "Lists books as Full, Brief, Thumbnails or Grid, picked from the library menu.")
         val viewModeClass = ViewModeEnumFingerprint.classDef
         val savedViewMode = viewModeClass.fields.single {
             it.type == viewModeClass.type && AccessFlags.STATIC.isSet(it.accessFlags) &&
@@ -44,13 +47,15 @@ val libraryViewModesPatch = bytecodePatch(
         }
 
         CurrentViewModeFingerprint.let {
-            val defaultModeIndex = it.instructionMatches[3].index
+            val (_, _, _, defaultModeRead, _) = it.instructionMatches
+            val defaultModeIndex = defaultModeRead.index
             val register = it.method.getInstruction<OneRegisterInstruction>(defaultModeIndex).registerA
             it.method.replaceInstruction(defaultModeIndex, "sget-object v$register, $savedViewMode")
         }
 
         LibraryOptionsMenuFingerprint.method.apply {
-            val filterIndex = LibraryOptionsMenuFingerprint.instructionMatches.first().index
+            val (filterItemLiteral, _, _, _, _) = LibraryOptionsMenuFingerprint.instructionMatches
+            val filterIndex = filterItemLiteral.index
             val filterItemId = getInstruction<WideLiteralInstruction>(filterIndex).wideLiteral
 
             findInstructionIndicesReversed(Opcode.RETURN_VOID)

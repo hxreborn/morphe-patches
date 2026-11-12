@@ -46,6 +46,10 @@ final class SpeechTextFilter {
         }
     }
 
+    int entryCount() {
+        return this.entries.size();
+    }
+
     String filter(String text) {
         if (text == null || text.isEmpty() || this.entries.isEmpty()) {
             return text;

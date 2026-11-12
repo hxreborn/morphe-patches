@@ -42,15 +42,17 @@ internal fun BytecodePatchContext.bindTtsPreference(row: Int): TtsPreference {
     }
 
     val toggle = ttsSwitchToggleFingerprint(prefsClass, switchField)
-    val flag = toggle.instructionMatches[0].instruction.getReference<FieldReference>()!!
-    val setter = toggle.instructionMatches[2].instruction.getReference<MethodReference>()!!
-    val settingsGetter = toggle.method.getInstruction(toggle.instructionMatches[0].index - 2)
+    val (flagRead, _, setterCall, _) = toggle.instructionMatches
+    val flag = flagRead.instruction.getReference<FieldReference>()!!
+    val setter = setterCall.instruction.getReference<MethodReference>()!!
+    val settingsGetter = toggle.method.getInstruction(flagRead.index - 2)
         .getReference<MethodReference>()!!
     check(settingsGetter.returnType == flag.definingClass) { "Settings getter not found before $flag" }
 
     val setterMatch = ttsFlagSetterFingerprint(setter.definingClass, setter.name)
-    val preference = setterMatch.instructionMatches[2].instruction.getReference<FieldReference>()!!
-    val sharedPreferences = setterMatch.method.getInstruction(setterMatch.instructionMatches[0].index - 1)
+    val (editCall, _, preferenceRead) = setterMatch.instructionMatches
+    val preference = preferenceRead.instruction.getReference<FieldReference>()!!
+    val sharedPreferences = setterMatch.method.getInstruction(editCall.index - 1)
         .getReference<FieldReference>()!!
 
     ttsFlagInitFingerprint(flag.definingClass, flag).let { init ->

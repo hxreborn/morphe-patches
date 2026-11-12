@@ -22,8 +22,12 @@ package hx.gateway;
 
 import java.util.Map;
 
+import android.util.Log;
 import hx.okhttp.ChainInterceptor;
+import hx.util.Logs;
 import hx.util.Reflect;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public final class BuildTagInterceptor extends ChainInterceptor {
 
@@ -34,6 +38,12 @@ public final class BuildTagInterceptor extends ChainInterceptor {
     private static final String RESOURCE_LIST_PATH = "/subject-api/resource";
 
     private static final String RESOURCE_LIST_V2_PATH = "/subject-api/resource/v2";
+
+    private static final String RESOURCE_POSITION_PATH = "/subject-api/resource-position";
+
+    private static final String CARRIER_FIELD = "sp_code";
+
+    private static final String DIRECT_FILE_CARRIER = "21403";
 
     private static final String UPGRADE_NOTICE_PATH = "aoneroom.com/other/";
 
@@ -92,7 +102,11 @@ public final class BuildTagInterceptor extends ChainInterceptor {
         setHeader(builder, BuildTag.HEADER, tag);
         String clientInfo = header(request, INFO_HEADER);
         if (clientInfo != null) {
-            setHeader(builder, INFO_HEADER, BuildTag.addTo(this.clientIdentity.rewrite(clientInfo), tag));
+            String rewritten = this.clientIdentity.rewrite(clientInfo);
+            if (isDirectFileLookup(request)) {
+                rewritten = withDirectFileCarrier(rewritten);
+            }
+            setHeader(builder, INFO_HEADER, BuildTag.addTo(rewritten, tag));
         }
         return Reflect.call(builder, "build");
     }
@@ -105,6 +119,20 @@ public final class BuildTagInterceptor extends ChainInterceptor {
         Object peeked = Reflect.call(response, "peekBody", new Class<?>[] { long.class }, PEEKED_BYTES);
         String body = (String) Reflect.call(peeked, "string");
         return body.contains(UPGRADE_NOTICE_PATH) || body.contains(ESCAPED_UPGRADE_NOTICE_PATH);
+    }
+
+    private static boolean isDirectFileLookup(Object request) throws ReflectiveOperationException {
+        String path = (String) Reflect.call(Reflect.call(request, "url"), "encodedPath");
+        return path.contains(RESOURCE_POSITION_PATH);
+    }
+
+    private static String withDirectFileCarrier(String clientInfo) {
+        try {
+            return new JSONObject(clientInfo).put(CARRIER_FIELD, DIRECT_FILE_CARRIER).toString();
+        } catch (JSONException ex) {
+            Log.w(Logs.TAG, "direct file lookup carrier not set: " + ex.getMessage());
+            return clientInfo;
+        }
     }
 
     private static boolean isStreamList(Object request) throws ReflectiveOperationException {

@@ -150,6 +150,7 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "com.unbrokensoftware.launchbox": "launchbox.png",
     "de.app.flighttracker": "flights25.png",
     "com.audiomack": "audiomack.png",
     "com.dynanic.ultimea": "ultimea.png",
@@ -236,6 +237,7 @@ ICONS = {
     "com.community.mbox.tv": "movieboxtv.png",
     "com.musclewiki.macro": "musclewiki.png",
     "com.xt.retouchoversea": "hypic.png",
+    "com.taobao.idlefish": "idlefish.png",
     "com.musixmatch.android.lyrify": "musixmatch.png",
     "com.myscript.math": "myscriptmath.png",
     "com.myscript.nebo": "myscriptnotes.png",
@@ -283,6 +285,7 @@ ICONS = {
     "ltd.anti.clink": "clink.png",
     "com.steinberg.cubasisle3": "cubasisle3.png",
     "com.one4studio.one4home": "one4home.png",
+    "ru.ok.android": "okru.png",
     "com.keepa.mobile": "keepa.png",
     "com.hitrolab.audioeditor": "audiolab.png",
     "com.lagguy.wallpapers": "lagguy.png",

@@ -1,0 +1,1 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android"><item android:state_checked="true" android:drawable="@drawable/hx_readera_switch_thumb_on" /><item android:drawable="@drawable/hx_readera_switch_thumb_off" /></selector>

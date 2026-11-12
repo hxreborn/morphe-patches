@@ -42,7 +42,11 @@ public final class Endpoints {
 
     static final String RESOURCE_POSITION = "wefeed-mobile-bff/subject-api/resource-position";
 
+    static final String RESOURCE_POSITION_V2 = "wefeed-mobile-bff/subject-api/resource-position/v2";
+
     static final String RESOURCE_LIST = "wefeed-mobile-bff/subject-api/resource";
+
+    static final String UPGRADE_NOTICE_PATH = "aoneroom.com/other/";
 
     private Endpoints() {
     }
