@@ -375,6 +375,9 @@
     move-object/from16 v6, v16
     invoke-virtual {v6}, Lcom/myscript/nebo/abtest/DocumentPresenceObserver;->start()V
     iput-object v6, v1, Lcom/myscript/nebo/NeboApplication;->documentPresenceObserver:Lcom/myscript/nebo/abtest/DocumentPresenceObserver;
+    new-instance v6, Lcom/myscript/nebo/penpanel/laser/SharedPreferencesLaserPointerSettings;
+    invoke-direct {v6, v0}, Lcom/myscript/nebo/penpanel/laser/SharedPreferencesLaserPointerSettings;-><init>(Landroid/content/Context;)V
+    iput-object v6, v1, Lcom/myscript/nebo/NeboApplication;->laserPointerSettings:Lcom/myscript/nebo/penpanel/laser/ILaserPointerSettings;
     sget-object v6, Lcom/myscript/nebo/migration/LenovoMigrationController;->Companion:Lcom/myscript/nebo/migration/LenovoMigrationController$Companion;
     invoke-virtual {v1}, Lcom/myscript/nebo/NeboApplication;->getLibraryRepository()Lcom/myscript/nebo/dms/core/LibraryRepository;
     move-result-object v11
