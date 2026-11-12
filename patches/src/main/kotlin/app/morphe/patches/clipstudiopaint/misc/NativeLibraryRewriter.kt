@@ -14,6 +14,9 @@ import java.nio.channels.FileChannel
 private const val LIBRARY = "lib/arm64-v8a/libClipStudioPaint.so"
 internal const val WORD_SIZE = 4
 
+private const val MISSING_LIBRARY_MESSAGE = "$LIBRARY not found. This patch needs the arm64-v8a libraries, " +
+    "turn off \"Optimize for device architecture\" in Manager's Patcher settings and patch again"
+
 internal class PatchSite(val pattern: IntArray, val rewrite: (ByteBuffer, Int) -> Unit)
 
 private fun ByteBuffer.matchesAt(offset: Int, words: IntArray) =
@@ -38,13 +41,19 @@ private fun ByteBuffer.findPatchSites(patchSites: List<PatchSite>): List<Int> {
 }
 
 internal fun ResourcePatchContext.rewriteNativeLibrary(patchSites: List<PatchSite>) {
+    rewriteNativeLibrary { buffer ->
+        buffer.findPatchSites(patchSites).forEachIndexed { index, start -> patchSites[index].rewrite(buffer, start) }
+    }
+}
+
+internal fun ResourcePatchContext.rewriteNativeLibrary(rewrite: (ByteBuffer) -> Unit) {
     val library = get(LIBRARY, true)
-    if (!library.exists()) throw PatchException("$LIBRARY not found")
+    if (!library.exists()) throw PatchException(MISSING_LIBRARY_MESSAGE)
 
     RandomAccessFile(library, "rw").use { file ->
         val mapped = file.channel.map(FileChannel.MapMode.READ_WRITE, 0, file.length())
         val buffer = mapped.duplicate().order(ByteOrder.LITTLE_ENDIAN)
-        buffer.findPatchSites(patchSites).forEachIndexed { index, start -> patchSites[index].rewrite(buffer, start) }
+        rewrite(buffer)
         mapped.force()
     }
 }

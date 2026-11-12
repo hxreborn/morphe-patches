@@ -5,7 +5,10 @@
 package app.morphe.patches.myscriptnotes.misc.premium
 
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patches.myscriptnotes.misc.pairip.restoreStartupPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatLifetimeEntitlement
 
 private const val ENTITLEMENT = "MyScript Notes – Full Access"
@@ -18,6 +21,8 @@ val unlockPremiumPatch = bytecodePatch(
         "PDF import and AI tools.",
 ) {
     compatibleWith(AppCompatibilities.MYSCRIPT_NOTES)
+    dependsOn(removePairipProtectionPatch, restoreStartupPatch)
+    availability(requireArm64)
     extendWith("extensions/extension.mpe")
 
     execute {

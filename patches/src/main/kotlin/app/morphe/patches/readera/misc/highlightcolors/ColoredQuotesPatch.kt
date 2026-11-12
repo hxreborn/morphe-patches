@@ -8,6 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
+import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -23,19 +25,21 @@ private const val PALETTE_NIGHT_PARAMETER = 5
 @Suppress("unused")
 val coloredQuotesPatch = bytecodePatch(
     name = "Colored quotes",
-    description = "Adds a color picker for quotes and highlights each quote in its own color.",
+    description = "Saves selected text as a quote in one of five colors, picked from the text selection menu.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
-    dependsOn(disableSignatureChecksPatch)
+    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
     extendWith("extensions/extension.mpe")
 
     execute {
+        registerReadEraPatch("Colored quotes", "Saves selected text as a quote in one of five colors.")
         val prefs = highlightColorPrefs()
-        val defaultColorField = QuoteColorIconFingerprint.instructionMatches[2].instruction.getReference<FieldReference>()!!
+        val (_, _, defaultColorRead, _) = QuoteColorIconFingerprint.instructionMatches
+        val defaultColorField = defaultColorRead.instruction.getReference<FieldReference>()!!
         val paletteClass = prefs.paletteFilter.definingClass
         val paletteByIndex = paletteByIndexFingerprint(paletteClass).method
 
@@ -51,14 +55,10 @@ val coloredQuotesPatch = bytecodePatch(
             fieldByParameter.getValue(PALETTE_DAY_PARAMETER) to fieldByParameter.getValue(PALETTE_NIGHT_PARAMETER)
         }
 
-        val eventBusAccessor: MethodReference
-        val eventType: String
-        val postQuoteEvent: MethodReference
-        CreateQuoteFingerprint.instructionMatches.let {
-            eventBusAccessor = it[1].instruction.getReference<MethodReference>()!!
-            eventType = it[3].instruction.getReference<FieldReference>()!!.type
-            postQuoteEvent = it[4].instruction.getReference<MethodReference>()!!
-        }
+        val (_, eventBusCall, _, eventTypeRead, postEventCall) = CreateQuoteFingerprint.instructionMatches
+        val eventBusAccessor = eventBusCall.instruction.getReference<MethodReference>()!!
+        val eventType = eventTypeRead.instruction.getReference<FieldReference>()!!.type
+        val postQuoteEvent = postEventCall.instruction.getReference<MethodReference>()!!
         val createQuote = CreateQuoteFingerprint.method
         val selectionType = createQuote.parameterTypes[1].toString()
         val quoteType = createQuote.returnType
