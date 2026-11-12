@@ -6,6 +6,7 @@ package app.morphe.patches.viber.misc.secondary
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.resource.ResourceType
@@ -61,4 +62,50 @@ internal object RegistrationDeviceTypeFingerprint : Fingerprint(
         ),
         opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
     ),
+)
+
+internal object BackupMetadataFingerprint : Fingerprint(
+    returnType = "Lcom/viber/voip/backup/BackupInfo;",
+    filters = listOf(string("backupMetadataVersion")),
+)
+
+internal fun secondaryBackupAvailabilityFingerprint(secondaryMode: MethodReference) = Fingerprint(
+    classFingerprint = BackupMetadataFingerprint,
+    returnType = "Z",
+    parameters = listOf("Landroid/content/Context;"),
+    filters = listOf(
+        methodCall(secondaryMode),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
+    ),
+)
+
+internal fun backupAccountPermissionsFingerprint(backupMetadataClass: String) = Fingerprint(
+    name = "<init>",
+    parameters = listOf("Landroid/app/Activity;", "Landroidx/fragment/app/Fragment;", "L", "L"),
+    filters = listOf(
+        fieldAccess(definingClass = backupMetadataClass, type = "I", opcode = Opcode.SGET),
+        fieldAccess(type = "[Ljava/lang/String;", opcode = Opcode.IPUT_OBJECT),
+    ),
+)
+
+internal object BackupFragmentFingerprint : Fingerprint(
+    name = "<clinit>",
+    filters = listOf(string("getViewBinding()Lcom/viber/voip/databinding/FragmentBackupBinding;")),
+)
+
+internal object BackupAccountPermissionRequestFingerprint : Fingerprint(
+    classFingerprint = BackupFragmentFingerprint,
+    parameters = listOf("I"),
+    returnType = "V",
+    filters = listOf(
+        string("accountPermissionsHelper"),
+        methodCall(parameters = emptyList(), returnType = "Z"),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
+    ),
+)
+
+internal fun backupAccountPermissionHelperFingerprint(helperClass: String) = Fingerprint(
+    definingClass = helperClass,
+    name = "<init>",
+    filters = listOf(fieldAccess(type = "[Ljava/lang/String;", opcode = Opcode.IPUT_OBJECT)),
 )

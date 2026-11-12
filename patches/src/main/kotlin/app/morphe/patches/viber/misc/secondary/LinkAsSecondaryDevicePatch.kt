@@ -4,10 +4,12 @@
  */
 package app.morphe.patches.viber.misc.secondary
 
+import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.addInstructionsAtControlFlowLabel
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -18,9 +20,22 @@ import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
 import app.morphe.patches.viber.shared.addFilterCallAfter
 import app.morphe.patches.viber.shared.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val SECONDARY_MODE_RESET_SITES = 4
+
+private fun Match.filterBackupPermissions() {
+    val permissionsStore = instructionMatches.last()
+    val register = (permissionsStore.instruction as TwoRegisterInstruction).registerA
+    method.addInstructionsAtControlFlowLabel(
+        permissionsStore.index,
+        """
+            invoke-static/range { v$register .. v$register }, $VIBER_SETTINGS_CLASS->filterBackupPermissions([Ljava/lang/String;)[Ljava/lang/String;
+            move-result-object v$register
+        """,
+    )
+}
 
 @Suppress("unused")
 val linkAsSecondaryDevicePatch: BytecodePatch = bytecodePatch(
@@ -48,6 +63,16 @@ val linkAsSecondaryDevicePatch: BytecodePatch = bytecodePatch(
 
         val (secondaryModeCall) = SecondaryPlatformNameFingerprint.matchSingle().instructionMatches
         val secondaryModeGetter = secondaryModeCall.instruction.getReference<MethodReference>()!!
+        val backupAvailability = secondaryBackupAvailabilityFingerprint(secondaryModeGetter).matchSingle()
+        backupAvailability.run {
+            val (_, secondaryResult) = instructionMatches
+            method.addFilterCallAfter(secondaryResult.index, "$VIBER_SETTINGS_CLASS->restrictBackupToPrimary(Z)Z")
+        }
+        backupAccountPermissionsFingerprint(backupAvailability.originalMethod.definingClass)
+            .matchSingle().filterBackupPermissions()
+        val (_, permissionCheck) = BackupAccountPermissionRequestFingerprint.matchSingle().instructionMatches
+        val permissionHelper = permissionCheck.instruction.getReference<MethodReference>()!!
+        backupAccountPermissionHelperFingerprint(permissionHelper.definingClass).matchSingle().filterBackupPermissions()
         RegistrationDeviceTypeFingerprint.matchSingle().run {
             val (_, _, tabletResult) = instructionMatches
             val register = (tabletResult.instruction as OneRegisterInstruction).registerA
