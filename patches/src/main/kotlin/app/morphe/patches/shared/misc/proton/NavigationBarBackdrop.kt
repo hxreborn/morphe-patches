@@ -20,7 +20,7 @@ internal const val NAVIGATION_BAR_BACKDROP_CLASS = "${PROTON_EXTENSION_PACKAGE}N
 private const val NATIVE_CANVAS = "Landroid/graphics/Canvas;"
 private const val DRAW_NODE_KIND = 4
 
-internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: String) {
+internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: String, extensionType: String = NAVIGATION_BAR_BACKDROP_CLASS) {
     val drawMatch = BackdropDrawContentFingerprint.matchSingle()
     val draw = drawMatch.method
     val scopeType = draw.definingClass
@@ -46,7 +46,7 @@ internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: Str
     listOf(scopeType, scopeField.type, contextType, canvasClass.type).forEach { type ->
         mutableClassDefBy(type).apply { accessFlags = accessFlags or AccessFlags.PUBLIC.value }
     }
-    val extension = mutableClassDefBy(NAVIGATION_BAR_BACKDROP_CLASS)
+    val extension = mutableClassDefBy(extensionType)
     val canvasPath = """
         check-cast p0, $scopeType
         iget-object v0, p0, ${descriptor(scopeField)}
@@ -129,7 +129,7 @@ internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: Str
     val (invocation) = callback.instructionMatches
     val host = invocation.instruction.getReference<MethodReference>()!!
     check(callback.method.instructions.elementAtOrNull(invocation.index + 1)?.opcode !in setOf(Opcode.MOVE_RESULT_OBJECT, Opcode.MOVE_RESULT, Opcode.MOVE_RESULT_WIDE))
-    val target = mutableClassDefBy("${NAVIGATION_BAR_BACKDROP_CLASS.dropLast(1)}\$DrawCallback;")
+    val target = mutableClassDefBy("${extensionType.dropLast(1)}\$DrawCallback;")
     target.interfaces.add(host.definingClass)
     target.addMethod(host.name, listOf("Ljava/lang/Object;"), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 2, """
         invoke-virtual { p0, p1 }, ${target.type}->accept(Ljava/lang/Object;)V
