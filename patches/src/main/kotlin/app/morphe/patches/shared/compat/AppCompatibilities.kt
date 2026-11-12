@@ -323,6 +323,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.25.111", versionCode = 1523, minSdk = 24)),
     )
 
+    val CANDY_CRUSH_SAGA = Compatibility(
+        name = "Candy Crush Saga",
+        packageName = "com.king.candycrushsaga",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x098AD3,
+        signatures = setOf(
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328",
+        ),
+        targets = listOf(AppTarget(version = "1.340.0.1", versionCode = 13400010, minSdk = 24)),
+    )
+
     val CASTLE = Compatibility(
         name = "Castle",
         packageName = "com.external.castle",

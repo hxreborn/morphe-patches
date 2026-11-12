@@ -150,6 +150,7 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "com.king.candycrushsaga": "candycrushsaga.png",
     "com.unbrokensoftware.launchbox": "launchbox.png",
     "de.app.flighttracker": "flights25.png",
     "com.audiomack": "audiomack.png",
