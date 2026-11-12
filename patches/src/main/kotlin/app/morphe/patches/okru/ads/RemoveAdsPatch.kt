@@ -7,6 +7,7 @@ package app.morphe.patches.okru.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -23,8 +24,8 @@ private val DISABLED_AD_FLAG_KEYS = listOf(
 
 private const val RETURN_EMPTY_LIST = """
     invoke-static { }, Ljava/util/Collections;->emptyList()Ljava/util/List;
-    move-result-object p0
-    return-object p0
+    move-result-object v0
+    return-object v0
 """
 
 @Suppress("unused")
@@ -44,9 +45,11 @@ val removeAdsPatch = bytecodePatch(
         MyTargetViewLoadFingerprint.matchSingle().method.returnEarly()
 
         LoadDiscussionBannerFingerprint.matchSingle().method.returnEarly()
-        ZenLoadAdRequestFingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
-        ZenLoadAdRequestListFingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
-        GamesAdSourcesFingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
+        listOf(ZenLoadAdRequestFingerprint, ZenLoadAdRequestListFingerprint, GamesAdSourcesFingerprint).forEach { fingerprint ->
+            val method = fingerprint.matchSingle().method
+            val target = if (method.implementation!!.registerCount == 0) method.addFreeRegisters(1).first else method
+            target.addInstructions(0, RETURN_EMPTY_LIST)
+        }
 
         VideoCatalogLoadBannersFingerprint.matchSingle().let { match ->
             val (loadBannersRead) = match.instructionMatches
