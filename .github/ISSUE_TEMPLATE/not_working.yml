@@ -449,12 +449,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.77.0"
+        - "1.77.1-dev.1"
         - "1.77.0-dev.2"
         - "1.77.0-dev.1"
+        - "1.77.0"
         - "1.76.1-dev.1"
         - "1.76.0-dev.8"
-        - "1.76.0-dev.7"
         - "Older than these"
         # /generated
     validations:

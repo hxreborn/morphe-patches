@@ -1,3 +1,9 @@
+## [1.77.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.77.0...v1.77.1-dev.1) (2026-11-12)
+
+### Bug Fixes
+
+* **MyScript Notes:** apply patches again in Manager ([393fcfb](https://github.com/hxreborn/morphe-patches/commit/393fcfbbd79e19fecfa7145b87f87e6ba7243383)), closes [#750](https://github.com/hxreborn/morphe-patches/issues/750)
+
 ## [1.77.0](https://github.com/hxreborn/morphe-patches/compare/v1.76.0...v1.77.0) (2026-11-12)
 
 ### Bug Fixes
