@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.76.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.76.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;520 patches total
+> **[v1.77.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.77.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;527 patches total
 
 ### Featured apps
 
@@ -2375,7 +2375,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="readera"></a>
 <details>
-<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
+<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2385,20 +2385,27 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="readera-accent-color"></a>[Accent color](patches/src/main/kotlin/app/morphe/patches/readera/misc/accent/AccentColorPatch.kt) | Replaces ReadEra's yellow with the wallpaper color on Android 12 and later, or green below 12. Another color can be picked in the patches menu. |
+| <a id="readera-app-theme"></a>[App theme](patches/src/main/kotlin/app/morphe/patches/readera/misc/theme/AppThemePatch.kt) | Adds a black AMOLED theme for the library, menus and Settings, picked in the patches menu. Book pages keep their own colors. |
 | <a id="readera-background-listening"></a>[Background listening](patches/src/main/kotlin/app/morphe/patches/readera/misc/background/BackgroundListeningPatch.kt) | Keeps text-to-speech playing while the app is in the background or the screen is off. |
 | <a id="readera-colored-quotes"></a>[Colored quotes](patches/src/main/kotlin/app/morphe/patches/readera/misc/highlightcolors/ColoredQuotesPatch.kt) | Adds a color picker for quotes and highlights each quote in its own color. |
 | <a id="readera-custom-fonts"></a>[Custom fonts](patches/src/main/kotlin/app/morphe/patches/readera/misc/fonts/CustomFontsPatch.kt) | Adds fonts from a folder you choose to the reading fonts. |
 | <a id="readera-dictionary-section"></a>[Dictionary section](patches/src/main/kotlin/app/morphe/patches/readera/misc/dictionary/DictionarySectionPatch.kt) | Adds the Dictionary section with all saved words to the main menu. |
 | <a id="readera-dictionary-word-colors"></a>[Dictionary word colors](patches/src/main/kotlin/app/morphe/patches/readera/misc/highlightcolors/DictionaryWordColorsPatch.kt) | Adds a color picker for dictionary words. |
 | <a id="readera-footnote-speech"></a>[Footnote speech](patches/src/main/kotlin/app/morphe/patches/readera/misc/footnotes/FootnoteSpeechPatch.kt) | Adds an option to read footnotes aloud during text-to-speech. |
+| <a id="readera-full-book-descriptions"></a>[Full book descriptions](patches/src/main/kotlin/app/morphe/patches/readera/misc/descriptions/FullBookDescriptionsPatch.kt) | Shows the whole book description in About document, including very short and very long ones. |
 | <a id="readera-library-full-screen"></a>[Library full screen](patches/src/main/kotlin/app/morphe/patches/readera/misc/fullscreen/LibraryFullScreenPatch.kt) | Adds the option to use full-screen mode in the library as well as while reading. |
 | <a id="readera-library-view-modes"></a>[Library view modes](patches/src/main/kotlin/app/morphe/patches/readera/misc/viewmode/LibraryViewModesPatch.kt) | Adds the Full, Brief, Thumbnails and Grid views to book lists. |
+| <a id="readera-material-3-controls"></a>[Material 3 controls](patches/src/main/kotlin/app/morphe/patches/readera/misc/materialcontrols/MaterialControlsPatch.kt) | Gives switches, checkboxes and radio buttons in Settings and dialogs the Material 3 look. |
+| <a id="readera-more-sleep-timer-choices"></a>[More sleep timer choices](patches/src/main/kotlin/app/morphe/patches/readera/misc/sleeptimer/MoreSleepTimerChoicesPatch.kt) | Adds 5 and 10 minute options to the Read aloud sleep timer. |
+| <a id="readera-page-counter-in-long-chapters"></a>[Page counter in long chapters](patches/src/main/kotlin/app/morphe/patches/readera/misc/pagecounter/PageCounterInLongChaptersPatch.kt) | Keeps the page counter next to the chapter title in chapters of 1,000 pages or more. |
 | <a id="readera-page-thumbnails"></a>[Page thumbnails](patches/src/main/kotlin/app/morphe/patches/readera/misc/minipages/PageThumbnailsPatch.kt) | Adds the page thumbnails button to the reader for browsing all pages of a book. |
 | <a id="readera-quotes-and-notes-section"></a>[Quotes and notes section](patches/src/main/kotlin/app/morphe/patches/readera/misc/notes/QuotesAndNotesPatch.kt) | Adds a section to the main menu with the quotes, bookmarks and reviews from all books. |
 | <a id="readera-remove-nags"></a>[Remove nags](patches/src/main/kotlin/app/morphe/patches/readera/misc/nags/RemoveNagsPatch.kt) | Removes the rate this app dialog, the promotional dialogs shown on startup and the Go to Premium buttons in the toolbar and its menu. |
 | <a id="readera-skip-headers-and-footers"></a>[Skip headers and footers](patches/src/main/kotlin/app/morphe/patches/readera/misc/skipheaders/SkipHeadersPatch.kt) | Adds an option to skip headers, footers and page numbers during text-to-speech. Applies to PDF and DjVu documents. |
+| <a id="readera-speech-pitch-slider"></a>[Speech pitch slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechpitch/SpeechPitchSliderPatch.kt) | Adds a voice pitch slider from 0.5x to 2x to Settings > Text to speech (TTS). |
 | <a id="readera-speech-rate-slider"></a>[Speech rate slider](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechrate/SpeechRateSliderPatch.kt) | Adds a text-to-speech speed slider from 0.1x to 4x, saved per voice. |
-| <a id="readera-text-to-speech-filter"></a>[Text-to-speech filter](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechfilter/SpeechTextFilterPatch.kt) | Adds "Omit words and symbols" to Settings > Text to speech (TTS). Read aloud skips listed words, phrases and symbols without changing book text. Includes bracket symbols by default. |
+| <a id="readera-text-to-speech-filter"></a>[Text-to-speech filter](patches/src/main/kotlin/app/morphe/patches/readera/misc/speechfilter/SpeechTextFilterPatch.kt) | Makes Read aloud skip the words and symbols on a list, without changing the book. The list is edited in the patches menu. |
 
 </details>
 

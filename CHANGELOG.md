@@ -1,3 +1,17 @@
+## [1.77.0](https://github.com/hxreborn/morphe-patches/compare/v1.76.0...v1.77.0) (2026-11-12)
+
+### New Features
+
+* **ReadEra - Accent color:** replace yellow with wallpaper color ([895d0e2](https://github.com/hxreborn/morphe-patches/commit/895d0e254caf8aac8f0c45507303028288a1985a))
+* **ReadEra - App theme:** add AMOLED option for library and menus ([656c4a2](https://github.com/hxreborn/morphe-patches/commit/656c4a2222188b4dc93c5631622e7e4fe4c18c87))
+* **ReadEra - Full book descriptions:** show short and long text in full ([bbce8d1](https://github.com/hxreborn/morphe-patches/commit/bbce8d190e0ef78415a81514d4e8eb36300ba4e6))
+* **ReadEra - Material 3 controls:** restyle switches and checkboxes ([26002c8](https://github.com/hxreborn/morphe-patches/commit/26002c8716b4f0d684a29dbcbcbeaf899ff56fc9))
+* **ReadEra - More sleep timer choices:** add 5 and 10 minutes ([a4858c0](https://github.com/hxreborn/morphe-patches/commit/a4858c080150538878234ea2292a63f137e25780))
+* **ReadEra - Page counter in long chapters:** show past 999 pages ([53cd334](https://github.com/hxreborn/morphe-patches/commit/53cd3347b52236da0dfe1d56a3a75bd7ee034b9a))
+* **ReadEra - Quotes and notes section:** share quotes and reviews ([aef6a4e](https://github.com/hxreborn/morphe-patches/commit/aef6a4e849b9faad8ab34c37c46e228a4ab9fc58))
+* **ReadEra - Speech pitch slider:** set 0.5x to 2x for each voice ([6857cd5](https://github.com/hxreborn/morphe-patches/commit/6857cd5674cac90856592ed8978c441bc4f88f18))
+* **ReadEra - Text-to-speech filter:** edit word list in patches menu ([9a8fac9](https://github.com/hxreborn/morphe-patches/commit/9a8fac90634f20af0e48d9c45d282d33e25dfc80))
+
 ## [1.76.0](https://github.com/hxreborn/morphe-patches/compare/v1.75.1...v1.76.0) (2026-11-10)
 
 ### Bug Fixes

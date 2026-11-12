@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.76.0",
+  "version": "1.77.0",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -706,6 +706,50 @@
     },
     {
       "name": "Accent color",
+      "description": "Replaces ReadEra's yellow with the wallpaper color on Android 12 and later, or green below 12. Another color can be picked in the patches menu.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Accent color",
       "description": "Changes accent colors with a chosen color or Material You.",
       "default": true,
       "category": null,
@@ -946,6 +990,50 @@
                 "ARMEABI_V7A": 26101021,
                 "X86_64": 26101021,
                 "X86": 26101021
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "App theme",
+      "description": "Adds a black AMOLED theme for the library, menus and Settings, picked in the patches menu. Book pages keep their own colors.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
               },
               "isExperimental": false,
               "minSdk": 23,
@@ -5377,6 +5465,50 @@
               },
               "isExperimental": false,
               "minSdk": 28,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Full book descriptions",
+      "description": "Shows the whole book description in About document, including very short and very long ones.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]
@@ -10240,6 +10372,50 @@
       "options": []
     },
     {
+      "name": "Material 3 controls",
+      "description": "Gives switches, checkboxes and radio buttons in Settings and dialogs the Material 3 look.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Material 3 switches",
       "description": "Shows switches in the Material 3 style with check and close icons.",
       "default": true,
@@ -10574,6 +10750,50 @@
       "options": []
     },
     {
+      "name": "More sleep timer choices",
+      "description": "Adds 5 and 10 minute options to the Read aloud sleep timer.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Multiple accounts",
       "description": "Signs in to several Keepa accounts at once and lists their price watches together. Accounts are added and removed in Settings > Accounts.",
       "default": true,
@@ -10693,6 +10913,50 @@
       "default": false,
       "category": null,
       "compatiblePackages": null,
+      "options": []
+    },
+    {
+      "name": "Page counter in long chapters",
+      "description": "Keeps the page counter next to the chapter title in chapters of 1,000 pages or more.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
       "options": []
     },
     {
@@ -14967,6 +15231,50 @@
       "options": []
     },
     {
+      "name": "Speech pitch slider",
+      "description": "Adds a voice pitch slider from 0.5x to 2x to Settings > Text to speech (TTS).",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "org.readera",
+          "name": "ReadEra",
+          "description": null,
+          "apkFileType": "APKS",
+          "appIconColor": "#0061BD",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "26.05.20+2300",
+              "versionCodes": {
+                "ARM64_V8A": 2300,
+                "ARMEABI_V7A": 2300,
+                "X86_64": 2300,
+                "X86": 2300
+              },
+              "isExperimental": false,
+              "minSdk": 21,
+              "description": null
+            },
+            {
+              "version": "26.10.28+2340",
+              "versionCodes": {
+                "ARM64_V8A": 2340,
+                "ARMEABI_V7A": 2340,
+                "X86_64": 2340,
+                "X86": 2340
+              },
+              "isExperimental": false,
+              "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Speech rate slider",
       "description": "Adds a text-to-speech speed slider from 0.1x to 4x, saved per voice.",
       "default": true,
@@ -15569,7 +15877,7 @@
     },
     {
       "name": "Text-to-speech filter",
-      "description": "Adds \"Omit words and symbols\" to Settings > Text to speech (TTS). Read aloud skips listed words, phrases and symbols without changing book text. Includes bracket symbols by default.",
+      "description": "Makes Read aloud skip the words and symbols on a list, without changing the book. The list is edited in the patches menu.",
       "default": true,
       "category": null,
       "compatiblePackages": [
