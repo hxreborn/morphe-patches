@@ -26,7 +26,9 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.util.Log;
@@ -52,7 +54,15 @@ public final class Boosters {
 
     private static final int HASH_BUFFER_SIZE = 65536;
 
-    private static final BoosterGrant currentGrant = new BoosterGrant(ITEM_IDS, AMOUNT);
+    private static final int LIVES_ITEM_ID = 3669;
+
+    private static final int TIMED_LIVES_ITEM_ID = 3646;
+
+    private static final int LIVES_HOURS = 24;
+
+    private static final int SECONDS_PER_HOUR = 3600;
+
+    private static final List<Boosters> rewards = createRewards();
 
     private static WeakReference<Activity> activity = new WeakReference<>(null);
 
@@ -60,11 +70,40 @@ public final class Boosters {
 
     private static boolean verified;
 
-    private Boosters() {
+    private final int[] itemIds;
+
+    private final int amount;
+
+    private final BoosterGrant currentGrant;
+
+    private Boosters(int[] itemIds, int amount, BoosterGrant currentGrant) {
+        this.itemIds = itemIds;
+        this.amount = amount;
+        this.currentGrant = currentGrant;
+    }
+
+    private static List<Boosters> createRewards() {
+        List<Boosters> enabled = new ArrayList<>();
+        if (boostersEnabled()) {
+            enabled.add(new Boosters(ITEM_IDS, AMOUNT, new BoosterGrant(ITEM_IDS, AMOUNT)));
+        }
+        if (livesEnabled()) {
+            enabled.add(new Boosters(new int[] { LIVES_ITEM_ID }, LIVES_HOURS,
+                    new BoosterGrant(new int[] { TIMED_LIVES_ITEM_ID }, LIVES_HOURS * SECONDS_PER_HOUR, true)));
+        }
+        return enabled;
+    }
+
+    private static boolean boostersEnabled() {
+        return false;
+    }
+
+    private static boolean livesEnabled() {
+        return false;
     }
 
     public static void onNativeHandle(Activity current, long handle) {
-        synchronized (currentGrant) {
+        synchronized (Boosters.class) {
             if (handle == 0) {
                 if (activity.get() == current) {
                     activity.clear();
@@ -73,66 +112,91 @@ public final class Boosters {
             }
             activity = new WeakReference<>(current);
         }
-        schedule();
+        for (Boosters reward : rewards) {
+            reward.schedule();
+        }
     }
 
     public static void onRequest(long requestId, int method, String url, int timeout, boolean redirect, Object headers,
             byte[] body) {
         if (url != null && url.contains(CLIENT_API_PATH)) {
-            currentGrant.onRequest(requestId, body);
+            int[] observations = new int[rewards.size()];
+            synchronized (Boosters.class) {
+                for (int index = 0; index < rewards.size(); index++) {
+                    observations[index] = rewards.get(index).currentGrant.reserveObservation();
+                }
+            }
+            for (int index = 0; index < rewards.size(); index++) {
+                rewards.get(index).currentGrant.onRequest(requestId, body, observations[index]);
+            }
         }
     }
 
     public static void onData(long requestId, byte[] bytes, int length) {
-        currentGrant.onData(requestId, bytes, length);
+        for (Boosters reward : rewards) {
+            reward.currentGrant.onData(requestId, bytes, length);
+        }
     }
 
     public static void onResponse(long requestId, boolean open) {
         if (!open) {
-            currentGrant.onResponse(requestId);
+            for (Boosters reward : rewards) {
+                reward.currentGrant.onResponse(requestId);
+            }
             verifyLibrary();
-            schedule();
+            for (Boosters reward : rewards) {
+                reward.schedule();
+            }
         }
     }
 
-    private static void schedule() {
+    private void schedule() {
         Activity current;
-        synchronized (currentGrant) {
+        synchronized (Boosters.class) {
             current = activity.get();
             if (!verified || current == null || current.isFinishing() || current.isDestroyed()
-                    || !currentGrant.reserve()) {
+                    || !this.currentGrant.reserve()) {
                 return;
             }
         }
         try {
             runOnGameThread(current, () -> submit(current));
         } catch (LinkageError | RuntimeException ex) {
-            currentGrant.fail();
+            this.currentGrant.fail();
             Log.e(LOG_TAG, "Game thread scheduling failed", ex);
         }
     }
 
-    private static void submit(Activity current) {
-        synchronized (currentGrant) {
+    private void submit(Activity current) {
+        synchronized (Boosters.class) {
             if (activity.get() != current || current.isFinishing() || current.isDestroyed()) {
-                currentGrant.cancelQueued();
+                this.currentGrant.cancelQueued();
                 return;
             }
-            if (!currentGrant.begin()) {
+            if (!this.currentGrant.begin()) {
                 return;
             }
         }
         try {
-            currentGrant.submitted(grant(getNativeHandle(current), ITEM_IDS, AMOUNT));
+            this.currentGrant.submitted(grant(getNativeHandle(current), this.itemIds, this.amount));
         } catch (LinkageError | SecurityException ex) {
-            currentGrant.fail();
+            this.currentGrant.fail();
             Log.e(LOG_TAG, "Booster submission failed", ex);
         }
     }
 
+    private static boolean hasReadyReward() {
+        for (Boosters reward : rewards) {
+            if (reward.currentGrant.state() == BoosterGrant.State.READY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void verifyLibrary() {
-        synchronized (currentGrant) {
-            if (currentGrant.state() != BoosterGrant.State.READY || verified || verifying) {
+        synchronized (Boosters.class) {
+            if (verified || verifying || !hasReadyReward()) {
                 return;
             }
             verifying = true;
@@ -155,11 +219,13 @@ public final class Boosters {
         } catch (IOException | NoSuchAlgorithmException | LinkageError | SecurityException ex) {
             Log.e(LOG_TAG, "Game library validation failed", ex);
         }
-        synchronized (currentGrant) {
+        synchronized (Boosters.class) {
             verifying = false;
             verified = matches;
             if (!matches) {
-                currentGrant.fail();
+                for (Boosters reward : rewards) {
+                    reward.currentGrant.fail();
+                }
                 Log.e(LOG_TAG, "Game library identity does not match");
             }
         }

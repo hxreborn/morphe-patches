@@ -56,14 +56,7 @@ private val addBoosterLibraryPatch = resourcePatch {
     }
 }
 
-@Suppress("unused")
-val addBoostersPatch = bytecodePatch(
-    name = "Add boosters",
-    description = "Adds 1,000 of each of ten boosters every time the game starts. " +
-        "Each booster unlocks at its usual level. Requires a standard install.",
-) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
-    availability(requireArm64StandardInstall)
+internal val candyCrushRewardsPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
     dependsOn(addBoosterLibraryPatch)
 
@@ -114,5 +107,23 @@ val addBoostersPatch = bytecodePatch(
                 "invoke-static/range { p1 .. p3 }, $BOOSTERS->onResponse(JZ)V",
             )
         }
+    }
+}
+
+@Suppress("unused")
+val addBoostersPatch = bytecodePatch(
+    name = "Add boosters",
+    description = "Adds 1,000 of each of ten boosters every time the game starts. " +
+        "Each booster unlocks at its usual level. Requires a standard install.",
+) {
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    availability(requireArm64StandardInstall)
+    dependsOn(candyCrushRewardsPatch)
+
+    execute {
+        mutableClassDefBy(BOOSTERS).replaceStub("boostersEnabled", 1, """
+            const/4 v0, 0x1
+            return v0
+        """)
     }
 }
