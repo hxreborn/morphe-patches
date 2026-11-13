@@ -1,3 +1,23 @@
+## [1.78.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.78.0-dev.1...v1.78.0-dev.2) (2026-11-13)
+
+### Bug Fixes
+
+* **Musicolet - Unlock premium:** calculate ReplayGain automatically ([cc56861](https://github.com/hxreborn/morphe-patches/commit/cc568611ae8141da35a2ea317c5bb3df4de55b18)), closes [#723](https://github.com/hxreborn/morphe-patches/issues/723)
+
+### New Features
+
+* **Candy Crush Saga - Add extra moves:** give five more moves per level ([a8c2fdd](https://github.com/hxreborn/morphe-patches/commit/a8c2fdd55a43fe4a7bffd44fcc6e99a3c0453f6f))
+* **Candy Crush Saga - Disable events:** remove map event cards ([121c2be](https://github.com/hxreborn/morphe-patches/commit/121c2bea45f27e996a05389c253bf6f98646c354))
+* **Candy Crush Saga - Disable notifications:** stop game reminders ([a2392fc](https://github.com/hxreborn/morphe-patches/commit/a2392fcf2d119a482e64856c7f76cd1798ab0c76))
+* **Candy Crush Saga - Disable tracking:** stop third-party analytics ([cdad3cd](https://github.com/hxreborn/morphe-patches/commit/cdad3cd6fe3a66943a383b45a0c8c57cb0e874a2))
+* **Candy Crush Saga - Hide ads:** stop ad networks from loading ([5038457](https://github.com/hxreborn/morphe-patches/commit/5038457c3e958b952c73d2f569a4132b9daa9da8))
+* **Candy Crush Saga - Parked app for Android Auto:** show on car screen ([338e0a4](https://github.com/hxreborn/morphe-patches/commit/338e0a4e035e9c6ee2e65db8026442888cda94e4))
+* **Candy Crush Saga - Remove ad offers:** drop watch-ad buttons ([4d46a76](https://github.com/hxreborn/morphe-patches/commit/4d46a764121fdde9a588b1f2f75bb54609bd2be6))
+* **Candy Crush Saga - Remove offer pop-ups:** stop automatic offers ([a4ec569](https://github.com/hxreborn/morphe-patches/commit/a4ec569b7053ef609b998392a9feaff61592e2d3))
+* **Candy Crush Saga - Remove rating prompts:** drop rate requests ([6d84cd0](https://github.com/hxreborn/morphe-patches/commit/6d84cd05fd08995c4e62c0a39d84c1282139f24b))
+* **Candy Crush Saga - Unlimited lives:** add 24 hours on game start ([cd40136](https://github.com/hxreborn/morphe-patches/commit/cd401366f63f80adcb402718bb4508eda2f5d641))
+* **Candy Crush Saga - Unlock booster slots:** remove level requirements ([93cb746](https://github.com/hxreborn/morphe-patches/commit/93cb7469f2103812ad27d3f6800d8aa08f8974d5))
+
 ## [1.78.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.77.1-dev.1...v1.78.0-dev.1) (2026-11-12)
 
 ### Bug Fixes

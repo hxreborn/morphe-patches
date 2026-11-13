@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.78.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;541 patches total
+> **[v1.78.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;552 patches total
 
 ### Featured apps
 
@@ -578,7 +578,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="candy-crush-saga"></a>
 <details>
-<summary><img src=".github/assets/icons/candycrushsaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Saga&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/candycrushsaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -589,6 +589,17 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each of ten boosters every time the game starts. Each booster unlocks at its usual level. Requires a standard install. |
+| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Adds five moves when each level starts. Requires a standard install. |
+| <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Disables events. |
+| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Blocks game reminders and the prompt asking to allow notifications. |
+| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze and Firebase Analytics data collection and blocks reads of the advertising ID and install referrer. Braze push and in-app messages stop too. |
+| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops rewarded and interstitial ads from loading. |
+| <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
+| <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes rewarded ad offers. |
+| <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes promotional offer pop-ups. |
+| <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes rating prompts and rate entry in Settings. |
+| <a id="candy-crush-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/lives/UnlimitedLivesPatch.kt) | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
+| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks booster slots at any level. Requires a standard install. |
 
 </details>
 
