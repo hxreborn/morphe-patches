@@ -1495,6 +1495,22 @@ internal object AppCompatibilities {
         ),
     )
 
+    val REDREADER = Compatibility(
+        name = "RedReader",
+        packageName = "org.quantumbadger.redreader",
+        apkFileType = ApkFileType.APK,
+        signatures = setOf("d9496a86f995087879f41199986a6d36c19306ac90dbd1e0793f3ab1981f3744"),
+        targets = listOf(AppTarget(version = "1.27", versionCode = 119, minSdk = 21)),
+    )
+
+    val REDREADER_ALPHA = Compatibility(
+        name = "RedReader Alpha",
+        packageName = "org.quantumbadger.redreaderalpha",
+        apkFileType = ApkFileType.APK,
+        signatures = setOf("3d2114ecae1f36d6d88f42780131848f9b50a7645b9e7daa72c6d65e32988123"),
+        targets = listOf(AppTarget(version = "Alpha 375", versionCode = 10375, minSdk = 21)),
+    )
+
     val READERA = Compatibility(
         name = "ReadEra",
         packageName = "org.readera",

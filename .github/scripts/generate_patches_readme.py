@@ -150,6 +150,8 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "org.quantumbadger.redreader": "redreader.png",
+    "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
     "com.king.candycrushsaga": "candycrushsaga.png",
     "com.unbrokensoftware.launchbox": "launchbox.png",
     "de.app.flighttracker": "flights25.png",
