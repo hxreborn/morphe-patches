@@ -30,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,6 +57,12 @@ public final class ServerResponses {
 
     private static final int BYTE_MASK = 0xff;
 
+    private static final String PLUGINS = "UopFeatureStatusApi.getAllPlugins";
+
+    private static final Set<String> AD_PLUGINS = new HashSet<>(Arrays.asList("ads_ool", "ads_egp", "ads_pre_level",
+            "ads_map_balloon", "ads_treat_machine", "ads_hard_level_offer", "ads_arcade", "ads_quest",
+            "ads_episode_race", "ads_skip_an_ad", "mini_ads_game", "ads_interstitials"));
+
     private static final String POPUPS = "CandyPopupConfigApi.getPopupUpdatedConfig";
 
     private static final String[] OFFER_CATEGORIES = { "dynamic_offer", "build_a_bundle", "endless_offer",
@@ -66,6 +73,10 @@ public final class ServerResponses {
     }
 
     private static boolean removeOffers() {
+        return false;
+    }
+
+    private static boolean removeAdOffers() {
         return false;
     }
 
@@ -154,6 +165,9 @@ public final class ServerResponses {
         if (removeOffers()) {
             targets.add(POPUPS);
         }
+        if (removeAdOffers()) {
+            targets.add(PLUGINS);
+        }
         return targets;
     }
 
@@ -171,6 +185,9 @@ public final class ServerResponses {
 
     private static Set<String> selectedPlugins() {
         Set<String> plugins = new HashSet<>();
+        if (removeAdOffers()) {
+            plugins.addAll(AD_PLUGINS);
+        }
         return plugins;
     }
 
@@ -192,10 +209,23 @@ public final class ServerResponses {
                 if (config != null) {
                     replace(edits, config, JSONObject.quote(blockOffers(config.string())));
                 }
+            } else if (PLUGINS.equals(method)) {
+                disablePlugins(result, plugins, edits);
 
             }
         }
         return splice(response, edits);
+    }
+
+    private static void disablePlugins(JsonText plugins, Set<String> names, TreeMap<Integer, Replacement> edits)
+            throws JSONException {
+        for (JsonText plugin : plugins.values) {
+            JsonText name = plugin.fields.get("name");
+            JsonText enabled = plugin.fields.get("enabled");
+            if (name != null && enabled != null && names.contains(name.string())) {
+                replace(edits, enabled, "false");
+            }
+        }
     }
 
     static String blockOffers(String config) throws JSONException {

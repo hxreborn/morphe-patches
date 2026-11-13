@@ -182,6 +182,15 @@ public class ServerResponsesTest {
     }
 
     @Test
+    public void disableAdOffersWithoutChangingAdConfiguration() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"ads_ool\",\"enabled\":true,"
+                + "\"contentResolutionId\":5782680582980523681},{\"name\":\"ads_config\",\"enabled\":true}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.singleton("ads_ool"));
+        Assert.assertEquals(response.replace("\"ads_ool\",\"enabled\":true", "\"ads_ool\",\"enabled\":false"), edited);
+    }
+
+    @Test
     public void acceptDepthBoundary() throws JSONException {
         StringBuilder text = new StringBuilder();
         for (int index = 0; index < ACCEPTED_JSON_DEPTH; index++) {
