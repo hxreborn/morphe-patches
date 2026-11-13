@@ -208,6 +208,15 @@ public class ServerResponsesTest {
     }
 
     @Test
+    public void disableSelectedEventsWithoutChangingDailyRewards() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"episode_race\",\"enabled\":true},"
+                + "{\"name\":\"dailystamp\",\"enabled\":true}]}]";
+        Assert.assertEquals(response.replace("\"episode_race\",\"enabled\":true", "\"episode_race\",\"enabled\":false"),
+                ServerResponses.edit(response, Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"),
+                        Collections.singleton("episode_race")));
+    }
+
+    @Test
     public void acceptDepthBoundary() throws JSONException {
         StringBuilder text = new StringBuilder();
         for (int index = 0; index < ACCEPTED_JSON_DEPTH; index++) {

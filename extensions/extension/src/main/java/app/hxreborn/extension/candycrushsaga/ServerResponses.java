@@ -65,6 +65,9 @@ public final class ServerResponses {
             "ads_map_balloon", "ads_treat_machine", "ads_hard_level_offer", "ads_arcade", "ads_quest",
             "ads_episode_race", "ads_skip_an_ad", "mini_ads_game", "ads_interstitials"));
 
+    private static final Set<String> EVENT_PLUGINS = new HashSet<>(Arrays.asList("episode_race", "chocolate_box",
+            "club_clash", "club_quest", "crushomaster", "cannon_frenzy", "leaderboard_event"));
+
     private static final String POPUPS = "CandyPopupConfigApi.getPopupUpdatedConfig";
 
     private static final String[] OFFER_CATEGORIES = { "dynamic_offer", "build_a_bundle", "endless_offer",
@@ -83,6 +86,10 @@ public final class ServerResponses {
     }
 
     private static boolean removeRatingPrompts() {
+        return false;
+    }
+
+    private static boolean disableEvents() {
         return false;
     }
 
@@ -171,7 +178,7 @@ public final class ServerResponses {
         if (removeOffers()) {
             targets.add(POPUPS);
         }
-        if (removeAdOffers() || removeRatingPrompts()) {
+        if (removeAdOffers() || removeRatingPrompts() || disableEvents()) {
             targets.add(PLUGINS);
         }
         if (removeRatingPrompts()) {
@@ -199,6 +206,9 @@ public final class ServerResponses {
         }
         if (removeRatingPrompts()) {
             plugins.add("rate_app");
+        }
+        if (disableEvents()) {
+            plugins.addAll(EVENT_PLUGINS);
         }
         return plugins;
     }
