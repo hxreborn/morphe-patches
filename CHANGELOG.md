@@ -1,3 +1,10 @@
+## [1.78.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.78.0-dev.2...v1.78.0-dev.3) (2026-11-13)
+
+### New Features
+
+* **Proton VPN - Frosted glass:** add translucent buttons and panels ([5c8af5c](https://github.com/hxreborn/morphe-patches/commit/5c8af5c2680c6e799cc528f3a32a820142afe8d1)), closes [#713](https://github.com/hxreborn/morphe-patches/issues/713)
+* **RedReader - Filter posts:** add title, subreddit and flair rules ([97ffea7](https://github.com/hxreborn/morphe-patches/commit/97ffea757f3fabd4e7775717128c79021c280f7f))
+
 ## [1.78.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.78.0-dev.1...v1.78.0-dev.2) (2026-11-13)
 
 ### Bug Fixes
