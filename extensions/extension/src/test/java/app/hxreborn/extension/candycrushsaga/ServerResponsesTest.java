@@ -191,6 +191,23 @@ public class ServerResponsesTest {
     }
 
     @Test
+    public void clearRatingLevelsWithoutChangingOtherSettings() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"ccsm.rating.levels\",\"value\":\"36,68\"},"
+                + "{\"name\":\"showSplashScreen\",\"value\":\"true\"}]}]";
+        Assert.assertEquals(response.replace("36,68", ""), ServerResponses.edit(response,
+                Collections.singletonMap("1", "ApplicationSettingsApi.getSettings"), Collections.emptySet()));
+    }
+
+    @Test
+    public void keepAdOffersWhenOnlyRatingPromptsAreSelected() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"rate_app\",\"enabled\":true},"
+                + "{\"name\":\"ads_ool\",\"enabled\":true}]}]";
+        Assert.assertEquals(response.replace("\"rate_app\",\"enabled\":true", "\"rate_app\",\"enabled\":false"),
+                ServerResponses.edit(response, Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"),
+                        Collections.singleton("rate_app")));
+    }
+
+    @Test
     public void acceptDepthBoundary() throws JSONException {
         StringBuilder text = new StringBuilder();
         for (int index = 0; index < ACCEPTED_JSON_DEPTH; index++) {

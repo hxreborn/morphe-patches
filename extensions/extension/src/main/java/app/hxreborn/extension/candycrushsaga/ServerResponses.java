@@ -57,6 +57,8 @@ public final class ServerResponses {
 
     private static final int BYTE_MASK = 0xff;
 
+    private static final String SETTINGS = "ApplicationSettingsApi.getSettings";
+
     private static final String PLUGINS = "UopFeatureStatusApi.getAllPlugins";
 
     private static final Set<String> AD_PLUGINS = new HashSet<>(Arrays.asList("ads_ool", "ads_egp", "ads_pre_level",
@@ -77,6 +79,10 @@ public final class ServerResponses {
     }
 
     private static boolean removeAdOffers() {
+        return false;
+    }
+
+    private static boolean removeRatingPrompts() {
         return false;
     }
 
@@ -165,8 +171,11 @@ public final class ServerResponses {
         if (removeOffers()) {
             targets.add(POPUPS);
         }
-        if (removeAdOffers()) {
+        if (removeAdOffers() || removeRatingPrompts()) {
             targets.add(PLUGINS);
+        }
+        if (removeRatingPrompts()) {
+            targets.add(SETTINGS);
         }
         return targets;
     }
@@ -187,6 +196,9 @@ public final class ServerResponses {
         Set<String> plugins = new HashSet<>();
         if (removeAdOffers()) {
             plugins.addAll(AD_PLUGINS);
+        }
+        if (removeRatingPrompts()) {
+            plugins.add("rate_app");
         }
         return plugins;
     }
@@ -211,7 +223,14 @@ public final class ServerResponses {
                 }
             } else if (PLUGINS.equals(method)) {
                 disablePlugins(result, plugins, edits);
-
+            } else if (SETTINGS.equals(method)) {
+                for (JsonText setting : result.values) {
+                    JsonText name = setting.fields.get("name");
+                    JsonText value = setting.fields.get("value");
+                    if (name != null && value != null && "ccsm.rating.levels".equals(name.string())) {
+                        replace(edits, value, "\"\"");
+                    }
+                }
             }
         }
         return splice(response, edits);
