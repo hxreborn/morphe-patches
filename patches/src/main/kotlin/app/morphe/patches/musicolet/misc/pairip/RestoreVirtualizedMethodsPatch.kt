@@ -342,12 +342,23 @@ private val RESTORED_METHODS = listOf(
         """,
     ),
     RestoredMethod(
-        "Lez0;", DO_IN_BACKGROUND, 2,
+        "Lez0;", DO_IN_BACKGROUND, 4,
         """
-            new-instance p1, Ljava/util/HashSet;
-            invoke-direct {p1}, Ljava/util/HashSet;-><init>()V
-            iput-object p1, p0, Lez0;->c:Ljava/util/HashSet;
-            return-object p1
+            :collect_start
+            new-instance v0, Ljava/util/HashSet;
+            invoke-direct {v0}, Ljava/util/HashSet;-><init>()V
+            iput-object v0, p0, Lez0;->c:Ljava/util/HashSet;
+            iget v1, p0, Lez0;->a:I
+            invoke-static {v1, v0}, $APP_PACKAGE/MusicService;->A(ILjava/util/HashSet;)V
+            :collect_end
+            .catch Ljava/lang/Throwable; {:collect_start .. :collect_end} :collect_failed
+            :done
+            const/4 v0, 0x0
+            return-object v0
+            :collect_failed
+            move-exception v0
+            invoke-virtual {v0}, Ljava/lang/Throwable;->printStackTrace()V
+            goto :done
         """,
     ),
     RestoredMethod(
