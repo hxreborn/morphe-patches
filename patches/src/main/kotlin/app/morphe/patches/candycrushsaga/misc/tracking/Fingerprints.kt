@@ -1,0 +1,63 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package app.morphe.patches.candycrushsaga.misc.tracking
+
+import app.morphe.patcher.Fingerprint
+
+internal val TrackingEntryFingerprints = listOf(
+    Fingerprint(
+        definingClass = "Lcom/king/usdk/appsflyer/AppsFlyerModule;",
+        name = "start",
+        returnType = "V",
+        parameters = emptyList(),
+    ),
+    Fingerprint(
+        definingClass = "Lcom/king/firebaseanalytics/FirebaseAnalyticsManager;",
+        name = "logEvent",
+        returnType = "V",
+    ),
+    Fingerprint(
+        definingClass = "Lcom/king/firebaseanalytics/FirebaseAnalyticsManager;",
+        name = "setUserProperty",
+        returnType = "V",
+    ),
+    Fingerprint(
+        definingClass = "Lcom/king/usdk/adinfo/AdvertisingId\$AdvertisingIdInitializer;",
+        name = "run",
+        returnType = "V",
+        parameters = emptyList(),
+    ),
+    Fingerprint(
+        definingClass = "Lcom/king/usdk/adinfo/ReferrerProvider;",
+        name = "startFetch",
+        returnType = "V",
+    ),
+)
+
+private val brazeModuleVoidEntries = listOf(
+    "configure",
+    "requestImmediateDataFlush",
+    "setCustomUserAttribute",
+    "setMultipleCustomUserAttributes",
+    "setCustomUserAttributeToNow",
+    "setCustomUserAttributeToSecondsFromEpoch",
+    "unsetCustomUserAttribute",
+    "setExternalUserId",
+)
+
+internal val BrazeModuleVoidEntryFingerprints = brazeModuleVoidEntries.map { name ->
+    Fingerprint(
+        definingClass = "Lcom/king/usdk/braze/BrazeAndroidModule;",
+        name = name,
+        returnType = "V",
+    )
+}
+
+internal object BrazeIdFromFeatureFlagFingerprint : Fingerprint(
+    definingClass = "Lcom/king/usdk/braze/BrazeAndroidModule;",
+    name = "getBrazeIdFromFeatureFlag",
+    returnType = "Ljava/lang/String;",
+    parameters = emptyList(),
+)
