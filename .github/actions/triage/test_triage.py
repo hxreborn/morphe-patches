@@ -1101,6 +1101,46 @@ ok = (registry_hit["matches"] == ["someone/patches"] and registry_hit["verdict"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} app another bundle already patches asks which features it lacks, not closed")
 
+SODA = "com.king.candycrushsodasaga"
+PATCHED_REGISTRY = {
+    "bundles": [{"repo": "someone/patches", "name": "Someone's patches", "source": "gitlab", "targetApps": [SODA],
+                 "patches": [{"name": "Hide ads", "compatiblePackagesKey": 0},
+                             {"name": "Disable telemetry", "compatiblePackagesKey": 0},
+                             {"name": "Unlock booster slots", "compatiblePackagesKey": 1}]}],
+    "compatibilities": [[{"packageName": SODA}], [{"packageName": "com.king.candycrushsaga"}]],
+}
+
+
+def soda_request(features):
+    body = (f"### App\n\nCandy Crush Soda Saga\n\n### Package name\n\n{SODA}\n\n### Requested features\n\n{features}\n\n"
+            f"{ACKNOWLEDGED}")
+    return {"number": 9, "title": "Candy Crush Soda Saga", "body": body, "state": "OPEN", "comments": []}
+
+
+def soda_verdict(features, previous=""):
+    this = soda_request(features)
+    return decide(9, this["body"], [this], SUPPORTED, PATCHED_REGISTRY, this["title"], previous=previous)
+
+
+lacking = soda_verdict("Unlock booster slots\r\nUnlimited lives\r\nHide ads\r\nextra moves\r\nboosters")
+ok = (lacking["labels"] == ["other bundle"]
+      and "but it has no patch for:\n\n- `Unlock booster slots`\n- `Unlimited lives`\n- `extra moves`\n- `boosters`\n\n"
+          "This request is kept open for those." in lacking["comment"]
+      and "closes after 1 day" not in lacking["comment"])
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} requested features the other bundle lacks keep the request open without asking")
+
+covered = soda_verdict("- No ads\n- block analytics, thanks")
+ok = covered["labels"] == ["needs info", "other bundle"] and "reply here and name the feature" in covered["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} features the other bundle already has still ask which features it lacks")
+
+rerun = soda_verdict("Unlimited lives", previous=soda_verdict("Unlimited lives")["comment"])
+answered = soda_verdict("Unlimited lives", previous=registry_hit["comment"])
+ok = rerun["labels"] == ["other bundle"] and answered["labels"] == ["needs info", "other bundle"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a request already asked which features it lacks keeps that reply on reruns")
+
 
 def posted(repo, number, title, body=""):
     return {"repo": repo, "number": number, "title": title, "body": body}
