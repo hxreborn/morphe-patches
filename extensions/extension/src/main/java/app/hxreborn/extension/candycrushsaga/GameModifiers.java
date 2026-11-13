@@ -26,11 +26,23 @@ import android.app.Activity;
 import android.util.Log;
 
 @SuppressWarnings("unused")
-public final class BoosterSlots {
+public final class GameModifiers {
 
     private static final int MAX_ATTEMPTS = 12;
 
-    private static final BoosterSlots INSTANCE = new BoosterSlots();
+    private static final int UNLOCK_SLOTS = 1;
+
+    private static final int ADD_MOVES = 2;
+
+    private static final int VALIDATION_REJECTED = -1;
+
+    private static final int RECOVERY_PENDING = -2;
+
+    private static final int ACTIVATION_ROLLED_BACK = -3;
+
+    private static final GameModifiers INSTANCE = new GameModifiers();
+
+    private final int features;
 
     private WeakReference<Activity> activity = new WeakReference<>(null);
 
@@ -38,9 +50,20 @@ public final class BoosterSlots {
 
     private boolean finished;
 
+    private boolean recovering;
+
     private int attempts;
 
-    private BoosterSlots() {
+    private GameModifiers() {
+        this.features = (slotsEnabled() ? UNLOCK_SLOTS : 0) | (extraMovesEnabled() ? ADD_MOVES : 0);
+    }
+
+    private static boolean slotsEnabled() {
+        return false;
+    }
+
+    private static boolean extraMovesEnabled() {
+        return false;
     }
 
     public static void onNativeHandle(Activity current, long handle) {
@@ -72,42 +95,51 @@ public final class BoosterSlots {
             this.queued = true;
         }
         try {
-            runOnGameThread(current, () -> unlock(current));
+            runOnGameThread(current, () -> activateModifiers(current));
         } catch (LinkageError | RuntimeException ex) {
             synchronized (this) {
                 this.queued = false;
-                this.finished = true;
+                this.finished = !this.recovering;
             }
-            Log.w(Boosters.LOG_TAG, "Booster slot scheduling failed");
+            Log.w(Boosters.LOG_TAG, "Game modifier scheduling failed");
         }
     }
 
-    private synchronized void unlock(Activity current) {
+    private synchronized void activateModifiers(Activity current) {
         this.queued = false;
         if (this.activity.get() != current || current.isFinishing() || current.isDestroyed() || this.finished) {
             return;
         }
-        if (++this.attempts > MAX_ATTEMPTS) {
+        if (!this.recovering && ++this.attempts > MAX_ATTEMPTS) {
             this.finished = true;
-            Log.w(Boosters.LOG_TAG, "Booster slot activation limit reached, limit=" + MAX_ATTEMPTS);
+            Log.w(Boosters.LOG_TAG, "Game modifier activation limit reached, limit=" + MAX_ATTEMPTS);
             return;
         }
         try {
-            System.loadLibrary("ccsslots");
-            int result = activate();
-            this.finished = result != 0;
-            if (result < 0) {
-                Log.w(Boosters.LOG_TAG, "Booster slot library validation failed");
-            }
+            System.loadLibrary("ccsmodifiers");
+            int result = activate(this.features);
+            recordActivation(result);
         } catch (LinkageError | SecurityException ex) {
-            this.finished = true;
-            Log.w(Boosters.LOG_TAG, "Booster slot activation failed");
+            this.finished = !this.recovering;
+            Log.w(Boosters.LOG_TAG, "Game modifier activation failed");
         }
+    }
+
+    private void recordActivation(int result) {
+        this.finished = result != 0 && result != RECOVERY_PENDING;
+        if (result == RECOVERY_PENDING && !this.recovering) {
+            Log.w(Boosters.LOG_TAG, "Game modifier recovery pending, redirects or permissions remain changed");
+        } else if (result == ACTIVATION_ROLLED_BACK) {
+            Log.w(Boosters.LOG_TAG, "Game modifier activation rolled back, pointers and permissions restored");
+        } else if (result == VALIDATION_REJECTED) {
+            Log.w(Boosters.LOG_TAG, "Game modifier library validation failed");
+        }
+        this.recovering = result == RECOVERY_PENDING;
     }
 
     private static void runOnGameThread(Activity current, Runnable runnable) {
     }
 
-    private static native int activate();
+    private static native int activate(int features);
 
 }

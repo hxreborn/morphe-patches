@@ -18,6 +18,8 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
+#include "Redirects.h"
+
 #include <android/log.h>
 #include <dlfcn.h>
 #include <jni.h>
@@ -31,6 +33,7 @@
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include <limits>
 
 namespace {
 
@@ -38,6 +41,14 @@ constexpr char LOG_TAG[] = "hxCandyCrush";
 constexpr size_t GAME_LIBRARY_SIZE = 83963536;
 constexpr uintptr_t BUILD_ID_OFFSET = 0x2e0;
 constexpr uintptr_t UNLOCK_SLOT = 0x18;
+constexpr jint UNLOCK_SLOTS = 1;
+constexpr jint ADD_MOVES = 2;
+constexpr int EXTRA_MOVES = 5;
+constexpr uintptr_t MOVE_LIMIT_SLOT = 0x4e26a00;
+constexpr uintptr_t MOVE_LIMIT_GETTER = 0x31bb6e0;
+constexpr uintptr_t MOVE_LIMIT_SETTER = 0x31bb758;
+constexpr uintptr_t TRACKER_MOVE_LIMIT_RETURN = 0x324a5ec;
+std::atomic<uintptr_t> activeBase{0};
 constexpr std::array<uint8_t, 16> BUILD_ID = {
     0x85, 0x26, 0x5c, 0x8b, 0xa4, 0x5b, 0x0b, 0x97,
     0x9b, 0x90, 0xf7, 0xa0, 0xc4, 0x5c, 0x58, 0x0b,
@@ -93,7 +104,23 @@ bool segmentsMatch(uintptr_t base) {
     return check.matches;
 }
 
-jint activate() {
+int moveLimit(void *state) {
+    const uintptr_t caller = reinterpret_cast<uintptr_t>(__builtin_return_address(0));
+    const uintptr_t base = activeBase.load();
+    const int limit = reinterpret_cast<int (*)(void *)>(base + MOVE_LIMIT_GETTER)(state);
+    if (caller == base + TRACKER_MOVE_LIMIT_RETURN && limit > 0
+            && limit <= std::numeric_limits<int>::max() - EXTRA_MOVES) {
+        reinterpret_cast<void (*)(void *, int)>(base + MOVE_LIMIT_SETTER)(state, limit + EXTRA_MOVES);
+        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "Extra moves added, amount=%d", EXTRA_MOVES);
+    }
+    return limit;
+}
+
+Redirects redirects;
+
+jint activate(jint features) {
+    if (redirects.pending) return redirects.recover();
+    if (features == 0 || (features & ~(UNLOCK_SLOTS | ADD_MOVES)) != 0) return -1;
     void *handle = dlopen("libcandycrushsaga.so", RTLD_NOW | RTLD_NOLOAD);
     if (handle == nullptr) return 0;
     std::unique_ptr<void, decltype(&dlclose)> library(handle, &dlclose);
@@ -108,33 +135,59 @@ jint activate() {
             || std::memcmp(reinterpret_cast<void *>(base + BUILD_ID_OFFSET), BUILD_ID.data(), BUILD_ID.size()) != 0) {
         return -1;
     }
-    const auto replacement = reinterpret_cast<uintptr_t>(&unlocked);
+    redirects = {};
+    auto &changes = redirects.changes;
+    auto &changeCount = redirects.changeCount;
+    if ((features & UNLOCK_SLOTS) != 0) {
+        for (const auto &getter : UNLOCK_GETTERS) {
+            changes[changeCount++] = {base + getter.vtable + UNLOCK_SLOT,
+                    base + getter.method, reinterpret_cast<uintptr_t>(&unlocked)};
+        }
+    }
+    if ((features & ADD_MOVES) != 0) {
+        if (*reinterpret_cast<uintptr_t *>(base + MOVE_LIMIT_SLOT + sizeof(uintptr_t))
+                != base + MOVE_LIMIT_SETTER) return -1;
+        changes[changeCount++] = {base + MOVE_LIMIT_SLOT, base + MOVE_LIMIT_GETTER,
+                reinterpret_cast<uintptr_t>(&moveLimit)};
+    }
     const long pageSize = sysconf(_SC_PAGESIZE);
     if (pageSize <= 0) return -1;
     const auto pageMask = static_cast<uintptr_t>(pageSize) - 1;
-    const uintptr_t page = (base + UNLOCK_GETTERS.front().vtable) & ~pageMask;
-    for (const auto &getter : UNLOCK_GETTERS) {
-        const uintptr_t address = base + getter.vtable + UNLOCK_SLOT;
-        if ((address & ~pageMask) != page) return -1;
-        const uintptr_t current = reinterpret_cast<std::atomic<uintptr_t> *>(address)->load();
-        if (current != base + getter.method && current != replacement) return -1;
+    redirects.pageSize = static_cast<size_t>(pageSize);
+    auto &pages = redirects.pages;
+    auto &pageCount = redirects.pageCount;
+    for (size_t index = 0; index < changeCount; index++) {
+        auto &change = changes[index];
+        const uintptr_t current = reinterpret_cast<std::atomic<uintptr_t> *>(change.slot)->load();
+        if (current != change.expected && current != change.replacement) return -1;
+        change.original = current;
+        const uintptr_t page = change.slot & ~pageMask;
+        bool found = false;
+        for (size_t existing = 0; existing < pageCount; existing++) {
+            if (pages[existing].address == page) found = true;
+        }
+        if (!found) {
+            if (pageCount == pages.size()) return -1;
+            const int protection = protectionAt(page, pageSize);
+            if (protection < 0 || (protection & PROT_READ) == 0) return -1;
+            pages[pageCount++] = {page, protection};
+        }
     }
-    if (mprotect(reinterpret_cast<void *>(page), pageSize, PROT_READ | PROT_WRITE) != 0) return -1;
-    for (const auto &getter : UNLOCK_GETTERS) {
-        auto *slot = reinterpret_cast<std::atomic<uintptr_t> *>(base + getter.vtable + UNLOCK_SLOT);
-        slot->store(replacement);
+    activeBase.store(base);
+    const int result = redirects.install();
+    if (result != 1) return result;
+    if ((features & UNLOCK_SLOTS) != 0) {
+        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "Booster slots unlocked, count=%zu", UNLOCK_GETTERS.size());
     }
-    if (mprotect(reinterpret_cast<void *>(page), pageSize, PROT_READ) != 0) {
-        __android_log_print(ANDROID_LOG_WARN, LOG_TAG, "Booster slot page protection failed");
-        return -1;
+    if ((features & ADD_MOVES) != 0) {
+        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "Extra moves enabled, amount=%d", EXTRA_MOVES);
     }
-    __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "Booster slots unlocked, count=%zu", UNLOCK_GETTERS.size());
     return 1;
 }
 
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_app_hxreborn_extension_candycrushsaga_BoosterSlots_activate(JNIEnv *, jclass) {
-    return activate();
+Java_app_hxreborn_extension_candycrushsaga_GameModifiers_activate(JNIEnv *, jclass, jint features) {
+    return activate(features);
 }
