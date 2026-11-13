@@ -7,6 +7,7 @@ package app.morphe.patches.candycrushsaga.shared
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.misc.boosters.HttpResponseFingerprint
 import app.morphe.patches.candycrushsaga.misc.boosters.NativeHandleSetterFingerprint
 import app.morphe.patches.candycrushsaga.misc.boosters.RunOnGameThreadFingerprint
@@ -33,20 +34,20 @@ internal val candyCrushModifiersPatch = bytecodePatch {
     dependsOn(addModifiersLibraryPatch)
 
     execute {
-        val gameThread = RunOnGameThreadFingerprint.matchAll(1..1).single().originalMethod
+        val gameThread = RunOnGameThreadFingerprint.matchSingle().originalMethod
         mutableClassDefBy(MODIFIERS).replaceStub("runOnGameThread", 2, """
             check-cast p0, ${gameThread.definingClass}
             invoke-virtual {p0, p1}, ${descriptor(gameThread)}
             return-void
         """)
-        val setter = NativeHandleSetterFingerprint.matchAll(1..1).single().method
-        setter.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
-            setter.addInstructionsAtControlFlowLabel(
+        val nativeHandleSetter = NativeHandleSetterFingerprint.matchSingle().method
+        nativeHandleSetter.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
+            nativeHandleSetter.addInstructionsAtControlFlowLabel(
                 index,
                 "invoke-static/range { p0 .. p2 }, $MODIFIERS->onNativeHandle(Landroid/app/Activity;J)V",
             )
         }
-        val response = HttpResponseFingerprint.matchAll(1..1).single().method
+        val response = HttpResponseFingerprint.matchSingle().method
         response.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             response.addInstructionsAtControlFlowLabel(
                 index,

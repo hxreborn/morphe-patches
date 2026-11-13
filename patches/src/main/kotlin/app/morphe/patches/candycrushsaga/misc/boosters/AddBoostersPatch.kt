@@ -8,6 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64StandardInstall
@@ -34,10 +35,10 @@ internal val candyCrushRewardsPatch = bytecodePatch {
     dependsOn(addBoosterLibraryPatch)
 
     execute {
-        val nativeHandleSetter = NativeHandleSetterFingerprint.matchAll(1..1).single().method
-        val runOnGameThread = RunOnGameThreadFingerprint.matchAll(1..1).single().originalMethod
-        val nativeApplicationGetter = NativeApplicationGetterFingerprint.matchAll(1..1).single().originalMethod
-        val nativeHandleGetter = NativeHandleGetterFingerprint.matchAll(1..1).single().originalMethod
+        val nativeHandleSetter = NativeHandleSetterFingerprint.matchSingle().method
+        val runOnGameThread = RunOnGameThreadFingerprint.matchSingle().originalMethod
+        val nativeApplicationGetter = NativeApplicationGetterFingerprint.matchSingle().originalMethod
+        val nativeHandleGetter = NativeHandleGetterFingerprint.matchSingle().originalMethod
         val activityType = runOnGameThread.definingClass
         mutableClassDefBy(BOOSTERS).apply {
             replaceStub("runOnGameThread", 2, """
@@ -64,16 +65,16 @@ internal val candyCrushRewardsPatch = bytecodePatch {
                 "invoke-static/range { p0 .. p2 }, $BOOSTERS->onNativeHandle(Landroid/app/Activity;J)V",
             )
         }
-        HttpRequestFingerprint.matchAll(1..1).single().method.addInstructions(
+        HttpRequestFingerprint.matchSingle().method.addInstructions(
             0,
             "invoke-static/range { p1 .. p8 }, " +
                 "$BOOSTERS->onRequest(JILjava/lang/String;IZLjava/lang/Object;[B)V",
         )
-        HttpDataFingerprint.matchAll(1..1).single().method.addInstructions(
+        HttpDataFingerprint.matchSingle().method.addInstructions(
             0,
             "invoke-static/range { p1 .. p4 }, $BOOSTERS->onData(J[BI)V",
         )
-        val response = HttpResponseFingerprint.matchAll(1..1).single().method
+        val response = HttpResponseFingerprint.matchSingle().method
         response.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             response.addInstructionsAtControlFlowLabel(
                 index,
