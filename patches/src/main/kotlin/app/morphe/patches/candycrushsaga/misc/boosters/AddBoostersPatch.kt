@@ -147,7 +147,8 @@ internal val candyCrushRewardsPatch = bytecodePatch {
 val addBoostersPatch = bytecodePatch(
     name = "Add boosters",
     description = "Adds 1,000 of each booster every time the game starts. " +
-        "Each booster unlocks at its usual level. Requires a standard install.",
+        "A booster is usable from its usual level, or from the first level with Unlock booster slots. " +
+        "Requires a standard install.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireArm64StandardInstall)

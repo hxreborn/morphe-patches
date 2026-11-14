@@ -23,7 +23,7 @@ private val removeNotificationPermissionPatch = resourcePatch {
 @Suppress("unused")
 val disableNotificationsPatch = bytecodePatch(
     name = "Disable notifications",
-    description = "Blocks game reminders and notification permission prompts. Requires a standard install.",
+    description = "Stops game reminders and the notification permission prompt. Requires a standard install.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireStandardInstall)

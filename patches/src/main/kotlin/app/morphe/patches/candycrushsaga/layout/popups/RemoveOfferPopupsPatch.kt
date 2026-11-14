@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 @Suppress("unused")
 val removeOfferPopupsPatch = bytecodePatch(
     name = "Remove offer pop-ups",
-    description = "Removes promotional offer pop-ups.",
+    description = "Removes pop-ups selling bundles, passes and limited-time offers.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     dependsOn(editServerResponsesPatch)

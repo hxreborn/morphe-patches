@@ -16,9 +16,9 @@ import app.morphe.patches.shared.misc.requireStandardInstall
 @Suppress("unused")
 val disableTrackingPatch = bytecodePatch(
     name = "Disable tracking",
-    description = "Stops AppsFlyer, Braze and Firebase Analytics data collection and blocks King's reads of " +
-        "the advertising ID and install referrer. Braze push and in-app messages stop too. " +
-        "Requires a standard install.",
+    description = "Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, " +
+        "and removes the advertising ID and install referrer permissions. " +
+        "Braze push and in-app messages stop too. Requires a standard install.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireStandardInstall)

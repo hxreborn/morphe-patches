@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 @Suppress("unused")
 val disableEventsPatch = bytecodePatch(
     name = "Disable events",
-    description = "Disables events.",
+    description = "Turns off limited-time events such as races, quests and leagues.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     dependsOn(editServerResponsesPatch)
