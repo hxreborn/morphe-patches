@@ -153,6 +153,7 @@ ICONS = {
     "name.antonsmirnov.android.arduinodroid2": "arduinodroid.png",
     "com.ilovepdf.www": "ilovepdf.png",
     "com.bittorrent.client": "bittorrent.png",
+    "com.utorrent.client": "utorrent.png",
     "org.quantumbadger.redreader": "redreader.png",
     "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
     "com.king.candycrushsaga": "candycrushsaga.png",

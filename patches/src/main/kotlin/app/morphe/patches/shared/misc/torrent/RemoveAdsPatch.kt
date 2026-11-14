@@ -10,7 +10,7 @@ import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 internal val removeAdsPatch = bytecodePatch {
-    compatibleWith(AppCompatibilities.BITTORRENT)
+    compatibleWith(AppCompatibilities.BITTORRENT, AppCompatibilities.UTORRENT)
     dependsOn(removeProtectionPatch)
 
     execute {

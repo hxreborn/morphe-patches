@@ -1903,6 +1903,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.3.36", versionCode = 4009263, minSdk = 29)),
     )
 
+    val UTORRENT = Compatibility(
+        name = "µTorrent",
+        packageName = "com.utorrent.client",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0A191F,
+        signatures = setOf(
+            "9f45df3b66b8cbba1edb84c8a87d6fbc9a8edd822fcc1b0fd4a8ab27fdd16a97",
+        ),
+        targets = listOf(AppTarget(version = "8.3.20", versionCode = 7733, minSdk = 24)),
+    )
+
     val VIDEO_EDITOR = Compatibility(
         name = "Video Editor",
         packageName = "videoeditor.videomaker.videoeditorforyoutube",

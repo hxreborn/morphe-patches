@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal val removeProtectionPatch = bytecodePatch {
-    compatibleWith(AppCompatibilities.BITTORRENT)
+    compatibleWith(AppCompatibilities.BITTORRENT, AppCompatibilities.UTORRENT)
     dependsOn(removePairipProtectionPatch, removePairipVirtualizationPatch)
 
     execute {
