@@ -12,7 +12,8 @@ import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativePatch
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativeBuild
-import app.morphe.patches.candycrushsaga.shared.SODA_EXTRA_MOVES_SHA256
+import app.morphe.patches.candycrushsaga.shared.SODA_LIBRARY_WITH_EXTRA_MOVES_SHA256
+import app.morphe.patches.candycrushsaga.shared.isCandyCrushSodaSaga
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64StandardInstall
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -23,6 +24,16 @@ import app.morphe.util.inputStreamFromBundledResource
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val HEX_CHARACTERS_PER_BYTE = 2
+
+private val SAGA_BOOSTER_IDS = listOf(3101, 3105, 3106, 3108, 3118, 3122, 3124, 3240, 3241, 3257)
+private val SODA_BOOSTER_IDS = listOf(12002, 12003, 12005, 12020, 12021, 12022, 12026, 12027, 12031, 12801, 12823)
+private const val SAGA_LIVES_ITEM_ID = 3669
+private const val SAGA_TIMED_LIVES_ITEM_ID = 3646
+private const val SODA_LIVES_ITEM_ID = 12299
+private const val LIVES_HOURS = 24
+private const val MINUTES_PER_HOUR = 60
+private const val SECONDS_PER_MINUTE = 60
+private const val SECONDS_PER_HOUR = 3600
 
 private const val BOOSTERS = "Lapp/hxreborn/extension/candycrushsaga/Boosters;"
 
@@ -47,12 +58,8 @@ internal val candyCrushRewardsPatch = bytecodePatch {
         val nativeHandleGetter = NativeHandleGetterFingerprint.matchSingle().originalMethod
         val activityType = runOnGameThread.definingClass
         val build = candyCrushNativeBuild(packageMetadata.packageName)
-        val soda = build.resourceDirectory == "candycrushsodasaga"
-        val boosterIds = if (soda) {
-            listOf(12002, 12003, 12005, 12020, 12021, 12022, 12026, 12027, 12031, 12801, 12823)
-        } else {
-            listOf(3101, 3105, 3106, 3108, 3118, 3122, 3124, 3240, 3241, 3257)
-        }
+        val soda = isCandyCrushSodaSaga(packageMetadata.packageName)
+        val boosterIds = if (soda) SODA_BOOSTER_IDS else SAGA_BOOSTER_IDS
         mutableClassDefBy(BOOSTERS).apply {
             replaceStub("boosterIds", 1, """
                 const/16 v0, ${boosterIds.size}
@@ -66,7 +73,7 @@ internal val candyCrushRewardsPatch = bytecodePatch {
             """)
             val hashes = mapOf(
                 "gameSha256" to build.sha256Hex,
-                "alternateGameSha256" to if (soda) SODA_EXTRA_MOVES_SHA256 else "",
+                "extraMovesGameSha256" to if (soda) SODA_LIBRARY_WITH_EXTRA_MOVES_SHA256 else "",
             )
             hashes.forEach { (name, hash) ->
                 replaceStub(name, 1, """
@@ -81,10 +88,10 @@ internal val candyCrushRewardsPatch = bytecodePatch {
                 """)
             }
             val values = mapOf(
-                "livesItemId" to if (soda) 12299 else 3669,
-                "timedLivesItemId" to if (soda) 12299 else 3646,
-                "livesAmount" to if (soda) 1440 else 24,
-                "secondsPerLifeUnit" to if (soda) 60 else 3600,
+                "livesItemId" to if (soda) SODA_LIVES_ITEM_ID else SAGA_LIVES_ITEM_ID,
+                "timedLivesItemId" to if (soda) SODA_LIVES_ITEM_ID else SAGA_TIMED_LIVES_ITEM_ID,
+                "livesAmount" to if (soda) LIVES_HOURS * MINUTES_PER_HOUR else LIVES_HOURS,
+                "secondsPerLifeUnit" to if (soda) SECONDS_PER_MINUTE else SECONDS_PER_HOUR,
                 "nativeConfirmationEnabled" to if (soda) 1 else 0,
             )
             values.forEach { (name, value) ->
@@ -139,7 +146,7 @@ internal val candyCrushRewardsPatch = bytecodePatch {
 @Suppress("unused")
 val addBoostersPatch = bytecodePatch(
     name = "Add boosters",
-    description = "Adds 1,000 to booster counts every time the game starts. " +
+    description = "Adds 1,000 of each booster every time the game starts. " +
         "Each booster unlocks at its usual level. Requires a standard install.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)

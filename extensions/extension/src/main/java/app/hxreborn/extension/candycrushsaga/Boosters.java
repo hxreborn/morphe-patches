@@ -54,7 +54,7 @@ public final class Boosters {
 
     private static final byte[] GAME_SHA256 = gameSha256();
 
-    private static final byte[] ALTERNATE_GAME_SHA256 = alternateGameSha256();
+    private static final byte[] EXTRA_MOVES_GAME_SHA256 = extraMovesGameSha256();
 
     private static final int CONFIRMED = 3;
 
@@ -110,7 +110,7 @@ public final class Boosters {
         return new byte[0];
     }
 
-    private static byte[] alternateGameSha256() {
+    private static byte[] extraMovesGameSha256() {
         return new byte[0];
     }
 
@@ -322,7 +322,7 @@ public final class Boosters {
                     }
                 }
                 byte[] actual = digest.digest();
-                matches = Arrays.equals(GAME_SHA256, actual) || Arrays.equals(ALTERNATE_GAME_SHA256, actual);
+                matches = Arrays.equals(GAME_SHA256, actual) || Arrays.equals(EXTRA_MOVES_GAME_SHA256, actual);
             }
         } catch (IOException | NoSuchAlgorithmException | LinkageError | SecurityException ex) {
             Log.e(LOG_TAG, "Game library validation failed", ex);

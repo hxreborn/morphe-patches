@@ -8,7 +8,9 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.candycrushsaga.shared.candyCrushModifiersPatch
+import app.morphe.patches.candycrushsaga.shared.candyCrushNativeBuild
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativePatch
+import app.morphe.patches.candycrushsaga.shared.isCandyCrushSodaSaga
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64StandardInstall
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -17,8 +19,6 @@ import java.nio.ByteOrder
 
 private const val MODIFIERS = "Lapp/hxreborn/extension/candycrushsaga/GameModifiers;"
 
-private const val SODA_PACKAGE = "com.king.candycrushsodasaga"
-private const val SODA_LIBRARY = "lib/arm64-v8a/libstritz.so"
 private const val INITIALIZE_MOVES_OFFSET = 0x32a8d28
 private const val ADJUST_MOVES_OFFSET = 0x7889b0
 private const val STORE_MOVES_OFFSET = 0x1a95334
@@ -38,8 +38,8 @@ private val addSodaExtraMovesPatch = resourcePatch {
     dependsOn(candyCrushNativePatch)
 
     execute {
-        if (packageMetadata.packageName != SODA_PACKAGE) return@execute
-        val library = get(SODA_LIBRARY)
+        if (!isCandyCrushSodaSaga(packageMetadata.packageName)) return@execute
+        val library = get(candyCrushNativeBuild(packageMetadata.packageName).libraryEntry)
         val bytes = library.readBytes()
         val words = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
         fun requireInstructions(offset: Int, expected: IntArray) {
@@ -60,20 +60,17 @@ private val addSodaExtraMovesPatch = resourcePatch {
         requireInstructions(FINISH_DISPLAY_OFFSET, IntArray(FINISH_DISPLAY_CODE.size))
         requireInstructions(ADJUST_MOVES_OFFSET, IntArray(ADJUST_MOVES_CODE.size))
         requireInstructions(STORE_MOVES_OFFSET, IntArray(STORE_MOVES_CODE.size))
-        words.putInt(INITIALIZE_MOVES_OFFSET, BRANCH_TO_ADJUST_MOVES)
-        ADJUST_MOVES_CODE.forEachIndexed { index, instruction ->
-            words.putInt(ADJUST_MOVES_OFFSET + index * Int.SIZE_BYTES, instruction)
+        fun writeInstructions(offset: Int, instructions: IntArray) {
+            instructions.forEachIndexed { index, instruction ->
+                words.putInt(offset + index * Int.SIZE_BYTES, instruction)
+            }
         }
-        STORE_MOVES_CODE.forEachIndexed { index, instruction ->
-            words.putInt(STORE_MOVES_OFFSET + index * Int.SIZE_BYTES, instruction)
-        }
-        words.putInt(DISPLAY_MOVES_OFFSET, CALL_ADJUST_DISPLAY)
-        ADJUST_DISPLAY_CODE.forEachIndexed { index, instruction ->
-            words.putInt(ADJUST_DISPLAY_OFFSET + index * Int.SIZE_BYTES, instruction)
-        }
-        FINISH_DISPLAY_CODE.forEachIndexed { index, instruction ->
-            words.putInt(FINISH_DISPLAY_OFFSET + index * Int.SIZE_BYTES, instruction)
-        }
+        writeInstructions(INITIALIZE_MOVES_OFFSET, intArrayOf(BRANCH_TO_ADJUST_MOVES))
+        writeInstructions(ADJUST_MOVES_OFFSET, ADJUST_MOVES_CODE)
+        writeInstructions(STORE_MOVES_OFFSET, STORE_MOVES_CODE)
+        writeInstructions(DISPLAY_MOVES_OFFSET, intArrayOf(CALL_ADJUST_DISPLAY))
+        writeInstructions(ADJUST_DISPLAY_OFFSET, ADJUST_DISPLAY_CODE)
+        writeInstructions(FINISH_DISPLAY_OFFSET, FINISH_DISPLAY_CODE)
         library.writeBytes(bytes)
     }
 }

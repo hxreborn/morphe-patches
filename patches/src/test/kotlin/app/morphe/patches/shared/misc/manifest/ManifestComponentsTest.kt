@@ -45,7 +45,7 @@ internal class ManifestComponentsTest {
             </manifest>
         """.trimIndent())
 
-        manifest.removeManifestMetadata(setOf("analytics"))
+        manifest.removeMetaData(setOf("analytics"))
 
         assertEquals("messaging", manifest.elements("meta-data").single().getAttribute("android:name"))
         assertEquals("discovery", manifest.elements("service").single().getAttribute("android:name"))

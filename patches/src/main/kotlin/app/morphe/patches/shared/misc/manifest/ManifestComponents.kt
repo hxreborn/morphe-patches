@@ -18,7 +18,7 @@ internal fun Document.disableApplicationComponents(names: Set<String>) {
         .forEach { it.setAttribute("android:enabled", "false") }
 }
 
-internal fun Document.removeManifestMetadata(names: Set<String>) {
+internal fun Document.removeMetaData(names: Set<String>) {
     getElementsByTagName("meta-data").asSequence().filterIsInstance<Element>()
         .filter { it.getAttribute("android:name") in names }
         .toList()

@@ -104,7 +104,7 @@ public final class ServerResponses {
     private ServerResponses() {
     }
 
-    private static boolean sodaConfiguration() {
+    private static boolean isSodaSaga() {
         return false;
     }
 
@@ -210,7 +210,7 @@ public final class ServerResponses {
     private static Set<String> selectedMethods() {
         Set<String> targets = new HashSet<>();
         if (removeOffers()) {
-            targets.add(sodaConfiguration() ? PLUGINS : POPUPS);
+            targets.add(isSodaSaga() ? PLUGINS : POPUPS);
         }
         if (removeAdOffers() || removeRatingPrompts() || disableEvents()) {
             targets.add(PLUGINS);
@@ -236,19 +236,19 @@ public final class ServerResponses {
     private static Set<String> selectedPlugins() {
         Set<String> plugins = new HashSet<>();
         if (removeAdOffers()) {
-            plugins.addAll(sodaConfiguration() ? SODA_AD_PLUGINS : AD_PLUGINS);
+            plugins.addAll(isSodaSaga() ? SODA_AD_PLUGINS : AD_PLUGINS);
         }
         if (removeRatingPrompts()) {
             plugins.add("rate_app");
         }
         if (disableEvents()) {
-            plugins.addAll(sodaConfiguration() ? SODA_EVENT_PLUGINS : EVENT_PLUGINS);
+            plugins.addAll(isSodaSaga() ? SODA_EVENT_PLUGINS : EVENT_PLUGINS);
         }
         return plugins;
     }
 
     static String edit(String response, Map<String, String> methods, Set<String> plugins) throws JSONException {
-        return edit(response, methods, plugins, sodaConfiguration(), removeOffers());
+        return edit(response, methods, plugins, isSodaSaga(), removeOffers());
     }
 
     static String edit(String response, Map<String, String> methods, Set<String> plugins, boolean soda,
@@ -308,7 +308,7 @@ public final class ServerResponses {
             }
             JsonText parameters = plugin.fields.get("parameters");
             if (parameters != null && parameters.text.charAt(parameters.start) != '[') {
-                throw new JSONException("Popup parameter list rejected");
+                throw new JSONException("Popup plugin parameters are not a JSON array");
             }
             boolean found = false;
             for (JsonText parameter : (parameters != null) ? parameters.values : Collections.<JsonText>emptyList()) {
@@ -336,7 +336,7 @@ public final class ServerResponses {
     private static String appendSodaOfferPlacements(String text) throws JSONException {
         JsonText blocked = JsonText.parse(text);
         if (blocked.text.charAt(blocked.start) != '[') {
-            throw new JSONException("Popup placement list rejected");
+            throw new JSONException("Popup blocklist is not a JSON array");
         }
         Set<String> present = new HashSet<>();
         for (JsonText placement : blocked.values) {

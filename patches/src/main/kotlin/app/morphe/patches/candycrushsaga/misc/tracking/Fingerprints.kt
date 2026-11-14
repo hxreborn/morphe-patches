@@ -7,30 +7,32 @@ package app.morphe.patches.candycrushsaga.misc.tracking
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.methodCall
 
+internal const val APPSFLYER_LIB = "Lcom/appsflyer/AppsFlyerLib;"
+internal const val APPSFLYER_MODULE = "Lcom/king/usdk/appsflyer/AppsFlyerModule;"
+
 internal object AppsFlyerInitializeFingerprint : Fingerprint(
-    definingClass = "Lcom/king/usdk/appsflyer/AppsFlyerModule;",
+    definingClass = APPSFLYER_MODULE,
     name = "<init>",
     returnType = "V",
-    parameters = listOf("Landroid/app/Activity;", "J", "J", "Ljava/lang/String;", "Ljava/lang/String;", "Z", "Ljava/lang/String;"),
     filters = listOf(
         methodCall(
-            definingClass = "Lcom/appsflyer/AppsFlyerLib;",
+            definingClass = APPSFLYER_LIB,
             name = "getInstance",
-            returnType = "Lcom/appsflyer/AppsFlyerLib;",
+            returnType = APPSFLYER_LIB,
             parameters = emptyList(),
         ),
     ),
 )
 
 internal object AppsFlyerCustomerUserIdFingerprint : Fingerprint(
-    definingClass = "Lcom/king/usdk/appsflyer/AppsFlyerModule;",
+    definingClass = APPSFLYER_MODULE,
     name = "setCustomerUserId",
     returnType = "V",
     parameters = listOf("Ljava/lang/String;"),
 )
 
 internal object AppsFlyerStartFingerprint : Fingerprint(
-    definingClass = "Lcom/king/usdk/appsflyer/AppsFlyerModule;",
+    definingClass = APPSFLYER_MODULE,
     name = "start",
     returnType = "V",
     parameters = emptyList(),

@@ -290,7 +290,7 @@ struct PendingReward {
 
 std::array<PendingReward, REWARD_TYPES> pendingRewards = {};
 
-bool sodaOwners(const ProcessMemory &memory, uintptr_t base, uintptr_t &services) {
+bool readSodaServices(const ProcessMemory &memory, uintptr_t base, uintptr_t &services) {
     uintptr_t game = 0;
     uintptr_t updater = 0;
     return memory.readPointer(base + GAME_INSTANCE_OFFSET, game)
@@ -301,7 +301,7 @@ bool sodaOwners(const ProcessMemory &memory, uintptr_t base, uintptr_t &services
             && memory.mapped(services, DELIVERY_MEMBER_OFFSET + sizeof(uintptr_t), false);
 }
 
-bool sodaAmounts(const ProcessMemory &memory, uintptr_t base, uintptr_t services, PendingReward &reward,
+bool readSodaAmounts(const ProcessMemory &memory, uintptr_t base, uintptr_t services, PendingReward &reward,
         bool lives, bool &active) {
     uintptr_t owner = 0;
     if (!memory.readPointer(services + (lives ? LIVES_MEMBER_OFFSET : BOOSTER_MEMBER_OFFSET), owner)
@@ -350,7 +350,7 @@ jint submit(uintptr_t handle, const Item *items, size_t count) {
     if (base == 0 || handle == 0) return NOT_SUBMITTED;
     uintptr_t services = 0;
     uintptr_t delivery = 0;
-    if (!sodaOwners(memory, base, services)
+    if (!readSodaServices(memory, base, services)
             || !memory.readPointer(services + DELIVERY_MEMBER_OFFSET, delivery)
             || !validObject(memory, delivery, base + DELIVERY_VTABLE_OFFSET)) return NOT_SUBMITTED;
     const bool lives = count == 1 && items[0].id == LIVES_ITEM_ID;
@@ -361,7 +361,7 @@ jint submit(uintptr_t handle, const Item *items, size_t count) {
     reward.count = count;
     for (size_t index = 0; index < count; index++) reward.ids[index] = items[index].id;
     bool active = false;
-    if (!sodaAmounts(memory, base, services, reward, lives, active)) return NOT_SUBMITTED;
+    if (!readSodaAmounts(memory, base, services, reward, lives, active)) return NOT_SUBMITTED;
     for (size_t index = 0; index < count; index++) {
         const int64_t amount = items[index].amount * (lives ? SECONDS_PER_MINUTE : 1);
         if (amount <= 0 || reward.expected[index] > INT64_MAX - amount) return NOT_SUBMITTED;
@@ -389,10 +389,10 @@ jint confirm(uint32_t firstId) {
     const ProcessMemory memory;
     const uintptr_t base = gameBase(memory);
     uintptr_t services = 0;
-    if (base == 0 || !sodaOwners(memory, base, services)) return CONFIRMATION_FAILED;
+    if (base == 0 || !readSodaServices(memory, base, services)) return CONFIRMATION_FAILED;
     auto observed = pending;
     bool active = false;
-    if (!sodaAmounts(memory, base, services, observed, lives, active)) return CONFIRMATION_FAILED;
+    if (!readSodaAmounts(memory, base, services, observed, lives, active)) return CONFIRMATION_FAILED;
     if (lives && !active) return CONFIRMATION_PENDING;
     const int64_t elapsed = std::chrono::duration_cast<std::chrono::seconds>(
             std::chrono::steady_clock::now() - pending.submitted).count();

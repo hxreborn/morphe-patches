@@ -22,12 +22,10 @@ val disableTrackingPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireStandardInstall)
-    dependsOn(disableAnalyticsCollectionPatch, deactivateFirebaseAnalyticsPatch, disableTrackingComponentsPatch)
+    dependsOn(disableAnalyticsCollectionPatch, deactivateFirebaseAnalyticsPatch, disableTrackingManifestEntriesPatch)
 
     execute {
-        if (classDefByOrNull("Lcom/appsflyer/AppsFlyerLib;") != null ||
-            classDefByOrNull("Lcom/king/usdk/appsflyer/AppsFlyerModule;") != null
-        ) {
+        if (classDefByOrNull(APPSFLYER_LIB) != null || classDefByOrNull(APPSFLYER_MODULE) != null) {
             val initialization = AppsFlyerInitializeFingerprint.matchSingle()
             val (firstSdkAccess) = initialization.instructionMatches
             initialization.method.addInstruction(firstSdkAccess.index, "return-void")
