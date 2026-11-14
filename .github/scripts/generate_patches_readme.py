@@ -150,6 +150,7 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "name.antonsmirnov.android.arduinodroid2": "arduinodroid.png",
     "org.quantumbadger.redreader": "redreader.png",
     "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
     "com.king.candycrushsaga": "candycrushsaga.png",

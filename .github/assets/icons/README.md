@@ -21,6 +21,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `arduinodroid.png` | ArduinoDroid (`name.antonsmirnov.android.arduinodroid2`) | PE Smirnov Anton Sergeevich | Play 9.7.6, xxhdpi launcher icon `res/m/ay.png`, cut to a circle |
 | `redreader.png` | RedReader (`org.quantumbadger.redreader`) | QuantumBadger | Play 1.27, `res/mipmap-xxxhdpi/icon.png`, cut to a circle |
 | `redreaderalpha.png` | RedReader Alpha (`org.quantumbadger.redreaderalpha`) | QuantumBadger | Official Alpha 375, `mipmap/icon_inv` xxxhdpi (`res/EM.png`), cut to a circle |
 | `launchbox.png` | LaunchBox (`com.unbrokensoftware.launchbox`) | Unbroken Software, LLC | APK 1.23, adaptive icon `res/mipmap-anydpi-v26/icon.xml`, white background under `launcher_foreground` (xxxhdpi), cut to a circle |

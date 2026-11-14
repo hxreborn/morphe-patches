@@ -128,6 +128,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.4.2.141", versionCode = 141, minSdk = 23)),
     )
 
+    val ARDUINODROID = Compatibility(
+        name = "ArduinoDroid",
+        packageName = "name.antonsmirnov.android.arduinodroid2",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x00979D,
+        signatures = setOf(
+            "9ac3cd0b6ca8b71164e555c4b9db580c0b16936de763445e2044b2fa8177e21d",
+        ),
+        targets = listOf(AppTarget(version = "9.7.6", versionCode = 9779, minSdk = 29)),
+    )
+
     val ATHAN = Compatibility(
         name = "Athan",
         packageName = "com.athan",

@@ -1,0 +1,23 @@
+package app.morphe.patches.arduinodroid.misc.premium
+
+import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+
+@Suppress("unused")
+val unlockPremiumPatch = bytecodePatch(
+    name = "Unlock premium",
+    description = "Unlocks premium features, removes ads and removes flashing limits.",
+) {
+    compatibleWith(AppCompatibilities.ARDUINODROID)
+    dependsOn(removePairipProtectionPatch)
+
+    execute {
+        val premiumStatus = PremiumStatusFingerprint.matchSingle().method
+        subscriptionStatusFingerprint(premiumStatus).matchSingle().method.returnEarly(false)
+        premiumStatus.returnEarly(true)
+        AdsInitializationFingerprint.matchSingle().method.returnEarly()
+    }
+}
