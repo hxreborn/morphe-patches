@@ -9,13 +9,30 @@ import app.morphe.patcher.patch.resourcePatch
 import java.security.MessageDigest
 import org.w3c.dom.Element
 
-private const val GAME_LIBRARY = "lib/arm64-v8a/libcandycrushsaga.so"
-private const val GAME_LIBRARY_SHA256 = "f658c3ae188b11f10d5547590e1a0172cf95c3255f1e4f5576841acf68fb487e"
 private const val HASH_BUFFER_SIZE = 65536
+
+internal const val SODA_EXTRA_MOVES_SHA256 = "187479e4681064a198aa0a67b5af3456c45fe44765e65aee962ecfd7da789e44"
+
+internal class CandyCrushNativeBuild(val libraryEntry: String, val sha256Hex: String, val resourceDirectory: String)
+
+internal fun candyCrushNativeBuild(packageName: String): CandyCrushNativeBuild = when (packageName) {
+    "com.king.candycrushsaga" -> CandyCrushNativeBuild(
+        "lib/arm64-v8a/libcandycrushsaga.so",
+        "f658c3ae188b11f10d5547590e1a0172cf95c3255f1e4f5576841acf68fb487e",
+        "candycrushsaga",
+    )
+    "com.king.candycrushsodasaga" -> CandyCrushNativeBuild(
+        "lib/arm64-v8a/libstritz.so",
+        "1fd641f801e1e3ed690172ab37034cef2876d4df812aab9700a0c39ec09a5a23",
+        "candycrushsodasaga",
+    )
+    else -> throw PatchException("Unsupported Candy Crush package: $packageName")
+}
 
 internal val candyCrushNativePatch = resourcePatch {
     execute {
-        val gameLibrary = get(GAME_LIBRARY)
+        val build = candyCrushNativeBuild(packageMetadata.packageName)
+        val gameLibrary = get(build.libraryEntry)
         if (!gameLibrary.isFile) throw PatchException("Missing Candy Crush native library")
         val digest = MessageDigest.getInstance("SHA-256")
         gameLibrary.inputStream().use { input ->
@@ -27,8 +44,8 @@ internal val candyCrushNativePatch = resourcePatch {
             }
         }
         val hash = digest.digest().joinToString("") { "%02x".format(it) }
-        if (hash != GAME_LIBRARY_SHA256) {
-            throw PatchException("Unsupported Candy Crush native library: SHA-256 $hash, expected $GAME_LIBRARY_SHA256")
+        if (hash != build.sha256Hex) {
+            throw PatchException("Unsupported Candy Crush native library: SHA-256 $hash, expected ${build.sha256Hex}")
         }
         document("AndroidManifest.xml").use { manifest ->
             val application = manifest.getElementsByTagName("application").item(0) as? Element

@@ -153,6 +153,7 @@ ICONS = {
     "org.quantumbadger.redreader": "redreader.png",
     "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
     "com.king.candycrushsaga": "candycrushsaga.png",
+    "com.king.candycrushsodasaga": "candycrushsodasaga.png",
     "com.unbrokensoftware.launchbox": "launchbox.png",
     "de.app.flighttracker": "flights25.png",
     "com.audiomack": "audiomack.png",

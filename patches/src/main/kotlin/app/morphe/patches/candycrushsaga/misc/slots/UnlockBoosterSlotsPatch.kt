@@ -17,7 +17,7 @@ val unlockBoosterSlotsPatch = bytecodePatch(
     name = "Unlock booster slots",
     description = "Unlocks booster slots at any level. Requires a standard install.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireArm64StandardInstall)
     dependsOn(candyCrushModifiersPatch)
 

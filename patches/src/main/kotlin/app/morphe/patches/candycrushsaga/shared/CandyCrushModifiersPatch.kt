@@ -7,6 +7,7 @@ package app.morphe.patches.candycrushsaga.shared
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.misc.boosters.HttpResponseFingerprint
 import app.morphe.patches.candycrushsaga.misc.boosters.NativeHandleSetterFingerprint
@@ -23,7 +24,8 @@ private const val MODIFIERS = "Lapp/hxreborn/extension/candycrushsaga/GameModifi
 private val addModifiersLibraryPatch = resourcePatch {
     dependsOn(candyCrushNativePatch)
     execute {
-        val resource = inputStreamFromBundledResource("candycrushsaga", "libccsmodifiers.so")
+        val build = candyCrushNativeBuild(packageMetadata.packageName)
+        val resource = inputStreamFromBundledResource(build.resourceDirectory, "libccsmodifiers.so")
             ?: throw PatchException("Missing Candy Crush game modifier library")
         get("lib/arm64-v8a/libccsmodifiers.so", copy = false).writeBytes(resource.use { it.readBytes() })
     }
@@ -40,7 +42,7 @@ internal val candyCrushModifiersPatch = bytecodePatch {
             invoke-virtual {p0, p1}, ${descriptor(gameThread)}
             return-void
         """)
-        val nativeHandleSetter = NativeHandleSetterFingerprint.matchSingle().method
+        val nativeHandleSetter = NativeHandleSetterFingerprint.matchSingle().method.cloneParameters()
         nativeHandleSetter.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             nativeHandleSetter.addInstructionsAtControlFlowLabel(
                 index,
