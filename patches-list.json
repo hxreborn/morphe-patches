@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.78.1-dev.1",
+  "version": "1.79.0-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -784,7 +784,7 @@
     },
     {
       "name": "Add boosters",
-      "description": "Adds 1,000 of each of ten boosters every time the game starts. Each booster unlocks at its usual level. Requires a standard install.",
+      "description": "Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -812,13 +812,38 @@
               "description": null
             }
           ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
         }
       ],
       "options": []
     },
     {
       "name": "Add extra moves",
-      "description": "Adds five moves when each level starts. Requires a standard install.",
+      "description": "Starts every level with five extra moves. Requires a standard install.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -840,6 +865,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -2453,7 +2503,7 @@
     },
     {
       "name": "Disable events",
-      "description": "Disables events.",
+      "description": "Turns off limited-time events such as races, quests and leagues.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2481,13 +2531,38 @@
               "description": null
             }
           ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
         }
       ],
       "options": []
     },
     {
       "name": "Disable notifications",
-      "description": "Blocks game reminders and the prompt asking to allow notifications.",
+      "description": "Stops game reminders and the notification permission prompt. Requires a standard install.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2509,6 +2584,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -2970,7 +3070,7 @@
     },
     {
       "name": "Disable tracking",
-      "description": "Stops AppsFlyer, Braze and Firebase Analytics data collection and blocks reads of the advertising ID and install referrer. Braze push and in-app messages stop too.",
+      "description": "Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -2992,6 +3092,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -7813,7 +7938,7 @@
     },
     {
       "name": "Hide ads",
-      "description": "Stops rewarded and interstitial ads from loading.",
+      "description": "Stops ad networks from starting and blocks rewarded and interstitial ads.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -7835,6 +7960,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -11604,6 +11754,31 @@
               "description": null
             }
           ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
         }
       ],
       "options": []
@@ -12394,7 +12569,7 @@
     },
     {
       "name": "Remove ad offers",
-      "description": "Removes rewarded ad offers.",
+      "description": "Removes offers to watch an ad for extra moves, lives or boosters.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -12416,6 +12591,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -13983,7 +14183,7 @@
     },
     {
       "name": "Remove offer pop-ups",
-      "description": "Removes promotional offer pop-ups.",
+      "description": "Removes pop-ups selling bundles, passes and limited-time offers.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -14005,6 +14205,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -14405,7 +14630,7 @@
     },
     {
       "name": "Remove rating prompts",
-      "description": "Removes rating prompts and rate entry in Settings.",
+      "description": "Removes prompts asking to rate the game after a level.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -14427,6 +14652,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -17140,6 +17390,31 @@
               "description": null
             }
           ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
         }
       ],
       "options": []
@@ -17522,7 +17797,7 @@
     },
     {
       "name": "Unlock booster slots",
-      "description": "Unlocks booster slots at any level. Requires a standard install.",
+      "description": "Unlocks all booster slots from the first level. Requires a standard install.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -17544,6 +17819,31 @@
                 "ARMEABI_V7A": 13400010,
                 "X86_64": 13400010,
                 "X86": 13400010
+              },
+              "isExperimental": false,
+              "minSdk": 24,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.king.candycrushsodasaga",
+          "name": "Candy Crush Soda Saga",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#098AD3",
+          "signatures": [
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.331.3",
+              "versionCodes": {
+                "ARM64_V8A": 13310030,
+                "ARMEABI_V7A": 13310030,
+                "X86_64": 13310030,
+                "X86": 13310030
               },
               "isExperimental": false,
               "minSdk": 24,

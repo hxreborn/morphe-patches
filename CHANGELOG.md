@@ -1,3 +1,26 @@
+## [1.79.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.78.1-dev.1...v1.79.0-dev.1) (2026-11-14)
+
+### Bug Fixes
+
+* **Candy Crush Saga - Disable notifications:** remove permission prompts ([892a63e](https://github.com/hxreborn/morphe-patches/commit/892a63e27d86f428cb5bc1d75da7c64cc3371e82))
+* **Candy Crush Saga - Disable tracking:** stop attribution collection ([9390c55](https://github.com/hxreborn/morphe-patches/commit/9390c557063934a2349a41b48ff00b96129ebb9c))
+* **Candy Crush Saga - Remove offer pop-ups:** skip oversized offer edits ([872f262](https://github.com/hxreborn/morphe-patches/commit/872f26299a7b20fb6b94d33fcda208181c616c16))
+
+### New Features
+
+* **Candy Crush Soda Saga - Add boosters:** grant 1,000 of each on start ([ef43485](https://github.com/hxreborn/morphe-patches/commit/ef43485c46331e2695d0f96396409988fc87999a))
+* **Candy Crush Soda Saga - Add extra moves:** give five more moves ([4233adf](https://github.com/hxreborn/morphe-patches/commit/4233adf670ee01dfa24cbabfa629db9f7148d402))
+* **Candy Crush Soda Saga - Disable events:** remove event entries ([3573938](https://github.com/hxreborn/morphe-patches/commit/3573938f9a314ac1d670a27dd2804a75f4e0f947))
+* **Candy Crush Soda Saga - Disable notifications:** stop reminders ([fb4b072](https://github.com/hxreborn/morphe-patches/commit/fb4b0722cc9699e7f248cf3eb2f29eb75718c2d9))
+* **Candy Crush Soda Saga - Disable tracking:** stop data collection ([5bfc691](https://github.com/hxreborn/morphe-patches/commit/5bfc69128e80d811ce2bb407f204ca26b6402213))
+* **Candy Crush Soda Saga - Hide ads:** stop ad networks from loading ([a5ef863](https://github.com/hxreborn/morphe-patches/commit/a5ef8634ca281df7f4374ebe51794f1bda612f74))
+* **Candy Crush Soda Saga - Parked app for Android Auto:** add car entry ([766859d](https://github.com/hxreborn/morphe-patches/commit/766859d909b5798a20783ef16f94c51e0ec80eff))
+* **Candy Crush Soda Saga - Remove ad offers:** drop watch-ad offers ([479162c](https://github.com/hxreborn/morphe-patches/commit/479162c8029b55b707e2ff991ec0f1a2fb161125))
+* **Candy Crush Soda Saga - Remove offer pop-ups:** block promotions ([a65fb1e](https://github.com/hxreborn/morphe-patches/commit/a65fb1e111f9978ddd700b9e23ced7b600106cac))
+* **Candy Crush Soda Saga - Remove rating prompts:** stop rate requests ([199169d](https://github.com/hxreborn/morphe-patches/commit/199169d046e6366c88e53a34ca3034f33cb23765))
+* **Candy Crush Soda Saga - Unlimited lives:** add 24 hours on start ([4d643aa](https://github.com/hxreborn/morphe-patches/commit/4d643aa0a4e7ddd8beb5f9a843a779658442a15d))
+* **Candy Crush Soda Saga - Unlock booster slots:** remove level limits ([78a5876](https://github.com/hxreborn/morphe-patches/commit/78a5876c27b4db3992198d8dc50371fa0926145c))
+
 ## [1.78.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.78.0...v1.78.1-dev.1) (2026-11-14)
 
 ### Bug Fixes
