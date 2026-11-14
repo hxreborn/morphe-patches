@@ -2,7 +2,7 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/banner-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/banner-light.svg" alt="hxreborn's patches" width="700"></picture>
 
-[![Downloads badge](https://img.shields.io/github/downloads/hxreborn/morphe-patches/total?style=for-the-badge&label=Downloads&color=2F81F7&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
+[![Downloads badge](https://img.shields.io/endpoint?url=https%3A%2F%2Freports.hxreborn.eu%2Fbadges%2Fmorphe-patches-downloads.json%3Fschema%3D1&style=for-the-badge&label=Downloads&color=2F81F7&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
 [![Stars badge](https://img.shields.io/github/stars/hxreborn/morphe-patches?style=for-the-badge&label=Stars&color=E3B341&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/stargazers)
 [![Ko-fi badge](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/hxreborn)
 
