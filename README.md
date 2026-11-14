@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.78.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;554 patches total
+> **[v1.78.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;555 patches total
 
 ### Featured apps
 
@@ -2496,7 +2496,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="redreader"></a>
 <details>
-<summary><img src=".github/assets/icons/redreader.png" width="18" align="top">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/redreader.png" width="18" align="top">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2507,12 +2507,13 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="redreader-filter-posts"></a>[Filter posts](patches/src/main/kotlin/app/morphe/patches/redreader/layout/filter/FilterPostsPatch.kt) | Filters posts by title keyword, subreddit name or post flair, with regular expression support. |
+| <a id="redreader-fix-login"></a>[Fix login](patches/src/main/kotlin/app/morphe/patches/redreader/misc/login/FixLoginPatch.kt) | Enables Reddit login without entering a client ID. |
 
 </details>
 
 <a id="redreader-alpha"></a>
 <details>
-<summary><img src=".github/assets/icons/redreaderalpha.png" width="18" align="top">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/redreaderalpha.png" width="18" align="top">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2523,6 +2524,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="redreader-alpha-filter-posts"></a>Filter posts | Filters posts by title keyword, subreddit name or post flair, with regular expression support. |
+| <a id="redreader-alpha-fix-login"></a>Fix login | Enables Reddit login without entering a client ID. |
 
 </details>
 

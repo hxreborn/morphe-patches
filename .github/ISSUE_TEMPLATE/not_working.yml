@@ -455,12 +455,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.78.0"
+        - "1.78.1"
+        - "1.79.0-dev.1"
+        - "1.78.1-dev.1"
         - "1.78.0-dev.3"
         - "1.78.0-dev.2"
         - "1.78.0-dev.1"
-        - "1.77.1-dev.1"
-        - "1.77.0-dev.2"
         - "Older than these"
         # /generated
     validations:
@@ -954,7 +954,9 @@ body:
         - "Realme Link \u00b7 AMOLED dark theme"
         - "Realme Link \u00b7 Bypass session expiry"
         - "RedReader Alpha \u00b7 Filter posts"
+        - "RedReader Alpha \u00b7 Fix login"
         - "RedReader \u00b7 Filter posts"
+        - "RedReader \u00b7 Fix login"
         - "Resprite \u00b7 Unlock premium"
         - "Ridmik Keyboard \u00b7 Remove ads"
         - "Ringtone Maker \u00b7 Remove rating prompts"
