@@ -51,6 +51,8 @@ body:
         - "APNA Tunnel Lite (another version, type it below)"
         - "Arc Player 1.4.2.141"
         - "Arc Player (another version, type it below)"
+        - "ArduinoDroid 9.7.6"
+        - "ArduinoDroid (another version, type it below)"
         - "Athan 11.0.7"
         - "Athan (another version, type it below)"
         - "AtloMaps 2.0.2"
@@ -457,11 +459,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.79.0-dev.5"
         - "1.79.0-dev.4"
         - "1.79.0-dev.3"
         - "1.79.0-dev.2"
         - "1.79.0-dev.1"
-        - "1.78.1-dev.1"
         - "1.78.1"
         - "Older than these"
         # /generated
@@ -545,6 +547,7 @@ body:
         - "Arc Player \u00b7 Disable tracking"
         - "Arc Player \u00b7 Remove rating prompts"
         - "Arc Player \u00b7 Unlock premium"
+        - "ArduinoDroid \u00b7 Unlock premium"
         - "Athan \u00b7 Dark theme"
         - "Athan \u00b7 Disable tracking"
         - "Athan \u00b7 GmsCore support"

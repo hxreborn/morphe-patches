@@ -1,3 +1,9 @@
+## [1.79.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.4...v1.79.0-dev.5) (2026-11-14)
+
+### New Features
+
+* **ArduinoDroid - Unlock premium:** remove ads and flashing limits ([5b3b557](https://github.com/hxreborn/morphe-patches/commit/5b3b5572080a56344381274a361a79925cb66ef1)), closes [#768](https://github.com/hxreborn/morphe-patches/issues/768)
+
 ## [1.79.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.3...v1.79.0-dev.4) (2026-11-14)
 
 ### New Features

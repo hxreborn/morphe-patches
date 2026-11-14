@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.79.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;554 patches total
+> **[v1.79.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;555 patches total
 
 ### Featured apps
 
@@ -262,6 +262,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="arc-player-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/arcplayer/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics and Firebase Sessions from collecting usage data. |
 | <a id="arc-player-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/arcplayer/misc/rate/RemoveRatingPromptsPatch.kt) | Removes the feedback and rating popup that appears after watching videos. |
 | <a id="arc-player-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/arcplayer/misc/premium/UnlockPremiumPatch.kt) | Unlocks the pure black theme and custom subtitle fonts, and removes the premium prompts. |
+
+</details>
+
+<a id="arduinodroid"></a>
+<details>
+<summary><img src=".github/assets/icons/arduinodroid.png" width="18" align="top">&nbsp;&nbsp;ArduinoDroid&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 9.7.6 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="arduinodroid-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/arduinodroid/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features, removes ads and removes flashing limits. |
 
 </details>
 

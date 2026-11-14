@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.79.0-dev.4",
+  "version": "1.79.0-dev.5",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -18243,6 +18243,40 @@
               },
               "isExperimental": false,
               "minSdk": 23,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Unlock premium",
+      "description": "Unlocks premium features, removes ads and removes flashing limits.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "name.antonsmirnov.android.arduinodroid2",
+          "name": "ArduinoDroid",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#00979D",
+          "signatures": [
+            "9ac3cd0b6ca8b71164e555c4b9db580c0b16936de763445e2044b2fa8177e21d"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "9.7.6",
+              "versionCodes": {
+                "ARM64_V8A": 9779,
+                "ARMEABI_V7A": 9779,
+                "X86_64": 9779,
+                "X86": 9779
+              },
+              "isExperimental": false,
+              "minSdk": 29,
               "description": null
             }
           ]
