@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.78.0",
+  "version": "1.78.1-dev.1",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -5810,40 +5810,6 @@
               },
               "isExperimental": false,
               "minSdk": 28,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Frosted glass",
-      "description": "Adds frosted glass to home screen buttons, panels and sheets. Requires Android 12 or later.",
-      "default": true,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "ch.protonvpn.android",
-          "name": "Proton VPN",
-          "description": null,
-          "apkFileType": "XAPK_REQUIRED",
-          "appIconColor": "#6D4AFF",
-          "signatures": [
-            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "5.21.9.0",
-              "versionCodes": {
-                "ARM64_V8A": 605210900,
-                "ARMEABI_V7A": 605210900,
-                "X86_64": 605210900,
-                "X86": 605210900
-              },
-              "isExperimental": false,
-              "minSdk": 26,
               "description": null
             }
           ]
