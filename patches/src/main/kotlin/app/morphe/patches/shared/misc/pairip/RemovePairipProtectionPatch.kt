@@ -21,6 +21,7 @@ val removePairipProtectionPatch: BytecodePatch = bytecodePatch {
         AppCompatibilities.BANGLA_CALENDAR,
         AppCompatibilities.BEHISABI,
         AppCompatibilities.BIOBIRD,
+        AppCompatibilities.BITTORRENT,
         AppCompatibilities.BLOCKIT,
         AppCompatibilities.BLURWALL,
         AppCompatibilities.CATZY,

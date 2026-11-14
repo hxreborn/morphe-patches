@@ -278,6 +278,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val BITTORRENT = Compatibility(
+        name = "BitTorrent",
+        packageName = "com.bittorrent.client",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x1C103E,
+        signatures = setOf(
+            "9f45df3b66b8cbba1edb84c8a87d6fbc9a8edd822fcc1b0fd4a8ab27fdd16a97",
+        ),
+        targets = listOf(AppTarget(version = "8.4.3", versionCode = 7735, minSdk = 24)),
+    )
+
     val BIWENGER = Compatibility(
         name = "Biwenger",
         packageName = "com.biwenger.app",

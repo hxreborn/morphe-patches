@@ -267,6 +267,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
         AppCompatibilities.AUDIOLAB,
         AppCompatibilities.BANGLA_CALENDAR,
         AppCompatibilities.BETTERSLEEP,
+        AppCompatibilities.BITTORRENT,
         AppCompatibilities.CATZY,
         AppCompatibilities.CONNECTED2,
         AppCompatibilities.DEVCHECK,
