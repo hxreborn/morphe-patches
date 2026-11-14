@@ -72,6 +72,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `calcnote.png` | CalcNote (`com.burton999.notecal`) | burton999 | APK 2.25.111, `res/drawable-xxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `castlefortv.png` | Castle for TV (`com.gxnet.castle.indiatv`) | Castle | APK 1.1.5, `res/S1.webp` (square icon cut to a circle) |
 | `candycrushsaga.png` | Candy Crush Saga (`com.king.candycrushsaga`) | King | APK 1.340.0.1, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
+| `candycrushsodasaga.png` | Candy Crush Soda Saga (`com.king.candycrushsodasaga`) | King | APK 1.331.3, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, centre 72dp cut to a circle |
 | `castle.png` | Castle (`com.external.castle`) | Castle | APK 2.1.3, `res/mipmap-xxxhdpi/ic_launcher_round.png` |
 | `acalendar.png` | aCalendar (`org.withouthat.acalendar`) | Tapir Apps GmbH | APK 2.9.5, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `quickcursor.png` | Quick Cursor (`com.quickcursor`) | Quick Cursor | APK 3.0.2, `res/mipmap-xxxhdpi-v4/launcher_icon_round.png` |

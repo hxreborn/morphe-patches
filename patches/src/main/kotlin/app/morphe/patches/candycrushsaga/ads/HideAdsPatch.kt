@@ -17,9 +17,9 @@ private const val DISABLED_MESSAGE = "ads disabled"
 @Suppress("unused")
 val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
-    description = "Stops rewarded and interstitial ads from loading.",
+    description = "Stops ad networks from starting and blocks rewarded and interstitial ads.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
 
     execute {
         AdSdkInitFingerprint.matchSingle().method.addInstructions(

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.78.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;554 patches total
+> **[v1.79.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;553 patches total
 
 ### Featured apps
 
@@ -29,7 +29,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>15 patches</sub></td>
+<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -588,18 +588,45 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each of ten boosters every time the game starts. Each booster unlocks at its usual level. Requires a standard install. |
-| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Adds five moves when each level starts. Requires a standard install. |
-| <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Disables events. |
-| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Blocks game reminders and the prompt asking to allow notifications. |
-| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze and Firebase Analytics data collection and blocks reads of the advertising ID and install referrer. Braze push and in-app messages stop too. |
-| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops rewarded and interstitial ads from loading. |
+| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install. |
+| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. Requires a standard install. |
+| <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Turns off limited-time events such as races, quests and leagues. |
+| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Stops game reminders and the notification permission prompt. Requires a standard install. |
+| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
+| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops ad networks from starting and blocks rewarded and interstitial ads. |
 | <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
-| <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes rewarded ad offers. |
-| <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes promotional offer pop-ups. |
-| <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes rating prompts and rate entry in Settings. |
+| <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes offers to watch an ad for extra moves, lives or boosters. |
+| <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes pop-ups selling bundles, passes and limited-time offers. |
+| <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes prompts asking to rate the game after a level. |
 | <a id="candy-crush-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/lives/UnlimitedLivesPatch.kt) | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
-| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks booster slots at any level. Requires a standard install. |
+| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks all booster slots from the first level. Requires a standard install. |
+
+</details>
+
+<a id="candy-crush-soda-saga"></a>
+<details>
+<summary><img src=".github/assets/icons/candycrushsodasaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Soda Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.331.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="candy-crush-soda-saga-add-boosters"></a>Add boosters | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install. |
+| <a id="candy-crush-soda-saga-add-extra-moves"></a>Add extra moves | Starts every level with five extra moves. Requires a standard install. |
+| <a id="candy-crush-soda-saga-disable-events"></a>Disable events | Turns off limited-time events such as races, quests and leagues. |
+| <a id="candy-crush-soda-saga-disable-notifications"></a>Disable notifications | Stops game reminders and the notification permission prompt. Requires a standard install. |
+| <a id="candy-crush-soda-saga-disable-tracking"></a>Disable tracking | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
+| <a id="candy-crush-soda-saga-hide-ads"></a>Hide ads | Stops ad networks from starting and blocks rewarded and interstitial ads. |
+| <a id="candy-crush-soda-saga-parked-app-for-android-auto"></a>Parked app for Android Auto | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
+| <a id="candy-crush-soda-saga-remove-ad-offers"></a>Remove ad offers | Removes offers to watch an ad for extra moves, lives or boosters. |
+| <a id="candy-crush-soda-saga-remove-offer-pop-ups"></a>Remove offer pop-ups | Removes pop-ups selling bundles, passes and limited-time offers. |
+| <a id="candy-crush-soda-saga-remove-rating-prompts"></a>Remove rating prompts | Removes prompts asking to rate the game after a level. |
+| <a id="candy-crush-soda-saga-unlimited-lives"></a>Unlimited lives | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
+| <a id="candy-crush-soda-saga-unlock-booster-slots"></a>Unlock booster slots | Unlocks all booster slots from the first level. Requires a standard install. |
 
 </details>
 
@@ -2248,7 +2275,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;15 patches</summary>
+<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2262,7 +2289,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/telemetry/DisableTelemetryPatch.kt) | Stops sending usage statistics and diagnostics to Proton. |
 | <a id="proton-vpn-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
-| <a id="proton-vpn-frosted-glass"></a>[Frosted glass](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/glass/FrostedGlassPatch.kt) | Adds frosted glass to home screen buttons, panels and sheets. Requires Android 12 or later. |
 | <a id="proton-vpn-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[Remove server change delay](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |

@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 @SuppressWarnings("unused")
@@ -42,25 +44,27 @@ public final class Boosters {
 
     static final int SUBMITTED = 1;
 
+    static final int SUBMISSION_UNKNOWN = 2;
+
     private static final String CLIENT_API_PATH = "/rpc/ClientApi";
 
-    private static final int[] ITEM_IDS = { 3101, 3105, 3106, 3108, 3118, 3122, 3124, 3240, 3241, 3257 };
+    private static final int[] ITEM_IDS = boosterIds();
 
     private static final int AMOUNT = 1000;
 
-    private static final byte[] GAME_SHA256 = { (byte) 0xf6, 0x58, (byte) 0xc3, (byte) 0xae, 0x18, (byte) 0x8b, 0x11,
-            (byte) 0xf1, 0x0d, 0x55, 0x47, 0x59, 0x0e, 0x1a, 0x01, 0x72, (byte) 0xcf, (byte) 0x95, (byte) 0xc3, 0x25,
-            0x5f, 0x1e, 0x4f, 0x55, 0x76, (byte) 0x84, 0x1a, (byte) 0xcf, 0x68, (byte) 0xfb, 0x48, 0x7e };
+    private static final byte[] GAME_SHA256 = gameSha256();
+
+    private static final byte[] EXTRA_MOVES_GAME_SHA256 = extraMovesGameSha256();
+
+    private static final int CONFIRMED = 3;
+
+    private static final int CONFIRMATION_PENDING = 0;
+
+    private static final int CONFIRMATION_INTERVAL_MS = 100;
+
+    private static final Handler confirmationHandler = new Handler(Looper.getMainLooper());
 
     private static final int HASH_BUFFER_SIZE = 65536;
-
-    private static final int LIVES_ITEM_ID = 3669;
-
-    private static final int TIMED_LIVES_ITEM_ID = 3646;
-
-    private static final int LIVES_HOURS = 24;
-
-    private static final int SECONDS_PER_HOUR = 3600;
 
     private static final List<Boosters> rewards = createRewards();
 
@@ -76,6 +80,8 @@ public final class Boosters {
 
     private final BoosterGrant currentGrant;
 
+    private boolean confirmationQueued;
+
     private Boosters(int[] itemIds, int amount, BoosterGrant currentGrant) {
         this.itemIds = itemIds;
         this.amount = amount;
@@ -85,13 +91,47 @@ public final class Boosters {
     private static List<Boosters> createRewards() {
         List<Boosters> enabled = new ArrayList<>();
         if (boostersEnabled()) {
-            enabled.add(new Boosters(ITEM_IDS, AMOUNT, new BoosterGrant(ITEM_IDS, AMOUNT)));
+            enabled.add(new Boosters(ITEM_IDS, AMOUNT,
+                    new BoosterGrant(ITEM_IDS, AMOUNT, false, nativeConfirmationEnabled())));
         }
         if (livesEnabled()) {
-            enabled.add(new Boosters(new int[] { LIVES_ITEM_ID }, LIVES_HOURS,
-                    new BoosterGrant(new int[] { TIMED_LIVES_ITEM_ID }, LIVES_HOURS * SECONDS_PER_HOUR, true)));
+            enabled.add(new Boosters(new int[] { livesItemId() }, livesAmount(),
+                    new BoosterGrant(new int[] { timedLivesItemId() }, livesAmount() * secondsPerLifeUnit(), true,
+                            nativeConfirmationEnabled())));
         }
         return enabled;
+    }
+
+    private static int[] boosterIds() {
+        return new int[0];
+    }
+
+    private static byte[] gameSha256() {
+        return new byte[0];
+    }
+
+    private static byte[] extraMovesGameSha256() {
+        return new byte[0];
+    }
+
+    private static int livesItemId() {
+        return 0;
+    }
+
+    private static int timedLivesItemId() {
+        return 0;
+    }
+
+    private static int livesAmount() {
+        return 0;
+    }
+
+    private static int secondsPerLifeUnit() {
+        return 0;
+    }
+
+    private static boolean nativeConfirmationEnabled() {
+        return false;
     }
 
     private static boolean boostersEnabled() {
@@ -119,6 +159,9 @@ public final class Boosters {
 
     public static void onRequest(long requestId, int method, String url, int timeout, boolean redirect, Object headers,
             byte[] body) {
+        if (nativeConfirmationEnabled()) {
+            return;
+        }
         if (url != null && url.contains(CLIENT_API_PATH)) {
             int[] observations = new int[rewards.size()];
             synchronized (Boosters.class) {
@@ -151,6 +194,10 @@ public final class Boosters {
     }
 
     private void schedule() {
+        if (nativeConfirmationEnabled() && this.currentGrant.state() == BoosterGrant.State.AWAITING) {
+            queueConfirmation();
+            return;
+        }
         Activity current;
         synchronized (Boosters.class) {
             current = activity.get();
@@ -179,9 +226,69 @@ public final class Boosters {
         }
         try {
             this.currentGrant.submitted(grant(getNativeHandle(current), this.itemIds, this.amount));
+            if (nativeConfirmationEnabled()) {
+                queueConfirmation();
+            }
         } catch (LinkageError | SecurityException ex) {
             this.currentGrant.fail();
             Log.e(LOG_TAG, "Booster submission failed", ex);
+        }
+    }
+
+    private void queueConfirmation() {
+        synchronized (Boosters.class) {
+            if (this.confirmationQueued || this.currentGrant.state() != BoosterGrant.State.AWAITING
+                    || activity.get() == null) {
+                return;
+            }
+            if (!this.currentGrant.reserveNativeConfirmation()) {
+                return;
+            }
+            this.confirmationQueued = true;
+        }
+        confirmationHandler.postDelayed(() -> {
+            Activity current;
+            synchronized (Boosters.class) {
+                current = activity.get();
+                if (current == null || current.isFinishing() || current.isDestroyed()) {
+                    this.confirmationQueued = false;
+                    return;
+                }
+            }
+            try {
+                runOnGameThread(current, () -> confirmDelivery(current));
+            } catch (LinkageError | RuntimeException ex) {
+                synchronized (Boosters.class) {
+                    this.confirmationQueued = false;
+                }
+                this.currentGrant.fail();
+                Log.e(LOG_TAG, "Reward confirmation scheduling failed", ex);
+            }
+        }, CONFIRMATION_INTERVAL_MS);
+    }
+
+    private void confirmDelivery(Activity current) {
+        try {
+            synchronized (Boosters.class) {
+                if (activity.get() != current || current.isFinishing() || current.isDestroyed()
+                        || this.currentGrant.state() != BoosterGrant.State.AWAITING) {
+                    return;
+                }
+            }
+            int result = confirm(this.itemIds[0]);
+            if (result == CONFIRMED) {
+                this.currentGrant.nativeConfirmed();
+            } else if (result != CONFIRMATION_PENDING) {
+                this.currentGrant.fail();
+            }
+        } catch (LinkageError | RuntimeException ex) {
+            this.currentGrant.fail();
+            Log.e(LOG_TAG, "Reward confirmation failed", ex);
+        } finally {
+            synchronized (Boosters.class) {
+                this.confirmationQueued = false;
+            }
+            queueConfirmation();
         }
     }
 
@@ -214,7 +321,8 @@ public final class Boosters {
                         digest.update(buffer, 0, count);
                     }
                 }
-                matches = Arrays.equals(GAME_SHA256, digest.digest());
+                byte[] actual = digest.digest();
+                matches = Arrays.equals(GAME_SHA256, actual) || Arrays.equals(EXTRA_MOVES_GAME_SHA256, actual);
             }
         } catch (IOException | NoSuchAlgorithmException | LinkageError | SecurityException ex) {
             Log.e(LOG_TAG, "Game library validation failed", ex);
@@ -239,6 +347,8 @@ public final class Boosters {
     }
 
     private static native int grant(long handle, int[] itemIds, int amount);
+
+    private static native int confirm(int firstItemId);
 
     private static native String libraryPath();
 
