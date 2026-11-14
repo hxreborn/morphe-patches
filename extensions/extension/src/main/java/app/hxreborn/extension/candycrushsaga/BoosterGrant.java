@@ -71,6 +71,8 @@ final class BoosterGrant {
 
     private static final int MAX_ATTEMPTS = 12;
 
+    private static final int MAX_NATIVE_CONFIRMATIONS = 120;
+
     private static final int MAX_INELIGIBLE_IDS = 4096;
 
     private static final int MAX_INELIGIBLE_ID_CHARACTERS = 262144;
@@ -84,6 +86,8 @@ final class BoosterGrant {
     private final int amount;
 
     private final boolean timedLives;
+
+    private final boolean nativeConfirmation;
 
     private final Object requestParsingLock = new Object();
 
@@ -107,6 +111,8 @@ final class BoosterGrant {
 
     private int attempts;
 
+    private int nativeConfirmations;
+
     private int unparsedIneligibleRequests;
 
     BoosterGrant(int[] itemIds, int amount) {
@@ -114,7 +120,15 @@ final class BoosterGrant {
     }
 
     BoosterGrant(int[] itemIds, int amount, boolean timedLives) {
+        this(itemIds, amount, timedLives, false);
+    }
+
+    BoosterGrant(int[] itemIds, int amount, boolean timedLives, boolean nativeConfirmation) {
         this.timedLives = timedLives;
+        this.nativeConfirmation = nativeConfirmation;
+        if (nativeConfirmation) {
+            this.state = State.READY;
+        }
         this.itemIds = itemIds.clone();
         Arrays.sort(this.itemIds);
         this.amount = amount;
@@ -174,6 +188,26 @@ final class BoosterGrant {
         } else {
             reject("Native reward result unknown, transactions=" + this.transactions.size());
         }
+    }
+
+    synchronized boolean reserveNativeConfirmation() {
+        if (!this.nativeConfirmation || this.state != State.AWAITING) {
+            return false;
+        }
+        if (++this.nativeConfirmations > MAX_NATIVE_CONFIRMATIONS) {
+            reject("Reward confirmation limit reached, limit=" + MAX_NATIVE_CONFIRMATIONS);
+            return false;
+        }
+        return true;
+    }
+
+    synchronized void nativeConfirmed() {
+        if (!this.nativeConfirmation || this.state != State.AWAITING) {
+            return;
+        }
+        this.state = State.COMPLETE;
+        Log.i(Boosters.LOG_TAG,
+                (this.timedLives ? "Lives" : "Booster") + " inventory confirmed, count=" + this.itemIds.length);
     }
 
     synchronized void fail() {
