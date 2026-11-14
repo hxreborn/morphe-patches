@@ -59,6 +59,8 @@ public final class ServerResponses {
 
     private static final String SETTINGS = "ApplicationSettingsApi.getSettings";
 
+    private static final String POPUP_BLOCKLIST_PARAMETER = "blocklist-filter";
+
     private static final String PLUGINS = "UopFeatureStatusApi.getAllPlugins";
 
     private static final Set<String> AD_PLUGINS = new HashSet<>(Arrays.asList("ads_ool", "ads_egp", "ads_pre_level",
@@ -70,6 +72,19 @@ public final class ServerResponses {
 
     private static final Set<String> SODA_AD_PLUGINS = new HashSet<>(Arrays.asList("prelevel_ads", "ads_watch_another",
             "ool_watch_another", "interstitial_ads", "ads_onboarding", "ads_dynamic_fallback"));
+
+    private static final Set<String> SODA_POPUP_PLUGINS = new HashSet<>(
+            Arrays.asList("pf_diorama_popup", "pf_back_to_diorama_popup"));
+
+    private static final Set<String> SODA_OFFER_PLACEMENTS = new HashSet<>(Arrays.asList(
+            "DynamicOfferPostGameModalPlacement", "DynamicOfferPreLevelModalPlacement", "LockedOffersModalPlacement",
+            "JourneyOfferStartModalPlacement", "JourneyOfferLastChanceModalPlacement",
+            "JourneyOfferFinishModalPlacement", "AchievementOfferFinishModalPlacement",
+            "AchievementOfferReminderModalPlacement", "AchievementOfferLastChanceModalPlacement",
+            "AchievementOfferStartModalPlacement", "GamePassStartModalPlacement", "GamePassFinishModalPlacement",
+            "GamePassLastChanceModalPlacement", "StreakShieldPurchaseOfferModalPlacement", "CrossPromoModalPlacement",
+            "MilestoneOfferRare", "MilestoneOfferEpic", "MilestoneOfferLegendary", "MilestoneOfferReminder",
+            "PiggyBankRedesignIntroModal", "PiggyBankRedesignOfferModal", "PiggyBankRedesignTimesUpModal"));
 
     private static final String POPUPS = "CandyPopupConfigApi.getPopupUpdatedConfig";
 
@@ -186,7 +201,7 @@ public final class ServerResponses {
     private static Set<String> selectedMethods() {
         Set<String> targets = new HashSet<>();
         if (removeOffers()) {
-            targets.add(POPUPS);
+            targets.add(sodaConfiguration() ? PLUGINS : POPUPS);
         }
         if (removeAdOffers() || removeRatingPrompts() || disableEvents()) {
             targets.add(PLUGINS);
@@ -224,6 +239,11 @@ public final class ServerResponses {
     }
 
     static String edit(String response, Map<String, String> methods, Set<String> plugins) throws JSONException {
+        return edit(response, methods, plugins, sodaConfiguration(), removeOffers());
+    }
+
+    static String edit(String response, Map<String, String> methods, Set<String> plugins, boolean soda,
+            boolean removeOfferPopups) throws JSONException {
         TreeMap<Integer, Replacement> edits = new TreeMap<>();
         for (JsonText reply : JsonText.parseShallow(response).values) {
             JsonText id = reply.fields.get("id");
@@ -243,6 +263,9 @@ public final class ServerResponses {
                 }
             } else if (PLUGINS.equals(method)) {
                 disablePlugins(result, plugins, edits);
+                if (soda && removeOfferPopups) {
+                    blockSodaOffers(result, edits);
+                }
             } else if (SETTINGS.equals(method)) {
                 for (JsonText setting : result.values) {
                     JsonText name = setting.fields.get("name");
@@ -265,6 +288,61 @@ public final class ServerResponses {
                 replace(edits, enabled, "false");
             }
         }
+    }
+
+    private static void blockSodaOffers(JsonText plugins, TreeMap<Integer, Replacement> edits) throws JSONException {
+        for (JsonText plugin : plugins.values) {
+            JsonText name = plugin.fields.get("name");
+            if (name == null || !SODA_POPUP_PLUGINS.contains(name.string())) {
+                continue;
+            }
+            JsonText parameters = plugin.fields.get("parameters");
+            if (parameters != null && parameters.text.charAt(parameters.start) != '[') {
+                throw new JSONException("Popup parameter list rejected");
+            }
+            boolean found = false;
+            for (JsonText parameter : (parameters != null) ? parameters.values : Collections.<JsonText>emptyList()) {
+                JsonText key = parameter.fields.get("key");
+                JsonText value = parameter.fields.get("value");
+                if (key != null && value != null && POPUP_BLOCKLIST_PARAMETER.equals(key.string())) {
+                    replace(edits, value, JSONObject.quote(appendSodaOfferPlacements(value.string())));
+                    found = true;
+                }
+            }
+            if (!found) {
+                String parameter = "{\"key\":" + JSONObject.quote(POPUP_BLOCKLIST_PARAMETER) + ",\"value\":"
+                        + JSONObject.quote(appendSodaOfferPlacements("[]")) + "}";
+                if (parameters == null) {
+                    replace(edits, plugin, appendField(plugin, "parameters", "[" + parameter + "]"));
+                } else {
+                    String original = parameters.raw();
+                    replace(edits, parameters, original.substring(0, original.length() - 1)
+                            + (parameters.values.isEmpty() ? "" : ",") + parameter + "]");
+                }
+            }
+        }
+    }
+
+    private static String appendSodaOfferPlacements(String text) throws JSONException {
+        JsonText blocked = JsonText.parse(text);
+        if (blocked.text.charAt(blocked.start) != '[') {
+            throw new JSONException("Popup placement list rejected");
+        }
+        Set<String> present = new HashSet<>();
+        for (JsonText placement : blocked.values) {
+            present.add(placement.string());
+        }
+        StringBuilder additions = new StringBuilder();
+        for (String placement : SODA_OFFER_PLACEMENTS) {
+            if (present.add(placement)) {
+                if (!blocked.values.isEmpty() || additions.length() > 0) {
+                    additions.append(',');
+                }
+                additions.append(JSONObject.quote(placement));
+            }
+        }
+        String original = blocked.raw();
+        return original.substring(0, original.length() - 1) + additions + "]";
     }
 
     static String blockOffers(String config) throws JSONException {
