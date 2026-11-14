@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 @Suppress("unused")
 val removeRatingPromptsPatch = bytecodePatch(
     name = "Remove rating prompts",
-    description = "Removes rating prompts and rate entry in Settings.",
+    description = "Removes prompts asking to rate the game.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
     dependsOn(editServerResponsesPatch)
