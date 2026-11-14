@@ -17,7 +17,7 @@ val unlimitedLivesPatch = bytecodePatch(
     name = "Unlimited lives",
     description = "Adds 24 hours of unlimited lives every time the game starts. Requires a standard install.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireArm64StandardInstall)
     dependsOn(candyCrushRewardsPatch)
 
