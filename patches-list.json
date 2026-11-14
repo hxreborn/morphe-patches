@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.79.0-dev.1",
+  "version": "1.79.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -16421,6 +16421,40 @@
                 "ARMEABI_V7A": 683,
                 "X86_64": 683,
                 "X86": 683
+              },
+              "isExperimental": false,
+              "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Skip sign-up screen",
+      "description": "Opens the app without signing in. Sign in later from the menu.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.tradingview.tradingviewapp",
+          "name": "TradingView",
+          "description": null,
+          "apkFileType": "APKS_REQUIRED",
+          "appIconColor": "#131722",
+          "signatures": [
+            "44f047fc6b34b0ba0c491f825bb4e43770d2bc941220d290a70f3a8467aed601"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.20.86.0.1002565",
+              "versionCodes": {
+                "ARM64_V8A": 1002565,
+                "ARMEABI_V7A": 1002565,
+                "X86_64": 1002565,
+                "X86": 1002565
               },
               "isExperimental": false,
               "minSdk": 26,

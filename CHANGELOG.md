@@ -1,3 +1,9 @@
+## [1.79.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.1...v1.79.0-dev.2) (2026-11-14)
+
+### New Features
+
+* **TradingView - Skip sign-up screen:** open app without signing in ([e937c99](https://github.com/hxreborn/morphe-patches/commit/e937c99699c158aea33d7627c6b00d60af7b8c5e)), closes [#748](https://github.com/hxreborn/morphe-patches/issues/748)
+
 ## [1.79.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.78.1-dev.1...v1.79.0-dev.1) (2026-11-14)
 
 ### Bug Fixes

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.79.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;553 patches total
+> **[v1.79.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;554 patches total
 
 ### Featured apps
 
@@ -2803,7 +2803,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="tradingview"></a>
 <details>
-<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2817,6 +2817,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="tradingview-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="tradingview-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
 | <a id="tradingview-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade button, plan banners, subscription card and paywalls. Extra indicators, watchlists, flag colors, alerts, second and tick intervals, and intraday replay are not unlocked. |
+| <a id="tradingview-skip-sign-up-screen"></a>[Skip sign-up screen](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/onboarding/SkipSignUpPatch.kt) | Opens the app without signing in. Sign in later from the menu. |
 | <a id="tradingview-unlock-multi-chart-layouts"></a>[Unlock multi-chart layouts](patches/src/main/kotlin/app/morphe/patches/tradingview/layouts/UnlockChartLayoutsPatch.kt) | Unlocks chart layouts with up to 8 charts on one screen. |
 
 </details>
