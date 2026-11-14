@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.morphe.patches.tradingview.layouts
+package app.morphe.patches.tradingview.chart
 
 import app.morphe.patcher.Fingerprint
 

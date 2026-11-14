@@ -31,21 +31,21 @@ import androidx.webkit.WebViewFeature;
 import app.hxreborn.extension.WebAssets;
 
 @SuppressWarnings("unused")
-public final class ChartLayouts {
+public final class ChartPlanLimits {
 
     private static final String TAG = "hxTradingView";
 
     private static final Set<String> ANY_ORIGIN_RULES = Collections.singleton("*");
 
-    private ChartLayouts() {
+    private ChartPlanLimits() {
     }
 
-    public static void addLayoutLimitScript(WebView view) {
+    public static void addPlanLimitsScript(WebView view) {
         if (!WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
-            Log.w(TAG, "WebView cannot run document start scripts, chart layout limit unchanged");
+            Log.w(TAG, "WebView cannot run document start scripts, chart plan limits unchanged");
             return;
         }
-        WebViewCompat.addDocumentStartJavaScript(view, WebAssets.TRADINGVIEW_CHART_LAYOUTS_WEBVIEW, ANY_ORIGIN_RULES);
+        WebViewCompat.addDocumentStartJavaScript(view, WebAssets.TRADINGVIEW_PLAN_LIMITS_WEBVIEW, ANY_ORIGIN_RULES);
     }
 
 }
