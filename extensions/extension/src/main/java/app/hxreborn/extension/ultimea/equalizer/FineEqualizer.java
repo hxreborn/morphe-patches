@@ -64,8 +64,6 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
 
     private static final int TITLE_SP = 20;
 
-    private static final int RIPPLE = 0x22541597;
-
     private static final int DISABLED_ALPHA = 0x61000000;
 
     private static final int RGB_MASK = 0x00ffffff;
@@ -141,7 +139,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         entry.setTextColor(style.buttonText);
         entry.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SP);
         entry.setBackground(
-                new RippleDrawable(ColorStateList.valueOf(RIPPLE), new ColorDrawable(style.background), null));
+                new RippleDrawable(ColorStateList.valueOf(style.ripple), new ColorDrawable(style.background), null));
         entry.setVisibility(View.GONE);
         content.removeView(host);
         wrapper.addView(host, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
@@ -153,7 +151,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         remote.setTextColor(style.buttonText);
         remote.setTextSize(TypedValue.COMPLEX_UNIT_SP, TEXT_SP);
         remote.setBackground(
-                new RippleDrawable(ColorStateList.valueOf(RIPPLE), new ColorDrawable(style.background), null));
+                new RippleDrawable(ColorStateList.valueOf(style.ripple), new ColorDrawable(style.background), null));
         remote.setVisibility(View.GONE);
         entries.addView(remote, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
         wrapper.addView(entries, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -198,8 +196,8 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         button.setAllCaps(false);
         button.setTextColor(new ColorStateList(new int[][] { new int[] { -android.R.attr.state_enabled }, new int[0] },
                 new int[] { (this.style.buttonText & RGB_MASK) | DISABLED_ALPHA, this.style.buttonText }));
-        button.setBackground(
-                new RippleDrawable(ColorStateList.valueOf(RIPPLE), new ColorDrawable(this.style.background), null));
+        button.setBackground(new RippleDrawable(ColorStateList.valueOf(this.style.ripple),
+                new ColorDrawable(this.style.background), null));
         button.setMinWidth(0);
         button.setMinimumWidth(0);
         button.setPadding(0, 0, 0, 0);

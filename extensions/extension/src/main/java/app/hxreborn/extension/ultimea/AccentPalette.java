@@ -38,15 +38,15 @@ final class AccentPalette {
 
     static final String SYSTEM = "system";
 
+    static final int STOCK_LIGHT_PRIMARY = 0xff541597;
+
+    static final int STOCK_DARK_PRIMARY = 0xffc499ff;
+
+    static final int STOCK_LIGHT_SURFACE = 0xffeee5f7;
+
+    static final int STOCK_DARK_SURFACE = 0xff332343;
+
     private static final String PREFERENCE_KEY = "accent_color";
-
-    private static final int STOCK_LIGHT_PRIMARY = 0xff541597;
-
-    private static final int STOCK_DARK_PRIMARY = 0xffc499ff;
-
-    private static final int STOCK_LIGHT_SURFACE = 0xffeee5f7;
-
-    private static final int STOCK_DARK_SURFACE = 0xff332343;
 
     private static final int RGB_MASK = 0x00ffffff;
 

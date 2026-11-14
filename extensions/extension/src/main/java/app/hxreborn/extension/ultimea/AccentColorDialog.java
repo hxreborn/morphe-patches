@@ -71,8 +71,6 @@ final class AccentColorDialog {
 
     private static final int CHECK_SP = 18;
 
-    private static final int STOCK_COLOR = 0xff541597;
-
     private static final double SRGB_THRESHOLD = 0.04045;
 
     private static final double SRGB_DIVISOR = 12.92;
@@ -161,7 +159,7 @@ final class AccentColorDialog {
     private View grid() {
         LinearLayout grid = new LinearLayout(this.activity);
         grid.setOrientation(LinearLayout.VERTICAL);
-        this.swatches.add(swatch("ULTIMEA", AccentPalette.STOCK, STOCK_COLOR));
+        this.swatches.add(swatch("ULTIMEA", AccentPalette.STOCK, AccentPalette.STOCK_LIGHT_PRIMARY));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             this.swatches.add(swatch("Material You", AccentPalette.SYSTEM, systemColor()));
         }
@@ -331,7 +329,7 @@ final class AccentColorDialog {
             return this.activity.getColor(android.R.color.system_accent1_500);
         } catch (Resources.NotFoundException ex) {
             Log.w(PatchSettings.LOG_TAG, "System accent swatch could not be read", ex);
-            return STOCK_COLOR;
+            return AccentPalette.STOCK_LIGHT_PRIMARY;
         }
     }
 

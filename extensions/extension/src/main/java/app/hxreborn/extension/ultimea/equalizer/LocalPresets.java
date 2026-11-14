@@ -182,6 +182,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
                 })
                 .setNegativeButton("Close", (dialog, which) -> dispose())
                 .show();
+            this.style.tint(this.dialog);
         } catch (JSONException | IllegalArgumentException ex) {
             this.dialog = new AlertDialog.Builder(this.activity, this.style.dialogTheme)
                 .setTitle("Recover local presets")
@@ -197,6 +198,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dispose())
                 .show();
+            this.style.tint(this.dialog);
         }
     }
 
@@ -231,6 +233,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
             })
             .setNegativeButton("Cancel", (dialog, which) -> showList())
             .show();
+        this.style.tint(this.dialog);
     }
 
     private void confirmDelete(EqualizerPreset preset) {
@@ -246,6 +249,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
             })
             .setNegativeButton("Cancel", (dialog, which) -> showList())
             .show();
+        this.style.tint(this.dialog);
     }
 
     private void name(String title, String initial, EqualizerPreset source) {
@@ -255,6 +259,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
             .setPositiveButton("Save", null)
             .setNegativeButton("Cancel", (ignored, which) -> showList())
             .show();
+        this.style.tint(dialog);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
             try {
                 if (source == null) {
@@ -280,6 +285,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
             .setPositiveButton("Save", null)
             .setNegativeButton("Cancel", (ignored, which) -> showList())
             .show();
+        this.style.tint(dialog);
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
             try {
                 this.store.rename(preset.id, input.getText().toString());
@@ -296,6 +302,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
 
     private EditText nameInput(String initial) {
         EditText input = new EditText(new ContextThemeWrapper(this.activity, this.style.dialogTheme));
+        this.style.tint(input);
         input.setSingleLine(true);
         input.setFilters(new InputFilter[] { new InputFilter.LengthFilter(EqualizerPreset.MAX_NAME_LENGTH) });
         input.setText(initial);
