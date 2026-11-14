@@ -46,6 +46,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `bereal.png` | BeReal (`com.bereal.ft`) | BeReal | APK 3.97.1, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 | `biwenger.png` | Biwenger (`com.biwenger.app`) | Biwenger Fantasy | APK 4.0.4, rounded square `mipmap/ic_launcher` xxxhdpi (`res/sK.webp`) cut to a circle |
 | `botim.png` | botim (`im.thebot.messenger`) | ALGENTO DMCC | APK 4.21.0, `res/mipmap-xxxhdpi-v4/botim_logo_round.png` |
+| `classdojo.png` | ClassDojo (`com.classdojo.android`) | ClassDojo, Inc. | Play 9.12.0, adaptive icon `core_ic_launcher_foreground` over white background, cut to a circle |
 | `clink.png` | Clink (`ltd.anti.clink`) | Anti Limited | APK 1.9.2, square icon `res/drawable-nodpi-v4/clink_icon.png` cut to a circle |
 | `clipstudiopaint.png` | Clip Studio Paint (`jp.co.celsys.clipstudiopaint.googleplay`) | CELSYS, Inc. | APK 5.1.4, `res/mipmap-xxhdpi-v4/ic_launcher_round.png` |
 | `cloneapp.png` | Clone App (`com.pengyou.cloneapp`) | SZPY Tech | APK 4.2.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |

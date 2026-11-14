@@ -394,6 +394,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val CLASSDOJO = Compatibility(
+        name = "ClassDojo",
+        packageName = "com.classdojo.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x97DF0D,
+        signatures = setOf(
+            "7c05f9ed40aff35f7e5601281fa344ef5a2e19c535197946d8221cf987b349d9",
+        ),
+        targets = listOf(AppTarget(version = "9.12.0", versionCode = 260091200, minSdk = 26)),
+    )
+
     val CLINK = Compatibility(
         name = "Clink",
         packageName = "ltd.anti.clink",
