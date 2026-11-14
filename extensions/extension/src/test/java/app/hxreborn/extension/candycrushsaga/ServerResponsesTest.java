@@ -279,6 +279,15 @@ public class ServerResponsesTest {
     }
 
     @Test
+    public void clearSodaRatingLevelsWithoutChangingSagaSettings() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"mobile.rate.app.levels\",\"value\":\"25,75\"},"
+                + "{\"name\":\"ccsm.rating.levels\",\"value\":\"36,68\"}]}]";
+        Assert.assertEquals(response.replace("25,75", ""),
+                ServerResponses.edit(response, Collections.singletonMap("1", "ApplicationSettingsApi.getSettings"),
+                        Collections.emptySet(), true, false));
+    }
+
+    @Test
     public void blockSodaOfferPlacementsWithoutDisablingFeatures() throws JSONException {
         String blocked = JSONObject.quote("[\"keep\"]");
         String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"enabled\":true,"

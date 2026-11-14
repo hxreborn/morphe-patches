@@ -59,6 +59,10 @@ public final class ServerResponses {
 
     private static final String SETTINGS = "ApplicationSettingsApi.getSettings";
 
+    private static final String SAGA_RATING_LEVELS = "ccsm.rating.levels";
+
+    private static final String SODA_RATING_LEVELS = "mobile.rate.app.levels";
+
     private static final String POPUP_BLOCKLIST_PARAMETER = "blocklist-filter";
 
     private static final String PLUGINS = "UopFeatureStatusApi.getAllPlugins";
@@ -270,7 +274,8 @@ public final class ServerResponses {
                 for (JsonText setting : result.values) {
                     JsonText name = setting.fields.get("name");
                     JsonText value = setting.fields.get("value");
-                    if (name != null && value != null && "ccsm.rating.levels".equals(name.string())) {
+                    if (name != null && value != null
+                            && (soda ? SODA_RATING_LEVELS : SAGA_RATING_LEVELS).equals(name.string())) {
                         replace(edits, value, "\"\"");
                     }
                 }

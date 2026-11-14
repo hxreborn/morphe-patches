@@ -15,7 +15,7 @@ val removeRatingPromptsPatch = bytecodePatch(
     name = "Remove rating prompts",
     description = "Removes prompts asking to rate the game.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     dependsOn(editServerResponsesPatch)
     execute {
         mutableClassDefBy(SERVER_RESPONSES).replaceStub("removeRatingPrompts", 1, """
