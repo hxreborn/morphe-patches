@@ -1,3 +1,9 @@
+## [1.79.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.2...v1.79.0-dev.3) (2026-11-14)
+
+### Updated App Support
+
+* **MyScript Notes:** add support for `7.4.9` ([bebe15c](https://github.com/hxreborn/morphe-patches/commit/bebe15c8be6f0b5f381ad7b7ce9ca3d8441a85dd)), closes [#769](https://github.com/hxreborn/morphe-patches/issues/769)
+
 ## [1.79.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.1...v1.79.0-dev.2) (2026-11-14)
 
 ### New Features

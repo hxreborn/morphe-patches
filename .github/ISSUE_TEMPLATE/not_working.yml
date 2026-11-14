@@ -246,7 +246,7 @@ body:
         - "MyMoveset (another version, type it below)"
         - "MyScript Math 1.12.0"
         - "MyScript Math (another version, type it below)"
-        - "MyScript Notes 7.4.8"
+        - "MyScript Notes 7.4.9"
         - "MyScript Notes (another version, type it below)"
         - "Nara Baby 2.8.3"
         - "Nara Baby (another version, type it below)"
@@ -457,12 +457,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.79.0-dev.3"
         - "1.79.0-dev.2"
         - "1.79.0-dev.1"
         - "1.78.1-dev.1"
         - "1.78.1"
         - "1.78.0-dev.3"
-        - "1.78.0-dev.2"
         - "Older than these"
         # /generated
     validations:
