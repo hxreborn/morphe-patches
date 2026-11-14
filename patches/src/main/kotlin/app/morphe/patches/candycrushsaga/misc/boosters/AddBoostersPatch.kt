@@ -87,7 +87,7 @@ internal val candyCrushRewardsPatch = bytecodePatch {
 @Suppress("unused")
 val addBoostersPatch = bytecodePatch(
     name = "Add boosters",
-    description = "Adds 1,000 of each of ten boosters every time the game starts. " +
+    description = "Adds 1,000 to booster counts every time the game starts. " +
         "Each booster unlocks at its usual level. Requires a standard install.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
