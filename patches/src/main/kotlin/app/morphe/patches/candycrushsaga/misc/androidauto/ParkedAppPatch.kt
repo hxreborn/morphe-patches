@@ -16,7 +16,7 @@ val parkedAppForAndroidAutoPatch = resourcePatch(
         "Requires Android 15 or newer and a standard install. " +
         "Android Auto needs Unknown sources turned on in its developer settings.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireStandardInstall)
 
     execute {
