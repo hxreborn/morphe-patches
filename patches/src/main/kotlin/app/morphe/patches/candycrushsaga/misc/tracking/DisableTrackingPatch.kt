@@ -20,7 +20,7 @@ val disableTrackingPatch = bytecodePatch(
         "the advertising ID and install referrer. Braze push and in-app messages stop too. " +
         "Requires a standard install.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireStandardInstall)
     dependsOn(disableAnalyticsCollectionPatch, deactivateFirebaseAnalyticsPatch, disableTrackingComponentsPatch)
 
