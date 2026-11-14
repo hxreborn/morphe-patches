@@ -1,3 +1,9 @@
+## [1.79.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.3...v1.79.0-dev.4) (2026-11-14)
+
+### New Features
+
+* **TradingView - Unlock chart features:** add Renko and Kagi charts ([5de4898](https://github.com/hxreborn/morphe-patches/commit/5de4898c82436c3626a7192efe8c3f2b8f70bcf1)), closes [#748](https://github.com/hxreborn/morphe-patches/issues/748)
+
 ## [1.79.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.2...v1.79.0-dev.3) (2026-11-14)
 
 ### Updated App Support
