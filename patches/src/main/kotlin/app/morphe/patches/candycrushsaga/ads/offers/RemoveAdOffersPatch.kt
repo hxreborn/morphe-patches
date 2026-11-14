@@ -15,7 +15,7 @@ val removeAdOffersPatch = bytecodePatch(
     name = "Remove ad offers",
     description = "Removes rewarded ad offers.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     dependsOn(editServerResponsesPatch)
     execute {
         mutableClassDefBy(SERVER_RESPONSES).replaceStub("removeAdOffers", 1, """

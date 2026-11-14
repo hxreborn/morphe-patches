@@ -68,6 +68,9 @@ public final class ServerResponses {
     private static final Set<String> EVENT_PLUGINS = new HashSet<>(Arrays.asList("episode_race", "chocolate_box",
             "club_clash", "club_quest", "crushomaster", "cannon_frenzy", "leaderboard_event"));
 
+    private static final Set<String> SODA_AD_PLUGINS = new HashSet<>(Arrays.asList("prelevel_ads", "ads_watch_another",
+            "ool_watch_another", "interstitial_ads", "ads_onboarding", "ads_dynamic_fallback"));
+
     private static final String POPUPS = "CandyPopupConfigApi.getPopupUpdatedConfig";
 
     private static final String[] OFFER_CATEGORIES = { "dynamic_offer", "build_a_bundle", "endless_offer",
@@ -75,6 +78,10 @@ public final class ServerResponses {
             "season_pass", "economy_loyalty", "marketing_message" };
 
     private ServerResponses() {
+    }
+
+    private static boolean sodaConfiguration() {
+        return false;
     }
 
     private static boolean removeOffers() {
@@ -205,7 +212,7 @@ public final class ServerResponses {
     private static Set<String> selectedPlugins() {
         Set<String> plugins = new HashSet<>();
         if (removeAdOffers()) {
-            plugins.addAll(AD_PLUGINS);
+            plugins.addAll(sodaConfiguration() ? SODA_AD_PLUGINS : AD_PLUGINS);
         }
         if (removeRatingPrompts()) {
             plugins.add("rate_app");
