@@ -1,3 +1,48 @@
+## [1.78.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.78.0-dev.2...v1.78.0-dev.3) (2026-11-13)
+
+### New Features
+
+* **Proton VPN - Frosted glass:** add translucent buttons and panels ([5c8af5c](https://github.com/hxreborn/morphe-patches/commit/5c8af5c2680c6e799cc528f3a32a820142afe8d1)), closes [#713](https://github.com/hxreborn/morphe-patches/issues/713)
+* **RedReader - Filter posts:** add title, subreddit and flair rules ([97ffea7](https://github.com/hxreborn/morphe-patches/commit/97ffea757f3fabd4e7775717128c79021c280f7f))
+
+## [1.78.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.78.0-dev.1...v1.78.0-dev.2) (2026-11-13)
+
+### Bug Fixes
+
+* **Musicolet - Unlock premium:** calculate ReplayGain automatically ([cc56861](https://github.com/hxreborn/morphe-patches/commit/cc568611ae8141da35a2ea317c5bb3df4de55b18)), closes [#723](https://github.com/hxreborn/morphe-patches/issues/723)
+
+### New Features
+
+* **Candy Crush Saga - Add extra moves:** give five more moves per level ([a8c2fdd](https://github.com/hxreborn/morphe-patches/commit/a8c2fdd55a43fe4a7bffd44fcc6e99a3c0453f6f))
+* **Candy Crush Saga - Disable events:** remove map event cards ([121c2be](https://github.com/hxreborn/morphe-patches/commit/121c2bea45f27e996a05389c253bf6f98646c354))
+* **Candy Crush Saga - Disable notifications:** stop game reminders ([a2392fc](https://github.com/hxreborn/morphe-patches/commit/a2392fcf2d119a482e64856c7f76cd1798ab0c76))
+* **Candy Crush Saga - Disable tracking:** stop third-party analytics ([cdad3cd](https://github.com/hxreborn/morphe-patches/commit/cdad3cd6fe3a66943a383b45a0c8c57cb0e874a2))
+* **Candy Crush Saga - Hide ads:** stop ad networks from loading ([5038457](https://github.com/hxreborn/morphe-patches/commit/5038457c3e958b952c73d2f569a4132b9daa9da8))
+* **Candy Crush Saga - Parked app for Android Auto:** show on car screen ([338e0a4](https://github.com/hxreborn/morphe-patches/commit/338e0a4e035e9c6ee2e65db8026442888cda94e4))
+* **Candy Crush Saga - Remove ad offers:** drop watch-ad buttons ([4d46a76](https://github.com/hxreborn/morphe-patches/commit/4d46a764121fdde9a588b1f2f75bb54609bd2be6))
+* **Candy Crush Saga - Remove offer pop-ups:** stop automatic offers ([a4ec569](https://github.com/hxreborn/morphe-patches/commit/a4ec569b7053ef609b998392a9feaff61592e2d3))
+* **Candy Crush Saga - Remove rating prompts:** drop rate requests ([6d84cd0](https://github.com/hxreborn/morphe-patches/commit/6d84cd05fd08995c4e62c0a39d84c1282139f24b))
+* **Candy Crush Saga - Unlimited lives:** add 24 hours on game start ([cd40136](https://github.com/hxreborn/morphe-patches/commit/cd401366f63f80adcb402718bb4508eda2f5d641))
+* **Candy Crush Saga - Unlock booster slots:** remove level requirements ([93cb746](https://github.com/hxreborn/morphe-patches/commit/93cb7469f2103812ad27d3f6800d8aa08f8974d5))
+
+## [1.78.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.77.1-dev.1...v1.78.0-dev.1) (2026-11-12)
+
+### Bug Fixes
+
+* **TradingView - Fix Google sign-in:** remove GmsCore requirement ([85539ee](https://github.com/hxreborn/morphe-patches/commit/85539ee30ce80ea4d0f68b89c9c1e93730023016)), closes [#748](https://github.com/hxreborn/morphe-patches/issues/748)
+* **Viber - Link as secondary device:** enable backup settings ([adffc62](https://github.com/hxreborn/morphe-patches/commit/adffc6267f62e2a9ab8ada3a9672d16d4225a481))
+
+### New Features
+
+* **Candy Crush Saga - Add boosters:** grant 1,000 of each per launch ([e8d7f44](https://github.com/hxreborn/morphe-patches/commit/e8d7f449770a44afc308e0a4765a94165da5b502))
+* **Photo Editor Pro - Disable push notifications:** skip opt-in prompt ([6a96225](https://github.com/hxreborn/morphe-patches/commit/6a96225a48416ef6a03a53b40ebea4addb14605e))
+
+## [1.77.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.77.0...v1.77.1-dev.1) (2026-11-12)
+
+### Bug Fixes
+
+* **MyScript Notes:** apply patches again in Manager ([393fcfb](https://github.com/hxreborn/morphe-patches/commit/393fcfbbd79e19fecfa7145b87f87e6ba7243383)), closes [#750](https://github.com/hxreborn/morphe-patches/issues/750)
+
 ## [1.77.0](https://github.com/hxreborn/morphe-patches/compare/v1.76.0...v1.77.0) (2026-11-12)
 
 ### Bug Fixes

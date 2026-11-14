@@ -323,6 +323,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.25.111", versionCode = 1523, minSdk = 24)),
     )
 
+    val CANDY_CRUSH_SAGA = Compatibility(
+        name = "Candy Crush Saga",
+        packageName = "com.king.candycrushsaga",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x098AD3,
+        signatures = setOf(
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328",
+        ),
+        targets = listOf(AppTarget(version = "1.340.0.1", versionCode = 13400010, minSdk = 24)),
+    )
+
     val CASTLE = Compatibility(
         name = "Castle",
         packageName = "com.external.castle",
@@ -1482,6 +1493,22 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "4.8.1", versionCode = 8699018, minSdk = 24),
         ),
+    )
+
+    val REDREADER = Compatibility(
+        name = "RedReader",
+        packageName = "org.quantumbadger.redreader",
+        apkFileType = ApkFileType.APK,
+        signatures = setOf("d9496a86f995087879f41199986a6d36c19306ac90dbd1e0793f3ab1981f3744"),
+        targets = listOf(AppTarget(version = "1.27", versionCode = 119, minSdk = 21)),
+    )
+
+    val REDREADER_ALPHA = Compatibility(
+        name = "RedReader Alpha",
+        packageName = "org.quantumbadger.redreaderalpha",
+        apkFileType = ApkFileType.APK,
+        signatures = setOf("3d2114ecae1f36d6d88f42780131848f9b50a7645b9e7daa72c6d65e32988123"),
+        targets = listOf(AppTarget(version = "Alpha 375", versionCode = 10375, minSdk = 21)),
     )
 
     val READERA = Compatibility(

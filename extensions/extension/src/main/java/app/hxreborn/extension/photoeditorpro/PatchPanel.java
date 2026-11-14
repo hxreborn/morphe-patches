@@ -119,12 +119,15 @@ public final class PatchPanel {
 
     private static final String SPOOF_IOS_PLATFORM_KEY = "pep_spoof_ios_platform";
 
+    private static final String DISABLE_PUSH_KEY = "pep_disable_push";
+
     private static final String[][] ALWAYS_ON = {
             { SPOOF_SIGNATURE_KEY, "Spoof signature",
                     "Spoofs the original app signature and disables the pairip client-side license check." },
             { SPOOF_IOS_PLATFORM_KEY, "Spoof iOS platform",
                     "Sends the AI requests as the iOS app, which the server accepts without a Play Integrity "
-                            + "token." }, };
+                            + "token." },
+            { DISABLE_PUSH_KEY, disablePushNotificationsName(), disablePushNotificationsDescription() }, };
 
     private static final Set<String> SAFE_METHODS = Set.of("GET", "HEAD", "OPTIONS", "TRACE");
 
@@ -184,6 +187,14 @@ public final class PatchPanel {
     }
 
     public static String unlockPremiumName() {
+        return null;
+    }
+
+    public static String disablePushNotificationsName() {
+        return null;
+    }
+
+    public static String disablePushNotificationsDescription() {
         return null;
     }
 

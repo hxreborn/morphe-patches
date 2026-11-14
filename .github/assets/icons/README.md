@@ -21,6 +21,8 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 
 | File | App | Developer | Source |
 |---|---|---|---|
+| `redreader.png` | RedReader (`org.quantumbadger.redreader`) | QuantumBadger | Play 1.27, `res/mipmap-xxxhdpi/icon.png`, cut to a circle |
+| `redreaderalpha.png` | RedReader Alpha (`org.quantumbadger.redreaderalpha`) | QuantumBadger | Official Alpha 375, `mipmap/icon_inv` xxxhdpi (`res/EM.png`), cut to a circle |
 | `launchbox.png` | LaunchBox (`com.unbrokensoftware.launchbox`) | Unbroken Software, LLC | APK 1.23, adaptive icon `res/mipmap-anydpi-v26/icon.xml`, white background under `launcher_foreground` (xxxhdpi), cut to a circle |
 | `flights25.png` | Flights25 (`de.app.flighttracker`) | Rocketech sp. z o.o. | Play 1.4.7, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml`, foreground over `ic_launcher_background`, cut to a circle |
 | `audiomack.png` | Audiomack (`com.audiomack`) | Audiomack Music Apps | APK 8.11.4, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
@@ -69,6 +71,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `moonreader.png` | Moon+ Reader (`com.flyersoft.moonreader`) | Moon+ | APK 10.7, adaptive icon `res/drawable-anydpi-v26/icon.xml` |
 | `calcnote.png` | CalcNote (`com.burton999.notecal`) | burton999 | APK 2.25.111, `res/drawable-xxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `castlefortv.png` | Castle for TV (`com.gxnet.castle.indiatv`) | Castle | APK 1.1.5, `res/S1.webp` (square icon cut to a circle) |
+| `candycrushsaga.png` | Candy Crush Saga (`com.king.candycrushsaga`) | King | APK 1.340.0.1, adaptive icon `res/mipmap-anydpi-v26/ic_launcher.xml` |
 | `castle.png` | Castle (`com.external.castle`) | Castle | APK 2.1.3, `res/mipmap-xxxhdpi/ic_launcher_round.png` |
 | `acalendar.png` | aCalendar (`org.withouthat.acalendar`) | Tapir Apps GmbH | APK 2.9.5, `res/mipmap-xxxhdpi-v4/ic_launcher.png` (square icon cut to a circle) |
 | `quickcursor.png` | Quick Cursor (`com.quickcursor`) | Quick Cursor | APK 3.0.2, `res/mipmap-xxxhdpi-v4/launcher_icon_round.png` |

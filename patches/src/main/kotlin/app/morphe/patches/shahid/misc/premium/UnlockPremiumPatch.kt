@@ -17,7 +17,7 @@ private const val REMOVE_HEIGHT_LIMIT =
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
-    name = "Unlock premium",
+    name = "Unlock Full HD",
     description = "Unlocks Full HD playback. VIP titles require a subscription.",
 ) {
     compatibleWith(AppCompatibilities.SHAHID)

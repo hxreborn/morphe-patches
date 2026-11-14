@@ -37,6 +37,16 @@ internal class AvailabilityTest {
     }
 
     @Test
+    fun `excludes a standard install patch from a mount install`() {
+        assertEquals(PatchAvailability.UNAVAILABLE, requireStandardInstall.resolve(InstallerType.MOUNT, ApkArchitecture.ARM64_V8A))
+    }
+
+    @Test
+    fun `enables a standard install patch on a standard install of any architecture`() {
+        assertEquals(PatchAvailability.ENABLED, requireStandardInstall.resolve(InstallerType.STANDARD, ApkArchitecture.ARMEABI_V7A))
+    }
+
+    @Test
     fun `enables an arm patch on an armeabi-v7a install`() {
         assertEquals(PatchAvailability.ENABLED, requireArm.resolve(InstallerType.STANDARD, ApkArchitecture.ARMEABI_V7A))
     }

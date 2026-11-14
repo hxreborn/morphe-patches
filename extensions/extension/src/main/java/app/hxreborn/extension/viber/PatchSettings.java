@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
@@ -139,6 +140,25 @@ public final class PatchSettings {
 
     public static boolean activateAsSecondary(boolean tablet) {
         return tablet || linkAsSecondaryDevice();
+    }
+
+    public static String[] filterBackupPermissions(String[] permissions) {
+        if (!linkAsSecondaryDevice()) {
+            return permissions;
+        }
+        List<String> required = new ArrayList<>();
+        for (String permission : permissions) {
+            if (!Manifest.permission.GET_ACCOUNTS.equals(permission)
+                    && !Manifest.permission.READ_CONTACTS.equals(permission)
+                    && !Manifest.permission.WRITE_CONTACTS.equals(permission)) {
+                required.add(permission);
+            }
+        }
+        return required.toArray(new String[0]);
+    }
+
+    public static boolean restrictBackupToPrimary(boolean secondary) {
+        return secondary && !linkAsSecondaryDevice();
     }
 
     public static boolean hideMoreItems() {

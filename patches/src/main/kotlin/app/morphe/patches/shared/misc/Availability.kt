@@ -31,6 +31,10 @@ internal val requireArm64RootMount = AvailabilityResolver { installer, architect
     if (installer == InstallerType.MOUNT) arm64Required.resolve(installer, architecture) else PatchAvailability.UNAVAILABLE
 }
 
+internal val requireStandardInstall = AvailabilityResolver { installer, _ ->
+    if (installer == InstallerType.MOUNT) PatchAvailability.UNAVAILABLE else PatchAvailability.ENABLED
+}
+
 internal val requireArm64StandardInstall = AvailabilityResolver { installer, architecture ->
     if (installer == InstallerType.MOUNT) PatchAvailability.UNAVAILABLE else requireArm64.resolve(installer, architecture)
 }

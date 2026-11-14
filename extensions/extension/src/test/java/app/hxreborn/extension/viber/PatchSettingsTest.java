@@ -248,6 +248,25 @@ public class PatchSettingsTest {
     }
 
     @Test
+    @Config(shadows = AppliedSecondaryDevice.class)
+    public void keepStoragePermissionForBackupProviders() {
+        String[] permissions = { "android.permission.GET_ACCOUNTS", "android.permission.READ_CONTACTS",
+                "android.permission.WRITE_CONTACTS", "android.permission.READ_EXTERNAL_STORAGE" };
+        Assert.assertArrayEquals(new String[] { "android.permission.READ_EXTERNAL_STORAGE" },
+                PatchSettings.filterBackupPermissions(permissions));
+    }
+
+    @Test
+    @Config(shadows = AppliedSecondaryDevice.class)
+    public void restoreBackupPermissionsWhenDisabled() {
+        String[] permissions = { "android.permission.READ_CONTACTS" };
+        PatchSettings.setEnabled(PatchSetting.LINK_AS_SECONDARY_DEVICE.key, false);
+        Assert.assertSame(permissions, PatchSettings.filterBackupPermissions(permissions));
+        Assert.assertTrue(PatchSettings.restrictBackupToPrimary(true));
+        Assert.assertFalse(PatchSettings.restrictBackupToPrimary(false));
+    }
+
+    @Test
     public void keepServerFolderLimitWithoutAppliedPatch() {
         Assert.assertEquals(SERVER_FOLDER_LIMIT, PatchSettings.folderLimit(SERVER_FOLDER_LIMIT));
     }

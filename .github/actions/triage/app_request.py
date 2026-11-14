@@ -42,6 +42,14 @@ QUIET_DAYS = 14
 OPEN_LIMIT = 3
 EXEMPT_ASSOCIATIONS = {"OWNER", "MEMBER", "COLLABORATOR"}
 CHECKBOX = re.compile(r"^\s*[-*]\s+\[([ xX])\]", re.M)
+FEATURE_SEPARATOR = re.compile(r"[\n,;]|\band\b|^\s*[-*\u2022]\s*", re.I | re.M)
+FEATURE_FILLER = {"the", "a", "an", "of", "to", "for", "and", "all", "in", "on", "my", "app", "game", "feature",
+                  "features", "please", "option", "hide", "remove", "block", "disable", "stop", "no", "unlock",
+                  "enable", "add", "get", "skip", "free", "thank", "thanks", "you"}
+FEATURE_SYNONYMS = {"analytic": "tracking", "telemetry": "tracking", "tracker": "tracking", "advert": "ad",
+                    "advertisement": "ad"}
+MAX_FEATURE_WORDS = 6
+KEPT_OPEN_FOR_LACKING = "This request is kept open for those."
 
 
 def is_package(text):
@@ -168,6 +176,38 @@ def bundle_name(bundle):
     return re.sub(r"[^A-Za-z0-9 .'+&-]", "", str(bundle.get("name") or ""))[:60].strip() or bundle["repo"]
 
 
+def feature_words(text):
+    words = {normalize(w) for w in re.findall(r"\w+", text)}
+    singular = {w[:-1] if len(w) > 3 and w.endswith("s") else w for w in words if w and w not in FEATURE_FILLER}
+    return {FEATURE_SYNONYMS.get(w, w) for w in singular}
+
+
+def requested_features(body):
+    items = (" ".join(item.split()) for item in FEATURE_SEPARATOR.split(field(parse_fields(body), "Requested features")))
+    return [item for item in items
+            if feature_words(item) and len(item.split()) <= MAX_FEATURE_WORDS and not item.endswith(":")]
+
+
+def bundle_patch_names(registry, bundle, package):
+    compatibilities = registry.get("compatibilities")
+    if not isinstance(compatibilities, list):
+        return []
+    names = []
+    for patch in bundle.get("patches") or []:
+        key = patch.get("compatiblePackagesKey") if isinstance(patch, dict) else None
+        packages = compatibilities[key] if isinstance(key, int) and 0 <= key < len(compatibilities) else []
+        if any(isinstance(p, dict) and p.get("packageName") == package for p in packages or []):
+            names.append(str(patch.get("name") or ""))
+    return names
+
+
+def features_no_bundle_has(body, registry, bundles, package):
+    patched = [words for b in bundles for words in map(feature_words, bundle_patch_names(registry, b, package)) if words]
+    if not patched:
+        return []
+    return [item for item in requested_features(body) if not any(words <= feature_words(item) for words in patched)]
+
+
 def author(issue):
     return (issue.get("author") or {}).get("login") or ""
 
@@ -264,7 +304,7 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
                     f"add its package name. If it's the same app, please upvote {request_links} instead."
                 )
 
-    bundles = []
+    bundles, lacking = [], []
     if package and verdict in ("pass", "flag") and registry:
         bundles = listed_bundles(registry, package)
         if bundles:
@@ -277,8 +317,25 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
                 rows.append(f"- [{len(bundles) - MAX_LISTED} more]({REGISTRY_PAGE})")
             if verdict == "pass":
                 verdict = "flag"
-            labels += [label for label in ("needs info", "other bundle") if label not in labels]
-            if len(bundles) == 1:
+            checks_features = not previous or KEPT_OPEN_FOR_LACKING in previous
+            lacking = features_no_bundle_has(body, registry, bundles, package) if checks_features else []
+            wanted = ("other bundle",) if lacking else ("needs info", "other bundle")
+            labels += [label for label in wanted if label not in labels]
+            lacking_rows = "\n".join(f"- {code_span(item, 60)}" for item in lacking)
+            if len(bundles) == 1 and lacking:
+                lines.append(
+                    f"{rows[0][2:]} already patches `{package}`, but it has no patch for:\n\n{lacking_rows}\n\n"
+                    f"{KEPT_OPEN_FOR_LACKING} If that bundle doesn't support your app version or a patch "
+                    "broke, open an issue on that bundle.\n\nThis doesn't guarantee the request gets picked up."
+                )
+            elif lacking:
+                lines.append(
+                    f"These bundles already patch `{package}`:\n\n" + "\n".join(rows)
+                    + f"\n\nNone of them has a patch for:\n\n{lacking_rows}\n\n{KEPT_OPEN_FOR_LACKING} "
+                    "If they don't support your app version or a patch broke, open an issue on one of them.\n\n"
+                    "This doesn't guarantee the request gets picked up."
+                )
+            elif len(bundles) == 1:
                 lines.append(
                     f"{rows[0][2:]} already patches `{package}`. To keep work from being split across bundles, a request "
                     "for an app another bundle covers is kept open only for what that bundle lacks.\n\n"
@@ -316,6 +373,7 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
 
     facts = hashlib.sha256(json.dumps([
         package, verdict, reason, duplicate_of, sorted(labels), [b["repo"] for b in bundles], posts,
+        *([lacking] if lacking else []),
         [r["number"] for r in open_by_author], [line.split("\n")[0] for line in lines if line.startswith("This looks like")],
     ]).encode()).hexdigest()[:12]
     return {

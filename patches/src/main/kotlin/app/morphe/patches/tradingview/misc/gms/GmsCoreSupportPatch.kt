@@ -14,5 +14,4 @@ val gmsCoreSupportPatch = gmsCoreSupportPatchFor(
     AppCompatibilities.TRADINGVIEW,
     playServicesCredentialProviderPatch,
     spoofSignaturePatch,
-    default = true,
 )

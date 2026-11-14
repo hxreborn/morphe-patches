@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.77.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.77.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;538 patches total
+> **[v1.78.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;554 patches total
 
 ### Featured apps
 
@@ -29,7 +29,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
+<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>15 patches</sub></td>
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -39,7 +39,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="160"><a href="#aliexpress"><img src=".github/assets/icons/aliexpress.png" width="40"><br>AliExpress</a><br><sub>9 patches</sub></td>
-<td align="center" width="160"><a href="#photo-editor-pro"><img src=".github/assets/icons/photoeditorpro.png" width="40"><br>Photo Editor Pro</a><br><sub>6 patches</sub></td>
+<td align="center" width="160"><a href="#photo-editor-pro"><img src=".github/assets/icons/photoeditorpro.png" width="40"><br>Photo Editor Pro</a><br><sub>7 patches</sub></td>
 <td align="center" width="160"><a href="#cx-file-explorer"><img src=".github/assets/icons/cx.png" width="40"><br>Cx File Explorer</a><br><sub>3 patches</sub></td>
 </tr>
 </table>
@@ -573,6 +573,33 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="calcnote-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/calcnote/misc/premium/UnlockProPatch.kt) | Unlocks Pro features and removes ads. |
+
+</details>
+
+<a id="candy-crush-saga"></a>
+<details>
+<summary><img src=".github/assets/icons/candycrushsaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.340.0.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each of ten boosters every time the game starts. Each booster unlocks at its usual level. Requires a standard install. |
+| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Adds five moves when each level starts. Requires a standard install. |
+| <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Disables events. |
+| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Blocks game reminders and the prompt asking to allow notifications. |
+| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze and Firebase Analytics data collection and blocks reads of the advertising ID and install referrer. Braze push and in-app messages stop too. |
+| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops rewarded and interstitial ads from loading. |
+| <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
+| <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes rewarded ad offers. |
+| <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes promotional offer pop-ups. |
+| <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes rating prompts and rate entry in Settings. |
+| <a id="candy-crush-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/lives/UnlimitedLivesPatch.kt) | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
+| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks booster slots at any level. Requires a standard install. |
 
 </details>
 
@@ -1489,7 +1516,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="mbc-shahid-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="mbc-shahid-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/shahid/ads/RemoveAdsPatch.kt) | Removes video ads, pause ads and sponsored cards on the home, show and Shorts pages. |
 | <a id="mbc-shahid-remove-root-detection"></a>[Remove root detection](patches/src/main/kotlin/app/morphe/patches/shahid/misc/root/RemoveRootDetectionPatch.kt) | Opens the app and plays videos on rooted devices. |
-| <a id="mbc-shahid-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/shahid/misc/premium/UnlockPremiumPatch.kt) | Unlocks Full HD playback. VIP titles require a subscription. |
+| <a id="mbc-shahid-unlock-full-hd"></a>[Unlock Full HD](patches/src/main/kotlin/app/morphe/patches/shahid/misc/premium/UnlockPremiumPatch.kt) | Unlocks Full HD playback. VIP titles require a subscription. |
 
 </details>
 
@@ -1975,7 +2002,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="photo-editor-pro"></a>
 <details>
-<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1985,6 +2012,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="photo-editor-pro-disable-push-notifications"></a>[Disable push notifications](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/misc/notifications/DisablePushNotificationsPatch.kt) | Blocks push notifications and the prompt asking to allow them. |
 | <a id="photo-editor-pro-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/ads/HideAdsPatch.kt) | Removes banner, interstitial, app-open and rewarded ads. |
 | <a id="photo-editor-pro-hide-share-options"></a>[Hide share options](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/layout/HideShareOptionsPatch.kt) | Removes share buttons from the save screen and centers the saved photo. |
 | <a id="photo-editor-pro-inspect-ai-requests"></a>[Inspect AI requests](patches/src/main/kotlin/app/morphe/patches/photoeditorpro/diagnostics/TraceAiRequestsPatch.kt) | Shows the network calls an AI tool makes, such as HTTP requests and Firebase uploads. Keeps a log of them. |
@@ -2220,7 +2248,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
+<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;15 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2234,6 +2262,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/telemetry/DisableTelemetryPatch.kt) | Stops sending usage statistics and diagnostics to Proton. |
 | <a id="proton-vpn-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
+| <a id="proton-vpn-frosted-glass"></a>[Frosted glass](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/glass/FrostedGlassPatch.kt) | Adds frosted glass to home screen buttons, panels and sheets. Requires Android 12 or later. |
 | <a id="proton-vpn-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[Remove server change delay](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |
@@ -2462,6 +2491,38 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="realme-link-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/realmelink/theme/AmoledThemePatch.kt) | Replaces the light theme with a pure black dark theme. Requires Android 13 or later. |
 | <a id="realme-link-bypass-session-expiry"></a>[Bypass session expiry](patches/src/main/kotlin/app/morphe/patches/realmelink/session/BypassSessionExpiryPatch.kt) | Stops the session expired prompt and toast. |
+
+</details>
+
+<a id="redreader"></a>
+<details>
+<summary><img src=".github/assets/icons/redreader.png" width="18" align="top">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.27 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="redreader-filter-posts"></a>[Filter posts](patches/src/main/kotlin/app/morphe/patches/redreader/layout/filter/FilterPostsPatch.kt) | Filters posts by title keyword, subreddit name or post flair, with regular expression support. |
+
+</details>
+
+<a id="redreader-alpha"></a>
+<details>
+<summary><img src=".github/assets/icons/redreaderalpha.png" width="18" align="top">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| Alpha 375 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="redreader-alpha-filter-posts"></a>Filter posts | Filters posts by title keyword, subreddit name or post flair, with regular expression support. |
 
 </details>
 
@@ -2716,7 +2777,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="tradingview"></a>
 <details>
-<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2726,6 +2787,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="tradingview-fix-google-sign-in"></a>[Fix Google sign-in](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/signin/FixGoogleSignInPatch.kt) | Signs in with Google through a web page. |
 | <a id="tradingview-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="tradingview-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
 | <a id="tradingview-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade button, plan banners, subscription card and paywalls. Extra indicators, watchlists, flag colors, alerts, second and tick intervals, and intraday replay are not unlocked. |
