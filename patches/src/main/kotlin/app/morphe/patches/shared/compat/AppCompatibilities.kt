@@ -732,6 +732,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.28.86.1", versionCode = 529, minSdk = 21)),
     )
 
+    val ILOVEPDF = Compatibility(
+        name = "iLovePDF",
+        packageName = "com.ilovepdf.www",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE5322D,
+        signatures = setOf(
+            "d36aa4f8780c982853e75476b6740ef10c2bb2cce972b5ff515eb2ea8edf891c",
+        ),
+        targets = listOf(AppTarget(version = "4.2.3", versionCode = 4002003, minSdk = 26)),
+    )
+
     val IMO = Compatibility(
         name = "imo",
         packageName = "com.imo.android.imoim",
