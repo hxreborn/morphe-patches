@@ -154,6 +154,9 @@ public final class ServerResponses {
             String edited = edit(decoded, methods, plugins);
             if (!decoded.equals(edited)) {
                 byte[] replacement = edited.getBytes(StandardCharsets.UTF_8);
+                if (replacement.length > MAX_BYTES) {
+                    throw new IOException("Edited configuration response exceeds byte limit");
+                }
                 if (gzip(bytes)) {
                     ByteArrayOutputStream compressed = new ByteArrayOutputStream();
                     try (GZIPOutputStream output = new GZIPOutputStream(compressed)) {
@@ -307,7 +310,15 @@ public final class ServerResponses {
         edits.put(value.start, new Replacement(value.end, replacement));
     }
 
-    private static String splice(String text, TreeMap<Integer, Replacement> edits) {
+    private static String splice(String text, TreeMap<Integer, Replacement> edits) throws JSONException {
+        long bytes = text.getBytes(StandardCharsets.UTF_8).length;
+        for (Map.Entry<Integer, Replacement> edit : edits.entrySet()) {
+            bytes += edit.getValue().text.getBytes(StandardCharsets.UTF_8).length
+                    - text.substring(edit.getKey(), edit.getValue().end).getBytes(StandardCharsets.UTF_8).length;
+        }
+        if (bytes > MAX_BYTES) {
+            throw new JSONException("Edited configuration response exceeds byte limit");
+        }
         StringBuilder output = new StringBuilder(text);
         for (Map.Entry<Integer, Replacement> edit : edits.descendingMap().entrySet()) {
             output.replace(edit.getKey(), edit.getValue().end, edit.getValue().text);
