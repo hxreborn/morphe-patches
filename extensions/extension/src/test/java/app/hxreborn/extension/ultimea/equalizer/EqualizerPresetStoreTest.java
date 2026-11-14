@@ -98,9 +98,9 @@ public class EqualizerPresetStoreTest {
         Assert.assertEquals(3, restored.size());
         Assert.assertEquals(original.id, this.store.current());
         Assert.assertEquals(original.id, restored.get(0).id);
-        Assert.assertEquals("Movie custom (2)", restored.get(1).name);
+        Assert.assertEquals("Untitled (2)", restored.get(1).name);
         Assert.assertEquals(first.state, restored.get(1).state);
-        Assert.assertEquals("Movie custom (3)", restored.get(2).name);
+        Assert.assertEquals("Untitled (3)", restored.get(2).name);
         Assert.assertEquals(custom, restored.get(2).state);
         Assert.assertEquals(base, restored.get(2).base);
         Assert.assertEquals("Movie", restored.get(2).baseName);
@@ -160,12 +160,12 @@ public class EqualizerPresetStoreTest {
     }
 
     @Test
-    public void createSequentialNamesFromBase() throws JSONException, IOException {
+    public void createSequentialUntitledNamesAndRetainBase() throws JSONException, IOException {
         SoundState base = new SoundState(this.curve, 1);
         EqualizerPreset first = this.store.createCustom("Movie", base, base);
         EqualizerPreset second = this.store.createCustom("Movie", base, base);
-        Assert.assertEquals("Movie custom", first.name);
-        Assert.assertEquals("Movie custom 2", second.name);
+        Assert.assertEquals("Untitled", first.name);
+        Assert.assertEquals("Untitled 2", second.name);
         Assert.assertEquals("Movie", second.baseName);
         Assert.assertEquals(second.id, this.store.current());
     }
@@ -341,6 +341,60 @@ public class EqualizerPresetStoreTest {
         Assert.assertEquals(1, this.store.load().size());
         Assert.assertEquals(second.id, this.store.load().get(0).id);
         Assert.assertEquals(this.curve, this.store.load().get(0).curve);
+    }
+
+    @Test
+    public void migrateAutomaticNamesWithoutChangingIdsSoundOrUserNames() throws Exception {
+        SoundState base = new SoundState(new EqualizerCurve(1, new int[10]), 1);
+        EqualizerPreset first = EqualizerPreset.create("Current sound custom", base, "Current sound", base);
+        EqualizerPreset second = EqualizerPreset.create("Movie custom", base, "Movie", base);
+        EqualizerPreset existing = EqualizerPreset.create("Untitled", base, "Movie", base);
+        EqualizerPreset typed = EqualizerPreset.create("Movie custom 2", base, "Movie", base);
+        seed(first, second, existing, typed);
+        this.store.setCurrent(first.id);
+        List<EqualizerPreset> loaded = this.store.load();
+        Assert.assertEquals(Arrays.asList("Untitled 2", "Untitled 3", "Untitled", "Movie custom 2"),
+                Arrays.asList(loaded.get(0).name, loaded.get(1).name, loaded.get(2).name, loaded.get(3).name));
+        for (int index = 0; index < loaded.size(); index++) {
+            EqualizerPreset original = Arrays.asList(first, second, existing, typed).get(index);
+            Assert.assertEquals(original.id, loaded.get(index).id);
+            Assert.assertEquals(original.state, loaded.get(index).state);
+            Assert.assertEquals(original.base, loaded.get(index).base);
+            Assert.assertEquals(original.baseName, loaded.get(index).baseName);
+        }
+        Assert.assertEquals(first.id, this.store.current());
+        Assert.assertEquals("Untitled 2", new EqualizerPresetStore(this.application).load().get(0).name);
+    }
+
+    @Test
+    public void preserveExplicitOldPatternNameAfterMigration() throws Exception {
+        SoundState base = new SoundState(this.curve, 1);
+        EqualizerPreset old = EqualizerPreset.create("Movie custom", base, "Movie", base);
+        seed(old);
+        Assert.assertEquals("Untitled", this.store.load().get(0).name);
+        this.store.rename(old.id, "Movie custom");
+        Assert.assertEquals("Movie custom", new EqualizerPresetStore(this.application).load().get(0).name);
+    }
+
+    @Test
+    public void retainMalformedPresetsWithoutMarkingNameMigrationComplete() {
+        android.content.SharedPreferences preferences = this.application
+            .getSharedPreferences("hx_ultimea_equalizer_presets", 0);
+        preferences.edit().putString("presets", "[{broken").commit();
+        Assert.assertThrows(JSONException.class, () -> this.store.load());
+        Assert.assertEquals("[{broken", preferences.getString("presets", null));
+        Assert.assertFalse(preferences.getBoolean("automatic_names_migrated", false));
+    }
+
+    private void seed(EqualizerPreset... presets) throws JSONException {
+        JSONArray records = new JSONArray();
+        for (EqualizerPreset preset : presets) {
+            records.put(new JSONObject().put("id", preset.id).put("curve", EqualizerPresetFile.json(preset)));
+        }
+        this.application.getSharedPreferences("hx_ultimea_equalizer_presets", 0)
+            .edit()
+            .putString("presets", records.toString())
+            .commit();
     }
 
 }

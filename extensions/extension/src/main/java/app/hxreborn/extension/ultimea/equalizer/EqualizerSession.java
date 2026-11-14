@@ -21,6 +21,7 @@
 package app.hxreborn.extension.ultimea.equalizer;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,11 +50,17 @@ final class EqualizerSession {
 
     private SoundState undoState;
 
+    private final ArrayDeque<SoundState> undoStates = new ArrayDeque<>();
+
+    private boolean undoRequested;
+
     private Selection confirmedSelection;
 
     private Selection desiredSelection;
 
     private Change active;
+
+    private Change failedChange;
 
     private boolean reading;
 
@@ -61,11 +68,13 @@ final class EqualizerSession {
 
     private boolean closed;
 
+    private boolean closingAfterWrites;
+
+    private Runnable afterWrites;
+
     private boolean failed;
 
     private boolean readAfterChange;
-
-    private boolean saveDesired;
 
     private boolean selectionPending;
 
@@ -111,10 +120,12 @@ final class EqualizerSession {
             return;
         }
         this.reading = true;
+        this.failedChange = null;
         this.readAfterChange = false;
         this.failed = false;
         this.error = null;
         this.undoState = null;
+        this.undoStates.clear();
         this.gesturePending = false;
         final int generation = ++this.readGeneration;
         publish();
@@ -131,11 +142,62 @@ final class EqualizerSession {
                 this.confirmed = readback;
                 this.desired = readback;
                 this.selectionPending = false;
-                this.saveDesired = false;
                 restoreSelection();
             }
             publish();
         });
+    }
+
+    void retry() {
+        if (this.closed || this.reading || this.busy) {
+            return;
+        }
+        Change change = this.failedChange;
+        if (change == null) {
+            read();
+            return;
+        }
+        this.reading = true;
+        this.failed = false;
+        this.error = null;
+        publish();
+        final int generation = ++this.readGeneration;
+        this.connection.read((latest) -> {
+            if (this.closed || generation != this.readGeneration || !this.reading) {
+                return;
+            }
+            this.reading = false;
+            if (latest == null) {
+                this.failed = true;
+                this.error = "Could not read soundbar. Reconnect, then retry.";
+                publish();
+            } else if (latest.equals(change.target)) {
+                this.active = change;
+                this.busy = true;
+                complete(change, latest);
+            } else if (latest.equals(change.before)) {
+                this.confirmed = latest;
+                this.failedChange = null;
+                this.selectionPending = true;
+                this.undoRequested = change.undo;
+                send();
+            } else {
+                this.confirmed = latest;
+                this.desired = latest;
+                this.failedChange = null;
+                restoreSelection();
+                this.error = "Sound changed on the soundbar";
+                publish();
+            }
+        });
+    }
+
+    void disconnected() {
+        if (!this.closed) {
+            this.failed = true;
+            this.error = "Soundbar disconnected";
+            publish();
+        }
     }
 
     void selectBase(int mode) {
@@ -149,31 +211,35 @@ final class EqualizerSession {
         }
         SoundState base = new SoundState(entry.curve, this.confirmed.xupmix);
         this.undoState = null;
+        this.undoStates.clear();
         this.gesturePending = false;
         request(base, new Selection(null, entry.name, base), false);
     }
 
-    void selectStyle(int row, int column) {
+    void create() {
         if (!canSelect()) {
             return;
         }
-        if (!EqualizerBases.available()) {
-            report("Equalizer configuration changed");
+        if (!this.presetsEnabled) {
+            report("Local presets are disabled");
             return;
         }
         try {
-            EqualizerStyles.Point point = EqualizerStyles.at(row, column);
-            SoundState base = new SoundState(point.curve, this.confirmed.xupmix);
-            this.undoState = null;
-            this.gesturePending = false;
-            request(base, new Selection(null, (point.name != null) ? point.name : "Style", base), false);
-        } catch (IllegalArgumentException | IllegalStateException ex) {
-            report("Equalizer style could not be selected");
+            EqualizerPreset preset = this.store.createCustom(this.confirmedSelection.baseName,
+                    this.confirmedSelection.base, this.confirmed.withCurve(this.confirmed.curve.asCustom()));
+            selectPreset(preset.id);
+        } catch (IOException | JSONException | IllegalArgumentException ex) {
+            report(message("Preset could not be created", ex));
         }
     }
 
-    void create() {
-        selectBase(MOVIE_MODE);
+    void setCurve(EqualizerCurve curve) {
+        if (!canEdit() || curve == null || curve.equals(this.desired.curve)) {
+            return;
+        }
+        beginEdit();
+        recordUndoBoundary();
+        request(this.desired.withCurve(curve), this.desiredSelection, true);
     }
 
     void selectPreset(String id) {
@@ -189,9 +255,12 @@ final class EqualizerSession {
             for (EqualizerPreset preset : this.presets) {
                 if (preset.id.equals(id)) {
                     this.undoState = null;
+                    this.undoStates.clear();
                     this.gesturePending = false;
                     SoundState base = resolve(preset.base);
-                    request(resolve(preset.state), new Selection(preset, preset.baseName, base), false);
+                    SoundState target = resolve(preset.state);
+                    request(target.withCurve(target.curve.asCustom()), new Selection(preset, preset.baseName, base),
+                            false);
                     return;
                 }
             }
@@ -215,7 +284,7 @@ final class EqualizerSession {
         this.gesturePending = false;
         if (!this.busy) {
             this.undoState = this.confirmed;
-        } else if (this.undoState == null) {
+        } else {
             this.undoState = this.active.target;
         }
     }
@@ -283,11 +352,11 @@ final class EqualizerSession {
     }
 
     void undo() {
-        if (!canSelect() || this.undoState == null) {
+        if (!canSelect() || this.undoStates.isEmpty()) {
             return;
         }
-        SoundState target = this.undoState;
-        this.undoState = this.confirmed;
+        SoundState target = this.undoStates.peekLast();
+        this.undoRequested = true;
         this.gesturePending = false;
         request(target, this.confirmedSelection, true);
     }
@@ -343,7 +412,16 @@ final class EqualizerSession {
         }
     }
 
+    void closeAfterWrites(Runnable completion) {
+        this.afterWrites = completion;
+        this.closingAfterWrites = true;
+        publish();
+    }
+
     void close() {
+        if (this.closed) {
+            return;
+        }
         this.closed = true;
         this.gesturePending = false;
         this.readGeneration++;
@@ -358,13 +436,17 @@ final class EqualizerSession {
             this.desired = this.active.target;
             this.desiredSelection = this.active.selection;
         }
+        Runnable completion = this.afterWrites;
+        this.afterWrites = null;
+        if (completion != null) {
+            completion.run();
+        }
     }
 
-    private void request(SoundState target, Selection selection, boolean save) {
+    private void request(SoundState target, Selection selection, boolean editingSound) {
         this.desired = target;
         this.desiredSelection = selection;
-        this.saveDesired = save;
-        this.selectionPending = !save;
+        this.selectionPending = !editingSound;
         this.error = null;
         publish();
         send();
@@ -377,6 +459,7 @@ final class EqualizerSession {
         }
         this.busy = true;
         Change change = new Change(this);
+        this.undoRequested = false;
         this.active = change;
         publish();
         this.connection.read((latest) -> {
@@ -401,8 +484,7 @@ final class EqualizerSession {
         this.selectionPending = false;
         if (readback == null || !readback.equals(change.target)) {
             this.failed = true;
-            this.desired = this.confirmed;
-            restoreSelection();
+            this.failedChange = change;
             if (this.error == null) {
                 this.error = "Change could not be saved. Reconnect, then retry.";
             }
@@ -412,12 +494,23 @@ final class EqualizerSession {
             }
             return;
         }
+        if (!change.historyRecorded) {
+            if (change.undo) {
+                this.undoStates.removeLast();
+            } else if (!change.before.equals(readback) && change.undoBoundary != null
+                    && !change.undoBoundary.equals(this.undoStates.peekLast())) {
+                this.undoStates.addLast(change.undoBoundary);
+            }
+            change.historyRecorded = true;
+        }
+        this.failedChange = null;
         this.confirmed = readback;
         this.confirmedSelection = change.selection;
         try {
             saveConfirmed(change);
         } catch (IOException | JSONException | IllegalArgumentException ex) {
             this.failed = true;
+            this.failedChange = change;
             this.desired = readback;
             this.desiredSelection = this.confirmedSelection;
             this.error = message("Soundbar confirmed. Preset could not be saved", ex);
@@ -439,54 +532,36 @@ final class EqualizerSession {
             return;
         }
         Selection selection = change.selection;
-        if (change.save || selection.preset != null) {
-            if (selection.preset == null) {
-                selection.preset = this.store.createCustom(selection.baseName, selection.base, change.target);
-            } else {
-                EqualizerPreset preset = selection.preset;
-                this.store.update(preset.id, change.target);
-                selection.preset = new EqualizerPreset(preset.id, preset.name, change.target, preset.baseName,
-                        preset.base);
-            }
+        if (selection.preset != null) {
+            EqualizerPreset preset = selection.preset;
+            this.store.update(preset.id, change.target);
+            selection.preset = new EqualizerPreset(preset.id, preset.name, change.target, preset.baseName, preset.base);
         }
         this.store.setCurrent((selection.preset != null) ? selection.preset.id : null);
         this.presets = this.store.load();
     }
 
     private void restoreSelection() {
-        this.confirmedSelection = currentSound(this.confirmed);
-        if (this.presetsEnabled) {
-            try {
-                this.presets = this.store.load();
-                String current = this.store.current();
-                for (EqualizerPreset preset : this.presets) {
-                    if (preset.id.equals(current) && matches(preset.state, this.confirmed)) {
-                        this.confirmedSelection = new Selection(preset, preset.baseName, resolve(preset.base));
-                        break;
-                    }
-                }
-            } catch (JSONException | IllegalArgumentException ex) {
-                this.failed = true;
-                this.error = "Saved presets could not be read";
-            }
+        try {
+            reloadPresets();
+        } catch (JSONException | IllegalArgumentException ex) {
+            this.failed = true;
+            this.error = "Saved presets could not be read";
         }
-        this.desiredSelection = this.confirmedSelection;
     }
 
     private void reloadPresets() throws JSONException {
-        this.presets = this.store.load();
-        if (this.confirmedSelection == null || this.confirmedSelection.preset == null) {
-            return;
-        }
-        String id = this.confirmedSelection.preset.id;
-        for (EqualizerPreset preset : this.presets) {
-            if (preset.id.equals(id) && matches(preset.state, this.confirmed)) {
-                this.confirmedSelection = new Selection(preset, preset.baseName, resolve(preset.base));
-                this.desiredSelection = this.confirmedSelection;
-                return;
+        this.confirmedSelection = (this.confirmed != null) ? currentSound(this.confirmed) : null;
+        if (this.presetsEnabled) {
+            this.presets = this.store.load();
+            String current = this.store.current();
+            for (EqualizerPreset preset : this.presets) {
+                if (this.confirmed != null && preset.id.equals(current) && matches(preset.state, this.confirmed)) {
+                    this.confirmedSelection = new Selection(preset, preset.baseName, resolve(preset.base));
+                    break;
+                }
             }
         }
-        this.confirmedSelection = currentSound(this.confirmed);
         this.desiredSelection = this.confirmedSelection;
     }
 
@@ -496,7 +571,9 @@ final class EqualizerSession {
     }
 
     private static boolean matches(SoundState preset, SoundState state) {
-        return preset.curve.equals(state.curve) && (preset.xupmix < 0 || preset.xupmix == state.xupmix);
+        return state.curve.mode() == EqualizerCurve.CUSTOM_MODE
+                && preset.curve.asCustom().equals(state.curve.asCustom())
+                && (preset.xupmix < 0 || preset.xupmix == state.xupmix);
     }
 
     private static Selection currentSound(SoundState state) {
@@ -521,13 +598,18 @@ final class EqualizerSession {
 
     private boolean canSelect() {
         if (this.closed) {
+            report("Equalizer is closed. Open it again");
             return false;
         }
         if (this.busy || this.reading) {
             report("Wait for the soundbar update to finish");
             return false;
         }
-        return canEdit();
+        if (!canEdit()) {
+            report((this.error != null) ? this.error : "Read the soundbar before selecting a preset");
+            return false;
+        }
+        return true;
     }
 
     private void report(String error) {
@@ -540,6 +622,13 @@ final class EqualizerSession {
     }
 
     private void publish() {
+        if (this.closingAfterWrites) {
+            if (!this.busy && !this.reading && (this.failed || this.desired == null
+                    || this.desired.equals(this.confirmed) && !this.selectionPending)) {
+                close();
+            }
+            return;
+        }
         if (!this.closed) {
             this.listener.changed(state());
         }
@@ -578,7 +667,9 @@ final class EqualizerSession {
         State(EqualizerSession session) {
             this.confirmed = session.confirmed;
             this.desired = session.desired;
-            this.selected = (session.confirmedSelection != null) ? session.confirmedSelection.preset : null;
+            EqualizerPreset preset = (session.confirmedSelection != null) ? session.confirmedSelection.preset : null;
+            this.selected = (preset != null && session.confirmed != null && matches(preset.state, session.confirmed))
+                    ? preset : null;
             this.base = (session.confirmedSelection != null) ? session.confirmedSelection.base : null;
             this.baseName = (session.confirmedSelection != null) ? session.confirmedSelection.baseName
                     : "Current sound";
@@ -588,8 +679,7 @@ final class EqualizerSession {
             this.closed = session.closed;
             this.presetsEnabled = session.presetsEnabled;
             this.canEdit = session.canEdit();
-            this.canUndo = this.canEdit && !this.busy && session.undoState != null
-                    && !session.undoState.equals(this.confirmed);
+            this.canUndo = this.canEdit && !this.busy && !session.undoStates.isEmpty();
             this.canReset = this.canEdit && !this.busy && this.selected != null && !this.base.equals(this.confirmed);
             this.error = session.error;
         }
@@ -620,15 +710,20 @@ final class EqualizerSession {
 
         private final Selection selection;
 
-        private final boolean save;
+        private final boolean undo;
+
+        private final SoundState undoBoundary;
 
         private boolean sent;
+
+        private boolean historyRecorded;
 
         Change(EqualizerSession session) {
             this.before = session.confirmed;
             this.target = session.desired;
             this.selection = session.desiredSelection;
-            this.save = session.saveDesired;
+            this.undo = session.undoRequested;
+            this.undoBoundary = session.undoState;
         }
 
     }

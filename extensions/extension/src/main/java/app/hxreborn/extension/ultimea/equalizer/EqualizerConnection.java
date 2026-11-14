@@ -287,6 +287,7 @@ public final class EqualizerConnection {
         hostXupmixQueries = 0;
         incoming = null;
         EqualizerSummary.clear();
+        MAIN.post(FineEqualizer::connectionChanged);
     }
 
     static void read(EqualizerCallback callback) {

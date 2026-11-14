@@ -89,49 +89,6 @@ public class EqualizerSessionTest {
     }
 
     @Test
-    public void selectsEveryStockStyleAndKeepsXupmix() throws JSONException {
-        read();
-        for (EqualizerStyles.Point point : EqualizerStyles.points()) {
-            this.session.selectStyle(point.row, point.column);
-            this.connection.settle();
-            Assert.assertEquals(point.curve, this.session.state().confirmed.curve);
-            Assert.assertEquals(1, this.session.state().confirmed.xupmix);
-            Assert.assertNull(this.session.state().selected);
-            Assert.assertNull(this.store.current());
-        }
-        Assert.assertTrue(this.store.load().isEmpty());
-    }
-
-    @Test
-    public void editsNamedStyleIntoPresetAndResetsToWholeStyle() throws JSONException {
-        read();
-        this.session.selectStyle(2, 2);
-        this.connection.settle();
-        SoundState bass = this.session.state().confirmed;
-        this.session.step(BAND, 1);
-        this.connection.settle();
-        Assert.assertEquals("Bass custom", this.session.state().selected.name);
-        Assert.assertEquals(bass, this.session.state().selected.base);
-        Assert.assertEquals(7, this.session.state().confirmed.curve.mode());
-        this.session.reset();
-        this.connection.settle();
-        Assert.assertEquals(bass, this.session.state().confirmed);
-        Assert.assertEquals(8, this.store.load().get(0).state.curve.mode());
-        this.session.undo();
-        this.connection.settle();
-        Assert.assertEquals(bass.curve.gain(BAND) + 1, this.session.state().confirmed.curve.gain(BAND));
-    }
-
-    @Test
-    public void rejectsStyleOutsideGridWithoutWriting() {
-        read();
-        this.session.selectStyle(-1, 0);
-        Assert.assertEquals(0, this.connection.applied);
-        Assert.assertNotNull(this.session.state().error);
-        Assert.assertEquals(movie(), this.session.state().confirmed);
-    }
-
-    @Test
     public void identifiesNamedStyleOnFreshRead() {
         this.connection.sound = new SoundState(EqualizerStyles.at(8, 8).curve, 0);
         read();
@@ -151,16 +108,18 @@ public class EqualizerSessionTest {
     }
 
     @Test
-    public void savesOnlyAfterExactDeviceConfirmation() throws JSONException {
+    public void updateSelectedPresetOnlyAfterExactDeviceConfirmation() throws JSONException {
         read();
+        createSelectedPreset();
+        EqualizerPreset original = this.store.load().get(0);
         this.session.step(BAND, 1);
-        Assert.assertTrue(this.store.load().isEmpty());
-        Assert.assertNull(this.session.state().selected);
+        Assert.assertEquals(movie().withCurve(movie().curve.asCustom()), this.store.load().get(0).state);
         this.connection.replyRead();
-        Assert.assertTrue(this.store.load().isEmpty());
+        Assert.assertEquals(movie().withCurve(movie().curve.asCustom()), this.store.load().get(0).state);
         this.connection.finishApply();
         EqualizerPreset preset = this.store.load().get(0);
-        Assert.assertEquals("Movie custom", preset.name);
+        Assert.assertEquals(original.id, preset.id);
+        Assert.assertEquals("Untitled", preset.name);
         Assert.assertEquals(11, preset.state.curve.gain(BAND));
         Assert.assertEquals(7, preset.state.curve.mode());
         Assert.assertEquals(1, preset.state.xupmix);
@@ -172,6 +131,7 @@ public class EqualizerSessionTest {
     @Test
     public void coalescesGainChangesIntoOneSavedPreset() throws JSONException {
         read();
+        createSelectedPreset();
         this.session.beginEdit();
         this.session.setGain(BAND, 11);
         this.session.setGain(BAND, 12);
@@ -184,14 +144,15 @@ public class EqualizerSessionTest {
         Assert.assertEquals(13, this.session.state().confirmed.curve.gain(BAND));
         this.session.undo();
         this.connection.settle();
-        Assert.assertEquals(movie(), this.session.state().confirmed);
-        Assert.assertEquals(movie(), this.store.load().get(0).state);
+        Assert.assertEquals(movie().withCurve(movie().curve.asCustom()), this.session.state().confirmed);
+        Assert.assertEquals(movie().withCurve(movie().curve.asCustom()), this.store.load().get(0).state);
     }
 
     @Test
     public void rejectsSelectionDuringPendingWriteAndKeepsCoalescingGains() throws Exception {
         EqualizerPreset other = this.store.add("Other", movie().curve.withGain(BAND, 20));
         read();
+        createSelectedPreset();
         this.session.step(BAND, 1);
         this.session.selectBase(2);
         this.session.selectPreset(other.id);
@@ -199,7 +160,7 @@ public class EqualizerSessionTest {
         Assert.assertEquals(11, this.session.state().desired.curve.gain(BAND));
         this.session.setGain(BAND, 12);
         this.connection.settle();
-        Assert.assertEquals("Movie custom", this.session.state().selected.name);
+        Assert.assertEquals("Untitled", this.session.state().selected.name);
         Assert.assertEquals(12, this.session.state().confirmed.curve.gain(BAND));
         Assert.assertEquals(2, this.store.load().size());
     }
@@ -207,6 +168,7 @@ public class EqualizerSessionTest {
     @Test
     public void restoresConfirmedSelectionAfterFailedRecall() throws Exception {
         read();
+        createSelectedPreset();
         this.session.step(BAND, 1);
         this.connection.settle();
         String current = this.store.current();
@@ -219,7 +181,7 @@ public class EqualizerSessionTest {
         this.connection.failApply();
         Assert.assertEquals(current, this.store.current());
         Assert.assertEquals(current, this.session.state().selected.id);
-        Assert.assertEquals(original, this.session.state().desired);
+        Assert.assertEquals(original.withCurve(other.curve), this.session.state().desired);
         Assert.assertFalse(this.session.state().canEdit);
         Assert.assertEquals("Change could not be saved. Reconnect, then retry.", this.session.state().error);
         read();
@@ -257,6 +219,55 @@ public class EqualizerSessionTest {
     }
 
     @Test
+    public void undoPreservesEachConfirmedGestureWhileWritesOverlap() {
+        read();
+        this.session.step(BAND, 1);
+        this.connection.replyRead();
+        this.session.step(BAND, 1);
+        this.connection.finishApply();
+        this.connection.settle();
+        Assert.assertEquals(12, this.session.state().confirmed.curve.gain(BAND));
+        this.session.undo();
+        this.connection.settle();
+        Assert.assertEquals(11, this.session.state().confirmed.curve.gain(BAND));
+        this.session.undo();
+        this.connection.settle();
+        Assert.assertEquals(10, this.session.state().confirmed.curve.gain(BAND));
+    }
+
+    @Test
+    public void savesFinalQueuedCurveAfterScreenCloses() throws JSONException {
+        read();
+        createSelectedPreset();
+        this.session.step(BAND, 1);
+        this.connection.replyRead();
+        this.session.setGain(BAND, 12);
+        int notifications = this.snapshots.size();
+        this.session.closeAfterWrites(() -> {
+        });
+        this.connection.settle();
+        Assert.assertEquals(2, this.connection.applied);
+        Assert.assertEquals(12, this.store.load().get(0).state.curve.gain(BAND));
+        Assert.assertTrue(this.session.state().closed);
+        Assert.assertEquals(notifications, this.snapshots.size());
+    }
+
+    @Test
+    public void savesFinalCurveAfterScreenClosesDuringComparison() throws JSONException {
+        read();
+        createSelectedPreset();
+        this.session.step(BAND, 1);
+        int notifications = this.snapshots.size();
+        this.session.closeAfterWrites(() -> {
+        });
+        this.connection.settle();
+        Assert.assertEquals(1, this.connection.applied);
+        Assert.assertEquals(11, this.store.load().get(0).state.curve.gain(BAND));
+        Assert.assertTrue(this.session.state().closed);
+        Assert.assertEquals(notifications, this.snapshots.size());
+    }
+
+    @Test
     public void stopsBeforeSetterWhenClosedDuringComparisonRead() throws JSONException {
         read();
         this.session.step(BAND, 1);
@@ -271,6 +282,7 @@ public class EqualizerSessionTest {
     @Test
     public void savesDispatchedChangeAfterCloseAndDropsQueuedChange() throws JSONException {
         read();
+        createSelectedPreset();
         this.session.step(BAND, 1);
         this.connection.replyRead();
         this.session.setGain(BAND, 12);
@@ -299,9 +311,10 @@ public class EqualizerSessionTest {
     @Test
     public void resetsAndUndoesExactModeGainsAndXupmix() {
         read();
+        createSelectedPreset();
         this.session.setXupmix(false);
         this.connection.settle();
-        Assert.assertEquals(1, this.session.state().confirmed.curve.mode());
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, this.session.state().confirmed.curve.mode());
         Assert.assertEquals(0, this.session.state().confirmed.xupmix);
         Assert.assertTrue(this.session.state().canReset);
         this.session.reset();
@@ -309,23 +322,23 @@ public class EqualizerSessionTest {
         Assert.assertEquals(movie(), this.session.state().confirmed);
         this.session.undo();
         this.connection.settle();
-        Assert.assertEquals(1, this.session.state().confirmed.curve.mode());
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, this.session.state().confirmed.curve.mode());
         Assert.assertEquals(0, this.session.state().confirmed.xupmix);
     }
 
     @Test
-    public void createsMoviePresetOnlyAfterFirstConfirmedEdit() throws JSONException {
+    public void createPresetInCustomModeWithCurrentGainsAndXupmix() throws JSONException {
         this.connection.sound = new SoundState(new EqualizerCurve(2, new int[10]), 0);
         read();
-        this.session.create();
-        this.connection.settle();
-        Assert.assertEquals(1, this.session.state().confirmed.curve.mode());
+        createSelectedPreset();
+        Assert.assertEquals(0, this.connection.applied);
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, this.session.state().confirmed.curve.mode());
         Assert.assertEquals(0, this.session.state().confirmed.xupmix);
-        Assert.assertTrue(this.store.load().isEmpty());
+        Assert.assertEquals(1, this.store.load().size());
+        Assert.assertEquals("Untitled", this.session.state().selected.name);
         this.session.step(BAND, -1);
         this.connection.settle();
-        Assert.assertEquals("Movie custom", this.session.state().selected.name);
-        Assert.assertEquals(9, this.session.state().confirmed.curve.gain(BAND));
+        Assert.assertEquals(-1, this.session.state().confirmed.curve.gain(BAND));
     }
 
     @Test
@@ -342,13 +355,14 @@ public class EqualizerSessionTest {
     @Test
     public void renamesAndDeletesWithoutChangingSound() throws JSONException {
         read();
+        createSelectedPreset();
         this.session.step(BAND, 1);
         this.connection.settle();
         EqualizerSession.State original = this.session.state();
         int applies = this.connection.applied;
         this.session.rename("Dialogue");
         Assert.assertEquals("Dialogue", this.session.state().selected.name);
-        Assert.assertEquals("Movie custom", original.selected.name);
+        Assert.assertEquals("Untitled", original.selected.name);
         Assert.assertEquals(original.confirmed, this.session.state().confirmed);
         this.session.delete();
         Assert.assertNull(this.session.state().selected);
@@ -421,23 +435,25 @@ public class EqualizerSessionTest {
     }
 
     @Test
-    public void keepsMovieUndoBoundaryForGainQueuedDuringBaseSelection() throws JSONException {
+    public void keepCurrentCurveAsUndoBoundaryAfterCreatingPreset() throws JSONException {
         this.connection.sound = new SoundState(new EqualizerCurve(2, new int[10]), 0);
         read();
-        this.session.create();
+        createSelectedPreset();
         this.session.beginEdit();
         this.session.setGain(BAND, 11);
         this.connection.settle();
         Assert.assertEquals(1, this.store.load().size());
-        Assert.assertEquals("Movie custom", this.session.state().selected.name);
+        Assert.assertEquals("Untitled", this.session.state().selected.name);
         this.session.undo();
         this.connection.settle();
-        Assert.assertEquals(movie().withXupmix(0), this.session.state().confirmed);
+        Assert.assertEquals(new SoundState(new EqualizerCurve(EqualizerCurve.CUSTOM_MODE, new int[10]), 0),
+                this.session.state().confirmed);
     }
 
     @Test
     public void rejectsMalformedActionsAndBoundarySteps() {
         read();
+        createSelectedPreset();
         this.session.selectBase(Integer.MIN_VALUE);
         this.session.selectPreset(null);
         this.session.setGain(-1, 0);
@@ -455,7 +471,7 @@ public class EqualizerSessionTest {
     }
 
     @Test
-    public void retainsConfirmedHardwareStateWhenPresetLimitBlocksAutosave() throws Exception {
+    public void editHardwareWithoutAddingPresetAtLimit() throws Exception {
         for (int index = 0; index < 64; index++) {
             this.store.add("Preset " + index, movie().curve.asCustom());
         }
@@ -465,8 +481,8 @@ public class EqualizerSessionTest {
         Assert.assertEquals(11, this.session.state().confirmed.curve.gain(BAND));
         Assert.assertEquals(64, this.store.load().size());
         Assert.assertNull(this.session.state().selected);
-        Assert.assertFalse(this.session.state().canEdit);
-        Assert.assertTrue(this.session.state().error.contains("Local preset limit reached"));
+        Assert.assertTrue(this.session.state().canEdit);
+        Assert.assertNull(this.session.state().error);
     }
 
     @Test
@@ -488,6 +504,204 @@ public class EqualizerSessionTest {
         this.connection.replyRead();
         Assert.assertNull(this.session.state().confirmed);
         Assert.assertEquals(notifications, this.snapshots.size());
+    }
+
+    @Test
+    public void retryAcceptedWriteWithoutSendingDuplicateSetter() throws JSONException {
+        read();
+        createSelectedPreset();
+        this.session.step(BAND, 1);
+        SoundState requested = this.session.state().desired;
+        this.connection.replyRead();
+        this.connection.sound = requested;
+        this.connection.failApply();
+        Assert.assertEquals(requested, this.session.state().desired);
+        this.session.retry();
+        this.connection.replyRead();
+        Assert.assertEquals(1, this.connection.applied);
+        Assert.assertEquals(requested, this.session.state().confirmed);
+        Assert.assertEquals(1, this.store.load().size());
+        Assert.assertTrue(this.session.state().canEdit);
+    }
+
+    @Test
+    public void retryUnacceptedWriteAfterIndependentRead() {
+        read();
+        this.session.step(BAND, 1);
+        SoundState requested = this.session.state().desired;
+        this.connection.replyRead();
+        this.connection.failApply();
+        this.session.retry();
+        Assert.assertEquals(1, this.connection.applied);
+        this.connection.settle();
+        Assert.assertEquals(2, this.connection.applied);
+        Assert.assertEquals(requested, this.session.state().confirmed);
+    }
+
+    @Test
+    public void keepExternalSoundChangeWhenRetrying() {
+        read();
+        this.session.step(BAND, 1);
+        this.connection.replyRead();
+        this.connection.failApply();
+        SoundState external = new SoundState(new EqualizerCurve(2, new int[10]), 0);
+        this.connection.sound = external;
+        this.session.retry();
+        this.connection.replyRead();
+        Assert.assertEquals(1, this.connection.applied);
+        Assert.assertEquals(external, this.session.state().confirmed);
+        Assert.assertEquals(external, this.session.state().desired);
+        Assert.assertEquals("Sound changed on the soundbar", this.session.state().error);
+    }
+
+    @Test
+    public void retainStyleCurveNameWithoutStyleSelector() {
+        EqualizerStyles.Point named = null;
+        for (EqualizerStyles.Point point : EqualizerStyles.points()) {
+            if (point.name != null) {
+                named = point;
+                break;
+            }
+        }
+        Assert.assertNotNull(named);
+        this.connection.sound = new SoundState(named.curve, 1);
+        read();
+        Assert.assertEquals(named.name, this.session.state().baseName);
+        Assert.assertEquals(0, this.connection.applied);
+    }
+
+    @Test
+    public void editSoundWithoutAutomaticallyCreatingPreset() throws JSONException {
+        read();
+        this.session.step(BAND, 1);
+        this.connection.settle();
+        Assert.assertTrue(this.store.load().isEmpty());
+        Assert.assertNull(this.store.current());
+        Assert.assertNull(this.session.state().selected);
+        Assert.assertEquals(11, this.session.state().confirmed.curve.gain(BAND));
+        createSelectedPreset();
+        Assert.assertEquals(1, this.store.load().size());
+        String id = this.store.current();
+        this.session.step(BAND, 1);
+        this.connection.settle();
+        Assert.assertEquals(1, this.store.load().size());
+        Assert.assertEquals(id, this.store.current());
+        Assert.assertEquals(12, this.store.load().get(0).curve.gain(BAND));
+    }
+
+    @Test
+    public void keepStandardModeUnselectedUntilPresetIsRecalled() throws Exception {
+        SoundState custom = new SoundState(movie().curve.asCustom(), 1);
+        EqualizerPreset preset = this.store.add(EqualizerPresetFile.parse(
+                EqualizerPresetFile.json(EqualizerPreset.create("Saved movie", custom, "Movie", movie())).toString()));
+        this.store.setCurrent(preset.id);
+        read();
+        Assert.assertNull(this.session.state().selected);
+        this.session.selectPreset(preset.id);
+        this.connection.settle();
+        Assert.assertEquals(preset.id, this.session.state().selected.id);
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, this.connection.sound.curve.mode());
+        EqualizerWrites writes = new EqualizerWrites(this.session, () -> {
+        });
+        writes.group(EqualizerGroup.BASS, 1);
+        writes.flush();
+        this.connection.settle();
+        Assert.assertEquals(1, this.store.load().size());
+        EqualizerPreset updated = this.store.load().get(0);
+        Assert.assertEquals(preset.id, updated.id);
+        Assert.assertEquals(preset.id, this.store.current());
+        for (int band = 0; band < EqualizerCurve.BAND_COUNT; band++) {
+            Assert.assertEquals(MOVIE_GAINS[band] + ((band <= 3) ? 1 : 0), updated.curve.gain(band));
+        }
+        writes.close();
+    }
+
+    @Test
+    public void explainPresetSelectionAfterSessionCloses() {
+        read();
+        this.session.close();
+        this.session.selectPreset("missing");
+        Assert.assertEquals("Equalizer is closed. Open it again", this.session.state().error);
+    }
+
+    @Test
+    public void explainCreateWhenLocalPresetsAreDisabled() {
+        this.session = session(false);
+        read();
+        this.session.create();
+        Assert.assertEquals("Local presets are disabled", this.session.state().error);
+    }
+
+    @Test
+    public void leaveMovieUnselectedWhenPresetsArriveBeforeRead() throws Exception {
+        assertSelectionArrival(1, true);
+    }
+
+    @Test
+    public void leaveMovieUnselectedWhenReadArrivesBeforePresets() throws Exception {
+        assertSelectionArrival(1, false);
+    }
+
+    @Test
+    public void selectMatchingCustomWhenPresetsArriveBeforeRead() throws Exception {
+        assertSelectionArrival(EqualizerCurve.CUSTOM_MODE, true);
+    }
+
+    @Test
+    public void selectMatchingCustomWhenReadArrivesBeforePresets() throws Exception {
+        assertSelectionArrival(EqualizerCurve.CUSTOM_MODE, false);
+    }
+
+    private void assertSelectionArrival(int mode, boolean presetsFirst) throws Exception {
+        SoundState custom = movie().withCurve(movie().curve.asCustom());
+        EqualizerPreset preset = EqualizerPreset.create("Untitled", custom, "Movie", movie());
+        this.connection.sound = movie().withCurve(new EqualizerCurve(mode, MOVIE_GAINS));
+        if (presetsFirst) {
+            preset = this.store.add(EqualizerPresetFile.parse(EqualizerPresetFile.json(preset).toString()));
+            this.store.setCurrent(preset.id);
+            this.session.refreshPresets();
+            Assert.assertNull(this.session.state().selected);
+        }
+        read();
+        if (!presetsFirst) {
+            preset = this.store.add(EqualizerPresetFile.parse(EqualizerPresetFile.json(preset).toString()));
+            this.store.setCurrent(preset.id);
+            this.session.refreshPresets();
+        }
+        if (mode == EqualizerCurve.CUSTOM_MODE) {
+            Assert.assertEquals(preset.id, this.session.state().selected.id);
+        } else {
+            Assert.assertNull(this.session.state().selected);
+        }
+        Assert.assertEquals(1, this.store.load().size());
+        Assert.assertEquals(0, this.connection.applied);
+        for (EqualizerSession.State state : this.snapshots) {
+            if (state.selected != null) {
+                Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, state.confirmed.curve.mode());
+                Assert.assertEquals(custom.curve, state.confirmed.curve);
+            }
+        }
+    }
+
+    @Test
+    public void selectCreatedPresetOnlyAfterCustomModeIsConfirmed() throws Exception {
+        read();
+        this.session.create();
+        EqualizerPreset preset = this.store.load().get(0);
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, preset.state.curve.mode());
+        Assert.assertNull(this.session.state().selected);
+        Assert.assertEquals(1, this.session.state().confirmed.curve.mode());
+        this.connection.replyRead();
+        Assert.assertNull(this.session.state().selected);
+        this.connection.finishApply();
+        Assert.assertEquals(preset.id, this.session.state().selected.id);
+        Assert.assertEquals(EqualizerCurve.CUSTOM_MODE, this.session.state().confirmed.curve.mode());
+    }
+
+    private void createSelectedPreset() {
+        this.session.create();
+        this.connection.settle();
+        this.connection.applied = 0;
     }
 
     private EqualizerSession session(boolean presetsEnabled) {

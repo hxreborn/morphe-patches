@@ -124,6 +124,18 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
         new LocalPresets(activity, curve, selection).showList();
     }
 
+    static void importPreset(Activity activity) {
+        LocalPresets previous = current.get();
+        if (previous != null && previous.fileRequest) {
+            previous.message("Finish choosing the preset file first");
+            return;
+        }
+        if (previous != null) {
+            previous.dispose();
+        }
+        new LocalPresets(activity, null, null).chooseImport();
+    }
+
     static boolean isOpen(Activity activity) {
         LocalPresets presets = current.get();
         return presets != null && presets.activity == activity && (presets.fileRequest || presets.transfers > 0
@@ -397,6 +409,7 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
                 if (presets == null) {
                     return;
                 }
+                FineEqualizer.refreshPresets(presets.activity);
                 presets.message((file.ignoredFields > 0)
                         ? "Preset imported. Unknown fields ignored: " + file.ignoredFields : "Preset imported");
                 if (presets.selection != null && current.get() == presets && !presets.activity.isDestroyed()

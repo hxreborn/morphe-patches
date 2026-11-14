@@ -14,6 +14,8 @@ import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.writeInt
 import app.morphe.patches.ultimea.misc.settings.appendNativeCode
+import app.morphe.patches.ultimea.misc.settings.nativeMethods
+import app.morphe.patches.ultimea.misc.settings.replaceWithPlatformMethod
 import app.morphe.patches.ultimea.misc.settings.patchesSettingsPatch
 
 private const val INSTRUCTION_BYTES = 4
@@ -28,7 +30,7 @@ private val LOAD_TENTH_DECIBEL = "4000005cc0035fd69a9999999999b93f".hexToByteArr
 @Suppress("unused")
 val fineEqualizerPatch: ResourcePatch = resourcePatch(
     name = "Fine equalizer",
-    description = "Adds 0.1 dB adjustment, band values and Undo.",
+    description = "Adds 0.1 dB bands, band values and Undo to the equalizer screen.",
 ) {
     compatibleWith(AppCompatibilities.ULTIMEA)
     availability(requireArm64)
@@ -63,6 +65,8 @@ val fineEqualizerPatch: ResourcePatch = resourcePatch(
         val step = range + STEP_LOAD_OFFSET
         bytes.writeInt(step, BRANCH_WITH_LINK or (((loader - step) shr 2) and BRANCH_IMMEDIATE_MASK))
         bytes.stopAutomaticPresetApply()
+        val tile = nativeMethods.equalizerTileCallback()
+        bytes.replaceWithPlatformMethod(tile, tile.loads("/device-eq").single(), nativeMethods)
         library.writeBytes(bytes)
     }
 }

@@ -46,14 +46,19 @@ public class EqualizerGroupTest {
     }
 
     @Test
-    public void rejectWholeGroupWhenOneBandIsAtLimit() {
+    public void clampBandAtLimitWhileMovingOtherBands() {
         EqualizerCurve original = new EqualizerCurve(8, new int[] { 0, 0, 0, 0, 0, 60, 0, 0, 0, 0 });
-        Assert.assertFalse(EqualizerGroup.MIDRANGE.canAdjust(original, 1));
-        Assert.assertThrows(IllegalArgumentException.class, () -> EqualizerGroup.MIDRANGE.adjust(original, 1));
+        Assert.assertTrue(EqualizerGroup.MIDRANGE.canAdjust(original, 1));
+        EqualizerCurve changed = EqualizerGroup.MIDRANGE.adjust(original, 1);
+        Assert.assertEquals(1, changed.gain(4));
+        Assert.assertEquals(60, changed.gain(5));
+        Assert.assertEquals(1, changed.gain(6));
         Assert.assertEquals(0, original.gain(4));
-        EqualizerCurve atMinimum = new EqualizerCurve(8, new int[] { 0, 0, 0, 0, 0, -60, 0, 0, 0, 0 });
-        Assert.assertFalse(EqualizerGroup.MIDRANGE.canAdjust(atMinimum, -1));
-        Assert.assertThrows(IllegalArgumentException.class, () -> EqualizerGroup.MIDRANGE.adjust(atMinimum, -1));
+        EqualizerCurve lower = EqualizerGroup.MIDRANGE
+            .adjust(new EqualizerCurve(8, new int[] { 0, 0, 0, 0, 0, -60, 0, 0, 0, 0 }), -1);
+        Assert.assertEquals(-1, lower.gain(4));
+        Assert.assertEquals(-60, lower.gain(5));
+        Assert.assertEquals(-1, lower.gain(6));
     }
 
     @Test
@@ -62,17 +67,6 @@ public class EqualizerGroupTest {
         Assert.assertFalse(EqualizerGroup.TREBLE.canAdjust(original, 2));
         Assert.assertThrows(IllegalArgumentException.class, () -> EqualizerGroup.TREBLE.adjust(original, 2));
         Assert.assertThrows(IllegalArgumentException.class, () -> EqualizerGroup.TREBLE.adjust(original, 0));
-    }
-
-    @Test
-    public void showEveryAdjustedFrequencyAndGain() {
-        EqualizerCurve original = new EqualizerCurve(8, new int[10]);
-        Assert.assertEquals("Midrange EQ\n500 Hz  +0.0 dB\n1000 Hz  +0.0 dB\n2000 Hz  +0.0 dB",
-                EqualizerGroup.MIDRANGE.values(original));
-        EqualizerCurve mixed = new EqualizerCurve(8, new int[] { 0, 0, 0, 0, 0, -3, 2, 0, 0, 0 });
-        EqualizerCurve adjusted = EqualizerGroup.MIDRANGE.adjust(mixed, 1);
-        Assert.assertEquals("Midrange EQ\n500 Hz  +0.1 dB\n1000 Hz  -0.2 dB\n2000 Hz  +0.3 dB",
-                EqualizerGroup.MIDRANGE.values(adjusted));
     }
 
     @Test

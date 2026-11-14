@@ -56,6 +56,13 @@ public final class PatchesMenu {
     }
 
     public static boolean open(Context context, String method) {
+        if ("/device-eq".equals(method) && AppliedPatches.fineEqualizer()) {
+            Activity activity = resumedActivity.get();
+            if (activity != null) {
+                app.hxreborn.extension.ultimea.equalizer.FineEqualizer.open(activity);
+            }
+            return true;
+        }
         if (!"/contact".equals(method)) {
             return false;
         }

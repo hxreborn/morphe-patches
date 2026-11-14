@@ -43,7 +43,9 @@ final class EqualizerPresetStore {
 
     private static final String CURRENT = "current";
 
-    private static final String CUSTOM_SUFFIX = " custom";
+    private static final String NEW_PRESET_NAME = "Untitled";
+
+    private static final String AUTOMATIC_NAMES_MIGRATED = "automatic_names_migrated";
 
     private static final int MAX_PRESETS = 64;
 
@@ -55,7 +57,8 @@ final class EqualizerPresetStore {
 
     List<EqualizerPreset> load() throws JSONException {
         synchronized (this.preferences) {
-            JSONArray json = new JSONArray(this.preferences.getString(PRESETS, "[]"));
+            String original = this.preferences.getString(PRESETS, "[]");
+            JSONArray json = new JSONArray(original);
             if (json.length() > MAX_PRESETS) {
                 throw new JSONException("Too many local presets");
             }
@@ -65,7 +68,45 @@ final class EqualizerPresetStore {
                 EqualizerPresetFile file = EqualizerPresetFile.parse(item.getJSONObject("curve").toString());
                 presets.add(new EqualizerPreset(item.getString("id"), file.name, file.state, file.baseName, file.base));
             }
+            if (!this.preferences.getBoolean(AUTOMATIC_NAMES_MIGRATED, false)) {
+                migrateAutomaticNames(json, presets, original);
+            }
             return Collections.unmodifiableList(presets);
+        }
+    }
+
+    private void migrateAutomaticNames(JSONArray json, List<EqualizerPreset> presets, String original)
+            throws JSONException {
+        for (int index = 0; index < presets.size(); index++) {
+            EqualizerPreset preset = presets.get(index);
+            if (!preset.name.equals(preset.baseName + " custom")) {
+                continue;
+            }
+            String name = newPresetName(presets);
+            presets.set(index, new EqualizerPreset(preset.id, name, preset.state, preset.baseName, preset.base));
+            json.getJSONObject(index).getJSONObject("curve").put("name", name);
+        }
+        boolean hadFlag = this.preferences.contains(AUTOMATIC_NAMES_MIGRATED);
+        boolean hadPresets = this.preferences.contains(PRESETS);
+        if (!this.preferences.edit()
+            .putString(PRESETS, json.toString())
+            .putBoolean(AUTOMATIC_NAMES_MIGRATED, true)
+            .commit()) {
+            SharedPreferences.Editor rollback = this.preferences.edit();
+            if (hadPresets) {
+                rollback.putString(PRESETS, original);
+            } else {
+                rollback.remove(PRESETS);
+            }
+            if (hadFlag) {
+                rollback.putBoolean(AUTOMATIC_NAMES_MIGRATED, false);
+            } else {
+                rollback.remove(AUTOMATIC_NAMES_MIGRATED);
+            }
+            if (!rollback.commit()) {
+                throw new JSONException("Preset name migration and rollback failed");
+            }
+            throw new JSONException("Preset names could not be migrated");
         }
     }
 
@@ -169,14 +210,7 @@ final class EqualizerPresetStore {
                 throw new IOException("Local preset limit reached");
             }
             String valid = EqualizerPreset.validName(baseName);
-            int suffix = 1;
-            String candidate;
-            do {
-                String ending = CUSTOM_SUFFIX + ((suffix == 1) ? "" : " " + suffix);
-                candidate = valid.substring(0,
-                        Math.min(valid.length(), EqualizerPreset.MAX_NAME_LENGTH - ending.length())) + ending;
-                suffix++;
-            } while (containsName(presets, candidate));
+            String candidate = newPresetName(presets);
             EqualizerPreset preset = EqualizerPreset.create(candidate, state, valid, base);
             presets.add(preset);
             save(presets, preset.id);
@@ -285,6 +319,16 @@ final class EqualizerPresetStore {
             candidate = base.substring(0, Math.min(base.length(), EqualizerPreset.MAX_NAME_LENGTH - ending.length()))
                     + ending;
         }
+        return candidate;
+    }
+
+    private static String newPresetName(List<EqualizerPreset> presets) {
+        int suffix = 1;
+        String candidate;
+        do {
+            candidate = NEW_PRESET_NAME + ((suffix == 1) ? "" : " " + suffix);
+            suffix++;
+        } while (containsName(presets, candidate));
         return candidate;
     }
 

@@ -25,6 +25,7 @@ import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableMethodReference
 
 private const val CONNECTION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/equalizer/EqualizerConnection;"
+
 private const val PANEL_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/equalizer/FineEqualizer;"
 
 internal val equalizerConnectionPatch = bytecodePatch {
