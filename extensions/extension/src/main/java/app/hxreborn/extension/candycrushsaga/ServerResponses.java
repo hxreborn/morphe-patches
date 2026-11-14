@@ -77,6 +77,11 @@ public final class ServerResponses {
     private static final Set<String> SODA_AD_PLUGINS = new HashSet<>(Arrays.asList("prelevel_ads", "ads_watch_another",
             "ool_watch_another", "interstitial_ads", "ads_onboarding", "ads_dynamic_fallback"));
 
+    private static final Set<String> SODA_EVENT_PLUGINS = new HashSet<>(Arrays.asList("episode_race", "soda_race",
+            "soda_league", "bake_a_cake", "treasure_hunt", "castle_quest", "weekly_race", "surf_race",
+            "tournament_system", "team_competition", "yetis_challenge", "scripted_quests", "scripted_quests_2",
+            "castle_liveop", "rocket_rush", "rocket_rush2", "shipmates", "tardis_hunt", "arcade_liveop"));
+
     private static final Set<String> SODA_POPUP_PLUGINS = new HashSet<>(
             Arrays.asList("pf_diorama_popup", "pf_back_to_diorama_popup"));
 
@@ -237,7 +242,7 @@ public final class ServerResponses {
             plugins.add("rate_app");
         }
         if (disableEvents()) {
-            plugins.addAll(EVENT_PLUGINS);
+            plugins.addAll(sodaConfiguration() ? SODA_EVENT_PLUGINS : EVENT_PLUGINS);
         }
         return plugins;
     }

@@ -15,7 +15,7 @@ val disableEventsPatch = bytecodePatch(
     name = "Disable events",
     description = "Disables events.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA)
+    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     dependsOn(editServerResponsesPatch)
     execute {
         mutableClassDefBy(SERVER_RESPONSES).replaceStub("disableEvents", 1, """
