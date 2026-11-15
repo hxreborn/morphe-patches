@@ -1731,6 +1731,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val SHTTPS_MARKETLESS = Compatibility(
+        name = "SHTTPS Marketless",
+        packageName = "com.phlox.simpleserver.marketless",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x004D46,
+        signatures = setOf(
+            "872a79aa71a501d4ca5be37addba5b6f8f958d58220b74799151df424ae831f0",
+        ),
+        targets = listOf(AppTarget(version = "3.4.7", versionCode = 84, minSdk = 26)),
+    )
+
     val SQCOM = Compatibility(
         name = "SQCOM",
         packageName = "com.sqcom.shangqing",

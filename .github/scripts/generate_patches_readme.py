@@ -212,6 +212,7 @@ ICONS = {
     "com.athan": "athan.png",
     "com.cardfeed.video_public": "publicvideos.png",
     "com.michaldrabik.showly2": "showly.png",
+    "com.phlox.simpleserver.marketless": "shttps.png",
     "co.steezy.app": "steezy.png",
     "com.storywise.storywise": "storywise.png",
     "com.sqcom.shangqing": "sqcom.png",
