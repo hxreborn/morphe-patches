@@ -513,7 +513,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "26728e842b7473b4c79b72324ee107ece06bce213520028c8973aeb2edb987af",
         ),
-        targets = listOf(AppTarget(version = "17.7.1", versionCode = 11771, minSdk = 23)),
+        targets = listOf(
+            AppTarget(version = "17.7.1", versionCode = 11771, minSdk = 23),
+            AppTarget(version = "17.7.3", versionCode = 11773, minSdk = 23),
+        ),
     )
 
     val DEVCHECK = Compatibility(
