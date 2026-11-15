@@ -589,7 +589,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "96cdac84105ee04a12a48110d37ec60888aa8fbff8220345888d7f9c12c2f3fa",
         ),
-        targets = listOf(AppTarget(version = "9.7", versionCode = 91, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "9.7", versionCode = 91, minSdk = 24),
+            AppTarget(version = "10.0", versionCode = 94, minSdk = 32),
+        ),
     )
 
     val ECHOGRAM = Compatibility(
