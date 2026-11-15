@@ -844,7 +844,10 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x000F15,
         signatures = setOf("8827dfbc7a7acf9ff37cfc7b6c1e544f80dc1fb8a235a8ca8174b08028e5d089"),
-        targets = listOf(AppTarget(version = "6.9.0-AOS-JOYN_AT-2212264", versionCode = 2212264, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "6.9.0-AOS-JOYN_AT-2212264", versionCode = 2212264, minSdk = 24),
+            AppTarget(version = "6.9.2-AOS-JOYN_AT-2282180", versionCode = 2282180, minSdk = 24),
+        ),
     )
 
     val KICK = Compatibility(
