@@ -887,7 +887,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "5fc760275f21c908355419006ad8022187cbf72d7ea701680fc4907cf234bc30",
         ),
-        targets = listOf(AppTarget(version = "2.17.5", versionCode = 641, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "2.17.5", versionCode = 641, minSdk = 26),
+            AppTarget(version = "2.18.0", versionCode = 648, minSdk = 26),
+        ),
     )
 
     val LINGODEER = Compatibility(
