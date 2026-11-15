@@ -1686,7 +1686,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "74cacd21c9b4949fbf4840992052dacb9e45fdd9da10134404f238a9d38318ae",
         ),
-        targets = listOf(AppTarget(version = "8.11.0", versionCode = 4464, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "8.11.0", versionCode = 4464, minSdk = 28),
+            AppTarget(version = "8.12.2", versionCode = 4467, minSdk = 28),
+        ),
     )
 
     val SHEYTOON = Compatibility(
