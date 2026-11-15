@@ -64,6 +64,11 @@
 ### Bug Fixes
 
 * **Proton VPN:** remove Frosted glass ([cc7a5ff](https://github.com/hxreborn/morphe-patches/commit/cc7a5ff7b98e1a87fd3a4665474ba99dd990c169)), closes [#713](https://github.com/hxreborn/morphe-patches/issues/713) [#765](https://github.com/hxreborn/morphe-patches/issues/765)
+## [1.78.1](https://github.com/hxreborn/morphe-patches/compare/v1.78.0...v1.78.1) (2026-11-14)
+
+### Bug Fixes
+
+* **RedReader - Fix login:** sign in without entering client ID ([b172381](https://github.com/hxreborn/morphe-patches/commit/b172381721e868b799b6adc5fffa55ed8a542148))
 
 ## [1.78.0](https://github.com/hxreborn/morphe-patches/compare/v1.77.0...v1.78.0) (2026-11-14)
 
