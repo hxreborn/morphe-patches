@@ -1,3 +1,36 @@
+## [1.80.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.79.0...v1.80.0-dev.1) (2026-11-15)
+
+### New Features
+
+* **SHTTPS Marketless - Unlock PLUS:** enable remote screen control ([15b8063](https://github.com/hxreborn/morphe-patches/commit/15b806359252c01ff67fbe500cad86028ccc11d8))
+
+### Updated App Support
+
+* **Arc Player:** add support for `1.5.0.145` ([8885cf0](https://github.com/hxreborn/morphe-patches/commit/8885cf069c1ac0d061c65af7dacc806f95c1ad7c)), closes [#790](https://github.com/hxreborn/morphe-patches/issues/790)
+* **AtloMaps:** add support for `2.0.3` ([7a058ae](https://github.com/hxreborn/morphe-patches/commit/7a058ae7aeb72b9267086ad5e72c7e0bfb9fd275)), closes [#792](https://github.com/hxreborn/morphe-patches/issues/792)
+* **Audible:** add support for `26.45.08` ([2988812](https://github.com/hxreborn/morphe-patches/commit/29888120931a26d123b292b7732bf205860af76c)), closes [#793](https://github.com/hxreborn/morphe-patches/issues/793)
+* **Biwenger:** add support for `4.0.5` ([088a88d](https://github.com/hxreborn/morphe-patches/commit/088a88df9d82ac1a0a4c50fa973a0deb8db440e0)), closes [#799](https://github.com/hxreborn/morphe-patches/issues/799)
+* **botim:** add support for `4.21.1` ([429cfec](https://github.com/hxreborn/morphe-patches/commit/429cfec467928991ee10e9ad6a6a4c1d30c83d34)), closes [#801](https://github.com/hxreborn/morphe-patches/issues/801)
+* **Clink:** add support for `2.0.2` ([620c258](https://github.com/hxreborn/morphe-patches/commit/620c2587db3abe2f59850d742dcb3eb3927c242a)), closes [#803](https://github.com/hxreborn/morphe-patches/issues/803)
+* **Clone App:** add support for `4.2.5` ([70d2801](https://github.com/hxreborn/morphe-patches/commit/70d28015328fdc331ad49f67efc1c26b427a310d)), closes [#804](https://github.com/hxreborn/morphe-patches/issues/804)
+* **Desh Telugu Keyboard:** add support for `17.7.3` ([afd9c95](https://github.com/hxreborn/morphe-patches/commit/afd9c95fb9f8036af41c8b7dea53952d70ea73d0)), closes [#806](https://github.com/hxreborn/morphe-patches/issues/806)
+* **Echo Equalizer:** add support for `10.0` ([d326614](https://github.com/hxreborn/morphe-patches/commit/d3266143feb32a75b49b4ab1c219ae6c3e974715)), closes [#809](https://github.com/hxreborn/morphe-patches/issues/809)
+* **Fast STL Viewer:** add support for `2.95` ([6961c4c](https://github.com/hxreborn/morphe-patches/commit/6961c4c2bb62fa89cb9d5c307887b0b03cdccd20)), closes [#811](https://github.com/hxreborn/morphe-patches/issues/811)
+* **ForusApp:** add support for `3.0.20` ([481d25a](https://github.com/hxreborn/morphe-patches/commit/481d25adbdd4d5666f7ca813976da497582804fd)), closes [#812](https://github.com/hxreborn/morphe-patches/issues/812)
+* **Ground News:** add support for `5.1.0` ([e2c0e3a](https://github.com/hxreborn/morphe-patches/commit/e2c0e3a1a66854e0576eb8b781d3d98209c820c8)), closes [#813](https://github.com/hxreborn/morphe-patches/issues/813)
+* **Joyn Austria:** add support for `6.9.2-AOS-JOYN_AT-2282180` ([e99d618](https://github.com/hxreborn/morphe-patches/commit/e99d618624eb8e1219ff9b6a05ce4b6ac248d0c9)), closes [#817](https://github.com/hxreborn/morphe-patches/issues/817)
+* **Liftoff:** add support for `2.18.0` ([1aae904](https://github.com/hxreborn/morphe-patches/commit/1aae9049006b2eaf0207d6ef0de8599c9a35d318)), closes [#818](https://github.com/hxreborn/morphe-patches/issues/818)
+* **Magic Earth:** add support for `7.1.26.42.F9918E5E.7B9203C7B` ([ab8a945](https://github.com/hxreborn/morphe-patches/commit/ab8a945043a853c91bb50d8c6098f4d91bb42c8f)), closes [#820](https://github.com/hxreborn/morphe-patches/issues/820)
+* **MangaTime:** add support for `1.25.3` ([8912d04](https://github.com/hxreborn/morphe-patches/commit/8912d04748295555e34d6ac5681533f9487c5114)), closes [#821](https://github.com/hxreborn/morphe-patches/issues/821)
+* **MBC Shahid:** add support for `8.12.2` ([67cdcb2](https://github.com/hxreborn/morphe-patches/commit/67cdcb221931f59d4d39add2696e4acb8ab94f74)), closes [#822](https://github.com/hxreborn/morphe-patches/issues/822)
+* **Nara Baby:** add support for `2.9.0` ([42e0c62](https://github.com/hxreborn/morphe-patches/commit/42e0c62f5fe8f9b87e765ddd3452f6b146dd7685)), closes [#826](https://github.com/hxreborn/morphe-patches/issues/826)
+* **Notein:** add support for `v2.1.49.0` ([f6ac2e8](https://github.com/hxreborn/morphe-patches/commit/f6ac2e88a595319e7d0342bc2d605b0897451b53)), closes [#827](https://github.com/hxreborn/morphe-patches/issues/827)
+* **One4Home Launcher:** add support for `0.5.190` ([b35ac71](https://github.com/hxreborn/morphe-patches/commit/b35ac71c46fedaed3c3cf4841966b677eed9c5b4)), closes [#829](https://github.com/hxreborn/morphe-patches/issues/829)
+* **Opal:** add support for `4.19.1` ([457bbdf](https://github.com/hxreborn/morphe-patches/commit/457bbdf51a5e094d90188d9d49c4ef7394877d2e)), closes [#830](https://github.com/hxreborn/morphe-patches/issues/830)
+* **Photo Editor Pro:** add support for `1.823.268` ([df225a9](https://github.com/hxreborn/morphe-patches/commit/df225a9834208869a0a62a35ea1da80e83512520)), closes [#834](https://github.com/hxreborn/morphe-patches/issues/834)
+* **Pixlr:** add support for `3.9.4` ([6cec380](https://github.com/hxreborn/morphe-patches/commit/6cec3800d5873bedae6227f79923dae19b105c51)), closes [#835](https://github.com/hxreborn/morphe-patches/issues/835)
+* **Projectivy Launcher:** add support for `4.73` ([729f685](https://github.com/hxreborn/morphe-patches/commit/729f68533df5751f3b794faf96ab13c430827f87)), closes [#837](https://github.com/hxreborn/morphe-patches/issues/837)
+
 ## [1.79.0](https://github.com/hxreborn/morphe-patches/compare/v1.78.1...v1.79.0) (2026-11-15)
 
 ### Bug Fixes
