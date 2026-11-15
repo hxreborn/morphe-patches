@@ -125,7 +125,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "51b6ef995b6ccd1a3fff12872d04fc7b69f01bf5ff523a3ea016c9beca1d70a3",
         ),
-        targets = listOf(AppTarget(version = "1.4.2.141", versionCode = 141, minSdk = 23)),
+        targets = listOf(
+            AppTarget(version = "1.4.2.141", versionCode = 141, minSdk = 23),
+            AppTarget(version = "1.5.0.145", versionCode = 145, minSdk = 32),
+        ),
     )
 
     val ARDUINODROID = Compatibility(
