@@ -12,6 +12,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.torrent.ProStatusFingerprint
 import app.morphe.patches.shared.misc.torrent.removeAdsPatch
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -27,6 +28,7 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(removeAdsPatch)
 
     execute {
+        returnTrueFrom("Lapp/hxreborn/extension/utorrent/PatchesSettingsActivity;", "hasPremiumPatch")
         val (_, paidStatusAssignment) = ProStatusFingerprint.matchSingle().instructionMatches
         val paidStatus = paidStatusAssignment.instruction.getReference<FieldReference>()!!
         proStatusGetterFingerprint(paidStatus.type).matchSingle().method.addInstructions(
