@@ -1284,7 +1284,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "e9b037f4be157ee608de6aa922cda5cdbe614633171cc94544c40f08e9509286",
         ),
-        targets = listOf(AppTarget(version = "4.17.0", versionCode = 4017000, minSdk = 29)),
+        targets = listOf(
+            AppTarget(version = "4.17.0", versionCode = 4017000, minSdk = 29),
+            AppTarget(version = "4.19.1", versionCode = 4019100, minSdk = 29),
+        ),
     )
 
     val PATREON = Compatibility(
