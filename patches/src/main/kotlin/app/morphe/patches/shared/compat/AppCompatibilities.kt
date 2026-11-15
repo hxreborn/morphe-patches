@@ -286,7 +286,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b3901a058ccf0d6ffd3b825cb9ea17075c1f80a50aea5776a911aea620ec58f7",
         ),
-        targets = listOf(AppTarget(version = "4.0.4", versionCode = 237, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "4.0.4", versionCode = 237, minSdk = 24),
+            AppTarget(version = "4.0.5", versionCode = 238, minSdk = 24),
+        ),
     )
 
     val BLOCKIT = Compatibility(
