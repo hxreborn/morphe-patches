@@ -463,11 +463,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.79.0-dev.7"
         - "1.79.0-dev.6"
         - "1.79.0-dev.5"
         - "1.79.0-dev.4"
         - "1.79.0-dev.3"
-        - "1.79.0-dev.2"
         - "1.78.1"
         - "Older than these"
         # /generated

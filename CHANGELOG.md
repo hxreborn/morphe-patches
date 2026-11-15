@@ -1,3 +1,9 @@
+## [1.79.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.6...v1.79.0-dev.7) (2026-11-15)
+
+### Bug Fixes
+
+* **RedReader - Fix login:** sign in without entering client ID ([b172381](https://github.com/hxreborn/morphe-patches/commit/b172381721e868b799b6adc5fffa55ed8a542148))
+
 ## [1.79.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.5...v1.79.0-dev.6) (2026-11-15)
 
 ### Bug Fixes
