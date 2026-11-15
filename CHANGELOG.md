@@ -1,3 +1,17 @@
+## [1.79.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.5...v1.79.0-dev.6) (2026-11-15)
+
+### Bug Fixes
+
+* **RedReader - Fix login:** add missing sign-in setup ([2797ec8](https://github.com/hxreborn/morphe-patches/commit/2797ec858f15f01f46b510b299ec57465f8238b5))
+* **ULTIMEA - Fine equalizer:** follow accent color ([de85aa2](https://github.com/hxreborn/morphe-patches/commit/de85aa2bf4e6ce5a76d88ce89bde61887f9c404f))
+
+### New Features
+
+* **ClassDojo - Unlock progress reports:** show detailed statistics ([04101bb](https://github.com/hxreborn/morphe-patches/commit/04101bb8bb01358d5b09922be6d1faa7a868d663))
+* **iLovePDF - GmsCore support:** enable Google sign-in and Drive ([f143aeb](https://github.com/hxreborn/morphe-patches/commit/f143aeb341d505019e26ba80a194c8ab51be7026))
+* **iLovePDF - Unlock premium:** enable premium PDF tools ([95fbf93](https://github.com/hxreborn/morphe-patches/commit/95fbf93bc1f563f3017d46037f0df1c9e723217b))
+* **ULTIMEA - Fine equalizer:** move editor into equalizer screen ([25f51b6](https://github.com/hxreborn/morphe-patches/commit/25f51b6166aeb7b388980e079bf1f2d93a4b243b))
+
 ## [1.79.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.79.0-dev.4...v1.79.0-dev.5) (2026-11-14)
 
 ### New Features

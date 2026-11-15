@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.79.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;555 patches total
+> **[v1.79.0-dev.6](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.6)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;559 patches total
 
 ### Featured apps
 
@@ -720,6 +720,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
+<a id="classdojo"></a>
+<details>
+<summary><img src=".github/assets/icons/classdojo.png" width="18" align="top">&nbsp;&nbsp;ClassDojo&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 9.12.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="classdojo-unlock-progress-reports"></a>[Unlock progress reports](patches/src/main/kotlin/app/morphe/patches/classdojo/misc/reports/UnlockProgressReportsPatch.kt) | Unlocks detailed progress statistics. Date and points filters keep their existing limits. Report limits can return after in-app updates. |
+
+</details>
+
 <a id="clink"></a>
 <details>
 <summary><img src=".github/assets/icons/clink.png" width="18" align="top">&nbsp;&nbsp;Clink&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
@@ -1207,6 +1223,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="hypic-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/hypic/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Pro button on the home screen, the Pro banner and promotions on the Me tab, free trial tips in the editor and on export, and Plans & billing in Settings. Closes subscription pages before they show. |
 | <a id="hypic-remove-reinstall-prompt"></a>[Remove reinstall prompt](patches/src/main/kotlin/app/morphe/patches/hypic/misc/prompt/RemoveReinstallPromptPatch.kt) | Removes the prompt to download the official app. Keeps saved app data. |
 | <a id="hypic-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/hypic/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro filters, effects, templates and tools. AI features that use server credits are not unlocked. |
+
+</details>
+
+<a id="ilovepdf"></a>
+<details>
+<summary><img src=".github/assets/icons/ilovepdf.png" width="18" align="top">&nbsp;&nbsp;iLovePDF&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.2.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="ilovepdf-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="ilovepdf-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/ilovepdf/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium PDF tools and cloud storage features. |
 
 </details>
 
@@ -2538,7 +2571,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="redreader"></a>
 <details>
-<summary><img src=".github/assets/icons/redreader.png" width="18" align="top">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/redreader.png" width="18" align="top">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2549,12 +2582,13 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="redreader-filter-posts"></a>[Filter posts](patches/src/main/kotlin/app/morphe/patches/redreader/layout/filter/FilterPostsPatch.kt) | Filters posts by title keyword, subreddit name or post flair, with regular expression support. |
+| <a id="redreader-fix-login"></a>[Fix login](patches/src/main/kotlin/app/morphe/patches/redreader/misc/login/FixLoginPatch.kt) | Enables Reddit login without entering a client ID. |
 
 </details>
 
 <a id="redreader-alpha"></a>
 <details>
-<summary><img src=".github/assets/icons/redreaderalpha.png" width="18" align="top">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/redreaderalpha.png" width="18" align="top">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2565,6 +2599,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="redreader-alpha-filter-posts"></a>Filter posts | Filters posts by title keyword, subreddit name or post flair, with regular expression support. |
+| <a id="redreader-alpha-fix-login"></a>Fix login | Enables Reddit login without entering a client ID. |
 
 </details>
 
@@ -2936,7 +2971,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="ultimea-accent-color"></a>[Accent color](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/AccentColorPatch.kt) | Changes accent colors with a chosen color or Material You. |
 | <a id="ultimea-dark-theme"></a>[Dark theme](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/DarkThemePatch.kt) | Adds dark and AMOLED themes with light text and controls. |
 | <a id="ultimea-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Crashlytics, Logan and usage event uploads. |
-| <a id="ultimea-fine-equalizer"></a>[Fine equalizer](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB adjustment, band values and Undo. |
+| <a id="ultimea-fine-equalizer"></a>[Fine equalizer](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB bands, band values and Undo to the equalizer screen. |
 | <a id="ultimea-local-equalizer-presets"></a>[Local equalizer presets](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/presets/LocalEqualizerPresetsPatch.kt) | Adds named local curves with duplicate, export and import actions. |
 | <a id="ultimea-remove-distractions"></a>[Remove distractions](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/distractions/RemoveDistractionsPatch.kt) | Removes community, message and support entries. |
 | <a id="ultimea-remove-popups"></a>[Remove popups](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/popups/RemovePopupsPatch.kt) | Removes promotional and rating popups. |
