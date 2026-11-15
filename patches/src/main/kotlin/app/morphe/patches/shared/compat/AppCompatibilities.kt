@@ -1355,7 +1355,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "a0b8e729cd652bbc754474e7e48b884704c5a3215e964e0900b6399a23b79e55",
         ),
-        targets = listOf(AppTarget(version = "3.9.3", versionCode = 39300, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "3.9.3", versionCode = 39300, minSdk = 28),
+            AppTarget(version = "3.9.4", versionCode = 39400, minSdk = 29),
+        ),
     )
 
     val PLECO = Compatibility(
