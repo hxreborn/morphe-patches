@@ -1552,7 +1552,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "137c725e8407123e717393db8559382f96677fcbab153624603796a98ae71250",
         ),
-        targets = listOf(AppTarget(version = "3.0.2", versionCode = 250, minSdk = 24)),
+        targets = listOf(
+            AppTarget(version = "3.0.2", versionCode = 250, minSdk = 24),
+            AppTarget(version = "3.1.0", versionCode = 261, minSdk = 24),
+        ),
     )
 
     val QURANIFY = Compatibility(
