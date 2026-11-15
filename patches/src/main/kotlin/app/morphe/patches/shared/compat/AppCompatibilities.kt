@@ -424,7 +424,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "8ea7bd2c094bd6d2dfbd605764c42ffd57c3d2ecf781b9aaf0135ff06b0cbde0",
         ),
-        targets = listOf(AppTarget(version = "1.9.2", versionCode = 194, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "1.9.2", versionCode = 194, minSdk = 28),
+            AppTarget(version = "2.0.2", versionCode = 202, minSdk = 28),
+        ),
     )
 
     val CLIP_STUDIO_PAINT = Compatibility(
