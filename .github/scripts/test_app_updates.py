@@ -74,6 +74,10 @@ assert ("issue", "edit", "2", "--title", "[App Update]: Showly 3.72.0") == next(
 assert ("issue", "edit", "7", "--title", "[App Update]: Newcomer 1.1") == next(c for c in calls if c[1:3] == ("edit", "7"))
 close = next(c for c in calls if c[1] == "close")
 assert close[:4] == ("issue", "close", "4", "--comment") and close[4].startswith("Audible `26.38.08` support has been added in Bundle [v1.38.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.38.0). "), calls
+calls.clear()
+app_updates.sync_issues(apps, [{**record, "package": "new", "candidate": "1.2", "readiness": "untested"},
+                               {**record, "package": "tagged", "candidate": "6.3_arm64", "readiness": "untested"}], "1.38.0")
+assert [c[1:3] for c in calls if c[0] == "issue" and c[1] != "list"] == [], calls
 print("issue sync passes")
 
 
