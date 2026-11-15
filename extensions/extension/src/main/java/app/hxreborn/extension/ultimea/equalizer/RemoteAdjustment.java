@@ -18,25 +18,10 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.protonvpn;
+package app.hxreborn.extension.ultimea.equalizer;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+interface RemoteAdjustment {
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = { 26, 30 })
-public final class FrostedGlassTest {
-
-    @Test
-    public void preserveOriginalDrawingBelowAndroid12() {
-        Object modifier = new Object();
-        Assert.assertSame(modifier, FrostedGlass.source(modifier));
-        Assert.assertFalse(FrostedGlass.draw(new Object(), new Object()));
-        Assert.assertFalse(FrostedGlass.isDrawingMask());
-        Assert.assertFalse(FrostedGlass.fade(new Object(), new Object()));
-    }
+    void step(EqualizerGroup group, int direction);
 
 }

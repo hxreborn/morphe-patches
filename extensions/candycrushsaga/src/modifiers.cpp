@@ -38,9 +38,17 @@
 namespace {
 
 constexpr char LOG_TAG[] = "hxCandyCrush";
+#if CANDY_CRUSH_SODA
+constexpr char GAME_LIBRARY[] = "libstritz.so";
+constexpr size_t GAME_LIBRARY_SIZE = 84765280;
+constexpr uintptr_t BUILD_ID_OFFSET = 0x2e0;
+constexpr uintptr_t UNLOCK_SLOT = 0x60;
+#else
+constexpr char GAME_LIBRARY[] = "libcandycrushsaga.so";
 constexpr size_t GAME_LIBRARY_SIZE = 83963536;
 constexpr uintptr_t BUILD_ID_OFFSET = 0x2e0;
 constexpr uintptr_t UNLOCK_SLOT = 0x18;
+#endif
 constexpr jint UNLOCK_SLOTS = 1;
 constexpr jint ADD_MOVES = 2;
 constexpr int EXTRA_MOVES = 5;
@@ -49,16 +57,28 @@ constexpr uintptr_t MOVE_LIMIT_GETTER = 0x31bb6e0;
 constexpr uintptr_t MOVE_LIMIT_SETTER = 0x31bb758;
 constexpr uintptr_t TRACKER_MOVE_LIMIT_RETURN = 0x324a5ec;
 std::atomic<uintptr_t> activeBase{0};
+#if CANDY_CRUSH_SODA
+constexpr std::array<uint8_t, 16> BUILD_ID = {
+    0x45, 0x5f, 0x62, 0x63, 0x0a, 0x53, 0xc9, 0x01,
+    0x04, 0x2a, 0x2f, 0x87, 0x86, 0x61, 0xff, 0x78,
+};
+#else
 constexpr std::array<uint8_t, 16> BUILD_ID = {
     0x85, 0x26, 0x5c, 0x8b, 0xa4, 0x5b, 0x0b, 0x97,
     0x9b, 0x90, 0xf7, 0xa0, 0xc4, 0x5c, 0x58, 0x0b,
 };
+#endif
 
 struct UnlockGetter {
     uintptr_t vtable;
     uintptr_t method;
 };
 
+#if CANDY_CRUSH_SODA
+constexpr std::array<UnlockGetter, 1> UNLOCK_GETTERS = {{
+    {0x4f07c60, 0x2d7bc3c},
+}};
+#else
 constexpr std::array<UnlockGetter, 13> UNLOCK_GETTERS = {{
     {0x4ccf5e8, 0x21d1c94},
     {0x4ccf668, 0x21d1fd4},
@@ -74,6 +94,7 @@ constexpr std::array<UnlockGetter, 13> UNLOCK_GETTERS = {{
     {0x4ccfb80, 0x21d3cb0},
     {0x4ccfc00, 0x21d3ff0},
 }};
+#endif
 
 bool unlocked(const void *, const void *) {
     return true;
@@ -87,8 +108,13 @@ bool segmentsMatch(uintptr_t base) {
     dl_iterate_phdr([](dl_phdr_info *info, size_t, void *data) {
         auto &check = *static_cast<Check *>(data);
         if (info->dlpi_addr != check.base) return 0;
+#if CANDY_CRUSH_SODA
+        constexpr std::array<uintptr_t, 3> addresses = {0, 0x4dda4c0, 0x50d2490};
+        constexpr std::array<uintptr_t, 3> sizes = {0x4dd64c0, 0x2f4b40, 0x1eff00};
+#else
         constexpr std::array<uintptr_t, 3> addresses = {0, 0x4c80000, 0x500b920};
         constexpr std::array<uintptr_t, 3> sizes = {0x4c7d930, 0x388000, 0x1adc98};
+#endif
         constexpr std::array<uint32_t, 3> flags = {PF_R | PF_X, PF_R | PF_W, PF_R | PF_W};
         size_t count = 0;
         for (size_t index = 0; index < info->dlpi_phnum; index++) {
@@ -121,7 +147,7 @@ Redirects redirects;
 jint activate(jint features) {
     if (redirects.pending) return redirects.recover();
     if (features == 0 || (features & ~(UNLOCK_SLOTS | ADD_MOVES)) != 0) return -1;
-    void *handle = dlopen("libcandycrushsaga.so", RTLD_NOW | RTLD_NOLOAD);
+    void *handle = dlopen(GAME_LIBRARY, RTLD_NOW | RTLD_NOLOAD);
     if (handle == nullptr) return 0;
     std::unique_ptr<void, decltype(&dlclose)> library(handle, &dlclose);
     void *symbol = dlsym(handle, "Java_com_king_http_HttpManager_on_1data");
@@ -145,10 +171,35 @@ jint activate(jint features) {
         }
     }
     if ((features & ADD_MOVES) != 0) {
+#if CANDY_CRUSH_SODA
+        constexpr uintptr_t INITIALIZE_MOVES_OFFSET = 0x32a8d28;
+        constexpr uintptr_t ADJUST_MOVES_OFFSET = 0x7889b0;
+        constexpr uintptr_t STORE_MOVES_OFFSET = 0x1a95334;
+        constexpr uintptr_t DISPLAY_MOVES_OFFSET = 0x27c04a0;
+        constexpr uintptr_t ADJUST_DISPLAY_OFFSET = 0x4dcde74;
+        constexpr uintptr_t FINISH_DISPLAY_OFFSET = 0x4dcdeb4;
+        constexpr uint32_t CALL_ADJUST_DISPLAY = 0x94983675;
+        constexpr std::array<uint32_t, 3> ADJUST_DISPLAY_CODE = {0x31001433, 0x1a936033, 0x1400000e};
+        constexpr std::array<uint32_t, 3> FINISH_DISPLAY_CODE = {0x7100003f, 0x1a81c273, 0xd65f03c0};
+        constexpr uint32_t BRANCH_TO_ADJUST_MOVES = 0x17537f22;
+        constexpr std::array<uint32_t, 4> ADJUST_MOVES_CODE = {0x31001428, 0x1a886028, 0x7100003f, 0x144c325e};
+        constexpr std::array<uint32_t, 3> STORE_MOVES_CODE = {0x1a81c101, 0x29000401, 0x14604e7c};
+        if (*reinterpret_cast<uint32_t *>(base + DISPLAY_MOVES_OFFSET) != CALL_ADJUST_DISPLAY
+                || std::memcmp(reinterpret_cast<void *>(base + ADJUST_DISPLAY_OFFSET),
+                        ADJUST_DISPLAY_CODE.data(), sizeof(ADJUST_DISPLAY_CODE)) != 0
+                || std::memcmp(reinterpret_cast<void *>(base + FINISH_DISPLAY_OFFSET),
+                        FINISH_DISPLAY_CODE.data(), sizeof(FINISH_DISPLAY_CODE)) != 0
+                || *reinterpret_cast<uint32_t *>(base + INITIALIZE_MOVES_OFFSET) != BRANCH_TO_ADJUST_MOVES
+                || std::memcmp(reinterpret_cast<void *>(base + ADJUST_MOVES_OFFSET),
+                        ADJUST_MOVES_CODE.data(), sizeof(ADJUST_MOVES_CODE)) != 0
+                || std::memcmp(reinterpret_cast<void *>(base + STORE_MOVES_OFFSET),
+                        STORE_MOVES_CODE.data(), sizeof(STORE_MOVES_CODE)) != 0) return -1;
+#else
         if (*reinterpret_cast<uintptr_t *>(base + MOVE_LIMIT_SLOT + sizeof(uintptr_t))
                 != base + MOVE_LIMIT_SETTER) return -1;
         changes[changeCount++] = {base + MOVE_LIMIT_SLOT, base + MOVE_LIMIT_GETTER,
                 reinterpret_cast<uintptr_t>(&moveLimit)};
+#endif
     }
     const long pageSize = sysconf(_SC_PAGESIZE);
     if (pageSize <= 0) return -1;

@@ -76,6 +76,8 @@ public class BoostersTest {
 
     private static final int ATTEMPT_LIMIT = 12;
 
+    private static final int NATIVE_CONFIRMATION_LIMIT = 120;
+
     private static final String TRANSACTION_GROUP = "current";
 
     private static final String OLD_TRANSACTION_GROUP = "older";
@@ -101,6 +103,69 @@ public class BoostersTest {
         BlockingJsonTokener.pause.set(false);
         BlockingJsonTokener.parsing = new CountDownLatch(1);
         BlockingJsonTokener.resume = new CountDownLatch(1);
+    }
+
+    @Test
+    public void waitsForNativeInventoryAfterSubmission() {
+        this.grant = new BoosterGrant(ITEMS, AMOUNT, false, true);
+        assertEquals(BoosterGrant.State.READY, this.grant.state());
+        assertFalse(this.grant.reserveNativeConfirmation());
+        this.grant.nativeConfirmed();
+        assertEquals(BoosterGrant.State.READY, this.grant.state());
+        assertTrue(this.grant.reserve());
+        assertTrue(this.grant.begin());
+        this.grant.submitted(Boosters.SUBMITTED);
+        assertEquals(BoosterGrant.State.AWAITING, this.grant.state());
+        assertTrue(this.grant.reserveNativeConfirmation());
+        this.grant.nativeConfirmed();
+        assertEquals(BoosterGrant.State.COMPLETE, this.grant.state());
+        assertFalse(this.grant.reserve());
+        assertFalse(this.grant.reserveNativeConfirmation());
+        this.grant.nativeConfirmed();
+        assertEquals(BoosterGrant.State.COMPLETE, this.grant.state());
+        assertWarningCount(0);
+    }
+
+    @Test
+    public void rejectsNativeConfirmationAfterTheLimit() {
+        this.grant = new BoosterGrant(ITEMS, AMOUNT, false, true);
+        assertTrue(this.grant.reserve());
+        assertTrue(this.grant.begin());
+        this.grant.submitted(Boosters.SUBMITTED);
+        for (int attempt = 0; attempt < NATIVE_CONFIRMATION_LIMIT; attempt++) {
+            assertTrue(this.grant.reserveNativeConfirmation());
+        }
+        assertFalse(this.grant.reserveNativeConfirmation());
+        assertEquals(BoosterGrant.State.UNKNOWN, this.grant.state());
+        this.grant.nativeConfirmed();
+        assertFalse(this.grant.reserve());
+        assertEquals(BoosterGrant.State.UNKNOWN, this.grant.state());
+        assertWarningCount(1);
+    }
+
+    @Test
+    public void keepsSagaTransactionsRequiredAfterNativeConfirmation() throws Exception {
+        begin();
+        this.grant.submitted(Boosters.SUBMITTED);
+        assertFalse(this.grant.reserveNativeConfirmation());
+        this.grant.nativeConfirmed();
+        assertEquals(BoosterGrant.State.AWAITING, this.grant.state());
+        acceptCurrentGrant();
+        assertEquals(BoosterGrant.State.COMPLETE, this.grant.state());
+        assertWarningCount(0);
+    }
+
+    @Test
+    public void keepsUnknownNativeSubmissionsTerminal() {
+        this.grant = new BoosterGrant(ITEMS, AMOUNT, false, true);
+        assertTrue(this.grant.reserve());
+        assertTrue(this.grant.begin());
+        this.grant.submitted(Boosters.SUBMISSION_UNKNOWN);
+        this.grant.nativeConfirmed();
+        assertEquals(BoosterGrant.State.UNKNOWN, this.grant.state());
+        assertFalse(this.grant.reserve());
+        assertFalse(this.grant.reserveNativeConfirmation());
+        assertWarningCount(1);
     }
 
     @Test

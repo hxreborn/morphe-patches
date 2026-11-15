@@ -62,7 +62,7 @@ public class EqualizerPresetTransferTest {
         List<EqualizerPreset> imported = this.transfer
             .importDocument(EqualizerPresetBundleFile.json(Arrays.asList(first, second)).toString());
         Assert.assertEquals(2, imported.size());
-        Assert.assertEquals("Movie custom (2)", imported.get(0).name);
+        Assert.assertEquals("Untitled (2)", imported.get(0).name);
         Assert.assertEquals(custom, imported.get(0).state);
         Assert.assertEquals(base, imported.get(0).base);
         Assert.assertEquals("Movie", imported.get(0).baseName);

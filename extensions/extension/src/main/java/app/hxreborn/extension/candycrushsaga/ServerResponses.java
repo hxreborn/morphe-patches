@@ -59,6 +59,12 @@ public final class ServerResponses {
 
     private static final String SETTINGS = "ApplicationSettingsApi.getSettings";
 
+    private static final String SAGA_RATING_LEVELS = "ccsm.rating.levels";
+
+    private static final String SODA_RATING_LEVELS = "mobile.rate.app.levels";
+
+    private static final String POPUP_BLOCKLIST_PARAMETER = "blocklist-filter";
+
     private static final String PLUGINS = "UopFeatureStatusApi.getAllPlugins";
 
     private static final Set<String> AD_PLUGINS = new HashSet<>(Arrays.asList("ads_ool", "ads_egp", "ads_pre_level",
@@ -68,6 +74,27 @@ public final class ServerResponses {
     private static final Set<String> EVENT_PLUGINS = new HashSet<>(Arrays.asList("episode_race", "chocolate_box",
             "club_clash", "club_quest", "crushomaster", "cannon_frenzy", "leaderboard_event"));
 
+    private static final Set<String> SODA_AD_PLUGINS = new HashSet<>(Arrays.asList("prelevel_ads", "ads_watch_another",
+            "ool_watch_another", "interstitial_ads", "ads_onboarding", "ads_dynamic_fallback"));
+
+    private static final Set<String> SODA_EVENT_PLUGINS = new HashSet<>(Arrays.asList("episode_race", "soda_race",
+            "soda_league", "bake_a_cake", "treasure_hunt", "castle_quest", "weekly_race", "surf_race",
+            "tournament_system", "team_competition", "yetis_challenge", "scripted_quests", "scripted_quests_2",
+            "castle_liveop", "rocket_rush", "rocket_rush2", "shipmates", "tardis_hunt", "arcade_liveop"));
+
+    private static final Set<String> SODA_POPUP_PLUGINS = new HashSet<>(
+            Arrays.asList("pf_diorama_popup", "pf_back_to_diorama_popup"));
+
+    private static final Set<String> SODA_OFFER_PLACEMENTS = new HashSet<>(Arrays.asList(
+            "DynamicOfferPostGameModalPlacement", "DynamicOfferPreLevelModalPlacement", "LockedOffersModalPlacement",
+            "JourneyOfferStartModalPlacement", "JourneyOfferLastChanceModalPlacement",
+            "JourneyOfferFinishModalPlacement", "AchievementOfferFinishModalPlacement",
+            "AchievementOfferReminderModalPlacement", "AchievementOfferLastChanceModalPlacement",
+            "AchievementOfferStartModalPlacement", "GamePassStartModalPlacement", "GamePassFinishModalPlacement",
+            "GamePassLastChanceModalPlacement", "StreakShieldPurchaseOfferModalPlacement", "CrossPromoModalPlacement",
+            "MilestoneOfferRare", "MilestoneOfferEpic", "MilestoneOfferLegendary", "MilestoneOfferReminder",
+            "PiggyBankRedesignIntroModal", "PiggyBankRedesignOfferModal", "PiggyBankRedesignTimesUpModal"));
+
     private static final String POPUPS = "CandyPopupConfigApi.getPopupUpdatedConfig";
 
     private static final String[] OFFER_CATEGORIES = { "dynamic_offer", "build_a_bundle", "endless_offer",
@@ -75,6 +102,10 @@ public final class ServerResponses {
             "season_pass", "economy_loyalty", "marketing_message" };
 
     private ServerResponses() {
+    }
+
+    private static boolean isSodaSaga() {
+        return false;
     }
 
     private static boolean removeOffers() {
@@ -154,6 +185,9 @@ public final class ServerResponses {
             String edited = edit(decoded, methods, plugins);
             if (!decoded.equals(edited)) {
                 byte[] replacement = edited.getBytes(StandardCharsets.UTF_8);
+                if (replacement.length > MAX_BYTES) {
+                    throw new IOException("Edited configuration response exceeds byte limit");
+                }
                 if (gzip(bytes)) {
                     ByteArrayOutputStream compressed = new ByteArrayOutputStream();
                     try (GZIPOutputStream output = new GZIPOutputStream(compressed)) {
@@ -176,7 +210,7 @@ public final class ServerResponses {
     private static Set<String> selectedMethods() {
         Set<String> targets = new HashSet<>();
         if (removeOffers()) {
-            targets.add(POPUPS);
+            targets.add(isSodaSaga() ? PLUGINS : POPUPS);
         }
         if (removeAdOffers() || removeRatingPrompts() || disableEvents()) {
             targets.add(PLUGINS);
@@ -202,18 +236,23 @@ public final class ServerResponses {
     private static Set<String> selectedPlugins() {
         Set<String> plugins = new HashSet<>();
         if (removeAdOffers()) {
-            plugins.addAll(AD_PLUGINS);
+            plugins.addAll(isSodaSaga() ? SODA_AD_PLUGINS : AD_PLUGINS);
         }
         if (removeRatingPrompts()) {
             plugins.add("rate_app");
         }
         if (disableEvents()) {
-            plugins.addAll(EVENT_PLUGINS);
+            plugins.addAll(isSodaSaga() ? SODA_EVENT_PLUGINS : EVENT_PLUGINS);
         }
         return plugins;
     }
 
     static String edit(String response, Map<String, String> methods, Set<String> plugins) throws JSONException {
+        return edit(response, methods, plugins, isSodaSaga(), removeOffers());
+    }
+
+    static String edit(String response, Map<String, String> methods, Set<String> plugins, boolean soda,
+            boolean removeOfferPopups) throws JSONException {
         TreeMap<Integer, Replacement> edits = new TreeMap<>();
         for (JsonText reply : JsonText.parseShallow(response).values) {
             JsonText id = reply.fields.get("id");
@@ -233,11 +272,15 @@ public final class ServerResponses {
                 }
             } else if (PLUGINS.equals(method)) {
                 disablePlugins(result, plugins, edits);
+                if (soda && removeOfferPopups) {
+                    blockSodaOffers(result, edits);
+                }
             } else if (SETTINGS.equals(method)) {
                 for (JsonText setting : result.values) {
                     JsonText name = setting.fields.get("name");
                     JsonText value = setting.fields.get("value");
-                    if (name != null && value != null && "ccsm.rating.levels".equals(name.string())) {
+                    if (name != null && value != null
+                            && (soda ? SODA_RATING_LEVELS : SAGA_RATING_LEVELS).equals(name.string())) {
                         replace(edits, value, "\"\"");
                     }
                 }
@@ -255,6 +298,61 @@ public final class ServerResponses {
                 replace(edits, enabled, "false");
             }
         }
+    }
+
+    private static void blockSodaOffers(JsonText plugins, TreeMap<Integer, Replacement> edits) throws JSONException {
+        for (JsonText plugin : plugins.values) {
+            JsonText name = plugin.fields.get("name");
+            if (name == null || !SODA_POPUP_PLUGINS.contains(name.string())) {
+                continue;
+            }
+            JsonText parameters = plugin.fields.get("parameters");
+            if (parameters != null && parameters.text.charAt(parameters.start) != '[') {
+                throw new JSONException("Popup plugin parameters are not a JSON array");
+            }
+            boolean found = false;
+            for (JsonText parameter : (parameters != null) ? parameters.values : Collections.<JsonText>emptyList()) {
+                JsonText key = parameter.fields.get("key");
+                JsonText value = parameter.fields.get("value");
+                if (key != null && value != null && POPUP_BLOCKLIST_PARAMETER.equals(key.string())) {
+                    replace(edits, value, JSONObject.quote(appendSodaOfferPlacements(value.string())));
+                    found = true;
+                }
+            }
+            if (!found) {
+                String parameter = "{\"key\":" + JSONObject.quote(POPUP_BLOCKLIST_PARAMETER) + ",\"value\":"
+                        + JSONObject.quote(appendSodaOfferPlacements("[]")) + "}";
+                if (parameters == null) {
+                    replace(edits, plugin, appendField(plugin, "parameters", "[" + parameter + "]"));
+                } else {
+                    String original = parameters.raw();
+                    replace(edits, parameters, original.substring(0, original.length() - 1)
+                            + (parameters.values.isEmpty() ? "" : ",") + parameter + "]");
+                }
+            }
+        }
+    }
+
+    private static String appendSodaOfferPlacements(String text) throws JSONException {
+        JsonText blocked = JsonText.parse(text);
+        if (blocked.text.charAt(blocked.start) != '[') {
+            throw new JSONException("Popup blocklist is not a JSON array");
+        }
+        Set<String> present = new HashSet<>();
+        for (JsonText placement : blocked.values) {
+            present.add(placement.string());
+        }
+        StringBuilder additions = new StringBuilder();
+        for (String placement : SODA_OFFER_PLACEMENTS) {
+            if (present.add(placement)) {
+                if (!blocked.values.isEmpty() || additions.length() > 0) {
+                    additions.append(',');
+                }
+                additions.append(JSONObject.quote(placement));
+            }
+        }
+        String original = blocked.raw();
+        return original.substring(0, original.length() - 1) + additions + "]";
     }
 
     static String blockOffers(String config) throws JSONException {
@@ -307,7 +405,15 @@ public final class ServerResponses {
         edits.put(value.start, new Replacement(value.end, replacement));
     }
 
-    private static String splice(String text, TreeMap<Integer, Replacement> edits) {
+    private static String splice(String text, TreeMap<Integer, Replacement> edits) throws JSONException {
+        long bytes = text.getBytes(StandardCharsets.UTF_8).length;
+        for (Map.Entry<Integer, Replacement> edit : edits.entrySet()) {
+            bytes += edit.getValue().text.getBytes(StandardCharsets.UTF_8).length
+                    - text.substring(edit.getKey(), edit.getValue().end).getBytes(StandardCharsets.UTF_8).length;
+        }
+        if (bytes > MAX_BYTES) {
+            throw new JSONException("Edited configuration response exceeds byte limit");
+        }
         StringBuilder output = new StringBuilder(text);
         for (Map.Entry<Integer, Replacement> edit : edits.descendingMap().entrySet()) {
             output.replace(edit.getKey(), edit.getValue().end, edit.getValue().text);

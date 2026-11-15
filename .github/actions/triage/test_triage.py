@@ -1002,6 +1002,24 @@ APP_CASES = {
     "only the bot commented recently": (
         54, [request(54, "AtloMaps", "com.atlogis.atlomaps", comments=[("github-actions", "2026-09-24T10:00:00Z")])],
         "close", 0),
+    "supported app with a recent human reply is left alone": (
+        54, [request(54, "AtloMaps", "com.atlogis.atlomaps") | {"comments": [
+            {"author": {"login": "github-actions"}, "createdAt": "2026-09-01T10:00:00Z", "replies": [
+                {"author": {"login": "someone"}, "createdAt": "2026-09-24T10:00:00Z"},
+            ]},
+        ]}], "hold", 0),
+    "an old human reply does not hold a supported request": (
+        54, [request(54, "AtloMaps", "com.atlogis.atlomaps") | {"comments": [
+            {"author": {"login": "github-actions"}, "createdAt": "2026-09-01T10:00:00Z", "replies": [
+                {"author": {"login": "someone"}, "createdAt": "2026-09-02T10:00:00Z"},
+            ]},
+        ]}], "close", 0),
+    "only the bot replied recently": (
+        54, [request(54, "AtloMaps", "com.atlogis.atlomaps") | {"comments": [
+            {"author": {"login": "someone"}, "createdAt": "2026-09-01T10:00:00Z", "replies": [
+                {"author": {"login": "github-actions"}, "createdAt": "2026-09-24T10:00:00Z"},
+            ]},
+        ]}], "close", 0),
     "a request without a package name passes": (
         5, [request(5, "Moviebox.ph", "idk")], "pass", 0),
     "package read out of a store link": (

@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patches.shared.readInt
 import app.morphe.patches.shared.writeInt
 import app.morphe.patches.ultimea.misc.settings.NativeFunction
+import app.morphe.patches.ultimea.misc.settings.NativeMethods
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
 
 private const val NOP = 0xd503201f.toInt()
@@ -100,3 +101,7 @@ private fun ByteArray.deviceCurveAssignment(refresh: NativeFunction, marker: Int
         DeviceCurveAssignment(address, controller, nativeMethods.callTarget(getter + 3 * INSTRUCTION_BYTES))
     }.singleOrNull() ?: throw PatchException("Expected one device equalizer display assignment")
 }
+
+internal fun NativeMethods.equalizerTileCallback(): NativeFunction = matching("/device-eq").singleOrNull { function ->
+    function.stringLoads.values.count { it.startsWith("/") } == 1
+} ?: throw PatchException("Expected one equalizer tile navigation callback")

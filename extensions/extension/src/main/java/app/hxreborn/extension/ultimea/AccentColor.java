@@ -66,14 +66,6 @@ public final class AccentColor {
 
     private static AccentObserver observer;
 
-    private static final int LIGHT_PRIMARY = 0xff541597;
-
-    private static final int DARK_PRIMARY = 0xffc499ff;
-
-    private static final int LIGHT_SURFACE = 0xffeee5f7;
-
-    private static final int DARK_SURFACE = 0xff332343;
-
     private AccentColor() {
     }
 
@@ -82,11 +74,17 @@ public final class AccentColor {
     }
 
     public static int primary(Context context, boolean dark) {
-        return isPatched() ? AccentPalette.primary(context, dark) : dark ? DARK_PRIMARY : LIGHT_PRIMARY;
+        if (isPatched()) {
+            return AccentPalette.primary(context, dark);
+        }
+        return dark ? AccentPalette.STOCK_DARK_PRIMARY : AccentPalette.STOCK_LIGHT_PRIMARY;
     }
 
     public static int surface(Context context, boolean dark) {
-        return isPatched() ? AccentPalette.surface(context, dark) : dark ? DARK_SURFACE : LIGHT_SURFACE;
+        if (isPatched()) {
+            return AccentPalette.surface(context, dark);
+        }
+        return dark ? AccentPalette.STOCK_DARK_SURFACE : AccentPalette.STOCK_LIGHT_SURFACE;
     }
 
     public static int transform(Context context, int original) {

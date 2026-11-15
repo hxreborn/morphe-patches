@@ -153,9 +153,10 @@ def supported_apps(patches_list):
 def discussed_recently(issue, now):
     cutoff = now - timedelta(days=QUIET_DAYS)
     return any(
-        (c.get("author") or {}).get("login") != "github-actions"
-        and datetime.fromisoformat(c["createdAt"].replace("Z", "+00:00")) > cutoff
-        for c in issue.get("comments") or []
+        (post.get("author") or {}).get("login") != "github-actions"
+        and datetime.fromisoformat(post["createdAt"].replace("Z", "+00:00")) > cutoff
+        for comment in issue.get("comments") or []
+        for post in [comment, *(comment.get("replies") or [])]
     )
 
 

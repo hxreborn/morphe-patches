@@ -150,9 +150,12 @@ def versions_table(targets, package):
 
 
 ICONS = {
+    "name.antonsmirnov.android.arduinodroid2": "arduinodroid.png",
+    "com.ilovepdf.www": "ilovepdf.png",
     "org.quantumbadger.redreader": "redreader.png",
     "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
     "com.king.candycrushsaga": "candycrushsaga.png",
+    "com.king.candycrushsodasaga": "candycrushsodasaga.png",
     "com.unbrokensoftware.launchbox": "launchbox.png",
     "de.app.flighttracker": "flights25.png",
     "com.audiomack": "audiomack.png",
@@ -285,6 +288,7 @@ ICONS = {
     "com.nieruo.healthapp": "catzy.png",
     "tech.coddy.coddyapp": "coddy.png",
     "jp.co.celsys.clipstudiopaint.googleplay": "clipstudiopaint.png",
+    "com.classdojo.android": "classdojo.png",
     "ltd.anti.clink": "clink.png",
     "com.steinberg.cubasisle3": "cubasisle3.png",
     "com.one4studio.one4home": "one4home.png",

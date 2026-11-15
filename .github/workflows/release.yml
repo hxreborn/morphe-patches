@@ -122,6 +122,10 @@ jobs:
             app=$(jq -r .app <<< "$row")
             jq -r .comment <<< "$row" > "$RUNNER_TEMP/comment.md"
             bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/comment.md" >/dev/null
+            bash -eo pipefail "$discussion" add-labels "$n" "in progress"
+            mapfile -t waiting < <(jq -r --argjson n "$n" '.[] | select(.number == $n) | (.labels // [])[].name
+              | select(. == "other bundle" or . == "needs info")' "$RUNNER_TEMP/requests.json")
+            [ "${#waiting[@]}" -eq 0 ] || bash -eo pipefail "$discussion" remove-labels "$n" "${waiting[@]}"
             echo "commented on #$n ($app) for $TAG"
           done
 

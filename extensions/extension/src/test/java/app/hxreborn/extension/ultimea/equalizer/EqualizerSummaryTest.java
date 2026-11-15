@@ -60,7 +60,7 @@ public class EqualizerSummaryTest {
         EqualizerSummary.curve(state.curve);
         Assert.assertEquals("Custom", EqualizerSummary.current(this.application));
         EqualizerSummary.xupmix(1);
-        Assert.assertEquals("Custom: Movie custom", EqualizerSummary.current(this.application));
+        Assert.assertEquals("Custom: Untitled", EqualizerSummary.current(this.application));
         EqualizerSummary.xupmix(0);
         Assert.assertEquals("Custom", EqualizerSummary.current(this.application));
     }

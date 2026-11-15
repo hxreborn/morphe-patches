@@ -76,8 +76,6 @@ final class SettingsStyle {
 
     private static final int LIGHT_SCREEN_BACKGROUND = 0xFFF6F6F6;
 
-    private static final int ACCENT = 0xFF541597;
-
     final boolean dark;
 
     final int screenBackground;
@@ -149,7 +147,7 @@ final class SettingsStyle {
     }
 
     void styleSwitch(Switch control) {
-        SwitchColors colors = new SwitchColors(AccentColor.transform(this.context, ACCENT), this.cardSurface,
+        SwitchColors colors = new SwitchColors(AccentColor.primary(this.context, this.dark), this.cardSurface,
                 this.dark);
         control.setThumbTintMode(PorterDuff.Mode.SRC_IN);
         control.setThumbTintList(ColorStateList.valueOf(colors.thumb));

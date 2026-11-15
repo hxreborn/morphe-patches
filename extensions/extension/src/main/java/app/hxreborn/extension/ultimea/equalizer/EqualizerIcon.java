@@ -163,7 +163,10 @@ final class EqualizerIcon extends Drawable {
         MORE(new float[0], new float[] { 12, 5, 1, 12, 12, 1, 12, 19, 1 }),
         PREVIOUS(new float[] { 15, 5, 8, 12, 15, 19 }, new float[0]),
         NEXT(new float[] { 9, 5, 16, 12, 9, 19 }, new float[0]), MINUS(new float[] { 5, 12, 19, 12 }, new float[0]),
-        PLUS(new float[] { 5, 12, 19, 12, Float.NaN, 0, 12, 5, 12, 19 }, new float[0]);
+        PLUS(new float[] { 5, 12, 19, 12, Float.NaN, 0, 12, 5, 12, 19 }, new float[0]),
+        DOWN(new float[] { 6, 9, 12, 15, 18, 9 }, new float[0]),
+        REMOTE(new float[] { 8, 2, 16, 2, 16, 22, 8, 22, 8, 2, Float.NaN, 0, 10, 11, 14, 11, Float.NaN, 0, 10, 14, 14,
+                14, Float.NaN, 0, 10, 17, 14, 17 }, new float[] { 12, 6, 1 });
 
         private final float[] lines;
 

@@ -48,35 +48,38 @@ internal fun ByteArray.addPatchesMenu() {
         it.start >= settings.end && it.start < settings.end + SETTINGS_CALLBACK_WINDOW
     } ?: throw PatchException("Expected one Contact Us callback beside Profile settings")
     val route = contact.loads("/contact").single()
-    val menuInvoke = nativeMethods.firstCallAfter(route, contact.end)
-    val invokeOffset = menuInvoke - contact.start
-    val review = nativeMethods.single("requestReview")
+    replaceWithPlatformMethod(contact, route, nativeMethods)
+    addTitleAllocation(titleCall)
+}
+
+internal fun ByteArray.replaceWithPlatformMethod(callback: NativeFunction, route: Int, methods: NativeMethods) {
+    val methodInvoke = methods.firstCallAfter(route, callback.end)
+    val invokeOffset = methodInvoke - callback.start
+    val review = methods.single("requestReview")
     val reviewMethod = review.loads("requestReview").single()
-    val reviewCall = nativeMethods.firstCallAfter(reviewMethod, review.end)
-    val logan = nativeMethods.single("type", "log")
+    val reviewCall = methods.firstCallAfter(reviewMethod, review.end)
+    val logan = methods.single("type", "log")
     val logMethod = logan.loads("log").last()
-    val invoke = nativeMethods.firstCallAfter(logMethod, logan.end)
-    val invokeTarget = nativeMethods.callTarget(invoke)
-    if (invokeTarget != nativeMethods.callTarget(reviewCall)) {
+    val invoke = methods.firstCallAfter(logMethod, logan.end)
+    val invokeTarget = methods.callTarget(invoke)
+    if (invokeTarget != methods.callTarget(reviewCall)) {
         throw PatchException("Expected shared Flutter method-channel invocation")
     }
-    val menu = mutableListOf(0xa9bf79fd.toInt(), 0xaa0f03fd.toInt(), 0xd10061ef.toInt())
-    menu += nativeMethods.poolLoad(logMethod - CHANNEL_BEFORE_METHOD, OBJECT_REGISTER)
-    menu += nativeMethods.poolLoad(nativeMethods.poolLoadStart(reviewMethod) - POOL_TYPE_ARGUMENTS_BEFORE_METHOD,
-        TYPE_ARGUMENTS_REGISTER)
-    menu += 0xa900c5f0.toInt()
-    menu += nativeMethods.poolLoad(route, OBJECT_REGISTER)
-    menu += 0xf90001f0.toInt()
-    menu += nativeMethods.poolLoad(reviewCall - INSTRUCTION_BYTES, ARGUMENT_DESCRIPTOR_REGISTER)
-    if (menu.size * INSTRUCTION_BYTES > invokeOffset) throw PatchException("Patches menu exceeds support callback frame")
-    while (menu.size * INSTRUCTION_BYTES < invokeOffset) menu += NOP
-    menu += BRANCH_WITH_LINK or (((invokeTarget - menuInvoke) shr 2) and BRANCH_IMMEDIATE_MASK)
-    menu += listOf(0xaa1603e0.toInt(), 0xaa1d03ef.toInt(), 0xa8c179fd.toInt(), 0xd65f03c0.toInt())
-    if (contact.start + menu.size * INSTRUCTION_BYTES > contact.end) {
-        throw PatchException("Patches menu exceeds support callback boundary")
+    val replacement = mutableListOf(0xa9bf79fd.toInt(), 0xaa0f03fd.toInt(), 0xd10061ef.toInt())
+    replacement += methods.poolLoad(logMethod - CHANNEL_BEFORE_METHOD, OBJECT_REGISTER)
+    replacement += methods.poolLoad(methods.poolLoadStart(reviewMethod) - POOL_TYPE_ARGUMENTS_BEFORE_METHOD, TYPE_ARGUMENTS_REGISTER)
+    replacement += 0xa900c5f0.toInt()
+    replacement += methods.poolLoad(route, OBJECT_REGISTER)
+    replacement += 0xf90001f0.toInt()
+    replacement += methods.poolLoad(reviewCall - INSTRUCTION_BYTES, ARGUMENT_DESCRIPTOR_REGISTER)
+    if (replacement.size * INSTRUCTION_BYTES > invokeOffset) throw PatchException("Platform method exceeds callback frame")
+    while (replacement.size * INSTRUCTION_BYTES < invokeOffset) replacement += NOP
+    replacement += BRANCH_WITH_LINK or (((invokeTarget - methodInvoke) shr 2) and BRANCH_IMMEDIATE_MASK)
+    replacement += listOf(0xaa1603e0.toInt(), 0xaa1d03ef.toInt(), 0xa8c179fd.toInt(), 0xd65f03c0.toInt())
+    if (callback.start + replacement.size * INSTRUCTION_BYTES > callback.end) {
+        throw PatchException("Platform method exceeds callback boundary")
     }
-    menu.forEachIndexed { slot, instruction -> writeInt(contact.start + slot * INSTRUCTION_BYTES, instruction) }
-    addTitleAllocation(titleCall)
+    replacement.forEachIndexed { slot, instruction -> writeInt(callback.start + slot * INSTRUCTION_BYTES, instruction) }
 }
 
 private fun ByteArray.addTitleAllocation(call: Int) {

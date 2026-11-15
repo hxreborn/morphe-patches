@@ -2,7 +2,7 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/banner-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/banner-light.svg" alt="hxreborn's patches" width="700"></picture>
 
-[![Downloads badge](https://img.shields.io/github/downloads/hxreborn/morphe-patches/total?style=for-the-badge&label=Downloads&color=2F81F7&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
+[![Downloads badge](https://img.shields.io/endpoint?url=https%3A%2F%2Freports.hxreborn.eu%2Fbadges%2Fmorphe-patches-downloads.json%3Fschema%3D1&style=for-the-badge&label=Downloads&color=2F81F7&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/releases/latest)
 [![Stars badge](https://img.shields.io/github/stars/hxreborn/morphe-patches?style=for-the-badge&label=Stars&color=E3B341&logo=github&logoColor=white)](https://github.com/hxreborn/morphe-patches/stargazers)
 [![Ko-fi badge](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/hxreborn)
 
@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.78.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.78.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;555 patches total
+> **[v1.79.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0-dev.7)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;559 patches total
 
 ### Featured apps
 
@@ -29,7 +29,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 </tr>
 <tr>
 <td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>15 patches</sub></td>
+<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
@@ -262,6 +262,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="arc-player-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/arcplayer/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics and Firebase Sessions from collecting usage data. |
 | <a id="arc-player-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/arcplayer/misc/rate/RemoveRatingPromptsPatch.kt) | Removes the feedback and rating popup that appears after watching videos. |
 | <a id="arc-player-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/arcplayer/misc/premium/UnlockPremiumPatch.kt) | Unlocks the pure black theme and custom subtitle fonts, and removes the premium prompts. |
+
+</details>
+
+<a id="arduinodroid"></a>
+<details>
+<summary><img src=".github/assets/icons/arduinodroid.png" width="18" align="top">&nbsp;&nbsp;ArduinoDroid&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 9.7.6 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="arduinodroid-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/arduinodroid/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features, removes ads and removes flashing limits. |
 
 </details>
 
@@ -588,18 +604,45 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each of ten boosters every time the game starts. Each booster unlocks at its usual level. Requires a standard install. |
-| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Adds five moves when each level starts. Requires a standard install. |
-| <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Disables events. |
-| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Blocks game reminders and the prompt asking to allow notifications. |
-| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze and Firebase Analytics data collection and blocks reads of the advertising ID and install referrer. Braze push and in-app messages stop too. |
-| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops rewarded and interstitial ads from loading. |
+| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install. |
+| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. Requires a standard install. |
+| <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Turns off limited-time events such as races, quests and leagues. |
+| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Stops game reminders and the notification permission prompt. Requires a standard install. |
+| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
+| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops ad networks from starting and blocks rewarded and interstitial ads. |
 | <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
-| <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes rewarded ad offers. |
-| <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes promotional offer pop-ups. |
-| <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes rating prompts and rate entry in Settings. |
+| <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes offers to watch an ad for extra moves, lives or boosters. |
+| <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes pop-ups selling bundles, passes and limited-time offers. |
+| <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes prompts asking to rate the game after a level. |
 | <a id="candy-crush-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/lives/UnlimitedLivesPatch.kt) | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
-| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks booster slots at any level. Requires a standard install. |
+| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks all booster slots from the first level. Requires a standard install. |
+
+</details>
+
+<a id="candy-crush-soda-saga"></a>
+<details>
+<summary><img src=".github/assets/icons/candycrushsodasaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Soda Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.331.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="candy-crush-soda-saga-add-boosters"></a>Add boosters | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install. |
+| <a id="candy-crush-soda-saga-add-extra-moves"></a>Add extra moves | Starts every level with five extra moves. Requires a standard install. |
+| <a id="candy-crush-soda-saga-disable-events"></a>Disable events | Turns off limited-time events such as races, quests and leagues. |
+| <a id="candy-crush-soda-saga-disable-notifications"></a>Disable notifications | Stops game reminders and the notification permission prompt. Requires a standard install. |
+| <a id="candy-crush-soda-saga-disable-tracking"></a>Disable tracking | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
+| <a id="candy-crush-soda-saga-hide-ads"></a>Hide ads | Stops ad networks from starting and blocks rewarded and interstitial ads. |
+| <a id="candy-crush-soda-saga-parked-app-for-android-auto"></a>Parked app for Android Auto | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
+| <a id="candy-crush-soda-saga-remove-ad-offers"></a>Remove ad offers | Removes offers to watch an ad for extra moves, lives or boosters. |
+| <a id="candy-crush-soda-saga-remove-offer-pop-ups"></a>Remove offer pop-ups | Removes pop-ups selling bundles, passes and limited-time offers. |
+| <a id="candy-crush-soda-saga-remove-rating-prompts"></a>Remove rating prompts | Removes prompts asking to rate the game after a level. |
+| <a id="candy-crush-soda-saga-unlimited-lives"></a>Unlimited lives | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
+| <a id="candy-crush-soda-saga-unlock-booster-slots"></a>Unlock booster slots | Unlocks all booster slots from the first level. Requires a standard install. |
 
 </details>
 
@@ -674,6 +717,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="catzy-remove-usage-limits"></a>Remove usage limits | Removes daily caps on store refreshes, blind boxes, feeding, petting and the Book of Answers. Opens the Item Recycling Center every day and shortens pet exploration to three minutes. |
 | <a id="catzy-unlimited-cat-coins"></a>Unlimited cat coins | Buys every store item without running out of cat coins. |
 | <a id="catzy-unlock-premium"></a>Unlock premium | Unlocks premium goals, journeys, breathing exercises, focus timers, sounds and themes. |
+
+</details>
+
+<a id="classdojo"></a>
+<details>
+<summary><img src=".github/assets/icons/classdojo.png" width="18" align="top">&nbsp;&nbsp;ClassDojo&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 9.12.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="classdojo-unlock-progress-reports"></a>[Unlock progress reports](patches/src/main/kotlin/app/morphe/patches/classdojo/misc/reports/UnlockProgressReportsPatch.kt) | Unlocks detailed progress statistics. Date and points filters keep their existing limits. Report limits can return after in-app updates. |
 
 </details>
 
@@ -1164,6 +1223,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="hypic-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/hypic/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Pro button on the home screen, the Pro banner and promotions on the Me tab, free trial tips in the editor and on export, and Plans & billing in Settings. Closes subscription pages before they show. |
 | <a id="hypic-remove-reinstall-prompt"></a>[Remove reinstall prompt](patches/src/main/kotlin/app/morphe/patches/hypic/misc/prompt/RemoveReinstallPromptPatch.kt) | Removes the prompt to download the official app. Keeps saved app data. |
 | <a id="hypic-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/hypic/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro filters, effects, templates and tools. AI features that use server credits are not unlocked. |
+
+</details>
+
+<a id="ilovepdf"></a>
+<details>
+<summary><img src=".github/assets/icons/ilovepdf.png" width="18" align="top">&nbsp;&nbsp;iLovePDF&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.2.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="ilovepdf-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="ilovepdf-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/ilovepdf/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium PDF tools and cloud storage features. |
 
 </details>
 
@@ -1764,7 +1840,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.4.8 |
+| 7.4.9 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2248,7 +2324,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;15 patches</summary>
+<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2262,7 +2338,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-disable-telemetry"></a>[Disable telemetry](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/telemetry/DisableTelemetryPatch.kt) | Stops sending usage statistics and diagnostics to Proton. |
 | <a id="proton-vpn-floating-navigation-bar"></a>[Floating navigation bar](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/navigationbar/FloatingNavigationBarPatch.kt) | Adds optional floating navigation with adjustable blur and glass. |
-| <a id="proton-vpn-frosted-glass"></a>[Frosted glass](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/glass/FrostedGlassPatch.kt) | Adds frosted glass to home screen buttons, panels and sheets. Requires Android 12 or later. |
 | <a id="proton-vpn-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[Remove server change delay](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |
@@ -2779,7 +2854,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="tradingview"></a>
 <details>
-<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2793,7 +2868,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="tradingview-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="tradingview-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
 | <a id="tradingview-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade button, plan banners, subscription card and paywalls. Extra indicators, watchlists, flag colors, alerts, second and tick intervals, and intraday replay are not unlocked. |
-| <a id="tradingview-unlock-multi-chart-layouts"></a>[Unlock multi-chart layouts](patches/src/main/kotlin/app/morphe/patches/tradingview/layouts/UnlockChartLayoutsPatch.kt) | Unlocks chart layouts with up to 8 charts on one screen. |
+| <a id="tradingview-skip-sign-up-screen"></a>[Skip sign-up screen](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/onboarding/SkipSignUpPatch.kt) | Opens the app without signing in. Sign in later from the menu. |
+| <a id="tradingview-unlock-chart-features"></a>[Unlock chart features](patches/src/main/kotlin/app/morphe/patches/tradingview/chart/UnlockChartFeaturesPatch.kt) | Unlocks layouts with up to 8 charts, a third indicator per chart and the Renko, Kagi, Point & Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals stay on your plan. |
 
 </details>
 
@@ -2895,7 +2971,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="ultimea-accent-color"></a>[Accent color](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/AccentColorPatch.kt) | Changes accent colors with a chosen color or Material You. |
 | <a id="ultimea-dark-theme"></a>[Dark theme](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/DarkThemePatch.kt) | Adds dark and AMOLED themes with light text and controls. |
 | <a id="ultimea-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Crashlytics, Logan and usage event uploads. |
-| <a id="ultimea-fine-equalizer"></a>[Fine equalizer](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB adjustment, band values and Undo. |
+| <a id="ultimea-fine-equalizer"></a>[Fine equalizer](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB bands, band values and Undo to the equalizer screen. |
 | <a id="ultimea-local-equalizer-presets"></a>[Local equalizer presets](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/presets/LocalEqualizerPresetsPatch.kt) | Adds named local curves with duplicate, export and import actions. |
 | <a id="ultimea-remove-distractions"></a>[Remove distractions](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/distractions/RemoveDistractionsPatch.kt) | Removes community, message and support entries. |
 | <a id="ultimea-remove-popups"></a>[Remove popups](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/popups/RemovePopupsPatch.kt) | Removes promotional and rating popups. |
@@ -3350,6 +3426,9 @@ See [NOTICE](NOTICE) for the full conditions.
 
 Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
 recorded in the Git history.
+
+The iLovePDF premium unlock is ported from [Lain-Patches](https://github.com/kiraio-moe/Lain-Patches)
+by [kiraio-moe](https://github.com/kiraio-moe).
 
 App icons in the patches list belong to their respective developers and are used only to
 identify each app. They are not covered by this repository's licence. See

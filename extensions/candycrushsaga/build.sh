@@ -11,3 +11,8 @@ test -x "$compiler"
 mkdir -p "$(dirname "$output")"
 "$compiler" -std=c++17 -O2 -fPIC -shared -fvisibility=hidden -static-libstdc++ -I"$include" \
     "$here/src/boosters.cpp" -llog -ldl -o "$output"
+
+output=$here/../../patches/src/main/resources/candycrushsodasaga/libccsboosters.so
+mkdir -p "$(dirname "$output")"
+"$compiler" -std=c++17 -O2 -fPIC -shared -fvisibility=hidden -static-libstdc++ -DCANDY_CRUSH_SODA=1 -I"$include" \
+    "$here/src/boosters.cpp" -llog -ldl -o "$output"

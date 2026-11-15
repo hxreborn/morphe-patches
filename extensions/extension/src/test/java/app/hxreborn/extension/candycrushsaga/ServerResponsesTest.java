@@ -20,9 +20,13 @@
  */
 package app.hxreborn.extension.candycrushsaga;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -47,6 +51,8 @@ public class ServerResponsesTest {
 
     private static final String CONFIG = "{\"configuration_states\":[{\"name\":\"win\","
             + "\"block_list\":{\"categories\":[\"buy_lives\"],\"modal_ids\":[\"keep\"]}}]}";
+
+    private static final int MAX_RESPONSE_BYTES = 8 * 1024 * 1024;
 
     @Test
     public void preserveUnrelatedReplyBytes() throws JSONException {
@@ -270,6 +276,138 @@ public class ServerResponsesTest {
     @Test(expected = JSONException.class)
     public void rejectAlternateSeparators() throws JSONException {
         JsonText.parse("{\"a\"=>[]}");
+    }
+
+    @Test
+    public void clearSodaRatingLevelsWithoutChangingSagaSettings() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"mobile.rate.app.levels\",\"value\":\"25,75\"},"
+                + "{\"name\":\"ccsm.rating.levels\",\"value\":\"36,68\"}]}]";
+        Assert.assertEquals(response.replace("25,75", ""),
+                ServerResponses.edit(response, Collections.singletonMap("1", "ApplicationSettingsApi.getSettings"),
+                        Collections.emptySet(), true, false));
+    }
+
+    @Test
+    public void blockSodaOfferPlacementsWithoutDisablingFeatures() throws JSONException {
+        String blocked = JSONObject.quote("[\"keep\"]");
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"enabled\":true,"
+                + "\"parameters\":[{\"key\":\"blocklist-filter\",\"value\":" + blocked + "}]}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        Assert.assertTrue(edited.contains("DynamicOfferPostGameModalPlacement"));
+        Assert.assertTrue(edited.contains("\"enabled\":true"));
+        Assert.assertTrue(edited.contains("keep"));
+        Assert.assertEquals(edited,
+                ServerResponses.edit(edited, Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"),
+                        Collections.emptySet(), true, true));
+    }
+
+    @Test
+    public void preserveSodaOfferPlacementsWhenOnlyAdsAreSelected() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"parameters\":["
+                + "{\"key\":\"blocklist-filter\",\"value\":\"[]\"}]}]}]";
+        Assert.assertEquals(response,
+                ServerResponses.edit(response, Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"),
+                        Collections.emptySet(), true, false));
+    }
+
+    @Test(expected = JSONException.class)
+    public void rejectSodaPopupBlocklistWithWrongShape() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"parameters\":["
+                + "{\"key\":\"blocklist-filter\",\"value\":\"{}\"}]}]}]";
+        ServerResponses.edit(response, Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"),
+                Collections.emptySet(), true, true);
+    }
+
+    @Test
+    public void addSodaPopupBlocklistToEmptyParameters() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"parameters\":[]}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        Assert.assertTrue(edited.contains("DynamicOfferPostGameModalPlacement"));
+        Assert.assertTrue(edited.contains("blocklist-filter"));
+    }
+
+    @Test
+    public void addSodaPopupBlocklistWithoutRemovingOtherParameters() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"parameters\":["
+                + "{\"key\":\"keep\",\"value\":\"same\"}]}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        Assert.assertTrue(edited.contains("DynamicOfferPostGameModalPlacement"));
+        Assert.assertTrue(edited.contains("{\"key\":\"keep\",\"value\":\"same\"}"));
+    }
+
+    @Test
+    public void addSodaPopupBlocklistWhenParametersAreAbsent() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"enabled\":true}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        Assert.assertTrue(edited.contains("DynamicOfferPostGameModalPlacement"));
+        Assert.assertTrue(edited.contains("\"enabled\":true"));
+    }
+
+    @Test
+    public void acceptSodaPopupEditsAtResponseByteLimit() throws JSONException {
+        String response = sodaPopupAtEditedLimit(0);
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        Assert.assertEquals(MAX_RESPONSE_BYTES, edited.length());
+    }
+
+    @Test(expected = JSONException.class)
+    public void rejectSodaPopupEditsAboveResponseByteLimit() throws JSONException {
+        ServerResponses.edit(sodaPopupAtEditedLimit(1),
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+    }
+
+    private static String sodaPopupAtEditedLimit(int excessBytes) throws JSONException {
+        String response = "[{\"id\":1,\"padding\":\"\",\"result\":[{\"name\":\"pf_diorama_popup\",\"parameters\":[]}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        char[] padding = new char[MAX_RESPONSE_BYTES - edited.length() + excessBytes];
+        Arrays.fill(padding, 'a');
+        return response.replace("\"padding\":\"\"", "\"padding\":\"" + new String(padding) + "\"");
+    }
+
+    @Test
+    public void blockAllSodaOfferPlacementsInBothPopupPlugins() throws JSONException {
+        Set<String> expected = new HashSet<>(Arrays.asList("keep", "DynamicOfferPostGameModalPlacement",
+                "DynamicOfferPreLevelModalPlacement", "LockedOffersModalPlacement", "JourneyOfferStartModalPlacement",
+                "JourneyOfferLastChanceModalPlacement", "JourneyOfferFinishModalPlacement",
+                "AchievementOfferFinishModalPlacement", "AchievementOfferReminderModalPlacement",
+                "AchievementOfferLastChanceModalPlacement", "AchievementOfferStartModalPlacement",
+                "GamePassStartModalPlacement", "GamePassFinishModalPlacement", "GamePassLastChanceModalPlacement",
+                "StreakShieldPurchaseOfferModalPlacement", "CrossPromoModalPlacement", "MilestoneOfferRare",
+                "MilestoneOfferEpic", "MilestoneOfferLegendary", "MilestoneOfferReminder",
+                "PiggyBankRedesignIntroModal", "PiggyBankRedesignOfferModal", "PiggyBankRedesignTimesUpModal"));
+        for (String plugin : Arrays.asList("pf_diorama_popup", "pf_back_to_diorama_popup")) {
+            String response = "[{\"id\":1,\"result\":[{\"name\":\"" + plugin + "\",\"parameters\":["
+                    + "{\"key\":\"blocklist-filter\",\"value\":" + JSONObject.quote("[\"keep\"]") + "}]}]}]";
+            String edited = ServerResponses.edit(response,
+                    Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true,
+                    true);
+            JSONArray parameters = new JSONArray(edited).getJSONObject(0)
+                .getJSONArray("result")
+                .getJSONObject(0)
+                .getJSONArray("parameters");
+            JSONArray blocked = new JSONArray(parameters.getJSONObject(0).getString("value"));
+            Set<String> actual = new HashSet<>();
+            for (int index = 0; index < blocked.length(); index++) {
+                actual.add(blocked.getString(index));
+            }
+            Assert.assertEquals(expected, actual);
+        }
+    }
+
+    @Test
+    public void preserveOtherSodaPluginsAndPopupParameters() throws JSONException {
+        String response = "[{\"id\":1,\"result\":[{\"name\":\"pf_diorama_popup\",\"parameters\":["
+                + "{\"key\":\"keep\",\"value\":\"same\"}]},{\"name\":\"bank_configuration\",\"enabled\":true}]}]";
+        String edited = ServerResponses.edit(response,
+                Collections.singletonMap("1", "UopFeatureStatusApi.getAllPlugins"), Collections.emptySet(), true, true);
+        Assert.assertTrue(edited.contains("{\"key\":\"keep\",\"value\":\"same\"}"));
+        Assert.assertTrue(edited.contains("{\"name\":\"bank_configuration\",\"enabled\":true}"));
     }
 
 }

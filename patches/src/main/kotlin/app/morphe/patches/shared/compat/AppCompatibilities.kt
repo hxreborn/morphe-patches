@@ -128,6 +128,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.4.2.141", versionCode = 141, minSdk = 23)),
     )
 
+    val ARDUINODROID = Compatibility(
+        name = "ArduinoDroid",
+        packageName = "name.antonsmirnov.android.arduinodroid2",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x00979D,
+        signatures = setOf(
+            "9ac3cd0b6ca8b71164e555c4b9db580c0b16936de763445e2044b2fa8177e21d",
+        ),
+        targets = listOf(AppTarget(version = "9.7.6", versionCode = 9779, minSdk = 29)),
+    )
+
     val ATHAN = Compatibility(
         name = "Athan",
         packageName = "com.athan",
@@ -334,6 +345,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.340.0.1", versionCode = 13400010, minSdk = 24)),
     )
 
+    val CANDY_CRUSH_SODA_SAGA = Compatibility(
+        name = "Candy Crush Soda Saga",
+        packageName = "com.king.candycrushsodasaga",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x098AD3,
+        signatures = setOf(
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328",
+        ),
+        targets = listOf(AppTarget(version = "1.331.3", versionCode = 13310030, minSdk = 24)),
+    )
+
     val CASTLE = Compatibility(
         name = "Castle",
         packageName = "com.external.castle",
@@ -370,6 +392,17 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "1.61.0", versionCode = 281, minSdk = 24),
         ),
+    )
+
+    val CLASSDOJO = Compatibility(
+        name = "ClassDojo",
+        packageName = "com.classdojo.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x97DF0D,
+        signatures = setOf(
+            "7c05f9ed40aff35f7e5601281fa344ef5a2e19c535197946d8221cf987b349d9",
+        ),
+        targets = listOf(AppTarget(version = "9.12.0", versionCode = 260091200, minSdk = 26)),
     )
 
     val CLINK = Compatibility(
@@ -697,6 +730,17 @@ internal object AppCompatibilities {
             "e4c15e30502f8da0e878e0fe73877403b8d99f8f761809507a6512ecfed84909",
         ),
         targets = listOf(AppTarget(version = "7.28.86.1", versionCode = 529, minSdk = 21)),
+    )
+
+    val ILOVEPDF = Compatibility(
+        name = "iLovePDF",
+        packageName = "com.ilovepdf.www",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xE5322D,
+        signatures = setOf(
+            "d36aa4f8780c982853e75476b6740ef10c2bb2cce972b5ff515eb2ea8edf891c",
+        ),
+        targets = listOf(AppTarget(version = "4.2.3", versionCode = 4002003, minSdk = 26)),
     )
 
     val IMO = Compatibility(
@@ -1072,7 +1116,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "12645b76721993f0f3faf82dddecd6c96355260bf44d06ce6246caf2fcf3ada8",
         ),
-        targets = listOf(AppTarget(version = "7.4.8", versionCode = 182801, minSdk = 26)),
+        targets = listOf(AppTarget(version = "7.4.9", versionCode = 183411, minSdk = 26)),
     )
 
     val MY_APK = Compatibility(

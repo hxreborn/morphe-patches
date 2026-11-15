@@ -20,8 +20,6 @@
  */
 package app.hxreborn.extension.ultimea.equalizer;
 
-import java.util.Locale;
-
 enum EqualizerGroup {
 
     BASS("Bass EQ", 0, 3), MIDRANGE("Midrange EQ", 4, 6), TREBLE("Treble EQ", 7, 9);
@@ -44,11 +42,11 @@ enum EqualizerGroup {
         }
         for (int band = this.first; band <= this.last; band++) {
             int gain = curve.gain(band) + direction;
-            if (gain < EqualizerCurve.MIN_GAIN_TENTHS || gain > EqualizerCurve.MAX_GAIN_TENTHS) {
-                return false;
+            if (gain >= EqualizerCurve.MIN_GAIN_TENTHS && gain <= EqualizerCurve.MAX_GAIN_TENTHS) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     EqualizerCurve adjust(EqualizerCurve curve, int direction) {
@@ -57,20 +55,10 @@ enum EqualizerGroup {
         }
         EqualizerCurve changed = curve;
         for (int band = this.first; band <= this.last; band++) {
-            changed = changed.withGain(band, curve.gain(band) + direction);
+            changed = changed.withGain(band, Math.max(EqualizerCurve.MIN_GAIN_TENTHS,
+                    Math.min(EqualizerCurve.MAX_GAIN_TENTHS, curve.gain(band) + direction)));
         }
         return changed;
-    }
-
-    String values(EqualizerCurve curve) {
-        StringBuilder text = new StringBuilder(this.title);
-        for (int band = this.first; band <= this.last; band++) {
-            text.append('\n')
-                .append(EqualizerCurve.frequency(band))
-                .append(" Hz  ")
-                .append(String.format(Locale.ROOT, "%+.1f dB", curve.gain(band) / 10.0));
-        }
-        return text.toString();
     }
 
 }
