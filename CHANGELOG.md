@@ -1,3 +1,24 @@
+## [1.81.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.80.1-dev.1...v1.81.0-dev.1) (2026-11-16)
+
+### Bug Fixes
+
+* **BitTorrent - Unlock premium:** show Pro settings in patches menu ([322e241](https://github.com/hxreborn/morphe-patches/commit/322e2418cbaa08060d920816ef65961ce0bee8fe))
+* **Public - Remove promotions:** remove pop-ups over bottom bar tabs ([38985d3](https://github.com/hxreborn/morphe-patches/commit/38985d3ddd8ae6a9aed4c01cd5bb02f6c51210db)), closes [#770](https://github.com/hxreborn/morphe-patches/issues/770)
+* **µTorrent - Unlock premium:** show Pro settings in patches menu ([d362ad1](https://github.com/hxreborn/morphe-patches/commit/d362ad1b67bb634c906fc99b929fc3f095917992))
+
+### New Features
+
+* **BitTorrent - AMOLED dark theme:** add black surfaces setting to menu ([e13d256](https://github.com/hxreborn/morphe-patches/commit/e13d256bebd98c35a517eef396cb17e75e389bef))
+* **BitTorrent - Fix screen insets:** keep screens clear of system bars ([812c3c1](https://github.com/hxreborn/morphe-patches/commit/812c3c1faabb4d8b768f413cce5362b7552a77f8))
+* **Botim - Hide Home tab:** open on Calls without Home tab ([14c6a4c](https://github.com/hxreborn/morphe-patches/commit/14c6a4ca708c7051c7bb2c30472acd17898f995e))
+* **Botim - Remove Home sections:** remove Services and Discover banners ([14b2843](https://github.com/hxreborn/morphe-patches/commit/14b28436d64ea1718c13f1f6bede0292dc88d754)), closes [#788](https://github.com/hxreborn/morphe-patches/issues/788)
+* **Proton Mail - Scheduled Trash and Spam deletion:** run in background ([a0020df](https://github.com/hxreborn/morphe-patches/commit/a0020dffefbdf540412b63cfc7bd1ae75590a81e)), closes [#778](https://github.com/hxreborn/morphe-patches/issues/778)
+* **Public - Disable trailer autoplay:** show posters on Local Drama ([cd13922](https://github.com/hxreborn/morphe-patches/commit/cd139224315b78f25f8984ea338aa40cb476903c)), closes [#770](https://github.com/hxreborn/morphe-patches/issues/770)
+* **Public - Remove startup animation:** open without animated logo ([7f21647](https://github.com/hxreborn/morphe-patches/commit/7f21647461d1053800d91567c63dca8d85c23ae5)), closes [#770](https://github.com/hxreborn/morphe-patches/issues/770)
+* **TradingView - Disable analytics:** block telemetry and Snowplow ([6e739f7](https://github.com/hxreborn/morphe-patches/commit/6e739f7ca1e84fd245bb5dd068afa2f005cbfc49)), closes [#895](https://github.com/hxreborn/morphe-patches/issues/895)
+* **µTorrent - AMOLED dark theme:** add black surfaces setting to menu ([1bacbc3](https://github.com/hxreborn/morphe-patches/commit/1bacbc38f27593ad03b61f390f1f97e7dce9ac8f))
+* **µTorrent - Fix screen insets:** keep screens clear of system bars ([af044da](https://github.com/hxreborn/morphe-patches/commit/af044dad4e181c2d89119b70c9e9f74eec5e6f84))
+
 ## [1.80.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.80.0...v1.80.1-dev.1) (2026-11-16)
 
 ### Bug Fixes
