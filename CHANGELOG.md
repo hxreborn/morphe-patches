@@ -1,3 +1,9 @@
+## [1.80.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.80.0...v1.80.1-dev.1) (2026-11-16)
+
+### Bug Fixes
+
+* **Proton Mail - Hide upgrade promotions:** skip sale screens at launch ([3483bb0](https://github.com/hxreborn/morphe-patches/commit/3483bb0116939e27af6333e3cf240be6c8da5baf))
+
 ## [1.80.0](https://github.com/hxreborn/morphe-patches/compare/v1.79.0...v1.80.0) (2026-11-16)
 
 ### Bug Fixes
