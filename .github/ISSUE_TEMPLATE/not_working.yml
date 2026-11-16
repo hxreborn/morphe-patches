@@ -496,12 +496,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.80.0"
         - "1.80.0-dev.3"
         - "1.80.0-dev.2"
         - "1.80.0-dev.1"
         - "1.79.0-dev.7"
         - "1.79.0-dev.6"
-        - "1.79.0"
         - "Older than these"
         # /generated
     validations:
