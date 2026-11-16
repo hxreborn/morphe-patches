@@ -20,8 +20,13 @@
  */
 package app.hxreborn.extension.protonmail;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import app.hxreborn.extension.proton.AppliedPatches;
 import app.hxreborn.extension.proton.PatchSettings;
@@ -37,6 +42,10 @@ final class ScheduledDeletionSettings {
     private static final String LAST_EMPTIED_MS = "last_emptied_ms";
 
     private static final String SHOW_TOAST = "show_toast";
+
+    private static final String DELETED_IN_BACKGROUND = "deleted_in_background";
+
+    private static final String LABEL_SEPARATOR = ",";
 
     private ScheduledDeletionSettings() {
 
@@ -125,6 +134,44 @@ final class ScheduledDeletionSettings {
         preferences.edit().putLong(key(label, accountId), System.currentTimeMillis()).apply();
     }
 
+    static synchronized void addDeletedInBackground(Context context, String accountId, List<String> labels) {
+        final SharedPreferences preferences = preferences(context);
+        if (preferences == null || accountId == null || labels.isEmpty()) {
+            return;
+        }
+
+        final List<String> deleted = ScheduledDeletion.combinedLabels(deletedInBackground(preferences, accountId),
+                labels);
+        preferences.edit()
+            .putString(deletedInBackgroundKey(accountId), TextUtils.join(LABEL_SEPARATOR, deleted))
+            .apply();
+    }
+
+    static synchronized List<String> takeDeletedInBackground(Context context, String accountId) {
+        final SharedPreferences preferences = preferences(context);
+        if (preferences == null || accountId == null) {
+            return new ArrayList<>();
+        }
+
+        final List<String> deleted = deletedInBackground(preferences, accountId);
+        if (!deleted.isEmpty()) {
+            preferences.edit().remove(deletedInBackgroundKey(accountId)).apply();
+        }
+        return deleted;
+    }
+
+    private static List<String> deletedInBackground(SharedPreferences preferences, String accountId) {
+        final List<String> stored = Arrays
+            .asList(preferences.getString(deletedInBackgroundKey(accountId), "").split(LABEL_SEPARATOR));
+        final List<String> deleted = new ArrayList<>();
+        for (String label : ScheduledDeletion.EMPTIED_LABELS) {
+            if (stored.contains(label)) {
+                deleted.add(label);
+            }
+        }
+        return deleted;
+    }
+
     static boolean showsToast(Context context) {
         final SharedPreferences preferences = preferences(context);
         return preferences == null || preferences.getBoolean(SHOW_TOAST, true);
@@ -141,6 +188,10 @@ final class ScheduledDeletionSettings {
 
     private static String intervalKey(String label) {
         return INTERVAL_SECONDS + "_" + label;
+    }
+
+    private static String deletedInBackgroundKey(String accountId) {
+        return DELETED_IN_BACKGROUND + "_" + accountId;
     }
 
     private static String key(String label, String accountId) {

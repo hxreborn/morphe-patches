@@ -25,6 +25,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -554,6 +557,32 @@ public final class ScheduledDeletionSettingsTest {
 
         assertTrue(ScheduledDeletionSettings.isActive(this.context, TRASH));
         assertTrue(ScheduledDeletionSettings.isActive(this.context, SPAM));
+    }
+
+    @Test
+    public void backgroundDeletionIsTakenOnceInFolderOrder() {
+        ScheduledDeletionSettings.addDeletedInBackground(this.context, "account", Collections.singletonList(SPAM));
+        ScheduledDeletionSettings.addDeletedInBackground(this.context, "account", Arrays.asList(TRASH, SPAM));
+
+        assertEquals(Arrays.asList(TRASH, SPAM),
+                ScheduledDeletionSettings.takeDeletedInBackground(this.context, "account"));
+        assertTrue(ScheduledDeletionSettings.takeDeletedInBackground(this.context, "account").isEmpty());
+    }
+
+    @Test
+    public void backgroundDeletionBelongsToItsAccount() {
+        ScheduledDeletionSettings.addDeletedInBackground(this.context, "first", Collections.singletonList(TRASH));
+
+        assertTrue(ScheduledDeletionSettings.takeDeletedInBackground(this.context, "second").isEmpty());
+        assertEquals(Collections.singletonList(TRASH),
+                ScheduledDeletionSettings.takeDeletedInBackground(this.context, "first"));
+    }
+
+    @Test
+    public void emptyBackgroundDeletionStoresNothing() {
+        ScheduledDeletionSettings.addDeletedInBackground(this.context, "account", Collections.emptyList());
+
+        assertFalse(this.preferences.contains("deleted_in_background_account"));
     }
 
 }

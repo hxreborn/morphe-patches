@@ -80,13 +80,17 @@ public final class ScheduledDeletion {
             shownLabelId = UniffiCalls.callNoArg(mailbox, "labelId");
             cacheSystemLabelIds(sessionSnapshot);
 
-            if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account)) {
-                return;
+            final List<String> deletedInBackground = ScheduledDeletionSettings
+                .takeDeletedInBackground(Utils.getContext(), account);
+            final boolean deletionStarted = ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account)
+                    && startDeletionWorker("hx-scheduled-deletion", "Failed to empty Trash and Spam", () -> {
+                        ScheduledDeletionEditor
+                            .showDeleted(combinedLabels(deletedInBackground, emptyDueLabels(sessionSnapshot, account)));
+                        return null;
+                    });
+            if (!deletionStarted) {
+                ScheduledDeletionEditor.showDeleted(deletedInBackground);
             }
-            startDeletionWorker("hx-scheduled-deletion", "Failed to empty Trash and Spam", () -> {
-                ScheduledDeletionEditor.showDeleted(emptyDueLabels(sessionSnapshot, account));
-                return null;
-            });
         } catch (Throwable throwable) {
             Log.e(TAG, "Failed to start scheduled deletion", throwable);
         }
@@ -107,9 +111,9 @@ public final class ScheduledDeletion {
         }
     }
 
-    private static void startDeletionWorker(String threadName, String failureMessage, Callable<Void> deletion) {
+    private static boolean startDeletionWorker(String threadName, String failureMessage, Callable<Void> deletion) {
         if (!DELETING.compareAndSet(false, true)) {
-            return;
+            return false;
         }
 
         final Thread worker = new Thread(() -> {
@@ -127,6 +131,17 @@ public final class ScheduledDeletion {
             DELETING.set(false);
             throw throwable;
         }
+        return true;
+    }
+
+    static List<String> combinedLabels(List<String> first, List<String> second) {
+        final List<String> labels = new ArrayList<>(first);
+        for (String label : second) {
+            if (!labels.contains(label)) {
+                labels.add(label);
+            }
+        }
+        return labels;
     }
 
     private static void emptyDueLabelsOfEveryAccount(Object mailSession) throws Exception {
@@ -162,7 +177,9 @@ public final class ScheduledDeletion {
             Log.w(TAG, "userSessionFromStoredSession returned no session");
             return;
         }
-        Log.i(TAG, "Background deletion emptied " + emptyDueLabels(userSession, account));
+        final List<String> deletedLabels = emptyDueLabels(userSession, account);
+        ScheduledDeletionSettings.addDeletedInBackground(Utils.getContext(), account, deletedLabels);
+        Log.i(TAG, "Background deletion emptied " + deletedLabels);
     }
 
     private static List<String> emptyDueLabels(Object mailSession, String account) throws Exception {
