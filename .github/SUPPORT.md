@@ -13,6 +13,7 @@ This is a hobby project run by one developer. Requests for new apps go to Discus
 
 ## Good to know
 
+- There are no ETAs. Requests and issues are handled when there's time, in no fixed order, and pinging or mentioning the developer doesn't move them up. Progress is posted on the request or issue itself.
 - One app per request. Upvote an existing request instead of opening another one for the same app. Each person can have 3 requests open at a time.
 - Each app update covers one app version. A newer version gets its own app update request.
 - Closed issues are locked automatically after about a week without activity. Anything new goes in a new issue.
