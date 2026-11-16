@@ -36,3 +36,16 @@ internal object UpgradeUpsellingButtonFingerprint : Fingerprint(
         resourceLiteral(ResourceType.STRING, "upselling_button_item_content_description"),
     ),
 )
+
+internal const val PROMOTION_MODAL_COUNT = 4
+
+internal object PromotionModalShowStateFingerprint : Fingerprint(
+    name = "toString",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf(),
+    strings = listOf("Show(wave="),
+)
+
+internal object HomeInterstitialPriorityFingerprint : Fingerprint(
+    strings = listOf("blackFridayState", "springSaleState", "summerCampaignState", "fallPromoState"),
+)
