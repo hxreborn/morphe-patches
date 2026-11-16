@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.80.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.80.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;560 patches total
+> **[v1.80.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.80.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;563 patches total
 
 ### Featured apps
 
@@ -501,6 +501,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="biobird-flashcards-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="biobird-flashcards-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/biobird/misc/premium/UnlockPremiumPatch.kt) | Unlocks all chapters and previous-year papers. Signing in requires GmsCore support. |
+
+</details>
+
+<a id="bittorrent"></a>
+<details>
+<summary><img src=".github/assets/icons/bittorrent.png" width="18" align="top">&nbsp;&nbsp;BitTorrent&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.4.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="bittorrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bittorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes ads. |
 
 </details>
 
@@ -2414,8 +2430,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.2.221 | 2.2.224 | 2.2.227 |
-| :---: | :---: | :---: |
+| 2.2.221 | 2.2.224 | 2.2.227 | 2.2.229 |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2430,8 +2446,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.0.2 |
-| :---: |
+| 3.0.2 | 3.1.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2462,8 +2478,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 11.20.1 | 11.23.0 |
-| :---: | :---: |
+| 11.20.1 | 11.23.0 | 11.24.0 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -3356,6 +3372,23 @@ signs in without a token.
 
 3. Paste the line into the **App Check token** option in Morphe Manager, then patch, install and sign in on
    the same day.
+
+</details>
+
+<a id="torrent"></a>
+<details>
+<summary><img src=".github/assets/icons/utorrent.png" width="18" align="top">&nbsp;&nbsp;µTorrent&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.3.20 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="torrent-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/theme/AmoledThemePatch.kt) | Makes the torrent and media page backgrounds pure black in dark mode. |
+| <a id="torrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes ads. |
 
 </details>
 

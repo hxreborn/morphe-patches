@@ -106,6 +106,8 @@ body:
         - "Biobird Flashcards 2.0.2"
         - "Biobird Flashcards 3.0.0"
         - "Biobird Flashcards (another version, type it below)"
+        - "BitTorrent 8.4.3"
+        - "BitTorrent (another version, type it below)"
         - "Biwenger 4.0.4"
         - "Biwenger 4.0.5"
         - "Biwenger (another version, type it below)"
@@ -373,8 +375,10 @@ body:
         - "QR & Barcode Scanner 2.2.221"
         - "QR & Barcode Scanner 2.2.224"
         - "QR & Barcode Scanner 2.2.227"
+        - "QR & Barcode Scanner 2.2.229"
         - "QR & Barcode Scanner (another version, type it below)"
         - "Quick Cursor 3.0.2"
+        - "Quick Cursor 3.1.0"
         - "Quick Cursor (another version, type it below)"
         - "Quranify 2.2.8"
         - "Quranify 2.2.9"
@@ -383,6 +387,7 @@ body:
         - "Quranify (another version, type it below)"
         - "Radio Javan 11.20.1"
         - "Radio Javan 11.23.0"
+        - "Radio Javan 11.24.0"
         - "Radio Javan (another version, type it below)"
         - "Raindrop.io 4.8.1"
         - "Raindrop.io (another version, type it below)"
@@ -493,6 +498,8 @@ body:
         - "Yi iot (another version, type it below)"
         - "Yuka 5.7"
         - "Yuka (another version, type it below)"
+        - "\u00b5Torrent 8.3.20"
+        - "\u00b5Torrent (another version, type it below)"
         # /generated
     validations:
       required: true

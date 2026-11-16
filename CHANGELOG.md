@@ -1,3 +1,17 @@
+## [1.80.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.80.0-dev.1...v1.80.0-dev.2) (2026-11-16)
+
+### New Features
+
+* **BitTorrent - Unlock premium:** enable Pro features and remove ads ([666af2c](https://github.com/hxreborn/morphe-patches/commit/666af2cb9da24394c57e04bcb98360b71b2974aa))
+* **µTorrent - AMOLED dark theme:** make page backgrounds black ([a6c8028](https://github.com/hxreborn/morphe-patches/commit/a6c80289d6498a824a4938fc7119ca897e5d9386))
+* **µTorrent - Unlock premium:** enable Pro features and remove ads ([05c9dbd](https://github.com/hxreborn/morphe-patches/commit/05c9dbddffe4b9ee15a860b4fceb993637d5e1bc))
+
+### Updated App Support
+
+* **QR & Barcode Scanner:** add support for `2.2.229` ([9882359](https://github.com/hxreborn/morphe-patches/commit/9882359e0c61e7bb7e48606b155a8a908e959d0e)), closes [#838](https://github.com/hxreborn/morphe-patches/issues/838)
+* **Quick Cursor:** add support for `3.1.0` ([0dbc4b9](https://github.com/hxreborn/morphe-patches/commit/0dbc4b93491042fe873530fc64196ff8bdb1f4c7)), closes [#839](https://github.com/hxreborn/morphe-patches/issues/839)
+* **Radio Javan:** add support for `11.24.0` ([a763d4a](https://github.com/hxreborn/morphe-patches/commit/a763d4ada07ffe1fb86f6f9d3cd56b19d78759a6)), closes [#841](https://github.com/hxreborn/morphe-patches/issues/841)
+
 ## [1.80.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.79.0...v1.80.0-dev.1) (2026-11-15)
 
 ### New Features
