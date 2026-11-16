@@ -38,6 +38,8 @@ public final class PatchSettings {
 
     static final String DISABLED_KEY_PREFIX = "hx_disabled_";
 
+    private static final int SILENT_DELETED_MESSAGE_MIME = 1007;
+
     private static final String START_FOLDER = "start_folder";
 
     private static final String SELECTED_BUSINESS_CHATS = "selected_business_chats";
@@ -54,7 +56,8 @@ public final class PatchSettings {
     }
 
     static boolean isEnabled(String key) {
-        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key);
+        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key)
+                && !PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key.equals(key);
         return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
@@ -72,6 +75,23 @@ public final class PatchSettings {
 
     public static boolean removeChatPayments() {
         return AppliedPatches.removeChatPayments() && isEnabled(PatchSetting.REMOVE_CHAT_PAYMENTS.key);
+    }
+
+    public static boolean removeDeletedMessageNotices() {
+        return AppliedPatches.removeDeletedMessageNotices()
+                && isEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key);
+    }
+
+    public static boolean hasStatusUnlessRemovingNotices(boolean hasStatus) {
+        return hasStatus && !removeDeletedMessageNotices();
+    }
+
+    public static int deletedMessageMime(int notice) {
+        return removeDeletedMessageNotices() ? SILENT_DELETED_MESSAGE_MIME : notice;
+    }
+
+    public static String deletedMessageBody(String notice) {
+        return removeDeletedMessageNotices() ? "" : notice;
     }
 
     public static boolean disableAiFeatures() {

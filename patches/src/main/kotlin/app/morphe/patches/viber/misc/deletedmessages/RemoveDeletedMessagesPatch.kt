@@ -6,6 +6,7 @@ package app.morphe.patches.viber.misc.deletedmessages
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -13,6 +14,9 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
+import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
+import app.morphe.patches.viber.shared.markPatchApplied
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -24,22 +28,32 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val DELETE_SILENTLY_REGISTERS = 6
 private const val SILENT_EVENT_REGISTERS = 12
 private const val NOTICE_FILTER_COUNT = 3
+private const val REMOVING_NOTICES = "$VIBER_SETTINGS_CLASS->removeDeletedMessageNotices()Z"
+private const val STATUS_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->hasStatusUnlessRemovingNotices(Z)Z"
+private const val MIME_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->deletedMessageMime(I)I"
+private const val BODY_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->deletedMessageBody(Ljava/lang/String;)Ljava/lang/String;"
 
 @Suppress("unused")
-val removeDeletedMessagesPatch = bytecodePatch(
+val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
     name = "Remove deleted message notices",
     description = "Requests silent deletion and removes deleted message notices from chats.",
-    default = false,
 ) {
     compatibleWith(AppCompatibilities.VIBER)
-    dependsOn(spoofSignaturePatch)
+    dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 
     execute {
+        markPatchApplied("removeDeletedMessageNotices", removeDeletedMessagesPatch)
         val request = DeleteMessageRequestFingerprint.matchSingle()
         val (requestCall) = request.instructionMatches
         val requestRegisters = requestCall.instruction as RegisterRangeInstruction
         val silentFlag = requestRegisters.startRegister + requestRegisters.registerCount - 1
-        request.method.addInstructions(requestCall.index, "const/16 v$silentFlag, 0x1")
+        request.method.addInstructions(
+            requestCall.index,
+            """
+                invoke-static {}, $REMOVING_NOTICES
+                move-result v$silentFlag
+            """,
+        )
 
         val silent = SilentDeletedMessageFingerprint.matchSingle()
         val (_, _, statusResult, _, statusBranch) = silent.instructionMatches
@@ -76,16 +90,28 @@ val removeDeletedMessagesPatch = bytecodePatch(
         val deleteSilently = "$controller->deleteMessageSilently($MESSAGE_ENTITY)V"
         controllerClass.addMethod(
             "deleteMessageSilently", listOf(MESSAGE_ENTITY), "V", AccessFlags.PUBLIC.value, DELETE_SILENTLY_REGISTERS, """
+                invoke-static {}, $REMOVING_NOTICES
+                move-result v0
+                if-eqz v0, :done
                 invoke-virtual {p1}, $MESSAGE_ENTITY->getMessageToken()J
                 move-result-wide v0
                 const/4 v2, 0x0
                 invoke-virtual {p0, v0, v1, v2}, $silentDelete
+                :done
                 return-void
             """,
         )
         val handleEvent = "$controller->handleSilentDeletedMessage($DELETED_MESSAGE_EVENT)V"
         controllerClass.addMethod(
             "handleSilentDeletedMessage", listOf(DELETED_MESSAGE_EVENT), "V", AccessFlags.PUBLIC.value, SILENT_EVENT_REGISTERS, """
+                invoke-static {}, $REMOVING_NOTICES
+                move-result v0
+                if-nez v0, :removing
+                iget-wide v0, p1, $DELETED_MESSAGE_EVENT->messageToken:J
+                const/4 v2, 0x0
+                invoke-virtual {p0, v0, v1, v2}, $silentDelete
+                return-void
+                :removing
                 iget-object v0, p0, ${descriptor(messageQueryProvider)}
                 invoke-interface {v0}, ${descriptor(providerGetMethod)}
                 move-result-object v0
@@ -114,9 +140,27 @@ val removeDeletedMessagesPatch = bytecodePatch(
         )
         val controllerRegister = (silentCall.instruction as FiveRegisterInstruction).registerC
         event.method.replaceInstruction(silentCall.index, "invoke-virtual {v$controllerRegister, p1}, $handleEvent")
-        silent.method.addInstructions(statusResult.index + 1, "const/4 v$statusRegister, 0x0")
-        deleted.method.replaceInstruction(mimeConstant.index, "const/16 v$mimeRegister, $SILENT_DELETED_MESSAGE_MIME")
-        deleted.method.addInstructions(bodyResult.index + 1, "const-string v$bodyRegister, \"\"")
+        silent.method.addInstructions(
+            statusResult.index + 1,
+            """
+                invoke-static {v$statusRegister}, $STATUS_UNLESS_REMOVING
+                move-result v$statusRegister
+            """,
+        )
+        deleted.method.addInstructions(
+            mimeConstant.index + 1,
+            """
+                invoke-static/range {v$mimeRegister .. v$mimeRegister}, $MIME_UNLESS_REMOVING
+                move-result v$mimeRegister
+            """,
+        )
+        deleted.method.addInstructions(
+            bodyResult.index + 1,
+            """
+                invoke-static/range {v$bodyRegister .. v$bodyRegister}, $BODY_UNLESS_REMOVING
+                move-result-object v$bodyRegister
+            """,
+        )
         deleted.method.addInstructions(messageUpdate.index + 1, "invoke-virtual {v${(controllerRead.instruction as TwoRegisterInstruction).registerB}, v$messageRegister}, $deleteSilently")
     }
 }

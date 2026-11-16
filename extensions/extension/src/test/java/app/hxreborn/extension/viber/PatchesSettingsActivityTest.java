@@ -88,8 +88,8 @@ public final class PatchesSettingsActivityTest {
             titles.add(setting.title());
         }
 
-        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove typing privacy banner",
-                "Remove list gaps", "Disable AI features", "Injected disappearing media title",
+        Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove deleted message notices",
+                "Remove typing privacy banner", "Remove list gaps", "Disable AI features", "Injected disappearing media title",
                 "Injected business name", "Injected folder title", "Injected start folder title",
                 "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
                 "Hide More screen items", "Injected online status title", "Injected media privacy title",
@@ -467,6 +467,21 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String removeChatPaymentsDescription() {
             return "Removes payment actions from chat menus.";
+        }
+
+        @Implementation
+        protected static boolean removeDeletedMessageNotices() {
+            return true;
+        }
+
+        @Implementation
+        protected static String removeDeletedMessageNoticesName() {
+            return "Remove deleted message notices";
+        }
+
+        @Implementation
+        protected static String removeDeletedMessageNoticesDescription() {
+            return "Removes deleted message notices from chats.";
         }
 
         @Implementation

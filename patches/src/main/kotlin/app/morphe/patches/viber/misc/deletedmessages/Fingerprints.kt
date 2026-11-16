@@ -15,7 +15,7 @@ import com.android.tools.smali.dexlib2.Opcode
 
 internal const val DELETED_MESSAGE_EVENT = "Lcom/viber/jni/im2/CDeletedMessageMsg;"
 internal const val MESSAGE_ENTITY = "Lcom/viber/voip/feature/model/main/message/MessageEntity;"
-internal const val SILENT_DELETED_MESSAGE_MIME = 1007
+private const val SILENT_DELETED_MESSAGE_MIME = 1007
 private const val DELETED_NOTICE_MIME = 1008
 
 internal object DeletedMessageFingerprint : Fingerprint(
