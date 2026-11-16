@@ -143,9 +143,7 @@ body:
         - "Desh Telugu Keyboard 17.7.1"
         - "Desh Telugu Keyboard 17.7.3"
         - "Desh Telugu Keyboard (another version, type it below)"
-        - "DevCheck 6.57"
-        - "DevCheck 6.60"
-        - "DevCheck 6.62"
+        - "DevCheck 6.63"
         - "DevCheck (another version, type it below)"
         - "Duolingo 6.103.6"
         - "Duolingo 6.104.4"
@@ -496,11 +494,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.81.0-dev.2"
         - "1.81.0-dev.1"
         - "1.80.1-dev.1"
         - "1.80.0-dev.3"
         - "1.80.0-dev.2"
-        - "1.80.0-dev.1"
         - "1.80.0"
         - "Older than these"
         # /generated
@@ -710,7 +708,6 @@ body:
         - "DepthPix \u00b7 Unlock premium"
         - "Desh Telugu Keyboard \u00b7 Disable tracking"
         - "Desh Telugu Keyboard \u00b7 Unlock premium"
-        - "DevCheck \u00b7 AMOLED dark theme"
         - "DevCheck \u00b7 Hide menu items"
         - "DevCheck \u00b7 Unlock premium"
         - "Duolingo \u00b7 Disable dynamic app icon"

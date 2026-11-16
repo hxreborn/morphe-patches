@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.81.0-dev.1",
+  "version": "1.81.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -131,52 +131,6 @@
               },
               "isExperimental": false,
               "minSdk": 21,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "AMOLED dark theme",
-      "description": "Adds a pure black option to the dark theme.",
-      "default": true,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "flar2.devcheck",
-          "name": "DevCheck",
-          "description": null,
-          "apkFileType": "APKS_REQUIRED",
-          "appIconColor": "#1E88E5",
-          "signatures": [
-            "f816aa5ff72263d1a9a6afb81e4c25e72fbf9002444f80a6e043f080c7010990"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "6.57",
-              "versionCodes": {
-                "ARM64_V8A": 657,
-                "ARMEABI_V7A": 657,
-                "X86_64": 657,
-                "X86": 657
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "6.60",
-              "versionCodes": {
-                "ARM64_V8A": 660,
-                "ARMEABI_V7A": 660,
-                "X86_64": 660,
-                "X86": 660
-              },
-              "isExperimental": false,
-              "minSdk": 24,
               "description": null
             }
           ]
@@ -9964,36 +9918,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "6.57",
+              "version": "6.63",
               "versionCodes": {
-                "ARM64_V8A": 657,
-                "ARMEABI_V7A": 657,
-                "X86_64": 657,
-                "X86": 657
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "6.60",
-              "versionCodes": {
-                "ARM64_V8A": 660,
-                "ARMEABI_V7A": 660,
-                "X86_64": 660,
-                "X86": 660
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "6.62",
-              "versionCodes": {
-                "ARM64_V8A": 662,
-                "ARMEABI_V7A": 662,
-                "X86_64": 662,
-                "X86": 662
+                "ARM64_V8A": 663,
+                "ARMEABI_V7A": 663,
+                "X86_64": 663,
+                "X86": 663
               },
               "isExperimental": false,
               "minSdk": 24,
@@ -20282,36 +20212,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "6.57",
+              "version": "6.63",
               "versionCodes": {
-                "ARM64_V8A": 657,
-                "ARMEABI_V7A": 657,
-                "X86_64": 657,
-                "X86": 657
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "6.60",
-              "versionCodes": {
-                "ARM64_V8A": 660,
-                "ARMEABI_V7A": 660,
-                "X86_64": 660,
-                "X86": 660
-              },
-              "isExperimental": false,
-              "minSdk": 24,
-              "description": null
-            },
-            {
-              "version": "6.62",
-              "versionCodes": {
-                "ARM64_V8A": 662,
-                "ARMEABI_V7A": 662,
-                "X86_64": 662,
-                "X86": 662
+                "ARM64_V8A": 663,
+                "ARMEABI_V7A": 663,
+                "X86_64": 663,
+                "X86": 663
               },
               "isExperimental": false,
               "minSdk": 24,

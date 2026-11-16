@@ -1,3 +1,9 @@
+## [1.81.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.1...v1.81.0-dev.2) (2026-11-16)
+
+### Updated App Support
+
+* **DevCheck:** add support for 6.63 ([9a7decc](https://github.com/hxreborn/morphe-patches/commit/9a7deccf36283b6794cfe8c5720366d0ee37e00a))
+
 ## [1.81.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.80.1-dev.1...v1.81.0-dev.1) (2026-11-16)
 
 ### Bug Fixes
