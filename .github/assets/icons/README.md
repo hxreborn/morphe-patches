@@ -23,6 +23,8 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 |---|---|---|---|
 | `ilovepdf.png` | iLovePDF (`com.ilovepdf.www`) | iLovePDF | Play 4.2.3, round launcher icon `res/drawable/ic_round_ilovepdf.png` |
 | `arduinodroid.png` | ArduinoDroid (`name.antonsmirnov.android.arduinodroid2`) | PE Smirnov Anton Sergeevich | Play 9.7.6, xxhdpi launcher icon `res/m/ay.png`, cut to a circle |
+| `bittorrent.png` | BitTorrent (`com.bittorrent.client`) | Rainberry, Inc. | Play 8.4.3, `res/drawable/launcher_round.png` |
+| `utorrent.png` | µTorrent (`com.utorrent.client`) | Rainberry, Inc. | Play 8.3.20, `res/drawable/launcher_round.png` |
 | `redreader.png` | RedReader (`org.quantumbadger.redreader`) | QuantumBadger | Play 1.27, `res/mipmap-xxxhdpi/icon.png`, cut to a circle |
 | `redreaderalpha.png` | RedReader Alpha (`org.quantumbadger.redreaderalpha`) | QuantumBadger | Official Alpha 375, `mipmap/icon_inv` xxxhdpi (`res/EM.png`), cut to a circle |
 | `launchbox.png` | LaunchBox (`com.unbrokensoftware.launchbox`) | Unbroken Software, LLC | APK 1.23, adaptive icon `res/mipmap-anydpi-v26/icon.xml`, white background under `launcher_foreground` (xxxhdpi), cut to a circle |
@@ -198,6 +200,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `ultimateguitar.png` | Ultimate Guitar: Chords & Tabs (`com.ultimateguitar.tabs`) | Ultimate Guitar USA LLC | APK 7.3.36, square icon `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` cut to a circle |
 | `xtreamplayer.png` | Xtream Player (`me.aap.fermatamod.dear.google.why.bingo2.rec`) | malebuffy | GitHub 1.8.12, adaptive round icon `res/mipmap-anydpi-v26/xtream_launcher_round.xml` (`res/drawable-xxxhdpi-v4/xtream_icon_app.png`, cut to a circle) |
 | `freedom.png` | Freedom (`to.freedom.android2`) | Eighty Percent Solutions Corporation | Play 7.18.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
+| `shttps.png` | SHTTPS Marketless (`com.phlox.simpleserver.marketless`) | Fedir Tsapana (Phlox) | APK 3.4.7, adaptive icon `mipmap/ic_launcher` (`ic_launcher_background` under `ic_launcher_foreground`, xhdpi, centre 72dp cut to a circle) |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

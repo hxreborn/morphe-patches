@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.79.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.79.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;559 patches total
+> **[v1.80.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.80.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;563 patches total
 
 ### Featured apps
 
@@ -254,8 +254,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 1.4.2.141 |
-| :---: |
+| 1.4.2.141 | 1.5.0.145 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -310,8 +310,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 2.0.2 |
-| :---: |
+| 2.0.2 | 2.0.3 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -342,8 +342,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 26.30.05 | 26.38.08 | 26.41.06 | 26.41.07 | 26.43.17 |
-| :---: | :---: | :---: | :---: | :---: |
+| 26.30.05 | 26.38.08 | 26.41.06 | 26.41.07 | 26.43.17 | 26.45.08 |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -504,6 +504,22 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
+<a id="bittorrent"></a>
+<details>
+<summary><img src=".github/assets/icons/bittorrent.png" width="18" align="top">&nbsp;&nbsp;BitTorrent&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.4.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="bittorrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bittorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes ads. |
+
+</details>
+
 <a id="biwenger"></a>
 <details>
 <summary><img src=".github/assets/icons/biwenger.png" width="18" align="top">&nbsp;&nbsp;Biwenger&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
@@ -511,8 +527,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.0.4 |
-| :---: |
+| 4.0.4 | 4.0.5 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -564,8 +580,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 4.20.1 | 4.21.0 |
-| :---: | :---: |
+| 4.20.1 | 4.21.0 | 4.21.1 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -743,8 +759,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.9.2 |
-| :---: |
+| 1.9.2 | 2.0.2 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -777,8 +793,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.2.3 |
-| :---: |
+| 4.2.3 | 4.2.5 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -903,8 +919,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 17.7.1 |
-| :---: |
+| 17.7.1 | 17.7.3 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -975,8 +991,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 9.7 |
-| :---: |
+| 9.7 | 10.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1023,8 +1039,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.94 |
-| :---: |
+| 2.94 | 2.95 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1091,8 +1107,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.0.15 | 3.0.18 |
-| :---: | :---: |
+| 3.0.15 | 3.0.18 | 3.0.20 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1161,8 +1177,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 5.0.0 |
-| :---: |
+| 5.0.0 | 5.1.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1347,8 +1363,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 6.9.0-AOS-JOYN_AT-2212264 |
-| :---: |
+| 6.9.0-AOS-JOYN_AT-2212264 | 6.9.2-AOS-JOYN_AT-2282180 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1498,8 +1514,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.17.5 |
-| :---: |
+| 2.17.5 | 2.18.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1533,8 +1549,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.1.26.26.21DB1F1B.3C81F7001 | 7.1.26.38.B4684D03.6207A61BA |
-| :---: | :---: |
+| 7.1.26.26.21DB1F1B.3C81F7001 | 7.1.26.38.B4684D03.6207A61BA | 7.1.26.42.F9918E5E.7B9203C7B |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1549,8 +1565,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.24.5 |
-| :---: |
+| 1.24.5 | 1.25.3 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1582,8 +1598,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 8.11.0 |
-| :---: |
+| 8.11.0 | 8.12.2 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1857,8 +1873,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.8.3 |
-| :---: |
+| 2.8.3 | 2.9.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1943,8 +1959,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| v2.1.37.0 |
-| :---: |
+| v2.1.37.0 | v2.1.49.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1992,8 +2008,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 0.5.145 |
-| :---: |
+| 0.5.145 | 0.5.190 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2008,8 +2024,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.17.0 |
-| :---: |
+| 4.17.0 | 4.19.1 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2083,8 +2099,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.791.265 | 1.802.266 | 1.811.267 |
-| :---: | :---: | :---: |
+| 1.791.265 | 1.802.266 | 1.811.267 | 1.823.268 |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2121,8 +2137,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.9.3 |
-| :---: |
+| 3.9.3 | 3.9.4 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
@@ -2224,8 +2240,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.72 | 4.71 | 4.70 |
-| :---: | :---: | :---: |
+| 4.73 | 4.72 | 4.71 | 4.70 |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2414,8 +2430,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.2.221 | 2.2.224 | 2.2.227 |
-| :---: | :---: | :---: |
+| 2.2.221 | 2.2.224 | 2.2.227 | 2.2.229 |
+| :---: | :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2430,8 +2446,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.0.2 |
-| :---: |
+| 3.0.2 | 3.1.0 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2462,8 +2478,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 11.20.1 | 11.23.0 |
-| :---: | :---: |
+| 11.20.1 | 11.23.0 | 11.24.0 |
+| :---: | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2734,6 +2750,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="showly-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/showly/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black. |
 | <a id="showly-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/showly/misc/premium/UnlockPremiumPatch.kt) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, transparent widgets, and the News feed. |
+
+</details>
+
+<a id="shttps-marketless"></a>
+<details>
+<summary><img src=".github/assets/icons/shttps.png" width="18" align="top">&nbsp;&nbsp;SHTTPS Marketless&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 3.4.7 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="shttps-marketless-unlock-plus"></a>[Unlock PLUS](patches/src/main/kotlin/app/morphe/patches/shttps/misc/premium/UnlockPlusPatch.kt) | Unlocks remote screen control, control from external apps and auto-shutdown timeouts over 6 hours or off. |
 
 </details>
 
@@ -3340,6 +3372,23 @@ signs in without a token.
 
 3. Paste the line into the **App Check token** option in Morphe Manager, then patch, install and sign in on
    the same day.
+
+</details>
+
+<a id="torrent"></a>
+<details>
+<summary><img src=".github/assets/icons/utorrent.png" width="18" align="top">&nbsp;&nbsp;µTorrent&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 8.3.20 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="torrent-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/theme/AmoledThemePatch.kt) | Makes the torrent and media page backgrounds pure black in dark mode. |
+| <a id="torrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes ads. |
 
 </details>
 

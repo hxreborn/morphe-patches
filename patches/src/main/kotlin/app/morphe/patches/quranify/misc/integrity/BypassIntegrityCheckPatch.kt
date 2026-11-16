@@ -5,60 +5,51 @@
 package app.morphe.patches.quranify.misc.integrity
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.getReference
+import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
+import org.w3c.dom.Element
 
-private const val ANDROID_API_HOST = "api-android.quranify.pro"
-private const val NEW_API_HOST = "api-new.quranify.pro"
+private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/quranify/LocalApiServer;"
+private const val NETWORK_SECURITY_CONFIG_ATTRIBUTE = "android:networkSecurityConfig"
+private const val NETWORK_SECURITY_CONFIG_NAME = "hx_quranify_network_security"
+private const val LOCAL_CLEARTEXT_CONFIG =
+    """<network-security-config><domain-config cleartextTrafficPermitted="true">""" +
+        """<domain>127.0.0.1</domain></domain-config></network-security-config>"""
 
-private val OBFUSCATION_KEY =
-    "4fa27118e3059c6b2df74482b13960ce075aab21d4963f8812ef576dc04ba973".hexToBytes()
-
-private fun String.hexToBytes() = chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-
-private fun ByteArray.xorWithKey() =
-    mapIndexed { index, byte -> byte.toInt().xor(OBFUSCATION_KEY[index % OBFUSCATION_KEY.size].toInt()).toByte() }
-        .toByteArray()
-
-private fun String.deobfuscate() = String(hexToBytes().xorWithKey())
-
-private fun String.obfuscate() = encodeToByteArray().xorWithKey().joinToString("") { "%02x".format(it) }
-
-private val HEX_LITERAL = Regex("^(?:[0-9a-f]{2})+$")
+private val allowLocalCleartextPatch = resourcePatch {
+    execute {
+        document("AndroidManifest.xml").use { document ->
+            val application = document.getElementsByTagName("application").item(0) as Element
+            if (application.hasAttribute(NETWORK_SECURITY_CONFIG_ATTRIBUTE)) {
+                throw PatchException("Quranify already declares a network security configuration")
+            }
+            application.setAttribute(NETWORK_SECURITY_CONFIG_ATTRIBUTE, "@xml/$NETWORK_SECURITY_CONFIG_NAME")
+        }
+        get("res/xml/$NETWORK_SECURITY_CONFIG_NAME.xml").writeText(LOCAL_CLEARTEXT_CONFIG)
+    }
+}
 
 val bypassIntegrityCheckPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.QURANIFY)
+    extendWith("extensions/extension.mpe")
+    dependsOn(allowLocalCleartextPatch)
 
     execute {
-        val method = ApiEndpointsFingerprint.matchSingle().method
-
-        val redirected = method.instructions.toList().count { instruction ->
-            val encoded = instruction.getReference<StringReference>()?.string
-            if (encoded == null || !HEX_LITERAL.matches(encoded)) return@count false
-
-            val endpoint = runCatching { encoded.deobfuscate() }.getOrNull()
-            if (endpoint == null || !endpoint.contains(ANDROID_API_HOST)) return@count false
-
-            val register = (instruction as OneRegisterInstruction).registerA
-            val replacement = endpoint.replace(ANDROID_API_HOST, NEW_API_HOST).obfuscate()
-            method.replaceInstruction(
-                method.instructions.indexOf(instruction),
-                "const-string v$register, \"$replacement\"",
+        ApiEndpointsFingerprint.matchSingle().apply {
+            val (_, _, decodedBaseUrl) = instructionMatches
+            val register = (decodedBaseUrl.instruction as OneRegisterInstruction).registerA
+            method.addInstructions(
+                decodedBaseUrl.index + 1,
+                """
+                    invoke-static {}, $EXTENSION_CLASS->baseUrl()Ljava/lang/String;
+                    move-result-object v$register
+                """,
             )
-            true
         }
-
-        if (redirected == 0) {
-            throw PatchException("Could not redirect $ANDROID_API_HOST to $NEW_API_HOST")
-        }
-
         FetchSessionTokenFingerprint.matchSingle().method.addInstructions(
             0,
             """

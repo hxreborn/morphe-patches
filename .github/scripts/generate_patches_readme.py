@@ -152,6 +152,8 @@ def versions_table(targets, package):
 ICONS = {
     "name.antonsmirnov.android.arduinodroid2": "arduinodroid.png",
     "com.ilovepdf.www": "ilovepdf.png",
+    "com.bittorrent.client": "bittorrent.png",
+    "com.utorrent.client": "utorrent.png",
     "org.quantumbadger.redreader": "redreader.png",
     "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
     "com.king.candycrushsaga": "candycrushsaga.png",
@@ -212,6 +214,7 @@ ICONS = {
     "com.athan": "athan.png",
     "com.cardfeed.video_public": "publicvideos.png",
     "com.michaldrabik.showly2": "showly.png",
+    "com.phlox.simpleserver.marketless": "shttps.png",
     "co.steezy.app": "steezy.png",
     "com.storywise.storywise": "storywise.png",
     "com.sqcom.shangqing": "sqcom.png",
