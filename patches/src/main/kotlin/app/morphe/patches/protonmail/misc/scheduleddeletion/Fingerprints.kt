@@ -51,3 +51,10 @@ internal object AutoDeleteBannerTextFingerprint : Fingerprint(
         ),
     ),
 )
+
+internal object StartBackgroundExecutionFingerprint : Fingerprint(
+    definingClass = "Luniffi/mail_uniffi/MailSession;",
+    name = "startBackgroundExecution",
+    returnType = "Luniffi/mail_uniffi/MailSessionStartBackgroundExecutionResult;",
+    parameters = listOf("Luniffi/mail_uniffi/BackgroundExecutionCallback;"),
+)

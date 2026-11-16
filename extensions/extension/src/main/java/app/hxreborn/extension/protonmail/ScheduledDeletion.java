@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -38,6 +39,8 @@ public final class ScheduledDeletion {
     static final String[] EMPTIED_LABELS = { TRASH, SPAM };
 
     private static final String TAG = "ScheduledDeletion";
+
+    private static final String AUTHENTICATED = "AUTHENTICATED";
 
     private static final AtomicBoolean DELETING = new AtomicBoolean();
 
@@ -80,31 +83,89 @@ public final class ScheduledDeletion {
             if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account)) {
                 return;
             }
-            if (!DELETING.compareAndSet(false, true)) {
-                return;
-            }
-
-            final Thread worker = new Thread(() -> {
-                try {
-                    emptyDueLabels(sessionSnapshot, account);
-                } catch (Throwable throwable) {
-                    Log.e(TAG, "Failed to empty Trash and Spam", throwable);
-                } finally {
-                    DELETING.set(false);
-                }
-            }, "hx-scheduled-deletion");
-            try {
-                worker.start();
-            } catch (Throwable throwable) {
-                DELETING.set(false);
-                throw throwable;
-            }
+            startDeletionWorker("hx-scheduled-deletion", "Failed to empty Trash and Spam", () -> {
+                ScheduledDeletionEditor.showDeleted(emptyDueLabels(sessionSnapshot, account));
+                return null;
+            });
         } catch (Throwable throwable) {
             Log.e(TAG, "Failed to start scheduled deletion", throwable);
         }
     }
 
-    private static void emptyDueLabels(Object mailSession, String account) throws Exception {
+    public static void onBackgroundExecution(Object mailSession) {
+        try {
+            if (!ScheduledDeletionSettings.isActive(Utils.getContext())) {
+                return;
+            }
+            startDeletionWorker("hx-scheduled-deletion-background", "Failed to empty Trash and Spam in the background",
+                    () -> {
+                        emptyDueLabelsOfEveryAccount(mailSession);
+                        return null;
+                    });
+        } catch (Throwable throwable) {
+            Log.e(TAG, "Failed to start background scheduled deletion", throwable);
+        }
+    }
+
+    private static void startDeletionWorker(String threadName, String failureMessage, Callable<Void> deletion) {
+        if (!DELETING.compareAndSet(false, true)) {
+            return;
+        }
+
+        final Thread worker = new Thread(() -> {
+            try {
+                deletion.call();
+            } catch (Throwable throwable) {
+                Log.e(TAG, failureMessage, throwable);
+            } finally {
+                DELETING.set(false);
+            }
+        }, threadName);
+        try {
+            worker.start();
+        } catch (Throwable throwable) {
+            DELETING.set(false);
+            throw throwable;
+        }
+    }
+
+    private static void emptyDueLabelsOfEveryAccount(Object mailSession) throws Exception {
+        final Object sessions = UniffiCalls.okValueOrNull(UniffiCalls
+            .invokeSuspending(UniffiCalls.methodNamed(mailSession.getClass(), "getSessions"), mailSession));
+        if (!(sessions instanceof List)) {
+            Log.w(TAG, "getSessions returned no session list");
+            return;
+        }
+
+        for (Object storedSession : (List<?>) sessions) {
+            try {
+                emptyDueLabelsOfStoredSession(mailSession, storedSession);
+            } catch (Exception ex) {
+                Log.e(TAG, "Background deletion failed for one account", ex);
+            }
+        }
+    }
+
+    private static void emptyDueLabelsOfStoredSession(Object mailSession, Object storedSession) throws Exception {
+        if (!AUTHENTICATED.equals(String.valueOf(UniffiCalls.callNoArg(storedSession, "state")))) {
+            return;
+        }
+        final String account = (String) UniffiCalls.callNoArg(storedSession, "userId");
+        if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account)) {
+            return;
+        }
+
+        final Object userSession = UniffiCalls.okValueOrNull(UniffiCalls.invokeSuspending(
+                UniffiCalls.methodNamed(mailSession.getClass(), "userSessionFromStoredSession"), mailSession,
+                storedSession));
+        if (userSession == null) {
+            Log.w(TAG, "userSessionFromStoredSession returned no session");
+            return;
+        }
+        Log.i(TAG, "Background deletion emptied " + emptyDueLabels(userSession, account));
+    }
+
+    private static List<String> emptyDueLabels(Object mailSession, String account) throws Exception {
         final List<String> deletedLabels = new ArrayList<>();
 
         for (String label : EMPTIED_LABELS) {
@@ -121,6 +182,12 @@ public final class ScheduledDeletion {
                 continue;
             }
 
+            LabelFirstPageSync.sync(mailSession, labelId);
+            if (intervalMsOf(label) != intervalMs
+                    || !ScheduledDeletionSettings.due(Utils.getContext(), account, label, intervalMs)) {
+                continue;
+            }
+
             final Object result = UniffiCalls.invokeSuspending(UniffiCalls.uniffiMethod("deleteAllMessagesInLabel"),
                     null, mailSession, labelId);
             final boolean emptied = "Ok".equals(UniffiCalls.simpleNameOf(result));
@@ -133,7 +200,7 @@ public final class ScheduledDeletion {
             ScheduledDeletionSettings.recordEmptied(Utils.getContext(), account, label);
             deletedLabels.add(label);
         }
-        ScheduledDeletionEditor.showDeleted(deletedLabels);
+        return deletedLabels;
     }
 
     static String shownLabel() {

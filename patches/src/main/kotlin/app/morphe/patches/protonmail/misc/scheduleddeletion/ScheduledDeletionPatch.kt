@@ -49,8 +49,8 @@ private val scheduledDeletionStringsPatch = resourcePatch {
 @Suppress("unused")
 val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
     name = "Scheduled Trash and Spam deletion",
-    description = "Deletes all messages in Trash and Spam on separate configurable schedules. " +
-        "Deleted messages cannot be recovered.",
+    description = "Deletes all messages in Trash and Spam on separate configurable schedules, " +
+        "also while the app is closed. Deleted messages cannot be recovered.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(
@@ -124,5 +124,9 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
             )
         }
 
+        StartBackgroundExecutionFingerprint.matchSingle().method.addInstructions(
+            0,
+            "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->onBackgroundExecution(Ljava/lang/Object;)V",
+        )
     }
 }
