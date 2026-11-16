@@ -94,6 +94,10 @@ public final class PatchSettings {
         return removeDeletedMessageNotices() ? "" : notice;
     }
 
+    public static boolean hideImageRemix() {
+        return AppliedPatches.hideImageRemix() && isEnabled(PatchSetting.HIDE_IMAGE_REMIX.key);
+    }
+
     public static boolean disableAiFeatures() {
         return AppliedPatches.disableAiFeatures() && isEnabled(PatchSetting.DISABLE_AI_FEATURES.key);
     }

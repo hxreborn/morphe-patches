@@ -4,22 +4,29 @@
  */
 package app.morphe.patches.viber.layout.remix
 
+import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
+import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
+import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
+import app.morphe.patches.viber.shared.markPatchApplied
+import app.morphe.patches.viber.shared.returnWhenEnabled
+
+private const val HIDE_IMAGE_REMIX = "$VIBER_SETTINGS_CLASS->hideImageRemix()Z"
 
 @Suppress("unused")
-val hideImageRemixPatch = bytecodePatch(
+val hideImageRemixPatch: BytecodePatch = bytecodePatch(
     name = "Hide image remix",
     description = "Hides Remix actions and the Remix introduction popup on images.",
-    default = false,
 ) {
     compatibleWith(AppCompatibilities.VIBER)
-    dependsOn(spoofSignaturePatch)
+
+    dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 
     execute {
-        ImageRemixAvailabilityFingerprint.matchSingle().method.returnEarly(false)
+        markPatchApplied("hideImageRemix", hideImageRemixPatch)
+        ImageRemixAvailabilityFingerprint.matchSingle().method.returnWhenEnabled(HIDE_IMAGE_REMIX)
     }
 }

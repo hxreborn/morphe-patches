@@ -294,6 +294,18 @@ public final class AppliedPatches {
         return null;
     }
 
+    public static boolean hideImageRemix() {
+        return false;
+    }
+
+    public static String hideImageRemixName() {
+        return null;
+    }
+
+    public static String hideImageRemixDescription() {
+        return null;
+    }
+
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
         add(applied, removeListGaps(), removeListGapsName(), removeListGapsDescription());
@@ -303,6 +315,7 @@ public final class AppliedPatches {
         add(applied, removeChatPayments(), removeChatPaymentsName(), removeChatPaymentsDescription());
         add(applied, removeDeletedMessageNotices(), removeDeletedMessageNoticesName(),
                 removeDeletedMessageNoticesDescription());
+        add(applied, hideImageRemix(), hideImageRemixName(), hideImageRemixDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
         add(applied, hidePromotions(), hidePromotionsName(), hidePromotionsDescription());
         add(applied, hideMoreItems(), hideMoreItemsName(), hideMoreItemsDescription());
