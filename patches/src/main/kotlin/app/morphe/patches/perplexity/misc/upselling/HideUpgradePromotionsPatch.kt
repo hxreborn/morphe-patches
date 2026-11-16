@@ -12,7 +12,7 @@ import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.perplexity.misc.returnUnitEarly
+import app.morphe.patches.shared.misc.kotlin.returnUnitEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
