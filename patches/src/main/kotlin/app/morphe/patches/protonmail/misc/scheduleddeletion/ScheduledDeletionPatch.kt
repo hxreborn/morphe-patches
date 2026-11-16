@@ -103,24 +103,24 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
 
         NewMailboxFingerprint.matchSingle().let { match ->
             val newMailboxCall = match.instructionMatches.first()
-            val call = newMailboxCall.getInstruction<FiveRegisterInstruction>()
-            val result = match.instructionMatches.last()
-            val resultRegister = result.getInstruction<OneRegisterInstruction>().registerA
+            val newMailboxInvoke = newMailboxCall.getInstruction<FiveRegisterInstruction>()
+            val moveResult = match.instructionMatches.last()
+            val resultRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
             val sessionRegister = match.method.getFreeRegisterProvider(
-                newMailboxCall.index, 1, call.registerC, call.registerD, resultRegister,
+                newMailboxCall.index, 1, newMailboxInvoke.registerC, newMailboxInvoke.registerD, resultRegister,
             ).getFreeRegister()
             if (sessionRegister > 15 || resultRegister > 15) {
                 throw PatchException("Mailbox capture registers exceed invoke-static encoding limit")
             }
 
             match.method.addInstructions(
-                result.index + 1,
+                moveResult.index + 1,
                 "invoke-static { v$resultRegister, v$sessionRegister }, " +
                     "$EXTENSION_CLASS->captureMailbox(Ljava/lang/Object;Ljava/lang/Object;)V",
             )
             match.method.addInstructions(
                 newMailboxCall.index,
-                "move-object/from16 v$sessionRegister, v${call.registerC}",
+                "move-object/from16 v$sessionRegister, v${newMailboxInvoke.registerC}",
             )
         }
 

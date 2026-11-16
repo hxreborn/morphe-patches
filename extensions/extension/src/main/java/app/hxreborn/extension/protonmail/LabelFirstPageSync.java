@@ -31,8 +31,6 @@ import app.hxreborn.extension.shared.ProxyHandler;
 
 final class LabelFirstPageSync extends ProxyHandler {
 
-    private static final String TAG = "ScheduledDeletion";
-
     private static final String LIST_UPDATE = "List";
 
     private static final String ERROR_UPDATE = "Error";
@@ -43,6 +41,22 @@ final class LabelFirstPageSync extends ProxyHandler {
 
     private static final long FIRST_PAGE_TIMEOUT_SECONDS = 30L;
 
+    private static final String CALLBACK_CLASS = "MessageScrollerLiveQueryCallback";
+
+    private static final String NEW_MAILBOX = "newMailbox";
+
+    private static final String SCROLL_MESSAGES_FOR_LABEL = "scrollMessagesForLabel";
+
+    private static final String FETCH_MORE = "fetchMore";
+
+    private static final String TERMINATE = "terminate";
+
+    private static final String DESTROY = "destroy";
+
+    private static final String ON_UPDATE = "onUpdate";
+
+    private static final String STATUS_GETTER = "getV1";
+
     private final CountDownLatch firstPageSynced = new CountDownLatch(1);
 
     private LabelFirstPageSync() {
@@ -52,64 +66,68 @@ final class LabelFirstPageSync extends ProxyHandler {
         try {
             syncOrThrow(mailUserSession, labelId);
         } catch (Exception ex) {
-            Log.w(TAG, "Failed to sync the first page before deleting", ex);
+            Log.w(ScheduledDeletion.TAG, "Failed to sync the first page before deleting", ex);
         }
     }
 
     private static void syncOrThrow(Object mailUserSession, Object labelId) throws Exception {
         final Object mailbox = UniffiCalls
-            .okValueOrNull(UniffiCalls.uniffiMethod("newMailbox").invoke(null, mailUserSession, labelId));
+            .okValueOrNull(UniffiCalls.uniffiMethod(NEW_MAILBOX).invoke(null, mailUserSession, labelId));
         if (mailbox == null) {
-            Log.w(TAG, "newMailbox returned no mailbox");
+            Log.w(ScheduledDeletion.TAG, NEW_MAILBOX + " returned no mailbox");
             return;
         }
 
         try {
             new LabelFirstPageSync().loadFirstPage(mailbox);
         } finally {
-            UniffiCalls.callNoArg(mailbox, "destroy");
+            UniffiCalls.callNoArg(mailbox, DESTROY);
         }
     }
 
     private void loadFirstPage(Object mailbox) throws Exception {
-        final Class<?> callbackType = Class.forName(UniffiCalls.UNIFFI_PACKAGE + "MessageScrollerLiveQueryCallback");
+        final Class<?> callbackType = Class.forName(UniffiCalls.UNIFFI_PACKAGE + CALLBACK_CLASS);
         final Object callback = Proxy.newProxyInstance(LabelFirstPageSync.class.getClassLoader(),
                 new Class<?>[] { callbackType }, this);
 
         final Object scroller = UniffiCalls.okValueOrNull(UniffiCalls
-            .invokeSuspending(UniffiCalls.uniffiMethod("scrollMessagesForLabel"), null, mailbox, null, callback));
+            .invokeSuspending(UniffiCalls.uniffiMethod(SCROLL_MESSAGES_FOR_LABEL), null, mailbox, null, callback));
         if (scroller == null) {
-            Log.w(TAG, "scrollMessagesForLabel returned no scroller");
+            Log.w(ScheduledDeletion.TAG, SCROLL_MESSAGES_FOR_LABEL + " returned no scroller");
             return;
         }
 
         try {
-            UniffiCalls.callNoArg(scroller, "fetchMore");
+            UniffiCalls.callNoArg(scroller, FETCH_MORE);
             if (!this.firstPageSynced.await(FIRST_PAGE_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                Log.w(TAG, "First page did not sync within " + FIRST_PAGE_TIMEOUT_SECONDS + "s");
+                Log.w(ScheduledDeletion.TAG, "First page did not sync within " + FIRST_PAGE_TIMEOUT_SECONDS + "s");
             }
         } finally {
-            UniffiCalls.callNoArg(scroller, "terminate");
-            UniffiCalls.callNoArg(scroller, "destroy");
+            UniffiCalls.callNoArg(scroller, TERMINATE);
+            UniffiCalls.callNoArg(scroller, DESTROY);
         }
     }
 
     @Override
     protected Object handle(Method method, Object[] args) {
-        if (!"onUpdate".equals(method.getName())) {
+        if (!ON_UPDATE.equals(method.getName())) {
             return null;
         }
 
         final Object update = args[0];
-        final String kind = UniffiCalls.simpleNameOf(update);
-        if (ERROR_UPDATE.equals(kind)) {
-            Log.w(TAG, "Message scroller reported an error");
+        final String updateType = UniffiCalls.simpleNameOf(update);
+        if (ERROR_UPDATE.equals(updateType)) {
+            Log.w(ScheduledDeletion.TAG, "Message scroller reported an error");
             this.firstPageSynced.countDown();
-        } else if (LIST_UPDATE.equals(kind) || (STATUS_UPDATE.equals(kind)
-                && FIRST_PAGE_LOADING_END.equals(String.valueOf(UniffiCalls.callNoArg(update, "getV1"))))) {
+        } else if (LIST_UPDATE.equals(updateType) || isFirstPageLoadingEnd(updateType, update)) {
             this.firstPageSynced.countDown();
         }
         return null;
+    }
+
+    private static boolean isFirstPageLoadingEnd(String updateType, Object update) {
+        return STATUS_UPDATE.equals(updateType)
+                && FIRST_PAGE_LOADING_END.equals(String.valueOf(UniffiCalls.callNoArg(update, STATUS_GETTER)));
     }
 
 }
