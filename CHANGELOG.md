@@ -1,3 +1,10 @@
+## [1.81.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.2...v1.81.0-dev.3) (2026-11-16)
+
+### New Features
+
+* **Viber - Hide image remix:** remove Remix button and intro popup ([5d9e517](https://github.com/hxreborn/morphe-patches/commit/5d9e517d9e733f92c08ab7cab06bc8ae74c19375)), closes [#777](https://github.com/hxreborn/morphe-patches/issues/777)
+* **Viber - Remove deleted message notices:** leave no trace on delete ([b01bfce](https://github.com/hxreborn/morphe-patches/commit/b01bfce6d4f7148350b6edc3940505d11ff1a73b)), closes [#776](https://github.com/hxreborn/morphe-patches/issues/776)
+
 ## [1.81.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.1...v1.81.0-dev.2) (2026-11-16)
 
 ### Updated App Support

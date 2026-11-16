@@ -494,11 +494,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.81.0-dev.3"
         - "1.81.0-dev.2"
         - "1.81.0-dev.1"
         - "1.80.1-dev.1"
         - "1.80.0-dev.3"
-        - "1.80.0-dev.2"
         - "1.80.0"
         - "Older than these"
         # /generated
@@ -1093,6 +1093,7 @@ body:
         - "Viber \u00b7 Filter business chats"
         - "Viber \u00b7 GmsCore support"
         - "Viber \u00b7 Hide ads"
+        - "Viber \u00b7 Hide image remix"
         - "Viber \u00b7 Hide More screen items"
         - "Viber \u00b7 Hide navigation buttons"
         - "Viber \u00b7 Hide Viber Out and channel promotions"
@@ -1100,6 +1101,7 @@ body:
         - "Viber \u00b7 Raise folder limit"
         - "Viber \u00b7 Remove Caller ID prompts"
         - "Viber \u00b7 Remove chat payment actions"
+        - "Viber \u00b7 Remove deleted message notices"
         - "Viber \u00b7 Remove list gaps"
         - "Viber \u00b7 Remove locked Plus items"
         - "Viber \u00b7 Remove online status limit"

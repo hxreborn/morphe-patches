@@ -17,13 +17,13 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.81.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.81.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;570 patches total
+> **[v1.81.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.81.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;572 patches total
 
 ### Featured apps
 
 <table align="center">
 <tr>
-<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>23 patches</sub></td>
+<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>25 patches</sub></td>
 <td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
 <td align="center" width="160"><a href="#moviebox"><img src=".github/assets/icons/moviebox.png" width="40"><br>MovieBox</a><br><sub>4 patches</sub></td>
 </tr>
@@ -3056,7 +3056,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;23 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;25 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -3076,11 +3076,13 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-hide-more-screen-items"></a>[Hide More screen items](patches/src/main/kotlin/app/morphe/patches/viber/layout/more/HideMoreItemsPatch.kt) | Hides selected entries from the main screen and More screen. | • Hide About and FAQ<br>• Hide Business Account<br>• Hide Caller ID<br>• Hide Viber Dating<br>• Hide eSIM<br>• Hide Get free stickers<br>• Hide Invite friends<br>• Hide Open Business Account<br>• Hide promotional banners<br>• Hide Rakuten account<br>• Hide Viber Lenses<br>• Hide Viber Out<br>• Hide Viber Plus<br>• Hide Your News |
 | <a id="viber-hide-viber-out-and-channel-promotions"></a>[Hide Viber Out and channel promotions](patches/src/main/kotlin/app/morphe/patches/viber/layout/promotions/HidePromotionsPatch.kt) | Hides the Viber Out banners and intro on the Calls tab and the channel and bot suggestions in the chat list. |  |
 | <a id="viber-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/viber/ads/HideAdsPatch.kt) | Hides ads in the chat list, the More screen, Explore, search and after calls. |  |
+| <a id="viber-hide-image-remix"></a>[Hide image remix](patches/src/main/kotlin/app/morphe/patches/viber/layout/remix/HideImageRemixPatch.kt) | Hides Remix actions and the Remix introduction popup on images. |  |
 | <a id="viber-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar. | • Hide Calls<br>• Hide ChatGPT<br>• Hide Explore<br>• Hide Marketplace<br>• Hide Pay<br>• Hide Shortica |
 | <a id="viber-link-as-secondary-device"></a>[Link as secondary device](patches/src/main/kotlin/app/morphe/patches/viber/misc/secondary/LinkAsSecondaryDevicePatch.kt) | Links to your main Viber phone. |  |
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
 | <a id="viber-remove-caller-id-prompts"></a>[Remove Caller ID prompts](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
+| <a id="viber-remove-deleted-message-notices"></a>[Remove deleted message notices](patches/src/main/kotlin/app/morphe/patches/viber/misc/deletedmessages/RemoveDeletedMessagesPatch.kt) | Requests silent deletion and removes deleted message notices from chats. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
 | <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |
 | <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |

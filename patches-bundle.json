@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-16T20:57:42",
-  "description": "## [1.81.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.1...v1.81.0-dev.2) (2026-11-16)\n\n### Updated App Support\n\n* **DevCheck:** add support for 6.63 ([9a7decc](https://github.com/hxreborn/morphe-patches/commit/9a7deccf36283b6794cfe8c5720366d0ee37e00a))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.81.0-dev.2/patches-1.81.0-dev.2.mpp",
+  "created_at": "2026-11-16T22:36:08",
+  "description": "## [1.81.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.2...v1.81.0-dev.3) (2026-11-16)\n\n### New Features\n\n* **Viber - Hide image remix:** remove Remix button and intro popup ([5d9e517](https://github.com/hxreborn/morphe-patches/commit/5d9e517d9e733f92c08ab7cab06bc8ae74c19375)), closes [#777](https://github.com/hxreborn/morphe-patches/issues/777)\n* **Viber - Remove deleted message notices:** leave no trace on delete ([b01bfce](https://github.com/hxreborn/morphe-patches/commit/b01bfce6d4f7148350b6edc3940505d11ff1a73b)), closes [#776](https://github.com/hxreborn/morphe-patches/issues/776)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.81.0-dev.3/patches-1.81.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.81.0-dev.2"
+  "version": "1.81.0-dev.3"
 }
