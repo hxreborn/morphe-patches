@@ -1,3 +1,9 @@
+## [1.81.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.3...v1.81.0-dev.4) (2026-11-16)
+
+### New Features
+
+* **Proton Mail - Scheduled Trash and Spam deletion:** toast on reopen ([3149681](https://github.com/hxreborn/morphe-patches/commit/3149681f234b0ecbb79d6057709d68801df47bed)), closes [#778](https://github.com/hxreborn/morphe-patches/issues/778)
+
 ## [1.81.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.2...v1.81.0-dev.3) (2026-11-16)
 
 ### New Features
