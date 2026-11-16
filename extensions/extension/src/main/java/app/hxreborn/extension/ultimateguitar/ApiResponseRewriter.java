@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.ultimateguitar;
 
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,8 +69,6 @@ public final class ApiResponseRewriter {
 
     private static final int ENABLED_VARIATION = 2;
 
-    private static final int HTTP_OK = 200;
-
     private static final int ENABLED_FLAG = 1;
 
     private static final int DISABLED_FLAG = 0;
@@ -82,7 +81,7 @@ public final class ApiResponseRewriter {
     public static int rewriteStatus(String url, int statusCode) {
         String path = (url != null) ? Uri.parse(url).getPath() : null;
         RESPONSE_PATH.set(path);
-        return SERVICE_ACCESS_PATH.equals(path) ? HTTP_OK : statusCode;
+        return SERVICE_ACCESS_PATH.equals(path) ? HttpURLConnection.HTTP_OK : statusCode;
     }
 
     public static byte[] rewriteBody(byte[] body) {

@@ -58,6 +58,19 @@ final class ParallelRangeProxy {
 
     private static final Charset ASCII = Charset.forName("US-ASCII");
 
+    private static final String BAD_REQUEST_STATUS = HttpURLConnection.HTTP_BAD_REQUEST + " Bad Request";
+
+    private static final String METHOD_NOT_ALLOWED_STATUS = HttpURLConnection.HTTP_BAD_METHOD + " Method Not Allowed";
+
+    private static final String NOT_FOUND_STATUS = HttpURLConnection.HTTP_NOT_FOUND + " Not Found";
+
+    private static final String RANGE_NOT_SATISFIABLE_STATUS = "416 Range Not Satisfiable";
+
+    private static final String OK_STATUS_LINE = "HTTP/1.1 " + HttpURLConnection.HTTP_OK + " OK\r\n";
+
+    private static final String PARTIAL_STATUS_LINE = "HTTP/1.1 " + HttpURLConnection.HTTP_PARTIAL
+            + " Partial Content\r\n";
+
     private static final Pattern RANGE = Pattern.compile("bytes=(\\d{1,18})-(\\d{0,18})");
 
     private static final Pattern CONTENT_RANGE = Pattern.compile("bytes (\\d{1,18})-(\\d{1,18})/(\\d{1,18})");
@@ -163,16 +176,16 @@ final class ParallelRangeProxy {
             Request request = Request.read(socket.getInputStream());
             OutputStream out = socket.getOutputStream();
             if (request == null) {
-                writeStatus(out, "400 Bad Request", "", NO_BODY);
+                writeStatus(out, BAD_REQUEST_STATUS, "", NO_BODY);
                 return;
             }
             if (!request.method.equals("GET") && !request.method.equals("HEAD")) {
-                writeStatus(out, "405 Method Not Allowed", "", NO_BODY);
+                writeStatus(out, METHOD_NOT_ALLOWED_STATUS, "", NO_BODY);
                 return;
             }
             ProxiedFile file = proxiedFile(request.token);
             if (file == null) {
-                writeStatus(out, "404 Not Found", "", NO_BODY);
+                writeStatus(out, NOT_FOUND_STATUS, "", NO_BODY);
                 return;
             }
             Origin origin;
@@ -185,7 +198,7 @@ final class ParallelRangeProxy {
             long start = request.rangeStart;
             long end = (request.rangeEnd < 0) ? origin.length - 1 : Math.min(request.rangeEnd, origin.length - 1);
             if (start > end) {
-                writeStatus(out, "416 Range Not Satisfiable", "Content-Range: bytes */" + origin.length + "\r\n",
+                writeStatus(out, RANGE_NOT_SATISFIABLE_STATUS, "Content-Range: bytes */" + origin.length + "\r\n",
                         NO_BODY);
                 return;
             }
@@ -202,7 +215,7 @@ final class ParallelRangeProxy {
 
     private static void writeHeaders(OutputStream out, boolean partial, long start, long end, Origin origin)
             throws IOException {
-        StringBuilder head = new StringBuilder((partial) ? "HTTP/1.1 206 Partial Content\r\n" : "HTTP/1.1 200 OK\r\n");
+        StringBuilder head = new StringBuilder((partial) ? PARTIAL_STATUS_LINE : OK_STATUS_LINE);
         head.append("Content-Type: ").append(origin.contentType).append("\r\n");
         head.append("Accept-Ranges: bytes\r\n");
         head.append("Content-Length: ").append(end - start + 1).append("\r\n");
@@ -579,7 +592,7 @@ final class ParallelRangeProxy {
                     connection.disconnect();
                     throw exception;
                 }
-                if (status >= 300 && status < 400) {
+                if (status >= HttpURLConnection.HTTP_MULT_CHOICE && status < HttpURLConnection.HTTP_BAD_REQUEST) {
                     String location = connection.getHeaderField("Location");
                     connection.disconnect();
                     if (location == null) {
@@ -594,7 +607,7 @@ final class ParallelRangeProxy {
                     continue;
                 }
                 if (status != HttpURLConnection.HTTP_PARTIAL) {
-                    OriginRejected rejection = (status >= 400)
+                    OriginRejected rejection = (status >= HttpURLConnection.HTTP_BAD_REQUEST)
                             ? new OriginRejected(status, connection.getResponseMessage(), errorBody(connection))
                             : new OriginRejected(HttpURLConnection.HTTP_BAD_GATEWAY, "Bad Gateway", NO_BODY);
                     connection.disconnect();

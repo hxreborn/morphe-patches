@@ -20,41 +20,45 @@
  */
 package app.hxreborn.extension.photoeditorpro;
 
+import java.net.HttpURLConnection;
+
 final class HttpStatus {
 
     static final int NONE = -1;
+
+    private static final int HTTP_TOO_MANY_REQUESTS = 429;
 
     private HttpStatus() {
     }
 
     static boolean isSuccess(int code) {
-        return code / 100 == 2;
+        return code >= HttpURLConnection.HTTP_OK && code < HttpURLConnection.HTTP_MULT_CHOICE;
     }
 
     static boolean isPending(int code) {
-        return code == 404;
+        return code == HttpURLConnection.HTTP_NOT_FOUND;
     }
 
     static String reason(int code) {
         return switch (code) {
-            case 200 -> "OK";
-            case 201 -> "Created";
-            case 202 -> "Accepted";
-            case 204 -> "No Content";
-            case 301 -> "Moved Permanently";
-            case 302 -> "Found";
-            case 304 -> "Not Modified";
-            case 400 -> "Bad Request";
-            case 401 -> "Unauthorized";
-            case 403 -> "Forbidden";
-            case 404 -> "Not Found";
-            case 408 -> "Request Timeout";
-            case 409 -> "Conflict";
-            case 429 -> "Too Many Requests";
-            case 500 -> "Internal Server Error";
-            case 502 -> "Bad Gateway";
-            case 503 -> "Service Unavailable";
-            case 504 -> "Gateway Timeout";
+            case HttpURLConnection.HTTP_OK -> "OK";
+            case HttpURLConnection.HTTP_CREATED -> "Created";
+            case HttpURLConnection.HTTP_ACCEPTED -> "Accepted";
+            case HttpURLConnection.HTTP_NO_CONTENT -> "No Content";
+            case HttpURLConnection.HTTP_MOVED_PERM -> "Moved Permanently";
+            case HttpURLConnection.HTTP_MOVED_TEMP -> "Found";
+            case HttpURLConnection.HTTP_NOT_MODIFIED -> "Not Modified";
+            case HttpURLConnection.HTTP_BAD_REQUEST -> "Bad Request";
+            case HttpURLConnection.HTTP_UNAUTHORIZED -> "Unauthorized";
+            case HttpURLConnection.HTTP_FORBIDDEN -> "Forbidden";
+            case HttpURLConnection.HTTP_NOT_FOUND -> "Not Found";
+            case HttpURLConnection.HTTP_CLIENT_TIMEOUT -> "Request Timeout";
+            case HttpURLConnection.HTTP_CONFLICT -> "Conflict";
+            case HTTP_TOO_MANY_REQUESTS -> "Too Many Requests";
+            case HttpURLConnection.HTTP_INTERNAL_ERROR -> "Internal Server Error";
+            case HttpURLConnection.HTTP_BAD_GATEWAY -> "Bad Gateway";
+            case HttpURLConnection.HTTP_UNAVAILABLE -> "Service Unavailable";
+            case HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> "Gateway Timeout";
             default -> "";
         };
     }

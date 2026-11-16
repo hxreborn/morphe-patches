@@ -22,6 +22,7 @@ package hx.okhttp;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.HttpURLConnection;
 
 import hx.util.Reflect;
 
@@ -70,7 +71,7 @@ public final class ApiClient {
 
     private static String successfulBody(Object response, String url) throws ReflectiveOperationException, IOException {
         int code = (Integer) Reflect.call(response, "code");
-        if (code < 200 || code >= 300) {
+        if (code < HttpURLConnection.HTTP_OK || code >= HttpURLConnection.HTTP_MULT_CHOICE) {
             throw new IOException("HTTP " + code + " for " + url);
         }
         return (String) Reflect.call(Reflect.call(response, "body"), "string");

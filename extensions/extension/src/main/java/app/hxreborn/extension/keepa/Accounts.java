@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.keepa;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -38,6 +39,8 @@ final class Accounts {
     static final String TAG_BELOW = "below";
     static final String TAG_FLAG = "flag";
     static final String TAG_OFF = "off";
+
+    private static final int HTTP_TOO_MANY_REQUESTS = 429;
 
     private final JSONObject document;
 
@@ -163,7 +166,8 @@ final class Accounts {
 
         for (Account account : this.accounts) {
             final JSONObject response = responses.optJSONObject(account.id);
-            if (response == null || response.optInt("status", 0) != 200 || response.has("error")) {
+            if (response == null || response.optInt("status", 0) != HttpURLConnection.HTTP_OK
+                    || response.has("error")) {
                 keepOwnership(previousOwners, account.id);
                 continue;
             }
@@ -195,7 +199,7 @@ final class Accounts {
             addProducts(productsByKey, response.optJSONArray("noHistoryProducts"));
         }
 
-        return new JSONObject().put("status", 200)
+        return new JSONObject().put("status", HttpURLConnection.HTTP_OK)
             .put("trackingCount", totalCount)
             .put("maxTrackingAllowed", totalLimit)
             .put("trackings", new JSONArray(trackingsByAsin.values()))
@@ -225,9 +229,9 @@ final class Accounts {
         if (account == null) {
             return;
         }
-        if (status == 401) {
+        if (status == HttpURLConnection.HTTP_UNAUTHORIZED) {
             account.state = AccountState.INVALID;
-        } else if (status == 429) {
+        } else if (status == HTTP_TOO_MANY_REQUESTS) {
             account.state = AccountState.THROTTLED;
             account.throttledUntil = now + THROTTLE_MS;
         }

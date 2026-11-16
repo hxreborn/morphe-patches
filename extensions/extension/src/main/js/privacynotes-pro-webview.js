@@ -7,6 +7,7 @@
   var IS_PRO = "/rest/v1/rpc/is_pro";
   var HEARTBEAT = "/rest/v1/rpc/device_heartbeat";
   var UNREGISTERED_KEY = "hx.unregisteredDevice";
+  var HTTP_OK = 200;
   function pathOf(input) {
     try {
       var raw = typeof input === "string" ? input : input && input.url ? input.url : String(input);
@@ -17,7 +18,7 @@
   }
   function jsonResponse(body) {
     return new Response(JSON.stringify(body), {
-      status: 200,
+      status: HTTP_OK,
       headers: { "Content-Type": "application/json" },
     });
   }
