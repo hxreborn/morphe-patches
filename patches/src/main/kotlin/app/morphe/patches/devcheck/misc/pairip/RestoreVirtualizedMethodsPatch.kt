@@ -189,38 +189,6 @@ private fun BytecodePatchContext.resolveStubs(): Pair<Map<String, String>, Map<M
     stubs[stub("PublicIpTask")] = publicIpTask.classDef.type
     field("PublicIpTask", "resultText", "Landroid/widget/TextView;", publicIpTask.field(1))
 
-    val networkTask = NetworkTaskPostExecuteFingerprint.matchSingle()
-    stubs[stub("NetworkDialogTask")] = networkTask.classDef.type
-    field("NetworkDialogTask", "mobileConnected", "Z", networkTask.classDef)
-    member("NetworkDialogTask", "list:Landroid/view/View;", descriptor(networkTask.field(1)))
-    val networkTypeReader = NetworkTypeReaderFingerprint.matchSingle()
-    stubs[stub("NetworkTypeReader")] = networkTypeReader.classDef.type
-    member("NetworkTypeReader", "read()Ljava/lang/String;", descriptor(networkTypeReader.method))
-    val networkFragment = classDefBy(networkTask.field(0).type)
-    member(
-        "DashboardFragment",
-        "networkTypeReader:${stub("NetworkTypeReader")}",
-        descriptor(networkFragment.fields.single { AccessFlags.STATIC.isSet(it.accessFlags) && it.type == networkTypeReader.classDef.type }),
-    )
-
-    val deviceInfoClass = pathExists.classDef.type
-    member("DeviceNetwork", "ipAddress()Ljava/lang/String;", descriptor(ipAddressFingerprint(deviceInfoClass).matchSingle().method))
-    member(
-        "Telephony",
-        "operator(Landroid/content/Context;)Ljava/lang/String;",
-        descriptor(OperatorFingerprint.matchSingle().method),
-    )
-    member(
-        "Telephony",
-        "phoneType(Landroid/content/Context;Landroid/telephony/TelephonyManager;)Ljava/lang/String;",
-        descriptor(PhoneTypeFingerprint.matchSingle().method),
-    )
-    member(
-        "Telephony",
-        "simState(Landroid/content/Context;I)Ljava/lang/String;",
-        descriptor(simStateFingerprint(deviceInfoClass).matchSingle().method),
-    )
-
     stubs[stub("BootReceiver")] = BOOT_RECEIVER
     stubs[stub("MonitorReceiver")] = MONITOR_RECEIVER
     stubs[stub("UpdateReceiver")] = UPDATE_RECEIVER
@@ -345,7 +313,6 @@ private fun BytecodePatchContext.resolveStubs(): Pair<Map<String, String>, Map<M
         batteryTask to "batteryActivityDoInBackground",
         bluetoothTask to "bluetoothDoInBackground",
         publicIpTask to "publicIpDoInBackground",
-        networkTask to "networkDialogDoInBackground",
     ).mapKeys { (match, _) -> match.classDef.methods.single { it.name == "doInBackground" } } + mapOf(
         receiver(BOOT_RECEIVER) to "bootReceive",
         receiver(MONITOR_RECEIVER) to "monitorReceive",
@@ -397,24 +364,7 @@ internal val restoreVirtualizedMethodsPatch = bytecodePatch {
             val call = "invoke-static/range {p0 .. p${method.parameterTypes.size}}, " +
                 "$RESTORED_CLASS->$restoredName($parameters)${method.returnType}"
             val returnSmali = if (method.returnType == "V") "return-void" else "move-result-object v0\nreturn-object v0"
-            val batteryUpdate = if (restoredName == "shizukuBinderReceive") {
-                dashboardBatteryRegistrationFingerprint(method.definingClass).matchOrNull()?.let { registration ->
-                    val (_, batteryIntentWrite) = registration.instructionMatches
-                    val batteryIntent = batteryIntentWrite.getInstruction<ReferenceInstruction>().reference as FieldReference
-                    """
-                        invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
-                        move-result-object v0
-                        const-string v1, "android.intent.action.BATTERY_CHANGED"
-                        invoke-virtual {v1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
-                        move-result v0
-                        if-eqz v0, :shizuku
-                        sput-object p2, ${descriptor(batteryIntent)}
-                        return-void
-                        :shizuku
-                    """
-                }.orEmpty()
-            } else ""
-            method.replaceVirtualizedBody("$batteryUpdate\n$call\n$returnSmali")
+            method.replaceVirtualizedBody("$call\n$returnSmali")
         }
     }
 }
