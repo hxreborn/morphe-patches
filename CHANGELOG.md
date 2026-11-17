@@ -1,3 +1,10 @@
+## [1.82.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.81.1-dev.1...v1.82.0-dev.1) (2026-11-17)
+
+### New Features
+
+* **iVoox - Remove rating prompts:** stop 5-star request during playback ([5a2a794](https://github.com/hxreborn/morphe-patches/commit/5a2a794299751711baaa832f612dc91cfa4e60ae))
+* **iVoox - Unlock premium:** remove ads and subscription offers ([e86a516](https://github.com/hxreborn/morphe-patches/commit/e86a516f133210cdc9edf9a462009220369e5b80))
+
 ## [1.81.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.81.0...v1.81.1-dev.1) (2026-11-17)
 
 ### Bug Fixes

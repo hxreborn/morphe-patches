@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.81.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.81.1-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;572 patches total
+> **[v1.82.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;574 patches total
 
 ### Featured apps
 
@@ -1340,6 +1340,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="iototoy-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/iototoy/misc/tracking/DisableTrackingPatch.kt) | Stops the AppBrain SDK from starting, loading ads and reading the advertising ID. Disables ML Kit usage logging. |
 | <a id="iototoy-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/iototoy/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium blocks, diagrams over 25 blocks and runs longer than 15 minutes. Removes ads. |
+
+</details>
+
+<a id="ivoox"></a>
+<details>
+<summary><img src=".github/assets/icons/ivoox.png" width="18" align="top">&nbsp;&nbsp;iVoox&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.4041 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="ivoox-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/ivoox/misc/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
+| <a id="ivoox-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/ivoox/misc/premium/UnlockPremiumPatch.kt) | Removes audio, banner, full-screen and splash screen ads, Premium and Plus offers, the player subscribe banner and Home alerts, and enables car mode, volume boost and up to 20 smart lists. |
 
 </details>
 

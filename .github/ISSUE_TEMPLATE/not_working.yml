@@ -200,6 +200,8 @@ body:
         - "Internet Speed Meter Lite (another version, type it below)"
         - "IoToToy 1.1.0"
         - "IoToToy (another version, type it below)"
+        - "iVoox 2.4041"
+        - "iVoox (another version, type it below)"
         - "Joyn 6.9.2-AOS-609282180"
         - "Joyn (another version, type it below)"
         - "Joyn Austria 6.9.0-AOS-JOYN_AT-2212264"
@@ -494,11 +496,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.82.0-dev.1"
         - "1.81.1-dev.1"
         - "1.81.0-dev.5"
         - "1.81.0-dev.4"
         - "1.81.0-dev.3"
-        - "1.81.0-dev.2"
         - "1.81.0"
         - "Older than these"
         # /generated
@@ -788,6 +790,8 @@ body:
         - "Internet Speed Meter Lite \u00b7 Unlock premium"
         - "IoToToy \u00b7 Disable tracking"
         - "IoToToy \u00b7 Unlock premium"
+        - "iVoox \u00b7 Remove rating prompts"
+        - "iVoox \u00b7 Unlock premium"
         - "Joyn Austria \u00b7 Hide ads"
         - "Joyn \u00b7 Hide ads"
         - "Jujo \u00b7 GmsCore support"
