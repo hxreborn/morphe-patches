@@ -13,12 +13,12 @@ import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val MAIL_UNIFFI_CLASS = "Luniffi/mail_uniffi/Mail_uniffiKt;"
-private const val MAILBOX = "Luniffi/mail_uniffi/Mailbox;"
-internal const val ID = "Luniffi/mail_uniffi/Id;"
+private const val MAILBOX_CLASS = "Luniffi/mail_uniffi/Mailbox;"
+private const val ID_CLASS = "Luniffi/mail_uniffi/Id;"
 internal object NewMailboxFingerprint : Fingerprint(
     filters = listOf(
         methodCall(
-            "$MAIL_UNIFFI_CLASS->newMailbox(Luniffi/mail_uniffi/MailUserSession;$ID)" +
+            "$MAIL_UNIFFI_CLASS->newMailbox(Luniffi/mail_uniffi/MailUserSession;$ID_CLASS)" +
                 "Luniffi/mail_uniffi/NewMailboxResult;",
         ),
         opcode(Opcode.MOVE_RESULT_OBJECT, location = MatchAfterImmediately()),
@@ -30,7 +30,7 @@ internal object ScrollMessagesForLabelFingerprint : Fingerprint(
     name = "scrollMessagesForLabel",
     returnType = "Ljava/lang/Object;",
     parameters = listOf(
-        MAILBOX, ID, "Luniffi/mail_uniffi/MessageScrollerLiveQueryCallback;", "L",
+        MAILBOX_CLASS, ID_CLASS, "Luniffi/mail_uniffi/MessageScrollerLiveQueryCallback;", "L",
     ),
 )
 
@@ -39,7 +39,7 @@ internal object ScrollConversationsForLabelFingerprint : Fingerprint(
     name = "scrollConversationsForLabel",
     returnType = "Ljava/lang/Object;",
     parameters = listOf(
-        MAILBOX, ID, "Luniffi/mail_uniffi/ConversationScrollerLiveQueryCallback;", "L",
+        MAILBOX_CLASS, ID_CLASS, "Luniffi/mail_uniffi/ConversationScrollerLiveQueryCallback;", "L",
     ),
 )
 
@@ -50,4 +50,11 @@ internal object AutoDeleteBannerTextFingerprint : Fingerprint(
             "mailbox_action_auto_delete_on_clear_trash_spam_banner_text",
         ),
     ),
+)
+
+internal object StartBackgroundExecutionFingerprint : Fingerprint(
+    definingClass = "Luniffi/mail_uniffi/MailSession;",
+    name = "startBackgroundExecution",
+    returnType = "Luniffi/mail_uniffi/MailSessionStartBackgroundExecutionResult;",
+    parameters = listOf("Luniffi/mail_uniffi/BackgroundExecutionCallback;"),
 )

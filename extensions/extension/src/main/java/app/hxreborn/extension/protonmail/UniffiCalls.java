@@ -31,7 +31,13 @@ public final class UniffiCalls {
 
     static final String UNIFFI_PACKAGE = "uniffi.mail_uniffi.";
 
+    private static final String TOP_LEVEL_FUNCTIONS_CLASS = "Mail_uniffiKt";
+
     private static final long SUSPEND_TIMEOUT_SECONDS = 60L;
+
+    private static final String OK_RESULT = "Ok";
+
+    private static final String RESULT_VALUE_GETTER = "getV1";
 
     private UniffiCalls() {
 
@@ -69,12 +75,16 @@ public final class UniffiCalls {
         return blockingContinuation.result;
     }
 
+    public static boolean isOk(Object result) {
+        return OK_RESULT.equals(simpleNameOf(result));
+    }
+
     public static Object okValueOrNull(Object result) {
-        return ("Ok".equals(simpleNameOf(result))) ? callNoArg(result, "getV1") : null;
+        return isOk(result) ? callNoArg(result, RESULT_VALUE_GETTER) : null;
     }
 
     static Method uniffiMethod(String name) throws Exception {
-        return methodNamed(Class.forName(UNIFFI_PACKAGE + "Mail_uniffiKt"), name);
+        return methodNamed(Class.forName(UNIFFI_PACKAGE + TOP_LEVEL_FUNCTIONS_CLASS), name);
     }
 
     public static Method methodNamed(Class<?> type, String name) throws NoSuchMethodException {
@@ -114,6 +124,10 @@ public final class UniffiCalls {
 
     private static final class BlockingContinuation extends ProxyHandler {
 
+        private static final String GET_CONTEXT = "getContext";
+
+        private static final String RESUME_WITH = "resumeWith";
+
         private final CountDownLatch resumed = new CountDownLatch(1);
 
         private final Object context;
@@ -132,10 +146,10 @@ public final class UniffiCalls {
         @Override
         protected Object handle(Method method, Object[] args) {
             final String name = method.getName();
-            if ("getContext".equals(name)) {
+            if (GET_CONTEXT.equals(name)) {
                 return this.context;
             }
-            if ("resumeWith".equals(name)) {
+            if (RESUME_WITH.equals(name)) {
                 this.result = args[0];
                 this.resumed.countDown();
                 return null;

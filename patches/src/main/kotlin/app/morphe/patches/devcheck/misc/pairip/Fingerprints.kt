@@ -180,63 +180,6 @@ internal object PublicIpTaskPreExecuteFingerprint : Fingerprint(
     ),
 )
 
-internal object NetworkTaskPostExecuteFingerprint : Fingerprint(
-    name = "onPostExecute",
-    filters = listOf(
-        fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this"),
-        fieldAccess(
-            opcode = Opcode.IGET_OBJECT,
-            definingClass = "this",
-            type = "Landroidx/recyclerview/widget/RecyclerView;",
-        ),
-        methodCall(definingClass = "Landroid/app/Dialog;", name = "isShowing"),
-    ),
-    custom = { _, classDef -> classDef.fields.any { it.type == "Z" } },
-)
-
-internal object NetworkTypeReaderFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
-    returnType = STRING,
-    parameters = emptyList(),
-    strings = listOf("android.permission.READ_PHONE_STATE"),
-    custom = { _, classDef -> classDef.fields.any { it.type == "Landroid/telephony/TelephonyManager;" } },
-)
-
-internal fun ipAddressFingerprint(deviceInfoClass: String) = Fingerprint(
-    definingClass = deviceInfoClass,
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
-    returnType = STRING,
-    parameters = emptyList(),
-    filters = listOf(
-        methodCall(definingClass = "Ljava/net/NetworkInterface;", name = "getInetAddresses"),
-        methodCall(definingClass = "Ljava/net/InetAddress;", name = "isLoopbackAddress"),
-        methodCall(definingClass = "Ljava/net/InetAddress;", name = "getHostAddress"),
-    ),
-)
-
-internal object OperatorFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
-    returnType = STRING,
-    parameters = listOf("Landroid/content/Context;"),
-    strings = listOf("telephony_subscription_service"),
-    filters = listOf(methodCall(definingClass = "Landroid/telephony/TelephonyManager;", name = "getNetworkOperatorName")),
-)
-
-internal object PhoneTypeFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
-    returnType = STRING,
-    parameters = listOf("Landroid/content/Context;", "Landroid/telephony/TelephonyManager;"),
-    filters = listOf(methodCall(definingClass = "Landroid/telephony/TelephonyManager;", name = "getPhoneType")),
-)
-
-internal fun simStateFingerprint(deviceInfoClass: String) = Fingerprint(
-    definingClass = deviceInfoClass,
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
-    returnType = STRING,
-    parameters = listOf("Landroid/content/Context;", "I"),
-    filters = listOf(resourceLiteral(ResourceType.STRING, "no_sim")),
-)
-
 internal const val BOOT_RECEIVER = "Lflar2/devcheck/utils/BootReceiver;"
 internal const val UPDATE_RECEIVER = "Lflar2/devcheck/utils/UpdateReceiver;"
 internal const val MONITOR_RECEIVER = "Lflar2/devcheck/utils/MonitorReceiver;"
@@ -346,16 +289,6 @@ internal object ShizukuBinderReceivedFingerprint : Fingerprint(
             returnType = "V",
         ),
     ),
-)
-
-internal fun dashboardBatteryRegistrationFingerprint(receiverType: String) = Fingerprint(
-    returnType = "V",
-    strings = listOf(BATTERY_CHANGED),
-    filters = listOf(
-        methodCall(definingClass = "Landroid/content/Context;", name = "registerReceiver", returnType = "Landroid/content/Intent;"),
-        fieldAccess(opcode = Opcode.SPUT_OBJECT, type = "Landroid/content/Intent;", location = MatchAfterWithin(2)),
-    ),
-    custom = { _, classDef -> classDef.fields.any { it.type == receiverType } },
 )
 
 private const val ROOT_SERVICE_MANAGER_DESCRIPTOR = "com.topjohnwu.superuser.internal.IRootServiceManager"

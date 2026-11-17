@@ -31,3 +31,14 @@ internal fun profileToolAddedFingerprint(toolType: String, toolField: String) = 
         methodCall(definingClass = "Lkotlin/collections/builders/ListBuilder;", name = "add"),
     ),
 )
+
+internal object BottomNavTabConfigFingerprint : Fingerprint(
+    strings = listOf("BottomNavTabConfig(id="),
+)
+
+internal object BottomNavTabPugmarkFingerprint : Fingerprint(
+    classFingerprint = BottomNavTabConfigFingerprint,
+    name = "getPugmark",
+    returnType = "Ljava/lang/String;",
+    parameters = emptyList(),
+)

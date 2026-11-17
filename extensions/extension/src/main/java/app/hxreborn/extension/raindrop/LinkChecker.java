@@ -194,7 +194,7 @@ final class LinkChecker {
                 int code = connection.getResponseCode();
                 if (code == HttpURLConnection.HTTP_NOT_FOUND || code == HttpURLConnection.HTTP_GONE) {
                     broken = true;
-                } else if (code >= 200 && code < 300) {
+                } else if (code >= HttpURLConnection.HTTP_OK && code < HttpURLConnection.HTTP_MULT_CHOICE) {
                     broken = false;
                 }
                 String type = connection.getContentType();
@@ -253,7 +253,8 @@ final class LinkChecker {
                 }
                 String location = lookup.getHeaderField("Location");
                 String path = (location != null) ? Uri.parse(location).getPath() : null;
-                if (code / 100 == 3 && path != null && WAYBACK_CAPTURE_PATH.matcher(path).matches()) {
+                if (code >= HttpURLConnection.HTTP_MULT_CHOICE && code < HttpURLConnection.HTTP_BAD_REQUEST
+                        && path != null && WAYBACK_CAPTURE_PATH.matcher(path).matches()) {
                     return true;
                 }
                 Log.w(TAG, "Wayback lookup returned HTTP " + code + " for " + link);

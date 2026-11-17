@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -37,7 +38,31 @@ public final class ScheduledDeletion {
     static final String SPAM = "SPAM";
     static final String[] EMPTIED_LABELS = { TRASH, SPAM };
 
-    private static final String TAG = "ScheduledDeletion";
+    static final String TAG = "ScheduledDeletion";
+
+    private static final String AUTHENTICATED = "AUTHENTICATED";
+
+    private static final String APP_OPEN_THREAD = "hx-scheduled-deletion";
+
+    private static final String BACKGROUND_THREAD = "hx-scheduled-deletion-background";
+
+    private static final String LABEL_IDS_THREAD = "hx-label-ids";
+
+    private static final String SYSTEM_LABEL_CLASS = "SystemLabel";
+
+    private static final String GET_SESSIONS = "getSessions";
+
+    private static final String USER_SESSION_FROM_STORED_SESSION = "userSessionFromStoredSession";
+
+    private static final String RESOLVE_SYSTEM_LABEL_ID = "resolveSystemLabelId";
+
+    private static final String DELETE_ALL_MESSAGES_IN_LABEL = "deleteAllMessagesInLabel";
+
+    private static final String LABEL_ID_GETTER = "labelId";
+
+    private static final String STATE_GETTER = "state";
+
+    private static final String USER_ID_GETTER = "userId";
 
     private static final AtomicBoolean DELETING = new AtomicBoolean();
 
@@ -51,9 +76,9 @@ public final class ScheduledDeletion {
 
     }
 
-    public static synchronized void captureMailbox(Object result, Object mailUserSession) {
+    public static synchronized void captureMailbox(Object newMailboxResult, Object mailUserSession) {
         try {
-            final Object mailbox = UniffiCalls.okValueOrNull(result);
+            final Object mailbox = UniffiCalls.okValueOrNull(newMailboxResult);
             if (mailbox != null) {
                 MAILBOX_SESSIONS.put(mailbox, mailUserSession);
             }
@@ -64,76 +89,156 @@ public final class ScheduledDeletion {
 
     public static synchronized void onMailboxShown(Object mailbox) {
         try {
-            final Object sessionSnapshot = MAILBOX_SESSIONS.get(mailbox);
-            if (sessionSnapshot == null) {
+            final Object mailUserSession = MAILBOX_SESSIONS.get(mailbox);
+            if (mailUserSession == null) {
                 return;
             }
 
-            final String account = userIdOf(sessionSnapshot);
-            if (account == null) {
+            final String accountId = userIdOf(mailUserSession);
+            if (accountId == null) {
                 return;
             }
 
-            shownLabelId = UniffiCalls.callNoArg(mailbox, "labelId");
-            cacheSystemLabelIds(sessionSnapshot);
+            shownLabelId = UniffiCalls.callNoArg(mailbox, LABEL_ID_GETTER);
+            cacheSystemLabelIds(mailUserSession);
 
-            if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), account)) {
-                return;
-            }
-            if (!DELETING.compareAndSet(false, true)) {
-                return;
-            }
-
-            final Thread worker = new Thread(() -> {
-                try {
-                    emptyDueLabels(sessionSnapshot, account);
-                } catch (Throwable throwable) {
-                    Log.e(TAG, "Failed to empty Trash and Spam", throwable);
-                } finally {
-                    DELETING.set(false);
-                }
-            }, "hx-scheduled-deletion");
-            try {
-                worker.start();
-            } catch (Throwable throwable) {
-                DELETING.set(false);
-                throw throwable;
+            final List<String> deletedInBackground = ScheduledDeletionSettings
+                .takeDeletedInBackground(Utils.getContext(), accountId);
+            final boolean deletionStarted = ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), accountId)
+                    && startDeletionWorker(APP_OPEN_THREAD, "Failed to empty Trash and Spam", () -> {
+                        ScheduledDeletionEditor.showDeleted(
+                                combinedLabels(deletedInBackground, emptyDueLabels(mailUserSession, accountId)));
+                        return null;
+                    });
+            if (!deletionStarted) {
+                ScheduledDeletionEditor.showDeleted(deletedInBackground);
             }
         } catch (Throwable throwable) {
             Log.e(TAG, "Failed to start scheduled deletion", throwable);
         }
     }
 
-    private static void emptyDueLabels(Object mailSession, String account) throws Exception {
+    public static void onBackgroundExecution(Object mailSession) {
+        try {
+            if (!ScheduledDeletionSettings.isActive(Utils.getContext())) {
+                return;
+            }
+            startDeletionWorker(BACKGROUND_THREAD, "Failed to empty Trash and Spam in the background", () -> {
+                emptyDueLabelsOfEveryAccount(mailSession);
+                return null;
+            });
+        } catch (Throwable throwable) {
+            Log.e(TAG, "Failed to start background scheduled deletion", throwable);
+        }
+    }
+
+    private static boolean startDeletionWorker(String threadName, String failureMessage, Callable<Void> deletion) {
+        if (!DELETING.compareAndSet(false, true)) {
+            return false;
+        }
+
+        final Thread worker = new Thread(() -> {
+            try {
+                deletion.call();
+            } catch (Throwable throwable) {
+                Log.e(TAG, failureMessage, throwable);
+            } finally {
+                DELETING.set(false);
+            }
+        }, threadName);
+        try {
+            worker.start();
+        } catch (Throwable throwable) {
+            DELETING.set(false);
+            throw throwable;
+        }
+        return true;
+    }
+
+    static List<String> combinedLabels(List<String> first, List<String> second) {
+        final List<String> labels = new ArrayList<>(first);
+        for (String label : second) {
+            if (!labels.contains(label)) {
+                labels.add(label);
+            }
+        }
+        return labels;
+    }
+
+    private static void emptyDueLabelsOfEveryAccount(Object mailSession) throws Exception {
+        final Object sessions = UniffiCalls.okValueOrNull(UniffiCalls
+            .invokeSuspending(UniffiCalls.methodNamed(mailSession.getClass(), GET_SESSIONS), mailSession));
+        if (!(sessions instanceof List)) {
+            Log.w(TAG, GET_SESSIONS + " returned no session list");
+            return;
+        }
+
+        for (Object storedSession : (List<?>) sessions) {
+            try {
+                emptyDueLabelsOfStoredSession(mailSession, storedSession);
+            } catch (Exception ex) {
+                Log.e(TAG, "Background deletion failed for one account", ex);
+            }
+        }
+    }
+
+    private static void emptyDueLabelsOfStoredSession(Object mailSession, Object storedSession) throws Exception {
+        if (!AUTHENTICATED.equals(String.valueOf(UniffiCalls.callNoArg(storedSession, STATE_GETTER)))) {
+            return;
+        }
+        final String accountId = (String) UniffiCalls.callNoArg(storedSession, USER_ID_GETTER);
+        if (!ScheduledDeletionSettings.anyLabelDue(Utils.getContext(), accountId)) {
+            return;
+        }
+
+        final Object userSession = UniffiCalls.okValueOrNull(UniffiCalls.invokeSuspending(
+                UniffiCalls.methodNamed(mailSession.getClass(), USER_SESSION_FROM_STORED_SESSION), mailSession,
+                storedSession));
+        if (userSession == null) {
+            Log.w(TAG, USER_SESSION_FROM_STORED_SESSION + " returned no session");
+            return;
+        }
+        final List<String> deletedLabels = emptyDueLabels(userSession, accountId);
+        ScheduledDeletionSettings.addDeletedInBackground(Utils.getContext(), accountId, deletedLabels);
+        Log.i(TAG, "Background deletion emptied " + deletedLabels);
+    }
+
+    private static List<String> emptyDueLabels(Object mailSession, String accountId) throws Exception {
         final List<String> deletedLabels = new ArrayList<>();
 
         for (String label : EMPTIED_LABELS) {
             final long intervalMs = intervalMsOf(label);
-            if (intervalMs <= 0L) {
-                continue;
-            }
-            if (!ScheduledDeletionSettings.due(Utils.getContext(), account, label, intervalMs)) {
+            if (intervalMs <= 0L || !ScheduledDeletionSettings.due(Utils.getContext(), accountId, label, intervalMs)) {
                 continue;
             }
 
             final Object labelId = systemLabelId(mailSession, label);
-            if (intervalMsOf(label) != intervalMs) {
+            if (!stillDue(accountId, label, intervalMs)) {
                 continue;
             }
 
-            final Object result = UniffiCalls.invokeSuspending(UniffiCalls.uniffiMethod("deleteAllMessagesInLabel"),
-                    null, mailSession, labelId);
-            final boolean emptied = "Ok".equals(UniffiCalls.simpleNameOf(result));
-
-            if (!emptied) {
-                Log.w(TAG, "deleteAllMessagesInLabel(" + label + ") returned " + UniffiCalls.simpleNameOf(result));
+            LabelFirstPageSync.sync(mailSession, labelId);
+            if (!stillDue(accountId, label, intervalMs)) {
                 continue;
             }
 
-            ScheduledDeletionSettings.recordEmptied(Utils.getContext(), account, label);
+            final Object deleteResult = UniffiCalls
+                .invokeSuspending(UniffiCalls.uniffiMethod(DELETE_ALL_MESSAGES_IN_LABEL), null, mailSession, labelId);
+            if (!UniffiCalls.isOk(deleteResult)) {
+                Log.w(TAG, DELETE_ALL_MESSAGES_IN_LABEL + "(" + label + ") returned "
+                        + UniffiCalls.simpleNameOf(deleteResult));
+                continue;
+            }
+
+            ScheduledDeletionSettings.recordEmptied(Utils.getContext(), accountId, label);
             deletedLabels.add(label);
         }
-        ScheduledDeletionEditor.showDeleted(deletedLabels);
+        return deletedLabels;
+    }
+
+    private static boolean stillDue(String accountId, String label, long intervalMs) {
+        return intervalMsOf(label) == intervalMs
+                && ScheduledDeletionSettings.due(Utils.getContext(), accountId, label, intervalMs);
     }
 
     static String shownLabel() {
@@ -163,7 +268,7 @@ public final class ScheduledDeletion {
             } catch (Throwable throwable) {
                 Log.e(TAG, "Failed to resolve the Trash and Spam label IDs", throwable);
             }
-        }, "hx-label-ids").start();
+        }, LABEL_IDS_THREAD).start();
     }
 
     private static long intervalMsOf(String label) {
@@ -172,21 +277,21 @@ public final class ScheduledDeletion {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Object systemLabelId(Object mailSession, String label) throws Exception {
-        final Class<?> systemLabel = Class.forName(UniffiCalls.UNIFFI_PACKAGE + "SystemLabel");
+        final Class<?> systemLabel = Class.forName(UniffiCalls.UNIFFI_PACKAGE + SYSTEM_LABEL_CLASS);
         final Object constant = Enum.valueOf((Class) systemLabel, label);
-        final Object result = UniffiCalls.invokeSuspending(UniffiCalls.uniffiMethod("resolveSystemLabelId"), null,
-                mailSession, constant);
-        final Object labelId = UniffiCalls.okValueOrNull(result);
+        final Object resolveResult = UniffiCalls.invokeSuspending(UniffiCalls.uniffiMethod(RESOLVE_SYSTEM_LABEL_ID),
+                null, mailSession, constant);
+        final Object labelId = UniffiCalls.okValueOrNull(resolveResult);
         if (labelId == null) {
             throw new IllegalStateException(
-                    "resolveSystemLabelId(" + label + ") returned " + UniffiCalls.simpleNameOf(result));
+                    RESOLVE_SYSTEM_LABEL_ID + "(" + label + ") returned " + UniffiCalls.simpleNameOf(resolveResult));
         }
         return labelId;
     }
 
     private static String userIdOf(Object mailUserSession) {
         try {
-            return (String) UniffiCalls.okValueOrNull(UniffiCalls.callNoArg(mailUserSession, "userId"));
+            return (String) UniffiCalls.okValueOrNull(UniffiCalls.callNoArg(mailUserSession, USER_ID_GETTER));
         } catch (Throwable throwable) {
             Log.e(TAG, "Failed to read the account ID", throwable);
             return null;

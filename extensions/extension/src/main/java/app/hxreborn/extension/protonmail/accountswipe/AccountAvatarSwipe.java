@@ -221,7 +221,7 @@ public final class AccountAvatarSwipe {
     private static void setPrimaryAccount(Object session, String userId) {
         try {
             final Object result = callSession(session, "setPrimaryAccount", userId);
-            if (!"Ok".equals(UniffiCalls.simpleNameOf(result))) {
+            if (!UniffiCalls.isOk(result)) {
                 Log.w(TAG, "setPrimaryAccount returned " + UniffiCalls.simpleNameOf(result));
             }
         } catch (Throwable throwable) {

@@ -223,7 +223,7 @@ public final class CloudFrontPlayInfoClient implements PlayInfoLookup {
 
     private static String readSuccessful(HttpURLConnection connection, String host) throws IOException {
         int code = connection.getResponseCode();
-        if (code < 200 || code >= 300) {
+        if (code < HttpURLConnection.HTTP_OK || code >= HttpURLConnection.HTTP_MULT_CHOICE) {
             throw new IOException("HTTP " + code + " from " + host);
         }
         try (InputStream in = connection.getInputStream()) {

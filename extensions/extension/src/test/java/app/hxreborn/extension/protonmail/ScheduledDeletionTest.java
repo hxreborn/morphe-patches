@@ -128,6 +128,14 @@ public final class ScheduledDeletionTest {
 
     }
 
+    static final class MailSession {
+
+        public Object getSessions(Object continuation) {
+            return Marker.COROUTINE_SUSPENDED;
+        }
+
+    }
+
     static final class Session {
 
         private final Object userId;
@@ -168,7 +176,7 @@ public final class ScheduledDeletionTest {
 
     private static void joinBackgroundThreads() throws InterruptedException {
         for (Thread thread : Thread.getAllStackTraces().keySet()) {
-            if (thread.getName().equals("hx-scheduled-deletion") || thread.getName().equals("hx-label-ids")) {
+            if (thread.getName().startsWith("hx-scheduled-deletion") || thread.getName().equals("hx-label-ids")) {
                 thread.join(10_000);
                 assertFalse(thread.getName(), thread.isAlive());
             }
@@ -310,6 +318,33 @@ public final class ScheduledDeletionTest {
         // then
         assertNull(logged("Failed to empty Trash and Spam"));
         assertEquals(1L, stamped("TRASH", "account"));
+    }
+
+    @Test
+    @Config(shadows = PatchedBuild.Applied.class)
+    public void backgroundRunWithAScheduleStartsTheDeletionWorker() throws InterruptedException {
+        // given
+        scheduleTrash(3600);
+
+        // when
+        ScheduledDeletion.onBackgroundExecution(new MailSession());
+        joinBackgroundThreads();
+
+        // then
+        final ShadowLog.LogItem failure = logged("Failed to empty Trash and Spam in the background");
+        assertNotNull(failure);
+        assertEquals("I/O coroutine dispatcher is unavailable", failure.throwable.getMessage());
+    }
+
+    @Test
+    @Config(shadows = PatchedBuild.Applied.class)
+    public void backgroundRunWithEveryScheduleOffStartsNoWorker() throws InterruptedException {
+        // when
+        ScheduledDeletion.onBackgroundExecution(new MailSession());
+        joinBackgroundThreads();
+
+        // then
+        assertTrue(ShadowLog.getLogsForTag(TAG).isEmpty());
     }
 
     @Test

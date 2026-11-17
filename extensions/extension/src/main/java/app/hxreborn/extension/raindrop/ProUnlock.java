@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.raindrop;
 
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +59,8 @@ public final class ProUnlock {
 
     private static final Pattern RESPONSE_CODE = Pattern.compile("code=(\\d+)");
 
+    private static final String HTTP_OK = String.valueOf(HttpURLConnection.HTTP_OK);
+
     private static final ThreadLocal<String> responseUrl = new ThreadLocal<>();
 
     private static final ThreadLocal<String> replacementRequestBody = new ThreadLocal<>();
@@ -85,7 +88,7 @@ public final class ProUnlock {
             Matcher code = RESPONSE_CODE.matcher(description);
             int start = description.indexOf("url=");
             int end = description.lastIndexOf('}');
-            if (code.find() && "200".equals(code.group(1)) && start >= 0 && end > start) {
+            if (code.find() && HTTP_OK.equals(code.group(1)) && start >= 0 && end > start) {
                 responseUrl.set(description.substring(start + 4, end));
             }
         } catch (RuntimeException ex) {

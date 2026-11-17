@@ -11,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from issue_comment import (
-    answers_needs_info, timestamp, CLOSED_MARKER, PING_MARKER, UNRELEASED_MARKER, is_early_status_ping,
+    answers_needs_info, timestamp, CLOSED_MARKER, PING_MARKER, UNRELEASED_MARKER, gets_ping_reply,
     is_release_question, is_request, is_status_ping, ping_reply, closed_issue_reply, unreleased_reply,
 )
 
@@ -91,6 +91,62 @@ PINGS = [
     "any possibility of an update on this?",
     "Has this been added yet I think it would be helpful",
     "ANY UPDATE???",
+    "Hey @hxreborn \r\nCould you at least provide a reply? ",
+    "can you please give us a response",
+    "at least reply",
+    "why are you ignoring us",
+    "Hey @hxreborn",
+    "@hxreborn bro please",
+    "hi @hxreborn ??",
+    "@hxreborn @hxreborn @hxreborn",
+    "still no reply",
+    "No response yet from the dev",
+    "please reply",
+    "reply pls",
+    "is this project dead?",
+    "Has this been abandoned",
+    "how much longer?",
+    "How long do we have to wait",
+    "we're still waiting",
+    "Still waiting...",
+    "update?",
+    "News??",
+    "status?",
+    "It's been 2 weeks.",
+    "its been a month already",
+    "it has been a while",
+    "Hello? Anyone there?",
+    "anyone here?",
+    "are you still there",
+    "u there?",
+    "Will this ever be added?",
+    "is this gonna happen",
+    "still nothing?",
+    "Nothing yet?",
+    "hurry up pls",
+    "need this asap",
+    "waiting for an update",
+    "Still waiting for your reply",
+    "when?",
+    "soon?",
+    "waiting",
+    "ping",
+    "bumping",
+    "bump bump",
+    "up up",
+    "patch plsss",
+    "@hxreborn pleaseee",
+    "hellooo?",
+    "Anyone?",
+    "Hello Sir,,",
+    "hi bro",
+    "@hxreborn what are your thoughts with this app suggestion?",
+    "Any thoughts?",
+    "please add this.",
+    "Pls add support for this app",
+    "Hey @hxreborn thats my one more request please work on it, thank you",
+    "@hxreborn Please do that as soon as possible. I will wait for your patch. thanks",
+    "@hxreborn when is this getting released? A new release hasn't been built yet with your commit.",
 ]
 
 NOT_PINGS = [
@@ -125,6 +181,40 @@ NOT_PINGS = [
     "<!-- bump -->",
     "`bump`",
     "```\nany updates?",
+    "Can you reply with the logcat?",
+    "could you answer my question about root",
+    "Could you at least reply with the logcat?",
+    "Can you please answer my question about root?",
+    "Please reply with the output of adb logcat",
+    "please answer whether root is needed",
+    "@hxreborn thanks, works now",
+    "Hey @hxreborn the patch fails on 2.1.0",
+    "@hxreborn `please`",
+    "The app is still waiting for the server after patching",
+    "The update dialog has no response when I tap it",
+    "I tried to update",
+    "update: works after a reinstall",
+    "Status bar is black",
+    "The app shows the dead-pixel test screen",
+    "how long does patching take?",
+    "It's been 2 days since I patched and it crashes",
+    "It's been a while since I used the app, the login is broken",
+    "Is anyone else seeing this?",
+    "Will it be patched if I use root?",
+    "The ping test fails in Network Analyzer",
+    "Waiting for the update to download never ends",
+    "The app is waiting for an update server that is down",
+    "Can you add the soon tab?",
+    "When I open the app it crashes",
+    "@hxreborn great work, thanks",
+    "It almost seems like they keep watch of these github issues and tries to fix asap lol but the banner is still there",
+    "@hxreborn what do i do?",
+    "Thanks but I need latest Google Play version..",
+    "Hi! @hxreborn do you think this is possible",
+    "Yeah I too want this",
+    "Hello, the other request is now closed.",
+    "please add this patch to the Morphe Manager list, the app crashes on 2.1",
+    "Any thoughts on the crash log above are welcome",
     "",
 ]
 
@@ -138,18 +228,29 @@ for text in NOT_PINGS:
     print(f"{'ok  ' if ok else 'FAIL'} silent on: {text[:70]!r}")
 
 ISSUE = {"created_at": "2026-10-09T06:22:46Z"}
-ok = is_early_status_ping(ISSUE, {"created_at": "2026-10-13T10:00:00Z", "body": PINGS[0]})
+ok = gets_ping_reply(ISSUE, {"created_at": "2026-10-13T10:00:00Z", "body": PINGS[0]})
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a ping 4 days after opening gets the reply")
 
-ok = not is_early_status_ping(ISSUE, {"created_at": "2026-11-09T06:22:47Z", "body": PINGS[0]})
+ok = not gets_ping_reply(ISSUE, {"created_at": "2026-11-09T06:22:47Z", "body": PINGS[0]})
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} a ping after 30 days gets no reply")
 
-text = ping_reply({"labels": []})
-ok = text == PING_MARKER + "\nThere's no ETA for this request yet. Any progress will be posted here.\n"
+ok = gets_ping_reply({**ISSUE, "labels": [{"name": "app request"}]}, {"created_at": "2026-11-09T06:22:47Z", "body": PINGS[0]})
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} the ping reply is the marker and the no-ETA sentence")
+print(f"{'ok  ' if ok else 'FAIL'} a ping on an app request after 30 days gets the reply")
+
+NO_ETA = ("\nThere's no ETA for this request. This is a hobby project run by one developer, and pings don't change the order, "
+          "see [Good to know](https://github.com/hxreborn/morphe-patches/blob/main/.github/SUPPORT.md#good-to-know).")
+text = ping_reply({"labels": []})
+ok = text == PING_MARKER + NO_ETA + " Any progress will be posted here.\n"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the ping reply is the marker, the no-ETA sentence and the support link")
+
+text = ping_reply({"labels": [{"name": "app request"}]})
+ok = text == PING_MARKER + NO_ETA + " Upvoting the request shows demand. Any progress will be posted here.\n"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the ping reply on an app request asks for upvotes")
 
 text = ping_reply({"labels": [{"name": "in pre-release"}]})
 ok = text == PING_MARKER + ("\nThis change has been added in a pre-release, see the comment above. Please try it and reply "

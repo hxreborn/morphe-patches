@@ -79,6 +79,8 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
             mapOf(
                 "remove_chat_payments" to "money_off",
+                "remove_deleted_message_notices" to "speaker_notes_off",
+                "hide_image_remix" to "auto_awesome",
                 "remove_list_gaps" to "vertical_align_center",
                 "remove_typing_privacy_banner" to "speaker_notes_off",
                 "disable_ai_features" to "auto_awesome",

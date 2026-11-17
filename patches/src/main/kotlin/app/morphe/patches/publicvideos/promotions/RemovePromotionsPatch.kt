@@ -19,13 +19,14 @@ private const val TOOL_ITEM_PARAMETER_COUNT = 8
 @Suppress("unused")
 val removePromotionsPatch = bytecodePatch(
     name = "Remove promotions",
-    description = "Removes advertiser banners under posts and the VIP package and advertising offers " +
-        "on the profile.",
+    description = "Removes advertiser banners under posts, the VIP package and advertising offers " +
+        "on the profile, and the pop-ups over bottom bar tabs.",
 ) {
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
         BottomBarCtaImageFingerprint.matchSingle().method.returnEarly()
+        BottomNavTabPugmarkFingerprint.matchSingle().method.returnEarly(null)
 
         val toolType = ProfileHeaderToolsFingerprint.matchSingle().method.implementation!!.instructions
             .firstNotNullOf { instruction ->

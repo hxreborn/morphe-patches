@@ -17,13 +17,13 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.80.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.80.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;563 patches total
+> **[v1.81.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.81.0-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;572 patches total
 
 ### Featured apps
 
 <table align="center">
 <tr>
-<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>23 patches</sub></td>
+<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>25 patches</sub></td>
 <td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
 <td align="center" width="160"><a href="#moviebox"><img src=".github/assets/icons/moviebox.png" width="40"><br>MovieBox</a><br><sub>4 patches</sub></td>
 </tr>
@@ -506,7 +506,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="bittorrent"></a>
 <details>
-<summary><img src=".github/assets/icons/bittorrent.png" width="18" align="top">&nbsp;&nbsp;BitTorrent&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/bittorrent.png" width="18" align="top">&nbsp;&nbsp;BitTorrent&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -516,7 +516,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="bittorrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bittorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes ads. |
+| <a id="bittorrent-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/bittorrent/misc/theme/AmoledThemePatch.kt) | Adds a setting that makes dialogs, snackbars, buttons and cards pure black in dark mode. |
+| <a id="bittorrent-fix-screen-insets"></a>[Fix screen insets](patches/src/main/kotlin/app/morphe/patches/bittorrent/layout/insets/FixScreenInsetsPatch.kt) | Keeps main screens and settings clear of system bars and display cutouts on Android 17. |
+| <a id="bittorrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/bittorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro settings and removes ads. |
 
 </details>
 
@@ -575,7 +577,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="botim"></a>
 <details>
-<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -587,6 +589,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="botim-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/botim/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data. |
 | <a id="botim-fix-sign-in"></a>[Fix sign-in](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/FixSignInPatch.kt) | Fixes sending the verification code when signing in with a phone number. |
+| <a id="botim-hide-home-tab"></a>[Hide Home tab](patches/src/main/kotlin/app/morphe/patches/botim/layout/navigation/HideHomeTabPatch.kt) | Hides the Home tab from the bottom bar and opens the app on Calls. |
+| <a id="botim-remove-home-sections"></a>[Remove Home sections](patches/src/main/kotlin/app/morphe/patches/botim/layout/home/RemoveHomeSectionsPatch.kt) | Removes the Services grid, Discover more banners and the search bar from Home. |
 | <a id="botim-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/SpoofSignaturePatch.kt) | Lets a new phone number receive the verification code and sign in. |
 | <a id="botim-unlock-vip"></a>[Unlock VIP](patches/src/main/kotlin/app/morphe/patches/botim/misc/premium/UnlockVipPatch.kt) | Removes ads and upgrade prompts. Shows the VIP badge in the header. |
 
@@ -931,17 +935,16 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="devcheck"></a>
 <details>
-<summary><img src=".github/assets/icons/devcheck.png" width="18" align="top">&nbsp;&nbsp;DevCheck&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary><img src=".github/assets/icons/devcheck.png" width="18" align="top">&nbsp;&nbsp;DevCheck&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
 
-| 6.57 | 6.60 | 6.62 |
-| :---: | :---: | :---: |
+| 6.63 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="devcheck-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/devcheck/misc/theme/AmoledThemePatch.kt) | Adds a pure black option to the dark theme. |
 | <a id="devcheck-hide-menu-items"></a>[Hide menu items](patches/src/main/kotlin/app/morphe/patches/devcheck/layout/menu/HideMenuItemsPatch.kt) | Hides Manage subscription, Share and About from the main menu. |
 | <a id="devcheck-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/devcheck/misc/premium/UnlockPremiumPatch.kt) | Unlocks the Pro tools, tests, themes and colors. |
 
@@ -2303,12 +2306,12 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-mail-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
 | <a id="proton-mail-custom-accent-color"></a>[Custom accent color](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/theme/AccentColorPatch.kt) | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-mail-hide-layout-components"></a>[Hide layout components](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/layout/HideLayoutComponentsPatch.kt) | Adds settings to hide the Subscription and Report a problem sidebar entries. |
-| <a id="proton-mail-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the top-bar upgrade button, promotional sidebar rows and the auto-delete upgrade banner in Trash and Spam. Keeps the Empty trash and Empty spam buttons. |
+| <a id="proton-mail-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the top-bar upgrade button, promotional sidebar rows and the auto-delete upgrade banner in Trash and Spam, and skips the seasonal sale screens shown at launch. Keeps the Empty trash and Empty spam buttons. |
 | <a id="proton-mail-m3e-loading-indicator"></a>[M3E loading indicator](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/loadingindicator/LoadingIndicatorPatch.kt) | Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator. |
 | <a id="proton-mail-material-3-switches"></a>[Material 3 switches](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/materialswitch/MaterialSwitchesPatch.kt) | Shows switches in the Material 3 style with check and close icons. |
 | <a id="proton-mail-remove-sent-from-signature"></a>[Remove 'Sent from' signature](patches/src/main/kotlin/app/morphe/patches/protonmail/signature/RemoveSentFromSignaturePatch.kt) | Removes the 'Sent from Proton Mail' signature and unlocks the mobile signature setting. |
 | <a id="proton-mail-remove-free-accounts-limit"></a>[Remove free accounts limit](patches/src/main/kotlin/app/morphe/patches/protonmail/account/RemoveFreeAccountsLimitPatch.kt) | Removes the limit on signed-in free accounts. |
-| <a id="proton-mail-scheduled-trash-and-spam-deletion"></a>[Scheduled Trash and Spam deletion](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/scheduleddeletion/ScheduledDeletionPatch.kt) | Deletes all messages in Trash and Spam on separate configurable schedules. Deleted messages cannot be recovered. |
+| <a id="proton-mail-scheduled-trash-and-spam-deletion"></a>[Scheduled Trash and Spam deletion](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/scheduleddeletion/ScheduledDeletionPatch.kt) | Deletes all messages in Trash and Spam on separate configurable schedules, also while the app is closed. Deleted messages cannot be recovered. |
 | <a id="proton-mail-swipe-to-switch-accounts"></a>[Swipe to switch accounts](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/accountswipe/SwipeToSwitchAccountsPatch.kt) | Switches between signed-in accounts by swiping up or down on the account avatar. |
 | <a id="proton-mail-unlock-custom-time-picker"></a>[Unlock custom time picker](patches/src/main/kotlin/app/morphe/patches/protonmail/misc/scheduling/UnlockCustomTimePickerPatch.kt) | Enables picking a custom date and time when snoozing conversations and scheduling messages. |
 
@@ -2385,7 +2388,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="public"></a>
 <details>
-<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2396,12 +2399,14 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="public-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/publicvideos/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Flurry, comScore, Firebase Analytics and Facebook from collecting usage data. |
+| <a id="public-disable-trailer-autoplay"></a>[Disable trailer autoplay](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/trailer/DisableTrailerAutoplayPatch.kt) | Stops the trailers that play on their own at the top of the Local Drama page. Only thumbnails load. |
 | <a id="public-disable-video-preloading"></a>[Disable video preloading](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/preload/DisableVideoPreloadingPatch.kt) | Stops preloading upcoming videos in the feed and in dramas. |
 | <a id="public-follow-system-theme"></a>[Follow system theme](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/theme/FollowSystemThemePatch.kt) | Switches the app between light and dark with the system theme. The app's Night Mode setting has no effect. |
 | <a id="public-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="public-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/publicvideos/ads/HideAdsPatch.kt) | Removes ads from the feed, app open, interstitial and rewarded placements, and the sponsor banner on the launch screen. |
-| <a id="public-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts and the VIP package and advertising offers on the profile. |
+| <a id="public-remove-promotions"></a>[Remove promotions](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts, the VIP package and advertising offers on the profile, and the pop-ups over bottom bar tabs. |
 | <a id="public-remove-screenshot-restriction"></a>[Remove screenshot restriction](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots and screen recording on every screen. |
+| <a id="public-remove-startup-animation"></a>[Remove startup animation](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/splash/RemoveStartupAnimationPatch.kt) | Opens the app without playing the animated logo on launch. |
 
 </details>
 
@@ -2886,7 +2891,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="tradingview"></a>
 <details>
-<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2896,6 +2901,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="tradingview-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/analytics/DisableAnalyticsPatch.kt) | Disables network telemetry and Snowplow analytics. |
 | <a id="tradingview-fix-google-sign-in"></a>[Fix Google sign-in](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/signin/FixGoogleSignInPatch.kt) | Signs in with Google through a web page. |
 | <a id="tradingview-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="tradingview-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
@@ -3050,7 +3056,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;23 patches</summary>
+<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;25 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -3070,11 +3076,13 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-hide-more-screen-items"></a>[Hide More screen items](patches/src/main/kotlin/app/morphe/patches/viber/layout/more/HideMoreItemsPatch.kt) | Hides selected entries from the main screen and More screen. | • Hide About and FAQ<br>• Hide Business Account<br>• Hide Caller ID<br>• Hide Viber Dating<br>• Hide eSIM<br>• Hide Get free stickers<br>• Hide Invite friends<br>• Hide Open Business Account<br>• Hide promotional banners<br>• Hide Rakuten account<br>• Hide Viber Lenses<br>• Hide Viber Out<br>• Hide Viber Plus<br>• Hide Your News |
 | <a id="viber-hide-viber-out-and-channel-promotions"></a>[Hide Viber Out and channel promotions](patches/src/main/kotlin/app/morphe/patches/viber/layout/promotions/HidePromotionsPatch.kt) | Hides the Viber Out banners and intro on the Calls tab and the channel and bot suggestions in the chat list. |  |
 | <a id="viber-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/viber/ads/HideAdsPatch.kt) | Hides ads in the chat list, the More screen, Explore, search and after calls. |  |
+| <a id="viber-hide-image-remix"></a>[Hide image remix](patches/src/main/kotlin/app/morphe/patches/viber/layout/remix/HideImageRemixPatch.kt) | Hides Remix actions and the Remix introduction popup on images. |  |
 | <a id="viber-hide-navigation-buttons"></a>[Hide navigation buttons](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar. | • Hide Calls<br>• Hide ChatGPT<br>• Hide Explore<br>• Hide Marketplace<br>• Hide Pay<br>• Hide Shortica |
 | <a id="viber-link-as-secondary-device"></a>[Link as secondary device](patches/src/main/kotlin/app/morphe/patches/viber/misc/secondary/LinkAsSecondaryDevicePatch.kt) | Links to your main Viber phone. |  |
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
 | <a id="viber-remove-caller-id-prompts"></a>[Remove Caller ID prompts](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
+| <a id="viber-remove-deleted-message-notices"></a>[Remove deleted message notices](patches/src/main/kotlin/app/morphe/patches/viber/misc/deletedmessages/RemoveDeletedMessagesPatch.kt) | Requests silent deletion and removes deleted message notices from chats. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
 | <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |
 | <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |
@@ -3377,7 +3385,7 @@ signs in without a token.
 
 <a id="torrent"></a>
 <details>
-<summary><img src=".github/assets/icons/utorrent.png" width="18" align="top">&nbsp;&nbsp;µTorrent&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary><img src=".github/assets/icons/utorrent.png" width="18" align="top">&nbsp;&nbsp;µTorrent&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -3387,7 +3395,8 @@ signs in without a token.
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="torrent-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/theme/AmoledThemePatch.kt) | Makes the torrent and media page backgrounds pure black in dark mode. |
+| <a id="torrent-amoled-dark-theme"></a>[AMOLED dark theme](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/theme/AmoledThemePatch.kt) | Adds an option to make dark surfaces pure black. |
+| <a id="torrent-fix-screen-insets"></a>[Fix screen insets](patches/src/main/kotlin/app/morphe/patches/utorrent/layout/insets/FixScreenInsetsPatch.kt) | Keeps main screens and settings clear of system bars and display cutouts on Android 17. |
 | <a id="torrent-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/utorrent/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes ads. |
 
 </details>

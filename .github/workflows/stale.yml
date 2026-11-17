@@ -27,6 +27,9 @@ jobs:
             .github/actions/triage/discussion.sh
             .github/actions/triage/replies.py
             .github/actions/triage/discussion_timeouts.py
+            .github/actions/triage/unanswered_pings.py
+            .github/actions/triage/fields.py
+            .github/scripts/issue_comment.py
             .github/scripts/versions.py
           sparse-checkout-cone-mode: false
       - env:
@@ -52,6 +55,14 @@ jobs:
             mapfile -t labels < <(jq -r --argjson n "$n" '.[] | select(.number == $n) | .labels[].name | select(. == "needs info" or . == "stale")' "$RUNNER_TEMP/requests.json")
             [ "${#labels[@]}" -eq 0 ] || bash -eo pipefail "$discussion" remove-labels "$n" "${labels[@]}"
             echo "closed #$n"
+          done
+          python3 .github/actions/triage/unanswered_pings.py "$RUNNER_TEMP/requests.json" "$OWNER" |
+          while read -r row; do
+            n=$(jq -r .number <<< "$row")
+            if [ "$DRY_RUN" = true ]; then echo "would answer the ping on #$n"; continue; fi
+            jq -r .body <<< "$row" > "$RUNNER_TEMP/ping.md"
+            bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/ping.md" >/dev/null
+            echo "answered the ping on #$n"
           done
 
   stale:

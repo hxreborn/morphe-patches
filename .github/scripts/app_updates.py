@@ -596,7 +596,7 @@ def sync_issues(apps, results, bundle_version):
     for record in results:
         app = apps[record["package"]]
         prefix = f"{APP_UPDATE_TITLE_PREFIX}{app['name']} "
-        candidate = record["candidate"] if record["status"] == "update" else None
+        candidate = record["candidate"] if record["status"] == "update" and record.get("readiness") != "untested" else None
         open_same = None
         open_newer = False
         for issue in issues:

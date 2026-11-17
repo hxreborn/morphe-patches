@@ -25,6 +25,8 @@ import java.util.Locale;
 enum PatchSetting {
 
     REMOVE_CHAT_PAYMENTS("Chats", "Remove chat payment actions", true),
+    REMOVE_DELETED_MESSAGE_NOTICES("Chats", "removeDeletedMessageNotices", false),
+    HIDE_IMAGE_REMIX("Chats", "hideImageRemix", false),
     REMOVE_TYPING_PRIVACY_BANNER("Chats", "removeTypingPrivacyBanner", true),
     REMOVE_LIST_GAPS("Chats", "removeListGaps", true), DISABLE_AI_FEATURES("Chats", "Disable AI features", true),
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", false),
@@ -63,6 +65,8 @@ enum PatchSetting {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGapsName();
             case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBannerName();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsName();
+            case REMOVE_DELETED_MESSAGE_NOTICES -> AppliedPatches.removeDeletedMessageNoticesName();
+            case HIDE_IMAGE_REMIX -> AppliedPatches.hideImageRemixName();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesName();
             case START_FOLDER -> AppliedPatches.startFolderName();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsName();
@@ -87,6 +91,8 @@ enum PatchSetting {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGapsDescription();
             case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBannerDescription();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPaymentsDescription();
+            case REMOVE_DELETED_MESSAGE_NOTICES -> AppliedPatches.removeDeletedMessageNoticesDescription();
+            case HIDE_IMAGE_REMIX -> AppliedPatches.hideImageRemixDescription();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeaturesDescription();
             case DISAPPEARING_MEDIA_PRIVACY -> {
                 String description = AppliedPatches.disappearingMediaPrivacyDescription();
@@ -115,6 +121,8 @@ enum PatchSetting {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGaps();
             case REMOVE_TYPING_PRIVACY_BANNER -> AppliedPatches.removeTypingPrivacyBanner();
             case REMOVE_CHAT_PAYMENTS -> AppliedPatches.removeChatPayments();
+            case REMOVE_DELETED_MESSAGE_NOTICES -> AppliedPatches.removeDeletedMessageNotices();
+            case HIDE_IMAGE_REMIX -> AppliedPatches.hideImageRemix();
             case DISABLE_AI_FEATURES -> AppliedPatches.disableAiFeatures();
             case START_FOLDER -> AppliedPatches.startFolder();
             case UNFILED_CHATS -> AppliedPatches.unfiledChats();
