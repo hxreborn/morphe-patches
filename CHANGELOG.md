@@ -1,3 +1,10 @@
+## [1.81.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.81.0...v1.81.1-dev.1) (2026-11-17)
+
+### Bug Fixes
+
+* **BeReal:** deliver push notifications to patched installs ([158d4b6](https://github.com/hxreborn/morphe-patches/commit/158d4b667f6412de2a6733b28feeba3ffa3263f3)), closes [#900](https://github.com/hxreborn/morphe-patches/issues/900)
+* **DepthPix:** stop empty Home and unsupported version error ([a60117d](https://github.com/hxreborn/morphe-patches/commit/a60117d3519920fba8486335b1975a41e81c0880))
+
 ## [1.81.0](https://github.com/hxreborn/morphe-patches/compare/v1.80.0...v1.81.0) (2026-11-17)
 
 ### Bug Fixes
