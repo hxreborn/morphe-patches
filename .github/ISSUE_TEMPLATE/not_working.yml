@@ -496,11 +496,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.82.0-dev.2"
         - "1.82.0-dev.1"
         - "1.81.1-dev.1"
         - "1.81.0-dev.5"
         - "1.81.0-dev.4"
-        - "1.81.0-dev.3"
         - "1.81.0"
         - "Older than these"
         # /generated
@@ -641,7 +641,9 @@ body:
         - "BlurWall \u00b7 Unlock premium"
         - "botim \u00b7 Disable tracking"
         - "botim \u00b7 Fix sign-in"
+        - "botim \u00b7 Hide All tab"
         - "botim \u00b7 Hide Home tab"
+        - "botim \u00b7 Remove botim AI"
         - "botim \u00b7 Remove Home sections"
         - "botim \u00b7 Spoof signature"
         - "botim \u00b7 Unlock VIP"

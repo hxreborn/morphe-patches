@@ -1,3 +1,11 @@
+## [1.82.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.1...v1.82.0-dev.2) (2026-11-17)
+
+### New Features
+
+* **Botim - Hide All tab:** show bottom bar without services grid ([a2e02dd](https://github.com/hxreborn/morphe-patches/commit/a2e02ddbb3e4fb79146695ef855bf5f2128645d1))
+* **Botim - Remove botim AI:** drop AI row from New chat and New call ([49beb21](https://github.com/hxreborn/morphe-patches/commit/49beb21114d907508ca790b2e246b6c4c8b2d483))
+* **TradingView - Unlock chart features:** lift 3-indicator chart limit ([519e95c](https://github.com/hxreborn/morphe-patches/commit/519e95cef829e3848bc502502616cba228767046)), closes [#928](https://github.com/hxreborn/morphe-patches/issues/928)
+
 ## [1.82.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.81.1-dev.1...v1.82.0-dev.1) (2026-11-17)
 
 ### New Features
