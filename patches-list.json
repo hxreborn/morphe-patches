@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.82.0-dev.2",
+  "version": "1.82.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -14272,7 +14272,7 @@
     },
     {
       "name": "Remove bulk import limit",
-      "description": "Removes the credit limit on bulk imports. Doesn't affect the weekly limit on single imports.",
+      "description": "Removes the credit limit on bulk imports and the weekly limit on link imports.",
       "default": true,
       "category": null,
       "compatiblePackages": [

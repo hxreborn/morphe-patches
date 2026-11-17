@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.82.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;576 patches total
+> **[v1.82.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;576 patches total
 
 ### Featured apps
 
@@ -114,7 +114,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="albo-enable-guest-sign-in"></a>[Enable guest sign-in](patches/src/main/kotlin/app/morphe/patches/albo/misc/guest/EnableGuestSignInPatch.kt) | Enables guest sign-in without a Google account. |
 | <a id="albo-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="albo-remove-bulk-import-limit"></a>[Remove bulk import limit](patches/src/main/kotlin/app/morphe/patches/albo/misc/imports/RemoveBulkImportLimitPatch.kt) | Removes the credit limit on bulk imports. Doesn't affect the weekly limit on single imports. |
+| <a id="albo-remove-bulk-import-limit"></a>[Remove bulk import limit](patches/src/main/kotlin/app/morphe/patches/albo/misc/imports/RemoveBulkImportLimitPatch.kt) | Removes the credit limit on bulk imports and the weekly limit on link imports. |
 | <a id="albo-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/albo/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro and Max features. Import limits are not included. |
 
 </details>

@@ -1,3 +1,9 @@
+## [1.82.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.2...v1.82.0-dev.3) (2026-11-17)
+
+### Bug Fixes
+
+* **Albo - Remove bulk import limit:** import links past the weekly limit ([dd33405](https://github.com/hxreborn/morphe-patches/commit/dd33405ca625d16142785302b42d7c14c75d7bf8)), closes [#932](https://github.com/hxreborn/morphe-patches/issues/932)
+
 ## [1.82.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.1...v1.82.0-dev.2) (2026-11-17)
 
 ### New Features
