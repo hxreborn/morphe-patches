@@ -34,6 +34,8 @@ public final class MainTabsTest {
 
     private static final Object CALLS = "calls";
 
+    private static final Object ALL = 4;
+
     @Test
     public void removesTheTabAndKeepsTheOrderOfTheRest() {
         Map<Object, Object> tabs = new LinkedHashMap<>();
@@ -52,6 +54,27 @@ public final class MainTabsTest {
         tabs.put(1, CALLS);
 
         assertEquals(1, MainTabs.withoutTab(tabs, HOME).size());
+    }
+
+    @Test
+    public void removesEveryTabOfTheTypeAndKeepsTheOrderOfTheRest() {
+        Map<Object, Object> tabs = new LinkedHashMap<>();
+        tabs.put("home", HOME);
+        tabs.put("calls", CALLS);
+        tabs.put("all", ALL);
+
+        Map<Object, Object> visible = MainTabs.withoutTabsOfType(tabs, Integer.class);
+
+        assertEquals(Arrays.asList(HOME, CALLS), Arrays.asList(visible.values().toArray()));
+    }
+
+    @Test
+    public void keepsEveryTabWhenNoneHasTheType() {
+        Map<Object, Object> tabs = new LinkedHashMap<>();
+        tabs.put("home", HOME);
+        tabs.put("calls", CALLS);
+
+        assertEquals(2, MainTabs.withoutTabsOfType(tabs, Integer.class).size());
     }
 
 }
