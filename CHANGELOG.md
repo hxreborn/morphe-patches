@@ -1,3 +1,9 @@
+## [1.82.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.3...v1.82.0-dev.4) (2026-11-17)
+
+### New Features
+
+* **Botim - Disable background logging:** remove extra launch process ([99b5bc8](https://github.com/hxreborn/morphe-patches/commit/99b5bc80f5cdde1bd53b03eca4a0901904400384)), closes [#917](https://github.com/hxreborn/morphe-patches/issues/917)
+
 ## [1.82.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.2...v1.82.0-dev.3) (2026-11-17)
 
 ### Bug Fixes

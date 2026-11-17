@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.82.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;576 patches total
+> **[v1.82.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
 
 ### Featured apps
 
@@ -577,7 +577,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="botim"></a>
 <details>
-<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
+<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -587,6 +587,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="botim-disable-background-logging"></a>[Disable background logging](patches/src/main/kotlin/app/morphe/patches/botim/misc/logging/DisableBackgroundLoggingPatch.kt) | Stops the logging service and the extra background process the app starts at launch. |
 | <a id="botim-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/botim/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data. |
 | <a id="botim-fix-sign-in"></a>[Fix sign-in](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/FixSignInPatch.kt) | Fixes sending the verification code when signing in with a phone number. |
 | <a id="botim-hide-all-tab"></a>[Hide All tab](patches/src/main/kotlin/app/morphe/patches/botim/layout/navigation/HideAllTabPatch.kt) | Hides the All tab from the bottom bar. |

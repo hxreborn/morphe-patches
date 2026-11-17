@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-17T19:25:57",
-  "description": "## [1.82.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.2...v1.82.0-dev.3) (2026-11-17)\n\n### Bug Fixes\n\n* **Albo - Remove bulk import limit:** import links past the weekly limit ([dd33405](https://github.com/hxreborn/morphe-patches/commit/dd33405ca625d16142785302b42d7c14c75d7bf8)), closes [#932](https://github.com/hxreborn/morphe-patches/issues/932)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.82.0-dev.3/patches-1.82.0-dev.3.mpp",
+  "created_at": "2026-11-17T19:43:06",
+  "description": "## [1.82.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.3...v1.82.0-dev.4) (2026-11-17)\n\n### New Features\n\n* **Botim - Disable background logging:** remove extra launch process ([99b5bc8](https://github.com/hxreborn/morphe-patches/commit/99b5bc80f5cdde1bd53b03eca4a0901904400384)), closes [#917](https://github.com/hxreborn/morphe-patches/issues/917)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.82.0-dev.4/patches-1.82.0-dev.4.mpp",
   "signature_download_url": "",
-  "version": "1.82.0-dev.3"
+  "version": "1.82.0-dev.4"
 }
