@@ -12,10 +12,10 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.smali.addFieldReader
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.ClassDef
@@ -33,10 +33,6 @@ private fun MutableMethod.returnNull() = addInstructions(
     """,
 )
 
-private val removeAdsExtensionPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-}
-
 @Suppress("unused")
 val removeAdsPatch: BytecodePatch = bytecodePatch(
     name = "Remove ads",
@@ -44,7 +40,10 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
         "Stops the ad networks from loading.",
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
-    dependsOn(removePairipProtectionPatch, removeAdsExtensionPatch, removeAdNetworkProvidersPatch)
+    dependsOn(
+        beRealBasePatch,
+        removeAdNetworkProvidersPatch,
+    )
 
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;", removeAdsPatch)

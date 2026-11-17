@@ -14,13 +14,13 @@ import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
-import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.asSequence
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -52,10 +52,6 @@ private val removePermissionsAndCollectionFlagsPatch = resourcePatch {
     }
 }
 
-private val dataCollectionExtensionPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-}
-
 @Suppress("unused")
 val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
     name = "Disable data collection",
@@ -65,11 +61,10 @@ val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.BEREAL)
 
     dependsOn(
-        removePairipProtectionPatch,
         removePermissionsAndCollectionFlagsPatch,
         disableCrashlyticsCollectionPatch,
         disableFirebaseSessionsPatch,
-        dataCollectionExtensionPatch,
+        beRealBasePatch,
     )
 
     execute {

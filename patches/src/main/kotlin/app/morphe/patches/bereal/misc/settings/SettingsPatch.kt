@@ -15,8 +15,8 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.shared.misc.fillPatchDetails
-import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import com.android.tools.smali.dexlib2.Opcode
@@ -83,7 +83,7 @@ private fun BytecodePatchContext.addSettingsRow() {
 
 internal val settingsPatch = bytecodePatch {
     dependsOn(
-        removePairipProtectionPatch,
+        beRealBasePatch,
         resourcePatch {
             finalize {
                 document("AndroidManifest.xml").use { document ->
@@ -111,7 +111,6 @@ internal val settingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
 
     execute {
         mutableClassDefBy(classDefBy(PAIRIP_APPLICATION_CLASS).superclass!!).methods

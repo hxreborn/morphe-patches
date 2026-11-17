@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -33,10 +34,6 @@ private val removeContactsPermissionsResourcePatch = resourcePatch {
     }
 }
 
-private val contactsPermissionExtensionPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-}
-
 @Suppress("unused")
 val removeContactsPermissionPatch: BytecodePatch = bytecodePatch(
     name = "Remove contacts permission",
@@ -44,7 +41,7 @@ val removeContactsPermissionPatch: BytecodePatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.BEREAL)
 
-    dependsOn(removeContactsPermissionsResourcePatch, contactsPermissionExtensionPatch)
+    dependsOn(removeContactsPermissionsResourcePatch, beRealBasePatch)
 
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}ContactsPermission;", removeContactsPermissionPatch)
