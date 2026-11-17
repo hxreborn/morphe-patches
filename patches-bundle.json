@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-16T22:54:28",
-  "description": "## [1.81.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.3...v1.81.0-dev.4) (2026-11-16)\n\n### New Features\n\n* **Proton Mail - Scheduled Trash and Spam deletion:** toast on reopen ([3149681](https://github.com/hxreborn/morphe-patches/commit/3149681f234b0ecbb79d6057709d68801df47bed)), closes [#778](https://github.com/hxreborn/morphe-patches/issues/778)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.81.0-dev.4/patches-1.81.0-dev.4.mpp",
+  "created_at": "2026-11-17T09:22:34",
+  "description": "## [1.81.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.81.0-dev.4...v1.81.0-dev.5) (2026-11-17)\n\n### New Features\n\n* **Viber - Hide image remix:** add patches menu switch ([8815fd1](https://github.com/hxreborn/morphe-patches/commit/8815fd1d8fac9e075027383d3bd580a660189ffe))\n* **Viber - Remove deleted message notices:** add patches menu switch ([b68f200](https://github.com/hxreborn/morphe-patches/commit/b68f2003454d67fa214da15fe88bdcff4fb0b648))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.81.0-dev.5/patches-1.81.0-dev.5.mpp",
   "signature_download_url": "",
-  "version": "1.81.0-dev.4"
+  "version": "1.81.0-dev.5"
 }
