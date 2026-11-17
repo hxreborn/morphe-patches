@@ -14,7 +14,7 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/tradingview/ChartPl
 @Suppress("unused")
 val unlockChartFeaturesPatch = bytecodePatch(
     name = "Unlock chart features",
-    description = "Unlocks layouts with up to 8 charts, a third indicator per chart and the Renko, Kagi, Point & Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals stay on your plan.",
+    description = "Unlocks layouts with up to 8 charts, more than 3 indicators per chart and the Renko, Kagi, Point & Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals follow your plan.",
 ) {
     compatibleWith(AppCompatibilities.TRADINGVIEW)
     extendWith("extensions/extension.mpe")
