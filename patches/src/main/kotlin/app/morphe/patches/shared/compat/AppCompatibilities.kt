@@ -2035,7 +2035,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xFBBF31,
         signatures = setOf("0d4facb5aedccec85e26512473ca51d63d8b415059d4ce8b0a387e0ba8b32f04"),
-        targets = listOf(AppTarget(version = "2.78.1", versionCode = 1515278101, minSdk = 24)),
+        targets = listOf(AppTarget(version = "2.78.2", versionCode = 1515278200, minSdk = 24)),
     )
 
     val XPLORE = Compatibility(
