@@ -1572,12 +1572,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "6832f51be89158c630aa9a166c10781f2f68fc3bf1ef1e776e4fa2c218f0010d",
         ),
-        targets = listOf(
-            AppTarget(version = "2.2.8", versionCode = 77, minSdk = 33),
-            AppTarget(version = "2.2.9", versionCode = 78, minSdk = 33),
-            AppTarget(version = "2.2.91", versionCode = 82, minSdk = 33),
-            AppTarget(version = "2.3.0", versionCode = 84, minSdk = 33),
-        ),
+        targets = listOf(AppTarget(version = "2.4.0", versionCode = 85, minSdk = 33)),
     )
 
     val RATEGLANCE = Compatibility(
