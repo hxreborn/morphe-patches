@@ -1684,7 +1684,7 @@ internal object AppCompatibilities {
         packageName = "com.risesci.nyx",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x8E58FF,
-        targets = listOf(AppTarget(version = "Android V1.79.3", versionCode = 1792671827, minSdk = 26)),
+        targets = listOf(AppTarget(version = "Android V1.79.4", versionCode = 1793822252, minSdk = 26)),
     )
 
     val RUBBER_BANDS = Compatibility(
