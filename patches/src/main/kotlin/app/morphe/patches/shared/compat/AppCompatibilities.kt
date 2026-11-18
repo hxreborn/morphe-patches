@@ -2037,7 +2037,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "d46cd5fa44ae52141346da0e2c21d0cea7c6e0587b1ee5ad121d909031efec57",
         ),
-        targets = listOf(AppTarget(version = "4.50.05", versionCode = 45005, minSdk = 26)),
+        targets = listOf(AppTarget(version = "4.53.05", versionCode = 45305, minSdk = 26)),
     )
 
     val YANOSIK = Compatibility(
