@@ -2051,7 +2051,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "5447ddeefa77b9897fd3755c225899a0cbfb61a959f04fc949870808aceb52e6",
         ),
-        targets = listOf(AppTarget(version = "26.9.0", versionCode = 6001512, minSdk = 28)),
+        targets = listOf(AppTarget(version = "26.10.0", versionCode = 6012223, minSdk = 28)),
     )
 
     val XTREAM_PLAYER = Compatibility(
