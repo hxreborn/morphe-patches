@@ -5,7 +5,6 @@
 package app.morphe.patches.viber.misc.updates
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
@@ -14,6 +13,7 @@ import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -27,8 +27,8 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 @Suppress("unused")
 val disableUpdatePromptsPatch: BytecodePatch = bytecodePatch(
     name = "Disable update prompts",
-    description = "Stops the optional Google Play update dialog, the suggested upgrade dialog and the update request " +
-        "on links this version can't open. Required updates still show.",
+    description = "Stops the Google Play update dialog, the suggested and required upgrade dialogs and the update " +
+        "request on links this version can't open. Viber's servers can still stop serving an old version.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
@@ -42,10 +42,7 @@ val disableUpdatePromptsPatch: BytecodePatch = bytecodePatch(
                 method.replaceInstruction(it.index, "const/4 v$flag, 0x0")
             }
         }
-        SuggestedUpgradeFingerprint.matchSingle().apply {
-            val (_, _, showSuggestedUpgrade) = instructionMatches
-            method.removeInstruction(showSuggestedUpgrade.index)
-        }
+        ClientUpgradeFingerprint.matchSingle().method.returnEarly()
         UnsupportedLinkDialogFingerprint.matchSingle().apply {
             val (_, _, labelsCall, returnDialog) = instructionMatches
             val labels = labelsCall.instruction.getReference<MethodReference>()!!

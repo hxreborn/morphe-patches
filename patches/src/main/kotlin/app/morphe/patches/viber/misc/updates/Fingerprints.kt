@@ -62,7 +62,7 @@ internal fun positiveLabelFingerprint(setter: MethodReference) = Fingerprint(
     filters = listOf(fieldAccess(opcode = Opcode.IPUT_OBJECT, type = "Ljava/lang/String;")),
 )
 
-internal object SuggestedUpgradeFingerprint : Fingerprint(
+internal object ClientUpgradeFingerprint : Fingerprint(
     name = "onClientUpgrade",
     returnType = "V",
     parameters = listOf("I"),
