@@ -12,7 +12,6 @@ internal object GenerateMasterKeyFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
     returnType = "Ljavax/crypto/SecretKey;",
     parameters = listOf("Ljavax/crypto/KeyGenerator;", "L", "Z"),
-    strings = listOf("_me_proton_core_data_crypto_master_key_"),
     filters = listOf(
         methodCall(
             definingClass = "Landroid/security/keystore/KeyGenParameterSpec\$Builder;",
