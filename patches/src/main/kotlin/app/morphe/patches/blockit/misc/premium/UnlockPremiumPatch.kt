@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.blockit.misc.premium
 
-import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.bytecodePatch
@@ -29,18 +29,18 @@ val unlockPremiumPatch = bytecodePatch(
         val (premiumStoreMatch, _, bigSuitcasePut, _, soundPackPut) = ownedPurchases.instructionMatches
 
         ownedPurchases.method.apply {
-            listOf(soundPackPut.index, bigSuitcasePut.index).forEach { putIndex ->
-                val ownedRegister = getInstruction<FiveRegisterInstruction>(putIndex).registerE
-                addInstruction(putIndex, "const/4 v$ownedRegister, 0x1")
-            }
-
             val premiumIndex = premiumStoreMatch.index
             val premiumStore = getInstruction<TwoRegisterInstruction>(premiumIndex)
             val premiumField = getInstruction<ReferenceInstruction>(premiumIndex).reference
+            val ownedRegisters = listOf(bigSuitcasePut.index, soundPackPut.index)
+                .map { getInstruction<FiveRegisterInstruction>(it).registerE }
+            val grantedRegisters = ownedRegisters.filter { it != premiumStore.registerA }.distinct()
+
             replaceInstruction(premiumIndex, "const/4 v${premiumStore.registerA}, 0x1")
-            addInstruction(
+            addInstructions(
                 premiumIndex + 1,
-                "iput-boolean v${premiumStore.registerA}, v${premiumStore.registerB}, $premiumField",
+                grantedRegisters.joinToString("\n") { "const/4 v$it, 0x1" } +
+                    "\niput-boolean v${premiumStore.registerA}, v${premiumStore.registerB}, $premiumField",
             )
         }
     }
