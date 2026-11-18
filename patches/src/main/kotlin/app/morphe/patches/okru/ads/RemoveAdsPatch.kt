@@ -20,6 +20,7 @@ private val DISABLED_AD_FLAG_KEYS = listOf(
     "vk.clips.banner.carousel.enabled",
     "stream.vkclip.closeable_overlay.advertisement.enabled",
     "vkminiapps.ads.enabled",
+    "discussion.advertisement.enabled",
 )
 
 private const val RETURN_EMPTY_LIST = """
@@ -44,7 +45,6 @@ val removeAdsPatch = bytecodePatch(
         MyTargetIsLoadCalledFingerprint.matchSingle().method.returnEarly(true)
         MyTargetViewLoadFingerprint.matchSingle().method.returnEarly()
 
-        LoadDiscussionBannerFingerprint.matchSingle().method.returnEarly()
         listOf(ZenLoadAdRequestFingerprint, ZenLoadAdRequestListFingerprint, GamesAdSourcesFingerprint).forEach { fingerprint ->
             val method = fingerprint.matchSingle().method
             val target = if (method.implementation!!.registerCount == 0) method.addFreeRegisters(1).first else method
