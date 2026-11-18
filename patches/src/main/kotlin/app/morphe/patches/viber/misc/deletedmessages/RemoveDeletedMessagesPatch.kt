@@ -5,10 +5,14 @@
 package app.morphe.patches.viber.misc.deletedmessages
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -32,11 +36,13 @@ private const val REMOVING_NOTICES = "$VIBER_SETTINGS_CLASS->removeDeletedMessag
 private const val STATUS_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->hasStatusUnlessRemovingNotices(Z)Z"
 private const val MIME_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->deletedMessageMime(I)I"
 private const val BODY_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->deletedMessageBody(Ljava/lang/String;)Ljava/lang/String;"
+private const val SHOW_DELETE_WITHOUT_TRACE_OPTION = "$VIBER_SETTINGS_CLASS->showDeleteWithoutTraceOption(Z)Z"
 
 @Suppress("unused")
 val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
     name = "Remove deleted message notices",
-    description = "Requests silent deletion and removes deleted message notices from chats.",
+    description = "Makes Delete for everyone leave no notice on either side and clears deleted message notices from chats. " +
+        "Hides Viber's own Delete without a trace option.",
 ) {
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
@@ -162,5 +168,28 @@ val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
             """,
         )
         deleted.method.addInstructions(messageUpdate.index + 1, "invoke-virtual {v${(controllerRead.instruction as TwoRegisterInstruction).registerB}, v$messageRegister}, $deleteSilently")
+
+        DeleteWithoutTraceMenuItemFingerprint.matchSingle().apply {
+            val (_, removeItem) = instructionMatches
+            val keepIndex = removeItem.index + 1
+            val removing = method.getFreeRegisterProvider(keepIndex, 1).getFreeRegister4Bit()
+            method.addInstructionsWithLabels(
+                keepIndex,
+                """
+                    invoke-static {}, $REMOVING_NOTICES
+                    move-result v$removing
+                    if-eqz v$removing, :keep
+                    return-void
+                """,
+                ExternalLabel("keep", method.getInstruction(keepIndex)),
+            )
+        }
+        DeleteOptionsDialogConstructorFingerprint.matchSingle().method.addInstructions(
+            0,
+            """
+                invoke-static {p1}, $SHOW_DELETE_WITHOUT_TRACE_OPTION
+                move-result p1
+            """,
+        )
     }
 }

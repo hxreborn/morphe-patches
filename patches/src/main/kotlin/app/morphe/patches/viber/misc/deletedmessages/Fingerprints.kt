@@ -10,7 +10,9 @@ import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.string
+import app.morphe.patcher.resource.ResourceType
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val DELETED_MESSAGE_EVENT = "Lcom/viber/jni/im2/CDeletedMessageMsg;"
@@ -97,5 +99,32 @@ internal object DeletedMessageEventFingerprint : Fingerprint(
     filters = listOf(
         methodCall(parameters = listOf("J", "Z"), returnType = "V"),
         methodCall(parameters = listOf("Ljava/lang/String;", "Z", "J", "J"), returnType = "V"),
+    ),
+)
+
+internal object DeleteWithoutTraceMenuItemFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = emptyList(),
+    filters = listOf(
+        resourceLiteral(ResourceType.ID, "menu_message_delete_without_trace"),
+        methodCall(name = "removeItem", parameters = listOf("I"), returnType = "V", location = MatchAfterImmediately()),
+        resourceLiteral(ResourceType.STRING, "menu_delete_without_trace"),
+    ),
+)
+
+internal object DeleteOptionsDialogFingerprint : Fingerprint(
+    name = "onPrepareDialogView",
+    returnType = "V",
+    filters = listOf(resourceLiteral(ResourceType.STRING, "viber_plus_delete_without_trace_with_start_emoji")),
+)
+
+internal object DeleteOptionsDialogConstructorFingerprint : Fingerprint(
+    classFingerprint = DeleteOptionsDialogFingerprint,
+    name = "<init>",
+    parameters = listOf(
+        "Z",
+        "Lkotlin/jvm/functions/Function0;",
+        "Lkotlin/jvm/functions/Function0;",
+        "Lkotlin/jvm/functions/Function0;",
     ),
 )

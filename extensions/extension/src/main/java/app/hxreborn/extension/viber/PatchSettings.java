@@ -86,6 +86,10 @@ public final class PatchSettings {
         return hasStatus && !removeDeletedMessageNotices();
     }
 
+    public static boolean showDeleteWithoutTraceOption(boolean shown) {
+        return shown && !removeDeletedMessageNotices();
+    }
+
     public static int deletedMessageMime(int notice) {
         return removeDeletedMessageNotices() ? SILENT_DELETED_MESSAGE_MIME : notice;
     }

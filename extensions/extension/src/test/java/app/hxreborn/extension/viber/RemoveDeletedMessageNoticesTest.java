@@ -56,6 +56,7 @@ public final class RemoveDeletedMessageNoticesTest {
         Assert.assertEquals(NOTICE_MIME, PatchSettings.deletedMessageMime(NOTICE_MIME));
         Assert.assertEquals("Message deleted", PatchSettings.deletedMessageBody("Message deleted"));
         Assert.assertTrue(PatchSettings.hasStatusUnlessRemovingNotices(true));
+        Assert.assertTrue(PatchSettings.showDeleteWithoutTraceOption(true));
     }
 
     @Test
@@ -66,6 +67,7 @@ public final class RemoveDeletedMessageNoticesTest {
         Assert.assertEquals("", PatchSettings.deletedMessageBody("Message deleted"));
         Assert.assertFalse(PatchSettings.hasStatusUnlessRemovingNotices(true));
         Assert.assertFalse(PatchSettings.hasStatusUnlessRemovingNotices(false));
+        Assert.assertFalse(PatchSettings.showDeleteWithoutTraceOption(true));
     }
 
     @Test
