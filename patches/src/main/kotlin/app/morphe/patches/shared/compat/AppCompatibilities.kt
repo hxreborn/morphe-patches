@@ -1313,7 +1313,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "58474964025470a3b95e2a1e319079a787180878af8915f81a2d1e77683ae23a",
         ),
-        targets = listOf(AppTarget(version = "126.44.0.13", versionCode = 244013, minSdk = 26)),
+        targets = listOf(AppTarget(version = "126.46.0.14", versionCode = 246014, minSdk = 26)),
     )
 
     val PERPLEXITY = Compatibility(
