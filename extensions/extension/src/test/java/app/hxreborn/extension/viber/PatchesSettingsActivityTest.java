@@ -89,12 +89,12 @@ public final class PatchesSettingsActivityTest {
         }
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove deleted message notices",
-                "Hide image remix", "Remove typing privacy banner",
-                "Remove list gaps", "Disable AI features", "Injected disappearing media title",
-                "Injected business name", "Injected folder title", "Injected start folder title",
-                "Injected folder limit title", "Hide ads", "Injected promotions title", "Hide navigation buttons",
-                "Hide More screen items", "Injected online status title", "Injected media privacy title",
-                "Disable analytics", "Injected update prompts title", "Injected secondary device title", PLUS_TITLE), titles);
+                "Hide image remix", "Remove typing privacy banner", "Remove list gaps", "Disable AI features",
+                "Injected disappearing media title", "Injected business name", "Injected folder title",
+                "Injected start folder title", "Injected folder limit title", "Hide ads", "Injected promotions title",
+                "Hide navigation buttons", "Hide More screen items", "Injected online status title",
+                "Injected media privacy title", "Disable analytics", "Injected secondary device title", PLUS_TITLE),
+                titles);
     }
 
     @Test

@@ -92,7 +92,6 @@ internal val patchesSettingsPatch = bytecodePatch {
                 "select_business_chats" to "checklist",
                 "remove_online_status_limit" to "timer_off",
                 "hide_promotions" to "promotions",
-                "disable_update_prompts" to "update_disabled",
                 "link_as_secondary_device" to "devices",
                 "raise_folder_limit" to "create_new_folder",
                 "start_folder" to "drive_file_move",

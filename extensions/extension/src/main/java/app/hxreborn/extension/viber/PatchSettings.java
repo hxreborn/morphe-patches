@@ -154,14 +154,6 @@ public final class PatchSettings {
         return disappearing && !saveDisappearingMedia();
     }
 
-    public static boolean disableUpdatePrompts() {
-        return AppliedPatches.disableUpdatePrompts() && isEnabled(PatchSetting.DISABLE_UPDATE_PROMPTS.key);
-    }
-
-    public static boolean allowUpdatePrompt(boolean allowed) {
-        return allowed && !disableUpdatePrompts();
-    }
-
     public static boolean linkAsSecondaryDevice() {
         return AppliedPatches.linkAsSecondaryDevice() && isEnabled(PatchSetting.LINK_AS_SECONDARY_DEVICE.key);
     }
