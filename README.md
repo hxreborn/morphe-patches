@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.81.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.81.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;572 patches total
+> **[v1.82.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
 
 ### Featured apps
 
@@ -114,7 +114,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 |----------|----------------|
 | <a id="albo-enable-guest-sign-in"></a>[Enable guest sign-in](patches/src/main/kotlin/app/morphe/patches/albo/misc/guest/EnableGuestSignInPatch.kt) | Enables guest sign-in without a Google account. |
 | <a id="albo-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="albo-remove-bulk-import-limit"></a>[Remove bulk import limit](patches/src/main/kotlin/app/morphe/patches/albo/misc/imports/RemoveBulkImportLimitPatch.kt) | Removes the credit limit on bulk imports. Doesn't affect the weekly limit on single imports. |
+| <a id="albo-remove-bulk-import-limit"></a>[Remove bulk import limit](patches/src/main/kotlin/app/morphe/patches/albo/misc/imports/RemoveBulkImportLimitPatch.kt) | Removes the credit limit on bulk imports and the weekly limit on link imports. |
 | <a id="albo-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/albo/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro and Max features. Import limits are not included. |
 
 </details>
@@ -577,7 +577,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="botim"></a>
 <details>
-<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -587,10 +587,13 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="botim-disable-background-logging"></a>[Disable background logging](patches/src/main/kotlin/app/morphe/patches/botim/misc/logging/DisableBackgroundLoggingPatch.kt) | Stops the logging service and the extra background process the app starts at launch. |
 | <a id="botim-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/botim/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data. |
 | <a id="botim-fix-sign-in"></a>[Fix sign-in](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/FixSignInPatch.kt) | Fixes sending the verification code when signing in with a phone number. |
+| <a id="botim-hide-all-tab"></a>[Hide All tab](patches/src/main/kotlin/app/morphe/patches/botim/layout/navigation/HideAllTabPatch.kt) | Hides the All tab from the bottom bar. |
 | <a id="botim-hide-home-tab"></a>[Hide Home tab](patches/src/main/kotlin/app/morphe/patches/botim/layout/navigation/HideHomeTabPatch.kt) | Hides the Home tab from the bottom bar and opens the app on Calls. |
 | <a id="botim-remove-home-sections"></a>[Remove Home sections](patches/src/main/kotlin/app/morphe/patches/botim/layout/home/RemoveHomeSectionsPatch.kt) | Removes the Services grid, Discover more banners and the search bar from Home. |
+| <a id="botim-remove-botim-ai"></a>[Remove botim AI](patches/src/main/kotlin/app/morphe/patches/botim/layout/ai/RemoveBotimAiPatch.kt) | Removes Chat with botim AI from New chat and New call. |
 | <a id="botim-spoof-signature"></a>[Spoof signature](patches/src/main/kotlin/app/morphe/patches/botim/misc/signin/SpoofSignaturePatch.kt) | Lets a new phone number receive the verification code and sign in. |
 | <a id="botim-unlock-vip"></a>[Unlock VIP](patches/src/main/kotlin/app/morphe/patches/botim/misc/premium/UnlockVipPatch.kt) | Removes ads and upgrade prompts. Shows the VIP badge in the header. |
 
@@ -1340,6 +1343,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|
 | <a id="iototoy-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/iototoy/misc/tracking/DisableTrackingPatch.kt) | Stops the AppBrain SDK from starting, loading ads and reading the advertising ID. Disables ML Kit usage logging. |
 | <a id="iototoy-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/iototoy/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium blocks, diagrams over 25 blocks and runs longer than 15 minutes. Removes ads. |
+
+</details>
+
+<a id="ivoox"></a>
+<details>
+<summary><img src=".github/assets/icons/ivoox.png" width="18" align="top">&nbsp;&nbsp;iVoox&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 2.4041 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="ivoox-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/ivoox/misc/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
+| <a id="ivoox-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/ivoox/misc/premium/UnlockPremiumPatch.kt) | Removes audio, banner, full-screen and splash screen ads, Premium and Plus offers, the player subscribe banner and Home alerts, and enables car mode, volume boost and up to 20 smart lists. |
 
 </details>
 
@@ -2907,7 +2927,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="tradingview-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
 | <a id="tradingview-hide-upgrade-promotions"></a>[Hide upgrade promotions](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade button, plan banners, subscription card and paywalls. Extra indicators, watchlists, flag colors, alerts, second and tick intervals, and intraday replay are not unlocked. |
 | <a id="tradingview-skip-sign-up-screen"></a>[Skip sign-up screen](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/onboarding/SkipSignUpPatch.kt) | Opens the app without signing in. Sign in later from the menu. |
-| <a id="tradingview-unlock-chart-features"></a>[Unlock chart features](patches/src/main/kotlin/app/morphe/patches/tradingview/chart/UnlockChartFeaturesPatch.kt) | Unlocks layouts with up to 8 charts, a third indicator per chart and the Renko, Kagi, Point & Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals stay on your plan. |
+| <a id="tradingview-unlock-chart-features"></a>[Unlock chart features](patches/src/main/kotlin/app/morphe/patches/tradingview/chart/UnlockChartFeaturesPatch.kt) | Unlocks layouts with up to 8 charts, more than 3 indicators per chart and the Renko, Kagi, Point & Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals follow your plan. |
 
 </details>
 

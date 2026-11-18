@@ -17,7 +17,9 @@ private val NOP = "1f2003d5".hexToByteArray()
 
 private val LOAD_MAX_ENTITLEMENT_INTO_X0 = "7073409100be45f9103a46f9".hexToByteArray()
 
-private class CreditSite(
+private val SET_IS_FROM_BULK_IMPORT = "c082009120b001b8".hexToByteArray()
+
+private class ImportLimitSite(
     val name: String,
     val pattern: ByteArray,
     val mask: ByteArray,
@@ -25,8 +27,8 @@ private class CreditSite(
     val replacement: ByteArray,
 )
 
-private val BULK_IMPORT_CREDIT_SITES = listOf(
-    CreditSite(
+private val IMPORT_LIMIT_SITES = listOf(
+    ImportLimitSite(
         name = "bulk import credits entitlement",
         pattern = ("a0831ef82800009470734091103a46f9e04101a9" +
             "705f4091107a46f97e734091de3f46f9").hexToByteArray(),
@@ -35,7 +37,7 @@ private val BULK_IMPORT_CREDIT_SITES = listOf(
         replacementOffset = 4,
         replacement = LOAD_MAX_ENTITLEMENT_INTO_X0,
     ),
-    CreditSite(
+    ImportLimitSite(
         name = "bulk import credit deduction",
         pattern = ("227c419341000036227040f85f0000f16c000054e00316aa38559917a3835ef8" +
             "e20300aa611b4691214840f94ef45294e20300aae10316aa9f000094").hexToByteArray(),
@@ -44,13 +46,30 @@ private val BULK_IMPORT_CREDIT_SITES = listOf(
         replacementOffset = 16,
         replacement = NOP,
     ),
+    ImportLimitSite(
+        name = "shared link import request",
+        pattern = ("1f4fff97a10b40f9e20316aa044fff97a10b40f9e20316aa07000094" +
+            "a00b40f9ef031daafd79c1a8c0035fd6").hexToByteArray(),
+        mask = ("000000fcffffffffffffffff000000fcffffffffffffffff000000fc" +
+            "ffffffffffffffffffffffffffffffff").hexToByteArray(),
+        replacementOffset = 8,
+        replacement = SET_IS_FROM_BULK_IMPORT,
+    ),
+    ImportLimitSite(
+        name = "link import request",
+        pattern = ("77000094a10b40f9e20316aa5c000094a0035ff8027041b842801c8b" +
+            "a10b40f946000094a0035ff802b041b8").hexToByteArray(),
+        mask = ("000000fcffffffffffffffff000000fcffffffffffffffffffffffff" +
+            "ffffffff000000fcffffffffffffffff").hexToByteArray(),
+        replacementOffset = 8,
+        replacement = SET_IS_FROM_BULK_IMPORT,
+    ),
 )
 
 @Suppress("unused")
 val removeBulkImportLimitPatch = resourcePatch(
     name = "Remove bulk import limit",
-    description = "Removes the credit limit on bulk imports. " +
-        "Doesn't affect the weekly limit on single imports.",
+    description = "Removes the credit limit on bulk imports and the weekly limit on link imports.",
 ) {
     compatibleWith(AppCompatibilities.ALBO)
     availability(requireArm64)
@@ -59,7 +78,7 @@ val removeBulkImportLimitPatch = resourcePatch(
     execute {
         val library = dartAotLibrary()
 
-        BULK_IMPORT_CREDIT_SITES.forEach { site ->
+        IMPORT_LIMIT_SITES.forEach { site ->
             if (!library.replaceMasked(site.pattern, site.mask, mapOf(site.replacementOffset to site.replacement))) {
                 throw PatchException("Could not find the ${site.name} in $DART_AOT_LIBRARY")
             }

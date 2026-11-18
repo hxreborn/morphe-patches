@@ -817,6 +817,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.1.0", versionCode = 11, minSdk = 24)),
     )
 
+    val IVOOX = Compatibility(
+        name = "iVoox",
+        packageName = "com.ivoox.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF25F30,
+        signatures = setOf(
+            "abf5cdd2d0f7377cb763ddee219d3cb282492fec262e43bc50b638b2d5e7555e",
+        ),
+        targets = listOf(AppTarget(version = "2.4041", versionCode = 621, minSdk = 23)),
+    )
+
     val JUJO = Compatibility(
         name = "Jujo",
         packageName = "com.dev2a.junk_journal",

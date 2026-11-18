@@ -59,10 +59,11 @@ jobs:
           python3 .github/actions/triage/unanswered_pings.py "$RUNNER_TEMP/requests.json" "$OWNER" |
           while read -r row; do
             n=$(jq -r .number <<< "$row")
-            if [ "$DRY_RUN" = true ]; then echo "would answer the ping on #$n"; continue; fi
+            ping=$(jq -r .url <<< "$row")
+            if [ "$DRY_RUN" = true ]; then echo "would answer $ping"; continue; fi
             jq -r .body <<< "$row" > "$RUNNER_TEMP/ping.md"
-            bash -eo pipefail "$discussion" comment "$n" "$RUNNER_TEMP/ping.md" >/dev/null
-            echo "answered the ping on #$n"
+            bash -eo pipefail "$discussion" reply "$n" "$(jq -r .replyTo <<< "$row")" "$RUNNER_TEMP/ping.md" >/dev/null
+            echo "answered $ping"
           done
 
   stale:

@@ -1,6 +1,11 @@
 (function () {
   if (window.hxPlanLimits) return;
   window.hxPlanLimits = true;
+  Object.defineProperty(window, 'WEBSOCKET_HOST', {
+    configurable: true,
+    get: function () { return 'widgetdata.tradingview.com'; },
+    set: function () {}
+  });
   var originalParse = JSON.parse;
   JSON.parse = function () {
     var plans = originalParse.apply(this, arguments);

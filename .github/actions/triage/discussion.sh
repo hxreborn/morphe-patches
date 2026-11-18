@@ -41,7 +41,7 @@ case "$command" in
               author { login }
               labels(first: 20) { nodes { name } }
               comments(first: 100) { totalCount nodes {
-                author { login } body createdAt url lastEditedAt editor { login }
+                id author { login } body createdAt url lastEditedAt editor { login }
                 replies(first: 100) { totalCount nodes { author { login } body createdAt url lastEditedAt editor { login } } }
               } }
             }
@@ -60,7 +60,7 @@ case "$command" in
       labels: [.labels.nodes[] | {name}],
       commentsComplete: ((.comments.totalCount // (.comments.nodes | length)) == (.comments.nodes | length)
         and all(.comments.nodes[]; (.replies.totalCount // (.replies.nodes // [] | length)) == (.replies.nodes // [] | length))),
-      comments: [.comments.nodes[] | {author: {login: (.author.login // "")}, body, createdAt, url, lastEditedAt, editor,
+      comments: [.comments.nodes[] | {id, author: {login: (.author.login // "")}, body, createdAt, url, lastEditedAt, editor,
         replies: [.replies.nodes[]? | {author: {login: (.author.login // "")}, body, createdAt, url, lastEditedAt, editor}]}]
     }]'
     ;;
@@ -74,11 +74,16 @@ case "$command" in
         state: (if .closed then "CLOSED" else "OPEN" end),
         author: {login: (.author.login // "")},
         labels: [.labels.nodes[] | {name}],
-        comments: [.comments.nodes[] | {author: {login: (.author.login // "")}, body, createdAt, url}]}'
+        comments: [.comments.nodes[] | {id, author: {login: (.author.login // "")}, body, createdAt, url}]}'
     ;;
   comment)
     graphql -f id="$(discussion_id "$1")" -F body="@$2" -f query='mutation AddComment($id: ID!, $body: String!) {
       addDiscussionComment(input: {discussionId: $id, body: $body}) { comment { url } } }' \
+      --jq '.data.addDiscussionComment.comment.url'
+    ;;
+  reply)
+    graphql -f id="$(discussion_id "$1")" -f replyTo="$2" -F body="@$3" -f query='mutation AddReply($id: ID!, $replyTo: ID!, $body: String!) {
+      addDiscussionComment(input: {discussionId: $id, replyToId: $replyTo, body: $body}) { comment { url } } }' \
       --jq '.data.addDiscussionComment.comment.url'
     ;;
   title)

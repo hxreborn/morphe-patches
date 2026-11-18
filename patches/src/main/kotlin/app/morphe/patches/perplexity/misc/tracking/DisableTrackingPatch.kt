@@ -10,7 +10,7 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
-import app.morphe.patches.perplexity.misc.returnUnitEarly
+import app.morphe.patches.shared.misc.kotlin.returnUnitEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.SingularInitFingerprint
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch

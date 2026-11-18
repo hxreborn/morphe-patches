@@ -327,6 +327,7 @@ ICONS = {
     "com.patreon.android": "patreon.png",
     "com.ultimateguitar.tabs": "ultimateguitar.png",
     "to.freedom.android2": "freedom.png",
+    "com.ivoox.app": "ivoox.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.botim;
 
+import java.util.Iterator;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -32,6 +33,24 @@ public final class MainTabs {
     public static Map<Object, Object> withoutTab(Map<Object, Object> tabs, Object tab) {
         tabs.values().remove(tab);
         return tabs;
+    }
+
+    public static Map<Object, Object> withoutAllTab(Map<Object, Object> tabs) {
+        return withoutTabsOfType(tabs, allTabType());
+    }
+
+    static Map<Object, Object> withoutTabsOfType(Map<Object, Object> tabs, Class<?> tabType) {
+        Iterator<Object> values = tabs.values().iterator();
+        while (values.hasNext()) {
+            if (tabType.isInstance(values.next())) {
+                values.remove();
+            }
+        }
+        return tabs;
+    }
+
+    static Class<?> allTabType() {
+        return Void.class;
     }
 
 }
