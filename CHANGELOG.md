@@ -1,3 +1,21 @@
+## [1.82.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.82.0...v1.82.1-dev.1) (2026-11-18)
+
+### Updated App Support
+
+* **Athan:** add support for `11.0.8` ([f4fdd3f](https://github.com/hxreborn/morphe-patches/commit/f4fdd3fd6d1e5708dbb8355a8f27e1d64be6a729)), closes [#791](https://github.com/hxreborn/morphe-patches/issues/791)
+* **blockit:** add support for `2.2.9` ([5888f9a](https://github.com/hxreborn/morphe-patches/commit/5888f9a20169c75c61bf1c0acfca7970b7e72094)), closes [#800](https://github.com/hxreborn/morphe-patches/issues/800)
+* **DepthPix:** add support for `1.0.42` ([9599f59](https://github.com/hxreborn/morphe-patches/commit/9599f596610f99e51a5715ed32429899f1fa0acf)), closes [#805](https://github.com/hxreborn/morphe-patches/issues/805)
+* **Duolingo:** add support for `6.105.2` ([90762e6](https://github.com/hxreborn/morphe-patches/commit/90762e6691258af1085ea2e4d18904289a0090e8)), closes [#808](https://github.com/hxreborn/morphe-patches/issues/808)
+* **Etsy:** add support for `8.3.0` ([2679f71](https://github.com/hxreborn/morphe-patches/commit/2679f7156acc27088b3c0b7e9e1b7063acfbe248)), closes [#810](https://github.com/hxreborn/morphe-patches/issues/810)
+* **Habitify:** add support for `52.1.0` ([77aea59](https://github.com/hxreborn/morphe-patches/commit/77aea59310dcfb047eaf74a8ea9fec2575b3e253)), closes [#814](https://github.com/hxreborn/morphe-patches/issues/814)
+* **Monet Launcher:** add support for `1.1.1` ([ef86778](https://github.com/hxreborn/morphe-patches/commit/ef86778be0141cf54ac26e12db99410bff3210d6)), closes [#824](https://github.com/hxreborn/morphe-patches/issues/824)
+* **Proton Mail:** add support for `7.12.1` ([56a8f79](https://github.com/hxreborn/morphe-patches/commit/56a8f7985ae4a61f6449ad4ff5d63c4c73a3484a)), closes [#763](https://github.com/hxreborn/morphe-patches/issues/763)
+* **Proton VPN:** add support for `5.21.57.0` ([77adade](https://github.com/hxreborn/morphe-patches/commit/77adade82ac950ffc97b03853b4bc45f2d1d88b2)), closes [#764](https://github.com/hxreborn/morphe-patches/issues/764)
+* **Quranify:** add support for `2.4.0` ([c31f3c8](https://github.com/hxreborn/morphe-patches/commit/c31f3c899b870c746c0f75d2ae874b89e2e802fc)), closes [#840](https://github.com/hxreborn/morphe-patches/issues/840)
+* **Ridmik Keyboard:** add support for `20.0.0` ([62f1945](https://github.com/hxreborn/morphe-patches/commit/62f19455aa7d384440f1d56e38456624263c5ccb)), closes [#844](https://github.com/hxreborn/morphe-patches/issues/844)
+* **Video Editor:** add support for `1.631.200.I` ([9264073](https://github.com/hxreborn/morphe-patches/commit/92640734c0dad88990d30bbc23a8b2787b9227b9)), closes [#854](https://github.com/hxreborn/morphe-patches/issues/854)
+* **weather24:** add support for `2.78.2` ([bdc2bbd](https://github.com/hxreborn/morphe-patches/commit/bdc2bbd8cb76f7ba3a4ed3f4725ae2655cc4639d)), closes [#858](https://github.com/hxreborn/morphe-patches/issues/858)
+
 ## [1.82.0](https://github.com/hxreborn/morphe-patches/compare/v1.81.0...v1.82.0) (2026-11-18)
 
 ### Bug Fixes
