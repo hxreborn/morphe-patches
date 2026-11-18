@@ -727,7 +727,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "df8b4b20196d12964c51fec02f8f83e332cc7b1bcbce8f1eb3a708c7ec051d50",
         ),
-        targets = listOf(AppTarget(version = "50.2.0", versionCode = 273, minSdk = 24)),
+        targets = listOf(AppTarget(version = "52.1.0", versionCode = 287, minSdk = 24)),
     )
 
     val HINDU_CALENDAR = Compatibility(
