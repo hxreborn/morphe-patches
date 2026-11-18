@@ -1692,10 +1692,7 @@ internal object AppCompatibilities {
         packageName = "app.rubberbands.fit",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xFD8700,
-        targets = listOf(
-            AppTarget(version = "3.11", versionCode = 297, minSdk = 26),
-            AppTarget(version = "3.16", versionCode = 302, minSdk = 29),
-        ),
+        targets = listOf(AppTarget(version = "3.19", versionCode = 306, minSdk = 29)),
     )
 
     val SERIALIZD = Compatibility(
