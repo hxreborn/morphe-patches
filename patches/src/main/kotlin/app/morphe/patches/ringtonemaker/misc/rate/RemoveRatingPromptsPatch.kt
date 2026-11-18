@@ -4,10 +4,11 @@
  */
 package app.morphe.patches.ringtonemaker.misc.rate
 
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
 val removeRatingPromptsPatch = bytecodePatch(
@@ -17,6 +18,9 @@ val removeRatingPromptsPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.RINGTONE_MAKER)
 
     execute {
-        ShowRatingDialogFingerprint.matchSingle().method.returnEarly()
+        val dialog = RatingDialogFingerprint.matchSingle()
+        val (_, _, result) = dialog.instructionMatches
+        val register = (result.instruction as OneRegisterInstruction).registerA
+        dialog.method.addInstruction(result.index + 1, "const/4 v$register, 0x1")
     }
 }

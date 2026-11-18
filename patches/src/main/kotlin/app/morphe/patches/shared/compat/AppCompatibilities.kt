@@ -1667,7 +1667,7 @@ internal object AppCompatibilities {
         packageName = "ringtonemaker.musiccutter.customringtones.freeringtonemaker",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x243ECA,
-        targets = listOf(AppTarget(version = "1.02.01.1023", versionCode = 10159, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.02.03.1117", versionCode = 10166, minSdk = 24)),
     )
 
     val MAY_BULLET_JOURNAL = Compatibility(
