@@ -29,6 +29,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
+private const val ENERGY_CONFIG_CONSTRUCTOR_COUNT = 2
+
 @Suppress("unused")
 val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
@@ -74,7 +76,9 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        EnergyConfigConstructorsFingerprint.matchAll().forEach { match ->
+        EnergyConfigConstructorsFingerprint.matchAll(
+            ENERGY_CONFIG_CONSTRUCTOR_COUNT..ENERGY_CONFIG_CONSTRUCTOR_COUNT,
+        ).forEach { match ->
             val (energyWrite, maxEnergyWrite) = match.instructionMatches.map { it.index }
             val (energy, maxEnergy) = listOf(energyWrite, maxEnergyWrite).map {
                 match.method.getInstruction<TwoRegisterInstruction>(it).registerA
