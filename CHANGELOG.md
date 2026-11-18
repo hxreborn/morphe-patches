@@ -1,3 +1,9 @@
+## [1.82.1-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.4...v1.82.1-dev.5) (2026-11-18)
+
+### Updated App Support
+
+* **Proton Lumo:** add support for `2.2.0-gms` and `2.2.0-nogms` ([4accb2d](https://github.com/hxreborn/morphe-patches/commit/4accb2dbe24ac6092848c387384eea04aadb240b)), closes [#942](https://github.com/hxreborn/morphe-patches/issues/942)
+
 ## [1.82.1-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.3...v1.82.1-dev.4) (2026-11-18)
 
 ### Updated App Support
