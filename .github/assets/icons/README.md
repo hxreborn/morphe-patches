@@ -202,6 +202,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `freedom.png` | Freedom (`to.freedom.android2`) | Eighty Percent Solutions Corporation | Play 7.18.2, `res/mipmap-xxxhdpi-v4/ic_launcher_round.webp` |
 | `shttps.png` | SHTTPS Marketless (`com.phlox.simpleserver.marketless`) | Fedir Tsapana (Phlox) | APK 3.4.7, adaptive icon `mipmap/ic_launcher` (`ic_launcher_background` under `ic_launcher_foreground`, xhdpi, centre 72dp cut to a circle) |
 | `ivoox.png` | iVoox (`com.ivoox.app`) | iVoox Podcast y Radio | Play 2.4041, round launcher icon `res/mipmap-xxxhdpi-v4/ic_ivoox_launcher_rebranding_round.webp`, cut to a circle |
+| `nextdoor.png` | Nextdoor (`com.nextdoor`) | Nextdoor | Play 5.39.2, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
 so its copyright terms are compatible with this one. The rest are used under nominative fair

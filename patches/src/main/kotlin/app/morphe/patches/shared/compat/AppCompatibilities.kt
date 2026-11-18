@@ -2123,4 +2123,13 @@ internal object AppCompatibilities {
         signatures = setOf("e7d5ad736aeecd2fe237679e4deaf2a40bb32fc07837fe48778a5b41c0418862"),
         targets = listOf(AppTarget(version = "13.2.2.0", versionCode = 73031, minSdk = 23)),
     )
+
+    val NEXTDOOR = Compatibility(
+        name = "Nextdoor",
+        packageName = "com.nextdoor",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x1B8751,
+        signatures = setOf("6b0039757b3666404626f2d606ee17b56ad47770f5aebad2d7b7326882190dbd"),
+        targets = listOf(AppTarget(version = "5.39.2", versionCode = 1254760, minSdk = 26)),
+    )
 }
