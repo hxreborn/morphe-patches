@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.nextdoor.ads
 
+import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 
 @Suppress("unused")
@@ -22,11 +22,12 @@ val removeSponsoredPostsPatch = bytecodePatch(
 
     execute {
         val match = AdsDataItemConverterFingerprint.matchSingle()
-        val adTypeBranches = match.instructionMatches.filter { it.instruction.opcode == Opcode.IF_NE }.map { it.index }
+        fun indexOf(filter: InstructionFilter) = match.instructionMatches.single { it.filter === filter }.index
+
         match.method.apply {
-            val missingAdBranch = getInstruction<BuilderOffsetInstruction>(match.instructionMatches.last().index)
-            val returnWithoutRows = missingAdBranch.target.location.instruction!!
-            adTypeBranches.sortedDescending().forEach { branchIndex ->
+            val returnWithoutRows =
+                getInstruction<BuilderOffsetInstruction>(indexOf(missingAdBranch)).target.location.instruction!!
+            listOf(adTypeBranch, adPlaceholderTypeBranch).map(::indexOf).sortedDescending().forEach { branchIndex ->
                 addInstructionsWithLabels(
                     branchIndex + 1,
                     "goto :return_without_rows",
