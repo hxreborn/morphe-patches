@@ -20,9 +20,11 @@ internal val ADS_REMOVED_PREFERENCE_READ = "62bb4bf900000094".hexToByteArray()
 
 internal val ADS_REMOVED_PREFERENCE_READ_MASK = "ffffffff000000fc".hexToByteArray()
 
+private const val RETURN_AND_NEXT_FUNCTION_OPENING = "c0035fd6fd79bfa9fd030faaefa100d1e30302aaa1031ff8a2831ef8"
+
 internal val PURCHASE_STATE_COPY_WITH_TAIL =
     ("da250b94a1035df8017000b8a1835df801b000b8a1035ef801f000b8a1835ef8013001b8" +
-        "a1035ff8017001b8a1835ff801b001b8ef031daafd79c1a8").hexToByteArray()
+        "a1035ff8017001b8a1835ff801b001b8ef031daafd79c1a8" + RETURN_AND_NEXT_FUNCTION_OPENING).hexToByteArray()
 
 internal val PURCHASE_STATE_COPY_WITH_TAIL_MASK =
     ("000000fc" + "ff".repeat(PURCHASE_STATE_COPY_WITH_TAIL.size - 4)).hexToByteArray()
