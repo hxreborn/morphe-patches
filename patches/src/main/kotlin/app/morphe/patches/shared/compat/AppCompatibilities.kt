@@ -1406,7 +1406,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "099909df5cf774e2a55b3d35a352ac33931dd218969cfcc766e570ee74c5170f",
         ),
-        targets = listOf(AppTarget(version = "a3.78.4", versionCode = 3078010, minSdk = 26)),
+        targets = listOf(AppTarget(version = "a3.80.1", versionCode = 3080004, minSdk = 26)),
     )
 
     val PRAYER_TIMES = Compatibility(
