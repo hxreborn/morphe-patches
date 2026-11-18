@@ -1,3 +1,20 @@
+## [1.82.0](https://github.com/hxreborn/morphe-patches/compare/v1.81.0...v1.82.0) (2026-11-18)
+
+### Bug Fixes
+
+* **Albo - Remove bulk import limit:** import links past the weekly limit ([dd33405](https://github.com/hxreborn/morphe-patches/commit/dd33405ca625d16142785302b42d7c14c75d7bf8)), closes [#932](https://github.com/hxreborn/morphe-patches/issues/932)
+* **BeReal:** deliver push notifications to patched installs ([158d4b6](https://github.com/hxreborn/morphe-patches/commit/158d4b667f6412de2a6733b28feeba3ffa3263f3)), closes [#900](https://github.com/hxreborn/morphe-patches/issues/900)
+* **DepthPix:** stop empty Home and unsupported version error ([a60117d](https://github.com/hxreborn/morphe-patches/commit/a60117d3519920fba8486335b1975a41e81c0880))
+
+### New Features
+
+* **Botim - Disable background logging:** remove extra launch process ([99b5bc8](https://github.com/hxreborn/morphe-patches/commit/99b5bc80f5cdde1bd53b03eca4a0901904400384)), closes [#917](https://github.com/hxreborn/morphe-patches/issues/917)
+* **Botim - Hide All tab:** show bottom bar without services grid ([a2e02dd](https://github.com/hxreborn/morphe-patches/commit/a2e02ddbb3e4fb79146695ef855bf5f2128645d1))
+* **Botim - Remove botim AI:** drop AI row from New chat and New call ([49beb21](https://github.com/hxreborn/morphe-patches/commit/49beb21114d907508ca790b2e246b6c4c8b2d483))
+* **iVoox - Remove rating prompts:** stop 5-star request during playback ([5a2a794](https://github.com/hxreborn/morphe-patches/commit/5a2a794299751711baaa832f612dc91cfa4e60ae))
+* **iVoox - Unlock premium:** remove ads and subscription offers ([e86a516](https://github.com/hxreborn/morphe-patches/commit/e86a516f133210cdc9edf9a462009220369e5b80))
+* **TradingView - Unlock chart features:** lift 3-indicator chart limit ([519e95c](https://github.com/hxreborn/morphe-patches/commit/519e95cef829e3848bc502502616cba228767046)), closes [#928](https://github.com/hxreborn/morphe-patches/issues/928)
+
 ## [1.82.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.82.0-dev.3...v1.82.0-dev.4) (2026-11-17)
 
 ### New Features
