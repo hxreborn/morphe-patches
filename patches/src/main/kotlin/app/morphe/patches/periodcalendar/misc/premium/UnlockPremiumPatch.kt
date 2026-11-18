@@ -24,7 +24,8 @@ val unlockPremiumPatch = bytecodePatch(
         IsAdFreeFingerprint.matchSingle().method.returnEarly(true)
 
         val workbook = WorkbookPurchasedFingerprint.matchSingle()
-        val ownershipCheckIndex = workbook.instructionMatches.last().index
+        val (_, ownershipResult) = workbook.instructionMatches
+        val ownershipCheckIndex = ownershipResult.index
         val ownedRegister = workbook.method.getInstruction<OneRegisterInstruction>(ownershipCheckIndex).registerA
         workbook.method.addInstruction(ownershipCheckIndex + 1, "const/16 v$ownedRegister, 0x1")
     }
