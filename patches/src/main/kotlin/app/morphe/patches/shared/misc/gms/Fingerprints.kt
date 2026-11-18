@@ -65,6 +65,46 @@ internal object GetCredentialHandlerFingerprint : Fingerprint(
     ),
 )
 
+private const val CLIENT_ID_ACTIVITY_WINDOW = 3
+
+internal object InlinedGetCredentialHandlerFingerprint : Fingerprint(
+    returnType = "V",
+    strings = listOf("CredentialManager requires a serverClientId."),
+    filters = listOf(
+        methodCall(
+            definingClass = "Ljava/lang/String;",
+            name = "length",
+            parameters = emptyList(),
+            returnType = "I",
+            opcode = Opcode.INVOKE_VIRTUAL,
+        ),
+        fieldAccess(
+            type = "Landroid/app/Activity;",
+            opcode = Opcode.IGET_OBJECT,
+            location = MatchAfterWithin(CLIENT_ID_ACTIVITY_WINDOW),
+        ),
+        opcode(Opcode.IF_NEZ, location = MatchAfterImmediately()),
+        string("No activity available", location = MatchAfterWithin(NO_ACTIVITY_FAILURE_WINDOW)),
+        methodCall(
+            name = "invoke",
+            parameters = listOf("Ljava/lang/Object;"),
+            returnType = "Ljava/lang/Object;",
+            opcode = Opcode.INVOKE_VIRTUAL,
+        ),
+        methodCall(
+            parameters = listOf(
+                "Landroid/content/Context;",
+                "L",
+                "Landroid/os/CancellationSignal;",
+                "Ljava/util/concurrent/Executor;",
+                "L",
+            ),
+            returnType = "V",
+            opcode = Opcode.INVOKE_VIRTUAL_RANGE,
+        ),
+    ),
+)
+
 private const val PRE_U_MIN_GMS_APK_VERSION = 252400000
 
 internal object PlayServicesGetCredentialRoutingFingerprint : Fingerprint(

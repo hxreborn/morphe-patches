@@ -79,30 +79,19 @@ internal class ProductAccessCheckTest {
     }
 
     @Test
-    fun `every combo prologue has a mask of its own length and fits the replacement`() {
-        COMBO_PURCHASE_CHECK_PROLOGUES.forEach { (pattern, mask) ->
-            assertEquals(pattern.size, mask.size)
-            assertTrue(RETURN_TRUE.size <= pattern.size)
-        }
+    fun `the combo prologue has a mask of its own length and fits the replacement`() {
+        assertEquals(COMBO_PURCHASE_CHECK_PROLOGUE.size, COMBO_PURCHASE_CHECK_PROLOGUE_MASK.size)
+        assertTrue(RETURN_TRUE.size <= COMBO_PURCHASE_CHECK_PROLOGUE.size)
     }
 
     @Test
-    fun `each combo prologue is replaced where it sits`() {
-        COMBO_PURCHASE_CHECK_PROLOGUES.forEach { (pattern, mask) ->
-            val library = libraryOf(2048 to pattern)
+    fun `the combo prologue is replaced where it sits`() {
+        val library = libraryOf(2048 to COMBO_PURCHASE_CHECK_PROLOGUE)
 
-            assertTrue(library.replaceMasked(pattern, mask, mapOf(0 to RETURN_TRUE)))
+        assertTrue(
+            library.replaceMasked(COMBO_PURCHASE_CHECK_PROLOGUE, COMBO_PURCHASE_CHECK_PROLOGUE_MASK, mapOf(0 to RETURN_TRUE)),
+        )
 
-            assertContentEquals(RETURN_TRUE, library.readBytes().copyOfRange(2048, 2048 + RETURN_TRUE.size))
-        }
-    }
-
-    @Test
-    fun `no combo prologue matches another build's combo function`() {
-        val (shoppingService, accessManager) = COMBO_PURCHASE_CHECK_PROLOGUES
-
-        listOf(shoppingService to accessManager, accessManager to shoppingService).forEach { (site, other) ->
-            assertFalse(libraryOf(2048 to site.first).replaceMasked(other.first, other.second, mapOf(0 to RETURN_TRUE)))
-        }
+        assertContentEquals(RETURN_TRUE, library.readBytes().copyOfRange(2048, 2048 + RETURN_TRUE.size))
     }
 }
