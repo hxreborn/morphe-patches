@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.82.1-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.1-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
+> **[v1.82.1-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.1-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
 
 ### Featured apps
 
@@ -1162,7 +1162,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 13.0.2.0 |
+| 13.2.2.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2015,7 +2015,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 26.9.24 |
+| 26.10.15 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2087,7 +2087,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 13.4.1 |
+| 13.6.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2103,7 +2103,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.103.0 |
+| 2.104.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2213,7 +2213,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| a3.78.4 |
+| a3.80.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2413,8 +2413,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.3.8 | 3.4.0 |
-| :---: | :---: |
+| 3.4.2 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2683,7 +2683,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.02.01.1023 |
+| 1.02.03.1117 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2938,7 +2938,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 439.0.0.184323 |
+| 441.0.0.185329 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2954,7 +2954,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 9.18.2 |
+| 9.19.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3004,7 +3004,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.3.36 |
+| 7.3.38 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3254,7 +3254,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 11.42.0 |
+| 11.43.4 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3288,7 +3288,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.50.05 |
+| 4.53.05 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3340,7 +3340,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 26.9.0 |
+| 26.10.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3356,7 +3356,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 5.1.8_20261021 |
+| 5.2.1_20261110 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |

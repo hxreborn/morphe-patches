@@ -1,3 +1,22 @@
+## [1.82.1-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.2...v1.82.1-dev.3) (2026-11-18)
+
+### Updated App Support
+
+* **Graph Messenger:** add support for `13.2.2.0` ([6bc3a37](https://github.com/hxreborn/morphe-patches/commit/6bc3a373bd4746d67fe433ad1d28b74fe32c89b2)), closes [#924](https://github.com/hxreborn/morphe-patches/issues/924)
+* **OK:** add support for `26.10.15` ([df538ad](https://github.com/hxreborn/morphe-patches/commit/df538ad6ef6f0860f570df526d671de174486605)), closes [#828](https://github.com/hxreborn/morphe-patches/issues/828)
+* **Period Tracker and Calendar:** add support for `13.6.0` ([f89e7f9](https://github.com/hxreborn/morphe-patches/commit/f89e7f921ccc5e47c0175283d167f3fb7adf33ac)), closes [#832](https://github.com/hxreborn/morphe-patches/issues/832)
+* **Perplexity:** add support for `2.104.0` ([d4dfa64](https://github.com/hxreborn/morphe-patches/commit/d4dfa64ae866b6b450851b578c91c8e605572935)), closes [#833](https://github.com/hxreborn/morphe-patches/issues/833)
+* **Poe:** add support for `a3.80.1` ([262ca02](https://github.com/hxreborn/morphe-patches/commit/262ca02cf670d513b2200bacb3dd8b38bd19e22d)), closes [#836](https://github.com/hxreborn/morphe-patches/issues/836)
+* **Public:** add support for `3.4.2` ([bc49801](https://github.com/hxreborn/morphe-patches/commit/bc49801eddfb971c4602bf3cded7ef4cb79d1a84)), closes [#920](https://github.com/hxreborn/morphe-patches/issues/920)
+* **Ringtone Maker:** add support for `1.02.03.1117` ([cbc072a](https://github.com/hxreborn/morphe-patches/commit/cbc072a836184be75112d110cf71ba3edaef0e5e)), closes [#845](https://github.com/hxreborn/morphe-patches/issues/845)
+* **Trainline:** add support for `441.0.0.185329` ([af3d7d4](https://github.com/hxreborn/morphe-patches/commit/af3d7d4741c95cd6034c2a6bc32888bf19da8ee6)), closes [#850](https://github.com/hxreborn/morphe-patches/issues/850)
+* **Transparent clock & weather:** add support for `9.19.0` ([4a0f202](https://github.com/hxreborn/morphe-patches/commit/4a0f20279e1cbb0ef3d611b0038744a37ad32abb)), closes [#851](https://github.com/hxreborn/morphe-patches/issues/851)
+* **Ultimate Guitar:** add support for `7.3.38` ([10cbe48](https://github.com/hxreborn/morphe-patches/commit/10cbe4881b9b47d9afaef71f2ced11c4cdd2591d)), closes [#853](https://github.com/hxreborn/morphe-patches/issues/853)
+* **Wattpad:** add support for `11.43.4` ([6c27cf6](https://github.com/hxreborn/morphe-patches/commit/6c27cf65817ec7f3e68159ba1a1e2b59e60b172a)), closes [#857](https://github.com/hxreborn/morphe-patches/issues/857)
+* **X-plore File Manager:** add support for `4.53.05` ([e7bda37](https://github.com/hxreborn/morphe-patches/commit/e7bda3754f5731895599decdf738c863d5b04a0e)), closes [#859](https://github.com/hxreborn/morphe-patches/issues/859)
+* **Yanosik:** add support for `26.10.0` ([4331ba7](https://github.com/hxreborn/morphe-patches/commit/4331ba74d3d7cb20aae9fe150ebb71d420195c9e)), closes [#860](https://github.com/hxreborn/morphe-patches/issues/860)
+* **Yi iot:** add support for `5.2.1_20261110` ([5ffe754](https://github.com/hxreborn/morphe-patches/commit/5ffe754be2ad23af5dc6d12d135cb30484c8b872)), closes [#861](https://github.com/hxreborn/morphe-patches/issues/861)
+
 ## [1.82.1-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.1...v1.82.1-dev.2) (2026-11-18)
 
 ### Updated App Support
