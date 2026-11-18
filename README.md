@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.82.1-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.1-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
+> **[v1.82.1-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.1-dev.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
 
 ### Featured apps
 
@@ -1272,8 +1272,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2026.08.1041 | 2026.09.1051 | 2026.10.1021 |
-| :---: | :---: | :---: |
+| 2026.10.1031 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1659,8 +1659,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 62.6 | 62.9 |
-| :---: | :---: |
+| 63.3 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2890,7 +2890,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.27.5 |
+| 4.28.5 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |

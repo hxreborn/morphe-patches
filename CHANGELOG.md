@@ -1,3 +1,11 @@
+## [1.82.1-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.3...v1.82.1-dev.4) (2026-11-18)
+
+### Updated App Support
+
+* **imo:** add support for `2026.10.1031` ([99b86e7](https://github.com/hxreborn/morphe-patches/commit/99b86e710273605f097f1b337445e470e82d03e7)), closes [#816](https://github.com/hxreborn/morphe-patches/issues/816)
+* **MemoNeet:** add support for `63.3` ([7a73dbd](https://github.com/hxreborn/morphe-patches/commit/7a73dbd860e394f55d70678fe2267355df584fda)), closes [#823](https://github.com/hxreborn/morphe-patches/issues/823)
+* **TeraBox:** add support for `4.28.5` ([21a5664](https://github.com/hxreborn/morphe-patches/commit/21a5664fa33590c9ec4ba68b9d9cec191a2e5b14)), closes [#849](https://github.com/hxreborn/morphe-patches/issues/849)
+
 ## [1.82.1-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.2...v1.82.1-dev.3) (2026-11-18)
 
 ### Updated App Support
