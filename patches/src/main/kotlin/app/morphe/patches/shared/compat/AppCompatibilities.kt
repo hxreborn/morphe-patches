@@ -1321,7 +1321,7 @@ internal object AppCompatibilities {
         packageName = "ai.perplexity.app.android",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0x20808D,
-        targets = listOf(AppTarget(version = "2.103.0", versionCode = 260673, minSdk = 26)),
+        targets = listOf(AppTarget(version = "2.104.0", versionCode = 260675, minSdk = 26)),
     )
 
     val PHOTONE = Compatibility(

@@ -45,4 +45,11 @@ internal val darkPalettes = listOf(
         tint = 0xDEDEDEL,
         tintAlphas = listOf(0x08L, 0x09L, 0x0FL, 0x12L, 0x1BL, 0x24L, 0x33L),
     ),
+    DarkPalette(
+        background = 0x15171BL,
+        raised = 0x1B1D21L,
+        sunken = 0x101216L,
+        tint = 0xDBDEE3L,
+        tintAlphas = listOf(0x08L, 0x09L, 0x0FL, 0x12L, 0x1BL, 0x24L, 0x33L),
+    ),
 )
