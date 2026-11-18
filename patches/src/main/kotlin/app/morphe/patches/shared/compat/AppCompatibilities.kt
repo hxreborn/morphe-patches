@@ -620,10 +620,7 @@ internal object AppCompatibilities {
         packageName = "com.etsy.android",
         apkFileType = ApkFileType.APKS,
         appIconColor = 0xF1641E,
-        targets = listOf(
-            AppTarget(version = "7.97.0", versionCode = 79700150, minSdk = 29),
-            AppTarget(version = "8.1.0", versionCode = 80100208, minSdk = 32),
-        ),
+        targets = listOf(AppTarget(version = "8.3.0", versionCode = 80300148, minSdk = 29)),
     )
 
     val FAST_STL_VIEWER = Compatibility(
