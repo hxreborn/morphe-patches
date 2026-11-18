@@ -2017,7 +2017,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xFF500A,
         signatures = setOf("012de45837d20561255a02bbc22334c1f681d01b366fe31bef418baf535903ef"),
-        targets = listOf(AppTarget(version = "11.42.0", versionCode = 3836, minSdk = 24)),
+        targets = listOf(AppTarget(version = "11.43.4", versionCode = 3844, minSdk = 24)),
     )
 
     val WEATHER24 = Compatibility(
