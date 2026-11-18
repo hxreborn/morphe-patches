@@ -9,6 +9,7 @@ import app.morphe.patcher.InstructionLocation
 import app.morphe.patcher.InstructionLocation.MatchAfterAnywhere
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.opcode
 import app.morphe.patcher.literal
@@ -71,9 +72,11 @@ private val DARK_BRAND_COLORS = listOf(
 
 internal val BRAND_COLORS = LIGHT_BRAND_COLORS + DARK_BRAND_COLORS + CORE_BRAND_COLORS
 
-private const val COLOR_PARAMETER_COUNT = 45
+private const val ORIGINAL_COLOR_PARAMETER_COUNT = 45
+private const val SHADOW_WEAK_COLOR_PARAMETER_COUNT = 46
 
-internal val PROTON_COLORS_PARAMETERS = listOf("Z") + List(COLOR_PARAMETER_COUNT) { "J" }
+internal val PROTON_COLORS_PARAMETERS = listOf(ORIGINAL_COLOR_PARAMETER_COUNT, SHADOW_WEAK_COLOR_PARAMETER_COUNT)
+    .map { count -> listOf("Z") + List(count) { "J" } }
 
 internal object DarkPaletteFingerprint : Fingerprint(
     name = "<clinit>",
@@ -83,11 +86,15 @@ internal object DarkPaletteFingerprint : Fingerprint(
 internal object ColorSchemeFingerprint : Fingerprint(
     name = "<clinit>",
     filters = listOf(
-        methodCall(
-            name = "<init>",
-            parameters = PROTON_COLORS_PARAMETERS,
-            returnType = "V",
-            opcode = Opcode.INVOKE_DIRECT_RANGE,
+        anyInstruction(
+            *PROTON_COLORS_PARAMETERS.map { parameters ->
+                methodCall(
+                    name = "<init>",
+                    parameters = parameters,
+                    returnType = "V",
+                    opcode = Opcode.INVOKE_DIRECT_RANGE,
+                )
+            }.toTypedArray(),
         ),
     ),
 )
@@ -102,8 +109,13 @@ internal fun colorGetterFingerprint(colorsClass: String, colorField: FieldRefere
 internal const val UPSELLING_DARK_BACKGROUND_COUNT = 3
 
 internal object UpsellingDarkBackgroundFingerprint : Fingerprint(
-    definingClass = "Lch/protonmail/android/mailupselling/presentation/ui/",
-    filters = listOf(literal(MAILBOX_BACKGROUND)),
+    filters = listOf(
+        fieldAccess(
+            definingClass = "Lch/protonmail/android/mailupselling/presentation/ui/",
+            opcode = Opcode.SGET_OBJECT,
+        ),
+        literal(MAILBOX_BACKGROUND),
+    ),
 )
 
 private const val DESIGN_THEME_PACKAGE = "Lch/protonmail/android/design/compose/theme/"

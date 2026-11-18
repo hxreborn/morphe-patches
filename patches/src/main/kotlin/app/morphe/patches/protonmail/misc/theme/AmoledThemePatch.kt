@@ -106,7 +106,7 @@ private fun Instruction.constructsProtonColors(): Boolean {
     val reference = getReference<MethodReference>() ?: return false
 
     return reference.name == "<init>" &&
-        reference.parameterTypes.map(CharSequence::toString) == PROTON_COLORS_PARAMETERS
+        reference.parameterTypes.map(CharSequence::toString) in PROTON_COLORS_PARAMETERS
 }
 
 private fun MutableMethod.constructsDarkColors(invokeIndex: Int): Boolean {
@@ -248,7 +248,8 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
         UpsellingDarkBackgroundFingerprint.matchAll(
             UPSELLING_DARK_BACKGROUND_COUNT..UPSELLING_DARK_BACKGROUND_COUNT,
         ).forEach { match ->
-            match.method.injectBackgroundTransformCall(match.instructionMatches.single().index)
+            val (_, background) = match.instructionMatches
+            match.method.injectBackgroundTransformCall(background.index)
         }
 
         CONTACTS_COLOR_TRANSFORMS.forEach { (fingerprint, transform) ->

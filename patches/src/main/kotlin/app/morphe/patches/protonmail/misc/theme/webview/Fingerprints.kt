@@ -36,13 +36,15 @@ internal object ComposerCssFingerprint : Fingerprint(
 )
 
 internal object WebSettingsClientFingerprint : Fingerprint(
-    strings = listOf("web-settings: onReceivedSslError: "),
+    strings = listOf("web-settings: HTTP error: "),
 )
 
 internal object WebSettingsPageFinishedFingerprint : Fingerprint(
     classFingerprint = WebSettingsClientFingerprint,
     name = "onPageFinished",
+    returnType = "V",
     parameters = listOf("Landroid/webkit/WebView;", "Ljava/lang/String;"),
+    isStatic = false,
 )
 
 internal object WebSettingsCreatedFingerprint : Fingerprint(
