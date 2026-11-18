@@ -1,3 +1,17 @@
+## [1.82.1-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.1...v1.82.1-dev.2) (2026-11-18)
+
+### Updated App Support
+
+* **Bangla Calendar:** add support for `3.0.01q` ([1aca645](https://github.com/hxreborn/morphe-patches/commit/1aca6456d183c74004d8234d32aac93eafadce65)), closes [#795](https://github.com/hxreborn/morphe-patches/issues/795)
+* **Hypic:** add support for `10.1.0` ([065818c](https://github.com/hxreborn/morphe-patches/commit/065818c204dcd878da4113665d8406a553cb1d3a)), closes [#815](https://github.com/hxreborn/morphe-patches/issues/815)
+* **MyScript Math:** add support for `2.0.0` ([60f6320](https://github.com/hxreborn/morphe-patches/commit/60f632014131f707bc8dd9f61ae6a8521b7fab38)), closes [#825](https://github.com/hxreborn/morphe-patches/issues/825)
+* **Patreon:** add support for `126.46.0.14` ([de49844](https://github.com/hxreborn/morphe-patches/commit/de4984465fd76f199a7f0afcb3bb0be7e63df02d)), closes [#831](https://github.com/hxreborn/morphe-patches/issues/831)
+* **RISE Sleep Tracker:** add support for `Android V1.79.4` ([547baf7](https://github.com/hxreborn/morphe-patches/commit/547baf7471a613cf276fd2feffc408007f7bcfaf)), closes [#846](https://github.com/hxreborn/morphe-patches/issues/846)
+* **Rubber Bands:** add support for `3.19` ([7634a2e](https://github.com/hxreborn/morphe-patches/commit/7634a2e8e767c224a72df326f6a1f26818a2d206)), closes [#847](https://github.com/hxreborn/morphe-patches/issues/847)
+* **Sheytoon:** add support for `6.8` ([38b2db4](https://github.com/hxreborn/morphe-patches/commit/38b2db4168b6886c5a7d2d689e4571e32455af95)), closes [#848](https://github.com/hxreborn/morphe-patches/issues/848)
+* **U Dictionary:** add support for `6.7.7` ([e8c1bbf](https://github.com/hxreborn/morphe-patches/commit/e8c1bbf8f16f08d519aa4d9107672e7eb1a284f7)), closes [#852](https://github.com/hxreborn/morphe-patches/issues/852)
+* **WalP:** add support for `10.2.6` ([8fcbb5f](https://github.com/hxreborn/morphe-patches/commit/8fcbb5fdb121b8bc32de7626a0315c63f4e0144c)), closes [#856](https://github.com/hxreborn/morphe-patches/issues/856)
+
 ## [1.82.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.82.0...v1.82.1-dev.1) (2026-11-18)
 
 ### Updated App Support
