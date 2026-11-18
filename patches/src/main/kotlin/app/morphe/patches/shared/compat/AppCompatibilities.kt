@@ -749,7 +749,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "bb3afb81a8a2c4fd8cdb786f09afe378d29859ecbcef82365590bf3787e64a7c",
         ),
-        targets = listOf(AppTarget(version = "9.9.0", versionCode = 99080, minSdk = 23)),
+        targets = listOf(AppTarget(version = "10.1.0", versionCode = 101030, minSdk = 23)),
     )
 
     val IDLEFISH = Compatibility(
