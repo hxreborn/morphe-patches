@@ -277,6 +277,8 @@ body:
         - "NEETprep Essential (another version, type it below)"
         - "Network Analyzer 5.1"
         - "Network Analyzer (another version, type it below)"
+        - "Nextdoor 5.39.2"
+        - "Nextdoor (another version, type it below)"
         - "Notein v2.1.37.0"
         - "Notein v2.1.49.0"
         - "Notein (another version, type it below)"
@@ -485,11 +487,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.83.0-dev.2"
         - "1.83.0-dev.1"
         - "1.82.1-dev.5"
         - "1.82.1-dev.4"
         - "1.82.1-dev.3"
-        - "1.82.1-dev.2"
         - "1.82.0"
         - "Older than these"
         # /generated
@@ -869,6 +871,7 @@ body:
         - "Network Analyzer \u00b7 Visual traceroute"
         - "Network Analyzer \u00b7 Wi-Fi channel usage"
         - "Network Analyzer \u00b7 Wi-Fi network details"
+        - "Nextdoor \u00b7 Remove sponsored posts"
         - "Notein \u00b7 Unlock premium"
         - "Notesnook \u00b7 Material You theme"
         - "Notesnook \u00b7 Unlock pro"

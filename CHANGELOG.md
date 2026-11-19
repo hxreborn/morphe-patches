@@ -1,3 +1,14 @@
+## [1.83.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.83.0-dev.1...v1.83.0-dev.2) (2026-11-19)
+
+### Bug Fixes
+
+* **Viber - Disable AI features:** hide Read quick summary in communities ([30ee167](https://github.com/hxreborn/morphe-patches/commit/30ee167f0560237c057d438d46a071a4c6e62216)), closes [#950](https://github.com/hxreborn/morphe-patches/issues/950)
+* **Viber - Remove deleted message notices:** enable by default ([9889bcc](https://github.com/hxreborn/morphe-patches/commit/9889bcc7a5b8fe70f34b17a460b9e63528c7636c)), closes [#936](https://github.com/hxreborn/morphe-patches/issues/936)
+
+### New Features
+
+* **Nextdoor - Remove sponsored posts:** drop ad cards and placeholders ([df4b9cf](https://github.com/hxreborn/morphe-patches/commit/df4b9cfd7a95558d9bb11c2d9e2fc46d60c650e3))
+
 ## [1.83.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.5...v1.83.0-dev.1) (2026-11-19)
 
 ### Bug Fixes
