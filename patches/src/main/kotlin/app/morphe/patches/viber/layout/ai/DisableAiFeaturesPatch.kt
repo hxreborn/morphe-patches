@@ -64,6 +64,9 @@ val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
         NewsBriefBannerEligibilityFingerprint.matchSingle().method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
         ) { register -> "sget-object v$register, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;\nreturn-object v$register" }
+        LinkSummaryHostAllowedFingerprint.matchSingle().method.returnWhenEnabled(
+            "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
+        )
         AiFeaturesBannerPreferenceFingerprint.matchAll(AI_FEATURES_BANNER_PREFERENCE_SITES)
             .redirectPreferences(PREFERENCE_KEY_OVERRIDE, "$EXTENSION_CLASS_DESCRIPTOR->markDismissed(Z)Z")
     }
