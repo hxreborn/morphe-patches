@@ -9,6 +9,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from update_report import issue_body
 from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare
 
 ISSUE_LABEL = "app-update"
@@ -143,7 +144,7 @@ def sync_bump_prs(records):
         push, pr = bump_plan(subject, branch_subject, prs)
         if push:
             git("push", "-q", "--force", "origin", f"{bump_commit(text, subject, tracker)}:refs/heads/{branch}")
-        body = f"Applies to {name} {apk['version']}. Needs a device check before merge."
+        body = issue_body(record, record)
         if pr and pr[0] == "create":
             gh("pr", "create", "--draft", "--base", "dev", "--head", branch, "--title", subject, "--body", body)
         elif pr:

@@ -150,13 +150,18 @@ def fake_gh(*args, **kw):
         return json.dumps(prs)
     pr_calls.append(args[:2])
     if args[:2] == ("pr", "create"):
+        bodies.append(args[args.index("--body") + 1])
         prs.append({"number": 9, "state": "OPEN", "title": args[args.index("--title") + 1]})
     return ""
 
 
+bodies = []
+
+
 def result(version):
     apk = {**clean, "version": version, "version_code": 11, "min_sdk": 26}
-    return [{**ready, "name": "One", "package": "com.one", "candidate": version, "verification": {version: [apk]}}]
+    return [{**ready, "name": "One", "package": "com.one", "candidate": version, "verification": {version: [apk]},
+             "current": "1.0", "current_version_codes": [10], "patches": [], "sources": {"play": {"version": version}}}]
 
 
 with tempfile.TemporaryDirectory() as temp:
@@ -189,6 +194,8 @@ with tempfile.TemporaryDirectory() as temp:
     assert 'AppTarget(version = "1.1", versionCode = 11, minSdk = 26),' in \
         run_git("show", f"{branch}:{bump_prs.COMPAT_PATH}", cwd=origin)
     assert pr_calls == [("pr", "create")]
+    assert bodies[0].startswith("### Update\n\nOne `1.0` → `1.1`\n\nPackage `com.one`, version code 10 → 11\n"), bodies[0]
+    assert "- [ ] Device check" in bodies[0] and "| Play | 1.1 |" in bodies[0], bodies[0]
 
     # when
     bump_prs.sync_bump_prs(result("1.1"))

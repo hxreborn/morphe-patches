@@ -78,6 +78,94 @@ calls.clear()
 app_updates.sync_issues(apps, [{**record, "package": "new", "candidate": "1.2", "readiness": "untested"},
                                {**record, "package": "tagged", "candidate": "6.3_arm64", "readiness": "untested"}], "1.38.0")
 assert [c[1:3] for c in calls if c[0] == "issue" and c[1] != "list"] == [], calls
+BEREAL_LOG = """INFO: Filtering patches for com.bereal.ft v3.99.1...
+INFO: Skipping disabled: Override certificate pinning (default)
+INFO: Skipping disabled: Remove Friends of Friends tab (default)
+INFO: Applying 20 patches...
+INFO: Deleting existing temporary files directory
+INFO: Decoding the manifest
+INFO: Decoding resources on request, 4010 files can be decoded
+INFO: Executing patches
+INFO: Building instruction indexes for 99220 classes...
+INFO: Applied: Back up memories
+INFO: Applied: Change download location
+INFO: Applied: Custom location
+INFO: Applied: Custom retake count
+INFO: Applied: Disable data collection
+INFO: Applied: Disable typing indicator
+INFO: Applied: Disable view receipts
+INFO: Applied: Post from gallery
+INFO: Applied: Remove Friends of Friends prompts
+INFO: Applied: Remove ads
+INFO: Applied: Remove contacts permission
+INFO: Applied: Remove friend suggestions
+INFO: Applied: Remove late flag
+INFO: Applied: Remove late label
+INFO: Applied: Remove promotions
+INFO: Applied: Remove streak prompts
+INFO: Applied: Remove update prompts
+INFO: Applied: Remove watermark
+ERROR: Failed: Save friends' BeReals
+INFO: Patching took 3.0 seconds
+ERROR: Patching aborted: Patching failed: Patch "Save friends' BeReals" failed: Failed to match the fingerprint: app.morphe.patches.bereal.misc.download.FeedPostMenuFingerprint@17df049f
+ERROR: app.morphe.patcher.patch.PatchException: Failed to match the fingerprint: app.morphe.patches.bereal.misc.download.FeedPostMenuFingerprint@17df049f
+	at app.morphe.patcher.Fingerprint.patchException(Fingerprint.kt:2265)
+	at app.morphe.patcher.Fingerprint.checkMatchesRange(Fingerprint.kt:2402)
+	at app.morphe.patcher.Fingerprint.matchAll(Fingerprint.kt:2391)
+	at app.morphe.patcher.util.BytecodeUtilsKt.matchSingle(BytecodeUtils.kt:91)
+	at app.morphe.patcher.util.BytecodeUtilsKt.matchSingle(BytecodeUtils.kt:831)
+	at app.morphe.patches.bereal.misc.download.SaveFriendsBeRealsPatchKt.saveFriendsBeRealsPatch$lambda$0$0(SaveFriendsBeRealsPatch.kt:47)
+	at app.morphe.patcher.patch.Patch.execute(Patch.kt:160)
+	at app.morphe.patcher.patch.BytecodePatch.execute$morphe_patcher(Patch.kt:357)
+
+INFO: Use --continue-on-error to skip failed patches and continue patching
+"""
+BEREAL_PATCHES = ["Back up memories", "Change download location", "Custom location", "Custom retake count", "Disable data collection",
+                  "Disable typing indicator", "Disable view receipts", "Post from gallery", "Remove Friends of Friends prompts",
+                  "Remove Friends of Friends tab", "Remove ads", "Remove contacts permission", "Remove friend suggestions",
+                  "Remove late flag", "Remove late label", "Remove promotions", "Remove streak prompts", "Remove update prompts",
+                  "Remove watermark", "Save friends' BeReals", "Show friends' posts before posting"]
+FINGERPRINT_FAILURE = "Failed to match the fingerprint: app.morphe.patches.bereal.misc.download.FeedPostMenuFingerprint"
+bereal_check = app_updates.parse_patch_log(BEREAL_LOG, 1)
+assert bereal_check["failed"] == ["Save friends' BeReals"], bereal_check
+assert bereal_check["skipped"] == ["Override certificate pinning", "Remove Friends of Friends tab"], bereal_check
+assert len(bereal_check["applied"]) == 18 and "Show friends' posts before posting" not in bereal_check["applied"], bereal_check
+assert bereal_check["reasons"] == {"Save friends' BeReals": FINGERPRINT_FAILURE}, bereal_check
+bereal_app = {"name": "BeReal", "package": "com.bereal.ft", "current": "3.98.0", "current_version_codes": [3600852], "patches": BEREAL_PATCHES,
+              "sources": {"play": {"version": "3.99.1"}, "apkmirror": {"error": "not listed"}, "uptodown": {"version": "3.100.0"},
+                          "apkpure": {"version": "3.99.1"}}}
+bereal_record = {"candidate": "3.99.1", "verification": {"3.99.1": [{"source": "play", "package_ok": True, "version_ok": True, "cert_ok": True,
+                 "version_code": 3603560, "patch_check": bereal_check}]}}
+body = app_updates.issue_body(bereal_app, bereal_record)
+assert "BeReal `3.98.0` → `3.99.1`" in body and "Package `com.bereal.ft`, version code 3600852 → 3603560" in body, body
+assert "- [x] Version confirmed by Play and APKPure\n" in body and "- [x] Back up memories applies" in body, body
+assert body.count("fails to apply") == 1 and "- [ ] **Save friends' BeReals fails to apply**" in body, body
+assert "- [ ] Show friends' posts before posting not reached\n" in body and "**Show friends'" not in body, body
+assert "Remove Friends of Friends tab" not in body and "Override certificate pinning" not in body, body
+assert f"| Save friends' BeReals | `{FINGERPRINT_FAILURE}` |" in body and "| Show friends'" not in body, body
+assert "@" not in next(line for line in body.splitlines() if line.startswith("| Save friends'")), body
+assert "Device check" not in body and "<details open><summary>Patcher log</summary>" in body, body
+assert "| Play | 3.99.1 | APK downloaded |" in body and "| APKPure | 3.99.1 |  |" in body, body
+assert "| Uptodown | 3.100.0 | newer, not verified |" in body and "APKMirror" not in body, body
+assert app_updates.readiness({"patches": BEREAL_PATCHES}, {"status": "update", "candidate": "3.99.1", "verification": bereal_record["verification"]}) == "needs work: 1 failed"
+clean_log = "\n".join(line for line in BEREAL_LOG.splitlines() if "Failed" not in line and "failed" not in line and not line.startswith(("\t", "ERROR", "INFO: Use")))
+clean_check = app_updates.parse_patch_log(clean_log + "\nINFO: Applied: Save friends' BeReals\nINFO: Applied: Show friends' posts before posting\n", 0)
+clean_record = {"candidate": "3.99.1", "verification": {"3.99.1": [{**bereal_record["verification"]["3.99.1"][0], "patch_check": clean_check}]}}
+clean_body = app_updates.issue_body(bereal_app, clean_record)
+assert "- [ ] Device check" in clean_body and "not reached" not in clean_body and "### Failure" not in clean_body, clean_body
+assert "Remove Friends of Friends tab" not in clean_body, clean_body
+newer_bundle_body = app_updates.issue_body({**bereal_app, "patches": [*BEREAL_PATCHES, "Added after the checked bundle"]}, clean_record)
+assert "- [ ] Added after the checked bundle not in the checked bundle\n" in newer_bundle_body and "Device check" not in newer_bundle_body, newer_bundle_body
+assert app_updates.readiness({"patches": BEREAL_PATCHES}, {"status": "update", "candidate": "3.99.1", "verification": clean_record["verification"]}) == "ready"
+crash_check = app_updates.parse_patch_log("INFO: Applied: Back up memories\nSEVERE: Exception in thread main\n", 1)
+crash_body = app_updates.issue_body(bereal_app, {"candidate": "3.99.1", "verification": {"3.99.1": [{**bereal_record["verification"]["3.99.1"][0], "patch_check": crash_check}]}})
+assert "### Failure\n\n<details open>" in crash_body and "| Patch | Error |" not in crash_body and "fails to apply" not in crash_body, crash_body
+sent = []
+app_updates.gh = lambda *args, **kw: sent.append(kw.get("input")) or ("[]" if args[:2] == ("issue", "list") else "")
+app_updates.sync_issues({"com.bereal.ft": {k: v for k, v in bereal_app.items() if k != "sources"}},
+                        [{**bereal_app, **bereal_record, "status": "update", "reported_by": ["play", "apkpure"], "readiness": "needs work: 1 failed"}], "1.38.0")
+assert [text for text in sent if text] == [body], sent
+print("issue body passes")
 print("issue sync passes")
 
 

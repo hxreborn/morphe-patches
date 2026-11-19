@@ -19,6 +19,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 import requests
+from update_report import issue_body
 from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare, tracked_version, version_key
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
@@ -377,6 +378,20 @@ def download(app, source, result, version, ctx, workdir):
     raise RuntimeError(error or "resolver produced no file")
 
 
+PATCH_FAILURE = re.compile(r'^ERROR: Patching aborted: .*?Patch "(.+?)" failed: (.+)$', re.M)
+OBJECT_HASH = re.compile(r"@[0-9a-f]+\b")
+
+
+def parse_patch_log(log, exit_code):
+    applied = sorted(set(re.findall(r"^INFO: Applied: (.+)$", log, re.M)))
+    failed = sorted(set(re.findall(r"^ERROR: Failed: (.+)$", log, re.M)))
+    skipped = sorted(set(re.findall(r"^INFO: Skipping disabled: (.+) \(default\)$", log, re.M)))
+    reasons = {name: OBJECT_HASH.sub("", reason).strip() for name, reason in PATCH_FAILURE.findall(log)}
+    errors = "\n".join(line.strip() for line in log.splitlines() if line.startswith("SEVERE") or "Exception" in line)
+    return {"applied": applied, "failed": failed, "skipped": skipped, "reasons": reasons, "exit": exit_code,
+            "tail": "" if exit_code == 0 else errors[-1500:]}
+
+
 def patch_check(apk, ctx, workdir):
     java = shutil.which("java")
     args = [java, "-jar", ctx["cli"], "patch", "-p", ctx["mpp"], "-f",
@@ -385,12 +400,7 @@ def patch_check(apk, ctx, workdir):
         done = subprocess.run(args, capture_output=True, text=True, timeout=PATCH_TIMEOUT)
     except subprocess.TimeoutExpired:
         return {"error": f"timed out after {PATCH_TIMEOUT}s"}
-    log = done.stdout + done.stderr
-    applied = sorted({name.strip() for name in re.findall(r"Applied: (.+)", log)})
-    failed = sorted({name.strip() for name in re.findall(r"FAILED: (.+)", log)})
-    errors = "\n".join(line.strip() for line in log.splitlines() if line.startswith("SEVERE") or "Exception" in line)
-    return {"applied": applied, "failed": failed, "exit": done.returncode,
-            "tail": "" if done.returncode == 0 else errors[-1500:]}
+    return parse_patch_log(done.stdout + done.stderr, done.returncode)
 
 
 def mark_checks(app, facts, version, reference):
@@ -520,7 +530,7 @@ def readiness(app, record):
     check = checks[0]
     if check.get("error"):
         return "patch check error"
-    expected = set(app["patches"])
+    expected = set(app["patches"]) - set(check["skipped"])
     applied = set(check["applied"])
     if check["failed"]:
         return f"needs work: {len(check['failed'])} failed"
@@ -568,29 +578,6 @@ def gh(*args, **kwargs):
     return subprocess.run(["gh", *args], check=True, capture_output=True, text=True, **kwargs).stdout
 
 
-def issue_body(app, record):
-    candidate = record["candidate"]
-    attempts = record.get("verification", {}).get(candidate, [])
-    verified = next((a for a in attempts if a.get("package_ok") and a.get("version_ok")), {})
-    check = verified.get("patch_check") or {}
-    if verified.get("cert_ok"):
-        cert = "cert matches"
-    elif verified.get("source") == "play":
-        cert = "served by play"
-    else:
-        cert = "cert unchecked"
-    patches = [f"{name} applied" for name in check.get("applied", [])] + [f"{name} failed" for name in check.get("failed", [])]
-    lines = [f"package: `{app['package']}`",
-             f"targeted: {app['current']} ({', '.join(map(str, app['current_version_codes']))})",
-             f"upstream: {candidate}" + (f" ({verified['version_code']})" if verified.get("version_code") else "")
-             + f", reported by {', '.join(record['reported_by'])}",
-             f"apk: {verified['source']}, {cert}" if verified else "apk: none verified",
-             "patches: " + (", ".join(patches) or "not checked")]
-    if check.get("tail"):
-        lines += ["", "```", check["tail"].strip(), "```"]
-    return "\n".join(lines) + "\n"
-
-
 def sync_close_comment(app, bundle_version):
     return (f"{app['name']} `{app['current']}` support has been added in {bundle(bundle_version)}. This issue is now closed. "
             f"If it doesn't patch or work, open an issue:\n\n{BROKEN_FORMS}")
@@ -630,12 +617,12 @@ def sync_issues(apps, results, bundle_version):
             continue
         if open_same and (open_same.get("author") or {}).get("is_bot"):
             gh("issue", "edit", str(open_same["number"]), "--title", prefix + candidate, "--body-file", "-",
-               input=issue_body(app, record))
+               input=issue_body({**app, **record}, record))
         elif open_same and open_same["title"] != prefix + candidate:
             gh("issue", "edit", str(open_same["number"]), "--title", prefix + candidate)
         elif not open_newer and prefix + candidate not in by_title:
             gh("issue", "create", "--title", prefix + candidate, "--label", ISSUE_LABEL, "--body-file", "-",
-               input=issue_body(app, record))
+               input=issue_body({**app, **record}, record))
 
 
 def main():
