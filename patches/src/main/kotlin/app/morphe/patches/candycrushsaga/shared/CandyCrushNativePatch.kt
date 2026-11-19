@@ -7,10 +7,8 @@ package app.morphe.patches.candycrushsaga.shared
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import java.security.MessageDigest
+import app.morphe.patches.shared.sha256Hex
 import org.w3c.dom.Element
-
-private const val HASH_BUFFER_SIZE = 65536
 
 internal const val SODA_LIBRARY_WITH_EXTRA_MOVES_SHA256 = "187479e4681064a198aa0a67b5af3456c45fe44765e65aee962ecfd7da789e44"
 
@@ -38,16 +36,7 @@ internal val candyCrushNativePatch = resourcePatch {
         val build = candyCrushNativeBuild(packageMetadata.packageName)
         val gameLibrary = get(build.libraryEntry)
         if (!gameLibrary.isFile) throw PatchException("Missing Candy Crush native library")
-        val digest = MessageDigest.getInstance("SHA-256")
-        gameLibrary.inputStream().use { input ->
-            val buffer = ByteArray(HASH_BUFFER_SIZE)
-            while (true) {
-                val count = input.read(buffer)
-                if (count < 0) break
-                digest.update(buffer, 0, count)
-            }
-        }
-        val hash = digest.digest().joinToString("") { "%02x".format(it) }
+        val hash = gameLibrary.sha256Hex()
         if (hash != build.sha256Hex) {
             throw PatchException("Unsupported Candy Crush native library: SHA-256 $hash, expected ${build.sha256Hex}")
         }

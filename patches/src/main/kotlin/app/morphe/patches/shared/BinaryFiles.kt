@@ -7,6 +7,7 @@ package app.morphe.patches.shared
 import app.morphe.patcher.patch.PatchException
 import java.io.File
 import java.io.RandomAccessFile
+import java.security.MessageDigest
 
 internal val DEX_MAGIC = byteArrayOf(0x64, 0x65, 0x78, 0x0a)
 internal const val DEX_CHECKSUM_OFFSET = 8
@@ -15,6 +16,8 @@ internal const val DEX_FILE_SIZE_OFFSET = 32
 internal const val DEX_MAP_OFF_OFFSET = 52
 internal const val DEX_HEADER_SIZE = 0x70
 internal const val DEX_MAP_ITEM_SIZE = 12
+
+private const val SHA256_BUFFER_BYTES = 65536
 
 internal fun ByteArray.readInt(offset: Int) =
     (this[offset].toInt() and 0xFF) or
@@ -110,4 +113,17 @@ internal fun ByteArray.indexOfMasked(pattern: ByteArray, mask: ByteArray, startI
         return index
     }
     return -1
+}
+
+internal fun File.sha256Hex(): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    inputStream().use { input ->
+        val buffer = ByteArray(SHA256_BUFFER_BYTES)
+        while (true) {
+            val count = input.read(buffer)
+            if (count < 0) break
+            digest.update(buffer, 0, count)
+        }
+    }
+    return digest.digest().joinToString("") { "%02x".format(it) }
 }
