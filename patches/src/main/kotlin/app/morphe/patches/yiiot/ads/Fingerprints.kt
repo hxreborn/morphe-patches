@@ -5,9 +5,14 @@
 package app.morphe.patches.yiiot.ads
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.anyInstruction
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object SetNoAdPlanFingerprint : Fingerprint(
@@ -40,4 +45,108 @@ internal object AdDialogFragmentOnCreateFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("Landroid/os/Bundle;"),
     filters = listOf(opcode(Opcode.INVOKE_SUPER)),
+)
+
+internal object TopBannerListFingerprint : Fingerprint(
+    definingClass = "Lcom/xiaoyi/cloud/newCloud/bean/BannerDetailInfo;",
+    name = "getTopBanner",
+    returnType = "Ljava/util/List;",
+    parameters = emptyList(),
+)
+
+internal object BottomBannerListFingerprint : Fingerprint(
+    definingClass = "Lcom/xiaoyi/cloud/newCloud/bean/BannerDetailInfo;",
+    name = "getBottomBanner",
+    returnType = "Ljava/util/List;",
+    parameters = emptyList(),
+)
+
+internal object HomePromoPopupFingerprint : Fingerprint(
+    definingClass = "Lcom/ants360/yicamera/db/AdsManager;",
+    accessFlags = listOf(AccessFlags.PUBLIC),
+    returnType = "V",
+    parameters = listOf("Lcom/xiaoyi/callspi/app/BaseActivity;"),
+    filters = listOf(string("ADS_LAST_SHOW_PIC")),
+)
+
+internal object NebulaPageListenersFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;", "L", "L"),
+    strings = listOf("bannerListener", "inAppMessageListener"),
+)
+
+internal object HighlightAdPlaceholderRowsFingerprint : Fingerprint(
+    definingClass = "Lcom/ants360/yicamera/viewmodel/DeviceListViewModel;",
+    name = "getHighlightAdFakeData",
+    returnType = "Ljava/util/List;",
+    parameters = emptyList(),
+)
+
+private const val DEVICE_LIST_FRAGMENT = "Lcom/ants360/yicamera/fragment/DeviceListFragment;"
+private const val SHOPPING_OBSERVER_CALL_WINDOW = 2
+
+internal object PremiumCloudRowFingerprint : Fingerprint(
+    definingClass = DEVICE_LIST_FRAGMENT,
+    returnType = "V",
+    parameters = emptyList(),
+    filters = listOf(
+        string("ignore cloud discover"),
+        methodCall(
+            opcode = Opcode.INVOKE_STATIC,
+            parameters = listOf("Ljava/lang/String;"),
+            returnType = "V",
+            location = MatchAfterImmediately(),
+        ),
+        anyInstruction(
+            opcode(Opcode.GOTO),
+            opcode(Opcode.GOTO_16),
+            opcode(Opcode.GOTO_32),
+            location = MatchAfterImmediately(),
+        ),
+        fieldAccess(
+            definingClass = DEVICE_LIST_FRAGMENT,
+            name = "deviceRecyclerItemList",
+            type = "Ljava/util/List;",
+            opcode = Opcode.IGET_OBJECT,
+            location = MatchAfterImmediately(),
+        ),
+    ),
+)
+
+internal object ShoppingProductsObserverFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = listOf("Ljava/util/List;"),
+    filters = listOf(
+        methodCall(
+            opcode = Opcode.INVOKE_STATIC,
+            definingClass = DEVICE_LIST_FRAGMENT,
+            parameters = listOf(DEVICE_LIST_FRAGMENT),
+            returnType = "Ljava/util/List;",
+        ),
+        methodCall(
+            opcode = Opcode.INVOKE_INTERFACE,
+            name = "clear",
+            location = MatchAfterWithin(SHOPPING_OBSERVER_CALL_WINDOW),
+        ),
+        methodCall(
+            opcode = Opcode.INVOKE_STATIC,
+            definingClass = DEVICE_LIST_FRAGMENT,
+            parameters = listOf(DEVICE_LIST_FRAGMENT),
+            returnType = "Ljava/util/List;",
+            location = MatchAfterWithin(SHOPPING_OBSERVER_CALL_WINDOW),
+        ),
+        methodCall(
+            opcode = Opcode.INVOKE_INTERFACE,
+            name = "addAll",
+            location = MatchAfterWithin(SHOPPING_OBSERVER_CALL_WINDOW),
+        ),
+        methodCall(
+            opcode = Opcode.INVOKE_STATIC,
+            definingClass = DEVICE_LIST_FRAGMENT,
+            parameters = listOf(DEVICE_LIST_FRAGMENT),
+            returnType = "V",
+            location = MatchAfterWithin(SHOPPING_OBSERVER_CALL_WINDOW),
+        ),
+        opcode(Opcode.RETURN_VOID, MatchAfterImmediately()),
+    ),
 )
