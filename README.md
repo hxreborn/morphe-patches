@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.83.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.83.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;578 patches total
+> **[v1.83.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.83.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;579 patches total
 
 ### Featured apps
 
@@ -1977,7 +1977,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="nextdoor"></a>
 <details>
-<summary><img src=".github/assets/icons/nextdoor.png" width="18" align="top">&nbsp;&nbsp;Nextdoor&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<summary><img src=".github/assets/icons/nextdoor.png" width="18" align="top">&nbsp;&nbsp;Nextdoor&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -1987,6 +1987,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
+| <a id="nextdoor-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="nextdoor-remove-sponsored-posts"></a>[Remove sponsored posts](patches/src/main/kotlin/app/morphe/patches/nextdoor/ads/RemoveSponsoredPostsPatch.kt) | Removes sponsored posts from the feed. |
 
 </details>

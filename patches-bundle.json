@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-19T07:39:46",
-  "description": "## [1.83.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.83.0-dev.1...v1.83.0-dev.2) (2026-11-19)\n\n### Bug Fixes\n\n* **Viber - Disable AI features:** hide Read quick summary in communities ([30ee167](https://github.com/hxreborn/morphe-patches/commit/30ee167f0560237c057d438d46a071a4c6e62216)), closes [#950](https://github.com/hxreborn/morphe-patches/issues/950)\n* **Viber - Remove deleted message notices:** enable by default ([9889bcc](https://github.com/hxreborn/morphe-patches/commit/9889bcc7a5b8fe70f34b17a460b9e63528c7636c)), closes [#936](https://github.com/hxreborn/morphe-patches/issues/936)\n\n### New Features\n\n* **Nextdoor - Remove sponsored posts:** drop ad cards and placeholders ([df4b9cf](https://github.com/hxreborn/morphe-patches/commit/df4b9cfd7a95558d9bb11c2d9e2fc46d60c650e3))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.83.0-dev.2/patches-1.83.0-dev.2.mpp",
+  "created_at": "2026-11-19T07:53:38",
+  "description": "## [1.83.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.83.0-dev.2...v1.83.0-dev.3) (2026-11-19)\n\n### New Features\n\n* **Nextdoor - GmsCore support:** sign in with Google, get notifications ([65a1edc](https://github.com/hxreborn/morphe-patches/commit/65a1edc8b79819ebcfc5370427adf9ea17038533))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.83.0-dev.3/patches-1.83.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.83.0-dev.2"
+  "version": "1.83.0-dev.3"
 }

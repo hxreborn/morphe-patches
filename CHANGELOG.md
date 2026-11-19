@@ -1,3 +1,9 @@
+## [1.83.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.83.0-dev.2...v1.83.0-dev.3) (2026-11-19)
+
+### New Features
+
+* **Nextdoor - GmsCore support:** sign in with Google, get notifications ([65a1edc](https://github.com/hxreborn/morphe-patches/commit/65a1edc8b79819ebcfc5370427adf9ea17038533))
+
 ## [1.83.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.83.0-dev.1...v1.83.0-dev.2) (2026-11-19)
 
 ### Bug Fixes
