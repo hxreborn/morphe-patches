@@ -19,7 +19,11 @@ val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
     description = "Stops ad networks from starting and blocks rewarded and interstitial ads.",
 ) {
-    compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
+    compatibleWith(
+        AppCompatibilities.BLOSSOM_BLAST_SAGA,
+        AppCompatibilities.CANDY_CRUSH_SAGA,
+        AppCompatibilities.CANDY_CRUSH_SODA_SAGA,
+    )
 
     execute {
         AdSdkInitFingerprint.matchSingle().method.addInstructions(

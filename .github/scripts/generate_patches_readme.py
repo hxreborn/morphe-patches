@@ -156,6 +156,7 @@ ICONS = {
     "com.utorrent.client": "utorrent.png",
     "org.quantumbadger.redreader": "redreader.png",
     "org.quantumbadger.redreaderalpha": "redreaderalpha.png",
+    "com.king.blossomblast": "blossomblastsaga.png",
     "com.king.candycrushsaga": "candycrushsaga.png",
     "com.king.candycrushsodasaga": "candycrushsodasaga.png",
     "com.unbrokensoftware.launchbox": "launchbox.png",

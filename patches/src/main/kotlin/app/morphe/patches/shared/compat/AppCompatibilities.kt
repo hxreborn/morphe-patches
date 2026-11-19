@@ -316,6 +316,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val BLOSSOM_BLAST_SAGA = Compatibility(
+        name = "Blossom Blast Saga",
+        packageName = "com.king.blossomblast",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x32C4EB,
+        signatures = setOf(
+            "ac7f3b3537e8e6797be7270fa4f9f6a2414e660f51a86efd47c75f00603bc328",
+        ),
+        targets = listOf(AppTarget(version = "100.234.0.1", versionCode = 625, minSdk = 24)),
+    )
+
     val BLURWALL = Compatibility(
         name = "BlurWall",
         packageName = "apps.automan.blurwallpaper",
