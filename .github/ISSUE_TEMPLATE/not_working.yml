@@ -277,6 +277,8 @@ body:
         - "NEETprep Essential (another version, type it below)"
         - "Network Analyzer 5.1"
         - "Network Analyzer (another version, type it below)"
+        - "NetworkFlow 3.1.0"
+        - "NetworkFlow (another version, type it below)"
         - "Nextdoor 5.39.2"
         - "Nextdoor (another version, type it below)"
         - "Notein v2.1.37.0"
@@ -487,12 +489,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.83.0"
+        - "1.84.0-dev.1"
         - "1.83.0-dev.3"
         - "1.83.0-dev.2"
         - "1.83.0-dev.1"
+        - "1.83.0"
         - "1.82.1-dev.5"
-        - "1.82.1-dev.4"
         - "Older than these"
         # /generated
     validations:
@@ -562,6 +564,7 @@ body:
         - "All Video Player App \u00b7 Disable tracking"
         - "All Video Player App \u00b7 Hide ads"
         - "All Video Player App \u00b7 Remove rating prompts"
+        - "All Video Player App \u00b7 Resume after screen lock"
         - "All Video Player App \u00b7 Resume videos opened from other apps"
         - "All Video Player App \u00b7 Skip splash delay"
         - "All-In-One Calculator \u00b7 GmsCore support"
@@ -871,6 +874,7 @@ body:
         - "Network Analyzer \u00b7 Visual traceroute"
         - "Network Analyzer \u00b7 Wi-Fi channel usage"
         - "Network Analyzer \u00b7 Wi-Fi network details"
+        - "NetworkFlow \u00b7 Unlock pro"
         - "Nextdoor \u00b7 GmsCore support"
         - "Nextdoor \u00b7 Remove sponsored posts"
         - "Notein \u00b7 Unlock premium"

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.83.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.83.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;579 patches total
+> **[v1.84.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.84.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;581 patches total
 
 ### Featured apps
 
@@ -145,7 +145,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <a id="all-video-player-app"></a>
 <details>
-<summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -159,6 +159,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="all-video-player-app-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Facebook and OneSignal from collecting usage data. |
 | <a id="all-video-player-app-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/ads/HideAdsPatch.kt) | Removes app open, interstitial and native ads, and the promoted apps list. |
 | <a id="all-video-player-app-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
+| <a id="all-video-player-app-resume-after-screen-lock"></a>[Resume after screen lock](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/resume/ResumeAfterScreenLockPatch.kt) | Resumes videos where playback stopped after the screen locks, including videos the library has not listed yet. |
 | <a id="all-video-player-app-resume-videos-opened-from-other-apps"></a>[Resume videos opened from other apps](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/resume/ResumeExternalVideosPatch.kt) | Resumes videos opened from a file manager or gallery where playback stopped. |
 | <a id="all-video-player-app-skip-splash-delay"></a>[Skip splash delay](patches/src/main/kotlin/app/morphe/patches/allvideoplayer/splash/SkipSplashDelayPatch.kt) | Opens the app without waiting on the splash screen. |
 
@@ -1972,6 +1973,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="network-analyzer-visual-traceroute"></a>[Visual traceroute](patches/src/main/kotlin/app/morphe/patches/netanalyzer/misc/visualtraceroute/VisualTraceroutePatch.kt) | Shows the hops of the current or last traceroute on an OpenStreetMap map. Map tiles load from tile.openstreetmap.org. |
 | <a id="network-analyzer-wi-fi-channel-usage"></a>[Wi-Fi channel usage](patches/src/main/kotlin/app/morphe/patches/netanalyzer/misc/channelusage/ChannelUsagePatch.kt) | Adds a chart of how busy each Wi-Fi channel is, stacking the networks that share it. |
 | <a id="network-analyzer-wi-fi-network-details"></a>[Wi-Fi network details](patches/src/main/kotlin/app/morphe/patches/netanalyzer/misc/wifidetails/WifiDetailsPatch.kt) | Adds a details page for each network in the Signal list with its channel range, utilization, beamforming support, maximum speed and modulation. |
+
+</details>
+
+<a id="networkflow"></a>
+<details>
+<summary><img src=".github/assets/icons/networkflow.png" width="18" align="top">&nbsp;&nbsp;NetworkFlow&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 3.1.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="networkflow-unlock-pro"></a>[Unlock pro](patches/src/main/kotlin/app/morphe/patches/networkflow/misc/premium/UnlockProPatch.kt) | Unlocks the full app ranking, all usage periods and date ranges, the Total Speed notification layout, colourful Home cards and unlimited data plans. Removes ads. Requires an arm64 device. |
 
 </details>
 

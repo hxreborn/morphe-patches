@@ -1,3 +1,10 @@
+## [1.84.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.83.0...v1.84.0-dev.1) (2026-11-19)
+
+### New Features
+
+* **All Video Player App - Resume after screen lock:** keep position ([b2d1c1a](https://github.com/hxreborn/morphe-patches/commit/b2d1c1a2d2cd7f1dad74958075675fd248b3ed42)), closes [#762](https://github.com/hxreborn/morphe-patches/issues/762)
+* **NetworkFlow - Unlock pro:** enable Pro features and remove ads ([4c0c47a](https://github.com/hxreborn/morphe-patches/commit/4c0c47a028da731f924563b7fd171360f7234c7e))
+
 ## [1.83.0](https://github.com/hxreborn/morphe-patches/compare/v1.82.0...v1.83.0) (2026-11-19)
 
 ### Bug Fixes
