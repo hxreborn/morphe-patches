@@ -1,3 +1,15 @@
+## [1.83.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.5...v1.83.0-dev.1) (2026-11-19)
+
+### Bug Fixes
+
+* **Viber - Disable update prompts:** stop required upgrade dialog ([8e4baed](https://github.com/hxreborn/morphe-patches/commit/8e4baed01e2283d339cb974a43e8579576c89986))
+* **Viber - Disable update prompts:** stop update nag on unknown links ([f04729b](https://github.com/hxreborn/morphe-patches/commit/f04729b89791dd6c2a33379e74d223156641c785))
+* **Viber - Disable update prompts:** stop upgrade nags, drop switch ([9723093](https://github.com/hxreborn/morphe-patches/commit/9723093e1b6bc71f926de1533dfa875a306c9502))
+
+### New Features
+
+* **Viber - Remove deleted message notices:** hide Delete without trace ([bdf2c9b](https://github.com/hxreborn/morphe-patches/commit/bdf2c9bb14f45e89341dd01e835f96c84aadcfeb)), closes [#936](https://github.com/hxreborn/morphe-patches/issues/936)
+
 ## [1.82.1-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.82.1-dev.4...v1.82.1-dev.5) (2026-11-18)
 
 ### Updated App Support

@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.82.1-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.1-dev.5)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
+> **[v1.83.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.83.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
 
 ### Featured apps
 
@@ -3088,7 +3088,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|-----------|
 | <a id="viber-disable-ai-features"></a>[Disable AI features](patches/src/main/kotlin/app/morphe/patches/viber/layout/ai/DisableAiFeaturesPatch.kt) | Removes AI and inline Translate. |  |
 | <a id="viber-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/viber/misc/analytics/DisableAnalyticsPatch.kt) | Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data. |  |
-| <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the optional Google Play update dialog. Required updates still show. |  |
+| <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the Google Play update dialog, the suggested and required upgrade dialogs and the update request on links this version can't open. Viber's servers can still stop serving an old version. |  |
 | <a id="viber-disappearing-media-privacy"></a>[Disappearing media privacy](patches/src/main/kotlin/app/morphe/patches/viber/layout/mediaprivacy/DisappearingMediaPrivacyPatch.kt) | Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat. |  |
 | <a id="viber-enable-viber-plus-features"></a>[Enable Viber Plus features](patches/src/main/kotlin/app/morphe/patches/viber/misc/premium/UnlockViberPlusPatch.kt) | Enables Viber Plus app icons and the typing privacy switch. The Plus badge and Invisible Mode need a paid subscription. |  |
 | <a id="viber-filter-business-chats"></a>[Filter business chats](patches/src/main/kotlin/app/morphe/patches/viber/layout/business/FilterBusinessChatsPatch.kt) | Filters selected business chats after reading and removes inbox discovery prompts. Shows unread chats and verification-code chats. |  |
@@ -3102,7 +3102,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
 | <a id="viber-remove-caller-id-prompts"></a>[Remove Caller ID prompts](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
-| <a id="viber-remove-deleted-message-notices"></a>[Remove deleted message notices](patches/src/main/kotlin/app/morphe/patches/viber/misc/deletedmessages/RemoveDeletedMessagesPatch.kt) | Requests silent deletion and removes deleted message notices from chats. |  |
+| <a id="viber-remove-deleted-message-notices"></a>[Remove deleted message notices](patches/src/main/kotlin/app/morphe/patches/viber/misc/deletedmessages/RemoveDeletedMessagesPatch.kt) | Makes Delete for everyone leave no notice on either side and clears deleted message notices from chats. Hides Viber's own Delete without a trace option. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
 | <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |
 | <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |
