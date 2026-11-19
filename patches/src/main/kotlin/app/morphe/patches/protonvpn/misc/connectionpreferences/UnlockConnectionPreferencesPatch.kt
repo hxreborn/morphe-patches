@@ -18,6 +18,7 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patches.protonvpn.misc.anchors.VpnUserIsFreeUserFingerprint
+import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
 import app.morphe.patches.protonvpn.misc.anchors.propertyGetter
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.patches.protonvpn.misc.profiles.VpnCountryToStringFingerprint
@@ -55,7 +56,7 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
         markPatchApplied("unlockConnectionPreferences", unlockConnectionPreferencesPatch)
         clearConstructorProperty(ConnectionPreferencesToStringFingerprint, "isFreeUser")
         keepUserSetting(defaultConnectionRestrictionFingerprint())
-        clearFreeUserCheck(recentsRecordingFingerprint())
+        clearRecentsRecordingFreeUserCheck()
         clearFreeUserCheckInLambdaOf(RecentsListViewStateFlowFingerprint)
         clearLastFreeUserCheckBefore(defaultConnectionRecentsFingerprint().matchSingle())
         clearFreeUserCheck(quickConnectIntentFingerprint())
@@ -177,6 +178,28 @@ private fun BytecodePatchContext.excludeLocationsFromFreeUserConnections() {
             return v0
         """,
     )
+}
+
+private fun BytecodePatchContext.clearRecentsRecordingFreeUserCheck() {
+    val method = recentsRecordingFingerprint().matchSingle().method
+    val instructions = method.instructions.toList()
+    val isFreeUser = isFreeUserCall()
+    val recentsDao = recentsDaoReference()
+    val sites = instructions.indices.filter { index ->
+        val freeUserResult = instructions.getOrNull(index + 1)
+        val freeUserBranch = instructions.getOrNull(index + 2)
+        isFreeUser.matches(method, instructions[index]) &&
+            freeUserResult?.opcode == Opcode.MOVE_RESULT &&
+            freeUserBranch?.opcode == Opcode.IF_NEZ &&
+            (freeUserResult as OneRegisterInstruction).registerA == (freeUserBranch as OneRegisterInstruction).registerA &&
+            instructions.subList(index + 3, maxOf(index + 3, (freeUserBranch as BuilderOffsetInstruction).target.location.index))
+                .takeWhile { it.opcode.canContinue() }
+                .any { recentsDao.matches(method, it) }
+    }
+    val site = sites.singleOrNull()
+        ?: throw PatchException("Expected one Recents recording branch in $method, found ${sites.size}")
+    val register = (instructions[site + 1] as OneRegisterInstruction).registerA
+    method.addInstruction(site + 2, "const/16 v$register, 0x0")
 }
 
 private fun Match.requireThisInP0() {

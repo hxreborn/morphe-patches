@@ -5,18 +5,21 @@
 package app.morphe.patches.protonvpn.misc.connectionpreferences
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.anyInstruction
+import app.morphe.patcher.checkCast
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.instanceOf
 import app.morphe.patcher.opcode
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.string
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
-import app.morphe.patches.protonvpn.misc.anchors.unitClass
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.patches.protonvpn.misc.profiles.VpnCountryToStringFingerprint
 import app.morphe.patches.protonvpn.misc.restrictions.SERVER
@@ -26,6 +29,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val SERVER_MANAGER = "Lcom/protonvpn/android/utils/ServerManager;"
+private const val OBJECT = "Ljava/lang/Object;"
 private const val PROTOCOL_SELECTION = "Lcom/protonvpn/android/vpn/ProtocolSelection;"
 
 internal object ConnectionPreferencesToStringFingerprint : Fingerprint(
@@ -95,9 +99,21 @@ internal fun BytecodePatchContext.recentsRecordingFingerprint() = Fingerprint(
         isFreeUserCall(),
         opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
         opcode(Opcode.IF_NEZ, MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.SGET_OBJECT, definingClass = unitClass.type),
+        recentsDaoReference(),
     ),
 )
+
+internal object RecentsDaoQueryFingerprint : Fingerprint(
+    strings = listOf(string("FROM `unnamedRecentsIntents` WHERE `recentId` IN (", StringComparisonType.CONTAINS)),
+)
+
+internal fun BytecodePatchContext.recentsDaoReference(): InstructionFilter {
+    val recentsDao = RecentsDaoQueryFingerprint.originalClassDef
+    val types = listOfNotNull(recentsDao.type, recentsDao.superclass).filter { it != OBJECT }
+    return anyInstruction(
+        *types.flatMap { listOf(checkCast(it), fieldAccess(type = it, opcodes = listOf(Opcode.IGET_OBJECT))) }.toTypedArray(),
+    )
+}
 
 internal object RecentsListViewStateFlowFingerprint : Fingerprint(
     name = "<init>",
