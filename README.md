@@ -3521,9 +3521,6 @@ See [NOTICE](NOTICE) for the full conditions.
 Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
 recorded in the Git history.
 
-The iLovePDF premium unlock is ported from [Lain-Patches](https://github.com/kiraio-moe/Lain-Patches)
-by [kiraio-moe](https://github.com/kiraio-moe).
-
 App icons in the patches list belong to their respective developers and are used only to
 identify each app. They are not covered by this repository's licence. See
 [the icon notice](.github/assets/icons/README.md).
