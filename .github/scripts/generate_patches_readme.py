@@ -330,6 +330,7 @@ ICONS = {
     "to.freedom.android2": "freedom.png",
     "com.ivoox.app": "ivoox.png",
     "com.nextdoor": "nextdoor.png",
+    "flipboard.app": "flipboard.png",
 }
 
 ICON_DIR = Path(".github/assets/icons")

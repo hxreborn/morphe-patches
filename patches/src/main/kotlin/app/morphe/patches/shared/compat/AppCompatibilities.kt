@@ -658,6 +658,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.4.7", versionCode = 82, minSdk = 24)),
     )
 
+    val FLIPBOARD = Compatibility(
+        name = "Flipboard",
+        packageName = "flipboard.app",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF52828,
+        signatures = setOf(
+            "a6785fa9b3da2a1da4ac1a6f70656046dd7cdda0a442e9f1b50d97076905fca5",
+        ),
+        targets = listOf(AppTarget(version = "4.3.68", versionCode = 5526, minSdk = 24)),
+    )
+
     val FOCUS_NOW = Compatibility(
         name = "FocusNow",
         packageName = "com.ferdinandobermeier.focusmate",

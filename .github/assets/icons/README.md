@@ -203,6 +203,7 @@ icon at 96x96, cut to a circle, for any app without an icon here.
 | `shttps.png` | SHTTPS Marketless (`com.phlox.simpleserver.marketless`) | Fedir Tsapana (Phlox) | APK 3.4.7, adaptive icon `mipmap/ic_launcher` (`ic_launcher_background` under `ic_launcher_foreground`, xhdpi, centre 72dp cut to a circle) |
 | `ivoox.png` | iVoox (`com.ivoox.app`) | iVoox Podcast y Radio | Play 2.4041, round launcher icon `res/mipmap-xxxhdpi-v4/ic_ivoox_launcher_rebranding_round.webp`, cut to a circle |
 | `nextdoor.png` | Nextdoor (`com.nextdoor`) | Nextdoor | Play 5.39.2, `res/mipmap-xxxhdpi-v4/launcher_icon.png`, cut to a circle |
+| `flipboard.png` | Flipboard (`flipboard.app`) | Flipboard | Play 4.3.68, `res/mipmap-xxxhdpi-v4/fl_app_icon.png` over brand red, cut to a circle |
 | `networkflow.png` | NetworkFlow (`com.evozi.network`) | Evozi | Play 3.1.0, `res/mipmap-xxxhdpi-v4/ic_launcher_round.png` |
 
 Showly's icon is also published under GPLv3 in [`trakt/showly`](https://github.com/trakt/showly),
