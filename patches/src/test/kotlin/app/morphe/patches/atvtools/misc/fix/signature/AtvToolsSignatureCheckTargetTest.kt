@@ -5,6 +5,8 @@
 package app.morphe.patches.atvtools.misc.fix.signature
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.shared.misc.AbiTarget
+import app.morphe.patches.shared.misc.NativeCheck
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import java.io.File
 import java.util.zip.ZipFile
@@ -108,10 +110,10 @@ internal class AtvToolsSignatureCheckTargetTest {
             val xapk = File(path)
             assertTrue(xapk.isFile, "configured stock XAPK does not exist: $xapk")
 
-            val target = AtvToolsSignatureCheckTarget.targets.firstOrNull { nativeLibraryOf(xapk, it.library) != null }
-            assertTrue(target != null, "${xapk.name} has none of ${AtvToolsSignatureCheckTarget.targets.joinToString { it.library }}")
+            val target = AtvToolsSignatureCheckTarget.targets.firstOrNull { nativeLibraryOf(xapk, it.libraryPath) != null }
+            assertTrue(target != null, "${xapk.name} has none of ${AtvToolsSignatureCheckTarget.targets.joinToString { it.libraryPath }}")
 
-            val library = nativeLibraryOf(xapk, target!!.library)!!
+            val library = nativeLibraryOf(xapk, target!!.libraryPath)!!
             val sites = target.checks.map { check ->
                 val hits = indicesOf(library, check.pattern)
                 assertEquals(1, hits.size, "${xapk.name}: ${check.name} matched ${hits.size} sites")

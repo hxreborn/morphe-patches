@@ -4,36 +4,8 @@
  */
 package app.morphe.patches.atvtools.misc.fix.signature
 
-import app.morphe.patcher.patch.PatchException
-import app.morphe.util.byteArrayOf
-
-internal class NativeCheck(val name: String, patternHex: String, replacementHex: String) {
-    val pattern = byteArrayOf(patternHex)
-    val replacement = byteArrayOf(replacementHex)
-
-    init {
-        if (pattern.size != replacement.size) {
-            throw PatchException(
-                "$name: pattern is ${pattern.size} bytes but replacement is ${replacement.size}",
-            )
-        }
-    }
-
-    fun applyTo(library: ByteArray) {
-        val sites = library.indicesOf(pattern)
-        val site = sites.singleOrNull()
-            ?: throw PatchException("$name: expected 1 match, found ${sites.size}")
-
-        replacement.copyInto(library, site)
-        if (!library.regionMatches(site, replacement)) {
-            throw PatchException("$name: replacement not present at $site after write")
-        }
-    }
-}
-
-internal class AbiTarget(val library: String, val checks: List<NativeCheck>) {
-    fun applyTo(bytes: ByteArray) = checks.forEach { it.applyTo(bytes) }
-}
+import app.morphe.patches.shared.misc.AbiTarget
+import app.morphe.patches.shared.misc.NativeCheck
 
 internal object AtvToolsSignatureCheckTarget {
     val ARM32 = AbiTarget(
@@ -82,13 +54,3 @@ internal object AtvToolsSignatureCheckTarget {
 
     val targets = listOf(ARM32, ARM64)
 }
-
-private fun ByteArray.regionMatches(at: Int, needle: ByteArray): Boolean {
-    if (at < 0 || at + needle.size > size) return false
-    for (index in needle.indices) if (this[at + index] != needle[index]) return false
-    return true
-}
-
-private fun ByteArray.indicesOf(needle: ByteArray): List<Int> =
-    if (needle.isEmpty()) emptyList()
-    else (0..size - needle.size).filter { regionMatches(it, needle) }

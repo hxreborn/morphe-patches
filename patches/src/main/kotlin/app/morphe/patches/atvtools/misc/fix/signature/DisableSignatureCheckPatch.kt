@@ -10,13 +10,13 @@ import app.morphe.patcher.patch.rawResourcePatch
 internal val disableSignatureCheckPatch = rawResourcePatch {
     execute {
         val present = AtvToolsSignatureCheckTarget.targets
-            .map { it to get(it.library, true) }
+            .map { it to get(it.libraryPath, true) }
             .filter { (_, library) -> library.exists() }
 
         if (present.isEmpty()) {
             throw PatchException(
                 "no atvTools native library found: expected one of " +
-                    AtvToolsSignatureCheckTarget.targets.joinToString { it.library },
+                    AtvToolsSignatureCheckTarget.targets.joinToString { it.libraryPath },
             )
         }
 

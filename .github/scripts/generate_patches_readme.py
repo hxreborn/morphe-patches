@@ -241,6 +241,7 @@ ICONS = {
     "io.raindrop.raindropio": "raindrop.png",
     "app.rubberbands.fit": "rubberbands.png",
     "io.lightray.photone": "photone.png",
+    "com.evozi.network": "networkflow.png",
     "photo.editor.photoeditor.photoeditorpro": "photoeditorpro.png",
     "com.community.oneroom": "moviebox.png",
     "com.community.mbox.tv": "movieboxtv.png",

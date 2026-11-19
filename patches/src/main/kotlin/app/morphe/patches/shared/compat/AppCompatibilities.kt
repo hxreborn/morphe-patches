@@ -1226,6 +1226,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "5.1", versionCode = 19502, minSdk = 29)),
     )
 
+    val NETWORKFLOW = Compatibility(
+        name = "NetworkFlow",
+        packageName = "com.evozi.network",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x11B2F9,
+        signatures = setOf(
+            "58d881e0c06db0d715cee5c281c84ccb571fc3a109ce5f05b796154c76c0748a",
+        ),
+        targets = listOf(AppTarget(version = "3.1.0", versionCode = 118, minSdk = 24)),
+    )
+
     val NOTEIN = Compatibility(
         name = "Notein",
         packageName = "com.orion.notein.global",
