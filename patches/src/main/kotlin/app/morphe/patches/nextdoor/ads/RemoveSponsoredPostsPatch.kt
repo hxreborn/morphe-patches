@@ -10,6 +10,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.nextdoor.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 
@@ -19,6 +20,8 @@ val removeSponsoredPostsPatch = bytecodePatch(
     description = "Removes sponsored posts from the feed.",
 ) {
     compatibleWith(AppCompatibilities.NEXTDOOR)
+
+    dependsOn(spoofSignaturePatch)
 
     execute {
         val match = AdsDataItemConverterFingerprint.matchSingle()
