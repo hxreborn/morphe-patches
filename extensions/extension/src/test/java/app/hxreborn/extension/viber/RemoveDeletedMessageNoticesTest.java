@@ -51,7 +51,17 @@ public final class RemoveDeletedMessageNoticesTest {
     }
 
     @Test
-    public void keepNoticesByDefault() {
+    public void removeNoticesByDefault() {
+        Assert.assertTrue(PatchSettings.removeDeletedMessageNotices());
+        Assert.assertEquals(SILENT_MIME, PatchSettings.deletedMessageMime(NOTICE_MIME));
+        Assert.assertEquals("", PatchSettings.deletedMessageBody("Message deleted"));
+        Assert.assertFalse(PatchSettings.hasStatusUnlessRemovingNotices(true));
+        Assert.assertFalse(PatchSettings.showDeleteWithoutTraceOption(true));
+    }
+
+    @Test
+    public void keepNoticesWhenSwitchedOff() {
+        PatchSettings.setEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key, false);
         Assert.assertFalse(PatchSettings.removeDeletedMessageNotices());
         Assert.assertEquals(NOTICE_MIME, PatchSettings.deletedMessageMime(NOTICE_MIME));
         Assert.assertEquals("Message deleted", PatchSettings.deletedMessageBody("Message deleted"));
@@ -60,29 +70,18 @@ public final class RemoveDeletedMessageNoticesTest {
     }
 
     @Test
-    public void replaceNoticesWithBlankRowsWhenEnabled() {
+    public void removeNoticesAgainWhenSwitchedBackOn() {
+        PatchSettings.setEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key, false);
         PatchSettings.setEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key, true);
-        Assert.assertTrue(PatchSettings.removeDeletedMessageNotices());
         Assert.assertEquals(SILENT_MIME, PatchSettings.deletedMessageMime(NOTICE_MIME));
         Assert.assertEquals("", PatchSettings.deletedMessageBody("Message deleted"));
-        Assert.assertFalse(PatchSettings.hasStatusUnlessRemovingNotices(true));
-        Assert.assertFalse(PatchSettings.hasStatusUnlessRemovingNotices(false));
-        Assert.assertFalse(PatchSettings.showDeleteWithoutTraceOption(true));
     }
 
     @Test
-    public void restoreNoticesWhenSwitchedOff() {
-        PatchSettings.setEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key, true);
+    public void restoreDefaultsRemovesNotices() {
         PatchSettings.setEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key, false);
-        Assert.assertEquals(NOTICE_MIME, PatchSettings.deletedMessageMime(NOTICE_MIME));
-        Assert.assertEquals("Message deleted", PatchSettings.deletedMessageBody("Message deleted"));
-    }
-
-    @Test
-    public void restoreDefaultsKeepsNoticesVisible() {
-        PatchSettings.setEnabled(PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key, true);
         PatchSettings.resetToDefaults();
-        Assert.assertFalse(PatchSettings.removeDeletedMessageNotices());
+        Assert.assertTrue(PatchSettings.removeDeletedMessageNotices());
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)

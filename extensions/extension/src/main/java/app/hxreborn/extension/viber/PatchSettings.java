@@ -56,8 +56,7 @@ public final class PatchSettings {
     }
 
     static boolean isEnabled(String key) {
-        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key)
-                && !PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key.equals(key);
+        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key);
         return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
