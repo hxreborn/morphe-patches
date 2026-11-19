@@ -124,6 +124,7 @@ public final class PatchesSettingsDialogTest {
         Assert.assertFalse(texts.contains("Home"));
         Assert.assertFalse(texts.contains("Videos"));
         Assert.assertFalse(texts.contains("Backup"));
+        Assert.assertFalse(texts.contains("Files"));
         Assert.assertFalse(texts.contains("Ads"));
     }
 
@@ -133,8 +134,9 @@ public final class PatchesSettingsDialogTest {
         List<String> texts = shownTexts();
         Assert.assertFalse(texts.contains("Patches"));
         assertInOrder(texts, "Home", AppliedPatches.HIDE_HOME_SHORTCUTS, AppliedPatches.REMOVE_RECENT_PANEL, "Backup",
-                AppliedPatches.SHOW_BACKUP_COUNT, "Videos", AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS,
-                AppliedPatches.UNLOCK_PREMIUM, "Ads", AppliedPatches.HIDE_ADS, AppliedPatches.HIDE_PROMOTIONS, "About");
+                AppliedPatches.SHOW_BACKUP_COUNT, "Files", AppliedPatches.SORT_BY_ORIGINAL_DATE, "Videos",
+                AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.UNLOCK_PREMIUM, "Ads",
+                AppliedPatches.HIDE_ADS, AppliedPatches.HIDE_PROMOTIONS, "About");
     }
 
     private static void assertInOrder(List<String> texts, String... expected) {
@@ -158,6 +160,7 @@ public final class PatchesSettingsDialogTest {
         Assert.assertTrue(texts.contains(AppliedPatches.UNLOCK_PREMIUM));
         Assert.assertTrue(texts.contains(AppliedPatches.REMOVE_RECENT_PANEL));
         Assert.assertTrue(texts.contains(AppliedPatches.SHOW_BACKUP_COUNT));
+        Assert.assertTrue(texts.contains(AppliedPatches.SORT_BY_ORIGINAL_DATE));
     }
 
     @Test

@@ -145,6 +145,11 @@ final class PatchesSettingsDialog {
         addSwitch(backup, AppliedPatches.showBackupCount(), AppliedPatches.showBackupCountName(),
                 AppliedPatches.SHOW_BACKUP_COUNT, "Shows remaining backup files.", "hx_terabox_ic_backup", true);
         addSection(column, "Backup", backup);
+        LinearLayout files = this.rows.card();
+        addSwitch(files, AppliedPatches.sortByOriginalDate(), AppliedPatches.sortByOriginalDateName(),
+                AppliedPatches.SORT_BY_ORIGINAL_DATE, AppliedPatches.sortByOriginalDateDescription(),
+                "hx_terabox_ic_sort", true);
+        addSection(column, "Files", files);
         LinearLayout videos = this.rows.card();
         addSwitch(videos, AppliedPatches.hideVideoRecommendations(), AppliedPatches.hideVideoRecommendationsName(),
                 AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.hideVideoRecommendationsDescription(),

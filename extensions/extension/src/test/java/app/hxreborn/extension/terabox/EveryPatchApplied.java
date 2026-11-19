@@ -177,6 +177,21 @@ public final class EveryPatchApplied {
     }
 
     @Implementation
+    public static boolean sortByOriginalDate() {
+        return true;
+    }
+
+    @Implementation
+    public static String sortByOriginalDateName() {
+        return "Sort by original date";
+    }
+
+    @Implementation
+    public static String sortByOriginalDateDescription() {
+        return "Sorts and displays files by their original modification dates.";
+    }
+
+    @Implementation
     public static boolean unlockPremium() {
         return true;
     }

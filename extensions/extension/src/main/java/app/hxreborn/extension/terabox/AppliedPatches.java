@@ -39,6 +39,8 @@ public final class AppliedPatches {
 
     static final String SHOW_BACKUP_COUNT = "Show backup count";
 
+    static final String SORT_BY_ORIGINAL_DATE = "Sort by original date";
+
     static final String UNLOCK_PREMIUM = "Unlock Premium Plus";
 
     private AppliedPatches() {
@@ -56,6 +58,7 @@ public final class AppliedPatches {
         add(applied, hideVideoRecommendations(), hideVideoRecommendationsName(), hideVideoRecommendationsDescription());
         add(applied, removeRecentPanel(), removeRecentPanelName(), removeRecentPanelDescription());
         add(applied, showBackupCount(), showBackupCountName(), showBackupCountDescription());
+        add(applied, sortByOriginalDate(), sortByOriginalDateName(), sortByOriginalDateDescription());
         add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
         Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
         return applied;
@@ -184,6 +187,18 @@ public final class AppliedPatches {
     }
 
     public static String showBackupCountDescription() {
+        return null;
+    }
+
+    public static boolean sortByOriginalDate() {
+        return false;
+    }
+
+    public static String sortByOriginalDateName() {
+        return null;
+    }
+
+    public static String sortByOriginalDateDescription() {
         return null;
     }
 

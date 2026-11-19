@@ -61,6 +61,7 @@ public final class PatchSettingsTest {
         Assert.assertFalse(PatchSettings.isPremiumUnlocked());
         Assert.assertFalse(PatchSettings.isRecentPanelRemoved());
         Assert.assertFalse(PatchSettings.isBackupCountShown());
+        Assert.assertFalse(PatchSettings.isOriginalDateSorted());
         Assert.assertEquals(AUTO_SHOW_DELAY, PatchSettings.promotionAutoShow(AUTO_SHOW_DELAY));
     }
 
@@ -74,6 +75,7 @@ public final class PatchSettingsTest {
         Assert.assertTrue(PatchSettings.isPremiumUnlocked());
         Assert.assertTrue(PatchSettings.isRecentPanelRemoved());
         Assert.assertTrue(PatchSettings.isBackupCountShown());
+        Assert.assertTrue(PatchSettings.isOriginalDateSorted());
         Assert.assertEquals(0, PatchSettings.promotionAutoShow(AUTO_SHOW_DELAY));
     }
 

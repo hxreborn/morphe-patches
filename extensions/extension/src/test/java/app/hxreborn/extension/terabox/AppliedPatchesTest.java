@@ -54,9 +54,11 @@ public final class AppliedPatchesTest {
     @Test
     @Config(shadows = EveryPatchApplied.class)
     public void listEveryAppliedPatchAlphabetically() {
-        Assert.assertEquals(Arrays.asList("Clone app", "Fix Google login", "Fix transfers over VPN", "Hide ads",
-                "Hide consent form", "Hide home shortcuts", "Hide promotions", "Hide video recommendations",
-                "Remove recent panel", "Show backup count", "Unlock Premium Plus"), names());
+        Assert.assertEquals(
+                Arrays.asList("Clone app", "Fix Google login", "Fix transfers over VPN", "Hide ads",
+                        "Hide consent form", "Hide home shortcuts", "Hide promotions", "Hide video recommendations",
+                        "Remove recent panel", "Show backup count", "Sort by original date", "Unlock Premium Plus"),
+                names());
     }
 
     @Test

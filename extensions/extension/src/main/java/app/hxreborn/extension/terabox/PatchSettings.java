@@ -37,7 +37,7 @@ public final class PatchSettings {
     private static final List<String> SWITCH_KEYS = Arrays.asList(AppliedPatches.HIDE_ADS,
             AppliedPatches.HIDE_PROMOTIONS, AppliedPatches.HIDE_HOME_SHORTCUTS,
             AppliedPatches.HIDE_VIDEO_RECOMMENDATIONS, AppliedPatches.UNLOCK_PREMIUM,
-            AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.SHOW_BACKUP_COUNT);
+            AppliedPatches.REMOVE_RECENT_PANEL, AppliedPatches.SHOW_BACKUP_COUNT, AppliedPatches.SORT_BY_ORIGINAL_DATE);
 
     private PatchSettings() {
     }
@@ -68,6 +68,10 @@ public final class PatchSettings {
 
     public static boolean isBackupCountShown() {
         return isFeatureEnabled(AppliedPatches.showBackupCount(), AppliedPatches.SHOW_BACKUP_COUNT);
+    }
+
+    public static boolean isOriginalDateSorted() {
+        return isFeatureEnabled(AppliedPatches.sortByOriginalDate(), AppliedPatches.SORT_BY_ORIGINAL_DATE);
     }
 
     public static long promotionAutoShow(long configured) {
