@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.82.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.82.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;577 patches total
+> **[v1.83.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.83.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;579 patches total
 
 ### Featured apps
 
@@ -288,7 +288,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 11.0.7 |
+| 11.0.8 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -409,7 +409,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 3.0.01e |
+| 3.0.01q |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -547,7 +547,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 **🎯 Supported versions:**
 
-| 2.2.7 |
+| 2.2.9 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -908,7 +908,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.0.35 |
+| 1.0.42 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -960,8 +960,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 6.103.6 | 6.104.4 |
-| :---: | :---: |
+| 6.105.2 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1029,8 +1029,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.97.0 | 8.1.0 |
-| :---: | :---: |
+| 8.3.0 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1162,7 +1162,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 13.0.2.0 |
+| 13.2.2.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1202,7 +1202,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 50.2.0 |
+| 52.1.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1236,7 +1236,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 9.9.0 |
+| 10.1.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1272,8 +1272,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2026.08.1041 | 2026.09.1051 | 2026.10.1021 |
-| :---: | :---: | :---: |
+| 2026.10.1031 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1659,8 +1659,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 62.6 | 62.9 |
-| :---: | :---: |
+| 63.3 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -1692,7 +1692,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.1.0 |
+| 1.1.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1862,7 +1862,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.12.0 |
+| 2.0.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -1975,6 +1975,23 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
+<a id="nextdoor"></a>
+<details>
+<summary><img src=".github/assets/icons/nextdoor.png" width="18" align="top">&nbsp;&nbsp;Nextdoor&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 5.39.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="nextdoor-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="nextdoor-remove-sponsored-posts"></a>[Remove sponsored posts](patches/src/main/kotlin/app/morphe/patches/nextdoor/ads/RemoveSponsoredPostsPatch.kt) | Removes sponsored posts from the feed. |
+
+</details>
+
 <a id="notein"></a>
 <details>
 <summary><img src=".github/assets/icons/notein.png" width="18" align="top">&nbsp;&nbsp;Notein&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
@@ -2015,7 +2032,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 26.9.24 |
+| 26.10.15 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2064,7 +2081,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 126.44.0.13 |
+| 126.46.0.14 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
@@ -2087,7 +2104,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 13.4.1 |
+| 13.6.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2103,7 +2120,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.103.0 |
+| 2.104.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2213,7 +2230,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| a3.78.4 |
+| a3.80.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2299,7 +2316,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.1.4-gms | 2.1.5-nogms |
+| 2.2.0-gms | 2.2.0-nogms |
 | :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2318,7 +2335,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.11.12 |
+| 7.12.1 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2368,7 +2385,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 5.21.9.0 |
+| 5.21.57.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2413,8 +2430,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.3.8 | 3.4.0 |
-| :---: | :---: |
+| 3.4.2 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2487,8 +2504,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.2.8 | 2.2.9 | 2.2.91 | 2.3.0 |
-| :---: | :---: | :---: | :---: |
+| 2.4.0 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2667,7 +2684,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 19.1.2 |
+| 20.0.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2683,7 +2700,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.02.01.1023 |
+| 1.02.03.1117 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2700,7 +2717,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| Android V1.79.3 |
+| Android V1.79.4 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2718,8 +2735,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 3.11 | 3.16 |
-| :---: | :---: |
+| 3.19 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2752,7 +2769,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 6.7 |
+| 6.8 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2890,7 +2907,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.27.5 |
+| 4.28.5 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
@@ -2938,7 +2955,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 439.0.0.184323 |
+| 441.0.0.185329 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2954,7 +2971,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 9.18.2 |
+| 9.19.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -2988,8 +3005,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 6.7.5 | 6.7.6 |
-| :---: | :---: |
+| 6.7.7 |
+| :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -3004,7 +3021,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 7.3.36 |
+| 7.3.38 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3088,7 +3105,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |----------|----------------|-----------|
 | <a id="viber-disable-ai-features"></a>[Disable AI features](patches/src/main/kotlin/app/morphe/patches/viber/layout/ai/DisableAiFeaturesPatch.kt) | Removes AI and inline Translate. |  |
 | <a id="viber-disable-analytics"></a>[Disable analytics](patches/src/main/kotlin/app/morphe/patches/viber/misc/analytics/DisableAnalyticsPatch.kt) | Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data. |  |
-| <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the optional Google Play update dialog. Required updates still show. |  |
+| <a id="viber-disable-update-prompts"></a>[Disable update prompts](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the Google Play update dialog, the suggested and required upgrade dialogs and the update request on links this version can't open. Viber's servers can still stop serving an old version. |  |
 | <a id="viber-disappearing-media-privacy"></a>[Disappearing media privacy](patches/src/main/kotlin/app/morphe/patches/viber/layout/mediaprivacy/DisappearingMediaPrivacyPatch.kt) | Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat. |  |
 | <a id="viber-enable-viber-plus-features"></a>[Enable Viber Plus features](patches/src/main/kotlin/app/morphe/patches/viber/misc/premium/UnlockViberPlusPatch.kt) | Enables Viber Plus app icons and the typing privacy switch. The Plus badge and Invisible Mode need a paid subscription. |  |
 | <a id="viber-filter-business-chats"></a>[Filter business chats](patches/src/main/kotlin/app/morphe/patches/viber/layout/business/FilterBusinessChatsPatch.kt) | Filters selected business chats after reading and removes inbox discovery prompts. Shows unread chats and verification-code chats. |  |
@@ -3102,7 +3119,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-raise-folder-limit"></a>[Raise folder limit](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |  |
 | <a id="viber-remove-caller-id-prompts"></a>[Remove Caller ID prompts](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |  |
 | <a id="viber-remove-chat-payment-actions"></a>[Remove chat payment actions](patches/src/main/kotlin/app/morphe/patches/viber/layout/payments/RemoveChatPaymentsPatch.kt) | Removes payment actions from chat menus. |  |
-| <a id="viber-remove-deleted-message-notices"></a>[Remove deleted message notices](patches/src/main/kotlin/app/morphe/patches/viber/misc/deletedmessages/RemoveDeletedMessagesPatch.kt) | Requests silent deletion and removes deleted message notices from chats. |  |
+| <a id="viber-remove-deleted-message-notices"></a>[Remove deleted message notices](patches/src/main/kotlin/app/morphe/patches/viber/misc/deletedmessages/RemoveDeletedMessagesPatch.kt) | Makes Delete for everyone leave no notice on either side and clears deleted message notices from chats. Hides Viber's own Delete without a trace option. |  |
 | <a id="viber-remove-list-gaps"></a>[Remove list gaps](patches/src/main/kotlin/app/morphe/patches/viber/layout/gaps/RemoveListGapsPatch.kt) | Removes list gaps and extra scrolling. |  |
 | <a id="viber-remove-locked-plus-items"></a>[Remove locked Plus items](patches/src/main/kotlin/app/morphe/patches/viber/layout/lockedplus/RemoveLockedPlusItemsPatch.kt) | Removes Invisible status options, Plus badge settings and locked Plus entries. |  |
 | <a id="viber-remove-online-status-limit"></a>[Remove online status limit](patches/src/main/kotlin/app/morphe/patches/viber/misc/onlinestatus/RemoveOnlineStatusLimitPatch.kt) | Removes the 24-hour wait between online status changes. |  |
@@ -3121,7 +3138,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 1.630.199 |
+| 1.631.200.I |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3221,7 +3238,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 10.2.4 |
+| 10.2.6 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3254,7 +3271,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 11.42.0 |
+| 11.43.4 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3272,7 +3289,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 2.78.1 |
+| 2.78.2 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3288,7 +3305,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 4.50.05 |
+| 4.53.05 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3340,7 +3357,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 26.9.0 |
+| 26.10.0 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3356,7 +3373,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **🎯 Supported versions:**
 
-| 5.1.8_20261021 |
+| 5.2.1_20261110 |
 | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
@@ -3504,9 +3521,6 @@ See [NOTICE](NOTICE) for the full conditions.
 
 Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
 recorded in the Git history.
-
-The iLovePDF premium unlock is ported from [Lain-Patches](https://github.com/kiraio-moe/Lain-Patches)
-by [kiraio-moe](https://github.com/kiraio-moe).
 
 App icons in the patches list belong to their respective developers and are used only to
 identify each app. They are not covered by this repository's licence. See

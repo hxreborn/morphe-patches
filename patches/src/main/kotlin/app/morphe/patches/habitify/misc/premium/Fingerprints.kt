@@ -16,13 +16,13 @@ internal object SnapshotToStringFingerprint : Fingerprint(
 )
 
 internal object FirebaseUserMapFingerprint : Fingerprint(
-    definingClass = "Lio/invertase/firebase/auth/ReactNativeFirebaseAuthModule;",
+    definingClass = "Lio/invertase/firebase/auth/",
     name = "firebaseUserToMap",
     strings = listOf("uid", "isAnonymous"),
 )
 
 internal object FirebaseUserIdFingerprint : Fingerprint(
-    definingClass = "Lio/invertase/firebase/auth/ReactNativeFirebaseAuthModule;",
+    definingClass = "Lio/invertase/firebase/auth/",
     name = "convertProviderData",
     filters = listOf(
         string("uid"),

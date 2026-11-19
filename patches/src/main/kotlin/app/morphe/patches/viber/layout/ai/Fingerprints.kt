@@ -125,3 +125,14 @@ internal object NewsBriefBannerEligibilityFingerprint : Fingerprint(
     returnType = "Ljava/lang/Object;",
     parameters = listOf("Lkotlin/coroutines/jvm/internal/ContinuationImpl;"),
 )
+
+internal object LinkSummaryHostAllowedFingerprint : Fingerprint(
+    returnType = "Z",
+    parameters = listOf("Ljava/lang/String;"),
+    filters = listOf(
+        opcode(Opcode.INSTANCE_OF),
+        fieldAccess(definingClass = "Ljava/util/Locale;", name = "ROOT", opcode = Opcode.SGET_OBJECT),
+        methodCall(definingClass = "Ljava/lang/String;", name = "toLowerCase", parameters = listOf("Ljava/util/Locale;")),
+        methodCall(definingClass = "Ljava/util/Iterator;", name = "hasNext"),
+    ),
+)

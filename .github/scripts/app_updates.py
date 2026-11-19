@@ -33,6 +33,17 @@ DOWNLOAD_TIMEOUT = 600
 PATCH_TIMEOUT = 900
 
 ISSUE_LABEL = "app-update"
+UNCHECKED_PACKAGES = {
+    "com.biobird.exvee",
+    "com.darinsoft.vimo",
+    "com.fengeon.resprite_desktop",
+    "com.lingodeer",
+    "com.oneletters.audiobooksai",
+    "com.thesortdapp.sortd",
+    "io.yuka.android",
+    "ipnossoft.rma.free",
+    "org.readera",
+}
 
 
 def load_inventory(path):
@@ -525,6 +536,7 @@ def render(report):
               ("unconfirmed", "Newer version reported by one source only"),
               ("failed", "Source resolution failed"),
               ("any-version", "Patch accepts any version"),
+              ("unchecked", "Not checked for updates"),
               ("current", "Already current")]
     lines = [f"# App update check {report['generated_at']}", "",
              f"Inventory: `{report['inventory']}` bundle {report['bundle_version']}, "
@@ -651,14 +663,18 @@ def main():
     ctx = {"tracker": tracker, "cli": args.cli, "mpp": args.mpp,
            "apkeep": shutil.which("apkeep"), "lock": threading.Lock(), "play": {},
            "workdir": Path(tempfile.mkdtemp(prefix="app-updates-", dir=args.workdir))}
-    ctx["urls"] = discover_urls(list(apps), Path(args.url_cache), load_discovery(tracker))
+    checked = [package for package in apps if package not in UNCHECKED_PACKAGES]
+    ctx["urls"] = discover_urls(checked, Path(args.url_cache), load_discovery(tracker))
 
     def check(app):
-        record = classify(app, query_sources(app, ctx), ctx)
-        record["readiness"] = readiness(app, record)
-        play = ctx["play"].get(app["package"], {}).get("facts", {})
-        if play.get("path"):
-            shutil.rmtree(Path(play.pop("path")).parent, ignore_errors=True)
+        if app["package"] in UNCHECKED_PACKAGES:
+            record = {"status": "unchecked", "candidate": None, "sources": {}, "notes": [], "readiness": None}
+        else:
+            record = classify(app, query_sources(app, ctx), ctx)
+            record["readiness"] = readiness(app, record)
+            play = ctx["play"].get(app["package"], {}).get("facts", {})
+            if play.get("path"):
+                shutil.rmtree(Path(play.pop("path")).parent, ignore_errors=True)
         print(f"{app['name']}: {record['status']} {record.get('candidate') or ''}", file=sys.stderr, flush=True)
         return {**{k: app[k] for k in ("name", "package", "apk_file_type", "signatures", "targets",
                                        "current", "current_version_codes", "patches")}, **record}

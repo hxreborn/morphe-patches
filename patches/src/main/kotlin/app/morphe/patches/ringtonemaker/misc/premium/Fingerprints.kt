@@ -5,25 +5,25 @@
 package app.morphe.patches.ringtonemaker.misc.premium
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.InstructionLocation
-import app.morphe.patcher.opcode
+import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
 internal object PremiumUserFingerprint : Fingerprint(
     definingClass = "Lapp/better/ringtone/MainApplication;",
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "Z",
     parameters = emptyList(),
     filters = listOf(
-        opcode(Opcode.SGET_BOOLEAN),
-        opcode(Opcode.INVOKE_STATIC, InstructionLocation.MatchAfterWithin(2)),
+        methodCall(
+            opcode = Opcode.INVOKE_STATIC,
+            parameters = listOf("Lcom/betterapp/googlebilling/SubsState;"),
+            returnType = "Z",
+        ),
     ),
 )
 
 internal object StartPurchaseScreenFingerprint : Fingerprint(
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "V",
-    parameters = listOf("Ljava/lang/String;", "Landroid/content/Context;"),
-    strings = listOf("vip_entry_click"),
+    strings = listOf("vip_entry_click", "purchase_origin"),
 )

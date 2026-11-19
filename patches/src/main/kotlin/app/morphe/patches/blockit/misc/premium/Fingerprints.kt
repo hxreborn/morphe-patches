@@ -13,6 +13,8 @@ import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val EDITOR_CLASS = "Landroid/content/SharedPreferences\$Editor;"
+private const val AD_REMOVE_KEY_WINDOW = 6
+private const val BAG_PUT_WINDOW = 22
 
 internal object OwnedPurchasesFingerprint : Fingerprint(
     returnType = "V",
@@ -20,8 +22,8 @@ internal object OwnedPurchasesFingerprint : Fingerprint(
     strings = listOf("owned INAPP purchases: "),
     filters = listOf(
         fieldAccess(type = "Z", opcode = Opcode.IPUT_BOOLEAN),
-        string("is_ad_remove", location = MatchAfterWithin(3)),
-        methodCall(definingClass = EDITOR_CLASS, name = "putBoolean"),
+        string("is_ad_remove", location = MatchAfterWithin(AD_REMOVE_KEY_WINDOW)),
+        methodCall(definingClass = EDITOR_CLASS, name = "putBoolean", location = MatchAfterWithin(BAG_PUT_WINDOW)),
         string("sounds_owned"),
         methodCall(definingClass = EDITOR_CLASS, name = "putBoolean", location = MatchAfterImmediately()),
     ),

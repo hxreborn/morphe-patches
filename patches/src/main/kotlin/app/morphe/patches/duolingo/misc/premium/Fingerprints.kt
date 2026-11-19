@@ -21,6 +21,7 @@ private const val ENERGY_CONFIG_CLASS = "Lcom/duolingo/core/energy/models/Energy
 internal object UserIsPaidFingerprint : Fingerprint(
     definingClass = USER_CLASS,
     name = "<init>",
+    custom = { method, _ -> method.parameterTypes.firstOrNull() == "I" },
     filters = listOf(
         fieldAccess(definingClass = USER_CLASS, type = SUBSCRIBER_LEVEL_CLASS, opcode = Opcode.IGET_OBJECT),
         methodCall(definingClass = SUBSCRIBER_LEVEL_CLASS, name = "hasSubscription", location = MatchAfterImmediately()),
@@ -32,6 +33,7 @@ internal object UserIsPaidFingerprint : Fingerprint(
 internal object UserHasMaxFingerprint : Fingerprint(
     definingClass = USER_CLASS,
     name = "<init>",
+    custom = { method, _ -> method.parameterTypes.firstOrNull() == "I" },
     filters = listOf(
         fieldAccess(definingClass = USER_CLASS, type = SUBSCRIBER_LEVEL_CLASS, opcode = Opcode.IGET_OBJECT),
         fieldAccess(

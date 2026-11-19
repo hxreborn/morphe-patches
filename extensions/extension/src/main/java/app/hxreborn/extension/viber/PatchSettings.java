@@ -56,8 +56,7 @@ public final class PatchSettings {
     }
 
     static boolean isEnabled(String key) {
-        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key)
-                && !PatchSetting.REMOVE_DELETED_MESSAGE_NOTICES.key.equals(key);
+        boolean defaultValue = !PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key.equals(key);
         return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
@@ -84,6 +83,10 @@ public final class PatchSettings {
 
     public static boolean hasStatusUnlessRemovingNotices(boolean hasStatus) {
         return hasStatus && !removeDeletedMessageNotices();
+    }
+
+    public static boolean showDeleteWithoutTraceOption(boolean shown) {
+        return shown && !removeDeletedMessageNotices();
     }
 
     public static int deletedMessageMime(int notice) {
@@ -148,14 +151,6 @@ public final class PatchSettings {
 
     public static boolean blocksMediaSave(boolean disappearing) {
         return disappearing && !saveDisappearingMedia();
-    }
-
-    public static boolean disableUpdatePrompts() {
-        return AppliedPatches.disableUpdatePrompts() && isEnabled(PatchSetting.DISABLE_UPDATE_PROMPTS.key);
-    }
-
-    public static boolean allowUpdatePrompt(boolean allowed) {
-        return allowed && !disableUpdatePrompts();
     }
 
     public static boolean linkAsSecondaryDevice() {

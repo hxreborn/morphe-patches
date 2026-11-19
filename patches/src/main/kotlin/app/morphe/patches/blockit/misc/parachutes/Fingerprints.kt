@@ -14,6 +14,18 @@ internal object LaunchPurchaseFingerprint : Fingerprint(
 
 internal object ParachutesBoughtFingerprint : Fingerprint(
     returnType = "V",
-    parameters = listOf("I"),
+    parameters = listOf(),
     strings = listOf("bought parachutes: "),
+)
+
+internal object ParachuteCountSetterFingerprint : Fingerprint(
+    returnType = "V",
+    parameters = listOf("I"),
+    strings = listOf("parachute_count", "parachute_sig"),
+)
+
+internal object ParachuteCountGetterFingerprint : Fingerprint(
+    returnType = "I",
+    parameters = listOf(),
+    strings = listOf("getParachuteCount: signature mismatch, resetting"),
 )
