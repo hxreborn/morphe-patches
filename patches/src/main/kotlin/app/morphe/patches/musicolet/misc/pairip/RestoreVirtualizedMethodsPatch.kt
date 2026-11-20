@@ -4,16 +4,74 @@
  */
 package app.morphe.patches.musicolet.misc.pairip
 
+import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.restoreVirtualizedMethods
 import app.morphe.patches.shared.misc.smali.addDefaultConstructor
+import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import java.util.Calendar
 
 private const val APP_PACKAGE = "Lin/krosbits/musicolet"
 private const val DO_IN_BACKGROUND = "doInBackground"
 private const val ON_RECEIVE = "onReceive"
+private const val DATE_REFRESH_REGISTERS = 7
+
+private fun dateRefreshBody(dateChangedFlag: FieldReference, todayCalendar: FieldReference) = """
+    invoke-static {}, $CALENDAR->getInstance()$CALENDAR
+    move-result-object v0
+    sget-object v1, $todayCalendar
+    const/4 v2, ${Calendar.YEAR}
+    invoke-virtual {v0, v2}, $CALENDAR->get(I)I
+    move-result v3
+    invoke-virtual {v1, v2}, $CALENDAR->get(I)I
+    move-result v4
+    if-ne v3, v4, :date_changed
+    const/4 v2, ${Calendar.DAY_OF_YEAR}
+    invoke-virtual {v0, v2}, $CALENDAR->get(I)I
+    move-result v3
+    invoke-virtual {v1, v2}, $CALENDAR->get(I)I
+    move-result v4
+    if-eq v3, v4, :store_today
+    :date_changed
+    const/4 v2, 0x1
+    iput-boolean v2, p0, $dateChangedFlag
+    :store_today
+    sput-object v0, $todayCalendar
+    const/4 v0, 0x0
+    return-object v0
+"""
+
+private fun BytecodePatchContext.dateRefreshMethod(): RestoredMethod {
+    val dateRefresh = DateChangeRefreshFingerprint.matchSingle()
+    val (_, dateChangedFlagRead) = dateRefresh.instructionMatches
+    val dateChangedFlag = dateChangedFlagRead.instruction.getReference<FieldReference>()!!
+    if (dateChangedFlag.definingClass != dateRefresh.originalClassDef.type) {
+        throw PatchException("${dateRefresh.originalMethod} reads $dateChangedFlag, expected a flag of its own class")
+    }
+    val todayCalendarInit = TodayCalendarInitFingerprint.matchSingle()
+    val (_, _, todayCalendarWrite) = todayCalendarInit.instructionMatches
+    val todayCalendar = todayCalendarWrite.instruction.getReference<FieldReference>()!!
+    val todayCalendarField = todayCalendarInit.originalClassDef.fields.singleOrNull { it.name == todayCalendar.name }
+    if (todayCalendarField == null || AccessFlags.FINAL.isSet(todayCalendarField.accessFlags)) {
+        throw PatchException(
+            "${todayCalendarInit.originalMethod} writes $todayCalendar, " +
+                "expected a writable Calendar of its own class",
+        )
+    }
+    return RestoredMethod(
+        dateRefresh.originalClassDef.type,
+        DO_IN_BACKGROUND,
+        DATE_REFRESH_REGISTERS,
+        dateRefreshBody(dateChangedFlag, todayCalendar),
+    )
+}
 
 private val RESTORED_METHODS = listOf(
     RestoredMethod(
@@ -335,13 +393,6 @@ private val RESTORED_METHODS = listOf(
         """,
     ),
     RestoredMethod(
-        "Lc51;", DO_IN_BACKGROUND, 2,
-        """
-            const/4 p0, 0x0
-            return-object p0
-        """,
-    ),
-    RestoredMethod(
         "Lez0;", DO_IN_BACKGROUND, 4,
         """
             :collect_start
@@ -418,7 +469,7 @@ val restoreVirtualizedMethodsPatch = bytecodePatch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        restoreVirtualizedMethods(RESTORED_METHODS)
+        restoreVirtualizedMethods(RESTORED_METHODS + dateRefreshMethod())
         mutableClassDefBy("Lhm1;").addDefaultConstructor()
     }
 }
