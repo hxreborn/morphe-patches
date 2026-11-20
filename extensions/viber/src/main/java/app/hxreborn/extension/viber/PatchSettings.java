@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
@@ -60,18 +61,21 @@ public final class PatchSettings {
         return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
+    @SuppressLint("ApplySharedPref")
     static void setEnabled(String key, boolean enabled) {
         if (preferences != null) {
             preferences.edit().putBoolean(key, enabled).commit();
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults() {
         if (preferences != null) {
             preferences.edit().clear().commit();
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean removeChatPayments() {
         return AppliedPatches.removeChatPayments() && isEnabled(PatchSetting.REMOVE_CHAT_PAYMENTS.key);
     }
@@ -180,6 +184,7 @@ public final class PatchSettings {
         return secondary && !linkAsSecondaryDevice();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean hideMoreItems() {
         return AppliedPatches.hideMoreItems() && isEnabled(PatchSetting.HIDE_MORE_ITEMS.key);
     }
@@ -204,6 +209,7 @@ public final class PatchSettings {
         return (preferences != null) ? preferences.getString(START_FOLDER, "") : "";
     }
 
+    @SuppressLint("ApplySharedPref")
     static void setStartFolder(String folderId) {
         if (preferences != null) {
             preferences.edit().putString(START_FOLDER, folderId).commit();
@@ -216,6 +222,7 @@ public final class PatchSettings {
                 : new HashSet<>();
     }
 
+    @SuppressLint("ApplySharedPref")
     static void setSelectedBusinessChats(Set<String> selected) {
         if (preferences != null) {
             preferences.edit().putStringSet(SELECTED_BUSINESS_CHATS, selected).commit();

@@ -28,7 +28,7 @@ import android.util.Log;
 @SuppressWarnings("unused")
 public final class BusinessChats {
 
-    private static final int BUSINESS_CHAT_FLAGS = (1 << 0) | (1 << 3) | (1 << 4);
+    private static final int BUSINESS_CHAT_FLAGS = 1 | (1 << 3) | (1 << 4);
 
     private static final long MARKED_UNREAD_FLAG = 1L << 33;
 
@@ -44,6 +44,7 @@ public final class BusinessChats {
         return filterSelection(prefix, PatchSettings.filterBusinessChats(), PatchSettings.selectedBusinessChats());
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     static String filterSelection(String prefix, boolean enabled, Set<String> selected) {
         if (!enabled || prefix == null || selected.isEmpty()) {
             return prefix;

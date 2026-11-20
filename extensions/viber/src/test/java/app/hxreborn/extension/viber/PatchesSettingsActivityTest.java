@@ -51,6 +51,7 @@ import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = PatchesSettingsActivityTest.HostIcons.class)
+@SuppressWarnings("deprecation")
 public final class PatchesSettingsActivityTest {
 
     private static final String ADS_TITLE = "Hide ads";
@@ -219,6 +220,7 @@ public final class PatchesSettingsActivityTest {
         Assert.assertNotEquals(RESTART_TITLE, latestDialogTitle());
     }
 
+    @SuppressWarnings("resource")
     private static AlertDialog openStartFolderPicker() {
         PatchSettings.initialize(RuntimeEnvironment.getApplication());
         PatchSettings.setStartFolder("All");
@@ -228,6 +230,7 @@ public final class PatchesSettingsActivityTest {
         return (AlertDialog) ShadowDialog.getLatestDialog();
     }
 
+    @SuppressWarnings("resource")
     private static AlertDialog openBusinessChatPicker() {
         createBusinessChat();
         PatchesSettingsActivity activity = Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get();
@@ -241,6 +244,7 @@ public final class PatchesSettingsActivityTest {
         return (AlertDialog) ShadowDialog.getLatestDialog();
     }
 
+    @SuppressWarnings({ "ResultOfMethodCallIgnored", "DataFlowIssue" })
     private static void createBusinessChat() {
         File path = RuntimeEnvironment.getApplication().getDatabasePath("viber_messages");
         path.getParentFile().mkdirs();
@@ -268,8 +272,7 @@ public final class PatchesSettingsActivityTest {
         if (view instanceof TextView && text.contentEquals(((TextView) view).getText())) {
             return view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 View found = findText(group.getChildAt(index), text);
                 if (found != null) {
@@ -288,6 +291,7 @@ public final class PatchesSettingsActivityTest {
         return current;
     }
 
+    @SuppressWarnings("resource")
     private static List<String> shownTexts() {
         View root = Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get().getWindow().getDecorView();
         List<String> texts = new ArrayList<>();
@@ -296,11 +300,10 @@ public final class PatchesSettingsActivityTest {
     }
 
     private static void collectTexts(View view, List<String> texts) {
-        if (view instanceof TextView && ((TextView) view).getText().length() > 0) {
-            texts.add(((TextView) view).getText().toString());
+        if (view instanceof TextView textView && !textView.getText().isEmpty()) {
+            texts.add(textView.getText().toString());
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 collectTexts(group.getChildAt(index), texts);
             }
@@ -308,6 +311,7 @@ public final class PatchesSettingsActivityTest {
     }
 
     @Implements(value = SettingsStyle.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class HostIcons {
 
         @Implementation
@@ -318,6 +322,7 @@ public final class PatchesSettingsActivityTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class OnlyAdsApplied {
 
         @Implementation
@@ -338,6 +343,7 @@ public final class PatchesSettingsActivityTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class OnlyPlusApplied {
 
         @Implementation
@@ -358,6 +364,7 @@ public final class PatchesSettingsActivityTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class OnlyBusinessChatsApplied {
 
         @Implementation
@@ -378,6 +385,7 @@ public final class PatchesSettingsActivityTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class EveryPatchApplied {
 
         @Implementation

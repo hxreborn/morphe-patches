@@ -33,6 +33,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = { RemoveDeletedMessageNoticesTest.AppliedDeletedMessages.class })
+@SuppressWarnings("deprecation")
 public final class RemoveDeletedMessageNoticesTest {
 
     private static final int NOTICE_MIME = 1008;
@@ -85,6 +86,7 @@ public final class RemoveDeletedMessageNoticesTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class AppliedDeletedMessages {
 
         @Implementation

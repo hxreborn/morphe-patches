@@ -40,6 +40,7 @@ import org.robolectric.annotation.Implementation;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = { 23, 36 }, manifest = Config.NONE, shadows = AppliedPatchRowsTest.HostIcons.class)
+@SuppressWarnings("deprecation")
 public final class AppliedPatchRowsTest {
 
     private static final String TITLE = "Applied feature";
@@ -104,8 +105,8 @@ public final class AppliedPatchRowsTest {
 
         row.performClick();
 
-        Assert.assertEquals(View.GONE, ((TextView) row.getChildAt(1)).getVisibility());
-        Assert.assertEquals(0f, ((ImageView) ((LinearLayout) row.getChildAt(0)).getChildAt(1)).getRotation(), 0f);
+        Assert.assertEquals(View.GONE, row.getChildAt(1).getVisibility());
+        Assert.assertEquals(0f, ((LinearLayout) row.getChildAt(0)).getChildAt(1).getRotation(), 0f);
         Assert.assertEquals(TITLE + ". Collapsed.", row.getContentDescription());
     }
 
@@ -116,7 +117,7 @@ public final class AppliedPatchRowsTest {
             Assert.assertFalse(row.isClickable());
             Assert.assertFalse(row.performClick());
             Assert.assertEquals(View.GONE,
-                    ((ImageView) ((LinearLayout) row.getChildAt(0)).getChildAt(1)).getVisibility());
+                    ((LinearLayout) row.getChildAt(0)).getChildAt(1).getVisibility());
             Assert.assertEquals(TITLE, row.getContentDescription());
         }
     }
@@ -130,6 +131,7 @@ public final class AppliedPatchRowsTest {
     }
 
     @Implements(value = SettingsStyle.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class HostIcons {
 
         @Implementation
@@ -140,6 +142,7 @@ public final class AppliedPatchRowsTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class LongPatchDescription {
 
         @Implementation

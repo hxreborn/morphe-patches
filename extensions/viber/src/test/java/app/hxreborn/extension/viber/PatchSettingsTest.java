@@ -35,6 +35,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28)
+@SuppressWarnings("deprecation")
 public class PatchSettingsTest {
 
     private static final String ADS = "Hide ads";
@@ -147,6 +148,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedTypingBanner {
 
         @Implementation
@@ -157,6 +159,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedOnlineStatusLimit {
 
         @Implementation
@@ -190,6 +193,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedPromotions {
 
         @Implementation
@@ -292,6 +296,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedDisappearingMediaSave {
 
         @Implementation
@@ -302,6 +307,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedFolderLimit {
 
         @Implementation
@@ -312,6 +318,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedSecondaryDevice {
 
         @Implementation
@@ -342,6 +349,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedAnalytics {
 
         @Implementation
@@ -352,6 +360,7 @@ public class PatchSettingsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedPlus {
 
         @Implementation

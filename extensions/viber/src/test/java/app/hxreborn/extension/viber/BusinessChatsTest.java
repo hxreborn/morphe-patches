@@ -42,6 +42,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, shadows = BusinessChatsTest.AppliedBusinessControls.class)
+@SuppressWarnings("deprecation")
 public final class BusinessChatsTest {
 
     private static final String SELECTION_PREFIX = "[conversations].[deleted] = 0 and ";
@@ -196,6 +197,7 @@ public final class BusinessChatsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static final class AppliedBusinessControls {
 
         @Implementation

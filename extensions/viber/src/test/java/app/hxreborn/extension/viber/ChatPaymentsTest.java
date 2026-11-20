@@ -34,6 +34,7 @@ import org.robolectric.annotation.Implements;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = ChatPaymentsTest.EnabledSettings.class,
         instrumentedPackages = "app.hxreborn.extension.viber")
+@SuppressWarnings("deprecation")
 public class ChatPaymentsTest {
 
     private enum Attachment {
@@ -76,6 +77,7 @@ public class ChatPaymentsTest {
     }
 
     @Implements(value = PatchSettings.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class EnabledSettings {
 
         static boolean enabled = true;

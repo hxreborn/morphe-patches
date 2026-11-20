@@ -44,8 +44,7 @@ public final class ListGaps implements ViewTreeObserver.OnGlobalLayoutListener {
     }
 
     public static void observeList(View view) {
-        if (view instanceof ViewGroup) {
-            ViewGroup list = (ViewGroup) view;
+        if (view instanceof ViewGroup list) {
             list.getViewTreeObserver().addOnGlobalLayoutListener(new ListGaps(list));
         }
     }

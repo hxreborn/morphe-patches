@@ -68,11 +68,10 @@ public final class PlusAdRow {
         View root = toggle.getRootView();
         View row = root.findViewById(adsFreeRowId());
         View titleView = root.findViewById(adsFreeTitleViewId());
-        if (row == null || !(titleView instanceof TextView)) {
+        if (row == null || !(titleView instanceof TextView title)) {
             Log.w(PatchSettings.LOG_TAG, "Viber Plus ad row not found");
             return;
         }
-        TextView title = (TextView) titleView;
         String originalTitle = context.getString(adsFreeTitleText());
         SpannableString titleText = new SpannableString(originalTitle + "  " + PATCHES_LABEL);
         int labelStart = titleText.length() - PATCHES_LABEL.length();
@@ -108,6 +107,7 @@ public final class PlusAdRow {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fontMetrics) {
             Paint labelPaint = scaledPaint(paint);
             if (fontMetrics != null) {
@@ -124,6 +124,7 @@ public final class PlusAdRow {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom,
                 Paint paint) {
             Paint labelPaint = scaledPaint(paint);

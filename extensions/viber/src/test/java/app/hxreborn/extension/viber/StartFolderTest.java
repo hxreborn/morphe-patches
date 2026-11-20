@@ -38,6 +38,7 @@ import org.robolectric.annotation.Implements;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = StartFolderTest.HostFolderAccess.class,
         instrumentedPackages = "app.hxreborn.extension.viber")
+@SuppressWarnings("deprecation")
 public class StartFolderTest {
 
     private static final int UNREAD_INDEX = 2;
@@ -172,6 +173,7 @@ public class StartFolderTest {
     }
 
     @Implements(StartFolder.class)
+    @SuppressWarnings("unused")
     public static class HostFolderAccess {
 
         @Implementation
