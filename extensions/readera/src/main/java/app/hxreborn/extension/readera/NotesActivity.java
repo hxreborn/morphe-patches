@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -132,8 +133,6 @@ public final class NotesActivity extends Activity {
 
     private TextView emptyView;
 
-    private ListView listView;
-
     public static void open(Activity activity) {
         activity.startActivity(new Intent(activity, NotesActivity.class));
     }
@@ -153,11 +152,11 @@ public final class NotesActivity extends Activity {
         root.addView(buildTabs());
         root.addView(buildFilters());
         FrameLayout content = new FrameLayout(this);
-        this.listView = new ListView(this);
-        this.listView.setAdapter(this.adapter);
-        this.listView.setDivider(null);
-        this.listView.setOnItemClickListener((parent, view, position, id) -> openRow(this.rows.get(position)));
-        content.addView(this.listView,
+        ListView listView = new ListView(this);
+        listView.setAdapter(this.adapter);
+        listView.setDivider(null);
+        listView.setOnItemClickListener((parent, view, position, id) -> openRow(this.rows.get(position)));
+        content.addView(listView,
                 new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         this.emptyView = text("", 16, this.secondaryTextColor);
         this.emptyView.setGravity(Gravity.CENTER);
@@ -304,7 +303,7 @@ public final class NotesActivity extends Activity {
         if (filter != null) {
             sql.append(" AND (").append(filter).append(')');
         }
-        if (this.query.length() > 0) {
+        if (!this.query.isEmpty()) {
             sql.append(" AND n.note_id IN (SELECT docid FROM fts_notes WHERE fts_notes MATCH ?)");
             arguments.add(this.query.replace('"', ' ') + "*");
         }
@@ -406,6 +405,7 @@ public final class NotesActivity extends Activity {
                     postNotePosition(note, row.type, row.docId);
                 }
             } catch (RuntimeException ex) {
+                Log.w(PatchSettings.LOG_TAG, "Could not post the note position", ex);
             }
         }
         Intent intent = new Intent(READ_ACTION, Uri.parse(DOCS_URI + row.docId));
@@ -444,6 +444,7 @@ public final class NotesActivity extends Activity {
         return text.isEmpty() ? extra : text + "\n\n" + extra;
     }
 
+    @SuppressLint("DiscouragedApi")
     private int stringId(String name) {
         return getResources().getIdentifier(name, "string", getPackageName());
     }
@@ -456,6 +457,7 @@ public final class NotesActivity extends Activity {
         return DateFormat.getLongDateFormat(this).format(new Date(time));
     }
 
+    @SuppressWarnings("resource")
     private void resolveColors() {
         TypedArray attributes = obtainStyledAttributes(new int[] { android.R.attr.textColorPrimary,
                 android.R.attr.textColorSecondary, android.R.attr.colorAccent });
@@ -543,6 +545,7 @@ public final class NotesActivity extends Activity {
             return header;
         }
 
+        @SuppressLint("DiscouragedApi")
         private View noteView(Row row) {
             LinearLayout item = new LinearLayout(NotesActivity.this);
             item.setPadding(dp(16), dp(10), dp(16), dp(10));
@@ -588,15 +591,12 @@ public final class NotesActivity extends Activity {
 
         private String primaryText(Row row) {
             String body = (row.body != null) ? row.body : "";
-            switch (row.type) {
-                case TYPE_BOOKMARK:
-                    return string("hx_notes_bookmark") + ": " + body + ", "
-                            + getString(stringId("hx_notes_page"), row.page + 1);
-                case TYPE_REVIEW:
-                    return string("hx_notes_review") + " " + stars(row.mark) + "\n" + body;
-                default:
-                    return body;
-            }
+            return switch (row.type) {
+                case TYPE_BOOKMARK -> string("hx_notes_bookmark") + ": " + body + ", "
+                        + getString(stringId("hx_notes_page"), row.page + 1);
+                case TYPE_REVIEW -> string("hx_notes_review") + " " + stars(row.mark) + "\n" + body;
+                default -> body;
+            };
         }
 
         private String metaText(Row row) {

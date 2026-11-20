@@ -150,6 +150,10 @@ final class AccentResourceTable {
 
     private static final int NO_SPECIAL_ATTRIBUTE = 0;
 
+    private static final int INT_BYTES = Integer.SIZE / Byte.SIZE;
+
+    private static final int CHAR_BYTES = Character.SIZE / Byte.SIZE;
+
     private static final int UTF8_LENGTH_BYTES = 2;
 
     private static final int UTF16_LENGTH_CHARS = 1;
@@ -211,8 +215,8 @@ final class AccentResourceTable {
         byte[] valueStrings = stringPool(Collections.emptyList(), true);
         byte[] typeStrings = stringPool(typeNames, false);
         byte[] keyStrings = stringPool(Collections.singletonList(entryName), true);
-        int typeSpecSize = TYPE_SPEC_HEADER_SIZE + entryCount * Integer.BYTES;
-        int typeSize = TYPE_HEADER_SIZE + entryCount * Integer.BYTES + ENTRY_SIZE + VALUE_SIZE;
+        int typeSpecSize = TYPE_SPEC_HEADER_SIZE + entryCount * INT_BYTES;
+        int typeSize = TYPE_HEADER_SIZE + entryCount * INT_BYTES + ENTRY_SIZE + VALUE_SIZE;
         int packageSize = PACKAGE_HEADER_SIZE + typeStrings.length + keyStrings.length + typeSpecSize + typeSize;
         int tableSize = TABLE_HEADER_SIZE + valueStrings.length + packageSize;
 
@@ -260,7 +264,7 @@ final class AccentResourceTable {
         out.put((byte) TYPE_FLAGS);
         out.putShort((short) RESERVED);
         out.putInt(entryCount);
-        out.putInt(TYPE_HEADER_SIZE + entryCount * Integer.BYTES);
+        out.putInt(TYPE_HEADER_SIZE + entryCount * INT_BYTES);
         out.putInt(CONFIG_SIZE);
         out.put(new byte[CONFIG_BYTES_BEFORE_SDK_VERSION]);
         out.putShort((short) SDK_QUALIFIER);
@@ -330,7 +334,7 @@ final class AccentResourceTable {
             encoded.add(bytes);
             dataSize += bytes.length;
         }
-        int stringsStart = STRING_POOL_HEADER_SIZE + strings.size() * Integer.BYTES;
+        int stringsStart = STRING_POOL_HEADER_SIZE + strings.size() * INT_BYTES;
         int size = align(stringsStart + dataSize);
         ByteBuffer out = ByteBuffer.allocate(size).order(ByteOrder.LITTLE_ENDIAN);
         putChunkHeader(out, RES_STRING_POOL_TYPE, STRING_POOL_HEADER_SIZE, size);
@@ -367,7 +371,7 @@ final class AccentResourceTable {
             throw new IllegalArgumentException("String exceeds " + MAX_SHORT_STRING_LENGTH + " characters: " + value);
         }
         ByteBuffer out = ByteBuffer
-            .allocate((UTF16_LENGTH_CHARS + value.length() + TERMINATOR_LENGTH) * Character.BYTES)
+            .allocate((UTF16_LENGTH_CHARS + value.length() + TERMINATOR_LENGTH) * CHAR_BYTES)
             .order(ByteOrder.LITTLE_ENDIAN);
         out.putShort((short) value.length());
         for (int index = 0; index < value.length(); index++) {

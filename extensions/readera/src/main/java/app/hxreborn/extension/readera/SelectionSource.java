@@ -56,6 +56,7 @@ public final class SelectionSource {
         return "";
     }
 
+    @SuppressWarnings("SameParameterValue")
     static void copyText(Activity activity, String label, String text) {
     }
 

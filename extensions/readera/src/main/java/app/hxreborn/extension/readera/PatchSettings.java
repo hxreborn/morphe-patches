@@ -68,6 +68,7 @@ public final class PatchSettings {
         return "";
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults() {
         Context context = application();
         if (context != null) {

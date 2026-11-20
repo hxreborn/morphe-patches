@@ -69,12 +69,10 @@ final class StopPoint {
     }
 
     boolean isReachedBy(Object position) {
-        if (!(position instanceof ReadingPosition)) {
+        if (!(position instanceof ReadingPosition reading)) {
             return false;
         }
-        ReadingPosition reading = (ReadingPosition) position;
-        if (this.utterance instanceof ReadingPosition) {
-            ReadingPosition end = (ReadingPosition) this.utterance;
+        if (this.utterance instanceof ReadingPosition end) {
             return this.utterance.equals(position) || (reading.readingLayoutHash() == end.readingLayoutHash()
                     && reading.readingRatio() > end.readingRatio());
         }

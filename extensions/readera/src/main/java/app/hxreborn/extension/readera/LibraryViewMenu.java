@@ -30,6 +30,7 @@ public final class LibraryViewMenu {
 
     }
 
+    @SuppressWarnings("DataFlowIssue")
     public static void show(Menu menu, int filterItemId, int currentModeItemId) {
         MenuItem filterItem = menu.findItem(filterItemId);
         for (int i = 0; i < menu.size(); i++) {

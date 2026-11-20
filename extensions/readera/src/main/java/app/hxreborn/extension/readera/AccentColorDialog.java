@@ -189,6 +189,7 @@ final class AccentColorDialog {
         Swatch swatch = new Swatch(preset, cell, ring, check);
         cell.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings({ "NullableProblems", "deprecation" })
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo node) {
                 super.onInitializeAccessibilityNodeInfo(host, node);
                 node.setClassName("android.widget.RadioButton");

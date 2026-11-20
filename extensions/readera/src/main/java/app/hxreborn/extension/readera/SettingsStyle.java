@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.readera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -153,6 +154,8 @@ final class SettingsStyle {
         control.refreshDrawableState();
     }
 
+    @SuppressLint("DiscouragedApi")
+    @SuppressWarnings("DataFlowIssue")
     private Drawable ownedDrawable(String name) {
         int resource = this.context.getResources()
             .getIdentifier("hx_readera_" + name.toLowerCase(java.util.Locale.ROOT), "drawable",

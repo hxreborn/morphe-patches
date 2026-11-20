@@ -180,6 +180,7 @@ public final class AccentColor {
     }
 
     @SuppressLint("DiscouragedPrivateApi")
+    @SuppressWarnings("JavaReflectionMemberAccess")
     private static void addAssetPath(AssetManager assets, File file) throws ReflectiveOperationException {
         if (addAssetPathMethod == null) {
             addAssetPathMethod = AssetManager.class.getMethod("addAssetPath", String.class);
@@ -203,6 +204,7 @@ public final class AccentColor {
     }
 
     @TargetApi(Build.VERSION_CODES.R)
+    @SuppressLint("UseRequiresApi")
     private static final class TableLoader {
 
         private static ResourcesLoader loader;

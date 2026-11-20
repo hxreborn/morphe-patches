@@ -56,6 +56,7 @@ final class MaterialMenu {
         this.style = style;
     }
 
+    @SuppressWarnings("resource")
     void show(View anchor, Item... items) {
         LinearLayout menu = new LinearLayout(this.context);
         menu.setOrientation(LinearLayout.VERTICAL);
@@ -85,6 +86,7 @@ final class MaterialMenu {
             row.setSelected(item.selected);
             row.setAccessibilityDelegate(new View.AccessibilityDelegate() {
                 @Override
+                @SuppressWarnings({ "NullableProblems", "deprecation" })
                 public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
                     super.onInitializeAccessibilityNodeInfo(host, info);
                     info.setCheckable(item.checkable);

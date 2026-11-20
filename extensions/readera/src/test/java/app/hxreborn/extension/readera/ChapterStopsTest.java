@@ -21,6 +21,7 @@
 package app.hxreborn.extension.readera;
 
 import java.util.Arrays;
+import java.util.Collections;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,7 +94,7 @@ public class ChapterStopsTest {
 
     @Test
     public void usesTenPagesForMissingEntry() {
-        this.stops.chapterEnd(Arrays.asList(THIRD));
+        this.stops.chapterEnd(Collections.singletonList(THIRD));
         Assert.assertEquals(StopNotice.MISSING_CHAPTER, this.stops.setChapterEnd(null, null));
         Assert.assertNull(this.stops.nextTrack(track(GENERATION, position(STOP_PAGE, 1))));
     }
@@ -350,7 +351,7 @@ public class ChapterStopsTest {
     }
 
     private static void armPages(ChapterStops stops) {
-        stops.chapterEnd(Arrays.asList(THIRD));
+        stops.chapterEnd(Collections.singletonList(THIRD));
         stops.setChapterEnd(null, null);
     }
 
