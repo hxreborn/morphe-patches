@@ -21,6 +21,7 @@
 package app.hxreborn.extension.ultimea.equalizer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -132,7 +133,7 @@ public class EqualizerPresetBundleFileTest {
     public void rejectUtf8BeyondByteLimit() throws JSONException {
         JSONObject json = fixture();
         char[] characters = new char[2048];
-        Arrays.fill(characters, '\u00e9');
+        Arrays.fill(characters, 'é');
         JSONObject entry = EqualizerPresetFile.json(preset());
         entry.put("extra", new String(characters));
         JSONArray entries = new JSONArray();
@@ -146,7 +147,7 @@ public class EqualizerPresetBundleFileTest {
     }
 
     private static JSONObject fixture() throws JSONException {
-        return EqualizerPresetBundleFile.json(Arrays.asList(preset()));
+        return EqualizerPresetBundleFile.json(Collections.singletonList(preset()));
     }
 
     private static EqualizerPreset preset() {

@@ -41,6 +41,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28)
+@SuppressWarnings("deprecation")
 public class ThemeSettingsTest {
 
     private static final int DARK = 1;

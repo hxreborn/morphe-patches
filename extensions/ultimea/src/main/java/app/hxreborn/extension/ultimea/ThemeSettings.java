@@ -67,6 +67,7 @@ public final class ThemeSettings {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static void initialize(Activity activity) {
         prepare(activity);
         int mode = currentMode;
@@ -159,6 +160,7 @@ public final class ThemeSettings {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static void setDarkBars(View decor, int visibility) {
         int flags = visibility & ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

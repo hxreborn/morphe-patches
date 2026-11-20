@@ -59,6 +59,7 @@ import org.robolectric.shadows.ShadowDialog;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 33, qualifiers = "mdpi", shadows = { FineEqualizerTest.ConnectionShadow.class,
         FineEqualizerTest.AppliedFlagsShadow.class, FineEqualizerTest.BasesShadow.class })
+@SuppressWarnings({ "deprecation", "DataFlowIssue" })
 public class FineEqualizerTest {
 
     private ActivityController<Activity> controller;
@@ -321,7 +322,7 @@ public class FineEqualizerTest {
     @Test
     @Config(sdk = 35)
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
-    public void showSaveCaptionWithoutDuplicatedNameAndPadPresetNames() throws Exception {
+    public void showSaveCaptionWithoutDuplicatedNameAndPadPresetNames() {
         FineEqualizer.open(this.activity);
         button(root(), "Custom").performClick();
         description(root(), "New preset from current curve").performClick();
@@ -661,8 +662,7 @@ public class FineEqualizerTest {
         if (view instanceof TextView && !(view instanceof Button) && label.contentEquals(((TextView) view).getText())) {
             return (TextView) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int child = 0; child < parent.getChildCount(); child++) {
                 TextView match = text(parent.getChildAt(child), label);
                 if (match != null) {
@@ -677,8 +677,7 @@ public class FineEqualizerTest {
         if (view instanceof ScrollView) {
             return (ScrollView) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int child = 0; child < parent.getChildCount(); child++) {
                 ScrollView match = scroll(parent.getChildAt(child));
                 if (match != null) {
@@ -696,8 +695,7 @@ public class FineEqualizerTest {
                 names.add(label);
             }
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int child = 0; child < parent.getChildCount(); child++) {
                 collectModes(parent.getChildAt(child), names);
             }
@@ -712,8 +710,7 @@ public class FineEqualizerTest {
         if (view instanceof Button && title.equals(((Button) view).getText().toString())) {
             return (Button) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int index = 0; index < parent.getChildCount(); index++) {
                 Button match = button(parent.getChildAt(index), title);
                 if (match != null) {
@@ -728,8 +725,7 @@ public class FineEqualizerTest {
         if (label.contentEquals(view.getContentDescription() != null ? view.getContentDescription() : "")) {
             return view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int index = 0; index < parent.getChildCount(); index++) {
                 View match = description(parent.getChildAt(index), label);
                 if (match != null) {
@@ -745,8 +741,7 @@ public class FineEqualizerTest {
         if (view instanceof SeekBar) {
             bands.add((SeekBar) view);
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int index = 0; index < parent.getChildCount(); index++) {
                 bands.addAll(bands(parent.getChildAt(index)));
             }
@@ -779,6 +774,7 @@ public class FineEqualizerTest {
     }
 
     @Implements(value = EqualizerConnection.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ClassEscapesDefinedScope" })
     public static class ConnectionShadow {
 
         private static SoundState current;
@@ -823,6 +819,7 @@ public class FineEqualizerTest {
     }
 
     @Implements(value = app.hxreborn.extension.ultimea.AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class AppliedFlagsShadow {
 
         @Implementation

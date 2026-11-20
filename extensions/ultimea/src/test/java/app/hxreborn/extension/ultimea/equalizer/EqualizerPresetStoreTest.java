@@ -62,7 +62,7 @@ public class EqualizerPresetStoreTest {
             .put(new JSONObject().put("id", "broken"))
             .toString();
         preferences.edit().putString("presets", malformed).commit();
-        Assert.assertThrows(JSONException.class, () -> this.store.load());
+        Assert.assertThrows(JSONException.class, this.store::load);
         Assert.assertEquals(1, this.store.recover());
         Assert.assertEquals(original.id, this.store.load().get(0).id);
         Assert.assertEquals(original.id, this.store.current());
@@ -234,6 +234,7 @@ public class EqualizerPresetStoreTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void retainWholeStateInPendingExport() throws JSONException, IOException {
         SoundState base = new SoundState(this.curve, 1);
         SoundState state = new SoundState(this.curve.withGain(2, 17), 0);
@@ -314,6 +315,7 @@ public class EqualizerPresetStoreTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void retainExportAcrossStoreRecreation() throws JSONException, IOException {
         EqualizerPreset preset = this.store.add("Dialogue", this.curve);
         this.store.prepareExport(preset);
@@ -381,7 +383,7 @@ public class EqualizerPresetStoreTest {
         android.content.SharedPreferences preferences = this.application
             .getSharedPreferences("hx_ultimea_equalizer_presets", 0);
         preferences.edit().putString("presets", "[{broken").commit();
-        Assert.assertThrows(JSONException.class, () -> this.store.load());
+        Assert.assertThrows(JSONException.class, this.store::load);
         Assert.assertEquals("[{broken", preferences.getString("presets", null));
         Assert.assertFalse(preferences.getBoolean("automatic_names_migrated", false));
     }

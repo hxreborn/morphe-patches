@@ -44,6 +44,7 @@ final class EqualizerPreset {
         this(id, name, new SoundState(curve.asCustom(), -1), "Custom", new SoundState(curve.asCustom(), -1));
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     EqualizerPreset(String id, String name, SoundState state, String baseName, SoundState base) {
         UUID.fromString(id);
         if (state.curve.mode() > MAX_MODE || base.curve.mode() > MAX_MODE) {

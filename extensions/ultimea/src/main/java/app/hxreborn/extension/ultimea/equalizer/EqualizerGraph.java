@@ -22,6 +22,7 @@ package app.hxreborn.extension.ultimea.equalizer;
 
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -42,6 +43,7 @@ import android.widget.SeekBar;
 
 import app.hxreborn.extension.ultimea.HostStyle;
 
+@SuppressLint("ViewConstructor")
 final class EqualizerGraph extends ViewGroup {
 
     private static final int AXIS_DP = 32;
@@ -184,6 +186,8 @@ final class EqualizerGraph extends ViewGroup {
     }
 
     @Override
+    @SuppressLint("DrawAllocation")
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         this.paint.setStyle(Paint.Style.FILL);
@@ -211,15 +215,13 @@ final class EqualizerGraph extends ViewGroup {
     }
 
     private float labelSize() {
-        return Math.min(sp(LABEL_SP), dp(MAX_LABEL_DP));
+        float labelSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, LABEL_SP,
+                getResources().getDisplayMetrics());
+        return Math.min(labelSize, dp(MAX_LABEL_DP));
     }
 
     private int dp(int value) {
         return Math.round(value * getResources().getDisplayMetrics().density);
-    }
-
-    private float sp(int value) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, getResources().getDisplayMetrics());
     }
 
     private static final class BandThumb extends Drawable {
@@ -393,6 +395,7 @@ final class EqualizerGraph extends ViewGroup {
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
             super.onInitializeAccessibilityNodeInfo(info);
             info.setRangeInfo(AccessibilityNodeInfo.RangeInfo.obtain(AccessibilityNodeInfo.RangeInfo.RANGE_TYPE_FLOAT,

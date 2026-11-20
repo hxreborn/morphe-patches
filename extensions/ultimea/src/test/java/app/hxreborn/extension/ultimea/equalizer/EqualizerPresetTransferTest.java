@@ -22,6 +22,7 @@ package app.hxreborn.extension.ultimea.equalizer;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Application;
@@ -148,7 +149,7 @@ public class EqualizerPresetTransferTest {
     @Test(expected = JSONException.class)
     public void rejectsNewerFileVersion() throws Exception {
         JSONObject document = EqualizerPresetBundleFile
-            .json(Arrays.asList(EqualizerPreset.create("Imported", movie(), "Movie", movie())));
+            .json(Collections.singletonList(EqualizerPreset.create("Imported", movie(), "Movie", movie())));
         document.put("formatVersion", 2);
         this.transfer.importDocumentWithReport(document.toString());
     }
@@ -156,7 +157,7 @@ public class EqualizerPresetTransferTest {
     @Test
     public void countsIgnoredFieldsFromBundleAndAcceptedPresets() throws Exception {
         EqualizerPreset preset = EqualizerPreset.create("Imported", movie(), "Movie", movie());
-        JSONObject document = EqualizerPresetBundleFile.json(Arrays.asList(preset));
+        JSONObject document = EqualizerPresetBundleFile.json(Collections.singletonList(preset));
         document.put("future", true);
         document.getJSONArray("presets").getJSONObject(0).put("futureSound", true);
         EqualizerPresetTransfer.ImportResult result = this.transfer.importDocumentWithReport(document.toString());
@@ -169,7 +170,7 @@ public class EqualizerPresetTransferTest {
     public void keepsStoreWhenEveryPresetIsRejected() throws Exception {
         EqualizerPreset original = this.store.createCustom("Movie", movie(), movie());
         EqualizerPreset preset = EqualizerPreset.create("Imported", movie(), "Movie", movie());
-        JSONObject document = EqualizerPresetBundleFile.json(Arrays.asList(preset));
+        JSONObject document = EqualizerPresetBundleFile.json(Collections.singletonList(preset));
         document.getJSONArray("presets").put(0, new JSONObject());
         EqualizerPresetTransfer.ImportResult result = this.transfer.importDocumentWithReport(document.toString());
         Assert.assertTrue(result.imported.isEmpty());

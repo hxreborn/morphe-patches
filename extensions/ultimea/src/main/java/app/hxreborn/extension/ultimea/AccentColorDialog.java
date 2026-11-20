@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -221,6 +222,7 @@ final class AccentColorDialog {
         Swatch swatch = new Swatch(preset, cell, ring, check);
         cell.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings({ "NullableProblems", "deprecation" })
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo node) {
                 super.onInitializeAccessibilityNodeInfo(host, node);
                 node.setClassName("android.widget.RadioButton");
@@ -324,6 +326,7 @@ final class AccentColorDialog {
     }
 
     @TargetApi(Build.VERSION_CODES.S)
+    @SuppressLint("UseRequiresApi")
     private int systemColor() {
         try {
             return this.activity.getColor(android.R.color.system_accent1_500);

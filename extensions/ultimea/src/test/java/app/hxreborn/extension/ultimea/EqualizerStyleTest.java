@@ -35,6 +35,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 31, shadows = EqualizerStyleTest.AppliedFlagsShadow.class)
+@SuppressWarnings("deprecation")
 public class EqualizerStyleTest {
 
     @After
@@ -67,6 +68,7 @@ public class EqualizerStyleTest {
     public static class AppliedFlagsShadow {
 
         @Implementation
+        @SuppressWarnings("unused")
         protected static boolean accentColor() {
             return true;
         }

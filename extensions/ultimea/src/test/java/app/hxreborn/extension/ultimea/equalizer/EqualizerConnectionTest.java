@@ -44,6 +44,7 @@ import org.robolectric.shadows.ShadowBluetoothDevice;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 33, shadows = EqualizerConnectionTest.GattShadow.class)
+@SuppressWarnings("deprecation")
 public class EqualizerConnectionTest {
 
     private static final UUID WRITE = UUID.fromString("27758d11-bf3a-4ac6-bee5-6259ccb7c9b7");
@@ -173,6 +174,7 @@ public class EqualizerConnectionTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void holdsConnectionMonitorWhileReleasingTimedOutTransaction() throws Exception {
         connect();
         EqualizerConnection.read(this::completed);
@@ -220,6 +222,7 @@ public class EqualizerConnectionTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void holdsConnectionMonitorWhileScheduledRetryChecksConnection() throws Exception {
         connect();
         Assert.assertTrue(EqualizerConnection.writeCharacteristic(this.gatt, this.writer));
@@ -1099,6 +1102,7 @@ public class EqualizerConnectionTest {
         assertEarlyHostCompletion(true);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void assertEarlyHostCompletion(boolean modern) throws Exception {
         connect();
         GattShadow shadow = Shadow.extract(this.gatt);
@@ -1378,6 +1382,7 @@ public class EqualizerConnectionTest {
     }
 
     @Implements(value = EqualizerSummary.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ClassEscapesDefinedScope" })
     public static class SummaryShadow {
 
         private static BluetoothGatt replacement;
@@ -1399,6 +1404,7 @@ public class EqualizerConnectionTest {
     }
 
     @Implements(EqualizerSummary.class)
+    @SuppressWarnings({ "unused", "ClassEscapesDefinedScope" })
     public static class SummaryMonitorShadow {
 
         private static boolean published;
@@ -1422,6 +1428,7 @@ public class EqualizerConnectionTest {
     }
 
     @Implements(BluetoothGatt.class)
+    @SuppressWarnings("unused")
     public static class GattShadow {
 
         private String name = "Poseidon D80 BLE";

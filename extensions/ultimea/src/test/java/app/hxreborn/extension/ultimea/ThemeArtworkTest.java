@@ -37,6 +37,7 @@ import org.robolectric.annotation.Implements;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = ThemeArtworkTest.HeaderShadow.class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@SuppressWarnings("deprecation")
 public class ThemeArtworkTest {
 
     private static final int WIDTH = 1081;
@@ -108,6 +109,7 @@ public class ThemeArtworkTest {
         private static int height;
 
         @Implementation
+        @SuppressWarnings("unused")
         protected static void onHeader(long value, int imageWidth, int imageHeight) {
             headers++;
             generator = value;

@@ -36,8 +36,8 @@ import android.util.Log;
 import app.hxreborn.extension.ultimea.controls.ReadbackCallbacks;
 import app.hxreborn.extension.ultimea.controls.XupmixReadback;
 
-@SuppressWarnings("unused")
-@SuppressLint("MissingPermission")
+@SuppressWarnings({ "unused", "deprecation" })
+@SuppressLint({ "MissingPermission", "UseRequiresApi" })
 public final class EqualizerConnection {
 
     private static final String LOG_TAG = "hxUltimea";
@@ -128,6 +128,7 @@ public final class EqualizerConnection {
         return result;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean canWrite(BluetoothGattCharacteristic characteristic) {
         return !WRITE.equals(characteristic.getUuid()) || pending == null;
     }
@@ -530,7 +531,6 @@ public final class EqualizerConnection {
             MAIN.postDelayed(this.timeout, TIMEOUT_MS);
         }
 
-        @SuppressWarnings("deprecation")
         void send() {
             synchronized (EqualizerConnection.class) {
                 if (pending != this || current == null || writer == null) {

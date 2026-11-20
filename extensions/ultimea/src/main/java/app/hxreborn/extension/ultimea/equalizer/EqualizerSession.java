@@ -596,6 +596,7 @@ final class EqualizerSession {
         return !this.closed && !this.reading && !this.failed && this.confirmed != null;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canSelect() {
         if (this.closed) {
             report("Equalizer is closed. Open it again");
@@ -664,6 +665,7 @@ final class EqualizerSession {
 
         final String error;
 
+        @SuppressWarnings("DataFlowIssue")
         State(EqualizerSession session) {
             this.confirmed = session.confirmed;
             this.desired = session.desired;

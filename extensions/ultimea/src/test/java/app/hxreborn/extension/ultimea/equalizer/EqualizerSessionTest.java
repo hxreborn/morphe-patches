@@ -718,6 +718,7 @@ public class EqualizerSessionTest {
     }
 
     @Implements(EqualizerBases.class)
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public static class BasesShadow {
 
         @Implementation
@@ -732,7 +733,7 @@ public class EqualizerSessionTest {
                 while ((count = input.read(buffer)) != -1) {
                     output.write(buffer, 0, count);
                 }
-                return new String(output.toByteArray(), StandardCharsets.UTF_8);
+                return output.toString(StandardCharsets.UTF_8);
             } catch (IOException ex) {
                 throw new IllegalStateException("Stock style fixture could not be read", ex);
             }

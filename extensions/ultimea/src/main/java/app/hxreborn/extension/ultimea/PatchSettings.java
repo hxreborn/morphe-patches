@@ -52,6 +52,7 @@ public final class PatchSettings {
         return AppliedPatches.stopFirmwareReminders() && isEnabled(STOP_FIRMWARE_REMINDERS, true);
     }
 
+    @SuppressWarnings("SameParameterValue")
     static boolean isEnabled(String key, boolean fallback) {
         SharedPreferences preferences = preferences();
         return (preferences != null) ? preferences.getBoolean(key, fallback) : fallback;
@@ -66,6 +67,7 @@ public final class PatchSettings {
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults() {
         SharedPreferences preferences = preferences();
         if (preferences != null) {

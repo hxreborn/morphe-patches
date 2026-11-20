@@ -75,6 +75,7 @@ final class EqualizerIcon extends Drawable {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public void draw(Canvas canvas) {
         Rect bounds = getBounds();
         if (this.stock != null) {

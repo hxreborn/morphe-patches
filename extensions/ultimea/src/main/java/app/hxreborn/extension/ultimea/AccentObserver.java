@@ -22,6 +22,7 @@ package app.hxreborn.extension.ultimea;
 
 import java.lang.ref.WeakReference;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
@@ -34,6 +35,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+@SuppressWarnings("NullableProblems")
 final class AccentObserver implements Application.ActivityLifecycleCallbacks, ComponentCallbacks {
 
     private final Application application;
@@ -85,6 +87,7 @@ final class AccentObserver implements Application.ActivityLifecycleCallbacks, Co
     }
 
     @TargetApi(Build.VERSION_CODES.S)
+    @SuppressLint("UseRequiresApi")
     private void observeWallpaper() {
         this.application.getSystemService(WallpaperManager.class)
             .addOnColorsChangedListener(new WallpaperListener(this), this.main);
@@ -139,6 +142,7 @@ final class AccentObserver implements Application.ActivityLifecycleCallbacks, Co
     }
 
     @TargetApi(Build.VERSION_CODES.S)
+    @SuppressLint("UseRequiresApi")
     private static final class WallpaperListener implements WallpaperManager.OnColorsChangedListener {
 
         private final AccentObserver observer;

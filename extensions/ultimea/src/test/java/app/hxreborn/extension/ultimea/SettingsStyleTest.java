@@ -49,6 +49,7 @@ public class SettingsStyleTest {
     private static final int ACCENT = 0xFF541597;
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void preservesStockTrackGeometryAndDrawsOpaqueStates() {
         Context context = new ContextThemeWrapper(RuntimeEnvironment.getApplication(),
                 android.R.style.Theme_DeviceDefault);

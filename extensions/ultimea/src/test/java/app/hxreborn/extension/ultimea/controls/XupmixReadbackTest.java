@@ -44,6 +44,7 @@ import org.robolectric.shadows.ShadowBluetoothDevice;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 33, shadows = XupmixReadbackTest.GattShadow.class)
+@SuppressWarnings("deprecation")
 public class XupmixReadbackTest {
 
     private static final UUID WRITE_UUID = UUID.fromString("27758d11-bf3a-4ac6-bee5-6259ccb7c9b7");
@@ -531,6 +532,7 @@ public class XupmixReadbackTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void holdsPendingMonitorWhileDeliveringConfirmation() throws Exception {
         BluetoothGatt gatt = Shadow.newInstanceOf(BluetoothGatt.class);
         BluetoothGattCharacteristic writer = characteristic(WRITE_UUID);
@@ -851,6 +853,7 @@ public class XupmixReadbackTest {
     }
 
     @Test
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void preservesEarlierCallbackWhenSetterWriteIsRejected() throws Exception {
         BluetoothGatt gatt = Shadow.newInstanceOf(BluetoothGatt.class);
         BluetoothGattCharacteristic writer = characteristic(WRITE_UUID);
@@ -1313,6 +1316,7 @@ public class XupmixReadbackTest {
     }
 
     @Implements(BluetoothGatt.class)
+    @SuppressWarnings("unused")
     public static class GattShadow {
 
         private int writes;

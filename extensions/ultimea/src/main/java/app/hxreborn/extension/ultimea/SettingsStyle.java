@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.ultimea;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -131,6 +132,7 @@ final class SettingsStyle {
         return new RippleDrawable(ColorStateList.valueOf(this.ripple), null, rounded(Color.WHITE, radiusDp));
     }
 
+    @SuppressLint("DiscouragedApi")
     Drawable hostIcon(String name, int tint) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         Drawable icon = hostDrawable(identifier);
@@ -172,6 +174,7 @@ final class SettingsStyle {
         return track;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private Drawable coloredTrack(Drawable stock, int color) {
         Drawable track = stock.getConstantState().newDrawable(this.context.getResources()).mutate();
         setTrackColor(track, color);
@@ -181,13 +184,15 @@ final class SettingsStyle {
     private static void setTrackColor(Drawable drawable, int color) {
         drawable.setTintList(null);
         drawable.setAlpha(OPAQUE_ALPHA);
-        if (drawable instanceof LayerDrawable) {
-            LayerDrawable layers = (LayerDrawable) drawable;
+        if (drawable instanceof LayerDrawable layers) {
             for (int index = 0; index < layers.getNumberOfLayers(); index++) {
                 setTrackColor(layers.getDrawable(index), color);
             }
-        } else if (drawable instanceof DrawableWrapper) {
-            setTrackColor(((DrawableWrapper) drawable).getDrawable(), color);
+        } else if (drawable instanceof DrawableWrapper wrapper) {
+            Drawable wrapped = wrapper.getDrawable();
+            if (wrapped != null) {
+                setTrackColor(wrapped, color);
+            }
         } else if (drawable instanceof GradientDrawable) {
             ((GradientDrawable) drawable).setColor(color);
         } else {

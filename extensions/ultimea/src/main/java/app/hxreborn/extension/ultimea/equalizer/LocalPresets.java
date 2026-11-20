@@ -322,7 +322,6 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
         return input;
     }
 
-    @SuppressWarnings("deprecation")
     private void chooseImport() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType(MIME_TYPE)
             .addCategory(Intent.CATEGORY_OPENABLE);
@@ -336,7 +335,6 @@ public final class LocalPresets extends ActivityCallbacksAdapter {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void chooseExport(EqualizerPreset preset) {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT).setType(MIME_TYPE)
             .addCategory(Intent.CATEGORY_OPENABLE)

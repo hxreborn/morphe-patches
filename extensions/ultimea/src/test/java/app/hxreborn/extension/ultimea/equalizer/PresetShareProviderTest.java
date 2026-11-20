@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -41,6 +42,7 @@ import org.robolectric.android.controller.ActivityController;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 23)
+@SuppressWarnings({ "deprecation", "DataFlowIssue" })
 public class PresetShareProviderTest {
 
     @Test
@@ -80,7 +82,7 @@ public class PresetShareProviderTest {
                     bytes.write(buffer, 0, count);
                 }
                 EqualizerPresetFile shared = EqualizerPresetFile
-                    .parse(new String(bytes.toByteArray(), StandardCharsets.UTF_8));
+                    .parse(bytes.toString(StandardCharsets.UTF_8));
                 Assert.assertEquals(state, shared.state);
                 Assert.assertEquals(base, shared.base);
                 Assert.assertEquals("Movie", shared.baseName);
@@ -120,7 +122,7 @@ public class PresetShareProviderTest {
                     bytes.write(buffer, 0, count);
                 }
                 List<EqualizerPresetFile> shared = EqualizerPresetBundleFile
-                    .read(new String(bytes.toByteArray(), StandardCharsets.UTF_8));
+                    .read(bytes.toString(StandardCharsets.UTF_8));
                 Assert.assertEquals(2, shared.size());
                 Assert.assertEquals(state, shared.get(0).state);
                 Assert.assertEquals(base, shared.get(0).base);
@@ -135,7 +137,7 @@ public class PresetShareProviderTest {
         try (ActivityController<Activity> controller = Robolectric.buildActivity(Activity.class).setup()) {
             Activity activity = controller.get();
             EqualizerPreset preset = EqualizerPreset.create("Single", new EqualizerCurve(7, new int[10]));
-            PresetShareProvider.shareAll(activity, Arrays.asList(preset));
+            PresetShareProvider.shareAll(activity, Collections.singletonList(preset));
             Intent chooser = Shadows.shadowOf(activity).getNextStartedActivity();
             Intent send = chooser.getParcelableExtra(Intent.EXTRA_INTENT);
             Uri uri = send.getParcelableExtra(Intent.EXTRA_STREAM);
@@ -155,7 +157,7 @@ public class PresetShareProviderTest {
         try (ActivityController<Activity> controller = Robolectric.buildActivity(Activity.class).setup()) {
             Activity activity = controller.get();
             char[] characters = new char[EqualizerPreset.MAX_NAME_LENGTH];
-            Arrays.fill(characters, '\u97f3');
+            Arrays.fill(characters, '音');
             SoundState state = new SoundState(new EqualizerCurve(7, new int[10]), 1);
             EqualizerPreset preset = EqualizerPreset.create(new String(characters), state, new String(characters),
                     state);
@@ -179,11 +181,12 @@ public class PresetShareProviderTest {
     }
 
     @Test(expected = FileNotFoundException.class)
+    @SuppressWarnings("resource")
     public void rejectsCollectionWriteAccess() throws Exception {
         try (ActivityController<Activity> controller = Robolectric.buildActivity(Activity.class).setup()) {
             Activity activity = controller.get();
             PresetShareProvider.shareAll(activity,
-                    Arrays.asList(EqualizerPreset.create("Single", new EqualizerCurve(7, new int[10]))));
+                    Collections.singletonList(EqualizerPreset.create("Single", new EqualizerCurve(7, new int[10]))));
             Intent chooser = Shadows.shadowOf(activity).getNextStartedActivity();
             Intent send = chooser.getParcelableExtra(Intent.EXTRA_INTENT);
             Uri uri = send.getParcelableExtra(Intent.EXTRA_STREAM);
@@ -196,6 +199,7 @@ public class PresetShareProviderTest {
     }
 
     @Test(expected = FileNotFoundException.class)
+    @SuppressWarnings("resource")
     public void rejectsSharePathTraversal() throws Exception {
         PresetShareProvider provider = Robolectric.buildContentProvider(PresetShareProvider.class).create().get();
         provider.openFile(Uri.parse("content://org.robolectric.default.hx_equalizer_presets/../private.json"), "r");
