@@ -181,29 +181,12 @@ val speechPitchSliderPatch = bytecodePatch(
         }
 
         val speak = SpeakTextFingerprint.matchAll(1..1).single()
-        val speechVoice = speak.classDef.fields.single { it.type == voice.returnType }
-        speak.classDef.apply {
-            interfaces.add(EXTENSION_TARGET_DESCRIPTOR)
-            addMethod(
-                "speechPitchVoice", emptyList(), "Landroid/speech/tts/Voice;", AccessFlags.PUBLIC.value, 2,
-                """
-                    iget-object v0, p0, $speechVoice
-                    if-eqz v0, :default_voice
-                    invoke-virtual {v0}, $selectedVoice
-                    move-result-object v0
-                    return-object v0
-                    :default_voice
-                    const/4 v0, 0x0
-                    return-object v0
-                """,
-            )
-        }
-        val contextField = speak.classDef.fields.single { it.type == "Landroid/content/Context;" }
+        val contextField = speak.classDef.fields.first { it.type == "Landroid/content/Context;" }
         val applyPitch = speak.classDef.addMethod(
             "applySpeechPitch", listOf("Landroid/speech/tts/TextToSpeech;"), "V", AccessFlags.PRIVATE.value, 3,
             """
                 iget-object v0, p0, $contextField
-                invoke-static {v0, p1, p0}, $EXTENSION_CLASS_DESCRIPTOR->applyPitch(Landroid/content/Context;Landroid/speech/tts/TextToSpeech;Lapp/hxreborn/extension/readera/SpeechPitchTarget;)V
+                invoke-static {v0, p1}, $EXTENSION_CLASS_DESCRIPTOR->applyPitch(Landroid/content/Context;Landroid/speech/tts/TextToSpeech;)V
                 return-void
             """,
         )

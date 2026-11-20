@@ -209,17 +209,14 @@ val readChapterAloudPatch = bytecodePatch(
         val lookAheads = queuedSpeechLookAheadFingerprint(utteranceType).matchAll(0..1).map { lookAhead ->
             lookAhead to classDefBy(lookAhead.originalMethod.definingClass).fields.single { it.type == "I" }
         }
-        val directSpeaks = speakDirectFallbackFingerprint(utteranceType).matchAll(0..1).map { fallback ->
-            val (speakCall) = fallback.instructionMatches
-            val accessor = speakCall.instruction.getReference<MethodReference>()!!
-            val directSpeak = classDefBy(accessor.definingClass).methods.single { descriptor(it) == descriptor(accessor) }
-                .implementation!!.instructions.single { it.opcode == Opcode.INVOKE_DIRECT }.getReference<MethodReference>()!!
-            val player = mutableClassDefBy(accessor.definingClass)
-            val speak = player.methods.single { descriptor(it) == descriptor(directSpeak) }
-            check(speak.parameterTypes == listOf(utteranceType) && speak.implementation!!.registerCount > speak.parameterTypes.size + 1) {
-                "Direct speech types disagree: ${descriptor(directSpeak)}, $utteranceType"
+        val requestType = PrepareToPlayFingerprint.matchAll(1..1).single().originalMethod.parameterTypes.single().toString()
+        val directSpeaks = speakUtteranceFingerprint(utteranceType).matchAll(0..1).map { directSpeak ->
+            val speak = directSpeak.method
+            check(speak.implementation!!.registerCount > speak.parameterTypes.size + 1) {
+                "Direct speech registers disagree: ${descriptor(speak)}, $utteranceType"
             }
-            speak to player.fields.single { it.type == "I" }
+            val (_, generationStore) = requestGenerationFingerprint(requestType).matchAll(1..1).single().instructionMatches
+            speak to generationStore.instruction.getReference<FieldReference>()!!
         }
         check(lookAheads.size + directSpeaks.size == 1) {
             "Queued speech sites disagree: ${lookAheads.size} look-ahead, ${directSpeaks.size} fallback"

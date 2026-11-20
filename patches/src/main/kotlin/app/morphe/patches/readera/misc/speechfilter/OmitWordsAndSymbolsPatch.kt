@@ -40,7 +40,7 @@ val omitWordsAndSymbolsPatch = bytecodePatch(
 
 internal fun BytecodePatchContext.addSpeechTextFilter() {
     val speakMatch = SpeakTextFingerprint.matchSingle()
-    val contextField = speakMatch.classDef.fields.single { it.type == "Landroid/content/Context;" }
+    val contextField = speakMatch.classDef.fields.first { it.type == "Landroid/content/Context;" }
     val filterText = speakMatch.classDef.addMethod(
         "filterSpeechText", listOf("Ljava/lang/String;"), "Ljava/lang/String;", AccessFlags.PRIVATE.value, 3,
         """

@@ -93,8 +93,8 @@ public final class SpeechPitchSlider implements SeekBar.OnSeekBarChangeListener 
         seekBar.setOnSeekBarChangeListener(slider);
     }
 
-    public static void applyPitch(Context context, TextToSpeech speech, SpeechPitchTarget target) {
-        speech.setPitch(readPitch(PatchSettings.speechPreferences(context), target.speechPitchVoice()));
+    public static void applyPitch(Context context, TextToSpeech speech) {
+        speech.setPitch(readPitch(PatchSettings.speechPreferences(context), speech.getVoice()));
     }
 
     private static int speechRateRowId() {

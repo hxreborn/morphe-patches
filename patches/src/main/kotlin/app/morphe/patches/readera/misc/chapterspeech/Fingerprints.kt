@@ -105,9 +105,28 @@ internal fun queuedSpeechLookAheadFingerprint(utterance: String) = Fingerprint(
     ),
 )
 
-internal fun speakDirectFallbackFingerprint(utterance: String) = Fingerprint(
-    strings = listOf("ReadTextPlayer addToSpeakDirect [%s]"),
-    filters = listOf(methodCall(opcode = Opcode.INVOKE_STATIC, parameters = listOf("L", utterance), returnType = "V")),
+internal object PrepareToPlayFingerprint : Fingerprint(strings = listOf("ReadTextPlayer prepareToPlay"))
+
+internal fun requestGenerationFingerprint(request: String) = Fingerprint(
+    classFingerprint = PrepareToPlayFingerprint,
+    accessFlags = listOf(AccessFlags.PRIVATE),
+    returnType = "V",
+    parameters = listOf(request),
+    filters = listOf(
+        fieldAccess(opcode = Opcode.IGET, definingClass = request, type = "I"),
+        fieldAccess(opcode = Opcode.IPUT, type = "I", location = MatchAfterImmediately()),
+    ),
+)
+
+internal fun speakUtteranceFingerprint(utterance: String) = Fingerprint(
+    classFingerprint = PrepareToPlayFingerprint,
+    accessFlags = listOf(AccessFlags.PRIVATE),
+    returnType = "V",
+    parameters = listOf(utterance),
+    filters = listOf(
+        methodCall(opcode = Opcode.INVOKE_DIRECT, parameters = listOf(utterance), returnType = "Ljava/lang/String;"),
+        methodCall(definingClass = "Ljava/util/Set;", name = "add"),
+    ),
 )
 
 internal const val SPEECH_RELAYOUT_DECODE_MATCH = 7
