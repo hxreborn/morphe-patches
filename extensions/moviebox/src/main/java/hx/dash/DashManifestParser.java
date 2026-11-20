@@ -72,6 +72,7 @@ final class DashManifestParser {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static double parseDurationSeconds(String iso8601Duration) {
         if (iso8601Duration == null) {
             return 0;

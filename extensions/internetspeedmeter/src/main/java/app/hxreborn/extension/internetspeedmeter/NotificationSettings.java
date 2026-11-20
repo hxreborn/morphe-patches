@@ -87,6 +87,7 @@ public final class NotificationSettings {
         return mainIntent;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static PendingIntent activityIntent(Context context, Intent intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(context, intent.getComponent().getClassName().hashCode(), intent,

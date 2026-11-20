@@ -48,6 +48,7 @@ public final class DatabaseSnapshots {
 
     }
 
+    @SuppressWarnings("DataFlowIssue")
     public static void addLifetimeEntitlement(Object snapshotMap) {
         try {
             if (!isSnapshotOf(snapshotMap, ENTITLEMENTS_KEY)) {
@@ -90,7 +91,7 @@ public final class DatabaseSnapshots {
         ClassLoader loader = snapshotMap.getClass().getClassLoader();
         Class<?> arguments = bridgeClass(loader, "Arguments");
         Class<?> writableMap = bridgeClass(loader, "WritableMap");
-        Map<String, Object> children = (value != null) ? value : new HashMap<String, Object>();
+        Map<String, Object> children = (value != null) ? value : new HashMap<>();
         Object childKeys = arguments.getMethod("makeNativeArray", List.class)
             .invoke(null, new ArrayList<Object>(children.keySet()));
 

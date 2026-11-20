@@ -71,6 +71,7 @@ final class PromotionRewriter {
         }
     }
 
+    @SuppressWarnings("EnhancedSwitchMigration")
     private static boolean removePromotions(JSONArray sections, int index) throws JSONException {
         JSONObject section = sections.getJSONObject(index);
         switch (section.optString("type")) {

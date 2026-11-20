@@ -145,6 +145,7 @@ final class Boot {
 
     private static native int writeCode(byte[] records);
 
+    @SuppressWarnings("Convert2Lambda")
     static void runAppHook(final ClassLoader loader) {
         final String hookClass;
         synchronized (Boot.class) {
@@ -185,6 +186,7 @@ final class Boot {
         }
     }
 
+    @SuppressWarnings({ "DataFlowIssue", "DiscouragedPrivateApi", "PrivateApi" })
     static void restoreFactoryName(ApplicationInfo info) {
         String factory = packerFactory(info);
         if (factory.isEmpty()) return;
@@ -237,9 +239,11 @@ final class Boot {
         toast(message, 1);
     }
 
+    @SuppressWarnings("Convert2Lambda")
     private static void toast(final String message, final int attempt) {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
+            @SuppressWarnings("PrivateApi")
             public void run() {
                 try {
                     Object application = Class.forName("android.app.ActivityThread")
@@ -258,6 +262,7 @@ final class Boot {
         }, (attempt == 1) ? 0L : TOAST_RETRY_MILLIS);
     }
 
+    @SuppressWarnings({ "ResultOfMethodCallIgnored", "UnsafeDynamicallyLoadedCode" })
     private static void loadNativeLibrary(ApplicationInfo info) throws Exception {
         String libraryEntry = "lib/" + (Process.is64Bit() ? ARM64_ABI : ARM32_ABI) + "/" + NATIVE_LIBRARY;
 
@@ -328,6 +333,7 @@ final class Boot {
         while ((count = in.read(buffer)) != -1) out.write(buffer, 0, count);
     }
 
+    @SuppressWarnings({ "deprecation", "ObsoleteSdkInt" })
     private static void spoofSignature(final String packageName) throws Exception {
         if (certificate.length == 0) return;
 

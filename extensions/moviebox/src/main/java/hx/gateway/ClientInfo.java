@@ -45,6 +45,7 @@ final class ClientInfo {
         }
     }
 
+    @SuppressWarnings("deprecation")
     static String create(Context application) throws PackageManager.NameNotFoundException {
         JSONObject info = identity();
         try {

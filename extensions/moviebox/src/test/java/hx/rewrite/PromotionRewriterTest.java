@@ -407,8 +407,7 @@ public final class PromotionRewriterTest {
     }
 
     private static String image(String deepLink, String title) {
-        return "{\"type\":\"SINGLE_IMAGE\",\"title\":\"" + title + "\",\"page\":{\"deepLink\":\"" + deepLink
-                + "\"}}";
+        return "{\"type\":\"SINGLE_IMAGE\",\"title\":\"" + title + "\",\"page\":{\"deepLink\":\"" + deepLink + "\"}}";
     }
 
     private static String custom(String... deepLinks) {
@@ -418,11 +417,12 @@ public final class PromotionRewriterTest {
     private static String entries(String... deepLinks) {
         StringBuilder entries = new StringBuilder();
         for (String deepLink : deepLinks) {
-            entries.append((entries.length() > 0) ? "," : "").append("{\"deepLink\":\"").append(deepLink).append("\"}");
+            entries.append(entries.isEmpty() ? "" : ",").append("{\"deepLink\":\"").append(deepLink).append("\"}");
         }
         return entries.toString();
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static String content(String title) {
         return "{\"type\":\"SUBJECTS_MOVIE\",\"title\":\"" + title + "\",\"subjects\":[{\"subjectId\":\"1\"}]}";
     }

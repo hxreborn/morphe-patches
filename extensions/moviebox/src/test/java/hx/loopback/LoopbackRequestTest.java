@@ -32,6 +32,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
+@SuppressWarnings("DataFlowIssue")
 public final class LoopbackRequestTest {
 
     private static final String ORIGIN = "https://origin.example.com/f.mp4";
@@ -70,7 +71,7 @@ public final class LoopbackRequestTest {
     public void readsTheRangeHeaderCaseInsensitively() {
         // when
         LoopbackRequest request = LoopbackRequest
-            .parse("GET /dash/77/0/0/720.mp4 HTTP/1.1\r\nhost: x\r\n" + "RANGE: bytes=100-\r\nAccept: */*");
+            .parse("GET /dash/77/0/0/720.mp4 HTTP/1.1\r\nhost: x\r\nRANGE: bytes=100-\r\nAccept: */*");
 
         // then
         Assertions.assertThat(request.range.first).isEqualTo(100);
@@ -187,7 +188,7 @@ public final class LoopbackRequestTest {
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().contains("8192")).as(failure.getMessage()).isTrue();
+        Assertions.assertThat(failure).hasMessageContaining("8192");
     }
 
     private static String get(String target) {

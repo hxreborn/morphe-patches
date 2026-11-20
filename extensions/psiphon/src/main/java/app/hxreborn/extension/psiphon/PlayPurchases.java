@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,6 +50,7 @@ public final class PlayPurchases {
 
     }
 
+    @SuppressLint("PrivateApi")
     public static List<Object> withSyntheticSubscription(List<Object> purchases) {
         try {
             Object purchase = Class.forName(PURCHASE_CLASS)

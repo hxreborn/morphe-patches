@@ -23,6 +23,7 @@ package hx.loopback;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+@SuppressWarnings("DataFlowIssue")
 public final class RangeHeaderTest {
 
     @Test

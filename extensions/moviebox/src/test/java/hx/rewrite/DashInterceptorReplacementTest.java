@@ -65,8 +65,7 @@ public final class DashInterceptorReplacementTest {
     private final List<String> lookedUp = new ArrayList<>();
 
     @Test
-    public void servesTheUnpacedPlayInfoInsteadOfTheEdgeCacheOne()
-            throws IOException, ReflectiveOperationException, JSONException {
+    public void servesTheUnpacedPlayInfoInsteadOfTheEdgeCacheOne() throws ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(UNPACED_PLAY_INFO);
 
@@ -90,8 +89,7 @@ public final class DashInterceptorReplacementTest {
     }
 
     @Test
-    public void keepsTheEdgeCachePlayInfoWhenNoUnpacedOneIsFound()
-            throws IOException, ReflectiveOperationException, JSONException {
+    public void keepsTheEdgeCachePlayInfoWhenNoUnpacedOneIsFound() throws ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(null);
 
@@ -104,7 +102,7 @@ public final class DashInterceptorReplacementTest {
 
     @Test
     public void keepsTheEdgeCachePlayInfoWhenTheAlternativeIsOnAnotherHost()
-            throws IOException, ReflectiveOperationException, JSONException {
+            throws ReflectiveOperationException, JSONException {
         // given
         DashInterceptor interceptor = givenInterceptorFinding(
                 PlayInfoFixtures.playInfo(PlayInfoFixtures.cloudFrontCookie("https://other.example.com/abc/*")));
@@ -134,7 +132,7 @@ public final class DashInterceptorReplacementTest {
             return (replacement != null && accepted.accepts(replacement)) ? replacement : null;
         };
         ApiClient api = new ApiClient(this.loader, new OkHttpClient(), "https://api6.example.com/");
-        return new DashInterceptor(this.loader, new MovieBoxSource(api, lookup), true, Collections.<String>emptySet());
+        return new DashInterceptor(this.loader, new MovieBoxSource(api, lookup), true, Collections.emptySet());
     }
 
     private String intercept(DashInterceptor interceptor, boolean responseKnowsItsRequest)
@@ -145,8 +143,7 @@ public final class DashInterceptorReplacementTest {
         return new String(builder.body, StandardCharsets.UTF_8);
     }
 
-    private static String firstStreamUrl(String playInfo) throws IOException, JSONException, IOException, IOException,
-            IOException, IOException, IOException, IOException, IOException {
+    private static String firstStreamUrl(String playInfo) throws JSONException {
         return new JSONObject(playInfo).getJSONObject("data").getJSONArray("streams").getJSONObject(0).getString("url");
     }
 
@@ -164,6 +161,7 @@ public final class DashInterceptorReplacementTest {
             return this.request;
         }
 
+        @SuppressWarnings("unused")
         public FakeResponse proceed(FakeRequest sent) {
             return this.response;
         }
@@ -227,6 +225,7 @@ public final class DashInterceptorReplacementTest {
             return this;
         }
 
+        @SuppressWarnings("unused")
         public FakeBuilder removeHeader(String name) {
             return this;
         }

@@ -58,7 +58,7 @@ public final class DashServer implements Runnable {
     private final ServerSocket serverSocket;
 
     private final ThreadPoolExecutor workers = new ThreadPoolExecutor(WORKERS, WORKERS, 0L, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<Runnable>(QUEUED_REQUESTS));
+            new ArrayBlockingQueue<>(QUEUED_REQUESTS));
 
     private boolean started;
 
@@ -211,6 +211,7 @@ public final class DashServer implements Runnable {
 
     public static final class RedirectException extends IOException {
 
+        @SuppressWarnings("MissingSerialAnnotation")
         private static final long serialVersionUID = 1L;
 
         final String location;
@@ -224,6 +225,7 @@ public final class DashServer implements Runnable {
 
     public static final class UnavailableException extends IOException {
 
+        @SuppressWarnings("MissingSerialAnnotation")
         private static final long serialVersionUID = 1L;
 
         public UnavailableException(String message) {

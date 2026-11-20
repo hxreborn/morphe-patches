@@ -107,6 +107,7 @@ public final class QuickOverviewActivity extends Activity {
     private int usageRequest;
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.preferences = AppResources.preferences(this);
@@ -175,6 +176,7 @@ public final class QuickOverviewActivity extends Activity {
         return column;
     }
 
+    @SuppressWarnings("deprecation")
     private View tabs() {
         LinearLayout tabs = new LinearLayout(this);
         tabs.setPadding(dp(PADDING_DP), dp(ROW_PADDING_DP), dp(PADDING_DP), 0);
@@ -196,6 +198,7 @@ public final class QuickOverviewActivity extends Activity {
         return tab;
     }
 
+    @SuppressLint("SetTextI18n")
     private void sample() {
         long received = TrafficStats.getTotalRxBytes();
         long sent = TrafficStats.getTotalTxBytes();
@@ -222,6 +225,7 @@ public final class QuickOverviewActivity extends Activity {
         return preferences.getFloat("session_usage_ref", 0f);
     }
 
+    @SuppressWarnings("deprecation")
     private void showUsage() {
         boolean mobile = this.usageNetwork == ConnectivityManager.TYPE_MOBILE;
         styleTab(this.mobileTab, mobile);

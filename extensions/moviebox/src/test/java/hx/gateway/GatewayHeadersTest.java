@@ -37,6 +37,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
+@SuppressWarnings("DataFlowIssue")
 public final class GatewayHeadersTest {
 
     private static final byte[] SIGNING_KEY = "test-signing-key".getBytes(StandardCharsets.UTF_8);

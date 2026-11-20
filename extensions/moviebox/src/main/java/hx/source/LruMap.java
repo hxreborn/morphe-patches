@@ -25,6 +25,7 @@ import java.util.Map;
 
 final class LruMap<V> extends LinkedHashMap<String, V> {
 
+    @SuppressWarnings("MissingSerialAnnotation")
     private static final long serialVersionUID = 1L;
 
     private static final float LOAD_FACTOR = 0.75f;

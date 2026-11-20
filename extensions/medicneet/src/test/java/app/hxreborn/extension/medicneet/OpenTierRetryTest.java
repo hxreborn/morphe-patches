@@ -53,7 +53,7 @@ public final class OpenTierRetryTest {
         // then
         assertTrue(retry);
         assertEquals(1, where.size());
-        assertEquals(Arrays.<Object>asList(TIER_FIELD, "in", Arrays.asList(1L, 2L)), where.get(0));
+        assertEquals(Arrays.asList(TIER_FIELD, "in", Arrays.asList(1L, 2L)), where.get(0));
     }
 
     @Test
@@ -74,7 +74,7 @@ public final class OpenTierRetryTest {
     public void keepsTheClausesTheAppAlreadyAsked() {
         // given
         final List<List<Object>> where = new ArrayList<>();
-        where.add(Arrays.<Object>asList("concept", "==", "leaf"));
+        where.add(Arrays.asList("concept", "==", "leaf"));
 
         // when
         OpenTierRetry.shouldRetry(DENIED, QUESTIONS, where, TIER_FIELD);

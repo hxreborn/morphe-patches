@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.internetspeedmeter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import android.view.View;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("ViewConstructor")
 final class SpeedGraphView extends View {
 
     private static final int SAMPLES = 61;
@@ -75,6 +77,7 @@ final class SpeedGraphView extends View {
         this.labelPaint.setTextSize(Dimensions.spExact(context, LABEL_TEXT_SP));
     }
 
+    @SuppressWarnings("SuspiciousSystemArraycopy")
     void add(long downloadBytesPerSecond, long uploadBytesPerSecond) {
         System.arraycopy(this.download, 1, this.download, 0, SAMPLES - 1);
         System.arraycopy(this.upload, 1, this.upload, 0, SAMPLES - 1);
@@ -85,6 +88,7 @@ final class SpeedGraphView extends View {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         long scale = MINIMUM_SCALE;
         for (int index = 0; index < SAMPLES; index++) {

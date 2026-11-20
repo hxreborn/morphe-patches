@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.vpnsuper;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -141,6 +142,7 @@ final class SettingsStyle {
                 rounded(this.cardSurface, radiusDp));
     }
 
+    @SuppressLint("DiscouragedApi")
     Drawable icon(String name) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         return (identifier != 0) ? tinted(identifier) : null;
@@ -179,6 +181,7 @@ final class SettingsStyle {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
+    @SuppressLint("UseRequiresApi")
     private Typeface font(int identifier) {
         return this.context.getResources().getFont(identifier);
     }

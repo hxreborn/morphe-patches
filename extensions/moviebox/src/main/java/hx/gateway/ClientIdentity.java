@@ -48,7 +48,7 @@ final class ClientIdentity {
 
     private final SharedPreferences preferences;
 
-    private final Set<String> reportedFields = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+    private final Set<String> reportedFields = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private volatile String deviceId;
 

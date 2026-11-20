@@ -146,6 +146,7 @@ public final class ReportBundle {
         return bytes.getInt(offset) & 0xffffffffL;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean hasString(ByteBuffer bytes, int id, String expected) {
         long count = unsigned(bytes, STRING_COUNT_OFFSET);
         if (id >= count) {

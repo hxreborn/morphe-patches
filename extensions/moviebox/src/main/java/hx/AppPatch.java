@@ -64,6 +64,7 @@ public final class AppPatch {
         new Installer(preferred).start();
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static Class<?> resolve(String name, ClassLoader preferred) {
         ClassLoader[] loaders = { preferred, AppPatch.class.getClassLoader(),
                 Thread.currentThread().getContextClassLoader() };
@@ -139,6 +140,7 @@ public final class AppPatch {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isMainProcess() {
         return ProcessName.isMain(ProcessName.current());
     }

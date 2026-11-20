@@ -56,6 +56,7 @@ public final class ClientInfoTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void carriesTheInstalledVersionCode() throws JSONException, PackageManager.NameNotFoundException {
         // given
         PackageInfo installed = new PackageInfo();

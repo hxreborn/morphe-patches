@@ -88,6 +88,7 @@ public final class MovieHead {
         return Mp4Boxes.u32(init, mdhd.offset + timescaleOffset(init, mdhd.offset));
     }
 
+    @SuppressWarnings("NegativeIntConstantInLongContext")
     static byte[] sidx(int referenceId, long timescale, long earliestTime, long firstOffset,
             List<Reference> references) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

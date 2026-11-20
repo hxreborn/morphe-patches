@@ -40,7 +40,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "CharsetObjectCanBeUsed" })
 public class Boot {
     private static final String STUB = "com.stub.StubApp";
     private static final String STUB_CONTEXT_FIELD = "d";
@@ -80,6 +80,7 @@ public class Boot {
         }
     }
 
+    @SuppressWarnings("UnsafeDynamicallyLoadedCode")
     private static void openHiddenApiAccess() {
         try {
             File opener = new File(context().getFilesDir(), HIDDEN_API_OPENER_FILE);
@@ -91,6 +92,7 @@ public class Boot {
         }
     }
 
+    @SuppressWarnings({ "JavaReflectionMemberAccess", "DiscouragedPrivateApi", "PrivateApi" })
     private static void clearPackageInfoCache() {
         try {
             Field field = Class.forName("android.content.pm.PackageManager")
@@ -148,6 +150,7 @@ public class Boot {
         });
     }
 
+    @SuppressWarnings({ "deprecation", "Convert2Diamond" })
     private static void spoofSignature(final String packageName, byte[] certificate) throws Exception {
         final Signature stock = new Signature(certificate);
         final Parcelable.Creator<PackageInfo> original = PackageInfo.CREATOR;

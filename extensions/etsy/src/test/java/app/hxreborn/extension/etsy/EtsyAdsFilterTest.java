@@ -148,6 +148,7 @@ public final class EtsyAdsFilterTest {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public String toString() {
             return this.description;
         }

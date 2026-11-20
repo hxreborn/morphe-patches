@@ -146,6 +146,7 @@ public final class BuildTagTest {
         };
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static ClassLoader loaderServing(String name, byte[] content) {
         return new ClassLoader(null) {
             @Override

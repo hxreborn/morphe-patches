@@ -47,7 +47,7 @@ public final class PlayInfoFixtures {
     public static String playInfo(String... cookies) {
         StringBuilder streams = new StringBuilder();
         for (String cookie : cookies) {
-            if (streams.length() > 0) {
+            if (!streams.isEmpty()) {
                 streams.append(',');
             }
             streams.append("{\"url\":\"https://origin.example.com/f.mp4\",\"signCookie\":\"")

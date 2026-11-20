@@ -61,6 +61,7 @@ public final class HotPatchesTest {
         Assertions.assertThat(removed).isFalse();
     }
 
+    @SuppressWarnings("ReadWriteStringCanBeUsed")
     private File givenAppliedPatch() throws IOException {
         File patches = new File(this.context.getApplicationInfo().dataDir, "tinker");
         File version = new File(patches, "patch-1a2b3c4d");

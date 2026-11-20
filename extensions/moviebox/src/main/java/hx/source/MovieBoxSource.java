@@ -291,6 +291,7 @@ public final class MovieBoxSource implements DashFileSource {
 
     private static final class NoSignedResourceException extends IOException {
 
+        @SuppressWarnings("MissingSerialAnnotation")
         private static final long serialVersionUID = 1L;
 
         NoSignedResourceException(String message) {

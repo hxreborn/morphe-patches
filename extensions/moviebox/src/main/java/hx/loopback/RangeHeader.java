@@ -36,6 +36,7 @@ final class RangeHeader {
         this.last = last;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static RangeHeader parse(String header) {
         Matcher matcher = (header != null) ? PATTERN.matcher(header) : null;
         if (matcher == null || !matcher.matches()) {

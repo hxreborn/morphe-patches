@@ -23,7 +23,6 @@ package hx.rewrite;
 import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,39 +85,37 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void extendsTheMembershipInTheProfileResponse()
-            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void extendsTheMembershipInTheProfileResponse() throws JSONException, IOException {
         // given
         this.server.put(PROFILE, MEMBER.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(PROFILE, true, Collections.<String>emptySet());
+        String body = fetch(PROFILE, true, Collections.emptySet());
 
         // then
         Assertions.assertThat(new JSONObject(body).getJSONObject("data").getInt("daysLeft")).isEqualTo(9999);
     }
 
     @Test
-    public void leavesOtherResponsesAlone() throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void leavesOtherResponsesAlone() throws IOException {
         // given
         this.server.put("/other", MEMBER.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch("/other", true, Collections.<String>emptySet());
+        String body = fetch("/other", true, Collections.emptySet());
 
         // then
         Assertions.assertThat(body).isEqualTo(MEMBER);
     }
 
     @Test
-    public void pointsSignedStreamsAtTheManifest()
-            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void pointsSignedStreamsAtTheManifest() throws JSONException, IOException {
         // given
         String cookie = PlayInfoFixtures.cloudFrontCookie("https://sacdn.example.com/abc/*");
         this.server.put(PLAY_INFO, PlayInfoFixtures.playInfo(cookie).getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(PLAY_INFO + "?subjectId=77&se=0&ep=0", true, Collections.<String>emptySet());
+        String body = fetch(PLAY_INFO + "?subjectId=77&se=0&ep=0", true, Collections.emptySet());
 
         // then
         JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
@@ -127,13 +124,12 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void routesUnsignedStreamsThroughTheLoopbackWhenDownloadsAreRouted()
-            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void routesUnsignedStreamsThroughTheLoopbackWhenDownloadsAreRouted() throws JSONException, IOException {
         // given
         this.server.put(PLAY_INFO, UNSIGNED_PLAY_INFO.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", true, Collections.<String>emptySet());
+        String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", true, Collections.emptySet());
 
         // then
         JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
@@ -142,28 +138,26 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void keepsUnsignedStreamsWhenDownloadsAreNotRouted()
-            throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void keepsUnsignedStreamsWhenDownloadsAreNotRouted() throws IOException {
         // given
         this.server.put(PLAY_INFO, UNSIGNED_PLAY_INFO.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", false, Collections.<String>emptySet());
+        String body = fetch(PLAY_INFO + "?subjectId=77&se=1&ep=2", false, Collections.emptySet());
 
         // then
         Assertions.assertThat(body).isEqualTo(UNSIGNED_PLAY_INFO);
     }
 
     @Test
-    public void routesResourceListsThroughTheLoopbackWhenDownloadsAreRouted()
-            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void routesResourceListsThroughTheLoopbackWhenDownloadsAreRouted() throws JSONException, IOException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
         this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(RESOURCE_LIST, true, Collections.<String>emptySet());
+        String body = fetch(RESOURCE_LIST, true, Collections.emptySet());
 
         // then
         JSONObject item = new JSONObject(body).getJSONObject("data").getJSONArray("list").getJSONObject(0);
@@ -172,15 +166,14 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void requestsResourceListsFromTheV1Endpoint()
-            throws JSONException, ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void requestsResourceListsFromTheV1Endpoint() throws JSONException, IOException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":1080,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
         this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(RESOURCE_LIST + "?subjectId=77&isVip=true", true, Collections.<String>emptySet());
+        String body = fetch(RESOURCE_LIST + "?subjectId=77&isVip=true", true, Collections.emptySet());
 
         // then
         JSONObject item = new JSONObject(body).getJSONObject("data").getJSONArray("list").getJSONObject(0);
@@ -190,28 +183,27 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void keepsResourceListsWhenDownloadsAreNotRouted()
-            throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void keepsResourceListsWhenDownloadsAreNotRouted() throws IOException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
         this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(RESOURCE_LIST, false, Collections.<String>emptySet());
+        String body = fetch(RESOURCE_LIST, false, Collections.emptySet());
 
         // then
         Assertions.assertThat(body).isEqualTo(list);
     }
 
     @Test
-    public void removesTheHiddenHomeTabs() throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void removesTheHiddenHomeTabs() throws IOException {
         // given
         String tabs = "{\"data\":{\"bottomTabs\":[{\"subTabs\":[{\"tabCode\":\"home\"},{\"tabCode\":\"live\"}]}]}}";
         this.server.put(BOTTOM_TAB, tabs.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(BOTTOM_TAB, true, new HashSet<>(Arrays.asList("live")));
+        String body = fetch(BOTTOM_TAB, true, new HashSet<>(Collections.singletonList("live")));
 
         // then
         Assertions.assertThat(body.contains("home")).as(body).isTrue();
@@ -219,22 +211,20 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void keepsTheHomeTabsWhenNoneAreHidden()
-            throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void keepsTheHomeTabsWhenNoneAreHidden() throws IOException {
         // given
         String tabs = "{\"data\":{\"bottomTabs\":[{\"subTabs\":[{\"tabCode\":\"live\"}]}]}}";
         this.server.put(BOTTOM_TAB, tabs.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(BOTTOM_TAB, true, Collections.<String>emptySet());
+        String body = fetch(BOTTOM_TAB, true, Collections.emptySet());
 
         // then
         Assertions.assertThat(body).isEqualTo(tabs);
     }
 
     @Test
-    public void removesThePromotionBannersFromTheHomeFeed()
-            throws ClassNotFoundException, IOException, ReflectiveOperationException {
+    public void removesThePromotionBannersFromTheHomeFeed() throws IOException {
         // given
         String feed = "{\"data\":{\"items\":[{\"type\":\"BANNER\",\"banner\":{\"banners\":["
                 + "{\"deepLink\":\"oneroom://x?type=/member/MemberActivity\"},"
@@ -242,7 +232,7 @@ public final class DashInterceptorTest {
         this.server.put(OPERATING_PAGE, feed.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(OPERATING_PAGE, true, Collections.<String>emptySet());
+        String body = fetch(OPERATING_PAGE, true, Collections.emptySet());
 
         // then
         Assertions.assertThat(body.contains("MemberActivity")).as(body).isFalse();
@@ -250,14 +240,13 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void emptiesTheSkuPromotion() throws JSONException, ClassNotFoundException, IOException,
-            ReflectiveOperationException {
+    public void emptiesTheSkuPromotion() throws JSONException, IOException {
         // given
         String promotion = "{\"code\":0,\"data\":{\"marketingActivityId\":\"1\",\"items\":[]}}";
         this.server.put(SKU_PROMOTION, promotion.getBytes(StandardCharsets.UTF_8));
 
         // when
-        String body = fetch(SKU_PROMOTION, true, Collections.<String>emptySet());
+        String body = fetch(SKU_PROMOTION, true, Collections.emptySet());
 
         // then
         Assertions.assertThat(new JSONObject(body).isNull("data")).as(body).isTrue();

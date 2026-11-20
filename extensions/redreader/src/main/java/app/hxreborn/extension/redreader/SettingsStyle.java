@@ -72,6 +72,7 @@ final class SettingsStyle {
         return 0;
     }
 
+    @SuppressWarnings("deprecation")
     Drawable backIcon() {
         Drawable icon = this.context.getResources().getDrawable(backIconDrawable()).mutate();
         icon.setTint(this.text);
@@ -106,6 +107,7 @@ final class SettingsStyle {
         return new RippleDrawable(ColorStateList.valueOf(this.secondary & RIPPLE_ALPHA_MASK), null, surface());
     }
 
+    @SuppressWarnings("deprecation")
     private int color(int attribute) {
         TypedValue value = new TypedValue();
         this.context.getTheme().resolveAttribute(attribute, value, true);

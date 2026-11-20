@@ -70,7 +70,7 @@ public final class SegmentProbeTest {
         Segment segment = publish("/s.m4s", media);
 
         // when
-        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<>(), COOKIES);
 
         // then
         Assertions.assertThat(segment.byteLength).isEqualTo(media.length);
@@ -82,7 +82,7 @@ public final class SegmentProbeTest {
         Segment segment = publish("/s.m4s", Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0)));
 
         // when
-        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<>(), COOKIES);
 
         // then
         Assertions.assertThat(segment.prefixBytes).isEqualTo(0);
@@ -98,7 +98,7 @@ public final class SegmentProbeTest {
                 Mp4Fixtures.concat(styp, sidx, Mp4Fixtures.mediaSegment(5, Mp4Fixtures.bytes(500, 0))));
 
         // when
-        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<>(), COOKIES);
 
         // then
         Assertions.assertThat(segment.prefixBytes).isEqualTo(styp.length + sidx.length);
@@ -113,7 +113,7 @@ public final class SegmentProbeTest {
                 Mp4Fixtures.concat(styp, Mp4Fixtures.mediaSegment(1, Mp4Fixtures.bytes(500, 0))));
 
         // when
-        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES);
+        SegmentProbe.size(Collections.singletonList(segment), new ArrayList<>(), COOKIES);
 
         // then
         Assertions.assertThat(segment.prefixBytes).isEqualTo(styp.length);
@@ -139,8 +139,8 @@ public final class SegmentProbeTest {
         Segment segment = publish("/s.m4s", Mp4Fixtures.box("free", Mp4Fixtures.zeros(300)));
 
         // when
-        Throwable failure = Assertions.catchThrowable(
-                () -> SegmentProbe.size(Collections.singletonList(segment), new ArrayList<Segment>(), COOKIES));
+        Throwable failure = Assertions
+            .catchThrowable(() -> SegmentProbe.size(Collections.singletonList(segment), new ArrayList<>(), COOKIES));
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);

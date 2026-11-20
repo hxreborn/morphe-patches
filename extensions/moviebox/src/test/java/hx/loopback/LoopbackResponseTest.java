@@ -130,7 +130,7 @@ public final class LoopbackResponseTest {
     }
 
     private static String text(ByteArrayOutputStream out) {
-        return new String(out.toByteArray(), StandardCharsets.ISO_8859_1);
+        return out.toString(StandardCharsets.ISO_8859_1);
     }
 
 }

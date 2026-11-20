@@ -40,11 +40,12 @@ public final class ChartPlanLimits {
     }
 
     public static void addPlanLimitsScript(WebView view) {
-        if (!WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
-            Log.w(TAG, "WebView cannot run document start scripts, chart plan limits unchanged");
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+            WebViewCompat.addDocumentStartJavaScript(view, WebAssets.TRADINGVIEW_PLAN_LIMITS_WEBVIEW,
+                    ANY_ORIGIN_RULES);
             return;
         }
-        WebViewCompat.addDocumentStartJavaScript(view, WebAssets.TRADINGVIEW_PLAN_LIMITS_WEBVIEW, ANY_ORIGIN_RULES);
+        Log.w(TAG, "WebView cannot run document start scripts, chart plan limits unchanged");
     }
 
 }

@@ -84,6 +84,7 @@ final class DashManifest {
         return segments;
     }
 
+    @SuppressWarnings("StringBufferMayBeStringBuilder")
     private static String resolveMediaUrl(String media, String representationId, int number) {
         Matcher matcher = NUMBER.matcher(media.replace(REPRESENTATION_ID, representationId));
         StringBuffer url = new StringBuffer();

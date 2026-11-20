@@ -69,6 +69,7 @@ final class GatewaySignature {
         }
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     private static String canonicalPath(String pathAndQuery) throws IOException {
         int question = pathAndQuery.indexOf('?');
         if (question < 0) {
@@ -84,6 +85,7 @@ final class GatewaySignature {
         return pathAndQuery.substring(0, question + 1) + TextUtils.join("&", pairs);
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String decode(String pair) throws IOException {
         int equals = pair.indexOf('=');
         if (equals < 0) {

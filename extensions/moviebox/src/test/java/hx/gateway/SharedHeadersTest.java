@@ -43,16 +43,19 @@ public final class SharedHeadersTest {
         Throwable failure = Assertions.catchThrowable(() -> SharedHeaders.of(String.class));
 
         // then
-        Assertions.assertThat(failure).isInstanceOf(NoSuchFieldException.class)
+        Assertions.assertThat(failure)
+            .isInstanceOf(NoSuchFieldException.class)
             .hasMessage("no static header map on java.lang.String");
     }
 
     private static final class HeaderStore {
 
+        @SuppressWarnings("unused")
         private static final String NAME = "store";
 
         private static final Map<String, String> HEADERS = new ConcurrentHashMap<>();
 
+        @SuppressWarnings("unused")
         private final Map<String, String> instanceHeaders = new ConcurrentHashMap<>();
 
     }

@@ -22,6 +22,7 @@ package app.hxreborn.extension.opal;
 
 import java.nio.charset.StandardCharsets;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.util.Base64;
 import org.json.JSONArray;
@@ -42,6 +43,7 @@ public final class LocalAccount {
     private LocalAccount() {
     }
 
+    @SuppressLint("ApplySharedPref")
     public static void seedFirebaseUser(SharedPreferences store, String userId) {
         if (store.contains(USER_KEY)) {
             return;

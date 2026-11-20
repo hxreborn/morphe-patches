@@ -115,6 +115,7 @@ public final class BootTest {
         Assertions.assertThat(notice).isEqualTo(Boot.APP_HOOK_FAILED + ": IllegalStateException");
     }
 
+    @SuppressWarnings("BusyWait")
     private static String latestToastWithin(long timeoutMillis) throws InterruptedException {
         long deadline = System.currentTimeMillis() + timeoutMillis;
         while (true) {
@@ -134,12 +135,13 @@ public final class BootTest {
         return givenApp(entries);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private ApplicationInfo givenAppNamingHook(String hookClass) throws IOException {
         return givenApp(Collections.singletonMap("assets/hx.hook", hookClass.getBytes(StandardCharsets.UTF_8)));
     }
 
     private ApplicationInfo givenAppWithoutHook() throws IOException {
-        return givenApp(Collections.<String, byte[]>emptyMap());
+        return givenApp(Collections.emptyMap());
     }
 
     private ApplicationInfo givenApp(Map<String, byte[]> entries) throws IOException {

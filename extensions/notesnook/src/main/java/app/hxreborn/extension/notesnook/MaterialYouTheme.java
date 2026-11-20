@@ -144,6 +144,7 @@ public final class MaterialYouTheme {
             this.encodeString = encodeString;
         }
 
+        @SuppressWarnings("DataFlowIssue")
         static MmkvSettings open() throws ReflectiveOperationException {
             Class<?> type = Class.forName(MMKV_CLASS);
             Method getHandle = accessibleMethod(type, "getMMKVWithID", String.class, int.class, String.class,

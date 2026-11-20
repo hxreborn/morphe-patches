@@ -195,7 +195,7 @@ public final class DashFileTest {
         return this.fixture.open();
     }
 
-    private static String headTypes(byte[] bytes) throws IOException {
+    private static String headTypes(byte[] bytes) {
         int at = 0;
         StringBuilder types = new StringBuilder();
         for (int i = 0; i < 4; i++) {
@@ -221,7 +221,7 @@ public final class DashFileTest {
         return out.toByteArray();
     }
 
-    private static int headLength(byte[] bytes) throws IOException {
+    private static int headLength(byte[] bytes) {
         int at = 0;
         for (int i = 0; i < 4; i++) {
             at += Mp4Fixtures.sizeAt(bytes, at);

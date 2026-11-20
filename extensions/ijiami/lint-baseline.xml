@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<issues format="6">
-    <issue id="NewApi" message="Call requires API level 29 (current min is 28): `android.app.AppComponentFactory#instantiateClassLoader`" errorLine1="                : packer.instantiateClassLoader(classLoader, info);" errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~">
-        <location file="src/main/java/hx/Delegate.java" line="67" column="26" />
-    </issue>
-</issues>

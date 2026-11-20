@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.utorrent;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -73,6 +74,8 @@ public final class ScreenInsets implements View.OnApplyWindowInsetsListener {
 
     @TargetApi(Build.VERSION_CODES.R)
     @Override
+    @SuppressLint("UseRequiresApi")
+    @SuppressWarnings("NullableProblems")
     public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
         Insets safe = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
         view.setPadding(safe.left, safe.top, safe.right, safe.bottom);

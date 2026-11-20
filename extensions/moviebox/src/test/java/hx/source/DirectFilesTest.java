@@ -248,6 +248,7 @@ public final class DirectFilesTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     public void givesNoPlayInfoWithoutASubject() {
         // when
         String playInfo = this.directFiles.playInfoFor("{}", null, 1, 2);

@@ -94,6 +94,7 @@ final class DirectFiles {
         return url;
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     String playInfoFor(String playInfo, String subjectId, int season, int episode) {
         if (subjectId == null || season < 0 || episode < 0) {
             return null;
@@ -169,6 +170,7 @@ final class DirectFiles {
             .put("idType", "");
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String joinResolutions(List<JSONObject> streams) throws JSONException {
         StringBuilder resolutions = new StringBuilder();
         for (JSONObject stream : streams) {

@@ -30,6 +30,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
+@SuppressWarnings("DataFlowIssue")
 public final class SignedResourceTest {
 
     @Test

@@ -31,6 +31,7 @@ import androidx.annotation.RequiresApi;
 public class PatchesComponentFactory extends AppComponentFactory {
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public Activity instantiateActivity(ClassLoader classLoader, String className, Intent intent)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         if (intent != null && PatchesMenu.ACTION_SHOW_PATCHES_SETTINGS.equals(intent.getAction())) {

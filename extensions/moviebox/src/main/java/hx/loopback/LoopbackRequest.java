@@ -66,6 +66,7 @@ final class LoopbackRequest {
 
     final RangeHeader range;
 
+    @SuppressWarnings("DataFlowIssue")
     private LoopbackRequest(boolean headOnly, String target, Matcher path, Uri uri, RangeHeader range) {
         this.headOnly = headOnly;
         this.target = target;

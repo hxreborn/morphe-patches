@@ -74,7 +74,7 @@ public final class InterleavedTracksTest {
     public void keepsVideoOnlyWhenThereIsNoAudio() {
         // given
         Track video = track(1, 1000, segments("v", 2, 2000, 1000));
-        Track audio = track(2, 1000, new ArrayList<Segment>());
+        Track audio = track(2, 1000, new ArrayList<>());
 
         // when
         InterleavedTracks ordered = InterleavedTracks.interleave(video, audio);

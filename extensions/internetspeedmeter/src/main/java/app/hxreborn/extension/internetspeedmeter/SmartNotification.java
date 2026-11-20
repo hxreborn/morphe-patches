@@ -69,6 +69,7 @@ public final class SmartNotification {
         offlineWatcher = new ConnectivityManager.NetworkCallback() {
 
             @Override
+            @SuppressWarnings("NullableProblems")
             public void onLost(Network network) {
                 if (!isConnected(service)) {
                     stopService(service);
@@ -114,6 +115,7 @@ public final class SmartNotification {
     }
 
     @SuppressLint("MissingPermission")
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isConnected(Context context) {
         return connectivity(context).getActiveNetwork() != null;
     }

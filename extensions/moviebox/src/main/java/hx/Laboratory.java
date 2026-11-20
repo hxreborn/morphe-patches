@@ -38,6 +38,7 @@ final class Laboratory {
     private Laboratory() {
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static void unlock(ClassLoader loader) {
         try {
             Class<?> mmkvClass = Class.forName(MMKV_CLASS, false, loader);

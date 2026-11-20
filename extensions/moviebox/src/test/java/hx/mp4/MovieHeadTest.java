@@ -200,6 +200,7 @@ public final class MovieHeadTest {
         return new Mp4Boxes.Box(at, Mp4Boxes.size(head, at));
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static Mp4Boxes.Box movieChild(byte[] head, String type) throws IOException {
         return Mp4Boxes.childOf(head, Mp4Boxes.child(head, 0, head.length, "moov"), type);
     }
@@ -216,6 +217,7 @@ public final class MovieHeadTest {
         return Mp4Boxes.u32(head, topLevel(head, boxIndex).offset + offset);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static Mp4Boxes.Box secondChild(byte[] head, Mp4Boxes.Box parent, String type) throws IOException {
         Mp4Boxes.Box first = Mp4Boxes.childOf(head, parent, type);
         return Mp4Boxes.child(head, first.end(), parent.end(), type);
@@ -234,7 +236,7 @@ public final class MovieHeadTest {
     }
 
     private static List<Long> references(byte[] head, Mp4Boxes.Box sidx, int field) {
-        int count = (int) (((head[sidx.offset + 30] & 0xFF) << 8) | (head[sidx.offset + 31] & 0xFF));
+        int count = ((head[sidx.offset + 30] & 0xFF) << 8) | (head[sidx.offset + 31] & 0xFF);
         List<Long> values = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             values.add(Mp4Boxes.u32(head, sidx.offset + 32 + i * 12 + field));

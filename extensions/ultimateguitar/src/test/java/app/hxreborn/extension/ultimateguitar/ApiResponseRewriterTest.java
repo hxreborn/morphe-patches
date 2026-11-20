@@ -226,6 +226,7 @@ public final class ApiResponseRewriterTest {
         return new JSONObject(ApiResponseRewriter.rewriteBody(EXPERIMENTS));
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static int count(JSONArray services, String name) throws Exception {
         int matches = 0;
         for (int i = 0; i < services.length(); i++) {

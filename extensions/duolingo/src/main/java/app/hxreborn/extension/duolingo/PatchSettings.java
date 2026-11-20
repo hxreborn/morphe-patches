@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -118,6 +119,7 @@ public final class PatchSettings {
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults() {
         SharedPreferences preferences = preferences();
         if (preferences == null) {

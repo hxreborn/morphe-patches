@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
+@SuppressWarnings("NullableProblems")
 public final class Delegate extends AppComponentFactory {
     private static final String TAG = "hxreborn/ijiami";
 
@@ -57,6 +58,7 @@ public final class Delegate extends AppComponentFactory {
     }
 
     @Override
+    @SuppressWarnings("NewApi")
     public ClassLoader instantiateClassLoader(ClassLoader classLoader, ApplicationInfo info) {
         Boot.restoreFactoryName(info);
         Boot.install(info);

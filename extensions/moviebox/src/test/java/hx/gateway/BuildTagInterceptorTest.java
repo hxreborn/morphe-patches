@@ -50,6 +50,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
+@SuppressWarnings({ "resource", "DataFlowIssue" })
 public final class BuildTagInterceptorTest {
 
     private static final byte[] CERTIFICATE = "stock-certificate".getBytes(StandardCharsets.UTF_8);
@@ -68,7 +69,7 @@ public final class BuildTagInterceptorTest {
                 .getSharedPreferences("build_tag_interceptor_test", Context.MODE_PRIVATE)));
 
     @Test
-    public void replacesTheStockBuildHeader() throws IOException, ClassNotFoundException {
+    public void replacesTheStockBuildHeader() throws IOException {
         // given
         Request request = request("stock-tag", "{\"device_id\":\"d1\"}");
         Chain chain = new Chain(request);
@@ -83,8 +84,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void signsTheTagWithTheCertificateDigest()
-            throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+    public void signsTheTagWithTheCertificateDigest() throws NoSuchAlgorithmException, IOException {
         // given
         Chain chain = new Chain(request("stock-tag", "{}"));
 
@@ -98,7 +98,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void putsTheSameTagInsideTheClientInfo() throws JSONException, IOException, ClassNotFoundException {
+    public void putsTheSameTagInsideTheClientInfo() throws JSONException, IOException {
         // given
         Chain chain = new Chain(request("stock-tag", "{\"device_id\":\"d1\"}"));
 
@@ -111,8 +111,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void sendsTheDirectFileCarrierOnResourcePositionLookups()
-            throws JSONException, IOException, ClassNotFoundException {
+    public void sendsTheDirectFileCarrierOnResourcePositionLookups() throws JSONException, IOException {
         // given
         Chain chain = new Chain(request("https://example.com/wefeed-mobile-bff/subject-api/resource-position/v2?r=1",
                 "stock-tag", "{\"device_id\":\"d1\",\"sp_code\":\"40410\"}"));
@@ -126,7 +125,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void keepsTheAppCarrierOnOtherRequests() throws JSONException, IOException, ClassNotFoundException {
+    public void keepsTheAppCarrierOnOtherRequests() throws JSONException, IOException {
         // given
         Chain chain = new Chain(request("https://example.com/wefeed-mobile-bff/subject-api/resource/v2?r=1",
                 "stock-tag", "{\"device_id\":\"d1\",\"sp_code\":\"40410\"}"));
@@ -140,7 +139,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void sendsAGaidWhenTheClientInfoHasNone() throws JSONException, IOException, ClassNotFoundException {
+    public void sendsAGaidWhenTheClientInfoHasNone() throws JSONException, IOException {
         // given
         Chain chain = new Chain(request("stock-tag", "{\"device_id\":\"d1\"}"));
 
@@ -153,8 +152,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void retriesPlayInfoOnceWithANewDeviceIdAfterTheUpgradeNotice()
-            throws JSONException, IOException, ClassNotFoundException {
+    public void retriesPlayInfoOnceWithANewDeviceIdAfterTheUpgradeNotice() throws JSONException, IOException {
         // given
         Chain chain = new Chain(playInfoRequest());
         chain.bodies.add(UPGRADE_NOTICE);
@@ -170,7 +168,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void retriesOnlyOnceWhenTheNewDeviceIdAlsoGetsTheUpgradeNotice() throws IOException, ClassNotFoundException {
+    public void retriesOnlyOnceWhenTheNewDeviceIdAlsoGetsTheUpgradeNotice() throws IOException {
         // given
         Chain chain = new Chain(playInfoRequest());
         chain.bodies.add(UPGRADE_NOTICE);
@@ -184,7 +182,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void retriesAResourceListThatCarriesTheUpgradeNotice() throws IOException, ClassNotFoundException {
+    public void retriesAResourceListThatCarriesTheUpgradeNotice() throws IOException {
         // given
         Chain chain = new Chain(
                 request("https://example.com/wefeed-mobile-bff/subject-api/resource?subjectId=1", "stock-tag", "{}"));
@@ -199,7 +197,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void sendsOtherEndpointsOnce() throws IOException, ClassNotFoundException {
+    public void sendsOtherEndpointsOnce() throws IOException {
         // given
         Chain chain = new Chain(request("stock-tag", "{}"));
         chain.bodies.add(UPGRADE_NOTICE);
@@ -212,7 +210,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void tagsARequestThatHasNoClientInfo() throws IOException, ClassNotFoundException {
+    public void tagsARequestThatHasNoClientInfo() throws IOException {
         // given
         Request request = new Request.Builder().url("https://example.com/a").header(BuildTag.HEADER, "stock").build();
         Chain chain = new Chain(request);
@@ -226,7 +224,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void passesARequestWithoutTheBuildHeaderThrough() throws IOException, ClassNotFoundException {
+    public void passesARequestWithoutTheBuildHeaderThrough() throws IOException {
         // given
         Request request = new Request.Builder().url("https://example.com/a").header("X-Client-Info", "{}").build();
         Chain chain = new Chain(request);
@@ -239,8 +237,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void tagsARequestFromAnotherClientThatCopiesTheSharedHeaders()
-            throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+    public void tagsARequestFromAnotherClientThatCopiesTheSharedHeaders() throws NoSuchAlgorithmException, IOException {
         // given
         this.sharedHeaders.put(BuildTag.HEADER, "own-certificate-tag");
         intercept(new Chain(request("own-certificate-tag", "{}")));
@@ -253,8 +250,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void retagsTheSharedHeadersAfterTheAppOverwritesThem()
-            throws NoSuchAlgorithmException, IOException, ClassNotFoundException {
+    public void retagsTheSharedHeadersAfterTheAppOverwritesThem() throws NoSuchAlgorithmException, IOException {
         // given
         intercept(new Chain(request("stock-tag", "{}")));
         this.sharedHeaders.put(BuildTag.HEADER, "own-certificate-tag");
@@ -267,7 +263,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void keepsTheSharedTagWhileTheAppLeavesItAlone() throws IOException, ClassNotFoundException {
+    public void keepsTheSharedTagWhileTheAppLeavesItAlone() throws IOException {
         // given
         intercept(new Chain(request("stock-tag", "{}")));
         String first = this.sharedHeaders.get(BuildTag.HEADER);
@@ -280,7 +276,7 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void reportsAFailureAsAnIoException() throws ClassNotFoundException {
+    public void reportsAFailureAsAnIoException() {
         // given
         Chain chain = new Chain(request("stock-tag", "{}"));
         chain.failure = new IllegalStateException("boom");
@@ -293,7 +289,8 @@ public final class BuildTagInterceptorTest {
     }
 
     @Test
-    public void describesItselfWhenAskedForItsString() throws ClassNotFoundException {
+    @SuppressWarnings("EqualsWithItself")
+    public void describesItselfWhenAskedForItsString() {
         // when
         Object proxy = proxy();
 
@@ -349,7 +346,7 @@ public final class BuildTagInterceptorTest {
         return parts.length == 2 && parts[1].equals(Digests.md5Hex(seed.getBytes(StandardCharsets.UTF_8)));
     }
 
-    private Response intercept(Chain chain) throws IOException, ClassNotFoundException {
+    private Response intercept(Chain chain) throws IOException {
         Interceptor.Chain proxy = (Interceptor.Chain) Proxy.newProxyInstance(this.loader,
                 new Class<?>[] { Interceptor.Chain.class }, chain);
         return ((Interceptor) proxy()).intercept(proxy);

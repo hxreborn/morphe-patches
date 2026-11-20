@@ -113,6 +113,7 @@ public final class ProcessNameTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     public void treatsAnUnknownProcessAsNotMain() {
         // when
         boolean main = ProcessName.isMain(null);
@@ -121,6 +122,7 @@ public final class ProcessNameTest {
         Assertions.assertThat(main).isFalse();
     }
 
+    @SuppressWarnings("ReadWriteStringCanBeUsed")
     private File commandLine(String content) throws IOException {
         File file = this.folder.newFile();
         Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));

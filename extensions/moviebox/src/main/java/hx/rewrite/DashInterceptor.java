@@ -120,6 +120,7 @@ public final class DashInterceptor extends ChainInterceptor {
         return rewritten.equals(text) ? bytes : rewritten.getBytes(StandardCharsets.UTF_8);
     }
 
+    @SuppressWarnings("EnhancedSwitchMigration")
     private String rewriteText(Endpoint endpoint, String url, Object response, String text)
             throws ReflectiveOperationException {
         switch (endpoint) {
@@ -168,6 +169,7 @@ public final class DashInterceptor extends ChainInterceptor {
         return (replacement != null) ? replacement : playInfo;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static int queryInt(Uri uri, String name) {
         try {
             return Integer.parseInt(uri.getQueryParameter(name));

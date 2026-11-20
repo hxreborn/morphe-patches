@@ -202,11 +202,11 @@ public final class DashManifestParserTest {
         DashManifest.Representation video = parse(xml).select("video", 720);
 
         // when
-        Throwable failure = Assertions.catchThrowable(() -> video.initializationUrl());
+        Throwable failure = Assertions.catchThrowable(video::initializationUrl);
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().contains("no initialization")).as(failure.getMessage()).isTrue();
+        Assertions.assertThat(failure).hasMessageContaining("no initialization");
     }
 
     @Test
@@ -222,9 +222,7 @@ public final class DashManifestParserTest {
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().contains("lacks a segment timeline"))
-            .as(failure.getMessage())
-            .isTrue();
+        Assertions.assertThat(failure).hasMessageContaining("lacks a segment timeline");
     }
 
     @Test
@@ -241,9 +239,7 @@ public final class DashManifestParserTest {
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().contains("invalid segment timeline"))
-            .as(failure.getMessage())
-            .isTrue();
+        Assertions.assertThat(failure).hasMessageContaining("invalid segment timeline");
     }
 
     @Test
@@ -254,9 +250,7 @@ public final class DashManifestParserTest {
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().startsWith("cannot parse manifest"))
-            .as(failure.getMessage())
-            .isTrue();
+        Assertions.assertThat(failure).hasMessageStartingWith("cannot parse manifest");
     }
 
     @Test
@@ -266,9 +260,7 @@ public final class DashManifestParserTest {
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().startsWith("cannot parse manifest"))
-            .as(failure.getMessage())
-            .isTrue();
+        Assertions.assertThat(failure).hasMessageStartingWith("cannot parse manifest");
     }
 
     @Test
@@ -284,7 +276,7 @@ public final class DashManifestParserTest {
 
         // then
         Assertions.assertThat(failure).isInstanceOf(IOException.class);
-        Assertions.assertThat(failure.getMessage().contains("nested deeper than 32")).as(failure.getMessage()).isTrue();
+        Assertions.assertThat(failure).hasMessageContaining("nested deeper than 32");
     }
 
     @Test

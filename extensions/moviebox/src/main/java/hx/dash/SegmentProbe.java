@@ -43,6 +43,7 @@ final class SegmentProbe {
     private SegmentProbe() {
     }
 
+    @SuppressWarnings("resource")
     static void size(List<Segment> video, List<Segment> audio, CdnCookies cookies) throws IOException {
         List<Segment> all = new ArrayList<>(video);
         all.addAll(audio);

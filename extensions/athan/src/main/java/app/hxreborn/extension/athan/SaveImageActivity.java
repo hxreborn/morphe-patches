@@ -75,6 +75,7 @@ public final class SaveImageActivity extends Activity {
         finish();
     }
 
+    @SuppressWarnings("deprecation")
     private static Uri sharedImage(Intent target) {
         String type = target.getType();
         if (type == null || !type.startsWith("image/")) {
@@ -95,6 +96,7 @@ public final class SaveImageActivity extends Activity {
     }
 
     @TargetApi(Build.VERSION_CODES.Q)
+    @SuppressLint("UseRequiresApi")
     private boolean save(Intent intent) {
         Uri image = intent.getData();
         if (image == null) {

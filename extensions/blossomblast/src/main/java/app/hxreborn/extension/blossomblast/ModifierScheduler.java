@@ -247,10 +247,12 @@ final class ModifierScheduler {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isOutstanding(int expectedGeneration, int task) {
         return this.taskOutstanding && task == this.postedTask && expectedGeneration == this.generation;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean countAttempt() {
         if (++this.attempts < MAX_ATTEMPTS) {
             return true;
@@ -260,6 +262,7 @@ final class ModifierScheduler {
         return false;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasPendingWork() {
         return !this.pendingCommands.isEmpty() || this.slotsPending || this.grants.hasPendingWork();
     }

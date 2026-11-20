@@ -21,6 +21,7 @@
 package hx.rewrite;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.assertj.core.api.Assertions;
@@ -56,7 +57,7 @@ public final class HomeTabsTest {
     @Test
     public void keepsTheResponseWhenNoTabMatches() {
         // when
-        String rewritten = HomeTabs.withoutTabs(TABS, new HashSet<>(Arrays.asList("missing")));
+        String rewritten = HomeTabs.withoutTabs(TABS, new HashSet<>(Collections.singletonList("missing")));
 
         // then
         Assertions.assertThat(rewritten).isSameAs(TABS);
@@ -68,7 +69,7 @@ public final class HomeTabsTest {
         String body = "{\"data\":{}}";
 
         // when
-        String rewritten = HomeTabs.withoutTabs(body, new HashSet<>(Arrays.asList("live")));
+        String rewritten = HomeTabs.withoutTabs(body, new HashSet<>(Collections.singletonList("live")));
 
         // then
         Assertions.assertThat(rewritten).isSameAs(body);
@@ -77,7 +78,7 @@ public final class HomeTabsTest {
     @Test
     public void keepsAResponseThatIsNotJson() {
         // when
-        String rewritten = HomeTabs.withoutTabs("nope", new HashSet<>(Arrays.asList("live")));
+        String rewritten = HomeTabs.withoutTabs("nope", new HashSet<>(Collections.singletonList("live")));
 
         // then
         Assertions.assertThat(rewritten).isEqualTo("nope");
