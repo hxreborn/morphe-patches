@@ -2,13 +2,20 @@
 """python3 generate_patches_readme.py <owner/repo> <branch> [patches-list.json] [README.md]"""
 
 import json
+import math
+import os
 import re
+import subprocess
 import sys
 import urllib.error
 import urllib.request
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from versions import APK_DOWNLOAD_WARNING, APK_VERSION_URLS
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
+from fields import field, normalize, parse_fields
 
 
 if len(sys.argv) < 3:
@@ -339,17 +346,15 @@ ICON_DIR = Path(".github/assets/icons")
 FEATURED_PACKAGES = [
     "com.viber.voip",
     "com.bereal.ft",
+    "com.imo.android.imoim",
     "com.community.oneroom",
     "ch.protonmail.android",
     "ch.protonvpn.android",
-    "com.keepa.mobile",
-    "com.dubox.drive",
-    "com.imo.android.imoim",
-    "com.duolingo",
-    "com.alibaba.aliexpresshd",
-    "photo.editor.photoeditor.photoeditorpro",
-    "com.cxinventor.file.explorer",
 ]
+HOT_WINDOW_DAYS = 30
+HOT_LIMIT = 6
+REPORT_WEIGHT = 2
+CHANGELOG_SUBJECT = re.compile(r"^(?:feat|fix|perf)\(([^)]+)\)!?: ")
 PLAY_URL = "https://play.google.com/store/apps/details?id={}&hl=en&gl=US"
 def icon_file(pkg):
     for filename in (ICONS.get(pkg), f"{pkg}.png"):
@@ -408,6 +413,120 @@ def app_notes(pkg):
     return f"\n\n{path.read_text(encoding='utf-8').strip()}" if pkg and path.is_file() else ""
 
 
+def git_lines(*args):
+    result = subprocess.run(["git", *args], capture_output=True, text=True)
+    return result.stdout.splitlines() if result.returncode == 0 else None
+
+
+def packages_by_name_key():
+    keys = {}
+    for pkg, entry in by_pkg.items():
+        keys.setdefault(normalize(entry["name"]), []).append(pkg)
+    return keys
+
+
+def packages_for_scope(app, keys):
+    key = normalize(app)
+    if not key:
+        return []
+    if key in keys:
+        return keys[key]
+    prefixed = [name for name in keys if name.startswith(key)]
+    return keys[prefixed[0]] if len(prefixed) == 1 else []
+
+
+def changelog_entries(since, keys):
+    if git_lines("rev-parse", "--is-shallow-repository") != ["false"]:
+        return None
+    subjects = git_lines("log", f"--since={since.isoformat()}", "--no-merges", "--format=%s")
+    if not subjects:
+        return None
+    counts = {}
+    for subject in subjects:
+        match = CHANGELOG_SUBJECT.match(subject)
+        if not match:
+            continue
+        for pkg in packages_for_scope(match.group(1).split(" - ")[0], keys):
+            counts[pkg] = counts.get(pkg, 0) + 1
+    return counts
+
+
+def next_page(link_header):
+    match = re.search(r'<([^>]+)>;\s*rel="next"', link_header or "")
+    return match.group(1) if match else None
+
+
+def fetch_issues_since(since):
+    url = (f"https://api.github.com/repos/{owner}/{repo}/issues"
+           f"?state=all&per_page=100&since={since.strftime('%Y-%m-%dT%H:%M:%SZ')}")
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": "patches-readme"}
+    if token := os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN"):
+        headers["Authorization"] = f"Bearer {token}"
+    issues = []
+    try:
+        while url:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=20) as response:
+                issues.extend(json.load(response))
+                url = next_page(response.headers.get("Link"))
+    except (OSError, ValueError) as error:
+        sys.stderr.write(f"⚠️  Issue reports left out of Hot apps: {error}\n")
+        return None
+    return issues
+
+
+def reported_packages(issue, keys):
+    reported = normalize(field(parse_fields(issue.get("body") or ""), "App and version"))
+    for key in sorted(keys, key=len, reverse=True):
+        if reported.startswith(key):
+            return keys[key]
+    title = issue.get("title") or ""
+    return [pkg for pkg, entry in by_pkg.items()
+            if re.search(rf"(?<!\w){re.escape(entry['name'])}(?!\w)", title, re.IGNORECASE)][:1]
+
+
+def issue_reports(since, keys):
+    issues = fetch_issues_since(since)
+    if issues is None:
+        return {}
+    counts = {}
+    for issue in issues:
+        if issue.get("pull_request") or issue.get("user", {}).get("type") == "Bot":
+            continue
+        if datetime.fromisoformat(issue["created_at"].replace("Z", "+00:00")) < since:
+            continue
+        weight = 1 + (issue.get("reactions") or {}).get("+1", 0)
+        for pkg in reported_packages(issue, keys):
+            counts[pkg] = counts.get(pkg, 0) + weight
+    return counts
+
+
+def hot_caption(pkg, changes):
+    patches = patch_count(len(by_pkg[pkg]["patches"]))
+    if changes:
+        return f"{patches}&nbsp;·&nbsp;{changes}&nbsp;{'change' if changes == 1 else 'changes'}"
+    return patches
+
+
+def hot_apps():
+    since = datetime.now(timezone.utc) - timedelta(days=HOT_WINDOW_DAYS)
+    keys = packages_by_name_key()
+    changes = changelog_entries(since, keys)
+    if changes is None:
+        sys.stderr.write("⚠️  Full Git history with recent commits needed, Hot apps left out\n")
+        return []
+    reports = issue_reports(since, keys)
+
+    def score(pkg):
+        activity = changes.get(pkg, 0) + REPORT_WEIGHT * reports.get(pkg, 0)
+        return activity + math.log2(1 + len(by_pkg[pkg]["patches"])) if activity else 0
+
+    ranked = sorted((pkg for pkg in by_pkg if pkg not in FEATURED_PACKAGES and score(pkg) > 0),
+                    key=lambda pkg: (-score(pkg), by_pkg[pkg]["name"].lower()))
+    for pkg in ranked[:HOT_LIMIT]:
+        sys.stderr.write(f"Hot: {by_pkg[pkg]['name']} {changes.get(pkg, 0)} changes, {reports.get(pkg, 0)} reports\n")
+    return [(pkg, hot_caption(pkg, changes.get(pkg, 0))) for pkg in ranked[:HOT_LIMIT]]
+
+
 def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     noun = "patch" if count == 1 else "patches"
     vtbl = versions_table(targets, pkg)
@@ -415,10 +534,9 @@ def spoiler(label, count, targets, tbl, expanded=False, pkg=None):
     if any((pkg, target.get("version")) in APK_VERSION_URLS for target in targets):
         versions_section += APK_DOWNLOAD_WARNING + "\n\n"
     tag = "<details open>" if expanded else "<details>"
-    return f"""<a id="{slug(label)}"></a>
-{tag}
+    return f"""{tag}
 <summary>{icon_img(pkg)}{label}&nbsp;&nbsp;•&nbsp;&nbsp;{count} {noun}</summary>
-<br>
+<a id="{slug(label)}-patches"></a><br>
 
 {versions_section}{tbl}{app_notes(pkg)}
 
@@ -436,8 +554,20 @@ def patch_count(n):
 def grid_cell(label, caption, pkg=None):
     filename = icon_file(pkg) if pkg else None
     icon = f'<img src=".github/assets/icons/{filename}" width="40">' if filename else "🌐"
-    return (f'<td align="center" width="{GRID_CELL_WIDTH}"><a href="#{slug(label)}">{icon}<br>{label}</a>'
+    return (f'<td align="center" width="{GRID_CELL_WIDTH}"><a href="#user-content-{slug(label)}-patches">{icon}<br>{label}</a>'
             f"<br><sub>{caption}</sub></td>")
+
+
+def index_entry(label):
+    name = label.replace(" ", "&nbsp;").replace("-", "&#8209;")
+    return f'<a id="{slug(label)}" href="#user-content-{slug(label)}-patches">{name}</a>'
+
+
+def app_index(apps):
+    entries = [index_entry(entry["name"]) for _, entry in apps]
+    if universal:
+        entries.append(index_entry("Universal"))
+    return "&nbsp;· ".join(entries)
 
 
 def app_grid(cells):
@@ -459,7 +589,14 @@ def build_content(expanded=False):
     lines.append("")
     lines.append("### Featured apps\n")
     lines.append(app_grid(cells))
-    lines.append(f'## <img src="https://raw.githubusercontent.com/{owner}/{repo}/assets/aqua/icons/full-list.png" height="48" align="absmiddle" alt=""> Full list\n\n<details open>\n<summary>click to expand or collapse</summary>\n')
+    if hot := hot_apps():
+        lines.append("### Hot apps\n")
+        lines.append(f'<p align="center"><sub>Most updated and most reported in the last {HOT_WINDOW_DAYS} days. '
+                     "Refreshed with every release.</sub></p>\n")
+        lines.append(app_grid([grid_cell(by_pkg[pkg]["name"], caption, pkg) for pkg, caption in hot]))
+    lines.append(f'## <img src="https://raw.githubusercontent.com/{owner}/{repo}/assets/aqua/icons/full-list.png" height="48" align="absmiddle" alt=""> Full list\n')
+    lines.append(app_index(apps) + "\n")
+    lines.append(f"<details>\n<summary>Patches and supported versions for all {len(apps)} apps</summary>\n")
 
     for pkg, entry in apps:
         patches = list(entry["patches"].values())
@@ -471,10 +608,9 @@ def build_content(expanded=False):
         uni_patches = list(universal.values())
         noun = "patch" if len(uni_patches) == 1 else "patches"
         tag  = "<details open>" if expanded else "<details>"
-        lines.append(f"""<a id="universal"></a>
-{tag}
+        lines.append(f"""{tag}
 <summary>🌐&nbsp;Universal&nbsp;&nbsp;•&nbsp;&nbsp;{len(uni_patches)} {noun}</summary>
-<br>
+<a id="universal-patches"></a><br>
 
 {patches_table(uni_patches, "universal")}
 
