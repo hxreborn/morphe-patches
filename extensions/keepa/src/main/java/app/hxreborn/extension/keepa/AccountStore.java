@@ -85,22 +85,17 @@ final class AccountStore {
         if (!this.file.exists()) {
             return new JSONObject();
         }
-        try {
-            final InputStream stream = new FileInputStream(this.file);
-            try {
-                final byte[] bytes = new byte[(int) this.file.length()];
-                int offset = 0;
-                while (offset < bytes.length) {
-                    final int count = stream.read(bytes, offset, bytes.length - offset);
-                    if (count < 0) {
-                        break;
-                    }
-                    offset += count;
+        try (InputStream stream = new FileInputStream(this.file)) {
+            final byte[] bytes = new byte[(int) this.file.length()];
+            int offset = 0;
+            while (offset < bytes.length) {
+                final int count = stream.read(bytes, offset, bytes.length - offset);
+                if (count < 0) {
+                    break;
                 }
-                return new JSONObject(new String(bytes, 0, offset, StandardCharsets.UTF_8));
-            } finally {
-                stream.close();
+                offset += count;
             }
+            return new JSONObject(new String(bytes, 0, offset, StandardCharsets.UTF_8));
         } catch (IOException exception) {
             throw new JSONException("Unable to read " + this.file + ": " + exception);
         }
@@ -109,11 +104,8 @@ final class AccountStore {
     private void write(JSONObject document) throws JSONException {
         final File replacement = new File(this.file.getPath() + ".tmp");
         try {
-            final OutputStream stream = new FileOutputStream(replacement);
-            try {
+            try (OutputStream stream = new FileOutputStream(replacement)) {
                 stream.write(document.toString().getBytes(StandardCharsets.UTF_8));
-            } finally {
-                stream.close();
             }
             if (!replacement.renameTo(this.file)) {
                 throw new IOException("rename failed");

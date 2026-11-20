@@ -54,7 +54,7 @@ public final class AccountStateTest {
     @Test
     public void unknownMissingOrDifferentlyCasedValuesReadAsInvalid() {
         for (String value : new String[] { null, "", "OK", "Throttled", "banned", " ok", "ok " }) {
-            assertEquals(String.valueOf(value), AccountState.INVALID, AccountState.fromWireValue(value));
+            assertEquals(value, AccountState.INVALID, AccountState.fromWireValue(value));
         }
     }
 

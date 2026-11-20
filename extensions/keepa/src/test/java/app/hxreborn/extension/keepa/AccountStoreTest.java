@@ -41,6 +41,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+@SuppressWarnings({ "DataFlowIssue", "ReadWriteStringCanBeUsed" })
 @RunWith(RobolectricTestRunner.class)
 public final class AccountStoreTest {
 
@@ -155,7 +156,7 @@ public final class AccountStoreTest {
     }
 
     @Test
-    public void leavesNoTemporaryFileBehind() throws IOException, JSONException {
+    public void leavesNoTemporaryFileBehind() throws JSONException {
         this.store.save(this.store.load());
         this.store.writePending("{\"op\":\"switch\"}");
         this.store.clearPending();
@@ -301,7 +302,7 @@ public final class AccountStoreTest {
     }
 
     @Test
-    public void doesNotOverwriteACorruptFileWhenSaving() throws IOException, JSONException {
+    public void doesNotOverwriteACorruptFileWhenSaving() throws IOException {
         // given
         writeRaw("{not json");
 

@@ -146,8 +146,6 @@ public final class AccountsActivity extends Activity {
 
     private boolean dark;
 
-    private int backgroundColor;
-
     private int cardColor;
 
     private int textColor;
@@ -174,7 +172,7 @@ public final class AccountsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.dark = NightMode.isActive(this);
-        this.backgroundColor = (this.dark) ? DARK_BACKGROUND : LIGHT_BACKGROUND;
+        final int backgroundColor = (this.dark) ? DARK_BACKGROUND : LIGHT_BACKGROUND;
         this.cardColor = (this.dark) ? DARK_CARD : LIGHT_CARD;
         this.textColor = (this.dark) ? DARK_TEXT : LIGHT_TEXT;
         this.mutedColor = (this.dark) ? DARK_MUTED : LIGHT_MUTED;
@@ -188,7 +186,7 @@ public final class AccountsActivity extends Activity {
 
         final LinearLayout screen = new LinearLayout(this);
         screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(this.backgroundColor);
+        screen.setBackgroundColor(backgroundColor);
         screen.setPadding(0, systemBarHeight("status_bar_height", STATUS_BAR_FALLBACK_DP), 0,
                 systemBarHeight("navigation_bar_height", 0));
         screen.addView(header());
@@ -216,7 +214,7 @@ public final class AccountsActivity extends Activity {
         bar.setGravity(Gravity.CENTER_VERTICAL);
         bar.setPadding(dp(CARD_PAD_DP), 0, dp(CARD_PAD_DP), 0);
         bar.setMinimumHeight(dp(HEADER_HEIGHT_DP));
-        bar.setBackground(roundedRipple(this.cardColor, CARD_RADIUS_DP));
+        bar.setBackground(roundedRipple(this.cardColor));
         bar.setClickable(true);
         bar.setFocusable(true);
         bar.setContentDescription("Back");
@@ -403,7 +401,7 @@ public final class AccountsActivity extends Activity {
         final LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(CARD_PAD_DP), dp(CARD_PAD_DP), dp(CARD_PAD_DP), dp(CARD_PAD_DP));
-        card.setBackground(roundedRipple(this.cardColor, CARD_RADIUS_DP));
+        card.setBackground(roundedRipple(this.cardColor));
         card.setClickable(true);
         card.setFocusable(true);
         card.setLayoutParams(cardParams());
@@ -512,7 +510,7 @@ public final class AccountsActivity extends Activity {
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP, TITLE_SP);
         button.setTypeface(Typeface.DEFAULT_BOLD);
         button.setStateListAnimator(null);
-        button.setBackground(roundedRipple(color, CARD_RADIUS_DP));
+        button.setBackground(roundedRipple(color));
         button
             .setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(BUTTON_HEIGHT_DP)));
         button.setOnClickListener(onClick);
@@ -605,9 +603,9 @@ public final class AccountsActivity extends Activity {
         return fill;
     }
 
-    private Drawable roundedRipple(int color, int radiusDp) {
-        return new RippleDrawable(ColorStateList.valueOf(this.rippleColor), roundedFill(color, radiusDp),
-                roundedFill(Color.WHITE, radiusDp));
+    private Drawable roundedRipple(int color) {
+        return new RippleDrawable(ColorStateList.valueOf(this.rippleColor), roundedFill(color, CARD_RADIUS_DP),
+                roundedFill(Color.WHITE, CARD_RADIUS_DP));
     }
 
     private Drawable bottomRoundedRipple() {
@@ -624,6 +622,7 @@ public final class AccountsActivity extends Activity {
         return new RippleDrawable(ColorStateList.valueOf(this.rippleColor), null, mask);
     }
 
+    @SuppressLint("DiscouragedApi")
     private int systemBarHeight(String name, int fallbackDp) {
         final int id = getResources().getIdentifier(name, "dimen", "android");
         return (id > 0) ? getResources().getDimensionPixelSize(id) : dp(fallbackDp);
