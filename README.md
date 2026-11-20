@@ -3594,9 +3594,5 @@ See [NOTICE](NOTICE) for the full conditions.
 Based on prior work by [ReVanced](https://github.com/ReVanced). Changes and their dates are
 recorded in the Git history.
 
-App icons in the patches list belong to their respective developers and are used only to
-identify each app. They are not covered by this repository's licence. See
-[the icon notice](.github/assets/icons/README.md).
-
 The Aqua pictures in the banner are fan and game art, credited in
 [aqua/CREDITS.md](https://github.com/hxreborn/morphe-patches/blob/assets/aqua/CREDITS.md).
