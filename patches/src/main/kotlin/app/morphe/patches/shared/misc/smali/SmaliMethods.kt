@@ -29,9 +29,16 @@ internal fun descriptor(field: FieldReference): String = DexFormatter.INSTANCE.g
 
 internal fun String.toJavaClassName() = removePrefix("L").removeSuffix(";").replace('/', '.')
 
+internal fun CharSequence.registerWidth() = if (this == "J" || this == "D") 2 else 1
+
+internal fun Method.parameterRegisterCount(): Int {
+    val receiver = if (AccessFlags.STATIC.isSet(accessFlags)) 0 else 1
+    return receiver + parameterTypes.sumOf { it.registerWidth() }
+}
+
 internal fun Method.parameterRegister(index: Int): String {
     val receiver = if (AccessFlags.STATIC.isSet(accessFlags)) 0 else 1
-    val preceding = parameterTypes.take(index).sumOf { if (it == "J" || it == "D") 2 else 1 }
+    val preceding = parameterTypes.take(index).sumOf { it.registerWidth() }
     return "p${receiver + preceding}"
 }
 
