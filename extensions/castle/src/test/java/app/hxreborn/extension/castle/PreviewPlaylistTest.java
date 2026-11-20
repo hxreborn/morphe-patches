@@ -94,6 +94,7 @@ public final class PreviewPlaylistTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void replacesThePaddingWithTheRemainingSegments() {
         // given
         PreviewPlaylist.Padding padding = PreviewPlaylist.Padding.of(paddedPreview());
@@ -110,6 +111,7 @@ public final class PreviewPlaylistTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void readsTheLastServedSegment() {
         // when
         PreviewPlaylist.Padding padding = PreviewPlaylist.Padding.of(paddedPreview());
@@ -119,6 +121,7 @@ public final class PreviewPlaylistTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void readsThePaddedDuration() {
         // when
         PreviewPlaylist.Padding padding = PreviewPlaylist.Padding.of(paddedPreview());

@@ -129,6 +129,7 @@ public final class PreviewPlaylist {
 
         private final String suffix;
 
+        @SuppressWarnings("DataFlowIssue")
         private Padding(String[] lines, int durationLine, int segmentLine, Matcher segment, double seconds) {
             this.lines = lines;
             this.durationLine = durationLine;

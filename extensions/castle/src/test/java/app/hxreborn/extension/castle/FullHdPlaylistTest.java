@@ -73,11 +73,19 @@ public final class FullHdPlaylistTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void keepsThePaddingUntilTheFullHdPreviewIsExpanded() throws IOException {
-        String preview = "#EXTM3U\n#EXT-X-TARGETDURATION:10\n"
-                + "#EXTINF:3.000000,\nhttps://cdn.test/hls/abc/480/0.jpg?t=1\n"
-                + "#EXTINF:2.000000,\nhttps://cdn.test/hls/abc/480/1.jpg?t=1\n"
-                + "#EXTINF:15.000000,\nhttps://cdn.test/hls/abc/480/1.jpg?t=1\n#EXT-X-ENDLIST\n";
+        String preview = """
+                #EXTM3U
+                #EXT-X-TARGETDURATION:10
+                #EXTINF:3.000000,
+                https://cdn.test/hls/abc/480/0.jpg?t=1
+                #EXTINF:2.000000,
+                https://cdn.test/hls/abc/480/1.jpg?t=1
+                #EXTINF:15.000000,
+                https://cdn.test/hls/abc/480/1.jpg?t=1
+                #EXT-X-ENDLIST
+                """;
 
         String upgraded = FullHdPlaylist.fullHd(preview, existingUpTo(4));
         PreviewPlaylist.Padding padding = PreviewPlaylist.Padding.of(upgraded);
@@ -204,15 +212,10 @@ public final class FullHdPlaylistTest {
     }
 
     private static UrlExistence existingUpTo(final int lastNumber) {
-        return new UrlExistence() {
-
-            @Override
-            public boolean exists(String url) {
-                int slash = url.lastIndexOf('/');
-                int number = Integer.parseInt(url.substring(slash + 1, url.indexOf('.', slash)));
-                return url.contains("/1080/") && number <= lastNumber;
-            }
-
+        return (url) -> {
+            int slash = url.lastIndexOf('/');
+            int number = Integer.parseInt(url.substring(slash + 1, url.indexOf('.', slash)));
+            return url.contains("/1080/") && number <= lastNumber;
         };
     }
 
