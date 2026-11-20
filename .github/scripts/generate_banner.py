@@ -2,9 +2,11 @@
 
 import base64
 import datetime
+import re
 import shutil
 import struct
 import sys
+import zlib
 from pathlib import Path
 
 
@@ -21,6 +23,39 @@ def png_size(path):
     if header[:8] != b"\x89PNG\r\n\x1a\n":
         raise SystemExit(f"{path} is not a PNG")
     return struct.unpack(">II", header[16:24])
+
+
+def check_png(path):
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        raise SystemExit(f"{path} is not a PNG")
+    offset = 8
+    while offset + 12 <= len(data):
+        length, kind = struct.unpack(">I4s", data[offset:offset + 8])
+        end = offset + 12 + length
+        if end > len(data) or zlib.crc32(data[offset + 4:end - 4]) != struct.unpack(">I", data[end - 4:end])[0]:
+            raise SystemExit(f"{path} is a damaged PNG: bad {kind!r} chunk")
+        if kind == b"IEND":
+            return
+        offset = end
+    raise SystemExit(f"{path} is a truncated PNG: no IEND chunk")
+
+
+REQUIRED_PICTURES = ("icons/installing.png",)
+CREDITED_PATH = re.compile(r"^\| `([^`]+)` \|", re.MULTILINE)
+PICTURE_FOLDERS = ("top", "bottom", "icons")
+
+
+def check_credits(aqua):
+    credited = set(CREDITED_PATH.findall((aqua / "CREDITS.md").read_text(encoding="utf-8")))
+    pictures = {path.relative_to(aqua).as_posix() for folder in PICTURE_FOLDERS for path in (aqua / folder).glob("*.png")}
+    problems = [f"no credit in CREDITS.md: {path}" for path in sorted(pictures - credited)]
+    problems += [f"credited but missing: {path}" for path in sorted(credited - pictures)]
+    problems += [f"required picture missing: {path}" for path in REQUIRED_PICTURES if path not in pictures]
+    for path in sorted(pictures):
+        check_png(aqua / path)
+    if problems:
+        raise SystemExit("aqua pictures and CREDITS.md disagree:\n" + "\n".join(problems))
 
 
 def data_uri(path):
@@ -74,6 +109,7 @@ def main():
     if len(sys.argv) < 2:
         raise SystemExit("Usage: generate_banner.py <assets-dir>")
     assets = Path(sys.argv[1])
+    check_credits(assets / "aqua")
     day = datetime.date.today().toordinal()
     top = pick_of_the_day(assets / "aqua" / "top", day)
     bottom = pick_of_the_day(assets / "aqua" / "bottom", day)

@@ -36,6 +36,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Fetch the README assets branch
+        run: git fetch --no-tags --depth=1 origin +refs/heads/assets:refs/remotes/origin/assets
+
       - name: Run script tests
         run: |
           pip install requests

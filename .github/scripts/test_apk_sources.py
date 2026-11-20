@@ -64,15 +64,16 @@ with tempfile.TemporaryDirectory() as temp:
 
     readme = directory / "README.md"
     readme.write_text("<!-- PATCHES_START -->\n<!-- PATCHES_END -->\n")
+    patches_doc = directory / "PATCHES.md"
     readme_patches = json.loads((ROOT / "patches-list.json").read_text())
     readme_patches["patches"].append(PATCHES["patches"][0])
     patches.write_text(json.dumps(readme_patches))
     subprocess.run(
         [sys.executable, str(ROOT / ".github/scripts/generate_patches_readme.py"),
-         "hxreborn/morphe-patches", "dev", str(patches), str(readme)],
+         "hxreborn/morphe-patches", "dev", str(patches), str(readme), str(patches_doc)],
         cwd=ROOT, capture_output=True, text=True, check=True,
     )
-    assert f'[{VERSION}]({URL} "Download stock APK")' in readme.read_text()
-    assert APK_DOWNLOAD_WARNING in readme.read_text()
+    assert f'[{VERSION}]({URL} "Download stock APK")' in patches_doc.read_text()
+    assert APK_DOWNLOAD_WARNING in patches_doc.read_text()
 
-print("PASS supported APK links, target removal, app-update reply, triage reply and README version link")
+print("PASS supported APK links, target removal, app-update reply, triage reply and patches page version link")
