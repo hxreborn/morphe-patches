@@ -54,7 +54,7 @@ jobs:
 
       - name: Run script tests
         run: |
-          pip install requests
+          pip install requests fonttools brotli
           for test in .github/scripts/test_*.py .github/actions/triage/test_*.py; do
             python "$test" || exit 1
           done

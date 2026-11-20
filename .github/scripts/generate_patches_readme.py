@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
 
+import readme_graphics
 from versions import APK_DOWNLOAD_WARNING, APK_VERSION_URLS
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
@@ -501,6 +502,102 @@ def build_readme_section():
     return "\n".join(lines)
 
 
+INDEX_START = "<!-- INDEX_START -->"
+INDEX_END = "<!-- INDEX_END -->"
+GRAPHICS_PATH = ".github/readme"
+ASSETS_REF = "origin/assets"
+INDEX_BUTTON_WIDTH = 155
+INDEX_BUTTONS = [
+    ("install", "Install", "Add the source", "installing", "#-installing"),
+    ("patches", "Patches", None, "full-list", "#-patches-list"),
+    ("request", "Request", "Vote or ask", "requests", "#-requests"),
+    ("build", "Build", "From source", "building", "#-building"),
+    ("disclaimer", "Disclaimer", "Read first", "disclaimer", "#-disclaimer"),
+    ("license", "License", "GPLv3 and notices", "license", "#-license"),
+]
+TAPE_ITEMS = 14
+TAPE_VERSION = re.compile(r"^(?:add )?support (?:for )?(.+)$")
+TAPE_VERSION_TOKEN = re.compile(r"`([^`]+)`|(\w[\w.+-]*\d[\w.+-]*)")
+TAPE_THEMES = ("light", "dark")
+
+
+def assets_icon(name):
+    result = subprocess.run(["git", "show", f"{ASSETS_REF}:aqua/icons/{name}.png"], capture_output=True)
+    return result.stdout if result.returncode == 0 and result.stdout else None
+
+
+def tape_items():
+    if git_lines("rev-parse", "--is-shallow-repository") != ["false"]:
+        sys.stderr.write("⚠️  Full Git history needed, release tape left out\n")
+        return []
+    since = datetime.now(timezone.utc) - timedelta(days=HOT_WINDOW_DAYS)
+    names_before = patch_names_before(since)
+    if names_before is None:
+        sys.stderr.write(f"⚠️  No patches-list.json from before {since:%Y-%m-%d}, release tape left out\n")
+        return []
+    keys = packages_by_name_key()
+    items = []
+    for subject in git_lines("log", f"--since={since.isoformat()}", "--no-merges", "--format=%s") or []:
+        match = CHANGELOG_SUBJECT.match(subject)
+        if not match:
+            continue
+        kind, scope, text = match.groups()
+        app, _, patch = scope.partition(" - ")
+        pkgs = packages_for_scope(app, keys)
+        if not pkgs:
+            continue
+        pkg = pkgs[0]
+        if not patch and (kind == "bump" or (kind == "feat" and VERSION_SUPPORT_SUBJECT.match(text))):
+            version = TAPE_VERSION.match(text)
+            tokens = [quoted or bare for quoted, bare in TAPE_VERSION_TOKEN.findall(version.group(1))] if version else []
+            if not tokens:
+                continue
+            item = ("Version", by_pkg[pkg]["name"], " and ".join(tokens))
+        elif patch:
+            if kind == "feat" and patch not in names_before.get(pkg, set()):
+                label = "New"
+            elif kind == "fix":
+                label = "Fixed"
+            else:
+                label = "Improved"
+            item = (label, by_pkg[pkg]["name"], patch)
+        else:
+            continue
+        if item in items:
+            continue
+        if not readme_graphics.covered(" ".join(item)):
+            sys.stderr.write(f"⚠️  Release tape left out {' '.join(item)!r}: glyphs missing from the font\n")
+            continue
+        items.append(item)
+        if len(items) == TAPE_ITEMS:
+            break
+    return items
+
+
+def build_index():
+    icons = {icon: assets_icon(icon) for _, _, _, icon, _ in INDEX_BUTTONS}
+    missing = sorted(icon for icon, png in icons.items() if png is None)
+    if missing:
+        sys.stderr.write(f"⚠️  Icons {missing} not on {ASSETS_REF}, index buttons and release tape left as they are\n")
+        return None
+    buttons = [(key, label, caption or f"{total} for {len(apps)} apps", icon, anchor) for key, label, caption, icon, anchor in INDEX_BUTTONS]
+    font_text = "".join(label + caption for _, label, caption, _, _ in buttons)
+    try:
+        files = {f"{key}.svg": readme_graphics.badge_svg(label, caption, icons[icon], font_text) for key, label, caption, icon, _ in buttons}
+    except ValueError as error:
+        sys.stderr.write(f"⚠️  {error}. Nothing written.\n")
+        sys.exit(1)
+    links = [f'<a href="{anchor}"><img src="{GRAPHICS_PATH}/{key}.svg" width="{INDEX_BUTTON_WIDTH}" alt="{label}"></a>' for key, label, _, _, anchor in buttons]
+    lines = ['<p align="center">', "<br>\n".join("&nbsp;".join(links[row:row + 2]) for row in range(0, len(links), 2)), "</p>"]
+    tape = tape_items()
+    for theme in TAPE_THEMES:
+        files[f"tape-{theme}.svg"] = readme_graphics.tape_svg(tape, theme) if tape else None
+    if tape:
+        pictures = "".join(f'<img src="{GRAPHICS_PATH}/tape-{theme}.svg#gh-{theme}-mode-only" width="100%" height="40" alt="Latest changes">' for theme in TAPE_THEMES)
+        lines += ["", f'<p align="center"><a href="https://github.com/{owner}/{repo}/releases">{pictures}</a></p>']
+    return "\n".join(lines), files
+
+
 def build_patches_doc():
     sections = [
         "# Patches",
@@ -560,7 +657,17 @@ if len(start_matches) != 1 or len(end_positions) != 1 or end_positions[0] < star
 
 actual_start = start_matches[0].group(0)
 
+index_starts, index_ends = readme.count(INDEX_START), readme.count(INDEX_END)
+has_index = (index_starts, index_ends) != (0, 0)
+if has_index and (index_starts != 1 or index_ends != 1 or readme.index(INDEX_END) < readme.index(INDEX_START)):
+    sys.stderr.write(
+        f"⚠️  {readme_path} needs exactly one {INDEX_START} followed by one {INDEX_END}, "
+        f"found {index_starts} start and {index_ends} end markers. Nothing written.\n"
+    )
+    sys.exit(1)
+
 generated  = build_readme_section()
+index = build_index() if has_index else None
 
 readme = readme.replace("https://morphe.software/add-source?github=xyz-user/xyz-patches", f"https://morphe.software/add-source?github={repo_full}")
 readme = readme.replace("https://github.com/xyz-user/xyz-patches", f"https://github.com/{repo_full}")
@@ -571,6 +678,17 @@ new_readme = re.sub(
     readme,
     flags=re.DOTALL,
 )
+if index:
+    index_block, graphics = index
+    start, end = new_readme.index(INDEX_START) + len(INDEX_START), new_readme.index(INDEX_END)
+    new_readme = f"{new_readme[:start]}\n{index_block}\n{new_readme[end:]}"
+    graphics_dir = readme_path.parent / GRAPHICS_PATH
+    graphics_dir.mkdir(parents=True, exist_ok=True)
+    for name, content in graphics.items():
+        if content is None:
+            (graphics_dir / name).unlink(missing_ok=True)
+        else:
+            (graphics_dir / name).write_text(content, encoding="utf-8")
 readme_path.write_text(new_readme, encoding="utf-8")
 patches_path.write_text(build_patches_doc(), encoding="utf-8")
 print(f"✅ Injected patches section into {readme_path} and wrote {patches_path} (v{ver}, branch={branch}, {total} patches, {len(apps)} apps)")

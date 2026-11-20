@@ -64,6 +64,7 @@
           "patches-list.json",
           "README.md",
           "PATCHES.md",
+          ".github/readme/*.svg",
           ".github/ISSUE_TEMPLATE/bug_report.yml",
           ".github/ISSUE_TEMPLATE/not_working.yml",
           ".github/ISSUE_TEMPLATE/app_update.yml"

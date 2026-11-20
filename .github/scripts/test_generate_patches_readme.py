@@ -144,6 +144,53 @@ with tempfile.TemporaryDirectory() as temp:
     assert readme.split(START_MARKER)[0] == original.split(START_MARKER)[0]
     assert readme.split(END_MARKER)[1] == original.split(END_MARKER)[1]
 
+INDEX_START = "<!-- INDEX_START -->"
+INDEX_END = "<!-- INDEX_END -->"
+PATCHES_BLOCK = f"{START_MARKER}\n{END_MARKER}\n"
+
+for name, markers in {
+    "reversed": f"{INDEX_END}\n{INDEX_START}\n",
+    "duplicated": f"{INDEX_START}\n{INDEX_END}\n" * 2,
+    "start only": f"{INDEX_START}\n",
+    "end only": f"{INDEX_END}\n",
+}.items():
+    with tempfile.TemporaryDirectory() as temp:
+        result, readme, patches_doc = run_generator(Path(temp), markers + PATCHES_BLOCK, cwd=ROOT)
+        assert result.returncode == 1, (name, result.returncode)
+        assert readme == markers + PATCHES_BLOCK and patches_doc is None, name
+        assert not (Path(temp) / ".github").exists(), name
+
+with tempfile.TemporaryDirectory() as temp:
+    original = (ROOT / "README.md").read_text()
+    result, readme, patches_doc = run_generator(Path(temp), original, cwd=ROOT)
+    assert result.returncode == 0, result.stderr
+    graphics = Path(temp) / ".github/readme"
+    for button in ("install", "patches", "request", "build", "disclaimer", "license"):
+        assert (graphics / f"{button}.svg").read_bytes() == (ROOT / ".github/readme" / f"{button}.svg").read_bytes(), button
+        assert f'src=".github/readme/{button}.svg"' in readme, button
+    tape_files = {(graphics / f"tape-{theme}.svg").is_file() for theme in ("light", "dark")}
+    assert tape_files == {".github/readme/tape-light.svg#gh-light-mode-only" in readme}
+    assert readme.split(INDEX_START)[0] == original.split(INDEX_START)[0]
+
+with tempfile.TemporaryDirectory() as temp:
+    stale_index = f"{INDEX_START}\nold index\n{INDEX_END}\n"
+    result, readme, patches_doc = run_generator(Path(temp), stale_index + PATCHES_BLOCK)
+    assert result.returncode == 0, result.stderr
+    assert readme.startswith(stale_index) and "index buttons and release tape left as they are" in result.stderr
+    assert not (Path(temp) / ".github").exists()
+
+sys.path.insert(0, str(SCRIPT.parent))
+import readme_graphics
+
+icon = (ROOT / ".github/readme/install.svg").read_bytes()
+for label, caption in (("Install", "A caption far too long for the badge"), ("Install", "Add the source ✓")):
+    try:
+        readme_graphics.badge_svg(label, caption, icon, label + caption)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError(f"badge_svg accepted {caption!r}")
+
 with tempfile.TemporaryDirectory() as temp:
     catalog = Path(temp) / "patches-list.json"
     catalog.write_text(json.dumps(data | {"patches": [

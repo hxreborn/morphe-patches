@@ -12,6 +12,16 @@
 
 AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps.
 
+<!-- INDEX_START -->
+<p align="center">
+<a href="#-installing"><img src=".github/readme/install.svg" width="155" alt="Install"></a>&nbsp;<a href="#-patches-list"><img src=".github/readme/patches.svg" width="155" alt="Patches"></a><br>
+<a href="#-requests"><img src=".github/readme/request.svg" width="155" alt="Request"></a>&nbsp;<a href="#-building"><img src=".github/readme/build.svg" width="155" alt="Build"></a><br>
+<a href="#-disclaimer"><img src=".github/readme/disclaimer.svg" width="155" alt="Disclaimer"></a>&nbsp;<a href="#-license"><img src=".github/readme/license.svg" width="155" alt="License"></a>
+</p>
+
+<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><img src=".github/readme/tape-light.svg#gh-light-mode-only" width="100%" height="40" alt="Latest changes"><img src=".github/readme/tape-dark.svg#gh-dark-mode-only" width="100%" height="40" alt="Latest changes"></a></p>
+<!-- INDEX_END -->
+
 </div>
 
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
