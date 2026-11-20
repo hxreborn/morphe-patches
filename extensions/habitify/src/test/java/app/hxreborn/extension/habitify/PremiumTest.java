@@ -62,6 +62,7 @@ public final class PremiumTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void grantsLifetimeProToFreeUsers() {
         Map<?, ?> result = (Map<?, ?>) unlockValue(USER_URL, USER_ID, new HashMap<>());
         Assert.assertEquals(1L, result.get("premiumStatusAndroid"));
