@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
+from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -19,7 +20,10 @@ RAW_OVERRIDE_ICON_HOST = "raw.githubusercontent.com/QuantumBadger"
 YUKA_HEADING_ANCHOR = "yuka-ioyukaandroid"
 UNIVERSAL_HEADING_ANCHOR = "universal"
 AMPERSAND_HEADING_ANCHOR = "transparent-clock--weather-comdroid27transparentclockweather"
-PATCHES_DOC_LINK = re.compile(r"PATCHES\.md#([^)\"]+)")
+PATCHES_DOC_LINK = re.compile(r"PATCHES\.md#([^)\" ]+)")
+INDEX_ROW = re.compile(r"^\| \d+ \| ")
+INDEX_NAME = re.compile(r"\[\*\*(.+?)\*\*\]")
+INDEX_CODE = re.compile(r"`([^`]+)`")
 MARKDOWN_IN_HEADING = re.compile(r"[*`\[\]<>\\~]|&(#?\w+);|(^|\W)_|_(\W|$)")
 START_MARKER = "<!-- PATCHES_START -->"
 END_MARKER = "<!-- PATCHES_END -->"
@@ -124,6 +128,15 @@ with tempfile.TemporaryDirectory() as temp:
     assert patches_doc.count(f'src="https://{PLAY_STORE_ICON_HOST}/') + patches_doc.count(OVERRIDE_ICON_HOST) + patches_doc.count(RAW_OVERRIDE_ICON_HOST) == app_count
     assert OVERRIDE_ICON_PACKAGE in readme and OVERRIDE_ICON_HOST in patches_doc
     assert PLAY_STORE_ICON_HOST in readme
+    rows = [line.split(" | ") for line in readme.splitlines() if INDEX_ROW.match(line)]
+    assert len(rows) == app_count + 1, len(rows)
+    names = [unescape(INDEX_NAME.search(row[1]).group(1)) for row in rows]
+    packages = [match.group(1) for row in rows if (match := INDEX_CODE.search(row[4]))]
+    versions = [", ".join(INDEX_CODE.findall(row[3])) for row in rows]
+    assert max(map(len, names)) <= 20 and max(map(len, packages)) <= 24, (max(names, key=len), max(packages, key=len))
+    assert all(len(version) <= 16 or ", " not in version for version in versions), max(versions, key=len)
+    assert '[**Audiobook Unlimited…**](PATCHES.md#' in readme and ' "Audiobook Unlimited for Kindle")' in readme
+    assert ' "ringtonemaker.musiccutter.customringtones.freeringtonemaker")' in readme
 
 for name, markers in {
     "reversed": f"{END_MARKER}\nold\n{START_MARKER}\n",

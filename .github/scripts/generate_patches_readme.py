@@ -455,17 +455,59 @@ def app_grid(cells):
     return f'<table align="center">\n{body}\n</table>\n'
 
 
+INDEX_NAME_CHARS = 20
+INDEX_VERSION_CHARS = 16
+INDEX_PACKAGE_CHARS = 24
+ELLIPSIS = "…"
+
+
+def shortened(text, limit):
+    if len(text) <= limit:
+        return text
+    return text[:limit - len(ELLIPSIS)] + ELLIPSIS
+
+
+def shortened_name(name, limit):
+    if len(name) <= limit:
+        return name
+    head = name[:limit - len(ELLIPSIS)]
+    if " " in head and name[len(head)] != " ":
+        head = head.rpartition(" ")[0]
+    return head.rstrip(" -:&") + ELLIPSIS
+
+
+def hover_title(full, shown):
+    return f' "{escape(full)}"' if shown != full else ""
+
+
+def version_cell(labels):
+    if not labels:
+        return "-"
+    shown = []
+    length = 0
+    for label in labels:
+        added = len(label) + (len(", ") if shown else 0)
+        if shown and length + added > INDEX_VERSION_CHARS:
+            break
+        shown.append(shortened(label, INDEX_VERSION_CHARS))
+        length += added
+    cell = ", ".join(f"`{escape(label, quote=False)}`" for label in shown)
+    hidden = len(labels) - len(shown)
+    return f"{cell}&nbsp;+{hidden}" if hidden else cell
+
+
 def index_row(index, app_name, package_name, count, labels):
-    app_cell = f"[**{escape(app_name, quote=False)}**](PATCHES.md#{app_anchor(app_name, package_name)})"
+    name = shortened_name(app_name, INDEX_NAME_CHARS)
+    app_cell = f"[**{escape(name, quote=False)}**](PATCHES.md#{app_anchor(app_name, package_name)}{hover_title(app_name, name)})"
     if INCLUDE_APP_ICONS and package_name:
         app_cell = f"{app_icon(package_name, 24)} {app_cell}"
-    version_cell = ", ".join(f"`{escape(label, quote=False)}`" for label in labels) if labels else "-"
+    package = shortened(package_name, INDEX_PACKAGE_CHARS)
     package_cell = (
-        f"[`{escape(package_name, quote=False)}`](https://play.google.com/store/apps/details?id={package_name})"
+        f"[`{escape(package, quote=False)}`](https://play.google.com/store/apps/details?id={package_name}{hover_title(package_name, package)})"
         if package_name
         else "-"
     )
-    return f"| {index} | {app_cell} | {count} | {version_cell} | {package_cell} |"
+    return f"| {index} | {app_cell} | {count} | {version_cell(labels)} | {package_cell} |"
 
 
 def featured_packages():
