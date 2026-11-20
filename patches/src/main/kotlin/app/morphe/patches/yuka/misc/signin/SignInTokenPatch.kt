@@ -29,7 +29,7 @@ private val EXPIRY_CLAIM = Regex("\"exp\"\\s*:\\s*(\\d+)")
 @Suppress("unused")
 val signInTokenPatch = bytecodePatch(
     name = "Sign-in token",
-    description = "Signs in on a standard install with an App Check token. " +
+    description = "Signs in with an App Check token. " +
         "Requires a token copied from Yuka installed from Google Play on a rooted phone. " +
         "Steps are in the Yuka section of the README.",
     default = false,

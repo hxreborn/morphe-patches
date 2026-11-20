@@ -19,7 +19,7 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks food preferences, diet alerts and the full history. " +
         "Search and offline downloads don't work. " +
-        "Signing in on a standard install needs Sign-in token. A root mount install signs in without it.",
+        "Signing in needs Sign-in token, except on a root mount install.",
 ) {
     compatibleWith(AppCompatibilities.YUKA)
 
