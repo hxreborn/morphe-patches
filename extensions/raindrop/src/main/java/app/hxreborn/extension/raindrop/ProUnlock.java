@@ -112,6 +112,7 @@ public final class ProUnlock {
         return (replacement != null) ? replacement : body;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     public static String archiveUrl(String url) {
         try {
             if (hasNativePro || url == null || !url.startsWith(RaindropApi.API_URL)) {
@@ -202,6 +203,7 @@ public final class ProUnlock {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static String stringBodyOf(Object bodyMap) throws ReflectiveOperationException {
         if (bodyMap == null
                 || !(Boolean) bodyMap.getClass().getMethod("hasKey", String.class).invoke(bodyMap, "string")) {
@@ -236,27 +238,16 @@ public final class ProUnlock {
             return null;
         }
         boolean isSuccess = response.optBoolean("result");
-        switch (resource) {
-            case "raindrop":
-                return rewriteBookmark(path, response);
-            case "raindrops":
-                if (path.size() != 3 || !isSuccess) {
-                    return null;
-                }
-                return rewriteBookmarks(url, collectionId(path.get(2)), response);
-            case "filters":
-                if (path.size() != 3 || !isSuccess) {
-                    return null;
-                }
-                return addFilterCounts(collectionId(path.get(2)), response);
-            case "collection":
-                if (path.size() != 4 || !"lastAction".equals(path.get(3)) || !isSuccess) {
-                    return null;
-                }
-                return stampVersion(response);
-            default:
-                return null;
-        }
+        return switch (resource) {
+            case "raindrop" -> rewriteBookmark(path, response);
+            case "raindrops" -> (path.size() != 3 || !isSuccess) ? null
+                    : rewriteBookmarks(url, collectionId(path.get(2)), response);
+            case "filters" -> (path.size() != 3 || !isSuccess) ? null
+                    : addFilterCounts(collectionId(path.get(2)), response);
+            case "collection" -> (path.size() != 4 || !"lastAction".equals(path.get(3)) || !isSuccess) ? null
+                    : stampVersion(response);
+            default -> null;
+        };
     }
 
     private static JSONObject rewriteBookmark(List<String> path, JSONObject response) throws JSONException {
@@ -378,6 +369,7 @@ public final class ProUnlock {
         return "duplicate:true".equals(query) || "broken:true".equals(query) || DUPLICATES_OF.matcher(query).matches();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static List<JSONObject> localResults(int collectionId, String query) {
         if ("duplicate:true".equals(query)) {
             return duplicatesIn(collectionId);

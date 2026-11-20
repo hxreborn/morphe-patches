@@ -98,9 +98,9 @@ final class LinkChecker {
 
     private static final ExecutorService archiver = Executors.newSingleThreadExecutor();
 
-    private static final Set<String> healthQueue = Collections.synchronizedSet(new HashSet<String>());
+    private static final Set<String> healthQueue = Collections.synchronizedSet(new HashSet<>());
 
-    private static final Set<String> archiveQueue = Collections.synchronizedSet(new HashSet<String>());
+    private static final Set<String> archiveQueue = Collections.synchronizedSet(new HashSet<>());
 
     private static volatile LinkStore store;
 
@@ -139,7 +139,7 @@ final class LinkChecker {
 
     static Set<String> linksContaining(String query) {
         LinkStore links = store;
-        return (links != null) ? links.linksContaining(query) : Collections.<String>emptySet();
+        return (links != null) ? links.linksContaining(query) : Collections.emptySet();
     }
 
     static String resultStamp() {
@@ -413,6 +413,7 @@ final class LinkChecker {
         return (text.length() > MAX_TEXT_CHARS) ? text.substring(0, MAX_TEXT_CHARS) : text;
     }
 
+    @SuppressWarnings({ "StringBufferMayBeStringBuilder", "DataFlowIssue" })
     static String decodeEntities(String text) {
         Matcher entity = ENTITY.matcher(text);
         StringBuffer decoded = new StringBuffer();

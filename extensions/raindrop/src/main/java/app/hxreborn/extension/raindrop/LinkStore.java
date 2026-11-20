@@ -40,6 +40,7 @@ final class LinkStore extends SQLiteOpenHelper {
     }
 
     @Override
+    @SuppressWarnings({ "SqlDialectInspection", "SqlNoDataSourceInspection" })
     public void onCreate(SQLiteDatabase database) {
         database.execSQL("CREATE TABLE links (link TEXT PRIMARY KEY, broken INTEGER NOT NULL DEFAULT 0, "
                 + "archived INTEGER NOT NULL DEFAULT 0, health_due_at INTEGER NOT NULL DEFAULT 0, "
@@ -172,6 +173,7 @@ final class LinkStore extends SQLiteOpenHelper {
         database.insertWithOnConflict("links", null, values, SQLiteDatabase.CONFLICT_IGNORE);
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String toMatchExpression(String query) {
         StringBuilder match = new StringBuilder();
         for (String word : query.toLowerCase(Locale.ROOT).split("[^\\p{L}\\p{N}]+")) {

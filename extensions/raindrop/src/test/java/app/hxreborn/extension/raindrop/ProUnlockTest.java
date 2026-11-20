@@ -51,6 +51,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+@SuppressWarnings({ "DataFlowIssue", "BusyWait", "SameParameterValue" })
 @RunWith(RobolectricTestRunner.class)
 public final class ProUnlockTest {
 
@@ -886,7 +887,7 @@ public final class ProUnlockTest {
         loadSharedLinkLibrary();
         assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6),
                 idsOf(listPage("7", "_id:1 duplicate:1 match:OR", "&perpage=25&page=0")));
-        assertEquals(Arrays.asList(4), idsOf(listPage("7", "_id:4 duplicate:4 match:OR", "&perpage=25&page=0")));
+        assertEquals(Collections.singletonList(4), idsOf(listPage("7", "_id:4 duplicate:4 match:OR", "&perpage=25&page=0")));
     }
 
     private void loadSharedLinkLibrary() throws JSONException, InterruptedException {
@@ -908,6 +909,7 @@ public final class ProUnlockTest {
         return new JSONObject(ProUnlock.replaceRequestBody("unused")).getJSONArray("ids").toString();
     }
 
+    @SuppressWarnings("unused")
     static final class BodyMap {
 
         private final String json;
