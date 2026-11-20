@@ -57,7 +57,7 @@ public final class WeatherJson {
     }
 
     public static String coordinateKey(double latitude, double longitude) {
-        return Float.toString((float) latitude) + "," + Float.toString((float) longitude);
+        return (float) latitude + "," + (float) longitude;
     }
 
     public static boolean isCoordinatePair(String query) {

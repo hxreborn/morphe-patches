@@ -105,6 +105,7 @@ public final class WeatherBackend {
         }
     }
 
+    @SuppressWarnings({ "DataFlowIssue", "UnnecessaryReturnStatement" })
     private static void respond(Socket connection) {
         try (Socket socket = connection) {
             final BufferedReader reader = new BufferedReader(
@@ -145,10 +146,12 @@ public final class WeatherBackend {
         throw new IOException("Unknown path " + path);
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String decode(String segment) throws IOException {
         return URLDecoder.decode(segment.replace("+", "%2B"), "UTF-8");
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String findCities(String query) throws Exception {
         if (WeatherJson.isCoordinatePair(query)) {
             final String[] parts = query.split(",");
@@ -186,6 +189,7 @@ public final class WeatherBackend {
         cityNames.edit().putString(key, city.getString("name")).apply();
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String httpGet(String address) throws IOException {
         final HttpURLConnection connection = (HttpURLConnection) new URL(address).openConnection();
         connection.setConnectTimeout(TIMEOUT_MILLIS);
