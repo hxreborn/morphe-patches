@@ -32,8 +32,8 @@ internal class ExtensionLoadersTest {
 
     private fun fixture(field: String) = ExtensionLoaderCoverage.Member(fixtureClass, field)
 
-    private fun closureOf(root: Patch<*>): List<Patch<*>> {
-        val seen = LinkedHashSet<Patch<*>>()
+    private fun closureOf(root: Patch): List<Patch> {
+        val seen = LinkedHashSet<Patch>()
         val queue = ArrayDeque(listOf(root))
         while (queue.isNotEmpty()) {
             val patch = queue.removeFirst()

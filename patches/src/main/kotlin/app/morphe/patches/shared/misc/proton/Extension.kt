@@ -104,10 +104,10 @@ internal fun MutableMethod.returnVoidWhen(condition: String) {
     )
 }
 
-internal fun BytecodePatchContext.markPatchApplied(settingsClass: String, methodName: String, patch: Patch<*>) =
+internal fun BytecodePatchContext.markPatchApplied(settingsClass: String, methodName: String, patch: Patch) =
     fillAppliedPatch(settingsClass, methodName, patch, withDescription = false)
 
-internal fun appliedPatchMarkerPatch(settingsClass: String, methodName: String, patch: () -> Patch<*>) = bytecodePatch {
+internal fun appliedPatchMarkerPatch(settingsClass: String, methodName: String, patch: () -> Patch) = bytecodePatch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonPatchApplicationExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     execute {
         markPatchApplied(settingsClass, methodName, patch())
@@ -116,7 +116,7 @@ internal fun appliedPatchMarkerPatch(settingsClass: String, methodName: String, 
 
 internal fun BytecodePatchContext.markPatchMetadata(
     methodName: String,
-    patch: Patch<*>,
+    patch: Patch,
     withDescription: Boolean = false,
     settingsClass: String = APPLIED_PATCHES_CLASS,
 ) = fillPatchMetadata(settingsClass, methodName, patch, withDescription)

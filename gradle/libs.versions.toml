@@ -1,6 +1,7 @@
 [versions]
-morphe-patcher = "2.1.0"
-morphe-patches-library = "2.1.0"
+morphe-patcher = "2.4.0"
+morphe-patches-library = "2.2.0"
+morphe-extensions-library = "2.1.0"
 #noinspection GradleDependency
 smali = "4220ae75f7"
 okhttp = "5.5.1"
@@ -26,7 +27,7 @@ asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 spring-javaformat-checkstyle = { module = "io.spring.javaformat:spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 morphe-patches-library = { module = "app.morphe:morphe-patches-library", version.ref = "morphe-patches-library" }
-morphe-extensions-library = { module = "app.morphe:morphe-extensions-library", version.ref = "morphe-patches-library" }
+morphe-extensions-library = { module = "app.morphe:morphe-extensions-library", version.ref = "morphe-extensions-library" }
 junit = { module = "junit:junit", version.ref = "junit" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }

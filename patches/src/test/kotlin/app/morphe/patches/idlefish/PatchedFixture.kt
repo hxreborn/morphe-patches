@@ -43,7 +43,7 @@ internal fun Instruction.describe(): String {
 internal fun assembledClasses(smaliClasses: List<String>): List<ClassDef> =
     DexBackedDexFile(Opcodes.getDefault(), ByteBuffer.wrap(assembleDex(smaliClasses))).classes.toList()
 
-internal fun patchedClasses(patch: Patch<*>, smaliClasses: List<String>): List<ClassDef> {
+internal fun patchedClasses(patch: Patch, smaliClasses: List<String>): List<ClassDef> {
     val directory = Files.createTempDirectory("idlefish-fixture").toFile()
     try {
         val apk = directory.resolve("fixture.apk")

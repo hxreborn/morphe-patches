@@ -26,7 +26,7 @@ internal class SpoofSignatureDependenciesTest {
         }
     }
 
-    private fun namedBeRealPatches(): List<Patch<*>> {
+    private fun namedBeRealPatches(): List<Patch> {
         val packageName = BEREAL_PACKAGE_PATH.replace('/', '.')
         val roots = javaClass.classLoader.getResources(BEREAL_PACKAGE_PATH).toList().map { Path.of(it.toURI()) }
 
@@ -44,16 +44,16 @@ internal class SpoofSignatureDependenciesTest {
             .filter { Modifier.isStatic(it.modifiers) && Patch::class.java.isAssignableFrom(it.type) }
             .map { field ->
                 field.isAccessible = true
-                field.get(null) as Patch<*>
+                field.get(null) as Patch
             }
             .filter { it.name != null }
             .distinct()
     }
 
-    private fun Patch<*>.allDependencies(): Set<Patch<*>> {
-        val dependencies = mutableSetOf<Patch<*>>()
+    private fun Patch.allDependencies(): Set<Patch> {
+        val dependencies = mutableSetOf<Patch>()
 
-        fun collect(patch: Patch<*>) {
+        fun collect(patch: Patch) {
             if (dependencies.add(patch)) patch.dependencies.forEach(::collect)
         }
 

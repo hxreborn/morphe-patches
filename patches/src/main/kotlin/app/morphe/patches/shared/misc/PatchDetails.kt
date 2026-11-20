@@ -14,7 +14,7 @@ internal fun BytecodePatchContext.returnTrueFrom(extensionClass: String, methodN
 
 internal fun BytecodePatchContext.fillPatchDetails(
     extensionClass: String,
-    patch: Patch<*>,
+    patch: Patch,
     nameMethod: String,
     descriptionMethod: String?,
 ) {
@@ -28,7 +28,7 @@ internal fun BytecodePatchContext.fillPatchDetails(
 internal fun BytecodePatchContext.fillPatchMetadata(
     extensionClass: String,
     methodName: String,
-    patch: Patch<*>,
+    patch: Patch,
     withDescription: Boolean = true,
 ) = fillPatchDetails(
     extensionClass,
@@ -40,7 +40,7 @@ internal fun BytecodePatchContext.fillPatchMetadata(
 internal fun BytecodePatchContext.fillAppliedPatch(
     extensionClass: String,
     methodName: String,
-    patch: Patch<*>,
+    patch: Patch,
     withDescription: Boolean = true,
 ) {
     returnTrueFrom(extensionClass, methodName)

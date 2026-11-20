@@ -32,7 +32,7 @@ private val icons = listOf(
     "hx_ultimea_ic_firmware",
 )
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch<*>) =
+internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch) =
     fillAppliedPatch("${ULTIMEA_EXTENSION}AppliedPatches;", methodName, patch, withDescription = false)
 
 internal val patchesSettingsPatch = bytecodePatch {

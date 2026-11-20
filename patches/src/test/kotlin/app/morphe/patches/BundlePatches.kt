@@ -14,7 +14,7 @@ import java.security.MessageDigest
 import java.util.function.Supplier
 
 internal object BundlePatches {
-    data class Declared(val source: String, val className: String, val field: String, val patch: Patch<*>)
+    data class Declared(val source: String, val className: String, val field: String, val patch: Patch)
 
     val classesDirectory = File("build/classes/kotlin/main")
 
@@ -31,7 +31,7 @@ internal object BundlePatches {
                 .filter { Modifier.isStatic(it.modifiers) && Patch::class.java.isAssignableFrom(it.type) }
                 .mapNotNull { field ->
                     field.isAccessible = true
-                    (field.get(null) as Patch<*>?)?.let { Declared(source, className, field.name, it) }
+                    (field.get(null) as Patch?)?.let { Declared(source, className, field.name, it) }
                 }
         }.toList()
     }
@@ -39,10 +39,10 @@ internal object BundlePatches {
     private fun digest(bytes: ByteArray) =
         MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
 
-    private val extensionStreamProviders = BytecodePatch::class.java.getDeclaredField("extensionStreamProviders")
+    private val extensionStreamProviders = Patch::class.java.getDeclaredField("extensionStreamProviders")
         .apply { isAccessible = true }
 
-    private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch<*>>(restoreVirtualizedMethodsPatch)
+    private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch>(restoreVirtualizedMethodsPatch)
 
     fun payloadsLoadedDirectlyBy(patch: BytecodePatch): Set<String> {
         if (patch in patchesAssemblingTheirDexAtPatchTime) return emptySet()
@@ -53,7 +53,7 @@ internal object BundlePatches {
             .toSet()
     }
 
-    fun payloadsLoadedBy(patch: Patch<*>, visited: MutableSet<Patch<*>> = mutableSetOf()): Set<String> {
+    fun payloadsLoadedBy(patch: Patch, visited: MutableSet<Patch> = mutableSetOf()): Set<String> {
         if (!visited.add(patch)) return emptySet()
         val own = (patch as? BytecodePatch)?.let(::payloadsLoadedDirectlyBy).orEmpty()
         return own + patch.dependencies.flatMap { payloadsLoadedBy(it, visited) }

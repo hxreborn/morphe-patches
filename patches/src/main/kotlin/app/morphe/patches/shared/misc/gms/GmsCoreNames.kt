@@ -355,7 +355,7 @@ internal val gmsCoreManifestPatch = resourcePatch {
 
 internal fun gmsCoreSupportPatchFor(
     compatibility: Compatibility,
-    vararg dependencies: Patch<*>,
+    vararg dependencies: Patch,
     default: Boolean = false,
 ) = bytecodePatch(
     name = "GmsCore support",
