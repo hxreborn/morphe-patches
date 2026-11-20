@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+@SuppressWarnings("SameParameterValue")
 final class SettingsRows {
 
     private static final int SECTION_HEADER_START_PADDING_DP = 4;
@@ -80,6 +81,7 @@ final class SettingsRows {
         return card;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     void switchRow(LinearLayout card, String iconName, String title, String description, boolean checked,
             CompoundButton.OnCheckedChangeListener listener) {
         CompoundButton toggle = SettingsStyle.createSwitch(this.context);

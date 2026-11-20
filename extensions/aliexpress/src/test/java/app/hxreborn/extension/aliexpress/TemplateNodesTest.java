@@ -32,6 +32,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, shadows = FakeTemplateNodes.class)
+@SuppressWarnings("deprecation")
 public class TemplateNodesTest {
 
     private static final int WHITE = 0xFFFFFFFF;

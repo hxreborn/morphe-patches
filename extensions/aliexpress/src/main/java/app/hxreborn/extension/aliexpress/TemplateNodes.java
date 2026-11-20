@@ -24,6 +24,7 @@ package app.hxreborn.extension.aliexpress;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("unused")
 final class TemplateNodes {
 
     private static final int MAX_ANCESTORS = 8;

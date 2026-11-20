@@ -62,10 +62,9 @@ public final class ViewerSaveButton {
     }
 
     public static void attach(View share) {
-        if (!PatchSettings.enableImageSaving() || !(share.getParent() instanceof RelativeLayout)) {
+        if (!PatchSettings.enableImageSaving() || !(share.getParent() instanceof RelativeLayout bar)) {
             return;
         }
-        RelativeLayout bar = (RelativeLayout) share.getParent();
         View button = createButton(share);
         if (button == null) {
             return;
@@ -113,10 +112,9 @@ public final class ViewerSaveButton {
     }
 
     private static ImageView iconOf(View share) {
-        if (!(share instanceof ViewGroup)) {
+        if (!(share instanceof ViewGroup group)) {
             return null;
         }
-        ViewGroup group = (ViewGroup) share;
         for (int index = 0; index < group.getChildCount(); index++) {
             View child = group.getChildAt(index);
             if (child instanceof ImageView) {
@@ -129,10 +127,9 @@ public final class ViewerSaveButton {
     private static void replaceAnchor(RelativeLayout bar, int oldAnchorId, int newAnchorId) {
         for (int index = 0; index < bar.getChildCount(); index++) {
             ViewGroup.LayoutParams layoutParams = bar.getChildAt(index).getLayoutParams();
-            if (!(layoutParams instanceof RelativeLayout.LayoutParams)) {
+            if (!(layoutParams instanceof RelativeLayout.LayoutParams params)) {
                 continue;
             }
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layoutParams;
             if (anchorsTo(params, oldAnchorId)) {
                 for (int rule : SHARE_ANCHOR_RULES) {
                     params.addRule(rule, newAnchorId);
@@ -197,6 +194,7 @@ public final class ViewerSaveButton {
         Toast.makeText(this.button.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static String visibleImageUrl(View root) {
         Rect visible = new Rect();
         String bestUrl = null;
@@ -213,8 +211,7 @@ public final class ViewerSaveButton {
                     bestUrl = url;
                 }
             }
-            if (view instanceof ViewGroup) {
-                ViewGroup group = (ViewGroup) view;
+            if (view instanceof ViewGroup group) {
                 for (int index = 0; index < group.getChildCount(); index++) {
                     pending.add(group.getChildAt(index));
                 }

@@ -60,8 +60,8 @@ public final class PatchesMenu {
         Context context = root.getContext();
         View reference = root.findViewById(versionRowId());
         View nativeTitle = root.findViewById(versionTitleId());
-        if (reference == null || !(nativeTitle instanceof TextView)
-                || !(reference.getParent() instanceof LinearLayout)) {
+        if (reference == null || !(nativeTitle instanceof TextView title)
+                || !(reference.getParent() instanceof LinearLayout parent)) {
             Log.w(PatchSettings.LOG_TAG, "Settings row or title not found");
             return;
         }
@@ -70,8 +70,6 @@ public final class PatchesMenu {
             Log.w(PatchSettings.LOG_TAG, "Settings activity not found");
             return;
         }
-        TextView title = (TextView) nativeTitle;
-        LinearLayout parent = (LinearLayout) reference.getParent();
         TextView entry = new TextView(context);
         entry.setTag(ROW_TAG);
         entry.setText(SETTINGS_ROW_TITLE);

@@ -36,6 +36,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, manifest = Config.NONE, shadows = FakeHostColors.class)
+@SuppressWarnings({ "deprecation", "resource" })
 public class SettingsStyleTest {
 
     @After
@@ -46,9 +47,9 @@ public class SettingsStyleTest {
     @Test
     public void preserveHostPaletteWhenSystemDarkModeChanges() {
         RuntimeEnvironment.setQualifiers("+notnight");
-        int[] light = hostPalette(0xFFF3F3F3, 0xFFFFFFFF);
+        int[] light = hostPalette();
         RuntimeEnvironment.setQualifiers("+night");
-        int[] dark = hostPalette(0xFFF3F3F3, 0xFFFFFFFF);
+        int[] dark = hostPalette();
 
         Assert.assertArrayEquals(light, dark);
     }
@@ -80,8 +81,8 @@ public class SettingsStyleTest {
         Assert.assertEquals(0x1FEEEEEE, style.divider);
     }
 
-    private static int[] hostPalette(int page, int row) {
-        SettingsStyle style = styleOn(page, row, 0xFF3A3E4A);
+    private static int[] hostPalette() {
+        SettingsStyle style = styleOn(0xFFF3F3F3, 0xFFFFFFFF, 0xFF3A3E4A);
         return new int[] { style.screenBackground, style.cardSurface, style.divider, style.primaryText,
                 style.secondaryText, style.accent };
     }

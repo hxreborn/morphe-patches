@@ -62,7 +62,7 @@ public class SponsoredProductsTest {
     @Test
     public void retainProductsWithNonObjectSponsorshipValues() {
         Map<String, Object> product = product("organic", "false");
-        List<Object> products = new ArrayList<>(Arrays.asList(product));
+        List<Object> products = new ArrayList<>(Collections.singletonList(product));
 
         Map<String, Object> source = new HashMap<>();
         source.put("listItems", products);
@@ -73,7 +73,7 @@ public class SponsoredProductsTest {
 
     @Test
     public void preserveOtherArraysContainingSponsoredProducts() {
-        List<Object> images = Arrays.asList(product("image", new HashMap<>()));
+        List<Object> images = Collections.singletonList(product("image", new HashMap<>()));
         Map<String, Object> source = new HashMap<>();
         source.put("images", images);
 
