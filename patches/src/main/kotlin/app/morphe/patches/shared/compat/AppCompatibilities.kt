@@ -2172,7 +2172,13 @@ internal object AppCompatibilities {
         packageName = "com.nextdoor",
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0x1B8751,
-        signatures = setOf("6b0039757b3666404626f2d606ee17b56ad47770f5aebad2d7b7326882190dbd"),
-        targets = listOf(AppTarget(version = "5.39.2", versionCode = 1254760, minSdk = 26)),
+        signatures = setOf(
+            "6b0039757b3666404626f2d606ee17b56ad47770f5aebad2d7b7326882190dbd",
+            "8c9c1bb5ffab26c1d2e7b0132ed74d58b11898b336c090133d8968e50192a448",
+        ),
+        targets = listOf(
+            AppTarget(version = "5.38.1", versionCode = 1254609, minSdk = 26),
+            AppTarget(version = "5.39.2", versionCode = 1254760, minSdk = 26),
+        ),
     )
 }
