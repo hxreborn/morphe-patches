@@ -17,7 +17,7 @@ private const val EXTRA_MOVES = 5
 @Suppress("unused")
 val addExtraMovesPatch = bytecodePatch(
     name = "Add extra moves",
-    description = "Starts every level with five extra moves. Requires a standard install on a 64-bit ARM device.",
+    description = "Starts every level with five extra moves.",
 ) {
     compatibleWith(AppCompatibilities.BLOSSOM_BLAST_SAGA)
     availability(requireArm64StandardInstall)

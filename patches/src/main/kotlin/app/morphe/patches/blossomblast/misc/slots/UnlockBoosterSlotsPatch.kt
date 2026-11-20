@@ -26,7 +26,7 @@ private const val INT_WIDTH = 4
 @Suppress("unused")
 val unlockBoosterSlotsPatch = bytecodePatch(
     name = "Unlock booster slots",
-    description = "Opens all booster slots from level 2. Requires a standard install on a 64-bit ARM device.",
+    description = "Opens all booster slots from level 2.",
 ) {
     compatibleWith(AppCompatibilities.BLOSSOM_BLAST_SAGA)
     availability(requireArm64StandardInstall)

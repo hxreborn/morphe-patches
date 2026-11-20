@@ -18,8 +18,7 @@ private val BOOSTER_NAMES = listOf("shovel", "water", "color")
 @Suppress("unused")
 val addBoostersPatch = bytecodePatch(
     name = "Add boosters",
-    description = "Tops up each booster to 999 every time the game starts. " +
-        "Requires a standard install on a 64-bit ARM device.",
+    description = "Tops up each booster to 999 every time the game starts.",
 ) {
     compatibleWith(AppCompatibilities.BLOSSOM_BLAST_SAGA)
     availability(requireArm64StandardInstall)

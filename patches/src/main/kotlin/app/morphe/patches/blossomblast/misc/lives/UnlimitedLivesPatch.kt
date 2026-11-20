@@ -17,8 +17,7 @@ private const val SECONDS_PER_HOUR = 3600
 @Suppress("unused")
 val unlimitedLivesPatch = bytecodePatch(
     name = "Unlimited lives",
-    description = "Gives unlimited lives for 24 hours every time the game starts. " +
-        "Requires a standard install on a 64-bit ARM device.",
+    description = "Gives unlimited lives for 24 hours every time the game starts.",
 ) {
     compatibleWith(AppCompatibilities.BLOSSOM_BLAST_SAGA)
     availability(requireArm64StandardInstall)
