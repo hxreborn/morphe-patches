@@ -593,8 +593,10 @@ def build_index():
     for theme in TAPE_THEMES:
         files[f"tape-{theme}.svg"] = readme_graphics.tape_svg(tape, theme) if tape else None
     if tape:
-        pictures = "".join(f'<img src="{GRAPHICS_PATH}/tape-{theme}.svg#gh-{theme}-mode-only" width="100%" height="40" alt="Latest changes">' for theme in TAPE_THEMES)
-        lines += ["", f'<p align="center"><a href="https://github.com/{owner}/{repo}/releases">{pictures}</a></p>']
+        tape_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{GRAPHICS_PATH}/tape"
+        picture = (f'<picture><source media="(prefers-color-scheme: dark)" srcset="{tape_url}-dark.svg">'
+                   f'<img src="{tape_url}-light.svg" width="{readme_graphics.TAPE_WIDTH}" alt="Latest changes"></picture>')
+        lines += ["", f'<p align="center"><a href="https://github.com/{owner}/{repo}/releases">{picture}</a></p>']
     return "\n".join(lines), files
 
 

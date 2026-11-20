@@ -20,7 +20,7 @@ ACCENT = '<linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" st
 TAPE_HEIGHT = 40
 TAPE_TEXT_SIZE = 16
 TAPE_SPEED = 38
-TAPE_MIN_WIDTH = 3200
+TAPE_WIDTH = 600
 TAPE_SEPARATOR = "   •   "
 TAPE_PALETTE = {
     "dark": {"fg": "#f0f6fc", "muted": "#9198a1"},
@@ -98,18 +98,19 @@ def tape_svg(items, theme):
     runs = tape_runs(items)
     weights = {"n": 600, "l": 600, "m": 500, "s": 500}
     cycle = sum(text_width(weights[kind], TAPE_TEXT_SIZE, text) for kind, text in runs)
-    copies = int(TAPE_MIN_WIDTH // cycle) + 2
-    spans = "".join(f'<tspan class="{kind}">{xml(text)}</tspan>' for kind, text in runs * copies)
+    copies = int(TAPE_WIDTH // cycle) + 2
+    spans = "".join(f'<tspan class="{kind}">{xml(text)}</tspan>' for kind, text in runs)
+    lines = "".join(f'<text x="{copy * cycle:.2f}" y="{TAPE_HEIGHT // 2 + 6}" xml:space="preserve">{spans}</text>' for copy in range(copies))
     text = "".join(text for _, text in runs)
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="{TAPE_HEIGHT}" role="img">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {TAPE_WIDTH} {TAPE_HEIGHT}" width="{TAPE_WIDTH}" height="{TAPE_HEIGHT}" role="img">
 <defs><style>@font-face{{font-family:T;font-weight:500;src:url(data:font/woff2;base64,{embedded_font(500, text)})}}@font-face{{font-family:T;font-weight:600;src:url(data:font/woff2;base64,{embedded_font(600, text)})}}
 text{{font-family:T,sans-serif;font-size:{TAPE_TEXT_SIZE}px;font-weight:500}}.n{{font-weight:600;fill:{palette["fg"]}}}.l{{font-weight:600;fill:#2aa7e0}}.m{{fill:{palette["muted"]}}}.s{{fill:#2aa7e0}}
 @keyframes run{{from{{transform:translateX(0)}}to{{transform:translateX(-{cycle:.2f}px)}}}}.run{{animation:run {cycle / TAPE_SPEED:.1f}s linear infinite}}
 @media (prefers-reduced-motion:reduce){{.run{{animation:none}}}}</style>
 <linearGradient id="accent" x1="0" x2="1"><stop offset="0" stop-color="#2aa7e0"/><stop offset="1" stop-color="#5fd0d8"/></linearGradient>
 <linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".06" stop-color="#fff"/><stop offset=".94" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<mask id="edges" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="{TAPE_HEIGHT}"><rect x="0" y="0" width="100%" height="{TAPE_HEIGHT}" fill="url(#fade)"/></mask></defs>
-<rect x="0" y="0" width="100%" height="2" fill="url(#accent)"/><rect x="0" y="{TAPE_HEIGHT - 2}" width="100%" height="2" fill="url(#accent)"/>
-<g mask="url(#edges)"><g class="run"><text x="0" y="{TAPE_HEIGHT // 2 + 6}" textLength="{cycle * copies:.2f}" lengthAdjust="spacing" xml:space="preserve">{spans}</text></g></g>
+<mask id="edges" maskUnits="userSpaceOnUse" x="0" y="0" width="{TAPE_WIDTH}" height="{TAPE_HEIGHT}"><rect x="0" y="0" width="{TAPE_WIDTH}" height="{TAPE_HEIGHT}" fill="url(#fade)"/></mask></defs>
+<rect x="0" y="0" width="{TAPE_WIDTH}" height="2" fill="url(#accent)"/><rect x="0" y="{TAPE_HEIGHT - 2}" width="{TAPE_WIDTH}" height="2" fill="url(#accent)"/>
+<g mask="url(#edges)"><g class="run">{lines}</g></g>
 </svg>
 '''

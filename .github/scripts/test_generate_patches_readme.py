@@ -169,7 +169,7 @@ with tempfile.TemporaryDirectory() as temp:
         assert (graphics / f"{button}.svg").read_bytes() == (ROOT / ".github/readme" / f"{button}.svg").read_bytes(), button
         assert f'src=".github/readme/{button}.svg"' in readme, button
     tape_files = {(graphics / f"tape-{theme}.svg").is_file() for theme in ("light", "dark")}
-    assert tape_files == {".github/readme/tape-light.svg#gh-light-mode-only" in readme}
+    assert tape_files == {"/.github/readme/tape-light.svg" in readme}
     assert readme.split(INDEX_START)[0] == original.split(INDEX_START)[0]
 
 with tempfile.TemporaryDirectory() as temp:

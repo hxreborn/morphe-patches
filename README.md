@@ -19,7 +19,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <a href="#-disclaimer"><img src=".github/readme/disclaimer.svg" width="155" alt="Disclaimer"></a>&nbsp;<a href="#-license"><img src=".github/readme/license.svg" width="155" alt="License"></a>
 </p>
 
-<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><img src=".github/readme/tape-light.svg#gh-light-mode-only" width="100%" height="40" alt="Latest changes"><img src=".github/readme/tape-dark.svg#gh-dark-mode-only" width="100%" height="40" alt="Latest changes"></a></p>
+<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
 <!-- INDEX_END -->
 
 </div>
