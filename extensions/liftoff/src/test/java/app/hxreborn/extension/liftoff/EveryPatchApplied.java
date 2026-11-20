@@ -24,6 +24,7 @@ import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
 @Implements(AppliedPatches.class)
+@SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
 public final class EveryPatchApplied {
 
     static final String PREMIUM_DESCRIPTION = "Unlocks rank analysis, bodygraph and nutrition tools. Requires an account.";

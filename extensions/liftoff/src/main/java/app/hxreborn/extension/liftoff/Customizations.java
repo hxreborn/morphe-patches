@@ -102,8 +102,7 @@ public final class Customizations {
         try {
             Object root = new JSONTokener(body).nextValue();
             boolean changed = false;
-            if (root instanceof JSONArray) {
-                JSONArray responses = (JSONArray) root;
+            if (root instanceof JSONArray responses) {
                 for (int index = 0; index < procedures.length; index++) {
                     if (PROFILE_PROCEDURE.equals(procedures[index])) {
                         changed |= grantCustomizations(responses.optJSONObject(index));

@@ -48,6 +48,7 @@ import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = EveryPatchApplied.class, sdk = { 23, 36 })
+@SuppressWarnings("DataFlowIssue")
 public final class PatchesMenuTest {
 
     private static final int WINDOW_WIDTH_PX = 1080;
@@ -311,8 +312,7 @@ public final class PatchesMenuTest {
         if (view instanceof TextView && value.contentEquals(((TextView) view).getText())) {
             return (TextView) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 TextView found = text(group.getChildAt(index), value);
                 if (found != null) {
@@ -327,8 +327,7 @@ public final class PatchesMenuTest {
         if (view.getContentDescription() != null && value.contentEquals(view.getContentDescription())) {
             return view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 View found = description(group.getChildAt(index), value);
                 if (found != null) {
