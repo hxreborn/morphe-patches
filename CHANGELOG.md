@@ -1,3 +1,29 @@
+## [1.84.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.84.0...v1.84.1-dev.1) (2026-11-20)
+
+### Bug Fixes
+
+* **AliExpress:** skip missing icons in patches settings ([c472350](https://github.com/hxreborn/morphe-patches/commit/c47235045ee4a6b0b356fc2ad51366cafddf899c))
+* apply code inspection fixes to shared extension code ([190dd4d](https://github.com/hxreborn/morphe-patches/commit/190dd4dd18d843d7a87c645de3e97bed54aa2599))
+* **BeReal:** keep stock behaviour when camera or post data is missing ([c6fe71f](https://github.com/hxreborn/morphe-patches/commit/c6fe71ff241ccc74a9454e145919b6a313f07508))
+* **BitTorrent - Fix screen insets:** apply code inspection fixes ([f5893e1](https://github.com/hxreborn/morphe-patches/commit/f5893e15c4ea2a6107a20685428956313831e151))
+* **Candy Crush Saga:** apply code inspection fixes ([481bceb](https://github.com/hxreborn/morphe-patches/commit/481bceba5f0148421eae8288018acd8d12c29f51))
+* **Castle - Unlock premium:** apply code inspection fixes ([8e3e415](https://github.com/hxreborn/morphe-patches/commit/8e3e41598f340deff736eba8946b4125df55cc4f))
+* **Cx File Explorer - Dark theme:** apply code inspection fixes ([8ec706d](https://github.com/hxreborn/morphe-patches/commit/8ec706d51b75dcd973ab92fe26a3f5718c882560))
+* **Habitify - Unlock premium:** apply code inspection fixes ([afec76f](https://github.com/hxreborn/morphe-patches/commit/afec76f50c1d09fe48fc9fa49a455615d1dc135f))
+* **Keepa - Multiple accounts:** apply code inspection fixes ([f237530](https://github.com/hxreborn/morphe-patches/commit/f237530f1504cf980e6beeabbb582ca5f349ab18))
+* **Liftoff:** apply code inspection fixes ([d1437d4](https://github.com/hxreborn/morphe-patches/commit/d1437d44ff22e7233b778d1371b9740a8d1d1723))
+* **Muviz Widgets - Fix weather:** apply code inspection fixes ([cd7319f](https://github.com/hxreborn/morphe-patches/commit/cd7319fb400b87fab1584b36c682c9389565cb95))
+* **Network Analyzer:** log network tool failures ([d9e8e0e](https://github.com/hxreborn/morphe-patches/commit/d9e8e0e9e388ef263e5f381811b6cc89912f7da9))
+* **Photo Editor Pro:** log unreadable AI run history ([6e4a288](https://github.com/hxreborn/morphe-patches/commit/6e4a288fa8bd18a44483a1b46ff80caeff51e1da))
+* **Proton:** apply code inspection fixes ([143913b](https://github.com/hxreborn/morphe-patches/commit/143913bfa54224824d94280b9f8085d526bb4b6d))
+* **Pydroid 3 - AMOLED dark theme:** apply code inspection fixes ([a037630](https://github.com/hxreborn/morphe-patches/commit/a0376303199b51f36dcbaa55d023e3177a0615f8))
+* **Quranify:** apply code inspection fixes ([272eb52](https://github.com/hxreborn/morphe-patches/commit/272eb523d04e08c282dd4b313e9c0614245e1e87))
+* **Raindrop.io - Accent color:** log failed accent cache cleanup ([349a16b](https://github.com/hxreborn/morphe-patches/commit/349a16bc1e660836f768e58bfd64ff2c63515590))
+* **ReadEra:** apply code inspection fixes ([2c7fea8](https://github.com/hxreborn/morphe-patches/commit/2c7fea8ebf0e8b16207f0eeb90118ce9e9fc4c5a))
+* **TeraBox:** apply code inspection fixes ([c7e2ef1](https://github.com/hxreborn/morphe-patches/commit/c7e2ef12f7c567743f8ffca3af2080345a52e7ad))
+* **ULTIMEA:** log unreadable equalizer presets ([f4571a2](https://github.com/hxreborn/morphe-patches/commit/f4571a27398cbebfaaf6c5b2c1670cf57c4175fa))
+* **Viber:** apply code inspection fixes ([a2d10a8](https://github.com/hxreborn/morphe-patches/commit/a2d10a8ae4489e66ac62b167a84de13d9140c914))
+
 ## [1.84.0](https://github.com/hxreborn/morphe-patches/compare/v1.83.0...v1.84.0) (2026-11-20)
 
 ### Bug Fixes
