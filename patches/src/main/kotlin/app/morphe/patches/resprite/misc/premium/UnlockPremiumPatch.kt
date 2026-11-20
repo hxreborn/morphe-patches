@@ -24,7 +24,12 @@ internal val GET_PREMIUM_ITEM_APPEND =
     ("615f4091217c42f9013001b8a1835ff801b001b8c2c2009102f002b8027003b863c34091630c41f903b003b8" +
         "a4835df881b040b885f040b8a5801c8ba6b040b8257c4193a5031af8c17c4193").hexToByteArray()
 
-internal val GET_PREMIUM_ITEM_APPEND_MASK = ByteArray(GET_PREMIUM_ITEM_APPEND.size) { 0xff.toByte() }
+internal val GET_PREMIUM_ITEM_APPEND_MASK =
+    (
+        "ffffffffff03c0ffffffffffffffffffffffffffffffffffffffffffffffffffff" +
+        "03c0ffff03c0ffffffffffffffffffffffffffffffffffffffffffffffffffffff" +
+        "ffffffffffffffffffff"
+    ).hexToByteArray()
 
 private const val GET_PREMIUM_ITEM_APPEND_OFFSET = 0x2c
 
