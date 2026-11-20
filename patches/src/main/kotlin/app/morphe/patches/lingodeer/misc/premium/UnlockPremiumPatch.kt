@@ -11,7 +11,7 @@ import app.morphe.patches.lingodeer.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
-import app.morphe.patches.shared.misc.requireArm
+import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
@@ -21,7 +21,7 @@ val unlockPremiumPatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.LINGODEER)
 
-    availability(requireArm)
+    availability(requireArm64)
 
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, spoofSignaturePatch)
 

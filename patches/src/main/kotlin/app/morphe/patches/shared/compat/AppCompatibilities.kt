@@ -977,7 +977,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b341b1d855ee55eb2c6c9287eaafc6449c0b34065e170af7bf5bc21a03f05bf2",
         ),
-        targets = listOf(AppTarget(version = "2.99.419", versionCode = 683, minSdk = 26)),
+        targets = listOf(AppTarget(version = "2.99.423", versionCode = 687, minSdk = 26)),
     )
 
     val LUMO = Compatibility(
