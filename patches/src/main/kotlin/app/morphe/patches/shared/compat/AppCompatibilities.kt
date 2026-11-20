@@ -658,6 +658,16 @@ internal object AppCompatibilities {
         ),
     )
 
+    val FLIPACLIP = Compatibility(
+        name = "FlipaClip",
+        packageName = "com.vblast.flipaclip",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf(
+            "9addfb5e975ac696d02c1a6b9c0d5035be76d587761ba3ddac1bf551b2b6a0cd",
+        ),
+        targets = listOf(AppTarget(version = "5.0.3", versionCode = 962, minSdk = 24)),
+    )
+
     val FLIGHTS25 = Compatibility(
         name = "Flights25",
         packageName = "de.app.flighttracker",

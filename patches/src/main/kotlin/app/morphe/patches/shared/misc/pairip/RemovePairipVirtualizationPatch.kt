@@ -271,6 +271,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
         AppCompatibilities.CATZY,
         AppCompatibilities.CONNECTED2,
         AppCompatibilities.DEVCHECK,
+        AppCompatibilities.FLIPACLIP,
         AppCompatibilities.GLASS_WIDGETS,
         AppCompatibilities.HINDU_CALENDAR,
         AppCompatibilities.INTERNET_SPEED_METER_LITE,
