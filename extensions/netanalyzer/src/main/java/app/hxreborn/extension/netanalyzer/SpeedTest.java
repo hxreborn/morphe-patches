@@ -50,8 +50,10 @@ import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +61,8 @@ import org.json.JSONObject;
 final class SpeedTest {
 
     static final long PHASE_MS = 15000;
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final String SERVERS_URL = "https://www.speedtest.net/api/js/servers?engine=js&limit=20";
 
@@ -195,7 +199,7 @@ final class SpeedTest {
 
     private final Random random = new Random();
 
-    private final Set<Socket> sockets = Collections.newSetFromMap(new ConcurrentHashMap<Socket, Boolean>());
+    private final Set<Socket> sockets = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private final List<Parked> parked = new ArrayList<>();
 
@@ -282,6 +286,7 @@ final class SpeedTest {
         return System.nanoTime() / 1000000L;
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     private static void closeQuietly(Socket socket) {
         if (socket == null) {
             return;
@@ -360,13 +365,16 @@ final class SpeedTest {
         closeAll();
         if (current != null) {
             try {
-                current.awaitTermination(SHUTDOWN_WAIT_MS, TimeUnit.MILLISECONDS);
+                if (!current.awaitTermination(SHUTDOWN_WAIT_MS, TimeUnit.MILLISECONDS)) {
+                    Log.w(TAG, "Speed test workers did not stop in time");
+                }
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
         }
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private List<Server> fetchServers() throws IOException, JSONException {
         final HttpURLConnection connection = (HttpURLConnection) new URL(SERVERS_URL).openConnection();
         this.listRequest = connection;
@@ -385,7 +393,7 @@ final class SpeedTest {
                     body.write(buffer, 0, read);
                 }
             }
-            final JSONArray array = new JSONArray(new String(body.toByteArray(), StandardCharsets.UTF_8));
+            final JSONArray array = new JSONArray(body.toString(StandardCharsets.UTF_8.name()));
             final List<Server> servers = new ArrayList<>();
             for (int i = 0; i < array.length() && servers.size() < SERVER_LIMIT; i++) {
                 final JSONObject item = array.optJSONObject(i);
@@ -474,6 +482,7 @@ final class SpeedTest {
         return sampler.result();
     }
 
+    @SuppressWarnings("BusyWait")
     private void waitPhase(Sampler sampler, List<UploadConnection> connections) throws InterruptedException {
         final long start = sampler.start;
         final long end = start + this.phaseMillis;
@@ -497,7 +506,9 @@ final class SpeedTest {
         sampler.close();
         phasePool.shutdownNow();
         closeActive();
-        phasePool.awaitTermination(SHUTDOWN_WAIT_MS, TimeUnit.MILLISECONDS);
+        if (!phasePool.awaitTermination(SHUTDOWN_WAIT_MS, TimeUnit.MILLISECONDS)) {
+            Log.w(TAG, "Speed test phase workers did not stop in time");
+        }
     }
 
     private void downloadLoop(Server first, List<Server> servers, Sampler sampler) {
@@ -535,11 +546,12 @@ final class SpeedTest {
             }
             if (total < FAILED_ATTEMPT_BYTES && sampler.isOpen()) {
                 server = servers.get(this.random.nextInt(servers.size()));
-                pause(RETRY_DELAY_MS);
+                pause();
             }
         }
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     private void preConnect(Server server, Sampler sampler) {
         Socket socket = null;
         boolean kept = false;
@@ -600,9 +612,9 @@ final class SpeedTest {
         }
     }
 
-    private void pause(long millis) {
+    private void pause() {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(RETRY_DELAY_MS);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
@@ -661,6 +673,7 @@ final class SpeedTest {
     }
 
     @TargetApi(Build.VERSION_CODES.N)
+    @SuppressLint("UseRequiresApi")
     private static void requireHostnameCheck(SSLSocket socket) {
         final SSLParameters parameters = socket.getSSLParameters();
         parameters.setEndpointIdentificationAlgorithm(HTTPS_IDENTIFICATION);
@@ -827,6 +840,7 @@ final class SpeedTest {
         }
 
         @Override
+        @SuppressWarnings("EmptyCatchBlock")
         public void run() {
             Server target = this.first;
             while (this.sampler.isOpen() && !SpeedTest.this.cancelled) {
@@ -850,7 +864,7 @@ final class SpeedTest {
                     if (moved == 0) {
                         target = this.servers.get(SpeedTest.this.random.nextInt(this.servers.size()));
                     }
-                    pause(RETRY_DELAY_MS);
+                    pause();
                 }
             }
         }
@@ -914,6 +928,7 @@ final class SpeedTest {
             return session.credited;
         }
 
+        @SuppressWarnings({ "EmptyCatchBlock", "NonAtomicOperationOnVolatileField" })
         private void readAcks(Session session) {
             long previous = now();
             try {
@@ -943,7 +958,7 @@ final class SpeedTest {
             }
         }
 
-        private final class Session {
+        private static final class Session {
 
             final Socket socket;
 

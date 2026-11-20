@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class LanScanResultsActivity extends HostScreenActivity {
 

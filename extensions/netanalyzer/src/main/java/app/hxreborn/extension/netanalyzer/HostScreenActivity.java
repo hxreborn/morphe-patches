@@ -22,6 +22,7 @@ package app.hxreborn.extension.netanalyzer;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -54,6 +55,8 @@ import android.widget.TextView;
 import app.hxreborn.extension.shared.Dimensions;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
+@SuppressWarnings({ "UnusedReturnValue", "SameParameterValue" })
 abstract class HostScreenActivity extends Activity {
 
     static final TextStyle TITLE_LARGE = new TextStyle(22, 28, 0f, TextStyle.MEDIUM);
@@ -139,6 +142,7 @@ abstract class HostScreenActivity extends Activity {
     private LinearLayout topBar;
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
@@ -570,14 +574,11 @@ abstract class HostScreenActivity extends Activity {
         static final String NOT_AVAILABLE = "N/A";
 
         int color(HostPalette palette) {
-            switch (this) {
-                case POSITIVE:
-                    return POSITIVE_DOT;
-                case NEGATIVE:
-                    return NEGATIVE_DOT;
-                default:
-                    return palette.grey;
-            }
+            return switch (this) {
+                case POSITIVE -> POSITIVE_DOT;
+                case NEGATIVE -> NEGATIVE_DOT;
+                default -> palette.grey;
+            };
         }
 
         static Status of(boolean positive, boolean gray) {

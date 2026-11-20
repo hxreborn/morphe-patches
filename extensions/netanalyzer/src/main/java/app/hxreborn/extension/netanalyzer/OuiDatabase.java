@@ -29,8 +29,11 @@ import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
+import android.util.Log;
 
 final class OuiDatabase {
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final String FILE = "oui_database.db";
 
@@ -70,6 +73,7 @@ final class OuiDatabase {
         } catch (SQLiteDoneException ex) {
             return null;
         } catch (SQLiteException ex) {
+            Log.w(TAG, "OUI database lookup failed", ex);
             return null;
         }
     }

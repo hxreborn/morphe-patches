@@ -170,6 +170,7 @@ public final class DnsExport extends TableExport {
         throw new NoSuchMethodException("No type mnemonic lookup on " + table.getClass());
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static Object field(Object record, String property) throws ReflectiveOperationException {
         final Field field = record.getClass().getDeclaredField(RECORD_FIELD_NAMES.get(property));
         field.setAccessible(true);

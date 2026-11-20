@@ -20,12 +20,14 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class SettingsActivity extends HostScreenActivity {
 
@@ -46,6 +48,7 @@ public final class SettingsActivity extends HostScreenActivity {
     }
 
     @Override
+    @SuppressLint("ApplySharedPref")
     void buildContent() {
         this.preferences = getSharedPreferences(getPackageName() + HostPalette.PREFERENCES_SUFFIX, MODE_PRIVATE);
 

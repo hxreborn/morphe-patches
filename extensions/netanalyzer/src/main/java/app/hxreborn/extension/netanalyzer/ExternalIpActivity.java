@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.Collections;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.Log;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class ExternalIpActivity extends HostScreenActivity {
 

@@ -321,6 +321,7 @@ public final class InformationExport implements ExportSource {
                 + (secondsOfHour / SECONDS_PER_MINUTE) + "m " + (secondsOfHour % SECONDS_PER_MINUTE) + "s";
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String addresses(Object connection, String property) throws ReflectiveOperationException {
         final StringBuilder joined = new StringBuilder();
         for (Object address : (Iterable<?>) value(connection, CONNECTION_FIELDS, property)) {
@@ -358,6 +359,7 @@ public final class InformationExport implements ExportSource {
         return method.invoke(null, true);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static Object value(Object owner, Map<String, String> names, String property)
             throws ReflectiveOperationException {
         final Field field = owner.getClass().getDeclaredField(names.get(property));

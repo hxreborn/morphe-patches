@@ -26,6 +26,7 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Network;
@@ -34,6 +35,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings({ "unused", "unchecked" })
 public final class UpnpActivity extends BrowserScreenActivity {
 
@@ -80,10 +82,10 @@ public final class UpnpActivity extends BrowserScreenActivity {
         }
         final List<UpnpDevice> devices;
         if (browsing()) {
-            devices = (this.browser != null) ? this.browser.devices() : Collections.<UpnpDevice>emptyList();
+            devices = (this.browser != null) ? this.browser.devices() : Collections.emptyList();
         } else {
             final Object nestedDevices = argument();
-            devices = (nestedDevices != null) ? (List<UpnpDevice>) nestedDevices : Collections.<UpnpDevice>emptyList();
+            devices = (nestedDevices != null) ? (List<UpnpDevice>) nestedDevices : Collections.emptyList();
         }
         for (UpnpDevice device : devices) {
             if (matches(ipFilter(), device.address)) {

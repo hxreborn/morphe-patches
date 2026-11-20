@@ -22,7 +22,6 @@ package app.hxreborn.extension.netanalyzer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
@@ -60,16 +59,12 @@ final class SpeedHistory {
         return entries;
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     static void add(Context context, long downloadBytesPerSecond, long uploadBytesPerSecond) {
         final List<Entry> entries = load(context);
         entries.add(new Entry(ConnectedNetwork.transportLabel(context), ConnectedNetwork.ssid(context),
                 System.currentTimeMillis(), downloadBytesPerSecond, uploadBytesPerSecond));
-        Collections.sort(entries, new Comparator<Entry>() {
-            @Override
-            public int compare(Entry first, Entry second) {
-                return Long.compare(first.date, second.date);
-            }
-        });
+        Collections.sort(entries, (first, second) -> Long.compare(first.date, second.date));
         save(context, entries.subList(Math.max(0, entries.size() - HISTORY_LIMIT), entries.size()));
     }
 

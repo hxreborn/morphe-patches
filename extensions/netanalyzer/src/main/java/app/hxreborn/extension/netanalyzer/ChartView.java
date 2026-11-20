@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -32,6 +33,7 @@ import android.view.View;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("ViewConstructor")
 final class ChartView extends View {
 
     private static final float LABEL_TEXT_DP = 10f;
@@ -124,6 +126,7 @@ final class ChartView extends View {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         final double[] yEntries = this.yAxis.entries();
         final double[] xEntries = this.xAxis.entries();

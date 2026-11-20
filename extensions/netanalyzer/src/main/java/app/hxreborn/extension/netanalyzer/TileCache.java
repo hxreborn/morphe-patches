@@ -46,6 +46,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.LruCache;
 
 final class TileCache {
@@ -73,6 +74,8 @@ final class TileCache {
     private static final String HEADER_USER_AGENT = "User-Agent";
 
     private static final String HEADER_IF_NONE_MATCH = "If-None-Match";
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final String HEADER_ETAG = "ETag";
 
@@ -119,7 +122,7 @@ final class TileCache {
         this.listener = listener;
         this.root = new File(context.getCacheDir(), DISK_DIRECTORY);
         final int memoryKilobytes = (int) (Runtime.getRuntime().maxMemory() / BYTES_PER_KILOBYTE / MEMORY_FRACTION);
-        this.memory = new LruCache<String, Bitmap>(memoryKilobytes) {
+        this.memory = new LruCache<>(memoryKilobytes) {
 
             @Override
             protected int sizeOf(String key, Bitmap value) {
@@ -237,6 +240,7 @@ final class TileCache {
         return DEFAULT_TTL_MILLIS;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static void writeFile(File file, HttpURLConnection connection) throws IOException {
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         try (InputStream input = connection.getInputStream()) {
@@ -247,7 +251,10 @@ final class TileCache {
             }
         }
         final File temporary = new File(file.getPath() + TEMPORARY_EXTENSION);
-        file.getParentFile().mkdirs();
+        final File parent = file.getParentFile();
+        if (!parent.mkdirs() && !parent.isDirectory()) {
+            throw new IOException(STORE_MESSAGE + parent);
+        }
         try (OutputStream output = new FileOutputStream(temporary)) {
             bytes.writeTo(output);
         }
@@ -262,8 +269,8 @@ final class TileCache {
         }
         try (InputStream input = new FileInputStream(file)) {
             final Bitmap bitmap = BitmapFactory.decodeStream(input);
-            if (bitmap == null) {
-                file.delete();
+            if (bitmap == null && !file.delete()) {
+                Log.w(TAG, "Failed to delete undecodable tile");
             }
             return bitmap;
         } catch (IOException ex) {

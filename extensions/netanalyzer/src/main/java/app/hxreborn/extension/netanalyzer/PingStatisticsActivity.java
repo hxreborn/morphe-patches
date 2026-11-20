@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -36,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class PingStatisticsActivity extends HostScreenActivity {
 

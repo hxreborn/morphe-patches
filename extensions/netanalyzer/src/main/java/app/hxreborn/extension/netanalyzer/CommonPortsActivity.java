@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class CommonPortsActivity extends HostScreenActivity {
 

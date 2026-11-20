@@ -57,6 +57,7 @@ final class Probe {
 
     final Date time;
 
+    @SuppressWarnings("DataFlowIssue")
     private Probe(Object probe, Map<String, Field> fields) throws ReflectiveOperationException {
         this.address = (InetAddress) fields.get("address").get(probe);
         this.hostname = (String) fields.get("hostname").get(probe);

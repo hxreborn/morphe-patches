@@ -21,6 +21,7 @@
 package app.hxreborn.extension.netanalyzer;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -30,6 +31,7 @@ import android.view.animation.LinearInterpolator;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("ViewConstructor")
 final class ProgressArc extends View {
 
     private static final float STROKE_DP = 3f;
@@ -83,6 +85,7 @@ final class ProgressArc extends View {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         final float inset = this.paint.getStrokeWidth() / 2;
         this.bounds.set(inset, inset, getWidth() - inset, getHeight() - inset);

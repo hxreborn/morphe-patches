@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -34,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class SpeedHistoryActivity extends HostScreenActivity {
 

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -45,6 +47,7 @@ import android.view.View;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("ViewConstructor")
 final class TileMapView extends View {
 
     static final int TILE_SIZE = 256;
@@ -55,7 +58,9 @@ final class TileMapView extends View {
 
     static final double MAX_LATITUDE = 85.05112878;
 
-    private static final String ATTRIBUTION = "\u00a9 OpenStreetMap contributors";
+    private static final String TAG = "hxNetAnalyzer";
+
+    private static final String ATTRIBUTION = "© OpenStreetMap contributors";
 
     private static final String COPYRIGHT_URL = "https://www.openstreetmap.org/copyright";
 
@@ -375,14 +380,11 @@ final class TileMapView extends View {
     }
 
     private static int colorOf(int type) {
-        switch (type) {
-            case MapMarker.TYPE_DESTINATION:
-                return DESTINATION_COLOR;
-            case MapMarker.TYPE_USER_LOCATION:
-                return USER_COLOR;
-            default:
-                return HOP_COLOR;
-        }
+        return switch (type) {
+            case MapMarker.TYPE_DESTINATION -> DESTINATION_COLOR;
+            case MapMarker.TYPE_USER_LOCATION -> USER_COLOR;
+            default -> HOP_COLOR;
+        };
     }
 
     private static boolean samePositions(List<MapMarker> first, List<MapMarker> second) {
@@ -507,7 +509,7 @@ final class TileMapView extends View {
             getContext().startActivity(
                     new Intent(Intent.ACTION_VIEW, Uri.parse(COPYRIGHT_URL)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         } catch (ActivityNotFoundException ex) {
-            return;
+            Log.w(TAG, "No browser for the copyright page", ex);
         }
     }
 
@@ -526,11 +528,13 @@ final class TileMapView extends View {
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public boolean onDown(MotionEvent event) {
             return true;
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public boolean onScroll(MotionEvent first, MotionEvent second, float distanceX, float distanceY) {
             final double size = displaySize(TileMapView.this.zoom);
             TileMapView.this.centerU += distanceX / size;

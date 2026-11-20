@@ -22,7 +22,6 @@ app/hxreborn/extension/netanalyzer/ExternalIpActivity
 app/hxreborn/extension/netanalyzer/Features
 app/hxreborn/extension/netanalyzer/Features$LanDeviceClickHandler
 app/hxreborn/extension/netanalyzer/FieldLayout
-app/hxreborn/extension/netanalyzer/FieldLayout$1
 app/hxreborn/extension/netanalyzer/FilledField
 app/hxreborn/extension/netanalyzer/HostActivity
 app/hxreborn/extension/netanalyzer/HostActivity$HostRefresh

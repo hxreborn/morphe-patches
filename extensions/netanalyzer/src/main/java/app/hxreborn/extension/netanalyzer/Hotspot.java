@@ -139,6 +139,7 @@ final class Hotspot {
         this.modulation = (Map<?, ?>) values[23];
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     static Hotspot read(Object model) throws ReflectiveOperationException {
         final List<Field> fields = new ArrayList<>();
         for (Field field : model.getClass().getDeclaredFields()) {
@@ -184,6 +185,7 @@ final class Hotspot {
         return this.ciphers.isEmpty() ? protocolList : protocolList + " (" + join(this.ciphers) + ")";
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     String standard() {
         final StringBuilder standard = new StringBuilder();
         final boolean skipLegacyA = this.maxSpeed.get(MODE_AC) != null && this.maxSpeed.get(MODE_AX) != null;
@@ -204,6 +206,7 @@ final class Hotspot {
         return standard.toString();
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String join(List<?> values) {
         final StringBuilder joined = new StringBuilder();
         for (Object value : values) {

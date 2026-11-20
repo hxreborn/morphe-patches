@@ -53,8 +53,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import android.net.Network;
+import android.util.Log;
 
 final class SsdpBrowser {
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final String GROUP_HOST = "239.255.255.250";
 
@@ -231,7 +234,7 @@ final class SsdpBrowser {
         try {
             out.send(new DatagramPacket(SEARCH, SEARCH.length, GROUP, PORT));
         } catch (IOException ex) {
-            return;
+            Log.w(TAG, "Search not sent", ex);
         }
     }
 
@@ -303,7 +306,7 @@ final class SsdpBrowser {
     }
 
     private void fetch(String uuid, String location, int current) {
-        UpnpDevice device = null;
+        UpnpDevice device;
         try {
             device = describe(location);
         } catch (IOException | URISyntaxException ex) {
@@ -341,6 +344,7 @@ final class SsdpBrowser {
         }
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String readResponse(InputStream in) throws IOException {
         final String status = readLine(in);
         if (status == null || !status.contains(HTTP_OK)) {
@@ -381,7 +385,7 @@ final class SsdpBrowser {
         if (body.size() == 0 || body.size() >= MAX_BODY) {
             return null;
         }
-        return new String(body.toByteArray(), StandardCharsets.UTF_8);
+        return body.toString(StandardCharsets.UTF_8.name());
     }
 
     private static void readChunks(InputStream in, ByteArrayOutputStream body) throws IOException {
@@ -419,6 +423,7 @@ final class SsdpBrowser {
         }
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String readLine(InputStream in) throws IOException {
         final StringBuilder line = new StringBuilder();
         int value;

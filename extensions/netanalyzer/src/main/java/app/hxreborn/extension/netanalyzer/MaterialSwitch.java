@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -29,6 +30,7 @@ import android.widget.Checkable;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("ViewConstructor")
 final class MaterialSwitch extends View implements Checkable {
 
     private static final float TRACK_WIDTH_DP = 52f;

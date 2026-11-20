@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Network;
@@ -41,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class BonjourActivity extends BrowserScreenActivity {
 

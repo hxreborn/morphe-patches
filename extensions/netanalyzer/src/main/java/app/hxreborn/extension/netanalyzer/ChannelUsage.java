@@ -106,21 +106,20 @@ final class ChannelUsage {
 
     private final Band band;
 
-    private final List<Network> networks = new ArrayList<>();
-
     private final Map<Integer, List<Network>> stacks = new TreeMap<>();
 
     private int maxStack;
 
     ChannelUsage(Band band, List<Network> scanned) {
         this.band = band;
+        final List<Network> networks = new ArrayList<>();
         for (Network network : scanned) {
             if (band.accepts(network)) {
-                this.networks.add(network);
+                networks.add(network);
             }
         }
-        Collections.sort(this.networks, (left, right) -> right.level - left.level);
-        for (Network network : this.networks) {
+        Collections.sort(networks, (left, right) -> right.level - left.level);
+        for (Network network : networks) {
             spread(network, network.centerChannel);
             if (network.secondCenterChannel != 0) {
                 spread(network, network.secondCenterChannel);
@@ -133,10 +132,6 @@ final class ChannelUsage {
             }
             this.maxStack = Math.max(this.maxStack, total);
         }
-    }
-
-    Band band() {
-        return this.band;
     }
 
     Map<Integer, List<Network>> stacks() {

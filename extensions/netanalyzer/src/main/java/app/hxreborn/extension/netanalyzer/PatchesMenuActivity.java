@@ -20,11 +20,13 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class PatchesMenuActivity extends HostScreenActivity {
 

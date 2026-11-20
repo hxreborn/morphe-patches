@@ -38,6 +38,7 @@ import android.os.Looper;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class VisualTracerouteActivity extends HostScreenActivity {
 
@@ -148,7 +149,7 @@ public final class VisualTracerouteActivity extends HostScreenActivity {
                 pending.clear();
                 country = code;
             }
-            double[] position = null;
+            double[] position;
             if (location != null && location.city != null && location.latitude != null && location.longitude != null) {
                 position = new double[] { location.latitude, location.longitude };
                 for (int index : pending) {

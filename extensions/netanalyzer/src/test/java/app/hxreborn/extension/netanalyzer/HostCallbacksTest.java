@@ -49,22 +49,23 @@ public final class HostCallbacksTest {
     }
 
     @Test
+    @SuppressWarnings({ "EqualsWithItself", "MisorderedAssertEqualsArguments" })
     public void keepsObjectMethodsFromInvokingTheAction() {
         final AtomicInteger calls = new AtomicInteger();
         final Object callback = HostCallbacks.create(HostClick.class, calls::incrementAndGet);
 
         Assert.assertEquals("hxNetAnalyzerClick", callback.toString());
         Assert.assertEquals(System.identityHashCode(callback), callback.hashCode());
-        Assert.assertTrue(callback.equals(callback));
-        Assert.assertFalse(callback.equals(new Object()));
-        Assert.assertFalse(callback.equals(null));
+        Assert.assertEquals(callback, callback);
+        Assert.assertNotEquals(callback, new Object());
+        Assert.assertNotEquals(callback, null);
         Assert.assertEquals(0, calls.get());
     }
 
     @Test
     public void invokesTheOriginalCallbackThroughItsInterface() {
         final AtomicInteger calls = new AtomicInteger();
-        final HostClick callback = () -> calls.incrementAndGet();
+        final HostClick callback = calls::incrementAndGet;
 
         HostCallbacks.invoke(callback);
 

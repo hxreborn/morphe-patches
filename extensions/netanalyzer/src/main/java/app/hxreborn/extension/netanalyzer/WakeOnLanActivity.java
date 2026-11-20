@@ -22,6 +22,7 @@ package app.hxreborn.extension.netanalyzer;
 
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.text.InputType;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class WakeOnLanActivity extends HostScreenActivity {
 

@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class ProbeDetailsActivity extends HostScreenActivity {
 
