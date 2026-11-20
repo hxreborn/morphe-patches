@@ -1,3 +1,24 @@
+## [1.84.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.84.0-dev.1...v1.84.0-dev.2) (2026-11-20)
+
+### Bug Fixes
+
+* **Proton VPN - Unlock connection preferences:** apply to GitHub builds ([ec20baf](https://github.com/hxreborn/morphe-patches/commit/ec20baf84e17fe42a2f8cb9f920740f8b7442aeb)), closes [#956](https://github.com/hxreborn/morphe-patches/issues/956)
+
+### New Features
+
+* **Blossom Blast Saga - Add boosters:** top up each booster to 999 ([62ed216](https://github.com/hxreborn/morphe-patches/commit/62ed216a9b175de556992c87a697ea368b7e2fd4))
+* **Blossom Blast Saga - Add extra moves:** give 5 more moves per level ([d7dd1c2](https://github.com/hxreborn/morphe-patches/commit/d7dd1c261447e3250d405b71b213705613b88742))
+* **Blossom Blast Saga - Hide ads:** stop ad networks and fullscreen ads ([ad821fa](https://github.com/hxreborn/morphe-patches/commit/ad821fabbc85c9829bae762b84e0c0a9430988fa))
+* **Blossom Blast Saga - Unlimited lives:** keep lives full for 24 hours ([9108ee9](https://github.com/hxreborn/morphe-patches/commit/9108ee9b279c837c2743ccb9e3f2bffd6b75ded4))
+* **Blossom Blast Saga - Unlock booster slots:** use pre-level boosters ([6385c79](https://github.com/hxreborn/morphe-patches/commit/6385c799733fcf49e5ed863c0956362f507e67f1))
+* **FlipaClip - Remove ads:** open projects without fullscreen ads ([a17cf6c](https://github.com/hxreborn/morphe-patches/commit/a17cf6c4c023723021f48a0fac84191c27c5d2ab))
+* **FlipaClip - Unlock premium:** use paid tools and export options ([9a033cf](https://github.com/hxreborn/morphe-patches/commit/9a033cff5ea8112bb6a63714603beb1f178397cf))
+* **Flipboard - Disable automatic Home feeds:** keep manual tab order ([031e206](https://github.com/hxreborn/morphe-patches/commit/031e2060f6654a0ae4f5ae131541c7b6b33f39cf))
+* **Flipboard - Remove sponsored cards:** skip article banners ([2560280](https://github.com/hxreborn/morphe-patches/commit/25602805bc643c523467091b2dff58067380c55b))
+* **Nextdoor - Remove sponsored posts:** remove For Sale ads ([a6d87b7](https://github.com/hxreborn/morphe-patches/commit/a6d87b7810b0d3911fb45cac11c8d0c8510e51c6)), closes [#958](https://github.com/hxreborn/morphe-patches/issues/958)
+* **TeraBox - Sort by original date:** show file modification dates ([75e294b](https://github.com/hxreborn/morphe-patches/commit/75e294bdfb9c9b7d8d5f4aff0a0bafc172587502))
+* **Yi iot - Hide ads:** remove Home promo cards and popups ([ade81a1](https://github.com/hxreborn/morphe-patches/commit/ade81a1c8f86200f16f5e407690cc0d82b3bbf29)), closes [#861](https://github.com/hxreborn/morphe-patches/issues/861)
+
 ## [1.84.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.83.0...v1.84.0-dev.1) (2026-11-19)
 
 ### New Features

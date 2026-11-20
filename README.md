@@ -17,7 +17,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.84.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.84.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;581 patches total
+> **[v1.84.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.84.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;590 patches total
 
 ### Featured apps
 
@@ -33,7 +33,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
 </tr>
 <tr>
-<td align="center" width="160"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>11 patches</sub></td>
+<td align="center" width="160"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>12 patches</sub></td>
 <td align="center" width="160"><a href="#imo"><img src=".github/assets/icons/imo.png" width="40"><br>imo</a><br><sub>31 patches</sub></td>
 <td align="center" width="160"><a href="#duolingo"><img src=".github/assets/icons/duolingo.png" width="40"><br>Duolingo</a><br><sub>4 patches</sub></td>
 </tr>
@@ -558,6 +558,26 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
+<a id="blossom-blast-saga"></a>
+<details>
+<summary><img src=".github/assets/icons/blossomblastsaga.png" width="18" align="top">&nbsp;&nbsp;Blossom Blast Saga&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 100.234.0.1 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="blossom-blast-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/boosters/AddBoostersPatch.kt) | Tops up each booster to 999 every time the game starts. Requires a standard install on a 64-bit ARM device. |
+| <a id="blossom-blast-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. Requires a standard install on a 64-bit ARM device. |
+| <a id="blossom-blast-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops ad networks from starting and blocks rewarded and interstitial ads. |
+| <a id="blossom-blast-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/lives/UnlimitedLivesPatch.kt) | Gives unlimited lives for 24 hours every time the game starts. Requires a standard install on a 64-bit ARM device. |
+| <a id="blossom-blast-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/slots/UnlockBoosterSlotsPatch.kt) | Opens all booster slots from level 2. Requires a standard install on a 64-bit ARM device. |
+
+</details>
+
 <a id="blurwall"></a>
 <details>
 <summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
@@ -633,7 +653,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Turns off limited-time events such as races, quests and leagues. |
 | <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Stops game reminders and the notification permission prompt. Requires a standard install. |
 | <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
-| <a id="candy-crush-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops ad networks from starting and blocks rewarded and interstitial ads. |
+| <a id="candy-crush-saga-hide-ads"></a>Hide ads | Stops ad networks from starting and blocks rewarded and interstitial ads. |
 | <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
 | <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes offers to watch an ad for extra moves, lives or boosters. |
 | <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes pop-ups selling bundles, passes and limited-time offers. |
@@ -1086,6 +1106,40 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="flights25-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="flights25-remove-calendar-import-limit"></a>[Remove calendar import limit](patches/src/main/kotlin/app/morphe/patches/flights25/misc/premium/CalendarImportPatch.kt) | Removes limit on single-flight calendar imports. |
 | <a id="flights25-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/flights25/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features. AI imports, Gmail scans and automatic calendar imports are not unlocked. |
+
+</details>
+
+<a id="flipaclip"></a>
+<details>
+<summary><img src=".github/assets/icons/flipaclip.png" width="18" align="top">&nbsp;&nbsp;FlipaClip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 5.0.3 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="flipaclip-remove-ads"></a>[Remove ads](patches/src/main/kotlin/app/morphe/patches/flipaclip/misc/ads/RemoveAdsPatch.kt) | Removes fullscreen ads when opening projects. |
+| <a id="flipaclip-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/flipaclip/misc/premium/UnlockPremiumPatch.kt) | Unlocks paid editing tools and export options. Voice maker and Magic Cut are excluded. |
+
+</details>
+
+<a id="flipboard"></a>
+<details>
+<summary><img src=".github/assets/icons/flipboard.png" width="18" align="top">&nbsp;&nbsp;Flipboard&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 4.3.68 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description |
+|----------|----------------|
+| <a id="flipboard-disable-automatic-home-feeds"></a>[Disable automatic Home feeds](patches/src/main/kotlin/app/morphe/patches/flipboard/home/DisableAutomaticHomeFeedsPatch.kt) | Skips automatically added Home tabs. |
+| <a id="flipboard-remove-sponsored-cards"></a>[Remove sponsored cards](patches/src/main/kotlin/app/morphe/patches/flipboard/ads/RemoveSponsoredCardsPatch.kt) | Removes sponsored cards from feeds and banners from the article reader. |
 
 </details>
 
@@ -2005,7 +2059,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
 | <a id="nextdoor-gmscore-support"></a>GmsCore support | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="nextdoor-remove-sponsored-posts"></a>[Remove sponsored posts](patches/src/main/kotlin/app/morphe/patches/nextdoor/ads/RemoveSponsoredPostsPatch.kt) | Removes sponsored posts from the feed. |
+| <a id="nextdoor-remove-sponsored-posts"></a>[Remove sponsored posts](patches/src/main/kotlin/app/morphe/patches/nextdoor/ads/RemoveSponsoredPostsPatch.kt) | Removes sponsored posts from the feed and For Sale ads from listings and search results. |
 
 </details>
 
@@ -2919,7 +2973,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 <a id="terabox"></a>
 <details>
-<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
+<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -2939,6 +2993,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="terabox-hide-video-recommendations"></a>[Hide video recommendations](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recommendations/HideVideoRecommendationsPatch.kt) | Removes recommendations below the player. |  |
 | <a id="terabox-remove-recent-panel"></a>[Remove recent panel](patches/src/main/kotlin/app/morphe/patches/terabox/misc/recent/RemoveRecentPanelPatch.kt) | Removes Recent, Starred and Offline from Home. |  |
 | <a id="terabox-show-backup-count"></a>[Show backup count](patches/src/main/kotlin/app/morphe/patches/terabox/misc/backup/ShowBackupCountPatch.kt) | Shows remaining files on Home and Photos, including paused backups. |  |
+| <a id="terabox-sort-by-original-date"></a>[Sort by original date](patches/src/main/kotlin/app/morphe/patches/terabox/misc/sort/SortByOriginalDatePatch.kt) | Sorts and displays files by their original modification dates. |  |
 | <a id="terabox-unlock-premium-plus"></a>[Unlock Premium Plus](patches/src/main/kotlin/app/morphe/patches/terabox/misc/premium/UnlockPremiumPatch.kt) | Unlocks HD, 3x speed and uploads, with HD up to original quality. HD buffers faster over parallel connections. |  |
 
 </details>
@@ -3395,7 +3450,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="yi-iot-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/yiiot/ads/HideAdsPatch.kt) | Removes splash, interstitial, banner and native ads. Keeps the optional ad that unlocks an alarm video. |
+| <a id="yi-iot-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/yiiot/ads/HideAdsPatch.kt) | Removes splash, interstitial, banner and native ads. Hides promotional cards and popups on Home and Highlights. Keeps the optional ad that unlocks an alarm video. |
 
 </details>
 
