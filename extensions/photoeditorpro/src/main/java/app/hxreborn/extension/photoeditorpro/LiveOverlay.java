@@ -23,6 +23,7 @@ package app.hxreborn.extension.photoeditorpro;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -125,6 +126,7 @@ final class LiveOverlay {
     private LiveOverlay() {
     }
 
+    @SuppressWarnings("SameParameterValue")
     static void render(View anchor, List<LiveRow> rows, String note) {
         try {
             LinearLayout view = panelFor(anchor);
@@ -148,7 +150,7 @@ final class LiveOverlay {
                 structure = shape;
                 view.removeAllViews();
                 if (rows.isEmpty()) {
-                    view.addView(mono(context, note, PatchPanel.DIM, PATH_SP));
+                    view.addView(mono(context, note, PatchPanel.DIM));
                 }
                 for (LiveRow call : rows) {
                     view.addView(row(context, call), rowParams(context, view.getChildCount() > 0));
@@ -294,6 +296,7 @@ final class LiveOverlay {
         });
     }
 
+    @SuppressLint({ "DiscouragedApi", "InternalInsetResource" })
     private static int statusBarHeight(Context context) {
         int id = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         return (id > 0) ? context.getResources().getDimensionPixelSize(id) : PatchPanel.dp(context, 24);
@@ -311,7 +314,7 @@ final class LiveOverlay {
         badge.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         row.addView(badge, wrap(0));
 
-        TextView path = mono(context, call.path, PATH_FG, PATH_SP);
+        TextView path = mono(context, call.path, PATH_FG);
         path.setSingleLine(true);
         path.setEllipsize(TextUtils.TruncateAt.MIDDLE);
         int gap = PatchPanel.dp(context, PATH_GAP_DP);
@@ -328,6 +331,7 @@ final class LiveOverlay {
         return row;
     }
 
+    @SuppressLint("SetTextI18n")
     private static void update(LinearLayout row, LiveRow call) {
         TextView count = (TextView) row.getChildAt(2);
         boolean repeated = call.count > 1;
@@ -371,11 +375,11 @@ final class LiveOverlay {
         return params;
     }
 
-    private static TextView mono(Context context, String text, int colour, float sp) {
+    private static TextView mono(Context context, String text, int colour) {
         TextView view = new TextView(context);
         view.setText(text);
         view.setTextColor(colour);
-        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, PATH_SP);
         view.setTypeface(Typeface.MONOSPACE);
         return view;
     }
@@ -428,6 +432,7 @@ final class LiveOverlay {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public String toString() {
             return this.label;
         }
@@ -448,6 +453,7 @@ final class LiveOverlay {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public String toString() {
             return this.label;
         }

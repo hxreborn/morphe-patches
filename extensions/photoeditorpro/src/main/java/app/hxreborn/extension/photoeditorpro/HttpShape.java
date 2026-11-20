@@ -212,7 +212,7 @@ final class HttpShape {
         try {
             return method.invoke(target, argument);
         } catch (InvocationTargetException ex) {
-            throw HttpShape.<RuntimeException>rethrow(ex.getCause());
+            throw HttpShape.rethrow(ex.getCause());
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException(ex);
         }
@@ -274,6 +274,7 @@ final class HttpShape {
                 && !Modifier.isAbstract(type.getModifiers());
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String formDecode(Object value) {
         String text = String.valueOf(value);
         try {

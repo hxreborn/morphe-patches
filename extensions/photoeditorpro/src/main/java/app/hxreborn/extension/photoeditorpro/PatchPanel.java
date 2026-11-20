@@ -59,6 +59,7 @@ import app.morphe.extension.shared.settings.Setting;
 import app.hxreborn.extension.shared.ActivityCallbacksAdapter;
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressWarnings("unused")
 public final class PatchPanel {
 
     static final int FG = Color.parseColor("#FFFFFF");
@@ -111,6 +112,8 @@ public final class PatchPanel {
     private static final String AI_TOOLS = "AI tools";
 
     private static final String DIAGNOSTICS = "Diagnostics";
+
+    private static final String TRACE_ROW_TITLE = "AI requests";
 
     private static final Set<String> INSTALLED = new HashSet<>();
 
@@ -213,11 +216,13 @@ public final class PatchPanel {
         return Dimensions.dp(c, v);
     }
 
+    @SuppressWarnings("deprecation")
     static int topInset(WindowInsets insets) {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ? insets.getInsets(WindowInsets.Type.systemBars()).top
                 : insets.getSystemWindowInsetTop();
     }
 
+    @SuppressWarnings("deprecation")
     static int bottomInset(WindowInsets insets) {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
                 ? insets.getInsets(WindowInsets.Type.systemBars()).bottom : insets.getSystemWindowInsetBottom();
@@ -322,6 +327,7 @@ public final class PatchPanel {
         return badge;
     }
 
+    @SuppressWarnings("deprecation")
     public static void show(Activity activity) {
         Dialog dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -370,7 +376,7 @@ public final class PatchPanel {
 
         if (installed(PatchSettings.SHOW_AI_PROGRESS) || installed(PatchSettings.LOG_ENDPOINTS)) {
             content.addView(divider(activity));
-            content.addView(traceRow(activity, "AI requests", RequestLog.summary(), () -> RequestLog.show(activity)));
+            content.addView(traceRow(activity, RequestLog.summary(), () -> RequestLog.show(activity)));
         }
 
         boolean anyAlwaysOn = false;
@@ -540,7 +546,7 @@ public final class PatchPanel {
         return block;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "DataFlowIssue" })
     private static View choiceRow(Activity activity, Entry entry) {
         EnumSetting<Enum<?>> setting = (EnumSetting<Enum<?>>) entry.setting;
         Enum<?>[] choices = setting.get().getDeclaringClass().getEnumConstants();
@@ -575,12 +581,12 @@ public final class PatchPanel {
         row.setAlpha((enabled) ? 1f : DISABLED_ALPHA);
     }
 
-    private static View traceRow(Activity activity, String titleText, String summaryText, Runnable onOpen) {
+    private static View traceRow(Activity activity, String summaryText, Runnable onOpen) {
         LinearLayout row = flatRow(activity);
         row.setPadding(dp(activity, SIDE_PAD_DP), dp(activity, 16), dp(activity, SIDE_PAD_DP), dp(activity, 16));
-        row.addView(labels(activity, titleText, summaryText));
+        row.addView(labels(activity, TRACE_ROW_TITLE, summaryText));
         row.addView(chevron(activity));
-        row.setContentDescription(titleText + ". " + summaryText);
+        row.setContentDescription(TRACE_ROW_TITLE + ". " + summaryText);
         row.setOnClickListener((v) -> onOpen.run());
         return row;
     }
@@ -662,6 +668,7 @@ public final class PatchPanel {
         return (SAFE_METHODS.contains(method.toUpperCase(Locale.US))) ? NEUTRAL : ACCENT;
     }
 
+    @SuppressWarnings({ "deprecation", "SameParameterValue" })
     static void showLog(Activity activity, String heading, View body) {
         Dialog dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

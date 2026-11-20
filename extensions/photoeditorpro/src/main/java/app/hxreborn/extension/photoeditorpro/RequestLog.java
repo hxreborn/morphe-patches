@@ -169,6 +169,7 @@ final class RequestLog {
         return card;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static View exchangeBlock(Activity activity, AiTrace.Exchange exchange) {
         LinearLayout block = new LinearLayout(activity);
         block.setOrientation(LinearLayout.VERTICAL);
@@ -209,6 +210,7 @@ final class RequestLog {
         return block;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String tally(List<AiTrace.Attempt> attempts) {
         Map<String, Integer> counts = new LinkedHashMap<>();
         for (int i = 0; i < attempts.size() - 1; i++) {
@@ -222,7 +224,7 @@ final class RequestLog {
             if (line.length() > 0) {
                 line.append(", ");
             }
-            line.append(entry.getKey()).append(" \u00d7").append(entry.getValue());
+            line.append(entry.getKey()).append(" ×").append(entry.getValue());
         }
         String closing = attempts.get(attempts.size() - 1).status();
         if (closing.isEmpty()) {
@@ -329,6 +331,7 @@ final class RequestLog {
         return view;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static LinearLayout detailBlock(Activity activity, AiTrace.Exchange exchange) {
         LinearLayout details = new LinearLayout(activity);
         details.setOrientation(LinearLayout.VERTICAL);
@@ -393,6 +396,7 @@ final class RequestLog {
         return row;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static View disclosure(Activity activity, String label, View target) {
         TextView view = ui(activity, label.toUpperCase(Locale.US), PatchPanel.DIM, LABEL_SP);
         view.setTypeface(Typeface.DEFAULT_BOLD);
@@ -454,6 +458,7 @@ final class RequestLog {
         return view;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static String clock(long epochMs) {
         return CLOCK.get().format(new Date(epochMs));
     }

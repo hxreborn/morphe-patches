@@ -46,6 +46,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 import org.robolectric.shadows.ShadowSystemClock;
 
+@SuppressWarnings("DataFlowIssue")
 @RunWith(RobolectricTestRunner.class)
 public final class ProgressTraceTest {
 

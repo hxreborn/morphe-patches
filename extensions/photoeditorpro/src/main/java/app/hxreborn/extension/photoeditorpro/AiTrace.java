@@ -110,7 +110,7 @@ public final class AiTrace {
             return response;
         } catch (Exception ex) {
             fail(attempt, ex);
-            throw HttpShape.<RuntimeException>rethrow(ex);
+            throw HttpShape.rethrow(ex);
         }
     }
 
@@ -214,7 +214,7 @@ public final class AiTrace {
 
     private static String peek(Object response) {
         String text = HttpShape.peekBody(response, MAX_BODY_BYTES).replace('\n', ' ');
-        return (text.length() <= MAX_BODY_CHARS) ? text : text.substring(0, MAX_BODY_CHARS) + "\u2026";
+        return (text.length() <= MAX_BODY_CHARS) ? text : text.substring(0, MAX_BODY_CHARS) + "…";
     }
 
     private static List<String[]> redacted(List<String[]> pairs, int limit) {
@@ -361,6 +361,7 @@ public final class AiTrace {
         return (query < 0) ? url : url.substring(0, query) + "?<redacted>";
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static String iso(long epochMs) {
         return ISO.get().format(new Date(epochMs));
     }
@@ -467,6 +468,7 @@ public final class AiTrace {
         return (token.isEmpty()) ? null : token;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     static String labelOf(String operation) {
         for (String[] entry : LABELS) {
             if (operation.equals(entry[0]) || operation.startsWith(entry[0] + "_")) {
