@@ -54,8 +54,7 @@ public final class HomeShortcutFilter {
                 removeFromItems((JSONObject) root, removedTypes);
                 return root.toString();
             }
-            if (root instanceof JSONArray) {
-                JSONArray entries = (JSONArray) root;
+            if (root instanceof JSONArray entries) {
                 for (int i = 0; i < entries.length(); i++) {
                     JSONObject group = entries.optJSONObject(i);
                     if (group != null) {
@@ -106,7 +105,7 @@ public final class HomeShortcutFilter {
     }
 
     private static Set<String> split(String values) {
-        return (values == null || values.isEmpty()) ? new HashSet<String>()
+        return (values == null || values.isEmpty()) ? new HashSet<>()
                 : new HashSet<>(Arrays.asList(values.split(",")));
     }
 

@@ -49,6 +49,7 @@ public final class PatchesSettingsDialogTest {
     private Activity activity;
 
     @Before
+    @SuppressWarnings("resource")
     public void startActivity() {
         this.activity = Robolectric.buildActivity(Activity.class).setup().get();
         Utils.setContext(this.activity.getApplication());
@@ -88,6 +89,7 @@ public final class PatchesSettingsDialogTest {
         Shadows.shadowOf(Looper.getMainLooper()).idle();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static List<TextView> latestDialogTextViews() {
         List<TextView> views = new ArrayList<>();
         collectTextViews(ShadowDialog.getLatestDialog().getWindow().getDecorView(), views);
@@ -98,8 +100,7 @@ public final class PatchesSettingsDialogTest {
         if (view instanceof TextView) {
             views.add((TextView) view);
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 collectTextViews(group.getChildAt(index), views);
             }

@@ -36,6 +36,7 @@ import org.robolectric.annotation.Implements;
 public final class TeraboxServerMembershipTest {
 
     @Test
+    @SuppressWarnings("ConstantValue")
     public void missingInfoIsNotAMember() {
         assertFalse(TeraboxServerMembership.isVip(null));
         assertEquals("0", TeraboxServerMembership.vipType(null));
@@ -61,6 +62,7 @@ public final class TeraboxServerMembershipTest {
     }
 
     @Implements(value = TeraboxServerMembership.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class HostVipInfo {
 
         @Implementation

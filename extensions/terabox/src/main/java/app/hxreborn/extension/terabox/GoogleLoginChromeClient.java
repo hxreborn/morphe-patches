@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.terabox;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -172,7 +173,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
     private static final String WEBKIT_TOKEN = "AppleWebKit/537.36";
 
     public static void setBrowserUserAgent(WebSettings settings, String userAgent) {
-        if (userAgent == null || userAgent.length() == 0) {
+        if (userAgent == null || userAgent.isEmpty()) {
             return;
         }
 
@@ -240,6 +241,8 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         return openPopup(view, resultMsg);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressWarnings("deprecation")
     private static boolean openPopup(WebView opener, Message resultMsg) {
         Activity activity = activityOf(opener.getContext());
         if (activity == null || activity.isFinishing()) {
@@ -314,6 +317,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return interceptRelayUrl(url);
         }

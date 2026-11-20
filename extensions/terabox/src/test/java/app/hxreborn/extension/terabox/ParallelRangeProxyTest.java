@@ -64,7 +64,7 @@ public final class ParallelRangeProxyTest {
 
     private static final int LENGTH = 2_621_440 + 12_345;
 
-    private static final byte[] DATA = pattern(LENGTH);
+    private static final byte[] DATA = pattern();
 
     private static final int MAX_REQUEST_HEAD = 16 * 1024;
 
@@ -77,8 +77,8 @@ public final class ParallelRangeProxyTest {
         }
     }
 
-    private static byte[] pattern(int length) {
-        final byte[] bytes = new byte[length];
+    private static byte[] pattern() {
+        final byte[] bytes = new byte[LENGTH];
         new Random(7).nextBytes(bytes);
         return bytes;
     }
@@ -229,6 +229,7 @@ public final class ParallelRangeProxyTest {
     }
 
     @Test
+    @SuppressWarnings("resource")
     public void servesConcurrentRangesWithTheirOwnBytes() throws Exception {
         final String proxyUrl = proxy(origin(), "/file");
         final long[][] ranges = { { 0, 600_000 }, { 900_000, 1_700_000 }, { 2_000_000, LENGTH - 1 },
@@ -482,7 +483,7 @@ public final class ParallelRangeProxyTest {
     @Test
     public void keepsCookieAcrossSameHostRedirects() throws IOException {
         // given
-        final FakeOrigin redirecting = origin(DATA, redirectTo("/final"));
+        final FakeOrigin redirecting = origin(DATA, redirectTo());
 
         // when
         final Response response = get(proxy(redirecting, "/start"), "Cookie: sid=1");
@@ -662,10 +663,10 @@ public final class ParallelRangeProxyTest {
         assertArrayEquals(slice(DATA, 0, response.body.length - 1), response.body);
     }
 
-    private static OriginResponder redirectTo(String location) {
+    private static OriginResponder redirectTo() {
         return (origin, request, out) -> {
             if (request.target.equals("/start")) {
-                origin.write(out, "302 Found", "Location: " + location + "\r\n", new byte[0]);
+                origin.write(out, "302 Found", "Location: /final\r\n", new byte[0]);
             } else {
                 origin.serveRange(request, out);
             }
@@ -705,11 +706,13 @@ public final class ParallelRangeProxyTest {
             return this.headers.get(name);
         }
 
+        @SuppressWarnings("DataFlowIssue")
         long rangeStart() {
             final Matcher matcher = RANGE.matcher(String.valueOf(header("range")));
             return (matcher.matches()) ? Long.parseLong(matcher.group(1)) : -1;
         }
 
+        @SuppressWarnings("DataFlowIssue")
         long rangeEnd(long length) {
             final Matcher matcher = RANGE.matcher(String.valueOf(header("range")));
             if (!matcher.matches() || matcher.group(2).isEmpty()) {
@@ -767,6 +770,7 @@ public final class ParallelRangeProxyTest {
             return count;
         }
 
+        @SuppressWarnings("SameParameterValue")
         Seen first(String target) {
             for (Seen seen : this.requests) {
                 if (seen.target.equals(target)) {
@@ -793,6 +797,7 @@ public final class ParallelRangeProxyTest {
                     slice(this.content, start, end));
         }
 
+        @SuppressWarnings("SameParameterValue")
         void writeTruncated(OutputStream out, Seen request, int deliveredBytes) throws IOException {
             final long start = request.rangeStart();
             final long end = request.rangeEnd(this.content.length);
@@ -830,6 +835,7 @@ public final class ParallelRangeProxyTest {
             }
         }
 
+        @SuppressWarnings("EmptyCatchBlock")
         private void handle(Socket socket) {
             try (Socket connection = socket) {
                 connection.setSoTimeout(10_000);
@@ -837,7 +843,6 @@ public final class ParallelRangeProxyTest {
                 this.requests.add(request);
                 this.responder.respond(this, request, connection.getOutputStream());
             } catch (IOException ex) {
-                return;
             }
         }
 

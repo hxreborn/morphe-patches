@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.terabox;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -158,6 +159,7 @@ final class SettingsStyle {
         return icon;
     }
 
+    @SuppressLint("DiscouragedApi")
     private Drawable hostDrawable(String name) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         return (identifier != 0) ? hostDrawable(identifier) : null;

@@ -23,6 +23,7 @@ package app.hxreborn.extension.terabox;
 import java.util.Arrays;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import app.morphe.extension.shared.Utils;
@@ -87,6 +88,7 @@ public final class PatchSettings {
         return preferences == null || preferences.getBoolean(key, true);
     }
 
+    @SuppressLint("ApplySharedPref")
     static void setEnabled(String key, boolean enabled) {
         SharedPreferences preferences = preferences();
         if (preferences != null) {
@@ -94,6 +96,7 @@ public final class PatchSettings {
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults() {
         SharedPreferences preferences = preferences();
         if (preferences != null) {

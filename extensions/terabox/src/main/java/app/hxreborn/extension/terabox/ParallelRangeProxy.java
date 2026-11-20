@@ -30,7 +30,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,8 +55,6 @@ import android.util.Log;
 final class ParallelRangeProxy {
 
     private static final String TAG = "TeraboxRangeProxy";
-
-    private static final Charset ASCII = Charset.forName("US-ASCII");
 
     private static final String BAD_REQUEST_STATUS = HttpURLConnection.HTTP_BAD_REQUEST + " Bad Request";
 
@@ -229,17 +227,18 @@ final class ParallelRangeProxy {
                 .append("\r\n");
         }
         head.append("Connection: close\r\n\r\n");
-        out.write(head.toString().getBytes(ASCII));
+        out.write(head.toString().getBytes(StandardCharsets.US_ASCII));
     }
 
     private static void writeStatus(OutputStream out, String status, String headers, byte[] body) throws IOException {
         out.write(("HTTP/1.1 " + status + "\r\n" + headers + "Content-Length: " + body.length
                 + "\r\nConnection: close\r\n\r\n")
-            .getBytes(ASCII));
+            .getBytes(StandardCharsets.US_ASCII));
         out.write(body);
         out.flush();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static long contentRangeTotal(HttpURLConnection connection) throws IOException {
         String header = connection.getHeaderField("Content-Range");
         Matcher range = CONTENT_RANGE.matcher(String.valueOf(header));
@@ -249,6 +248,7 @@ final class ParallelRangeProxy {
         return Long.parseLong(range.group(3));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static void requireContentRange(HttpURLConnection connection, long start, long end, long length)
             throws IOException {
         String header = connection.getHeaderField("Content-Range");
@@ -309,6 +309,7 @@ final class ParallelRangeProxy {
 
         final String cookie;
 
+        @SuppressWarnings("DataFlowIssue")
         private Request(String method, String target, String range, String cookie) {
             int queryStart = target.indexOf('?');
             String path = (queryStart < 0) ? target : target.substring(0, queryStart);
@@ -319,7 +320,7 @@ final class ParallelRangeProxy {
             Matcher matcher = (range != null) ? RANGE.matcher(range.trim()) : null;
             this.hasRange = matcher != null && matcher.matches();
             this.rangeStart = (this.hasRange) ? Long.parseLong(matcher.group(1)) : 0;
-            this.rangeEnd = (this.hasRange && matcher.group(2).length() != 0) ? Long.parseLong(matcher.group(2)) : -1;
+            this.rangeEnd = (this.hasRange && !matcher.group(2).isEmpty()) ? Long.parseLong(matcher.group(2)) : -1;
         }
 
         static Request read(InputStream in) throws IOException {
