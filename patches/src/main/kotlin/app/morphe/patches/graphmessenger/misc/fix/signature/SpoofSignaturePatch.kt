@@ -11,6 +11,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import java.security.MessageDigest
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lorg/telegram/messenger/ApplicationLoaderImpl;"
 
@@ -28,8 +29,8 @@ private val spoofNativeCertificateDigestPatch = rawResourcePatch {
 }
 
 internal val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.GRAPH_MESSENGER)
-    extendWith("extensions/extension.mpe")
 
     dependsOn(spoofNativeCertificateDigestPatch)
 

@@ -12,6 +12,7 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.imoHideVoiceClubTabExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/imo/HomeTabs;"
 
@@ -20,9 +21,8 @@ val hideVoiceClubTabPatch = bytecodePatch(
     name = "Hide Voice Club tab",
     description = "Removes the Voice Club tab from the home screen.",
 ) {
+    dependsOn(imoHideVoiceClubTabExtensionPatch)
     compatibleWith(AppCompatibilities.IMO)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         HomeTabIdsFingerprint.matchSingle().method.apply {

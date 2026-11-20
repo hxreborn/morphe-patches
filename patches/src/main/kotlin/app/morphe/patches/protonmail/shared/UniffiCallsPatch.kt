@@ -12,6 +12,8 @@ import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.protonUniffiCallsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 private const val UNIFFI_CALLS_CLASS = "Lapp/hxreborn/extension/protonmail/UniffiCalls;"
 private const val KOTLIN_RESULTS_CLASS = "Lapp/hxreborn/extension/protonmail/KotlinResults;"
@@ -20,8 +22,7 @@ private const val BUNDLED_COROUTINE_SINGLETONS = "Lkotlin/coroutines/intrinsics/
 private const val BUNDLED_RESULT_FAILURE = "Lkotlin/Result\$Failure;"
 
 internal val uniffiCallsPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(protonUniffiCallsExtensionPatch, sharedProxyHandlerExtensionPatch)
     execute {
         with(
             IoDispatcherFingerprint.matchAll(1..2)

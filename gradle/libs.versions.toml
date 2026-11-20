@@ -7,6 +7,7 @@ okhttp = "5.5.1"
 gson = "2.15.0"
 pngj = "2.1.0"
 kotlinx-coroutines = "1.11.0"
+asm = "9.9.1"
 spring-javaformat = "0.0.48"
 junit = "4.13.2"
 assertj = "3.27.7"
@@ -15,11 +16,13 @@ json = "20260814"
 androidx-annotation = "1.9.1"
 androidx-compose = "1.7.6"
 androidx-webkit = "1.16.0"
+kotlin-stdlib = "2.4.21"
 
 [libraries]
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 pngj = { module = "ar.com.hjg:pngj", version.ref = "pngj" }
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 spring-javaformat-checkstyle = { module = "io.spring.javaformat:spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 morphe-patches-library = { module = "app.morphe:morphe-patches-library", version.ref = "morphe-patches-library" }
@@ -33,3 +36,4 @@ androidx-compose-ui = { module = "androidx.compose.ui:ui-android", version.ref =
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime-android", version.ref = "androidx-compose" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation-android", version.ref = "androidx-compose" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "androidx-webkit" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-stdlib" }

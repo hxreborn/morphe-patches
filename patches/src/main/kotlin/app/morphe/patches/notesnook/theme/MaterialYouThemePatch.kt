@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.notesnookMaterialYouThemeExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/notesnook/MaterialYouTheme;"
 
@@ -19,9 +20,8 @@ val materialYouThemePatch = bytecodePatch(
         "Colours refresh when the app restarts, and start from the second launch. " +
         "Requires Android 12 or later.",
 ) {
+    dependsOn(notesnookMaterialYouThemeExtensionPatch)
     compatibleWith(AppCompatibilities.NOTESNOOK)
-    extendWith("extensions/extension.mpe")
-
     execute {
         MmkvInstallFingerprint.matchSingle().apply {
             val index = instructionMatches[0].index

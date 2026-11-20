@@ -25,14 +25,14 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction3rc
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableMethodReference
+import app.morphe.patches.shared.misc.extension.ultimeaSettingsExtensionPatch
 
 private const val CALLBACKS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/controls/ReadbackCallbacks;"
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/controls/XupmixReadback;"
 
 internal val xupmixReadbackPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(ultimeaSettingsExtensionPatch)
     execute {
         listOf(WriteCharacteristicFingerprint, WriteCharacteristicWithValueFingerprint).forEach { fingerprint ->
             val match = fingerprint.matchSingle()

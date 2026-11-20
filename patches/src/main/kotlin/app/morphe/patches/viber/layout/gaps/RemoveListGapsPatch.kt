@@ -14,6 +14,7 @@ import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
 import app.morphe.patches.viber.shared.addFilterCallAfter
 import app.morphe.patches.viber.shared.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.viberRemoveListGapsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/ListGaps;"
 
@@ -22,6 +23,7 @@ val removeListGapsPatch: BytecodePatch = bytecodePatch(
     name = "Remove list gaps",
     description = "Removes list gaps and extra scrolling.",
 ) {
+    dependsOn(viberRemoveListGapsExtensionPatch)
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 

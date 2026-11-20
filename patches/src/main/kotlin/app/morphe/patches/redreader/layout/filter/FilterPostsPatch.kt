@@ -17,12 +17,14 @@ import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.redreaderSettingsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/redreader/PostFilter;"
 private const val SETTINGS_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/redreader/PatchSettings;"
 private const val SETTINGS_ACTIVITY = "app.hxreborn.extension.redreader.PatchesSettingsActivity"
 
 private val filterResourcesPatch = resourcePatch {
+    dependsOn(redreaderSettingsExtensionPatch)
     execute {
         val packageName = document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
@@ -52,9 +54,9 @@ val filterPostsPatch = bytecodePatch(
     name = "Filter posts",
     description = "Filters posts by title keyword, subreddit name or post flair, with regular expression support.",
 ) {
+    dependsOn(redreaderSettingsExtensionPatch)
     compatibleWith(AppCompatibilities.REDREADER, AppCompatibilities.REDREADER_ALPHA)
     dependsOn(filterResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         mutableClassDefBy("Lapp/hxreborn/extension/redreader/SettingsStyle;").replaceResourceIdStubs(

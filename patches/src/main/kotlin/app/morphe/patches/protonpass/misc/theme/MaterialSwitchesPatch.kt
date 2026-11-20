@@ -16,6 +16,7 @@ import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.protonMaterialSwitchViewExtensionPatch
 
 private const val COLORS_PARAMETER = 4
 private const val COMPOSER_PARAMETER = 5
@@ -25,6 +26,7 @@ val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
+    dependsOn(protonMaterialSwitchViewExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_PASS)
     dependsOn(patchesSettingsPatch)
 

@@ -29,6 +29,7 @@ import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheckInLambda
 import app.morphe.patches.protonvpn.misc.restrictions.keepUserSetting
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -38,6 +39,7 @@ import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction20t
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.protonUnlockConnectionPreferencesExtensionPatch
 
 private const val EXCLUDED_LOCATIONS_CLASS = "Lapp/hxreborn/extension/protonvpn/ExcludedLocations;"
 private const val VPN_USER_ARGUMENT_OFFSET = 2
@@ -49,11 +51,12 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
     name = "Unlock connection preferences",
     description = "Unlocks the default connection, recent connections and excluded locations on free plans.",
 ) {
+    dependsOn(protonUnlockConnectionPreferencesExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_VPN)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockConnectionPreferences", unlockConnectionPreferencesPatch)
+        markPatchApplied(VPN_SETTINGS_CLASS, "unlockConnectionPreferences", unlockConnectionPreferencesPatch)
         clearConstructorProperty(ConnectionPreferencesToStringFingerprint, "isFreeUser")
         keepUserSetting(defaultConnectionRestrictionFingerprint())
         clearRecentsRecordingFreeUserCheck()

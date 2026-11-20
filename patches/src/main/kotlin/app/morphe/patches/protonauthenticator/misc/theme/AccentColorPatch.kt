@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonAccentColorPickerExtensionPatch
 import app.morphe.patches.shared.misc.proton.ACCENT_COLOR_CLASS
 import app.morphe.patches.shared.misc.proton.CORE_BRAND_COLORS
 import app.morphe.patches.shared.misc.proton.accentOverlayPatch
@@ -39,6 +40,7 @@ val accentColorPatch: BytecodePatch = bytecodePatch(
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_AUTHENTICATOR)
+    dependsOn(protonAccentColorPickerExtensionPatch)
     dependsOn(patchesSettingsPatch, accentOverlayPatch)
 
     execute {

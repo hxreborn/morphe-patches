@@ -16,6 +16,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "android-platinum"
 private const val PRODUCT = "android_platinum_yearly"
@@ -26,9 +27,9 @@ val unlockPlatinumPatch = bytecodePatch(
     description = "Unlocks the Platinum plan with unlimited tracked items, every-minute updates, widgets, " +
         "watchlists and backups.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.ANYTRACKER)
     dependsOn(removePairipProtectionPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)

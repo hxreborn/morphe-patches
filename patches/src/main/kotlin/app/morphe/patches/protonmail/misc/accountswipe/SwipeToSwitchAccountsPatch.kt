@@ -14,6 +14,9 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.uniffiCallsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonSwipeToSwitchAccountsExtensionPatch
+import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
+import app.morphe.patches.shared.misc.proton.forwardStub
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -33,13 +36,13 @@ val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
     name = "Swipe to switch accounts",
     description = "Switches between signed-in accounts by swiping up or down on the account avatar.",
 ) {
+    dependsOn(protonSwipeToSwitchAccountsExtensionPatch)
     dependsOn(patchesSettingsPatch, uniffiCallsPatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
 
-    extendWith("extensions/extension.mpe")
-
     execute {
-        markPatchApplied("swipeToSwitchAccounts", swipeToSwitchAccountsPatch)
+        markPatchApplied(MAIL_SETTINGS_CLASS, "swipeToSwitchAccounts", swipeToSwitchAccountsPatch)
+        forwardStub(MAIL_SETTINGS_CLASS, "addSwipeToSwitchAccountsRows", "Lapp/hxreborn/extension/protonmail/accountswipe/AccountSwipeRows;")
 
         val onTouchEventField = PointerInteropFilterTouchFingerprint.matchSingle()
             .instructionMatches[2].getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!

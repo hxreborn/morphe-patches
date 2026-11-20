@@ -68,7 +68,6 @@ val showAiProgressPatch: BytecodePatch = bytecodePatch(
 ) {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchMetadata("showAiProgress", showAiProgressPatch)

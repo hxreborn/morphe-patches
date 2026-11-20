@@ -19,6 +19,8 @@ import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.viberGmsCoreSupportExtensionPatch
+import app.morphe.patches.shared.misc.extension.viberSettingsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/viber/ChooseAccountIntent;"
 private const val ACCOUNT_REQUEST_CLASS = "Lapp/hxreborn/extension/viber/GmsCoreAccountRequest;"
@@ -34,8 +36,7 @@ private fun Match.redirectAccountsByType() {
 }
 
 private val systemAccountChooserPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(viberGmsCoreSupportExtensionPatch, viberSettingsExtensionPatch)
     execute {
         markPatchApplied("gmsCoreSupport", gmsCoreSupportPatch)
         GoogleAccountListFingerprint.matchSingle().redirectAccountsByType()

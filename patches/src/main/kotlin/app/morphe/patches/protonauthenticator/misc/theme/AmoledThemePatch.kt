@@ -27,6 +27,7 @@ import app.morphe.util.findElementByAttributeValueOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
+import app.morphe.patches.shared.misc.extension.protonAmoledDarkThemeExtensionPatch
 
 private const val THEME_PALETTE_COUNT = 2
 private const val EMPTY_STATE_COLOR_FILTER_METHOD = "placeholderColorFilter"
@@ -115,9 +116,14 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
+    dependsOn(protonAmoledDarkThemeExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_AUTHENTICATOR)
-    dependsOn(patchesSettingsPatch, amoledBackgroundOverlayPatch, amoledWindowBackgroundPatch, amoledSplashBackgroundPatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(
+        patchesSettingsPatch,
+        amoledBackgroundOverlayPatch,
+        amoledWindowBackgroundPatch,
+        amoledSplashBackgroundPatch,
+    )
 
     execute {
         markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)

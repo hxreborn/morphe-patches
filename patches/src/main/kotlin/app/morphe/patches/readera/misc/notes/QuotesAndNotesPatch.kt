@@ -26,6 +26,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.readeraQuotesAndNotesSectionExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val NOTES_ACTIVITY = "app.hxreborn.extension.readera.NotesActivity"
 private const val NOTES_ACTIVITY_TYPE = "Lapp/hxreborn/extension/readera/NotesActivity;"
@@ -81,6 +83,7 @@ private val notesStringsPatch = resourcePatch {
 }
 
 private val notesActivityManifestPatch = resourcePatch {
+    dependsOn(readeraQuotesAndNotesSectionExtensionPatch, sharedDimensionsExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
@@ -102,9 +105,12 @@ val quotesAndNotesPatch = bytecodePatch(
 
     availability(requireArm64)
 
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, notesActivityManifestPatch, notesStringsPatch)
-
-    extendWith("extensions/extension.mpe")
+    dependsOn(
+        patchesSettingsPatch,
+        disableSignatureChecksPatch,
+        notesActivityManifestPatch,
+        notesStringsPatch,
+    )
 
     execute {
         registerReadEraPatch("Quotes and notes section", "Adds a side menu page with quotes, bookmarks and reviews from every book.")

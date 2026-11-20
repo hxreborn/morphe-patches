@@ -12,10 +12,12 @@ import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.readeraChapterReaderExtensionPatch
 
 internal const val CHAPTER_READER = "Lapp/hxreborn/extension/readera/ChapterReader;"
 
 internal val chapterReaderPatch = bytecodePatch {
+    dependsOn(readeraChapterReaderExtensionPatch)
     execute {
         val (_, documentRead, positionRead, copyCall, speechCall) =
             ReadAloudFromCurrentPositionFingerprint.matchAll(1..1).single().instructionMatches

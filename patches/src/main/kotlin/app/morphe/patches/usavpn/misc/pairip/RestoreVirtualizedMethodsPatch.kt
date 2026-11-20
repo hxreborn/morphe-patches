@@ -14,6 +14,7 @@ import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.restoreVirtualizedMethods
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patches.shared.misc.extension.sharedUnlockPremiumExtensionPatch
 
 internal const val APP = "Lcom/vpn/lib/App;"
 internal const val SPLASH = "Lcom/vpn/lib/feature/splash/SplashActivity;"
@@ -129,10 +130,10 @@ private fun appRestoredMethods(packageName: String) = when (packageName) {
 }
 
 val restoreVirtualizedMethodsPatch = bytecodePatch {
+    dependsOn(sharedUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.USA_VPN, AppCompatibilities.VPN_INDIA)
 
     dependsOn(removePairipVirtualizationPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         checkMergedLambdaBindings()

@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "unlock"
 private const val PRODUCT = "rb_unlocked"
@@ -18,8 +19,8 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks running and logging workouts, progress tracking and personal records. " +
         "AI workout generation is not included.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.RUBBER_BANDS)
-    extendWith("extensions/extension.mpe")
 
     dependsOn(removePairipProtectionPatch)
 

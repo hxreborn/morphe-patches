@@ -13,6 +13,7 @@ import app.morphe.patches.shared.misc.gms.bindGmsCoreSignInTypes
 import app.morphe.patches.shared.misc.gms.gmsCoreSpoofedSignaturePatch
 import app.morphe.patches.shared.misc.gms.redirectGmsPackageToGmsCore
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
+import app.morphe.patches.shared.misc.extension.sharedGmsSignInExtensionPatch
 
 private const val REQUEST_PARAMS_CLASS =
     "Lio/flutter/plugins/googlesignin/GetCredentialRequestParams;"
@@ -23,8 +24,8 @@ val gmsCoreSupportPatch = bytecodePatch(
     description = "Signs in through GmsCore instead of Google Play Services. " +
         "Requires GmsCore to be installed.",
 ) {
+    dependsOn(sharedGmsSignInExtensionPatch)
     compatibleWith(AppCompatibilities.ALL_IN_ONE_CALCULATOR)
-    extendWith("extensions/extension.mpe")
 
     dependsOn(removePairipVirtualizationPatch, gmsCoreSpoofedSignaturePatch)
 

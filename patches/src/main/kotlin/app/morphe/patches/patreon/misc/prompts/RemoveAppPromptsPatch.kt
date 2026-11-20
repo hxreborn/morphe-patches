@@ -22,7 +22,6 @@ val removeAppPromptsPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PATREON)
 
     dependsOn(patchesSettingsPatch, featureFlagsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(APP_PROMPTS_CLASS, removeAppPromptsPatch)

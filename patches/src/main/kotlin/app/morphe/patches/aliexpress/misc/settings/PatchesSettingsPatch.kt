@@ -25,6 +25,8 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.aliexpressSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val SWITCH_FACTORY_REGISTERS = 3
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
@@ -55,6 +57,7 @@ internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(aliexpressSettingsExtensionPatch, sharedDimensionsExtensionPatch)
     dependsOn(
         resourcePatch {
             execute {
@@ -67,8 +70,6 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         val switchConstructor = SwitchConstructorFingerprint.matchSingle().method
         mutableClassDefBy(PATCHES_MENU_CLASS).replaceResourceIdStubs(

@@ -64,7 +64,11 @@ internal object AppCompatDelegateImplFingerprint : Fingerprint(
     ),
 )
 
-internal fun patchesSettingsActivityPatch(themeStyle: String, hostActivity: String) = bytecodePatch {
+internal fun patchesSettingsActivityPatch(
+    themeStyle: String,
+    hostActivity: String,
+    settingsClass: String,
+) = bytecodePatch {
     dependsOn(
         switchColorsPatch,
         resourcePatch {
@@ -91,9 +95,8 @@ internal fun patchesSettingsActivityPatch(themeStyle: String, hostActivity: Stri
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
+        bindAppSettings(settingsClass)
         try {
             replacePatchesThemeStubs()
         } catch (ex: PatchException) {

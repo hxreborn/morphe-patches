@@ -29,6 +29,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
+import app.morphe.patches.shared.misc.extension.netanalyzerHistoryRowsExtensionPatch
+import app.morphe.patches.shared.misc.extension.netanalyzerToolsHistoryExtensionPatch
 
 private val HISTORY_ITEM_PROPERTIES = listOf("address", "favorite")
 private const val CONSTRUCTOR = "<init>"
@@ -41,6 +43,7 @@ val toolsHistoryPatch = bytecodePatch(
     description = "Lists the hosts queried in Tools with their last options, and lets you star or delete them. " +
         "Tapping an entry opens it in Tools.",
 ) {
+    dependsOn(netanalyzerHistoryRowsExtensionPatch, netanalyzerToolsHistoryExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(toolbarActionsPatch, patchesMenuPatch)

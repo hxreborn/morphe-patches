@@ -8,15 +8,16 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks Pro and Max features. Import limits are not included.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.ALBO)
     dependsOn(removePairipProtectionPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         grantRevenueCatEntitlements("Pro" to "albo_pro_monthly", "max" to "albo_max_monthly")

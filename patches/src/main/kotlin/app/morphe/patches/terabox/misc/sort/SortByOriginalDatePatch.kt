@@ -28,6 +28,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ThreeRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.teraboxSortByOriginalDateExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/terabox/OriginalDateSort;"
 private const val UTILS_CLASS = "Lapp/morphe/extension/shared/Utils;"
@@ -39,6 +40,7 @@ val sortByOriginalDatePatch: BytecodePatch = bytecodePatch(
     name = "Sort by original date",
     description = "Sorts and displays files by their original modification dates.",
 ) {
+    dependsOn(teraboxSortByOriginalDateExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 

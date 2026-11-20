@@ -1,0 +1,13 @@
+app/hxreborn/extension/viber/AppliedPatches
+app/hxreborn/extension/viber/AppliedPatches$AppliedPatch
+app/hxreborn/extension/viber/BusinessChatSelection
+app/hxreborn/extension/viber/BusinessChatSelection$Chat
+app/hxreborn/extension/viber/PatchSetting
+app/hxreborn/extension/viber/PatchSettings
+app/hxreborn/extension/viber/PatchesMenu
+app/hxreborn/extension/viber/PatchesSettingsActivity
+app/hxreborn/extension/viber/PlusAdRow
+app/hxreborn/extension/viber/PlusAdRow$PatchChip
+app/hxreborn/extension/viber/SettingsRows
+app/hxreborn/extension/viber/SettingsStyle
+app/hxreborn/extension/viber/StartFolder

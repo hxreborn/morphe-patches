@@ -16,6 +16,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
@@ -27,7 +28,7 @@ val removeServerChangeDelayPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("removeServerChangeDelay", removeServerChangeDelayPatch)
+        markPatchApplied(VPN_SETTINGS_CLASS, "removeServerChangeDelay", removeServerChangeDelayPatch)
         changeServerDelayFingerprints.forEach { it.matchSingle().method.returnEarly(0) }
     }
 }

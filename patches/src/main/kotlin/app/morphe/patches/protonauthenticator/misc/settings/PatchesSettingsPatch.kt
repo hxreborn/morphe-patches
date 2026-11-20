@@ -19,12 +19,19 @@ import app.morphe.patches.shared.misc.proton.attachPatchContext
 import app.morphe.patches.shared.misc.proton.injectAppCompatDefaultNightMode
 import app.morphe.patches.shared.misc.proton.injectBundleVersion
 import app.morphe.patches.shared.misc.proton.literalWrittenTo
+import app.morphe.patches.shared.misc.proton.AUTHENTICATOR_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonAuthenticatorSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 private const val HOST_ACTIVITY = "proton.android.authenticator.app.ui.MainActivity"
 private const val APPLICATION_CLASS = "Lproton/android/authenticator/app/App;"
@@ -92,9 +99,8 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(patchesSettingsActivityPatch("@style/Theme.ProtonAuthenticator", HOST_ACTIVITY))
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(morpheLibraryCoreExtensionPatch, protonAuthenticatorSettingsExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(patchesSettingsActivityPatch("@style/Theme.ProtonAuthenticator", HOST_ACTIVITY, AUTHENTICATOR_SETTINGS_CLASS))
     execute {
         injectBundleVersion()
         injectAppCompatDefaultNightMode()

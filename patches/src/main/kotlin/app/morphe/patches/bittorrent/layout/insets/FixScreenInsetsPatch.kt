@@ -12,6 +12,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.torrent.removeProtectionPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.bittorrentFixScreenInsetsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/bittorrent/ScreenInsets;"
 
@@ -20,9 +21,9 @@ val fixScreenInsetsPatch = bytecodePatch(
     name = "Fix screen insets",
     description = "Keeps main screens and settings clear of system bars and display cutouts on Android 17.",
 ) {
+    dependsOn(bittorrentFixScreenInsetsExtensionPatch)
     compatibleWith(AppCompatibilities.BITTORRENT)
     dependsOn(removeProtectionPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR).replaceResourceIdStubs(

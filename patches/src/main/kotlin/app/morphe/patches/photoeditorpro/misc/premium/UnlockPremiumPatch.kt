@@ -16,15 +16,16 @@ import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.photoeditorpro.shared.returnTrueWhileEnabled
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.photoeditorproPatchGatesExtensionPatch
 
 @Suppress("unused")
 val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks pro tools and removes export watermarks and upgrade prompts.",
 ) {
+    dependsOn(photoeditorproPatchGatesExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchMetadata("unlockPremium", unlockPremiumPatch)

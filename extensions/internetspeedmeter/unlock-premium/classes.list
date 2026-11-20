@@ -1,0 +1,12 @@
+app/hxreborn/extension/internetspeedmeter/HostResources
+app/hxreborn/extension/internetspeedmeter/NetworkAvailableReceiver
+app/hxreborn/extension/internetspeedmeter/NotificationSettings
+app/hxreborn/extension/internetspeedmeter/PremiumSettings
+app/hxreborn/extension/internetspeedmeter/QuickOverviewActivity
+app/hxreborn/extension/internetspeedmeter/SmartNotification
+app/hxreborn/extension/internetspeedmeter/SmartNotification$1
+app/hxreborn/extension/internetspeedmeter/SpeedFormat
+app/hxreborn/extension/internetspeedmeter/SpeedGraphView
+app/hxreborn/extension/internetspeedmeter/ThemeEditor
+app/hxreborn/extension/internetspeedmeter/ThemeEditor$1
+app/hxreborn/extension/internetspeedmeter/ThemeEditor$SliderListener

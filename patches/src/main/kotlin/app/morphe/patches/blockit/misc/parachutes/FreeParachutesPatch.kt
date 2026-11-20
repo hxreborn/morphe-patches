@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.extension.blockitFreeParachutesExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/blockit/ParachutePacks;"
 
@@ -18,11 +19,10 @@ val freeParachutesPatch = bytecodePatch(
     name = "Free parachutes",
     description = "Adds parachute packs without a purchase.",
 ) {
+    dependsOn(blockitFreeParachutesExtensionPatch)
     compatibleWith(AppCompatibilities.BLOCKIT)
 
     dependsOn(removePairipProtectionPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         val refreshMethodName = ParachutesBoughtFingerprint.method.name

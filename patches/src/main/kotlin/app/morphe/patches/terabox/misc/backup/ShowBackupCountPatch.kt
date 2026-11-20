@@ -25,6 +25,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
+import app.morphe.patches.shared.misc.extension.teraboxShowBackupCountExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/BackupCount;"
 
@@ -33,6 +34,7 @@ val showBackupCountPatch: BytecodePatch = bytecodePatch(
     name = "Show backup count",
     description = "Shows remaining files on Home and Photos, including paused backups.",
 ) {
+    dependsOn(teraboxShowBackupCountExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 

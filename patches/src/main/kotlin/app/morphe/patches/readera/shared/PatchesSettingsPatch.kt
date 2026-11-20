@@ -17,6 +17,7 @@ import app.morphe.patches.shared.misc.smali.replaceMethod
 import app.morphe.util.asSequence
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.readeraSettingsExtensionPatch
 
 internal const val READERA_SETTINGS = "Lapp/hxreborn/extension/readera/PatchSettings;"
 private const val SETTINGS_ACTIVITY = "app.hxreborn.extension.readera.PatchesSettingsActivity"
@@ -32,6 +33,7 @@ internal fun registerReadEraPatch(name: String, explanation: String) {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(readeraSettingsExtensionPatch)
     dependsOn(
         disableSignatureChecksPatch,
         resourcePatch {
@@ -80,8 +82,6 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         appliedExplanations.clear()
         RootPreferencesFingerprint.matchAll(1..1)

@@ -21,6 +21,7 @@ import app.morphe.patches.shared.misc.proton.SETTINGS_ROW_TITLE
 import app.morphe.patches.shared.misc.proton.injectAppCompatDefaultNightMode
 import app.morphe.patches.shared.misc.proton.injectBundleVersion
 import app.morphe.patches.shared.misc.proton.literalWrittenTo
+import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -28,6 +29,10 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.protonPatchApplicationExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 private const val HOST_ACTIVITY = "ch.protonmail.android.feature.applicationlogs.ApplicationLogsActivity"
 private const val SETTINGS_ITEM_NAME_PARAMETER = 1
@@ -50,9 +55,10 @@ private fun MutableMethod.settingsItemCalls() = instructions.withIndex().filter 
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(protonPatchApplicationExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
-        patchesSettingsActivityPatch("@style/ProtonTheme.Mail", HOST_ACTIVITY),
+        patchesSettingsActivityPatch("@style/ProtonTheme.Mail", HOST_ACTIVITY, MAIL_SETTINGS_CLASS),
         removeWebTapHighlightPatch,
     )
 

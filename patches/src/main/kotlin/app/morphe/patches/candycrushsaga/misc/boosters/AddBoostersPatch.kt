@@ -22,6 +22,7 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import app.morphe.util.inputStreamFromBundledResource
 import com.android.tools.smali.dexlib2.Opcode
+import app.morphe.patches.shared.misc.extension.candycrushsagaBoostersExtensionPatch
 
 private const val HEX_CHARACTERS_PER_BYTE = 2
 
@@ -48,7 +49,7 @@ private val addBoosterLibraryPatch = resourcePatch {
 }
 
 internal val candyCrushRewardsPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(candycrushsagaBoostersExtensionPatch)
     dependsOn(addBoosterLibraryPatch)
 
     execute {

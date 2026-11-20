@@ -55,7 +55,6 @@ val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
     }
 
     dependsOn(patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(NAVIGATION_BUTTONS_CLASS, hideNavigationButtonsPatch, withDescription = false)

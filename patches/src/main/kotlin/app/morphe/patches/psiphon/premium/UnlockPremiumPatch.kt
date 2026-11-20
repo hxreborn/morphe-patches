@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.psiphonUnlockPremiumExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/psiphon/PlayPurchases;"
 
@@ -17,9 +18,8 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks all regions. Removes ads and the upgrade button.",
 ) {
+    dependsOn(psiphonUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.PSIPHON)
-    extendWith("extensions/extension.mpe")
-
     execute {
         PlayPurchasesResponseFingerprint.matchSingle().method.addInstructions(
             0,

@@ -17,6 +17,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.readeraHighlightColorPickerExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val DICTIONARY_WORD_COLOR_KEY = "pref_dict_word_color"
 
@@ -25,13 +27,12 @@ val dictionaryWordColorsPatch = bytecodePatch(
     name = "Dictionary word colors",
     description = "Saves a selected word to Dictionary in one of five colors.",
 ) {
+    dependsOn(readeraHighlightColorPickerExtensionPatch, sharedDimensionsExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
     dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         registerReadEraPatch("Dictionary word colors", "Saves a selected word to Dictionary in one of five colors.")

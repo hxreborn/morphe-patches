@@ -44,6 +44,11 @@ private const val REQUEST_CLASS = "Lokhttp3/Request;"
 private const val RESPONSE_CLASS = "Lokhttp3/Response;"
 private const val REAL_CHAIN_CLASS = "Lokhttp3/internal/http/RealInterceptorChain;"
 private const val CHAIN_CLASS = "Lokhttp3/Interceptor${'$'}Chain;"
+private val EXTENSION_DEXES = listOf(
+    "extensions/hxreborn/castle-device-guid.mpe",
+    "extensions/hxreborn/castle-full-hd-playlist.mpe",
+    "extensions/hxreborn/shared-streams.mpe",
+)
 
 private const val PREMIUM_VIP_INFO = """
     new-instance v0, Lcom/gxgx/base/bean/VipInfo;
@@ -159,7 +164,7 @@ val unlockPremiumPatch = rawResourcePatch(
                 firstParameter = "Landroid/net/Uri;",
                 smali = EXPAND_PREVIEW_PLAYLIST,
             )
-            addExtensionPackage(EXTENSION_PACKAGE, besideClass = playlistParser)
+            addExtensionPackage(EXTENSION_PACKAGE, besideClass = playlistParser, extensionDexes = EXTENSION_DEXES)
 
             method(DOWNLOAD_PLAYLIST_TASK_CLASS, "handleConnect").apply {
                 val streamIndex = indexOfFirstInstructionOrThrow {

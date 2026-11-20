@@ -24,6 +24,7 @@ import app.morphe.patches.netanalyzer.shared.toolbarActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.netanalyzerToolOptionsExtensionPatch
 
 private val TOOL_OPTION_PROPERTIES = listOf(
     "pingDelay", "pingProtocol", "pingTcpPort", "maxDelay", "minDelay", "tracerouteUdp", "payloadSize",
@@ -36,6 +37,7 @@ val toolOptionsPatch = bytecodePatch(
     description = "Adds ping protocol, TCP ping, probe delay, payload size, don't fragment and audible ping, " +
         "traceroute and port scan delays, whois and RDAP servers, and DNS flags.",
 ) {
+    dependsOn(netanalyzerToolOptionsExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(toolbarActionsPatch, patchesMenuPatch)

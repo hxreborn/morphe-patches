@@ -1,4 +1,6 @@
+import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
 
 group = "app.hxreborn"
 
@@ -24,11 +26,20 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
 
+sourceSets {
+    create("tools") {
+        java.srcDir("src/tools/java")
+        compileClasspath += sourceSets["main"].compileClasspath
+        runtimeClasspath += sourceSets["main"].runtimeClasspath
+    }
+}
+
 dependencies {
     implementation(libs.morphe.patches.library)
     implementation(libs.pngj)
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.asm)
     testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
 }
 
@@ -63,6 +74,19 @@ tasks {
             if (offenders.isNotEmpty()) {
                 throw GradleException("Android has no desktop JDK, referenced from: $offenders")
             }
+
+            val archive = archiveFile.get().asFile
+            val stripped = File(archive.parentFile, archive.name + ".tmp")
+            ZipFile(archive).use { zip ->
+                ZipOutputStream(stripped.outputStream()).use { out ->
+                    zip.entries().asSequence().filterNot { it.isDirectory }.forEach { entry ->
+                        out.putNextEntry(ZipEntry(entry))
+                        zip.getInputStream(entry).use { it.copyTo(out) }
+                        out.closeEntry()
+                    }
+                }
+            }
+            stripped.renameTo(archive)
         }
     }
 
@@ -75,6 +99,41 @@ tasks {
 
     withType<Test> {
         useJUnitPlatform()
+    }
+
+    val strippedPayloadsDirectory = layout.buildDirectory.dir("strippedPayloads")
+    val unstrippedResourcesDirectory = processResources.map { it.destinationDir }
+    val stripPayloadClasses = register<JavaExec>("stripPayloadClasses") {
+        description = "Removes the empty resource holder class and the classes a removed.list names from the payload dexes"
+        classpath = sourceSets["tools"].runtimeClasspath
+        mainClass.set("app.hxreborn.payloadtools.StripPayloadClasses")
+        inputs.files(unstrippedResourcesDirectory.map { directory -> fileTree(directory) { include("**/*.mpe") } })
+            .withPropertyName("payloads")
+        inputs.files(fileTree(rootProject.file("extensions")) {
+            include("**/removed.list", "**/build.gradle.kts")
+            exclude("**/build/**")
+        }).withPropertyName("removedLists")
+        outputs.dir(strippedPayloadsDirectory).withPropertyName("strippedPayloads")
+        doFirst {
+            delete(strippedPayloadsDirectory)
+            args(
+                unstrippedResourcesDirectory.get().absolutePath,
+                rootProject.file("extensions").absolutePath,
+                strippedPayloadsDirectory.get().asFile.absolutePath,
+            )
+        }
+    }
+
+    jar {
+        from(stripPayloadClasses)
+        eachFile {
+            if (name.endsWith(".mpe") && !file.startsWith(strippedPayloadsDirectory.get().asFile)) exclude()
+        }
+    }
+
+    test {
+        dependsOn(stripPayloadClasses)
+        classpath = files(strippedPayloadsDirectory) + classpath
     }
 
     register<JavaExec>("generatePatchesList") {

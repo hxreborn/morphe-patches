@@ -19,7 +19,7 @@ internal class GoogleLoginCallbackTest {
         val executable = node
         assumeTrue(executable != null, "node not on PATH")
         val fixture = File(requireNotNull(javaClass.getResource("/terabox/google-login-callback.cjs")).toURI())
-        val source = File("../extensions/extension/src/main/java/app/hxreborn/extension/terabox/GoogleLoginChromeClient.java")
+        val source = File("../extensions/terabox/src/main/java/app/hxreborn/extension/terabox/GoogleLoginChromeClient.java")
         val process = ProcessBuilder(requireNotNull(executable).absolutePath, fixture.absolutePath, source.absolutePath, scenario)
             .redirectErrorStream(true).start()
         val completed = process.waitFor(NODE_TIMEOUT_SECONDS, TimeUnit.SECONDS)

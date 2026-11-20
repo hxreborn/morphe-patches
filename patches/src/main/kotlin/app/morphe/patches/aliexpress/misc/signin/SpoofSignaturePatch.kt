@@ -12,17 +12,18 @@ import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.aliexpressSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 @Suppress("unused")
 val spoofSignaturePatch: BytecodePatch = bytecodePatch(
     name = "Spoof signature",
     description = "Restores product loading on patched installs.",
 ) {
+    dependsOn(aliexpressSettingsExtensionPatch, sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.ALIEXPRESS)
 
     dependsOn(signingDataPatch, patchesSettingsPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchApplied("spoofSignature", spoofSignaturePatch)

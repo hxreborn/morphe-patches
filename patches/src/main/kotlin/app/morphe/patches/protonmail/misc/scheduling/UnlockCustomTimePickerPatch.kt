@@ -14,6 +14,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -26,10 +27,8 @@ val unlockCustomTimePickerPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
 
-    extendWith("extensions/extension.mpe")
-
     execute {
-        markPatchApplied("unlockCustomTimePicker", unlockCustomTimePickerPatch)
+        markPatchApplied(MAIL_SETTINGS_CLASS, "unlockCustomTimePicker", unlockCustomTimePickerPatch)
 
         SnoozeOptionsFingerprint.instructionMatches.let { matches ->
             val customUnset = matches[1].getInstruction<ReferenceInstruction>().reference

@@ -1,0 +1,5 @@
+app/hxreborn/extension/proton/MaterialSwitchView
+app/hxreborn/extension/proton/MaterialSwitchView$FactoryHandler
+app/hxreborn/extension/proton/MaterialSwitchView$FunctionHandler
+app/hxreborn/extension/proton/MaterialSwitchView$UpdateHandler
+app/hxreborn/extension/proton/MaterialSwitchView$UpdateHandler$1

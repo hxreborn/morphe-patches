@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonmail.misc.theme.webview.webSettingsThemePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonAccentColorPickerExtensionPatch
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.transformBrandColors
 
@@ -17,6 +18,7 @@ val accentColorPatch: BytecodePatch = bytecodePatch(
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
+    dependsOn(protonAccentColorPickerExtensionPatch)
     dependsOn(webSettingsThemePatch)
 
     execute {

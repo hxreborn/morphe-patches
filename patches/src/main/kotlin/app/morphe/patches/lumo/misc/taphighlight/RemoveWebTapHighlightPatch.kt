@@ -13,6 +13,8 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.webTapHighlightHighlightExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/WebTapHighlight;"
 
@@ -21,10 +23,14 @@ val removeWebTapHighlightPatch = bytecodePatch(
     name = "Remove tap highlight",
     description = "Removes the highlight flash on tapped buttons and links.",
 ) {
+    dependsOn(morpheLibraryCoreExtensionPatch, webTapHighlightHighlightExtensionPatch)
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreVirtualizedMethodsPatch)
+    dependsOn(
+        removePairipVirtualizationPatch,
+        removePairipProtectionPatch,
+        restoreVirtualizedMethodsPatch,
+    )
     availability(requireArm64)
-    extendWith("extensions/extension.mpe")
 
     execute {
         PageFinishedFingerprint.matchSingle().method.addInstructions(

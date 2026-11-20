@@ -18,6 +18,9 @@ import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.castleFullHdPlaylistExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedStreamsExtensionPatch
+import app.morphe.patches.shared.misc.extension.castletvUnlockPremiumExtensionPatch
 
 private const val PREMIUM_VIP_INFO_CLASS = "Lapp/hxreborn/extension/castletv/PremiumVipInfo;"
 private const val VIP_INFO_CLASS = "Lcom/gxgx/base/bean/VipInfo;"
@@ -41,9 +44,8 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks member-only titles and shows the account as Premium. " +
         "Requires a signed-in account.",
 ) {
+    dependsOn(castleFullHdPlaylistExtensionPatch, castletvUnlockPremiumExtensionPatch, sharedStreamsExtensionPatch)
     compatibleWith(AppCompatibilities.CASTLE_FOR_TV)
-    extendWith("extensions/extension.mpe")
-
     execute {
         VideoBodyConstructorFingerprint.matchSingle().method.addInstructions(
             0,

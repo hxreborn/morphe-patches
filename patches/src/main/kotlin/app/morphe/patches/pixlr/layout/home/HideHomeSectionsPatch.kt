@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.pixlrHideHomeSectionsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/pixlr/HomeSection;"
 
@@ -29,9 +30,8 @@ val hideHomeSectionsPatch = bytecodePatch(
     name = "Hide home sections",
     description = "Hides the selected sections from the home screen.",
 ) {
+    dependsOn(pixlrHideHomeSectionsExtensionPatch)
     compatibleWith(AppCompatibilities.PIXLR)
-    extendWith("extensions/extension.mpe")
-
     val hideSectionOptions = HomeSection.entries.associateWith { section ->
         booleanOption(
             key = section.optionKey,

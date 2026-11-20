@@ -37,6 +37,9 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.iiecAmoledDarkThemeExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/iiec/AmoledTheme;"
 private const val ON_CREATE_METHOD = "onCreate"
@@ -208,10 +211,10 @@ val amoledThemePatch = bytecodePatch(
     description = "Adds an AMOLED option to Settings > Appearance > Editor theme (dark). " +
         "Applies only while the Dark theme is active.",
 ) {
+    dependsOn(iiecAmoledDarkThemeExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedNightModeExtensionPatch)
     compatibleWith(*AppCompatibilities.IIEC_APPS)
 
     dependsOn(bypassSignatureCheckPatch, amoledThemeResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val constructorMatch = DarkSchemeConstructorFingerprint.matchSingle()

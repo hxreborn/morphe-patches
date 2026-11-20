@@ -11,6 +11,8 @@ import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.biwenger.shared.PageStartedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.biwengerFetchRewriteExtensionPatch
+import app.morphe.patches.shared.misc.extension.biwengerRemoveAdsExtensionPatch
 
 private const val AD_CONFIG_INSTALL = "Lapp/hxreborn/extension/biwenger/AdConfig;->install(Landroid/webkit/WebView;)V"
 
@@ -21,9 +23,8 @@ val removeAdsPatch = bytecodePatch(
     name = "Remove ads",
     description = "Removes banner, interstitial, rewarded, native and app open ads.",
 ) {
+    dependsOn(biwengerFetchRewriteExtensionPatch, biwengerRemoveAdsExtensionPatch)
     compatibleWith(AppCompatibilities.BIWENGER)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         PageStartedFingerprint.matchSingle().method.addInstructions(

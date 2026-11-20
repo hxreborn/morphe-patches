@@ -8,6 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.privacynotesUnlockPremiumExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/privacynotes/ProUnlock;"
 
@@ -17,9 +19,8 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks Pro features, unlimited devices and larger file uploads. " +
         "The server still blocks note history and caps storage at 50 MB.",
 ) {
+    dependsOn(morpheLibraryCoreExtensionPatch, privacynotesUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.PRIVACY_NOTES)
-    extendWith("extensions/extension.mpe")
-
     execute {
         PageStartedFingerprint.matchSingle().method.addInstructions(
             0,

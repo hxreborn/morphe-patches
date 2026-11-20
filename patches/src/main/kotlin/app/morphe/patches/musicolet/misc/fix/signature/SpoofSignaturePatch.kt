@@ -12,13 +12,13 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import java.util.Base64
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lin/krosbits/musicolet/MyApplication;"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.MUSICOLET)
-    extendWith("extensions/extension.mpe")
-
     execute {
         spoofSignature(APPLICATION_CLASS)
 

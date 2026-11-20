@@ -14,6 +14,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "Quranify Premium"
 private const val PRODUCT = "quranify_premium"
@@ -25,9 +26,9 @@ val unlockPremiumPatch = bytecodePatch(
         "background playback controls, and insights. Removes the Free Premium challenge " +
         "section from Settings.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     dependsOn(bypassIntegrityCheckPatch, removePairipProtectionPatch)
     compatibleWith(AppCompatibilities.QURANIFY)
-    extendWith("extensions/extension.mpe")
 
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)

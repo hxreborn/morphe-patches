@@ -23,6 +23,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.photoeditorproInspectAiRequestsExtensionPatch
 
 private const val AI_TRACE_CLASS = "$EXTENSION_PACKAGE/AiTrace;"
 private const val AI_TRACE_INTERCEPTOR_CLASS = "$EXTENSION_PACKAGE/AiTraceInterceptor;"
@@ -34,9 +35,9 @@ val traceAiRequestsPatch: BytecodePatch = bytecodePatch(
     description = "Shows the network calls an AI tool makes, such as HTTP requests and " +
         "Firebase uploads. Keeps a log of them.",
 ) {
+    dependsOn(photoeditorproInspectAiRequestsExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchMetadata("traceAiRequests", traceAiRequestsPatch)

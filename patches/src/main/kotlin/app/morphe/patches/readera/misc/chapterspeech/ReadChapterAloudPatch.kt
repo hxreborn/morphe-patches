@@ -36,6 +36,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.readeraChapterSpeechExtensionPatch
 
 private const val BOUNDARY_RESOLVER = "Lapp/hxreborn/extension/readera/SpeechBoundaryResolver;"
 private const val CONTENTS_PANEL_CHAIN_LENGTH = 2
@@ -63,10 +64,15 @@ val readChapterAloudPatch = bytecodePatch(
     description = "Reads one chapter aloud and stops at its end. " +
         "Long-press the chapter in Contents to start.",
 ) {
+    dependsOn(readeraChapterSpeechExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, chapterReaderPatch, contentsMessageResourcePatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(
+        patchesSettingsPatch,
+        disableSignatureChecksPatch,
+        chapterReaderPatch,
+        contentsMessageResourcePatch,
+    )
 
     execute {
         registerReadEraPatch("Read chapter aloud", "Long-press a chapter in Contents to read only that chapter aloud.")

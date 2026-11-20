@@ -18,9 +18,16 @@ import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
 import app.morphe.patches.shared.misc.proton.attachPatchContext
 import app.morphe.patches.shared.misc.proton.injectAppCompatDefaultNightMode
 import app.morphe.patches.shared.misc.proton.injectBundleVersion
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import java.util.logging.Logger
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonVpnSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 private const val HOST_ACTIVITY = "me.proton.core.devicemigration.presentation.DeviceMigrationActivity"
 private const val APPLICATION_CLASS = "Lcom/protonvpn/android/ProtonApplicationHilt;"
@@ -52,9 +59,8 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY))
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, protonVpnSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY, VPN_SETTINGS_CLASS))
     execute {
         injectBundleVersion()
         attachPatchContext(APPLICATION_CLASS)

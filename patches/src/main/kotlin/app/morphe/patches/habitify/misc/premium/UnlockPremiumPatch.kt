@@ -13,6 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.habitifyUnlockPremiumExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/habitify/Premium;"
 private const val FIREBASE_AUTH_CLASS = "Lcom/google/firebase/auth/FirebaseAuth;"
@@ -22,8 +23,8 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks lifetime Pro features and unlimited habits. Requires a signed-in account.",
 ) {
+    dependsOn(habitifyUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.HABITIFY)
-    extendWith("extensions/extension.mpe")
     dependsOn(removePairipProtectionPatch)
 
     execute {

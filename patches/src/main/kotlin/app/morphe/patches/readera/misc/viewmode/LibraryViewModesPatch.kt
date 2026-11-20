@@ -19,6 +19,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
+import app.morphe.patches.shared.misc.extension.readeraLibraryViewModesExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/LibraryViewMenu;"
 
@@ -27,13 +28,12 @@ val libraryViewModesPatch = bytecodePatch(
     name = "Library view modes",
     description = "Adds Full, Brief, Thumbnails and Grid layouts for book lists to the library menu.",
 ) {
+    dependsOn(readeraLibraryViewModesExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
     dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         registerReadEraPatch("Library view modes", "Lists books as Full, Brief, Thumbnails or Grid, picked from the library menu.")

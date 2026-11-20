@@ -22,12 +22,15 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.vpnsuperAppliedPatchesExtensionPatch
+import app.morphe.patches.shared.misc.extension.vpnsuperSettingsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/vpnsuper/NotificationDisconnect;"
 private const val CONNECTION_SERVICE_CLASS = "Lcom/superunlimited/feature/vpn/connection/presentation/VpnControlService;"
 private const val DISCONNECT_RECEIVER_CLASS_NAME = "app.hxreborn.extension.vpnsuper.NotificationDisconnectReceiver"
 
 private val notificationDisconnectReceiverPatch = resourcePatch {
+    dependsOn(vpnsuperAppliedPatchesExtensionPatch, vpnsuperSettingsExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
             (document.getElementsByTagName("application").item(0) as Element).appendChild(

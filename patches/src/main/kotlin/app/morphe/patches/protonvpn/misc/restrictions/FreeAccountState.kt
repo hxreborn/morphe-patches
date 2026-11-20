@@ -25,6 +25,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonMembersExtensionPatch
 
 private const val FREE_ACCOUNT = "Lapp/hxreborn/extension/protonvpn/FreeAccount;"
 
@@ -75,6 +77,7 @@ private object UserInfoInvalidateFingerprint : Fingerprint(
 )
 
 internal val freeAccountStatePatch = bytecodePatch {
+    dependsOn(protonFreeServerLocationsExtensionPatch, protonMembersExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     execute {

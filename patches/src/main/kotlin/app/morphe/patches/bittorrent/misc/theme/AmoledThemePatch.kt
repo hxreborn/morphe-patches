@@ -26,6 +26,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.bittorrentSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.bittorrentSettingsExtensionPatch
 
 private const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/bittorrent/"
 private const val THEME_CLASS = "${EXTENSION_PACKAGE}AmoledTheme;"
@@ -132,6 +134,7 @@ private fun ResourcePatchContext.copyWithBlackBackground(source: String, target:
 }
 
 private val amoledResourcesPatch = resourcePatch {
+    dependsOn(bittorrentSettingsExtensionPatch)
     execute {
         addNightSplash(listOf("splash_icon", "splash_icon_fix"), listOf("activity_splash"))
         document("res/values/public.xml").use { declarations ->
@@ -203,10 +206,10 @@ val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Adds a setting that makes dialogs, snackbars, buttons and cards pure black in dark mode.",
 ) {
+    dependsOn(bittorrentSettings2ExtensionPatch)
     compatibleWith(AppCompatibilities.BITTORRENT)
     availability(requireArm64)
     dependsOn(removeProtectionPatch, amoledResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val darkMode = DarkModeFingerprint.matchSingle().method

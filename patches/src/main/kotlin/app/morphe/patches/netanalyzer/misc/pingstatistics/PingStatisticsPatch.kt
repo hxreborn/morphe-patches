@@ -14,6 +14,8 @@ import app.morphe.patches.netanalyzer.shared.hostToolsPatch
 import app.morphe.patches.netanalyzer.shared.toolbarActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.netanalyzerChartViewExtensionPatch
+import app.morphe.patches.shared.misc.extension.netanalyzerPingStatisticsExtensionPatch
 
 @Suppress("unused")
 val pingStatisticsPatch = bytecodePatch(
@@ -21,6 +23,7 @@ val pingStatisticsPatch = bytecodePatch(
     description = "Adds a bar chart of the current or last ping's round-trip times with min, median, max " +
         "and lost packets.",
 ) {
+    dependsOn(netanalyzerChartViewExtensionPatch, netanalyzerPingStatisticsExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(toolbarActionsPatch, hostToolsPatch)

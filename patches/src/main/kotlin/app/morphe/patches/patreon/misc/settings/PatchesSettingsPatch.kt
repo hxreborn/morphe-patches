@@ -33,6 +33,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import java.util.logging.Logger
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.patreonSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 internal const val PATREON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/patreon/"
 private const val PATCHES_MENU_CLASS = "${PATREON_EXTENSION_PACKAGE}PatchesMenu;"
@@ -128,6 +130,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(patreonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
         resourcePatch {
@@ -161,8 +164,6 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         mutableClassDefBy(PATCHES_MENU_CLASS).methods.single { it.name == "hostActivity" }.returnEarly(HOST_ACTIVITY)
 

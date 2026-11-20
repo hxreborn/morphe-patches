@@ -17,8 +17,9 @@ import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutab
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonUpgradePromotionRowsExtensionPatch
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markUpgradePromotionsPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -77,11 +78,12 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
         "Plan limits still apply.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_PASS)
+    dependsOn(protonUpgradePromotionRowsExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     execute {
         markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
-        markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
+        markUpgradePromotionsPatched()
 
         UpgradeInfoConstructorFingerprint.matchSingle().preserveAndResolveUpgradeAvailable()
         PlanLimitReachedFingerprint.matchSingle().readOriginalUpgradeAvailable()

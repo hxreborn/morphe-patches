@@ -16,6 +16,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.cxDarkThemeExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/cx/DarkTheme;"
 private const val CONTEXT_CLASS = "Landroid/content/Context;"
@@ -45,10 +46,10 @@ val darkThemePatch = bytecodePatch(
     name = "Dark theme",
     description = "Renders the app's dark theme and adds it to the settings.",
 ) {
+    dependsOn(cxDarkThemeExtensionPatch)
     compatibleWith(AppCompatibilities.CX_FILE_EXPLORER)
 
     dependsOn(unlockPremiumPatch, darkThemeResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val themePreference = ThemePreferenceFingerprint.matchSingle().instructionMatches[0]

@@ -7,6 +7,7 @@ package app.morphe.patches.bulletjournal.misc.premium
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "premium"
 private const val PRODUCT = "bujo.premium.lifetime"
@@ -16,9 +17,8 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks premium features.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.MAY_BULLET_JOURNAL)
-    extendWith("extensions/extension.mpe")
-
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
     }

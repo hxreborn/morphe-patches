@@ -12,6 +12,8 @@ import app.morphe.patches.raindrop.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.raindropUnlockProExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedStreamsExtensionPatch
 
 private const val REACT_CONTEXT_TYPE = "Lcom/facebook/react/bridge/ReactApplicationContext;"
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/raindrop/ProUnlock;"
@@ -23,9 +25,9 @@ val unlockProPatch = bytecodePatch(
         "suggestions, full-text search of saved pages, Wayback Machine copies and a weekly bookmark export to Downloads. " +
         "Requires a signed-in account.",
 ) {
+    dependsOn(raindropUnlockProExtensionPatch, sharedStreamsExtensionPatch)
     compatibleWith(AppCompatibilities.RAINDROP)
     dependsOn(spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         ResponseHandlerFingerprint.matchSingle().apply {

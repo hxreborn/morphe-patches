@@ -13,15 +13,15 @@ import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import java.security.MessageDigest
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/xt/retouch/MainApplication;"
 
 private const val APK_SIGNATURE_V3_PREFIX = "S3:"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.HYPIC)
-    extendWith("extensions/extension.mpe")
-
     execute {
         spoofSignature(APPLICATION_CLASS)
 

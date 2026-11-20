@@ -38,6 +38,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.protonMaterial3SwitchesExtensionPatch
 
 private const val SWITCH_THUMB_ICON_CLASS = "Lapp/hxreborn/extension/protonvpn/SwitchThumbIcon;"
 private const val VIEW_SWITCH_STYLE_CLASS = "Lapp/hxreborn/extension/protonvpn/ViewSwitchStyle;"
@@ -335,6 +336,7 @@ val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Adds check and close icons to switches.",
 ) {
+    dependsOn(protonMaterial3SwitchesExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_VPN)
     dependsOn(patchesSettingsPatch, resourceFieldsPatch)
 

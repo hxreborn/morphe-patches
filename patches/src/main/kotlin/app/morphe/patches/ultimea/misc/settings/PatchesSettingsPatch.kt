@@ -17,6 +17,7 @@ import app.morphe.patches.ultimea.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.fillAppliedPatch
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.ultimeaSettingsExtensionPatch
 
 internal const val ULTIMEA_EXTENSION = "Lapp/hxreborn/extension/ultimea/"
 private const val MENU = "${ULTIMEA_EXTENSION}PatchesMenu;"
@@ -35,7 +36,7 @@ internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Pa
     fillAppliedPatch("${ULTIMEA_EXTENSION}AppliedPatches;", methodName, patch, withDescription = false)
 
 internal val patchesSettingsPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(ultimeaSettingsExtensionPatch)
     dependsOn(spoofSignaturePatch, resourcePatch {
         dependsOn(nativeMethodsPatch)
         execute {

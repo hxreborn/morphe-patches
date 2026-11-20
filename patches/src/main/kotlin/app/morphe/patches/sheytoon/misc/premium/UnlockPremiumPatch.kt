@@ -7,6 +7,7 @@ package app.morphe.patches.sheytoon.misc.premium
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "select"
 private const val PRODUCT = "sheytoon_select_monthly"
@@ -17,9 +18,8 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks Sheytoon Select: unlimited likes, superlikes and quick notes, incognito mode, " +
         "Second Look, and unblurred photos of the people who liked or viewed you.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.SHEYTOON)
-    extendWith("extensions/extension.mpe")
-
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
     }

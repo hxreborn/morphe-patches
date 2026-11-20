@@ -14,6 +14,7 @@ import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.photoeditorproHideShareOptionsExtensionPatch
 
 private const val RESULT_SCREEN_CLASS = "$EXTENSION_PACKAGE/ResultScreen;"
 
@@ -22,9 +23,9 @@ val hideShareOptionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide share options",
     description = "Removes share buttons from the save screen and centers the saved photo.",
 ) {
+    dependsOn(photoeditorproHideShareOptionsExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchMetadata("hideShareOptions", hideShareOptionsPatch)

@@ -26,6 +26,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.berealDataCollectionExtensionPatch
 
 private val removedPermissions = setOf(
     "com.google.android.gms.permission.AD_ID",
@@ -58,6 +59,7 @@ val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
     description = "Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, Adjust " +
         "attribution and the Shake bug reporter.",
 ) {
+    dependsOn(berealDataCollectionExtensionPatch)
     compatibleWith(AppCompatibilities.BEREAL)
 
     dependsOn(

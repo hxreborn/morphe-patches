@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
+import app.morphe.patches.shared.misc.extension.uptclMatchSystemBarColorExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/uptcl/WindowBackground;"
 
@@ -17,9 +18,9 @@ val matchSystemBarColorPatch = bytecodePatch(
     name = "Match system bar color",
     description = "Colors the status bar and navigation bar white to match the app's screens.",
 ) {
+    dependsOn(uptclMatchSystemBarColorExtensionPatch)
     compatibleWith(AppCompatibilities.UPTCL)
     dependsOn(trustInstalledCertificatePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         BaseActivityOnCreateFingerprint.matchSingle().method.addInstruction(

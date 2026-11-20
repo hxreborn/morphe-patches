@@ -14,6 +14,7 @@ import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.etsyHideAdsExtensionPatch
 
 private const val BOX_DATA_CLASS =
     "Lcom/etsy/android/ui/search/component/model/BoxApiModel\$Data;"
@@ -24,9 +25,8 @@ val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
     description = "Removes promoted listings and the \"with Ads\" label from search results.",
 ) {
+    dependsOn(etsyHideAdsExtensionPatch)
     compatibleWith(AppCompatibilities.ETSY)
-    extendWith("extensions/extension.mpe")
-
     execute {
         SearchGridBoxFingerprint.matchSingle().method.apply {
             val index = indexOfFirstInstructionOrThrow {

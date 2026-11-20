@@ -1,0 +1,8 @@
+app/hxreborn/extension/vpnsuper/NotificationDisconnect
+app/hxreborn/extension/vpnsuper/NotificationDisconnectReceiver
+app/hxreborn/extension/vpnsuper/PatchSettings
+app/hxreborn/extension/vpnsuper/PatchesMenu
+app/hxreborn/extension/vpnsuper/PatchesMenuRow
+app/hxreborn/extension/vpnsuper/PatchesSettingsDialog
+app/hxreborn/extension/vpnsuper/SettingsRows
+app/hxreborn/extension/vpnsuper/SettingsStyle

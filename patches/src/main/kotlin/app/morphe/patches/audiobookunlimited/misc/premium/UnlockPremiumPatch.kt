@@ -10,6 +10,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.expo.disableOtaUpdatesPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatLifetimeEntitlement
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "Unlimited Books"
 private const val PRODUCT = "kindle_lifetime_notrial"
@@ -25,6 +26,7 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks Unlimited Books and skips the subscription offer shown after onboarding. " +
         "Disables OTA updates.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.AUDIOBOOK_UNLIMITED)
     dependsOn(
         removePairipProtectionPatch,
@@ -33,8 +35,6 @@ val unlockPremiumPatch = bytecodePatch(
             setOf(ONBOARDING_REPLACES_WITH_PAYWALL to ONBOARDING_REPLACES_WITH_HOME)
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         grantRevenueCatLifetimeEntitlement(ENTITLEMENT, PRODUCT)
     }

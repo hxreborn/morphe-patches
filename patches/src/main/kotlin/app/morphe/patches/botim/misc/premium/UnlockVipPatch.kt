@@ -15,6 +15,7 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.botimUnlockVipExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/SduiCollections;"
 
@@ -23,11 +24,10 @@ val unlockVipPatch = bytecodePatch(
     name = "Unlock VIP",
     description = "Removes ads and upgrade prompts. Shows the VIP badge in the header.",
 ) {
+    dependsOn(botimUnlockVipExtensionPatch)
     compatibleWith(AppCompatibilities.BOTIM)
 
     dependsOn(fixSignInPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         val mapper = SelfProfileMapperFingerprint.matchSingle()

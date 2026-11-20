@@ -123,7 +123,7 @@ internal fun BytecodePatchContext.drawPullRefreshAsLoadingIndicator(
     androidViewParameterCount: Int,
     loadPullProgress: (stateType: String, state: String, progress: String, scratch: String) -> String,
 ) {
-    markFeaturePatched(LOADING_INDICATOR_CLASS)
+    markLoadingIndicatorPatched()
 
     val match = contentFingerprint.matchSingle()
     val content = match.method

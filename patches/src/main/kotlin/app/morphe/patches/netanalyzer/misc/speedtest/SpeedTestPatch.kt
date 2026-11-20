@@ -11,12 +11,16 @@ import app.morphe.patches.netanalyzer.shared.addMenuEntry
 import app.morphe.patches.netanalyzer.shared.patchesMenuPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.netanalyzerChannelUsageActivityExtensionPatch
+import app.morphe.patches.shared.misc.extension.netanalyzerChartViewExtensionPatch
+import app.morphe.patches.shared.misc.extension.netanalyzerSpeedTestExtensionPatch
 
 @Suppress("unused")
 val speedTestPatch = bytecodePatch(
     name = "Speed test",
     description = "Adds an internet speed test with download and upload charts and a test history.",
 ) {
+    dependsOn(netanalyzerChannelUsageActivityExtensionPatch, netanalyzerChartViewExtensionPatch, netanalyzerSpeedTestExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(patchesMenuPatch)

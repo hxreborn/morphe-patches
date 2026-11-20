@@ -21,6 +21,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.netanalyzerFeaturesExtensionPatch
 
 private const val THEME = "MyApplicationTheme"
 private const val HOST_PALETTE_CLASS = "Lapp/hxreborn/extension/netanalyzer/HostPalette;"
@@ -42,8 +43,8 @@ private fun Map<String, String>.toRegistration() =
     entries.joinToString(LIST_SEPARATOR) { (property, field) -> "$property$NAME_SEPARATOR$field" }
 
 internal val hostPalettePatch = bytecodePatch {
+    dependsOn(netanalyzerFeaturesExtensionPatch)
     dependsOn(stringKeyPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val theme = Fingerprint(filters = listOf(composable(THEME), colorSchemeConstructor)).matchSingle()

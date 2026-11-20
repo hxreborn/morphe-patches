@@ -22,6 +22,7 @@ import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.literalWrittenTo
+import app.morphe.patches.shared.misc.proton.PASS_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -51,7 +52,12 @@ val hideNavigationBarOnScrollPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchMetadata("hideNavigationBarOnScroll", hideNavigationBarOnScrollPatch, withDescription = true)
+        markPatchMetadata(
+            "hideNavigationBarOnScroll",
+            hideNavigationBarOnScrollPatch,
+            withDescription = true,
+            settingsClass = PASS_SETTINGS_CLASS,
+        )
         markFeaturePatched(NAVIGATION_BAR_CLASS)
         requireAppMethods(NAVIGATION_BAR_CLASS, SCROLL_HANDLER_CLASS, HIDDEN_OFFSET_CLASS)
         VelocityConstructorFingerprint.matchSingle()

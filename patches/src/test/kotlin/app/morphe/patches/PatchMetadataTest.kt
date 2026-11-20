@@ -82,7 +82,7 @@ internal class PatchMetadataTest {
             ZipOutputStream(apk.outputStream()).use { zip ->
                 for ((entry, resource) in listOf(
                     "AndroidManifest.xml" to "/metadata/AndroidManifest.axml",
-                    "classes.dex" to "/extensions/extension.mpe",
+                    "classes.dex" to "/extensions/hxreborn/aliexpress-settings.mpe",
                 )) {
                     zip.putNextEntry(ZipEntry(entry))
                     checkNotNull(javaClass.getResourceAsStream(resource)).use { it.copyTo(zip) }

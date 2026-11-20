@@ -18,6 +18,7 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import app.morphe.util.inputStreamFromBundledResource
 import com.android.tools.smali.dexlib2.Opcode
+import app.morphe.patches.shared.misc.extension.candycrushsagaGameModifiersExtensionPatch
 
 private const val MODIFIERS = "Lapp/hxreborn/extension/candycrushsaga/GameModifiers;"
 
@@ -32,7 +33,7 @@ private val addModifiersLibraryPatch = resourcePatch {
 }
 
 internal val candyCrushModifiersPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(candycrushsagaGameModifiersExtensionPatch)
     dependsOn(addModifiersLibraryPatch)
 
     execute {

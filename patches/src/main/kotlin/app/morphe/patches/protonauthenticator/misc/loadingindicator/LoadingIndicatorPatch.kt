@@ -12,6 +12,7 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonLoadingIndicatorExtensionPatch
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
@@ -20,6 +21,7 @@ import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.protonM3ELoadingIndicatorExtensionPatch
 
 private const val ANDROID_VIEW_PARAMETERS = 6
 private const val COLOR_TYPE = "J"
@@ -34,6 +36,8 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
+    dependsOn(protonLoadingIndicatorExtensionPatch)
+    dependsOn(protonM3ELoadingIndicatorExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_AUTHENTICATOR)
     dependsOn(patchesSettingsPatch)
 

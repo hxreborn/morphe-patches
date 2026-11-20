@@ -1,0 +1,5 @@
+app/hxreborn/extension/quranify/ApiRequest
+app/hxreborn/extension/quranify/ApiResponse
+app/hxreborn/extension/quranify/HttpExchange
+app/hxreborn/extension/quranify/LocalApiServer
+app/hxreborn/extension/quranify/WebApiSession

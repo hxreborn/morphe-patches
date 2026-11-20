@@ -16,6 +16,8 @@ import app.morphe.util.findElementByAttributeValueOrThrow
 import app.morphe.util.findMutableMethodOf
 import app.morphe.util.getNode
 import com.android.tools.smali.dexlib2.iface.ClassDef
+import app.morphe.patches.shared.misc.extension.cxAmoledDarkThemeExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/cx/AmoledTheme;"
 private const val STRING_CLASS = "Ljava/lang/String;"
@@ -85,10 +87,10 @@ val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Adds a pure black option to the dark theme.",
 ) {
+    dependsOn(cxAmoledDarkThemeExtensionPatch, sharedNightModeExtensionPatch)
     compatibleWith(AppCompatibilities.CX_FILE_EXPLORER)
 
     dependsOn(darkThemePatch, amoledThemeResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val settingsClassDef = ThemePreferenceFingerprint.matchSingle().classDef

@@ -19,14 +19,14 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.medicneetUnlockPremiumExtensionPatch
 
 private const val OPEN_TIER_RETRY_CLASS = "Lapp/hxreborn/extension/medicneet/OpenTierRetry;"
 
 private const val TIER_FIELD = "tier"
 
 internal val openQuestionTiersPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(medicneetUnlockPremiumExtensionPatch)
     execute {
         retryDeniedQuestionQueries()
         answerDeniedSegmentReads()

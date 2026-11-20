@@ -23,7 +23,6 @@ val hideRecommendedCreatorsPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PATREON)
 
     dependsOn(patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(EXTENSION_CLASS_DESCRIPTOR, hideRecommendedCreatorsPatch)

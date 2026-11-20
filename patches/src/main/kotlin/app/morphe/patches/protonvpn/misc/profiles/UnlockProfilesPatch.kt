@@ -19,8 +19,10 @@ import app.morphe.patches.protonvpn.misc.restrictions.freeServerMethod
 import app.morphe.patches.protonvpn.misc.restrictions.invertFreeServerCheckForFreeAccount
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensionPatch
 
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"
 
@@ -30,11 +32,12 @@ val unlockProfilesPatch: BytecodePatch = bytecodePatch(
     description = "Unlocks profiles on free plans and limits them to free locations. " +
         "Profiles for other locations are hidden.",
 ) {
+    dependsOn(protonFreeServerLocationsExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_VPN)
     dependsOn(patchesSettingsPatch, freeAccountStatePatch)
 
     execute {
-        markPatchApplied("unlockProfiles", unlockProfilesPatch)
+        markPatchApplied(VPN_SETTINGS_CLASS, "unlockProfiles", unlockProfilesPatch)
         setExtensionMember(
             "profileAvailability",
             findPropertyField(ProfileViewItemToStringFingerprint, "availability").name,

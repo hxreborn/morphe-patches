@@ -64,6 +64,7 @@ private val recoveredDexFiles = mutableListOf<ByteArray>()
 private val virtualizedCodeAssets = mutableListOf<File>()
 private var hoistedFields = emptyList<HoistedField>()
 private var isPairipPacked = false
+private var pairipMethodsAreUsed = true
 
 private fun ByteArray.indexOfSequence(sequence: ByteArray): Int {
     outer@ for (start in 0..size - sequence.size) {
@@ -112,6 +113,7 @@ private val extractRecoveredDexPatch = rawResourcePatch {
         recoveredDexFiles.clear()
         virtualizedCodeAssets.clear()
         hoistedFields = emptyList()
+        pairipMethodsAreUsed = false
         isPairipPacked = get("lib").listFiles { file -> file.isDirectory }
             ?.any { architecture -> architecture.resolve("libpairipcore.so").exists() } == true
         if (!isPairipPacked) return@execute
@@ -133,6 +135,21 @@ private val extractRecoveredDexPatch = rawResourcePatch {
             pairipBuildLines(packageMetadata.packageName, packageMetadata.versionCode, "tsv"),
             appDexFiles,
         )
+        pairipMethodsAreUsed = hoistedFields.any { it.type == METHOD_TYPE && !it.assignedByApp }
+    }
+}
+
+private object PairipPayload
+
+internal val conditionalSharedPairipExtensionPatch = bytecodePatch {
+    dependsOn(extractRecoveredDexPatch)
+
+    extendWithAll {
+        if (pairipMethodsAreUsed) {
+            listOf(Supplier { PairipPayload::class.java.classLoader.getResourceAsStream("extensions/hxreborn/shared-pairip.mpe") })
+        } else {
+            emptyList()
+        }
     }
 }
 
@@ -291,8 +308,7 @@ val removePairipVirtualizationPatch = bytecodePatch {
         AppCompatibilities.YUKA,
     )
 
-    dependsOn(removePairipResourcesPatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(removePairipResourcesPatch, conditionalSharedPairipExtensionPatch)
 
     execute {
         if (!isPairipPacked) return@execute

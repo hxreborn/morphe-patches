@@ -16,11 +16,12 @@ import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonLoadingIndicatorExtensionPatch
 import app.morphe.patches.shared.misc.proton.LOADING_INDICATOR_CLASS
 import app.morphe.patches.shared.misc.proton.SHOW_LOADING_INDICATOR
 import app.morphe.patches.shared.misc.proton.androidViewFingerprint
 import app.morphe.patches.shared.misc.proton.bindLoadingIndicatorView
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markLoadingIndicatorPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -44,11 +45,12 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
+    dependsOn(protonLoadingIndicatorExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     execute {
         markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
-        markFeaturePatched(LOADING_INDICATOR_CLASS)
+        markLoadingIndicatorPatched()
 
         val pullingIconMatch = PullToRefreshPullingIconFingerprint.matchSingle()
         val pullingIconMethod = pullingIconMatch.method

@@ -30,6 +30,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.viberUnfiledChatsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/UnfiledChats;"
 private const val PREDEFINED_FOLDER_TYPE = 1
@@ -40,6 +41,7 @@ val unfiledChatsPatch: BytecodePatch = bytecodePatch(
     name = "Unfiled chats",
     description = "Adds a folder tab for chats outside your custom folders.",
 ) {
+    dependsOn(viberUnfiledChatsExtensionPatch)
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 

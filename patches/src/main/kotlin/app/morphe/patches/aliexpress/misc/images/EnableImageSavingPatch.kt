@@ -28,6 +28,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.aliexpressEnableImageSavingExtensionPatch
 
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 private const val VIEWER_SAVE_BUTTON_CLASS = "Lapp/hxreborn/extension/aliexpress/ViewerSaveButton;"
@@ -68,6 +69,7 @@ val enableImageSavingPatch: BytecodePatch = bytecodePatch(
     name = "Enable image saving",
     description = "Shows a save button on full-screen product and review photos.",
 ) {
+    dependsOn(aliexpressEnableImageSavingExtensionPatch)
     compatibleWith(AppCompatibilities.ALIEXPRESS)
     dependsOn(spoofSignaturePatch, stockSaveIconPatch)
 

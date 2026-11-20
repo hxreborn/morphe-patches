@@ -19,6 +19,8 @@ import app.morphe.patches.netanalyzer.shared.lanScanObserverPatch
 import app.morphe.patches.netanalyzer.shared.toolbarActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.netanalyzerHistoryRowsExtensionPatch
+import app.morphe.patches.shared.misc.extension.netanalyzerLanScanHistoryExtensionPatch
 
 @Suppress("unused")
 val lanScanHistoryPatch = bytecodePatch(
@@ -26,6 +28,7 @@ val lanScanHistoryPatch = bytecodePatch(
     description = "Saves each finished LAN scan and its devices, lets you star, delete or clear saved scans, " +
         "and scans a custom IP range.",
 ) {
+    dependsOn(netanalyzerHistoryRowsExtensionPatch, netanalyzerLanScanHistoryExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(toolbarActionsPatch, lanScanObserverPatch)

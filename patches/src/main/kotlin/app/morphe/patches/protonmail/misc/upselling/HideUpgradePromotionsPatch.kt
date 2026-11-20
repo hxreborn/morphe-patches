@@ -13,11 +13,13 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.protonmail.misc.banner.answerAutoDeleteBannerCheck
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonUpgradePromotionRowsExtensionPatch
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markUpgradePromotionsPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import app.morphe.util.findInstructionIndicesReversed
@@ -54,17 +56,17 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
         "Keeps the Empty trash and Empty spam buttons.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
+    dependsOn(protonUpgradePromotionRowsExtensionPatch)
     dependsOn(
         patchesSettingsPatch,
         unhandledSidebarUpsellingPatch,
         autoDeleteBannerStatePatch,
     )
 
-    extendWith("extensions/extension.mpe")
-
     execute {
         markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
-        markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
+        markUpgradePromotionsPatched()
+        answerAutoDeleteBannerCheck("isUpsellHidden", "$UPSELLING_VISIBILITY_CLASS->isHidden()Z")
 
         val rows = sidebarUpsellingRowFingerprints.mapNotNull { it.methodOrNull }
 

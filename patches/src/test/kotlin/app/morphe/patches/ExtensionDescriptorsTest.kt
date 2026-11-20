@@ -4,10 +4,7 @@
  */
 package app.morphe.patches
 
-import com.android.tools.smali.dexlib2.Opcodes
-import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import java.io.File
-import java.nio.ByteBuffer
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -25,17 +22,7 @@ internal class ExtensionDescriptorsTest {
         """(?:[$]\{?(\w+)\}?|($classPrefix[\w/$]+;))->([\w<>$]+)\(([^)"\s]*)\)(\[*(?:[VZBSCIJFD]|L[\w/$]+;))""",
     )
 
-    private val extensionMethods: Map<String, Set<String>> by lazy {
-        val bytes = checkNotNull(javaClass.getResourceAsStream("/extensions/extension.mpe")) {
-            "extensions/extension.mpe is not on the test classpath"
-        }.use { it.readBytes() }
-
-        DexBackedDexFile(Opcodes.getDefault(), ByteBuffer.wrap(bytes)).classes.associate { classDef ->
-            classDef.type to classDef.methods
-                .map { "${it.name}(${it.parameterTypes.joinToString("")})${it.returnType}" }
-                .toSet()
-        }
-    }
+    private val extensionMethods: Map<String, Set<String>> by lazy { ExtensionPayloads.methodsByClass }
 
     private val sources by lazy {
         File("src/main/kotlin").walkTopDown().filter { it.extension == "kt" }.associateWith { it.readText() }

@@ -16,6 +16,7 @@ import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
 import app.morphe.patches.viber.shared.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.viberRemoveChatPaymentActionsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/ChatPayments;"
 
@@ -24,6 +25,7 @@ val removeChatPaymentsPatch: BytecodePatch = bytecodePatch(
     name = "Remove chat payment actions",
     description = "Removes payment actions from chat menus.",
 ) {
+    dependsOn(viberRemoveChatPaymentActionsExtensionPatch)
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 

@@ -16,12 +16,14 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
 private const val SELECTION_TOOLBAR = "Lapp/hxreborn/extension/readera/SelectionToolbar;"
 private const val SCROLL_VIEW = "Landroid/widget/ScrollView;"
 private const val ATTACH_REGISTERS = 3
 
 internal val selectionToolbarPatch = bytecodePatch {
+    dependsOn(readeraSelectionMenuExtensionPatch)
     execute {
         val clipboard = ClipboardCopyFingerprint.matchAll(1..1).single().originalMethod
         val copy = selectionCopyFingerprint(clipboard).matchAll(1..1).single()

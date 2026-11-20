@@ -1,0 +1,10 @@
+app/hxreborn/extension/proton/AccentColor
+app/hxreborn/extension/proton/AccentColor$LabAdjustment
+app/hxreborn/extension/proton/MaterialSwitches
+app/hxreborn/extension/proton/PatchSettings
+app/hxreborn/extension/proton/PatchesTheme
+app/hxreborn/extension/proton/SwitchStyle
+app/hxreborn/extension/proton/SwitchStyle$MaterialStyle
+app/hxreborn/extension/proton/SwitchStyle$WithIconState
+app/hxreborn/extension/proton/WebToggleSwitchStyle
+app/hxreborn/extension/proton/WebToggleSwitchStyle$MarkDrawable

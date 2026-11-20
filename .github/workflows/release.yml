@@ -65,12 +65,12 @@ jobs:
       - name: Check Java style
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :extensions:extension:checkstyle :extensions:extension:lintRelease --no-daemon
+        run: ./gradlew :checkExtensions --no-daemon
 
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :patches:test :extensions:extension:test --no-daemon
+        run: ./gradlew :patches:test :testExtensions --no-daemon
 
       - name: Remove test build outputs
         run: rm -rf patches/build/libs

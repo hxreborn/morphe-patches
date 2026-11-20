@@ -1,0 +1,3 @@
+app/hxreborn/extension/terabox/GoogleLoginChromeClient
+app/hxreborn/extension/terabox/GoogleLoginChromeClient$PopupChromeClient
+app/hxreborn/extension/terabox/GoogleLoginChromeClient$PopupViewClient

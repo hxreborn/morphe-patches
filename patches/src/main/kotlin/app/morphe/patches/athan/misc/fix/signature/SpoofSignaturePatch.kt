@@ -7,13 +7,13 @@ package app.morphe.patches.athan.misc.fix.signature
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/athan/activity/AthanApplication;"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.ATHAN)
-    extendWith("extensions/extension.mpe")
-
     execute {
         spoofSignature(APPLICATION_CLASS)
     }

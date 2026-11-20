@@ -19,6 +19,7 @@ import app.morphe.patches.protonvpn.misc.anchors.unitInstanceField
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -31,7 +32,7 @@ val disableTelemetryPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch, resourceFieldsPatch, disableAnalyticsCollectionPatch)
 
     execute {
-        markPatchApplied("disableTelemetry", disableTelemetryPatch)
+        markPatchApplied(VPN_SETTINGS_CLASS, "disableTelemetry", disableTelemetryPatch)
         ObservabilityEnabledFingerprint.matchAll().forEach {
             val flagRead = it.instructionMatches.last()
             it.method.addInstructions(

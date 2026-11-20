@@ -19,6 +19,7 @@ import app.morphe.patches.protonmail.shared.ARM64
 import app.morphe.patches.protonmail.shared.MAIL_UNIFFI_LIBRARY
 import app.morphe.patches.protonmail.shared.X86_64
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.shared.replaceTrailingMasked
 
@@ -47,7 +48,7 @@ private val LIMIT_CHECKS = mapOf(
 )
 
 private val removeFreeAccountsLimitMarkerPatch =
-    appliedPatchMarkerPatch("removeFreeAccountsLimit") { removeFreeAccountsLimitPatch }
+    appliedPatchMarkerPatch(MAIL_SETTINGS_CLASS, "removeFreeAccountsLimit") { removeFreeAccountsLimitPatch }
 
 @Suppress("unused")
 val removeFreeAccountsLimitPatch: ResourcePatch = resourcePatch(

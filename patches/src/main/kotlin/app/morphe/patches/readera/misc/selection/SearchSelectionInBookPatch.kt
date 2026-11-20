@@ -19,6 +19,8 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
+import app.morphe.patches.shared.misc.extension.readeraSearchSelectionInBookExtensionPatch
+import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
 private const val SELECTION_SEARCH = "Lapp/hxreborn/extension/readera/SelectionSearch;"
 private const val TEXT_SEARCH_HINT = "Text search"
@@ -35,10 +37,15 @@ val searchSelectionInBookPatch = bytecodePatch(
     name = "Search selection in book",
     description = "Searches the book for the selected text and lists every match. Found under More in the text selection menu.",
 ) {
+    dependsOn(readeraSearchSelectionInBookExtensionPatch, readeraSelectionMenuExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, selectionToolbarPatch, textSearchHintResourcePatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(
+        patchesSettingsPatch,
+        disableSignatureChecksPatch,
+        selectionToolbarPatch,
+        textSearchHintResourcePatch,
+    )
 
     execute {
         registerReadEraPatch("Search selection in book", "Searches the book for the selected text.")

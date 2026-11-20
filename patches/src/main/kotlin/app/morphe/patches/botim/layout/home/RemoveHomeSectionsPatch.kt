@@ -16,6 +16,7 @@ import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.botimRemoveHomeSectionsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/HomeSections;"
 
@@ -25,9 +26,8 @@ val removeHomeSectionsPatch = bytecodePatch(
     description = "Removes the Services grid, Discover more banners and the search bar from Home.",
     default = false,
 ) {
+    dependsOn(botimRemoveHomeSectionsExtensionPatch)
     compatibleWith(AppCompatibilities.BOTIM)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         MainUiStateConstructorFingerprint.matchSingle().method.apply {

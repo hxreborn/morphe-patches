@@ -17,6 +17,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.aliexpressRemoveSponsoredItemsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/aliexpress/SponsoredProducts;"
 
@@ -25,9 +26,9 @@ val removeSponsoredItemsPatch: BytecodePatch = bytecodePatch(
     name = "Remove sponsored items",
     description = "Removes paid placements from search results and product feeds.",
 ) {
+    dependsOn(aliexpressRemoveSponsoredItemsExtensionPatch)
     compatibleWith(AppCompatibilities.ALIEXPRESS)
     dependsOn(spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchApplied("removeSponsoredItems", removeSponsoredItemsPatch)

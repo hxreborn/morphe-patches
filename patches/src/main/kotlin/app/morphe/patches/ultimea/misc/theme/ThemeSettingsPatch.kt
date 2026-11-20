@@ -23,12 +23,13 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.shared.misc.extension.ultimeaDarkThemeExtensionPatch
 
 private const val THEME_ARTWORK_CLASS = "Lapp/hxreborn/extension/ultimea/ThemeArtwork;"
 internal const val THEME_SETTINGS_CLASS = "Lapp/hxreborn/extension/ultimea/ThemeSettings;"
 
 internal val themeSettingsPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(ultimeaDarkThemeExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     execute {

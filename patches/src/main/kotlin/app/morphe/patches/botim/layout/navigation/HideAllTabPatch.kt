@@ -14,6 +14,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.botimMainTabsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/MainTabs;"
 
@@ -23,9 +24,8 @@ val hideAllTabPatch = bytecodePatch(
     description = "Hides the All tab from the bottom bar.",
     default = false,
 ) {
+    dependsOn(botimMainTabsExtensionPatch)
     compatibleWith(AppCompatibilities.BOTIM)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         val (allTabTypeCheck) = AllTabFragmentFactoryFingerprint.matchSingle().instructionMatches

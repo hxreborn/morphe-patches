@@ -1,0 +1,13 @@
+app/hxreborn/extension/duolingo/AppliedPatches
+app/hxreborn/extension/duolingo/PatchContext
+app/hxreborn/extension/duolingo/PatchContext$1
+app/hxreborn/extension/duolingo/PatchSettings
+app/hxreborn/extension/duolingo/PatchSettings$Subscription
+app/hxreborn/extension/duolingo/PatchesMenu
+app/hxreborn/extension/duolingo/PatchesSettingsDialog
+app/hxreborn/extension/duolingo/PatchesSettingsDialog$1
+app/hxreborn/extension/duolingo/SettingsRows
+app/hxreborn/extension/duolingo/SettingsRows$1
+app/hxreborn/extension/duolingo/SettingsStyle
+app/hxreborn/extension/duolingo/SettingsStyle$Toggle
+app/hxreborn/extension/duolingo/SettingsStyle$Toggle$1

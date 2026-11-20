@@ -20,6 +20,10 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.netanalyzerFeaturesExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 internal const val FEATURES_CLASS = "Lapp/hxreborn/extension/netanalyzer/Features;"
 internal const val EXTENSION_PACKAGE = "app.hxreborn.extension.netanalyzer"
@@ -67,6 +71,7 @@ private const val EXPORT_FILE_PROVIDER = "ExportFileProvider"
 private const val EXPORT_PROVIDER_AUTHORITY_SUFFIX = ".netanalyzer-an.provider"
 
 private val featureActivitiesPatch = resourcePatch {
+    dependsOn(netanalyzerFeaturesExtensionPatch)
     finalize {
         document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
@@ -88,8 +93,12 @@ private val featureActivitiesPatch = resourcePatch {
 }
 
 internal val patchesMenuPatch = bytecodePatch {
-    dependsOn(disableTamperDetectionPatch, hostPalettePatch, featureActivitiesPatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(netanalyzerFeaturesExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(
+        disableTamperDetectionPatch,
+        hostPalettePatch,
+        featureActivitiesPatch,
+    )
 
     execute {
         menuEntries.clear()

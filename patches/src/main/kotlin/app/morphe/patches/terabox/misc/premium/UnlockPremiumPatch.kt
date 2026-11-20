@@ -29,6 +29,9 @@ import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.teraboxSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.teraboxUnlockPremiumPlusExtensionPatch
 
 private const val PREMIUM_PLUS_LEVEL = 2
 private const val MAX_PLAYBACK_SPEED = 3.0
@@ -43,6 +46,7 @@ private val DATA_SAVER_LAYOUTS = listOf(
 )
 
 private val hideDataSaverOptionPatch = resourcePatch {
+    dependsOn(morpheLibraryCoreExtensionPatch, teraboxSettingsExtensionPatch, teraboxUnlockPremiumPlusExtensionPatch)
     execute {
         DATA_SAVER_LAYOUTS.forEach { layout ->
             document("res/layout/$layout.xml").use { document ->
@@ -61,10 +65,9 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     description = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
         "HD buffers faster over parallel connections.",
 ) {
+    dependsOn(teraboxUnlockPremiumPlusExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch, unlockHdPlaybackPatch, hideDataSaverOptionPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchApplied("unlockPremium", unlockPremiumPatch)

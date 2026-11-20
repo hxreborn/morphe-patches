@@ -13,6 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
+import app.morphe.patches.shared.misc.extension.idlefishAllowSharingWithoutLoginExtensionPatch
 
 private const val SHARE_LINK = "Lapp/hxreborn/extension/idlefish/ShareLink;"
 
@@ -23,6 +24,7 @@ val shareWithoutLoginPatch = bytecodePatch(
     name = "Allow sharing without login",
     description = "Shares a public listing link through the Android share sheet when signed out.",
 ) {
+    dependsOn(idlefishAllowSharingWithoutLoginExtensionPatch)
     compatibleWith(AppCompatibilities.IDLEFISH)
 
     dependsOn(spoofSignaturePatch)

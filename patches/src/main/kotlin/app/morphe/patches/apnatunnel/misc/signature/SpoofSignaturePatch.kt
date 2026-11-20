@@ -7,13 +7,13 @@ package app.morphe.patches.apnatunnel.misc.signature
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/liapp/x;"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.APNA_TUNNEL_LITE)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         spoofSignature(APPLICATION_CLASS)

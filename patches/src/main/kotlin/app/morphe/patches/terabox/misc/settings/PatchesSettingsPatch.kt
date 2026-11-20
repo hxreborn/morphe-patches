@@ -21,6 +21,8 @@ import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.ResourceGroup
 import app.morphe.util.copyResources
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.teraboxSettingsExtensionPatch
 
 internal const val TERABOX_PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/terabox/PatchSettings;"
 internal const val PREMIUM_ENABLED = "$TERABOX_PATCH_SETTINGS_CLASS->isPremiumUnlocked()Z"
@@ -51,6 +53,7 @@ internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: Mu
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(morpheLibraryCoreExtensionPatch, teraboxSettingsExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
         resourcePatch {
@@ -59,8 +62,6 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         mutableClassDefBy(TERABOX_PATCHES_MENU_CLASS).replaceResourceIdStubs(
             ResourceType.ID,

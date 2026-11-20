@@ -26,6 +26,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.teraboxUnlockPremiumPlusExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/TeraboxHdUnlock;"
 private const val MAIN_PLAYER_VIEW_ID = 115
@@ -35,9 +36,9 @@ private const val ORIGINAL_RESOLUTION_LABEL = "ORIGIN"
 private const val KILO_RESOLUTION_SUFFIX = "K"
 
 internal val unlockHdPlaybackPatch = bytecodePatch {
+    dependsOn(teraboxUnlockPremiumPlusExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         PremiumResolutionThresholdFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(Int.MAX_VALUE) }

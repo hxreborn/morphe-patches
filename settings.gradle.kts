@@ -19,3 +19,12 @@ pluginManagement {
 plugins {
     id("app.morphe.patches") version "2.1.0"
 }
+
+include(":extension-tests", ":extension-test-fixtures")
+
+rootDir.resolve("extensions").walkTopDown()
+    .onEnter { it.name != "build" && it.name != "node_modules" }
+    .filter { it.name == "library.gradle.kts" }
+    .forEach { script ->
+        include(":extensions:" + script.parentFile.relativeTo(rootDir.resolve("extensions")).invariantSeparatorsPath.replace('/', ':'))
+    }

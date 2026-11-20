@@ -31,6 +31,9 @@ import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstructio
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import java.util.logging.Logger
+import app.morphe.patches.shared.misc.extension.duolingoSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
 
 internal const val DUOLINGO_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/duolingo/"
 internal const val PATCH_SETTINGS_CLASS = "${DUOLINGO_EXTENSION_PACKAGE}PatchSettings;"
@@ -157,6 +160,7 @@ private fun BytecodePatchContext.addPatchesSettingsSection() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(duolingoSettingsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch)
     dependsOn(
         resourcePatch {
             execute {
@@ -168,8 +172,6 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         attachPatchContext()
         try {

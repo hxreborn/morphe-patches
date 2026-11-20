@@ -18,6 +18,7 @@ import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
+import app.morphe.patches.shared.misc.extension.photoeditorproDisablePushNotificationsExtensionPatch
 
 private const val PUSH_NOTIFICATIONS_CLASS = "$EXTENSION_PACKAGE/PushNotifications;"
 
@@ -34,9 +35,9 @@ val disablePushNotificationsPatch: BytecodePatch = bytecodePatch(
     name = "Disable push notifications",
     description = "Blocks push notifications and the prompt asking to allow them.",
 ) {
+    dependsOn(photoeditorproDisablePushNotificationsExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch, disableNotificationDelegationPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchMetadata("disablePushNotifications", disablePushNotificationsPatch)

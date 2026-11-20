@@ -21,6 +21,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
+import app.morphe.patches.shared.misc.extension.opalSkipSignInExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/opal/LocalAccount;"
 private const val LOCAL_USER_ID = "local-user"
@@ -39,9 +40,9 @@ val skipSignInPatch = bytecodePatch(
     name = "Skip sign-in",
     description = "Skips sign-in and runs Opal without an account. Features that need the Opal server are unavailable.",
 ) {
+    dependsOn(opalSkipSignInExtensionPatch)
     compatibleWith(AppCompatibilities.OPAL)
     dependsOn(removePairipProtectionPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         FirebaseAuthStoreFingerprint.matchSingle().apply {

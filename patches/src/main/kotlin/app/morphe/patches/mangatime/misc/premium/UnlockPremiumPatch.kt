@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "MangaTime Plus"
 private const val PRODUCT = "mt_plus_1"
@@ -18,9 +19,9 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Removes ads and chapter limits, and unlocks reading history, binge mode and section settings. " +
         "AI recommendation refresh and custom explore views are not unlocked.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.MANGATIME)
     dependsOn(removePairipProtectionPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)

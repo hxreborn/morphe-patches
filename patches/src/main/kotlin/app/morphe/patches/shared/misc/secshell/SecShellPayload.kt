@@ -21,7 +21,6 @@ import java.util.Base64
 
 private const val PAYLOAD_JAR = "assets/classes0.jar"
 private const val SHELL_DEX = "classes.dex"
-private const val EXTENSION_DEX = "extensions/extension.mpe"
 private const val JAR_MANIFEST = "META-INF/MANIFEST.MF"
 
 internal interface SecShellContainer {
@@ -65,15 +64,17 @@ internal class SecShellPayload(private val container: SecShellContainer) {
 
     fun referencesInMethodUsing(string: String) = editorUsing(string).referencesInMethodUsing(string)
 
-    fun addExtensionPackage(packageType: String, besideClass: String) {
-        val extension = SecShellPayload::class.java.classLoader.getResourceAsStream(EXTENSION_DEX)
-            ?.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()) }
-            ?: throw PatchException("$EXTENSION_DEX is missing from the patch bundle")
-        val packageClasses = extension.classes.filter { it.type.startsWith(packageType) }
-        if (packageClasses.isEmpty()) throw PatchException("$EXTENSION_DEX has no class in $packageType")
+    fun addExtensionPackage(packageType: String, besideClass: String, extensionDexes: List<String>) {
+        val extensionClasses = extensionDexes.flatMap { resource ->
+            SecShellPayload::class.java.classLoader.getResourceAsStream(resource)
+                ?.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes.toList() }
+                ?: throw PatchException("$resource is missing from the patch bundle")
+        }
+        val packageClasses = extensionClasses.filter { it.type.startsWith(packageType) }
+        if (packageClasses.isEmpty()) throw PatchException("$extensionDexes have no class in $packageType")
 
         val editor = editor(dexContaining(besideClass))
-        classesReachableFrom(packageClasses, extension.classes.associateBy { it.type }).forEach(editor::addClass)
+        classesReachableFrom(packageClasses, extensionClasses.associateBy { it.type }).forEach(editor::addClass)
     }
 
     fun sealed(): ByteArray =

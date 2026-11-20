@@ -26,6 +26,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.readeraCopyWithSourceExtensionPatch
+import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
 private const val SELECTION_SOURCE = "Lapp/hxreborn/extension/readera/SelectionSource;"
 private const val QUOTE_SHARE_SUBJECT = "Quote from the book %1\$s"
@@ -42,10 +44,15 @@ val copyWithSourcePatch = bytecodePatch(
     name = "Copy with source",
     description = "Copies selected text with the book title and author. Found under More in the text selection menu.",
 ) {
+    dependsOn(readeraCopyWithSourceExtensionPatch, readeraSelectionMenuExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, selectionToolbarPatch, quoteShareSubjectResourcePatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(
+        patchesSettingsPatch,
+        disableSignatureChecksPatch,
+        selectionToolbarPatch,
+        quoteShareSubjectResourcePatch,
+    )
 
     execute {
         registerReadEraPatch("Copy with source", "Copies selected text with the book title and author.")

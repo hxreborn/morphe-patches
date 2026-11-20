@@ -13,12 +13,14 @@ import app.morphe.patches.shared.misc.smali.replaceMethod
 import app.morphe.util.cloneMutable
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.internetspeedmeterAdPreferenceExtensionPatch
+import app.morphe.patches.shared.misc.extension.internetspeedmeterUnlockPremiumExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val SESSION_COUNTER_METHOD = "sessionCounter"
 
 internal val sessionCounterPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(internetspeedmeterAdPreferenceExtensionPatch, internetspeedmeterUnlockPremiumExtensionPatch, sharedDimensionsExtensionPatch)
     execute {
         val reference = SessionReferenceFingerprint.method
         val editIndex = SessionReferenceFingerprint.instructionMatches.first().index

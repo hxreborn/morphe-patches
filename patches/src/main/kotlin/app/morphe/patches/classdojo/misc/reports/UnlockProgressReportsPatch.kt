@@ -12,6 +12,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.all.misc.hermes.hermesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.classdojoUnlockProgressReportsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/classdojo/ReportBundle;"
 
@@ -26,9 +27,8 @@ val unlockProgressReportsPatch = bytecodePatch(
     description = "Unlocks detailed progress statistics. Date and points filters keep their existing limits. " +
         "Report limits can return after in-app updates.",
 ) {
+    dependsOn(classdojoUnlockProgressReportsExtensionPatch)
     compatibleWith(AppCompatibilities.CLASSDOJO)
-    extendWith("extensions/extension.mpe")
-
     dependsOn(
         hermesPatch {
             setOf(REPORT_CONTENT_BY_SUBSCRIPTION to DETAILED_REPORT_CONTENT)

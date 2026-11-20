@@ -14,7 +14,7 @@ internal class PatchesSettingsResourcesTest {
     private val iconName = Regex("""hx_duolingo_ic_\w+""")
 
     private val extensionIcons by lazy {
-        File("../extensions/extension/src/main/java/app/hxreborn/extension/duolingo")
+        File("../extensions/duolingo/src/main/java/app/hxreborn/extension/duolingo")
             .walkTopDown().filter { it.extension == "java" }
             .flatMap { file -> iconName.findAll(file.readText()).map { it.value } }
             .toSortedSet()

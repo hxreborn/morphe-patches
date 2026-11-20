@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.cubasisle3UnlockPremiumExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/cubasisle3/StoreUnlock;"
 
@@ -18,9 +19,8 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks the full Cubasis version and the in-app shop content.",
 ) {
+    dependsOn(cubasisle3UnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.CUBASIS_LE_3)
-    extendWith("extensions/extension.mpe")
-
     execute {
         val appLoaded = AppLoadedFingerprint.matchSingle()
         val updateCall = appLoaded.instructionMatches.single()

@@ -18,6 +18,8 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.readeraReadAloudFromSelectionExtensionPatch
+import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
 private const val SELECTION_READ_ALOUD = "Lapp/hxreborn/extension/readera/SelectionReadAloud;"
 
@@ -26,10 +28,15 @@ val readAloudFromSelectionPatch = bytecodePatch(
     name = "Read aloud from selection",
     description = "Starts Read aloud from the selected text. Found under More in the text selection menu.",
 ) {
+    dependsOn(readeraReadAloudFromSelectionExtensionPatch, readeraSelectionMenuExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, chapterReaderPatch, selectionToolbarPatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(
+        patchesSettingsPatch,
+        disableSignatureChecksPatch,
+        chapterReaderPatch,
+        selectionToolbarPatch,
+    )
 
     execute {
         registerReadEraPatch("Read aloud from selection", "Starts Read aloud from the selected text.")

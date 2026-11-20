@@ -12,17 +12,21 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
+import app.morphe.patches.protonmail.misc.banner.answerAutoDeleteBannerCheck
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.uniffiCallsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonScheduledDeletionRowsExtensionPatch
+import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
+import app.morphe.patches.shared.misc.proton.forwardStub
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
-private const val BANNER_CLASS = "Lapp/hxreborn/extension/protonmail/AutoDeleteBanner;"
+private const val BANNER_CLASS = "Lapp/hxreborn/extension/protonmail/ScheduledDeletionBanner;"
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/ScheduledDeletion;"
 
 private val scheduledDeletionStringsPatch = resourcePatch {
@@ -53,16 +57,18 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
         "also while the app is closed. Deleted messages cannot be recovered.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_MAIL)
+    dependsOn(protonScheduledDeletionRowsExtensionPatch)
     dependsOn(
         patchesSettingsPatch,
         autoDeleteBannerStatePatch,
         scheduledDeletionStringsPatch,
         uniffiCallsPatch,
     )
-    extendWith("extensions/extension.mpe")
 
     execute {
-        markPatchApplied("scheduledDeletion", scheduledDeletionPatch)
+        markPatchApplied(MAIL_SETTINGS_CLASS, "scheduledDeletion", scheduledDeletionPatch)
+        forwardStub(MAIL_SETTINGS_CLASS, "addScheduledDeletionRows", "Lapp/hxreborn/extension/protonmail/ScheduledDeletionRows;")
+        answerAutoDeleteBannerCheck("isScheduled", "$BANNER_CLASS->isScheduled()Z")
 
         AutoDeleteBannerTextFingerprint.matchSingle().let { match ->
             val bannerTextIndex = match.instructionMatches.single().index

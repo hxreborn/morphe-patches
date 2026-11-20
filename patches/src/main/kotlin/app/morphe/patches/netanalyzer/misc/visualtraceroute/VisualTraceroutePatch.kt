@@ -15,6 +15,7 @@ import app.morphe.patches.netanalyzer.shared.hostToolsPatch
 import app.morphe.patches.netanalyzer.shared.toolbarActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.netanalyzerVisualTracerouteExtensionPatch
 
 @Suppress("unused")
 val visualTraceroutePatch = bytecodePatch(
@@ -22,6 +23,7 @@ val visualTraceroutePatch = bytecodePatch(
     description = "Shows the hops of the current or last traceroute on an OpenStreetMap map. " +
         "Map tiles load from tile.openstreetmap.org.",
 ) {
+    dependsOn(netanalyzerVisualTracerouteExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(toolbarActionsPatch, hostToolsPatch)

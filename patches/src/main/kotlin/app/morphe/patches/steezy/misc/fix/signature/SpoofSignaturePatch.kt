@@ -7,13 +7,13 @@ package app.morphe.patches.steezy.misc.fix.signature
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lco/steezy/app/MainApplication;"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.STEEZY)
-    extendWith("extensions/extension.mpe")
-
     execute {
         spoofSignature(APPLICATION_CLASS)
     }

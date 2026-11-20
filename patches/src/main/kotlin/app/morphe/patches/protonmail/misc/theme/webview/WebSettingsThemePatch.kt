@@ -8,12 +8,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
+import app.morphe.patches.shared.misc.extension.protonWebSettingsThemeExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/WebSettingsTheme;"
 
 internal val webSettingsThemePatch = bytecodePatch {
+    dependsOn(protonWebSettingsThemeExtensionPatch)
     dependsOn(patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         WebSettingsCreatedFingerprint.matchSingle().method.addInstructions(

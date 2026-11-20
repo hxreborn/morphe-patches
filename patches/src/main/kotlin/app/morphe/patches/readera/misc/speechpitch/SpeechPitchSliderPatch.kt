@@ -34,6 +34,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.readeraMaterialRadioButtonExtensionPatch
+import app.morphe.patches.shared.misc.extension.readeraSpeechPitchSliderExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechPitchSlider;"
 private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechPitchTarget;"
@@ -42,6 +44,7 @@ private val radioButtonTags = setOf("RadioButton", MATERIAL_RADIO_BUTTON_TAG)
 private lateinit var pitchResources: ResourcePatchContext
 
 private val pitchResourcesPatch = resourcePatch {
+    dependsOn(readeraMaterialRadioButtonExtensionPatch)
     execute {
         pitchResources = this
         decode("res/layout/*.xml")
@@ -90,10 +93,10 @@ val speechPitchSliderPatch = bytecodePatch(
     name = "Speech pitch slider",
     description = "Adds a voice pitch slider from 0.5x to 2x to Settings > Text to speech (TTS).",
 ) {
+    dependsOn(readeraSpeechPitchSliderExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
     availability(requireArm64)
     dependsOn(patchesSettingsPatch, disableSignatureChecksPatch, pitchResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         registerReadEraPatch("Speech pitch slider", "Adds a voice pitch slider from 0.5x to 2x to Settings > Text to speech (TTS).")

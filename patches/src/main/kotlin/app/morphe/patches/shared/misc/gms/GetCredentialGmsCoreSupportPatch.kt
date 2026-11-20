@@ -16,6 +16,7 @@ import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
+import app.morphe.patches.shared.misc.extension.sharedGmsSignInExtensionPatch
 
 private const val MAX_INVOKE_REGISTER = 15
 
@@ -57,7 +58,7 @@ private fun requireInlinedSignInSafe(
 }
 
 internal val getCredentialGmsCoreSignInPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(sharedGmsSignInExtensionPatch)
 
     dependsOn(gmsCoreSpoofedSignaturePatch, gmsCoreManifestPatch)
 

@@ -17,6 +17,7 @@ import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.teraboxHideHomeShortcutsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/HomeShortcutFilter;"
 
@@ -52,11 +53,10 @@ val hideHomeShortcutsPatch: BytecodePatch = bytecodePatch(
     description = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
         "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.",
 ) {
+    dependsOn(teraboxHideHomeShortcutsExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
 
     dependsOn(patchesSettingsPatch)
-
-    extendWith("extensions/extension.mpe")
 
     val hideShortcutOptions = Shortcut.entries.associateWith { shortcut ->
         booleanOption(

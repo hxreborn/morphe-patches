@@ -26,6 +26,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.formats.PackedSwitchPayload
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.castleDeviceGuidExtensionPatch
 
 private const val DEVICE_GUID_CLASS = "Lapp/hxreborn/extension/castle/DeviceGuid;"
 
@@ -116,9 +117,8 @@ val spoofSignaturePatch = bytecodePatch(
     name = "Spoof signature",
     description = "Removes the modified app warning that stops video playback.",
 ) {
+    dependsOn(castleDeviceGuidExtensionPatch)
     compatibleWith(AppCompatibilities.CASTLE_FOR_TV)
-    extendWith("extensions/extension.mpe")
-
     execute {
         val certificate = packageMetadata.stockSigningCertificate().encoded.joinToString("") { "%02x".format(it) }
 

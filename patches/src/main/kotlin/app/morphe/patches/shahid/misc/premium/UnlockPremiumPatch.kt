@@ -11,6 +11,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.shahidUnlockFullHdExtensionPatch
 
 private const val REMOVE_HEIGHT_LIMIT =
     "Lapp/hxreborn/extension/shahid/ManifestFilter;->removeHeightLimit(Ljava/lang/String;)Ljava/lang/String;"
@@ -20,9 +21,8 @@ val unlockPremiumPatch = bytecodePatch(
     name = "Unlock Full HD",
     description = "Unlocks Full HD playback. VIP titles require a subscription.",
 ) {
+    dependsOn(shahidUnlockFullHdExtensionPatch)
     compatibleWith(AppCompatibilities.SHAHID)
-    extendWith("extensions/extension.mpe")
-
     execute {
         PlayoutMediaUrlFingerprint.matchAll(2..2).forEach { match ->
             val urlIndex = match.instructionMatches.first().index

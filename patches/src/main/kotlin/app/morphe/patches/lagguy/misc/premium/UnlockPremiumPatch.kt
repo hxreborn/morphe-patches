@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "lifetime"
 private const val PRODUCT = "lifetime"
@@ -18,8 +19,8 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks Pro collections, wide walls, original-size downloads and unlimited saves. " +
         "Requires a signed-in account.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.LAGGUY_WALLPAPERS)
-    extendWith("extensions/extension.mpe")
 
     dependsOn(removePairipProtectionPatch)
 

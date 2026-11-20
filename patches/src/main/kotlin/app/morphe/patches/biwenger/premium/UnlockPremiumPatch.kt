@@ -9,6 +9,8 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.biwenger.shared.PageStartedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.biwengerFetchRewriteExtensionPatch
+import app.morphe.patches.shared.misc.extension.biwengerUnlockPremiumExtensionPatch
 
 private const val INSTALL = "Lapp/hxreborn/extension/biwenger/PremiumLeagues;->install(Landroid/webkit/WebView;)V"
 
@@ -19,9 +21,8 @@ val unlockPremiumPatch = bytecodePatch(
         "The server refuses custom scoring, release clauses, substitutes and player tracking. " +
         "Actions that cost credits still charge you, with no confirmation.",
 ) {
+    dependsOn(biwengerFetchRewriteExtensionPatch, biwengerUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.BIWENGER)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         PageStartedFingerprint.matchSingle().method.addInstructions(

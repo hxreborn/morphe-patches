@@ -10,12 +10,14 @@ import app.morphe.patches.netanalyzer.shared.addMenuEntry
 import app.morphe.patches.netanalyzer.shared.patchesMenuPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.netanalyzerSettingsExtensionPatch
 
 @Suppress("unused")
 val settingsPatch = bytecodePatch(
     name = "Settings",
     description = "Adds a Settings screen with the theme, Wi-Fi scan frequency and 6 GHz scan options.",
 ) {
+    dependsOn(netanalyzerSettingsExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(patchesMenuPatch)

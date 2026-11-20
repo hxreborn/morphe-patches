@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.calcnote.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "pro"
 private const val PRODUCT = "calcnote_pro_plan"
@@ -17,8 +18,8 @@ val unlockProPatch = bytecodePatch(
     name = "Unlock pro",
     description = "Unlocks Pro features and removes ads.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.CALCNOTE)
-    extendWith("extensions/extension.mpe")
 
     dependsOn(spoofSignaturePatch)
 

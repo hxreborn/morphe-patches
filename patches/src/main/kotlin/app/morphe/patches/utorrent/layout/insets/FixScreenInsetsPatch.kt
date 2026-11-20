@@ -11,6 +11,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.torrent.removeProtectionPatch
+import app.morphe.patches.shared.misc.extension.utorrentFixScreenInsetsExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/utorrent/ScreenInsets;"
 
@@ -19,9 +20,9 @@ val fixScreenInsetsPatch = bytecodePatch(
     name = "Fix screen insets",
     description = "Keeps main screens and settings clear of system bars and display cutouts on Android 17.",
 ) {
+    dependsOn(utorrentFixScreenInsetsExtensionPatch)
     compatibleWith(AppCompatibilities.UTORRENT)
     dependsOn(removeProtectionPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR).replaceResourceIdStubs(

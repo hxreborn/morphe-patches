@@ -10,6 +10,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/pairip/application/Application;"
 
@@ -18,12 +19,11 @@ val spoofSignaturePatch = bytecodePatch(
     name = "Spoof signature",
     description = "Enables sign-up and sign-in.",
 ) {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.CONNECTED2)
     availability(requireArm64)
 
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         spoofSignature(APPLICATION_CLASS)

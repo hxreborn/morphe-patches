@@ -11,6 +11,7 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonLoadingIndicatorExtensionPatch
 import app.morphe.patches.shared.misc.proton.drawPullRefreshAsLoadingIndicator
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.resizeLoadingIndicatorContainer
@@ -26,6 +27,7 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_PASS)
+    dependsOn(protonLoadingIndicatorExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     execute {

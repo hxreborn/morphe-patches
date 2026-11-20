@@ -12,12 +12,12 @@ import app.morphe.patches.imo.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
+import app.morphe.patches.shared.misc.extension.imoGmsCoreSupportExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/imo/AccountChooser;"
 
 private val accountChooserPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(imoGmsCoreSupportExtensionPatch)
     execute {
         AddAccountCallFingerprint.matchAllMethodIndicesForEach { index ->
             val call = getInstruction<RegisterRangeInstruction>(index)

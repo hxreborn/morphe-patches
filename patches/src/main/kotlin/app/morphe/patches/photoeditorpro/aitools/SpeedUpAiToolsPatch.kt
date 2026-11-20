@@ -27,6 +27,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.photoeditorproPatchGatesExtensionPatch
 
 private const val THREAD_SLEEP = "Ljava/lang/Thread;->sleep(J)V"
 private const val STOCK_CHUNK_BYTES = 262144L
@@ -38,9 +39,9 @@ val speedUpAiToolsPatch = bytecodePatch(
     description = "Shortens the AI tool wait by polling for the result more often and " +
         "uploading the photo in larger chunks.",
 ) {
+    dependsOn(photoeditorproPatchGatesExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofIosPlatformPatch, spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         AI_TASK_CALLBACK_CLASSES.forEach { callback ->

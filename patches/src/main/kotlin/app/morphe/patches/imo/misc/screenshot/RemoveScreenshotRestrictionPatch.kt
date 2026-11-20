@@ -14,6 +14,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.sharedRemoveScreenshotRestrictionExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/WindowFlags;"
 
@@ -22,9 +23,8 @@ val removeScreenshotRestrictionPatch = bytecodePatch(
     name = "Remove screenshot restriction",
     description = "Allows screenshots and screen recording in chats, calls, media and profiles.",
 ) {
+    dependsOn(sharedRemoveScreenshotRestrictionExtensionPatch)
     compatibleWith(AppCompatibilities.IMO)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         routeWindowFlagsCalls(AddWindowFlagsFingerprint, "addFlags(Landroid/view/Window;I)V")

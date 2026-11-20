@@ -18,6 +18,8 @@ import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.util.asSequence
 import com.android.tools.smali.dexlib2.Opcode
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.readeraMaterial3ControlsExtensionPatch
+import app.morphe.patches.shared.misc.extension.readeraMaterialRadioButtonExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/MaterialControls;"
 internal const val MATERIAL_CHECK_BOX_TAG = "app.hxreborn.extension.readera.MaterialCheckBox"
@@ -33,6 +35,7 @@ private val controlResources = listOf(
 )
 
 private val materialControlsResourcesPatch = resourcePatch {
+    dependsOn(readeraMaterial3ControlsExtensionPatch, readeraMaterialRadioButtonExtensionPatch)
     execute {
         val roles = readEraResourceRoles()
         val replacements = mapOf("CheckBox" to MATERIAL_CHECK_BOX_TAG, "RadioButton" to MATERIAL_RADIO_BUTTON_TAG)

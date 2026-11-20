@@ -16,6 +16,10 @@ import app.morphe.patches.shared.misc.reactnative.ScrollViewLayoutFingerprint
 import app.morphe.patches.shared.misc.revenuecat.InvalidateCustomerInfoCacheFingerprint
 import app.morphe.patches.shared.misc.smali.replaceStub
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.liftoffSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 internal const val LIFTOFF_PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/liftoff/PatchSettings;"
 private const val LIFTOFF_PATCH_CONTEXT_CLASS = "Lapp/hxreborn/extension/liftoff/PatchContext;"
@@ -30,6 +34,7 @@ internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: By
 internal val patchesSettingsPatch = run {
     lateinit var applicationType: String
     bytecodePatch {
+    dependsOn(liftoffSettingsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
         dependsOn(
             resourcePatch {
                 execute {
@@ -55,7 +60,6 @@ internal val patchesSettingsPatch = run {
                 }
             },
         )
-        extendWith("extensions/extension.mpe")
         execute {
             applicationOnCreateFingerprint(applicationType).matchSingle().method.addInstruction(
                 0,

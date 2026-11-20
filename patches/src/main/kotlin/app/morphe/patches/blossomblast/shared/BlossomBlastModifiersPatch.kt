@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
+import app.morphe.patches.shared.misc.extension.blossomblastGameModifiersExtensionPatch
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.shared.sha256Hex
@@ -52,8 +53,7 @@ private val addModifiersLibraryPatch = resourcePatch {
 }
 
 internal val blossomBlastModifiersPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-    dependsOn(addModifiersLibraryPatch)
+    dependsOn(blossomblastGameModifiersExtensionPatch, addModifiersLibraryPatch)
 
     execute {
         val gameThread = NativeApplicationGameThreadFingerprint.matchSingle().originalMethod

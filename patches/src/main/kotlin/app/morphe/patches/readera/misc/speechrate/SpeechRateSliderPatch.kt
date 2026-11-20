@@ -24,6 +24,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.readeraSpeechRateSliderExtensionPatch
 
 private const val EXTENSION_SLIDER_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechRateSlider;"
 private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechRateTarget;"
@@ -33,13 +34,12 @@ val speechRateSliderPatch = bytecodePatch(
     name = "Speech rate slider",
     description = "Sets Read aloud speed from 0.1x to 4x with a slider on the Speech rate screen.",
 ) {
+    dependsOn(readeraSpeechRateSliderExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
     dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         registerReadEraPatch("Speech rate slider", "Sets Read aloud speed from 0.1x to 4x with a slider.")

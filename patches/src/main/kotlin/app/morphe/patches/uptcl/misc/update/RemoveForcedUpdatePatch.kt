@@ -13,6 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.uptclRemoveForcedUpdateExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/uptcl/AppVersionCheck;"
 
@@ -21,9 +22,9 @@ val removeForcedUpdatePatch = bytecodePatch(
     name = "Remove forced update",
     description = "Removes the update prompts that block the app at launch.",
 ) {
+    dependsOn(uptclRemoveForcedUpdateExtensionPatch)
     compatibleWith(AppCompatibilities.UPTCL)
     dependsOn(trustInstalledCertificatePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         AppVersionResultFingerprint.matchSingle().method.apply {

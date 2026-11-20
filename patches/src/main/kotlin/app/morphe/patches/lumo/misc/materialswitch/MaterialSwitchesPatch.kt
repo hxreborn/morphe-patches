@@ -19,6 +19,12 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonMaterialSwitchViewExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonWebMaterialSwitchExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 private const val WEB_SWITCH_CLASS = "Lapp/hxreborn/extension/proton/WebMaterialSwitch;"
 private const val SWITCH_VIEW_CLASS = "Lapp/hxreborn/extension/proton/MaterialSwitchView;"
@@ -66,10 +72,14 @@ val materialSwitchesPatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
+    dependsOn(morpheLibraryCoreExtensionPatch, protonMaterialSwitchViewExtensionPatch, protonSettings2ExtensionPatch, protonWebMaterialSwitchExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreVirtualizedMethodsPatch)
+    dependsOn(
+        removePairipVirtualizationPatch,
+        removePairipProtectionPatch,
+        restoreVirtualizedMethodsPatch,
+    )
     availability(requireArm64)
-    extendWith("extensions/extension.mpe")
 
     execute {
         PageFinishedFingerprint.matchSingle().method.addInstructions(

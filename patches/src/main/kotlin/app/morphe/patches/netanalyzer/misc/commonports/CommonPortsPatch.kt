@@ -13,12 +13,14 @@ import app.morphe.patches.netanalyzer.shared.patchesMenuPatch
 import app.morphe.patches.netanalyzer.shared.toolbarActionsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.netanalyzerCommonPortsListExtensionPatch
 
 @Suppress("unused")
 val commonPortsPatch = bytecodePatch(
     name = "Common ports list",
     description = "Adds an editor for the ports the Common port scan checks.",
 ) {
+    dependsOn(netanalyzerCommonPortsListExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(toolbarActionsPatch, patchesMenuPatch)

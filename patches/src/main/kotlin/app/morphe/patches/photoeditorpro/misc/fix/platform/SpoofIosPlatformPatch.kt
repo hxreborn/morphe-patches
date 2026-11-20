@@ -20,7 +20,6 @@ private const val IOS_PLATFORM = "iOS"
 val spoofIosPlatformPatch = bytecodePatch {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val match = AiRequestInterceptorFingerprint.matchSingle()

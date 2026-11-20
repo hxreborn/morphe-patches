@@ -26,10 +26,12 @@ import app.morphe.patches.protonvpn.misc.restrictions.freeAccountStatePatch
 import app.morphe.patches.protonvpn.misc.restrictions.invertFreeServerCheckForFreeAccount
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import app.morphe.patches.shared.misc.smali.parameterRegister
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensionPatch
 
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"
 
@@ -39,11 +41,12 @@ val showFreeServerLocationsPatch: BytecodePatch = bytecodePatch(
     description = "Lists free server locations in Countries and Search and connects to the one you pick. " +
         "Applies only to free plans.",
 ) {
+    dependsOn(protonFreeServerLocationsExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_VPN)
     dependsOn(patchesSettingsPatch, freeAccountStatePatch)
 
     execute {
-        markPatchApplied("showFreeServerLocations", showFreeServerLocationsPatch)
+        markPatchApplied(VPN_SETTINGS_CLASS, "showFreeServerLocations", showFreeServerLocationsPatch)
 
         val freeLocationsHeader = resourceId(ResourceType.STRING, "free_connections_info_server_locations")
         invertFreeServerCheckForFreeAccount(serverListFilterFingerprint())

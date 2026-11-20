@@ -28,6 +28,9 @@ import app.morphe.util.insertFirst
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.internetspeedmeterAdPreferenceExtensionPatch
+import app.morphe.patches.shared.misc.extension.internetspeedmeterUnlockPremiumExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/internetspeedmeter"
 private const val SETTINGS_CLASS_DESCRIPTOR = "$EXTENSION_PACKAGE/PremiumSettings;"
@@ -40,6 +43,7 @@ private const val NETWORK_RECEIVER = "app.hxreborn.extension.internetspeedmeter.
 private const val USAGE_STATS_PERMISSION = "android.permission.PACKAGE_USAGE_STATS"
 
 private val addPremiumComponentsPatch = resourcePatch {
+    dependsOn(internetspeedmeterAdPreferenceExtensionPatch, internetspeedmeterUnlockPremiumExtensionPatch, sharedDimensionsExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
             val manifest = document.documentElement
@@ -80,6 +84,7 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks the notification dialog, smart notifications, themes, notification accent and " +
         "the starting hour of the day.",
 ) {
+    dependsOn(internetspeedmeterUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.INTERNET_SPEED_METER_LITE)
 
     dependsOn(removeAppProtectionPatch, removeAdsPatch, addPremiumComponentsPatch, sessionCounterPatch)

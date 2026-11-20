@@ -12,6 +12,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.quranifyUnlockPremiumExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/quranify/LocalApiServer;"
 private const val NETWORK_SECURITY_CONFIG_ATTRIBUTE = "android:networkSecurityConfig"
@@ -34,8 +35,8 @@ private val allowLocalCleartextPatch = resourcePatch {
 }
 
 val bypassIntegrityCheckPatch = bytecodePatch {
+    dependsOn(quranifyUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.QURANIFY)
-    extendWith("extensions/extension.mpe")
     dependsOn(allowLocalCleartextPatch)
 
     execute {

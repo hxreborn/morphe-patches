@@ -15,10 +15,17 @@ import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
 import app.morphe.patches.shared.misc.proton.attachPatchContext
 import app.morphe.patches.shared.misc.proton.injectAppCompatDefaultNightMode
 import app.morphe.patches.shared.misc.proton.injectBundleVersion
+import app.morphe.patches.shared.misc.proton.PASS_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonPassSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
 private const val HOST_ACTIVITY = "me.proton.core.devicemigration.presentation.DeviceMigrationActivity"
 private const val APPLICATION_CLASS = "Lproton/android/pass/App;"
@@ -54,9 +61,8 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(patchesSettingsActivityPatch("@style/ProtonTheme.Pass", HOST_ACTIVITY))
-    extendWith("extensions/extension.mpe")
-
+    dependsOn(morpheLibraryCoreExtensionPatch, protonPassSettingsExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(patchesSettingsActivityPatch("@style/ProtonTheme.Pass", HOST_ACTIVITY, PASS_SETTINGS_CLASS))
     execute {
         injectBundleVersion()
         injectAppCompatDefaultNightMode()

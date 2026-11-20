@@ -17,6 +17,8 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.readeraHighlightColorPickerExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val CITATION_COLOR_KEY = "pref_citation_color"
 private const val PALETTE_DAY_PARAMETER = 4
@@ -27,13 +29,12 @@ val coloredQuotesPatch = bytecodePatch(
     name = "Colored quotes",
     description = "Saves selected text as a quote in one of five colors, picked from the text selection menu.",
 ) {
+    dependsOn(readeraHighlightColorPickerExtensionPatch, sharedDimensionsExtensionPatch)
     compatibleWith(AppCompatibilities.READERA)
 
     availability(requireArm64)
 
     dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         registerReadEraPatch("Colored quotes", "Saves selected text as a quote in one of five colors.")

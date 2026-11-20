@@ -12,6 +12,7 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.moonreaderUnlockProExtensionPatch
 
 private const val PRO_PACKAGE_CONTEXT = "Lapp/hxreborn/extension/moonreader/ProPackageContext;"
 
@@ -22,11 +23,10 @@ val unlockProPatch = bytecodePatch(
         "WebDAV and FTP sync, text-to-speech controls, the home screen widget " +
         "and extra toolbar and shelf options.",
 ) {
+    dependsOn(moonreaderUnlockProExtensionPatch)
     compatibleWith(AppCompatibilities.MOON_READER)
 
     dependsOn(homeScreenWidgetPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         IsProFingerprint.matchSingle().method.returnEarly(true)

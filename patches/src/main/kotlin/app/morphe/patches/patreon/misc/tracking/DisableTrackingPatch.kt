@@ -39,7 +39,6 @@ val disableTrackingPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PATREON)
 
     dependsOn(patchesSettingsPatch, featureFlagsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(TRACKING_CLASS, disableTrackingPatch)

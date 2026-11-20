@@ -5,6 +5,7 @@
 package app.morphe.patches.flights25
 
 import app.morphe.patches.flights25.misc.premium.unlockPremiumPatch
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +14,7 @@ import kotlin.test.assertNull
 internal class UnlockPremiumPatchTest {
     @Test
     fun `keeps premium independent of native patches`() {
-        assertEquals(setOf(removePairipProtectionPatch), unlockPremiumPatch.dependencies)
+        assertEquals(setOf(removePairipProtectionPatch, sharedRevenuecatExtensionPatch), unlockPremiumPatch.dependencies)
     }
 
     @Test

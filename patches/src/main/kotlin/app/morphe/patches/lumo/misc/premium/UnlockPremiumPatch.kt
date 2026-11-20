@@ -13,6 +13,8 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.extension.lumoUnlockPremiumExtensionPatch
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/lumo/LumoPlus;"
 
@@ -22,10 +24,14 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Unlocks unlimited projects and removes upgrade prompts. " +
         "Usage limits for models, messages and images still apply.",
 ) {
+    dependsOn(lumoUnlockPremiumExtensionPatch, morpheLibraryCoreExtensionPatch)
     compatibleWith(AppCompatibilities.LUMO)
-    dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreVirtualizedMethodsPatch)
+    dependsOn(
+        removePairipVirtualizationPatch,
+        removePairipProtectionPatch,
+        restoreVirtualizedMethodsPatch,
+    )
     availability(requireArm64)
-    extendWith("extensions/extension.mpe")
 
     execute {
         PageStartedFingerprint.matchSingle().method.addInstructions(

@@ -15,6 +15,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
+import app.morphe.patches.shared.misc.extension.teraboxRemoveRecentPanelExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/terabox/RecentPanel;"
 
@@ -23,6 +24,7 @@ val removeRecentPanelPatch: BytecodePatch = bytecodePatch(
     name = "Remove recent panel",
     description = "Removes Recent, Starred and Offline from Home.",
 ) {
+    dependsOn(teraboxRemoveRecentPanelExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 

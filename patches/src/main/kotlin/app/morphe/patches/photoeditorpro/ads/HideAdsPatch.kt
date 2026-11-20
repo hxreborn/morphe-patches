@@ -13,15 +13,16 @@ import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.photoeditorpro.shared.returnTrueWhileEnabled
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.photoeditorproPatchGatesExtensionPatch
 
 @Suppress("unused")
 val hideAdsPatch: BytecodePatch = bytecodePatch(
     name = "Hide ads",
     description = "Removes banner, interstitial, app-open and rewarded ads.",
 ) {
+    dependsOn(photoeditorproPatchGatesExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchMetadata("hideAds", hideAdsPatch)

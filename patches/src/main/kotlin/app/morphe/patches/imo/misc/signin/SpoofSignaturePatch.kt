@@ -14,6 +14,7 @@ import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val SECURITY_LIBRARY = "lib/arm64-v8a/libanti.so"
 private const val APPLICATION_CLASS = "Lcom/imo/android/imoim/IMO;"
@@ -71,12 +72,11 @@ val spoofSignaturePatch = bytecodePatch(
     name = "Spoof signature",
     description = "Restores phone verification by call when signing in and lets the app get its push token.",
 ) {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.IMO)
     availability(requireArm64)
 
     dependsOn(spoofSecurityLibrarySignaturePatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         spoofSignature(APPLICATION_CLASS)

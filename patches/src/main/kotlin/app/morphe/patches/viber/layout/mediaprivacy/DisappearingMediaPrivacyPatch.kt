@@ -32,6 +32,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstructio
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
+import app.morphe.patches.shared.misc.extension.viberDisappearingMediaPrivacyExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/viber/DisappearingMediaPrivacy;"
 private const val UPDATE_READ_STATE = "$EXTENSION_CLASS->updateReadState(Ljava/lang/Object;Ljava/lang/String;Landroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/String;)I"
@@ -42,6 +43,7 @@ val disappearingMediaPrivacyPatch: BytecodePatch = bytecodePatch(
     name = "Disappearing media privacy",
     description = "Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat.",
 ) {
+    dependsOn(viberDisappearingMediaPrivacyExtensionPatch)
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 

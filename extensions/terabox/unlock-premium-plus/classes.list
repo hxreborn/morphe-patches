@@ -1,0 +1,11 @@
+app/hxreborn/extension/terabox/DataSaverOption
+app/hxreborn/extension/terabox/ParallelRangeProxy
+app/hxreborn/extension/terabox/ParallelRangeProxy$Fetch
+app/hxreborn/extension/terabox/ParallelRangeProxy$Origin
+app/hxreborn/extension/terabox/ParallelRangeProxy$OriginRejected
+app/hxreborn/extension/terabox/ParallelRangeProxy$ProxiedFile
+app/hxreborn/extension/terabox/ParallelRangeProxy$Request
+app/hxreborn/extension/terabox/ParallelRangeProxy$Segment
+app/hxreborn/extension/terabox/TeraboxHdUnlock
+app/hxreborn/extension/terabox/TeraboxHdUnlock$1
+app/hxreborn/extension/terabox/TeraboxServerMembership

@@ -13,6 +13,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
+import app.morphe.patches.shared.misc.extension.internetspeedmeterInterfaceCountersExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/internetspeedmeter/InterfaceCounters;"
 private const val COUNTERS_LIBRARY = "libtraffic_interface1.so"
@@ -35,8 +36,8 @@ private val removeCountersLibraryPatch = rawResourcePatch {
 }
 
 internal val replaceInterfaceCountersPatch = bytecodePatch {
+    dependsOn(internetspeedmeterInterfaceCountersExtensionPatch)
     dependsOn(removeCountersLibraryPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val classDef = InterfaceCountersInitializerFingerprint.classDef

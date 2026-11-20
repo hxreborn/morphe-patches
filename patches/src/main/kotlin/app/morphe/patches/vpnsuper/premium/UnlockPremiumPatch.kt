@@ -27,6 +27,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.vpnsuperAppliedPatchesExtensionPatch
 
 private const val FUNCTION0_CLASS = "Lkotlin/jvm/functions/Function0;"
 private const val BOOLEAN_CLASS = "Ljava/lang/Boolean;"
@@ -76,10 +77,10 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     description = "Unlocks premium servers and removes ads, upgrade banners, the launch paywall and " +
         "the Android TV sign-in screen.",
 ) {
+    dependsOn(vpnsuperAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.VPN_SUPER)
 
     dependsOn(liappPackageFilterPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchApplied("unlockPremium", unlockPremiumPatch)

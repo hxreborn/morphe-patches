@@ -31,7 +31,6 @@ val hideHomeTabPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PATREON)
 
     dependsOn(patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(HOME_TAB_CLASS, hideHomeTabPatch)

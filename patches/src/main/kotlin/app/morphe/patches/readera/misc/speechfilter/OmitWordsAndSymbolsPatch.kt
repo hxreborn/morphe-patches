@@ -32,8 +32,6 @@ val omitWordsAndSymbolsPatch = bytecodePatch(
 
     dependsOn(patchesSettingsPatch, disableSignatureChecksPatch)
 
-    extendWith("extensions/extension.mpe")
-
     execute {
         registerReadEraPatch("Omit words and symbols", "Read aloud skips these words and symbols. The book text is unchanged.")
         addSpeechTextFilter()

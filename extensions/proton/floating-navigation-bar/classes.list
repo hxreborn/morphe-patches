@@ -1,0 +1,8 @@
+app/hxreborn/extension/proton/FloatingNavigationBar
+app/hxreborn/extension/proton/NavigationBarAppearance
+app/hxreborn/extension/proton/NavigationBarBackdrop
+app/hxreborn/extension/proton/NavigationBarBackdrop$DrawCallback
+app/hxreborn/extension/proton/NavigationBarBackdrop$Renderer
+app/hxreborn/extension/proton/NavigationBarPreview
+app/hxreborn/extension/proton/NavigationBarRows
+app/hxreborn/extension/proton/NavigationBarRows$1

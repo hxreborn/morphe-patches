@@ -12,13 +12,16 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.SPOOF_SIGNATURE_CLASS
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
+import app.morphe.patches.shared.misc.extension.ultimeaSettingsExtensionPatch
 
 private const val APPLICATION_NAME = "app.hxreborn.extension.ultimea.UltimeaApplication"
 private const val APPLICATION_CLASS = "Lapp/hxreborn/extension/ultimea/UltimeaApplication;"
 
 internal val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedSignatureExtensionPatch, ultimeaSettingsExtensionPatch)
     compatibleWith(AppCompatibilities.ULTIMEA)
-    extendWith("extensions/extension.mpe")
     dependsOn(resourcePatch {
         execute {
             document("AndroidManifest.xml").use { document ->

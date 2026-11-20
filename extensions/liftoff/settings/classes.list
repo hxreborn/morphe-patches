@@ -1,0 +1,13 @@
+app/hxreborn/extension/liftoff/AppliedPatches
+app/hxreborn/extension/liftoff/AppliedPatches$AppliedPatch
+app/hxreborn/extension/liftoff/ConfirmationDialog
+app/hxreborn/extension/liftoff/ConfirmationDialog$Choice
+app/hxreborn/extension/liftoff/PatchContext
+app/hxreborn/extension/liftoff/PatchContext$1
+app/hxreborn/extension/liftoff/PatchSettings
+app/hxreborn/extension/liftoff/PatchesMenu
+app/hxreborn/extension/liftoff/PatchesMenu$SettingsEntry
+app/hxreborn/extension/liftoff/PatchesMenu$SettingsEntry$1
+app/hxreborn/extension/liftoff/PatchesSettingsDialog
+app/hxreborn/extension/liftoff/SettingsRows
+app/hxreborn/extension/liftoff/SettingsStyle

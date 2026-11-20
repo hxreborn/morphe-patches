@@ -89,4 +89,5 @@ internal fun BytecodePatchContext.transformBrandColors(colors: Collection<Long>)
     }
 
     markFeaturePatched(ACCENT_COLOR_CLASS)
+    showSettingsRows("addAccentColorRows", "${PROTON_EXTENSION_PACKAGE}AccentColorRows;")
 }

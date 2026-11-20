@@ -15,6 +15,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.protonvpn.misc.restrictions.unlockUserSetting
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
@@ -26,7 +27,7 @@ val unlockLanConnectionsPatch: BytecodePatch = bytecodePatch(
     dependsOn(patchesSettingsPatch)
 
     execute {
-        markPatchApplied("unlockLanConnections", unlockLanConnectionsPatch)
+        markPatchApplied(VPN_SETTINGS_CLASS, "unlockLanConnections", unlockLanConnectionsPatch)
         unlockUserSetting(
             LanConnectionsViewStateFingerprint,
             lanConnectionsRestrictionFingerprint(),

@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.catzy.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.arm64Availability
+import app.morphe.patches.shared.misc.extension.kotlinUuidExtensionPatch
 
 internal fun catzyPatch(
     name: String,
@@ -21,7 +22,7 @@ internal fun catzyPatch(
 
     availability(arm64Availability(selection))
 
-    dependsOn(removeAppProtectionPatch)
+    dependsOn(removeAppProtectionPatch, kotlinUuidExtensionPatch)
 
     execute(block)
 }

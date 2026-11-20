@@ -5,12 +5,13 @@
 package app.morphe.patches.keepa.misc.accounts
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.inputStreamFromBundledResource
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.keepaMultipleAccountsExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
 
 private const val ACCOUNTS_ACTIVITY_CLASS = "app.hxreborn.extension.keepa.AccountsActivity"
 private const val ACCOUNTS_ACTIVITY_THEME = "@style/AppTheme"
@@ -19,18 +20,15 @@ private const val VENDOR = "assets/app/vendor.mjs"
 private const val SETTINGS_CHUNK = "assets/app/src_app_features_settings_settings_component_ts.mjs"
 private const val MANAGE_CHUNK = "assets/app/src_app_features_manage_manage_routes_ts.mjs"
 
-private val multipleAccountsExtensionPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
-}
-
 @Suppress("unused")
 val multipleAccountsPatch = resourcePatch(
     name = "Multiple accounts",
     description = "Signs in to several Keepa accounts at once and lists their price watches together. " +
         "Accounts are added and removed in Settings > Accounts.",
 ) {
+    dependsOn(keepaMultipleAccountsExtensionPatch, sharedNightModeExtensionPatch)
     compatibleWith(AppCompatibilities.KEEPA)
-    dependsOn(removePairipProtectionPatch, multipleAccountsExtensionPatch)
+    dependsOn(removePairipProtectionPatch)
 
     execute {
         val runtime = inputStreamFromBundledResource("keepa", "accounts.js")

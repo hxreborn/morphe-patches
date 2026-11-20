@@ -9,15 +9,15 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/pairip/application/Application;"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.LINGODEER)
 
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         spoofSignature(APPLICATION_CLASS)

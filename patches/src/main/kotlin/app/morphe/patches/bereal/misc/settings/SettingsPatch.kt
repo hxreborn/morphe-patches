@@ -25,6 +25,14 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.berealContactsPermissionExtensionPatch
+import app.morphe.patches.shared.misc.extension.berealDataCollectionExtensionPatch
+import app.morphe.patches.shared.misc.extension.berealSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.berealSponsoredPostsExtensionPatch
+import app.morphe.patches.shared.misc.extension.berealUpdatePromptsExtensionPatch
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 internal const val BEREAL_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/bereal/"
 private const val PATCH_CONTEXT_CLASS = "${BEREAL_EXTENSION_PACKAGE}PatchContext;"
@@ -82,6 +90,7 @@ private fun BytecodePatchContext.addSettingsRow() {
 }
 
 internal val settingsPatch = bytecodePatch {
+    dependsOn(berealContactsPermissionExtensionPatch, berealDataCollectionExtensionPatch, berealSettingsExtensionPatch, berealSponsoredPostsExtensionPatch, berealUpdatePromptsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
     dependsOn(
         beRealBasePatch,
         resourcePatch {

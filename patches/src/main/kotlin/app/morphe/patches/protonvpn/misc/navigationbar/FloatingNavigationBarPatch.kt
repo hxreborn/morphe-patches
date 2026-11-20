@@ -15,12 +15,13 @@ import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonFloatingNavigationBarExtensionPatch
 import app.morphe.patches.shared.misc.proton.FLOATING_NAVIGATION_BAR_CLASS
 import app.morphe.patches.shared.misc.proton.NAVIGATION_BAR_BACKDROP_CLASS
 import app.morphe.patches.shared.misc.proton.GraphicsLayerElementFingerprint
 import app.morphe.patches.shared.misc.proton.bindNavigationBarPreview
 import app.morphe.patches.shared.misc.proton.injectFloatingNavigationBar
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markFloatingNavigationBarPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.captureScaffoldPageColor
 import app.morphe.patches.shared.misc.proton.paddingElementFingerprint
@@ -57,6 +58,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_VPN)
+    dependsOn(protonFloatingNavigationBarExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     execute {
@@ -76,7 +78,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
             showLabels = true,
         )
         markPatchMetadata("floatingNavigationBar", floatingNavigationBarPatch)
-        markFeaturePatched(FLOATING_NAVIGATION_BAR_CLASS)
+        markFloatingNavigationBarPatched()
         val mainBar = MainBottomBarFingerprint.matchSingle()
         captureScaffoldPageColor(
             mainScaffoldFingerprint(mainBar.originalClassDef.type).matchSingle(),

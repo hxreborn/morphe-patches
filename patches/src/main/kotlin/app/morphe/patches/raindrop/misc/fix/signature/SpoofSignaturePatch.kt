@@ -7,13 +7,13 @@ package app.morphe.patches.raindrop.misc.fix.signature
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lio/raindrop/raindropio/MainApplication;"
 
 val spoofSignaturePatch = bytecodePatch {
+    dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.RAINDROP)
-    extendWith("extensions/extension.mpe")
-
     execute {
         spoofSignature(APPLICATION_CLASS)
     }

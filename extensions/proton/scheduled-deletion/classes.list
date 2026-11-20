@@ -1,0 +1,6 @@
+app/hxreborn/extension/protonmail/LabelFirstPageSync
+app/hxreborn/extension/protonmail/ScheduledDeletion
+app/hxreborn/extension/protonmail/ScheduledDeletionBanner
+app/hxreborn/extension/protonmail/ScheduledDeletionEditor
+app/hxreborn/extension/protonmail/ScheduledDeletionEditor$LabelSection
+app/hxreborn/extension/protonmail/ScheduledDeletionSettings

@@ -25,7 +25,6 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PATREON)
 
     dependsOn(patchesSettingsPatch, featureFlagsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(UPGRADE_PROMOTIONS_CLASS, hideUpgradePromotionsPatch)

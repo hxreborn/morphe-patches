@@ -29,6 +29,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.viberSettingsExtensionPatch
 
 private const val PATCHES_MENU = "Lapp/hxreborn/extension/viber/PatchesMenu;"
 
@@ -39,7 +40,7 @@ private const val SETTINGS_STYLE = "Lapp/hxreborn/extension/viber/SettingsStyle;
 private const val ACTIVITY = "app.hxreborn.extension.viber.PatchesSettingsActivity"
 
 internal val patchesSettingsPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(viberSettingsExtensionPatch)
     dependsOn(resourcePatch {
         execute {
             document("res/values/ids.xml").use { document ->

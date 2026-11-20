@@ -30,7 +30,6 @@ val disableQuipsAndAutoplayPatch: BytecodePatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PATREON)
 
     dependsOn(patchesSettingsPatch, featureFlagsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markFeaturePatched(QUIPS_AND_AUTOPLAY_CLASS, disableQuipsAndAutoplayPatch)

@@ -7,6 +7,7 @@ package app.morphe.patches.yanosik.misc.premium
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "pro_subscription"
 private const val PRODUCT = "app.yanosik.pro.sub.management"
@@ -17,9 +18,8 @@ val unlockPremiumPatch = bytecodePatch(
     description = "Removes ads and enables the floating widget, dynamic island, route editing " +
         "and tab customization. Points, quests and rankings are not included.",
 ) {
+    dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.YANOSIK)
-    extendWith("extensions/extension.mpe")
-
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
     }

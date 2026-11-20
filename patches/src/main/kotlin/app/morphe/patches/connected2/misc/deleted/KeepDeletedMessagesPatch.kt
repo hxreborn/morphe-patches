@@ -21,6 +21,7 @@ import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.connected2KeepDeletedMessagesExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/connected2/DeletedMessages;"
 
@@ -29,12 +30,11 @@ val keepDeletedMessagesPatch = bytecodePatch(
     name = "Keep deleted messages",
     description = "Keeps messages the other person deletes and marks deleted text messages with 🗑.",
 ) {
+    dependsOn(connected2KeepDeletedMessagesExtensionPatch)
     compatibleWith(AppCompatibilities.CONNECTED2)
     availability(requireArm64)
 
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         DeleteMessageHandlerFingerprint.matchSingle().apply {

@@ -1,0 +1,15 @@
+app/hxreborn/extension/protonmail/accountswipe/AccountAvatarSwipe
+app/hxreborn/extension/protonmail/accountswipe/AccountAvatarSwipe$TargetAccount
+app/hxreborn/extension/protonmail/accountswipe/AccountSwipeRows
+app/hxreborn/extension/protonmail/accountswipe/AccountSwipeRows$1
+app/hxreborn/extension/protonmail/accountswipe/AvatarCaptureCallback
+app/hxreborn/extension/protonmail/accountswipe/AvatarSlotView
+app/hxreborn/extension/protonmail/accountswipe/AvatarSlotView$1
+app/hxreborn/extension/protonmail/accountswipe/AvatarSlotView$Layer
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchAnimation
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchAnimation$1
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchAnimation$2
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchStyle
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchStyleDialog
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchStyleDialog$Chooser
+app/hxreborn/extension/protonmail/accountswipe/AvatarSwitchStyleDialog$Chooser$1

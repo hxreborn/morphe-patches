@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.notesnookUnlockProExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/notesnook/ProUnlock;"
 
@@ -20,9 +21,8 @@ val unlockProPatch = bytecodePatch(
         "reminder limits. Requires a signed-in account. The server still enforces storage, " +
         "attachment size, monographs and SMS 2FA.",
 ) {
+    dependsOn(notesnookUnlockProExtensionPatch)
     compatibleWith(AppCompatibilities.NOTESNOOK)
-    extendWith("extensions/extension.mpe")
-
     execute {
         ResponseHandlerFingerprint.matchSingle().apply {
             val index = instructionMatches[0].index

@@ -10,5 +10,4 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
 internal val beRealBasePatch = bytecodePatch {
     dependsOn(removePairipProtectionPatch, spoofSignaturePatch)
-    extendWith("extensions/extension.mpe")
 }

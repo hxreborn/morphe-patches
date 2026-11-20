@@ -22,6 +22,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.muvizwidgetsFixWeatherExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/muvizwidgets/WeatherBackend;"
 
@@ -48,11 +49,10 @@ val fixWeatherPatch = bytecodePatch(
     description = "Loads weather and finds the current city in the weather widgets. " +
         "Fetches weather from Open-Meteo and the current city from BigDataCloud.",
 ) {
+    dependsOn(muvizwidgetsFixWeatherExtensionPatch)
     compatibleWith(AppCompatibilities.MUVIZ_WIDGETS)
 
     dependsOn(removePairipProtectionPatch, allowLoopbackCleartextPatch)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         val debugProviderType = DebugAppCheckRegistrarFingerprint.matchSingle().method.run {

@@ -16,6 +16,7 @@ import app.morphe.patches.shared.misc.reactnative.BlobResponseDataFingerprint
 import app.morphe.patches.shared.misc.reactnative.NetworkResponseReceivedFingerprint
 import app.morphe.patches.shared.misc.reactnative.TextResponseReceivedFingerprint
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.liftoffUnlockCustomizationsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/liftoff/Customizations;"
 @Suppress("unused")
@@ -23,9 +24,9 @@ val unlockCustomizationsPatch: BytecodePatch = bytecodePatch(
     name = "Unlock customizations",
     description = "Unlocks themes, profile borders and profile banners.",
 ) {
+    dependsOn(liftoffUnlockCustomizationsExtensionPatch)
     dependsOn(patchesSettingsPatch)
     compatibleWith(AppCompatibilities.LIFTOFF)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchApplied("unlockCustomizations", unlockCustomizationsPatch)

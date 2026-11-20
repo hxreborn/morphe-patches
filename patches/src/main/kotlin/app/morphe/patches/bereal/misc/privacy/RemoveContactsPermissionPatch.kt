@@ -14,6 +14,7 @@ import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.berealContactsPermissionExtensionPatch
 
 private val contactsPermissions = setOf(
     "android.permission.READ_CONTACTS",
@@ -39,6 +40,7 @@ val removeContactsPermissionPatch: BytecodePatch = bytecodePatch(
     name = "Remove contacts permission",
     description = "Stops BeReal from asking for or reading your phone's contacts.",
 ) {
+    dependsOn(berealContactsPermissionExtensionPatch)
     compatibleWith(AppCompatibilities.BEREAL)
 
     dependsOn(removeContactsPermissionsResourcePatch, beRealBasePatch)

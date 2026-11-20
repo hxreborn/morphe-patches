@@ -13,6 +13,7 @@ import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
+import app.morphe.patches.shared.misc.extension.protonMaterialSwitchViewExtensionPatch
 
 private const val ENABLED_PARAMETER = 4
 private const val COMPOSER_PARAMETER = 7
@@ -22,6 +23,7 @@ val materialSwitchesPatch: BytecodePatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Adds check and close icons to switches.",
 ) {
+    dependsOn(protonMaterialSwitchViewExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_AUTHENTICATOR)
     dependsOn(patchesSettingsPatch)
 

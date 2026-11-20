@@ -12,11 +12,12 @@ import app.morphe.patches.candycrushsaga.shared.isCandyCrushSodaSaga
 import app.morphe.patches.shared.misc.smali.addFieldReader
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.candycrushsagaServerResponsesExtensionPatch
 
 internal const val SERVER_RESPONSES = "Lapp/hxreborn/extension/candycrushsaga/ServerResponses;"
 
 internal val editServerResponsesPatch = bytecodePatch {
-    extendWith("extensions/extension.mpe")
+    dependsOn(candycrushsagaServerResponsesExtensionPatch)
     execute {
         val soda = isCandyCrushSodaSaga(packageMetadata.packageName)
         mutableClassDefBy(SERVER_RESPONSES).replaceStub("isSodaSaga", 1, """

@@ -17,6 +17,7 @@ import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.botimMainTabsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/MainTabs;"
 
@@ -26,9 +27,8 @@ val hideHomeTabPatch = bytecodePatch(
     description = "Hides the Home tab from the bottom bar and opens the app on Calls.",
     default = false,
 ) {
+    dependsOn(botimMainTabsExtensionPatch)
     compatibleWith(AppCompatibilities.BOTIM)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         val factory = TabFragmentFactoryFingerprint.matchSingle()

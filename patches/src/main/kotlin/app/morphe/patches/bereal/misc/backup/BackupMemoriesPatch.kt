@@ -15,6 +15,8 @@ import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.berealSettingsExtensionPatch
+import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}backup/MemoriesBackup;"
 private const val API_CLASS = "${BEREAL_EXTENSION_PACKAGE}backup/BeRealApi;"
@@ -28,6 +30,7 @@ private val backupPermissions = listOf(
 )
 
 private val addBackupServicePatch = resourcePatch {
+    dependsOn(berealSettingsExtensionPatch, morpheLibraryCoreExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
             val manifest = document.documentElement

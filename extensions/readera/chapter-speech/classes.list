@@ -1,0 +1,13 @@
+app/hxreborn/extension/readera/ChapterSpeech
+app/hxreborn/extension/readera/ChapterSpeech$1
+app/hxreborn/extension/readera/ChapterStops
+app/hxreborn/extension/readera/ContentsEntry
+app/hxreborn/extension/readera/ContentsPanel
+app/hxreborn/extension/readera/ContentsPlaceholderAction
+app/hxreborn/extension/readera/ContentsRow
+app/hxreborn/extension/readera/ContentsRowMenu
+app/hxreborn/extension/readera/ReadingPosition
+app/hxreborn/extension/readera/SpeechBoundaryResolver
+app/hxreborn/extension/readera/SpeechTrack
+app/hxreborn/extension/readera/StopNotice
+app/hxreborn/extension/readera/StopPoint

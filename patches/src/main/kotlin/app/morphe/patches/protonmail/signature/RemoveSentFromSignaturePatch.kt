@@ -19,6 +19,7 @@ import app.morphe.patches.protonmail.shared.ARM64
 import app.morphe.patches.protonmail.shared.MAIL_UNIFFI_LIBRARY
 import app.morphe.patches.protonmail.shared.X86_64
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.appliedPatchMarkerPatch
 import app.morphe.patches.shared.replaceAsciiInPlace
 import app.morphe.patches.shared.replaceMasked
@@ -84,7 +85,7 @@ private val PAID_ACCOUNT_CALL_SITES = mapOf(
 )
 
 private val removeSentFromSignatureMarkerPatch =
-    appliedPatchMarkerPatch("removeSentFromSignature") { removeSentFromSignaturePatch }
+    appliedPatchMarkerPatch(MAIL_SETTINGS_CLASS, "removeSentFromSignature") { removeSentFromSignaturePatch }
 
 @Suppress("unused")
 val removeSentFromSignaturePatch: ResourcePatch = resourcePatch(

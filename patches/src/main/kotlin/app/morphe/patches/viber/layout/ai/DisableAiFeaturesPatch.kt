@@ -16,6 +16,7 @@ import app.morphe.patches.viber.shared.addFilterCallAfter
 import app.morphe.patches.viber.shared.markPatchApplied
 import app.morphe.patches.viber.shared.redirectPreferences
 import app.morphe.patches.viber.shared.returnWhenEnabled
+import app.morphe.patches.shared.misc.extension.viberDisableAiFeaturesExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/AiPreferences;"
 private const val PREFERENCE_KEY_OVERRIDE = "$EXTENSION_CLASS_DESCRIPTOR->preferenceKey(Ljava/lang/String;)Ljava/lang/String;"
@@ -26,6 +27,7 @@ val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
     name = "Disable AI features",
     description = "Removes AI and inline Translate.",
 ) {
+    dependsOn(viberDisableAiFeaturesExtensionPatch)
     compatibleWith(AppCompatibilities.VIBER)
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 

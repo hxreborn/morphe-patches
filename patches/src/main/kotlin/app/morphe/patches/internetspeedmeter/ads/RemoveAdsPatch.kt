@@ -19,6 +19,7 @@ import app.morphe.util.asSequence
 import app.morphe.util.removeFromParent
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.internetspeedmeterAdPreferenceExtensionPatch
 
 private const val PROMPT_ATTEMPTS_PAST_LIMIT = 6
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/internetspeedmeter/AdPreference;"
@@ -50,6 +51,7 @@ val removeAdsPatch = bytecodePatch(
     name = "Remove ads",
     description = "Removes ads and the prompts to allow them.",
 ) {
+    dependsOn(internetspeedmeterAdPreferenceExtensionPatch)
     compatibleWith(AppCompatibilities.INTERNET_SPEED_METER_LITE)
 
     dependsOn(removeAppProtectionPatch, removeAdSdkStartupPatch)

@@ -1,0 +1,5 @@
+app/hxreborn/extension/proton/AccentColorDialog
+app/hxreborn/extension/proton/AccentColorDialog$Picker
+app/hxreborn/extension/proton/AccentColorDialog$Picker$SliderListener
+app/hxreborn/extension/proton/AccentColorDialog$Picker$SwatchCell
+app/hxreborn/extension/proton/AccentColorRows

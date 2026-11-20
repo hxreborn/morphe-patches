@@ -7,6 +7,7 @@ package app.morphe.patches.protonpass.misc.navigationbar
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.util.getReference
+import app.morphe.patches.shared.misc.extension.protonFloatingNavigationBarExtensionPatch
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -20,7 +21,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.FLOATING_NAVIGATION_BAR_CLASS
 import app.morphe.patches.shared.misc.proton.bindNavigationBarPreview
 import app.morphe.patches.shared.misc.proton.injectFloatingNavigationBar
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markFloatingNavigationBarPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -32,6 +33,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
     compatibleWith(AppCompatibilities.PROTON_PASS)
+    dependsOn(protonFloatingNavigationBarExtensionPatch)
     dependsOn(patchesSettingsPatch)
 
     var contentPadding: Match? = null
@@ -54,7 +56,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
         )
         contentPadding = AppContentPaddingFingerprint.matchSingle()
         markPatchMetadata("floatingNavigationBar", floatingNavigationBarPatch)
-        markFeaturePatched(FLOATING_NAVIGATION_BAR_CLASS)
+        markFloatingNavigationBarPatched()
         val insets = NavigationBarsPaddingFingerprint.matchOrNull()?.method
         if (insets == null) {
             installMeasuredBottomInsets(COMPOSE_MODIFIER)

@@ -27,6 +27,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
+import app.morphe.patches.shared.misc.extension.netanalyzerChannelUsageActivityExtensionPatch
+import app.morphe.patches.shared.misc.extension.netanalyzerChartViewExtensionPatch
 
 private const val HAS_USAGE_PAGE = "hasUsagePage"
 private const val SHOW_USAGE_PAGE = 1
@@ -37,6 +39,7 @@ val channelUsagePatch = bytecodePatch(
     name = "Wi-Fi channel usage",
     description = "Adds a chart of how busy each Wi-Fi channel is, stacking the networks that share it.",
 ) {
+    dependsOn(netanalyzerChannelUsageActivityExtensionPatch, netanalyzerChartViewExtensionPatch)
     compatibleWith(AppCompatibilities.NETWORK_ANALYZER)
     availability(requireArm64)
     dependsOn(patchesMenuPatch)

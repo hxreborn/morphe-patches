@@ -10,6 +10,7 @@ import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
 import com.android.tools.smali.dexlib2.AccessFlags
+import app.morphe.patches.shared.misc.extension.tradingviewDisableAnalyticsExtensionPatch
 
 private const val ANALYTICS_REQUEST_DESCRIPTOR = "Lapp/hxreborn/extension/tradingview/AnalyticsRequest;"
 private const val WEB_VIEW_DESCRIPTOR = "Landroid/webkit/WebView;"
@@ -23,9 +24,8 @@ val disableAnalyticsPatch = bytecodePatch(
     name = "Disable analytics",
     description = "Disables network telemetry and Snowplow analytics.",
 ) {
+    dependsOn(tradingviewDisableAnalyticsExtensionPatch)
     compatibleWith(AppCompatibilities.TRADINGVIEW)
-    extendWith("extensions/extension.mpe")
-
     execute {
         NetworkTelemetryInitializationFingerprint.matchSingle().method.returnEarly()
         SnowPlowTrackerInitializationFingerprint.matchSingle().method.returnEarly()

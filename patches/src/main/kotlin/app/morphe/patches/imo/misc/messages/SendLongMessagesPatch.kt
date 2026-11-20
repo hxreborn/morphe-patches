@@ -15,6 +15,7 @@ import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import app.morphe.patches.shared.misc.extension.imoSendLongMessagesExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/imo/LongTextMessages;"
 
@@ -33,9 +34,8 @@ val sendLongMessagesPatch = bytecodePatch(
         "Raises the chat input limit to 10000 characters. " +
         "Privacy Chat messages are cut at 2000 characters.",
 ) {
+    dependsOn(imoSendLongMessagesExtensionPatch)
     compatibleWith(AppCompatibilities.IMO)
-
-    extendWith("extensions/extension.mpe")
 
     execute {
         SendTextMessageFingerprint.matchSingle().method.apply {

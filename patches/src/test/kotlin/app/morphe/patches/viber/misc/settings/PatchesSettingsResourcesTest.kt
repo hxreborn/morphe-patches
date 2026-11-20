@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 internal class PatchesSettingsResourcesTest {
     @Test
     fun `copy a vector for every settings switch`() {
-        val settings = File("../extensions/extension/src/main/java/app/hxreborn/extension/viber/PatchSetting.java")
+        val settings = File("../extensions/viber/src/main/java/app/hxreborn/extension/viber/PatchSetting.java")
             .readText().substringAfter("enum PatchSetting {").substringBefore(';')
         val icons = Regex("""\b([A-Z][A-Z_]+)\(""")
             .findAll(settings).map { it.groupValues[1].lowercase(Locale.ROOT) }.toList()

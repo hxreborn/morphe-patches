@@ -25,6 +25,8 @@ import app.morphe.util.findInstructionIndicesReversed
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
+import app.morphe.patches.shared.misc.extension.teraboxFixGoogleLoginExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/GoogleLoginChromeClient;"
 
@@ -50,9 +52,9 @@ val fixGoogleLoginPatch: BytecodePatch = bytecodePatch(
     name = "Fix Google login",
     description = "Restores signing in with a Google account.",
 ) {
+    dependsOn(sharedNightModeExtensionPatch, teraboxFixGoogleLoginExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(loginLoadingIndicatorPatch, spoofSignaturePatch, patchesSettingsPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         markPatchApplied("fixGoogleLogin", fixGoogleLoginPatch)

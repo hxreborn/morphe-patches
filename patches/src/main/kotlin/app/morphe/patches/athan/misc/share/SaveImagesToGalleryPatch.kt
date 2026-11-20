@@ -15,10 +15,12 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.athanSaveImagesToGalleryExtensionPatch
 
 private const val SAVE_IMAGE_ACTIVITY = "app.hxreborn.extension.athan.SaveImageActivity"
 
 private val saveImageActivityPatch = resourcePatch {
+    dependsOn(athanSaveImagesToGalleryExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
@@ -39,7 +41,6 @@ val saveImagesToGalleryPatch = bytecodePatch(
         "Requires Android 10 or newer.",
 ) {
     compatibleWith(AppCompatibilities.ATHAN)
-    extendWith("extensions/extension.mpe")
     dependsOn(spoofSignaturePatch, saveImageActivityPatch)
 
     execute {

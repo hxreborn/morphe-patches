@@ -17,12 +17,14 @@ import app.morphe.patches.shared.misc.torrent.ProStatusFingerprint
 import app.morphe.patches.shared.misc.torrent.removeAdsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import app.morphe.patches.shared.misc.extension.bittorrentSettingsExtensionPatch
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
     description = "Unlocks Pro settings and removes ads.",
 ) {
+    dependsOn(bittorrentSettingsExtensionPatch)
     compatibleWith(AppCompatibilities.BITTORRENT)
     availability(requireArm64)
     dependsOn(removeAdsPatch)

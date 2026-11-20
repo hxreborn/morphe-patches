@@ -22,6 +22,7 @@ import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import app.morphe.patches.shared.misc.extension.berealSponsoredPostsExtensionPatch
 
 private const val SPONSORED_FIELD = "isSponsored_"
 
@@ -39,6 +40,7 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
     description = "Removes the full-screen ad at launch and sponsored BeReals in both feeds. " +
         "Stops the ad networks from loading.",
 ) {
+    dependsOn(berealSponsoredPostsExtensionPatch)
     compatibleWith(AppCompatibilities.BEREAL)
     dependsOn(
         beRealBasePatch,

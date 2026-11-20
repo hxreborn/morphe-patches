@@ -18,6 +18,8 @@ import app.morphe.util.copyResources
 import java.util.logging.Logger
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.vpnsuperAppliedPatchesExtensionPatch
+import app.morphe.patches.shared.misc.extension.vpnsuperSettingsExtensionPatch
 
 private const val APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/vpnsuper/AppliedPatches;"
 private const val SETTINGS_STYLE_CLASS = "Lapp/hxreborn/extension/vpnsuper/SettingsStyle;"
@@ -72,6 +74,7 @@ private fun Document.addPatchesMenuRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
+    dependsOn(vpnsuperAppliedPatchesExtensionPatch, vpnsuperSettingsExtensionPatch)
     dependsOn(
         resourcePatch {
             execute {
@@ -93,8 +96,6 @@ internal val patchesSettingsPatch = bytecodePatch {
             }
         },
     )
-    extendWith("extensions/extension.mpe")
-
     execute {
         menuStylesResolved = false
         try {

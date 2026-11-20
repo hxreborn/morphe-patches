@@ -19,6 +19,7 @@ import app.morphe.patches.yuka.misc.pairip.guardVirtualizedTasksPatch
 import java.security.MessageDigest
 import java.time.Instant
 import java.util.Base64
+import app.morphe.patches.shared.misc.extension.sharedSignInTokenExtensionPatch
 
 internal const val TOKEN_SEED_CLASS = "Lapp/hxreborn/extension/shared/AppCheckTokenSeed;"
 
@@ -34,13 +35,12 @@ val signInTokenPatch = bytecodePatch(
         "Steps are in the Yuka section of the README.",
     default = false,
 ) {
+    dependsOn(sharedSignInTokenExtensionPatch)
     compatibleWith(AppCompatibilities.YUKA)
 
     availability(requireArm64StandardInstall)
 
     dependsOn(guardVirtualizedTasksPatch, removePairipProtectionPatch)
-
-    extendWith("extensions/extension.mpe")
 
     val appCheckToken by stringOption(
         key = "appCheckToken",

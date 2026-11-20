@@ -26,6 +26,8 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
+import app.morphe.patches.shared.misc.extension.utorrentSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.utorrentSettingsExtensionPatch
 
 private const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/utorrent/"
 private const val THEME_CLASS = "${EXTENSION_PACKAGE}AmoledTheme;"
@@ -106,6 +108,7 @@ private fun ResourcePatchContext.copyWithBlackBackground(source: String, target:
 }
 
 private val amoledResourcesPatch = resourcePatch {
+    dependsOn(utorrentSettingsExtensionPatch)
     execute {
         addNightSplash(listOf("splash_icon", "splash_icon_fix"), listOf())
         amoledDrawableIds = document("res/values/public.xml").use { declarationsDocument ->
@@ -189,10 +192,10 @@ val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Adds an option to make dark surfaces pure black.",
 ) {
+    dependsOn(utorrentSettings2ExtensionPatch)
     compatibleWith(AppCompatibilities.UTORRENT)
     availability(requireArm64)
     dependsOn(removeProtectionPatch, amoledResourcesPatch)
-    extendWith("extensions/extension.mpe")
 
     execute {
         val themeClass = surfaceResourceFingerprint("color_controller_bg_dark").matchSingle().classDef.type

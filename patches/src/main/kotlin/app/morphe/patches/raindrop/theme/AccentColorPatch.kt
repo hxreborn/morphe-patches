@@ -16,6 +16,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.raindropAccentColorExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/raindrop/AccentColor;"
 
@@ -36,9 +37,8 @@ val accentColorPatch = bytecodePatch(
     description = "Replaces the accent color with the wallpaper color on Android 12 and later, or with a chosen " +
         "color. A new wallpaper color applies after the app restarts.",
 ) {
+    dependsOn(raindropAccentColorExtensionPatch)
     compatibleWith(AppCompatibilities.RAINDROP)
-    extendWith("extensions/extension.mpe")
-
     dependsOn(
         hermesVariantsPatch(
             setOf(

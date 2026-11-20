@@ -23,12 +23,15 @@ import app.morphe.patches.protonvpn.misc.restrictions.filterConstructorProperty
 import app.morphe.patches.protonvpn.misc.restrictions.filterReturnValue
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.protonUpgradePromotionRowsExtensionPatch
 import app.morphe.patches.shared.misc.proton.UPSELLING_VISIBILITY_CLASS
-import app.morphe.patches.shared.misc.proton.markFeaturePatched
+import app.morphe.patches.shared.misc.proton.markUpgradePromotionsPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.smali.toJavaClassName
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import app.morphe.patches.shared.misc.extension.protonHideUpgradePromotionsExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonMembersExtensionPatch
 
 private const val PROMOTIONS_CLASS = "Lapp/hxreborn/extension/protonvpn/Promotions;"
 private const val IS_HIDDEN = "$UPSELLING_VISIBILITY_CLASS->isHidden()Z"
@@ -38,12 +41,14 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
     name = "Hide upgrade promotions",
     description = "Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers.",
 ) {
+    dependsOn(protonUpgradePromotionRowsExtensionPatch)
+    dependsOn(protonHideUpgradePromotionsExtensionPatch, protonMembersExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_VPN)
     dependsOn(patchesSettingsPatch)
 
     execute {
         markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
-        markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
+        markUpgradePromotionsPatched()
 
         val plusBadgeId = resourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
 

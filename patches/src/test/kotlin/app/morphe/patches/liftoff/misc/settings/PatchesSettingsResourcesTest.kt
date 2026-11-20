@@ -15,7 +15,7 @@ internal class PatchesSettingsResourcesTest {
     @Test
     fun `loads vector resources for every menu icon`() {
         val iconName = Regex("""hx_liftoff_ic_\w+""")
-        val referencedIcons = File("../extensions/extension/src/main/java/app/hxreborn/extension/liftoff")
+        val referencedIcons = File("../extensions/liftoff/src/main/java/app/hxreborn/extension/liftoff")
             .walkTopDown()
             .filter { it.extension == "java" }
             .flatMap { iconName.findAll(it.readText()).map { match -> match.value } }
