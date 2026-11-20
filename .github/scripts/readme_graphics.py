@@ -11,10 +11,10 @@ WEIGHTS = (500, 600)
 STATIC = {weight: instancer.instantiateVariableFont(TTFont(FONT_FILE, recalcTimestamp=False), {"wght": weight}) for weight in WEIGHTS}
 CMAP = STATIC[500].getBestCmap()
 
-BADGE_TEXT_X = 66
-BADGE_LABEL_SIZE = 23
-BADGE_CAPTION_SIZE = 15
-ARROW_CLEARANCE_X = 206
+BADGE_TEXT_X = 56
+BADGE_LABEL_SIZE = 28
+BADGE_CAPTION_SIZE = 19
+BADGE_TEXT_END_X = 222
 ACCENT = '<linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2aa7e0"/><stop offset="1" stop-color="#5fd0d8"/></linearGradient>'
 
 TAPE_HEIGHT = 40
@@ -65,19 +65,18 @@ def xml(text):
 def badge_svg(label, caption, icon_png, font_text):
     for line, weight, size in ((label, 600, BADGE_LABEL_SIZE), (caption, 500, BADGE_CAPTION_SIZE)):
         end = BADGE_TEXT_X + text_width(weight, size, line)
-        if end > ARROW_CLEARANCE_X:
-            raise ValueError(f"badge text {line!r} ends at x={end:.1f}, past the arrow at x={ARROW_CLEARANCE_X}")
+        if end > BADGE_TEXT_END_X:
+            raise ValueError(f"badge text {line!r} ends at x={end:.1f}, past the badge edge at x={BADGE_TEXT_END_X}")
     fonts = (f'@font-face{{font-family:L;src:url(data:font/woff2;base64,{embedded_font(600, font_text)}) format("woff2")}}'
              f'@font-face{{font-family:C;src:url(data:font/woff2;base64,{embedded_font(500, font_text)}) format("woff2")}}')
     icon = base64.b64encode(icon_png).decode()
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" width="240" height="64" role="img" aria-label="{xml(label)}">
-<defs><style>{fonts}</style>{ACCENT}<clipPath id="c"><circle cx="32" cy="32" r="24"/></clipPath></defs>
+<defs><style>{fonts}</style>{ACCENT}<clipPath id="c"><circle cx="30" cy="32" r="20"/></clipPath></defs>
 <rect x="2" y="2" width="236" height="60" rx="30" fill="url(#g)"/>
-<circle cx="32" cy="32" r="26" fill="#ffffff"/>
-<image href="data:image/png;base64,{icon}" x="8" y="8" width="48" height="48" clip-path="url(#c)"/>
-<text x="{BADGE_TEXT_X}" y="30" font-family="L" font-size="{BADGE_LABEL_SIZE}" fill="#ffffff">{xml(label)}</text>
-<text x="{BADGE_TEXT_X}" y="50" font-family="C" font-size="{BADGE_CAPTION_SIZE}" fill="#ffffff" fill-opacity="0.95">{xml(caption)}</text>
-<path d="M214 24l8 8-8 8" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="30" cy="32" r="22" fill="#ffffff"/>
+<image href="data:image/png;base64,{icon}" x="10" y="12" width="40" height="40" clip-path="url(#c)"/>
+<text x="{BADGE_TEXT_X}" y="31" font-family="L" font-size="{BADGE_LABEL_SIZE}" fill="#ffffff">{xml(label)}</text>
+<text x="{BADGE_TEXT_X}" y="52" font-family="C" font-size="{BADGE_CAPTION_SIZE}" fill="#ffffff" fill-opacity="0.95">{xml(caption)}</text>
 </svg>
 '''
 

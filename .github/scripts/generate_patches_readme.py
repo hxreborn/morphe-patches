@@ -548,7 +548,7 @@ INDEX_START = "<!-- INDEX_START -->"
 INDEX_END = "<!-- INDEX_END -->"
 GRAPHICS_PATH = ".github/readme"
 ASSETS_REF = "origin/assets"
-INDEX_BUTTON_WIDTH = 155
+INDEX_BUTTON_WIDTH = "48%"
 INDEX_BUTTONS = [
     ("install", "Install", "Add the source", "installing", "#-installing"),
     ("patches", "Patches", None, "full-list", "#-patches-list"),
