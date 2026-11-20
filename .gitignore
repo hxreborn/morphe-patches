@@ -146,3 +146,5 @@ bin/
 
 __pycache__/
 *.pyc
+
+morphe-signing.key
