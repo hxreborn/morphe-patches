@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.proton;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.om.FabricatedOverlay;
 import android.content.om.OverlayInfo;
@@ -49,6 +50,7 @@ public final class AccentOverlay {
 
     }
 
+    @SuppressLint("DiscouragedApi")
     static void install(Context context) {
         final int brandColors = context.getResources()
             .getIdentifier(BRAND_COLORS_ARRAY, "array", context.getPackageName());
@@ -95,15 +97,12 @@ public final class AccentOverlay {
         final Resources resources = context.getResources();
         final FabricatedOverlay overlay = new FabricatedOverlay(OVERLAY_NAME, context.getPackageName());
         overlay.setTargetOverlayable(OVERLAYABLE_NAME);
-        final TypedArray colors = resources.obtainTypedArray(brandColors);
-        try {
+        try (TypedArray colors = resources.obtainTypedArray(brandColors)) {
             for (int index = 0; index < colors.length(); index++) {
                 final int id = colors.getResourceId(index, 0);
                 overlay.setResourceValue(resources.getResourceName(id), TypedValue.TYPE_INT_COLOR_ARGB8,
                         AccentColor.transformBrandColorArgb(resources.getColor(id, null)), null);
             }
-        } finally {
-            colors.recycle();
         }
         final OverlayManagerTransaction transaction = OverlayManagerTransaction.newInstance();
         transaction.registerFabricatedOverlay(overlay);

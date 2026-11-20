@@ -64,6 +64,7 @@ public final class WebToggleSwitchStyleTest {
         return drawable.getCurrent();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static int fill(Drawable shape) {
         return ((GradientDrawable) shape).getColor().getDefaultColor();
     }

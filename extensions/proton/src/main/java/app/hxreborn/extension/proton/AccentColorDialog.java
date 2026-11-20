@@ -263,8 +263,8 @@ final class AccentColorDialog {
             if (AccentColor.isSystemAccentAvailable()) {
                 presets.add(AccentColor.SYSTEM);
             }
-            for (int index = 0; index < HUE_VALUES.length; index++) {
-                presets.add(hueToHexColor(HUE_VALUES[index]));
+            for (int hue : HUE_VALUES) {
+                presets.add(hueToHexColor(hue));
             }
 
             final LinearLayout grid = new LinearLayout(this.activity);
@@ -316,7 +316,7 @@ final class AccentColorDialog {
         private View createActionButtons(Dialog dialog) {
             final LinearLayout buttons = PatchesDialog.createButtonRow(this.activity);
             buttons.addView(PatchesDialog.configureActionButton(this.activity,
-                    createTextView("Cancel", LABEL_SP, this.textWeakColor), () -> dialog.dismiss()));
+                    createTextView("Cancel", LABEL_SP, this.textWeakColor), dialog::dismiss));
             buttons.addView(PatchesDialog.configureActionButton(this.activity, this.applyButton, () -> {
                 dialog.dismiss();
                 if (this.selectedPreset.equals(AccentColor.getPreset())) {

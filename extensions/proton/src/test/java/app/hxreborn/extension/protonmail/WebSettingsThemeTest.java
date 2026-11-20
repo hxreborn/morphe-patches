@@ -33,7 +33,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.webkit.ValueCallback;
@@ -67,13 +66,12 @@ public final class WebSettingsThemeTest {
 
     private static final Pattern TONE = Pattern.compile("'(\\d+,\\d+,\\d+)':'(\\d+,\\d+,\\d+)'");
 
-    private Context context;
-
     private Activity activity;
 
     @Before
+    @SuppressWarnings("resource")
     public void useApplicationContext() {
-        this.context = PatchedBuild.useApplicationContext();
+        PatchedBuild.useApplicationContext();
         this.activity = Robolectric.buildActivity(Activity.class).setup().get();
         PatchedBuild.setAccentPreset("");
     }
@@ -468,6 +466,7 @@ public final class WebSettingsThemeTest {
         final WebView failing = new WebView(this.activity) {
 
             @Override
+            @SuppressWarnings("NullableProblems")
             public void evaluateJavascript(String script, ValueCallback<String> callback) {
                 throw new IllegalStateException("no web view");
             }

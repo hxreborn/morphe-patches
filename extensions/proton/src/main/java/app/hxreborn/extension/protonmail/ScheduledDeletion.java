@@ -236,6 +236,7 @@ public final class ScheduledDeletion {
         return deletedLabels;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean stillDue(String accountId, String label, long intervalMs) {
         return intervalMsOf(label) == intervalMs
                 && ScheduledDeletionSettings.due(Utils.getContext(), accountId, label, intervalMs);

@@ -251,6 +251,7 @@ public final class AvatarSwitchStyleDialog {
             row.setContentDescription(style.getLabel());
             row.setAccessibilityDelegate(new View.AccessibilityDelegate() {
                 @Override
+                @SuppressWarnings({ "deprecation", "NullableProblems" })
                 public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
                     super.onInitializeAccessibilityNodeInfo(host, info);
                     info.setClassName(RadioButton.class.getName());

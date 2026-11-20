@@ -113,6 +113,7 @@ public final class PatchesDialog {
         return dialog;
     }
 
+    @SuppressWarnings("SameParameterValue")
     static void showConfirmation(Activity activity, String titleText, String message, String confirmLabel,
             Runnable onConfirm) {
         if (activity.isFinishing() || activity.isDestroyed()) {
@@ -133,7 +134,7 @@ public final class PatchesDialog {
         final LinearLayout actions = createButtonRow(activity);
         final Dialog dialog = createDialog(activity, contentLayout);
         actions.addView(configureActionButton(activity, createTextView(activity, "Later", LABEL_SP, textWeakColor),
-                () -> dialog.dismiss()));
+                dialog::dismiss));
         actions.addView(configureActionButton(activity,
                 createTextView(activity, confirmLabel, LABEL_SP,
                         AccentColor.getAccentColor(PatchesTheme.isDark(PatchesTheme.backgroundSecondary(activity)))),

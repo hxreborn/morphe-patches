@@ -66,6 +66,7 @@ public final class PassSettingsTest {
     }
 
     @org.robolectric.annotation.Implements(LayoutComponents.class)
+    @SuppressWarnings("unused")
     public static final class LayoutShadow {
 
         @org.robolectric.annotation.Implementation

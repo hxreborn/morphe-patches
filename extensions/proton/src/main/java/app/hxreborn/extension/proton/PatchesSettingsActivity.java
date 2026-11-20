@@ -181,34 +181,25 @@ public final class PatchesSettingsActivity extends Activity implements SettingsS
         addAccentColorRows(this, appearanceRows);
         if (AmoledTheme.isPatched()) {
             appearanceRows.add(switchRow(AppliedPatches.amoledDarkThemeName(),
-                    AppliedPatches.amoledDarkThemeDescription(), AmoledTheme.isEnabled(), new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean enabled) {
-                            AmoledTheme.setEnabled(enabled);
-                            recreateContent();
-                            confirmRestart();
-                        }
+                    AppliedPatches.amoledDarkThemeDescription(), AmoledTheme.isEnabled(), (enabled) -> {
+                        AmoledTheme.setEnabled(enabled);
+                        recreateContent();
+                        confirmRestart();
                     }));
             if (AmoledTheme.isEnabled()) {
                 appearanceRows.add(switchRow("Dim raised surfaces", "Dims bars, cards, buttons and sheets.",
-                        AmoledTheme.isDimRaisedSurfacesEnabled(), new CheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(boolean enabled) {
-                                AmoledTheme.setDimRaisedSurfacesEnabled(enabled);
-                                confirmRestart();
-                            }
+                        AmoledTheme.isDimRaisedSurfacesEnabled(), (enabled) -> {
+                            AmoledTheme.setDimRaisedSurfacesEnabled(enabled);
+                            confirmRestart();
                         }));
             }
         }
         if (MaterialSwitches.isPatched()) {
             appearanceRows
                 .add(switchRow(AppliedPatches.materialSwitchesName(), AppliedPatches.materialSwitchesDescription(),
-                        MaterialSwitches.isEnabled(), new CheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(boolean enabled) {
-                                MaterialSwitches.setEnabled(enabled);
-                                confirmRestart();
-                            }
+                        MaterialSwitches.isEnabled(), (enabled) -> {
+                            MaterialSwitches.setEnabled(enabled);
+                            confirmRestart();
                         }));
         }
         addLoadingIndicatorRows(this, appearanceRows);
@@ -266,17 +257,10 @@ public final class PatchesSettingsActivity extends Activity implements SettingsS
 
     @Override
     public View layoutSwitchRow(String title, String summary, final String key) {
-        return layoutSwitchRow(title, summary, key, true);
-    }
-
-    private View layoutSwitchRow(String title, String summary, final String key, boolean enabled) {
-        return switchRow(title, summary, PatchSettings.isEnabled(key, false), new CheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(boolean checked) {
-                PatchSettings.setEnabled(key, checked);
-                confirmRestart();
-            }
-        }, enabled);
+        return switchRow(title, summary, PatchSettings.isEnabled(key, false), (checked) -> {
+            PatchSettings.setEnabled(key, checked);
+            confirmRestart();
+        });
     }
 
     @Override
@@ -459,11 +443,13 @@ public final class PatchesSettingsActivity extends Activity implements SettingsS
         return row;
     }
 
+    @SuppressLint("DiscouragedApi")
     private int systemBarHeight(String name, int fallbackDp) {
         final int identifier = getResources().getIdentifier(name, "dimen", "android");
         return (identifier > 0) ? getResources().getDimensionPixelSize(identifier) : dp(fallbackDp);
     }
 
+    @SuppressWarnings("deprecation")
     private String appVersion() {
         try {
             final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

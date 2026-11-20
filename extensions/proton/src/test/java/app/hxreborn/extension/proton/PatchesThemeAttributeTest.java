@@ -41,6 +41,7 @@ import org.robolectric.annotation.Implements;
 public final class PatchesThemeAttributeTest {
 
     @Implements(value = PatchesTheme.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class ThemeAttributes {
 
         @Implementation
@@ -59,8 +60,9 @@ public final class PatchesThemeAttributeTest {
         return RuntimeEnvironment.getApplication();
     }
 
-    private static int themeColor(Context context, int attribute) {
-        final TypedArray attributes = context.obtainStyledAttributes(new int[] { attribute });
+    @SuppressWarnings("resource")
+    private static int accentColor(Context context) {
+        final TypedArray attributes = context.obtainStyledAttributes(new int[] { android.R.attr.colorAccent });
         try {
             return attributes.getColor(0, 0);
         } finally {
@@ -69,10 +71,11 @@ public final class PatchesThemeAttributeTest {
     }
 
     @Test
+    @SuppressWarnings("NegativeIntConstantInLongContext")
     public void colorAttributeOfTheThemeIsResolved() {
         // given
         final Context context = application();
-        final int expected = themeColor(context, android.R.attr.colorAccent);
+        final int expected = accentColor(context);
 
         // when
         final int resolved = PatchesTheme.textNorm(context);
@@ -83,6 +86,7 @@ public final class PatchesThemeAttributeTest {
     }
 
     @Test
+    @SuppressWarnings("NegativeIntConstantInLongContext")
     public void colorResourceAttributeOfTheThemeIsResolved() {
         // given
         final Context context = application();

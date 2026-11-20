@@ -26,7 +26,6 @@ import java.util.List;
 import android.view.View;
 
 import app.hxreborn.extension.proton.AppSettings;
-import app.hxreborn.extension.proton.CheckedChangeListener;
 import app.hxreborn.extension.proton.SettingsScreen;
 
 @SuppressWarnings("unused")
@@ -70,12 +69,7 @@ public final class PassSettings implements AppSettings {
         }
         if (NavigationBarAutoHide.isPatched()) {
             rows.add(screen.switchRow(hideNavigationBarOnScrollName(), hideNavigationBarOnScrollDescription(),
-                    NavigationBarAutoHide.isEnabled(), new CheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(boolean enabled) {
-                            NavigationBarAutoHide.setEnabled(enabled);
-                        }
-                    }));
+                    NavigationBarAutoHide.isEnabled(), NavigationBarAutoHide::setEnabled));
         }
     }
 

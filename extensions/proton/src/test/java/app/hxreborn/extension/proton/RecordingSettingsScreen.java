@@ -30,6 +30,7 @@ import org.robolectric.Robolectric;
 
 public final class RecordingSettingsScreen implements SettingsScreen {
 
+    @SuppressWarnings("resource")
     private final Activity activity = Robolectric.buildActivity(Activity.class).get();
 
     private final List<String> titles = new ArrayList<>();

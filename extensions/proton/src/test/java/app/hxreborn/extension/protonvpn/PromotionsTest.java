@@ -83,6 +83,7 @@ public final class PromotionsTest {
         return notifications;
     }
 
+    @SuppressWarnings("resource")
     private static Activity upgradeDialogFrom(UpgradeSource source) {
         final Intent intent = new Intent().putExtra("Upgrade Type", source);
         return Robolectric.buildActivity(Activity.class, intent).get();
@@ -111,7 +112,7 @@ public final class PromotionsTest {
     @Test
     public void itemsAreUntouchedWhenUpsellsAreNotHidden() {
         // given
-        final List<Object> items = Arrays.<Object>asList("country", "city");
+        final List<Object> items = Arrays.asList("country", "city");
 
         // when
         final List<?> result = Promotions.withoutUpgradeBanners(items);
@@ -124,7 +125,7 @@ public final class PromotionsTest {
     public void unpatchedBuildIgnoresAStoredHideSetting() {
         PatchedBuild.setUpgradePromotionsHidden(true);
         final List<Notification> promos = notificationsOf(1, 2, 3);
-        final List<Object> items = Arrays.<Object>asList("country", "city");
+        final List<Object> items = Arrays.asList("country", "city");
         final View view = new View(this.context);
 
         assertSame(promos, Promotions.withoutPromoNotifications(promos));
@@ -209,7 +210,7 @@ public final class PromotionsTest {
             PatchedBuild.Applied.class })
     public void itemsThatAreNotUpgradeBannersAreKeptInOrder() {
         // given
-        final List<Object> items = Arrays.<Object>asList("country", 3, new Object(), "city");
+        final List<Object> items = Arrays.asList("country", 3, new Object(), "city");
 
         // when
         final List<?> kept = Promotions.withoutUpgradeBanners(items);
@@ -225,7 +226,7 @@ public final class PromotionsTest {
     public void itemsAreUntouchedOnceUpsellsAreShownAgain() {
         // given
         PatchedBuild.setUpgradePromotionsHidden(false);
-        final List<Object> items = Arrays.<Object>asList("country", "city");
+        final List<Object> items = Arrays.asList("country", "city");
 
         // when
         final List<?> result = Promotions.withoutUpgradeBanners(items);
@@ -304,6 +305,7 @@ public final class PromotionsTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings("resource")
     public void keepsAnActivityWithoutAnUpgradeSource() {
         assertFalse(Promotions.hidesOnboardingUpgrade(Robolectric.buildActivity(Activity.class).get()));
     }

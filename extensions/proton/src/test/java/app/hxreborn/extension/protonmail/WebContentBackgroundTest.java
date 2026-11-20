@@ -261,6 +261,7 @@ public final class WebContentBackgroundTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings("resource")
     public void singleByteReadsReturnUnsignedValuesThenEndOfStream() throws IOException {
         final InputStream stream = replacing(new byte[] { 'a', (byte) 0xFF, (byte) 0x80 });
 
@@ -274,6 +275,7 @@ public final class WebContentBackgroundTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings("resource")
     public void emptySourceIsAnEmptyStream() throws IOException {
         final InputStream stream = replacing(new byte[0]);
 
@@ -285,6 +287,7 @@ public final class WebContentBackgroundTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings("resource")
     public void streamPositionFollowsTheReplacedContent() throws IOException {
         final InputStream stream = replacing(ascii("ab#191927cd"));
 
@@ -298,6 +301,7 @@ public final class WebContentBackgroundTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings({ "DataFlowIssue", "ResultOfMethodCallIgnored" })
     public void sourceIsNotTouchedUntilTheFirstRead() throws IOException {
         final CountingInput source = new CountingInput(ascii("#191927"));
         final InputStream stream = WebContentBackground.replaceBackground(source);
@@ -314,6 +318,7 @@ public final class WebContentBackgroundTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings("DataFlowIssue")
     public void closingClosesTheSourceWithoutReadingIt() throws IOException {
         // given
         final CountingInput source = new CountingInput(ascii("#191927"));
@@ -330,6 +335,7 @@ public final class WebContentBackgroundTest {
     @Test
     @Config(shadows = { PatchedBuild.Amoled.class, PatchedBuild.Accent.class, PatchedBuild.Upselling.class,
             PatchedBuild.Applied.class })
+    @SuppressWarnings({ "DataFlowIssue", "ResultOfMethodCallIgnored" })
     public void sourceFailureSurfacesOnFirstRead() {
         // given
         final IOException failure = new IOException("reset");

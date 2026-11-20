@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.proton;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -38,6 +39,8 @@ public final class AmoledBackgroundOverlay {
         return false;
     }
 
+    @SuppressLint("DiscouragedApi")
+    @SuppressWarnings("resource")
     static void apply(Activity activity) {
         if (!isPatched() || !AmoledTheme.isEnabled()) {
             return;

@@ -97,14 +97,11 @@ public final class PatchesTheme {
     }
 
     static int uiNightMode() {
-        switch (appCompatDefaultNightMode()) {
-            case APP_COMPAT_MODE_NIGHT_NO:
-                return Configuration.UI_MODE_NIGHT_NO;
-            case APP_COMPAT_MODE_NIGHT_YES:
-                return Configuration.UI_MODE_NIGHT_YES;
-            default:
-                return Configuration.UI_MODE_NIGHT_UNDEFINED;
-        }
+        return switch (appCompatDefaultNightMode()) {
+            case APP_COMPAT_MODE_NIGHT_NO -> Configuration.UI_MODE_NIGHT_NO;
+            case APP_COMPAT_MODE_NIGHT_YES -> Configuration.UI_MODE_NIGHT_YES;
+            default -> Configuration.UI_MODE_NIGHT_UNDEFINED;
+        };
     }
 
     public static int backgroundNorm(Context context) {

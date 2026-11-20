@@ -29,6 +29,7 @@ import org.junit.Test;
 
 public final class FreeAccountTest {
 
+    @SuppressWarnings("unused")
     static final class UserInfo {
 
         private final Object vpnUser;

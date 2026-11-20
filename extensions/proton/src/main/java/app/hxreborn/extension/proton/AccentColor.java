@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import android.graphics.ColorSpace;
 import android.os.Build;
 import app.morphe.extension.shared.Utils;
 
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class AccentColor {
 

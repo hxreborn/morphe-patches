@@ -75,6 +75,7 @@ final class AvatarSlotView extends View {
         this.incoming.bitmap = incoming;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     void setFrame(AvatarSwitchStyle style, float progress, int direction) {
         final float height = getHeight();
         final float firstHalf = Math.min(1f, 2f * progress);

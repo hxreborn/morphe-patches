@@ -43,6 +43,7 @@ public final class FreeServerLocationsTest {
         Free, All, Custom {
 
             @Override
+            @SuppressWarnings("NullableProblems")
             public String toString() {
                 return "custom";
             }
@@ -63,6 +64,7 @@ public final class FreeServerLocationsTest {
 
     }
 
+    @SuppressWarnings("unused")
     static final class Item {
 
         private final int tier;
@@ -77,6 +79,7 @@ public final class FreeServerLocationsTest {
 
     }
 
+    @SuppressWarnings("unused")
     static final class Server {
 
         private final boolean free;
@@ -93,6 +96,7 @@ public final class FreeServerLocationsTest {
 
     static final class Country {
 
+        @SuppressWarnings({ "unused", "FieldCanBeLocal" })
         private final List<Server> serverList;
 
         Country(Server... servers) {
@@ -103,6 +107,7 @@ public final class FreeServerLocationsTest {
 
     static final class Profile {
 
+        @SuppressWarnings({ "unused", "FieldCanBeLocal" })
         private final Availability availability;
 
         Profile(Availability availability) {
