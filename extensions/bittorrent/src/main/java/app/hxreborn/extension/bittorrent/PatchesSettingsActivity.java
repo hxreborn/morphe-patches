@@ -75,7 +75,8 @@ public final class PatchesSettingsActivity extends Activity {
         styleSystemBars(getWindow());
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "DataFlowIssue" })
+    @SuppressLint("InlinedApi")
     private void styleSystemBars(Window window) {
         window.setStatusBarColor(this.style.screenBackground);
         window.setNavigationBarColor((Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !this.style.dark) ? Color.BLACK
@@ -216,6 +217,7 @@ public final class PatchesSettingsActivity extends Activity {
             .show());
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void styleDialog(AlertDialog dialog) {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(this.style.screenBackground));
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(this.style.accent);
