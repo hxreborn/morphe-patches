@@ -17,7 +17,7 @@ pluginManagement {
 }
 
 plugins {
-    id("app.morphe.patches") version "2.1.0"
+    id("app.morphe.patches") version "2.1.1"
 }
 
 include(":extension-tests", ":extension-test-fixtures")
