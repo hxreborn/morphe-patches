@@ -47,12 +47,14 @@ public final class AmoledThemeTest {
 
     private static final int OVERLAY = android.R.style.Theme_Translucent;
 
+    @SuppressWarnings("resource")
     private static ThemedActivity activity(int uiMode, int overlayStyle) {
         final ThemedActivity activity = Robolectric.buildActivity(ThemedActivity.class).create().get();
         activity.override = new OverlayResources(activity.getResources(), uiMode, overlayStyle);
         return activity;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static ThemedActivity activityWithSwitch(Object value, int uiMode, int overlayStyle) {
         final ThemedActivity activity = activity(uiMode, overlayStyle);
         final SharedPreferences.Editor editor = activity
