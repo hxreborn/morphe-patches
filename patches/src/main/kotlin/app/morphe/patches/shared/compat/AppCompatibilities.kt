@@ -1863,7 +1863,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b75fd2b70084d7e0813b8f74dd74b62ab79b2aa0ce1372331a1841bd88eed993",
         ),
-        targets = listOf(AppTarget(version = "4.28.5", versionCode = 709, minSdk = 23)),
+        targets = listOf(AppTarget(version = "4.29.0", versionCode = 710, minSdk = 23)),
     )
 
     val THREEWAY = Compatibility(
