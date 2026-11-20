@@ -20,14 +20,45 @@ inputs:
   dry-run:
     description: Print app request verdicts without commenting, labeling or closing.
     default: "false"
+  preview-issue:
+    description: Read one bug or feature issue and summarize triage with a read-only token.
+    default: ""
 
 runs:
   using: composite
   steps:
+    - name: Load issue for preview
+      id: preview
+      if: inputs.preview-issue != ''
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        REPO: ${{ github.repository }}
+        PREVIEW_ISSUE: ${{ inputs.preview-issue }}
+      run: |
+        [[ "$PREVIEW_ISSUE" =~ ^[1-9][0-9]*$ ]] || { echo "::error::Enter a positive issue number"; exit 1; }
+        gh api "repos/$REPO/issues/$PREVIEW_ISSUE" |
+          jq '{issue: .}' > "$RUNNER_TEMP/preview-event.json"
+        kind=$(jq -r '
+          .issue | [.labels[].name] as $labels |
+          if has("pull_request") or .user.type == "Bot" or
+             (.author_association | IN("OWNER", "MEMBER", "COLLABORATOR")) or
+             ($labels | any(. == "bot-wrong" or . == "app-update")) then "skip"
+          elif ($labels | index("bug")) then "bug"
+          elif ($labels | index("enhancement")) then "feature"
+          else "skip" end
+        ' "$RUNNER_TEMP/preview-event.json")
+        printf 'kind=%s\n' "$kind" >> "$GITHUB_OUTPUT"
+        printf '## Triage preview for #%s\n' "$PREVIEW_ISSUE" >> "$GITHUB_STEP_SUMMARY"
+        if [ "$kind" = skip ]; then
+          printf '\nThe issue is outside automatic bug and feature triage.\n' >> "$GITHUB_STEP_SUMMARY"
+        fi
+
     - name: Triage app requests
       if: >-
-        github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
-        github.event_name == 'discussion'
+        inputs.preview-issue == '' &&
+        (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
+        github.event_name == 'discussion')
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
@@ -154,65 +185,87 @@ runs:
 
     - name: Triage feature requests
       if: >-
-        github.event_name == 'issues' && github.event.action == 'opened' &&
+        steps.preview.outputs.kind == 'feature' ||
+        (github.event_name == 'issues' && github.event.action == 'opened' &&
         contains(github.event.issue.labels.*.name, 'enhancement') &&
         github.event.issue.user.type != 'Bot' &&
-        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association))
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
-        ISSUE: ${{ github.event.issue.number }}
+        ISSUE: ${{ github.event.issue.number || inputs.preview-issue }}
         REPO: ${{ github.repository }}
         PATCHES_LIST: ${{ inputs.patches-list }}
         CATEGORY: ${{ inputs.requests-category }}
+        PREVIEW_ISSUE: ${{ inputs.preview-issue }}
       run: |
+        source "${{ github.action_path }}/issue_changes.sh"
         list="$PWD/$PATCHES_LIST"
         cd "$RUNNER_TEMP"
-        jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > body.md
+        event=$GITHUB_EVENT_PATH
+        if [ -n "${PREVIEW_ISSUE:-}" ]; then event=preview-event.json; fi
+        jq -r '.issue.body // ""' "$event" > body.md
         python3 "${{ github.action_path }}/feature_request.py" body.md "$list" "$CATEGORY" > verdict.json
         verdict=$(jq -r .verdict verdict.json)
         echo "#$ISSUE: $verdict"
+        if [ -n "${PREVIEW_ISSUE:-}" ]; then
+          printf '\nCheck result: %s\n' "$verdict" >> "$GITHUB_STEP_SUMMARY"
+          python3 "${{ github.action_path }}/related_issues.py" "$event" "$list" enhancement >> "$GITHUB_STEP_SUMMARY"
+          if [ "$(jq -r .issue.state "$event")" != open ]; then
+            printf '\nFeature triage applies when the issue opens.\n' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+        fi
         if [ "$verdict" = close ]; then
           jq -j .comment verdict.json > comment.md
-          gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
-          gh issue close "$ISSUE" --repo "$REPO" --reason "not planned"
+          change_issue comment --body-file comment.md
+          change_issue close --reason "not planned"
         fi
 
     - name: Check the report
       if: >-
-        contains(github.event.issue.labels.*.name, 'bug')
+        contains(github.event.issue.labels.*.name, 'bug') || steps.preview.outputs.kind == 'bug'
       shell: bash
       env:
         PATCHES_LIST: ${{ inputs.patches-list }}
+        PREVIEW_ISSUE: ${{ inputs.preview-issue }}
       run: |
-        jq -r '.issue.body // ""' "$GITHUB_EVENT_PATH" > "$RUNNER_TEMP/issue-body.md"
-        list=$PATCHES_LIST
-        dev_bundle=$(tr -d '\r' < "$RUNNER_TEMP/issue-body.md" | sed -nE \
-          '/^[[:space:]]*Source:.* v?([0-9]+\.[0-9]+\.[0-9]+-dev\.[0-9]+)[[:space:]]*$/{s//\1/p;q;}')
-        if [ -n "$dev_bundle" ] && git show "v$dev_bundle:$PATCHES_LIST" > "$RUNNER_TEMP/reported-list.json" 2>/dev/null; then
-          list=$RUNNER_TEMP/reported-list.json
-        fi
-        ISSUE_TITLE=$(jq -r '.issue.title // ""' "$GITHUB_EVENT_PATH") python3 "${{ github.action_path }}/triage.py" \
-          "$RUNNER_TEMP/issue-body.md" "$list" > "$RUNNER_TEMP/verdict.json"
+        event=$GITHUB_EVENT_PATH
+        if [ -n "${PREVIEW_ISSUE:-}" ]; then event="$RUNNER_TEMP/preview-event.json"; fi
+        jq -r '.issue.body // ""' "$event" > "$RUNNER_TEMP/issue-body.md"
+        ISSUE_TITLE=$(jq -r '.issue.title // ""' "$event") python3 "${{ github.action_path }}/triage.py" \
+          "$RUNNER_TEMP/issue-body.md" "$PATCHES_LIST" > "$RUNNER_TEMP/verdict.json"
 
     - name: Act on the verdict
       if: >-
-        contains(github.event.issue.labels.*.name, 'bug')
+        contains(github.event.issue.labels.*.name, 'bug') || steps.preview.outputs.kind == 'bug'
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
-        ISSUE: ${{ github.event.issue.number }}
+        ISSUE: ${{ github.event.issue.number || inputs.preview-issue }}
         REPO: ${{ github.repository }}
         ACTION: ${{ github.event.action }}
         CLOSED: ${{ github.event.issue.state == 'closed' }}
+        PATCHES_LIST: ${{ inputs.patches-list }}
+        PREVIEW_ISSUE: ${{ inputs.preview-issue }}
       run: |
+        source "${{ github.action_path }}/issue_changes.sh"
+        list="$PWD/$PATCHES_LIST"
         cd "$RUNNER_TEMP"
+        event=$GITHUB_EVENT_PATH
         verdict=$(jq -r .verdict verdict.json)
         jq -r .comment verdict.json > comment.md
+        if [ -n "${PREVIEW_ISSUE:-}" ]; then
+          event=preview-event.json
+          CLOSED=$(jq -r '.issue.state == "closed"' "$event")
+          jq -r '"\nCheck result: \(.verdict)\n\nManifest: \(.manifest.source)\(if .manifest.version then " " + .manifest.version else "" end)"' \
+            verdict.json | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 "${{ github.action_path }}/related_issues.py" "$event" "$list" bug verdict.json >> "$GITHUB_STEP_SUMMARY"
+        fi
         remove_bot_labels() {
           mapfile -t outdated < <(jq -r --slurpfile verdict verdict.json --arg drop "$1" \
             '.issue.labels[].name | select(. as $label | $drop | split(",") | index($label))
-             | select(. as $label | $verdict[0].labels | index($label) | not)' "$GITHUB_EVENT_PATH")
+             | select(. as $label | $verdict[0].labels | index($label) | not)' "$event")
           bash -eo pipefail "${{ github.action_path }}/remove_bot_labels.sh" "$ISSUE" "${outdated[@]}"
         }
 
@@ -220,9 +273,12 @@ runs:
         if [ "$CLOSED" = "true" ]; then
           closer=$(gh api "repos/$REPO/issues/$ISSUE/timeline" --paginate \
             --jq '.[] | select(.event == "closed") | .actor.login' | tail -1)
-          labels=$(jq -r '.issue.labels[].name' "$GITHUB_EVENT_PATH")
+          labels=$(jq -r '.issue.labels[].name' "$event")
           if [ "$closer" != "github-actions[bot]" ] || ! grep -qxE 'incomplete|stale' <<< "$labels"; then
             echo "#$ISSUE: closed by $closer without an incomplete or stale label, left alone"
+            if [ -n "${PREVIEW_ISSUE:-}" ]; then
+              printf '\nThe issue is closed outside triage. No changes proposed.\n' >> "$GITHUB_STEP_SUMMARY"
+            fi
             exit 0
           fi
           if grep -qx incomplete <<< "$labels" && ! grep -qx stale <<< "$labels"; then
@@ -231,7 +287,7 @@ runs:
         fi
 
         app=$(jq -r .app verdict.json)
-        if [ -n "$app" ] && [ "$verdict" != "pass" ] && [ "$ACTION" = "opened" ]; then
+        if [ -z "${PREVIEW_ISSUE:-}" ] && [ -n "$app" ] && [ "$verdict" != "pass" ] && [ "$ACTION" = "opened" ]; then
           dupes=$(gh search issues "$app" --repo "$REPO" --label bug --match title --limit 4 --json number,title --jq \
             "map(select(.number != $ISSUE)) | .[0:3] | map(\"- [#\(.number)](https://redirect.github.com/$REPO/issues/\(.number)) \`\(.title | gsub(\"\`\"; \"'\") | gsub(\"\\\\s+\"; \" \"))\`\") | join(\"\n\")") ||
             { echo "::warning::Searching for issues about $app failed"; dupes=""; }
@@ -251,7 +307,7 @@ runs:
           [ "$(without_related < comment.md)" != "$(printf '%s\n' "$previous" | without_related)" ]
         }
         post_comment() {
-          ! comment_changed || gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
+          ! comment_changed || change_issue comment --body-file comment.md
         }
 
         case "$verdict" in
@@ -265,19 +321,19 @@ runs:
             post_comment
             if [ "$CLOSED" != "true" ]; then
               remove_bot_labels stale
-              gh issue edit "$ISSUE" --repo "$REPO" --add-label incomplete
-              gh issue close "$ISSUE" --repo "$REPO" --reason "not planned"
+              change_issue edit --add-label incomplete
+              change_issue close --reason "not planned"
             fi
             ;;
           flag)
             if comment_changed; then
               labels=$(jq -r '.labels | join(",")' verdict.json)
-              [ -z "$labels" ] || gh issue edit "$ISSUE" --repo "$REPO" --add-label "$labels"
-              gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
+              [ -z "$labels" ] || change_issue edit --add-label "$labels"
+              change_issue comment --body-file comment.md
             fi
             [ -z "$previous" ] || remove_bot_labels "needs info,untargeted version"
             if [ "$CLOSED_BY_TRIAGE" = "true" ]; then
-              gh issue reopen "$ISSUE" --repo "$REPO"
+              change_issue reopen
               remove_bot_labels incomplete
             fi
             ;;
@@ -286,7 +342,7 @@ runs:
               remove_bot_labels "incomplete,needs info,untargeted version"
             fi
             if [ "$CLOSED" = "true" ]; then
-              gh issue reopen "$ISSUE" --repo "$REPO"
+              change_issue reopen
               printf '<!-- triage-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" report-reopened)" > comment.md
               post_comment
             elif [ -n "$previous" ]; then

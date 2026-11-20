@@ -4,6 +4,7 @@
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
@@ -28,6 +29,8 @@ STEP_FIELDS = ("Steps to reproduce", "Expected behaviour", "Actual behaviour")
 ANSWER_FIELDS = ("Bug description", *STEP_FIELDS, "Screenshots", "Device and Android version", "APK source")
 LOG_FIELDS = ("Debug log", "Error logs", "Morphe logs", "Logs")
 SOURCE_FIELDS = ("APK source", "APK source and type", "APK source and architecture")
+BUNDLE_VERSION = r"\d+\.\d+\.\d+(?:-dev\.\d+)?"
+BUNDLE_SOURCE = re.compile(rf"^[ \t]*Source:[ \t]*hxreborn[\u2019']s patches[ \t]+v?({BUNDLE_VERSION})[ \t]*$", re.I | re.M)
 
 REPACKAGERS = ("softonic", "happymod", "apkmod", "apkmody", "modyolo", "moddroid", "an1.com", "rexdl",
                "apkdone", "liteapks", "apkmb", "apk4free", "androeed", "apkrabi")
@@ -104,9 +107,36 @@ def matches_target(target):
     return same_variant(typed_version, target) and bool(cores & (target_forms(target) | version_cores(target)))
 
 
-data = json.loads(list_path.read_text(encoding="utf-8"))
-apps = supported_apps(data)
+def report_manifest(fields, path):
+    current = json.loads(path.read_text(encoding="utf-8"))
+    form_version = field(fields, "Patches version")
+    form_match = re.fullmatch(rf"v?({BUNDLE_VERSION})", form_version, re.I)
+    versions = {version.lower() for name in LOG_FIELDS for version in BUNDLE_SOURCE.findall(field(fields, name))}
+    if form_match:
+        versions.add(form_match[1].lower())
+    if len(versions) > 1:
+        return current, "unverified", "The report names more than one patches version. Please confirm which one was used."
+    if not versions:
+        if form_version:
+            return current, "unverified", "Please add the exact patches version so app support can be checked."
+        return current, "current", ""
+
+    version = versions.pop()
+    result = subprocess.run(["git", "-C", path.parent, "show", f"refs/tags/v{version}:./{path.name}"],
+                            capture_output=True, text=True)
+    if result.returncode == 0:
+        try:
+            tagged = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            tagged = None
+        if isinstance(tagged, dict) and tagged.get("version") == version and isinstance(tagged.get("patches"), list):
+            return tagged, "reported", ""
+    return current, "unverified", f"App support could not be checked against patches `{version}`."
+
+
 fields = parse_fields(body_path.read_text(encoding="utf-8"))
+data, manifest_source, manifest_note = report_manifest(fields, list_path)
+apps = supported_apps(data)
 
 description = field(fields, *DESCRIPTION_FIELDS) or "\n".join(filter(None, (field(fields, n) for n in STEP_FIELDS)))
 if not has_any(fields, *DESCRIPTION_FIELDS, *STEP_FIELDS):
@@ -142,7 +172,7 @@ def target_forms(version):
 
 blockers = []
 flags = []
-notes = []
+notes = [manifest_note] if manifest_note else []
 labels = []
 
 if not fields:
@@ -216,7 +246,7 @@ elif repackager_named:
     labels.append("needs info")
 
 
-if not fields:
+if not fields or (not matched and manifest_source == "unverified"):
     pass
 elif not matched:
     supported = ", ".join(sorted(name for name, _ in apps))
@@ -239,7 +269,7 @@ elif another_version:
         "\"Another version\" is selected, but the Other version field is empty."
     )
     labels.append("needs info")
-elif matched[1] and not (
+elif manifest_source != "unverified" and matched[1] and not (
     any(matches_target(v) for v in matched[1]) if version_tokens
     else any(form in version_haystack for v in matched[1] for form in target_forms(v))
 ):
@@ -304,5 +334,6 @@ print(json.dumps({
     "verdict": verdict,
     "labels": list(dict.fromkeys(labels)),
     "app": contradicted or (matched[0] if matched else ""),
+    "manifest": {"source": manifest_source, "version": data["version"] if manifest_source != "unverified" else None},
     "comment": MARKER + "\n" + "\n\n".join(sections) if sections else "",
 }))

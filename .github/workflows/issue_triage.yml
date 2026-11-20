@@ -9,6 +9,9 @@ on:
     - cron: "30 6 * * *"
   workflow_dispatch:
     inputs:
+      issue-number:
+        description: Preview triage for one bug or feature issue. Leave empty for the app request sweep.
+        type: string
       dry-run:
         description: Print app request verdicts without acting on them
         type: boolean
@@ -17,13 +20,33 @@ on:
 permissions: {}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.issue.number || github.event.discussion.number || 'sweep' }}
+  group: >-
+    ${{ github.workflow }}-${{ github.event.issue.number || github.event.discussion.number ||
+    (inputs.issue-number != '' && format('preview-{0}', inputs.issue-number)) || 'sweep' }}
   cancel-in-progress: false
 
 jobs:
+  preview:
+    if: github.event_name == 'workflow_dispatch' && inputs.issue-number != ''
+    permissions:
+      contents: read
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ./.github/actions/triage
+        with:
+          token: ${{ github.token }}
+          preview-issue: ${{ inputs.issue-number }}
+
   triage:
     if: >-
-      github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && inputs.issue-number == '') ||
       (github.event_name == 'discussion' &&
        github.event.discussion.category.slug == 'app-requests' &&
        github.event.discussion.state == 'open' &&

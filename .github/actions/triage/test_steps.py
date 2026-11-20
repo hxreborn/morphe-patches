@@ -113,8 +113,20 @@ elif args[:2] == ["issue", "list"]:
 elif args[0] == "api" and args[1].startswith("users/"):
     emit(state["events"].get(args[1].split("/")[1], []))
 elif args[0] == "api":
-    _, _, _, _, number, kind = args[1].split("/")
-    emit(issues[number][kind])
+    _, _, _, _, number, *kind = args[1].split("/")
+    if kind:
+        emit(issues[number][kind[0]])
+    else:
+        i = issues[number]
+        emit({**i, "number": int(number), "state": i["state"].lower(),
+              "labels": [{"name": label} for label in i["labels"]]})
+elif args[:2] == ["search", "issues"]:
+    if opt("--match") != "title" or opt("--json") != "number,title,state" or args[-2] != "--":
+        sys.exit(1)
+    query = args[-1].lower().split()
+    emit([{"number": int(n), "title": i["title"], "state": i["state"].lower()}
+          for n, i in issues.items() if opt("--label") in i["labels"]
+          and all(word in i["title"].lower() for word in query)])
 elif args[:2] == ["issue", "view"]:
     emit({"state": issues[args[2]].get("live_state", issues[args[2]]["state"])})
 else:
@@ -171,7 +183,7 @@ def opened(repo, number, title):
 
 
 def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=None, action="edited", events=None,
-        association="NONE", tagged_lists=None):
+        association="NONE", tagged_lists=None, preview=False):
     with tempfile.TemporaryDirectory() as temp:
         temp = Path(temp)
         (temp / "bin").mkdir()
@@ -202,6 +214,8 @@ def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=N
             "REGISTRY": "https://registry.invalid", "PATCHES_LIST": "patches-list.json",
             "DRY_RUN": "false", "RUNNER_TEMP": str(temp / "runner"), "GITHUB_EVENT_PATH": str(temp / "event.json"),
             "ACTION": action, "ASSOCIATION": association, "CLOSED": str(event_issue.get("state") == "closed").lower(),
+            "PREVIEW_ISSUE": str(issue_number) if preview else "", "GITHUB_STEP_SUMMARY": str(temp / "summary.md"),
+            "GITHUB_OUTPUT": str(temp / "output.txt"),
         }
         status = 0
         for name in steps:
@@ -211,6 +225,10 @@ def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=N
                 break
         state = json.loads((temp / "state.json").read_text())
         mutations = [" ".join(c[:3]) for c in state["calls"] if c[0] == "issue" and c[1] in ("comment", "close", "reopen", "edit")]
+        if preview:
+            summary, output = temp / "summary.md", temp / "output.txt"
+            return status, mutations + state["mutations"], summary.read_text() if summary.exists() else "", \
+                output.read_text() if output.exists() else ""
         return status, state["issues"], mutations + state["mutations"]
 
 
@@ -591,8 +609,66 @@ status, issues, mutations = run({"20": issue("[Bug]: x", dev_body, labels=("bug"
                                 event_issue=dev_report, action="opened")
 
 # then
-check(status == 0 and "untargeted version" in issues["20"]["labels"],
-      "a report naming a pre-release with no tag is checked against the checked-out targets")
+check(status == 0 and "untargeted version" not in issues["20"]["labels"]
+      and "App support could not be checked against patches" in issues["20"]["comments"][0]["body"],
+      "a report naming a pre-release with no tag does not get a compatibility label")
+
+stable_list = {**DEV_LIST, "version": "1.1.0"}
+stable_body = f"### App and version\n\nSupported 2.0.0\n\n### Patches version\n\n1.1.0\n\n### Bug description\n\n{LONG}\n"
+status, issues, mutations = run({"20": issue("Supported", stable_body, labels=("bug",))}, BUG,
+                                issue_number=20, event_issue={**dev_report, "body": stable_body},
+                                tagged_lists={"v1.1.0": stable_list})
+check(status == 0 and mutations == [], "the form selects the exact stable release without a log")
+
+conflicting = stable_body + "\n### Error logs\n\nSource: hxreborn\u2019s patches 1.1.0-dev.1\nManager: 2.2.0-dev.3\n"
+status, issues, mutations = run({"20": issue("Supported", conflicting, labels=("bug",))}, BUG,
+                                issue_number=20, event_issue={**dev_report, "body": conflicting},
+                                tagged_lists={"v1.1.0-dev.1": DEV_LIST, "v1.1.0": stable_list})
+check(status == 0 and "untargeted version" not in issues["20"]["labels"]
+      and "more than one patches version" in issues["20"]["comments"][0]["body"],
+      "a form and log disagreement leaves compatibility unverified")
+
+PREVIEW = ["Load issue for preview"]
+preview_body = (stable_body + "\n### Patch that breaks it\n\nSupported \u00b7 Sync library\n"
+                "\n### Actual behaviour\n\nThe queue duplicates episodes on refresh.\n")
+preview_issues = {
+    "20": issue("Supported queue duplicates episodes", preview_body, labels=("bug",)),
+    "16": issue("Supported queue duplicates on refresh", "", labels=("bug",), state="CLOSED"),
+    "17": issue("Supported Sync library freezes on launch", "", labels=("bug",)),
+    "18": issue("Supported queue duplicates episodes", "", labels=("enhancement",)),
+    "21": issue("Supported queue duplicates episodes", "", labels=("bug",)),
+}
+status, mutations, summary, output = run(preview_issues, PREVIEW + BUG, issue_number=20, preview=True,
+                                         tagged_lists={"v1.1.0": stable_list})
+check(status == 0 and mutations == [] and output == "kind=bug\n"
+      and "Manifest: reported 1.1.0" in summary and "[#16]" in summary
+      and all(f"[#{n}]" not in summary for n in (17, 18, 20, 21)),
+      "a passing bug preview uses the tagged manifest and lists only matching older bug reports")
+
+bad_body = stable_body.replace(LONG, "none")
+status, mutations, summary, output = run({"20": issue("Supported", bad_body, labels=("bug",))},
+                                         PREVIEW + BUG, issue_number=20, preview=True,
+                                         tagged_lists={"v1.1.0": stable_list})
+check(status == 0 and mutations == [] and "Post comment" in summary and "Add labels: incomplete" in summary
+      and "Close as not planned" in summary,
+      "a bug preview shows the comment, label and close without a write")
+
+bot_closed = issue("Supported", stable_body, labels=("bug", "incomplete"), state="CLOSED",
+                   timeline=[event("closed", BOT), labeled("incomplete", BOT)])
+status, mutations, summary, output = run({"20": bot_closed}, PREVIEW + BUG, issue_number=20, preview=True,
+                                         tagged_lists={"v1.1.0": stable_list})
+check(status == 0 and mutations == [] and "Reopen issue" in summary and "Remove label: incomplete" in summary,
+      "a corrected closed report previews reopening and removal of the bot label")
+
+unsupported = "### App\n\nUnknown Reader\n\n### Feature description\n\nAdd collection folders.\n"
+status, mutations, summary, output = run({"20": issue("Unknown Reader", unsupported, labels=("enhancement",))},
+                                         PREVIEW + ["Triage feature requests"], issue_number=20, preview=True)
+check(status == 0 and mutations == [] and output == "kind=feature\n"
+      and "Post comment" in summary and "Close as not planned" in summary,
+      "a feature preview reports a proposed close without a write")
+
+status, mutations, summary, output = run(preview_issues, PREVIEW, issue_number="0", preview=True)
+check(status != 0 and mutations == [] and summary == "", "preview rejects nonpositive issue numbers")
 
 print(f"\n{checks - failures}/{checks} passed")
 sys.exit(1 if failures else 0)
