@@ -78,7 +78,7 @@ private val addSodaExtraMovesPatch = resourcePatch {
 @Suppress("unused")
 val addExtraMovesPatch = bytecodePatch(
     name = "Add extra moves",
-    description = "Starts every level with five extra moves. Requires a standard install.",
+    description = "Starts every level with five extra moves.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireArm64StandardInstall)

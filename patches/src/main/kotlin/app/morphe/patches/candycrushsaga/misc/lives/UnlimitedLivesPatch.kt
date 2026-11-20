@@ -15,7 +15,7 @@ private const val BOOSTERS = "Lapp/hxreborn/extension/candycrushsaga/Boosters;"
 @Suppress("unused")
 val unlimitedLivesPatch = bytecodePatch(
     name = "Unlimited lives",
-    description = "Adds 24 hours of unlimited lives every time the game starts. Requires a standard install.",
+    description = "Adds 24 hours of unlimited lives every time the game starts.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireArm64StandardInstall)

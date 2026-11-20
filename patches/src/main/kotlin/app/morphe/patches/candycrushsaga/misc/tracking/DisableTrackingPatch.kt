@@ -18,7 +18,7 @@ val disableTrackingPatch = bytecodePatch(
     name = "Disable tracking",
     description = "Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, " +
         "and removes the advertising ID and install referrer permissions. " +
-        "Braze push and in-app messages stop too. Requires a standard install.",
+        "Braze push and in-app messages stop too.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
     availability(requireStandardInstall)

@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.requireStandardInstall
 val parkedAppForAndroidAutoPatch = resourcePatch(
     name = "Parked app for Android Auto",
     description = "Lists the game on the Android Auto car screen while parked. " +
-        "Requires Android 15 or newer and a standard install. " +
+        "Requires Android 15 or newer. " +
         "Android Auto needs Unknown sources turned on in its developer settings.",
 ) {
     compatibleWith(AppCompatibilities.CANDY_CRUSH_SAGA, AppCompatibilities.CANDY_CRUSH_SODA_SAGA)
