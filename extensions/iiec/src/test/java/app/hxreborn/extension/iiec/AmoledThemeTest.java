@@ -42,6 +42,7 @@ public final class AmoledThemeTest {
     private SharedPreferences preferences;
 
     @Before
+    @SuppressWarnings("deprecation")
     public void startFromACleanLooper() {
         final Application application = RuntimeEnvironment.getApplication();
         this.preferences = PreferenceManager.getDefaultSharedPreferences(application);

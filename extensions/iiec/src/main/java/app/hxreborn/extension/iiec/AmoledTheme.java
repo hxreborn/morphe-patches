@@ -23,6 +23,7 @@ package app.hxreborn.extension.iiec;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -50,6 +51,7 @@ public final class AmoledTheme {
 
     private static final List<Activity> APP_ACTIVITIES = new ArrayList<>();
 
+    @SuppressWarnings("FieldCanBeLocal")
     private static SharedPreferences.OnSharedPreferenceChangeListener editorThemeListener;
 
     private static boolean amoledSelected;
@@ -58,29 +60,28 @@ public final class AmoledTheme {
 
     }
 
+    @SuppressWarnings("deprecation")
     public static void attach(Application application) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(application);
         amoledSelected = isAmoledValue(preferences);
-        editorThemeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (!EDITOR_THEME_DARK_PREFERENCE_KEY.equals(key)) {
-                    return;
-                }
-
-                boolean selected = isAmoledValue(sharedPreferences);
-                if (selected == amoledSelected) {
-                    return;
-                }
-
-                amoledSelected = selected;
-                recreateAppActivities();
+        editorThemeListener = (sharedPreferences, key) -> {
+            if (!EDITOR_THEME_DARK_PREFERENCE_KEY.equals(key)) {
+                return;
             }
+
+            boolean selected = isAmoledValue(sharedPreferences);
+            if (selected == amoledSelected) {
+                return;
+            }
+
+            amoledSelected = selected;
+            recreateAppActivities();
         };
         preferences.registerOnSharedPreferenceChangeListener(editorThemeListener);
 
         application.registerActivityLifecycleCallbacks(new ActivityCallbacksAdapter() {
             @Override
+            @SuppressWarnings("NullableProblems")
             public void onActivityPreCreated(Activity activity, Bundle savedInstanceState) {
                 applyOverlay(activity);
             }
@@ -108,13 +109,10 @@ public final class AmoledTheme {
     }
 
     private static void recreateAppActivities() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                for (Activity activity : new ArrayList<>(APP_ACTIVITIES)) {
-                    if (!activity.isFinishing()) {
-                        activity.recreate();
-                    }
+        new Handler(Looper.getMainLooper()).post(() -> {
+            for (Activity activity : new ArrayList<>(APP_ACTIVITIES)) {
+                if (!activity.isFinishing()) {
+                    activity.recreate();
                 }
             }
         });
@@ -128,6 +126,7 @@ public final class AmoledTheme {
         }
     }
 
+    @SuppressLint("DiscouragedApi")
     private static boolean applyOverlay(Activity activity) {
         if (!isAppActivity(activity) || !isAmoledSelected(activity)) {
             return false;
@@ -143,6 +142,7 @@ public final class AmoledTheme {
         return true;
     }
 
+    @SuppressWarnings("resource")
     private static void reapplyWindowBackground(Activity activity) {
         TypedArray attributes = activity.getTheme()
             .obtainStyledAttributes(new int[] { android.R.attr.windowBackground });
@@ -169,6 +169,7 @@ public final class AmoledTheme {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     private static boolean isAmoledSelected(Activity activity) {
         if (!NightMode.isActive(activity)) {
             return false;
