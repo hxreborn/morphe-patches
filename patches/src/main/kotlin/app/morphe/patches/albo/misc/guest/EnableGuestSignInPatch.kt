@@ -28,24 +28,18 @@ private class BranchSite(
 private val GUEST_SIGN_IN_SITES = listOf(
     BranchSite(
         name = "guest button visibility check",
-        pattern = "30f05f3811f05f38300a508a1f825cea000000540000009404002036403f40f900f448f9504b40f9".hexToByteArray(),
-        mask = "ffffffffffffffffffffffffffffffff1f0000ff000000fc1f00f8ffffffffffffffffffffffffff".hexToByteArray(),
-        replacement = NOP,
-    ),
-    BranchSite(
-        name = "guest button availability check",
-        pattern = ("640340f900000094e10300aa62034091420040f90000009400002037" +
-            "a0835ff800002037e00316aa00000014").hexToByteArray(),
-        mask = ("ff03c0ff000000fcffffffffff03c0ffff03c0ff000000fc1f00f8ff" +
-            "ffffffff1f00f8ffffffffff000000fc").hexToByteArray(),
+        pattern = ("30f05f3811f05f38300a508a1f825cea400000545832229484042036a0835ff8" +
+            "60002037e00316aa").hexToByteArray(),
+        mask = ("ffffffffffffffffffffffffffffffff1f0000ff000000fc1f00f8ffff0fe0ff" +
+            "1f00f8ffffffffff").hexToByteArray(),
         replacement = NOP,
     ),
     BranchSite(
         name = "guest captcha token check",
-        pattern = ("a0035ff801f040b821801c8b62034091420040f90000009400002037" +
-            "a0035ff8013041b821801c8b00000094e10300aa").hexToByteArray(),
-        mask = ("ffffffffffffffffffffffffff03c0ffff03c0ff000000fc1f00f8ff" +
-            "ffffffffffffffffffffffff000000fcffffffff").hexToByteArray(),
+        pattern = ("a08357f801f040b821801c8b62374491423c47f908e9d39740012037" +
+            "a08357f8013041b821801c8b70010094e10300aa").hexToByteArray(),
+        mask = ("ff0fe0ffffffffffffffffffff0380ffff03c0ff000000fc1f00f8ff" +
+            "ff0fe0ffffffffffffffffff000000fcffffffff").hexToByteArray(),
         replacement = BRANCH_OVER_TOKEN_CHECK,
     ),
 )
