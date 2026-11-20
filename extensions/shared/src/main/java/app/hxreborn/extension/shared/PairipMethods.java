@@ -60,28 +60,18 @@ public final class PairipMethods {
             return Array.newInstance(forName(name.substring(0, name.length() - 2)), 0).getClass();
         }
 
-        switch (name) {
-            case "boolean":
-                return boolean.class;
-            case "byte":
-                return byte.class;
-            case "char":
-                return char.class;
-            case "double":
-                return double.class;
-            case "float":
-                return float.class;
-            case "int":
-                return int.class;
-            case "long":
-                return long.class;
-            case "short":
-                return short.class;
-            case "void":
-                return void.class;
-            default:
-                return Class.forName(name);
-        }
+        return switch (name) {
+            case "boolean" -> boolean.class;
+            case "byte" -> byte.class;
+            case "char" -> char.class;
+            case "double" -> double.class;
+            case "float" -> float.class;
+            case "int" -> int.class;
+            case "long" -> long.class;
+            case "short" -> short.class;
+            case "void" -> void.class;
+            default -> Class.forName(name);
+        };
     }
 
 }

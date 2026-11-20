@@ -38,6 +38,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("DataFlowIssue")
 public final class LiappPackageFilterTest {
 
     private static final String EDITOR_PACKAGE = "com.gmail.heagoo.apkeditor.modpro";
@@ -124,7 +125,7 @@ public final class LiappPackageFilterTest {
     }
 
     @Test
-    public void rethrowsTheSystemPackageManagersExceptionUnwrapped() throws Exception {
+    public void rethrowsTheSystemPackageManagersExceptionUnwrapped() {
         // given
         LiappPackageFilter.install(this.context);
 

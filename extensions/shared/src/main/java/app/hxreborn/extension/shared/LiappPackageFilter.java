@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -45,6 +46,7 @@ public final class LiappPackageFilter extends ProxyHandler {
         this.ownPackage = ownPackage;
     }
 
+    @SuppressLint({ "DiscouragedPrivateApi", "PrivateApi" })
     public static void install(Context context) {
         try {
             Class<?> activityThread = Class.forName("android.app.ActivityThread");
@@ -80,12 +82,10 @@ public final class LiappPackageFilter extends ProxyHandler {
         if (!(result instanceof Parcelable) || !calledFromLiapp()) {
             return result;
         }
-        if (result instanceof PackageInfo) {
-            PackageInfo packageInfo = (PackageInfo) result;
+        if (result instanceof PackageInfo packageInfo) {
             return isSystemOrOwnPackage(packageInfo.packageName, packageInfo.applicationInfo) ? result : null;
         }
-        if (result instanceof ApplicationInfo) {
-            ApplicationInfo applicationInfo = (ApplicationInfo) result;
+        if (result instanceof ApplicationInfo applicationInfo) {
             return isSystemOrOwnPackage(applicationInfo.packageName, applicationInfo) ? result : null;
         }
         return null;

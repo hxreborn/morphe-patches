@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+@SuppressWarnings("NullableProblems")
 public abstract class ActivityCallbacksAdapter implements Application.ActivityLifecycleCallbacks {
 
     @Override

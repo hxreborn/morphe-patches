@@ -41,6 +41,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
+
+@SuppressLint("NewApi")
 public final class LocalCdn implements AutoCloseable {
 
     private static final Pattern RANGE = Pattern.compile("bytes=(\\d+)-(\\d+)");
@@ -94,7 +97,7 @@ public final class LocalCdn implements AutoCloseable {
 
     public List<String> rangesOn(String path) {
         List<String> served = this.ranges.get(path);
-        return (served != null) ? new ArrayList<>(served) : Collections.<String>emptyList();
+        return (served != null) ? new ArrayList<>(served) : Collections.emptyList();
     }
 
     public int peakConcurrentRanges() {
@@ -127,6 +130,7 @@ public final class LocalCdn implements AutoCloseable {
         }
     }
 
+    @SuppressWarnings("UnnecessaryReturnStatement")
     private void serve(Socket client) {
         try (Socket connection = client) {
             BufferedReader in = new BufferedReader(
@@ -162,6 +166,7 @@ public final class LocalCdn implements AutoCloseable {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void answerWithRange(OutputStream out, String path, byte[] body, String range) throws IOException {
         Matcher matcher = (range != null) ? RANGE.matcher(range) : null;
         if (this.rangesIgnored || matcher == null || !matcher.matches()) {

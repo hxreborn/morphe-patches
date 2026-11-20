@@ -55,7 +55,7 @@ public final class InstalledCertificate {
         }
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "DataFlowIssue" })
     private static Signature[] signers(Context context) throws PackageManager.NameNotFoundException {
         PackageManager packageManager = context.getPackageManager();
         String packageName = context.getPackageName();

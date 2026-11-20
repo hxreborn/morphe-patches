@@ -42,12 +42,7 @@ public final class AdMobLoadFailure {
             return;
         }
 
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                deliver(callback);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> deliver(callback));
     }
 
     private static void deliver(Object callback) {
@@ -65,6 +60,7 @@ public final class AdMobLoadFailure {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static Class<?> sdkType(Class<?> type) {
         while (!type.getName().startsWith(ADS_PACKAGE)) {
             type = type.getSuperclass();

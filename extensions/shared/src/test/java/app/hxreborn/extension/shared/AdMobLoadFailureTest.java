@@ -34,6 +34,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("DataFlowIssue")
 public final class AdMobLoadFailureTest {
 
     private static final String TAG = "AdMobLoadFailure";

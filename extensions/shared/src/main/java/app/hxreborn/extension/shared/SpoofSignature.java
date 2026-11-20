@@ -16,6 +16,7 @@ package app.hxreborn.extension.shared;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -45,9 +46,9 @@ public class SpoofSignature extends Application {
 
         spoofedSignature = new Signature(Base64.decode(certificate, Base64.DEFAULT));
         try {
-            spoofPackageInfoCreator(packageName, spoofedSignature);
+            spoofPackageInfoCreator(packageName);
         } catch (ReflectiveOperationException ex) {
-            spoofPackageManagerBinder(packageName, spoofedSignature);
+            spoofPackageManagerBinder(packageName);
         }
     }
 
@@ -63,15 +64,14 @@ public class SpoofSignature extends Application {
         spoofCachedPackageInfo(packageManager, base.getPackageName());
     }
 
-    private static void spoofPackageInfoCreator(String packageName, Signature spoofed)
-            throws ReflectiveOperationException {
+    private static void spoofPackageInfoCreator(String packageName) throws ReflectiveOperationException {
         Parcelable.Creator<PackageInfo> original = PackageInfo.CREATOR;
 
         Parcelable.Creator<PackageInfo> creator = new Parcelable.Creator<>() {
             @Override
             public PackageInfo createFromParcel(Parcel source) {
                 PackageInfo packageInfo = original.createFromParcel(source);
-                spoofSignatures(packageInfo, packageName, spoofed);
+                spoofSignatures(packageInfo, packageName, spoofedSignature);
 
                 return packageInfo;
             }
@@ -105,12 +105,13 @@ public class SpoofSignature extends Application {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static void spoofPackageManagerBinder(String packageName, Signature spoofed) {
+    @SuppressWarnings({ "unchecked", "DataFlowIssue" })
+    @SuppressLint({ "DiscouragedPrivateApi", "PrivateApi" })
+    private static void spoofPackageManagerBinder(String packageName) {
         try {
             Class<?> activityThread = Class.forName("android.app.ActivityThread");
             IInterface original = (IInterface) activityThread.getDeclaredMethod("getPackageManager").invoke(null);
-            PackageManagerBinder binder = new PackageManagerBinder(original.asBinder(), packageName, spoofed);
+            PackageManagerBinder binder = new PackageManagerBinder(original.asBinder(), packageName, spoofedSignature);
             Object packageManager = Class.forName("android.content.pm.IPackageManager$Stub")
                 .getDeclaredMethod("asInterface", IBinder.class)
                 .invoke(null, binder);
@@ -130,6 +131,7 @@ public class SpoofSignature extends Application {
         }
     }
 
+    @SuppressLint({ "DiscouragedPrivateApi", "PrivateApi" })
     private static void replacePackageManagerProxy(PackageManager packageManager) {
         try {
             Field binderField = packageManager.getClass().getDeclaredField("mPM");
@@ -177,7 +179,6 @@ public class SpoofSignature extends Application {
             this.spoofed = spoofed;
         }
 
-        @SuppressWarnings("deprecation")
         void learnPackageInfoTransactionCode(PackageManager packageManager) {
             this.learningThread = Thread.currentThread();
             try {
@@ -195,6 +196,7 @@ public class SpoofSignature extends Application {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         protected boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
             if (this.packageInfoTransactionCode < 0 && Thread.currentThread() == this.learningThread) {
                 this.packageInfoTransactionCode = code;

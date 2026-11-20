@@ -22,6 +22,7 @@ package app.hxreborn.extension.shared;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -77,6 +78,7 @@ public final class GmsCoreSignIn {
         return Class.forName("<result-class>");
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static void succeed(Object callback, String idToken, String accountName) {
         try {
             JSONObject claims = decodeClaims(idToken);
@@ -102,6 +104,7 @@ public final class GmsCoreSignIn {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static Object newCredential(Class<?> credentialClass, Map<String, String> fields) throws Exception {
         Constructor<?> constructor = stringConstructor(credentialClass);
         int parameterCount = constructor.getParameterTypes().length;
@@ -184,7 +187,7 @@ public final class GmsCoreSignIn {
                 return new JSONObject();
             }
             byte[] payload = Base64.decode(parts[1], Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
-            return new JSONObject(new String(payload, "UTF-8"));
+            return new JSONObject(new String(payload, StandardCharsets.UTF_8));
         } catch (Throwable throwable) {
             return new JSONObject();
         }

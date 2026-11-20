@@ -22,6 +22,7 @@ package app.hxreborn.extension.shared;
 
 import java.nio.charset.StandardCharsets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
@@ -48,6 +49,7 @@ public final class AppCheckTokenSeed {
     private AppCheckTokenSeed() {
     }
 
+    @SuppressLint("ApplySharedPref")
     public static void seed(Context context) {
         try {
             String token = token();
@@ -74,6 +76,7 @@ public final class AppCheckTokenSeed {
         return "<app-check-token>";
     }
 
+    @SuppressLint("DiscouragedApi")
     private static SharedPreferences store(Context context) {
         int appIdResource = context.getResources().getIdentifier("google_app_id", "string", context.getPackageName());
         if (appIdResource == 0) {

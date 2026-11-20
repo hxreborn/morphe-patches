@@ -40,7 +40,6 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,6 +56,7 @@ import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowAccountManager;
 import org.robolectric.shadows.ShadowLog;
 
+@SuppressWarnings({ "resource", "unused", "NullableProblems", "DataFlowIssue" })
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = GmsCoreSignInTest.CapturingAccountManager.class)
 public final class GmsCoreSignInTest {
@@ -73,10 +73,10 @@ public final class GmsCoreSignInTest {
         return CapturingAccountManager.requests.get(0);
     }
 
-    private static Bundle bundleWith(String token, String accountName) {
+    private static Bundle bundleWith(String token) {
         final Bundle bundle = new Bundle();
         bundle.putString(AccountManager.KEY_AUTHTOKEN, token);
-        bundle.putString(AccountManager.KEY_ACCOUNT_NAME, accountName);
+        bundle.putString(AccountManager.KEY_ACCOUNT_NAME, "a@x");
         return bundle;
     }
 
@@ -178,7 +178,7 @@ public final class GmsCoreSignInTest {
         final TokenRequest request = requestToken();
 
         // when
-        request.callback.run(resultOf(bundleWith("header." + claims("{\"email\":\"a@x\"}") + ".signature", "a@x")));
+        request.callback.run(resultOf(bundleWith("header." + claims("{\"email\":\"a@x\"}") + ".signature")));
 
         // then
         final List<ShadowLog.LogItem> logs = ShadowLog.getLogsForTag("GmsCoreSignIn");
@@ -190,7 +190,7 @@ public final class GmsCoreSignInTest {
     @Test
     public void reportsAMissingTokenAsNoCredential() {
         // when
-        requestToken().callback.run(resultOf(bundleWith(null, "a@x")));
+        requestToken().callback.run(resultOf(bundleWith(null)));
 
         // then
         assertDeliveryFailed();
@@ -426,12 +426,12 @@ public final class GmsCoreSignInTest {
         }
 
         @Override
-        public Bundle getResult() throws OperationCanceledException, AuthenticatorException {
+        public Bundle getResult() throws AuthenticatorException {
             throw new AuthenticatorException("no authenticator");
         }
 
         @Override
-        public Bundle getResult(long timeout, TimeUnit unit) throws OperationCanceledException, AuthenticatorException {
+        public Bundle getResult(long timeout, TimeUnit unit) throws AuthenticatorException {
             throw new AuthenticatorException("no authenticator");
         }
 

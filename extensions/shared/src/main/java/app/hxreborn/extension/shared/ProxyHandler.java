@@ -28,16 +28,12 @@ public abstract class ProxyHandler implements InvocationHandler {
     @Override
     public final Object invoke(Object proxy, Method method, Object[] args) {
         final String name = method.getName();
-        if ("toString".equals(name)) {
-            return describe();
-        }
-        if ("hashCode".equals(name)) {
-            return System.identityHashCode(proxy);
-        }
-        if ("equals".equals(name)) {
-            return proxy == args[0];
-        }
-        return handle(method, args);
+        return switch (name) {
+            case "toString" -> describe();
+            case "hashCode" -> System.identityHashCode(proxy);
+            case "equals" -> proxy == args[0];
+            default -> handle(method, args);
+        };
     }
 
     protected String describe() {
