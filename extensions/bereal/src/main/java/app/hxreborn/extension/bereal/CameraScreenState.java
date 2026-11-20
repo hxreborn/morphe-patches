@@ -59,13 +59,17 @@ final class CameraScreenState {
         }
         try {
             final Object lifecycle = owner.getClass().getMethod("getLifecycle").invoke(owner);
+            if (lifecycle == null) {
+                return null;
+            }
             for (Method method : lifecycle.getClass().getMethods()) {
                 if (method.getParameterTypes().length == 0
                         && method.getReturnType().getName().equals(LIFECYCLE_STATE)) {
-                    return ((Enum<?>) method.invoke(lifecycle)).name();
+                    final Enum<?> state = (Enum<?>) method.invoke(lifecycle);
+                    return (state != null) ? state.name() : null;
                 }
             }
-        } catch (ReflectiveOperationException | ClassCastException | NullPointerException ex) {
+        } catch (ReflectiveOperationException | ClassCastException ex) {
             return null;
         }
         return null;
@@ -75,8 +79,7 @@ final class CameraScreenState {
         if (view.getClass().getName().startsWith(VIEWFINDER_PACKAGE)) {
             return view.isShown() && view.getGlobalVisibleRect(new Rect());
         }
-        if (view instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int i = 0; i < group.getChildCount(); i++) {
                 if (hasVisibleViewfinder(group.getChildAt(i))) {
                     return true;

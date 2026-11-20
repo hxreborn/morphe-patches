@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Outline;
@@ -46,6 +47,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("SetTextI18n")
 final class LocationRows {
 
     private static final String TAG = "LocationRows";
@@ -121,7 +123,7 @@ final class LocationRows {
 
     private void placeSearch() {
         final FrameLayout frame = new FrameLayout(this.activity);
-        this.place = field("Place or address", InputType.TYPE_CLASS_TEXT);
+        this.place = field();
         this.place.setText(PatchSettings.LOCATION_LABEL.get());
         this.place.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         this.place.setPadding(this.style.dp(16), this.style.dp(14), this.style.dp(56), this.style.dp(14));
@@ -216,6 +218,7 @@ final class LocationRows {
         return button;
     }
 
+    @SuppressWarnings("deprecation")
     private void findPlace(String query) {
         final String name = query.trim();
         final int request = ++this.placeRequest;
@@ -262,10 +265,10 @@ final class LocationRows {
         return (line != null && !line.isEmpty()) ? line : fallback;
     }
 
-    private EditText field(String hint, int inputType) {
+    private EditText field() {
         final EditText field = new EditText(this.activity);
-        field.setHint(hint);
-        field.setInputType(inputType);
+        field.setHint("Place or address");
+        field.setInputType(InputType.TYPE_CLASS_TEXT);
         field.setSingleLine(true);
         field.setTextColor(SettingsStyle.PRIMARY_TEXT);
         field.setHintTextColor(SettingsStyle.SECONDARY_TEXT);

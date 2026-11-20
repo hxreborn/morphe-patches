@@ -144,7 +144,6 @@ final class BackupRun {
                 return;
             }
         }
-        return;
     }
 
     private MemorySaver.Result save(final MemoryPost post) {

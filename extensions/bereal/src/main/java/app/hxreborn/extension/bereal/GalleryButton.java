@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +61,7 @@ import android.widget.Toast;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("StaticFieldLeak")
 final class GalleryButton {
 
     private static final String TAG = "GalleryButton";
@@ -130,13 +132,9 @@ final class GalleryButton {
 
     private boolean removed;
 
-    private final Runnable hostStateCheck = new Runnable() {
-        @Override
-        public void run() {
-            GalleryButton.this.checkHostState();
-        }
-    };
+    private final Runnable hostStateCheck = this::checkHostState;
 
+    @SuppressWarnings("deprecation")
     private GalleryButton(Activity activity, ViewGroup content, Object lifecycleOwner, Object cameraViewModel) {
         this.activity = activity;
         this.content = content;
@@ -292,6 +290,7 @@ final class GalleryButton {
         this.button.setVisibility(capturing ? View.VISIBLE : View.GONE);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void dropMissingFiles() {
         boolean changed = false;
         final Iterator<Uri> iterator = this.staged.iterator();
@@ -399,6 +398,7 @@ final class GalleryButton {
         this.activity.startActivity(new Intent(this.activity, GalleryPickerActivity.class));
     }
 
+    @SuppressWarnings("NonAtomicOperationOnVolatileField")
     private void sync() {
         final Uri back = this.selection.back();
         final Uri front = this.selection.front();
@@ -421,6 +421,7 @@ final class GalleryButton {
         });
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void write(Context context, Uri photo, boolean front) {
         final File target = GalleryPhotos.file(context, front);
         final int slot = front ? 1 : 0;
@@ -461,7 +462,7 @@ final class GalleryButton {
         } else {
             this.badge.setText(this.selection.isComplete() ? "✓" : "1");
             this.badge.setTextColor(Color.BLACK);
-            this.badge.setBackground(pill(Color.WHITE, BADGE_DP / 2f));
+            this.badge.setBackground(pill());
             this.badge.setVisibility(View.VISIBLE);
         }
         this.album.refresh();
@@ -480,6 +481,7 @@ final class GalleryButton {
         return statusBarInset + dp(TITLE_ROW_CENTER_DP) - dp(BUTTON_DP) / 2;
     }
 
+    @SuppressLint({ "DiscouragedApi", "InternalInsetResource" })
     private int statusBarHeight() {
         final Resources resources = this.activity.getResources();
         final int id = resources.getIdentifier("status_bar_height", "dimen", "android");
@@ -496,10 +498,10 @@ final class GalleryButton {
         return new RippleDrawable(ColorStateList.valueOf(RIPPLE), fill, mask);
     }
 
-    private GradientDrawable pill(int color, float radiusDp) {
+    private GradientDrawable pill() {
         final GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(color);
-        drawable.setCornerRadius(Dimensions.dpExact(this.activity, radiusDp));
+        drawable.setColor(Color.WHITE);
+        drawable.setCornerRadius(Dimensions.dpExact(this.activity, BADGE_DP / 2f));
         return drawable;
     }
 

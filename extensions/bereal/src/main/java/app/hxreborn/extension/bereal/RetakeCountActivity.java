@@ -105,7 +105,7 @@ public final class RetakeCountActivity extends Activity {
         final LinearLayout buttons = new LinearLayout(this);
         buttons.setOrientation(LinearLayout.VERTICAL);
         buttons.setPadding(0, dp(20), 0, 0);
-        this.applyButton = button("Apply", true, (view) -> finishWith(Integer.valueOf(this.count)));
+        this.applyButton = button("Apply", true, (view) -> finishWith(this.count));
         buttons.addView(this.applyButton, buttonParams(0));
         buttons.addView(button("Use real count", false, (view) -> finishWith(null)), buttonParams(dp(8)));
         card.addView(buttons);
@@ -119,6 +119,7 @@ public final class RetakeCountActivity extends Activity {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_COUNT, this.count);

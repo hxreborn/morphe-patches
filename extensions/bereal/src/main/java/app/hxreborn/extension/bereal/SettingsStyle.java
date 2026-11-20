@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.bereal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -131,11 +132,13 @@ final class SettingsStyle {
         return new RippleDrawable(ColorStateList.valueOf(RIPPLE), rounded(surface, radiusDp), mask);
     }
 
+    @SuppressLint("DiscouragedApi")
     static Drawable hostIcon(Context context, String name) {
         final int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         return (id != 0) ? hostIcon(context, id) : null;
     }
 
+    @SuppressWarnings("deprecation")
     static Drawable hostIcon(Context context, int id) {
         try {
             final Drawable icon = context.getDrawable(id);

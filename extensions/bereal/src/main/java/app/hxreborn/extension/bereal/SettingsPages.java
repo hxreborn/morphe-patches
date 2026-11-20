@@ -21,6 +21,7 @@
 package app.hxreborn.extension.bereal;
 
 import android.animation.LayoutTransition;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
@@ -113,6 +114,7 @@ final class SettingsPages {
     }
 
     @TargetApi(Build.VERSION_CODES.S_V2)
+    @SuppressLint("UseRequiresApi")
     private void addRow(LinearLayout card, PatchGroup.Row spec) {
         switch (spec.kind) {
             case LOCATION:

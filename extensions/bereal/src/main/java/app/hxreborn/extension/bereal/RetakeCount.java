@@ -57,6 +57,7 @@ public final class RetakeCount {
         PatchContext.open(RetakeCountActivity.class);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static int retakeCount(int original) {
         final CountDownLatch latch;
         synchronized (LOCK) {

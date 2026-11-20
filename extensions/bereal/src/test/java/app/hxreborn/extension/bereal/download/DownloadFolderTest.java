@@ -43,6 +43,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("NullableProblems")
 public final class DownloadFolderTest {
 
     private static final String DOCUMENTS = "com.android.externalstorage.documents";

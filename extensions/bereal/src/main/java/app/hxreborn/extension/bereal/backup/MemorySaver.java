@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -48,6 +49,7 @@ import org.json.JSONObject;
 import app.hxreborn.extension.bereal.download.DownloadFolder;
 
 @TargetApi(Build.VERSION_CODES.S_V2)
+@SuppressLint({ "UseRequiresApi", "ObsoleteSdkInt", "ExifInterface" })
 public final class MemorySaver {
 
     private static final String TAG = "MemorySaver";
@@ -196,6 +198,7 @@ public final class MemorySaver {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private byte[] withExif(final MemoryPost post, final long time, final byte[] original, final String ext) {
         File temp = null;
         try {

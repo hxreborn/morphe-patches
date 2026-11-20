@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 import android.content.Context;
 import app.morphe.extension.shared.settings.BooleanSetting;
 
+@SuppressWarnings("SameParameterValue")
 final class PatchGroup {
 
     final String title;

@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import app.hxreborn.extension.bereal.PatchSettings;
@@ -38,6 +39,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("ConstantValue")
 public final class FriendsOfFriendsTabTest {
 
     @Before
@@ -53,7 +55,7 @@ public final class FriendsOfFriendsTabTest {
     @Test
     public void addsTheTabWhenNotRemoved() {
         // given
-        List<Object> tabs = givenTabs("friends");
+        List<Object> tabs = givenTabs();
 
         // when
         boolean added = FriendsOfFriendsTab.addUnlessRemoved(tabs, "fof", false);
@@ -66,20 +68,20 @@ public final class FriendsOfFriendsTabTest {
     @Test
     public void skipsTheTabWhenRemoved() {
         // given
-        List<Object> tabs = givenTabs("friends");
+        List<Object> tabs = givenTabs();
 
         // when
         boolean added = FriendsOfFriendsTab.addUnlessRemoved(tabs, "fof", true);
 
         // then
         assertFalse(added);
-        assertEquals(Arrays.asList("friends"), tabs);
+        assertEquals(Collections.singletonList("friends"), tabs);
     }
 
     @Test
     public void addsTheTabWhenTheStoredSettingIsOff() {
         // given
-        List<Object> tabs = givenTabs("friends");
+        List<Object> tabs = givenTabs();
         PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB.save(false);
 
         // when
@@ -93,7 +95,7 @@ public final class FriendsOfFriendsTabTest {
     @Test
     public void skipsTheTabWhenTheStoredSettingIsOn() {
         // given
-        List<Object> tabs = givenTabs("friends");
+        List<Object> tabs = givenTabs();
         PatchSettings.REMOVE_FRIENDS_OF_FRIENDS_TAB.save(true);
 
         // when
@@ -101,11 +103,11 @@ public final class FriendsOfFriendsTabTest {
 
         // then
         assertFalse(added);
-        assertEquals(Arrays.asList("friends"), tabs);
+        assertEquals(Collections.singletonList("friends"), tabs);
     }
 
-    private static List<Object> givenTabs(Object... tabs) {
-        return new ArrayList<>(Arrays.asList(tabs));
+    private static List<Object> givenTabs() {
+        return new ArrayList<>(Collections.singletonList("friends"));
     }
 
 }

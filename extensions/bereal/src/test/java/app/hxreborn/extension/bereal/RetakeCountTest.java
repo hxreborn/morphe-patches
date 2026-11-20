@@ -60,7 +60,7 @@ public final class RetakeCountTest {
     @Test
     public void sendsTheChosenCount() {
         RetakeCount.sendStarted(2);
-        RetakeCount.choose(Integer.valueOf(7));
+        RetakeCount.choose(7);
 
         assertEquals(7, RetakeCount.retakeCount(2));
     }
@@ -68,7 +68,7 @@ public final class RetakeCountTest {
     @Test
     public void asksAgainForTheNextPost() {
         RetakeCount.sendStarted(2);
-        RetakeCount.choose(Integer.valueOf(7));
+        RetakeCount.choose(7);
         RetakeCount.retakeCount(2);
 
         assertEquals(3, RetakeCount.retakeCount(3));
@@ -85,7 +85,7 @@ public final class RetakeCountTest {
     @Test
     public void sendsZeroForANegativeChoice() {
         RetakeCount.sendStarted(2);
-        RetakeCount.choose(Integer.valueOf(-3));
+        RetakeCount.choose(-3);
 
         assertEquals(0, RetakeCount.retakeCount(2));
     }
@@ -94,12 +94,13 @@ public final class RetakeCountTest {
     public void sendsTheRealCountWhenTheSettingIsOff() {
         PatchSettings.CUSTOM_RETAKE_COUNT.save(false);
         RetakeCount.sendStarted(2);
-        RetakeCount.choose(Integer.valueOf(7));
+        RetakeCount.choose(7);
 
         assertEquals(2, RetakeCount.retakeCount(2));
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void opensThePromptWhenAPostStarts() {
         RetakeCount.sendStarted(5);
 
@@ -125,7 +126,7 @@ public final class RetakeCountTest {
         final Thread upload = new Thread(() -> sent.set(RetakeCount.retakeCount(2)));
         upload.start();
 
-        RetakeCount.choose(Integer.valueOf(9));
+        RetakeCount.choose(9);
         upload.join(5000);
 
         assertEquals(9, sent.get());

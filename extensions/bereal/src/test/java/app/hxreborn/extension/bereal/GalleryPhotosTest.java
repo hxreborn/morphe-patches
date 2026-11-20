@@ -37,6 +37,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class GalleryPhotosTest {
 
     private Context context;
