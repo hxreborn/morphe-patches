@@ -20,11 +20,18 @@ plugins {
     id("app.morphe.patches") version "2.1.1"
 }
 
-include(":extension-tests", ":extension-test-fixtures")
+val extensionsDirectory = rootDir.resolve("extensions")
+val payloadBuildFile = rootDir.resolve("config/extension/payload.gradle.kts")
 
-rootDir.resolve("extensions").walkTopDown()
-    .onEnter { it.name != "build" && it.name != "node_modules" }
-    .filter { it.name == "library.gradle.kts" }
-    .forEach { script ->
-        include(":extensions:" + script.parentFile.relativeTo(rootDir.resolve("extensions")).invariantSeparatorsPath.replace('/', ':'))
+extensionsDirectory.listFiles().orEmpty().filter { it.isDirectory }.sortedBy { it.name }.forEach { module ->
+    if (module.resolve("library.gradle.kts").isFile) {
+        include(":extensions:${module.name}")
     }
+    module.listFiles().orEmpty().filter {
+        it.resolve("classes.list").isFile || it.resolve("payload-options.gradle.kts").isFile
+    }.sortedBy { it.name }.forEach { group ->
+        val path = ":extensions:${module.name}:${group.name}"
+        include(path)
+        project(path).buildFileName = payloadBuildFile.relativeTo(group).invariantSeparatorsPath
+    }
+}

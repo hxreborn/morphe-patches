@@ -49,13 +49,21 @@ abstract class GenerateWebAssets : DefaultTask() {
 
 val catalog = libs
 
-val extensionProjects = subprojects.filter { it.path.startsWith(":extensions:") || it.path == ":extension-tests" }
+fun Project.payloadClassesTask() = extra.properties["payloadClassesTask"] as String? ?: "compileReleaseJavaWithJavac"
+
+@Suppress("UNCHECKED_CAST")
+fun Project.payloadClassesDirectory() = extra.properties["payloadClassesDir"] as Provider<Directory>?
+    ?: provider { tasks.named(payloadClassesTask(), JavaCompile::class.java).get().destinationDirectory.get() }
+
+val extensionProjects = subprojects.filter { it.path.startsWith(":extensions:") }
+val extensionTestProjects = extensionProjects.filter { module ->
+    listOf("src/test/java", "src/test/kotlin").any { module.file(it).isDirectory }
+}
 
 extensionProjects.filter { it.layout.projectDirectory.file("library.gradle.kts").asFile.isFile }.forEach { library ->
     library.apply(plugin = "com.android.library")
     library.extensions.configure<LibraryExtension> {
-        namespace = "app.hxreborn.extension." + library.projectDir.relativeTo(rootDir.resolve("extensions"))
-            .invariantSeparatorsPath.removeSuffix("/library").replace("/", "").replace("-", "")
+        namespace = "app.hxreborn.extension." + library.name.replace("-", "")
         compileSdk = 36
         defaultConfig.minSdk = 23
         compileOptions {
@@ -101,20 +109,15 @@ configure(extensionProjects) {
 
             if (androidPlugin == "com.android.library") {
                 val libraryDirectory = layout.projectDirectory.asFile
-                val groupsDirectory = if (libraryDirectory.listFiles().orEmpty().any { it.resolve("classes.list").isFile }) {
-                    libraryDirectory
-                } else {
-                    libraryDirectory.parentFile
-                }
-                val lists = groupsDirectory.listFiles().orEmpty().map { it.resolve("classes.list") }.filter { it.isFile }
+                val lists = libraryDirectory.listFiles().orEmpty().map { it.resolve("classes.list") }.filter { it.isFile }
                 if (lists.isNotEmpty()) {
                     val unusedList = libraryDirectory.resolve("unused.list")
-                    val compileTask = extra.properties["payloadClassesTask"] as String? ?: "compileReleaseJavaWithJavac"
-                    val compiledClasses = (extra.properties["payloadClassesDir"] as Provider<Directory>?)
-                        ?: provider { tasks.named(compileTask, JavaCompile::class.java).get().destinationDirectory.get() }
+                    val compiledClasses = payloadClassesDirectory()
+                    val checksUnlistedClasses = !extra.has("payloadClassesTask")
                     tasks.register("verifyPayloadClasses") {
                         description = "Fails when a payload class list names a missing class or a class sits in no list or in two"
-                        dependsOn(compileTask)
+                        dependsOn(payloadClassesTask())
+                        inputs.dir(compiledClasses).withPathSensitivity(PathSensitivity.RELATIVE)
                         inputs.files(lists)
                         inputs.files(unusedList)
                         doLast {
@@ -127,12 +130,14 @@ configure(extensionProjects) {
                             }
                             val missing = owners.keys.filter { it !in compiled }
                             val twice = owners.filterValues { it.size > 1 }
-                            val unused = if (unusedList.isFile) unusedList.readLines().filter { it.isNotBlank() }.toSet() else null
-                            val unlisted = if (unused == null) emptyList() else compiled.filter { it !in owners && it !in unused }
-                            val unusedAndListed = unused.orEmpty().filter { it in owners }
-                            check(missing.isEmpty() && twice.isEmpty() && unlisted.isEmpty() && unusedAndListed.isEmpty()) {
+                            val unused = if (unusedList.isFile) unusedList.readLines().filter { it.isNotBlank() }.toSet() else emptySet()
+                            val unlisted = if (checksUnlistedClasses) compiled - owners.keys - unused else emptySet()
+                            val unusedAndListed = unused.intersect(owners.keys)
+                            val missingUnused = unused - compiled
+                            check(missing.isEmpty() && twice.isEmpty() && unlisted.isEmpty() && unusedAndListed.isEmpty() && missingUnused.isEmpty()) {
                                 "Payload class lists of ${project.path} disagree with the compiled classes: " +
-                                    "listed but absent $missing, listed twice $twice, in no list $unlisted, listed and unused $unusedAndListed"
+                                    "listed but absent $missing, listed twice $twice, in no list $unlisted, " +
+                                    "listed and unused $unusedAndListed, absent unused $missingUnused"
                             }
                         }
                     }
@@ -141,20 +146,14 @@ configure(extensionProjects) {
 
             val classList = layout.projectDirectory.file("classes.list").asFile
             if (androidPlugin == "com.android.application" && classList.isFile) {
-                val parentProject = checkNotNull(parent)
-                val library = if (parentProject.file("library.gradle.kts").isFile) {
-                    parentProject
-                } else {
-                    rootProject.project("${parentProject.path}:library")
-                }
+                val library = checkNotNull(parent)
                 val patterns = classList.readLines().filter { it.isNotBlank() }.map { "$it.class" }
-                val classesTask = library.extra.properties["payloadClassesTask"] as String? ?: "compileReleaseJavaWithJavac"
-                val classesDirectory = library.extra.properties["payloadClassesDir"] as Provider<Directory>?
-                    ?: provider { library.tasks.named(classesTask, JavaCompile::class.java).get().destinationDirectory.get() }
+                check(patterns.isNotEmpty()) { "No classes listed in $classList" }
+                val classesDirectory = library.payloadClassesDirectory()
                 val payloadClasses = tasks.register<Jar>("payloadClasses") {
                     archiveFileName.set("payload-classes.jar")
                     destinationDirectory.set(layout.buildDirectory.dir("payload"))
-                    dependsOn("${library.path}:$classesTask")
+                    dependsOn("${library.path}:verifyPayloadClasses")
                     from(classesDirectory) {
                         include(patterns)
                     }
@@ -165,18 +164,14 @@ configure(extensionProjects) {
                 }
             }
 
-            val sharedManifest = rootProject.file("config/extension/AndroidManifest.xml")
-            val ownsManifest = layout.projectDirectory.file("src/main/AndroidManifest.xml").asFile.exists()
-
             if (androidPlugin == "com.android.application") {
                 extensions.configure<ApplicationExtension> {
                     testOptions.unitTests.isIncludeAndroidResources = true
-                    if (!ownsManifest) sourceSets.getByName("main").manifest.srcFile(sharedManifest)
+                    sourceSets.getByName("main").manifest.srcFile(rootProject.file("config/extension/AndroidManifest.xml"))
                 }
             } else {
                 extensions.configure<LibraryExtension> {
                     testOptions.unitTests.isIncludeAndroidResources = true
-                    if (!ownsManifest) sourceSets.getByName("main").manifest.srcFile(sharedManifest)
                 }
             }
 
@@ -198,13 +193,14 @@ configure(extensionProjects) {
         }
     }
 
-    if (layout.projectDirectory.dir("src/main/java").asFile.isDirectory) {
+    val checkstyleSources = extra.properties["extensionCheckstyleSources"] as? FileCollection ?: files("src/main/java")
+    if (layout.projectDirectory.dir("src/main/java").asFile.isDirectory && !checkstyleSources.isEmpty) {
         apply(plugin = "checkstyle")
         dependencies {
             add("checkstyle", catalog.spring.javaformat.checkstyle)
         }
         val checkstyle = tasks.register<Checkstyle>("checkstyle") {
-            source("src/main/java")
+            source(checkstyleSources)
             classpath = files()
         }
         tasks.matching { it.name == "check" }.configureEach {
@@ -216,7 +212,7 @@ configure(extensionProjects) {
 tasks.register("testExtensions") {
     description = "Runs the unit tests of every extension module"
     dependsOn(
-        extensionProjects.map { module ->
+        extensionTestProjects.map { module ->
             module.tasks.matching { it.name.startsWith("test") && it.name.endsWith("UnitTest") }
         },
     )

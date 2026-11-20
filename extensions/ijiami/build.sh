@@ -31,7 +31,7 @@ trap 'rm -rf "$work"' EXIT
 
 mkdir -p "$resources" "$fixtures"
 
-javac -Xlint:all -source 8 -target 8 -bootclasspath "$platform" -d "$work/boot" "$here"/src/hx/*.java
+javac -Xlint:all -source 8 -target 8 -bootclasspath "$platform" -d "$work/boot" "$here"/src/main/java/hx/*.java
 "$build_tools/d8" --min-api 28 --lib "$platform" --output "$work/boot" "$work"/boot/hx/*.class
 cp "$work/boot/classes.dex" "$resources/boot.dex"
 

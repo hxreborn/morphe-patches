@@ -112,18 +112,14 @@ internal class ExtensionPayloadsTest {
         assertEquals(emptyList(), definitions)
     }
 
-    private val exportedResource = Regex("""extension\s*\{\s*name\s*=\s*"(extensions/hxreborn/[\w/-]+\.mpe)"""")
-
     private val moduleResources: Map<String, String> by lazy {
-        File("../extensions").walkTopDown()
-            .onEnter { it.name != "build" && it.name != "node_modules" }
-            .filter { it.isFile && it.name == "build.gradle.kts" }
-            .mapNotNull { script ->
-                exportedResource.find(script.readText())?.let {
-                    script.parentFile.relativeTo(File("../extensions")).invariantSeparatorsPath to it.groupValues[1]
-                }
+        File("../extensions").listFiles().orEmpty().filter { it.isDirectory }.flatMap { module ->
+            module.listFiles().orEmpty().filter {
+                it.resolve("classes.list").isFile || it.resolve("payload-options.gradle.kts").isFile
+            }.map { group ->
+                "${module.name}/${group.name}" to "extensions/hxreborn/${module.name}-${group.name}.mpe"
             }
-            .toMap()
+        }.toMap()
     }
 
     @Test

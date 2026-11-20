@@ -110,8 +110,7 @@ tasks {
         inputs.files(unstrippedResourcesDirectory.map { directory -> fileTree(directory) { include("**/*.mpe") } })
             .withPropertyName("payloads")
         inputs.files(fileTree(rootProject.file("extensions")) {
-            include("**/removed.list", "**/build.gradle.kts")
-            exclude("**/build/**")
+            include("*/*/removed.list")
         }).withPropertyName("removedLists")
         outputs.dir(strippedPayloadsDirectory).withPropertyName("strippedPayloads")
         doFirst {

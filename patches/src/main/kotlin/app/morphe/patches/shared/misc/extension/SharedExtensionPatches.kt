@@ -38,9 +38,9 @@ internal val sharedProxyHandlerExtensionPatch = bytecodePatch {
     extendWith("extensions/hxreborn/shared-proxy-handler.mpe")
 }
 
-internal val sharedUnlockPremium2ExtensionPatch = bytecodePatch {
+internal val sharedLiappPackageFilterExtensionPatch = bytecodePatch {
     dependsOn(sharedProxyHandlerExtensionPatch)
-    extendWith("extensions/hxreborn/shared-unlock-premium-2.mpe")
+    extendWith("extensions/hxreborn/shared-liapp-package-filter.mpe")
 }
 
 internal val sharedNightModeExtensionPatch = bytecodePatch {

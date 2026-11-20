@@ -8,12 +8,12 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
-import app.morphe.patches.shared.misc.extension.sharedUnlockPremium2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.sharedLiappPackageFilterExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/shared/LiappPackageFilter;"
 
 val liappPackageFilterPatch = bytecodePatch {
-    dependsOn(sharedProxyHandlerExtensionPatch, sharedUnlockPremium2ExtensionPatch)
+    dependsOn(sharedProxyHandlerExtensionPatch, sharedLiappPackageFilterExtensionPatch)
     execute {
         LiappInitFingerprint.matchSingle().method.addInstruction(
             0,

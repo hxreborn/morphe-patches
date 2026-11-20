@@ -36,7 +36,7 @@ META-INF/third-party/licenses/):
 - Material Components for Android, https://github.com/material-components/material-components-android,
   Copyright 2024 The Android Open Source Project. The loading indicator animation and the MaterialShapes
   outlines, morphed with androidx.graphics:graphics-shapes 1.0.1, in
-  extensions/shared/library/src/main/java/app/hxreborn/extension/shared/LoadingIndicatorView.java and
+  extensions/proton/src/main/java/app/hxreborn/extension/shared/LoadingIndicatorView.java and
   LoadingIndicatorShapes.java. Each file keeps its Apache-2.0 header.
 - Gson, https://github.com/google/gson, Copyright 2008 Google Inc. Bundled in the .mpp.
 - PNGJ, http://hjg.com.ar/pngj/. Bundled in the .mpp. Its NOTICE:
@@ -61,4 +61,4 @@ Code ported from other projects keeps the copyright and source lines in its file
 - MorpheApp/morphe-patches (GPLv3 with the NOTICE terms above): the GmsCore files, the shared
   SpoofSignature extension and the Proton Mail signature patch.
 - L-JINBIN/ApkSignatureKillerEx, https://github.com/L-JINBIN/ApkSignatureKillerEx: the signature check in
-  extensions/shared/library/src/main/java/app/hxreborn/extension/shared/SpoofSignature.java is adapted from it.
+  extensions/shared/src/main/java/app/hxreborn/extension/shared/SpoofSignature.java is adapted from it.

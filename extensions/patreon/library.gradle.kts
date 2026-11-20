@@ -11,7 +11,7 @@ extensions.configure<com.android.build.api.dsl.LibraryExtension> {
 }
 
 dependencies {
-    add("compileOnly", project(":extensions:shared:library"))
+    add("compileOnly", project(":extensions:shared"))
     add("compileOnly", catalog.findLibrary("androidx-annotation").get())
-    add("testImplementation", project(":extensions:shared:library"))
+    add("testImplementation", project(":extensions:shared"))
 }

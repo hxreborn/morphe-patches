@@ -28,13 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public final class StripPayloadClasses {
-
-    private static final Pattern EXPORT_NAME = Pattern.compile("name\\s*=\\s*\"extensions/hxreborn/([\\w-]+\\.mpe)\"");
 
     private StripPayloadClasses() {
     }
@@ -43,26 +39,25 @@ public final class StripPayloadClasses {
         final Path resources = new File(arguments[0]).toPath();
         final Path extensions = new File(arguments[1]).toPath();
         final Path output = new File(arguments[2]).toPath();
-        final Map<String, List<String>> removed = payloadLists(extensions, "removed.list");
+        final Map<Path, List<String>> removed = removedClasses(extensions);
         try (Stream<Path> files = Files.walk(resources)) {
             for (Path file : (Iterable<Path>) files.filter((path) -> path.toString().endsWith(".mpe"))::iterator) {
-                final String resource = file.getFileName().toString();
-                final Path stripped = output.resolve(resources.relativize(file));
+                final Path resource = resources.relativize(file);
+                final Path stripped = output.resolve(resource);
                 Files.createDirectories(stripped.getParent());
                 Files.write(stripped, rewrite(Files.readAllBytes(file), removed.getOrDefault(resource, List.of())));
             }
         }
     }
 
-    private static Map<String, List<String>> payloadLists(Path extensions, String listName) throws IOException {
-        final Map<String, List<String>> lists = new HashMap<>();
-        try (Stream<Path> files = Files.walk(extensions)) {
-            for (Path list : (Iterable<Path>) files.filter((path) -> path.getFileName().toString().equals(listName))::iterator) {
-                final Matcher export = EXPORT_NAME.matcher(Files.readString(list.resolveSibling("build.gradle.kts")));
-                if (!export.find()) {
-                    throw new IOException("No exported payload next to " + list);
-                }
-                lists.put(export.group(1), Files.readAllLines(list).stream().filter((line) -> !line.isBlank()).toList());
+    private static Map<Path, List<String>> removedClasses(Path extensions) throws IOException {
+        final Map<Path, List<String>> lists = new HashMap<>();
+        try (Stream<Path> files = Files.find(extensions, 3, (path, attributes) -> attributes.isRegularFile()
+                && path.getFileName().toString().equals("removed.list"))) {
+            for (Path list : (Iterable<Path>) files::iterator) {
+                final Path group = list.getParent();
+                final Path resource = Path.of("extensions", "hxreborn", group.getParent().getFileName() + "-" + group.getFileName() + ".mpe");
+                lists.put(resource, Files.readAllLines(list).stream().filter((line) -> !line.isBlank()).toList());
             }
         }
         return lists;

@@ -26,7 +26,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Document
 import org.w3c.dom.Element
-import app.morphe.patches.shared.misc.extension.bittorrentSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.bittorrentSettingsMenuAndAmoledThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.bittorrentSettingsExtensionPatch
 
 private const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/bittorrent/"
@@ -206,7 +206,7 @@ val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Adds a setting that makes dialogs, snackbars, buttons and cards pure black in dark mode.",
 ) {
-    dependsOn(bittorrentSettings2ExtensionPatch)
+    dependsOn(bittorrentSettingsMenuAndAmoledThemeExtensionPatch)
     compatibleWith(AppCompatibilities.BITTORRENT)
     availability(requireArm64)
     dependsOn(removeProtectionPatch, amoledResourcesPatch)

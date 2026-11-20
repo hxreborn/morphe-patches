@@ -21,7 +21,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonMaterialSwitchViewExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonWebMaterialSwitchExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
@@ -72,7 +72,7 @@ val materialSwitchesPatch = bytecodePatch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonMaterialSwitchViewExtensionPatch, protonSettings2ExtensionPatch, protonWebMaterialSwitchExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonMaterialSwitchViewExtensionPatch, protonSettingsThemeExtensionPatch, protonWebMaterialSwitchExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     compatibleWith(AppCompatibilities.LUMO)
     dependsOn(
         removePairipVirtualizationPatch,

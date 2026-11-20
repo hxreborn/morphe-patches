@@ -26,7 +26,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
-import app.morphe.patches.shared.misc.extension.utorrentSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.utorrentSettingsMenuExtensionPatch
 import app.morphe.patches.shared.misc.extension.utorrentSettingsExtensionPatch
 
 private const val EXTENSION_PACKAGE = "Lapp/hxreborn/extension/utorrent/"
@@ -192,7 +192,7 @@ val amoledThemePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Adds an option to make dark surfaces pure black.",
 ) {
-    dependsOn(utorrentSettings2ExtensionPatch)
+    dependsOn(utorrentSettingsMenuExtensionPatch)
     compatibleWith(AppCompatibilities.UTORRENT)
     availability(requireArm64)
     dependsOn(removeProtectionPatch, amoledResourcesPatch)

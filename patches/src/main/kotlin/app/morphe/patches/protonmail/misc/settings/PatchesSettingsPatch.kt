@@ -30,7 +30,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.protonPatchApplicationExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
@@ -55,7 +55,7 @@ private fun MutableMethod.settingsItemCalls() = instructions.withIndex().filter 
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(protonPatchApplicationExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(protonPatchApplicationExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
         patchesSettingsActivityPatch("@style/ProtonTheme.Mail", HOST_ACTIVITY, MAIL_SETTINGS_CLASS),
