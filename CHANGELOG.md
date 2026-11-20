@@ -1,3 +1,9 @@
+## [1.84.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.84.0-dev.2...v1.84.0-dev.3) (2026-11-20)
+
+### New Features
+
+* **Nextdoor:** support 5.38.1 ([43e9679](https://github.com/hxreborn/morphe-patches/commit/43e96790664317dbdcca1c3b8db81452db5d0c9c)), closes [#959](https://github.com/hxreborn/morphe-patches/issues/959)
+
 ## [1.84.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.84.0-dev.1...v1.84.0-dev.2) (2026-11-20)
 
 ### Bug Fixes

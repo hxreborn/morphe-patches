@@ -17,42 +17,50 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.84.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.84.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;590 patches total
+> **[v1.84.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.84.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;590 patches total
 
 ### Featured apps
 
 <table align="center">
 <tr>
-<td align="center" width="160"><a href="#viber"><img src=".github/assets/icons/viber.png" width="40"><br>Viber</a><br><sub>25 patches</sub></td>
-<td align="center" width="160"><a href="#bereal"><img src=".github/assets/icons/bereal.png" width="40"><br>BeReal</a><br><sub>21 patches</sub></td>
-<td align="center" width="160"><a href="#moviebox"><img src=".github/assets/icons/moviebox.png" width="40"><br>MovieBox</a><br><sub>4 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-viber-patches"><img src="https://publicmetadata.co.uk/com.viber.voip" width="40" height="40" align="top" alt=""><br>Viber</a><br><sub>25 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-bereal-patches"><img src="https://publicmetadata.co.uk/com.bereal.ft" width="40" height="40" align="top" alt=""><br>BeReal</a><br><sub>21 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-imo-patches"><img src="https://publicmetadata.co.uk/com.imo.android.imoim" width="40" height="40" align="top" alt=""><br>imo</a><br><sub>31 patches</sub></td>
 </tr>
 <tr>
-<td align="center" width="160"><a href="#proton-mail"><img src=".github/assets/icons/protonmail.png" width="40"><br>Proton Mail</a><br><sub>11 patches</sub></td>
-<td align="center" width="160"><a href="#proton-vpn"><img src=".github/assets/icons/protonvpn.png" width="40"><br>Proton VPN</a><br><sub>14 patches</sub></td>
-<td align="center" width="160"><a href="#keepa"><img src=".github/assets/icons/keepa.png" width="40"><br>Keepa</a><br><sub>4 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-moviebox-patches"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>4 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-proton-mail-patches"><img src="https://publicmetadata.co.uk/ch.protonmail.android" width="40" height="40" align="top" alt=""><br>Proton Mail</a><br><sub>11 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-proton-vpn-patches"><img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="40" height="40" align="top" alt=""><br>Proton VPN</a><br><sub>14 patches</sub></td>
+</tr>
+</table>
+
+### Hot apps
+
+<p align="center"><sub>Most updated and most reported in the last 30 days. Refreshed with every release.</sub></p>
+
+<table align="center">
+<tr>
+<td align="center" width="160"><a href="#user-content-terabox-patches"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>12 patches&nbsp;·&nbsp;12&nbsp;changes</sub></td>
+<td align="center" width="160"><a href="#user-content-readera-patches"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>27 patches&nbsp;·&nbsp;17&nbsp;changes</sub></td>
+<td align="center" width="160"><a href="#user-content-aliexpress-patches"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9 patches&nbsp;·&nbsp;13&nbsp;changes</sub></td>
 </tr>
 <tr>
-<td align="center" width="160"><a href="#terabox"><img src=".github/assets/icons/terabox.png" width="40"><br>TeraBox</a><br><sub>12 patches</sub></td>
-<td align="center" width="160"><a href="#imo"><img src=".github/assets/icons/imo.png" width="40"><br>imo</a><br><sub>31 patches</sub></td>
-<td align="center" width="160"><a href="#duolingo"><img src=".github/assets/icons/duolingo.png" width="40"><br>Duolingo</a><br><sub>4 patches</sub></td>
-</tr>
-<tr>
-<td align="center" width="160"><a href="#aliexpress"><img src=".github/assets/icons/aliexpress.png" width="40"><br>AliExpress</a><br><sub>9 patches</sub></td>
-<td align="center" width="160"><a href="#photo-editor-pro"><img src=".github/assets/icons/photoeditorpro.png" width="40"><br>Photo Editor Pro</a><br><sub>7 patches</sub></td>
-<td align="center" width="160"><a href="#cx-file-explorer"><img src=".github/assets/icons/cx.png" width="40"><br>Cx File Explorer</a><br><sub>3 patches</sub></td>
+<td align="center" width="160"><a href="#user-content-castle-patches"><img src="https://publicmetadata.co.uk/com.external.castle" width="40" height="40" align="top" alt=""><br>Castle</a><br><sub>4 patches&nbsp;·&nbsp;11&nbsp;changes</sub></td>
+<td align="center" width="160"><a href="#user-content-candy-crush-saga-patches"><img src="https://publicmetadata.co.uk/com.king.candycrushsaga" width="40" height="40" align="top" alt=""><br>Candy Crush Saga</a><br><sub>12 patches&nbsp;·&nbsp;15&nbsp;changes</sub></td>
+<td align="center" width="160"><a href="#user-content-public-patches"><img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="40" height="40" align="top" alt=""><br>Public</a><br><sub>9 patches&nbsp;·&nbsp;7&nbsp;changes</sub></td>
 </tr>
 </table>
 
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/full-list.png" height="48" align="absmiddle" alt=""> Full list
 
-<details open>
-<summary>click to expand or collapse</summary>
+<a id="1weather" href="#user-content-1weather-patches">1Weather</a>&nbsp;· <a id="3way" href="#user-content-3way-patches">3way</a>&nbsp;· <a id="acalendar" href="#user-content-acalendar-patches">aCalendar</a>&nbsp;· <a id="albo" href="#user-content-albo-patches">Albo</a>&nbsp;· <a id="aliexpress" href="#user-content-aliexpress-patches">AliExpress</a>&nbsp;· <a id="all-video-player-app" href="#user-content-all-video-player-app-patches">All&nbsp;Video&nbsp;Player&nbsp;App</a>&nbsp;· <a id="all-in-one-calculator" href="#user-content-all-in-one-calculator-patches">All&#8209;In&#8209;One&nbsp;Calculator</a>&nbsp;· <a id="aloa" href="#user-content-aloa-patches">Aloa</a>&nbsp;· <a id="alpinequest" href="#user-content-alpinequest-patches">AlpineQuest</a>&nbsp;· <a id="anytracker" href="#user-content-anytracker-patches">AnyTracker</a>&nbsp;· <a id="apna-tunnel-lite" href="#user-content-apna-tunnel-lite-patches">APNA&nbsp;Tunnel&nbsp;Lite</a>&nbsp;· <a id="arc-player" href="#user-content-arc-player-patches">Arc&nbsp;Player</a>&nbsp;· <a id="arduinodroid" href="#user-content-arduinodroid-patches">ArduinoDroid</a>&nbsp;· <a id="athan" href="#user-content-athan-patches">Athan</a>&nbsp;· <a id="atlomaps" href="#user-content-atlomaps-patches">AtloMaps</a>&nbsp;· <a id="atvtools" href="#user-content-atvtools-patches">atvTools</a>&nbsp;· <a id="audible" href="#user-content-audible-patches">Audible</a>&nbsp;· <a id="audiobook-unlimited-for-kindle" href="#user-content-audiobook-unlimited-for-kindle-patches">Audiobook&nbsp;Unlimited&nbsp;for&nbsp;Kindle</a>&nbsp;· <a id="audiolab" href="#user-content-audiolab-patches">AudioLab</a>&nbsp;· <a id="audiomack" href="#user-content-audiomack-patches">Audiomack</a>&nbsp;· <a id="bangla-calendar" href="#user-content-bangla-calendar-patches">Bangla&nbsp;Calendar</a>&nbsp;· <a id="behisabi" href="#user-content-behisabi-patches">BeHisabi</a>&nbsp;· <a id="bereal" href="#user-content-bereal-patches">BeReal</a>&nbsp;· <a id="bettersleep" href="#user-content-bettersleep-patches">BetterSleep</a>&nbsp;· <a id="biobird-flashcards" href="#user-content-biobird-flashcards-patches">Biobird&nbsp;Flashcards</a>&nbsp;· <a id="bittorrent" href="#user-content-bittorrent-patches">BitTorrent</a>&nbsp;· <a id="biwenger" href="#user-content-biwenger-patches">Biwenger</a>&nbsp;· <a id="blockit" href="#user-content-blockit-patches">blockit</a>&nbsp;· <a id="blossom-blast-saga" href="#user-content-blossom-blast-saga-patches">Blossom&nbsp;Blast&nbsp;Saga</a>&nbsp;· <a id="blurwall" href="#user-content-blurwall-patches">BlurWall</a>&nbsp;· <a id="botim" href="#user-content-botim-patches">botim</a>&nbsp;· <a id="calcnote" href="#user-content-calcnote-patches">CalcNote</a>&nbsp;· <a id="candy-crush-saga" href="#user-content-candy-crush-saga-patches">Candy&nbsp;Crush&nbsp;Saga</a>&nbsp;· <a id="candy-crush-soda-saga" href="#user-content-candy-crush-soda-saga-patches">Candy&nbsp;Crush&nbsp;Soda&nbsp;Saga</a>&nbsp;· <a id="cast-plug-in-for-musicolet" href="#user-content-cast-plug-in-for-musicolet-patches">Cast&nbsp;Plug&#8209;in&nbsp;for&nbsp;Musicolet</a>&nbsp;· <a id="castle" href="#user-content-castle-patches">Castle</a>&nbsp;· <a id="castle-for-tv" href="#user-content-castle-for-tv-patches">Castle&nbsp;for&nbsp;TV</a>&nbsp;· <a id="catzy" href="#user-content-catzy-patches">Catzy</a>&nbsp;· <a id="classdojo" href="#user-content-classdojo-patches">ClassDojo</a>&nbsp;· <a id="clink" href="#user-content-clink-patches">Clink</a>&nbsp;· <a id="clip-studio-paint" href="#user-content-clip-studio-paint-patches">Clip&nbsp;Studio&nbsp;Paint</a>&nbsp;· <a id="clone-app" href="#user-content-clone-app-patches">Clone&nbsp;App</a>&nbsp;· <a id="coddy" href="#user-content-coddy-patches">Coddy</a>&nbsp;· <a id="connected2-me" href="#user-content-connected2-me-patches">Connected2.me</a>&nbsp;· <a id="cubasis-le-3" href="#user-content-cubasis-le-3-patches">Cubasis&nbsp;LE&nbsp;3</a>&nbsp;· <a id="cx-file-explorer" href="#user-content-cx-file-explorer-patches">Cx&nbsp;File&nbsp;Explorer</a>&nbsp;· <a id="cxxdroid" href="#user-content-cxxdroid-patches">Cxxdroid</a>&nbsp;· <a id="depthpix" href="#user-content-depthpix-patches">DepthPix</a>&nbsp;· <a id="desh-telugu-keyboard" href="#user-content-desh-telugu-keyboard-patches">Desh&nbsp;Telugu&nbsp;Keyboard</a>&nbsp;· <a id="devcheck" href="#user-content-devcheck-patches">DevCheck</a>&nbsp;· <a id="duolingo" href="#user-content-duolingo-patches">Duolingo</a>&nbsp;· <a id="dwg-fastview" href="#user-content-dwg-fastview-patches">DWG&nbsp;FastView</a>&nbsp;· <a id="echo-equalizer" href="#user-content-echo-equalizer-patches">Echo&nbsp;Equalizer</a>&nbsp;· <a id="echogram" href="#user-content-echogram-patches">Echogram</a>&nbsp;· <a id="etsy" href="#user-content-etsy-patches">Etsy</a>&nbsp;· <a id="fast-stl-viewer" href="#user-content-fast-stl-viewer-patches">Fast&nbsp;STL&nbsp;Viewer</a>&nbsp;· <a id="fddb" href="#user-content-fddb-patches">Fddb</a>&nbsp;· <a id="flights25" href="#user-content-flights25-patches">Flights25</a>&nbsp;· <a id="flipaclip" href="#user-content-flipaclip-patches">FlipaClip</a>&nbsp;· <a id="flipboard" href="#user-content-flipboard-patches">Flipboard</a>&nbsp;· <a id="focusnow" href="#user-content-focusnow-patches">FocusNow</a>&nbsp;· <a id="forusapp" href="#user-content-forusapp-patches">ForusApp</a>&nbsp;· <a id="freedom" href="#user-content-freedom-patches">Freedom</a>&nbsp;· <a id="glass-widgets" href="#user-content-glass-widgets-patches">Glass&nbsp;Widgets</a>&nbsp;· <a id="graph-messenger" href="#user-content-graph-messenger-patches">Graph&nbsp;Messenger</a>&nbsp;· <a id="ground-news" href="#user-content-ground-news-patches">Ground&nbsp;News</a>&nbsp;· <a id="habitify" href="#user-content-habitify-patches">Habitify</a>&nbsp;· <a id="hindu-calendar" href="#user-content-hindu-calendar-patches">Hindu&nbsp;Calendar</a>&nbsp;· <a id="hypic" href="#user-content-hypic-patches">Hypic</a>&nbsp;· <a id="ilovepdf" href="#user-content-ilovepdf-patches">iLovePDF</a>&nbsp;· <a id="imo" href="#user-content-imo-patches">imo</a>&nbsp;· <a id="internet-speed-meter-lite" href="#user-content-internet-speed-meter-lite-patches">Internet&nbsp;Speed&nbsp;Meter&nbsp;Lite</a>&nbsp;· <a id="iototoy" href="#user-content-iototoy-patches">IoToToy</a>&nbsp;· <a id="ivoox" href="#user-content-ivoox-patches">iVoox</a>&nbsp;· <a id="joyn" href="#user-content-joyn-patches">Joyn</a>&nbsp;· <a id="joyn-austria" href="#user-content-joyn-austria-patches">Joyn&nbsp;Austria</a>&nbsp;· <a id="jujo" href="#user-content-jujo-patches">Jujo</a>&nbsp;· <a id="jvdroid" href="#user-content-jvdroid-patches">Jvdroid</a>&nbsp;· <a id="keepa" href="#user-content-keepa-patches">Keepa</a>&nbsp;· <a id="kick" href="#user-content-kick-patches">Kick</a>&nbsp;· <a id="klassik-radio" href="#user-content-klassik-radio-patches">Klassik&nbsp;Radio+</a>&nbsp;· <a id="lagguy-wallpapers" href="#user-content-lagguy-wallpapers-patches">Lagguy&nbsp;Wallpapers</a>&nbsp;· <a id="launchbox" href="#user-content-launchbox-patches">LaunchBox</a>&nbsp;· <a id="led-blinker" href="#user-content-led-blinker-patches">LED&nbsp;Blinker</a>&nbsp;· <a id="liftoff" href="#user-content-liftoff-patches">Liftoff</a>&nbsp;· <a id="lingodeer" href="#user-content-lingodeer-patches">LingoDeer</a>&nbsp;· <a id="magic-earth" href="#user-content-magic-earth-patches">Magic&nbsp;Earth</a>&nbsp;· <a id="mangatime" href="#user-content-mangatime-patches">MangaTime</a>&nbsp;· <a id="may-beautiful-bullet-journal" href="#user-content-may-beautiful-bullet-journal-patches">May:&nbsp;Beautiful&nbsp;Bullet&nbsp;Journal</a>&nbsp;· <a id="mbc-shahid" href="#user-content-mbc-shahid-patches">MBC&nbsp;Shahid</a>&nbsp;· <a id="medicneet" href="#user-content-medicneet-patches">MedicNEET</a>&nbsp;· <a id="memoneet" href="#user-content-memoneet-patches">MemoNeet</a>&nbsp;· <a id="minishare" href="#user-content-minishare-patches">MiniShare</a>&nbsp;· <a id="monet-launcher" href="#user-content-monet-launcher-patches">Monet&nbsp;Launcher</a>&nbsp;· <a id="moon-reader" href="#user-content-moon-reader-patches">Moon+&nbsp;Reader</a>&nbsp;· <a id="moviebox" href="#user-content-moviebox-patches">MovieBox</a>&nbsp;· <a id="moviebox-tv" href="#user-content-moviebox-tv-patches">MovieBox&nbsp;TV</a>&nbsp;· <a id="musclewiki" href="#user-content-musclewiki-patches">MuscleWiki</a>&nbsp;· <a id="musicolet" href="#user-content-musicolet-patches">Musicolet</a>&nbsp;· <a id="musixmatch" href="#user-content-musixmatch-patches">Musixmatch</a>&nbsp;· <a id="muviz-widgets" href="#user-content-muviz-widgets-patches">Muviz&nbsp;Widgets</a>&nbsp;· <a id="my-apk" href="#user-content-my-apk-patches">My&nbsp;APK</a>&nbsp;· <a id="mymoveset" href="#user-content-mymoveset-patches">MyMoveset</a>&nbsp;· <a id="myscript-math" href="#user-content-myscript-math-patches">MyScript&nbsp;Math</a>&nbsp;· <a id="myscript-notes" href="#user-content-myscript-notes-patches">MyScript&nbsp;Notes</a>&nbsp;· <a id="nara-baby" href="#user-content-nara-baby-patches">Nara&nbsp;Baby</a>&nbsp;· <a id="neetprep" href="#user-content-neetprep-patches">NEETprep</a>&nbsp;· <a id="neetprep-essential" href="#user-content-neetprep-essential-patches">NEETprep&nbsp;Essential</a>&nbsp;· <a id="network-analyzer" href="#user-content-network-analyzer-patches">Network&nbsp;Analyzer</a>&nbsp;· <a id="networkflow" href="#user-content-networkflow-patches">NetworkFlow</a>&nbsp;· <a id="nextdoor" href="#user-content-nextdoor-patches">Nextdoor</a>&nbsp;· <a id="notein" href="#user-content-notein-patches">Notein</a>&nbsp;· <a id="notesnook" href="#user-content-notesnook-patches">Notesnook</a>&nbsp;· <a id="ok" href="#user-content-ok-patches">OK</a>&nbsp;· <a id="one4home-launcher" href="#user-content-one4home-launcher-patches">One4Home&nbsp;Launcher</a>&nbsp;· <a id="opal" href="#user-content-opal-patches">Opal</a>&nbsp;· <a id="patreon" href="#user-content-patreon-patches">Patreon</a>&nbsp;· <a id="period-tracker-and-calendar" href="#user-content-period-tracker-and-calendar-patches">Period&nbsp;Tracker&nbsp;and&nbsp;Calendar</a>&nbsp;· <a id="perplexity" href="#user-content-perplexity-patches">Perplexity</a>&nbsp;· <a id="photo-editor-pro" href="#user-content-photo-editor-pro-patches">Photo&nbsp;Editor&nbsp;Pro</a>&nbsp;· <a id="photone" href="#user-content-photone-patches">Photone</a>&nbsp;· <a id="pixlr" href="#user-content-pixlr-patches">Pixlr</a>&nbsp;· <a id="pleco" href="#user-content-pleco-patches">Pleco</a>&nbsp;· <a id="pocket-whip" href="#user-content-pocket-whip-patches">Pocket&nbsp;Whip</a>&nbsp;· <a id="poe" href="#user-content-poe-patches">Poe</a>&nbsp;· <a id="prayer-times-and-qibla" href="#user-content-prayer-times-and-qibla-patches">Prayer&nbsp;Times&nbsp;and&nbsp;Qibla</a>&nbsp;· <a id="privacy-notes" href="#user-content-privacy-notes-patches">Privacy&nbsp;Notes</a>&nbsp;· <a id="projectivy-launcher" href="#user-content-projectivy-launcher-patches">Projectivy&nbsp;Launcher</a>&nbsp;· <a id="proton-authenticator" href="#user-content-proton-authenticator-patches">Proton&nbsp;Authenticator</a>&nbsp;· <a id="proton-lumo" href="#user-content-proton-lumo-patches">Proton&nbsp;Lumo</a>&nbsp;· <a id="proton-mail" href="#user-content-proton-mail-patches">Proton&nbsp;Mail</a>&nbsp;· <a id="proton-pass" href="#user-content-proton-pass-patches">Proton&nbsp;Pass</a>&nbsp;· <a id="proton-vpn" href="#user-content-proton-vpn-patches">Proton&nbsp;VPN</a>&nbsp;· <a id="psiphon" href="#user-content-psiphon-patches">Psiphon</a>&nbsp;· <a id="public" href="#user-content-public-patches">Public</a>&nbsp;· <a id="pydroid-3" href="#user-content-pydroid-3-patches">Pydroid&nbsp;3</a>&nbsp;· <a id="qr-barcode-scanner" href="#user-content-qr-barcode-scanner-patches">QR&nbsp;&&nbsp;Barcode&nbsp;Scanner</a>&nbsp;· <a id="quick-cursor" href="#user-content-quick-cursor-patches">Quick&nbsp;Cursor</a>&nbsp;· <a id="quranify" href="#user-content-quranify-patches">Quranify</a>&nbsp;· <a id="radio-javan" href="#user-content-radio-javan-patches">Radio&nbsp;Javan</a>&nbsp;· <a id="raindrop-io" href="#user-content-raindrop-io-patches">Raindrop.io</a>&nbsp;· <a id="rateglance" href="#user-content-rateglance-patches">RateGlance</a>&nbsp;· <a id="readera" href="#user-content-readera-patches">ReadEra</a>&nbsp;· <a id="realme-link" href="#user-content-realme-link-patches">Realme&nbsp;Link</a>&nbsp;· <a id="redreader" href="#user-content-redreader-patches">RedReader</a>&nbsp;· <a id="redreader-alpha" href="#user-content-redreader-alpha-patches">RedReader&nbsp;Alpha</a>&nbsp;· <a id="resprite" href="#user-content-resprite-patches">Resprite</a>&nbsp;· <a id="ridmik-keyboard" href="#user-content-ridmik-keyboard-patches">Ridmik&nbsp;Keyboard</a>&nbsp;· <a id="ringtone-maker" href="#user-content-ringtone-maker-patches">Ringtone&nbsp;Maker</a>&nbsp;· <a id="rise-sleep-tracker" href="#user-content-rise-sleep-tracker-patches">RISE&nbsp;Sleep&nbsp;Tracker</a>&nbsp;· <a id="rubber-bands" href="#user-content-rubber-bands-patches">Rubber&nbsp;Bands</a>&nbsp;· <a id="serializd" href="#user-content-serializd-patches">Serializd</a>&nbsp;· <a id="sheytoon" href="#user-content-sheytoon-patches">Sheytoon</a>&nbsp;· <a id="showly" href="#user-content-showly-patches">Showly</a>&nbsp;· <a id="shttps-marketless" href="#user-content-shttps-marketless-patches">SHTTPS&nbsp;Marketless</a>&nbsp;· <a id="sqcom" href="#user-content-sqcom-patches">SQCOM</a>&nbsp;· <a id="steezy" href="#user-content-steezy-patches">STEEZY</a>&nbsp;· <a id="storywise" href="#user-content-storywise-patches">Storywise</a>&nbsp;· <a id="sygic" href="#user-content-sygic-patches">Sygic</a>&nbsp;· <a id="symfonium" href="#user-content-symfonium-patches">Symfonium</a>&nbsp;· <a id="terabox" href="#user-content-terabox-patches">TeraBox</a>&nbsp;· <a id="tradingview" href="#user-content-tradingview-patches">TradingView</a>&nbsp;· <a id="trainline" href="#user-content-trainline-patches">Trainline</a>&nbsp;· <a id="transparent-clock-weather" href="#user-content-transparent-clock-weather-patches">Transparent&nbsp;clock&nbsp;&&nbsp;weather</a>&nbsp;· <a id="tunneldoom-vpn" href="#user-content-tunneldoom-vpn-patches">TunnelDOOM&nbsp;VPN</a>&nbsp;· <a id="u-dictionary" href="#user-content-u-dictionary-patches">U&nbsp;Dictionary</a>&nbsp;· <a id="ultimate-guitar" href="#user-content-ultimate-guitar-patches">Ultimate&nbsp;Guitar</a>&nbsp;· <a id="ultimea" href="#user-content-ultimea-patches">ULTIMEA</a>&nbsp;· <a id="uptcl" href="#user-content-uptcl-patches">UPTCL</a>&nbsp;· <a id="usa-vpn" href="#user-content-usa-vpn-patches">USA&nbsp;VPN</a>&nbsp;· <a id="viber" href="#user-content-viber-patches">Viber</a>&nbsp;· <a id="video-editor" href="#user-content-video-editor-patches">Video&nbsp;Editor</a>&nbsp;· <a id="vllo" href="#user-content-vllo-patches">VLLO</a>&nbsp;· <a id="vpn-india" href="#user-content-vpn-india-patches">VPN&nbsp;India</a>&nbsp;· <a id="vpn-super-unlimited-proxy" href="#user-content-vpn-super-unlimited-proxy-patches">VPN&nbsp;Super&nbsp;Unlimited&nbsp;Proxy</a>&nbsp;· <a id="vpnify" href="#user-content-vpnify-patches">vpnify</a>&nbsp;· <a id="wallmaa" href="#user-content-wallmaa-patches">Wallmaa</a>&nbsp;· <a id="walp" href="#user-content-walp-patches">WalP</a>&nbsp;· <a id="watch-it" href="#user-content-watch-it-patches">WATCH&nbsp;IT</a>&nbsp;· <a id="wattpad" href="#user-content-wattpad-patches">Wattpad</a>&nbsp;· <a id="weather24" href="#user-content-weather24-patches">weather24</a>&nbsp;· <a id="x-plore-file-manager" href="#user-content-x-plore-file-manager-patches">X&#8209;plore&nbsp;File&nbsp;Manager</a>&nbsp;· <a id="xianyu" href="#user-content-xianyu-patches">Xianyu</a>&nbsp;· <a id="xtream-player" href="#user-content-xtream-player-patches">Xtream&nbsp;Player</a>&nbsp;· <a id="yanosik" href="#user-content-yanosik-patches">Yanosik</a>&nbsp;· <a id="yi-iot" href="#user-content-yi-iot-patches">Yi&nbsp;iot</a>&nbsp;· <a id="yuka" href="#user-content-yuka-patches">Yuka</a>&nbsp;· <a id="torrent" href="#user-content-torrent-patches">µTorrent</a>&nbsp;· <a id="universal" href="#user-content-universal-patches">Universal</a>
 
-<a id="1weather"></a>
 <details>
-<summary><img src=".github/assets/icons/oneweather.png" width="18" align="top">&nbsp;&nbsp;1Weather&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary>Patches and supported versions for all 188 apps</summary>
+
+<details>
+<summary><img src="https://publicmetadata.co.uk/com.handmark.expressweather" width="18" height="18" align="top" alt="">&nbsp;&nbsp;1Weather&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="1weather-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -68,10 +76,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="3way"></a>
 <details>
-<summary><img src=".github/assets/icons/3way.png" width="18" align="top">&nbsp;&nbsp;3way&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/app.threesome.dating" width="18" height="18" align="top" alt="">&nbsp;&nbsp;3way&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="3way-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -84,10 +91,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="acalendar"></a>
 <details>
-<summary><img src=".github/assets/icons/acalendar.png" width="18" align="top">&nbsp;&nbsp;aCalendar&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/org.withouthat.acalendar" width="18" height="18" align="top" alt="">&nbsp;&nbsp;aCalendar&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="acalendar-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -100,10 +106,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="albo"></a>
 <details>
-<summary><img src=".github/assets/icons/albo.png" width="18" align="top">&nbsp;&nbsp;Albo&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.thesortdapp.sortd" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Albo&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="albo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -119,10 +124,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="aliexpress"></a>
 <details>
-<summary><img src=".github/assets/icons/aliexpress.png" width="18" align="top">&nbsp;&nbsp;AliExpress&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="18" height="18" align="top" alt="">&nbsp;&nbsp;AliExpress&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<a id="aliexpress-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -143,10 +147,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="all-video-player-app"></a>
 <details>
-<summary><img src=".github/assets/icons/allvideoplayer.png" width="18" align="top">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.allformatplayer.streamvideoplayer" width="18" height="18" align="top" alt="">&nbsp;&nbsp;All Video Player App&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<a id="all-video-player-app-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -165,10 +168,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="all-in-one-calculator"></a>
 <details>
-<summary><img src=".github/assets/icons/allinonecalculator.png" width="18" align="top">&nbsp;&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/all.in.one.calculator" width="18" height="18" align="top" alt="">&nbsp;&nbsp;All-In-One Calculator&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="all-in-one-calculator-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -182,10 +184,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="aloa"></a>
 <details>
-<summary><img src=".github/assets/icons/aloa.png" width="18" align="top">&nbsp;&nbsp;Aloa&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.getaloa.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Aloa&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="aloa-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -199,10 +200,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="alpinequest"></a>
 <details>
-<summary><img src=".github/assets/icons/alpinequest.png" width="18" align="top">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/psyberia.alpinequest.free" width="18" height="18" align="top" alt="">&nbsp;&nbsp;AlpineQuest&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="alpinequest-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -215,10 +215,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="anytracker"></a>
 <details>
-<summary><img src=".github/assets/icons/anytracker.png" width="18" align="top">&nbsp;&nbsp;AnyTracker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.shervinkoushan.anyTracker" width="18" height="18" align="top" alt="">&nbsp;&nbsp;AnyTracker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="anytracker-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -231,10 +230,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="apna-tunnel-lite"></a>
 <details>
-<summary><img src=".github/assets/icons/apnatunnellite.png" width="18" align="top">&nbsp;&nbsp;APNA Tunnel Lite&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.apnatunnel.lite" width="18" height="18" align="top" alt="">&nbsp;&nbsp;APNA Tunnel Lite&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="apna-tunnel-lite-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -248,10 +246,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="arc-player"></a>
 <details>
-<summary><img src=".github/assets/icons/com.videoplayer.arcplayer.png" width="18" align="top">&nbsp;&nbsp;Arc Player&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.videoplayer.arcplayer" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Arc Player&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="arc-player-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -266,10 +263,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="arduinodroid"></a>
 <details>
-<summary><img src=".github/assets/icons/arduinodroid.png" width="18" align="top">&nbsp;&nbsp;ArduinoDroid&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/name.antonsmirnov.android.arduinodroid2" width="18" height="18" align="top" alt="">&nbsp;&nbsp;ArduinoDroid&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="arduinodroid-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -282,10 +278,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="athan"></a>
 <details>
-<summary><img src=".github/assets/icons/athan.png" width="18" align="top">&nbsp;&nbsp;Athan&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.athan" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Athan&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<a id="athan-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -304,10 +299,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="atlomaps"></a>
 <details>
-<summary><img src=".github/assets/icons/atlomaps.png" width="18" align="top">&nbsp;&nbsp;AtloMaps&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.atlogis.atlomaps" width="18" height="18" align="top" alt="">&nbsp;&nbsp;AtloMaps&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="atlomaps-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -320,10 +314,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="atvtools"></a>
 <details>
-<summary><img src=".github/assets/icons/atvtools.png" width="18" align="top">&nbsp;&nbsp;atvTools&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/dev.vodik7.atvtools" width="18" height="18" align="top" alt="">&nbsp;&nbsp;atvTools&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="atvtools-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -336,10 +329,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="audible"></a>
 <details>
-<summary><img src=".github/assets/icons/audible.png" width="18" align="top">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.audible.application" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Audible&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="audible-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -353,10 +345,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="audiobook-unlimited-for-kindle"></a>
 <details>
-<summary><img src=".github/assets/icons/audiobookunlimited.png" width="18" align="top">&nbsp;&nbsp;Audiobook Unlimited for Kindle&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.oneletters.audiobooksai" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Audiobook Unlimited for Kindle&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="audiobook-unlimited-for-kindle-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -370,10 +361,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="audiolab"></a>
 <details>
-<summary><img src=".github/assets/icons/audiolab.png" width="18" align="top">&nbsp;&nbsp;AudioLab&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.hitrolab.audioeditor" width="18" height="18" align="top" alt="">&nbsp;&nbsp;AudioLab&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="audiolab-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -386,10 +376,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="audiomack"></a>
 <details>
-<summary><img src=".github/assets/icons/audiomack.png" width="18" align="top">&nbsp;&nbsp;Audiomack&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.audiomack" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Audiomack&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="audiomack-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -403,10 +392,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="bangla-calendar"></a>
 <details>
-<summary><img src=".github/assets/icons/banglacalendar.png" width="18" align="top">&nbsp;&nbsp;Bangla Calendar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.outscar.bd.bongcal" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Bangla Calendar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="bangla-calendar-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -420,10 +408,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="behisabi"></a>
 <details>
-<summary><img src=".github/assets/icons/behisabi.png" width="18" align="top">&nbsp;&nbsp;BeHisabi&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.neonbhoot.behisabi" width="18" height="18" align="top" alt="">&nbsp;&nbsp;BeHisabi&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="behisabi-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -436,10 +423,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="bereal"></a>
 <details>
-<summary><img src=".github/assets/icons/bereal.png" width="18" align="top">&nbsp;&nbsp;BeReal&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.bereal.ft" width="18" height="18" align="top" alt="">&nbsp;&nbsp;BeReal&nbsp;&nbsp;•&nbsp;&nbsp;21 patches</summary>
+<a id="bereal-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -472,10 +458,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="bettersleep"></a>
 <details>
-<summary><img src=".github/assets/icons/bettersleep.png" width="18" align="top">&nbsp;&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ipnossoft.rma.free" width="18" height="18" align="top" alt="">&nbsp;&nbsp;BetterSleep&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="bettersleep-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -488,10 +473,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="biobird-flashcards"></a>
 <details>
-<summary><img src=".github/assets/icons/biobird.png" width="18" align="top">&nbsp;&nbsp;Biobird Flashcards&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.biobird.exvee" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Biobird Flashcards&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="biobird-flashcards-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -505,10 +489,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="bittorrent"></a>
 <details>
-<summary><img src=".github/assets/icons/bittorrent.png" width="18" align="top">&nbsp;&nbsp;BitTorrent&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.bittorrent.client" width="18" height="18" align="top" alt="">&nbsp;&nbsp;BitTorrent&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="bittorrent-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -523,10 +506,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="biwenger"></a>
 <details>
-<summary><img src=".github/assets/icons/biwenger.png" width="18" align="top">&nbsp;&nbsp;Biwenger&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.biwenger.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Biwenger&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="biwenger-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -541,10 +523,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="blockit"></a>
 <details>
-<summary><img src=".github/assets/icons/blockit.png" width="18" align="top">&nbsp;&nbsp;blockit&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.hypenet.focused" width="18" height="18" align="top" alt="">&nbsp;&nbsp;blockit&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="blockit-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -558,10 +539,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="blossom-blast-saga"></a>
 <details>
-<summary><img src=".github/assets/icons/blossomblastsaga.png" width="18" align="top">&nbsp;&nbsp;Blossom Blast Saga&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.king.blossomblast" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Blossom Blast Saga&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<a id="blossom-blast-saga-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -570,18 +550,17 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="blossom-blast-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/boosters/AddBoostersPatch.kt) | Tops up each booster to 999 every time the game starts. Requires a standard install on a 64-bit ARM device. |
-| <a id="blossom-blast-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. Requires a standard install on a 64-bit ARM device. |
+| <a id="blossom-blast-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/boosters/AddBoostersPatch.kt) | Tops up each booster to 999 every time the game starts. |
+| <a id="blossom-blast-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. |
 | <a id="blossom-blast-saga-hide-ads"></a>[Hide ads](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/HideAdsPatch.kt) | Stops ad networks from starting and blocks rewarded and interstitial ads. |
-| <a id="blossom-blast-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/lives/UnlimitedLivesPatch.kt) | Gives unlimited lives for 24 hours every time the game starts. Requires a standard install on a 64-bit ARM device. |
-| <a id="blossom-blast-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/slots/UnlockBoosterSlotsPatch.kt) | Opens all booster slots from level 2. Requires a standard install on a 64-bit ARM device. |
+| <a id="blossom-blast-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/lives/UnlimitedLivesPatch.kt) | Gives unlimited lives for 24 hours every time the game starts. |
+| <a id="blossom-blast-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/blossomblast/misc/slots/UnlockBoosterSlotsPatch.kt) | Opens all booster slots from level 2. |
 
 </details>
 
-<a id="blurwall"></a>
 <details>
-<summary><img src=".github/assets/icons/blurwall.png" width="18" align="top">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/apps.automan.blurwallpaper" width="18" height="18" align="top" alt="">&nbsp;&nbsp;BlurWall&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="blurwall-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -596,10 +575,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="botim"></a>
 <details>
-<summary><img src=".github/assets/icons/botim.png" width="18" align="top">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/im.thebot.messenger" width="18" height="18" align="top" alt="">&nbsp;&nbsp;botim&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<a id="botim-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -620,10 +598,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="calcnote"></a>
 <details>
-<summary><img src=".github/assets/icons/calcnote.png" width="18" align="top">&nbsp;&nbsp;CalcNote&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.burton999.notecal" width="18" height="18" align="top" alt="">&nbsp;&nbsp;CalcNote&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="calcnote-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -636,10 +613,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="candy-crush-saga"></a>
 <details>
-<summary><img src=".github/assets/icons/candycrushsaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.king.candycrushsaga" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Candy Crush Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
+<a id="candy-crush-saga-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -648,25 +624,24 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install. |
-| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. Requires a standard install. |
+| <a id="candy-crush-saga-add-boosters"></a>[Add boosters](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/boosters/AddBoostersPatch.kt) | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. |
+| <a id="candy-crush-saga-add-extra-moves"></a>[Add extra moves](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/moves/AddExtraMovesPatch.kt) | Starts every level with five extra moves. |
 | <a id="candy-crush-saga-disable-events"></a>[Disable events](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/events/DisableEventsPatch.kt) | Turns off limited-time events such as races, quests and leagues. |
-| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Stops game reminders and the notification permission prompt. Requires a standard install. |
-| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
+| <a id="candy-crush-saga-disable-notifications"></a>[Disable notifications](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/notifications/DisableNotificationsPatch.kt) | Stops game reminders and the notification permission prompt. |
+| <a id="candy-crush-saga-disable-tracking"></a>[Disable tracking](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. |
 | <a id="candy-crush-saga-hide-ads"></a>Hide ads | Stops ad networks from starting and blocks rewarded and interstitial ads. |
-| <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
+| <a id="candy-crush-saga-parked-app-for-android-auto"></a>[Parked app for Android Auto](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/androidauto/ParkedAppPatch.kt) | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer. Android Auto needs Unknown sources turned on in its developer settings. |
 | <a id="candy-crush-saga-remove-ad-offers"></a>[Remove ad offers](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/ads/offers/RemoveAdOffersPatch.kt) | Removes offers to watch an ad for extra moves, lives or boosters. |
 | <a id="candy-crush-saga-remove-offer-pop-ups"></a>[Remove offer pop-ups](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/layout/popups/RemoveOfferPopupsPatch.kt) | Removes pop-ups selling bundles, passes and limited-time offers. |
 | <a id="candy-crush-saga-remove-rating-prompts"></a>[Remove rating prompts](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/rating/RemoveRatingPromptsPatch.kt) | Removes prompts asking to rate the game after a level. |
-| <a id="candy-crush-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/lives/UnlimitedLivesPatch.kt) | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
-| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks all booster slots from the first level. Requires a standard install. |
+| <a id="candy-crush-saga-unlimited-lives"></a>[Unlimited lives](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/lives/UnlimitedLivesPatch.kt) | Adds 24 hours of unlimited lives every time the game starts. |
+| <a id="candy-crush-saga-unlock-booster-slots"></a>[Unlock booster slots](patches/src/main/kotlin/app/morphe/patches/candycrushsaga/misc/slots/UnlockBoosterSlotsPatch.kt) | Unlocks all booster slots from the first level. |
 
 </details>
 
-<a id="candy-crush-soda-saga"></a>
 <details>
-<summary><img src=".github/assets/icons/candycrushsodasaga.png" width="18" align="top">&nbsp;&nbsp;Candy Crush Soda Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.king.candycrushsodasaga" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Candy Crush Soda Saga&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
+<a id="candy-crush-soda-saga-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -675,25 +650,24 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
-| <a id="candy-crush-soda-saga-add-boosters"></a>Add boosters | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. Requires a standard install. |
-| <a id="candy-crush-soda-saga-add-extra-moves"></a>Add extra moves | Starts every level with five extra moves. Requires a standard install. |
+| <a id="candy-crush-soda-saga-add-boosters"></a>Add boosters | Adds 1,000 of each booster every time the game starts. A booster is usable from its usual level, or from the first level with Unlock booster slots. |
+| <a id="candy-crush-soda-saga-add-extra-moves"></a>Add extra moves | Starts every level with five extra moves. |
 | <a id="candy-crush-soda-saga-disable-events"></a>Disable events | Turns off limited-time events such as races, quests and leagues. |
-| <a id="candy-crush-soda-saga-disable-notifications"></a>Disable notifications | Stops game reminders and the notification permission prompt. Requires a standard install. |
-| <a id="candy-crush-soda-saga-disable-tracking"></a>Disable tracking | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. Requires a standard install. |
+| <a id="candy-crush-soda-saga-disable-notifications"></a>Disable notifications | Stops game reminders and the notification permission prompt. |
+| <a id="candy-crush-soda-saga-disable-tracking"></a>Disable tracking | Stops AppsFlyer, Braze, Firebase Analytics and Google measurement from collecting data, and removes the advertising ID and install referrer permissions. Braze push and in-app messages stop too. |
 | <a id="candy-crush-soda-saga-hide-ads"></a>Hide ads | Stops ad networks from starting and blocks rewarded and interstitial ads. |
-| <a id="candy-crush-soda-saga-parked-app-for-android-auto"></a>Parked app for Android Auto | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer and a standard install. Android Auto needs Unknown sources turned on in its developer settings. |
+| <a id="candy-crush-soda-saga-parked-app-for-android-auto"></a>Parked app for Android Auto | Lists the game on the Android Auto car screen while parked. Requires Android 15 or newer. Android Auto needs Unknown sources turned on in its developer settings. |
 | <a id="candy-crush-soda-saga-remove-ad-offers"></a>Remove ad offers | Removes offers to watch an ad for extra moves, lives or boosters. |
 | <a id="candy-crush-soda-saga-remove-offer-pop-ups"></a>Remove offer pop-ups | Removes pop-ups selling bundles, passes and limited-time offers. |
 | <a id="candy-crush-soda-saga-remove-rating-prompts"></a>Remove rating prompts | Removes prompts asking to rate the game after a level. |
-| <a id="candy-crush-soda-saga-unlimited-lives"></a>Unlimited lives | Adds 24 hours of unlimited lives every time the game starts. Requires a standard install. |
-| <a id="candy-crush-soda-saga-unlock-booster-slots"></a>Unlock booster slots | Unlocks all booster slots from the first level. Requires a standard install. |
+| <a id="candy-crush-soda-saga-unlimited-lives"></a>Unlimited lives | Adds 24 hours of unlimited lives every time the game starts. |
+| <a id="candy-crush-soda-saga-unlock-booster-slots"></a>Unlock booster slots | Unlocks all booster slots from the first level. |
 
 </details>
 
-<a id="cast-plug-in-for-musicolet"></a>
 <details>
-<summary><img src=".github/assets/icons/musicoletcastplugin.png" width="18" align="top">&nbsp;&nbsp;Cast Plug-in for Musicolet&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/in.krosbits.castplugin" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Cast Plug-in for Musicolet&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="cast-plug-in-for-musicolet-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -706,10 +680,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="castle"></a>
 <details>
-<summary><img src=".github/assets/icons/castle.png" width="18" align="top">&nbsp;&nbsp;Castle&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.external.castle" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Castle&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="castle-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -725,10 +698,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 </details>
 
-<a id="castle-for-tv"></a>
 <details>
-<summary><img src=".github/assets/icons/castlefortv.png" width="18" align="top">&nbsp;&nbsp;Castle for TV&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.gxnet.castle.indiatv" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Castle for TV&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="castle-for-tv-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -745,10 +717,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="catzy"></a>
 <details>
-<summary><img src=".github/assets/icons/catzy.png" width="18" align="top">&nbsp;&nbsp;Catzy&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.nieruo.healthapp" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Catzy&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="catzy-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -764,10 +735,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="classdojo"></a>
 <details>
-<summary><img src=".github/assets/icons/classdojo.png" width="18" align="top">&nbsp;&nbsp;ClassDojo&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.classdojo.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;ClassDojo&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="classdojo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -780,10 +750,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="clink"></a>
 <details>
-<summary><img src=".github/assets/icons/clink.png" width="18" align="top">&nbsp;&nbsp;Clink&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ltd.anti.clink" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Clink&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="clink-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -796,10 +765,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="clip-studio-paint"></a>
 <details>
-<summary><img src=".github/assets/icons/clipstudiopaint.png" width="18" align="top">&nbsp;&nbsp;Clip Studio Paint&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/jp.co.celsys.clipstudiopaint.googleplay" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Clip Studio Paint&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="clip-studio-paint-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -814,10 +782,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="clone-app"></a>
 <details>
-<summary><img src=".github/assets/icons/cloneapp.png" width="18" align="top">&nbsp;&nbsp;Clone App&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.pengyou.cloneapp" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Clone App&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="clone-app-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -833,10 +800,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="coddy"></a>
 <details>
-<summary><img src=".github/assets/icons/coddy.png" width="18" align="top">&nbsp;&nbsp;Coddy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/tech.coddy.coddyapp" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Coddy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="coddy-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -849,10 +815,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="connected2-me"></a>
 <details>
-<summary><img src=".github/assets/icons/connected2.png" width="18" align="top">&nbsp;&nbsp;Connected2.me&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.connected2.ozzy.c2m" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Connected2.me&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<a id="connected2-me-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -869,10 +834,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="cubasis-le-3"></a>
 <details>
-<summary><img src=".github/assets/icons/cubasisle3.png" width="18" align="top">&nbsp;&nbsp;Cubasis LE 3&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.steinberg.cubasisle3" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Cubasis LE 3&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="cubasis-le-3-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -886,10 +850,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="cx-file-explorer"></a>
 <details>
-<summary><img src=".github/assets/icons/cx.png" width="18" align="top">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.cxinventor.file.explorer" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Cx File Explorer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="cx-file-explorer-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -904,10 +867,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="cxxdroid"></a>
 <details>
-<summary><img src=".github/assets/icons/cxxdroid.png" width="18" align="top">&nbsp;&nbsp;Cxxdroid&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ru.iiec.cxxdroid" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Cxxdroid&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="cxxdroid-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -922,10 +884,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="depthpix"></a>
 <details>
-<summary><img src=".github/assets/icons/depthpix.png" width="18" align="top">&nbsp;&nbsp;DepthPix&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.androholic.wallpapersdepthpix" width="18" height="18" align="top" alt="">&nbsp;&nbsp;DepthPix&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="depthpix-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -940,10 +901,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="desh-telugu-keyboard"></a>
 <details>
-<summary><img src=".github/assets/icons/deshtelugu.png" width="18" align="top">&nbsp;&nbsp;Desh Telugu Keyboard&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.telug.keyboard.for.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Desh Telugu Keyboard&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="desh-telugu-keyboard-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -957,10 +917,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="devcheck"></a>
 <details>
-<summary><img src=".github/assets/icons/devcheck.png" width="18" align="top">&nbsp;&nbsp;DevCheck&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/flar2.devcheck" width="18" height="18" align="top" alt="">&nbsp;&nbsp;DevCheck&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="devcheck-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -974,10 +933,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="duolingo"></a>
 <details>
-<summary><img src=".github/assets/icons/duolingo.png" width="18" align="top">&nbsp;&nbsp;Duolingo&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.duolingo" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Duolingo&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="duolingo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -993,10 +951,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="dwg-fastview"></a>
 <details>
-<summary><img src=".github/assets/icons/dwgfastview.png" width="18" align="top">&nbsp;&nbsp;DWG FastView&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.gstarmc.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;DWG FastView&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="dwg-fastview-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1011,10 +968,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="echo-equalizer"></a>
 <details>
-<summary><img src=".github/assets/icons/echoequalizer.png" width="18" align="top">&nbsp;&nbsp;Echo Equalizer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.hapibits.soundlift" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Echo Equalizer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="echo-equalizer-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1027,10 +983,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="echogram"></a>
 <details>
-<summary><img src=".github/assets/icons/echogram.png" width="18" align="top">&nbsp;&nbsp;Echogram&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.liori.echogram" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Echogram&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="echogram-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1043,10 +998,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="etsy"></a>
 <details>
-<summary><img src=".github/assets/icons/etsy.png" width="18" align="top">&nbsp;&nbsp;Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.etsy.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Etsy&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="etsy-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1059,10 +1013,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="fast-stl-viewer"></a>
 <details>
-<summary><img src=".github/assets/icons/faststlviewer.png" width="18" align="top">&nbsp;&nbsp;Fast STL Viewer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.performance.meshview" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Fast STL Viewer&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="fast-stl-viewer-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1075,10 +1028,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="fddb"></a>
 <details>
-<summary><img src=".github/assets/icons/fddb.png" width="18" align="top">&nbsp;&nbsp;Fddb&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.fddb" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Fddb&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="fddb-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1091,10 +1043,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="flights25"></a>
 <details>
-<summary><img src=".github/assets/icons/flights25.png" width="18" align="top">&nbsp;&nbsp;Flights25&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/de.app.flighttracker" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Flights25&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="flights25-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1109,10 +1060,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="flipaclip"></a>
 <details>
-<summary><img src=".github/assets/icons/flipaclip.png" width="18" align="top">&nbsp;&nbsp;FlipaClip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.vblast.flipaclip" width="18" height="18" align="top" alt="">&nbsp;&nbsp;FlipaClip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="flipaclip-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1126,10 +1076,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="flipboard"></a>
 <details>
-<summary><img src=".github/assets/icons/flipboard.png" width="18" align="top">&nbsp;&nbsp;Flipboard&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/flipboard.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Flipboard&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="flipboard-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1143,10 +1092,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="focusnow"></a>
 <details>
-<summary><img src=".github/assets/icons/focusnow.png" width="18" align="top">&nbsp;&nbsp;FocusNow&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.ferdinandobermeier.focusmate" width="18" height="18" align="top" alt="">&nbsp;&nbsp;FocusNow&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="focusnow-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1161,10 +1109,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="forusapp"></a>
 <details>
-<summary><img src=".github/assets/icons/forus.png" width="18" align="top">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.myvitale.forus" width="18" height="18" align="top" alt="">&nbsp;&nbsp;ForusApp&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="forusapp-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1177,10 +1124,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="freedom"></a>
 <details>
-<summary><img src=".github/assets/icons/freedom.png" width="18" align="top">&nbsp;&nbsp;Freedom&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/to.freedom.android2" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Freedom&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="freedom-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1194,10 +1140,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="glass-widgets"></a>
 <details>
-<summary><img src=".github/assets/icons/glasswidgets.png" width="18" align="top">&nbsp;&nbsp;Glass Widgets&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.jndapp.glass.widgets" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Glass Widgets&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="glass-widgets-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1210,10 +1155,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="graph-messenger"></a>
 <details>
-<summary><img src=".github/assets/icons/graphmessenger.png" width="18" align="top">&nbsp;&nbsp;Graph Messenger&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ir.ilmili.telegraph" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Graph Messenger&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<a id="graph-messenger-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1231,10 +1175,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ground-news"></a>
 <details>
-<summary><img src=".github/assets/icons/groundnews.png" width="18" align="top">&nbsp;&nbsp;Ground News&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.checkitt" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Ground News&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="ground-news-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1250,10 +1193,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="habitify"></a>
 <details>
-<summary><img src=".github/assets/icons/habitify.png" width="18" align="top">&nbsp;&nbsp;Habitify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/co.unstatic.habitify" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Habitify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="habitify-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1267,10 +1209,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="hindu-calendar"></a>
 <details>
-<summary><img src=".github/assets/icons/hinducalendar.png" width="18" align="top">&nbsp;&nbsp;Hindu Calendar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.alokmandavgane.hinducalendar" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Hindu Calendar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="hindu-calendar-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1284,10 +1225,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="hypic"></a>
 <details>
-<summary><img src=".github/assets/icons/hypic.png" width="18" align="top">&nbsp;&nbsp;Hypic&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.xt.retouchoversea" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Hypic&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="hypic-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1303,10 +1243,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ilovepdf"></a>
 <details>
-<summary><img src=".github/assets/icons/ilovepdf.png" width="18" align="top">&nbsp;&nbsp;iLovePDF&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.ilovepdf.www" width="18" height="18" align="top" alt="">&nbsp;&nbsp;iLovePDF&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="ilovepdf-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1320,10 +1259,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="imo"></a>
 <details>
-<summary><img src=".github/assets/icons/imo.png" width="18" align="top">&nbsp;&nbsp;imo&nbsp;&nbsp;•&nbsp;&nbsp;31 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.imo.android.imoim" width="18" height="18" align="top" alt="">&nbsp;&nbsp;imo&nbsp;&nbsp;•&nbsp;&nbsp;31 patches</summary>
+<a id="imo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1366,10 +1304,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="internet-speed-meter-lite"></a>
 <details>
-<summary><img src=".github/assets/icons/internetspeedmeterlite.png" width="18" align="top">&nbsp;&nbsp;Internet Speed Meter Lite&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.internet.speed.meter.lite" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Internet Speed Meter Lite&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="internet-speed-meter-lite-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1384,10 +1321,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="iototoy"></a>
 <details>
-<summary><img src=".github/assets/icons/iototoy.png" width="18" align="top">&nbsp;&nbsp;IoToToy&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.hardcodedjoy.iototoy" width="18" height="18" align="top" alt="">&nbsp;&nbsp;IoToToy&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="iototoy-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1401,10 +1337,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ivoox"></a>
 <details>
-<summary><img src=".github/assets/icons/ivoox.png" width="18" align="top">&nbsp;&nbsp;iVoox&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.ivoox.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;iVoox&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="ivoox-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1418,10 +1353,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="joyn"></a>
 <details>
-<summary><img src=".github/assets/icons/joyn.png" width="18" align="top">&nbsp;&nbsp;Joyn&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/de.prosiebensat1digital.seventv" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Joyn&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="joyn-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1434,10 +1368,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="joyn-austria"></a>
 <details>
-<summary><img src=".github/assets/icons/joyn-austria.png" width="18" align="top">&nbsp;&nbsp;Joyn Austria&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/at.zappn" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Joyn Austria&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="joyn-austria-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1450,10 +1383,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="jujo"></a>
 <details>
-<summary><img src=".github/assets/icons/com.dev2a.junk_journal.png" width="18" align="top">&nbsp;&nbsp;Jujo&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.dev2a.junk_journal" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Jujo&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="jujo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1467,10 +1399,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="jvdroid"></a>
 <details>
-<summary><img src=".github/assets/icons/jvdroid.png" width="18" align="top">&nbsp;&nbsp;Jvdroid&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ru.iiec.jvdroid" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Jvdroid&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="jvdroid-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1485,10 +1416,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="keepa"></a>
 <details>
-<summary><img src=".github/assets/icons/keepa.png" width="18" align="top">&nbsp;&nbsp;Keepa&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.keepa.mobile" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Keepa&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="keepa-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1504,10 +1434,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="kick"></a>
 <details>
-<summary><img src=".github/assets/icons/kick.png" width="18" align="top">&nbsp;&nbsp;Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.kick.mobile" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Kick&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="kick-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1520,10 +1449,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="klassik-radio"></a>
 <details>
-<summary><img src=".github/assets/icons/klassikradio.png" width="18" align="top">&nbsp;&nbsp;Klassik Radio+&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/de.klassikradio.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Klassik Radio+&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="klassik-radio-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1536,10 +1464,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="lagguy-wallpapers"></a>
 <details>
-<summary><img src=".github/assets/icons/lagguy.png" width="18" align="top">&nbsp;&nbsp;Lagguy Wallpapers&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.lagguy.wallpapers" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Lagguy Wallpapers&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="lagguy-wallpapers-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1553,10 +1480,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="launchbox"></a>
 <details>
-<summary><img src=".github/assets/icons/launchbox.png" width="18" align="top">&nbsp;&nbsp;LaunchBox&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://www.launchbox-app.com/apple-touch-icon-120x120.png" width="18" height="18" align="top" alt="">&nbsp;&nbsp;LaunchBox&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="launchbox-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1569,10 +1495,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="led-blinker"></a>
 <details>
-<summary><img src=".github/assets/icons/ledblinker.png" width="18" align="top">&nbsp;&nbsp;LED Blinker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.ledblinker" width="18" height="18" align="top" alt="">&nbsp;&nbsp;LED Blinker&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="led-blinker-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1585,10 +1510,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="liftoff"></a>
 <details>
-<summary><img src=".github/assets/icons/liftoff.png" width="18" align="top">&nbsp;&nbsp;Liftoff&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.gymbros.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Liftoff&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="liftoff-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1602,10 +1526,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="lingodeer"></a>
 <details>
-<summary><img src=".github/assets/icons/lingodeer.png" width="18" align="top">&nbsp;&nbsp;LingoDeer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.lingodeer" width="18" height="18" align="top" alt="">&nbsp;&nbsp;LingoDeer&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="lingodeer-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1620,10 +1543,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="magic-earth"></a>
 <details>
-<summary><img src=".github/assets/icons/magicearth.png" width="18" align="top">&nbsp;&nbsp;Magic Earth&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.generalmagic.magicearth" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Magic Earth&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="magic-earth-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1636,10 +1558,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="mangatime"></a>
 <details>
-<summary><img src=".github/assets/icons/mangatime.png" width="18" align="top">&nbsp;&nbsp;MangaTime&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/net.mangatime.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MangaTime&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="mangatime-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1653,10 +1574,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="may-beautiful-bullet-journal"></a>
 <details>
-<summary><img src=".github/assets/icons/com.azeravn.bulletjournal.png" width="18" align="top">&nbsp;&nbsp;May: Beautiful Bullet Journal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.azeravn.bulletjournal" width="18" height="18" align="top" alt="">&nbsp;&nbsp;May: Beautiful Bullet Journal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="may-beautiful-bullet-journal-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1669,10 +1589,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="mbc-shahid"></a>
 <details>
-<summary><img src=".github/assets/icons/shahid.png" width="18" align="top">&nbsp;&nbsp;MBC Shahid&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/net.mbc.shahid" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MBC Shahid&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<a id="mbc-shahid-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1690,10 +1609,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="medicneet"></a>
 <details>
-<summary><img src=".github/assets/icons/medicneet.png" width="18" align="top">&nbsp;&nbsp;MedicNEET&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.halalfire.medicneet" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MedicNEET&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="medicneet-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1707,10 +1625,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="memoneet"></a>
 <details>
-<summary><img src=".github/assets/icons/memoneet.png" width="18" align="top">&nbsp;&nbsp;MemoNeet&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.adithya.memoneet" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MemoNeet&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="memoneet-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1724,10 +1641,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="minishare"></a>
 <details>
-<summary><img src=".github/assets/icons/minishare.png" width="18" align="top">&nbsp;&nbsp;MiniShare&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.omniashare.minishare" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MiniShare&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="minishare-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1740,10 +1656,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="monet-launcher"></a>
 <details>
-<summary><img src=".github/assets/icons/monet.png" width="18" align="top">&nbsp;&nbsp;Monet Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.klevico.monet" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Monet Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="monet-launcher-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1756,10 +1671,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="moon-reader"></a>
 <details>
-<summary><img src=".github/assets/icons/moonreader.png" width="18" align="top">&nbsp;&nbsp;Moon+ Reader&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.flyersoft.moonreader" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Moon+ Reader&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="moon-reader-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1774,10 +1688,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="moviebox"></a>
 <details>
-<summary><img src=".github/assets/icons/moviebox.png" width="18" align="top">&nbsp;&nbsp;MovieBox&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.community.oneroom" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MovieBox&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="moviebox-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1793,10 +1706,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="moviebox-tv"></a>
 <details>
-<summary><img src=".github/assets/icons/movieboxtv.png" width="18" align="top">&nbsp;&nbsp;MovieBox TV&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.community.mbox.tv" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MovieBox TV&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="moviebox-tv-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1811,10 +1723,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="musclewiki"></a>
 <details>
-<summary><img src=".github/assets/icons/musclewiki.png" width="18" align="top">&nbsp;&nbsp;MuscleWiki&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.musclewiki.macro" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MuscleWiki&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="musclewiki-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1828,10 +1739,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="musicolet"></a>
 <details>
-<summary><img src=".github/assets/icons/musicolet.png" width="18" align="top">&nbsp;&nbsp;Musicolet&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/in.krosbits.musicolet" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Musicolet&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="musicolet-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1844,10 +1754,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="musixmatch"></a>
 <details>
-<summary><img src=".github/assets/icons/musixmatch.png" width="18" align="top">&nbsp;&nbsp;Musixmatch&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.musixmatch.android.lyrify" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Musixmatch&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="musixmatch-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1860,10 +1769,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="muviz-widgets"></a>
 <details>
-<summary><img src=".github/assets/icons/muvizwidgets.png" width="18" align="top">&nbsp;&nbsp;Muviz Widgets&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.sparkine.widgets" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Muviz Widgets&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="muviz-widgets-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1877,10 +1785,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="my-apk"></a>
 <details>
-<summary><img src=".github/assets/icons/com.andatsoft.myapk.fwa.png" width="18" align="top">&nbsp;&nbsp;My APK&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.andatsoft.myapk.fwa" width="18" height="18" align="top" alt="">&nbsp;&nbsp;My APK&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="my-apk-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1893,10 +1800,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="mymoveset"></a>
 <details>
-<summary><img src=".github/assets/icons/mymoveset.png" width="18" align="top">&nbsp;&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.soulbreakers.mymoveset" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MyMoveset&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="mymoveset-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1910,10 +1816,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="myscript-math"></a>
 <details>
-<summary><img src=".github/assets/icons/myscriptmath.png" width="18" align="top">&nbsp;&nbsp;MyScript Math&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.myscript.math" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MyScript Math&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="myscript-math-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1927,10 +1832,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="myscript-notes"></a>
 <details>
-<summary><img src=".github/assets/icons/myscriptnotes.png" width="18" align="top">&nbsp;&nbsp;MyScript Notes&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.myscript.nebo" width="18" height="18" align="top" alt="">&nbsp;&nbsp;MyScript Notes&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="myscript-notes-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1944,10 +1848,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="nara-baby"></a>
 <details>
-<summary><img src=".github/assets/icons/narababy.png" width="18" align="top">&nbsp;&nbsp;Nara Baby&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.naraorganics.nara" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Nara Baby&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="nara-baby-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1962,10 +1865,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="neetprep"></a>
 <details>
-<summary><img src=".github/assets/icons/neetprep.png" width="18" align="top">&nbsp;&nbsp;NEETprep&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.lernr.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;NEETprep&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="neetprep-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1979,10 +1881,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="neetprep-essential"></a>
 <details>
-<summary><img src=".github/assets/icons/neetprepessential.png" width="18" align="top">&nbsp;&nbsp;NEETprep Essential&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.gooded.essential" width="18" height="18" align="top" alt="">&nbsp;&nbsp;NEETprep Essential&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="neetprep-essential-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -1997,10 +1898,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="network-analyzer"></a>
 <details>
-<summary><img src=".github/assets/icons/netanalyzer.png" width="18" align="top">&nbsp;&nbsp;Network Analyzer&nbsp;&nbsp;•&nbsp;&nbsp;18 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/net.techet.netanalyzerlite.an" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Network Analyzer&nbsp;&nbsp;•&nbsp;&nbsp;18 patches</summary>
+<a id="network-analyzer-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2030,10 +1930,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="networkflow"></a>
 <details>
-<summary><img src=".github/assets/icons/networkflow.png" width="18" align="top">&nbsp;&nbsp;NetworkFlow&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.evozi.network" width="18" height="18" align="top" alt="">&nbsp;&nbsp;NetworkFlow&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="networkflow-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2046,15 +1945,14 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="nextdoor"></a>
 <details>
-<summary><img src=".github/assets/icons/nextdoor.png" width="18" align="top">&nbsp;&nbsp;Nextdoor&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.nextdoor" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Nextdoor&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="nextdoor-patches"></a><br>
 
 **🎯 Supported versions:**
 
-| 5.39.2 |
-| :---: |
+| 5.38.1 | 5.39.2 |
+| :---: | :---: |
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|
@@ -2063,10 +1961,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="notein"></a>
 <details>
-<summary><img src=".github/assets/icons/notein.png" width="18" align="top">&nbsp;&nbsp;Notein&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.orion.notein.global" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Notein&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="notein-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2079,10 +1976,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="notesnook"></a>
 <details>
-<summary><img src=".github/assets/icons/notesnook.png" width="18" align="top">&nbsp;&nbsp;Notesnook&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.streetwriters.notesnook" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Notesnook&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="notesnook-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2096,10 +1992,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ok"></a>
 <details>
-<summary><img src=".github/assets/icons/okru.png" width="18" align="top">&nbsp;&nbsp;OK&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ru.ok.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;OK&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="ok-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2112,10 +2007,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="one4home-launcher"></a>
 <details>
-<summary><img src=".github/assets/icons/one4home.png" width="18" align="top">&nbsp;&nbsp;One4Home Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.one4studio.one4home" width="18" height="18" align="top" alt="">&nbsp;&nbsp;One4Home Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="one4home-launcher-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2128,10 +2022,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="opal"></a>
 <details>
-<summary><img src=".github/assets/icons/opal.png" width="18" align="top">&nbsp;&nbsp;Opal&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.withopal.opal" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Opal&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="opal-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2145,10 +2038,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="patreon"></a>
 <details>
-<summary><img src=".github/assets/icons/patreon.png" width="18" align="top">&nbsp;&nbsp;Patreon&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.patreon.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Patreon&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
+<a id="patreon-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2168,10 +2060,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="period-tracker-and-calendar"></a>
 <details>
-<summary><img src=".github/assets/icons/periodcalendar.png" width="18" align="top">&nbsp;&nbsp;Period Tracker and Calendar&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.lbrc.PeriodCalendar" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Period Tracker and Calendar&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="period-tracker-and-calendar-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2184,10 +2075,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="perplexity"></a>
 <details>
-<summary><img src=".github/assets/icons/perplexity.png" width="18" align="top">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ai.perplexity.app.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Perplexity&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="perplexity-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2203,10 +2093,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="photo-editor-pro"></a>
 <details>
-<summary><img src=".github/assets/icons/photoeditorpro.png" width="18" align="top">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/photo.editor.photoeditor.photoeditorpro" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Photo Editor Pro&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<a id="photo-editor-pro-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2225,10 +2114,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="photone"></a>
 <details>
-<summary><img src=".github/assets/icons/photone.png" width="18" align="top">&nbsp;&nbsp;Photone&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/io.lightray.photone" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Photone&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="photone-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2241,10 +2129,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="pixlr"></a>
 <details>
-<summary><img src=".github/assets/icons/pixlr.png" width="18" align="top">&nbsp;&nbsp;Pixlr&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.pixlr.express" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Pixlr&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="pixlr-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2260,10 +2147,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="pleco"></a>
 <details>
-<summary><img src=".github/assets/icons/pleco.png" width="18" align="top">&nbsp;&nbsp;Pleco&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.pleco.chinesesystem" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Pleco&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="pleco-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2277,10 +2163,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="pocket-whip"></a>
 <details>
-<summary><img src=".github/assets/icons/pocketwhip.png" width="18" align="top">&nbsp;&nbsp;Pocket Whip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.greenstone.pocketwhip" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Pocket Whip&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="pocket-whip-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2294,10 +2179,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="poe"></a>
 <details>
-<summary><img src=".github/assets/icons/poe.png" width="18" align="top">&nbsp;&nbsp;Poe&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.poe.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Poe&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="poe-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2311,10 +2195,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="prayer-times-and-qibla"></a>
 <details>
-<summary><img src=".github/assets/icons/prayertimes.png" width="18" align="top">&nbsp;&nbsp;Prayer Times and Qibla&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.reworewo.prayertimes" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Prayer Times and Qibla&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="prayer-times-and-qibla-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2328,10 +2211,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="privacy-notes"></a>
 <details>
-<summary><img src=".github/assets/icons/privacynotes.png" width="18" align="top">&nbsp;&nbsp;Privacy Notes&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/app.privacynotes" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Privacy Notes&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="privacy-notes-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2344,10 +2226,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="projectivy-launcher"></a>
 <details>
-<summary><img src=".github/assets/icons/projectivy.png" width="18" align="top">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.spocky.projengmenu" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Projectivy Launcher&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="projectivy-launcher-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2360,10 +2241,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="proton-authenticator"></a>
 <details>
-<summary><img src=".github/assets/icons/protonauthenticator.png" width="18" align="top">&nbsp;&nbsp;Proton Authenticator&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/proton.android.authenticator" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Proton Authenticator&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<a id="proton-authenticator-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2380,10 +2260,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="proton-lumo"></a>
 <details>
-<summary><img src=".github/assets/icons/lumo.png" width="18" align="top">&nbsp;&nbsp;Proton Lumo&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/me.proton.android.lumo" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Proton Lumo&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="proton-lumo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2399,10 +2278,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="proton-mail"></a>
 <details>
-<summary><img src=".github/assets/icons/protonmail.png" width="18" align="top">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ch.protonmail.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Proton Mail&nbsp;&nbsp;•&nbsp;&nbsp;11 patches</summary>
+<a id="proton-mail-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2425,10 +2303,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="proton-pass"></a>
 <details>
-<summary><img src=".github/assets/icons/protonpass.png" width="18" align="top">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/proton.android.pass" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Proton Pass&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<a id="proton-pass-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2449,10 +2326,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="proton-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/protonvpn.png" width="18" align="top">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Proton VPN&nbsp;&nbsp;•&nbsp;&nbsp;14 patches</summary>
+<a id="proton-vpn-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2478,10 +2354,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="psiphon"></a>
 <details>
-<summary><img src=".github/assets/icons/psiphon.png" width="18" align="top">&nbsp;&nbsp;Psiphon&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.psiphon3.subscription" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Psiphon&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="psiphon-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2494,10 +2369,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="public"></a>
 <details>
-<summary><img src=".github/assets/icons/publicvideos.png" width="18" align="top">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Public&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<a id="public-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2518,10 +2392,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="pydroid-3"></a>
 <details>
-<summary><img src=".github/assets/icons/pydroid.png" width="18" align="top">&nbsp;&nbsp;Pydroid 3&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ru.iiec.pydroid3" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Pydroid 3&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="pydroid-3-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2536,10 +2409,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="qr-barcode-scanner"></a>
 <details>
-<summary><img src=".github/assets/icons/qrscanner.png" width="18" align="top">&nbsp;&nbsp;QR & Barcode Scanner&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.gamma.scan" width="18" height="18" align="top" alt="">&nbsp;&nbsp;QR & Barcode Scanner&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="qr-barcode-scanner-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2552,10 +2424,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="quick-cursor"></a>
 <details>
-<summary><img src=".github/assets/icons/quickcursor.png" width="18" align="top">&nbsp;&nbsp;Quick Cursor&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.quickcursor" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Quick Cursor&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="quick-cursor-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2568,10 +2439,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="quranify"></a>
 <details>
-<summary><img src=".github/assets/icons/quranify.png" width="18" align="top">&nbsp;&nbsp;Quranify&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.mchutov.Quranify" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Quranify&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="quranify-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2584,10 +2454,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="radio-javan"></a>
 <details>
-<summary><img src=".github/assets/icons/radiojavan.png" width="18" align="top">&nbsp;&nbsp;Radio Javan&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.radiojavan.androidradio" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Radio Javan&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="radio-javan-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2602,10 +2471,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="raindrop-io"></a>
 <details>
-<summary><img src=".github/assets/icons/raindrop.png" width="18" align="top">&nbsp;&nbsp;Raindrop.io&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/io.raindrop.raindropio" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Raindrop.io&nbsp;&nbsp;•&nbsp;&nbsp;6 patches</summary>
+<a id="raindrop-io-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2623,10 +2491,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="rateglance"></a>
 <details>
-<summary><img src=".github/assets/icons/rateglance.png" width="18" align="top">&nbsp;&nbsp;RateGlance&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.sry.rateglance" width="18" height="18" align="top" alt="">&nbsp;&nbsp;RateGlance&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="rateglance-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2639,10 +2506,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="readera"></a>
 <details>
-<summary><img src=".github/assets/icons/readera.png" width="18" align="top">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;27 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/org.readera" width="18" height="18" align="top" alt="">&nbsp;&nbsp;ReadEra&nbsp;&nbsp;•&nbsp;&nbsp;27 patches</summary>
+<a id="readera-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2681,10 +2547,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="realme-link"></a>
 <details>
-<summary><img src=".github/assets/icons/realmelink.png" width="18" align="top">&nbsp;&nbsp;Realme Link&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.realme.link" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Realme Link&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="realme-link-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2698,10 +2563,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="redreader"></a>
 <details>
-<summary><img src=".github/assets/icons/redreader.png" width="18" align="top">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/org.quantumbadger.redreader" width="18" height="18" align="top" alt="">&nbsp;&nbsp;RedReader&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="redreader-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2715,10 +2579,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="redreader-alpha"></a>
 <details>
-<summary><img src=".github/assets/icons/redreaderalpha.png" width="18" align="top">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://raw.githubusercontent.com/QuantumBadger/RedReader/master/src/main/res/mipmap-xxxhdpi/icon_inv.png" width="18" height="18" align="top" alt="">&nbsp;&nbsp;RedReader Alpha&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="redreader-alpha-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2732,10 +2595,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="resprite"></a>
 <details>
-<summary><img src=".github/assets/icons/resprite.png" width="18" align="top">&nbsp;&nbsp;Resprite&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.fengeon.resprite_desktop" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Resprite&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="resprite-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2748,10 +2610,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ridmik-keyboard"></a>
 <details>
-<summary><img src=".github/assets/icons/ridmik.png" width="18" align="top">&nbsp;&nbsp;Ridmik Keyboard&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ridmik.keyboard" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Ridmik Keyboard&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="ridmik-keyboard-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2764,10 +2625,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ringtone-maker"></a>
 <details>
-<summary><img src=".github/assets/icons/ringtonemaker.png" width="18" align="top">&nbsp;&nbsp;Ringtone Maker&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/ringtonemaker.musiccutter.customringtones.freeringtonemaker" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Ringtone Maker&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="ringtone-maker-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2781,10 +2641,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="rise-sleep-tracker"></a>
 <details>
-<summary><img src=".github/assets/icons/risesleep.png" width="18" align="top">&nbsp;&nbsp;RISE Sleep Tracker&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.risesci.nyx" width="18" height="18" align="top" alt="">&nbsp;&nbsp;RISE Sleep Tracker&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="rise-sleep-tracker-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2799,10 +2658,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="rubber-bands"></a>
 <details>
-<summary><img src=".github/assets/icons/rubberbands.png" width="18" align="top">&nbsp;&nbsp;Rubber Bands&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/app.rubberbands.fit" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Rubber Bands&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="rubber-bands-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2815,10 +2673,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="serializd"></a>
 <details>
-<summary><img src=".github/assets/icons/serializd.png" width="18" align="top">&nbsp;&nbsp;Serializd&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.serializdmobile" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Serializd&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="serializd-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2833,10 +2690,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="sheytoon"></a>
 <details>
-<summary><img src=".github/assets/icons/sheytoon.png" width="18" align="top">&nbsp;&nbsp;Sheytoon&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.triovent.datingapp" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Sheytoon&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="sheytoon-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2849,10 +2705,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="showly"></a>
 <details>
-<summary><img src=".github/assets/icons/showly.png" width="18" align="top">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.michaldrabik.showly2" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Showly&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="showly-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2866,10 +2721,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="shttps-marketless"></a>
 <details>
-<summary><img src=".github/assets/icons/shttps.png" width="18" align="top">&nbsp;&nbsp;SHTTPS Marketless&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.phlox.simpleserver.marketless" width="18" height="18" align="top" alt="">&nbsp;&nbsp;SHTTPS Marketless&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="shttps-marketless-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2882,10 +2736,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="sqcom"></a>
 <details>
-<summary><img src=".github/assets/icons/sqcom.png" width="18" align="top">&nbsp;&nbsp;SQCOM&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.sqcom.shangqing" width="18" height="18" align="top" alt="">&nbsp;&nbsp;SQCOM&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="sqcom-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2899,10 +2752,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="steezy"></a>
 <details>
-<summary><img src=".github/assets/icons/steezy.png" width="18" align="top">&nbsp;&nbsp;STEEZY&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/co.steezy.app" width="18" height="18" align="top" alt="">&nbsp;&nbsp;STEEZY&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
+<a id="steezy-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2918,10 +2770,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="storywise"></a>
 <details>
-<summary><img src=".github/assets/icons/storywise.png" width="18" align="top">&nbsp;&nbsp;Storywise&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.storywise.storywise" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Storywise&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="storywise-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2936,10 +2787,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="sygic"></a>
 <details>
-<summary><img src=".github/assets/icons/sygic.png" width="18" align="top">&nbsp;&nbsp;Sygic&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.sygic.aura" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Sygic&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="sygic-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2953,10 +2803,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="symfonium"></a>
 <details>
-<summary><img src=".github/assets/icons/symfonium.png" width="18" align="top">&nbsp;&nbsp;Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/app.symfonik.music.player" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Symfonium&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="symfonium-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2971,10 +2820,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="terabox"></a>
 <details>
-<summary><img src=".github/assets/icons/terabox.png" width="18" align="top">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.dubox.drive" width="18" height="18" align="top" alt="">&nbsp;&nbsp;TeraBox&nbsp;&nbsp;•&nbsp;&nbsp;12 patches</summary>
+<a id="terabox-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -2998,10 +2846,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="tradingview"></a>
 <details>
-<summary><img src=".github/assets/icons/tradingview.png" width="18" align="top">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.tradingview.tradingviewapp" width="18" height="18" align="top" alt="">&nbsp;&nbsp;TradingView&nbsp;&nbsp;•&nbsp;&nbsp;7 patches</summary>
+<a id="tradingview-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3020,10 +2867,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="trainline"></a>
 <details>
-<summary><img src=".github/assets/icons/trainline.png" width="18" align="top">&nbsp;&nbsp;Trainline&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.thetrainline" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Trainline&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="trainline-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3036,10 +2882,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="transparent-clock-weather"></a>
 <details>
-<summary><img src=".github/assets/icons/transparentclock.png" width="18" align="top">&nbsp;&nbsp;Transparent clock & weather&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.droid27.transparentclockweather" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Transparent clock & weather&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="transparent-clock-weather-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3053,10 +2898,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="tunneldoom-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/tunneldoomvpn.png" width="18" align="top">&nbsp;&nbsp;TunnelDOOM VPN&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.tunneldoom.http" width="18" height="18" align="top" alt="">&nbsp;&nbsp;TunnelDOOM VPN&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="tunneldoom-vpn-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3070,10 +2914,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="u-dictionary"></a>
 <details>
-<summary><img src=".github/assets/icons/udictionary.png" width="18" align="top">&nbsp;&nbsp;U Dictionary&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.youdao.hindict" width="18" height="18" align="top" alt="">&nbsp;&nbsp;U Dictionary&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="u-dictionary-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3086,10 +2929,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ultimate-guitar"></a>
 <details>
-<summary><img src=".github/assets/icons/ultimateguitar.png" width="18" align="top">&nbsp;&nbsp;Ultimate Guitar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.ultimateguitar.tabs" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Ultimate Guitar&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="ultimate-guitar-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3103,10 +2945,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="ultimea"></a>
 <details>
-<summary><img src=".github/assets/icons/ultimea.png" width="18" align="top">&nbsp;&nbsp;ULTIMEA&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.dynanic.ultimea" width="18" height="18" align="top" alt="">&nbsp;&nbsp;ULTIMEA&nbsp;&nbsp;•&nbsp;&nbsp;9 patches</summary>
+<a id="ultimea-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3127,10 +2968,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="uptcl"></a>
 <details>
-<summary><img src=".github/assets/icons/uptcl.png" width="18" align="top">&nbsp;&nbsp;UPTCL&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.ufoneselfcare" width="18" height="18" align="top" alt="">&nbsp;&nbsp;UPTCL&nbsp;&nbsp;•&nbsp;&nbsp;5 patches</summary>
+<a id="uptcl-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3147,10 +2987,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="usa-vpn"></a>
 <details>
-<summary><img src=".github/assets/icons/usavpn.png" width="18" align="top">&nbsp;&nbsp;USA VPN&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/vpn.usa_tap2free" width="18" height="18" align="top" alt="">&nbsp;&nbsp;USA VPN&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="usa-vpn-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3163,10 +3002,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="viber"></a>
 <details>
-<summary><img src=".github/assets/icons/viber.png" width="18" align="top">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;25 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.viber.voip" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Viber&nbsp;&nbsp;•&nbsp;&nbsp;25 patches</summary>
+<a id="viber-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3203,10 +3041,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="video-editor"></a>
 <details>
-<summary><img src=".github/assets/icons/videoeditor.png" width="18" align="top">&nbsp;&nbsp;Video Editor&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/videoeditor.videomaker.videoeditorforyoutube" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Video Editor&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="video-editor-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3219,10 +3056,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="vllo"></a>
 <details>
-<summary><img src=".github/assets/icons/vllo.png" width="18" align="top">&nbsp;&nbsp;VLLO&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.darinsoft.vimo" width="18" height="18" align="top" alt="">&nbsp;&nbsp;VLLO&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="vllo-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3236,10 +3072,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="vpn-india"></a>
 <details>
-<summary><img src=".github/assets/icons/vpnindia.png" width="18" align="top">&nbsp;&nbsp;VPN India&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/india.vpn_tap2free" width="18" height="18" align="top" alt="">&nbsp;&nbsp;VPN India&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="vpn-india-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3252,10 +3087,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="vpn-super-unlimited-proxy"></a>
 <details>
-<summary><img src=".github/assets/icons/vpnsuper.png" width="18" align="top">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.free.vpn.super.hotspot.open" width="18" height="18" align="top" alt="">&nbsp;&nbsp;VPN Super Unlimited Proxy&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="vpn-super-unlimited-proxy-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3269,10 +3103,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="vpnify"></a>
 <details>
-<summary><img src=".github/assets/icons/vpnify.png" width="18" align="top">&nbsp;&nbsp;vpnify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.vpn.free.hotspot.secure.vpnify" width="18" height="18" align="top" alt="">&nbsp;&nbsp;vpnify&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="vpnify-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3286,10 +3119,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="wallmaa"></a>
 <details>
-<summary><img src=".github/assets/icons/wallmaa.png" width="18" align="top">&nbsp;&nbsp;Wallmaa&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.wallmaa.minimal.wallpapers" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Wallmaa&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="wallmaa-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3303,10 +3135,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="walp"></a>
 <details>
-<summary><img src=".github/assets/icons/walp.png" width="18" align="top">&nbsp;&nbsp;WalP&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.stresscodes.wallp" width="18" height="18" align="top" alt="">&nbsp;&nbsp;WalP&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="walp-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3319,10 +3150,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="watch-it"></a>
 <details>
-<summary><img src=".github/assets/icons/watchit.png" width="18" align="top">&nbsp;&nbsp;WATCH IT&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.watchit.vod" width="18" height="18" align="top" alt="">&nbsp;&nbsp;WATCH IT&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="watch-it-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3336,10 +3166,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="wattpad"></a>
 <details>
-<summary><img src=".github/assets/icons/wattpad.png" width="18" align="top">&nbsp;&nbsp;Wattpad&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/wp.wattpad" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Wattpad&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="wattpad-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3354,10 +3183,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="weather24"></a>
 <details>
-<summary><img src=".github/assets/icons/weather24.png" width="18" align="top">&nbsp;&nbsp;weather24&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.wetter.androidclient" width="18" height="18" align="top" alt="">&nbsp;&nbsp;weather24&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="weather24-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3370,10 +3198,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="x-plore-file-manager"></a>
 <details>
-<summary><img src=".github/assets/icons/xplore.png" width="18" align="top">&nbsp;&nbsp;X-plore File Manager&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.lonelycatgames.Xplore" width="18" height="18" align="top" alt="">&nbsp;&nbsp;X-plore File Manager&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="x-plore-file-manager-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3387,10 +3214,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="xianyu"></a>
 <details>
-<summary><img src=".github/assets/icons/idlefish.png" width="18" align="top">&nbsp;&nbsp;Xianyu&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.taobao.idlefish" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Xianyu&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="xianyu-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3404,10 +3230,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="xtream-player"></a>
 <details>
-<summary><img src=".github/assets/icons/xtreamplayer.png" width="18" align="top">&nbsp;&nbsp;Xtream Player&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/me.aap.fermatamod.dear.google.why.bingo2.rec" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Xtream Player&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="xtream-player-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3422,10 +3247,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="yanosik"></a>
 <details>
-<summary><img src=".github/assets/icons/pl.neptis.yanosik.mobi.android.png" width="18" align="top">&nbsp;&nbsp;Yanosik&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/pl.neptis.yanosik.mobi.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Yanosik&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="yanosik-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3438,10 +3262,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="yi-iot"></a>
 <details>
-<summary><img src=".github/assets/icons/yiiot.png" width="18" align="top">&nbsp;&nbsp;Yi iot&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.yunyi.smartcamera" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Yi iot&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<a id="yi-iot-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3454,10 +3277,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 </details>
 
-<a id="yuka"></a>
 <details>
-<summary><img src=".github/assets/icons/yuka.png" width="18" align="top">&nbsp;&nbsp;Yuka&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/io.yuka.android" width="18" height="18" align="top" alt="">&nbsp;&nbsp;Yuka&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<a id="yuka-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3466,8 +3288,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
-| <a id="yuka-sign-in-token"></a>[Sign-in token](patches/src/main/kotlin/app/morphe/patches/yuka/misc/signin/SignInTokenPatch.kt) | Signs in on a standard install with an App Check token. Requires a token copied from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of the README. | • App Check token |
-| <a id="yuka-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads don't work. Signing in on a standard install needs Sign-in token. A root mount install signs in without it. |  |
+| <a id="yuka-sign-in-token"></a>[Sign-in token](patches/src/main/kotlin/app/morphe/patches/yuka/misc/signin/SignInTokenPatch.kt) | Signs in with an App Check token. Requires a token copied from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of the README. | • App Check token |
+| <a id="yuka-unlock-premium"></a>[Unlock premium](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads don't work. Signing in needs Sign-in token, except on a root mount install. |  |
 
 **Sign-in token** needs an App Check token from Yuka installed from Google Play on a rooted phone. Yuka uses
 the token only to sign in. You need a new one only if you sign out or clear Yuka's data. A root mount install
@@ -3492,10 +3314,9 @@ signs in without a token.
 
 </details>
 
-<a id="torrent"></a>
 <details>
-<summary><img src=".github/assets/icons/utorrent.png" width="18" align="top">&nbsp;&nbsp;µTorrent&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
-<br>
+<summary><img src="https://publicmetadata.co.uk/com.utorrent.client" width="18" height="18" align="top" alt="">&nbsp;&nbsp;µTorrent&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<a id="torrent-patches"></a><br>
 
 **🎯 Supported versions:**
 
@@ -3510,10 +3331,9 @@ signs in without a token.
 
 </details>
 
-<a id="universal"></a>
 <details>
 <summary>🌐&nbsp;Universal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
+<a id="universal-patches"></a><br>
 
 | 💊&nbsp;Patch | 📜&nbsp;Description |
 |----------|----------------|

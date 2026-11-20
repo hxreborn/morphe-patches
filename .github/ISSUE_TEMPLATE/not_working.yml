@@ -285,6 +285,7 @@ body:
         - "Network Analyzer (another version, type it below)"
         - "NetworkFlow 3.1.0"
         - "NetworkFlow (another version, type it below)"
+        - "Nextdoor 5.38.1"
         - "Nextdoor 5.39.2"
         - "Nextdoor (another version, type it below)"
         - "Notein v2.1.37.0"
@@ -495,11 +496,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.84.0-dev.3"
         - "1.84.0-dev.2"
         - "1.84.0-dev.1"
         - "1.83.0-dev.3"
         - "1.83.0-dev.2"
-        - "1.83.0-dev.1"
         - "1.83.0"
         - "Older than these"
         # /generated
