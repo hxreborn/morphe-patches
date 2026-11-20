@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.84.1-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.84.1-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**590 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.85.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.85.0-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -49,13 +49,13 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <table align="center">
 <tr>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>5&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>5&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>14&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>2&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>14&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>2&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#aliexpress-comalibabaaliexpresshd"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9&nbsp;new&nbsp;patches<br>5&nbsp;fixed</sub></td>
 </tr>
 <tr>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#castle-comexternalcastle"><img src="https://publicmetadata.co.uk/com.external.castle" width="40" height="40" align="top" alt=""><br>Castle</a><br><sub>4&nbsp;new&nbsp;patches<br>8&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#public-comcardfeedvideo_public"><img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="40" height="40" align="top" alt=""><br>Public</a><br><sub>8&nbsp;new&nbsp;patches<br>1&nbsp;fixed<br>3&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#candy-crush-saga-comkingcandycrushsaga"><img src="https://publicmetadata.co.uk/com.king.candycrushsaga" width="40" height="40" align="top" alt=""><br>Candy Crush Saga</a><br><sub>12&nbsp;new&nbsp;patches<br>4&nbsp;fixed</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#public-comcardfeedvideo_public"><img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="40" height="40" align="top" alt=""><br>Public</a><br><sub>6&nbsp;new&nbsp;patches<br>1&nbsp;fixed<br>3&nbsp;new&nbsp;versions</sub></td>
 </tr>
 </table>
 
@@ -200,7 +200,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 132 | <img src="https://publicmetadata.co.uk/proton.android.pass" width="24" height="24" align="top" alt=""> [**Proton Pass**](PATCHES.md#proton-pass-protonandroidpass) | 9 | `1.40.3`, `1.41.2`&nbsp;+3 | [`proton.android.pass`](https://play.google.com/store/apps/details?id=proton.android.pass) |
 | 133 | <img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="24" height="24" align="top" alt=""> [**Proton VPN**](PATCHES.md#proton-vpn-chprotonvpnandroid) | 14 | `5.21.57.0` | [`ch.protonvpn.android`](https://play.google.com/store/apps/details?id=ch.protonvpn.android) |
 | 134 | <img src="https://publicmetadata.co.uk/com.psiphon3.subscription" width="24" height="24" align="top" alt=""> [**Psiphon**](PATCHES.md#psiphon-compsiphon3subscription) | 1 | `2.5.13` | [`com.psiphon3.subscripti…`](https://play.google.com/store/apps/details?id=com.psiphon3.subscription "com.psiphon3.subscription") |
-| 135 | <img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="24" height="24" align="top" alt=""> [**Public**](PATCHES.md#public-comcardfeedvideo_public) | 9 | `3.4.2` | [`com.cardfeed.video_publ…`](https://play.google.com/store/apps/details?id=com.cardfeed.video_public "com.cardfeed.video_public") |
+| 135 | <img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="24" height="24" align="top" alt=""> [**Public**](PATCHES.md#public-comcardfeedvideo_public) | 11 | `3.4.2` | [`com.cardfeed.video_publ…`](https://play.google.com/store/apps/details?id=com.cardfeed.video_public "com.cardfeed.video_public") |
 | 136 | <img src="https://publicmetadata.co.uk/ru.iiec.pydroid3" width="24" height="24" align="top" alt=""> [**Pydroid 3**](PATCHES.md#pydroid-3-ruiiecpydroid3) | 3 | `8.6_arm64` | [`ru.iiec.pydroid3`](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3) |
 | 137 | <img src="https://publicmetadata.co.uk/com.gamma.scan" width="24" height="24" align="top" alt=""> [**QR &amp; Barcode Scanner**](PATCHES.md#qr--barcode-scanner-comgammascan) | 1 | `2.2.221`, `2.2.224`&nbsp;+2 | [`com.gamma.scan`](https://play.google.com/store/apps/details?id=com.gamma.scan) |
 | 138 | <img src="https://publicmetadata.co.uk/com.quickcursor" width="24" height="24" align="top" alt=""> [**Quick Cursor**](PATCHES.md#quick-cursor-comquickcursor) | 1 | `3.0.2`, `3.1.0` | [`com.quickcursor`](https://play.google.com/store/apps/details?id=com.quickcursor) |

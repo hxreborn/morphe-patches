@@ -496,12 +496,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.85.0-dev.1"
         - "1.84.1-dev.1"
         - "1.84.0-dev.3"
         - "1.84.0-dev.2"
         - "1.84.0-dev.1"
         - "1.84.0"
-        - "1.83.0-dev.3"
         - "Older than these"
         # /generated
     validations:
@@ -985,6 +985,8 @@ body:
         - "Public \u00b7 Follow system theme"
         - "Public \u00b7 GmsCore support"
         - "Public \u00b7 Hide ads"
+        - "Public \u00b7 Load videos on tap"
+        - "Public \u00b7 Remove feed cards"
         - "Public \u00b7 Remove promotions"
         - "Public \u00b7 Remove screenshot restriction"
         - "Public \u00b7 Remove startup animation"

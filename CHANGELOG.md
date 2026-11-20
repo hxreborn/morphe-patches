@@ -1,3 +1,14 @@
+## [1.85.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.84.1-dev.1...v1.85.0-dev.1) (2026-11-20)
+
+### Bug Fixes
+
+* **Musicolet - Unlock premium:** stop silent songs and empty Most Played ([5d0ae0f](https://github.com/hxreborn/morphe-patches/commit/5d0ae0f3de2f6fecb7d913eea72cceaa78ad3814)), closes [#973](https://github.com/hxreborn/morphe-patches/issues/973)
+
+### New Features
+
+* **Public - Load videos on tap:** show thumbnails when Autoplay is off ([d21e017](https://github.com/hxreborn/morphe-patches/commit/d21e017033b28799d3672d3040d1409ed5f41da1)), closes [#770](https://github.com/hxreborn/morphe-patches/issues/770)
+* **Public - Remove feed cards:** keep follow suggestions out of For You ([aced490](https://github.com/hxreborn/morphe-patches/commit/aced4904f60344d05a837cf638d888a23c9f6197))
+
 ## [1.84.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.84.0...v1.84.1-dev.1) (2026-11-20)
 
 ### Bug Fixes
