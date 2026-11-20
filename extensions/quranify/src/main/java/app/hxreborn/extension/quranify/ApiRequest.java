@@ -107,6 +107,7 @@ final class ApiRequest {
         return body;
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String readLine(InputStream input) throws IOException {
         ByteArrayOutputStream line = new ByteArrayOutputStream();
         while (line.size() < MAX_LINE_BYTES) {
@@ -115,7 +116,7 @@ final class ApiRequest {
                 throw new IOException("Incomplete API headers");
             }
             if (value == '\n') {
-                String text = new String(line.toByteArray(), StandardCharsets.US_ASCII);
+                String text = line.toString(StandardCharsets.US_ASCII.name());
                 return text.endsWith("\r") ? text.substring(0, text.length() - 1) : text;
             }
             line.write(value);
