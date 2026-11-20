@@ -409,7 +409,7 @@ final class BoosterGrant {
                     continue;
                 }
                 int fieldType = update.optInt("fT");
-                if (fieldType != AMOUNT_FIELD_TYPE && (!this.timedLives || fieldType != TIMER_START_FIELD_TYPE)) {
+                if (fieldType != AMOUNT_FIELD_TYPE) {
                     continue;
                 }
                 int itemId = item.optInt("i");
@@ -800,13 +800,12 @@ final class BoosterGrant {
                     throw new IOException("Inventory nesting invalid");
                 }
             } else if (character == '"' || character == '\'') {
-                char quote = character;
                 boolean closed = false;
                 while (++index < json.length()) {
                     char next = json.charAt(index);
                     if (next == '\\') {
                         index++;
-                    } else if (next == quote) {
+                    } else if (next == character) {
                         closed = true;
                         break;
                     }
@@ -828,6 +827,7 @@ final class BoosterGrant {
         }
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String decode(byte[] bytes) throws IOException {
         InputStream input = new ByteArrayInputStream(bytes);
         if (bytes.length >= 2 && (bytes[0] & 0xff) == 0x1f && (bytes[1] & 0xff) == 0x8b) {
@@ -842,7 +842,7 @@ final class BoosterGrant {
                 }
                 output.write(buffer, 0, count);
             }
-            return new String(output.toByteArray(), StandardCharsets.UTF_8);
+            return output.toString(StandardCharsets.UTF_8.name());
         }
     }
 

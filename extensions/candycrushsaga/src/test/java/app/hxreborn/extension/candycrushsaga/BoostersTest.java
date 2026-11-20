@@ -43,7 +43,6 @@ import java.util.zip.GZIPOutputStream;
 
 import android.util.Log;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Before;
@@ -223,7 +222,7 @@ public class BoostersTest {
             return null;
         });
         new Thread(earlier).start();
-        FutureTask<Void> resend = null;
+        FutureTask<Void> resend;
         try {
             assertTrue(BlockingJsonTokener.parsing.await(5, TimeUnit.SECONDS));
             assertTrue(this.grant.begin());
@@ -241,7 +240,6 @@ public class BoostersTest {
             BlockingJsonTokener.resume.countDown();
         }
         earlier.get(5, TimeUnit.SECONDS);
-        assertTrue(resend != null);
         resend.get(5, TimeUnit.SECONDS);
         assertEquals(BoosterGrant.State.AWAITING, this.grant.state());
         acceptCurrentGrant();
@@ -554,6 +552,7 @@ public class BoostersTest {
     }
 
     @Test
+    @SuppressWarnings("SynchronizeOnNonFinalField")
     public void preventsAnotherSubmissionWhenAWaitingCallbackResumes() throws Exception {
         begin();
         AtomicInteger submissions = new AtomicInteger(1);
@@ -934,7 +933,7 @@ public class BoostersTest {
         checkUnrelatedLivesPairs(combined, includeTimestamp, false, false);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "DataFlowIssue" })
     private void checkUnrelatedLivesPairs(boolean combined, boolean includeTimestamp, boolean twoPairs, boolean batched)
             throws Exception {
         Field rewardsField = Boosters.class.getDeclaredField("rewards");
@@ -1170,12 +1169,14 @@ public class BoostersTest {
         assertWarningCount(1);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private int timerOwnedCount() throws Exception {
         Field field = BoosterGrant.class.getDeclaredField("transactions");
         field.setAccessible(true);
         return ((Map<?, ?>) field.get(this.grant)).size();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private int timerPendingCount() throws Exception {
         Field field = BoosterGrant.class.getDeclaredField("timerCandidates");
         field.setAccessible(true);
@@ -1314,6 +1315,7 @@ public class BoostersTest {
     }
 
     @Implements(JSONTokener.class)
+    @SuppressWarnings("unused")
     public static class BlockingJsonTokener {
 
         static final AtomicBoolean pause = new AtomicBoolean();
@@ -1326,7 +1328,7 @@ public class BoostersTest {
         private JSONTokener tokener;
 
         @Implementation
-        protected Object nextValue() throws JSONException {
+        protected Object nextValue() {
             if (pause.compareAndSet(true, false)) {
                 parsing.countDown();
                 try {
