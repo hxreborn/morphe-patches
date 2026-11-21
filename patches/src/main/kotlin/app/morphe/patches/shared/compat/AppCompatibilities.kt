@@ -261,7 +261,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "22c4c3a7776a3b54b9380a6021fa86cea27fd6844792ea6c579ba9ad0d2dbd71",
         ),
-        targets = listOf(AppTarget(version = "26.19", versionCode = 27176, minSdk = 26)),
+        targets = listOf(AppTarget(version = "26.20", versionCode = 27237, minSdk = 26)),
     )
 
     val BIOBIRD = Compatibility(

@@ -13,3 +13,8 @@ internal object ExecuteIterableRequestFingerprint : Fingerprint(
     parameters = listOf("L"),
     strings = listOf("SDK-Request-Processor", "IterableRequest"),
 )
+
+internal object IterableTrampolineResumeFingerprint : Fingerprint(
+    definingClass = "Lcom/iterable/iterableapi/IterableTrampolineActivity;",
+    name = "onResume",
+)
