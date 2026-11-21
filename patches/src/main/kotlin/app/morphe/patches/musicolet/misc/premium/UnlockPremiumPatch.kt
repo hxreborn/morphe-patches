@@ -39,6 +39,7 @@ val unlockPremiumPatch = bytecodePatch(
         castPluginAccessPatch,
         unlockNativeLicenseLevelPatch,
         forcePassedIntegrityVerdictPatch,
+        markLicensedTierPatch,
     )
 
     execute {
