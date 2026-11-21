@@ -17,7 +17,7 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/ultimateguitar/ApiR
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(
     name = "Unlock premium",
-    description = "Unlocks Pro, Courses, Sing and Practice features and removes ads. Songbooks are not unlocked.",
+    description = "Unlocks Pro, Sing and Practice features and removes ads. Paid course lessons and Songbooks are not unlocked.",
 ) {
     dependsOn(ultimateguitarUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.ULTIMATE_GUITAR)

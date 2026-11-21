@@ -52,6 +52,15 @@ public final class ApiResponseRewriterTest {
     private static final String EXPERIMENTS = "{\"experiments\":{\"8153\":2},"
             + "\"closed_experiments\":{\"8078\":2,\"8120\":2}}";
 
+    private static final String COURSE_CONTENT_URL = API_HOST + "/api/v1/edu/content/content?id=lesson";
+
+    private static final String COURSE_URL = API_HOST + "/api/v1/edu/content/course?id=course";
+
+    private static final String COURSE_SUBSCRIPTION_ERROR = "{\"error\":{\"name\":\"Payment Required\","
+            + "\"message\":\"Access to content denied (subscription required, code:SA)\",\"status\":402}}";
+
+    private static final String COURSE_SUBSCRIPTION_MESSAGE = "This lesson requires an Ultimate Guitar subscription.";
+
     @After
     public void clearPendingResponsePath() {
         ApiResponseRewriter.rewriteBody((String) null);
@@ -70,6 +79,47 @@ public final class ApiResponseRewriterTest {
     @Test
     public void keepsTheStatusOfOtherRequests() {
         assertEquals(404, ApiResponseRewriter.rewriteStatus(API_HOST + "/api/v1/purchase/content/access", 404));
+    }
+
+    @Test
+    public void givesThePaidLessonAReadableError() throws Exception {
+        assertEquals(402, ApiResponseRewriter.rewriteStatus(COURSE_CONTENT_URL, 402));
+
+        JSONObject response = new JSONObject(ApiResponseRewriter.rewriteBody(COURSE_SUBSCRIPTION_ERROR));
+
+        assertEquals(COURSE_SUBSCRIPTION_MESSAGE, response.getString("error"));
+    }
+
+    @Test
+    public void givesThePaidCourseAReadableErrorInByteResponses() throws Exception {
+        assertEquals(402, ApiResponseRewriter.rewriteStatus(COURSE_URL, 402));
+
+        byte[] rewritten = ApiResponseRewriter.rewriteBody(COURSE_SUBSCRIPTION_ERROR.getBytes(StandardCharsets.UTF_8));
+
+        JSONObject response = new JSONObject(new String(rewritten, StandardCharsets.UTF_8));
+        assertEquals(COURSE_SUBSCRIPTION_MESSAGE, response.getString("error"));
+    }
+
+    @Test
+    public void keepsOtherPaidCourseErrors() {
+        String body = "{\"error\":{\"message\":\"Payment required\"}}";
+        ApiResponseRewriter.rewriteStatus(COURSE_CONTENT_URL, 402);
+
+        assertSame(body, ApiResponseRewriter.rewriteBody(body));
+    }
+
+    @Test
+    public void keepsSuccessfulCourseResponses() {
+        ApiResponseRewriter.rewriteStatus(COURSE_CONTENT_URL, 200);
+
+        assertSame(COURSE_SUBSCRIPTION_ERROR, ApiResponseRewriter.rewriteBody(COURSE_SUBSCRIPTION_ERROR));
+    }
+
+    @Test
+    public void keepsSubscriptionErrorsOnOtherPaths() {
+        ApiResponseRewriter.rewriteStatus(API_HOST + "/api/v1/edu/content/section", 402);
+
+        assertSame(COURSE_SUBSCRIPTION_ERROR, ApiResponseRewriter.rewriteBody(COURSE_SUBSCRIPTION_ERROR));
     }
 
     @Test
