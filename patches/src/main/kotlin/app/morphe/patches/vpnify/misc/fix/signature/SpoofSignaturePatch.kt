@@ -15,7 +15,6 @@ import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
-import java.util.HexFormat
 
 private const val ARM64 = "lib/arm64-v8a/libnative-lib.so"
 private const val ARM32 = "lib/armeabi-v7a/libnative-lib.so"
@@ -59,10 +58,10 @@ val spoofSignaturePatch = bytecodePatch {
     dependsOn(disableNativeSignatureCheckPatch, disableArm64SignatureCheckPatch)
 
     execute {
-        val stockDigestPrefix = HexFormat.of().formatHex(
-            MessageDigest.getInstance("SHA-1")
-                .digest(packageMetadata.stockSigningCertificate().encoded),
-        ).take(DIGEST_PREFIX_LENGTH)
+        val stockDigestPrefix = MessageDigest.getInstance("SHA-1")
+            .digest(packageMetadata.stockSigningCertificate().encoded)
+            .joinToString("") { "%02x".format(it) }
+            .take(DIGEST_PREFIX_LENGTH)
 
         CertificateDigestFingerprint.matchSingle().method.returnEarly(stockDigestPrefix)
     }
