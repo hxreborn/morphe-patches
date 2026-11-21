@@ -2165,7 +2165,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKM,
         appIconColor = 0xB6D790,
         signatures = setOf("e7d5ad736aeecd2fe237679e4deaf2a40bb32fc07837fe48778a5b41c0418862"),
-        targets = listOf(AppTarget(version = "13.2.2.0", versionCode = 73031, minSdk = 23)),
+        targets = listOf(AppTarget(version = "13.2.2.2", versionCode = 73051, minSdk = 23)),
     )
 
     val NEXTDOOR = Compatibility(
