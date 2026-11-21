@@ -41,6 +41,7 @@ sourceSets {
 dependencies {
     implementation(libs.morphe.patches.library)
     implementation(libs.pngj)
+    implementation("net.coobird:thumbnailator:0.4.20")
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.asm)
