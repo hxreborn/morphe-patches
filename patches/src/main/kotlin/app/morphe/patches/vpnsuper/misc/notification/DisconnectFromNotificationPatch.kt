@@ -15,6 +15,7 @@ import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
+import app.morphe.patches.vpnsuper.misc.fix.tamper.disableTamperResponsePatch
 import app.morphe.patches.vpnsuper.misc.settings.markPatchApplied
 import app.morphe.patches.vpnsuper.misc.settings.patchesSettingsPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -49,7 +50,7 @@ val disconnectFromNotificationPatch: BytecodePatch = bytecodePatch(
     description = "Skips opening the app when Disconnect is tapped in the notification. Doesn't work on Android TV.",
 ) {
     compatibleWith(AppCompatibilities.VPN_SUPER)
-    dependsOn(patchesSettingsPatch, notificationDisconnectReceiverPatch)
+    dependsOn(patchesSettingsPatch, notificationDisconnectReceiverPatch, disableTamperResponsePatch)
 
     execute {
         markPatchApplied("disconnectFromNotification", disconnectFromNotificationPatch)

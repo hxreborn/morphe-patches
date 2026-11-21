@@ -23,6 +23,9 @@ package app.hxreborn.extension.shared;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -36,8 +39,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
+import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(shadows = ActivityThreadPackageManagerShadow.class)
 @SuppressWarnings("DataFlowIssue")
 public final class LiappPackageFilterTest {
 
@@ -60,6 +65,7 @@ public final class LiappPackageFilterTest {
     @After
     public void restoreThePackageManager() throws ReflectiveOperationException {
         packageManagerField().set(null, this.previousPackageManager);
+        ActivityThreadPackageManagerShadow.packageManager = null;
     }
 
     @Test
@@ -125,13 +131,41 @@ public final class LiappPackageFilterTest {
     }
 
     @Test
+    public void keepsTheAppItselfAndSystemAppsInLiappsInstalledApplicationList() throws Exception {
+        // given
+        String ownPackage = this.context.getPackageName();
+        givenSystemPackageManagerListing(ownPackage, EDITOR_PACKAGE, SYSTEM_PACKAGE);
+        LiappPackageFilter.install(this.context);
+
+        // when
+        Object installed = LiappCaller.call(() -> installedApplications(filteredPackageManager()));
+
+        // then
+        Assertions.assertThat(packageNames(installed)).containsExactly(ownPackage, SYSTEM_PACKAGE);
+    }
+
+    @Test
+    public void listsEveryInstalledApplicationToTheAppsOwnCode() throws Exception {
+        // given
+        String ownPackage = this.context.getPackageName();
+        givenSystemPackageManagerListing(ownPackage, EDITOR_PACKAGE, SYSTEM_PACKAGE);
+        LiappPackageFilter.install(this.context);
+
+        // when
+        Object installed = installedApplications(filteredPackageManager());
+
+        // then
+        Assertions.assertThat(packageNames(installed)).containsExactly(ownPackage, EDITOR_PACKAGE, SYSTEM_PACKAGE);
+    }
+
+    @Test
     public void rethrowsTheSystemPackageManagersExceptionUnwrapped() {
         // given
         LiappPackageFilter.install(this.context);
 
         // when
-        Throwable thrown = Assertions.catchThrowable(() -> invoke(filteredPackageManager(), "getInstallerPackageName",
-                EDITOR_PACKAGE));
+        Throwable thrown = Assertions
+            .catchThrowable(() -> invoke(filteredPackageManager(), "getInstallerPackageName", EDITOR_PACKAGE));
 
         // then
         Assertions.assertThat(thrown).isInstanceOf(UnsupportedOperationException.class);
@@ -144,6 +178,40 @@ public final class LiappPackageFilterTest {
         packageInfo.applicationInfo.packageName = packageName;
         packageInfo.applicationInfo.flags = flags;
         Shadows.shadowOf(this.context.getPackageManager()).installPackage(packageInfo);
+    }
+
+    private void givenSystemPackageManagerListing(String... packageNames) throws ReflectiveOperationException {
+        List<ApplicationInfo> applications = new ArrayList<>();
+        for (String packageName : packageNames) {
+            ApplicationInfo application = new ApplicationInfo();
+            application.packageName = packageName;
+            application.flags = SYSTEM_PACKAGE.equals(packageName) ? ApplicationInfo.FLAG_SYSTEM : 0;
+            applications.add(application);
+        }
+        Object parceledList = Class.forName("android.content.pm.ParceledListSlice")
+            .getConstructor(List.class)
+            .newInstance(applications);
+        Class<?> packageManagerInterface = Class.forName("android.content.pm.IPackageManager");
+        Object listingPackageManager = Proxy.newProxyInstance(packageManagerInterface.getClassLoader(),
+                new Class<?>[] { packageManagerInterface }, (proxy, method, args) -> {
+                    if (method.getName().equals("getInstalledApplications")) {
+                        return parceledList;
+                    }
+                    throw new UnsupportedOperationException(method.getName());
+                });
+        ActivityThreadPackageManagerShadow.packageManager = listingPackageManager;
+    }
+
+    private static Object installedApplications(Object packageManager) throws Exception {
+        return invoke(packageManager, "getInstalledApplications", 0L, 0);
+    }
+
+    private static List<String> packageNames(Object parceledList) throws ReflectiveOperationException {
+        List<String> names = new ArrayList<>();
+        for (Object entry : (List<?>) parceledList.getClass().getMethod("getList").invoke(parceledList)) {
+            names.add(((ApplicationInfo) entry).packageName);
+        }
+        return names;
     }
 
     private static Object filteredPackageManager() throws ReflectiveOperationException {
