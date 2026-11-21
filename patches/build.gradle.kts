@@ -7,7 +7,7 @@ group = "app.hxreborn"
 patches {
     about {
         name = "hxreborn’s patches"
-        description = "Patches for the apps I actually use"
+        description = "Unlocks premium features and removes ads and tracking in 100+ Android apps"
         source = "git@github.com:hxreborn/morphe-patches.git"
         author = "hxreborn"
         contact = "https://github.com/hxreborn/morphe-patches/issues"
