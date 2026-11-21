@@ -184,7 +184,7 @@ body:
         - "Glass Widgets 1.0.10"
         - "Glass Widgets 1.0.2"
         - "Glass Widgets (another version, type it below)"
-        - "Graph Messenger 13.2.2.0"
+        - "Graph Messenger 13.2.2.2"
         - "Graph Messenger (another version, type it below)"
         - "Ground News 5.0.0"
         - "Ground News 5.1.0"
@@ -497,11 +497,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.85.1-dev.3"
         - "1.85.1-dev.2"
         - "1.85.1-dev.1"
         - "1.85.0-dev.3"
         - "1.85.0-dev.2"
-        - "1.85.0-dev.1"
         - "1.85.0"
         - "Older than these"
         # /generated

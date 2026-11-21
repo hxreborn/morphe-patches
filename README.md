@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.85.1-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.85.1-dev.2)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.85.1-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.85.1-dev.3)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -130,7 +130,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 62 | <img src="https://publicmetadata.co.uk/com.myvitale.forus" width="24" height="24" align="top" alt=""> [**ForusApp**](PATCHES.md#forusapp-commyvitaleforus) | 1 | `3.0.15`, `3.0.18`&nbsp;+1 | [`com.myvitale.forus`](https://play.google.com/store/apps/details?id=com.myvitale.forus) |
 | 63 | <img src="https://publicmetadata.co.uk/to.freedom.android2" width="24" height="24" align="top" alt=""> [**Freedom**](PATCHES.md#freedom-tofreedomandroid2) | 2 | `7.18.2` | [`to.freedom.android2`](https://play.google.com/store/apps/details?id=to.freedom.android2) |
 | 64 | <img src="https://publicmetadata.co.uk/com.jndapp.glass.widgets" width="24" height="24" align="top" alt=""> [**Glass Widgets**](PATCHES.md#glass-widgets-comjndappglasswidgets) | 1 | `1.0.10`, `1.0.2` | [`com.jndapp.glass.widgets`](https://play.google.com/store/apps/details?id=com.jndapp.glass.widgets) |
-| 65 | <img src="https://publicmetadata.co.uk/ir.ilmili.telegraph" width="24" height="24" align="top" alt=""> [**Graph Messenger**](PATCHES.md#graph-messenger-irilmilitelegraph) | 6 | `13.2.2.0` | [`ir.ilmili.telegraph`](https://play.google.com/store/apps/details?id=ir.ilmili.telegraph) |
+| 65 | <img src="https://publicmetadata.co.uk/ir.ilmili.telegraph" width="24" height="24" align="top" alt=""> [**Graph Messenger**](PATCHES.md#graph-messenger-irilmilitelegraph) | 6 | `13.2.2.2` | [`ir.ilmili.telegraph`](https://play.google.com/store/apps/details?id=ir.ilmili.telegraph) |
 | 66 | <img src="https://publicmetadata.co.uk/com.checkitt" width="24" height="24" align="top" alt=""> [**Ground News**](PATCHES.md#ground-news-comcheckitt) | 4 | `5.0.0`, `5.1.0` | [`com.checkitt`](https://play.google.com/store/apps/details?id=com.checkitt) |
 | 67 | <img src="https://publicmetadata.co.uk/co.unstatic.habitify" width="24" height="24" align="top" alt=""> [**Habitify**](PATCHES.md#habitify-counstatichabitify) | 2 | `52.1.0` | [`co.unstatic.habitify`](https://play.google.com/store/apps/details?id=co.unstatic.habitify) |
 | 68 | <img src="https://publicmetadata.co.uk/com.alokmandavgane.hinducalendar" width="24" height="24" align="top" alt=""> [**Hindu Calendar**](PATCHES.md#hindu-calendar-comalokmandavganehinducalendar) | 2 | `9.4.0` | [`com.alokmandavgane.hind…`](https://play.google.com/store/apps/details?id=com.alokmandavgane.hinducalendar "com.alokmandavgane.hinducalendar") |

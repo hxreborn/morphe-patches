@@ -1,3 +1,9 @@
+## [1.85.1-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.85.1-dev.2...v1.85.1-dev.3) (2026-11-21)
+
+### Updated App Support
+
+* **Graph Messenger:** add support for `13.2.2.2` ([903d85c](https://github.com/hxreborn/morphe-patches/commit/903d85c61d0ba6c5a3d22a09e4d97463415ecc4f)), closes [#999](https://github.com/hxreborn/morphe-patches/issues/999)
+
 ## [1.85.1-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.85.1-dev.1...v1.85.1-dev.2) (2026-11-21)
 
 ### Bug Fixes
