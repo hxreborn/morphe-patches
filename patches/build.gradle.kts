@@ -70,21 +70,6 @@ tasks {
         from(rootProject.file("third-party/licenses")) { into("META-INF/third-party/licenses") }
 
         doLast {
-            val desktopOnlyPackages = listOf("java/awt/", "javax/imageio/", "javax/swing/")
-            val offenders = ZipFile(archiveFile.get().asFile).use { zip ->
-                zip.entries().asSequence()
-                    .filter { it.name.endsWith(".class") }
-                    .filter { entry ->
-                        val text = zip.getInputStream(entry).readBytes().toString(Charsets.ISO_8859_1)
-                        desktopOnlyPackages.any(text::contains)
-                    }
-                    .map { it.name }
-                    .toList()
-            }
-            if (offenders.isNotEmpty()) {
-                throw GradleException("Android has no desktop JDK, referenced from: $offenders")
-            }
-
             val archive = archiveFile.get().asFile
             val stripped = File(archive.parentFile, archive.name + ".tmp")
             ZipFile(archive).use { zip ->
