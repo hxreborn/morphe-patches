@@ -16,9 +16,9 @@ private const val ENTITLEMENT = "Unlimited Books"
 private const val PRODUCT = "kindle_lifetime_notrial"
 
 private const val ONBOARDING_REPLACES_WITH_PAYWALL =
-    "44 02 03 01 B9 91 01 71 06 01 00 6E 01 02 03 01"
+    "44 02 03 01 BC 91 01 74 0F 01 00 6E 01 02 03 01"
 private const val ONBOARDING_REPLACES_WITH_HOME =
-    "44 02 03 01 B9 91 01 5E A7 00 00 6E 01 02 03 01"
+    "44 02 03 01 BC 91 01 33 A7 00 00 6E 01 02 03 01"
 
 @Suppress("unused")
 val unlockPremiumPatch = bytecodePatch(

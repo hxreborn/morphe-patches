@@ -122,6 +122,7 @@ final class LanScan {
         this.customNames = (Map<?, ?>) FieldLayout.get(fields[CUSTOM_NAMES], scanInfo);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private LanScan(JSONObject json) throws JSONException, UnknownHostException {
         this.name = json.optString(JSON_NAME);
         this.ssid = json.isNull(JSON_SSID) ? null : json.optString(JSON_SSID, null);

@@ -79,6 +79,7 @@ final class SettingsRows {
         return card;
     }
 
+    @SuppressWarnings("SameParameterValue")
     void switchRow(LinearLayout card, int iconId, String title, String description, boolean checked,
             SwitchChangeListener listener) {
         HostSwitch toggle = new HostSwitch(this.context, checked, this.style.accent, listener);
@@ -94,6 +95,7 @@ final class SettingsRows {
         toggle.attach(row);
     }
 
+    @SuppressWarnings("SameParameterValue")
     void actionRow(LinearLayout card, int iconId, String title, String description, Runnable action) {
         LinearLayout row = baseRow(card, iconId);
         addTitleAndDescription(row, title, description);

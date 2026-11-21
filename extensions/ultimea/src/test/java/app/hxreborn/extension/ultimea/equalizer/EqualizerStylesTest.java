@@ -55,7 +55,7 @@ public class EqualizerStylesTest {
             while ((count = input.read(buffer)) != -1) {
                 output.write(buffer, 0, count);
             }
-            definitions = new String(output.toByteArray(), StandardCharsets.UTF_8);
+            definitions = output.toString(StandardCharsets.UTF_8);
         }
         ReflectionHelpers.setStaticField(EqualizerStyles.class, "points", null);
     }
@@ -154,7 +154,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsMalformedBandCount() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).put("db", new JSONArray());
+        point(json, 0).put("db", new JSONArray());
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -162,8 +162,8 @@ public class EqualizerStylesTest {
     @Test
     public void acceptsTenthDbGainPrecision() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).getJSONArray("db").put(0, 5.1);
-        point(json, 0, 0).getJSONArray("db").put(1, -5.1);
+        point(json, 0).getJSONArray("db").put(0, 5.1);
+        point(json, 0).getJSONArray("db").put(1, -5.1);
         definitions = json.toString();
         Assert.assertEquals(51, EqualizerStyles.at(0, 0).curve.gain(0));
         Assert.assertEquals(-51, EqualizerStyles.at(0, 0).curve.gain(1));
@@ -172,7 +172,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsMissingPointIdentifier() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).remove("point");
+        point(json, 0).remove("point");
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -180,7 +180,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsBlankPointIdentifier() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).put("point", " ");
+        point(json, 0).put("point", " ");
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -188,7 +188,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsNonNumericGain() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).getJSONArray("db").put(0, "5.5");
+        point(json, 0).getJSONArray("db").put(0, "5.5");
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -196,7 +196,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsGainBeyondTenthDbPrecision() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).getJSONArray("db").put(0, 5.55);
+        point(json, 0).getJSONArray("db").put(0, 5.55);
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -204,7 +204,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsGainAboveRange() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).getJSONArray("db").put(0, 6.1);
+        point(json, 0).getJSONArray("db").put(0, 6.1);
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -212,7 +212,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsGainBelowRange() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 0).getJSONArray("db").put(0, -6.1);
+        point(json, 0).getJSONArray("db").put(0, -6.1);
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -220,7 +220,7 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsDuplicatePointIdentifiers() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 1).put("point", point(json, 0, 0).get("point"));
+        point(json, 1).put("point", point(json, 0).get("point"));
         definitions = json.toString();
         EqualizerStyles.points();
     }
@@ -228,13 +228,13 @@ public class EqualizerStylesTest {
     @Test(expected = IllegalStateException.class)
     public void rejectsDuplicateCurves() throws JSONException {
         JSONObject json = new JSONObject(definitions);
-        point(json, 0, 1).put("db", point(json, 0, 0).getJSONArray("db"));
+        point(json, 1).put("db", point(json, 0).getJSONArray("db"));
         definitions = json.toString();
         EqualizerStyles.points();
     }
 
-    private static JSONObject point(JSONObject json, int row, int column) throws JSONException {
-        return json.getJSONArray("style").getJSONArray(row).getJSONObject(column);
+    private static JSONObject point(JSONObject json, int column) throws JSONException {
+        return json.getJSONArray("style").getJSONArray(0).getJSONObject(column);
     }
 
     @Implements(EqualizerBases.class)

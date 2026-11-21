@@ -116,6 +116,7 @@ public final class PatchedBuild {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static final class Applied {
 
         @Implementation
@@ -191,6 +192,7 @@ public final class PatchedBuild {
     }
 
     @Implements(MailSettings.class)
+    @SuppressWarnings("unused")
     public static final class Mail {
 
         @Implementation
@@ -246,6 +248,7 @@ public final class PatchedBuild {
     }
 
     @Implements(PassSettings.class)
+    @SuppressWarnings("unused")
     public static final class Pass {
 
         @Implementation
@@ -266,6 +269,7 @@ public final class PatchedBuild {
     }
 
     @Implements(VpnSettings.class)
+    @SuppressWarnings("unused")
     public static final class Vpn {
 
         @Implementation

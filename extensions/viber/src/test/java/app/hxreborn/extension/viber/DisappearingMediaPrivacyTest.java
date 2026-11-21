@@ -37,6 +37,7 @@ import org.robolectric.annotation.Implements;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = { DisappearingMediaPrivacyTest.AppliedPrivacy.class,
         DisappearingMediaPrivacyTest.DatabaseUpdate.class })
+@SuppressWarnings("deprecation")
 public final class DisappearingMediaPrivacyTest {
 
     private SQLiteDatabase database;
@@ -63,8 +64,8 @@ public final class DisappearingMediaPrivacyTest {
         Assert.assertFalse(PatchSettings.disappearingMediaPrivacy());
         Assert.assertFalse(DisappearingMediaPrivacy.blockScreenshot(2));
         Assert.assertEquals(2, markUnreadRows());
-        assertState(1, 0, 1);
-        assertState(2, 0, 1);
+        assertState(1, 1);
+        assertState(2, 1);
     }
 
     @Test
@@ -81,9 +82,9 @@ public final class DisappearingMediaPrivacyTest {
         this.database.execSQL("INSERT INTO messages VALUES (4, 0, 1, 0, 134217728, 0)");
         enable();
         Assert.assertEquals(3, markUnreadRows());
-        assertState(1, 0, 1);
-        assertState(2, 0, 0);
-        assertState(4, 0, 0);
+        assertState(1, 1);
+        assertState(2, 0);
+        assertState(4, 0);
     }
 
     @Test
@@ -110,9 +111,9 @@ public final class DisappearingMediaPrivacyTest {
     public void retainOrdinaryReceiptsAndLocalDisappearingReadState() {
         enable();
         Assert.assertEquals(2, markUnreadRows());
-        assertState(1, 0, 1);
-        assertState(2, 0, 0);
-        assertState(3, 0, 0);
+        assertState(1, 1);
+        assertState(2, 0);
+        assertState(3, 0);
     }
 
     @Test
@@ -121,7 +122,7 @@ public final class DisappearingMediaPrivacyTest {
         markUnreadRows();
         PatchSettings.setEnabled(PatchSetting.DISAPPEARING_MEDIA_PRIVACY.key, false);
         Assert.assertEquals(0, markUnreadRows());
-        assertState(2, 0, 0);
+        assertState(2, 0);
         Assert.assertFalse(DisappearingMediaPrivacy.blockScreenshot(2));
     }
 
@@ -137,16 +138,17 @@ public final class DisappearingMediaPrivacyTest {
                 new String[] { "0" });
     }
 
-    private void assertState(int id, int unread, int syncRead) {
+    private void assertState(int id, int syncRead) {
         try (Cursor cursor = this.database.rawQuery("SELECT unread, sync_read FROM messages WHERE _id=?",
                 new String[] { Integer.toString(id) })) {
             Assert.assertTrue(cursor.moveToFirst());
-            Assert.assertEquals(unread, cursor.getInt(0));
+            Assert.assertEquals(0, cursor.getInt(0));
             Assert.assertEquals(syncRead, cursor.getInt(1));
         }
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class AppliedPrivacy {
 
         @Implementation
@@ -157,6 +159,7 @@ public final class DisappearingMediaPrivacyTest {
     }
 
     @Implements(value = DisappearingMediaPrivacy.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class DatabaseUpdate {
 
         @Implementation

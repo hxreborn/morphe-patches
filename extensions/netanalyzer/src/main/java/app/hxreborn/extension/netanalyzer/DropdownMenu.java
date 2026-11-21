@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -41,6 +42,7 @@ import android.widget.TextView;
 import app.hxreborn.extension.shared.Dimensions;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 final class DropdownMenu {
 
     private static final int MIN_WIDTH_DP = 112;
@@ -75,6 +77,7 @@ final class DropdownMenu {
         return this;
     }
 
+    @SuppressWarnings("SameParameterValue")
     DropdownMenu addSubmenu(String title, String icon, Runnable open) {
         this.items.add(new Item(title, icon, true, open));
         return this;

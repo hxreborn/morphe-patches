@@ -105,6 +105,7 @@ final class SettingsStyle {
                 rounded(Color.WHITE, radiusDp));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     Drawable hostIcon(int identifier, int tint) {
         Drawable icon = this.context.getDrawable(identifier).mutate();
         icon.setTint(tint);

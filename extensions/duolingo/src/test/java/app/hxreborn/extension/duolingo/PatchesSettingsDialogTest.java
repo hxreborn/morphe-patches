@@ -42,6 +42,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowDialog;
 
+@SuppressWarnings({ "resource", "DataFlowIssue" })
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = FakeHostResources.class)
 public final class PatchesSettingsDialogTest {
@@ -97,8 +98,7 @@ public final class PatchesSettingsDialogTest {
         if (view instanceof TextView) {
             views.add((TextView) view);
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 collectTextViews(group.getChildAt(index), views);
             }

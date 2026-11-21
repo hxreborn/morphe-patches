@@ -45,6 +45,7 @@ import android.provider.OpenableColumns;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+@SuppressWarnings("NullableProblems")
 public final class PresetShareProvider extends ContentProvider {
 
     private static final String AUTHORITY_SUFFIX = ".hx_equalizer_presets";
@@ -117,6 +118,7 @@ public final class PresetShareProvider extends ContentProvider {
         return MIME_TYPE;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private File file(Uri uri) throws FileNotFoundException {
         String name = uri.getLastPathSegment();
         if (name == null || !name.matches("[0-9a-f]{64}\\.json") || !"content".equals(uri.getScheme())
@@ -140,6 +142,7 @@ public final class PresetShareProvider extends ContentProvider {
     }
 
     @Override
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         try {
             File file = file(uri);
@@ -157,7 +160,7 @@ public final class PresetShareProvider extends ContentProvider {
                     bytes.write(buffer, 0, count);
                 }
             }
-            String document = new String(bytes.toByteArray(), StandardCharsets.UTF_8);
+            String document = bytes.toString(StandardCharsets.UTF_8.name());
             List<EqualizerPresetFile> presets = EqualizerPresetBundleFile.read(document);
             String name = COLLECTION_FORMAT.equals(new JSONObject(document).get("format")) ? COLLECTION_FILENAME
                     : presets.get(0).name.replace('/', '_').replace('\\', '_') + ".json";

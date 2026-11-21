@@ -70,6 +70,7 @@ public final class AutoDeleteBannerTest {
     }
 
     @Implements(AutoDeleteBanner.class)
+    @SuppressWarnings("unused")
     public static final class UpsellHidden {
 
         @Implementation
@@ -80,6 +81,7 @@ public final class AutoDeleteBannerTest {
     }
 
     @Implements(AutoDeleteBanner.class)
+    @SuppressWarnings("unused")
     public static final class ScheduledAndUpsellHidden {
 
         @Implementation

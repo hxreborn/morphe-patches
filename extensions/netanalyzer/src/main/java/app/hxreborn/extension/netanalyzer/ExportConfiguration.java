@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,6 +33,7 @@ import android.widget.LinearLayout;
 import app.hxreborn.extension.shared.Dimensions;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 final class ExportConfiguration {
 
     static final String DEFAULT_SEPARATOR = ",";
@@ -52,9 +54,8 @@ final class ExportConfiguration {
     }
 
     static String separator(Context context) {
-        final String separator = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
             .getString(SEPARATOR_KEY, DEFAULT_SEPARATOR);
-        return (separator != null) ? separator : DEFAULT_SEPARATOR;
     }
 
     static void show(Activity activity) {

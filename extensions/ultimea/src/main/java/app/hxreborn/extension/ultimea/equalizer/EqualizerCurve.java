@@ -108,10 +108,9 @@ final class EqualizerCurve {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof EqualizerCurve)) {
+        if (!(other instanceof EqualizerCurve curve)) {
             return false;
         }
-        EqualizerCurve curve = (EqualizerCurve) other;
         return this.mode == curve.mode && Arrays.equals(this.gains, curve.gains);
     }
 

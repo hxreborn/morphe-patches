@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
@@ -36,6 +37,7 @@ import android.widget.FrameLayout;
 import app.hxreborn.extension.shared.Dimensions;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class ExportMenu {
 
@@ -86,38 +88,32 @@ public final class ExportMenu {
     }
 
     private static ExportSource exportSource(String screen) {
-        switch (screen) {
-            case EXPORT_PING:
-                return ProbeExport.ping();
-            case EXPORT_TRACEROUTE:
-                return ProbeExport.traceroute();
-            case EXPORT_LAN:
+        return switch (screen) {
+            case EXPORT_PING -> ProbeExport.ping();
+            case EXPORT_TRACEROUTE -> ProbeExport.traceroute();
+            case EXPORT_LAN -> {
                 final LanScan scan = LiveLanScan.currentScan();
-                return (scan != null) ? new LanExport(scan) : null;
-            case EXPORT_PORT_SCAN:
-                return new PortScanExport();
-            case EXPORT_DNS:
-                return new DnsExport();
-            case EXPORT_WIFI:
-                return new WifiExport();
-            case EXPORT_INFORMATION:
-                return new InformationExport();
-            case EXPORT_WHOIS:
-                return new WhoisExport();
-            default:
+                yield (scan != null) ? new LanExport(scan) : null;
+            }
+            case EXPORT_PORT_SCAN -> new PortScanExport();
+            case EXPORT_DNS -> new DnsExport();
+            case EXPORT_WIFI -> new WifiExport();
+            case EXPORT_INFORMATION -> new InformationExport();
+            case EXPORT_WHOIS -> new WhoisExport();
+            default -> {
                 Log.e(TAG, "Unknown export " + screen);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 
     static void show(Activity activity, View anchor, ExportSource source) {
         final Runnable plainText = () -> ExportDelivery.shareText(activity, source.subject(activity),
                 source.text(activity));
-        if (!(source instanceof TableExport)) {
+        if (!(source instanceof TableExport table)) {
             new DropdownMenu(activity).add("Export", MaterialIcons.SHARE, plainText).show(anchor);
             return;
         }
-        final TableExport table = (TableExport) source;
         final DropdownMenu formats = new DropdownMenu(activity).add("Plain Text", MaterialIcons.TEXT_SNIPPET, plainText)
             .add("CSV File", MaterialIcons.TABLE_CHART, () -> ExportDelivery.shareCsv(activity, table.csv(activity)))
             .add("Configure…", MaterialIcons.SETTINGS, () -> ExportConfiguration.show(activity));
@@ -141,6 +137,7 @@ public final class ExportMenu {
         placedAnchor.post(() -> show(activity, placedAnchor, source));
     }
 
+    @SuppressWarnings("deprecation")
     private static int statusBarHeight(View content) {
         final WindowInsets insets = content.getRootWindowInsets();
         if (insets == null) {

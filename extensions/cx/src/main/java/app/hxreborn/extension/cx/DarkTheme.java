@@ -56,7 +56,7 @@ public final class DarkTheme {
         try {
             String value = preferences.getString(THEME_PREFERENCE_KEY, DEFAULT_MODE);
 
-            mode = (value != null) ? Integer.parseInt(value) : MODE_NIGHT_NO;
+            mode = Integer.parseInt(value);
         } catch (RuntimeException ex) {
             return MODE_NIGHT_NO;
         }

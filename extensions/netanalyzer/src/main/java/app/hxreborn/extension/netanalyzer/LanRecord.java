@@ -272,6 +272,7 @@ final class LanRecord {
         return hosts;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static String optString(JSONObject json, String key) {
         return json.isNull(key) ? null : json.optString(key, null);
     }

@@ -48,7 +48,7 @@ import android.widget.Toast;
 
 import app.hxreborn.extension.bereal.PatchSettings;
 
-@SuppressLint("NotificationPermission")
+@SuppressLint({ "NotificationPermission", "UseRequiresApi", "ObsoleteSdkInt" })
 @TargetApi(Build.VERSION_CODES.S_V2)
 public final class BackupService extends Service {
 
@@ -236,6 +236,7 @@ public final class BackupService extends Service {
                 .build();
     }
 
+    @SuppressWarnings("deprecation")
     private Notification.Builder builder() {
         final Notification.Builder builder = (Build.VERSION.SDK_INT >= 26)
                 ? new Notification.Builder(this, CHANNEL_ID)

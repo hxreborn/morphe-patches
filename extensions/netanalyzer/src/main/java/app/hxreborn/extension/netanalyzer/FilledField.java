@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -32,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint({ "UseRequiresApi", "ViewConstructor" })
 final class FilledField extends LinearLayout {
 
     private static final int HORIZONTAL_DP = 16;

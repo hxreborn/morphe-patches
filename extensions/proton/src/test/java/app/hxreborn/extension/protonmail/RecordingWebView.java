@@ -40,6 +40,7 @@ final class RecordingWebView extends WebView {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public void evaluateJavascript(String script, ValueCallback<String> callback) {
         this.scripts.add(script);
         this.callbacks.add(callback);

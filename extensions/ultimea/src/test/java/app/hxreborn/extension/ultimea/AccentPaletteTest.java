@@ -38,6 +38,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 31)
+@SuppressWarnings("deprecation")
 public class AccentPaletteTest {
 
     private static final String PREFERENCE_KEY = "accent_color";

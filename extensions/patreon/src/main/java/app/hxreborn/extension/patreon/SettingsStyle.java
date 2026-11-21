@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.patreon;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -186,12 +187,14 @@ final class SettingsStyle {
         return icon;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     Drawable backIcon(int tint) {
         Drawable icon = hostDrawable(backIconDrawable());
         icon.setTint(tint);
         return icon;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     void styleSwitch(Switch control) {
         Drawable thumbShape = hostDrawable(switchThumbDrawable());
         Drawable trackShape = hostDrawable(switchTrackDrawable());
@@ -224,6 +227,7 @@ final class SettingsStyle {
         }
     }
 
+    @SuppressLint("DiscouragedApi")
     private Drawable hostDrawable(String name) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         return (identifier != 0) ? hostDrawable(identifier) : null;

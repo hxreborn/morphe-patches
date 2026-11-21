@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.proton;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -100,6 +101,7 @@ final class WebToggleSwitchStyle {
         control.refreshDrawableState();
     }
 
+    @SuppressLint("DiscouragedApi")
     private static int checkedThumbColor(Context context) {
         final Context themed = PatchesTheme.withNightMode(context);
         final int id = themed.getResources().getIdentifier(CHECKED_THUMB_COLOR, "color", context.getPackageName());

@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -58,6 +59,7 @@ import android.widget.TextView;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("SetTextI18n")
 final class GalleryAlbumDialog {
 
     private static final String TAG = "GalleryAlbumDialog";
@@ -116,7 +118,7 @@ final class GalleryAlbumDialog {
 
     private final List<View> tileViews = new ArrayList<>();
 
-    private final LruCache<Uri, Bitmap> cache = new LruCache<Uri, Bitmap>(CACHE_BYTES) {
+    private final LruCache<Uri, Bitmap> cache = new LruCache<>(CACHE_BYTES) {
         @Override
         protected int sizeOf(Uri key, Bitmap value) {
             return value.getByteCount();
@@ -144,6 +146,7 @@ final class GalleryAlbumDialog {
         this.owner = owner;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     void show() {
         if (this.released || isShowing() || this.activity.isFinishing() || this.activity.isDestroyed()) {
             return;
@@ -283,6 +286,7 @@ final class GalleryAlbumDialog {
         return this.sheet;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private View handleZone() {
         final FrameLayout zone = new FrameLayout(this.activity);
         final View handle = new View(this.activity);
@@ -560,6 +564,7 @@ final class GalleryAlbumDialog {
         });
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static Bitmap decodeThumbnail(Context context, Uri photo, int side) {
         try {
             if ("file".equals(photo.getScheme())) {

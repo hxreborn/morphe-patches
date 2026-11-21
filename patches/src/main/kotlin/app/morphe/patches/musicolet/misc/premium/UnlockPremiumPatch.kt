@@ -12,6 +12,7 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.musicolet.misc.fix.cast.castPluginAccessPatch
+import app.morphe.patches.musicolet.misc.fix.integrity.forcePassedIntegrityVerdictPatch
 import app.morphe.patches.musicolet.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.musicolet.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -37,6 +38,8 @@ val unlockPremiumPatch = bytecodePatch(
         spoofSignaturePatch,
         castPluginAccessPatch,
         unlockNativeLicenseLevelPatch,
+        forcePassedIntegrityVerdictPatch,
+        markLicensedTierPatch,
     )
 
     execute {

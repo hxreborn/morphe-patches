@@ -78,6 +78,7 @@ final class FolderMenu {
         field.setContentDescription("Download folder, " + title + ", " + volume);
         field.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings("NullableProblems")
             public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(view, info);
                 info.setClassName(Button.class.getName());
@@ -140,6 +141,7 @@ final class FolderMenu {
         row.setContentDescription(checkable ? title + ", " + volume : title);
         row.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings({ "NullableProblems", "deprecation" })
             public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(view, info);
                 info.setClassName(checkable ? CheckedTextView.class.getName() : Button.class.getName());

@@ -35,6 +35,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = ListGapsTest.AppliedGaps.class)
+@SuppressWarnings("deprecation")
 public class ListGapsTest {
 
     private static final int WIDTH = 400;
@@ -169,6 +170,7 @@ public class ListGapsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static class AppliedGaps {
 
         @Implementation

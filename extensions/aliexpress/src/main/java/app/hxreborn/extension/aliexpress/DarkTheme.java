@@ -21,6 +21,7 @@
 
 package app.hxreborn.extension.aliexpress;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -140,6 +141,7 @@ public final class DarkTheme {
         return params != null && params.height > 0 && params.width >= params.height * BAR_MIN_ASPECT;
     }
 
+    @SuppressWarnings("deprecation")
     public static void darkenQuantityControl(LinearLayout control) {
         if (!templatesNeedNightColors()) {
             return;
@@ -219,6 +221,7 @@ public final class DarkTheme {
         filler.setBackgroundColor(hostWhiteBackground(filler.getContext(), color));
     }
 
+    @SuppressLint("DiscouragedApi")
     static int hostWhiteBackground(Context context, int color) {
         int id = context.getResources().getIdentifier(HOST_WHITE_BACKGROUND, "color", context.getPackageName());
         if (id == 0) {

@@ -30,6 +30,7 @@ import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
 @Implements(value = TemplateNodes.class, isInAndroidSdk = false)
+@SuppressWarnings("unused")
 public final class FakeTemplateNodes {
 
     @Implementation

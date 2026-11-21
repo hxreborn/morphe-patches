@@ -57,6 +57,7 @@ public final class LoadingIndicatorContainer {
         return (container & ARGB_MASK) << 32;
     }
 
+    @SuppressWarnings("SameParameterValue")
     static int toneWithMaxChroma(int argb, float maxChroma, float tone) {
         return argb;
     }

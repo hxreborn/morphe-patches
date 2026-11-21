@@ -84,6 +84,7 @@ enum PatchSetting {
         };
     }
 
+    @SuppressWarnings("DataFlowIssue")
     String description() {
         return switch (this) {
             case REMOVE_LIST_GAPS -> AppliedPatches.removeListGapsDescription();

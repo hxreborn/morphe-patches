@@ -11,10 +11,10 @@ extensions.configure<com.android.build.api.dsl.LibraryExtension> {
 }
 
 dependencies {
-    add("compileOnly", project(":extensions:shared:library"))
+    add("compileOnly", project(":extensions:shared"))
     add("compileOnly", catalog.findLibrary("morphe-extensions-library").get())
     add("compileOnly", catalog.findLibrary("kotlin-stdlib").get())
-    add("testImplementation", project(":extensions:shared:library"))
+    add("testImplementation", project(":extensions:shared"))
     add("testImplementation", catalog.findLibrary("morphe-extensions-library").get())
     add("testImplementation", catalog.findLibrary("kotlin-stdlib").get())
 }

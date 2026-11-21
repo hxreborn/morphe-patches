@@ -49,10 +49,9 @@ public final class SponsoredProducts {
             return;
         }
         Object value = source.get(key);
-        if (!(value instanceof List<?>)) {
+        if (!(value instanceof List<?> products)) {
             return;
         }
-        List<?> products = (List<?>) value;
         if (!containsSponsoredProduct(products)) {
             return;
         }
@@ -76,10 +75,9 @@ public final class SponsoredProducts {
     }
 
     private static boolean isSponsoredProduct(Object item) {
-        if (!(item instanceof Map<?, ?>)) {
+        if (!(item instanceof Map<?, ?> product)) {
             return false;
         }
-        Map<?, ?> product = (Map<?, ?>) item;
         return product.get(PRODUCT_ID) != null && product.get(SPONSORSHIP) instanceof Map<?, ?>;
     }
 

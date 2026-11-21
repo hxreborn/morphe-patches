@@ -125,6 +125,7 @@ public class ServerResponseStreamTest {
     }
 
     @Test
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void stopReadingInterruptedRequests() throws IOException {
         FailingInputStream source = new FailingInputStream();
         Thread.currentThread().interrupt();

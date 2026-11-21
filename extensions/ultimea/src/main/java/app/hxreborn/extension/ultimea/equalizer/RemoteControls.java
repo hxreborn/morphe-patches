@@ -89,8 +89,7 @@ final class RemoteControls {
             view.setEnabled(enabled);
             view.setAlpha(enabled ? 1f : HostStyle.DISABLED_OPACITY);
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) view;
+        if (view instanceof ViewGroup parent) {
             for (int index = 0; index < parent.getChildCount(); index++) {
                 setEnabled(parent.getChildAt(index), enabled);
             }

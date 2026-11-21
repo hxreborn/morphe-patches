@@ -36,6 +36,7 @@ public final class HostSwitch extends View.AccessibilityDelegate {
 
     private boolean checked;
 
+    @SuppressWarnings("DataFlowIssue")
     HostSwitch(Context context, boolean checked, int accent, SwitchChangeListener listener) {
         this.control = create(context, PatchSettings.isDark(context) ? DARK_TRACK_COLOR : accent);
         this.checked = checked;
@@ -61,6 +62,7 @@ public final class HostSwitch extends View.AccessibilityDelegate {
     }
 
     @Override
+    @SuppressWarnings({ "NullableProblems", "deprecation" })
     public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
         super.onInitializeAccessibilityNodeInfo(host, info);
         info.setClassName(Switch.class.getName());

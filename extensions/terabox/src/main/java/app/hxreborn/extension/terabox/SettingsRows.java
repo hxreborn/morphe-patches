@@ -103,6 +103,7 @@ final class SettingsRows {
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
 
+    @SuppressWarnings("SameParameterValue")
     void actionRow(LinearLayout card, String iconName, String title, String description, Runnable action) {
         LinearLayout row = baseRow(card, iconName);
         addTitleAndDescription(row, title, description);

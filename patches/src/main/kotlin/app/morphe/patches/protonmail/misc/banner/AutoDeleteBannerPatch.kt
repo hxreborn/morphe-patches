@@ -23,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.protonAutoDeleteBannerExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonPatchApplicationExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
@@ -47,7 +47,7 @@ private fun Method.enumConstant(name: String): FieldReference =
     ).reference as FieldReference
 
 val autoDeleteBannerStatePatch = bytecodePatch {
-    dependsOn(protonAutoDeleteBannerExtensionPatch, protonPatchApplicationExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(protonAutoDeleteBannerExtensionPatch, protonPatchApplicationExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(spoofSignaturePatch)
 

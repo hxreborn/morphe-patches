@@ -39,6 +39,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28)
+@SuppressWarnings("deprecation")
 public final class ReportBundleTest {
 
     private static final int STRING_COUNT = 30784;

@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.protonmail;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import app.morphe.extension.shared.Utils;
 
@@ -40,6 +41,7 @@ public final class ScheduledDeletionBanner {
         return enabledByProton || isScheduled();
     }
 
+    @SuppressLint("DiscouragedApi")
     public static int textResource(int original) {
         if (!isScheduled()) {
             return original;

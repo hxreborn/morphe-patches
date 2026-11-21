@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.84.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**590 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.85.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -58,7 +58,7 @@
 
 **Supported versions:**
 
-| 1.25.6 |
+| 1.28.1 |
 | :---: |
 
 | Patch | Details |
@@ -297,7 +297,7 @@
 
 **Supported versions:**
 
-| 1.7.24 |
+| 1.7.30 |
 | :---: |
 
 | Patch | Details |
@@ -410,7 +410,7 @@
 
 **Supported versions:**
 
-| 26.19 |
+| 26.20 |
 | :---: |
 
 | Patch | Details |
@@ -425,8 +425,8 @@
 
 **Supported versions:**
 
-| 2.0.2 | 3.0.0 |
-| :---: | :---: |
+| 2.0.2 | 3.0.0 | 4.0.0 |
+| :---: | :---: | :---: |
 
 | Patch | Details |
 |---|---|
@@ -1478,7 +1478,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 2.99.419 |
+| 2.99.423 |
 | :---: |
 
 | Patch | Details |
@@ -2332,6 +2332,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="public-follow-system-theme"></a>[**Follow system theme**](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/theme/FollowSystemThemePatch.kt) | Switches the app between light and dark with the system theme. The app's Night Mode setting has no effect. |
 | <a id="public-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="public-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/publicvideos/ads/HideAdsPatch.kt) | Removes ads from the feed, app open, interstitial and rewarded placements, and the sponsor banner on the launch screen. |
+| <a id="public-load-videos-on-tap"></a>[**Load videos on tap**](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/thumbnails/LoadVideosOnTapPatch.kt) | Loads feed videos only after a tap when Autoplay is set to Off in the app's settings. YouTube videos are not affected. |
+| <a id="public-remove-feed-cards"></a>[**Remove feed cards**](patches/src/main/kotlin/app/morphe/patches/publicvideos/feed/RemoveFeedCardsPatch.kt) | Removes follow suggestion cards and custom cards from the For You feed. |
 | <a id="public-remove-promotions"></a>[**Remove promotions**](patches/src/main/kotlin/app/morphe/patches/publicvideos/promotions/RemovePromotionsPatch.kt) | Removes advertiser banners under posts, the VIP package and advertising offers on the profile, and the pop-ups over bottom bar tabs. |
 | <a id="public-remove-screenshot-restriction"></a>[**Remove screenshot restriction**](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/screenshot/RemoveScreenshotRestrictionPatch.kt) | Allows screenshots and screen recording on every screen. |
 | <a id="public-remove-startup-animation"></a>[**Remove startup animation**](patches/src/main/kotlin/app/morphe/patches/publicvideos/misc/splash/RemoveStartupAnimationPatch.kt) | Opens the app without playing the animated logo on launch. |
@@ -2458,7 +2460,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 26.05.20+2300 | 26.10.28+2340 |
+| 26.05.20+2300 | 26.11.06+2360 |
 | :---: | :---: |
 
 | Patch | Details |
@@ -2547,7 +2549,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 1.32.6 |
+| 1.33.1 |
 | :---: |
 
 | Patch | Details |
@@ -2772,7 +2774,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 4.28.5 |
+| 4.29.0 |
 | :---: |
 
 | Patch | Details |
@@ -3229,7 +3231,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 5.7 |
+| 5.9.1 |
 | :---: |
 
 | Patch | Details |

@@ -26,6 +26,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import org.json.JSONArray;
@@ -33,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @TargetApi(Build.VERSION_CODES.S_V2)
+@SuppressLint("UseRequiresApi")
 public final class MemoriesJson {
 
     private MemoriesJson() {

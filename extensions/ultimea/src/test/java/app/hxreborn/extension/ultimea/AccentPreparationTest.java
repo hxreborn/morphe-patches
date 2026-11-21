@@ -46,6 +46,7 @@ import org.robolectric.annotation.Implements;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 31,
         shadows = { AccentPreparationTest.AppliedFlagsShadow.class, AccentPreparationTest.PaletteAssetsShadow.class })
+@SuppressWarnings("deprecation")
 public class AccentPreparationTest {
 
     private Context context;
@@ -179,6 +180,7 @@ public class AccentPreparationTest {
     public static class AppliedFlagsShadow {
 
         @Implementation
+        @SuppressWarnings("unused")
         protected static boolean accentColor() {
             return true;
         }

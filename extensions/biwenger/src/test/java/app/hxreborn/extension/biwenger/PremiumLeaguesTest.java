@@ -35,6 +35,7 @@ import org.robolectric.Shadows;
 public final class PremiumLeaguesTest {
 
     @Test
+    @SuppressWarnings("resource")
     public void installsAScriptThatRewritesLeagueResponses() {
         // given
         final WebView view = new WebView(Robolectric.buildActivity(Activity.class).get());

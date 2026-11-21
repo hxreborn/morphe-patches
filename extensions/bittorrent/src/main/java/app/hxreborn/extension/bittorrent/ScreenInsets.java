@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.bittorrent;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Insets;
@@ -72,6 +73,8 @@ public final class ScreenInsets implements View.OnApplyWindowInsetsListener {
 
     @TargetApi(Build.VERSION_CODES.R)
     @Override
+    @SuppressLint("UseRequiresApi")
+    @SuppressWarnings("NullableProblems")
     public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
         Insets safe = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
         int bottom = this.insetBottom ? safe.bottom : 0;
@@ -94,10 +97,9 @@ public final class ScreenInsets implements View.OnApplyWindowInsetsListener {
 
     private static void clearToolbarMargin(View page, int id) {
         View view = page.findViewById(id);
-        if (view == null || !(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
+        if (view == null || !(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams parameters)) {
             return;
         }
-        ViewGroup.MarginLayoutParams parameters = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         if (parameters.topMargin != 0) {
             parameters.topMargin = 0;
             view.setLayoutParams(parameters);
@@ -149,8 +151,7 @@ public final class ScreenInsets implements View.OnApplyWindowInsetsListener {
                 clearToolbarMargin(view, addButtonId());
                 return;
             }
-            if (view instanceof ViewGroup) {
-                ViewGroup group = (ViewGroup) view;
+            if (view instanceof ViewGroup group) {
                 for (int index = 0; index < group.getChildCount(); index++) {
                     update(group.getChildAt(index));
                 }

@@ -246,6 +246,7 @@ final class BookmarkIndex {
         return bookmarkCollection == collectionId;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     static String normalizeLink(String link) {
         Uri uri = Uri.parse(link.trim());
         String host = uri.getHost();
@@ -322,6 +323,7 @@ final class BookmarkIndex {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void save(long savedAccount, List<JSONObject> published) {
         File target = savedIndex;
         if (target == null) {
@@ -371,6 +373,7 @@ final class BookmarkIndex {
         throw new IOException("user/stats has no count for collection " + ALL);
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     private static void findDuplicates() {
         Map<String, Long> firstByLink = new HashMap<>();
         originals.clear();

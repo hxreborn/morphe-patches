@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+@SuppressWarnings("DataFlowIssue")
 public final class CoordinatesTest {
 
     @Test

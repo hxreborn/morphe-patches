@@ -43,9 +43,7 @@ public final class PatchSettings {
     }
 
     public static void initialize(Context context) {
-        SharedPreferences stored = context.getApplicationContext()
-            .getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
-        preferences = stored;
+        preferences = context.getApplicationContext().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
         applicationContext = context.getApplicationContext();
         if (DarkTheme.followsDarkMode()) {
             initializeNightMode();
@@ -65,6 +63,7 @@ public final class PatchSettings {
         return isFeatureEnabled(AppliedPatches.removeSponsoredItems(), AppliedPatches.REMOVE_SPONSORED_ITEMS);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean disableAnalytics() {
         return isFeatureEnabled(AppliedPatches.disableAnalytics(), AppliedPatches.DISABLE_ANALYTICS);
     }
@@ -73,6 +72,7 @@ public final class PatchSettings {
         return isFeatureEnabled(AppliedPatches.disableUpdatePrompts(), AppliedPatches.DISABLE_UPDATE_PROMPTS);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean enableImageSaving() {
         return isFeatureEnabled(AppliedPatches.enableImageSaving(), AppliedPatches.ENABLE_IMAGE_SAVING);
     }

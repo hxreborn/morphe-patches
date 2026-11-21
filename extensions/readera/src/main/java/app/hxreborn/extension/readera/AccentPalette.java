@@ -23,6 +23,7 @@ package app.hxreborn.extension.readera;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
@@ -101,6 +102,7 @@ final class AccentPalette {
     }
 
     @TargetApi(Build.VERSION_CODES.S)
+    @SuppressLint("UseRequiresApi")
     private static int systemColor(Context context) {
         return context.getColor(android.R.color.system_accent1_200);
     }
@@ -114,6 +116,7 @@ final class AccentPalette {
         return null;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean valid(String preset) {
         return STOCK.equals(preset) || SYSTEM.equals(preset) || isHex(preset);
     }

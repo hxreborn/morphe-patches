@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import app.hxreborn.extension.aliexpress.AppliedPatches.AppliedPatch;
 
+@SuppressWarnings("deprecation")
 final class PatchesSettingsDialog {
 
     private static final String RESET_DESCRIPTION = "Restores every switch to its default.";

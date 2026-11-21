@@ -48,11 +48,14 @@ import org.robolectric.shadows.ShadowDialog;
 import org.robolectric.shadows.ShadowViewGroup;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("deprecation")
 @Config(manifest = Config.NONE, sdk = 31,
         shadows = { FloatingNavigationBarTest.Patched.class, NavigationBarBackdropTest.PreviewResources.class,
                 NavigationBarBackdropTest.NavigationRowsShown.class })
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 public final class NavigationBarBackdropTest {
+
+    private static final String GLASS_SWITCH_TITLE = "Glass navigation bar";
 
     private static final long SURFACE = 0xff2b2b3800000000L;
 
@@ -95,7 +98,7 @@ public final class NavigationBarBackdropTest {
         NavigationBarBackdrop.setBlurStrengthDp(12);
         PatchSettings.setEnabled(NavigationBarBackdrop.GLASS_KEY, true);
         Activity activity = settings();
-        Switch glass = effectSwitch(activity, "Glass navigation bar");
+        Switch glass = glassSwitch(activity);
         Assert.assertFalse(glass.isEnabled());
         Assert.assertTrue(glass.isChecked());
         Assert.assertFalse(((View) glass.getParent()).isEnabled());
@@ -112,7 +115,7 @@ public final class NavigationBarBackdropTest {
     public void explainDisabledEffectRowsBelowAndroid12() {
         PatchSettings.setEnabled(FloatingNavigationBar.KEY, true);
         Activity activity = settings();
-        Switch glass = effectSwitch(activity, "Glass navigation bar");
+        Switch glass = glassSwitch(activity);
         Assert.assertFalse(glass.isEnabled());
         Assert.assertFalse(blurStrengthRow(activity).isEnabled());
         Assert.assertEquals("Glass navigation bar. Requires Android 12 or later.", glass.getContentDescription());
@@ -213,7 +216,7 @@ public final class NavigationBarBackdropTest {
         NavigationBarBackdrop.setBlurStrengthDp(0);
         Activity activity = settings();
         Assert.assertTrue(containsText(blurStrengthRow(activity), "Off"));
-        effectSwitch(activity, "Glass navigation bar").performClick();
+        glassSwitch(activity).performClick();
         Assert.assertTrue(PatchSettings.isEnabled(NavigationBarBackdrop.GLASS_KEY, false));
         Assert.assertTrue(containsText(blurStrengthRow(activity), "7 / 25"));
         SeekBar slider = findSlider(activity.findViewById(android.R.id.content));
@@ -264,9 +267,9 @@ public final class NavigationBarBackdropTest {
         return this.controller.get();
     }
 
-    private static Switch effectSwitch(Activity activity, String title) {
-        Switch control = findSwitch(activity.findViewById(android.R.id.content), title);
-        Assert.assertNotNull(title, control);
+    private static Switch glassSwitch(Activity activity) {
+        Switch control = findSwitch(activity.findViewById(android.R.id.content), GLASS_SWITCH_TITLE);
+        Assert.assertNotNull(GLASS_SWITCH_TITLE, control);
         return control;
     }
 
@@ -275,8 +278,7 @@ public final class NavigationBarBackdropTest {
                 && view.getContentDescription().toString().startsWith(title + ". ")) {
             return (Switch) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 Switch control = findSwitch(group.getChildAt(index), title);
                 if (control != null) {
@@ -298,8 +300,7 @@ public final class NavigationBarBackdropTest {
         if (view instanceof SeekBar) {
             return (SeekBar) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 SeekBar slider = findSlider(group.getChildAt(index));
                 if (slider != null) {
@@ -314,8 +315,7 @@ public final class NavigationBarBackdropTest {
         if (view instanceof TextView && text.contentEquals(((TextView) view).getText())) {
             return (TextView) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 TextView label = findText(group.getChildAt(index), text);
                 if (label != null) {
@@ -335,8 +335,7 @@ public final class NavigationBarBackdropTest {
         if (view instanceof NavigationBarPreview) {
             return (NavigationBarPreview) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 NavigationBarPreview preview = findPreview(group.getChildAt(index));
                 if (preview != null) {
@@ -368,6 +367,7 @@ public final class NavigationBarBackdropTest {
     }
 
     @Implements(NavigationBarPreview.class)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class PreviewResources extends ShadowViewGroup {
 
         @Implementation

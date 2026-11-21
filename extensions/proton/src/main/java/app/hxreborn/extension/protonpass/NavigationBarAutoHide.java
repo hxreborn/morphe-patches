@@ -29,7 +29,6 @@ import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.view.animation.PathInterpolator;
 import androidx.compose.foundation.lazy.LazyListState;
-import androidx.compose.runtime.ParcelableSnapshotMutableFloatState;
 import androidx.compose.ui.Modifier;
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection;
 import androidx.compose.ui.unit.Velocity;
@@ -37,7 +36,7 @@ import androidx.compose.ui.unit.Velocity;
 import app.hxreborn.extension.proton.PatchSettings;
 import app.hxreborn.extension.shared.ProxyHandler;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "KotlinInternalInJava" })
 public final class NavigationBarAutoHide {
 
     public static final String KEY = "auto_hide_navigation_bar";
@@ -190,7 +189,8 @@ public final class NavigationBarAutoHide {
 
     private static final class HiddenOffset {
 
-        private static final ParcelableSnapshotMutableFloatState hiddenDp = new ParcelableSnapshotMutableFloatState(0f);
+        private static final androidx.compose.runtime.ParcelableSnapshotMutableFloatState hiddenDp =
+                new androidx.compose.runtime.ParcelableSnapshotMutableFloatState(0f);
 
     }
 
@@ -216,6 +216,7 @@ public final class NavigationBarAutoHide {
             return noVelocity();
         }
 
+        @SuppressWarnings("JavaReflectionMemberAccess")
         private Object noVelocity() {
             if (this.noVelocity == null) {
                 try {

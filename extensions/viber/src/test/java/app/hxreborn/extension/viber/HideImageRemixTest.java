@@ -33,6 +33,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = { HideImageRemixTest.AppliedImageRemix.class })
+@SuppressWarnings("deprecation")
 public final class HideImageRemixTest {
 
     @Before
@@ -65,6 +66,7 @@ public final class HideImageRemixTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class AppliedImageRemix {
 
         @Implementation

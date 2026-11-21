@@ -41,21 +41,19 @@ final class SelectionMenu {
 
     private static void addAction(ScrollView menu, String label, Runnable action) {
         View content = menu.getChildAt(0);
-        if (!(content instanceof LinearLayout)) {
+        if (!(content instanceof LinearLayout actions)) {
             Log.w(PatchSettings.LOG_TAG, "Selection menu has no action list for " + label);
             return;
         }
-        LinearLayout actions = (LinearLayout) content;
         int lastIndex = actions.getChildCount() - 1;
         View last = actions.getChildAt(lastIndex);
-        if (!(last instanceof Button)) {
+        if (!(last instanceof Button template)) {
             Log.w(PatchSettings.LOG_TAG, "Selection menu has no template button for " + label);
             return;
         }
         if (actions.findViewWithTag(label) != null) {
             return;
         }
-        Button template = (Button) last;
         Button button = new Button(template.getContext());
         button.setTag(label);
         button.setText(label);

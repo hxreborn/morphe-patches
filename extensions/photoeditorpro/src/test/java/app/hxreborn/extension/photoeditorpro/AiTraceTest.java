@@ -59,6 +59,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+@SuppressWarnings({ "DataFlowIssue", "resource", "SameParameterValue" })
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
 public final class AiTraceTest {
@@ -371,7 +372,7 @@ public final class AiTraceTest {
     }
 
     @Test
-    public void failureMessageIsCutAtTheLimit() throws IOException {
+    public void failureMessageIsCutAtTheLimit() {
         // given
         replies.addLast(Reply.failing(new IOException("b".repeat(600))));
 

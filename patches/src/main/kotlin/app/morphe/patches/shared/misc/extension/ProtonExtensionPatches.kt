@@ -6,23 +6,23 @@ package app.morphe.patches.shared.misc.extension
 
 import app.morphe.patcher.patch.bytecodePatch
 
-internal val protonSettings2ExtensionPatch = bytecodePatch {
+internal val protonSettingsThemeExtensionPatch = bytecodePatch {
     dependsOn(morpheLibraryCoreExtensionPatch, sharedNightModeExtensionPatch)
-    extendWith("extensions/hxreborn/proton-settings-2.mpe")
+    extendWith("extensions/hxreborn/proton-settings-theme.mpe")
 }
 
 internal val protonSettingsExtensionPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, sharedProxyHandlerExtensionPatch)
     extendWith("extensions/hxreborn/proton-settings.mpe")
 }
 
 internal val protonMaterialSwitchViewExtensionPatch = bytecodePatch {
-    dependsOn(protonSettings2ExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(protonSettingsThemeExtensionPatch, sharedProxyHandlerExtensionPatch)
     extendWith("extensions/hxreborn/proton-material-switch-view.mpe")
 }
 
 internal val protonPatchApplicationExtensionPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch, sharedSignatureExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch, sharedSignatureExtensionPatch)
     extendWith("extensions/hxreborn/proton-patch-application.mpe")
 }
 
@@ -72,7 +72,7 @@ internal val protonSwipeToSwitchAccountsExtensionPatch = bytecodePatch {
 }
 
 internal val protonWebMaterialSwitchExtensionPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch)
     extendWith("extensions/hxreborn/proton-web-material-switch.mpe")
 }
 
@@ -81,7 +81,7 @@ internal val protonAmoledDarkThemeExtensionPatch = bytecodePatch {
 }
 
 internal val protonAuthenticatorSettingsExtensionPatch = bytecodePatch {
-    dependsOn(protonSettings2ExtensionPatch, protonSettingsExtensionPatch)
+    dependsOn(protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch)
     extendWith("extensions/hxreborn/proton-authenticator-settings.mpe")
 }
 
@@ -95,18 +95,18 @@ internal val protonAutoDeleteBannerExtensionPatch = bytecodePatch {
     extendWith("extensions/hxreborn/proton-auto-delete-banner.mpe")
 }
 
-internal val protonAmoledDarkTheme2ExtensionPatch = bytecodePatch {
+internal val protonMailWebContentBackgroundExtensionPatch = bytecodePatch {
     dependsOn(protonSettingsExtensionPatch, sharedStreamsExtensionPatch)
-    extendWith("extensions/hxreborn/proton-amoled-dark-theme-2.mpe")
+    extendWith("extensions/hxreborn/proton-mail-web-content-background.mpe")
 }
 
 internal val protonWebSettingsThemeExtensionPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch)
     extendWith("extensions/hxreborn/proton-web-settings-theme.mpe")
 }
 
 internal val protonPassSettingsExtensionPatch = bytecodePatch {
-    dependsOn(protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     extendWith("extensions/hxreborn/proton-pass-settings.mpe")
 }
 
@@ -129,7 +129,7 @@ internal val protonHideUpgradePromotionsExtensionPatch = bytecodePatch {
 }
 
 internal val protonMaterial3SwitchesExtensionPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, sharedProxyHandlerExtensionPatch)
     extendWith("extensions/hxreborn/proton-material-3-switches.mpe")
 }
 

@@ -35,6 +35,7 @@ import org.robolectric.annotation.Implements;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
+@SuppressWarnings("deprecation")
 public class AppliedPatchesTest {
 
     private static final String ANALYTICS_DESCRIPTION = "Stops usage statistics and affiliate link reports.";
@@ -74,6 +75,7 @@ public class AppliedPatchesTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class MixedCaseTitles {
 
         @Implementation
@@ -119,6 +121,7 @@ public class AppliedPatchesTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class AppliedWithoutDescription {
 
         @Implementation
@@ -134,6 +137,7 @@ public class AppliedPatchesTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class AppliedAnalytics {
 
         @Implementation

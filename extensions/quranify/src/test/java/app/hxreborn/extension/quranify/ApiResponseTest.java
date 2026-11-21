@@ -37,7 +37,7 @@ public final class ApiResponseTest {
     private static String write(Map<String, String> headers) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         new ApiResponse(200, "application/json", BODY, headers).writeTo(output);
-        return output.toString(StandardCharsets.UTF_8.name());
+        return output.toString(StandardCharsets.UTF_8);
     }
 
     @Test

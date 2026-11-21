@@ -31,7 +31,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
@@ -52,6 +51,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+@SuppressWarnings({ "DataFlowIssue", "BusyWait", "UnnecessaryReturn" })
 @RunWith(RobolectricTestRunner.class)
 public final class LinkCheckerPageTextTest {
 
@@ -172,7 +172,7 @@ public final class LinkCheckerPageTextTest {
         assertEquals("caf�", storedText("text/html; charset=UTF-8", latin1));
         assertEquals("caf�", storedText("text/html", latin1));
         assertEquals("caf�", storedText("text/html; charset=bogus-charset", latin1));
-        assertEquals("café", storedText("text/html; charset=UTF-16LE", "café".getBytes(Charset.forName("UTF-16LE"))));
+        assertEquals("café", storedText("text/html; charset=UTF-16LE", "café".getBytes(StandardCharsets.UTF_16LE)));
     }
 
     @Test
@@ -260,6 +260,7 @@ public final class LinkCheckerPageTextTest {
             }
         }
 
+        @SuppressWarnings("UnnecessaryReturnStatement")
         private void respond(Socket client) {
             try (Socket connection = client) {
                 BufferedReader reader = new BufferedReader(

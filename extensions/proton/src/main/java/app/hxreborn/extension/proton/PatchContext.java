@@ -41,6 +41,7 @@ public final class PatchContext {
         return resumedActivityReference.get();
     }
 
+    @SuppressWarnings("NullableProblems")
     public static void attach(Application application) {
         Utils.setContext(application);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {

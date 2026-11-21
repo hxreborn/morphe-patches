@@ -60,6 +60,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowDialog;
 import org.robolectric.shadows.ShadowSystemClock;
 
+@SuppressWarnings({ "DataFlowIssue", "resource", "SameParameterValue", "PrimitiveArrayArgumentToVarargsMethod" })
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
 public final class RequestLogTest {

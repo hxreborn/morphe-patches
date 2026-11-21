@@ -31,7 +31,7 @@ trap 'rm -rf "$work"' EXIT
 
 mkdir -p "$resources"
 
-"$javac" -nowarn -source 8 -target 8 -bootclasspath "$platform" -d "$work/boot" "$here"/src/Boot.java
+"$javac" -nowarn -source 8 -target 8 -bootclasspath "$platform" -d "$work/boot" "$here"/src/main/java/Boot.java
 "$build_tools/d8" --min-api 23 --lib "$platform" --output "$work/boot" "$work"/boot/*.class
 cp "$work/boot/classes.dex" "$resources/boot.dex"
 

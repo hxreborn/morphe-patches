@@ -44,8 +44,8 @@ public final class TeraboxHdUnlockTest {
         return "https://www.terabox.com/api/streaming?path=" + Uri.encode(path) + "&type=" + type;
     }
 
-    private static String sharedStreamingUrl(String fsId, String type) {
-        return "https://www.terabox.com/share/streaming?fid=" + fsId + "&type=" + type;
+    private static String sharedStreamingUrl(String fsId) {
+        return "https://www.terabox.com/share/streaming?fid=" + fsId + "&type=M3U8_AUTO_480";
     }
 
     private static boolean isRecorded(String path) {
@@ -54,7 +54,7 @@ public final class TeraboxHdUnlockTest {
     }
 
     private static boolean isSharedFileRecorded(String fsId) {
-        TeraboxHdUnlock.selectPlaybackUrl(null, sharedStreamingUrl(fsId, "M3U8_AUTO_480"));
+        TeraboxHdUnlock.selectPlaybackUrl(null, sharedStreamingUrl(fsId));
         return TeraboxHdUnlock.requiresReload(true);
     }
 
@@ -149,6 +149,7 @@ public final class TeraboxHdUnlockTest {
     }
 
     @Test
+    @SuppressWarnings("StringOperationCanBeSimplified")
     public void passesTheSameUrlInstanceThrough() {
         // given
         final String url = new String("https://cdn.example/video.mp4");
@@ -352,6 +353,7 @@ public final class TeraboxHdUnlockTest {
             this.optionCalls++;
         }
 
+        @SuppressWarnings("unused")
         public void setEnableCustomHls(boolean enabled) {
             this.customHls = enabled;
             this.optionCalls++;

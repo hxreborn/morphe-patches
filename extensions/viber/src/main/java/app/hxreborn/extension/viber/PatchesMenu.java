@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.viber;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -57,6 +58,7 @@ public final class PatchesMenu {
         return true;
     }
 
+    @SuppressLint("DiscouragedApi")
     private static int resourceId(Context context, String type, String name) {
         return context.getResources().getIdentifier(name, type, context.getPackageName());
     }

@@ -142,6 +142,7 @@ public final class RecentPanelTest {
     }
 
     @Implements(value = RecentPanel.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class HostPanels {
 
         @Implementation
@@ -166,11 +167,8 @@ public final class RecentPanelTest {
         @Override
         public int getIdentifier(String name, String defType, String defPackage) {
             if ("id".equals(defType)) {
-                switch (name) {
-                    case "rb_trans_btn":
-                        return TRANSFER_BUTTON_ID;
-                    default:
-                        break;
+                if ("rb_trans_btn".equals(name)) {
+                    return TRANSFER_BUTTON_ID;
                 }
             }
             return super.getIdentifier(name, defType, defPackage);

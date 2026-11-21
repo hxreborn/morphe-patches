@@ -35,6 +35,7 @@ import org.robolectric.annotation.Implements;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 28, shadows = AiPreferencesTest.EnabledSettings.class,
         instrumentedPackages = "app.hxreborn.extension.viber")
+@SuppressWarnings("deprecation")
 public class AiPreferencesTest {
 
     private static final long CHATGPT_ASSISTANT_FLAG = 1L << 29;
@@ -116,6 +117,7 @@ public class AiPreferencesTest {
     }
 
     @Implements(value = PatchSettings.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class EnabledSettings {
 
         static boolean enabled = true;

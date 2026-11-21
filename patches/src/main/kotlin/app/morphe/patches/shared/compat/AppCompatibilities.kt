@@ -33,7 +33,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "ae23b6062bfe3fea5e0372c58ee809e0ee3eb3b356350cfaa2734dd6742c15b9",
         ),
-        targets = listOf(AppTarget(version = "1.25.6", versionCode = 1037, minSdk = 26)),
+        targets = listOf(AppTarget(version = "1.28.1", versionCode = 1135, minSdk = 26)),
     )
 
     val ALIEXPRESS = Compatibility(
@@ -195,7 +195,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2c2c9d68b4564d29e20fea9a363b7597b15e246ddbc553f5353e07c2da956d0e",
         ),
-        targets = listOf(AppTarget(version = "1.7.24", versionCode = 199, minSdk = 24)),
+        targets = listOf(AppTarget(version = "1.7.30", versionCode = 205, minSdk = 24)),
     )
 
     val AUDIOMACK = Compatibility(
@@ -261,7 +261,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "22c4c3a7776a3b54b9380a6021fa86cea27fd6844792ea6c579ba9ad0d2dbd71",
         ),
-        targets = listOf(AppTarget(version = "26.19", versionCode = 27176, minSdk = 26)),
+        targets = listOf(AppTarget(version = "26.20", versionCode = 27237, minSdk = 26)),
     )
 
     val BIOBIRD = Compatibility(
@@ -275,6 +275,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "2.0.2", versionCode = 38, minSdk = 23),
             AppTarget(version = "3.0.0", versionCode = 41, minSdk = 24),
+            AppTarget(version = "4.0.0", versionCode = 46, minSdk = 24),
         ),
     )
 
@@ -976,7 +977,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b341b1d855ee55eb2c6c9287eaafc6449c0b34065e170af7bf5bc21a03f05bf2",
         ),
-        targets = listOf(AppTarget(version = "2.99.419", versionCode = 683, minSdk = 26)),
+        targets = listOf(AppTarget(version = "2.99.423", versionCode = 687, minSdk = 26)),
     )
 
     val LUMO = Compatibility(
@@ -1667,7 +1668,7 @@ internal object AppCompatibilities {
         appIconColor = 0x0061BD,
         targets = listOf(
             AppTarget(version = "26.05.20+2300", versionCode = 2300, minSdk = 21),
-            AppTarget(version = "26.10.28+2340", versionCode = 2340, minSdk = 23),
+            AppTarget(version = "26.11.06+2360", versionCode = 2360, minSdk = 23),
         ),
     )
 
@@ -1686,7 +1687,7 @@ internal object AppCompatibilities {
         appIconColor = 0xD070B0,
         signatures = setOf("4b7b35ef333631ef03f56308df5eecaf87db75c227fd3675b12e04c36b2c0ce7"),
         targets = listOf(
-            AppTarget(version = "1.32.6", versionCode = 302, minSdk = 24),
+            AppTarget(version = "1.33.1", versionCode = 313, minSdk = 24),
         ),
     )
 
@@ -1863,7 +1864,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "b75fd2b70084d7e0813b8f74dd74b62ab79b2aa0ce1372331a1841bd88eed993",
         ),
-        targets = listOf(AppTarget(version = "4.28.5", versionCode = 709, minSdk = 23)),
+        targets = listOf(AppTarget(version = "4.29.0", versionCode = 710, minSdk = 23)),
     )
 
     val THREEWAY = Compatibility(
@@ -2121,7 +2122,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "a7e3c4a612680186937b02e7b89574d5fd62798b8cb668973992fa89f6198fcb",
         ),
-        targets = listOf(AppTarget(version = "5.7", versionCode = 875, minSdk = 24)),
+        targets = listOf(AppTarget(version = "5.9.1", versionCode = 882, minSdk = 24)),
     )
 
     val USA_VPN = Compatibility(

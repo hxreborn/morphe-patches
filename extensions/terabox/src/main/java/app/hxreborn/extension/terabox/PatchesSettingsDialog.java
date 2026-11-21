@@ -250,8 +250,7 @@ final class PatchesSettingsDialog {
         if (view instanceof TextView) {
             ((TextView) view).setTextColor(this.style.primaryText);
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 styleConfirmationText(group.getChildAt(index));
             }

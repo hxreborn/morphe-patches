@@ -51,11 +51,10 @@ public final class PatchesMenu {
             return;
         }
         View templateView = activity.findViewById(templateRowId());
-        if (!(templateView instanceof TextView) || !(templateView.getParent() instanceof LinearLayout)) {
+        if (!(templateView instanceof TextView template) || !(templateView.getParent() instanceof LinearLayout)) {
             Log.w(PatchSettings.LOG_TAG, "Settings row template missing");
             return;
         }
-        TextView template = (TextView) templateView;
         LinearLayout parent = (LinearLayout) template.getParent();
         TextView row = new TextView(activity);
         row.setTag(ENTRY_TAG);

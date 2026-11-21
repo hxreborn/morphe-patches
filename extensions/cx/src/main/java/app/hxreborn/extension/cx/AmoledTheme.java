@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.cx;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
@@ -42,6 +43,7 @@ public final class AmoledTheme {
         return (AMOLED_PREFERENCE_KEY.equals(key)) ? THEME_PREFERENCE_KEY : key;
     }
 
+    @SuppressLint("DiscouragedApi")
     public static void applyOverlay(Activity activity) {
         if (!isAmoled(activity)) {
             return;

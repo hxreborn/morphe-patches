@@ -98,6 +98,7 @@ public class ScreenInsetsTest {
     }
 
     @Test
+    @SuppressWarnings("resource")
     public void preserveContentOnAndroid16() {
         Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
         View view = new View(activity);

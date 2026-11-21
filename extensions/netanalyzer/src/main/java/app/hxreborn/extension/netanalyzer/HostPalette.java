@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -32,6 +33,7 @@ import android.os.Build;
 import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class HostPalette {
 
@@ -192,6 +194,7 @@ public final class HostPalette {
         captured = new HostPalette((role) -> argb(readLong(colorScheme, names, role)));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static HostPalette of(Context context) {
         final HostPalette palette = captured;
         if (palette != null) {
@@ -236,6 +239,7 @@ public final class HostPalette {
         }
     }
 
+    @SuppressWarnings("resource")
     private static int themeColor(Context context, int attribute) {
         final TypedArray attributes = context.obtainStyledAttributes(new int[] { attribute });
         try {

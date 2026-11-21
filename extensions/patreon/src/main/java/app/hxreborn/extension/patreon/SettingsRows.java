@@ -94,6 +94,7 @@ final class SettingsRows {
         row.setOnClickListener((view) -> toggle.toggle());
     }
 
+    @SuppressWarnings("SameParameterValue")
     void actionRow(LinearLayout card, String iconName, String title, String description, Runnable action) {
         LinearLayout row = baseRow(card, iconName);
         addTitleAndDescription(row, title, description);

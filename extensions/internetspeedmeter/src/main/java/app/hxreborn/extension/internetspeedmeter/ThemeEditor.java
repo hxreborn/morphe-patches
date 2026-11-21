@@ -230,9 +230,8 @@ final class ThemeEditor {
         bar.setProgress(Math.round(fraction * PERCENT));
     }
 
-    @SuppressWarnings("unchecked")
     private <T extends View> T find(int id) {
-        return (T) this.content.findViewById(id);
+        return this.content.findViewById(id);
     }
 
     private static final class SliderListener implements SeekBar.OnSeekBarChangeListener {

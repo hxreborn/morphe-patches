@@ -40,6 +40,7 @@ final class ContentsPlaceholderAction {
         this.stockMessage = placeholder.getText();
     }
 
+    @SuppressWarnings("resource")
     void attach() {
         String message = this.stockMessage + "\n\n" + ChapterSpeech.TEN_PAGES;
         SpannableString action = new SpannableString(message);

@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.aliexpress;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -146,16 +147,22 @@ final class SettingsStyle {
         return drawable;
     }
 
+    @SuppressWarnings("SameParameterValue")
     Drawable ripple(int radiusDp) {
         return new RippleDrawable(ColorStateList.valueOf(this.rippleColor), null, rounded(this.primaryText, radiusDp));
     }
 
+    @SuppressLint("DiscouragedApi")
     Drawable hostIcon(String name, int tint) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         if (identifier == 0) {
             return null;
         }
-        Drawable icon = this.context.getDrawable(identifier).mutate();
+        Drawable icon = this.context.getDrawable(identifier);
+        if (icon == null) {
+            return null;
+        }
+        icon = icon.mutate();
         icon.setTint(tint);
         return icon;
     }
@@ -203,6 +210,7 @@ final class SettingsStyle {
         return (Color.red(color) + Color.green(color) + Color.blue(color)) / CHANNEL_COUNT > MID_CHANNEL;
     }
 
+    @SuppressWarnings("resource")
     private int themeColor(int attribute, int fallback) {
         TypedArray theme = this.context.obtainStyledAttributes(new int[] { attribute });
         int color = theme.getColor(0, fallback);

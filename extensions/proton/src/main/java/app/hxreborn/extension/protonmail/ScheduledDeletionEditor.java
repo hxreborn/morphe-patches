@@ -79,6 +79,7 @@ public final class ScheduledDeletionEditor {
         return (schedules.isEmpty()) ? "Off" : schedules;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String schedules(Context context) {
         final StringBuilder summary = new StringBuilder();
         for (String label : ScheduledDeletion.EMPTIED_LABELS) {

@@ -41,6 +41,8 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricTestRunner.class)
 public final class AccentColorTest {
 
+    private static final int CHANNEL_TOLERANCE = 2;
+
     private static final String ORANGE = "#E8710A";
 
     private static final long ARGB_MASK = 0xFFFFFFFFL;
@@ -76,11 +78,11 @@ public final class AccentColorTest {
         return Math.max(0.6, Math.min(1.4, lab(picked)[0] / lab(AccentColor.STOCK_DARK_ACCENT)[0]));
     }
 
-    private static void assertChannelsNear(int expected, int actual, int tolerance) {
+    private static void assertChannelsNear(int expected, int actual) {
         for (int shift = 0; shift <= 24; shift += 8) {
             final int difference = Math.abs(((expected >>> shift) & 0xFF) - ((actual >>> shift) & 0xFF));
             assertTrue(Integer.toHexString(expected) + " vs " + Integer.toHexString(actual) + " at " + shift,
-                    difference <= tolerance);
+                    difference <= CHANNEL_TOLERANCE);
         }
     }
 
@@ -198,7 +200,7 @@ public final class AccentColorTest {
             final double ratio = lab(argb(preset))[0] / lab(AccentColor.STOCK_DARK_ACCENT)[0];
             assertTrue(preset, ratio >= 0.6 && ratio <= 1.4);
 
-            assertChannelsNear(argb(preset), AccentColor.resolveAccentColor(preset, true), 2);
+            assertChannelsNear(argb(preset), AccentColor.resolveAccentColor(preset, true));
         }
     }
 
@@ -261,6 +263,7 @@ public final class AccentColorTest {
     }
 
     @Test
+    @SuppressWarnings("NegativeIntConstantInLongContext")
     public void systemPresetUsesTheSystemAccentColor() {
         assertTrue(AccentColor.isSystemAccentAvailable());
         final int system = this.context.getColor(android.R.color.system_accent1_500);
@@ -300,7 +303,7 @@ public final class AccentColorTest {
         assertEquals(AccentColor.resolveAccentColor(ORANGE, true), AccentColor.getAccentColor(true));
         assertEquals(AccentColor.resolveAccentColor(ORANGE, false), AccentColor.getAccentColor(false));
         assertEquals(AccentColor.getAccentColor(true), AccentColor.transformedStockDarkAccent());
-        assertChannelsNear(0xFFE8710A, AccentColor.getAccentColor(true), 2);
+        assertChannelsNear(0xFFE8710A, AccentColor.getAccentColor(true));
     }
 
     @Test
@@ -353,7 +356,7 @@ public final class AccentColorTest {
         // then
         assertEquals(0L, transformed & ~ARGB_MASK);
         assertEquals(AccentColor.transformedStockDarkAccent() & ARGB_MASK, transformed);
-        assertChannelsNear(0xFFE8710A, (int) transformed, 2);
+        assertChannelsNear(0xFFE8710A, (int) transformed);
     }
 
     @Test
@@ -416,8 +419,8 @@ public final class AccentColorTest {
 
         final Map<Integer, Integer> remembered = AccentColor.transformedBrandColors();
         assertEquals(2, remembered.size());
-        assertEquals((int) stock, (int) remembered.get(0xFF9292F9));
-        assertEquals((int) light, (int) remembered.get(0xFF6D4AFF));
+        assertEquals(Integer.valueOf((int) stock), remembered.get(0xFF9292F9));
+        assertEquals(Integer.valueOf((int) light), remembered.get(0xFF6D4AFF));
 
         remembered.clear();
         assertEquals(2, AccentColor.transformedBrandColors().size());
@@ -458,7 +461,7 @@ public final class AccentColorTest {
         assertEquals(0, AccentColor.resolvePresetColor(AccentColor.SYSTEM));
         assertEquals(AccentColor.STOCK_DARK_ACCENT, AccentColor.resolveAccentColor(AccentColor.SYSTEM, true));
         assertEquals(AccentColor.STOCK_LIGHT_ACCENT, AccentColor.resolveAccentColor(AccentColor.SYSTEM, false));
-        assertChannelsNear(0xFFE8710A, AccentColor.resolveAccentColor(ORANGE, true), 2);
+        assertChannelsNear(0xFFE8710A, AccentColor.resolveAccentColor(ORANGE, true));
     }
 
     @Test

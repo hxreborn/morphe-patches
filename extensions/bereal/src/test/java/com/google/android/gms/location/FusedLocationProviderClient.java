@@ -22,6 +22,7 @@ package com.google.android.gms.location;
 
 import com.google.android.gms.tasks.Task;
 
+@SuppressWarnings("unused")
 public interface FusedLocationProviderClient {
 
     Task getCurrentLocation(int priority, Object cancellationToken);

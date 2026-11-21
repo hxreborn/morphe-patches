@@ -50,7 +50,7 @@ public final class OpenTierRetry {
         }
 
         try {
-            where.add(Arrays.<Object>asList(tierField, TIER_OPERATOR, OPEN_TIERS));
+            where.add(Arrays.asList(tierField, TIER_OPERATOR, OPEN_TIERS));
         } catch (UnsupportedOperationException ex) {
             return false;
         }

@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.duolingo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -188,6 +189,7 @@ final class SettingsStyle {
         return button;
     }
 
+    @SuppressWarnings("SameParameterValue")
     GradientDrawable rounded(int fill, float radiusDp) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(fill);
@@ -195,6 +197,7 @@ final class SettingsStyle {
         return drawable;
     }
 
+    @SuppressWarnings("SameParameterValue")
     GradientDrawable outlined(int fill, int stroke, float radiusDp) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(fill);
@@ -211,6 +214,7 @@ final class SettingsStyle {
         return tinted(this.context.getDrawable(backIconDrawable()), tint);
     }
 
+    @SuppressLint("DiscouragedApi")
     Drawable hostIcon(String name, int tint) {
         int id = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         return tinted((id != 0) ? this.context.getDrawable(id) : null, tint);
@@ -266,6 +270,7 @@ final class SettingsStyle {
         }
     }
 
+    @SuppressLint("ViewConstructor")
     static final class Toggle extends View implements Checkable {
 
         private static final int WIDTH_DP = 56;
@@ -340,6 +345,7 @@ final class SettingsStyle {
         static void describeAsSwitch(View row, Checkable toggle) {
             row.setAccessibilityDelegate(new AccessibilityDelegate() {
                 @Override
+                @SuppressWarnings({ "NullableProblems", "deprecation" })
                 public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfo info) {
                     super.onInitializeAccessibilityNodeInfo(view, info);
                     info.setClassName(Switch.class.getName());

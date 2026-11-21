@@ -13,8 +13,4 @@ app/hxreborn/extension/proton/PatchesDialog
 app/hxreborn/extension/proton/PatchesMenu
 app/hxreborn/extension/proton/PatchesMenu$RowClickHandler
 app/hxreborn/extension/proton/PatchesSettingsActivity
-app/hxreborn/extension/proton/PatchesSettingsActivity$1
-app/hxreborn/extension/proton/PatchesSettingsActivity$2
-app/hxreborn/extension/proton/PatchesSettingsActivity$3
-app/hxreborn/extension/proton/PatchesSettingsActivity$4
 app/hxreborn/extension/proton/SettingsScreen

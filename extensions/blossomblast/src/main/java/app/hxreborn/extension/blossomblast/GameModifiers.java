@@ -136,6 +136,7 @@ public final class GameModifiers implements GameThread, ModifierBridge {
                 boosterSlotLevels());
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean loadLibrary() {
         if (libraryLoaded) {
             return true;

@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.json.JSONException;
@@ -155,8 +154,8 @@ public final class BookmarkIndexTest {
     @Test
     public void ignoresObservedBookmarksUntilTheIndexIsLoaded() throws JSONException {
         JSONObject bookmark = new JSONObject().put("_id", 42).put("link", "https://example.com/a");
-        BookmarkIndex.observe(Arrays.asList(bookmark));
-        BookmarkIndex.observe(Collections.<JSONObject>emptyList());
+        BookmarkIndex.observe(Collections.singletonList(bookmark));
+        BookmarkIndex.observe(Collections.emptyList());
         assertFalse(BookmarkIndex.isLoaded());
         assertEquals(Collections.emptyList(), BookmarkIndex.snapshot());
         assertNull(BookmarkIndex.find(42));

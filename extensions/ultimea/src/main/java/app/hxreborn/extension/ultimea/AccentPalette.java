@@ -23,6 +23,7 @@ package app.hxreborn.extension.ultimea;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import android.graphics.ColorSpace;
 import android.os.Build;
 import android.util.Log;
 
+@SuppressLint("UseRequiresApi")
 final class AccentPalette {
 
     static final String STOCK = "";
@@ -148,6 +150,7 @@ final class AccentPalette {
         return context.getSharedPreferences(PatchSettings.PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean valid(String preset) {
         return preset != null
                 && (STOCK.equals(preset) || SYSTEM.equals(preset) || HEX_PRESET.matcher(preset).matches());

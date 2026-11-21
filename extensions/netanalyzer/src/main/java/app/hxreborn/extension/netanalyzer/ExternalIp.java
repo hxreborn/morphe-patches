@@ -68,10 +68,12 @@ final class ExternalIp {
         this.longitude = coordinate(coordinates, "longitude");
     }
 
+    @SuppressWarnings("unused")
     static Object stateValue(Object stateHolder) {
         return null;
     }
 
+    @SuppressWarnings("unused")
     static Object flowValue(Object flowHolder) {
         return null;
     }

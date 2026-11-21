@@ -99,6 +99,7 @@ final class SettingsRows {
         addLabels(row, title, description);
         row.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings("NullableProblems")
             public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(view, info);
                 info.setClassName(Button.class.getName());

@@ -82,20 +82,19 @@ final class ChapterStops {
     }
 
     synchronized Object chapterEnd(List<?> contents) {
-        if (!(this.resolvingEntry instanceof ContentsEntry) || !(this.resolvingEntry instanceof ReadingPosition)) {
+        if (!(this.resolvingEntry instanceof ContentsEntry pressed)
+                || !(this.resolvingEntry instanceof ReadingPosition)) {
             return null;
         }
-        ContentsEntry pressed = (ContentsEntry) this.resolvingEntry;
         int page = ((ReadingPosition) this.resolvingEntry).readingPage();
         for (Object entry : contents) {
             if (!this.chapterFound) {
                 this.chapterFound = entry == this.resolvingEntry;
                 continue;
             }
-            if (!(entry instanceof ContentsEntry) || !(entry instanceof ReadingPosition)) {
+            if (!(entry instanceof ContentsEntry candidate) || !(entry instanceof ReadingPosition)) {
                 continue;
             }
-            ContentsEntry candidate = (ContentsEntry) entry;
             if (candidate.contentsLink() == null && candidate.contentsLevel() <= pressed.contentsLevel()
                     && ((ReadingPosition) entry).readingPage() >= page) {
                 return entry;
@@ -150,10 +149,9 @@ final class ChapterStops {
     }
 
     private Object filterTrack(Object track, boolean manual) {
-        if (this.stop == null || !(track instanceof SpeechTrack)) {
+        if (this.stop == null || !(track instanceof SpeechTrack next)) {
             return track;
         }
-        SpeechTrack next = (SpeechTrack) track;
         if (next.speechGeneration() < this.stop.firstGeneration()) {
             return track;
         }

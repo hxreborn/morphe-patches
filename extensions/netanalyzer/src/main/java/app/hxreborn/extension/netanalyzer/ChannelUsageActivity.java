@@ -34,14 +34,18 @@ import android.content.SharedPreferences;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class ChannelUsageActivity extends HostScreenActivity {
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final TextStyle CAPTION = new TextStyle(11, 16, 0.5f, TextStyle.MEDIUM);
 
@@ -141,15 +145,17 @@ public final class ChannelUsageActivity extends HostScreenActivity {
     }
 
     @SuppressLint("MissingPermission")
+    @SuppressWarnings("deprecation")
     private void requestScan() {
         try {
             this.wifi.startScan();
         } catch (SecurityException ex) {
-            return;
+            Log.w(TAG, "Wi-Fi scan not permitted", ex);
         }
     }
 
     @SuppressLint("MissingPermission")
+    @SuppressWarnings("deprecation")
     private void refresh() {
         final List<ChannelUsage.Network> scanned = new ArrayList<>();
         try {

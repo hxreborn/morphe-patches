@@ -34,6 +34,7 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 
+@SuppressWarnings("DataFlowIssue")
 public final class AccountBridgeTest {
 
     @Rule

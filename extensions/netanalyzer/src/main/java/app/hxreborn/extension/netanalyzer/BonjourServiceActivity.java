@@ -24,11 +24,13 @@ import java.net.InetAddress;
 import java.util.Collections;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.widget.LinearLayout;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings({ "unused", "unchecked" })
 public final class BonjourServiceActivity extends BrowserScreenActivity {
 
@@ -43,7 +45,7 @@ public final class BonjourServiceActivity extends BrowserScreenActivity {
     void buildContent() {
         final Object argument = argument();
         final List<BonjourService> services = (argument != null) ? (List<BonjourService>) argument
-                : Collections.<BonjourService>emptyList();
+                : Collections.emptyList();
         for (BonjourService service : services) {
             if (!matches(ipFilter(), service.address4)) {
                 continue;

@@ -107,29 +107,19 @@ public final class ChapterSpeech {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isFootnoteMarker(Object utterance) {
         return utterance instanceof ReadingPosition && ((ReadingPosition) utterance).readingType() == FOOTNOTE_MARKER;
     }
 
     private static void showNotice(StopNotice notice) {
         SpeechScreenLock.onChapterSpeechStart(application);
-        String message;
-        switch (notice) {
-            case CHAPTER:
-                message = String.format(Locale.ROOT, CHAPTER_NOTICE, STOPS.chapterTitle());
-                break;
-            case BOOK_END:
-                message = BOOK_END_NOTICE;
-                break;
-            case TEN_PAGES:
-                message = TEN_PAGES_NOTICE;
-                break;
-            case MISSING_CHAPTER:
-                message = MISSING_CHAPTER_NOTICE;
-                break;
-            default:
-                throw new IllegalStateException("Unknown chapter stop notice: " + notice);
-        }
+        String message = switch (notice) {
+            case CHAPTER -> String.format(Locale.ROOT, CHAPTER_NOTICE, STOPS.chapterTitle());
+            case BOOK_END -> BOOK_END_NOTICE;
+            case TEN_PAGES -> TEN_PAGES_NOTICE;
+            case MISSING_CHAPTER -> MISSING_CHAPTER_NOTICE;
+        };
         Context context = application;
         if (context != null) {
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());

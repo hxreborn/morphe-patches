@@ -111,6 +111,7 @@ public class LocalPresetsTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void releasesBothTimedOutReadsAndImportsAfterActivityRecreation() throws Exception {
         android.net.Uri stalled = android.net.Uri.parse("content://presets/stalled");
         java.io.File file = java.io.File.createTempFile("preset-timeout", ".json", this.activity.getCacheDir());
@@ -262,6 +263,7 @@ public class LocalPresetsTest {
                 Thread.yield();
             }
             Assert.assertEquals("Preset exported", org.robolectric.shadows.ShadowToast.getTextOfLatestToast());
+            @SuppressWarnings("ReadWriteStringCanBeUsed")
             EqualizerPresetFile exported = EqualizerPresetFile.parse(new String(
                     java.nio.file.Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8));
             Assert.assertEquals(state, exported.state);

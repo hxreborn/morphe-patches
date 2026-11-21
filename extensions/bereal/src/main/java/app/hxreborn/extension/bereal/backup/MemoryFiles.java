@@ -26,10 +26,12 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.S_V2)
+@SuppressLint("UseRequiresApi")
 public final class MemoryFiles {
 
     private static final DateTimeFormatter BASE = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss", Locale.ROOT);
@@ -65,29 +67,19 @@ public final class MemoryFiles {
         }
         final int dot = path.lastIndexOf('.');
         final String ext = (dot < 0) ? "" : path.substring(dot + 1).toLowerCase(Locale.ROOT);
-        switch (ext) {
-            case "jpeg":
-            case "jpg":
-                return "jpg";
-            case "webp":
-            case "png":
-            case "mp4":
-                return ext;
-            default:
-                return fallback;
-        }
+        return switch (ext) {
+            case "jpeg", "jpg" -> "jpg";
+            case "webp", "png", "mp4" -> ext;
+            default -> fallback;
+        };
     }
 
     public static String mimeType(final String ext) {
-        switch (ext) {
-            case "jpg":
-                return "image/jpeg";
-            case "png":
-                return "image/png";
-            case "mp4":
-                return "video/mp4";
-            default:
-                return "image/webp";
-        }
+        return switch (ext) {
+            case "jpg" -> "image/jpeg";
+            case "png" -> "image/png";
+            case "mp4" -> "video/mp4";
+            default -> "image/webp";
+        };
     }
 }

@@ -34,6 +34,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, manifest = Config.NONE)
+@SuppressWarnings({ "deprecation", "resource" })
 public class SettingsStyleFallbackTest {
 
     private static final int TITLE_COLOR = 0xFF3A3E4A;

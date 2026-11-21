@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
+@SuppressWarnings("DataFlowIssue")
 public final class AccountTest {
 
     private static final long NOW = 1_000_000_000_000L;

@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import app.hxreborn.extension.liftoff.AppliedPatches.AppliedPatch;
 
+@SuppressWarnings({ "deprecation", "NullableProblems" })
 final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
 
     private static final String UNKNOWN_VERSION = "unknown";
@@ -80,6 +81,7 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         });
     }
 
+    @SuppressWarnings("DataFlowIssue")
     void show() {
         LinearLayout root = new LinearLayout(this.activity);
         root.setOrientation(LinearLayout.VERTICAL);

@@ -85,6 +85,7 @@ public final class NavigationButtonsTest {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public String toString() {
             return this.name;
         }

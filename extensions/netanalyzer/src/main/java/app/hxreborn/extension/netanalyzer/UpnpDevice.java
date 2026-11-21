@@ -193,7 +193,7 @@ final class UpnpDevice {
                 text = node.getNodeValue();
             }
         }
-        if (text == null || text.trim().length() == 0) {
+        if (text == null || text.trim().isEmpty()) {
             return null;
         }
         return text.trim();

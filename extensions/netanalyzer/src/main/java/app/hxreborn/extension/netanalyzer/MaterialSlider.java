@@ -30,6 +30,7 @@ import android.view.View;
 
 import app.hxreborn.extension.shared.Dimensions;
 
+@SuppressLint("ViewConstructor")
 final class MaterialSlider extends View {
 
     private static final float TRACK_HEIGHT_DP = 16f;
@@ -96,6 +97,7 @@ final class MaterialSlider extends View {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         final float thumbWidth = dp(THUMB_WIDTH_DP);
         final float gap = dp(THUMB_GAP_DP);

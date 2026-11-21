@@ -46,6 +46,7 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowSystemClock;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("resource")
 public final class PatchesSettingsActivityTest {
 
     private static final Uri PICKED_FOLDER = Uri

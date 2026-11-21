@@ -59,6 +59,7 @@ public final class PremiumInterceptor implements Interceptor {
     }
 
     @Override
+    @SuppressWarnings({ "NullableProblems", "ConstantValue", "deprecation" })
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Response response = chain.proceed(request);

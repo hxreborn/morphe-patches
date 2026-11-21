@@ -141,7 +141,9 @@ public final class AccentColor {
         File[] stale = folder.listFiles();
         if (stale != null) {
             for (File file : stale) {
-                file.delete();
+                if (!file.delete()) {
+                    Log.w(TAG, "Cannot delete the cached accent color bundle " + file.getName());
+                }
             }
         }
         if (!folder.isDirectory() && !folder.mkdirs()) {

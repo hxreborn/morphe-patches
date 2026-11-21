@@ -92,6 +92,7 @@ public final class DeviceGuid {
         }
     }
 
+    @SuppressWarnings("UnnecessaryReturnStatement")
     private static void write(String value) {
         try {
             Object store = store();

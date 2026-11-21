@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+@SuppressWarnings("SameParameterValue")
 final class SettingsRows {
 
     private static final int SECTION_HEADER_START_PADDING_DP = 4;

@@ -235,6 +235,7 @@ final class PatchesSettingsDialog {
         option.addView(this.style.regularText(subscription.description, SettingsStyle.SUMMARY_SP, this.style.wolf));
         option.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings({ "NullableProblems", "deprecation" })
             public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(view, info);
                 info.setClassName(RadioButton.class.getName());
@@ -303,6 +304,7 @@ final class PatchesSettingsDialog {
         Runtime.getRuntime().exit(0);
     }
 
+    @SuppressWarnings("deprecation")
     private void styleWindow(Window window) {
         if (window == null) {
             return;
@@ -319,6 +321,7 @@ final class PatchesSettingsDialog {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
         view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                 insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());

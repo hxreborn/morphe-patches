@@ -121,7 +121,7 @@ public final class WeatherJsonTest {
     public void keysCoordinatesLikeTheAppPrintsThem() {
         assertEquals("39.91987,32.85427", WeatherJson.coordinateKey(39.91987, 32.85427));
         assertEquals(WeatherJson.coordinateKey(39.91987, 32.85427),
-                WeatherJson.coordinateKey((double) (float) 39.91987, (double) (float) 32.85427));
+                WeatherJson.coordinateKey((float) 39.91987, (float) 32.85427));
     }
 
 }

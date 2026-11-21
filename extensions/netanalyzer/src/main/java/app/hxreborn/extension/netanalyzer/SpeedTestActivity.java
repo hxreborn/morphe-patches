@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class SpeedTestActivity extends HostScreenActivity {
 
@@ -337,6 +339,7 @@ public final class SpeedTestActivity extends HostScreenActivity {
             plot();
         }
 
+        @SuppressWarnings("IntegerDivisionInFloatingPointContext")
         void add(long elapsedMillis, long raw, long live) {
             if (this.points.isEmpty()) {
                 this.firstElapsed = elapsedMillis;

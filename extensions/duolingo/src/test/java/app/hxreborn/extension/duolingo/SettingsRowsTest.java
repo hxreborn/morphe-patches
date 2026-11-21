@@ -37,6 +37,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.RuntimeEnvironment;
 
+@SuppressWarnings("deprecation")
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = FakeHostResources.class)
 public final class SettingsRowsTest {

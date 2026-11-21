@@ -67,10 +67,9 @@ public final class PatchesMenu {
     public static void onScrollLayout(ScrollView scroll) {
         Activity activity = PatchContext.resumedActivity();
         if (activity == null || !scroll.isShown() || scroll.getChildCount() != 1
-                || !(scroll.getChildAt(0) instanceof ViewGroup)) {
+                || !(scroll.getChildAt(0) instanceof ViewGroup content)) {
             return;
         }
-        ViewGroup content = (ViewGroup) scroll.getChildAt(0);
         if (content.findViewWithTag(scroll) != null) {
             return;
         }
@@ -93,8 +92,7 @@ public final class PatchesMenu {
         if (view instanceof TextView && labels.contains(((TextView) view).getText().toString())) {
             return (TextView) view;
         }
-        if (view instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 TextView found = findLabel(group.getChildAt(index), labels);
                 if (found != null) {
@@ -151,6 +149,7 @@ public final class PatchesMenu {
             this.row.setLayoutDirection(template.getLayoutDirection());
             this.row.setAccessibilityDelegate(new View.AccessibilityDelegate() {
                 @Override
+                @SuppressWarnings("NullableProblems")
                 public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfo info) {
                     super.onInitializeAccessibilityNodeInfo(view, info);
                     info.setClassName(Button.class.getName());
@@ -298,10 +297,12 @@ public final class PatchesMenu {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public void onViewAttachedToWindow(View view) {
         }
 
         @Override
+        @SuppressWarnings("NullableProblems")
         public void onViewDetachedFromWindow(View view) {
             this.scroll.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             this.scroll.removeOnAttachStateChangeListener(this);

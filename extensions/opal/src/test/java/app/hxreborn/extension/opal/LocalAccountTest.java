@@ -51,6 +51,7 @@ public final class LocalAccountTest {
         this.store = RuntimeEnvironment.getApplication().getSharedPreferences("firebase", Context.MODE_PRIVATE);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private JSONObject seededUser() throws Exception {
         LocalAccount.seedFirebaseUser(this.store, USER_ID);
         return new JSONObject(this.store.getString(USER_KEY, null));

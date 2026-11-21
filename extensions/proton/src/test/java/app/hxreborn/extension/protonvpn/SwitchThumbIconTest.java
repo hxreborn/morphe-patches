@@ -86,6 +86,7 @@ public final class SwitchThumbIconTest {
 
     @Test
     @Config(shadows = PatchedBuild.Switches.class)
+    @SuppressWarnings("DataFlowIssue")
     public void describesTheContentByItsState() {
         assertEquals("SwitchThumbIcon(checked)", SwitchThumbIcon.thumbContent(Function.class, true).toString());
         assertEquals("SwitchThumbIcon(unchecked)", SwitchThumbIcon.thumbContent(Function.class, false).toString());
@@ -93,6 +94,7 @@ public final class SwitchThumbIconTest {
 
     @Test
     @Config(shadows = PatchedBuild.Switches.class)
+    @SuppressWarnings({ "DataFlowIssue", "SimplifiableAssertion", "SimplifiableJUnitAssertion", "EqualsWithItself" })
     public void comparesTheContentByIdentity() {
         // given
         final Object checked = SwitchThumbIcon.thumbContent(Function.class, true);
@@ -106,7 +108,7 @@ public final class SwitchThumbIconTest {
 
     @Test
     @Config(shadows = PatchedBuild.Switches.class)
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "DataFlowIssue" })
     public void returnsNullWhenTheContentIsInvoked() {
         // given
         final Function<Object, Object> content = (Function<Object, Object>) SwitchThumbIcon.thumbContent(Function.class,

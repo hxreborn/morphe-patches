@@ -18,6 +18,8 @@ androidx-annotation = "1.9.1"
 androidx-compose = "1.7.6"
 androidx-webkit = "1.16.0"
 kotlin-stdlib = "2.4.21"
+animalsniffer = "2.0.1"
+gummy-bears = "0.16.0"
 
 [libraries]
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
@@ -38,3 +40,7 @@ androidx-compose-runtime = { module = "androidx.compose.runtime:runtime-android"
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation-android", version.ref = "androidx-compose" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "androidx-webkit" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-stdlib" }
+android-api-signature = { module = "com.toasttab.android:gummy-bears-api-26", version.ref = "gummy-bears" }
+
+[plugins]
+animalsniffer = { id = "ru.vyarus.animalsniffer", version.ref = "animalsniffer" }

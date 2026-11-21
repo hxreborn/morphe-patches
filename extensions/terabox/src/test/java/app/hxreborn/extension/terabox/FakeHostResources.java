@@ -24,6 +24,7 @@ import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
 @Implements(value = SettingsStyle.class, isInAndroidSdk = false)
+@SuppressWarnings("unused")
 public final class FakeHostResources {
 
     public static final int PAGE_BACKGROUND = android.R.color.black;
@@ -34,6 +35,7 @@ public final class FakeHostResources {
 
     public static final int PRIMARY_TEXT = android.R.color.white;
 
+    @SuppressWarnings("deprecation")
     public static final int SECONDARY_TEXT = android.R.color.tertiary_text_dark;
 
     @Implementation

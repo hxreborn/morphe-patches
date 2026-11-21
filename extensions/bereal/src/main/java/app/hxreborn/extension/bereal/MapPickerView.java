@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.bereal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -86,6 +87,7 @@ final class MapPickerView extends View implements OsmTileLoadListener {
 
     private MapPickerListener listener;
 
+    @SuppressWarnings("NullableProblems")
     MapPickerView(Context context) {
         super(context);
         this.textPaint.setTextSize(Dimensions.spExact(context, 11f));
@@ -164,6 +166,7 @@ final class MapPickerView extends View implements OsmTileLoadListener {
     }
 
     @Override
+    @SuppressLint("ClickableViewAccessibility")
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
             getParent().requestDisallowInterceptTouchEvent(true);

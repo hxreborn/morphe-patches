@@ -69,6 +69,7 @@ public final class ScheduledDeletionTest {
     }
 
     @Implements(value = KotlinResults.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class FakeKotlinResults {
 
         @Implementation
@@ -98,6 +99,7 @@ public final class ScheduledDeletionTest {
 
     }
 
+    @SuppressWarnings("unused")
     static final class Ok {
 
         private final Object value;
@@ -120,6 +122,7 @@ public final class ScheduledDeletionTest {
 
     }
 
+    @SuppressWarnings("unused")
     static final class Mailbox {
 
         public Object labelId() {
@@ -128,6 +131,7 @@ public final class ScheduledDeletionTest {
 
     }
 
+    @SuppressWarnings("unused")
     static final class MailSession {
 
         public Object getSessions(Object continuation) {
@@ -136,6 +140,7 @@ public final class ScheduledDeletionTest {
 
     }
 
+    @SuppressWarnings("unused")
     static final class Session {
 
         private final Object userId;
@@ -160,8 +165,8 @@ public final class ScheduledDeletionTest {
         this.preferences = this.context.getSharedPreferences(PatchSettings.PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    private void scheduleTrash(int seconds) {
-        ScheduledDeletionSettings.saveIntervalSeconds(this.context, ScheduledDeletion.TRASH, seconds);
+    private void scheduleTrashEveryHour() {
+        ScheduledDeletionSettings.saveIntervalSeconds(this.context, ScheduledDeletion.TRASH, 3600);
     }
 
     private Object stamped(String label, String account) {
@@ -198,6 +203,7 @@ public final class ScheduledDeletionTest {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static void throwOnFailure(Object result) throws Exception {
         try {
             final Method method = UniffiCalls.class.getDeclaredMethod("throwOnFailure", Object.class);
@@ -242,7 +248,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void mailboxWithoutACapturedAccountIsIgnored() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
 
         // when
         ScheduledDeletion.onMailboxShown(new Mailbox());
@@ -257,7 +263,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void firstSightOfTheAccountStartsItsCountdownWithoutDeleting() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
         final long before = System.currentTimeMillis();
 
         // when
@@ -274,9 +280,10 @@ public final class ScheduledDeletionTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void overdueLabelStartsTheDeletionWorker() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
         final long overdue = System.currentTimeMillis() - 2 * HOUR_MS;
         this.preferences.edit().putLong("last_emptied_ms_TRASH_account", overdue).apply();
 
@@ -294,7 +301,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void labelThatIsNotDueDoesNotStartTheWorker() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
         this.preferences.edit()
             .putLong("last_emptied_ms_TRASH_account", System.currentTimeMillis() - HOUR_MS / 2)
             .apply();
@@ -324,7 +331,7 @@ public final class ScheduledDeletionTest {
     @Config(shadows = PatchedBuild.Mail.class)
     public void backgroundRunWithAScheduleStartsTheDeletionWorker() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
 
         // when
         ScheduledDeletion.onBackgroundExecution(new MailSession());
@@ -350,7 +357,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void workerStartsAgainAfterAFailedRun() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
         this.preferences.edit()
             .putLong("last_emptied_ms_TRASH_account", System.currentTimeMillis() - 2 * HOUR_MS)
             .apply();
@@ -367,7 +374,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void accountIdFromAFailedResultIsIgnored() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
 
         // when
         for (Object userId : new Object[] { new Failure(new IOException("offline")), new Ok(null), null, "account" }) {
@@ -383,7 +390,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void accountIdOfTheWrongTypeIsReported() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
 
         // when
         showMailbox(new Mailbox(), new Session(new Ok(42)));
@@ -398,7 +405,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void sessionWithoutAnAccountGetterIsReported() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
 
         // when
         showMailbox(new Mailbox(), new Object());
@@ -413,7 +420,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void mailboxWithoutALabelGetterIsReported() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
         final Object mailbox = new Object();
 
         // when
@@ -430,7 +437,7 @@ public final class ScheduledDeletionTest {
     @Test
     public void resultsThatAreNotOkAssociateNothing() throws InterruptedException {
         // given
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
 
         // when
         for (Object result : new Object[] { null, new Failure(new IOException()), "Ok", Marker.COROUTINE_SUSPENDED,
@@ -447,7 +454,7 @@ public final class ScheduledDeletionTest {
 
     @Test
     public void okResultAssociatesItsValueNotTheWrapper() throws InterruptedException {
-        scheduleTrash(3600);
+        scheduleTrashEveryHour();
         final Mailbox mailbox = new Mailbox();
         final Ok result = new Ok(mailbox);
         ScheduledDeletion.captureMailbox(result, new Session(new Ok("account")));
@@ -602,6 +609,8 @@ public final class ScheduledDeletionTest {
     }
 
     @Test
+    @SuppressWarnings({ "SimplifiableAssertion", "SimplifiableJUnitAssertion", "EqualsWithItself", "ConstantValue",
+            "EqualsBetweenInconvertibleTypes", "ObjectEqualsNull" })
     public void continuationAnswersObjectMethodsItself() throws ReflectiveOperationException {
         final FakeContinuation first = continuationFor(newBlockingContinuation(new Object()));
         final FakeContinuation second = continuationFor(newBlockingContinuation(new Object()));

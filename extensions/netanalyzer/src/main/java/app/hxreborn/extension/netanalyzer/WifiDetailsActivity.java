@@ -23,6 +23,7 @@ package app.hxreborn.extension.netanalyzer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.text.InputType;
@@ -35,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class WifiDetailsActivity extends HostScreenActivity {
 
@@ -178,6 +180,7 @@ public final class WifiDetailsActivity extends HostScreenActivity {
         return lines;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String elementIds(Hotspot hotspot) {
         final StringBuilder ids = new StringBuilder();
         for (Object id : hotspot.elementIds) {

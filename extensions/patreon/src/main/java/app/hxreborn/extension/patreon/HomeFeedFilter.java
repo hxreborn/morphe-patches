@@ -156,6 +156,7 @@ public final class HomeFeedFilter {
         return nonMemberPosts;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static File roomDatabaseFile() {
         Context context = PatchSettings.application();
         File[] files = (context != null) ? context.getDatabasePath(DATABASE_PREFIX).getParentFile().listFiles() : null;

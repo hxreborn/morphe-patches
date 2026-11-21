@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.netanalyzer;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -31,6 +32,7 @@ import android.os.Build;
 import android.view.View;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint({ "UseRequiresApi", "ViewConstructor" })
 final class StarButton extends View {
 
     private static final int POINTS = 5;
@@ -68,6 +70,7 @@ final class StarButton extends View {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         final float density = getResources().getDisplayMetrics().density;
         final float outer = STAR_RADIUS_DP * density;

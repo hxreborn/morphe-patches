@@ -58,8 +58,13 @@ public final class ApiRequestTest {
 
     @Test
     public void forwardsOnlyAllowedHeadersInLowercase() throws IOException {
-        ApiRequest request = read("GET /api/ HTTP/1.1\r\nX-Device-Id: device\r\nCookie: secret\r\n"
-                + "Accept:  application/json \r\n\r\n");
+        ApiRequest request = read("""
+                GET /api/ HTTP/1.1\r
+                X-Device-Id: device\r
+                Cookie: secret\r
+                Accept:  application/json \r
+                \r
+                """);
 
         assertEquals("device", request.headers.get("x-device-id"));
         assertEquals("application/json", request.headers.get("accept"));

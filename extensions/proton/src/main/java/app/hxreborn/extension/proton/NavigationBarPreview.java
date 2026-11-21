@@ -109,6 +109,7 @@ final class NavigationBarPreview extends android.widget.FrameLayout {
 
     private boolean glass;
 
+    @SuppressWarnings("DataFlowIssue")
     NavigationBarPreview(Context context) {
         super(context);
         this.density = context.getResources().getDisplayMetrics().density;
@@ -147,6 +148,7 @@ final class NavigationBarPreview extends android.widget.FrameLayout {
         updateAppearance();
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private LinearLayout sampleContent(Context context, int[] iconIds) {
         final LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);

@@ -33,12 +33,9 @@ public final class UpgradePromotionRows {
     public static void add(PatchesSettingsActivity activity, List<View> rows) {
         rows.add(activity.switchRow(AppliedPatches.hideUpgradePromotionsName(),
                 AppliedPatches.hideUpgradePromotionsDescription(), UpsellingVisibility.isHidden(),
-                new CheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(boolean hidden) {
-                        UpsellingVisibility.setHidden(hidden);
-                        activity.confirmRestart();
-                    }
+                (hidden) -> {
+                    UpsellingVisibility.setHidden(hidden);
+                    activity.confirmRestart();
                 }));
     }
 

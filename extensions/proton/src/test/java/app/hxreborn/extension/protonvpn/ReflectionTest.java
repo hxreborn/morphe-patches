@@ -32,6 +32,7 @@ import org.junit.Test;
 
 public final class ReflectionTest {
 
+    @SuppressWarnings("unused")
     static final class Target {
 
         private final Object value = new Object();

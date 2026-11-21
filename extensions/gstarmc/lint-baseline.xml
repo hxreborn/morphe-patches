@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6">
+    <issue id="BlockedPrivateApi" message="Reflective access to sPackageInfoCache is forbidden when targeting API 36 and above" errorLine1="            Field field = Class.forName(&quot;android.content.pm.PackageManager&quot;)" errorLine2="                          ^">
+        <location file="src/main/java/Boot.java" line="96" column="27" />
+    </issue>
+</issues>

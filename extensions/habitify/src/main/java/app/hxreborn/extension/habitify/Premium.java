@@ -90,10 +90,9 @@ public final class Premium {
             grantLifetimePro(subscription);
             return subscription;
         }
-        if (!(value instanceof Map<?, ?>)) {
+        if (!(value instanceof Map<?, ?> user)) {
             return value;
         }
-        Map<?, ?> user = (Map<?, ?>) value;
         if (Long.valueOf(1L).equals(user.get(ANDROID_PREMIUM_KEY)) && isLifetimePro(user.get(SUBSCRIPTION_KEY))) {
             return value;
         }
@@ -111,10 +110,9 @@ public final class Premium {
     }
 
     private static boolean isLifetimePro(Object value) {
-        if (!(value instanceof Map<?, ?>)) {
+        if (!(value instanceof Map<?, ?> subscription)) {
             return false;
         }
-        Map<?, ?> subscription = (Map<?, ?>) value;
         return PRO_PRODUCT.equals(subscription.get(PRODUCT_ID_KEY)) && !subscription.containsKey(EXPIRES_AT_KEY);
     }
 

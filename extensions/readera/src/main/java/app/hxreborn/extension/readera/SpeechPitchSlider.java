@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.readera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.speech.tts.TextToSpeech;
@@ -62,6 +63,7 @@ public final class SpeechPitchSlider implements SeekBar.OnSeekBarChangeListener 
         this.label = label;
     }
 
+    @SuppressLint("SetTextI18n")
     public static void attach(View root, SpeechPitchTarget target) {
         if (root == null) {
             return;
@@ -71,16 +73,15 @@ public final class SpeechPitchSlider implements SeekBar.OnSeekBarChangeListener 
             return;
         }
         View rateRow = root.findViewById(speechRateRowId());
-        if (rateRow != null && rateRow.getParent() instanceof ViewGroup) {
-            ViewGroup parent = (ViewGroup) rateRow.getParent();
+        if (rateRow != null && rateRow.getParent() instanceof ViewGroup parent) {
             if (row.getParent() == parent && parent.indexOfChild(row) != parent.indexOfChild(rateRow) + 1) {
                 ViewGroup.LayoutParams layoutParameters = row.getLayoutParams();
                 parent.removeView(row);
                 parent.addView(row, parent.indexOfChild(rateRow) + 1, layoutParameters);
             }
         }
-        SeekBar seekBar = (SeekBar) row.findViewById(android.R.id.progress);
-        TextView label = (TextView) row.findViewById(android.R.id.text2);
+        SeekBar seekBar = row.findViewById(android.R.id.progress);
+        TextView label = row.findViewById(android.R.id.text2);
         Voice voice = target.speechPitchVoice();
         SpeechPitchSlider slider = new SpeechPitchSlider(root.getContext(), target, label);
         seekBar.setOnSeekBarChangeListener(null);
@@ -92,8 +93,8 @@ public final class SpeechPitchSlider implements SeekBar.OnSeekBarChangeListener 
         seekBar.setOnSeekBarChangeListener(slider);
     }
 
-    public static void applyPitch(Context context, TextToSpeech speech, SpeechPitchTarget target) {
-        speech.setPitch(readPitch(PatchSettings.speechPreferences(context), target.speechPitchVoice()));
+    public static void applyPitch(Context context, TextToSpeech speech) {
+        speech.setPitch(readPitch(PatchSettings.speechPreferences(context), speech.getVoice()));
     }
 
     private static int speechRateRowId() {
@@ -113,6 +114,7 @@ public final class SpeechPitchSlider implements SeekBar.OnSeekBarChangeListener 
     }
 
     @Override
+    @SuppressLint("SetTextI18n")
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (!fromUser) {
             return;

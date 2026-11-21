@@ -23,7 +23,7 @@ import app.morphe.patches.shared.misc.proton.patchesSettingsActivityPatch
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import java.util.logging.Logger
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonVpnSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
@@ -59,7 +59,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
 }
 
 internal val patchesSettingsPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, protonVpnSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, protonVpnSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY, VPN_SETTINGS_CLASS))
     execute {
         injectBundleVersion()

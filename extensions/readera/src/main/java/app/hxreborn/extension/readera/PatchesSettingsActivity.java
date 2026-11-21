@@ -174,7 +174,7 @@ public final class PatchesSettingsActivity extends Activity {
         if (explanations.containsKey(SpeechFilterSettings.TITLE)) {
             View omit = this.rows.choiceRow(speech, "omit", SpeechFilterSettings.TITLE,
                     explanations.get(SpeechFilterSettings.TITLE),
-                    Integer.toString(SpeechFilterSettings.count(this)) + " ›");
+                    SpeechFilterSettings.count(this) + " ›");
             omit.setOnClickListener((view) -> SpeechFilterSettings.open(this, this::refresh));
         }
         addSection(column, "Read aloud", speech);

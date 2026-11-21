@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -148,6 +149,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         this.remoteEntry = entry;
     }
 
+    @SuppressWarnings("deprecation")
     public static void attach(Activity activity) {
         FineEqualizer previous = current.get();
         if (previous != null && previous.activity == activity) {
@@ -253,6 +255,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         }
     }
 
+    @SuppressWarnings({ "deprecation", "DataFlowIssue" })
     private void openScreen(boolean remote) {
         if (this.dialog != null || this.activity.isFinishing() || this.activity.isDestroyed()) {
             return;
@@ -413,6 +416,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         render(this.session.state());
     }
 
+    @SuppressLint("DrawAllocation")
     private void rebuildBody() {
         this.body.removeAllViews();
         this.readout = null;
@@ -597,6 +601,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         this.increase.setContentDescription(frequency + " Hz increase 0.1 dB");
     }
 
+    @SuppressWarnings("NullableProblems")
     private void renderPresets(EqualizerSession.State state) {
         StringBuilder key = new StringBuilder().append(this.custom)
             .append(state.canEdit)
@@ -763,7 +768,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         EqualizerSession.State state = this.session.state();
         if (state.selected != null && preset.id.equals(state.selected.id)) {
             if (menu) {
-                showPresetMenuAfterLayout((Button) this.presets.findViewWithTag(preset.id), preset);
+                showPresetMenuAfterLayout(this.presets.findViewWithTag(preset.id), preset);
             } else {
                 feedback("Selected " + preset.name);
                 this.session.selectPreset(preset.id);
@@ -791,7 +796,7 @@ public final class FineEqualizer extends ActivityCallbacksAdapter {
         String id = this.pendingPresetId;
         this.pendingPresetId = null;
         if (this.pendingPresetMenu) {
-            showPresetMenuAfterLayout((Button) this.presets.findViewWithTag(id), state.selected);
+            showPresetMenuAfterLayout(this.presets.findViewWithTag(id), state.selected);
         } else {
             feedback("Selected " + state.selected.name);
         }

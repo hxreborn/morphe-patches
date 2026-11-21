@@ -170,6 +170,7 @@ public final class NavigationBarBackdrop {
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
+    @SuppressWarnings("NullableProblems")
     private static final class Renderer
             implements Application.ActivityLifecycleCallbacks, ViewTreeObserver.OnPreDrawListener {
 
@@ -212,6 +213,7 @@ public final class NavigationBarBackdrop {
                     RenderEffect.createBlurEffect(this.blurRadiusPx, this.blurRadiusPx, Shader.TileMode.CLAMP));
         }
 
+        @SuppressWarnings({ "DataFlowIssue", "ResultOfMethodCallIgnored" })
         private void drawSource(Object scope) {
             this.sourceCoordinates = coordinates(scope);
             final Canvas destination = canvas(scope);
@@ -244,6 +246,7 @@ public final class NavigationBarBackdrop {
             destination.drawRenderNode(this.sourceNode);
         }
 
+        @SuppressWarnings("DataFlowIssue")
         private void drawBar(Object scope) {
             this.barCoordinates = coordinates(scope);
             final Canvas destination = canvas(scope);

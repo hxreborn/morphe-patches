@@ -15,7 +15,7 @@ import app.morphe.patches.shared.replaceMasked
 
 private val NOP = "1f2003d5".hexToByteArray()
 
-private val LOAD_MAX_ENTITLEMENT_INTO_X0 = "7073409100be45f9103a46f9".hexToByteArray()
+private val LOAD_MAX_ENTITLEMENT_INTO_X0 = "701f4191006a47f910e247f9".hexToByteArray()
 
 private val SET_IS_FROM_BULK_IMPORT = "c082009120b001b8".hexToByteArray()
 
@@ -30,8 +30,8 @@ private class ImportLimitSite(
 private val IMPORT_LIMIT_SITES = listOf(
     ImportLimitSite(
         name = "bulk import credits entitlement",
-        pattern = ("a0831ef82800009470734091103a46f9e04101a9" +
-            "705f4091107a46f97e734091de3f46f9").hexToByteArray(),
+        pattern = ("a0831ef828000094701f419110e247f9e04101a9" +
+            "70ff4091109643f97e1f4191dee747f9").hexToByteArray(),
         mask = ("ffffffff000000fcffffffffffffffffffffffff" +
             "ffffffffffffffffffffffffffffffff").hexToByteArray(),
         replacementOffset = 4,
@@ -39,10 +39,8 @@ private val IMPORT_LIMIT_SITES = listOf(
     ),
     ImportLimitSite(
         name = "bulk import credit deduction",
-        pattern = ("227c419341000036227040f85f0000f16c000054e00316aa38559917a3835ef8" +
-            "e20300aa611b4691214840f94ef45294e20300aae10316aa9f000094").hexToByteArray(),
-        mask = ("ffffffff1f0000ffffffffffffffffff1f0000ffffffffff000000fcffffffff" +
-            "ffffffffff03c0ffff03c0ff000000fcffffffffffffffff000000fc").hexToByteArray(),
+        pattern = "227c419341000036227040f85f0000f16c000054e00316aade0e9c14".hexToByteArray(),
+        mask = "ffffffff1f00f8ffff0fe0ffffffffff1f0000ffffffffff000000fc".hexToByteArray(),
         replacementOffset = 16,
         replacement = NOP,
     ),

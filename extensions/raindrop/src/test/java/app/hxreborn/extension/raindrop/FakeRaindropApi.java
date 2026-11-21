@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("DataFlowIssue")
 final class FakeRaindropApi {
 
     private static final Map<String, Response> RESPONSES = new ConcurrentHashMap<>();

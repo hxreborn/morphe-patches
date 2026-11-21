@@ -81,6 +81,7 @@ final class SettingsRows {
         return card;
     }
 
+    @SuppressWarnings("SameParameterValue")
     void switchRow(LinearLayout card, String iconName, String title, String description, boolean checked,
             CompoundButton.OnCheckedChangeListener listener) {
         Switch toggle = new Switch(this.context);
@@ -101,6 +102,7 @@ final class SettingsRows {
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
 
+    @SuppressWarnings("SameParameterValue")
     void actionRow(LinearLayout card, String iconName, String title, String description, Runnable action) {
         LinearLayout row = baseRow(card, iconName);
         addTitleAndDescription(row, title, description);

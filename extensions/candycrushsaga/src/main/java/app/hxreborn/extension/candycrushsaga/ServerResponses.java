@@ -265,24 +265,30 @@ public final class ServerResponses {
                 continue;
             }
             result = JsonText.expand(result);
-            if (POPUPS.equals(method)) {
-                JsonText config = result.fields.get("configJsonString");
-                if (config != null) {
-                    replace(edits, config, JSONObject.quote(blockOffers(config.string())));
-                }
-            } else if (PLUGINS.equals(method)) {
-                disablePlugins(result, plugins, edits);
-                if (soda && removeOfferPopups) {
-                    blockSodaOffers(result, edits);
-                }
-            } else if (SETTINGS.equals(method)) {
-                for (JsonText setting : result.values) {
-                    JsonText name = setting.fields.get("name");
-                    JsonText value = setting.fields.get("value");
-                    if (name != null && value != null
-                            && (soda ? SODA_RATING_LEVELS : SAGA_RATING_LEVELS).equals(name.string())) {
-                        replace(edits, value, "\"\"");
+            switch (method) {
+                case POPUPS -> {
+                    JsonText config = result.fields.get("configJsonString");
+                    if (config != null) {
+                        replace(edits, config, JSONObject.quote(blockOffers(config.string())));
                     }
+                }
+                case PLUGINS -> {
+                    disablePlugins(result, plugins, edits);
+                    if (soda && removeOfferPopups) {
+                        blockSodaOffers(result, edits);
+                    }
+                }
+                case SETTINGS -> {
+                    for (JsonText setting : result.values) {
+                        JsonText name = setting.fields.get("name");
+                        JsonText value = setting.fields.get("value");
+                        if (name != null && value != null
+                                && (soda ? SODA_RATING_LEVELS : SAGA_RATING_LEVELS).equals(name.string())) {
+                            replace(edits, value, "\"\"");
+                        }
+                    }
+                }
+                default -> {
                 }
             }
         }
@@ -333,6 +339,7 @@ public final class ServerResponses {
         }
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String appendSodaOfferPlacements(String text) throws JSONException {
         JsonText blocked = JsonText.parse(text);
         if (blocked.text.charAt(blocked.start) != '[') {
@@ -355,6 +362,7 @@ public final class ServerResponses {
         return original.substring(0, original.length() - 1) + additions + "]";
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     static String blockOffers(String config) throws JSONException {
         JsonText states = JsonText.parse(config).fields.get("configuration_states");
         if (states == null) {

@@ -22,6 +22,7 @@ package app.hxreborn.extension.netanalyzer;
 
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class ToolOptionsActivity extends HostScreenActivity {
 
@@ -108,12 +110,10 @@ public final class ToolOptionsActivity extends HostScreenActivity {
     @Override
     void buildContent() {
         this.preferences = ToolOptions.preferences(this);
-        addToolbarIcon(MaterialIcons.MORE, "More", (view) -> {
-            new DropdownMenu(this).add("Reset", null, () -> {
-                this.preferences.edit().clear().apply();
-                rebuild();
-            }).show(view);
-        });
+        addToolbarIcon(MaterialIcons.MORE, "More", (view) -> new DropdownMenu(this).add("Reset", null, () -> {
+            this.preferences.edit().clear().apply();
+            rebuild();
+        }).show(view));
         populate();
     }
 

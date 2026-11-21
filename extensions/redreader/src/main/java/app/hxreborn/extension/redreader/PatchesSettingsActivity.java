@@ -61,6 +61,7 @@ public final class PatchesSettingsActivity extends Activity {
         showContent();
     }
 
+    @SuppressWarnings("deprecation")
     private void showContent() {
         LinearLayout screen = new LinearLayout(this);
         screen.setOrientation(LinearLayout.VERTICAL);

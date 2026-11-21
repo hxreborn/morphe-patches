@@ -118,6 +118,7 @@ public final class FloatingNavigationBarTest {
     }
 
     @Implements(FloatingNavigationBar.class)
+    @SuppressWarnings("ProtectedMemberInFinalClass")
     public static final class Patched {
 
         @Implementation

@@ -46,7 +46,11 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import android.util.Log;
+
 final class MdnsBrowser {
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final int PORT = 5353;
 
@@ -349,12 +353,12 @@ final class MdnsBrowser {
         try {
             this.scheduler.schedule(() -> force(instance.key, current), RESOLVE_MS, TimeUnit.MILLISECONDS);
         } catch (RejectedExecutionException ex) {
-            return;
+            Log.w(TAG, "Instance resolution not scheduled", ex);
         }
     }
 
     private void force(String key, int current) {
-        boolean changed = false;
+        boolean changed;
         synchronized (this.lock) {
             final Instance instance = this.instances.get(key);
             if (current != this.generation || instance == null) {
@@ -409,7 +413,7 @@ final class MdnsBrowser {
                 this.scheduler.schedule(() -> send(out, packet), round * ROUND_MS, TimeUnit.MILLISECONDS);
             }
         } catch (RejectedExecutionException ex) {
-            return;
+            Log.w(TAG, "Query not scheduled", ex);
         }
     }
 
@@ -417,7 +421,7 @@ final class MdnsBrowser {
         try {
             out.send(new DatagramPacket(packet, packet.length, GROUP, PORT));
         } catch (IOException ex) {
-            return;
+            Log.w(TAG, "Query not sent", ex);
         }
     }
 
@@ -468,7 +472,7 @@ final class MdnsBrowser {
             final String name = readName(packet, cursor);
             final int type = u16(packet, cursor[0]);
             final long ttl = ((long) u16(packet, cursor[0] + TTL_OFFSET) << Short.SIZE)
-                    | u16(packet, cursor[0] + TTL_OFFSET + Short.BYTES);
+                    | u16(packet, cursor[0] + TTL_OFFSET + Short.SIZE / Byte.SIZE);
             final int length = u16(packet, cursor[0] + RDATA_LENGTH_OFFSET);
             final int start = cursor[0] + RECORD_FIXED_LENGTH;
             cursor[0] = start + length;
@@ -514,6 +518,7 @@ final class MdnsBrowser {
         return txt;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String readName(byte[] packet, int[] cursor) {
         final StringBuilder name = new StringBuilder();
         int pos = cursor[0];
@@ -551,6 +556,7 @@ final class MdnsBrowser {
         return ((packet[pos] & BYTE_MASK) << Byte.SIZE) | (packet[pos + 1] & BYTE_MASK);
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     static List<String> labels(String name) {
         final List<String> labels = new ArrayList<>();
         final StringBuilder current = new StringBuilder();
@@ -680,6 +686,7 @@ final class MdnsBrowser {
             this.type = type;
         }
 
+        @SuppressWarnings("BooleanMethodIsAlwaysInverted")
         boolean isResolved(Map<String, List<InetAddress>> hosts) {
             if (this.forced) {
                 return true;

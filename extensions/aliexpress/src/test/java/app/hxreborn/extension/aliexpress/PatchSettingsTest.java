@@ -43,6 +43,7 @@ import org.robolectric.shadows.ShadowDialog;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28, manifest = Config.NONE, shadows = FakeHostColors.class)
+@SuppressWarnings({ "deprecation", "resource" })
 public class PatchSettingsTest {
 
     @Before
@@ -78,6 +79,7 @@ public class PatchSettingsTest {
     }
 
     @Test
+    @SuppressWarnings("DataFlowIssue")
     public void restoreDefaultsFromResetDialog() {
         PatchSettings.setEnabled(AppliedPatches.REMOVE_PROMOTIONAL_POPUPS, false);
         PatchSettings.setEnabled(AppliedPatches.SKIP_SPLASH_PROMOTIONS, false);
@@ -105,10 +107,9 @@ public class PatchSettingsTest {
         if (view instanceof TextView && text.contentEquals(((TextView) view).getText())) {
             return (TextView) view;
         }
-        if (!(view instanceof ViewGroup)) {
+        if (!(view instanceof ViewGroup group)) {
             return null;
         }
-        ViewGroup group = (ViewGroup) view;
         for (int index = 0; index < group.getChildCount(); index++) {
             TextView found = findText(group.getChildAt(index), text);
             if (found != null) {

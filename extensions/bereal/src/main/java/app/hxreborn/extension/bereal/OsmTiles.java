@@ -54,7 +54,7 @@ final class OsmTiles {
 
     private static final long RETRY_AFTER_MS = 20000;
 
-    private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(CACHE_BYTES) {
+    private final LruCache<String, Bitmap> cache = new LruCache<>(CACHE_BYTES) {
         @Override
         protected int sizeOf(String key, Bitmap value) {
             return value.getByteCount();
@@ -83,6 +83,7 @@ final class OsmTiles {
         return this.cache.get(key(zoom, x, y));
     }
 
+    @SuppressWarnings("resource")
     void request(int zoom, int x, int y) {
         final String key = key(zoom, x, y);
         synchronized (this.failed) {

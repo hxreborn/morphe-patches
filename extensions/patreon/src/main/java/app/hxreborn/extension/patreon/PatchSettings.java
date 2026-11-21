@@ -46,6 +46,7 @@ public final class PatchSettings {
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults() {
         SharedPreferences preferences = preferences();
         if (preferences != null) {

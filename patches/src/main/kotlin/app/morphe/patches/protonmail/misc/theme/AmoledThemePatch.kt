@@ -43,8 +43,8 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import java.lang.Long.toHexString
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonAmoledDarkTheme2ExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonMailWebContentBackgroundExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedStreamsExtensionPatch
 
@@ -69,7 +69,7 @@ private val SPLASH_BACKGROUND_VALUES = mapOf(
 )
 
 private val amoledSplashBackgroundPatch = resourcePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch)
     execute {
         SPLASH_BACKGROUND_VALUES.forEach { (file, value) ->
             document(file).use { document ->
@@ -232,7 +232,7 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
-    dependsOn(protonAmoledDarkTheme2ExtensionPatch, sharedStreamsExtensionPatch)
+    dependsOn(protonMailWebContentBackgroundExtensionPatch, sharedStreamsExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(webSettingsThemePatch, amoledSplashBackgroundPatch)
 

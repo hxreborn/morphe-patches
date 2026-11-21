@@ -58,24 +58,24 @@ public final class WebContentBackground {
         return (input != null) ? new BackgroundReplacingInputStream(input) : null;
     }
 
-    private static void replaceInPlace(byte[] content, byte[] target, byte[] replacement) {
-        if (target.length != replacement.length) {
+    private static void replaceInPlace(byte[] content) {
+        if (PROTON_DARK_BACKGROUND_BYTES.length != AMOLED_BACKGROUND_BYTES.length) {
             throw new IllegalArgumentException("In-place replacement requires equal-length values");
         }
 
-        for (int offset = 0; offset <= content.length - target.length;) {
-            if (matchesAt(content, target, offset)) {
-                System.arraycopy(replacement, 0, content, offset, replacement.length);
-                offset += target.length;
+        for (int offset = 0; offset <= content.length - PROTON_DARK_BACKGROUND_BYTES.length;) {
+            if (matchesAt(content, offset)) {
+                System.arraycopy(AMOLED_BACKGROUND_BYTES, 0, content, offset, AMOLED_BACKGROUND_BYTES.length);
+                offset += PROTON_DARK_BACKGROUND_BYTES.length;
             } else {
                 offset++;
             }
         }
     }
 
-    private static boolean matchesAt(byte[] content, byte[] target, int offset) {
-        for (int index = 0; index < target.length; index++) {
-            if (content[offset + index] != target[index]) {
+    private static boolean matchesAt(byte[] content, int offset) {
+        for (int index = 0; index < PROTON_DARK_BACKGROUND_BYTES.length; index++) {
+            if (content[offset + index] != PROTON_DARK_BACKGROUND_BYTES[index]) {
                 return false;
             }
         }
@@ -121,7 +121,7 @@ public final class WebContentBackground {
         private ByteArrayInputStream replacement() throws IOException {
             if (this.replacement == null) {
                 byte[] content = Streams.readAll(this.source);
-                replaceInPlace(content, PROTON_DARK_BACKGROUND_BYTES, AMOLED_BACKGROUND_BYTES);
+                replaceInPlace(content);
                 this.replacement = new ByteArrayInputStream(content);
             }
 

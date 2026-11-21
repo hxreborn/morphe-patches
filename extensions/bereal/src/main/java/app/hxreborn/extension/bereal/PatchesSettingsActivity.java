@@ -68,11 +68,7 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
 
     private SettingsPages pages;
 
-    private PatchCatalog catalog;
-
     private LinearLayout content;
-
-    private ScrollView scroll;
 
     private View undoBar;
 
@@ -86,21 +82,21 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
         getWindow().setStatusBarColor(SettingsStyle.SCREEN_BACKGROUND);
         getWindow().setNavigationBarColor(SettingsStyle.SCREEN_BACKGROUND);
         this.style = new SettingsStyle(this);
-        this.catalog = PatchCatalog.collect();
-        this.pages = new SettingsPages(this, this.style, new SettingsRows(this, this.style), this.catalog, this,
+        final PatchCatalog catalog = PatchCatalog.collect();
+        this.pages = new SettingsPages(this, this.style, new SettingsRows(this, this.style), catalog, this,
                 hostVersion());
 
         final int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
         this.content = new ColumnLayout(this, this.style.dp(SettingsStyle.CONTENT_MAX_DP));
         this.content.setPadding(inset, 0, inset, this.style.dp(88));
-        this.scroll = new ScrollView(this);
-        this.scroll.addView(this.content, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        final ScrollView scroll = new ScrollView(this);
+        scroll.addView(this.content, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
 
         final LinearLayout page = new LinearLayout(this);
         page.setOrientation(LinearLayout.VERTICAL);
         page.addView(toolbar());
-        page.addView(this.scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        page.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
         final FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(SettingsStyle.SCREEN_BACKGROUND);
         root.setFitsSystemWindows(true);
@@ -118,6 +114,7 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (this.undoSnapshot != null) {

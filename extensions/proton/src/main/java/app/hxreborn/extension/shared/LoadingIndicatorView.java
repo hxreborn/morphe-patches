@@ -128,6 +128,7 @@ public final class LoadingIndicatorView extends View {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     protected void onDraw(Canvas canvas) {
         if (morphs == null) {
             morphs = LoadingIndicatorShapes.decodeMorphs();

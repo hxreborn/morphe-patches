@@ -64,7 +64,7 @@ public class EqualizerBasesTest {
             while ((count = input.read(buffer)) != -1) {
                 output.write(buffer, 0, count);
             }
-            JSONObject profile = new JSONObject(new String(output.toByteArray(), StandardCharsets.UTF_8));
+            JSONObject profile = new JSONObject(output.toString(StandardCharsets.UTF_8));
             JSONArray gains = new JSONArray();
             for (int band = 0; band < EqualizerCurve.BAND_COUNT; band++) {
                 gains.put(0);

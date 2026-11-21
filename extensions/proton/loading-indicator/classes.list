@@ -2,7 +2,6 @@ app/hxreborn/extension/proton/LoadingIndicator
 app/hxreborn/extension/proton/LoadingIndicator$FactoryHandler
 app/hxreborn/extension/proton/LoadingIndicator$UpdateHandler
 app/hxreborn/extension/proton/LoadingIndicatorRows
-app/hxreborn/extension/proton/LoadingIndicatorRows$1
 app/hxreborn/extension/shared/LoadingIndicatorShapes
 app/hxreborn/extension/shared/LoadingIndicatorView
 app/hxreborn/extension/shared/LoadingIndicatorView$1

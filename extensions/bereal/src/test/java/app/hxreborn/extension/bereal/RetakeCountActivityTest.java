@@ -40,6 +40,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("resource")
 public final class RetakeCountActivityTest {
 
     @Before

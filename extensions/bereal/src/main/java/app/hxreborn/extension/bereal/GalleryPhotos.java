@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,6 +36,7 @@ import android.net.Uri;
 import android.util.Log;
 import app.morphe.extension.shared.Utils;
 
+@SuppressLint("ExifInterface")
 @SuppressWarnings("unused")
 public final class GalleryPhotos {
 
@@ -119,6 +121,7 @@ public final class GalleryPhotos {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     static void clear(Context context) {
         synchronized (CAPTURED_SIDES) {
             CAPTURED_SIDES[0] = false;

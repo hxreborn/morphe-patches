@@ -84,6 +84,7 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     @SuppressWarnings("deprecation")
+    @SuppressLint("InlinedApi")
     private void styleSystemBars(Window window) {
         window.setStatusBarColor(this.style.screenBackground);
         window.setNavigationBarColor(this.style.screenBackground);

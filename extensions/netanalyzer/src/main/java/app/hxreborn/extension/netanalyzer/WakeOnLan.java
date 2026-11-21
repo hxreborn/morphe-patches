@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import android.util.Log;
+
 final class WakeOnLan {
 
     static final int DEFAULT_PORT = 9;
@@ -45,6 +47,8 @@ final class WakeOnLan {
     static final int MAC_REPETITIONS = 16;
 
     static final int PACKET_LENGTH = MAC_LENGTH * (1 + MAC_REPETITIONS);
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final Pattern MAC_PATTERN = Pattern.compile("^([0-9A-Fa-f]{2}[:]){5}[0-9A-Fa-f]{2}$");
 
@@ -168,7 +172,7 @@ final class WakeOnLan {
         try {
             targets.add(InetAddress.getByName(IPV6_ALL_NODES + chosen.getName()));
         } catch (IOException ex) {
-            return;
+            Log.w(TAG, "IPv6 all-nodes target not added", ex);
         }
     }
 

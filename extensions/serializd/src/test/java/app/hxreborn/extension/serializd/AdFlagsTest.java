@@ -91,6 +91,7 @@ public final class AdFlagsTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     public void passesNullThrough() {
         // when
         String sanitized = AdFlags.disable(null);

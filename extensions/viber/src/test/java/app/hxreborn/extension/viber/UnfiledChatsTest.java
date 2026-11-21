@@ -22,6 +22,7 @@ package app.hxreborn.extension.viber;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -46,6 +47,7 @@ import org.robolectric.annotation.Implements;
 @Config(manifest = Config.NONE, sdk = 28,
         shadows = { UnfiledChatsTest.AppliedUnfiledChats.class, UnfiledChatsTest.HostFolderAccess.class },
         instrumentedPackages = "app.hxreborn.extension.viber")
+@SuppressWarnings("deprecation")
 public class UnfiledChatsTest {
 
     private static final String UNFILED = "1";
@@ -97,7 +99,7 @@ public class UnfiledChatsTest {
     @Test
     public void preserveCustomFolderSelection() {
         Assert.assertEquals(CUSTOM, UnfiledChats.filterSelection(ALL_QUERY, CUSTOM));
-        Assert.assertEquals(Arrays.asList(1L), readChats(CUSTOM));
+        Assert.assertEquals(Collections.singletonList(1L), readChats(CUSTOM));
     }
 
     @Test
@@ -161,15 +163,15 @@ public class UnfiledChatsTest {
     public void showUnfiledWithoutUserFolders() {
         List<Object> tabs = new ArrayList<>();
         Assert.assertFalse(UnfiledChats.addTabAndIsEmpty(tabs));
-        Assert.assertEquals(Arrays.asList(TAB), tabs);
+        Assert.assertEquals(Collections.singletonList(TAB), tabs);
     }
 
     @Test
     public void preserveExistingTabsWhenDisabled() {
         PatchSettings.setEnabled(PatchSetting.UNFILED_CHATS.key, false);
-        List<Object> tabs = new ArrayList<>(Arrays.asList("Work"));
+        List<Object> tabs = new ArrayList<>(Collections.singletonList("Work"));
         Assert.assertFalse(UnfiledChats.addTabAndIsEmpty(tabs));
-        Assert.assertEquals(Arrays.asList("Work"), tabs);
+        Assert.assertEquals(Collections.singletonList("Work"), tabs);
     }
 
     @Test
@@ -288,6 +290,7 @@ public class UnfiledChatsTest {
     }
 
     @Implements(UnfiledChats.class)
+    @SuppressWarnings("unused")
     public static final class HostFolderAccess {
 
         @Implementation
@@ -318,6 +321,7 @@ public class UnfiledChatsTest {
     }
 
     @Implements(AppliedPatches.class)
+    @SuppressWarnings("unused")
     public static final class AppliedUnfiledChats {
 
         @Implementation

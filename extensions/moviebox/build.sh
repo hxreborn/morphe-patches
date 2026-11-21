@@ -28,7 +28,7 @@ trap 'rm -rf "$work"' EXIT
 
 mkdir -p "$resources"
 
-"$javac" -Xlint:all -source 8 -target 8 -bootclasspath "$platform:$build_tools/core-lambda-stubs.jar" -d "$work/hook" $(find "$here/src" -name '*.java' | sort)
+"$javac" -Xlint:all -source 8 -target 8 -bootclasspath "$platform:$build_tools/core-lambda-stubs.jar" -d "$work/hook" $(find "$here/src/main/java" -name '*.java' | sort)
 "$build_tools/d8" --min-api 23 --lib "$platform" --output "$work/hook" $(find "$work/hook" -name '*.class' | sort)
 cp "$work/hook/classes.dex" "$resources/dashhook.dex"
 

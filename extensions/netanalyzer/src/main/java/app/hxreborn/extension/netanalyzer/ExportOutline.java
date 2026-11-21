@@ -46,6 +46,7 @@ final class ExportOutline {
         this.indent += columns;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     void title(String title) {
         if (this.indent == 0) {
             if (this.output.length() > 0) {
@@ -82,6 +83,7 @@ final class ExportOutline {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public String toString() {
         return this.output.toString();
     }

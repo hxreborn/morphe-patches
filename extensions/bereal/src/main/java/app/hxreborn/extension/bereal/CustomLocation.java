@@ -90,7 +90,8 @@ public final class CustomLocation {
         try {
             return method.invoke(client, args);
         } catch (InvocationTargetException ex) {
-            throw ex.getCause();
+            final Throwable cause = ex.getCause();
+            throw (cause != null) ? cause : ex;
         }
     }
 

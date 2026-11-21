@@ -44,10 +44,9 @@ final class SoundState {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SoundState)) {
+        if (!(other instanceof SoundState state)) {
             return false;
         }
-        SoundState state = (SoundState) other;
         return this.curve.equals(state.curve) && this.xupmix == state.xupmix;
     }
 

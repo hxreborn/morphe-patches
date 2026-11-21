@@ -155,6 +155,7 @@ public final class BackupCountTest {
     }
 
     @Implements(BackupCount.class)
+    @SuppressWarnings({ "unused", "ProtectedMemberInFinalClass" })
     public static final class PendingFilesQuery {
 
         private static Cursor cursor;

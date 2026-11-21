@@ -41,11 +41,13 @@ import android.os.Looper;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 abstract class BrowserScreenActivity extends HostScreenActivity {
 
     static final String EXTRA_IP = "ip";
@@ -63,6 +65,8 @@ abstract class BrowserScreenActivity extends HostScreenActivity {
     private static final int LABEL_GAP_DP = 4;
 
     private static final TextStyle DETAIL = new TextStyle(12, 20, 0.2f, TextStyle.NORMAL);
+
+    private static final String TAG = "hxNetAnalyzer";
 
     private static final String MULTICAST_LOCK_TAG = "multicastLock";
 
@@ -110,7 +114,7 @@ abstract class BrowserScreenActivity extends HostScreenActivity {
                 startBrowser(this.bindAddress, this.bindNetwork, this.bindInterface);
                 started = true;
             } catch (IOException ex) {
-                started = false;
+                Log.w(TAG, "Browser failed to start", ex);
             }
         }
         this.unavailable = !started;
@@ -166,15 +170,15 @@ abstract class BrowserScreenActivity extends HostScreenActivity {
         return column;
     }
 
-    final TextView nameLine(LinearLayout column, String name) {
+    final void nameLine(LinearLayout column, String name) {
         final TextView view = text((name != null) ? name : "", BODY_MEDIUM, this.palette.valueText);
         view.setTextIsSelectable(true);
         final LinearLayout.LayoutParams params = matchWidth();
         params.bottomMargin = dp(NAME_GAP_DP);
         column.addView(view, params);
-        return view;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     final void propertyLines(LinearLayout column, Map<String, String> properties) {
         if (properties.isEmpty()) {
             return;
@@ -196,12 +200,14 @@ abstract class BrowserScreenActivity extends HostScreenActivity {
         column.addView(view, params);
     }
 
+    @SuppressWarnings("SameParameterValue")
     final void labelLine(LinearLayout column, String label, String value) {
         final LinearLayout line = new LinearLayout(this);
         labelValue(line, label, value, true);
         column.addView(line, matchWidth());
     }
 
+    @SuppressWarnings("SameParameterValue")
     final void labelPairLine(LinearLayout column, String label, String value, String endLabel, String endValue) {
         final LinearLayout line = new LinearLayout(this);
         labelValue(line, label, value, true);
@@ -236,6 +242,7 @@ abstract class BrowserScreenActivity extends HostScreenActivity {
     }
 
     @SuppressLint("MissingPermission")
+    @SuppressWarnings("deprecation")
     private boolean resolveNetwork() {
         final ConnectivityManager connectivity = getSystemService(ConnectivityManager.class);
         Network chosen = null;

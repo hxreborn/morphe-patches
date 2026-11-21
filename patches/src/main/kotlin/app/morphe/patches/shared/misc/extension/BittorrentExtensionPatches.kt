@@ -10,9 +10,9 @@ internal val bittorrentSettingsExtensionPatch = bytecodePatch {
     extendWith("extensions/hxreborn/bittorrent-settings.mpe")
 }
 
-internal val bittorrentSettings2ExtensionPatch = bytecodePatch {
+internal val bittorrentSettingsMenuAndAmoledThemeExtensionPatch = bytecodePatch {
     dependsOn(bittorrentSettingsExtensionPatch)
-    extendWith("extensions/hxreborn/bittorrent-settings-2.mpe")
+    extendWith("extensions/hxreborn/bittorrent-settings-menu-and-amoled-theme.mpe")
 }
 
 internal val bittorrentFixScreenInsetsExtensionPatch = bytecodePatch {

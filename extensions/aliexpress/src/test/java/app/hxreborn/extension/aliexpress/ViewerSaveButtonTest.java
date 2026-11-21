@@ -43,6 +43,7 @@ import org.robolectric.shadows.ShadowLooper;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.Q, manifest = Config.NONE,
         shadows = { ViewerSaveButtonTest.TaggedImageUrls.class, ViewerSaveButtonTest.ImageSavingEnabled.class })
+@SuppressWarnings({ "deprecation", "resource" })
 public class ViewerSaveButtonTest {
 
     private static final int PAGE_SIZE_PX = 400;
@@ -147,6 +148,7 @@ public class ViewerSaveButtonTest {
     }
 
     @Implements(value = ViewerSaveButton.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class TaggedImageUrls {
 
         @Implementation
@@ -162,6 +164,7 @@ public class ViewerSaveButtonTest {
     }
 
     @Implements(value = PatchSettings.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class ImageSavingEnabled {
 
         @Implementation

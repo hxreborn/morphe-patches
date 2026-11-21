@@ -112,6 +112,7 @@ final class Suggestions {
         votes.put(key, ((current != null) ? current : 0) + weight);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static <K> List<K> topKeys(final Map<K, Integer> votes, int limit) {
         List<K> keys = new ArrayList<>(votes.keySet());
         Collections.sort(keys, (left, right) -> Integer.compare(votes.get(right), votes.get(left)));

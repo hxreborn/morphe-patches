@@ -20,7 +20,7 @@ import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonPatchApplicationExtensionPatch
-import app.morphe.patches.shared.misc.extension.protonSettings2ExtensionPatch
+import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
@@ -108,7 +108,7 @@ internal fun BytecodePatchContext.markPatchApplied(settingsClass: String, method
     fillAppliedPatch(settingsClass, methodName, patch, withDescription = false)
 
 internal fun appliedPatchMarkerPatch(settingsClass: String, methodName: String, patch: () -> Patch) = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonPatchApplicationExtensionPatch, protonSettings2ExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonPatchApplicationExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     execute {
         markPatchApplied(settingsClass, methodName, patch())
     }

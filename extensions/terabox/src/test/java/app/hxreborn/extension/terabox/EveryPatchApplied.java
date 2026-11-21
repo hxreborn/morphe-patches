@@ -24,6 +24,7 @@ import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
 @Implements(AppliedPatches.class)
+@SuppressWarnings("unused")
 public final class EveryPatchApplied {
 
     @Implementation

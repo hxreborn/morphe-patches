@@ -30,14 +30,9 @@ import java.util.List;
 
 final class FieldLayout {
 
-    private static final Comparator<Field> BY_OBFUSCATED_NAME = new Comparator<Field>() {
-
-        @Override
-        public int compare(Field first, Field second) {
-            final int byLength = Integer.compare(first.getName().length(), second.getName().length());
-            return (byLength != 0) ? byLength : first.getName().compareTo(second.getName());
-        }
-
+    private static final Comparator<Field> BY_OBFUSCATED_NAME = (first, second) -> {
+        final int byLength = Integer.compare(first.getName().length(), second.getName().length());
+        return (byLength != 0) ? byLength : first.getName().compareTo(second.getName());
     };
 
     private FieldLayout() {
@@ -65,6 +60,7 @@ final class FieldLayout {
         return found.toArray(new Field[0]);
     }
 
+    @SuppressWarnings("ComparatorCombinators")
     static List<Field> instanceFieldsByName(Object object) {
         final List<Field> fields = new ArrayList<>();
         for (Field field : object.getClass().getDeclaredFields()) {

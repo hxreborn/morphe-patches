@@ -95,6 +95,7 @@ final class LiveLanScan {
         return scanItem.get() != null && startCallback.get() != null;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static InetAddress parseIpv4(String text) {
         final Matcher matcher = IPV4.matcher(text.trim());
         if (!matcher.matches()) {
@@ -161,6 +162,7 @@ final class LiveLanScan {
         return true;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static void start(Object item) {
         final Object onStart = startCallback.get();
         if (onStart == null) {

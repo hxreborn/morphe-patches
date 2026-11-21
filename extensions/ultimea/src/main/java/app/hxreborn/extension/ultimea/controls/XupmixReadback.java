@@ -38,8 +38,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-@SuppressWarnings("unused")
-@SuppressLint("MissingPermission")
+@SuppressWarnings({ "unused", "deprecation" })
+@SuppressLint({ "MissingPermission", "UseRequiresApi" })
 public final class XupmixReadback {
 
     private static final String LOG_TAG = "hxUltimea";

@@ -23,6 +23,7 @@ package app.hxreborn.extension.duolingo;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
+@SuppressWarnings({ "unused", "deprecation" })
 @Implements(value = SettingsStyle.class, isInAndroidSdk = false)
 public final class FakeHostResources {
 

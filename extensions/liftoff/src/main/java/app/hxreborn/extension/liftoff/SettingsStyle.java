@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.liftoff;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -116,7 +117,7 @@ final class SettingsStyle {
         this.accent = this.primaryText;
         View page = settingsPage(template);
         this.screenBackground = pageBackground(page);
-        this.cardSurface = blend(this.screenBackground, this.primaryText, CARD_TINT_PERCENT);
+        this.cardSurface = blend(this.screenBackground, this.primaryText);
         this.divider = this.screenBackground;
         this.dark = brightness(this.screenBackground) < brightness(this.primaryText);
         this.regular = hostText.getTypeface();
@@ -159,6 +160,7 @@ final class SettingsStyle {
         return new RippleDrawable(ColorStateList.valueOf(color), null, rounded(this.primaryText, radiusDp));
     }
 
+    @SuppressLint("DiscouragedApi")
     Drawable hostIcon(String name, int tint) {
         int identifier = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         Drawable drawable = (identifier != 0) ? this.context.getDrawable(identifier) : null;
@@ -217,8 +219,7 @@ final class SettingsStyle {
         paint.setTypeface(template.getTypeface());
         paint.setTextSize(template.getTextSize());
         CharSequence text = template.getText();
-        if (text instanceof Spanned) {
-            Spanned spanned = (Spanned) text;
+        if (text instanceof Spanned spanned) {
             for (CharacterStyle span : spanned.getSpans(0, text.length(), CharacterStyle.class)) {
                 if (spanned.getSpanStart(span) == 0 && spanned.getSpanEnd(span) == text.length()) {
                     span.updateDrawState(paint);
@@ -243,11 +244,11 @@ final class SettingsStyle {
         return Color.argb(Math.min(Color.alpha(color), alpha), Color.red(color), Color.green(color), Color.blue(color));
     }
 
-    private static int blend(int base, int tint, int tintPercent) {
-        int basePercent = PERCENT - tintPercent;
-        return Color.rgb((Color.red(base) * basePercent + Color.red(tint) * tintPercent) / PERCENT,
-                (Color.green(base) * basePercent + Color.green(tint) * tintPercent) / PERCENT,
-                (Color.blue(base) * basePercent + Color.blue(tint) * tintPercent) / PERCENT);
+    private static int blend(int base, int tint) {
+        int basePercent = PERCENT - CARD_TINT_PERCENT;
+        return Color.rgb((Color.red(base) * basePercent + Color.red(tint) * CARD_TINT_PERCENT) / PERCENT,
+                (Color.green(base) * basePercent + Color.green(tint) * CARD_TINT_PERCENT) / PERCENT,
+                (Color.blue(base) * basePercent + Color.blue(tint) * CARD_TINT_PERCENT) / PERCENT);
     }
 
     private static int brightness(int color) {

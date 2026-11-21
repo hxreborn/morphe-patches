@@ -23,6 +23,7 @@ package app.hxreborn.extension.duolingo;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 
+@SuppressWarnings("unused")
 @Implements(AppliedPatches.class)
 public final class EveryPatchApplied {
 

@@ -27,11 +27,14 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 final class EqualizerPresetStore {
+
+    private static final String LOG_TAG = "hxUltimea";
 
     private static final String PREFERENCES = "hx_ultimea_equalizer_presets";
 
@@ -133,7 +136,7 @@ final class EqualizerPresetStore {
                         readable.add(new EqualizerPreset(id, file.name, file.state, file.baseName, file.base));
                     }
                 } catch (JSONException | IllegalArgumentException ex) {
-                    continue;
+                    Log.w(LOG_TAG, "Skipped an unreadable preset", ex);
                 }
             }
             JSONArray backups = new JSONArray(this.preferences.getString(RECOVERY_BACKUPS, "[]"));
@@ -157,6 +160,7 @@ final class EqualizerPresetStore {
         return add(EqualizerPreset.create(name, curve));
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     EqualizerPreset duplicate(EqualizerPreset source, String name) throws JSONException, IOException {
         return add(EqualizerPreset.create(name, source.state, source.baseName, source.base));
     }

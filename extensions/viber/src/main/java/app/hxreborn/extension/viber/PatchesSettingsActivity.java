@@ -78,6 +78,7 @@ public final class PatchesSettingsActivity extends Activity {
         setContentView(screen());
     }
 
+    @SuppressLint("InlinedApi")
     @SuppressWarnings("deprecation")
     private void styleSystemBars(Window window) {
         window.setStatusBarColor(this.style.screenBackground);
@@ -188,6 +189,7 @@ public final class PatchesSettingsActivity extends Activity {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void showStartFolderSelection(PatchSetting setting) {
         List<Object> choices = StartFolder.folders();
         if (choices.isEmpty()) {

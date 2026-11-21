@@ -25,6 +25,7 @@ import java.util.List;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
@@ -81,6 +82,7 @@ public final class GmsCoreAccountRequest {
         return accounts.toArray(new Account[0]);
     }
 
+    @SuppressLint("PrivateApi")
     private static Application currentApplication() {
         try {
             return (Application) Class.forName(ACTIVITY_THREAD_CLASS)

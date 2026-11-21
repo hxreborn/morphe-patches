@@ -24,7 +24,6 @@ import java.util.List;
 
 import android.view.View;
 
-import app.hxreborn.extension.proton.CheckedChangeListener;
 import app.hxreborn.extension.proton.SettingsScreen;
 
 @SuppressWarnings("unused")
@@ -37,12 +36,7 @@ public final class AccountSwipeRows {
         rows.add(screen.row(AvatarSwitchStyleDialog.TITLE, AccountAvatarSwipe.getSwitchStyle().getLabel(),
                 () -> AvatarSwitchStyleDialog.show(screen.activity(), screen::recreateContent)));
         rows.add(screen.switchRow("Vibrate on switch", "Vibrates when the account changes.",
-                AccountAvatarSwipe.isHapticFeedbackEnabled(), new CheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(boolean enabled) {
-                        AccountAvatarSwipe.setHapticFeedbackEnabled(enabled);
-                    }
-                }));
+                AccountAvatarSwipe.isHapticFeedbackEnabled(), AccountAvatarSwipe::setHapticFeedbackEnabled));
     }
 
 }

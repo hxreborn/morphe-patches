@@ -34,6 +34,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("ConstantValue")
 public final class FriendsPostsTest {
 
     @Before

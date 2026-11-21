@@ -23,6 +23,7 @@ package app.hxreborn.extension.readera;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
@@ -61,6 +62,8 @@ public final class SpeechNotification {
     }
 
     @TargetApi(Build.VERSION_CODES.N)
+    @SuppressLint("UseRequiresApi")
+    @SuppressWarnings("deprecation")
     static Notification addSleepTimerCountdown(Notification notification, Context context, long remainingMillis) {
         if (remainingMillis <= 0) {
             return notification;

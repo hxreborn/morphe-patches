@@ -61,6 +61,7 @@ final class XupmixFrames {
     private XupmixFrames() {
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     static boolean isD80(String bluetoothName) {
         return D80_BLUETOOTH_NAME.equals(bluetoothName);
     }

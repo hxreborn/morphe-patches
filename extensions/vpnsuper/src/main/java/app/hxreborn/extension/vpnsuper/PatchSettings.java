@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.vpnsuper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -38,14 +39,17 @@ final class PatchSettings {
         return AppliedPatches.disconnectFromNotification() && isEnabled(context, DISCONNECT_FROM_NOTIFICATION);
     }
 
+    @SuppressWarnings("SameParameterValue")
     static boolean isEnabled(Context context, String key) {
         return preferences(context).getBoolean(key, true);
     }
 
+    @SuppressLint("ApplySharedPref")
     static void setEnabled(Context context, String key, boolean enabled) {
         preferences(context).edit().putBoolean(key, enabled).commit();
     }
 
+    @SuppressLint("ApplySharedPref")
     static void resetToDefaults(Context context) {
         preferences(context).edit().clear().commit();
     }

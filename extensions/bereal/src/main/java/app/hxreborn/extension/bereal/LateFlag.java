@@ -23,11 +23,13 @@ package app.hxreborn.extension.bereal;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.O)
 @SuppressWarnings("unused")
+@SuppressLint({ "UseRequiresApi", "ObsoleteSdkInt" })
 public final class LateFlag {
 
     private static final long LATE_GRACE_SECONDS = 60;
@@ -84,6 +86,9 @@ public final class LateFlag {
             return original;
         }
         final Instant takenAt = instantValue(original);
+        if (takenAt == null) {
+            return original;
+        }
         if (!takenAt.isAfter(current.end.plusSeconds(LATE_GRACE_SECONDS))) {
             return original;
         }

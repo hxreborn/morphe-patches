@@ -34,9 +34,11 @@ public final class PatchSettings {
 
     public static final BooleanSetting SHOW_AI_PROGRESS = new BooleanSetting("pep_show_ai_progress", true);
 
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public static final EnumSetting<LiveOverlay.Position> OVERLAY_POSITION = new EnumSetting<>("pep_overlay_position",
             LiveOverlay.Position.TOP);
 
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public static final EnumSetting<LiveOverlay.Linger> OVERLAY_LINGER = new EnumSetting<>("pep_overlay_linger",
             LiveOverlay.Linger.NORMAL);
 

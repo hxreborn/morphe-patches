@@ -27,7 +27,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 @RequiresApi(Build.VERSION_CODES.P)
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "NullableProblems" })
 public class PatchesComponentFactory extends AppComponentFactory {
 
     @Override

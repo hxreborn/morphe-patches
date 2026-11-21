@@ -70,6 +70,7 @@ public final class LoadingIndicator {
         return function(functionType, new UpdateHandler(indeterminate, rotationDegrees / FULL_TURN_DEGREES));
     }
 
+    @SuppressWarnings("SameParameterValue")
     static void show(Object composer, boolean indeterminate, float rotationDegrees) {
     }
 

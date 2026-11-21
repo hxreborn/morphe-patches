@@ -10,9 +10,9 @@ internal val utorrentSettingsExtensionPatch = bytecodePatch {
     extendWith("extensions/hxreborn/utorrent-settings.mpe")
 }
 
-internal val utorrentSettings2ExtensionPatch = bytecodePatch {
+internal val utorrentSettingsMenuExtensionPatch = bytecodePatch {
     dependsOn(utorrentSettingsExtensionPatch)
-    extendWith("extensions/hxreborn/utorrent-settings-2.mpe")
+    extendWith("extensions/hxreborn/utorrent-settings-menu.mpe")
 }
 
 internal val utorrentFixScreenInsetsExtensionPatch = bytecodePatch {

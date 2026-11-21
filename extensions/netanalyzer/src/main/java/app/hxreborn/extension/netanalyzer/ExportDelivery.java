@@ -76,6 +76,7 @@ final class ExportDelivery {
         activity.startActivity(Intent.createChooser(send, CHOOSER_TITLE));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     static void shareCsv(Activity activity, String csv) {
         final File file = ExportFileProvider.file(activity);
         final File directory = file.getParentFile();

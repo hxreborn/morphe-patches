@@ -178,8 +178,7 @@ public final class ApiResponseRewriter {
 
     private static boolean grantInNode(Object node) throws JSONException {
         boolean granted = false;
-        if (node instanceof JSONObject) {
-            JSONObject object = (JSONObject) node;
+        if (node instanceof JSONObject object) {
             Iterator<String> keys = object.keys();
             while (keys.hasNext()) {
                 String key = keys.next();
@@ -191,8 +190,7 @@ public final class ApiResponseRewriter {
                     granted |= grantInNode(value);
                 }
             }
-        } else if (node instanceof JSONArray) {
-            JSONArray array = (JSONArray) node;
+        } else if (node instanceof JSONArray array) {
             for (int i = 0; i < array.length(); i++) {
                 granted |= grantInNode(array.get(i));
             }
@@ -226,6 +224,7 @@ public final class ApiResponseRewriter {
             .put("product_code", JSONObject.NULL);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static int indexOf(byte[] haystack, byte[] needle) {
         for (int start = 0; start <= haystack.length - needle.length; start++) {
             int matched = 0;

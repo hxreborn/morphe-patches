@@ -45,6 +45,7 @@ public final class WindowBackground {
         });
     }
 
+    @SuppressWarnings("deprecation")
     private static void keepDarkIcons(View decorView) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             int darkIcons = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS

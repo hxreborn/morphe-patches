@@ -22,6 +22,7 @@ package app.hxreborn.extension.netanalyzer;
 
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.text.InputType;
@@ -31,14 +32,20 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class LanCustomNameActivity extends HostScreenActivity {
 
-    private static final String EXPLANATION = "Since Android SDK 32, which is now required for Play Store app "
-            + "distribution, apps aren't allowed to access devices' MAC addresses. This page allows you to assign a "
-            + "custom name to an IP address instead.\n\nHowever, if the device's IP address changes, which commonly "
-            + "happens when using DHCP, the name will be assigned to the wrong device. Use this feature only when "
-            + "you are absolutely sure IP addresses cannot change.\n\nCustom names are kept per Wi-Fi network.";
+    private static final String EXPLANATION = """
+            Since Android SDK 32, which is now required for Play Store app \
+            distribution, apps aren't allowed to access devices' MAC addresses. This page allows you to assign a \
+            custom name to an IP address instead.
+
+            However, if the device's IP address changes, which commonly \
+            happens when using DHCP, the name will be assigned to the wrong device. Use this feature only when \
+            you are absolutely sure IP addresses cannot change.
+
+            Custom names are kept per Wi-Fi network.""";
 
     private static final String MAC_SEPARATOR = ":";
 
@@ -84,8 +91,8 @@ public final class LanCustomNameActivity extends HostScreenActivity {
                 dp(FIELD_GAP_DP));
         this.vendor = field(column, "Vendor", "Vendor (optional)", (stored != null) ? stored[LanNames.VENDOR] : "",
                 dp(FIELD_GAP_DP));
-        this.mac.onChange(() -> this.mac.setError(!isBlank(this.mac) && !validMac(macText())));
-        this.mac.setError(!isBlank(this.mac) && !validMac(macText()));
+        this.mac.onChange(() -> this.mac.setError(hasText(this.mac) && !validMac(macText())));
+        this.mac.setError(hasText(this.mac) && !validMac(macText()));
 
         final TextView explanation = text(EXPLANATION, BODY_MEDIUM, this.palette.onSurfaceVariant);
         final LinearLayout.LayoutParams explanationParams = matchWidth();
@@ -126,8 +133,8 @@ public final class LanCustomNameActivity extends HostScreenActivity {
         return this.mac.input().getText().toString().trim();
     }
 
-    private static boolean isBlank(FilledField field) {
-        return field.input().getText().toString().trim().isEmpty();
+    private static boolean hasText(FilledField field) {
+        return !field.input().getText().toString().trim().isEmpty();
     }
 
     private static boolean validMac(String text) {

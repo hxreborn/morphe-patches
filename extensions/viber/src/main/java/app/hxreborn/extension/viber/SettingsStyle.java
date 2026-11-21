@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.viber;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -136,6 +137,8 @@ final class SettingsStyle {
         return new RippleDrawable(ColorStateList.valueOf(this.divider), null, rounded(this.primaryText, radius));
     }
 
+    @SuppressLint("DiscouragedApi")
+    @SuppressWarnings("DataFlowIssue")
     Drawable hostIcon(String name, int tint) {
         int id = this.context.getResources().getIdentifier(name, "drawable", this.context.getPackageName());
         Drawable drawable = this.context.getDrawable(id).mutate();

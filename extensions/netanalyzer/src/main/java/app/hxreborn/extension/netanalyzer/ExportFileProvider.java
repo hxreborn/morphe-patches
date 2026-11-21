@@ -60,16 +60,19 @@ public final class ExportFileProvider extends ContentProvider {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public String getType(Uri uri) {
         return CSV_MIME;
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         return ParcelFileDescriptor.open(exportedFile(uri), ParcelFileDescriptor.MODE_READ_ONLY);
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final File file;
         try {
@@ -84,20 +87,24 @@ public final class ExportFileProvider extends ContentProvider {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public Uri insert(Uri uri, ContentValues values) {
         throw new UnsupportedOperationException("Read-only export provider");
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         throw new UnsupportedOperationException("Read-only export provider");
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         throw new UnsupportedOperationException("Read-only export provider");
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private File exportedFile(Uri uri) throws FileNotFoundException {
         if (!CSV_FILE.equals(uri.getLastPathSegment())) {
             throw new FileNotFoundException(uri.toString());

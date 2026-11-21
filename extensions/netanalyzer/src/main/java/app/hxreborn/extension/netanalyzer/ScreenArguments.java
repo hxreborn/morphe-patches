@@ -27,7 +27,7 @@ final class ScreenArguments {
 
     private static final int LIMIT = 16;
 
-    private static final Map<Integer, Object> ENTRIES = new LinkedHashMap<Integer, Object>() {
+    private static final Map<Integer, Object> ENTRIES = new LinkedHashMap<>() {
 
         @Override
         protected boolean removeEldestEntry(Map.Entry<Integer, Object> eldest) {

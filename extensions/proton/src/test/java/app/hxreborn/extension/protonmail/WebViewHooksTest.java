@@ -47,6 +47,7 @@ public final class WebViewHooksTest {
     private Activity activity;
 
     @Before
+    @SuppressWarnings("resource")
     public void useApplicationContext() {
         PatchedBuild.useApplicationContext();
         PatchedBuild.setAccentPreset("");
@@ -92,6 +93,7 @@ public final class WebViewHooksTest {
         WebTapHighlight.remove(new WebView(this.activity) {
 
             @Override
+            @SuppressWarnings("NullableProblems")
             public void evaluateJavascript(String script, ValueCallback<String> callback) {
                 throw new IllegalStateException("no web view");
             }
@@ -147,6 +149,7 @@ public final class WebViewHooksTest {
         WebMaterialSwitch.restyleIfEnabled(new WebView(this.activity) {
 
             @Override
+            @SuppressWarnings("NullableProblems")
             public void evaluateJavascript(String script, ValueCallback<String> callback) {
                 throw new IllegalStateException("no web view");
             }

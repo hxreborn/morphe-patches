@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.ultimea.equalizer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
@@ -71,6 +72,7 @@ final class HostViews {
         return drawable;
     }
 
+    @SuppressWarnings("SameParameterValue")
     RippleDrawable surface(int color, int radiusDp) {
         return new RippleDrawable(ColorStateList.valueOf(this.style.ripple), rounded(color, radiusDp),
                 rounded(Color.WHITE, radiusDp));
@@ -203,6 +205,7 @@ final class HostViews {
                 rounded(Color.WHITE, HostStyle.CARD_RADIUS_DP)));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     void repeat(Button button, Runnable change) {
         Runnable repeat = new Runnable() {
             @Override

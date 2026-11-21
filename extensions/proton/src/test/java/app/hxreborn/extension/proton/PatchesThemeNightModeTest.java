@@ -111,6 +111,7 @@ public final class PatchesThemeNightModeTest {
     }
 
     @Implements(PatchesTheme.class)
+    @SuppressWarnings("unused")
     public static final class AlwaysNight {
 
         @Implementation
@@ -121,6 +122,7 @@ public final class PatchesThemeNightModeTest {
     }
 
     @Implements(PatchesTheme.class)
+    @SuppressWarnings("unused")
     public static final class AlwaysLight {
 
         @Implementation

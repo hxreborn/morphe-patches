@@ -20,9 +20,11 @@
  */
 package app.hxreborn.extension.bereal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.LinearLayout;
 
+@SuppressLint("ViewConstructor")
 final class ColumnLayout extends LinearLayout {
 
     private final int maxWidth;

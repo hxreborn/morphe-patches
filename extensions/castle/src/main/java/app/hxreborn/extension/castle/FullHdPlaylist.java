@@ -60,14 +60,7 @@ public final class FullHdPlaylist {
         byte[] original = Streams.readAll(playlist);
         String fullHd;
         try {
-            fullHd = fullHd(new String(original, StandardCharsets.UTF_8), new UrlExistence() {
-
-                @Override
-                public boolean exists(String url) throws IOException {
-                    return PreviewPlaylist.exists(url);
-                }
-
-            });
+            fullHd = fullHd(new String(original, StandardCharsets.UTF_8), PreviewPlaylist::exists);
         } catch (IOException | RuntimeException ex) {
             fullHd = null;
         }

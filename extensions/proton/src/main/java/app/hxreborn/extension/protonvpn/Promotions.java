@@ -97,6 +97,7 @@ public final class Promotions {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean hidesOnboardingUpgrade(Activity activity) {
         if (!UpsellingVisibility.isHidden()) {
             return false;

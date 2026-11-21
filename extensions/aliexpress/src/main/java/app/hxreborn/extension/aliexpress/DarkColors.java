@@ -120,16 +120,12 @@ final class DarkColors {
     }
 
     private static int nightRgb(int type, int luma) {
-        switch (type) {
-            case BACKGROUND_TYPE:
-                return background(luma);
-            case TEXT_TYPE:
-                return foreground(luma);
-            case LINE_TYPE:
-                return (luma >= LIGHT_LINE_MIN_LUMA) ? LINE_NIGHT : foreground(luma);
-            default:
-                return NOT_REMAPPED;
-        }
+        return switch (type) {
+            case BACKGROUND_TYPE -> background(luma);
+            case TEXT_TYPE -> foreground(luma);
+            case LINE_TYPE -> (luma >= LIGHT_LINE_MIN_LUMA) ? LINE_NIGHT : foreground(luma);
+            default -> NOT_REMAPPED;
+        };
     }
 
     private static int background(int luma) {

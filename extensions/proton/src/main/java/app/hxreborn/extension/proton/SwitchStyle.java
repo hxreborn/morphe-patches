@@ -22,6 +22,7 @@ package app.hxreborn.extension.proton;
 
 import java.util.Arrays;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -65,7 +66,7 @@ public final class SwitchStyle {
             return;
         }
         control.setSplitTrack(false);
-        control.setSwitchPadding(style.dimension("switchPadding"));
+        control.setSwitchPadding(style.switchPadding());
         control.setThumbDrawable(style.thumb());
         control.setTrackDrawable(style.track());
         control.refreshDrawableState();
@@ -81,6 +82,7 @@ public final class SwitchStyle {
         return (style != null) ? style.track() : null;
     }
 
+    @SuppressWarnings("resource")
     private static final class MaterialStyle {
 
         private final Context context;
@@ -142,8 +144,8 @@ public final class SwitchStyle {
             return track;
         }
 
-        int dimension(String name) {
-            final TypedArray values = styleValues(attribute(name));
+        int switchPadding() {
+            final TypedArray values = styleValues(attribute("switchPadding"));
             try {
                 return values.getDimensionPixelSize(0, 0);
             } finally {
@@ -197,6 +199,7 @@ public final class SwitchStyle {
             return identifier(this.context, name, "attr");
         }
 
+        @SuppressLint("DiscouragedApi")
         private static int identifier(Context context, String name, String type) {
             return context.getResources().getIdentifier(name, type, context.getPackageName());
         }

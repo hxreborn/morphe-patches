@@ -36,6 +36,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import app.morphe.extension.shared.settings.BooleanSetting;
 
+@SuppressWarnings("UnusedReturnValue")
 final class SettingsRows {
 
     private final Context context;
@@ -85,6 +86,7 @@ final class SettingsRows {
         });
         row.view.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings({ "NullableProblems", "deprecation" })
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
                 info.setClassName(Switch.class.getName());
@@ -102,6 +104,7 @@ final class SettingsRows {
         final Row row = baseRow(card, iconName, title, description, "always on", null, toggle);
         row.view.setAccessibilityDelegate(new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings({ "NullableProblems", "deprecation" })
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
                 info.setClassName(Switch.class.getName());
@@ -200,6 +203,7 @@ final class SettingsRows {
     private static View.AccessibilityDelegate buttonDelegate() {
         return new View.AccessibilityDelegate() {
             @Override
+            @SuppressWarnings("NullableProblems")
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
                 info.setClassName(Button.class.getName());

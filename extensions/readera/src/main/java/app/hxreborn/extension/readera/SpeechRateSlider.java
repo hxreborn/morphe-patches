@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.readera;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -43,12 +44,13 @@ public final class SpeechRateSlider implements SeekBar.OnSeekBarChangeListener {
     }
 
     public static void attach(View root, int seekBarId, int labelId, SpeechRateTarget target) {
-        SeekBar seekBar = (SeekBar) root.findViewById(seekBarId);
-        TextView label = (TextView) root.findViewById(labelId);
+        SeekBar seekBar = root.findViewById(seekBarId);
+        TextView label = root.findViewById(labelId);
         seekBar.setOnSeekBarChangeListener(new SpeechRateSlider(label, target));
     }
 
     @Override
+    @SuppressLint("SetTextI18n")
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (!fromUser) {
             return;

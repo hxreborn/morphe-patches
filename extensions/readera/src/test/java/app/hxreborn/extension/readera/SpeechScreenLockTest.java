@@ -42,6 +42,7 @@ import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowToast;
 
+@SuppressWarnings({ "resource", "deprecation" })
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = SpeechScreenLockTest.ShadowSpeechScreenLock.class)
 public final class SpeechScreenLockTest {
@@ -168,6 +169,7 @@ public final class SpeechScreenLockTest {
         private static boolean applied;
 
         @Implementation
+        @SuppressWarnings("ProtectedMemberInFinalClass")
         protected static boolean applied() {
             return applied;
         }

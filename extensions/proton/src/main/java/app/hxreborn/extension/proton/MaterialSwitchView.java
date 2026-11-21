@@ -133,6 +133,7 @@ public final class MaterialSwitchView {
             if (interactive) {
                 control.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
+                    @SuppressWarnings("NullableProblems")
                     public void onCheckedChanged(CompoundButton button, boolean isChecked) {
                         button.setOnCheckedChangeListener(null);
                         button.setChecked(UpdateHandler.this.checked);

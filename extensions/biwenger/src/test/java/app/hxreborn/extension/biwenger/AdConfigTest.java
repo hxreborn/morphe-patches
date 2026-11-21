@@ -35,6 +35,7 @@ import org.robolectric.Shadows;
 public final class AdConfigTest {
 
     @Test
+    @SuppressWarnings("resource")
     public void installsAScriptThatDropsTheAdConfig() {
         // given
         final WebView view = new WebView(Robolectric.buildActivity(Activity.class).get());

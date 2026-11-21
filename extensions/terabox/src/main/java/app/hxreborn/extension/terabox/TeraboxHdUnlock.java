@@ -40,7 +40,7 @@ public final class TeraboxHdUnlock {
 
     private static final int RECORDED_FILES = 32;
 
-    private static final Map<String, String> ORIGINAL_LINKS = new LinkedHashMap<String, String>(16, 0.75f, true) {
+    private static final Map<String, String> ORIGINAL_LINKS = new LinkedHashMap<>(16, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
             return size() > RECORDED_FILES;

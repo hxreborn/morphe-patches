@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.os.Build;
@@ -39,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @TargetApi(Build.VERSION_CODES.Q)
+@SuppressLint("UseRequiresApi")
 @SuppressWarnings("unused")
 public final class ToolsHistoryActivity extends HostScreenActivity {
 
@@ -126,6 +128,7 @@ public final class ToolsHistoryActivity extends HostScreenActivity {
             .show();
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private CharSequence tools(JSONObject entry) {
         final JSONArray stack = entry.optJSONArray(ToolsHistory.TYPE_STACK);
         final SpannableStringBuilder names = new SpannableStringBuilder();
@@ -144,6 +147,7 @@ public final class ToolsHistoryActivity extends HostScreenActivity {
         return names;
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private static String date(JSONObject entry) {
         try {
             return new SimpleDateFormat(SHOWN_DATE_PATTERN, Locale.getDefault())

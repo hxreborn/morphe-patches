@@ -43,6 +43,7 @@ import org.robolectric.annotation.Implements;
 import org.robolectric.shadows.ShadowActivity;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("deprecation")
 @Config(manifest = Config.NONE, sdk = 30)
 public final class PatchesSettingsRowsTest {
 
@@ -80,6 +81,7 @@ public final class PatchesSettingsRowsTest {
                 "Appearance", "Custom accent color", "M3E loading indicator"), shown);
     }
 
+    @SuppressWarnings("resource")
     private static Activity settings() {
         return Robolectric.buildActivity(PatchesSettingsActivity.class).setup().get();
     }
@@ -94,8 +96,7 @@ public final class PatchesSettingsRowsTest {
         if (view instanceof TextView) {
             texts.add(((TextView) view).getText().toString());
         }
-        if (view instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) view;
+        if (view instanceof ViewGroup group) {
             for (int index = 0; index < group.getChildCount(); index++) {
                 collectTexts(group.getChildAt(index), texts);
             }
@@ -103,6 +104,7 @@ public final class PatchesSettingsRowsTest {
     }
 
     @Implements(PatchesSettingsActivity.class)
+    @SuppressWarnings("unused")
     public static final class FilledRowStubs extends ShadowActivity {
 
         @Implementation

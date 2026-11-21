@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.TextView;
 
@@ -104,6 +105,7 @@ public final class UnfiledChats {
         return null;
     }
 
+    @SuppressLint("SetTextI18n")
     public static void updateEmptyView(View root) {
         if (root == null) {
             return;

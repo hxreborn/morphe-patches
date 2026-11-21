@@ -36,7 +36,7 @@ final class PatchSummary {
     }
 
     static String status(int on, int off, int applied) {
-        return on + " on \u2022 " + off + " off \u2022 " + applied + " applied";
+        return on + " on • " + off + " off • " + applied + " applied";
     }
 
 }

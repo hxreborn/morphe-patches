@@ -138,6 +138,7 @@ public final class LateFlagTest {
     }
 
     @Implements(value = LateFlag.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static final class HostTimestamps {
 
         @Implementation

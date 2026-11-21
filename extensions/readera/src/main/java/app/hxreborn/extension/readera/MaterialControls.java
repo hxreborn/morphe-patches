@@ -20,6 +20,7 @@
  */
 package app.hxreborn.extension.readera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.CompoundButton;
@@ -49,6 +50,8 @@ public final class MaterialControls {
         }
     }
 
+    @SuppressLint("DiscouragedApi")
+    @SuppressWarnings("DataFlowIssue")
     private static Drawable drawable(CompoundButton button, String name) {
         Context context = button.getContext();
         int resource = context.getResources()

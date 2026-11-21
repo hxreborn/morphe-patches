@@ -32,12 +32,7 @@ public final class LoadingIndicatorRows {
 
     public static void add(PatchesSettingsActivity activity, List<View> rows) {
         rows.add(activity.switchRow(AppliedPatches.loadingIndicatorName(), AppliedPatches.loadingIndicatorDescription(),
-                LoadingIndicator.isEnabled(), new CheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(boolean enabled) {
-                        LoadingIndicator.setEnabled(enabled);
-                    }
-                }));
+                LoadingIndicator.isEnabled(), LoadingIndicator::setEnabled));
     }
 
 }

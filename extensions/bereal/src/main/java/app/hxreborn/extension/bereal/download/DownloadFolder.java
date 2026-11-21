@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -47,6 +48,7 @@ import app.hxreborn.extension.bereal.PatchSettings;
 
 @SuppressWarnings("unused")
 @TargetApi(Build.VERSION_CODES.S_V2)
+@SuppressLint("UseRequiresApi")
 public final class DownloadFolder {
 
     public static final String PICTURES_FOLDER = Environment.DIRECTORY_PICTURES + "/BeReal";
@@ -266,6 +268,7 @@ public final class DownloadFolder {
                 mediaStoreUri(resolver, MediaStore.Downloads.EXTERNAL_CONTENT_URI, displayName, JSON_FOLDER));
     }
 
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     private static String read(ContentResolver resolver, Uri file) {
         if (file == null) {
             return null;
@@ -280,7 +283,7 @@ public final class DownloadFolder {
             while ((count = in.read(buffer)) >= 0) {
                 out.write(buffer, 0, count);
             }
-            return new String(out.toByteArray(), StandardCharsets.UTF_8);
+            return out.toString(StandardCharsets.UTF_8.name());
         } catch (IOException | RuntimeException ex) {
             Log.e(TAG, "Not read: " + file, ex);
             return null;

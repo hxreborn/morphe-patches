@@ -128,6 +128,7 @@ final class AvatarSwitchAnimation {
         });
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean show(Bitmap outgoing) {
         if (this.activity.isFinishing() || this.activity.isDestroyed()) {
             return false;

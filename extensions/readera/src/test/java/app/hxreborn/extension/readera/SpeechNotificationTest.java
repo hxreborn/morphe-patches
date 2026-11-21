@@ -31,6 +31,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+@SuppressWarnings({ "deprecation", "ConstantValue" })
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
 public final class SpeechNotificationTest {

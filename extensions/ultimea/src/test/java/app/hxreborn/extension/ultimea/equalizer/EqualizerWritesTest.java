@@ -36,6 +36,7 @@ import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 23, shadows = FineEqualizerTest.BasesShadow.class)
+@SuppressWarnings("DataFlowIssue")
 public class EqualizerWritesTest {
 
     private EqualizerSession session;

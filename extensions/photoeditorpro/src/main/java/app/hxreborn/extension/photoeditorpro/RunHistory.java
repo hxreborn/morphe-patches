@@ -26,7 +26,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 public final class RunHistory {
+
+    private static final String TAG = "hxreborn/ai";
 
     private static final int KEEP = 5;
 
@@ -76,7 +80,7 @@ public final class RunHistory {
         }
         cache = new LinkedHashMap<>();
         String raw = PatchSettings.RUN_HISTORY.get();
-        if (raw == null || raw.isEmpty()) {
+        if (raw.isEmpty()) {
             return cache;
         }
         for (String block : raw.split(";")) {
@@ -89,6 +93,7 @@ public final class RunHistory {
                 try {
                     runs.add(Long.parseLong(value.trim()));
                 } catch (NumberFormatException ex) {
+                    Log.w(TAG, "Skipped a malformed run time", ex);
                 }
             }
             if (!runs.isEmpty()) {
@@ -98,6 +103,7 @@ public final class RunHistory {
         return cache;
     }
 
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
     private static String encode(Map<String, List<Long>> all) {
         StringBuilder out = new StringBuilder();
         for (Map.Entry<String, List<Long>> entry : all.entrySet()) {

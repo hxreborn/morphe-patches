@@ -54,6 +54,7 @@ import org.robolectric.shadows.ShadowLooper;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.Q, manifest = Config.NONE,
         shadows = { DarkThemeTest.AppliedTheme.class, FakeTemplateNodes.class })
+@SuppressWarnings({ "deprecation", "resource" })
 public class DarkThemeTest {
 
     @Before
@@ -289,6 +290,7 @@ public class DarkThemeTest {
             super(context);
         }
 
+        @SuppressWarnings("unused")
         public void evaluateJavascript(String script, ValueCallback<String> callback) {
             this.script = script;
         }
@@ -311,6 +313,7 @@ public class DarkThemeTest {
     }
 
     @Implements(value = AppliedPatches.class, isInAndroidSdk = false)
+    @SuppressWarnings("unused")
     public static class AppliedTheme {
 
         @Implementation

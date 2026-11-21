@@ -34,6 +34,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings("deprecation")
 @Config(sdk = { 23, 36 }, manifest = Config.NONE, shadows = FakeHostResources.class)
 public final class AppliedPatchRowsTest {
 
@@ -68,8 +69,8 @@ public final class AppliedPatchRowsTest {
 
         row.performClick();
 
-        Assert.assertEquals(View.GONE, ((TextView) ((LinearLayout) row.getChildAt(0)).getChildAt(1)).getVisibility());
-        Assert.assertEquals(0f, ((ImageView) row.getChildAt(1)).getRotation(), 0f);
+        Assert.assertEquals(View.GONE, ((LinearLayout) row.getChildAt(0)).getChildAt(1).getVisibility());
+        Assert.assertEquals(0f, row.getChildAt(1).getRotation(), 0f);
         Assert.assertEquals(TITLE + ". Collapsed.", row.getContentDescription());
     }
 
@@ -79,7 +80,7 @@ public final class AppliedPatchRowsTest {
             LinearLayout row = row(description);
             Assert.assertFalse(row.isClickable());
             Assert.assertFalse(row.performClick());
-            Assert.assertEquals(View.GONE, ((ImageView) row.getChildAt(1)).getVisibility());
+            Assert.assertEquals(View.GONE, row.getChildAt(1).getVisibility());
             Assert.assertEquals(TITLE, row.getContentDescription());
         }
     }
