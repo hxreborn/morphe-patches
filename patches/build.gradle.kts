@@ -2,6 +2,10 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
+plugins {
+    alias(libs.plugins.animalsniffer)
+}
+
 group = "app.hxreborn"
 
 patches {
@@ -41,6 +45,12 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.asm)
     testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
+
+    signature(libs.android.api.signature) { artifact { type = "signature" } }
+}
+
+animalsniffer {
+    sourceSets = listOf(project.sourceSets["main"])
 }
 
 tasks {
@@ -142,6 +152,10 @@ tasks {
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set("app.morphe.util.PatchListGeneratorKt")
+    }
+
+    named("buildAndroid") {
+        dependsOn("animalsnifferMain")
     }
 
     publish {
