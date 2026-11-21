@@ -1,3 +1,7 @@
+plugins {
+    alias(libs.plugins.animalsniffer)
+}
+
 group = "app.hxreborn"
 
 patches {
@@ -30,6 +34,12 @@ dependencies {
     implementation(libs.morphe.patches.library)
     patchListGeneratorClasspath(libs.gson)
     testImplementation(kotlin("test"))
+
+    signature(libs.android.api.signature) { artifact { type = "signature" } }
+}
+
+animalsniffer {
+    sourceSets = listOf(project.sourceSets["main"])
 }
 
 tasks {
@@ -51,6 +61,10 @@ tasks {
 
         classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
         mainClass.set("util.PatchListGeneratorKt")
+    }
+
+    named("buildAndroid") {
+        dependsOn("animalsnifferMain")
     }
 
     publish {
