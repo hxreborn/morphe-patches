@@ -24,6 +24,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,11 +33,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Parcelable;
+import android.util.Log;
 
 @SuppressWarnings("unused")
 public final class LiappPackageFilter extends ProxyHandler {
 
+    private static final String TAG = "LiappPackageFilter";
+
     private static final String LIAPP_PACKAGE_PREFIX = "com.liapp.";
+
+    private static final String PARCELED_LIST_CLASS = "android.content.pm.ParceledListSlice";
 
     private final Object systemPackageManager;
 
@@ -82,13 +89,37 @@ public final class LiappPackageFilter extends ProxyHandler {
         if (!(result instanceof Parcelable) || !calledFromLiapp()) {
             return result;
         }
-        if (result instanceof PackageInfo packageInfo) {
-            return isSystemOrOwnPackage(packageInfo.packageName, packageInfo.applicationInfo) ? result : null;
+        if (PARCELED_LIST_CLASS.equals(result.getClass().getName())) {
+            return keepEntriesVisibleToLiapp(result);
         }
-        if (result instanceof ApplicationInfo applicationInfo) {
-            return isSystemOrOwnPackage(applicationInfo.packageName, applicationInfo) ? result : null;
+        return isVisibleToLiapp(result) ? result : null;
+    }
+
+    private Object keepEntriesVisibleToLiapp(Object parceledList) {
+        List<?> entries;
+        try {
+            entries = (List<?>) parceledList.getClass().getMethod("getList").invoke(parceledList);
+        } catch (ReflectiveOperationException ex) {
+            Log.w(TAG, "Could not read the package list", ex);
+            return null;
         }
-        return null;
+        Iterator<?> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            if (!isVisibleToLiapp(iterator.next())) {
+                iterator.remove();
+            }
+        }
+        return parceledList;
+    }
+
+    private boolean isVisibleToLiapp(Object entry) {
+        if (entry instanceof PackageInfo packageInfo) {
+            return isSystemOrOwnPackage(packageInfo.packageName, packageInfo.applicationInfo);
+        }
+        if (entry instanceof ApplicationInfo applicationInfo) {
+            return isSystemOrOwnPackage(applicationInfo.packageName, applicationInfo);
+        }
+        return false;
     }
 
     private boolean isSystemOrOwnPackage(String packageName, ApplicationInfo applicationInfo) {

@@ -16,6 +16,7 @@ import app.morphe.patcher.util.findFreeRegister
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.liapp.liappPackageFilterPatch
+import app.morphe.patches.vpnsuper.misc.fix.tamper.disableTamperResponsePatch
 import app.morphe.patches.vpnsuper.misc.settings.markPatchApplied
 import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -80,7 +81,7 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     dependsOn(vpnsuperAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.VPN_SUPER)
 
-    dependsOn(liappPackageFilterPatch)
+    dependsOn(liappPackageFilterPatch, disableTamperResponsePatch)
 
     execute {
         markPatchApplied("unlockPremium", unlockPremiumPatch)
