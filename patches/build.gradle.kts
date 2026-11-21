@@ -1,6 +1,16 @@
+import com.android.tools.r8.CompilationMode
+import com.android.tools.r8.D8
+import com.android.tools.r8.D8Command
+import com.android.tools.r8.OutputMode
+import com.android.tools.r8.utils.ArchiveResourceProvider
+import ru.vyarus.gradle.plugin.animalsniffer.AnimalSniffer
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+
+plugins {
+    alias(libs.plugins.animalsniffer)
+}
 
 group = "app.hxreborn"
 
@@ -41,6 +51,12 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.asm)
     testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
+
+    signature(libs.android.api.signature) { artifact { type = "signature" } }
+}
+
+animalsniffer {
+    sourceSets = emptyList()
 }
 
 tasks {
@@ -60,21 +76,6 @@ tasks {
         from(rootProject.file("third-party/licenses")) { into("META-INF/third-party/licenses") }
 
         doLast {
-            val desktopOnlyPackages = listOf("java/awt/", "javax/imageio/", "javax/swing/")
-            val offenders = ZipFile(archiveFile.get().asFile).use { zip ->
-                zip.entries().asSequence()
-                    .filter { it.name.endsWith(".class") }
-                    .filter { entry ->
-                        val text = zip.getInputStream(entry).readBytes().toString(Charsets.ISO_8859_1)
-                        desktopOnlyPackages.any(text::contains)
-                    }
-                    .map { it.name }
-                    .toList()
-            }
-            if (offenders.isNotEmpty()) {
-                throw GradleException("Android has no desktop JDK, referenced from: $offenders")
-            }
-
             val archive = archiveFile.get().asFile
             val stripped = File(archive.parentFile, archive.name + ".tmp")
             ZipFile(archive).use { zip ->
@@ -142,6 +143,59 @@ tasks {
 
         classpath = sourceSets["main"].runtimeClasspath
         mainClass.set("app.morphe.util.PatchListGeneratorKt")
+    }
+
+    val desugarPatchesClasses = register("desugarPatchesClasses") {
+        val patchesFile = jar.flatMap { it.archiveFile }
+        val classpath = sourceSets["main"].compileClasspath
+        val output = layout.buildDirectory.file("animalsniffer/patches-desugared.jar")
+
+        inputs.file(patchesFile)
+        inputs.files(classpath)
+        outputs.file(output)
+
+        doLast {
+            val patchesPath = patchesFile.get().asFile.toPath()
+            val outputPath = output.get().asFile.toPath()
+
+            D8.run(
+                D8Command.builder()
+                    .addProgramResourceProvider(ArchiveResourceProvider.fromArchive(patchesPath, true))
+                    .addClasspathFiles(classpath.files.filter { it.exists() }.map { it.toPath() })
+                    .setMode(CompilationMode.DEBUG)
+                    .setMinApiLevel(26)
+                    .setOutput(outputPath, OutputMode.ClassFile)
+                    .build()
+            )
+        }
+    }
+
+    val extractPatchesClasses = register<Sync>("extractPatchesClasses") {
+        from(desugarPatchesClasses.map { zipTree(it.outputs.files.singleFile) }) {
+            include("**/*.class")
+        }
+        into(layout.buildDirectory.dir("animalsniffer/patches-classes"))
+    }
+
+    val checkAndroidApi = register<AnimalSniffer>("checkAndroidApi") {
+        description = "Checks that the patches file only uses APIs available on Android."
+        group = "verification"
+
+        source(extractPatchesClasses)
+        classpath = sourceSets["main"].compileClasspath
+        animalsnifferSignatures = configurations["signature"]
+        animalsnifferClasspath = configurations["animalsniffer"]
+        sourcesDirs = sourceSets["main"].allSource.sourceDirectories
+        reports.text.outputLocation = layout.buildDirectory.file("reports/animalsniffer/patches.text")
+        reports.csv.outputLocation = layout.buildDirectory.file("reports/animalsniffer/patches.csv")
+    }
+
+    check {
+        dependsOn(checkAndroidApi)
+    }
+
+    named("buildAndroid") {
+        dependsOn(checkAndroidApi)
     }
 
     publish {
