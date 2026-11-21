@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.85.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.85.0-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.85.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.85.0-dev.2)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -53,9 +53,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <td align="center" valign="top" width="100"><a href="PATCHES.md#aliexpress-comalibabaaliexpresshd"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9&nbsp;new&nbsp;patches<br>5&nbsp;fixed</sub></td>
 </tr>
 <tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#castle-comexternalcastle"><img src="https://publicmetadata.co.uk/com.external.castle" width="40" height="40" align="top" alt=""><br>Castle</a><br><sub>4&nbsp;new&nbsp;patches<br>8&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#public-comcardfeedvideo_public"><img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="40" height="40" align="top" alt=""><br>Public</a><br><sub>8&nbsp;new&nbsp;patches<br>1&nbsp;fixed<br>3&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#candy-crush-saga-comkingcandycrushsaga"><img src="https://publicmetadata.co.uk/com.king.candycrushsaga" width="40" height="40" align="top" alt=""><br>Candy Crush Saga</a><br><sub>12&nbsp;new&nbsp;patches<br>4&nbsp;fixed</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#castle-comexternalcastle"><img src="https://publicmetadata.co.uk/com.external.castle" width="40" height="40" align="top" alt=""><br>Castle</a><br><sub>3&nbsp;new&nbsp;patches<br>8&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
 </tr>
 </table>
 

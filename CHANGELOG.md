@@ -1,3 +1,9 @@
+## [1.85.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.85.0-dev.1...v1.85.0-dev.2) (2026-11-21)
+
+### Bug Fixes
+
+* **Musicolet - Unlock premium:** show all Most Played periods ([222b496](https://github.com/hxreborn/morphe-patches/commit/222b496b6f8a2531844bc2725a8784269706bcc6)), closes [#973](https://github.com/hxreborn/morphe-patches/issues/973)
+
 ## [1.85.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.84.1-dev.1...v1.85.0-dev.1) (2026-11-20)
 
 ### Bug Fixes
