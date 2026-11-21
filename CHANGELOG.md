@@ -1,3 +1,9 @@
+## [1.85.1-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.85.1-dev.1...v1.85.1-dev.2) (2026-11-21)
+
+### Bug Fixes
+
+* **Ultimate Guitar - Unlock premium:** show subscription message ([c1ca1d9](https://github.com/hxreborn/morphe-patches/commit/c1ca1d9bd42fa95e4059c8e998756412eef50a91))
+
 ## [1.85.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.85.0...v1.85.1-dev.1) (2026-11-21)
 
 ### Bug Fixes

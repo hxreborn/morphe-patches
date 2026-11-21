@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.85.1-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.85.1-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -2889,7 +2889,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="ultimate-guitar-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="ultimate-guitar-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/ultimateguitar/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro, Courses, Sing and Practice features and removes ads. Songbooks are not unlocked. |
+| <a id="ultimate-guitar-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/ultimateguitar/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro, Sing and Practice features and removes ads. Paid course lessons and Songbooks are not unlocked. |
 
 ---
 
