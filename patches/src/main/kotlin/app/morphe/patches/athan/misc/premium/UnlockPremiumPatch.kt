@@ -7,7 +7,7 @@ package app.morphe.patches.athan.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -20,7 +20,7 @@ private const val PREMIUM_SUBSCRIPTION_JSON =
     """{\"type\":\"PROMO_CODE\",\"status\":1,\"migratedProUser\":true,\"subscriptionPackName\":\"Athan Premium\"}"""
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Athan Premium, including the premium Quran themes and athans, and removes ads.",
 ) {

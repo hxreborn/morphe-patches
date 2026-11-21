@@ -6,7 +6,9 @@ package app.morphe.patches.connected2.misc.deleted
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -26,7 +28,7 @@ import app.morphe.patches.shared.misc.extension.connected2KeepDeletedMessagesExt
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/connected2/DeletedMessages;"
 
 @Suppress("unused")
-val keepDeletedMessagesPatch = bytecodePatch(
+val keepDeletedMessagesPatch = patch(
     name = "Keep deleted messages",
     description = "Keeps messages the other person deletes and marks deleted text messages with 🗑.",
 ) {

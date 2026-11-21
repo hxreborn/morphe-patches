@@ -6,9 +6,11 @@ package app.morphe.patches.readera.misc.speechpitch
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.misc.materialcontrols.MATERIAL_RADIO_BUTTON_TAG
@@ -41,14 +43,12 @@ private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/
 private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechPitchTarget;"
 private const val PITCH_LAYOUT = "res/layout/hx_readera_pitch.xml"
 private val radioButtonTags = setOf("RadioButton", MATERIAL_RADIO_BUTTON_TAG)
-private lateinit var pitchResources: ResourcePatchContext
 
-private val pitchResourcesPatch = resourcePatch {
+private val pitchResourcesPatch = patch {
     dependsOn(readeraMaterialRadioButtonExtensionPatch)
     execute {
-        pitchResources = this
         decode("res/layout/*.xml")
-        val sliderLayout = get("res/layout").listFiles()!!.filter { it.extension == "xml" }.single { file ->
+        val sliderLayout = resourceFile("res/layout").listFiles()!!.filter { it.extension == "xml" }.single { file ->
             file.inputStream().use { document(it) }.use { document ->
                 val root = document.documentElement
                 root.tagName == "LinearLayout" &&
@@ -58,7 +58,7 @@ private val pitchResourcesPatch = resourcePatch {
                     }
             }
         }
-        get(PITCH_LAYOUT).writeText(sliderLayout.readText())
+        resourceFile(PITCH_LAYOUT).writeText(sliderLayout.readText())
         document(PITCH_LAYOUT).use { document ->
             val root = document.documentElement
             root.removeAttribute("android:id")
@@ -89,7 +89,7 @@ private val pitchResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val speechPitchSliderPatch = bytecodePatch(
+val speechPitchSliderPatch = patch(
     name = "Speech pitch slider",
     description = "Adds a voice pitch slider from 0.5x to 2x to Settings > Text to speech (TTS).",
 ) {
@@ -103,19 +103,19 @@ val speechPitchSliderPatch = bytecodePatch(
         val view = PitchPreferencesViewFingerprint.matchAll(1..1).single()
         val (_, _, rowLoad) = view.instructionMatches
         val rowId = (rowLoad.instruction as WideLiteralInstruction).wideLiteral
-        val rowName = pitchResources.document("res/values/public.xml").use { document ->
+        val rowName = document("res/values/public.xml").use { document ->
             document.getElementsByTagName("public").asSequence().map { it as Element }.single {
                 it.getAttribute("type") == "id" && it.getAttribute("id").removePrefix("0x").toLong(16) == rowId
             }.getAttribute("name")
         }
-        val screen = pitchResources.get("res/layout").listFiles()!!.filter { it.extension == "xml" }.single { file ->
-            file.inputStream().use { pitchResources.document(it) }.use { document ->
+        val screen = resourceFile("res/layout").listFiles()!!.filter { it.extension == "xml" }.single { file ->
+            file.inputStream().use { document(it) }.use { document ->
                 document.getElementsByTagName("include").asSequence().any {
                     (it as Element).getAttribute("android:id") == "@id/$rowName"
                 }
             }
         }
-        pitchResources.document("res/layout/./${screen.name}").use { document ->
+        document("res/layout/./${screen.name}").use { document ->
             val container = document.documentElement.childElementsSequence().single()
             val row = document.createElement("include")
             row.setAttribute("layout", "@layout/hx_readera_pitch")

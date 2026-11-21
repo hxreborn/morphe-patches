@@ -5,8 +5,8 @@
 package app.morphe.patches.protonpass.misc.inappmessages
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.proton.PASS_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
-val hidePromotionalMessagesPatch: BytecodePatch = bytecodePatch(
+val hidePromotionalMessagesPatch: Patch = patch(
     name = "Hide promotional messages",
     description = "Hides promotional banners, offers and pop-up messages.",
 ) {

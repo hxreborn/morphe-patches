@@ -5,7 +5,8 @@
 package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -20,7 +21,7 @@ internal const val NAVIGATION_BAR_BACKDROP_CLASS = "${PROTON_EXTENSION_PACKAGE}N
 private const val NATIVE_CANVAS = "Landroid/graphics/Canvas;"
 private const val DRAW_NODE_KIND = 4
 
-internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: String) {
+internal fun installNavigationBarBackdrop(modifierType: String) {
     val drawMatch = BackdropDrawContentFingerprint.matchSingle()
     val draw = drawMatch.method
     val scopeType = draw.definingClass

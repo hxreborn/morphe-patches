@@ -4,9 +4,9 @@
  */
 package app.morphe.patches.photoeditorpro.misc.premium
 
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
@@ -19,7 +19,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.photoeditorproPatchGatesExtensionPatch
 
 @Suppress("unused")
-val unlockPremiumPatch: BytecodePatch = bytecodePatch(
+val unlockPremiumPatch: Patch = patch(
     name = "Unlock premium",
     description = "Unlocks pro tools and removes export watermarks and upgrade prompts.",
 ) {

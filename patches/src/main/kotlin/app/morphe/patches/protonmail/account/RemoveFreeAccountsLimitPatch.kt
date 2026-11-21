@@ -10,9 +10,10 @@
  */
 package app.morphe.patches.protonmail.account
 
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64
@@ -51,7 +52,7 @@ private val removeFreeAccountsLimitMarkerPatch =
     appliedPatchMarkerPatch(MAIL_SETTINGS_CLASS, "removeFreeAccountsLimit") { removeFreeAccountsLimitPatch }
 
 @Suppress("unused")
-val removeFreeAccountsLimitPatch: ResourcePatch = resourcePatch(
+val removeFreeAccountsLimitPatch: Patch = patch(
     name = "Remove free accounts limit",
     description = "Removes the limit on signed-in free accounts.",
 ) {
@@ -62,7 +63,7 @@ val removeFreeAccountsLimitPatch: ResourcePatch = resourcePatch(
         var patchedArchitectures = 0
 
         for ((architecture, check) in LIMIT_CHECKS) {
-            val library = get("lib/$architecture/$MAIL_UNIFFI_LIBRARY")
+            val library = resourceFile("lib/$architecture/$MAIL_UNIFFI_LIBRARY")
             if (!library.exists()) continue
 
             if (library.replaceTrailingMasked(check.pattern, check.mask, check.bypass)) {

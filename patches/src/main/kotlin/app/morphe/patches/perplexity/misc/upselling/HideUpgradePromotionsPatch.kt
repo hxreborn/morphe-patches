@@ -7,7 +7,8 @@ package app.morphe.patches.perplexity.misc.upselling
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -18,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = bytecodePatch(
+val hideUpgradePromotionsPatch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the subscription offer after signing in, the Upgrade plan banner, home screen " +
         "promotions and upgrade cards in answers. Plan limits still apply.",

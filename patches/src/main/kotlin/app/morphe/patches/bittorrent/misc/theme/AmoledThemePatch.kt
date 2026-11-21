@@ -7,9 +7,12 @@ package app.morphe.patches.bittorrent.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
@@ -95,7 +98,7 @@ private const val NIGHT_STYLES_FILE = "res/values-night/styles.xml"
 private const val WHITE = "@android:color/white"
 private const val BLACK = "@android:color/black"
 
-private fun ResourcePatchContext.addNightSplash(drawables: List<String>, layouts: List<String>) {
+private fun addNightSplash(drawables: List<String>, layouts: List<String>) {
     val (parent, items) = document("res/values-v31/styles.xml").use { styles ->
         val style = styles.documentElement.elementsByTag("style").single { it.getAttribute("name") == SPLASH_STYLE }
         style.getAttribute("parent") to style.elementsByTag("item")
@@ -117,10 +120,10 @@ private fun ResourcePatchContext.addNightSplash(drawables: List<String>, layouts
     layouts.forEach { copyWithBlackBackground("res/layout/$it.xml", "res/layout-night/$it.xml") }
 }
 
-private fun ResourcePatchContext.copyWithBlackBackground(source: String, target: String) {
-    val copy = get(target)
+private fun copyWithBlackBackground(source: String, target: String) {
+    val copy = resourceFile(target)
     copy.parentFile.mkdirs()
-    get(source).copyTo(copy, overwrite = true)
+    resourceFile(source).copyTo(copy, overwrite = true)
     document(target).use { resource ->
         val root = resource.documentElement
         (listOf(root) + root.elementsByTag("*")).forEach { element ->
@@ -133,7 +136,7 @@ private fun ResourcePatchContext.copyWithBlackBackground(source: String, target:
     }
 }
 
-private val amoledResourcesPatch = resourcePatch {
+private val amoledResourcesPatch = patch {
     dependsOn(bittorrentSettingsExtensionPatch)
     execute {
         addNightSplash(listOf("splash_icon", "splash_icon_fix"), listOf("activity_splash"))
@@ -143,7 +146,7 @@ private val amoledResourcesPatch = resourcePatch {
                 val name = "hx_bittorrent_amoled_$original"
                 val identifier = nextDrawable++
                 declarations.declare("drawable", name, identifier)
-                get("res/drawable/$original.xml").copyTo(get("res/drawable/$name.xml"), overwrite = true)
+                resourceFile("res/drawable/$original.xml").copyTo(resourceFile("res/drawable/$name.xml"), overwrite = true)
                 document("res/drawable/$name.xml").use { drawable ->
                     val fills = drawable.getElementsByTagName("solid")
                     val gradients = drawable.getElementsByTagName("gradient")
@@ -165,7 +168,7 @@ private val amoledResourcesPatch = resourcePatch {
         }
 
         decode("res/layout/activity_setting.xml")
-        get("res/layout/$SWITCH_LAYOUT_NAME.xml").writeText(SWITCH_LAYOUT)
+        resourceFile("res/layout/$SWITCH_LAYOUT_NAME.xml").writeText(SWITCH_LAYOUT)
         document("res/layout/activity_setting.xml").use { layout ->
             val views = layout.documentElement.elementsByTag("*")
             val title = views.single { it.getAttribute("android:id").endsWith("/$ANCHOR_ROW_ID") }
@@ -202,7 +205,7 @@ private val amoledResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Adds a setting that makes dialogs, snackbars, buttons and cards pure black in dark mode.",
 ) {

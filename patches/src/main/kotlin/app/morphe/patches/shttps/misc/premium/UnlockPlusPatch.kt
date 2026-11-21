@@ -5,7 +5,8 @@
 package app.morphe.patches.shttps.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -16,7 +17,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Suppress("unused")
-val unlockPlusPatch = bytecodePatch(
+val unlockPlusPatch = patch(
     name = "Unlock PLUS",
     description = "Unlocks remote screen control, control from external apps and auto-shutdown timeouts over 6 hours or off.",
 ) {

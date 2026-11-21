@@ -4,15 +4,15 @@
  */
 package app.morphe.patches.ultimea.misc.controls
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.ultimea.misc.settings.patchesSettingsPatch
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
 
 @Suppress("unused")
-val xupmixPatch: BytecodePatch = bytecodePatch(
+val xupmixPatch: Patch = patch(
     name = "Xupmix",
     description = "Enables Xupmix control on Poseidon D80.",
 ) {

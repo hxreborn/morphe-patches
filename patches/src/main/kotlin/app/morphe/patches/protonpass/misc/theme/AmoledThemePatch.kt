@@ -4,9 +4,9 @@
  */
 package app.morphe.patches.protonpass.misc.theme
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
@@ -32,7 +32,7 @@ private const val SPLASH_STYLE = "ProtonTheme.Splash.Pass"
 private const val SPLASH_BACKGROUND_ITEM = "windowSplashScreenBackground"
 private const val BLACK_RESOURCE = "@android:color/black"
 
-private val amoledSplashBackgroundPatch = resourcePatch {
+private val amoledSplashBackgroundPatch = patch {
     execute {
         document(NIGHT_STYLES).use { document ->
             document.getElementsByTagName("style")
@@ -45,7 +45,7 @@ private val amoledSplashBackgroundPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch: BytecodePatch = bytecodePatch(
+val amoledThemePatch: Patch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {

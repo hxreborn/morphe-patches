@@ -12,8 +12,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -85,7 +85,7 @@ internal fun resizeLoadingIndicatorContainer(method: MutableMethod, sizeCall: Ma
     )
 }
 
-internal fun BytecodePatchContext.bindLoadingIndicatorView(androidView: Method, modifierCompanion: FieldReference?) {
+internal fun bindLoadingIndicatorView(androidView: Method, modifierCompanion: FieldReference?) {
     val functionType = androidView.parameterTypes.first().toString()
     val composerType = androidView.parameterTypes[ANDROID_VIEW_COMPOSER_PARAMETER].toString()
     val (modifierArgument, defaultMaskArgument, lastArgument) = when {
@@ -118,7 +118,7 @@ internal fun BytecodePatchContext.bindLoadingIndicatorView(androidView: Method, 
     )
 }
 
-internal fun BytecodePatchContext.drawPullRefreshAsLoadingIndicator(
+internal fun drawPullRefreshAsLoadingIndicator(
     contentFingerprint: Fingerprint,
     androidViewParameterCount: Int,
     loadPullProgress: (stateType: String, state: String, progress: String, scratch: String) -> String,
@@ -147,7 +147,7 @@ internal fun BytecodePatchContext.drawPullRefreshAsLoadingIndicator(
     }
 }
 
-private fun BytecodePatchContext.redirectToLoadingIndicator(
+private fun redirectToLoadingIndicator(
     caller: MutableMethod,
     index: Int,
     wrapperName: String,

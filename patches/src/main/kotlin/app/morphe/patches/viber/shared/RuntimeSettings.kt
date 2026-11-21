@@ -7,8 +7,7 @@ package app.morphe.patches.viber.shared
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -18,10 +17,9 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal const val VIBER_SETTINGS_CLASS = "Lapp/hxreborn/extension/viber/PatchSettings;"
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+internal fun markPatchApplied(methodName: String, patch: Patch) =
     fillAppliedPatch("Lapp/hxreborn/extension/viber/AppliedPatches;", methodName, patch)
 
-context(_: BytecodePatchContext)
 internal fun MutableMethod.returnWhenEnabled(settingCall: String, result: ((Int) -> String)? = null) {
     val register = implementation!!.registerCount
     val (expanded, parameterMoves) = addFreeRegisters(1)

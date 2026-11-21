@@ -8,7 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -43,7 +44,7 @@ private const val CLICKABLE_ON_CLICK_PARAMETER = 3
 private const val BACKGROUND_CALL_MATCH = 1
 
 @Suppress("unused")
-val hostDetailsPatch = bytecodePatch(
+val hostDetailsPatch = patch(
     name = "Host details",
     description = "Adds a details page for each ping reply and traceroute hop with its address, hostname, " +
         "round-trip times, TTL, AS and location.",

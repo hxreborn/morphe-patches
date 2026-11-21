@@ -6,9 +6,9 @@ package app.morphe.patches.protonmail.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -40,7 +40,7 @@ private const val SIZE_CALL_MATCH = 1
 private const val INDICATOR_BOX_MODIFIER_REGISTER = 3
 
 @Suppress("unused")
-val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
+val loadingIndicatorPatch: Patch = patch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {

@@ -6,10 +6,10 @@ package app.morphe.patches.protonmail.misc.scheduleddeletion
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.banner.answerAutoDeleteBannerCheck
@@ -29,7 +29,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val BANNER_CLASS = "Lapp/hxreborn/extension/protonmail/ScheduledDeletionBanner;"
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/ScheduledDeletion;"
 
-private val scheduledDeletionStringsPatch = resourcePatch {
+private val scheduledDeletionStringsPatch = patch {
     execute {
         document("res/values/strings.xml").use { document ->
             mapOf(
@@ -51,7 +51,7 @@ private val scheduledDeletionStringsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
+val scheduledDeletionPatch: Patch = patch(
     name = "Scheduled Trash and Spam deletion",
     description = "Deletes all messages in Trash and Spam on separate configurable schedules, " +
         "also while the app is closed. Deleted messages cannot be recovered.",

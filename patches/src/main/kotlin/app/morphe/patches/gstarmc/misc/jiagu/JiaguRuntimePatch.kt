@@ -5,8 +5,9 @@
 package app.morphe.patches.gstarmc.misc.jiagu
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.misc.jiagu.asJiaguDex
 import app.morphe.patches.shared.misc.jiagu.withLoader
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
@@ -14,8 +15,8 @@ import app.morphe.util.inputStreamFromBundledResource
 
 private const val CONFIGURATION_ASSET = "assets/hcfg"
 
-internal fun ResourcePatchContext.enableRuntimeFeature(flag: String) {
-    val configuration = get(CONFIGURATION_ASSET, copy = false)
+internal fun enableRuntimeFeature(flag: String) {
+    val configuration = resourceFile(CONFIGURATION_ASSET, copy = false)
     val enabled = if (configuration.exists()) configuration.readText().lines() else emptyList()
 
     if (flag in enabled) return
@@ -28,13 +29,13 @@ internal fun bundledResource(name: String) =
         ?: throw PatchException("Missing bundled resource: gstarmc/$name"))
         .use { it.readBytes() }
 
-val jiaguRuntimePatch = rawResourcePatch {
+val jiaguRuntimePatch = patch {
     execute {
-        val classes = get("classes.dex")
+        val classes = resourceFile("classes.dex")
         classes.writeBytes(classes.readBytes().asJiaguDex().withLoader(bootLoaderSmali))
 
-        get("assets/h", copy = false).writeBytes(bundledResource("boot.dex"))
-        get("assets/hc", copy = false).writeBytes(packageMetadata.stockSigningCertificate().encoded)
-        get("assets/hl", copy = false).writeBytes(bundledResource("hiddenapi.so"))
+        resourceFile("assets/h", copy = false).writeBytes(bundledResource("boot.dex"))
+        resourceFile("assets/hc", copy = false).writeBytes(packageMetadata.stockSigningCertificate().encoded)
+        resourceFile("assets/hl", copy = false).writeBytes(bundledResource("hiddenapi.so"))
     }
 }

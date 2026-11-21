@@ -5,9 +5,10 @@
 package app.morphe.patches.terabox.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -45,7 +46,7 @@ private val DATA_SAVER_LAYOUTS = listOf(
     "video_full_bar_resolution_drama",
 )
 
-private val hideDataSaverOptionPatch = resourcePatch {
+private val hideDataSaverOptionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, teraboxSettingsExtensionPatch, teraboxUnlockPremiumPlusExtensionPatch)
     execute {
         DATA_SAVER_LAYOUTS.forEach { layout ->
@@ -60,7 +61,7 @@ private val hideDataSaverOptionPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val unlockPremiumPatch: BytecodePatch = bytecodePatch(
+val unlockPremiumPatch: Patch = patch(
     name = "Unlock Premium Plus",
     description = "Unlocks HD, 3x speed and uploads, with HD up to original quality. " +
         "HD buffers faster over parallel connections.",

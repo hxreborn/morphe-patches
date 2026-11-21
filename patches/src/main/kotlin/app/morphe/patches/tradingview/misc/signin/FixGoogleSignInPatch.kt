@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.tradingview.misc.signin
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val fixGoogleSignInPatch = bytecodePatch(
+val fixGoogleSignInPatch = patch(
     name = "Fix Google sign-in",
     description = "Signs in with Google through a web page.",
 ) {

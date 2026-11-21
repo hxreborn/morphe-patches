@@ -6,8 +6,8 @@ package app.morphe.patches.liftoff.misc.customizations
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.liftoff.misc.settings.markPatchApplied
 import app.morphe.patches.liftoff.misc.settings.patchesSettingsPatch
@@ -20,7 +20,7 @@ import app.morphe.patches.shared.misc.extension.liftoffUnlockCustomizationsExten
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/liftoff/Customizations;"
 @Suppress("unused")
-val unlockCustomizationsPatch: BytecodePatch = bytecodePatch(
+val unlockCustomizationsPatch: Patch = patch(
     name = "Unlock customizations",
     description = "Unlocks themes, profile borders and profile banners.",
 ) {

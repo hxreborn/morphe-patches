@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.readera.misc.selection
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.readera.shared.addSelectionAction
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -26,14 +27,14 @@ private const val SELECTION_SEARCH = "Lapp/hxreborn/extension/readera/SelectionS
 private const val TEXT_SEARCH_HINT = "Text search"
 
 private var textSearchHint = -1L
-private val textSearchHintResourcePatch = resourcePatch {
+private val textSearchHintResourcePatch = patch {
     execute {
         textSearchHint = stringResourceId(TEXT_SEARCH_HINT)
     }
 }
 
 @Suppress("unused")
-val searchSelectionInBookPatch = bytecodePatch(
+val searchSelectionInBookPatch = patch(
     name = "Search selection in book",
     description = "Searches the book for the selected text and lists every match. Found under More in the text selection menu.",
 ) {

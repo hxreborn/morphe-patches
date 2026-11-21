@@ -6,10 +6,10 @@ package app.morphe.patches.bereal.misc.privacy
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -37,7 +37,7 @@ private val removedPermissions = setOf(
     "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
 )
 
-private val removePermissionsAndCollectionFlagsPatch = resourcePatch {
+private val removePermissionsAndCollectionFlagsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val manifest = document.documentElement
@@ -54,7 +54,7 @@ private val removePermissionsAndCollectionFlagsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
+val disableDataCollectionPatch: Patch = patch(
     name = "Disable data collection",
     description = "Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, Adjust " +
         "attribution and the Shake bug reporter.",

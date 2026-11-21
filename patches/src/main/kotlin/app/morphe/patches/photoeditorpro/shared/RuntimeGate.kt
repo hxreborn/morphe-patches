@@ -6,9 +6,10 @@ package app.morphe.patches.photoeditorpro.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -39,7 +40,7 @@ internal fun MutableClass.methodMatching(role: String, predicate: (MutableMethod
     methods.singleOrNull(predicate)
         ?: throw PatchException("No single $role method in $type")
 
-internal fun BytecodePatchContext.taskClass(callbackClass: String): MutableClass {
+internal fun taskClass(callbackClass: String): MutableClass {
     val packagePrefix = callbackClass.substringBeforeLast('/') + "/"
     val owner = classDefByOrNull(callbackClass)?.fields?.singleOrNull {
         it.type != callbackClass && it.type.startsWith(packagePrefix)
@@ -65,7 +66,7 @@ internal fun MutableMethod.returnTrueWhileEnabled(gateMethod: String) {
     )
 }
 
-internal fun BytecodePatchContext.markPatchInstalled(settingKey: String) {
+internal fun markPatchInstalled(settingKey: String) {
     mutableClassDefBy(PATCH_PANEL_CLASS)
         .methods.single { it.name == "<clinit>" }
         .apply {
@@ -82,7 +83,7 @@ internal fun BytecodePatchContext.markPatchInstalled(settingKey: String) {
         }
 }
 
-internal fun BytecodePatchContext.markPatchMetadata(
+internal fun markPatchMetadata(
     methodName: String,
-    patch: BytecodePatch,
+    patch: Patch,
 ) = fillPatchMetadata(PATCH_PANEL_CLASS, methodName, patch)

@@ -6,7 +6,7 @@ package app.morphe.patches.resprite.misc.premium
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -37,7 +37,7 @@ private val SKIP_GET_PREMIUM_ITEM =
     "a4035ef8a2835df841b040b8257c4193a58319f846f040b8c6801c8b1a000014".hexToByteArray()
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks every premium feature, including the export limit, symmetry, outline, filters, text, timelapse and custom brushes.",
 ) {

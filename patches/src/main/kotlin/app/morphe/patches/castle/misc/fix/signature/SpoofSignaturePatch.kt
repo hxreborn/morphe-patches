@@ -6,7 +6,8 @@ package app.morphe.patches.castle.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.secshell.editSecShellPayload
 import app.morphe.patches.shared.misc.secshell.secShellPayloadPatch
@@ -17,7 +18,7 @@ private const val SIGNATURE_CLASS = "Landroid/content/pm/Signature;"
 private const val DIGEST_ERROR = "error!"
 
 @Suppress("unused")
-val spoofSignaturePatch = rawResourcePatch(
+val spoofSignaturePatch = patch(
     name = "Spoof signature",
     description = "Removes the modified app warning that stops video playback.",
 ) {

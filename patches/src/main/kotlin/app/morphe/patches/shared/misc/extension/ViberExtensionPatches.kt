@@ -4,42 +4,43 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val viberSettingsExtensionPatch = bytecodePatch {
+
+internal val viberSettingsExtensionPatch = patch {
     extendWith("extensions/hxreborn/viber-settings.mpe")
 }
 
-internal val viberDisableAiFeaturesExtensionPatch = bytecodePatch {
+internal val viberDisableAiFeaturesExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-disable-ai-features.mpe")
 }
 
-internal val viberFilterBusinessChatsExtensionPatch = bytecodePatch {
+internal val viberFilterBusinessChatsExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-filter-business-chats.mpe")
 }
 
-internal val viberRemoveChatPaymentActionsExtensionPatch = bytecodePatch {
+internal val viberRemoveChatPaymentActionsExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-remove-chat-payment-actions.mpe")
 }
 
-internal val viberGmsCoreSupportExtensionPatch = bytecodePatch {
+internal val viberGmsCoreSupportExtensionPatch = patch {
     extendWith("extensions/hxreborn/viber-gms-core-support.mpe")
 }
 
-internal val viberDisappearingMediaPrivacyExtensionPatch = bytecodePatch {
+internal val viberDisappearingMediaPrivacyExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-disappearing-media-privacy.mpe")
 }
 
-internal val viberRemoveListGapsExtensionPatch = bytecodePatch {
+internal val viberRemoveListGapsExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-remove-list-gaps.mpe")
 }
 
-internal val viberUnfiledChatsExtensionPatch = bytecodePatch {
+internal val viberUnfiledChatsExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-unfiled-chats.mpe")
 }

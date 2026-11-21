@@ -7,8 +7,8 @@ package app.morphe.patches.muvizwidgets.misc.weather
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,7 +30,7 @@ private const val APP_CHECK_RESPONSE = """{\"token\":\"e30.e30.e30\",\"ttl\":\"3
 
 private const val NETWORK_SECURITY_CONFIG = "res/xml/network_security_config.xml"
 
-private val allowLoopbackCleartextPatch = resourcePatch {
+private val allowLoopbackCleartextPatch = patch {
     compatibleWith(AppCompatibilities.MUVIZ_WIDGETS)
 
     execute {
@@ -44,7 +44,7 @@ private val allowLoopbackCleartextPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val fixWeatherPatch = bytecodePatch(
+val fixWeatherPatch = patch(
     name = "Fix weather",
     description = "Loads weather and finds the current city in the weather widgets. " +
         "Fetches weather from Open-Meteo and the current city from BigDataCloud.",

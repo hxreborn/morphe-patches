@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val morpheLibraryCoreExtensionPatch = bytecodePatch {
+
+internal val morpheLibraryCoreExtensionPatch = patch {
     extendWith("extensions/hxreborn/morphe-library-core.mpe")
 }

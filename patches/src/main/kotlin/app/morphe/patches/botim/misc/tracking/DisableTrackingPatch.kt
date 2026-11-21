@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.botim.misc.tracking
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.botim.misc.signin.fixSignInPatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatc
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops Firebase Analytics, Crashlytics, Adjust and MoEngage from collecting usage data.",
 ) {

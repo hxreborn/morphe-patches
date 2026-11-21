@@ -5,7 +5,7 @@
 package app.morphe.patches.clipstudiopaint.misc
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.patch.resourceFile
 import java.io.RandomAccessFile
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -40,14 +40,14 @@ private fun ByteBuffer.findPatchSites(patchSites: List<PatchSite>): List<Int> {
     return found.map { it.single() }
 }
 
-internal fun ResourcePatchContext.rewriteNativeLibrary(patchSites: List<PatchSite>) {
+internal fun rewriteNativeLibrary(patchSites: List<PatchSite>) {
     rewriteNativeLibrary { buffer ->
         buffer.findPatchSites(patchSites).forEachIndexed { index, start -> patchSites[index].rewrite(buffer, start) }
     }
 }
 
-internal fun ResourcePatchContext.rewriteNativeLibrary(rewrite: (ByteBuffer) -> Unit) {
-    val library = get(LIBRARY, true)
+internal fun rewriteNativeLibrary(rewrite: (ByteBuffer) -> Unit) {
+    val library = resourceFile(LIBRARY, true)
     if (!library.exists()) throw PatchException(MISSING_LIBRARY_MESSAGE)
 
     RandomAccessFile(library, "rw").use { file ->

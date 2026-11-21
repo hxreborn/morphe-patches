@@ -6,7 +6,8 @@ package app.morphe.patches.hypic.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
@@ -19,7 +20,7 @@ private const val APPLICATION_CLASS = "Lcom/xt/retouch/MainApplication;"
 
 private const val APK_SIGNATURE_V3_PREFIX = "S3:"
 
-val spoofSignaturePatch = bytecodePatch {
+val spoofSignaturePatch = patch {
     dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.HYPIC)
     execute {

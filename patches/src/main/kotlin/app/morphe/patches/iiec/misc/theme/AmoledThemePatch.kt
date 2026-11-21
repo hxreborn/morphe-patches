@@ -9,10 +9,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.Document
 import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.getReference
@@ -112,7 +112,7 @@ private fun cloneArrayWithExtraItem(document: Document, sourceName: String, newN
     }
 }
 
-private val amoledThemeResourcesPatch = resourcePatch {
+private val amoledThemeResourcesPatch = patch {
     execute {
         document("res/values/arrays.xml").use { document ->
             cloneArrayWithExtraItem(document, EDITOR_THEME_TITLES_ARRAY, DARK_EDITOR_THEME_TITLES_ARRAY, AMOLED_TITLE)
@@ -160,7 +160,6 @@ private val amoledThemeResourcesPatch = resourcePatch {
     }
 }
 
-context(patchContext: BytecodePatchContext)
 private fun Method.injectAmoledSchemeSelection(darkSchemeType: String, applyMethodName: String) {
     val tempRegister = implementation!!.registerCount
     val method = cloneParameters()
@@ -206,7 +205,7 @@ private fun Method.injectAmoledSchemeSelection(darkSchemeType: String, applyMeth
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Adds an AMOLED option to Settings > Appearance > Editor theme (dark). " +
         "Applies only while the Dark theme is active.",

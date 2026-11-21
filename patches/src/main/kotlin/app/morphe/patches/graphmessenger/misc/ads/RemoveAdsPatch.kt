@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.graphmessenger.misc.ads
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes banner, interstitial, native, app open and rewarded ads, " +
         "Graph's own promotions, Telegram sponsored messages and the proxy sponsor channel.",

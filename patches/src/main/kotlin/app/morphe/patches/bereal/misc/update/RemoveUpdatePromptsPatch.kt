@@ -5,8 +5,8 @@
 package app.morphe.patches.bereal.misc.update
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.base.beRealBasePatch
@@ -16,7 +16,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.berealUpdatePromptsExtensionPatch
 
 @Suppress("unused")
-val removeUpdatePromptsPatch: BytecodePatch = bytecodePatch(
+val removeUpdatePromptsPatch: Patch = patch(
     name = "Remove update prompts",
     description = "Removes BeReal's required and suggested update dialogs and the Play Store update prompt.",
 ) {

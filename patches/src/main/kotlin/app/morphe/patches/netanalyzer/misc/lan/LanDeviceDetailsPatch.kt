@@ -6,7 +6,8 @@ package app.morphe.patches.netanalyzer.misc.lan
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
@@ -18,7 +19,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 private const val DEVICE_CALLBACK_ARGUMENTS = 3
 
 @Suppress("unused")
-val lanDeviceDetailsPatch = bytecodePatch(
+val lanDeviceDetailsPatch = patch(
     name = "LAN device details",
     description = "Adds a details page for each device in the LAN scan with its names, Wake on LAN, " +
         "Bonjour and UPnP services and web interface, plus text and CSV export of the scan.",

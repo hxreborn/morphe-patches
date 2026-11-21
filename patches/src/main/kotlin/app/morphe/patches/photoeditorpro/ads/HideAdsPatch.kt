@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.photoeditorpro.ads
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.RemoveAdsPurchasedFingerprint
@@ -16,7 +16,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.photoeditorproPatchGatesExtensionPatch
 
 @Suppress("unused")
-val hideAdsPatch: BytecodePatch = bytecodePatch(
+val hideAdsPatch: Patch = patch(
     name = "Hide ads",
     description = "Removes banner, interstitial, app-open and rewarded ads.",
 ) {

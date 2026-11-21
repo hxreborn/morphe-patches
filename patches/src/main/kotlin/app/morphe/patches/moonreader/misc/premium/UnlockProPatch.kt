@@ -7,7 +7,7 @@ package app.morphe.patches.moonreader.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -17,7 +17,7 @@ import app.morphe.patches.shared.misc.extension.moonreaderUnlockProExtensionPatc
 private const val PRO_PACKAGE_CONTEXT = "Lapp/hxreborn/extension/moonreader/ProPackageContext;"
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks Pro features, including PDF annotations and form filling, " +
         "WebDAV and FTP sync, text-to-speech controls, the home screen widget " +

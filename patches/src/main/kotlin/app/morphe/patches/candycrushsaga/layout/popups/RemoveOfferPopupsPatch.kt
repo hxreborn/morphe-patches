@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.candycrushsaga.layout.popups
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.shared.serverresponse.SERVER_RESPONSES
 import app.morphe.patches.candycrushsaga.shared.serverresponse.editServerResponsesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceStub
 
 @Suppress("unused")
-val removeOfferPopupsPatch = bytecodePatch(
+val removeOfferPopupsPatch = patch(
     name = "Remove offer pop-ups",
     description = "Removes pop-ups selling bundles, passes and limited-time offers.",
 ) {

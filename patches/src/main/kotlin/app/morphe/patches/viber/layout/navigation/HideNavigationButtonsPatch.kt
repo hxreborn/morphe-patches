@@ -7,9 +7,10 @@ package app.morphe.patches.viber.layout.navigation
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -35,7 +36,7 @@ private enum class HomeTab(val label: String, val default: Boolean, vararg val i
 }
 
 @Suppress("unused")
-val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
+val hideNavigationButtonsPatch: Patch = patch(
     name = "Hide navigation buttons",
     description = "Hides the selected tabs from the bottom navigation bar.",
 ) {

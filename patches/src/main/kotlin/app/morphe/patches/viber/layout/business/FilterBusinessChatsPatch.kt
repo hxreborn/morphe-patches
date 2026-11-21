@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.layout.business
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.viberFilterBusinessChatsExtensio
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/BusinessChats;"
 
 @Suppress("unused")
-val filterBusinessChatsPatch: BytecodePatch = bytecodePatch(
+val filterBusinessChatsPatch: Patch = patch(
     name = "Filter business chats",
     description = "Filters selected business chats after reading and removes inbox discovery prompts. Shows unread chats and verification-code chats.",
 ) {

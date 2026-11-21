@@ -5,8 +5,10 @@
 package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.util.asSequence
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -15,19 +17,19 @@ private const val OVERLAYABLE_NAME = "HxAccentColor"
 private const val BRAND_COLORS_ARRAY = "hx_accent_brand_colors"
 private const val COLOR_REFERENCE = "@color/"
 
-private fun ResourcePatchContext.valuesFiles(name: String) =
+private fun valuesFiles(name: String) =
     decode("res/values*/$name")
 
-private fun ResourcePatchContext.elements(path: String, tag: String) =
+private fun elements(path: String, tag: String) =
     document(path).use { document -> document.getElementsByTagName(tag).asSequence().map { it as Element }.toList() }
 
-private fun ResourcePatchContext.appendToValues(file: String, build: (Document) -> Element) {
+private fun appendToValues(file: String, build: (Document) -> Element) {
     val path = "res/values/$file"
-    get(path).takeUnless { it.exists() }?.writeText("<resources />")
+    resourceFile(path).takeUnless { it.exists() }?.writeText("<resources />")
     document(path).use { document -> document.documentElement.appendChild(build(document)) }
 }
 
-internal val accentOverlayPatch = resourcePatch {
+internal val accentOverlayPatch = patch {
     execute {
         val names = valuesFiles("styles.xml")
             .flatMap { elements(it, "item") }

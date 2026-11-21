@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val moonreaderUnlockProExtensionPatch = bytecodePatch {
+
+internal val moonreaderUnlockProExtensionPatch = patch {
     extendWith("extensions/hxreborn/moonreader-unlock-pro.mpe")
 }

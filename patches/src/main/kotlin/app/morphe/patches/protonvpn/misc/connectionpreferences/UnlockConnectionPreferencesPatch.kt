@@ -10,10 +10,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
@@ -47,7 +47,7 @@ private const val EXCLUDED_LOCATIONS_ARGUMENT_OFFSET = 5
 private const val MAX_INVOKE_REGISTER = 15
 
 @Suppress("unused")
-val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
+val unlockConnectionPreferencesPatch: Patch = patch(
     name = "Unlock connection preferences",
     description = "Unlocks the default connection, recent connections and excluded locations on free plans.",
 ) {
@@ -88,7 +88,7 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
+private fun excludeLocationsFromRandomServers() {
     ExcludedLocationsConstructorFingerprint.matchSingle().run {
         val (returnVoid) = instructionMatches
         requireThisInP0()
@@ -150,7 +150,7 @@ private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
     }
 }
 
-private fun BytecodePatchContext.excludeLocationsFromFreeUserConnections() {
+private fun excludeLocationsFromFreeUserConnections() {
     bestServerForConnectIntentCallFingerprint().matchSingle().run {
         val (bestServerCall, bestServerResult) = instructionMatches
         val arguments = bestServerCall.instruction as? RegisterRangeInstruction
@@ -183,7 +183,7 @@ private fun BytecodePatchContext.excludeLocationsFromFreeUserConnections() {
     )
 }
 
-private fun BytecodePatchContext.clearRecentsRecordingFreeUserCheck() {
+private fun clearRecentsRecordingFreeUserCheck() {
     val method = recentsRecordingFingerprint().matchSingle().method
     val instructions = method.instructions.toList()
     val isFreeUser = isFreeUserCall()
@@ -224,7 +224,7 @@ private fun Match.alwaysTakeLastIfEqz(isTarget: (BuilderOffsetInstruction) -> Bo
     method.replaceInstruction(branch.location.index, BuilderInstruction20t(Opcode.GOTO_16, branch.target))
 }
 
-private fun BytecodePatchContext.clearLastFreeUserCheckBefore(anchor: Match) {
+private fun clearLastFreeUserCheckBefore(anchor: Match) {
     val isFreeUser = VpnUserIsFreeUserFingerprint.originalMethod
     val instructions = anchor.method.instructions
     val callIndex = instructions.take(anchor.instructionMatches.last().index).indexOfLast {

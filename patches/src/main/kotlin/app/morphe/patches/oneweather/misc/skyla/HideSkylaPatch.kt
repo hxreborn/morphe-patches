@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.oneweather.misc.skyla
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val hideSkylaPatch = bytecodePatch(
+val hideSkylaPatch = patch(
     name = "Hide Skyla",
     description = "Hides the Skyla AI assistant, its prompts and the Summarize buttons.",
 ) {

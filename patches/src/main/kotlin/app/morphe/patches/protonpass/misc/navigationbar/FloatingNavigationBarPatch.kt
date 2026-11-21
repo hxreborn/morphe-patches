@@ -6,13 +6,14 @@ package app.morphe.patches.protonpass.misc.navigationbar
 
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.extension.protonFloatingNavigationBarExtensionPatch
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.proton.installMeasuredBottomInsets
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
@@ -28,7 +29,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
+val floatingNavigationBarPatch: Patch = patch(
     name = "Floating navigation bar",
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {

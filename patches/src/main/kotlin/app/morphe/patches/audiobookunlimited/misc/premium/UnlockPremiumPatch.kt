@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.audiobookunlimited.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.all.misc.hermes.hermesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.expo.disableOtaUpdatesPatch
@@ -21,7 +21,7 @@ private const val ONBOARDING_REPLACES_WITH_HOME =
     "44 02 03 01 BC 91 01 33 A7 00 00 6E 01 02 03 01"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Unlimited Books and skips the subscription offer shown after onboarding. " +
         "Disables OTA updates.",

@@ -5,7 +5,8 @@
 package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -15,9 +16,9 @@ private const val KILL_DELAY_BASE_MILLISECONDS = 26_000
 private const val KILL_DELAY_SEARCH_INSTRUCTIONS = 32
 private const val CALLS_AFTER_GATE = 2
 
-internal val disableNativeTamperCheckPatch = rawResourcePatch {
+internal val disableNativeTamperCheckPatch = patch {
     execute {
-        val library = get(LIBRARY, true)
+        val library = resourceFile(LIBRARY, true)
         if (!library.exists()) throw PatchException("$LIBRARY is missing")
 
         val bytes = library.readBytes()

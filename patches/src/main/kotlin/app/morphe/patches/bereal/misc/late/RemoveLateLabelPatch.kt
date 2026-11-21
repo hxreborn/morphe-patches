@@ -6,10 +6,10 @@ package app.morphe.patches.bereal.misc.late
 
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -32,7 +32,7 @@ private fun Match.lateFlagFieldName() =
     instructionMatch(Opcode.IGET_BOOLEAN)
         .getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!.name
 
-private fun BytecodePatchContext.lateReads(): List<LateRead> {
+private fun lateReads(): List<LateRead> {
     val corePost = CorePostToStringFingerprint.matchSingle()
     val lateBy = corePost.classDef.fields.single { it.type == "J" && it.accessFlags and AccessFlags.STATIC.value == 0 }
     return listOf(
@@ -44,7 +44,7 @@ private fun BytecodePatchContext.lateReads(): List<LateRead> {
     }
 }
 
-private fun BytecodePatchContext.filterLateReads(methods: List<MutableMethod>, reads: List<LateRead>): Int {
+private fun filterLateReads(methods: List<MutableMethod>, reads: List<LateRead>): Int {
     val targets = methods.flatMap { method ->
         reads.mapNotNull { read ->
             lateReadFingerprint(read.definingClass, read.name, read.opcode).matchOrNull(method)
@@ -67,7 +67,7 @@ private fun BytecodePatchContext.filterLateReads(methods: List<MutableMethod>, r
 }
 
 @Suppress("unused")
-val removeLateLabelPatch: BytecodePatch = bytecodePatch(
+val removeLateLabelPatch: Patch = patch(
     name = "Remove late label",
     description = "Replaces the late label on friends' BeReals with how long ago they posted.",
 ) {

@@ -6,12 +6,12 @@ package app.morphe.patches.realmelink.session
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val bypassSessionExpiryPatch = bytecodePatch(
+val bypassSessionExpiryPatch = patch(
     name = "Bypass session expiry",
     description = "Stops the session expired prompt and toast.",
 ) {

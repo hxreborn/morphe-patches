@@ -8,7 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -35,7 +36,7 @@ private const val FIRST_HD_HEIGHT = 720
 private const val ORIGINAL_RESOLUTION_LABEL = "ORIGIN"
 private const val KILO_RESOLUTION_SUFFIX = "K"
 
-internal val unlockHdPlaybackPatch = bytecodePatch {
+internal val unlockHdPlaybackPatch = patch {
     dependsOn(teraboxUnlockPremiumPlusExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)

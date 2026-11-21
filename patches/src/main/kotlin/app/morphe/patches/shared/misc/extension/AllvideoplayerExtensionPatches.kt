@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch = bytecodePatch {
+
+internal val allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch = patch {
     extendWith("extensions/hxreborn/allvideoplayer-resume-videos-opened-from-other-apps.mpe")
 }

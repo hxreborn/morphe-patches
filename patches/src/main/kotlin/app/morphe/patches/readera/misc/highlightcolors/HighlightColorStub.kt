@@ -7,7 +7,8 @@ package app.morphe.patches.readera.misc.highlightcolors
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
@@ -45,7 +46,7 @@ internal class HighlightColorStub(
     val selectionField: String,
 )
 
-internal fun BytecodePatchContext.highlightColorPrefs(): HighlightColorPrefs {
+internal fun highlightColorPrefs(): HighlightColorPrefs {
     val (prefsAccessorCall, _, _, paletteFilterCall) = QuoteColorIconFingerprint.instructionMatches
     val prefsAccessor = prefsAccessorCall.instruction.getReference<MethodReference>()!!
     val paletteFilter = paletteFilterCall.instruction.getReference<MethodReference>()!!
@@ -58,7 +59,7 @@ internal fun BytecodePatchContext.highlightColorPrefs(): HighlightColorPrefs {
     )
 }
 
-internal fun BytecodePatchContext.readDefaultColorFromPreference(defaultColorField: FieldReference, key: String) {
+internal fun readDefaultColorFromPreference(defaultColorField: FieldReference, key: String) {
     defaultColorWriteFingerprint(defaultColorField).let {
         val (storeRead, defaultColorWrite) = it.instructionMatches
         val storeField = storeRead.instruction.getReference<FieldReference>()!!
@@ -79,7 +80,7 @@ internal fun BytecodePatchContext.readDefaultColorFromPreference(defaultColorFie
     }
 }
 
-internal fun BytecodePatchContext.selectionStateClass(): ClassDef {
+internal fun selectionStateClass(): ClassDef {
     val stubType = SelectionActionsFingerprint.instructionMatches[QUOTE_PICKER_MATCH].instruction
         .getReference<TypeReference>()!!.type
     val (colorModeCall, _, _, _) = NightHighlightFingerprint.instructionMatches
@@ -93,7 +94,7 @@ private fun stubBindMethod(stubBase: ClassDef, colorModeType: String) = stubBase
         method.parameterTypes[0].toString() !in listOf("Z", colorModeType)
 }
 
-internal fun BytecodePatchContext.fillHighlightColorStub(
+internal fun fillHighlightColorStub(
     stubMatchIndex: Int,
     pickerFactory: String,
     targetType: String,

@@ -8,7 +8,7 @@ import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
@@ -36,7 +36,7 @@ private const val LIST_CONTENT_PADDING_ARGUMENT = 2
 private const val SCAFFOLD_BACKGROUND_PARAMETER = 13
 private const val SCAFFOLD_BACKGROUND_DEFAULT = 0x2000
 
-internal fun BytecodePatchContext.installFloatingContentPadding(content: Match) {
+internal fun installFloatingContentPadding(content: Match) {
     captureScaffoldPageColor(
         MainScaffoldFingerprint.matchSingle(), SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
         "getBackground-0d7_KjU",

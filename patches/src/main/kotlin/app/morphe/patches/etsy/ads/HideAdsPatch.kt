@@ -6,7 +6,7 @@ package app.morphe.patches.etsy.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -21,7 +21,7 @@ private const val BOX_DATA_CLASS =
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/etsy/EtsyAdsFilter;"
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Removes promoted listings and the \"with Ads\" label from search results.",
 ) {

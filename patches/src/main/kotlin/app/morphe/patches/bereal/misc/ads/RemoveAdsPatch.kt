@@ -5,9 +5,9 @@
 package app.morphe.patches.bereal.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -35,7 +35,7 @@ private fun MutableMethod.returnNull() = addInstructions(
 )
 
 @Suppress("unused")
-val removeAdsPatch: BytecodePatch = bytecodePatch(
+val removeAdsPatch: Patch = patch(
     name = "Remove ads",
     description = "Removes the full-screen ad at launch and sponsored BeReals in both feeds. " +
         "Stops the ad networks from loading.",
@@ -103,7 +103,7 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.replaceSponsoredStub(entries: List<ClassDef>) {
+private fun replaceSponsoredStub(entries: List<ClassDef>) {
     val checks = entries.mapIndexed { index, entry ->
         val readSponsored = mutableClassDefBy(entry.type)
             .addFieldReader(entry.fields.single { it.name == SPONSORED_FIELD })

@@ -10,7 +10,7 @@
  */
 package app.morphe.patches.protonmail.misc.fix.signature
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.PROTON_EXTENSION_PACKAGE
 import app.morphe.patches.shared.misc.signature.spoofSignature
@@ -24,7 +24,7 @@ import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 private const val APPLICATION_CLASS = "Lch/protonmail/android/App;"
 private const val PATCH_APPLICATION_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchApplication;"
 
-val spoofSignaturePatch = bytecodePatch {
+val spoofSignaturePatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonPatchApplicationExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     execute {

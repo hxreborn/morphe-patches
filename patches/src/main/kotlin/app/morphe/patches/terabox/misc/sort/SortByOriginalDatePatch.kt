@@ -9,9 +9,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -36,7 +36,7 @@ private const val BUILT_IN_SORT_ORDER_RETURNS = 9
 private const val FILE_ROW_CHANGE_CALLBACKS = 2
 
 @Suppress("unused")
-val sortByOriginalDatePatch: BytecodePatch = bytecodePatch(
+val sortByOriginalDatePatch: Patch = patch(
     name = "Sort by original date",
     description = "Sorts and displays files by their original modification dates.",
 ) {

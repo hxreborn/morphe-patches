@@ -4,15 +4,15 @@
  */
 package app.morphe.patches.ultimea.misc.settings
 
-import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.patch.resourceFile
 import java.io.DataOutputStream
 
-internal fun ResourcePatchContext.writeNativeEdits(
+internal fun writeNativeEdits(
     feature: String,
     library: ByteArray,
     edits: List<Pair<Int, ByteArray>>,
 ) {
-    val file = get("assets/hx_ultimea/$feature")
+    val file = resourceFile("assets/hx_ultimea/$feature")
     file.parentFile.mkdirs()
     DataOutputStream(file.outputStream()).use { output ->
         output.writeInt(edits.size)

@@ -16,7 +16,6 @@ import app.morphe.patcher.instanceOf
 import app.morphe.patcher.opcode
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.string
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
@@ -37,17 +36,17 @@ internal object ConnectionPreferencesToStringFingerprint : Fingerprint(
     strings = listOf("ConnectionPreferencesState(isFeatureDiscovered="),
 )
 
-internal fun BytecodePatchContext.addExcludedLocationFingerprint() = freeUserCheckFingerprint(
+internal fun addExcludedLocationFingerprint() = freeUserCheckFingerprint(
     strings = listOf("Cannot add excluded location: free VPN user is not allowed"),
 )
 
-internal fun BytecodePatchContext.removeExcludedLocationFingerprint() = freeUserCheckFingerprint(
+internal fun removeExcludedLocationFingerprint() = freeUserCheckFingerprint(
     strings = listOf("Cannot remove excluded location: free VPN user is not allowed"),
 )
 
 internal object ExcludedLocationsToStringFingerprint : ToStringFingerprint("ExcludedLocations(allLocations=")
 
-internal fun BytecodePatchContext.excludedLocationsFlowFingerprint(): Fingerprint {
+internal fun excludedLocationsFlowFingerprint(): Fingerprint {
     val excludedLocations = ExcludedLocationsToStringFingerprint.originalClassDef.type
     return freeUserCheckFingerprint(
         name = "invokeSuspend",
@@ -67,7 +66,7 @@ internal object ExcludedLocationsConstructorFingerprint : Fingerprint(
     filters = listOf(opcode(Opcode.RETURN_VOID)),
 )
 
-internal fun BytecodePatchContext.serverIsExcludedFingerprint() = Fingerprint(
+internal fun serverIsExcludedFingerprint() = Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
     returnType = "Z",
     parameters = listOf(SERVER, ExcludedLocationsToStringFingerprint.originalClassDef.type),
@@ -80,7 +79,7 @@ internal object VpnCountryConstructorFingerprint : Fingerprint(
     parameters = listOf("Ljava/lang/String;", "Ljava/util/List;"),
 )
 
-internal fun BytecodePatchContext.randomServerFingerprint() = Fingerprint(
+internal fun randomServerFingerprint() = Fingerprint(
     definingClass = SERVER_MANAGER,
     returnType = SERVER,
     parameters = listOf(vpnUserType, PROTOCOL_SELECTION, "Ljava/util/List;"),
@@ -91,9 +90,9 @@ internal fun BytecodePatchContext.randomServerFingerprint() = Fingerprint(
     ),
 )
 
-internal fun BytecodePatchContext.defaultConnectionRestrictionFingerprint() = restrictionGuardFingerprint("getDefaultProfileId")
+internal fun defaultConnectionRestrictionFingerprint() = restrictionGuardFingerprint("getDefaultProfileId")
 
-internal fun BytecodePatchContext.recentsRecordingFingerprint() = Fingerprint(
+internal fun recentsRecordingFingerprint() = Fingerprint(
     name = "invokeSuspend",
     filters = listOf(
         isFreeUserCall(),
@@ -107,7 +106,7 @@ internal object RecentsDaoQueryFingerprint : Fingerprint(
     strings = listOf(string("FROM `unnamedRecentsIntents` WHERE `recentId` IN (", StringComparisonType.CONTAINS)),
 )
 
-internal fun BytecodePatchContext.recentsDaoReference(): InstructionFilter {
+internal fun recentsDaoReference(): InstructionFilter {
     val recentsDao = RecentsDaoQueryFingerprint.originalClassDef
     val types = listOfNotNull(recentsDao.type, recentsDao.superclass).filter { it != OBJECT }
     return anyInstruction(
@@ -125,7 +124,7 @@ internal object DefaultConnectionViewStateFlowFingerprint : Fingerprint(
     strings = listOf("effectiveCurrentUserSettings", "getConnectIntentViewState", "observeDefaultConnection"),
 )
 
-internal fun BytecodePatchContext.defaultConnectionRecentsFingerprint(): Fingerprint {
+internal fun defaultConnectionRecentsFingerprint(): Fingerprint {
     val owner = DefaultConnectionViewStateFlowFingerprint.originalClassDef.type
     return Fingerprint(
         name = "invokeSuspend",
@@ -146,13 +145,13 @@ internal object GetQuickConnectIntentConstructorFingerprint : Fingerprint(
     strings = listOf("getDefaultConnectIntent", "observeDefaultConnection"),
 )
 
-internal fun BytecodePatchContext.quickConnectIntentFingerprint() = freeUserCheckFingerprint(
+internal fun quickConnectIntentFingerprint() = freeUserCheckFingerprint(
     definingClass = GetQuickConnectIntentConstructorFingerprint.originalClassDef.type,
     returnType = "Ljava/lang/Object;",
     parameters = listOf("L"),
 )
 
-internal fun BytecodePatchContext.bestServerForConnectIntentCallFingerprint(): Fingerprint {
+internal fun bestServerForConnectIntentCallFingerprint(): Fingerprint {
     val excludedLocations = ExcludedLocationsToStringFingerprint.originalClassDef.type
     return Fingerprint(
         parameters = listOf("L", vpnUserType, PROTOCOL_SELECTION, excludedLocations, "L"),
@@ -170,7 +169,7 @@ internal fun BytecodePatchContext.bestServerForConnectIntentCallFingerprint(): F
 internal object DefaultConnectionSettingStateToStringFingerprint :
     ToStringFingerprint("DefaultConnectionSettingState(iconRes=")
 
-internal fun BytecodePatchContext.defaultConnectionSettingFingerprint() = Fingerprint(
+internal fun defaultConnectionSettingFingerprint() = Fingerprint(
     name = "invokeSuspend",
     filters = listOf(
         isFreeUserCall(),
@@ -186,7 +185,7 @@ internal fun BytecodePatchContext.defaultConnectionSettingFingerprint() = Finger
 internal object ConnectionCardViewStateToStringFingerprint :
     ToStringFingerprint("VpnConnectionCardViewState(cardLabel=")
 
-internal fun BytecodePatchContext.connectionCardLabelFingerprint() = freeUserCheckFingerprint(
+internal fun connectionCardLabelFingerprint() = freeUserCheckFingerprint(
     name = "invokeSuspend",
     followingFilters = arrayOf(
         methodCall(
@@ -196,14 +195,14 @@ internal fun BytecodePatchContext.connectionCardLabelFingerprint() = freeUserChe
     ),
 )
 
-internal fun BytecodePatchContext.inlinedConnectionCardFingerprint() = Fingerprint(
+internal fun inlinedConnectionCardFingerprint() = Fingerprint(
     name = "invokeSuspend",
     filters = listOf(newInstance(ConnectionCardViewStateToStringFingerprint.originalClassDef.type)),
 )
 
 internal object RecentDefaultConnectionToStringFingerprint : ToStringFingerprint("Recent(recentId=")
 
-internal fun BytecodePatchContext.inlinedDefaultConnectionSettingFingerprint() = Fingerprint(
+internal fun inlinedDefaultConnectionSettingFingerprint() = Fingerprint(
     name = "invokeSuspend",
     filters = listOf(
         instanceOf(RecentDefaultConnectionToStringFingerprint.originalClassDef.type),

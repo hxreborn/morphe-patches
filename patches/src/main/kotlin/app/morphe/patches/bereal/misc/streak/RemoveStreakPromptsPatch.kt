@@ -6,9 +6,9 @@ package app.morphe.patches.bereal.misc.streak
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -23,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}streak/StreakPrompts;"
 
 @Suppress("unused")
-val removeStreakPromptsPatch: BytecodePatch = bytecodePatch(
+val removeStreakPromptsPatch: Patch = patch(
     name = "Remove streak prompts",
     description = "Removes the offers to recover your streak and the Save your streak sheet. Your streak count doesn't change.",
 ) {

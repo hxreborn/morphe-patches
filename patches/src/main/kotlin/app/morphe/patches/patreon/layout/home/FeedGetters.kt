@@ -5,7 +5,7 @@
 package app.morphe.patches.patreon.layout.home
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -22,7 +22,7 @@ private const val NETWORK_SCHEMA = "Lcom/patreon/android/network/intf/schema/Net
 
 private class FeedGetter(val definingClass: String, val name: String)
 
-private fun BytecodePatchContext.replaceGetterStub(extensionClass: String, stub: String, vararg getters: FeedGetter) {
+private fun replaceGetterStub(extensionClass: String, stub: String, vararg getters: FeedGetter) {
     val branches = getters.mapIndexed { index, getter ->
         val method = Fingerprint(definingClass = getter.definingClass, name = getter.name, parameters = emptyList())
             .matchSingle().originalMethod
@@ -43,7 +43,7 @@ private fun BytecodePatchContext.replaceGetterStub(extensionClass: String, stub:
     )
 }
 
-internal fun BytecodePatchContext.replaceHomeFeedStubs(extensionClass: String) {
+internal fun replaceHomeFeedStubs(extensionClass: String) {
     replaceGetterStub(
         extensionClass,
         "postCardOf",
@@ -76,5 +76,5 @@ internal fun BytecodePatchContext.replaceHomeFeedStubs(extensionClass: String) {
     )
 }
 
-internal fun BytecodePatchContext.replaceQuickPostCardStub(extensionClass: String) =
+internal fun replaceQuickPostCardStub(extensionClass: String) =
     replaceGetterStub(extensionClass, "quickPostCardOf", FeedGetter(LAUNCHER_FEED_ITEM, "getQuickPostCard"))

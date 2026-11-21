@@ -5,7 +5,7 @@
 package app.morphe.patches.shahid.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -14,7 +14,7 @@ private const val RECAPTCHA_CLIENT_INIT_FAILED_CODE = "RECAPTCHA_CLIENT_INIT_FAI
 private const val CLEAR_CREDENTIAL_CALLBACK_COUNT = 4
 
 @Suppress("unused")
-val fixSignInPatch = bytecodePatch(
+val fixSignInPatch = patch(
     name = "Fix sign-in",
     description = "Fixes signing in with an email, phone number or social account.",
 ) {

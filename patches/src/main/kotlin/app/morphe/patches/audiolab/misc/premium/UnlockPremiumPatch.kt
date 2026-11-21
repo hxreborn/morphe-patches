@@ -5,7 +5,9 @@
 package app.morphe.patches.audiolab.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -22,7 +24,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import java.security.MessageDigest
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro tools and removes ads, reward videos and upgrade prompts. " +
         "The AI tools are not included.",

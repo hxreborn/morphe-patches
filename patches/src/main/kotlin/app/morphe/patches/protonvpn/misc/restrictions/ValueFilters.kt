@@ -8,8 +8,8 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
 import app.morphe.util.findInstructionIndicesReversedOrThrow
@@ -43,7 +43,7 @@ private fun MutableMethod.fieldAssignment(field: FieldReference): TwoRegisterIns
             it.registerA > thisRegister
     }
 
-private fun BytecodePatchContext.propertyConstructor(toString: Fingerprint, property: String): Pair<MutableMethod, FieldReference> {
+private fun propertyConstructor(toString: Fingerprint, property: String): Pair<MutableMethod, FieldReference> {
     val field = findPropertyField(toString, property)
     val constructor = mutableClassDefBy(field.definingClass).methods.single { method ->
         method.name == "<init>" && method.implementation != null && method.fieldAssignment(field) != null
@@ -53,7 +53,7 @@ private fun BytecodePatchContext.propertyConstructor(toString: Fingerprint, prop
 
 private fun MutableMethod.parameterAssignedTo(field: FieldReference) = "p${fieldAssignment(field)!!.registerA - thisRegister}"
 
-internal fun BytecodePatchContext.filterConstructorProperty(toString: Fingerprint, property: String, filter: String) {
+internal fun filterConstructorProperty(toString: Fingerprint, property: String, filter: String) {
     val (constructor, field) = propertyConstructor(toString, property)
     val parameter = constructor.parameterAssignedTo(field)
     val filterResult = if (field.type == "Z") {
@@ -73,7 +73,7 @@ internal fun BytecodePatchContext.filterConstructorProperty(toString: Fingerprin
     )
 }
 
-internal fun BytecodePatchContext.clearConstructorProperty(toString: Fingerprint, property: String) {
+internal fun clearConstructorProperty(toString: Fingerprint, property: String) {
     val (constructor, field) = propertyConstructor(toString, property)
     if (field.type != "Z") throw PatchException("$field is not a boolean")
     constructor.addInstructions(0, "const/16 ${constructor.parameterAssignedTo(field)}, 0x0")

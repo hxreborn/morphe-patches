@@ -6,8 +6,8 @@ package app.morphe.patches.bereal.misc.promos
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -30,7 +30,7 @@ private fun MutableMethod.filterBoolean(index: Int, register: String, filter: St
 )
 
 @Suppress("unused")
-val removePromotionsPatch: BytecodePatch = bytecodePatch(
+val removePromotionsPatch: Patch = patch(
     name = "Remove promotions",
     description = "Removes Recap cards, the \"How's BeReal?\" review prompt, the " +
         "profile completion card, the notifications banner and the music tooltip.",

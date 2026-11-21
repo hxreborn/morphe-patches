@@ -5,11 +5,12 @@
 package app.morphe.patches.liftoff.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.fillAppliedPatch
 import app.morphe.patches.shared.misc.reactnative.ScrollViewLayoutFingerprint
@@ -28,15 +29,15 @@ private const val LIFTOFF_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/lifto
 private const val CACHE_INVALIDATION_REGISTERS = 0
 private val ICON_NAMES = listOf("back", "premium", "customizations", "reset", "info", "patches", "entry", "expand")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+internal fun markPatchApplied(methodName: String, patch: Patch) =
     fillAppliedPatch(LIFTOFF_APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal val patchesSettingsPatch = run {
     lateinit var applicationType: String
-    bytecodePatch {
+    patch {
     dependsOn(liftoffSettingsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
         dependsOn(
-            resourcePatch {
+            patch {
                 execute {
                     document("AndroidManifest.xml").use { document ->
                         val application = document.getElementsByTagName("application").item(0) as Element
@@ -54,7 +55,7 @@ internal val patchesSettingsPatch = run {
                         val resource = LiftoffResources::class.java.getResourceAsStream("/liftoff/drawable/$filename")
                             ?: throw PatchException("Missing patch icon $filename")
                         resource.use { icon ->
-                            get("res/drawable/$filename").outputStream().use(icon::copyTo)
+                            resourceFile("res/drawable/$filename").outputStream().use(icon::copyTo)
                         }
                     }
                 }

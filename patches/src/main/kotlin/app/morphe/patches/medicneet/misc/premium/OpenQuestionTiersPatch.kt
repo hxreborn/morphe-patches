@@ -6,8 +6,7 @@ package app.morphe.patches.medicneet.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -25,7 +24,7 @@ private const val OPEN_TIER_RETRY_CLASS = "Lapp/hxreborn/extension/medicneet/Ope
 
 private const val TIER_FIELD = "tier"
 
-internal val openQuestionTiersPatch = bytecodePatch {
+internal val openQuestionTiersPatch = patch {
     dependsOn(medicneetUnlockPremiumExtensionPatch)
     execute {
         retryDeniedQuestionQueries()
@@ -33,7 +32,7 @@ internal val openQuestionTiersPatch = bytecodePatch {
     }
 }
 
-private fun BytecodePatchContext.retryDeniedQuestionQueries() {
+private fun retryDeniedQuestionQueries() {
     val run = FirestoreQueryGetRunFingerprint.matchSingle()
     val (pathRead, _, paramsRead, handler) = run.instructionMatches
     val method = run.method
@@ -72,7 +71,7 @@ private fun BytecodePatchContext.retryDeniedQuestionQueries() {
     )
 }
 
-private fun BytecodePatchContext.answerDeniedSegmentReads() {
+private fun answerDeniedSegmentReads() {
     val run = FirestoreDocumentGetRunFingerprint.matchSingle()
     val matches = run.instructionMatches
     val method = run.method

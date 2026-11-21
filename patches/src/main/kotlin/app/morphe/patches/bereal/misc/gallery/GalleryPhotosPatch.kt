@@ -7,10 +7,11 @@ package app.morphe.patches.bereal.misc.gallery
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -25,7 +26,7 @@ private val mediaPermissions = listOf(
     "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
 )
 
-private val addMediaPermissionsPatch = resourcePatch {
+private val addMediaPermissionsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val manifest = document.documentElement
@@ -41,7 +42,7 @@ private val addMediaPermissionsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val galleryPhotosPatch: BytecodePatch = bytecodePatch(
+val galleryPhotosPatch: Patch = patch(
     name = "Post from gallery",
     description = "Adds a gallery button to the camera for picking the back and front photo of your BeReal.",
 ) {

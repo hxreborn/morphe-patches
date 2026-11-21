@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val raindropAccentColorExtensionPatch = bytecodePatch {
+
+internal val raindropAccentColorExtensionPatch = patch {
     extendWith("extensions/hxreborn/raindrop-accent-color.mpe")
 }
 
-internal val raindropUnlockProExtensionPatch = bytecodePatch {
+internal val raindropUnlockProExtensionPatch = patch {
     dependsOn(sharedStreamsExtensionPatch)
     extendWith("extensions/hxreborn/raindrop-unlock-pro.mpe")
 }

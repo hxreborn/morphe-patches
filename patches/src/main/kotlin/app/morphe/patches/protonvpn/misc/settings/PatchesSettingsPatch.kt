@@ -6,9 +6,8 @@ package app.morphe.patches.protonvpn.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchSingle
@@ -38,7 +37,7 @@ private const val COMPOSER_PARAMETER = 9
 
 private val logger = Logger.getLogger("app.morphe.patches.protonvpn.misc.settings")
 
-private fun BytecodePatchContext.addPatchesSettingsRow() {
+private fun addPatchesSettingsRow() {
     val iconId = resourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
 
     val match = WidgetSettingsRowFingerprint.matchSingle()
@@ -58,7 +57,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
     match.method.addInstructions(rowIndex + 1, "invoke-static/range { v$composer .. v$composer }, $settingsRowMethod")
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, protonVpnSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(resourceFieldsPatch, patchesSettingsActivityPatch("@style/ProtonTheme.Vpn.Mobile", HOST_ACTIVITY, VPN_SETTINGS_CLASS))
     execute {

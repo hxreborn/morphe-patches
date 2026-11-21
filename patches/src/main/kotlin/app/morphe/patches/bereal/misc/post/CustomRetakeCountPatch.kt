@@ -6,9 +6,9 @@ package app.morphe.patches.bereal.misc.post
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -19,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 @Suppress("unused")
-val customRetakeCountPatch: BytecodePatch = bytecodePatch(
+val customRetakeCountPatch: Patch = patch(
     name = "Custom retake count",
     description = "Asks before each BeReal how many retakes your friends see on it.",
 ) {

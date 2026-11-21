@@ -5,8 +5,10 @@
 package app.morphe.patches.blossomblast.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patches.shared.misc.extension.blossomblastGameModifiersExtensionPatch
@@ -33,9 +35,9 @@ private const val ARRAY_REGISTERS = 1
 private const val BYTE_WIDTH = 1
 private const val STRING_ARRAY_REGISTERS = 3
 
-private val addModifiersLibraryPatch = resourcePatch {
+private val addModifiersLibraryPatch = patch {
     execute {
-        val gameLibrary = get(GAME_LIBRARY)
+        val gameLibrary = resourceFile(GAME_LIBRARY)
         if (!gameLibrary.isFile) throw PatchException("Missing Blossom Blast native library")
         val hash = gameLibrary.sha256Hex()
         if (hash != GAME_LIBRARY_SHA256) {
@@ -48,11 +50,11 @@ private val addModifiersLibraryPatch = resourcePatch {
         }
         val bridge = inputStreamFromBundledResource(BRIDGE_DIRECTORY, BRIDGE_LIBRARY)
             ?: throw PatchException("Missing Blossom Blast game modifier library")
-        get("lib/arm64-v8a/$BRIDGE_LIBRARY", copy = false).writeBytes(bridge.use { it.readBytes() })
+        resourceFile("lib/arm64-v8a/$BRIDGE_LIBRARY", copy = false).writeBytes(bridge.use { it.readBytes() })
     }
 }
 
-internal val blossomBlastModifiersPatch = bytecodePatch {
+internal val blossomBlastModifiersPatch = patch {
     dependsOn(blossomblastGameModifiersExtensionPatch, addModifiersLibraryPatch)
 
     execute {

@@ -7,7 +7,8 @@ package app.morphe.patches.photoeditorpro.aitools
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
@@ -34,7 +35,7 @@ private const val STOCK_CHUNK_BYTES = 262144L
 private val PLAUSIBLE_POLL_BUDGET = 1L..10_000L
 
 @Suppress("unused")
-val speedUpAiToolsPatch = bytecodePatch(
+val speedUpAiToolsPatch = patch(
     name = "Speed up AI tools",
     description = "Shortens the AI tool wait by polling for the result more often and " +
         "uploading the photo in larger chunks.",

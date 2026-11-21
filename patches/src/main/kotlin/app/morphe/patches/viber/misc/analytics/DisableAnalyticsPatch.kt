@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.misc.analytics
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -23,7 +23,7 @@ private const val COLLECTION_FILTER = "$VIBER_SETTINGS_CLASS->analyticsCollectio
 private val ADID_COLLECTION_SITES = 2..2
 
 @Suppress("unused")
-val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
+val disableAnalyticsPatch: Patch = patch(
     name = "Disable analytics",
     description = "Stops Mixpanel, Adjust, Braze, Firebase, Crashlytics and Snap Kit from collecting and sending usage data.",
 ) {

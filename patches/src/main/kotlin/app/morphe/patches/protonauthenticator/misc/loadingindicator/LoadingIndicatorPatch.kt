@@ -5,9 +5,11 @@
 package app.morphe.patches.protonauthenticator.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
@@ -32,7 +34,7 @@ private const val LOADING_INDICATOR_CONTAINER_CLASS =
     "Lapp/hxreborn/extension/protonauthenticator/LoadingIndicatorContainer;"
 
 @Suppress("unused")
-val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
+val loadingIndicatorPatch: Patch = patch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {

@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val lumoUnlockPremiumExtensionPatch = bytecodePatch {
+
+internal val lumoUnlockPremiumExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch)
     extendWith("extensions/hxreborn/lumo-unlock-premium.mpe")
 }

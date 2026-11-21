@@ -4,16 +4,17 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val imoGmsCoreSupportExtensionPatch = bytecodePatch {
+
+internal val imoGmsCoreSupportExtensionPatch = patch {
     extendWith("extensions/hxreborn/imo-gms-core-support.mpe")
 }
 
-internal val imoHideVoiceClubTabExtensionPatch = bytecodePatch {
+internal val imoHideVoiceClubTabExtensionPatch = patch {
     extendWith("extensions/hxreborn/imo-hide-voice-club-tab.mpe")
 }
 
-internal val imoSendLongMessagesExtensionPatch = bytecodePatch {
+internal val imoSendLongMessagesExtensionPatch = patch {
     extendWith("extensions/hxreborn/imo-send-long-messages.mpe")
 }

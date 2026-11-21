@@ -8,7 +8,8 @@ import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.nextdoor.misc.fix.signature.spoofSignaturePatch
@@ -27,7 +28,7 @@ private const val NIBBLE_REGISTER_LIMIT = 16
 private fun Match.match(filter: InstructionFilter) = instructionMatches.single { it.filter === filter }
 
 @Suppress("unused")
-val removeSponsoredPostsPatch = bytecodePatch(
+val removeSponsoredPostsPatch = patch(
     name = "Remove sponsored posts",
     description = "Removes sponsored posts from the feed and For Sale ads from listings and search results.",
 ) {

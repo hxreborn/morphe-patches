@@ -14,8 +14,9 @@ package app.morphe.patches.protonvpn.misc.freeservers
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchSingle
@@ -36,7 +37,7 @@ import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensi
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"
 
 @Suppress("unused")
-val showFreeServerLocationsPatch: BytecodePatch = bytecodePatch(
+val showFreeServerLocationsPatch: Patch = patch(
     name = "Show free server locations",
     description = "Lists free server locations in Countries and Search and connects to the one you pick. " +
         "Applies only to free plans.",

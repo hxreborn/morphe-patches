@@ -5,7 +5,8 @@
 package app.morphe.patches.utorrent.layout.insets
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -16,7 +17,7 @@ import app.morphe.patches.shared.misc.extension.utorrentFixScreenInsetsExtension
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/utorrent/ScreenInsets;"
 
 @Suppress("unused")
-val fixScreenInsetsPatch = bytecodePatch(
+val fixScreenInsetsPatch = patch(
     name = "Fix screen insets",
     description = "Keeps main screens and settings clear of system bars and display cutouts on Android 17.",
 ) {

@@ -7,9 +7,9 @@ package app.morphe.patches.netanalyzer.shared
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.string
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -79,17 +79,15 @@ private class VectorApi(
 private var vectorApi: VectorApi? = null
 private val iconMethods = HashMap<String, Method>()
 
-internal val vectorIconsPatch = bytecodePatch {
+internal val vectorIconsPatch = patch {
     execute {
         vectorApi = null
         iconMethods.clear()
     }
 }
 
-context(context: BytecodePatchContext)
 internal fun imageVectorType(): String = vectorApi().build.returnType
 
-context(context: BytecodePatchContext)
 internal fun iconMethod(classDef: MutableClass, name: String, pathData: String): Method =
     iconMethods.getOrPut("${classDef.type}$name") {
         val api = vectorApi()
@@ -147,8 +145,7 @@ internal fun iconMethod(classDef: MutableClass, name: String, pathData: String):
         )
     }
 
-context(context: BytecodePatchContext)
-private fun vectorApi(): VectorApi = vectorApi ?: with(context) {
+private fun vectorApi(): VectorApi = vectorApi ?: run {
     val reference = Fingerprint(
         filters = listOf(
             decryptedString(REFERENCE_ICON),

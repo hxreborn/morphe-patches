@@ -6,7 +6,9 @@ package app.morphe.patches.habitify.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +21,7 @@ private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/habitify
 private const val FIREBASE_AUTH_CLASS = "Lcom/google/firebase/auth/FirebaseAuth;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks lifetime Pro features and unlimited habits. Requires a signed-in account.",
 ) {

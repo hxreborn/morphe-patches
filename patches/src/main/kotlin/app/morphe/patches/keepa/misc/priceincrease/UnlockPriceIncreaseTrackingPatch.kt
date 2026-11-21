@@ -5,7 +5,9 @@
 package app.morphe.patches.keepa.misc.priceincrease
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
@@ -14,7 +16,7 @@ private const val GATED_TRACKING_TYPE = "!this.hasData&&this.isDropSelected||(th
 private const val UNGATED_TRACKING_TYPE = "this.showDropOptions=!0;"
 
 @Suppress("unused")
-val unlockPriceIncreaseTrackingPatch = resourcePatch(
+val unlockPriceIncreaseTrackingPatch = patch(
     name = "Unlock price increase tracking",
     description = "Adds the rise option when creating or editing a price watch.",
 ) {
@@ -23,7 +25,7 @@ val unlockPriceIncreaseTrackingPatch = resourcePatch(
 
     execute {
         decode("assets/app/*.mjs")
-        val chunks = get("assets/app").listFiles { file -> file.extension == "mjs" }
+        val chunks = resourceFile("assets/app").listFiles { file -> file.extension == "mjs" }
             ?: throw PatchException("Could not read the application bundle directory.")
 
         val editorChunks = chunks.mapNotNull { chunk ->

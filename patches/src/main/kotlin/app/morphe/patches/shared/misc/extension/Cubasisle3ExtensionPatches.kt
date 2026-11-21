@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val cubasisle3UnlockPremiumExtensionPatch = bytecodePatch {
+
+internal val cubasisle3UnlockPremiumExtensionPatch = patch {
     extendWith("extensions/hxreborn/cubasisle3-unlock-premium.mpe")
 }

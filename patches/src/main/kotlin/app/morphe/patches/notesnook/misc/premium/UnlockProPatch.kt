@@ -6,7 +6,7 @@ package app.morphe.patches.notesnook.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.extension.notesnookUnlockProExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/notesnook/ProUnlock;"
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks task lists, callouts, app lock, and the notebook, tag, colour and " +
         "reminder limits. Requires a signed-in account. The server still enforces storage, " +

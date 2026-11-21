@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.liftoff.misc.premium
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.liftoff.misc.settings.LIFTOFF_PATCH_SETTINGS_CLASS
 import app.morphe.patches.liftoff.misc.settings.markPatchApplied
 import app.morphe.patches.liftoff.misc.settings.patchesSettingsPatch
@@ -16,7 +16,7 @@ import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 private const val ENTITLEMENT = "gymbros_plus_v1"
 private const val PRODUCT = "gymbros_plus_v1"
 @Suppress("unused")
-val unlockPremiumPatch: BytecodePatch = bytecodePatch(
+val unlockPremiumPatch: Patch = patch(
     name = "Unlock premium",
     description = "Unlocks rank analysis, bodygraph, full chart history and nutrition tools. " +
         "Requires a Liftoff account.",

@@ -6,7 +6,7 @@ package app.morphe.patches.castle.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.secshell.SecShellPayload
@@ -53,7 +53,7 @@ private fun SecShellPayload.completeRewardedActions() {
 }
 
 @Suppress("unused")
-val removeAdsPatch = rawResourcePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes banner, video, interstitial and rewarded ads. Actions that waited on a rewarded ad run immediately.",
 ) {

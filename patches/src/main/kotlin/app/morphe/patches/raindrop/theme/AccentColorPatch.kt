@@ -7,7 +7,7 @@ package app.morphe.patches.raindrop.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
@@ -32,7 +32,7 @@ private const val DARK_PLACEHOLDER = "23 44 43 43 32 38 46"
 private val HEX_COLOR = Regex("#(?:[0-9A-Fa-f]{2})?([0-9A-Fa-f]{6})")
 
 @Suppress("unused")
-val accentColorPatch = bytecodePatch(
+val accentColorPatch = patch(
     name = "Accent color",
     description = "Replaces the accent color with the wallpaper color on Android 12 and later, or with a chosen " +
         "color. A new wallpaper color applies after the app restarts.",

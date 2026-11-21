@@ -6,8 +6,8 @@ package app.morphe.patches.bereal.misc.typing
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -20,7 +20,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}typing/TypingIndicator;"
 
 @Suppress("unused")
-val disableTypingIndicatorPatch: BytecodePatch = bytecodePatch(
+val disableTypingIndicatorPatch: Patch = patch(
     name = "Disable typing indicator",
     description = "Stops showing friends that you're typing in a chat. You still see when they type.",
 ) {

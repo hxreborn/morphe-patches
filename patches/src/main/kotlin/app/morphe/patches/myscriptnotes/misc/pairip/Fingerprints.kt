@@ -8,7 +8,6 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.string
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -396,20 +395,20 @@ internal object BillingReceiveFingerprint : Fingerprint(
     returnType = "V",
 )
 
-internal fun BytecodePatchContext.callbackClass(consumer: Fingerprint, parameters: List<String>): String = Fingerprint(
+internal fun callbackClass(consumer: Fingerprint, parameters: List<String>): String = Fingerprint(
     name = "invoke",
     parameters = parameters,
     returnType = "Ljava/lang/Object;",
     filters = listOf(methodCall(consumer.matchSingle().method)),
 ).matchSingle().method.definingClass
 
-internal fun BytecodePatchContext.listenerClass(consumer: Fingerprint, name: String, returnType: String): String = Fingerprint(
+internal fun listenerClass(consumer: Fingerprint, name: String, returnType: String): String = Fingerprint(
     name = name,
     returnType = returnType,
     filters = listOf(methodCall(consumer.matchSingle().method)),
 ).matchSingle().method.definingClass
 
-internal fun BytecodePatchContext.editorContentClass(): String {
+internal fun editorContentClass(): String {
     val consumer = EditorContentConsumerFingerprint.matchSingle().method
     val bridge = Fingerprint(
         definingClass = EDITOR_ACTIVITY,
@@ -420,7 +419,7 @@ internal fun BytecodePatchContext.editorContentClass(): String {
     return callbackClass(bridge, listOf("Ljava/lang/Object;", "Ljava/lang/Object;"))
 }
 
-internal fun BytecodePatchContext.laserObserverClass(): String {
+internal fun laserObserverClass(): String {
     val observer = LaserObserverFingerprint.matchSingle().method.definingClass
     val constructor = Fingerprint(
         definingClass = observer,
@@ -433,7 +432,7 @@ internal fun BytecodePatchContext.laserObserverClass(): String {
     ).matchSingle().method.definingClass
 }
 
-internal fun BytecodePatchContext.paywallContentClass(): String = Fingerprint(
+internal fun paywallContentClass(): String = Fingerprint(
     classFingerprint = Fingerprint(
         filters = listOf(
             string(

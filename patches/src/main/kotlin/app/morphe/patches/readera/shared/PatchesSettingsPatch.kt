@@ -5,8 +5,11 @@
 package app.morphe.patches.readera.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.readera.misc.fullscreen.RootPreferencesFingerprint
@@ -32,15 +35,15 @@ internal fun registerReadEraPatch(name: String, explanation: String) {
     appliedExplanations[name] = explanation
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(readeraSettingsExtensionPatch)
     dependsOn(
         disableSignatureChecksPatch,
-        resourcePatch {
+        patch {
             execute {
                 val generalTitleName = stringNameByEnglishText(GENERAL_CATEGORY_TITLE)
                 val screen = decode("res/xml/*.xml").single { path ->
-                    get(path).readText().contains("<org.readera.pref.AboutReadEraPref")
+                    resourceFile(path).readText().contains("<org.readera.pref.AboutReadEraPref")
                 }
                 document(screen).use { document ->
                     val general = document.documentElement.childNodes.asSequence().filterIsInstance<Element>()
@@ -76,7 +79,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 drawables.forEach { name ->
                     val path = "readera/drawable/hx_readera_${name.lowercase()}.xml"
                     SettingsResources::class.java.getResourceAsStream("/$path")!!.use { input ->
-                        get("res/drawable/hx_readera_${name.lowercase()}.xml").outputStream().use(input::copyTo)
+                        resourceFile("res/drawable/hx_readera_${name.lowercase()}.xml").outputStream().use(input::copyTo)
                     }
                 }
             }

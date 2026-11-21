@@ -8,8 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -43,7 +43,7 @@ private fun MutableMethod.overwriteFieldAfter(index: Int, literal: String) {
 private fun Document.elementWithId(id: String) =
     getElementsByTagName("*").findElementByAttributeValueOrThrow("android:id", "@id/$id")
 
-private val removeVipOfferEntriesPatch = resourcePatch {
+private val removeVipOfferEntriesPatch = patch {
     execute {
         document("res/layout/dialog_accessibility.xml").use { document ->
             val freeVipTool = document.elementWithId("ll_free_vip")
@@ -67,7 +67,7 @@ private val removeVipOfferEntriesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks VIP: multiple copies of each app, batch cloning, bubble mode, custom themes " +
         "and no ads. Removes the 50% off offer and the Free VIP, Renew VIP and Get F-Code entries.",

@@ -4,12 +4,12 @@
  */
 package app.morphe.patches.shared.misc.torrent
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
-internal val removeAdsPatch = bytecodePatch {
+internal val removeAdsPatch = patch {
     compatibleWith(AppCompatibilities.BITTORRENT, AppCompatibilities.UTORRENT)
     dependsOn(removeProtectionPatch)
 

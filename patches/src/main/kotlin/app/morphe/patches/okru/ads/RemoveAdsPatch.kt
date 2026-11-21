@@ -6,7 +6,7 @@ package app.morphe.patches.okru.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -30,7 +30,7 @@ private const val RETURN_EMPTY_LIST = """
 """
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes sponsored posts, video and clip ads, and ads in messages, notifications, " +
         "discussions, games, music and Dzen.",

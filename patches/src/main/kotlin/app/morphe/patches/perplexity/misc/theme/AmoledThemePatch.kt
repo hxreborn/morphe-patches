@@ -7,8 +7,8 @@ package app.morphe.patches.perplexity.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -51,7 +51,7 @@ private fun MutableMethod.matchTintToBlack(color: Long, palette: DarkPalette) {
     replaceInstruction(index, "const v$register, 0x${tint.toString(16)}")
 }
 
-private val splashBackgroundPatch = resourcePatch {
+private val splashBackgroundPatch = patch {
     execute {
         document("res/values/colors.xml").use { document ->
             document.getElementsByTagName("color")
@@ -62,7 +62,7 @@ private val splashBackgroundPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black.",
 ) {

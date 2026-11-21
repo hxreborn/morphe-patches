@@ -7,8 +7,8 @@ package app.morphe.patches.terabox.misc.promotions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -24,7 +24,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val PREMIUM_HOME_CARD_TYPE = 6
 
 @Suppress("unused")
-val hidePromotionsPatch: BytecodePatch = bytecodePatch(
+val hidePromotionsPatch: Patch = patch(
     name = "Hide promotions",
     description = "Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, " +
         "floating invites and coupon popups.",

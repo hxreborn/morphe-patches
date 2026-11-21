@@ -8,8 +8,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -37,7 +39,7 @@ private const val PROMOTIONS_CLASS = "Lapp/hxreborn/extension/protonvpn/Promotio
 private const val IS_HIDDEN = "$UPSELLING_VISIBILITY_CLASS->isHidden()Z"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
+val hideUpgradePromotionsPatch: Patch = patch(
     name = "Hide upgrade promotions",
     description = "Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers.",
 ) {

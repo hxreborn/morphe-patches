@@ -4,65 +4,66 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val sharedActivityCallbacksAdapterExtensionPatch = bytecodePatch {
+
+internal val sharedActivityCallbacksAdapterExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-activity-callbacks-adapter.mpe")
 }
 
-internal val sharedAdmobExtensionPatch = bytecodePatch {
+internal val sharedAdmobExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-admob.mpe")
 }
 
-internal val sharedSignInTokenExtensionPatch = bytecodePatch {
+internal val sharedSignInTokenExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-sign-in-token.mpe")
 }
 
-internal val sharedDimensionsExtensionPatch = bytecodePatch {
+internal val sharedDimensionsExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-dimensions.mpe")
 }
 
-internal val sharedUnlockPremiumExtensionPatch = bytecodePatch {
+internal val sharedUnlockPremiumExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-unlock-premium.mpe")
 }
 
-internal val sharedGmsSignInExtensionPatch = bytecodePatch {
+internal val sharedGmsSignInExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-gms-sign-in.mpe")
 }
 
-internal val sharedInstalledCertificateExtensionPatch = bytecodePatch {
+internal val sharedInstalledCertificateExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-installed-certificate.mpe")
 }
 
-internal val sharedProxyHandlerExtensionPatch = bytecodePatch {
+internal val sharedProxyHandlerExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-proxy-handler.mpe")
 }
 
-internal val sharedLiappPackageFilterExtensionPatch = bytecodePatch {
+internal val sharedLiappPackageFilterExtensionPatch = patch {
     dependsOn(sharedProxyHandlerExtensionPatch)
     extendWith("extensions/hxreborn/shared-liapp-package-filter.mpe")
 }
 
-internal val sharedNightModeExtensionPatch = bytecodePatch {
+internal val sharedNightModeExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-night-mode.mpe")
 }
 
-internal val sharedRevenuecatExtensionPatch = bytecodePatch {
+internal val sharedRevenuecatExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-revenuecat.mpe")
 }
 
-internal val sharedSecurityContextExtensionPatch = bytecodePatch {
+internal val sharedSecurityContextExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-security-context.mpe")
 }
 
-internal val sharedSignatureExtensionPatch = bytecodePatch {
+internal val sharedSignatureExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-signature.mpe")
 }
 
-internal val sharedStreamsExtensionPatch = bytecodePatch {
+internal val sharedStreamsExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-streams.mpe")
 }
 
-internal val sharedRemoveScreenshotRestrictionExtensionPatch = bytecodePatch {
+internal val sharedRemoveScreenshotRestrictionExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-remove-screenshot-restriction.mpe")
 }

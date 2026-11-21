@@ -10,8 +10,8 @@
  */
 package app.morphe.patches.protonvpn.misc.delay
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -20,7 +20,7 @@ import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
-val removeServerChangeDelayPatch: BytecodePatch = bytecodePatch(
+val removeServerChangeDelayPatch: Patch = patch(
     name = "Remove server change delay",
     description = "Removes the wait between server changes on free plans.",
 ) {

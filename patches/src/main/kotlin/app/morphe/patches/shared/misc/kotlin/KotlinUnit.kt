@@ -5,12 +5,11 @@
 package app.morphe.patches.shared.misc.kotlin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 
-internal fun BytecodePatchContext.returnUnitEarly(method: MutableMethod) {
+internal fun returnUnitEarly(method: MutableMethod) {
     val unitClass = KotlinUnitToStringFingerprint.matchSingle().classDef
     val unitType = unitClass.type
     val instanceField = unitClass.fields.single {

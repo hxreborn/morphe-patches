@@ -6,8 +6,8 @@ package app.morphe.patches.patreon.layout.promotions
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.misc.featureflags.featureFlagsPatch
 import app.morphe.patches.patreon.misc.settings.PATREON_EXTENSION_PACKAGE
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val UPGRADE_PROMOTIONS_CLASS = "${PATREON_EXTENSION_PACKAGE}UpgradePromotions;"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
+val hideUpgradePromotionsPatch: Patch = patch(
     name = "Hide upgrade promotions",
     description = "Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey.",
 ) {

@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.yanosik.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
 import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
@@ -13,7 +13,7 @@ private const val ENTITLEMENT = "pro_subscription"
 private const val PRODUCT = "app.yanosik.pro.sub.management"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Removes ads and enables the floating widget, dynamic island, route editing " +
         "and tab customization. Points, quests and rankings are not included.",

@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.candycrushsaga.misc.tracking
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 import app.morphe.patches.shared.misc.manifest.disableApplicationComponents
 import app.morphe.patches.shared.misc.manifest.removeMetaData
@@ -32,7 +33,7 @@ private val trackingPermissions = setOf(
     "android.permission.ACCESS_ADSERVICES_TOPICS",
 )
 
-internal val disableTrackingManifestEntriesPatch = resourcePatch {
+internal val disableTrackingManifestEntriesPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.disableApplicationComponents(trackingComponents)

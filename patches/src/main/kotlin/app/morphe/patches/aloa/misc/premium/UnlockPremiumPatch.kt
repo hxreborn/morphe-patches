@@ -5,7 +5,7 @@
 package app.morphe.patches.aloa.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -16,7 +16,7 @@ private const val ENTITLEMENT_CLASS = "Lcom/superwall/sdk/models/entitlements/En
 private const val ACTIVE_STATUS_CLASS = "Lcom/superwall/sdk/models/entitlements/SubscriptionStatus\$Active;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks conversations, tutor lessons and roadmaps.",
 ) {

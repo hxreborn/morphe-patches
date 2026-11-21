@@ -7,9 +7,12 @@ package app.morphe.patches.utorrent.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.listDecodableFiles
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
@@ -69,7 +72,7 @@ private const val NIGHT_STYLES_FILE = "res/values-night/styles.xml"
 private const val WHITE = "@android:color/white"
 private const val BLACK = "@android:color/black"
 
-private fun ResourcePatchContext.addNightSplash(drawables: List<String>, layouts: List<String>) {
+private fun addNightSplash(drawables: List<String>, layouts: List<String>) {
     val (parent, items) = document("res/values-v31/styles.xml").use { styles ->
         val style = styles.documentElement.elementsByTag("style").single { it.getAttribute("name") == SPLASH_STYLE }
         style.getAttribute("parent") to style.elementsByTag("item")
@@ -91,10 +94,10 @@ private fun ResourcePatchContext.addNightSplash(drawables: List<String>, layouts
     layouts.forEach { copyWithBlackBackground("res/layout/$it.xml", "res/layout-night/$it.xml") }
 }
 
-private fun ResourcePatchContext.copyWithBlackBackground(source: String, target: String) {
-    val copy = get(target)
+private fun copyWithBlackBackground(source: String, target: String) {
+    val copy = resourceFile(target)
     copy.parentFile.mkdirs()
-    get(source).copyTo(copy, overwrite = true)
+    resourceFile(source).copyTo(copy, overwrite = true)
     document(target).use { resource ->
         val root = resource.documentElement
         (listOf(root) + root.elementsByTag("*")).forEach { element ->
@@ -107,7 +110,7 @@ private fun ResourcePatchContext.copyWithBlackBackground(source: String, target:
     }
 }
 
-private val amoledResourcesPatch = resourcePatch {
+private val amoledResourcesPatch = patch {
     dependsOn(utorrentSettingsExtensionPatch)
     execute {
         addNightSplash(listOf("splash_icon", "splash_icon_fix"), listOf())
@@ -124,7 +127,7 @@ private val amoledResourcesPatch = resourcePatch {
             switchDeclaration.setAttribute("name", "hx_utorrent_amoled_switch")
             switchDeclaration.setAttribute("id", "0x${switchLayoutId.toString(16)}")
             declarationsDocument.documentElement.appendChild(switchDeclaration)
-            get("res/layout/hx_utorrent_amoled_switch.xml").writeText("""
+            resourceFile("res/layout/hx_utorrent_amoled_switch.xml").writeText("""
                 <com.bittorrent.app.view.CustomSwitch
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -144,12 +147,12 @@ private val amoledResourcesPatch = resourcePatch {
                     if (listDecodableFiles("res/drawable*/$original.webp").isEmpty()) {
                         throw PatchException("Missing dark header bitmap")
                     }
-                    get("res/drawable/$name.xml").writeText("""
+                    resourceFile("res/drawable/$name.xml").writeText("""
                         <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
                             android:src="@drawable/$original" android:tint="#ff000000" />
                     """.trimIndent())
                 } else {
-                    get("res/drawable/$original.xml").copyTo(get("res/drawable/$name.xml"), overwrite = true)
+                    resourceFile("res/drawable/$original.xml").copyTo(resourceFile("res/drawable/$name.xml"), overwrite = true)
                     document("res/drawable/$name.xml").use { drawable ->
                     val fills = drawable.getElementsByTagName("solid")
                     val gradients = drawable.getElementsByTagName("gradient")
@@ -188,7 +191,7 @@ private val amoledResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Adds an option to make dark surfaces pure black.",
 ) {

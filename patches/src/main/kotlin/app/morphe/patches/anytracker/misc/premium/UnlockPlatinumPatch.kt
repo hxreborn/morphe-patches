@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -22,7 +22,7 @@ private const val ENTITLEMENT = "android-platinum"
 private const val PRODUCT = "android_platinum_yearly"
 
 @Suppress("unused")
-val unlockPlatinumPatch = bytecodePatch(
+val unlockPlatinumPatch = patch(
     name = "Unlock Platinum",
     description = "Unlocks the Platinum plan with unlimited tracked items, every-minute updates, widgets, " +
         "watchlists and backups.",

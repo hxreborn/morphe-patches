@@ -6,11 +6,12 @@ package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.util.findMutableMethodOf
-import app.morphe.patcher.patch.BytecodePatchContext
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
@@ -28,8 +29,7 @@ private const val OBJECT_TYPE = "Ljava/lang/Object;"
 private const val METHOD_SEPARATOR = ","
 private const val REGISTRATION_SEPARATOR = ";"
 
-context(context: BytecodePatchContext)
-private fun recordStarts(start: MethodReference, recorder: String): String = with(context) {
+private fun recordStarts(start: MethodReference, recorder: String): String {
     val method = mutableClassDefBy(start.definingClass).findMutableMethodOf(start)
     val stop = method.implementation!!.instructions.first { instruction ->
         instruction.opcode == Opcode.INVOKE_STATIC && instruction.getReference<MethodReference>()!!.let {
@@ -42,10 +42,10 @@ private fun recordStarts(start: MethodReference, recorder: String): String = wit
     if (!recorder.contains("($parameters)")) throw PatchException("$recorder does not take the parameters of $start")
     val lastParameter = MethodUtil.getParameterRegisterCount(method) - 1
     method.addInstructions(0, "invoke-static/range { p0 .. p$lastParameter }, $recorder")
-    listOf(start.name, stop.name).joinToString(METHOD_SEPARATOR)
+    return listOf(start.name, stop.name).joinToString(METHOD_SEPARATOR)
 }
 
-internal val hostToolsPatch = bytecodePatch {
+internal val hostToolsPatch = patch {
     dependsOn(patchesMenuPatch)
 
     execute {

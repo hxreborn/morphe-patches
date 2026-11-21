@@ -7,7 +7,7 @@ package app.morphe.patches.tradingview.misc.upselling
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
@@ -21,7 +21,7 @@ private const val BLACK_FRIDAY_TEASER_BANNER = "$BANNER_MODEL_PACKAGE/WatchlistB
 private const val REFER_FRIEND_ITEM = "Lcom/tradingview/tradingviewapp/feature/menu/impl/state/MenuItem\$ReferFriend;"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = bytecodePatch(
+val hideUpgradePromotionsPatch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the Upgrade button, plan banners, subscription card and paywalls. " +
         "Extra indicators, watchlists, flag colors, alerts, second and tick intervals, " +

@@ -7,10 +7,10 @@ package app.morphe.patches.viber.layout.more
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.addFreeRegisters
@@ -57,7 +57,7 @@ private enum class MoreItem(val label: String, val resourceName: String, val sur
 }
 
 @Suppress("unused")
-val hideMoreItemsPatch: BytecodePatch = bytecodePatch(
+val hideMoreItemsPatch: Patch = patch(
     name = "Hide More screen items",
     description = "Hides selected entries from the main screen and More screen.",
 ) {
@@ -86,7 +86,7 @@ val hideMoreItemsPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.filterMoreItems(hiddenIds: List<Long>) {
+private fun filterMoreItems(hiddenIds: List<Long>) {
     val listItems = BuildMoreItemsFingerprint.matchSingle()
     val (createItem, _, _, _, _) = listItems.instructionMatches
     val itemType = createItem.instruction.getReference<MethodReference>()!!.returnType
@@ -134,7 +134,7 @@ private fun BytecodePatchContext.filterMoreItems(hiddenIds: List<Long>) {
     """, ExternalLabel("original", method.getInstruction(refreshIndex)))
 }
 
-private fun BytecodePatchContext.filterMainMenuItems(hiddenIds: List<Long>) {
+private fun filterMainMenuItems(hiddenIds: List<Long>) {
     val repository = BuildMoreItemsFingerprint.matchSingle()
     val hiddenCheck = mutableClassDefBy(repository.classDef).addHiddenIdCheck("isHiddenMainMenuItem", hiddenIds)
     mutableClassDefBy(VIBER_SETTINGS_CLASS).replaceStub("isHiddenMainMenuItem", 1, """
@@ -148,7 +148,7 @@ private fun BytecodePatchContext.filterMainMenuItems(hiddenIds: List<Long>) {
     """)
 }
 
-private fun BytecodePatchContext.itemIdField(itemType: String): FieldReference {
+private fun itemIdField(itemType: String): FieldReference {
     val builderType = itemConstructorFingerprint(itemType).matchSingle().method.parameterTypes.single().toString()
     val builderConstructor = itemBuilderConstructorFingerprint(builderType).matchSingle()
     val idParameterRegister = builderConstructor.method.implementation!!.registerCount - builderConstructor.method.parameterTypes.lastIndex

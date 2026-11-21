@@ -5,15 +5,14 @@
 package app.morphe.patches.idlefish.misc.login
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.idlefish.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val skipLoginPromptsPatch = bytecodePatch(
+val skipLoginPromptsPatch = patch(
     name = "Skip login prompts",
     description = "Skips login screens that open at launch, on search and listing taps and during background requests.",
 ) {
@@ -26,7 +25,7 @@ val skipLoginPromptsPatch = bytecodePatch(
     }
 }
 
-internal fun BytecodePatchContext.skipLoginPrompts() {
+internal fun skipLoginPrompts() {
     FirstLaunchLoginGuideFingerprint.matchSingle().method.returnEarly(false)
     ExtraOpenLoginFingerprint.matchSingle().method.returnEarly(false)
     RemoteLoginFingerprint.matchSingle().method.addInstructions(

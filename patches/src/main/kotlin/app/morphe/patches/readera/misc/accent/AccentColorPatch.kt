@@ -8,8 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.AppCompatAttachBaseContextFingerprint
@@ -40,7 +43,7 @@ private const val MENU_TRACK_CHECKED_FILL = "android:color=\"#ffc107\""
 
 private lateinit var accentColorName: String
 
-private val accentColorResourcesPatch = resourcePatch {
+private val accentColorResourcesPatch = patch {
     dependsOn(patchesSettingsPatch)
 
     execute {
@@ -57,7 +60,7 @@ private val accentColorResourcesPatch = resourcePatch {
             throw PatchException("Accent color $accentColorName is also defined in $qualifiedDefinitions")
         }
 
-        val trackFile = get(MENU_SWITCH_TRACK)
+        val trackFile = resourceFile(MENU_SWITCH_TRACK)
         val track = trackFile.readText()
         val checkedFillCount = track.split(MENU_TRACK_CHECKED_FILL).size - 1
         if (checkedFillCount != 1) {
@@ -70,7 +73,7 @@ private val accentColorResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val accentColorPatch = bytecodePatch(
+val accentColorPatch = patch(
     name = "Accent color",
     description = "Replaces ReadEra's yellow with the wallpaper color on Android 12 and later, or green below 12. " +
         "Another color can be picked in the patches menu.",

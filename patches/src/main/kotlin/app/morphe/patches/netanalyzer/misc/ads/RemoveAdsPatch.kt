@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.ads
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.netanalyzer.shared.ClickableRowFingerprint
@@ -18,7 +18,7 @@ private const val PRO_VERSION_HEADER = "Pro Version"
 private val ABOUT_ROWS_TO_REMOVE = listOf("Full Feature List", "Configure Ad Consent")
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes the banner ads, the ad consent prompt and the Pro upgrade prompts.",
 ) {

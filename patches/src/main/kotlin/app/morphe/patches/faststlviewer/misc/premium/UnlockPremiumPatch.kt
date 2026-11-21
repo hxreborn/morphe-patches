@@ -7,8 +7,7 @@ package app.morphe.patches.faststlviewer.misc.premium
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -22,7 +21,7 @@ private const val PRODUCT_READER_COUNT = 2
 private const val PRO_READER_COUNT = 4
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks slice view, colors, lighting, normals, measurements, " +
         "printability analysis and transform, and removes ads.",
@@ -36,7 +35,7 @@ val unlockPremiumPatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.forceBooleanFieldReadsTrue(
+private fun forceBooleanFieldReadsTrue(
     fieldAccessFingerprint: Fingerprint,
     readerCount: Int,
 ) {

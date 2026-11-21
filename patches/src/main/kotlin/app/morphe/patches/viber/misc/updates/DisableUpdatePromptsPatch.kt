@@ -6,8 +6,8 @@ package app.morphe.patches.viber.misc.updates
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -25,7 +25,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Suppress("unused")
-val disableUpdatePromptsPatch: BytecodePatch = bytecodePatch(
+val disableUpdatePromptsPatch: Patch = patch(
     name = "Disable update prompts",
     description = "Stops the Google Play update dialog, the suggested and required upgrade dialogs and the update " +
         "request on links this version can't open. Viber's servers can still stop serving an old version.",

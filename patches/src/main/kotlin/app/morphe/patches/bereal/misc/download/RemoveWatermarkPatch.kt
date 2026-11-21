@@ -6,8 +6,8 @@ package app.morphe.patches.bereal.misc.download
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}download/DownloadWatermark;"
 
 @Suppress("unused")
-val removeWatermarkPatch: BytecodePatch = bytecodePatch(
+val removeWatermarkPatch: Patch = patch(
     name = "Remove watermark",
     description = "Saves downloaded BeReals at full size without the BeReal logo.",
 ) {

@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.myscriptnotes.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.myscriptnotes.misc.pairip.restoreStartupPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -16,7 +16,7 @@ private const val ENTITLEMENT = "MyScript Notes – Full Access"
 private const val PRODUCT = "msnotes_standard_lifetime"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks unlimited notes and pages, text conversion, shape and scratch-out gestures, " +
         "PDF import and AI tools.",

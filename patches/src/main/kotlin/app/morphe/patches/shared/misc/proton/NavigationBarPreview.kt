@@ -4,14 +4,14 @@
  */
 package app.morphe.patches.shared.misc.proton
 
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patches.shared.misc.smali.replaceMethod
 
 private const val NAVIGATION_BAR_PREVIEW_CLASS = "${PROTON_EXTENSION_PACKAGE}NavigationBarPreview;"
 
-internal fun BytecodePatchContext.bindNavigationBarPreview(
+internal fun bindNavigationBarPreview(
     icons: List<String>,
     labels: List<String>,
     showLabels: Boolean,

@@ -5,8 +5,8 @@
 package app.morphe.patches.viber.layout.gaps
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -19,7 +19,7 @@ import app.morphe.patches.shared.misc.extension.viberRemoveListGapsExtensionPatc
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/ListGaps;"
 
 @Suppress("unused")
-val removeListGapsPatch: BytecodePatch = bytecodePatch(
+val removeListGapsPatch: Patch = patch(
     name = "Remove list gaps",
     description = "Removes list gaps and extra scrolling.",
 ) {

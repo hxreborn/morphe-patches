@@ -5,7 +5,7 @@
 package app.morphe.patches.serializd.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.playwire.stopPlaywireSdkPatch
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.misc.extension.serializdRemoveAdsExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/serializd/AdFlags;"
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes ad placements and the advertising consent prompt.",
 ) {

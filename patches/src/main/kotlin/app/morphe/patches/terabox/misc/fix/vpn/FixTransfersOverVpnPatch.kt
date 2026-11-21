@@ -6,8 +6,8 @@ package app.morphe.patches.terabox.misc.fix.vpn
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -18,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val fixTransfersOverVpnPatch: BytecodePatch = bytecodePatch(
+val fixTransfersOverVpnPatch: Patch = patch(
     name = "Fix transfers over VPN",
     description = "Runs uploads, downloads and saves from shared links while a VPN is active.",
 ) {

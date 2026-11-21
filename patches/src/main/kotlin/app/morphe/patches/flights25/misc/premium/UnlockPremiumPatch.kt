@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.flights25.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 private const val PRODUCT = "unlimited_access_yearly_flight_tracker"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks premium features. AI imports, Gmail scans and automatic calendar imports are not unlocked.",
 ) {

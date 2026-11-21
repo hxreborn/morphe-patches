@@ -6,7 +6,8 @@ package app.morphe.patches.botim.layout.navigation
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +20,7 @@ import app.morphe.patches.shared.misc.extension.botimMainTabsExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/MainTabs;"
 
 @Suppress("unused")
-val hideAllTabPatch = bytecodePatch(
+val hideAllTabPatch = patch(
     name = "Hide All tab",
     description = "Hides the All tab from the bottom bar.",
     default = false,

@@ -6,7 +6,7 @@ package app.morphe.patches.movieboxtv.misc.allinone
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patches.shared.misc.ijiami.IjiamiContainer
@@ -33,8 +33,8 @@ private const val STRING = "Ljava/lang/String;"
 private const val BYTE_ARRAY = "[B"
 private const val COUNTRY_INTERCEPTOR_RETURNS = 4
 
-internal fun ResourcePatchContext.installQualityStreams() {
-    val payload = IjiamiContainer.of(get("classes.dex").readBytes()).decrypt()
+internal fun installQualityStreams() {
+    val payload = IjiamiContainer.of(resourceFile("classes.dex").readBytes()).decrypt()
     val classes = PayloadDex.split(payload).filter { dex ->
         qualityStreamAnchors.any { dex.stringIndexOf(it) != null }
     }.flatMap { dex ->

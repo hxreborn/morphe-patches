@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.moviebox.misc.permanentnotification
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
 import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.requireArm64
 private const val PERMANENT_CONFIG = "Lcom/transsion/mpush/core/config/PermanentConfig;"
 
 @Suppress("unused")
-val hidePermanentNotificationPatch = resourcePatch(
+val hidePermanentNotificationPatch = patch(
     name = "Hide permanent notification",
     description = "Hides the permanent notification. Requires All-In-One.",
 ) {

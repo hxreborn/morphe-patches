@@ -5,8 +5,8 @@
 package app.morphe.patches.protonpass.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -22,7 +22,7 @@ private const val COLORS_PARAMETER = 4
 private const val COMPOSER_PARAMETER = 5
 
 @Suppress("unused")
-val materialSwitchesPatch: BytecodePatch = bytecodePatch(
+val materialSwitchesPatch: Patch = patch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {

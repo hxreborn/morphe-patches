@@ -8,8 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
@@ -37,7 +38,7 @@ private const val PREDEFINED_FOLDER_TYPE = 1
 private const val READ_ONLY_FOLDER_FLAGS = 7
 
 @Suppress("unused")
-val unfiledChatsPatch: BytecodePatch = bytecodePatch(
+val unfiledChatsPatch: Patch = patch(
     name = "Unfiled chats",
     description = "Adds a folder tab for chats outside your custom folders.",
 ) {

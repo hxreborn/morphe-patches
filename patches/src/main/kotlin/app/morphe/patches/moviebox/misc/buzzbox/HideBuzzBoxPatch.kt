@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.moviebox.misc.buzzbox
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
 import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
@@ -19,7 +19,7 @@ private const val COMMUNITY_HOME_TAB_VALUE = "CommunityTab"
 private const val COMMUNITY_HOME_TAB_ENUM_NAME = "SUB_ROOM"
 
 @Suppress("unused")
-val hideBuzzBoxPatch = resourcePatch(
+val hideBuzzBoxPatch = patch(
     name = "Hide BuzzBox",
     description = "Removes the BuzzBox tabs from the bottom navigation bar and the home screen.",
 ) {

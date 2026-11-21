@@ -4,28 +4,29 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val photoeditorproSettingsExtensionPatch = bytecodePatch {
+
+internal val photoeditorproSettingsExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedSignatureExtensionPatch)
     extendWith("extensions/hxreborn/photoeditorpro-settings.mpe")
 }
 
-internal val photoeditorproInspectAiRequestsExtensionPatch = bytecodePatch {
+internal val photoeditorproInspectAiRequestsExtensionPatch = patch {
     dependsOn(photoeditorproSettingsExtensionPatch)
     extendWith("extensions/hxreborn/photoeditorpro-inspect-ai-requests.mpe")
 }
 
-internal val photoeditorproPatchGatesExtensionPatch = bytecodePatch {
+internal val photoeditorproPatchGatesExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, photoeditorproSettingsExtensionPatch)
     extendWith("extensions/hxreborn/photoeditorpro-patch-gates.mpe")
 }
 
-internal val photoeditorproDisablePushNotificationsExtensionPatch = bytecodePatch {
+internal val photoeditorproDisablePushNotificationsExtensionPatch = patch {
     extendWith("extensions/hxreborn/photoeditorpro-disable-push-notifications.mpe")
 }
 
-internal val photoeditorproHideShareOptionsExtensionPatch = bytecodePatch {
+internal val photoeditorproHideShareOptionsExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, photoeditorproSettingsExtensionPatch)
     extendWith("extensions/hxreborn/photoeditorpro-hide-share-options.mpe")
 }

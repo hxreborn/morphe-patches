@@ -7,8 +7,9 @@ package app.morphe.patches.redreader.layout.filter
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -23,7 +24,7 @@ private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/redreade
 private const val SETTINGS_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/redreader/PatchSettings;"
 private const val SETTINGS_ACTIVITY = "app.hxreborn.extension.redreader.PatchesSettingsActivity"
 
-private val filterResourcesPatch = resourcePatch {
+private val filterResourcesPatch = patch {
     dependsOn(redreaderSettingsExtensionPatch)
     execute {
         val packageName = document("AndroidManifest.xml").use { document ->
@@ -50,7 +51,7 @@ private val filterResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val filterPostsPatch = bytecodePatch(
+val filterPostsPatch = patch(
     name = "Filter posts",
     description = "Filters posts by title keyword, subreddit name or post flair, with regular expression support.",
 ) {

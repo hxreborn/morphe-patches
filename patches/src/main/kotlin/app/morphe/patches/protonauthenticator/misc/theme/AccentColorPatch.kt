@@ -5,8 +5,8 @@
 package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -35,7 +35,7 @@ private val AUTHENTICATOR_BRAND_COLORS = listOf(
 )
 
 @Suppress("unused")
-val accentColorPatch: BytecodePatch = bytecodePatch(
+val accentColorPatch: Patch = patch(
     name = "Custom accent color",
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {

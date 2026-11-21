@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.visualtraceroute
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.extension.netanalyzerVisualTracerouteExtensionPatch
 
 @Suppress("unused")
-val visualTraceroutePatch = bytecodePatch(
+val visualTraceroutePatch = patch(
     name = "Visual traceroute",
     description = "Shows the hops of the current or last traceroute on an OpenStreetMap map. " +
         "Map tiles load from tile.openstreetmap.org.",

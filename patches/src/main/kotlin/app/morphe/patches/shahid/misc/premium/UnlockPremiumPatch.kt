@@ -6,7 +6,7 @@ package app.morphe.patches.shahid.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -17,7 +17,7 @@ private const val REMOVE_HEIGHT_LIMIT =
     "Lapp/hxreborn/extension/shahid/ManifestFilter;->removeHeightLimit(Ljava/lang/String;)Ljava/lang/String;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock Full HD",
     description = "Unlocks Full HD playback. VIP titles require a subscription.",
 ) {

@@ -7,9 +7,10 @@ package app.morphe.patches.bereal.misc.download
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -34,7 +35,7 @@ private const val DOWNLOAD_ENABLED = "${BEREAL_EXTENSION_PACKAGE}download/Friend
 private const val LAST_FOUR_BIT_REGISTER = 15
 
 @Suppress("unused")
-val saveFriendsBeRealsPatch: BytecodePatch = bytecodePatch(
+val saveFriendsBeRealsPatch: Patch = patch(
     name = "Save friends' BeReals",
     description = "Adds Download to the 3-dot menu of friends' BeReals in the feed and on the RealMoji screen.",
 ) {

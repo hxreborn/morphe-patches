@@ -5,7 +5,7 @@
 package app.morphe.patches.allvideoplayer.resume
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.extension.allvideoplayerResumeVideosOpened
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/allvideoplayer/MediaStoreVideoUri;"
 
 @Suppress("unused")
-val resumeExternalVideosPatch = bytecodePatch(
+val resumeExternalVideosPatch = patch(
     name = "Resume videos opened from other apps",
     description = "Resumes videos opened from a file manager or gallery where playback stopped.",
 ) {

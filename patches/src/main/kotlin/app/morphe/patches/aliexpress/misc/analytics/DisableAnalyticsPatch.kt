@@ -10,9 +10,10 @@
  */
 package app.morphe.patches.aliexpress.misc.analytics
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
@@ -25,7 +26,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 private const val FIREBASE_INITIALIZER_REGISTERS = 3
 
-private val analyticsDefaultsPatch = resourcePatch {
+private val analyticsDefaultsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_analytics_collection_enabled", "false")
@@ -34,7 +35,7 @@ private val analyticsDefaultsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
+val disableAnalyticsPatch: Patch = patch(
     name = "Disable analytics",
     description = "Stops usage statistics and affiliate link reports.",
 ) {

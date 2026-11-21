@@ -8,7 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.ultimea.misc.controls.xupmixPatch
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
@@ -28,7 +29,7 @@ private const val CONNECTION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea
 
 private const val PANEL_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/equalizer/FineEqualizer;"
 
-internal val equalizerConnectionPatch = bytecodePatch {
+internal val equalizerConnectionPatch = patch {
     dependsOn(xupmixPatch)
     execute {
         markPatchApplied("fineEqualizer", fineEqualizerPatch)

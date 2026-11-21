@@ -6,7 +6,7 @@ package app.morphe.patches.hypic.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.hypic.misc.fix.signature.spoofSignaturePatch
@@ -16,7 +16,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 private const val TOP_VIP_STATE = "VIP4"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro filters, effects, templates and tools. " +
         "AI features that use server credits are not unlocked.",

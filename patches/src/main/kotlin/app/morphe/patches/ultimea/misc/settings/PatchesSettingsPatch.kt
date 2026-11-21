@@ -7,11 +7,12 @@ package app.morphe.patches.ultimea.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.ultimea.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -32,18 +33,18 @@ private val icons = listOf(
     "hx_ultimea_ic_firmware",
 )
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: Patch) =
+internal fun markPatchApplied(methodName: String, patch: Patch) =
     fillAppliedPatch("${ULTIMEA_EXTENSION}AppliedPatches;", methodName, patch, withDescription = false)
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(ultimeaSettingsExtensionPatch)
-    dependsOn(spoofSignaturePatch, resourcePatch {
+    dependsOn(spoofSignaturePatch, patch {
         dependsOn(nativeMethodsPatch)
         execute {
             icons.forEach { name ->
                 val stream = UltimeaResources::class.java.getResourceAsStream("/ultimea/drawable/$name.xml")
                     ?: throw PatchException("Missing patches menu icon $name")
-                stream.use { get("res/drawable/$name.xml").outputStream().use(it::copyTo) }
+                stream.use { resourceFile("res/drawable/$name.xml").outputStream().use(it::copyTo) }
             }
             listOf("values" to false, "values-night" to true).forEach { (qualifier, dark) ->
                 document("res/$qualifier/styles.xml").use { document ->

@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.castletv.shared.IsAdFreeMemberFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -39,7 +39,7 @@ private fun Method.indexOfFreeUserCheck(vipHelperType: String, startIndex: Int =
     }
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks member-only titles and shows the account as Premium. " +
         "Requires a signed-in account.",

@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.readera.misc.sleeptimer
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.smali.replaceMethod
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val moreSleepTimerChoicesPatch = bytecodePatch(
+val moreSleepTimerChoicesPatch = patch(
     name = "More sleep timer choices",
     description = "Adds 5 and 10 minute options to the Read aloud sleep timer.",
 ) {

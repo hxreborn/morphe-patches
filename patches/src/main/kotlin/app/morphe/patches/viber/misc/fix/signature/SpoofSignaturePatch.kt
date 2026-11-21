@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.misc.fix.signature
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 private const val APPLICATION_CLASS = "Lcom/viber/voip/ManifestViberApplication;"
 
 @Suppress("unused")
-val spoofSignaturePatch: BytecodePatch = bytecodePatch(
+val spoofSignaturePatch: Patch = patch(
     name = "Spoof signature",
     description = "Lets the app send and receive messages and get its push token.",
 ) {

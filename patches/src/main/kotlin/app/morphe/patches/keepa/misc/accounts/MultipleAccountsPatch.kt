@@ -5,7 +5,9 @@
 package app.morphe.patches.keepa.misc.accounts
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.util.inputStreamFromBundledResource
@@ -21,7 +23,7 @@ private const val SETTINGS_CHUNK = "assets/app/src_app_features_settings_setting
 private const val MANAGE_CHUNK = "assets/app/src_app_features_manage_manage_routes_ts.mjs"
 
 @Suppress("unused")
-val multipleAccountsPatch = resourcePatch(
+val multipleAccountsPatch = patch(
     name = "Multiple accounts",
     description = "Signs in to several Keepa accounts at once and lists their price watches together. " +
         "Accounts are added and removed in Settings > Accounts.",
@@ -35,10 +37,10 @@ val multipleAccountsPatch = resourcePatch(
             ?.bufferedReader()?.use { it.readText() }
             ?: throw PatchException("Runtime resource keepa/accounts.js is unavailable")
 
-        val bundle = get(BUNDLE)
-        val settings = get(SETTINGS_CHUNK)
-        val manage = get(MANAGE_CHUNK)
-        requireRuntimeDependencies(runtime, bundle.readText() + get(VENDOR).readText())
+        val bundle = resourceFile(BUNDLE)
+        val settings = resourceFile(SETTINGS_CHUNK)
+        val manage = resourceFile(MANAGE_CHUNK)
+        requireRuntimeDependencies(runtime, bundle.readText() + resourceFile(VENDOR).readText())
         val editedBundle = applyNetworkEdits(bundle.readText(), runtime)
         val editedSettings = applySettingsEdits(settings.readText())
         val editedManage = applyManageEdits(manage.readText())

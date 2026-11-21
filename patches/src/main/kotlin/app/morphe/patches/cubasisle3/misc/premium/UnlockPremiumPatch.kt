@@ -6,7 +6,7 @@ package app.morphe.patches.cubasisle3.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.extension.cubasisle3UnlockPremiumExtension
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/cubasisle3/StoreUnlock;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the full Cubasis version and the in-app shop content.",
 ) {

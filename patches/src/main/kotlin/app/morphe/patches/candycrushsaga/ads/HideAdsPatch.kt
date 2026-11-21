@@ -5,7 +5,7 @@
 package app.morphe.patches.candycrushsaga.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -15,7 +15,7 @@ private const val NO_FILL_ERROR_CODE = 0x3
 private const val DISABLED_MESSAGE = "ads disabled"
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Stops ad networks from starting and blocks rewarded and interstitial ads.",
 ) {

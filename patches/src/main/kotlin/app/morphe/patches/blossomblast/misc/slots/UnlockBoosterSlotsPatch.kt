@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.blossomblast.misc.slots
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patches.blossomblast.shared.MODIFIERS
 import app.morphe.patches.blossomblast.shared.blossomBlastModifiersPatch
@@ -24,7 +25,7 @@ private val STOCK_UNLOCK_LEVELS = listOf(5, 36, 52, 0, 0, 0, 0)
 private const val INT_WIDTH = 4
 
 @Suppress("unused")
-val unlockBoosterSlotsPatch = bytecodePatch(
+val unlockBoosterSlotsPatch = patch(
     name = "Unlock booster slots",
     description = "Opens all booster slots from level 2.",
 ) {

@@ -6,7 +6,10 @@ package app.morphe.patches.candycrushsaga.shared.serverresponse
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.shared.isCandyCrushSodaSaga
 import app.morphe.patches.shared.misc.smali.addFieldReader
@@ -16,7 +19,7 @@ import app.morphe.patches.shared.misc.extension.candycrushsagaServerResponsesExt
 
 internal const val SERVER_RESPONSES = "Lapp/hxreborn/extension/candycrushsaga/ServerResponses;"
 
-internal val editServerResponsesPatch = bytecodePatch {
+internal val editServerResponsesPatch = patch {
     dependsOn(candycrushsagaServerResponsesExtensionPatch)
     execute {
         val soda = isCandyCrushSodaSaga(packageMetadata.packageName)

@@ -6,7 +6,8 @@ package app.morphe.patches.netanalyzer.misc.toolshistory
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
@@ -38,7 +39,7 @@ private const val ROUTE_CLASS_MATCH = 1
 private const val REGISTRATION_SEPARATOR = ";"
 
 @Suppress("unused")
-val toolsHistoryPatch = bytecodePatch(
+val toolsHistoryPatch = patch(
     name = "Tools history",
     description = "Lists the hosts queried in Tools with their last options, and lets you star or delete them. " +
         "Tapping an entry opens it in Tools.",

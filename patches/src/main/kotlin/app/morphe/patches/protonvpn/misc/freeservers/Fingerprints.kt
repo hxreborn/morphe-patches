@@ -16,7 +16,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.resourceField
@@ -25,7 +24,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 
-internal fun BytecodePatchContext.serverListFilterFingerprint() = freeServerCheckFingerprint(
+internal fun serverListFilterFingerprint() = freeServerCheckFingerprint(
     opcode(Opcode.IF_NEZ, MatchAfterImmediately()),
 )
 
@@ -33,7 +32,7 @@ internal object ServerGroupToStringFingerprint : ToStringFingerprint("ServerGrou
 
 internal fun Method.tierParameterIndex() = parameterTypes.indexOfFirst { it.toString() == "Ljava/lang/Integer;" }
 
-internal fun BytecodePatchContext.serverGroupItemStateFingerprint(): Fingerprint {
+internal fun serverGroupItemStateFingerprint(): Fingerprint {
     val serverGroup = ServerGroupToStringFingerprint.originalClassDef.type
     return Fingerprint(
         returnType = serverGroup,
@@ -52,7 +51,7 @@ internal val saveStateToStringFingerprints = listOf(
     "ServersScreenSaveState(countryId=",
 ).map(::ToStringFingerprint)
 
-internal fun BytecodePatchContext.searchResultSectionFingerprint() = Fingerprint(
+internal fun searchResultSectionFingerprint() = Fingerprint(
     filters = listOf(methodCall(serverGroupItemStateFingerprint().originalMethod)),
     custom = { method, _ ->
         val parameters = method.parameterTypes.map { it.toString() }

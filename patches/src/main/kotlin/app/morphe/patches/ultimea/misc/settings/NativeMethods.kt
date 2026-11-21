@@ -5,7 +5,7 @@
 package app.morphe.patches.ultimea.misc.settings
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.arm64.arm64CompareAndSwapResultRegister
 import app.morphe.patches.shared.misc.arm64.arm64ExclusiveStoreStatusRegister
 import app.morphe.patches.shared.misc.arm64.arm64SecondLoadRegister
@@ -56,7 +56,7 @@ private const val FRAME_POINTER = 0xaa0f03fd.toInt()
 internal lateinit var nativeMethods: NativeMethods
     private set
 
-internal val nativeMethodsPatch = resourcePatch {
+internal val nativeMethodsPatch = patch {
     execute { nativeMethods = NativeMethods(dartAotLibrary().readBytes()) }
 }
 

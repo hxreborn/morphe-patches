@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.athan.misc.tracking
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
@@ -16,7 +16,7 @@ import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatc
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 
-private val disablePerformanceMonitoringPatch = resourcePatch {
+private val disablePerformanceMonitoringPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_performance_collection_deactivated", "true")
@@ -25,7 +25,7 @@ private val disablePerformanceMonitoringPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops usage events from reaching Firebase and Facebook, and disables Crashlytics and " +
         "Firebase performance monitoring.",

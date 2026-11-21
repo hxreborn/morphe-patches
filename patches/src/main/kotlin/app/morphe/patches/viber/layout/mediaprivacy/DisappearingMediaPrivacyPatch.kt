@@ -8,8 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -39,7 +40,7 @@ private const val UPDATE_READ_STATE = "$EXTENSION_CLASS->updateReadState(Ljava/l
 private const val SCREENSHOT_EVENT_PARAMETER = "p5"
 
 @Suppress("unused")
-val disappearingMediaPrivacyPatch: BytecodePatch = bytecodePatch(
+val disappearingMediaPrivacyPatch: Patch = patch(
     name = "Disappearing media privacy",
     description = "Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat.",
 ) {

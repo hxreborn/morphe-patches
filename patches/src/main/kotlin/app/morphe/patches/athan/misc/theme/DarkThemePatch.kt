@@ -7,8 +7,8 @@ package app.morphe.patches.athan.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
@@ -31,7 +31,7 @@ private val styleFiles = listOf("res/values/styles.xml", "res/values-v29/styles.
 
 private fun Document.styles() = getElementsByTagName("style").asSequence().filterIsInstance<Element>()
 
-private val allowForceDarkPatch = resourcePatch {
+private val allowForceDarkPatch = patch {
     execute {
         document(styleFiles.first()).use { styles ->
             val baseTheme = styles.styles().singleOrNull { it.getAttribute("name") == APPCOMPAT_LIGHT_BASE_THEME }
@@ -56,7 +56,7 @@ private val allowForceDarkPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val darkThemePatch = bytecodePatch(
+val darkThemePatch = patch(
     name = "Dark theme",
     description = "Shows the app in dark colors when the system dark theme is on.",
 ) {

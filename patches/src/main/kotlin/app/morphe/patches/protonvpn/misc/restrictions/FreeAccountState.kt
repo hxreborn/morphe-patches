@@ -12,8 +12,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
@@ -46,7 +45,7 @@ private fun Method.receivesType(type: String) = parameterTypes.firstOrNull()?.to
         it.opcode == Opcode.CHECK_CAST && it.getReference<TypeReference>()?.type == type
     } == true
 
-private fun BytecodePatchContext.userInfoUpdateFingerprint(): Fingerprint {
+private fun userInfoUpdateFingerprint(): Fingerprint {
     val userInfo = UserInfoToStringFingerprint.originalClassDef.type
     return Fingerprint(
         returnType = "Ljava/lang/Object;",
@@ -76,7 +75,7 @@ private object UserInfoInvalidateFingerprint : Fingerprint(
     ),
 )
 
-internal val freeAccountStatePatch = bytecodePatch {
+internal val freeAccountStatePatch = patch {
     dependsOn(protonFreeServerLocationsExtensionPatch, protonMembersExtensionPatch)
     dependsOn(patchesSettingsPatch)
 

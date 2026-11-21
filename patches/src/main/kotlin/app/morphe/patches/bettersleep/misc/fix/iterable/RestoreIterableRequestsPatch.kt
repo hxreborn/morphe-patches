@@ -5,13 +5,14 @@
 package app.morphe.patches.bettersleep.misc.fix.iterable
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.smali.descriptor
 
-val restoreIterableRequestsPatch = bytecodePatch {
+val restoreIterableRequestsPatch = patch {
     compatibleWith(AppCompatibilities.BETTERSLEEP)
 
     dependsOn(removePairipVirtualizationPatch)

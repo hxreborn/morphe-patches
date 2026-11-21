@@ -11,8 +11,8 @@
 package app.morphe.patches.protonvpn.misc.telemetry
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.protonvpn.misc.anchors.unitInstanceField
@@ -24,7 +24,7 @@ import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val disableTelemetryPatch: BytecodePatch = bytecodePatch(
+val disableTelemetryPatch: Patch = patch(
     name = "Disable telemetry",
     description = "Stops sending usage statistics and diagnostics to Proton.",
 ) {

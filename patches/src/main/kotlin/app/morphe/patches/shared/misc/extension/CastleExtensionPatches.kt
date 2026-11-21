@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val castleDeviceGuidExtensionPatch = bytecodePatch {
+
+internal val castleDeviceGuidExtensionPatch = patch {
     extendWith("extensions/hxreborn/castle-device-guid.mpe")
 }
 
-internal val castleFullHdPlaylistExtensionPatch = bytecodePatch {
+internal val castleFullHdPlaylistExtensionPatch = patch {
     dependsOn(sharedStreamsExtensionPatch)
     extendWith("extensions/hxreborn/castle-full-hd-playlist.mpe")
 }

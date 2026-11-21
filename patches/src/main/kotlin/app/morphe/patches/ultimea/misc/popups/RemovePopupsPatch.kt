@@ -4,9 +4,8 @@
  */
 package app.morphe.patches.ultimea.misc.popups
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
@@ -22,13 +21,13 @@ private const val BRANCH_MASK = 0xfc000000.toInt()
 private val RETURN_NULL = "e00316aac0035fd6".hexToByteArray()
 
 @Suppress("unused")
-val removePopupsPatch: BytecodePatch = bytecodePatch(
+val removePopupsPatch: Patch = patch(
     name = "Remove popups",
     description = "Removes promotional and rating popups.",
 ) {
     compatibleWith(AppCompatibilities.ULTIMEA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, resourcePatch {
+    dependsOn(patchesSettingsPatch, patch {
         execute {
             val library = dartAotLibrary().readBytes()
             val popup = nativeMethods.single("app_popup") { "language_english" !in it.stringLoads.values }.start

@@ -7,7 +7,6 @@ package app.morphe.patches.readera.shared
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.Opcode
@@ -25,7 +24,7 @@ private const val SET_VISIBILITY = "Landroid/view/View;->setVisibility(I)V"
 
 internal class TtsPreference(val flag: FieldReference, val settingsGetter: MethodReference)
 
-internal fun BytecodePatchContext.bindTtsPreference(row: Int): TtsPreference {
+internal fun bindTtsPreference(row: Int): TtsPreference {
     val prefsClass = TtsPrefsEventFingerprint.classDef.type
     val view = TtsPrefsViewFingerprint
     val rowRegister = view.instructionMatches[row].getInstruction<FiveRegisterInstruction>().registerC
@@ -86,11 +85,11 @@ internal fun BytecodePatchContext.bindTtsPreference(row: Int): TtsPreference {
     return TtsPreference(flag, settingsGetter)
 }
 
-internal fun BytecodePatchContext.showTtsPreferenceRow(row: Int) = copyTtsPreferenceRowVisibility(row, TTS_UPSELL_ROW)
+internal fun showTtsPreferenceRow(row: Int) = copyTtsPreferenceRowVisibility(row, TTS_UPSELL_ROW)
 
-internal fun BytecodePatchContext.hideTtsPreferenceRow(row: Int) = copyTtsPreferenceRowVisibility(row, TTS_FOOTNOTE_ROW)
+internal fun hideTtsPreferenceRow(row: Int) = copyTtsPreferenceRowVisibility(row, TTS_FOOTNOTE_ROW)
 
-private fun BytecodePatchContext.copyTtsPreferenceRowVisibility(row: Int, sourceRow: Int) {
+private fun copyTtsPreferenceRowVisibility(row: Int, sourceRow: Int) {
     val view = TtsPrefsViewFingerprint
     val rowRegister = view.instructionMatches[row].getInstruction<FiveRegisterInstruction>().registerC
     val visibilityRegister = view.instructionMatches[sourceRow].getInstruction<FiveRegisterInstruction>().registerD

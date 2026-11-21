@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.rise.misc.telemetry
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val disableTelemetryPatch = bytecodePatch(
+val disableTelemetryPatch = patch(
     name = "Disable telemetry",
     description = "Stops crash and error reports from reaching Sentry.",
 ) {

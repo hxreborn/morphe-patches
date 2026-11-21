@@ -8,8 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -39,7 +40,7 @@ private const val BODY_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->deletedMessageB
 private const val SHOW_DELETE_WITHOUT_TRACE_OPTION = "$VIBER_SETTINGS_CLASS->showDeleteWithoutTraceOption(Z)Z"
 
 @Suppress("unused")
-val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
+val removeDeletedMessagesPatch: Patch = patch(
     name = "Remove deleted message notices",
     description = "Makes Delete for everyone leave no notice on either side and clears deleted message notices from chats. " +
         "Hides Viber's own Delete without a trace option.",

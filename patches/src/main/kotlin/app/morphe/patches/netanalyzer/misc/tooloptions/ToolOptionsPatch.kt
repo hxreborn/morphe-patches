@@ -7,7 +7,8 @@ package app.morphe.patches.netanalyzer.misc.tooloptions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
@@ -32,7 +33,7 @@ private val TOOL_OPTION_PROPERTIES = listOf(
 )
 
 @Suppress("unused")
-val toolOptionsPatch = bytecodePatch(
+val toolOptionsPatch = patch(
     name = "Tool options",
     description = "Adds ping protocol, TCP ping, probe delay, payload size, don't fragment and audible ping, " +
         "traceroute and port scan delays, whois and RDAP servers, and DNS flags.",

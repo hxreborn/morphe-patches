@@ -6,9 +6,11 @@ package app.morphe.patches.protonmail.misc.accountswipe
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
@@ -32,7 +34,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/accountswipe/AccountAvatarSwipe;"
 
 @Suppress("unused")
-val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
+val swipeToSwitchAccountsPatch: Patch = patch(
     name = "Swipe to switch accounts",
     description = "Switches between signed-in accounts by swiping up or down on the account avatar.",
 ) {

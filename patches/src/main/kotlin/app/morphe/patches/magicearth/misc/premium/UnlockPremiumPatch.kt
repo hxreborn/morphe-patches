@@ -5,7 +5,7 @@
 package app.morphe.patches.magicearth.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -29,7 +29,7 @@ private const val IS_ACTIVE_NULL_CHECK_OFFSET = 12
 private const val IS_ACTIVE_BRANCH_OFFSET = 16
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks offline maps, real-time traffic and weather, elevation maps, activity recording, " +
         "vehicle profiles, personalized voices and Android Auto.",

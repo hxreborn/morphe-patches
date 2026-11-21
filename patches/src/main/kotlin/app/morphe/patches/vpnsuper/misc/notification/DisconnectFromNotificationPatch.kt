@@ -5,10 +5,11 @@
 package app.morphe.patches.vpnsuper.misc.notification
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -30,7 +31,7 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/vpnsuper/Notificati
 private const val CONNECTION_SERVICE_CLASS = "Lcom/superunlimited/feature/vpn/connection/presentation/VpnControlService;"
 private const val DISCONNECT_RECEIVER_CLASS_NAME = "app.hxreborn.extension.vpnsuper.NotificationDisconnectReceiver"
 
-private val notificationDisconnectReceiverPatch = resourcePatch {
+private val notificationDisconnectReceiverPatch = patch {
     dependsOn(vpnsuperAppliedPatchesExtensionPatch, vpnsuperSettingsExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
@@ -45,7 +46,7 @@ private val notificationDisconnectReceiverPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disconnectFromNotificationPatch: BytecodePatch = bytecodePatch(
+val disconnectFromNotificationPatch: Patch = patch(
     name = "Disconnect from notification",
     description = "Skips opening the app when Disconnect is tapped in the notification. Doesn't work on Android TV.",
 ) {

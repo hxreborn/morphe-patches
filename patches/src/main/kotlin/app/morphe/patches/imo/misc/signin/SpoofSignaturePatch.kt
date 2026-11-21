@@ -5,8 +5,9 @@
 package app.morphe.patches.imo.misc.signin
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.signature.spoofSignature
@@ -47,9 +48,9 @@ private fun ByteBuffer.matchesAt(offset: Int) = CERTIFICATE_DIGEST_FUNCTION.with
     if (word == BL) actual and BL_MASK == BL else actual == word
 }
 
-private val spoofSecurityLibrarySignaturePatch = rawResourcePatch {
+private val spoofSecurityLibrarySignaturePatch = patch {
     execute {
-        val library = get(SECURITY_LIBRARY, true)
+        val library = resourceFile(SECURITY_LIBRARY, true)
         if (!library.exists()) throw PatchException("$SECURITY_LIBRARY not found")
 
         val bytes = library.readBytes()
@@ -68,7 +69,7 @@ private val spoofSecurityLibrarySignaturePatch = rawResourcePatch {
 }
 
 @Suppress("unused")
-val spoofSignaturePatch = bytecodePatch(
+val spoofSignaturePatch = patch(
     name = "Spoof signature",
     description = "Restores phone verification by call when signing in and lets the app get its push token.",
 ) {

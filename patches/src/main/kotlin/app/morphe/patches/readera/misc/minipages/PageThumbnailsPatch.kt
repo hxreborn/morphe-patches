@@ -6,7 +6,7 @@ package app.morphe.patches.readera.misc.minipages
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
@@ -17,7 +17,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 
 @Suppress("unused")
-val pageThumbnailsPatch = bytecodePatch(
+val pageThumbnailsPatch = patch(
     name = "Page thumbnails",
     description = "Adds a button next to the page slider that shows the book's pages as thumbnails.",
 ) {

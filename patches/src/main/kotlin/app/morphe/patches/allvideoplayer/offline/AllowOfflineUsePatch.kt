@@ -5,12 +5,12 @@
 package app.morphe.patches.allvideoplayer.offline
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val allowOfflineUsePatch = bytecodePatch(
+val allowOfflineUsePatch = patch(
     name = "Allow offline use",
     description = "Opens the app without an internet connection.",
 ) {

@@ -4,14 +4,14 @@
  */
 package app.morphe.patches.narababy.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.narababy.shared.DATABASE_SNAPSHOTS_CLASS
 import app.morphe.patches.narababy.shared.rewriteDatabaseSnapshots
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.narababyDatabaseSnapshotsExtensionPatch
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Nara Lifetime for every family the account belongs to.",
 ) {

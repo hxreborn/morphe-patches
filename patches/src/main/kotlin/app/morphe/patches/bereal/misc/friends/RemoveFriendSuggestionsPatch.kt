@@ -7,9 +7,10 @@ package app.morphe.patches.bereal.misc.friends
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -44,7 +45,7 @@ private fun MutableMethod.filterRegisterAfter(index: Int, body: (register: Int, 
 }
 
 @Suppress("unused")
-val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
+val removeFriendSuggestionsPatch: Patch = patch(
     name = "Remove friend suggestions",
     description = "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and the feed.",
 ) {

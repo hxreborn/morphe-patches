@@ -5,7 +5,8 @@
 package app.morphe.patches.bettersleep.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bettersleep.misc.fix.iterable.restoreIterablePushActionPatch
@@ -25,7 +26,7 @@ private const val PURCHASE_TIME = 1735689600000L
 private const val EXPIRY_TIME = 4891363200000L
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all premium content and skips the free trial screen.",
 ) {

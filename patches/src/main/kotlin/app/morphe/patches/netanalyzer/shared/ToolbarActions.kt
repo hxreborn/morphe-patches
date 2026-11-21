@@ -9,9 +9,9 @@ import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
@@ -74,7 +74,7 @@ private class ToolbarActionReferences(
 private var toolbarActionReferences: ToolbarActionReferences? = null
 private val toolbarActionMethods = HashMap<String, Method>()
 
-internal val toolbarActionsPatch = bytecodePatch {
+internal val toolbarActionsPatch = patch {
     dependsOn(patchesMenuPatch, vectorIconsPatch)
 
     execute {
@@ -93,8 +93,7 @@ private const val ROW_CHEVRON_END_DP = 8f
 private const val ROW_CHEVRON_TINT = "rowSubsubtitleColor"
 private const val ROW_CHEVRON_REGISTERS = 9
 
-context(context: BytecodePatchContext)
-internal fun rowChevronMethod(classDef: MutableClass): Method = with(context) {
+internal fun rowChevronMethod(classDef: MutableClass): Method =
     toolbarActionMethods.getOrPut("${classDef.type}$ROW_CHEVRON_METHOD") {
         val references = toolbarActionReferences()
         val iconType = imageVectorType()
@@ -148,17 +147,13 @@ internal fun rowChevronMethod(classDef: MutableClass): Method = with(context) {
             smali,
         )
     }
-}
 
-context(context: BytecodePatchContext)
 internal fun addToolbarIcon(slot: ToolbarSlot, iconName: String, pathData: String, description: String, activity: String) =
     addIconButton(slot, iconName, pathData, description, OPEN_ACTIVITY_CLICK, "$EXTENSION_PACKAGE.$activity")
 
-context(context: BytecodePatchContext)
 internal fun addExportMenu(slot: ToolbarSlot, screen: String) =
     addIconButton(slot, MORE_VERT_ICON, MaterialIcons.MORE_VERT, MORE_OPTIONS, EXPORT_MENU_CLICK, screen)
 
-context(context: BytecodePatchContext)
 private fun addIconButton(
     slot: ToolbarSlot,
     iconName: String,
@@ -218,7 +213,6 @@ internal class ToolbarSlot(
     val composerType: String,
 )
 
-context(context: BytecodePatchContext)
 internal fun emptyGroupSlot(composableName: String): ToolbarSlot =
     emptyGroupSlotOrNull(composableFingerprint(composableName).matchSingle())
         ?: throw PatchException("$composableName has no empty composer group after a null check")
@@ -249,7 +243,6 @@ internal fun emptyGroupSlotOrNull(match: Match): ToolbarSlot? {
     return null
 }
 
-context(context: BytecodePatchContext)
 internal fun textButtonSlot(composableName: String): ToolbarSlot {
     val menu = Fingerprint(
         filters = listOf(composable(composableName), methodCall(reference = toolbarActionReferences().textButton)),
@@ -265,12 +258,10 @@ internal fun textButtonSlot(composableName: String): ToolbarSlot {
     return ToolbarSlot(menu.method, menu.classDef, call.index, composerRegister, composerType)
 }
 
-context(context: BytecodePatchContext)
 internal fun afterTextButtonSlot(composableName: String): ToolbarSlot = textButtonSlot(composableName).let { slot ->
     ToolbarSlot(slot.method, slot.classDef, slot.index + 1, slot.composerRegister, slot.composerType)
 }
 
-context(context: BytecodePatchContext)
 internal fun addToolbarAction(slot: ToolbarSlot, label: String, activity: String) {
     val actionMethod = toolbarActionMethod(slot.classDef, label, "$EXTENSION_PACKAGE.$activity")
     slot.method.addInstructions(
@@ -279,8 +270,7 @@ internal fun addToolbarAction(slot: ToolbarSlot, label: String, activity: String
     )
 }
 
-context(context: BytecodePatchContext)
-private fun toolbarActionReferences(): ToolbarActionReferences = toolbarActionReferences ?: with(context) {
+private fun toolbarActionReferences(): ToolbarActionReferences = toolbarActionReferences ?: run {
     val pingMenu = emptyGroupSlot(TOOLS_PING_MENU)
     val composerType = pingMenu.composerType
     val clickable = ClickableModifierFingerprint.matchSingle().originalMethod
@@ -360,7 +350,6 @@ private fun toolbarActionReferences(): ToolbarActionReferences = toolbarActionRe
     ).also { toolbarActionReferences = it }
 }
 
-context(context: BytecodePatchContext)
 private fun toolbarActionMethod(classDef: MutableClass, label: String, activity: String): Method =
     toolbarActionMethods.getOrPut("${classDef.type}$label") {
         val references = toolbarActionReferences()

@@ -7,8 +7,10 @@ package app.morphe.patches.ridmik.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,10 +21,10 @@ import org.w3c.dom.Element
 
 private const val AD_SLOT_ID = "@id/adsParent"
 
-private val collapseAdSlotsPatch = resourcePatch {
+private val collapseAdSlotsPatch = patch {
     execute {
         val layouts = decode("res/layout*")
-        val slotLayouts = layouts.filter { path -> AD_SLOT_ID in get(path).readText() }
+        val slotLayouts = layouts.filter { path -> AD_SLOT_ID in resourceFile(path).readText() }
         if (slotLayouts.isEmpty()) throw PatchException("No layout contains $AD_SLOT_ID")
 
         val slotLayoutReferences = mutableSetOf<String>()
@@ -35,7 +37,7 @@ private val collapseAdSlotsPatch = resourcePatch {
             }
         }
 
-        layouts.filter { path -> slotLayoutReferences.any { it in get(path).readText() } }.forEach { path ->
+        layouts.filter { path -> slotLayoutReferences.any { it in resourceFile(path).readText() } }.forEach { path ->
             document(path).use { document ->
                 document.documentElement.hideMatching {
                     it.tagName == "include" && it.getAttribute("layout") in slotLayoutReferences
@@ -50,7 +52,7 @@ private fun Element.hideMatching(predicate: (Element) -> Boolean) = doRecursivel
 }
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes banner, full-screen and app-open ads from the keyboard and the app, " +
         "and sponsored results in GIF search.",

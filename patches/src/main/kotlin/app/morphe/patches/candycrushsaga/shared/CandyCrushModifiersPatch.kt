@@ -5,8 +5,10 @@
 package app.morphe.patches.candycrushsaga.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.misc.boosters.HttpResponseFingerprint
@@ -22,17 +24,17 @@ import app.morphe.patches.shared.misc.extension.candycrushsagaGameModifiersExten
 
 private const val MODIFIERS = "Lapp/hxreborn/extension/candycrushsaga/GameModifiers;"
 
-private val addModifiersLibraryPatch = resourcePatch {
+private val addModifiersLibraryPatch = patch {
     dependsOn(candyCrushNativePatch)
     execute {
         val build = candyCrushNativeBuild(packageMetadata.packageName)
         val resource = inputStreamFromBundledResource(build.resourceDirectory, "libccsmodifiers.so")
             ?: throw PatchException("Missing Candy Crush game modifier library")
-        get("lib/arm64-v8a/libccsmodifiers.so", copy = false).writeBytes(resource.use { it.readBytes() })
+        resourceFile("lib/arm64-v8a/libccsmodifiers.so", copy = false).writeBytes(resource.use { it.readBytes() })
     }
 }
 
-internal val candyCrushModifiersPatch = bytecodePatch {
+internal val candyCrushModifiersPatch = patch {
     dependsOn(candycrushsagaGameModifiersExtensionPatch)
     dependsOn(addModifiersLibraryPatch)
 

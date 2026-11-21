@@ -7,10 +7,10 @@ package app.morphe.patches.photoeditorpro.aitools
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -62,7 +62,7 @@ private val TRACED_TOOLS = mapOf(
 )
 
 @Suppress("unused")
-val showAiProgressPatch: BytecodePatch = bytecodePatch(
+val showAiProgressPatch: Patch = patch(
     name = "Show AI progress",
     description = "Shows the current stage of AI Remove and Enhance on their loading screens.",
 ) {
@@ -123,7 +123,7 @@ private fun hookTask(
     resultHandler.addInstructions(0, "invoke-static { $statusRegister }, $PROGRESS_TRACE_CLASS->finished(I)V")
 }
 
-private fun BytecodePatchContext.hookLoadingFragment(fragmentClass: String) {
+private fun hookLoadingFragment(fragmentClass: String) {
     val fragment = mutableClassDefBy(fragmentClass)
 
     val progressMethod = fragment.methodMatching("progress animator") {

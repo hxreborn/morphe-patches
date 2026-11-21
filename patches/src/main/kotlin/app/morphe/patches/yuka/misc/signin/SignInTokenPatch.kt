@@ -7,7 +7,8 @@ package app.morphe.patches.yuka.misc.signin
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.OptionException
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,7 +31,7 @@ private const val STEPS_URL = "github.com/hxreborn/morphe-patches/blob/dev/PATCH
 private val EXPIRY_CLAIM = Regex("\"exp\"\\s*:\\s*(\\d+)")
 
 @Suppress("unused")
-val signInTokenPatch = bytecodePatch(
+val signInTokenPatch = patch(
     name = "Sign-in token",
     description = "Signs in with an App Check token. " +
         "Requires a token copied from Yuka installed from Google Play on a rooted phone. " +

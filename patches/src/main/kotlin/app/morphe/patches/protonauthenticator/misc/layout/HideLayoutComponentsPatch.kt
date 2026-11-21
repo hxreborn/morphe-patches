@@ -7,8 +7,8 @@ package app.morphe.patches.protonauthenticator.misc.layout
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -23,7 +23,7 @@ private const val SETTINGS_SECTIONS_CLASS = "Lapp/hxreborn/extension/protonauthe
 private const val NEXT_INSTRUCTION = 1
 
 @Suppress("unused")
-val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
+val hideLayoutComponentsPatch: Patch = patch(
     name = "Hide layout components",
     description = "Adds settings to hide the Spread the word section, the Discover Proton section " +
         "and the Proton Pass banner.",

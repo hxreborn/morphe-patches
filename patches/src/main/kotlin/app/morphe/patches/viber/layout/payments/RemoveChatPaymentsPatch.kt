@@ -5,8 +5,8 @@
 package app.morphe.patches.viber.layout.payments
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -21,7 +21,7 @@ import app.morphe.patches.shared.misc.extension.viberRemoveChatPaymentActionsExt
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/ChatPayments;"
 
 @Suppress("unused")
-val removeChatPaymentsPatch: BytecodePatch = bytecodePatch(
+val removeChatPaymentsPatch: Patch = patch(
     name = "Remove chat payment actions",
     description = "Removes payment actions from chat menus.",
 ) {

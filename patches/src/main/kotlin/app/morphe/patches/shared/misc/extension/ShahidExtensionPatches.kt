@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val shahidUnlockFullHdExtensionPatch = bytecodePatch {
+
+internal val shahidUnlockFullHdExtensionPatch = patch {
     extendWith("extensions/hxreborn/shahid-unlock-full-hd.mpe")
 }

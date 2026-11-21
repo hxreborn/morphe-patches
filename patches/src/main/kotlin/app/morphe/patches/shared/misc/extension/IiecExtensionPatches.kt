@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val iiecAmoledDarkThemeExtensionPatch = bytecodePatch {
+
+internal val iiecAmoledDarkThemeExtensionPatch = patch {
     dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedNightModeExtensionPatch)
     extendWith("extensions/hxreborn/iiec-amoled-dark-theme.mpe")
 }

@@ -4,12 +4,13 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val uptclRemoveForcedUpdateExtensionPatch = bytecodePatch {
+
+internal val uptclRemoveForcedUpdateExtensionPatch = patch {
     extendWith("extensions/hxreborn/uptcl-remove-forced-update.mpe")
 }
 
-internal val uptclMatchSystemBarColorExtensionPatch = bytecodePatch {
+internal val uptclMatchSystemBarColorExtensionPatch = patch {
     extendWith("extensions/hxreborn/uptcl-match-system-bar-color.mpe")
 }

@@ -6,7 +6,7 @@ package app.morphe.patches.lingodeer.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lingodeer.misc.fix.signature.spoofSignaturePatch
@@ -23,7 +23,7 @@ private const val PROMPT_METHOD_COUNT = 2
 private const val BYPASS_CONSTANT_COUNT = 3
 
 @Suppress("unused")
-val skipSignInPromptPatch = bytecodePatch(
+val skipSignInPromptPatch = patch(
     name = "Skip sign-in prompt",
     description = "Opens lessons past the second unit without an account.",
 ) {

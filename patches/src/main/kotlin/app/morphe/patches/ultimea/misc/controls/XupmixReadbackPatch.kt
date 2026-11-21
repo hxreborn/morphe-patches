@@ -8,7 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patcher.util.getReference
@@ -31,7 +32,7 @@ private const val CALLBACKS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/contro
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/controls/XupmixReadback;"
 
-internal val xupmixReadbackPatch = bytecodePatch {
+internal val xupmixReadbackPatch = patch {
     dependsOn(ultimeaSettingsExtensionPatch)
     execute {
         listOf(WriteCharacteristicFingerprint, WriteCharacteristicWithValueFingerprint).forEach { fingerprint ->

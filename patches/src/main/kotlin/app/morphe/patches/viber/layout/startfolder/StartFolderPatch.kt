@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.viber.layout.startfolder
 
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -38,7 +39,7 @@ private const val FOLDER_NAME_PARAMETER_INDEX = 1
 private const val FOLDER_TYPE_PARAMETER_INDEX = 2
 
 @Suppress("unused")
-val startFolderPatch: BytecodePatch = bytecodePatch(
+val startFolderPatch: Patch = patch(
     name = "Start folder",
     description = "Opens Chats in the selected folder.",
 ) {

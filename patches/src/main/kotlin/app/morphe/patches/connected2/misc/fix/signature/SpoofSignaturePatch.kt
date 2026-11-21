@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.connected2.misc.fix.signature
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 private const val APPLICATION_CLASS = "Lcom/pairip/application/Application;"
 
 @Suppress("unused")
-val spoofSignaturePatch = bytecodePatch(
+val spoofSignaturePatch = patch(
     name = "Spoof signature",
     description = "Enables sign-up and sign-in.",
 ) {

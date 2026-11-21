@@ -8,8 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -30,7 +31,7 @@ import app.morphe.patches.shared.misc.extension.teraboxShowBackupCountExtensionP
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/BackupCount;"
 
 @Suppress("unused")
-val showBackupCountPatch: BytecodePatch = bytecodePatch(
+val showBackupCountPatch: Patch = patch(
     name = "Show backup count",
     description = "Shows remaining files on Home and Photos, including paused backups.",
 ) {

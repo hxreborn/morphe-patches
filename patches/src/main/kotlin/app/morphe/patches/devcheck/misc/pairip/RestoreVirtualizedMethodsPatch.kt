@@ -5,8 +5,9 @@
 package app.morphe.patches.devcheck.misc.pairip
 
 import app.morphe.patcher.Match
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchSingle
@@ -36,7 +37,7 @@ private val RESTORED_SOURCES = listOf(
 
 private fun stub(name: String) = "Lstub/$name;"
 
-private fun BytecodePatchContext.resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>> {
+private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>> {
     val stubs = mutableMapOf<String, String>()
 
     fun Match.reference(index: Int) =
@@ -333,7 +334,7 @@ private lateinit var restoredSmali: List<String>
 
 private lateinit var virtualizedMethods: Map<MutableMethod, String>
 
-private val resolveRestoredMethodsPatch = bytecodePatch {
+private val resolveRestoredMethodsPatch = patch {
     execute {
         val (stubs, methods) = resolveStubs()
         val replacements = stubs.entries.sortedByDescending { it.key.length }
@@ -353,7 +354,7 @@ private val resolveRestoredMethodsPatch = bytecodePatch {
     }
 }
 
-internal val restoreVirtualizedMethodsPatch = bytecodePatch {
+internal val restoreVirtualizedMethodsPatch = patch {
     dependsOn(removePairipVirtualizationPatch, resolveRestoredMethodsPatch)
 
     extendWith(Supplier { ByteArrayInputStream(assembleDex(restoredSmali)) })

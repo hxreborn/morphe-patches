@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val blossomblastGameModifiersExtensionPatch = bytecodePatch {
+
+internal val blossomblastGameModifiersExtensionPatch = patch {
     extendWith("extensions/hxreborn/blossomblast-game-modifiers.mpe")
 }

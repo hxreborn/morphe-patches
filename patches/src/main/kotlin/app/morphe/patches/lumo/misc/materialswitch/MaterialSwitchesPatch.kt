@@ -6,8 +6,8 @@ package app.morphe.patches.lumo.misc.materialswitch
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
@@ -31,7 +31,7 @@ private const val SWITCH_VIEW_CLASS = "Lapp/hxreborn/extension/proton/MaterialSw
 private const val MODIFIER_PARAMETER = 1
 private const val COMPOSER_PARAMETER = 4
 
-private fun BytecodePatchContext.drawNativeSwitchesAsViews() {
+private fun drawNativeSwitchesAsViews() {
     val switch = MaterialSwitchFingerprint.matchSingle().method
     val modifier = switch.parameterTypes[MODIFIER_PARAMETER].toString()
     val androidView = androidViewFingerprint(modifier, switch.parameterTypes[COMPOSER_PARAMETER].toString())
@@ -68,7 +68,7 @@ private fun BytecodePatchContext.drawNativeSwitchesAsViews() {
 }
 
 @Suppress("unused")
-val materialSwitchesPatch = bytecodePatch(
+val materialSwitchesPatch = patch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {

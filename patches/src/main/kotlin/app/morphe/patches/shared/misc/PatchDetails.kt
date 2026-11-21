@@ -4,15 +4,15 @@
  */
 package app.morphe.patches.shared.misc
 
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.returnEarly
 import com.android.tools.smali.util.StringUtils.escapeString
 
-internal fun BytecodePatchContext.returnTrueFrom(extensionClass: String, methodName: String) =
+internal fun returnTrueFrom(extensionClass: String, methodName: String) =
     mutableClassDefBy(extensionClass).methods.single { it.name == methodName }.returnEarly(true)
 
-internal fun BytecodePatchContext.fillPatchDetails(
+internal fun fillPatchDetails(
     extensionClass: String,
     patch: Patch,
     nameMethod: String,
@@ -25,7 +25,7 @@ internal fun BytecodePatchContext.fillPatchDetails(
     }
 }
 
-internal fun BytecodePatchContext.fillPatchMetadata(
+internal fun fillPatchMetadata(
     extensionClass: String,
     methodName: String,
     patch: Patch,
@@ -37,7 +37,7 @@ internal fun BytecodePatchContext.fillPatchMetadata(
     (methodName + "Description").takeIf { withDescription },
 )
 
-internal fun BytecodePatchContext.fillAppliedPatch(
+internal fun fillAppliedPatch(
     extensionClass: String,
     methodName: String,
     patch: Patch,

@@ -10,7 +10,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -42,7 +43,7 @@ private val colorSchemeConstructor = InstructionFilter { _, instruction ->
 private fun Map<String, String>.toRegistration() =
     entries.joinToString(LIST_SEPARATOR) { (property, field) -> "$property$NAME_SEPARATOR$field" }
 
-internal val hostPalettePatch = bytecodePatch {
+internal val hostPalettePatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     dependsOn(stringKeyPatch)
 

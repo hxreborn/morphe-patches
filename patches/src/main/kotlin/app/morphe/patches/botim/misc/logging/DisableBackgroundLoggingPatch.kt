@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.botim.misc.logging
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.manifest.disableApplicationComponents
 
@@ -15,7 +16,7 @@ private val loggingComponents = setOf(
 )
 
 @Suppress("unused")
-val disableBackgroundLoggingPatch = resourcePatch(
+val disableBackgroundLoggingPatch = patch(
     name = "Disable background logging",
     description = "Stops the logging service and the extra background process the app starts at launch.",
     default = false,

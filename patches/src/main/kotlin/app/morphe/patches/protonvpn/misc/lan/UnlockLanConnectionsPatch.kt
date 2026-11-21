@@ -10,8 +10,8 @@
  */
 package app.morphe.patches.protonvpn.misc.lan
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonvpn.misc.restrictions.unlockUserSetting
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +19,7 @@ import app.morphe.patches.shared.misc.proton.VPN_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 
 @Suppress("unused")
-val unlockLanConnectionsPatch: BytecodePatch = bytecodePatch(
+val unlockLanConnectionsPatch: Patch = patch(
     name = "Unlock LAN connections",
     description = "Unlocks LAN connections on free plans.",
 ) {

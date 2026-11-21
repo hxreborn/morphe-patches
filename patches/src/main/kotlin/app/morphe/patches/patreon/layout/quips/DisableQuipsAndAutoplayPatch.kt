@@ -7,8 +7,8 @@ package app.morphe.patches.patreon.layout.quips
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.layout.home.launcherSectionItemsFingerprint
 import app.morphe.patches.patreon.layout.home.replaceQuickPostCardStub
@@ -23,7 +23,7 @@ private const val QUIPS_AND_AUTOPLAY_CLASS = "${PATREON_EXTENSION_PACKAGE}QuipsA
 private const val HOME_FEED_FILTER_CLASS = "${PATREON_EXTENSION_PACKAGE}HomeFeedFilter;"
 
 @Suppress("unused")
-val disableQuipsAndAutoplayPatch: BytecodePatch = bytecodePatch(
+val disableQuipsAndAutoplayPatch: Patch = patch(
     name = "Disable Quips and autoplay",
     description = "Removes Quip cards and the Quip button, and stops feed videos from autoplaying or preloading.",
 ) {

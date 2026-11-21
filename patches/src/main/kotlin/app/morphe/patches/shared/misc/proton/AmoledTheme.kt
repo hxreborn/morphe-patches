@@ -11,8 +11,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -47,13 +47,13 @@ private fun Instruction.readsStaticField(field: FieldReference) =
         it.definingClass == field.definingClass && it.name == field.name
     } == true
 
-private fun BytecodePatchContext.returnsStaticField(getter: MethodReference, field: FieldReference) =
+private fun returnsStaticField(getter: MethodReference, field: FieldReference) =
     getter.parameterTypes.isEmpty() &&
         classDefByOrNull(getter.definingClass)?.methods
             ?.singleOrNull { it.name == getter.name && it.parameterTypes.isEmpty() }
             ?.implementation?.instructions?.any { it.readsStaticField(field) } == true
 
-private fun BytecodePatchContext.readsPaletteField(method: MutableMethod, index: Int, field: FieldReference): Boolean {
+private fun readsPaletteField(method: MutableMethod, index: Int, field: FieldReference): Boolean {
     val write = method.getInstruction(index)
     if (write.readsStaticField(field)) return true
     if (write.opcode != Opcode.MOVE_RESULT_WIDE || index == 0) return false
@@ -62,7 +62,7 @@ private fun BytecodePatchContext.readsPaletteField(method: MutableMethod, index:
     return returnsStaticField(getter, field)
 }
 
-private fun BytecodePatchContext.shadeReads(match: Match, argument: Int, field: FieldReference): Boolean {
+private fun shadeReads(match: Match, argument: Int, field: FieldReference): Boolean {
     val constructorCall = match.instructionMatches.first()
     val arguments = constructorCall.getInstruction<RegisterRangeInstruction>()
     val shadeWrite = match.method.indexOfLastWriteOrNull(arguments.shadeRegister(argument), constructorCall.index)
@@ -88,7 +88,7 @@ private fun MutableMethod.transformShade(constructorCall: Match.InstructionMatch
     )
 }
 
-internal fun BytecodePatchContext.transformCoreDarkBackgrounds() {
+internal fun transformCoreDarkBackgrounds() {
     val palette = BalticSeaPaletteFingerprint.matchSingle()
     val balticSea = palette.method.paletteFieldAssignedFrom(ProtonPalette.BALTIC_SEA)
     val bastille = palette.method.paletteFieldAssignedFrom(ProtonPalette.BASTILLE)

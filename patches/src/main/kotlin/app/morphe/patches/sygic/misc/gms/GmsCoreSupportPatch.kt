@@ -6,14 +6,14 @@ package app.morphe.patches.sygic.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
-private val playServicesFallbackPatch = bytecodePatch {
+private val playServicesFallbackPatch = patch {
     execute {
         CredentialManagerAvailabilityFingerprint.matchSingle().method.returnEarly(false)
 

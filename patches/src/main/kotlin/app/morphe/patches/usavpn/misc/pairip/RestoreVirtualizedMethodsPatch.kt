@@ -5,7 +5,8 @@
 package app.morphe.patches.usavpn.misc.pairip
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchSingle
@@ -129,7 +130,7 @@ private fun appRestoredMethods(packageName: String) = when (packageName) {
     else -> throw PatchException("No restored methods for $packageName")
 }
 
-val restoreVirtualizedMethodsPatch = bytecodePatch {
+val restoreVirtualizedMethodsPatch = patch {
     dependsOn(sharedUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.USA_VPN, AppCompatibilities.VPN_INDIA)
 

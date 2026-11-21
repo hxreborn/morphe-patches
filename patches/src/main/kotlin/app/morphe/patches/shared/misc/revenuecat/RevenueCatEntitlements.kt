@@ -5,7 +5,6 @@
 package app.morphe.patches.shared.misc.revenuecat
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -16,15 +15,15 @@ private const val GRANT = "$EXTENSION_CLASS->grantEntitlement(Lorg/json/JSONObje
 private const val GRANT_LIFETIME =
     "$EXTENSION_CLASS->grantLifetimeEntitlement(Lorg/json/JSONObject;Ljava/lang/String;Ljava/lang/String;)V"
 
-internal fun BytecodePatchContext.grantRevenueCatEntitlements(
+internal fun grantRevenueCatEntitlements(
     vararg entitlements: Pair<String, String>,
     enabledMethod: String? = null,
 ) = injectGrants(GRANT, entitlements, enabledMethod)
 
-internal fun BytecodePatchContext.grantRevenueCatLifetimeEntitlement(entitlement: String, product: String) =
+internal fun grantRevenueCatLifetimeEntitlement(entitlement: String, product: String) =
     injectGrants(GRANT_LIFETIME, arrayOf(entitlement to product))
 
-private fun BytecodePatchContext.injectGrants(
+private fun injectGrants(
     grant: String,
     entitlements: Array<out Pair<String, String>>,
     enabledMethod: String? = null,

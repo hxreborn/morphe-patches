@@ -5,7 +5,9 @@
 package app.morphe.patches.serializd.misc.icon
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.listApkEntries
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.png.PngImage
 
@@ -23,14 +25,14 @@ private val foregroundSizeByDensity = mapOf(
 )
 
 @Suppress("unused")
-val sharpenLauncherIconPatch = resourcePatch(
+val sharpenLauncherIconPatch = patch(
     name = "Sharpen launcher icon",
     description = "Sharpens the default launcher icon. Alternate icons are unchanged.",
 ) {
     compatibleWith(AppCompatibilities.SERIALIZD)
 
     execute {
-        val splash = PngImage.read(get(SPLASH_IMAGE))
+        val splash = PngImage.read(resourceFile(SPLASH_IMAGE))
         val mark = splash.findLogoMark()
 
         val foregrounds = listApkEntries("res/mipmap-")
@@ -38,7 +40,7 @@ val sharpenLauncherIconPatch = resourcePatch(
             .mapNotNull { entry -> foregroundSize(entry)?.let { entry to it } }
         if (foregrounds.isEmpty()) throw PatchException("Could not find the launcher icon foreground")
 
-        foregrounds.forEach { (entry, size) -> splash.resampleLayer(mark, size).write(get(entry)) }
+        foregrounds.forEach { (entry, size) -> splash.resampleLayer(mark, size).write(resourceFile(entry)) }
     }
 }
 

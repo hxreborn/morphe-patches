@@ -6,8 +6,8 @@ package app.morphe.patches
 
 import app.morphe.patcher.Patcher
 import app.morphe.patcher.PatcherConfig
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.shared.misc.fillAppliedPatch
 import com.android.tools.smali.dexlib2.Opcodes
@@ -28,22 +28,22 @@ internal class PatchMetadataTest {
     @Test
     fun `inject selected metadata with quotes and line breaks`() {
         // given
-        lateinit var patch: BytecodePatch
-        patch = bytecodePatch(
+        lateinit var selectedPatch: Patch
+        selectedPatch = patch(
             name = "Selected \"feature\"",
             description = "Preserves backslashes \\.\nIncludes the full caveat.",
         ) {
-            execute { markPatchApplied("disableAnalytics", patch) }
+            execute { markPatchApplied("disableAnalytics", selectedPatch) }
         }
 
         // when
-        val methods = appliedPatchesMethods(patch)
+        val methods = appliedPatchesMethods(selectedPatch)
 
         // then
         assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
-        assertEquals(patch.name,
+        assertEquals(selectedPatch.name,
             ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
-        assertEquals(patch.description,
+        assertEquals(selectedPatch.description,
             ((methods.getValue("disableAnalyticsDescription") as ReferenceInstruction).reference as StringReference).string)
         for (name in listOf("removeSponsoredItems", "removeSponsoredItemsName", "removeSponsoredItemsDescription")) {
             assertEquals(0, (methods.getValue(name) as NarrowLiteralInstruction).narrowLiteral)
@@ -53,29 +53,29 @@ internal class PatchMetadataTest {
     @Test
     fun `leave description unfilled when withDescription is false`() {
         // given
-        lateinit var patch: BytecodePatch
-        patch = bytecodePatch(name = "Selected feature", description = "Unused description.") {
+        lateinit var selectedPatch: Patch
+        selectedPatch = patch(name = "Selected feature", description = "Unused description.") {
             execute {
                 fillAppliedPatch(
                     "Lapp/hxreborn/extension/aliexpress/AppliedPatches;",
                     "disableAnalytics",
-                    patch,
+                    selectedPatch,
                     withDescription = false,
                 )
             }
         }
 
         // when
-        val methods = appliedPatchesMethods(patch)
+        val methods = appliedPatchesMethods(selectedPatch)
 
         // then
         assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
-        assertEquals(patch.name,
+        assertEquals(selectedPatch.name,
             ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
         assertEquals(0, (methods.getValue("disableAnalyticsDescription") as NarrowLiteralInstruction).narrowLiteral)
     }
 
-    private fun appliedPatchesMethods(patch: BytecodePatch): Map<String, Instruction> {
+    private fun appliedPatchesMethods(patch: Patch): Map<String, Instruction> {
         val directory = Files.createTempDirectory("patch-metadata").toFile()
         try {
             val apk = directory.resolve("fixture.apk")

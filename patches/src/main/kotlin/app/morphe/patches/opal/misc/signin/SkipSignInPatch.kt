@@ -6,7 +6,7 @@ package app.morphe.patches.opal.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -36,7 +36,7 @@ private const val MARK_ONBOARDING_COMPLETED =
     "INSERT OR REPLACE INTO `onboarding` (`id`, `step`) VALUES (0, 'Completed')"
 
 @Suppress("unused")
-val skipSignInPatch = bytecodePatch(
+val skipSignInPatch = patch(
     name = "Skip sign-in",
     description = "Skips sign-in and runs Opal without an account. Features that need the Opal server are unavailable.",
 ) {

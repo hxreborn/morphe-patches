@@ -5,7 +5,7 @@
 package app.morphe.patches.hinducalendar.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.hinducalendar.misc.pairip.restoreReminderReceiversPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Removes banner and interstitial ads and the Remove Ads menu item.",
 ) {

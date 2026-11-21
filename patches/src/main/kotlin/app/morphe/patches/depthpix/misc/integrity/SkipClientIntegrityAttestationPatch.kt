@@ -4,11 +4,11 @@
  */
 package app.morphe.patches.depthpix.misc.integrity
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.kotlin.returnUnitEarly
 
-internal val skipClientIntegrityAttestationPatch = bytecodePatch {
+internal val skipClientIntegrityAttestationPatch = patch {
     execute {
         returnUnitEarly(ClientIntegrityAttestationFingerprint.matchSingle().method)
     }

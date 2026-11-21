@@ -4,10 +4,9 @@
  */
 package app.morphe.patches.ultimea.misc.firmware
 
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
@@ -23,13 +22,13 @@ private const val BRANCH_MASK = 0xfc000000.toInt()
 private const val RETURN_FALSE = 0x9100c2c0.toInt()
 
 @Suppress("unused")
-val stopFirmwareRemindersPatch: BytecodePatch = bytecodePatch(
+val stopFirmwareRemindersPatch: Patch = patch(
     name = "Stop firmware reminders",
     description = "Stops automatic firmware reminders. Keeps manual update checks.",
 ) {
     compatibleWith(AppCompatibilities.ULTIMEA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, resourcePatch {
+    dependsOn(patchesSettingsPatch, patch {
         execute {
             val library = dartAotLibrary().readBytes()
             val firmware = nativeMethods.single("/device-detail", "Do not show dialog")

@@ -6,7 +6,7 @@ package app.morphe.patches.raindrop.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.raindrop.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +19,7 @@ private const val REACT_CONTEXT_TYPE = "Lcom/facebook/react/bridge/ReactApplicat
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/raindrop/ProUnlock;"
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks reminders and highlight notes. Adds duplicate and broken link filters, collection and tag " +
         "suggestions, full-text search of saved pages, Wayback Machine copies and a weekly bookmark export to Downloads. " +

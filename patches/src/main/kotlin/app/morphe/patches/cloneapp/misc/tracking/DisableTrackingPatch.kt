@@ -6,7 +6,7 @@ package app.morphe.patches.cloneapp.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -20,7 +20,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private val UPLOAD_ENDPOINTS = listOf("evt", "clonelog_gp", "shis", "dhis")
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops sending usage events, the cloned app list and the private browser's search and " +
         "download history to the developer, and disables Firebase Analytics.",

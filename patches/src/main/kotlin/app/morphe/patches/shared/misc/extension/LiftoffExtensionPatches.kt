@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val liftoffSettingsExtensionPatch = bytecodePatch {
+
+internal val liftoffSettingsExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/liftoff-settings.mpe")
 }
 
-internal val liftoffUnlockCustomizationsExtensionPatch = bytecodePatch {
+internal val liftoffUnlockCustomizationsExtensionPatch = patch {
     dependsOn(liftoffSettingsExtensionPatch)
     extendWith("extensions/hxreborn/liftoff-unlock-customizations.mpe")
 }

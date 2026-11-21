@@ -5,7 +5,8 @@
 package app.morphe.patches.showly.misc.theme
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.childElementsSequence
 import app.morphe.util.forEachChildElement
@@ -24,7 +25,7 @@ private val APP_THEME_ITEM_NAMES = setOf(
 )
 
 @Suppress("unused")
-val amoledThemePatch = resourcePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black.",
 ) {

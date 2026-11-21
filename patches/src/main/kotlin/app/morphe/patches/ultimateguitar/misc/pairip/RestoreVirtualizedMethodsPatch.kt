@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.ultimateguitar.misc.pairip
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
@@ -125,7 +125,7 @@ private val RESTORED_METHODS = listOf(
     ),
 )
 
-val restoreVirtualizedMethodsPatch = bytecodePatch {
+val restoreVirtualizedMethodsPatch = patch {
     compatibleWith(AppCompatibilities.ULTIMATE_GUITAR)
 
     dependsOn(removePairipVirtualizationPatch)

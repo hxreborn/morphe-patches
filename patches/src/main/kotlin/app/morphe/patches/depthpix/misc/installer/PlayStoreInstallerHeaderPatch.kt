@@ -5,14 +5,14 @@
 package app.morphe.patches.depthpix.misc.installer
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.depthpix.misc.integrity.skipClientIntegrityAttestationPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
 private const val PLAY_STORE_PACKAGE = "com.android.vending"
 private const val HEADER_SITES = 2
 
-internal val playStoreInstallerHeaderPatch = bytecodePatch {
+internal val playStoreInstallerHeaderPatch = patch {
     dependsOn(skipClientIntegrityAttestationPatch)
 
     execute {

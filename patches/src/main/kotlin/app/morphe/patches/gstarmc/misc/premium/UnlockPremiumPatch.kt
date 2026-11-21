@@ -5,7 +5,7 @@
 package app.morphe.patches.gstarmc.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.gstarmc.misc.jiagu.editPayloadDexes
 import app.morphe.patches.gstarmc.misc.jiagu.jiaguRuntimePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -38,7 +38,7 @@ private val VOID_METHODS = mapOf(ADS to listOf("loadInternalAds"))
 private const val CHECK_CALLBACK = "Lcom/stone/app/ui/base/BaseActivity\$FunctionPointCheckCallback;"
 
 @Suppress("unused")
-val unlockPremiumPatch = rawResourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the paid drawing, annotation and measurement tools, and removes ads.",
 ) {

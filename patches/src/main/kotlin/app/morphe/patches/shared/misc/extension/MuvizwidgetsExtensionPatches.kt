@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val muvizwidgetsFixWeatherExtensionPatch = bytecodePatch {
+
+internal val muvizwidgetsFixWeatherExtensionPatch = patch {
     extendWith("extensions/hxreborn/muvizwidgets-fix-weather.mpe")
 }

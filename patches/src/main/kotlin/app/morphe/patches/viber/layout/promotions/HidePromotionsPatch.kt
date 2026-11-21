@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.layout.promotions
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -18,7 +18,7 @@ import app.morphe.patches.viber.shared.markPatchApplied
 private const val SHOW_PROMOTION = "$VIBER_SETTINGS_CLASS->showPromotion(Z)Z"
 
 @Suppress("unused")
-val hidePromotionsPatch: BytecodePatch = bytecodePatch(
+val hidePromotionsPatch: Patch = patch(
     name = "Hide Viber Out and channel promotions",
     description = "Hides the Viber Out banners and intro on the Calls tab and the channel and bot suggestions in the chat list.",
 ) {

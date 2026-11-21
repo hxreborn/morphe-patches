@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.myscriptnotes.misc.tracking
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.myscriptnotes.misc.pairip.restoreStartupPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
@@ -12,7 +13,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val disableTrackingPatch = resourcePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops Firebase Analytics, Crashlytics, Firebase Sessions and Survicate surveys from " +
         "collecting usage data.",

@@ -6,12 +6,12 @@ package app.morphe.patches.networkflow.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
-internal val disableArchiveSignatureCheckPatch = bytecodePatch {
+internal val disableArchiveSignatureCheckPatch = patch {
     compatibleWith(AppCompatibilities.NETWORKFLOW)
 
     execute {

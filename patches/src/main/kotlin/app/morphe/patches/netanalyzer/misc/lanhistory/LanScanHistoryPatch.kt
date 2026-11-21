@@ -5,7 +5,7 @@
 package app.morphe.patches.netanalyzer.misc.lanhistory
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MainActivityOnCreateFingerprint
@@ -23,7 +23,7 @@ import app.morphe.patches.shared.misc.extension.netanalyzerHistoryRowsExtensionP
 import app.morphe.patches.shared.misc.extension.netanalyzerLanScanHistoryExtensionPatch
 
 @Suppress("unused")
-val lanScanHistoryPatch = bytecodePatch(
+val lanScanHistoryPatch = patch(
     name = "LAN scan history",
     description = "Saves each finished LAN scan and its devices, lets you star, delete or clear saved scans, " +
         "and scans a custom IP range.",

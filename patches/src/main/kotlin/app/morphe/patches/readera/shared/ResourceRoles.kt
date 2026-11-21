@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.readera.shared
 
-import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
 import app.morphe.util.asSequence
 import app.morphe.util.childElementsSequence
 import org.w3c.dom.Element
@@ -42,12 +43,12 @@ internal data class ReadEraPalette(
     val barAttribute: String,
 )
 
-private fun ResourcePatchContext.applicationTheme() = document("AndroidManifest.xml").use { document ->
+private fun applicationTheme() = document("AndroidManifest.xml").use { document ->
     (document.getElementsByTagName("application").item(0) as Element)
         .getAttribute("android:theme").removePrefix("@style/")
 }
 
-private fun ResourcePatchContext.frameworkColorAttributes(vararg names: String): Map<String, String> {
+private fun frameworkColorAttributes(vararg names: String): Map<String, String> {
     val attributes = mutableMapOf<String, MutableSet<String>>()
     decode("res/values*/styles.xml").forEach { path ->
         document(path).use { document ->
@@ -70,11 +71,11 @@ private fun List<Element>.themeItem(styleName: String, attribute: String): Strin
 
 private fun argb(value: String) = value.lowercase().let { if (it.length == RGB_HEX_LENGTH) "#ff${it.drop(1)}" else it }
 
-private fun ResourcePatchContext.styles() = document("res/values/styles.xml").use { document ->
+private fun styles() = document("res/values/styles.xml").use { document ->
     document.getElementsByTagName("style").asSequence().map { it as Element }.toList()
 }
 
-internal fun ResourcePatchContext.readEraResourceRoles(): ReadEraResourceRoles {
+internal fun readEraResourceRoles(): ReadEraResourceRoles {
     val theme = applicationTheme()
     val buttonTintAttributes = mutableSetOf<String>()
     val checkboxThemes = mutableSetOf<String>()
@@ -114,10 +115,10 @@ internal fun ResourcePatchContext.readEraResourceRoles(): ReadEraResourceRoles {
         checkboxAccent, switchStyle, checkboxTint, radioTint, buttonTintAttributes.single())
 }
 
-internal fun ResourcePatchContext.readEraAccent(): String =
+internal fun readEraAccent(): String =
     styles().themeItem(applicationTheme(), frameworkColorAttributes("android:colorAccent").getValue("android:colorAccent"))
 
-internal fun ResourcePatchContext.readEraPalette(): ReadEraPalette {
+internal fun readEraPalette(): ReadEraPalette {
     val theme = applicationTheme()
     val attributes = frameworkColorAttributes("android:colorPrimary", "android:colorPrimaryDark")
     val styles = styles()

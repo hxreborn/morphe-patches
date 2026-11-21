@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
@@ -30,7 +30,7 @@ private const val EXTENSION_SLIDER_DESCRIPTOR = "Lapp/hxreborn/extension/readera
 private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechRateTarget;"
 
 @Suppress("unused")
-val speechRateSliderPatch = bytecodePatch(
+val speechRateSliderPatch = patch(
     name = "Speech rate slider",
     description = "Sets Read aloud speed from 0.1x to 4x with a slider on the Speech rate screen.",
 ) {

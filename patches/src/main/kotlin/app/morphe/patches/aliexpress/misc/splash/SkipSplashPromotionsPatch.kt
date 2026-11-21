@@ -12,8 +12,8 @@ package app.morphe.patches.aliexpress.misc.splash
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
@@ -24,7 +24,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 
 @Suppress("unused")
-val skipSplashPromotionsPatch: BytecodePatch = bytecodePatch(
+val skipSplashPromotionsPatch: Patch = patch(
     name = "Skip splash promotions",
     description = "Skips the full-screen promotion shown at launch.",
 ) {

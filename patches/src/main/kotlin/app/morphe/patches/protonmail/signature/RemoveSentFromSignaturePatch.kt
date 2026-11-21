@@ -10,9 +10,10 @@
  */
 package app.morphe.patches.protonmail.signature
 
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.ARM32
 import app.morphe.patches.protonmail.shared.ARM64
@@ -88,7 +89,7 @@ private val removeSentFromSignatureMarkerPatch =
     appliedPatchMarkerPatch(MAIL_SETTINGS_CLASS, "removeSentFromSignature") { removeSentFromSignaturePatch }
 
 @Suppress("unused")
-val removeSentFromSignaturePatch: ResourcePatch = resourcePatch(
+val removeSentFromSignaturePatch: Patch = patch(
     name = "Remove 'Sent from' signature",
     description = "Removes the 'Sent from Proton Mail' signature and unlocks the mobile signature setting.",
 ) {
@@ -96,11 +97,11 @@ val removeSentFromSignaturePatch: ResourcePatch = resourcePatch(
     compatibleWith(AppCompatibilities.PROTON_MAIL)
 
     execute {
-        val architectures = PAID_ACCOUNT_CALL_SITES.filterKeys { get("lib/$it/$MAIL_UNIFFI_LIBRARY").exists() }
+        val architectures = PAID_ACCOUNT_CALL_SITES.filterKeys { resourceFile("lib/$it/$MAIL_UNIFFI_LIBRARY").exists() }
         if (architectures.isEmpty()) throw PatchException("Could not find $MAIL_UNIFFI_LIBRARY for $ARM64, $ARM32 or $X86_64")
 
         for ((architecture, callSites) in architectures) {
-            val library = get("lib/$architecture/$MAIL_UNIFFI_LIBRARY")
+            val library = resourceFile("lib/$architecture/$MAIL_UNIFFI_LIBRARY")
 
             if (!library.replaceAsciiInPlace(DEFAULT_MOBILE_SIGNATURE, " ".repeat(DEFAULT_MOBILE_SIGNATURE.length))) {
                 throw PatchException("Could not find the default mobile signature in $architecture")

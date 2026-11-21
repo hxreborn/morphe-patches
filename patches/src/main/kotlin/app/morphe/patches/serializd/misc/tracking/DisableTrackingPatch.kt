@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.serializd.misc.tracking
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.playwire.stopPlaywireSdkPatch
 
 @Suppress("unused")
-val disableTrackingPatch = resourcePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops Firebase Analytics and the Playwire advertising SDK from collecting " +
         "usage data and the advertising ID.",

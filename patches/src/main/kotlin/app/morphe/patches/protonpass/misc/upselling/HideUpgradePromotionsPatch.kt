@@ -9,8 +9,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
@@ -72,7 +72,7 @@ private fun Match.readOriginalUpgradeAvailable() {
 }
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
+val hideUpgradePromotionsPatch: Patch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. " +
         "Plan limits still apply.",

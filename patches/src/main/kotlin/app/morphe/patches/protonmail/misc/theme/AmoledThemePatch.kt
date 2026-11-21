@@ -6,11 +6,11 @@ package app.morphe.patches.protonmail.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -68,7 +68,7 @@ private val SPLASH_BACKGROUND_VALUES = mapOf(
     "res/values-night/colors.xml" to "@android:color/black",
 )
 
-private val amoledSplashBackgroundPatch = resourcePatch {
+private val amoledSplashBackgroundPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch)
     execute {
         SPLASH_BACKGROUND_VALUES.forEach { (file, value) ->
@@ -145,7 +145,7 @@ private fun MutableMethod.setSidebarPressedAndSeparatorColors() {
     )
 }
 
-private fun BytecodePatchContext.shade40Getter(colorsClass: String): MethodReference {
+private fun shade40Getter(colorsClass: String): MethodReference {
     val constructor = classDefBy(colorsClass).methods.filter { it.name == "<init>" }.maxBy { it.parameterTypes.size }
     val stateFields = constructor.implementation!!.instructions
         .filter { it.opcode == Opcode.IPUT_OBJECT }
@@ -154,7 +154,7 @@ private fun BytecodePatchContext.shade40Getter(colorsClass: String): MethodRefer
     return colorGetterFingerprint(colorsClass, shade40Field).matchSingle().method
 }
 
-private fun BytecodePatchContext.transformShade40CopyRoles(colorScheme: MutableMethod, shade40Palette: FieldReference) {
+private fun transformShade40CopyRoles(colorScheme: MutableMethod, shade40Palette: FieldReference) {
     val darkColorsIndex = colorScheme.indexOfDarkColorsOrThrow()
     val darkColors = colorScheme.getInstruction<RegisterRangeInstruction>(darkColorsIndex)
     val colorsClass = darkColors.getReference<MethodReference>()!!.definingClass
@@ -228,7 +228,7 @@ private fun MutableMethod.replaceInlineMessageBackground(index: Int) {
 }
 
 @Suppress("unused")
-val amoledThemePatch: BytecodePatch = bytecodePatch(
+val amoledThemePatch: Patch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {

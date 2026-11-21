@@ -6,7 +6,7 @@ package app.morphe.patches.biwenger.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.biwenger.shared.PageStartedFingerprint
@@ -19,7 +19,7 @@ private const val AD_CONFIG_INSTALL = "Lapp/hxreborn/extension/biwenger/AdConfig
 private const val AD_REQUEST_MATCHES = "Lapp/hxreborn/extension/biwenger/AdRequest;->matches(Ljava/lang/String;)Z"
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes banner, interstitial, rewarded, native and app open ads.",
 ) {

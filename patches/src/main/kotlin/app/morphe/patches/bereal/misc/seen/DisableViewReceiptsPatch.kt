@@ -7,8 +7,8 @@ package app.morphe.patches.bereal.misc.seen
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -49,7 +49,7 @@ private fun Match.returnSuccessWhenSkipped() {
 }
 
 @Suppress("unused")
-val disableViewReceiptsPatch: BytecodePatch = bytecodePatch(
+val disableViewReceiptsPatch: Patch = patch(
     name = "Disable view receipts",
     description = "Stops sending which BeReals you viewed and which chats you opened.",
 ) {

@@ -7,8 +7,8 @@ package app.morphe.patches.pleco.misc.addons
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -21,9 +21,9 @@ private val unlockedPurchaseIds = listOf(
     0x80033001.toInt(),
 )
 
-private val unlockNativeAddOnFlagsPatch = rawResourcePatch {
+private val unlockNativeAddOnFlagsPatch = patch {
     execute {
-        val library = get(AddOnFlags.LIBRARY, true)
+        val library = resourceFile(AddOnFlags.LIBRARY, true)
         if (!library.exists()) throw PatchException("${AddOnFlags.LIBRARY} not found in the APK")
         val bytes = library.readBytes()
         AddOnFlags.forceOwnedFlags(bytes)
@@ -32,7 +32,7 @@ private val unlockNativeAddOnFlagsPatch = rawResourcePatch {
 }
 
 @Suppress("unused")
-val unlockAddOnsPatch = bytecodePatch(
+val unlockAddOnsPatch = patch(
     name = "Unlock add-ons",
     description = "Unlocks the Flashcard System, Document Reader, Optical Character Recognizer and " +
         "Enhanced Handwriting Recognizer. Excludes paid dictionaries, audio and voices.",

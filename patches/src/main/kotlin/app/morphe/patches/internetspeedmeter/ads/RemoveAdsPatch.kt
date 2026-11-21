@@ -9,8 +9,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.internetspeedmeter.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.internetspeedmeter.misc.settings.removeSettingsRow
@@ -34,7 +34,7 @@ private val AD_SDK_STARTUP_ENTRIES = listOf(
     "meta-data" to UNITY_ADS_INITIALIZER,
 )
 
-private val removeAdSdkStartupPatch = resourcePatch {
+private val removeAdSdkStartupPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             AD_SDK_STARTUP_ENTRIES.forEach { (tag, name) ->
@@ -47,7 +47,7 @@ private val removeAdSdkStartupPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes ads and the prompts to allow them.",
 ) {

@@ -7,10 +7,9 @@ package app.morphe.patches.terabox.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
@@ -34,7 +33,7 @@ private const val TERABOX_PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/terabox/
 private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "backup", "sort", "reset", "info", "patches", "expand")
     .map { "hx_terabox_ic_$it" }
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+internal fun markPatchApplied(methodName: String, patch: Patch) =
     fillAppliedPatch(TERABOX_APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: MutableMethod.() -> Unit) {
@@ -52,11 +51,11 @@ internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: Mu
     )
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, teraboxSettingsExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
-        resourcePatch {
+        patch {
             execute {
                 copyResources("terabox", ResourceGroup("drawable", *ICON_RESOURCES.map { "$it.xml" }.toTypedArray()))
             }

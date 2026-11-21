@@ -5,10 +5,10 @@
 package app.morphe.patches.shared.misc.liapp
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 
-val disableLiappTamperAlertPatch = bytecodePatch {
+val disableLiappTamperAlertPatch = patch {
     execute {
         val match = LiappTamperAlertFingerprint.matchSingle()
         val (_, showAlert, _) = match.instructionMatches

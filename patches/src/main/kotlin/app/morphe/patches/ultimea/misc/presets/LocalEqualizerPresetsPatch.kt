@@ -5,8 +5,9 @@
 package app.morphe.patches.ultimea.misc.presets
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -17,7 +18,7 @@ import app.morphe.patches.ultimea.misc.settings.markPatchApplied
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/equalizer/LocalPresets;"
 
 @Suppress("unused")
-val localEqualizerPresetsPatch: BytecodePatch = bytecodePatch(
+val localEqualizerPresetsPatch: Patch = patch(
     name = "Local equalizer presets",
     description = "Adds named local curves with duplicate, export and import actions.",
 ) {

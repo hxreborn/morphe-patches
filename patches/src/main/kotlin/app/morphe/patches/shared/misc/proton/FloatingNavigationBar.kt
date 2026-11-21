@@ -6,8 +6,10 @@ package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
@@ -33,7 +35,7 @@ private const val CENTER_TRANSFORM_ORIGIN = 0x3f0000003f000000L
 private const val PACKED_BLACK = -0x100000000000000L
 private const val SHAPE_CORNER_COUNT = 4
 
-internal fun BytecodePatchContext.injectFloatingNavigationBar(method: MutableMethod, callIndex: Int, fixedHeight: Boolean = false) {
+internal fun injectFloatingNavigationBar(method: MutableMethod, callIndex: Int, fixedHeight: Boolean = false) {
     val call = method.getInstruction<RegisterRangeInstruction>(callIndex)
     val reference = call.getReference<MethodReference>()!!
     val modifierType = reference.parameterTypes.first().toString()
@@ -72,7 +74,7 @@ internal fun BytecodePatchContext.injectFloatingNavigationBar(method: MutableMet
     )
 }
 
-private fun BytecodePatchContext.installFloatingModifier(modifierType: String, fixedHeight: Boolean) {
+private fun installFloatingModifier(modifierType: String, fixedHeight: Boolean) {
     val shape = RoundedShapeFingerprint.matchSingle().originalClassDef
     val corner = DpCornerSizeFingerprint.matchSingle().originalClassDef
     val layer = GraphicsLayerElementFingerprint.matchSingle().originalClassDef
@@ -152,7 +154,7 @@ private fun BytecodePatchContext.installFloatingModifier(modifierType: String, f
     )
 }
 
-internal fun BytecodePatchContext.installMeasuredBottomInsets(modifierType: String) {
+internal fun installMeasuredBottomInsets(modifierType: String) {
     val layer = GraphicsLayerElementFingerprint.matchSingle().originalClassDef
     val padding = paddingElementFingerprint(layer.superclass!!).matchSingle().originalClassDef
     val constructor = padding.methods.single { it.name == "<init>" }

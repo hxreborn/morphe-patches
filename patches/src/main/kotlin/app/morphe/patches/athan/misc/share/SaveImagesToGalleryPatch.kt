@@ -6,8 +6,8 @@ package app.morphe.patches.athan.misc.share
 
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +19,7 @@ import app.morphe.patches.shared.misc.extension.athanSaveImagesToGalleryExtensio
 
 private const val SAVE_IMAGE_ACTIVITY = "app.hxreborn.extension.athan.SaveImageActivity"
 
-private val saveImageActivityPatch = resourcePatch {
+private val saveImageActivityPatch = patch {
     dependsOn(athanSaveImagesToGalleryExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
@@ -35,7 +35,7 @@ private val saveImageActivityPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val saveImagesToGalleryPatch = bytecodePatch(
+val saveImagesToGalleryPatch = patch(
     name = "Save images to gallery",
     description = "Adds a Save to gallery option to the share sheet of verse, dua and greeting card images. " +
         "Requires Android 10 or newer.",

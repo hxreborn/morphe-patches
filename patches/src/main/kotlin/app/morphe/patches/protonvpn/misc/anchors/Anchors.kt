@@ -13,8 +13,8 @@ import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.string
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -41,12 +41,12 @@ internal object KotlinUnitToStringFingerprint : Fingerprint(
     strings = listOf("kotlin.Unit"),
 )
 
-internal val BytecodePatchContext.unitClass
+internal val unitClass
     get() = KotlinUnitToStringFingerprint.matchAll().map { it.originalClassDef }.let { classes ->
         classes.singleOrNull { it.type != EXTENSION_KOTLIN_UNIT_TYPE } ?: classes.single()
     }
 
-internal val BytecodePatchContext.unitInstanceField
+internal val unitInstanceField
     get() = unitClass.let { unit ->
         "${unit.type}->${unit.staticFields.single { it.type == unit.type }.name}:${unit.type}"
     }
@@ -68,21 +68,21 @@ internal object VpnUserIsFreeUserFingerprint : Fingerprint(
     ),
 )
 
-internal val BytecodePatchContext.vpnUserType
+internal val vpnUserType
     get() = VpnUserToStringFingerprint.originalClassDef.type
 
-internal fun BytecodePatchContext.isFreeUserCall(
+internal fun isFreeUserCall(
     location: InstructionLocation = InstructionLocation.MatchAfterAnywhere(),
 ) = methodCall(VpnUserIsFreeUserFingerprint.originalMethod, location)
 
 private const val EXTENSION_MEMBERS_CLASS = "Lapp/hxreborn/extension/protonvpn/Members;"
 
-internal fun BytecodePatchContext.setExtensionMember(member: String, value: String) =
+internal fun setExtensionMember(member: String, value: String) =
     mutableClassDefBy(EXTENSION_MEMBERS_CLASS).methods.single { it.name == member }.returnEarly(value)
 
 private fun Instruction.reference() = (this as? ReferenceInstruction)?.reference
 
-internal fun BytecodePatchContext.findPropertyField(toString: Fingerprint, property: String): FieldReference {
+internal fun findPropertyField(toString: Fingerprint, property: String): FieldReference {
     toString.matchSingle()
     val instructions = toString.originalMethod.implementation!!.instructions.toList()
     val labels = instructions.mapNotNull { (it.reference() as? StringReference)?.string }.filter { it.endsWith("=") }
@@ -102,7 +102,7 @@ internal fun BytecodePatchContext.findPropertyField(toString: Fingerprint, prope
     return fields[labelIndex]
 }
 
-private fun BytecodePatchContext.propertyGetters(toString: Fingerprint, field: FieldReference) =
+private fun propertyGetters(toString: Fingerprint, field: FieldReference) =
     toString.originalClassDef.methods.filter { method ->
         method.parameterTypes.isEmpty() && !AccessFlags.STATIC.isSet(method.accessFlags) &&
             method.implementation?.instructions?.toList()?.let { body ->
@@ -110,18 +110,18 @@ private fun BytecodePatchContext.propertyGetters(toString: Fingerprint, field: F
             } == true
     }
 
-internal fun BytecodePatchContext.propertyGetter(toString: Fingerprint, property: String) =
+internal fun propertyGetter(toString: Fingerprint, property: String) =
     propertyGetters(toString, findPropertyField(toString, property)).firstOrNull()
         ?: throw PatchException("No getter for $property in ${toString.originalClassDef.type}")
 
-internal fun BytecodePatchContext.propertyGetterCall(toString: Fingerprint, property: String): InstructionFilter {
+internal fun propertyGetterCall(toString: Fingerprint, property: String): InstructionFilter {
     val field = findPropertyField(toString, property)
     val getters = propertyGetters(toString, field)
     if (getters.isEmpty()) throw PatchException("No getter for $field")
     return anyInstruction(*getters.map { methodCall(it) }.toTypedArray())
 }
 
-internal fun BytecodePatchContext.propertyRead(toString: Fingerprint, property: String): InstructionFilter {
+internal fun propertyRead(toString: Fingerprint, property: String): InstructionFilter {
     val field = findPropertyField(toString, property)
     val read = fieldAccess(field, listOf(Opcode.IGET, Opcode.IGET_OBJECT, Opcode.IGET_BOOLEAN))
     val getters = propertyGetters(toString, field)

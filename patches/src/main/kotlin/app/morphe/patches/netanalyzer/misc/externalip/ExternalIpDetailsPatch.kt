@@ -7,7 +7,7 @@ package app.morphe.patches.netanalyzer.misc.externalip
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
@@ -25,7 +25,7 @@ private const val BUTTON_LABEL = "buttonLabel"
 private const val BUTTON_ON_CLICK = "onButtonClick"
 
 @Suppress("unused")
-val externalIpDetailsPatch = bytecodePatch(
+val externalIpDetailsPatch = patch(
     name = "External IP details",
     description = "Adds a Details button to the External IP rows that shows the address's hostname, " +
         "network operator and location.",

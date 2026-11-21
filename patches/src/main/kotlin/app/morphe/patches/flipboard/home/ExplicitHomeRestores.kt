@@ -2,7 +2,8 @@ package app.morphe.patches.flipboard.home
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -22,7 +23,7 @@ private const val EDITOR = "Landroid/content/SharedPreferences\$Editor;"
 private const val LIST = "Ljava/util/List;"
 private const val OPTED_OUT = "Lflipboard/model/flapresponse/OptOutsResults;"
 
-internal fun BytecodePatchContext.persistExplicitHomeRestores(): String {
+internal fun persistExplicitHomeRestores(): String {
     val restore = RestoreDynamicHomeFeedFingerprint.matchSingle()
     val api = restore.instructionMatches.single { it.filter === restoreHomeRequest }
         .instruction.getReference<MethodReference>()!!

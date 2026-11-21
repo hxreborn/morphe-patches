@@ -7,9 +7,10 @@ package app.morphe.patches.shared.misc.signature
 import app.morphe.patcher.PackageMetadata
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.all.misc.fix.spoofsignature.isCertMaybeInauthentic
@@ -28,7 +29,7 @@ private const val ANDROID_APPLICATION_CLASS = "Landroid/app/Application;"
 private const val PACKAGE_NAME_PLACEHOLDER = "<package-name>"
 private const val CERTIFICATE_PLACEHOLDER = "<certificate>"
 
-internal fun BytecodePatchContext.spoofSignature(
+internal fun spoofSignature(
     applicationClass: String,
     hostClass: String = SPOOF_SIGNATURE_CLASS,
 ) {
@@ -91,7 +92,7 @@ internal fun MutableMethod.replaceString(placeholder: String, value: String) {
     replaceInstruction(index, "const-string v$register, \"$value\"")
 }
 
-private fun BytecodePatchContext.applicationRoot(applicationClass: String): MutableClass {
+private fun applicationRoot(applicationClass: String): MutableClass {
     var classDef = mutableClassDefBy(applicationClass)
     val walked = mutableSetOf(classDef.type)
 

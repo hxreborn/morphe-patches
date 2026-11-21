@@ -5,7 +5,7 @@
 package app.morphe.patches.lumo.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.PageStartedFingerprint
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
@@ -19,7 +19,7 @@ import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/lumo/LumoPlus;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks unlimited projects and removes upgrade prompts. " +
         "Usage limits for models, messages and images still apply.",

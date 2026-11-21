@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.protonauthenticator.misc.theme
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +19,7 @@ private const val ENABLED_PARAMETER = 4
 private const val COMPOSER_PARAMETER = 7
 
 @Suppress("unused")
-val materialSwitchesPatch: BytecodePatch = bytecodePatch(
+val materialSwitchesPatch: Patch = patch(
     name = "Material 3 switches",
     description = "Adds check and close icons to switches.",
 ) {

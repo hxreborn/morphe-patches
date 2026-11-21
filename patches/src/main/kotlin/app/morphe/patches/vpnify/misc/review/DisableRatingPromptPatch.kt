@@ -4,14 +4,14 @@
  */
 package app.morphe.patches.vpnify.misc.review
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.vpnify.misc.fix.signature.spoofSignaturePatch
 
 @Suppress("unused")
-val disableRatingPromptPatch = bytecodePatch(
+val disableRatingPromptPatch = patch(
     name = "Disable rating prompt",
     description = "Stops the Google Play rating prompt from appearing.",
 ) {

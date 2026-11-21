@@ -4,16 +4,17 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val botimRemoveHomeSectionsExtensionPatch = bytecodePatch {
+
+internal val botimRemoveHomeSectionsExtensionPatch = patch {
     extendWith("extensions/hxreborn/botim-remove-home-sections.mpe")
 }
 
-internal val botimMainTabsExtensionPatch = bytecodePatch {
+internal val botimMainTabsExtensionPatch = patch {
     extendWith("extensions/hxreborn/botim-main-tabs.mpe")
 }
 
-internal val botimUnlockVipExtensionPatch = bytecodePatch {
+internal val botimUnlockVipExtensionPatch = patch {
     extendWith("extensions/hxreborn/botim-unlock-vip.mpe")
 }

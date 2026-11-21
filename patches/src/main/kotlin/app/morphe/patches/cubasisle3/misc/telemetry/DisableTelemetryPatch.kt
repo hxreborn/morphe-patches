@@ -6,13 +6,13 @@ package app.morphe.patches.cubasisle3.misc.telemetry
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val disableTelemetryPatch = bytecodePatch(
+val disableTelemetryPatch = patch(
     name = "Disable telemetry",
     description = "Stops crash reports, sessions and configuration requests from reaching Bugsnag.",
 ) {

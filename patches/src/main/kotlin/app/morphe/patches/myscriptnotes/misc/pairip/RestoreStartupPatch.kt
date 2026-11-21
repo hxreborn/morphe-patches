@@ -4,7 +4,10 @@
  */
 package app.morphe.patches.myscriptnotes.misc.pairip
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -62,7 +65,7 @@ private val RESTORED_SOURCES = listOf(
     "BillingReceiver.smali",
 )
 
-internal val restoreStartupPatch = bytecodePatch {
+internal val restoreStartupPatch = patch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {

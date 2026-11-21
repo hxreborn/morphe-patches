@@ -11,13 +11,14 @@
 package app.morphe.patches.iiec.misc.fix.signature
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 
-internal val bypassSignatureCheckPatch = rawResourcePatch {
+internal val bypassSignatureCheckPatch = patch {
     dependsOn(removeSharedUserIdPatch)
 
     execute {
-        val metaInf = get("META-INF", true)
+        val metaInf = resourceFile("META-INF", true)
         if (!metaInf.isDirectory) throw PatchException("META-INF not found in the input APK")
         if (!metaInf.renameTo(metaInf.resolveSibling("META-iNF"))) {
             throw PatchException("Could not rename META-INF to META-iNF")

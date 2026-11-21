@@ -5,7 +5,8 @@
 package app.morphe.patches.flipaclip.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 
@@ -19,12 +20,12 @@ private val PROJECT_EXPORT_GATE = "a80240b908b944111f4d213141040054".hexToByteAr
 private val PROJECT_EXPORT_ERROR = "20068012".hexToByteArray()
 private val ARM64_NOP = "1f2003d5".hexToByteArray()
 
-internal val restoreProjectExportPatch = rawResourcePatch {
+internal val restoreProjectExportPatch = patch {
     compatibleWith(AppCompatibilities.FLIPACLIP)
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val library = get(LIBRARY, true)
+        val library = resourceFile(LIBRARY, true)
         if (!library.exists()) throw PatchException("$LIBRARY is missing")
 
         val bytes = library.readBytes()

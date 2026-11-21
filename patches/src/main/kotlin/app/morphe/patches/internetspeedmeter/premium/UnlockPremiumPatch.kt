@@ -9,8 +9,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -42,7 +43,7 @@ private const val OVERVIEW_ACTIVITY = "app.hxreborn.extension.internetspeedmeter
 private const val NETWORK_RECEIVER = "app.hxreborn.extension.internetspeedmeter.NetworkAvailableReceiver"
 private const val USAGE_STATS_PERMISSION = "android.permission.PACKAGE_USAGE_STATS"
 
-private val addPremiumComponentsPatch = resourcePatch {
+private val addPremiumComponentsPatch = patch {
     dependsOn(internetspeedmeterAdPreferenceExtensionPatch, internetspeedmeterUnlockPremiumExtensionPatch, sharedDimensionsExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
@@ -79,7 +80,7 @@ private val addPremiumComponentsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the notification dialog, smart notifications, themes, notification accent and " +
         "the starting hour of the day.",

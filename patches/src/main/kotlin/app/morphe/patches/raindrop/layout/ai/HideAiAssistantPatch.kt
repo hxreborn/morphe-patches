@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.raindrop.layout.ai
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
 
@@ -16,7 +16,7 @@ private const val READER_TOOLBAR_BUTTON = "52 03 08 01 6F 03 11 01 10 03"
 private const val READER_TOOLBAR_BUTTON_NULL = "52 03 08 01 94 03 94 03 94 03"
 
 @Suppress("unused")
-val hideAiAssistantPatch = rawResourcePatch(
+val hideAiAssistantPatch = patch(
     name = "Hide AI assistant",
     description = "Hides the AI assistant button on the home screen, in collections and in the reader.",
 ) {

@@ -4,19 +4,20 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val aliexpressSettingsExtensionPatch = bytecodePatch {
+
+internal val aliexpressSettingsExtensionPatch = patch {
     dependsOn(sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/aliexpress-settings.mpe")
 }
 
-internal val aliexpressRemoveSponsoredItemsExtensionPatch = bytecodePatch {
+internal val aliexpressRemoveSponsoredItemsExtensionPatch = patch {
     dependsOn(aliexpressSettingsExtensionPatch)
     extendWith("extensions/hxreborn/aliexpress-remove-sponsored-items.mpe")
 }
 
-internal val aliexpressEnableImageSavingExtensionPatch = bytecodePatch {
+internal val aliexpressEnableImageSavingExtensionPatch = patch {
     dependsOn(aliexpressSettingsExtensionPatch)
     extendWith("extensions/hxreborn/aliexpress-enable-image-saving.mpe")
 }

@@ -6,8 +6,10 @@ package app.morphe.patches.candycrushsaga.misc.boosters
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativePatch
@@ -38,17 +40,17 @@ private const val SECONDS_PER_HOUR = 3600
 
 private const val BOOSTERS = "Lapp/hxreborn/extension/candycrushsaga/Boosters;"
 
-private val addBoosterLibraryPatch = resourcePatch {
+private val addBoosterLibraryPatch = patch {
     dependsOn(candyCrushNativePatch)
     execute {
         val build = candyCrushNativeBuild(packageMetadata.packageName)
         val resource = inputStreamFromBundledResource(build.resourceDirectory, "libccsboosters.so")
             ?: throw PatchException("Missing Candy Crush booster library")
-        get("lib/arm64-v8a/libccsboosters.so", copy = false).writeBytes(resource.use { it.readBytes() })
+        resourceFile("lib/arm64-v8a/libccsboosters.so", copy = false).writeBytes(resource.use { it.readBytes() })
     }
 }
 
-internal val candyCrushRewardsPatch = bytecodePatch {
+internal val candyCrushRewardsPatch = patch {
     dependsOn(candycrushsagaBoostersExtensionPatch)
     dependsOn(addBoosterLibraryPatch)
 
@@ -145,7 +147,7 @@ internal val candyCrushRewardsPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val addBoostersPatch = bytecodePatch(
+val addBoostersPatch = patch(
     name = "Add boosters",
     description = "Adds 1,000 of each booster every time the game starts. " +
         "A booster is usable from its usual level, or from the first level with Unlock booster slots.",

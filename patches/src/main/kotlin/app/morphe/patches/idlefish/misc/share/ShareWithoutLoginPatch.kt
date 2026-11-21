@@ -4,9 +4,8 @@
  */
 package app.morphe.patches.idlefish.misc.share
 
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.idlefish.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -20,7 +19,7 @@ private const val SHARE_LINK = "Lapp/hxreborn/extension/idlefish/ShareLink;"
 private const val SHARE_SYSTEM_PARAMS = "Lcom/taobao/idlefish/share/plugin/ShareSystemController${'$'}ShareSystemParams;"
 
 @Suppress("unused")
-val shareWithoutLoginPatch = bytecodePatch(
+val shareWithoutLoginPatch = patch(
     name = "Allow sharing without login",
     description = "Shares a public listing link through the Android share sheet when signed out.",
 ) {
@@ -34,7 +33,7 @@ val shareWithoutLoginPatch = bytecodePatch(
     }
 }
 
-internal fun BytecodePatchContext.rewriteShareRoute() {
+internal fun rewriteShareRoute() {
     val shareRoute = ShareRouteFingerprint.matchSingle()
     val (queryParameterRead, sharePageParse) = shareRoute.instructionMatches
     val shareInfoKey = when (val instruction = queryParameterRead.instruction) {

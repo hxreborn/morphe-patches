@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -22,7 +22,7 @@ import app.morphe.patches.shared.misc.extension.botimMainTabsExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/MainTabs;"
 
 @Suppress("unused")
-val hideHomeTabPatch = bytecodePatch(
+val hideHomeTabPatch = patch(
     name = "Hide Home tab",
     description = "Hides the Home tab from the bottom bar and opens the app on Calls.",
     default = false,

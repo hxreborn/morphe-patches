@@ -6,7 +6,7 @@ package app.morphe.patches.netanalyzer.misc.devicenames
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -23,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val REGISTRATION_SEPARATOR = ";"
 
 @Suppress("unused")
-val customDeviceNamesPatch = bytecodePatch(
+val customDeviceNamesPatch = patch(
     name = "Custom device names",
     description = "Adds custom names for Wi-Fi networks and LAN devices, shown in the Wi-Fi and LAN lists.",
 ) {

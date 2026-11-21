@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.patreon.layout.search
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.patreon.misc.settings.markFeaturePatched
 import app.morphe.patches.patreon.misc.settings.patchesSettingsPatch
@@ -17,7 +18,7 @@ private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/patreon/
 private const val ITEMS_GETTER_REGISTERS = 3
 
 @Suppress("unused")
-val hideSearchSuggestionsPatch: BytecodePatch = bytecodePatch(
+val hideSearchSuggestionsPatch: Patch = patch(
     name = "Hide search suggestions",
     description = "Removes suggested creators and topics from Explore.",
 ) {

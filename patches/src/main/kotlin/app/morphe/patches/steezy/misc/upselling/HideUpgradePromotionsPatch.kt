@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.steezy.misc.upselling
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.all.misc.hermes.hermesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -14,7 +14,7 @@ private const val ONBOARDING_PUSHES_TABS =
     "73 05 C8 08 40 01 05 A0 5B 03 05 73 06 57 0B"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = rawResourcePatch(
+val hideUpgradePromotionsPatch = patch(
     name = "Hide upgrade promotions",
     description = "Skips the subscription offer shown after sign-up.",
 ) {

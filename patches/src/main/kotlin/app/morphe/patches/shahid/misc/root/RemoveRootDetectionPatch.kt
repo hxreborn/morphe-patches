@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.shahid.misc.root
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val removeRootDetectionPatch = bytecodePatch(
+val removeRootDetectionPatch = patch(
     name = "Remove root detection",
     description = "Opens the app and plays videos on rooted devices.",
 ) {

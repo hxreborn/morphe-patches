@@ -11,7 +11,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -20,7 +20,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal const val SERVER = "Lcom/protonvpn/android/servers/Server;"
 
-internal val BytecodePatchContext.freeServerMethod: Method
+internal val freeServerMethod: Method
     get() = classDefBy(SERVER).methods.single { method ->
         method.returnType == "Z" && method.parameterTypes.isEmpty() &&
             !AccessFlags.STATIC.isSet(method.accessFlags) &&
@@ -28,7 +28,7 @@ internal val BytecodePatchContext.freeServerMethod: Method
             listOf(Opcode.IGET, Opcode.IF_NEZ)
     }
 
-internal fun BytecodePatchContext.freeServerCheckFingerprint(
+internal fun freeServerCheckFingerprint(
     vararg followingFilters: InstructionFilter,
 ) = Fingerprint(
     filters = listOf(
@@ -37,7 +37,7 @@ internal fun BytecodePatchContext.freeServerCheckFingerprint(
     ) + followingFilters,
 )
 
-internal fun BytecodePatchContext.invertFreeServerCheckForFreeAccount(check: Fingerprint) {
+internal fun invertFreeServerCheckForFreeAccount(check: Fingerprint) {
     check.matchSingle().run {
         val isFreeServerResult = instructionMatches[1]
         val register = isFreeServerResult.getInstruction<OneRegisterInstruction>().registerA

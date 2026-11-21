@@ -4,7 +4,6 @@
  */
 package app.morphe.patches
 
-import app.morphe.patcher.patch.BytecodePatch
 import com.android.tools.smali.dexlib2.immutable.ImmutableClassDef
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
@@ -93,7 +92,7 @@ internal class ExtensionPayloadsTest {
             .let { Regex(""""(extensions/hxreborn/[\w-]+\.mpe)"""").findAll(it).map { match -> match.groupValues[1] }.toSet() }
         val declared = BundlePatches.declared
         val loaders = declared.flatMap { entry ->
-            (entry.patch as? BytecodePatch)?.let(BundlePatches::payloadsLoadedDirectlyBy).orEmpty().map { it to entry.patch }
+            BundlePatches.payloadsLoadedDirectlyBy(entry.patch).map { it to entry.patch }
         }
         val dependedOn = declared.flatMap { entry -> entry.patch.dependencies }.toSet()
         val orphans = loaders.filter { (resource, patch) -> patch !in dependedOn && resource !in nestedReads }.map { it.first }
@@ -134,7 +133,7 @@ internal class ExtensionPayloadsTest {
     fun `every resource has exactly one loader patch`() {
         val loadersByResource = BundlePatches.declared
             .flatMap { declared ->
-                (declared.patch as? BytecodePatch)?.let(BundlePatches::payloadsLoadedDirectlyBy).orEmpty()
+                BundlePatches.payloadsLoadedDirectlyBy(declared.patch)
                     .map { it to declared.patch }
             }
             .groupBy({ it.first }, { it.second })

@@ -8,9 +8,8 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -21,7 +20,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 private const val SERIALIZER_PACKAGE = "Lorg/telegram/tgnet/"
 
-context(_: BytecodePatchContext)
 private fun Fingerprint.replaceReadsWithFalse(read: InstructionFilter, write: InstructionFilter) {
     val readers = matchAll().filter { match ->
         !match.classDef.type.startsWith(SERIALIZER_PACKAGE) &&
@@ -45,7 +43,7 @@ private fun MutableMethod.isStoredIntoField(index: Int, register: Int): Boolean 
 }
 
 @Suppress("unused")
-val removeRestrictionsPatch = bytecodePatch(
+val removeRestrictionsPatch = patch(
     name = "Remove restrictions",
     description = "Allows copying, forwarding, saving and screenshots in chats and channels that restrict them.",
 ) {

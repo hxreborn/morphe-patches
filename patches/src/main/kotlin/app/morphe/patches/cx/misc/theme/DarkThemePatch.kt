@@ -6,7 +6,9 @@ package app.morphe.patches.cx.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.cx.misc.premium.unlockPremiumPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -42,7 +44,7 @@ private fun List<Instruction>.indexOfDroppedMoveResult(reference: MethodReferenc
 }
 
 @Suppress("unused")
-val darkThemePatch = bytecodePatch(
+val darkThemePatch = patch(
     name = "Dark theme",
     description = "Renders the app's dark theme and adds it to the settings.",
 ) {

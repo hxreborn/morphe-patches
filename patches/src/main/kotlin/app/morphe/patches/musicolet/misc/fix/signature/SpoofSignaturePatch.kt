@@ -5,7 +5,8 @@
 package app.morphe.patches.musicolet.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -16,7 +17,7 @@ import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lin/krosbits/musicolet/MyApplication;"
 
-val spoofSignaturePatch = bytecodePatch {
+val spoofSignaturePatch = patch {
     dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.MUSICOLET)
     execute {

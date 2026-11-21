@@ -7,7 +7,7 @@ package app.morphe.patches.imo.misc.messages
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
@@ -28,7 +28,7 @@ private fun MutableMethod.freeRegisters(count: Int): List<Int> {
 }
 
 @Suppress("unused")
-val sendLongMessagesPatch = bytecodePatch(
+val sendLongMessagesPatch = patch(
     name = "Send long messages",
     description = "Sends text longer than 2000 characters as consecutive messages. " +
         "Raises the chat input limit to 10000 characters. " +

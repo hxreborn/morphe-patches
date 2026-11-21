@@ -9,8 +9,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -70,7 +71,7 @@ internal fun addFeatureActivity(activity: String) {
 private const val EXPORT_FILE_PROVIDER = "ExportFileProvider"
 private const val EXPORT_PROVIDER_AUTHORITY_SUFFIX = ".netanalyzer-an.provider"
 
-private val featureActivitiesPatch = resourcePatch {
+private val featureActivitiesPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     finalize {
         document("AndroidManifest.xml").use { document ->
@@ -92,7 +93,7 @@ private val featureActivitiesPatch = resourcePatch {
     }
 }
 
-internal val patchesMenuPatch = bytecodePatch {
+internal val patchesMenuPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         disableTamperDetectionPatch,

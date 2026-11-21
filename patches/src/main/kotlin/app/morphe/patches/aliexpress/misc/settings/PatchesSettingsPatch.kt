@@ -7,11 +7,11 @@ package app.morphe.patches.aliexpress.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.util.matchSingle
@@ -35,7 +35,7 @@ private const val PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/aliexpress/Patch
 
 private val ICON_NAMES = listOf("promotions", "splash", "sponsored", "images", "analytics", "updates", "reset", "info", "bundle", "expand", "back")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
+internal fun markPatchApplied(methodName: String, patch: Patch) =
     fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
@@ -56,16 +56,16 @@ internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
     )
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(aliexpressSettingsExtensionPatch, sharedDimensionsExtensionPatch)
     dependsOn(
-        resourcePatch {
+        patch {
             execute {
                 ICON_NAMES.forEach { name ->
                     val fileName = "hx_aliexpress_ic_$name.xml"
                     val icon = AliExpressResources::class.java.getResourceAsStream("/aliexpress/drawable/$fileName")
                         ?: throw PatchException("Missing patch icon $fileName")
-                    icon.use { get("res/drawable/$fileName").outputStream().use(it::copyTo) }
+                    icon.use { resourceFile("res/drawable/$fileName").outputStream().use(it::copyTo) }
                 }
             }
         },

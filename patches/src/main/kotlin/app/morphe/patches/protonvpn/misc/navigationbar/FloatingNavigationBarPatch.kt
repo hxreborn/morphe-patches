@@ -7,9 +7,11 @@ package app.morphe.patches.protonvpn.misc.navigationbar
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
@@ -53,7 +55,7 @@ private const val PROFILE_BUTTON_COUNT = 2
 private const val CLEAR_DEFAULT_CONTENT_PADDING = -5
 
 @Suppress("unused")
-val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
+val floatingNavigationBarPatch: Patch = patch(
     name = "Floating navigation bar",
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
@@ -183,7 +185,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.installFloatingContentPadding(navType: String, modifierType: String) {
+private fun installFloatingContentPadding(navType: String, modifierType: String) {
     val values = PaddingValuesFingerprint.matchSingle().originalClassDef
     val paddingType = values.interfaces.single()
     val constructor = values.methods.single { it.name == "<init>" && it.parameterTypes == List(4) { "F" } }
@@ -287,7 +289,7 @@ private fun BytecodePatchContext.installFloatingContentPadding(navType: String, 
     )
 }
 
-private fun BytecodePatchContext.installContentClearance(modifier: String, padding: String, footprintHeight: String) {
+private fun installContentClearance(modifier: String, padding: String, footprintHeight: String) {
     val extension = mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS)
     val values = PaddingValuesFingerprint.matchSingle().originalClassDef
     val valuesConstructor = values.methods.single { it.name == "<init>" && it.parameterTypes == List(4) { "F" } }

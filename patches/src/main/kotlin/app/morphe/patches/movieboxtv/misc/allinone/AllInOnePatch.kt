@@ -6,7 +6,7 @@ package app.morphe.patches.movieboxtv.misc.allinone
 
 import app.morphe.patcher.patch.ApkArchitecture
 import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
 import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
@@ -23,7 +23,7 @@ private const val SET_VIP_HEADERS = "S0"
 private const val TEEN_MODE_KEY = "mmkv_key_teen_mode"
 
 @Suppress("unused")
-val allInOnePatch = resourcePatch(
+val allInOnePatch = patch(
     name = "All-In-One",
     description = "Unlocks video playback and removes ads and forced updates. " +
         "Requires Android 10 or later.",

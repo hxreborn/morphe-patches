@@ -7,8 +7,8 @@ package app.morphe.patches.shared.misc.proton
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -23,7 +23,7 @@ private const val ENABLED_PARAMETER = 3
 private const val ANDROID_VIEW_PARAMETERS = 5
 private const val ANDROID_VIEW_PARAMETERS_WITH_DEFAULTS = 6
 
-internal fun BytecodePatchContext.drawSwitchAsView(
+internal fun drawSwitchAsView(
     method: MutableMethod,
     composerParameter: Int,
     modifierCompanion: FieldReference?,

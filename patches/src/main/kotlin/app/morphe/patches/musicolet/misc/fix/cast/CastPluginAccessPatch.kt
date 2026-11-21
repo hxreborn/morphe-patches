@@ -6,7 +6,7 @@ package app.morphe.patches.musicolet.misc.fix.cast
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -18,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val CAST_PLUGIN_PERMISSION = "in.krosbits.musicolet.ALLOW_CAST_AUDIO"
 private const val OUTDATED_PLUGIN_VERSION = 1
 
-val castPluginAccessPatch = bytecodePatch {
+val castPluginAccessPatch = patch {
     compatibleWith(AppCompatibilities.MUSICOLET)
 
     execute {

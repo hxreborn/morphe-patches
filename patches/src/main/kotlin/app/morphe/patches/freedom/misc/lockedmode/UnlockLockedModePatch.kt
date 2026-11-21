@@ -5,7 +5,7 @@
 package app.morphe.patches.freedom.misc.lockedmode
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -90,7 +90,7 @@ private fun File.replaceMaskedOrThrow(
 }
 
 @Suppress("unused")
-val unlockLockedModePatch = resourcePatch(
+val unlockLockedModePatch = patch(
     name = "Unlock Locked Mode",
     description = "Unlocks Locked Mode on free accounts.",
 ) {

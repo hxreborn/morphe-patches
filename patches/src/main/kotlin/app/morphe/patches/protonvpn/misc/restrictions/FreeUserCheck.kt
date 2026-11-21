@@ -12,8 +12,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructionsOrNull
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
@@ -22,7 +22,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
-internal fun BytecodePatchContext.freeUserCheckFingerprint(
+internal fun freeUserCheckFingerprint(
     definingClass: String? = null,
     name: String? = null,
     accessFlags: List<AccessFlags>? = null,
@@ -49,12 +49,12 @@ private fun Match.clearFreeUserResult() {
     method.addInstruction(freeUserResult.index + 1, "const/16 v$register, 0x0")
 }
 
-internal fun BytecodePatchContext.clearFreeUserCheck(check: Fingerprint) = check.matchSingle().clearFreeUserResult()
+internal fun clearFreeUserCheck(check: Fingerprint) = check.matchSingle().clearFreeUserResult()
 
-internal fun BytecodePatchContext.clearFreeUserChecks(check: Fingerprint) =
+internal fun clearFreeUserChecks(check: Fingerprint) =
     check.matchAll().forEach { it.clearFreeUserResult() }
 
-internal fun BytecodePatchContext.clearFreeUserCheckInLambdaOf(owner: Fingerprint) {
+internal fun clearFreeUserCheckInLambdaOf(owner: Fingerprint) {
     val instantiatedTypes = owner.originalClassDef.methods
         .flatMap { it.instructionsOrNull ?: emptyList() }
         .filter { it.opcode == Opcode.NEW_INSTANCE }

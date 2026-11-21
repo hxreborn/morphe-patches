@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val cxDarkThemeExtensionPatch = bytecodePatch {
+
+internal val cxDarkThemeExtensionPatch = patch {
     extendWith("extensions/hxreborn/cx-dark-theme.mpe")
 }
 
-internal val cxAmoledDarkThemeExtensionPatch = bytecodePatch {
+internal val cxAmoledDarkThemeExtensionPatch = patch {
     dependsOn(cxDarkThemeExtensionPatch, sharedNightModeExtensionPatch)
     extendWith("extensions/hxreborn/cx-amoled-dark-theme.mpe")
 }

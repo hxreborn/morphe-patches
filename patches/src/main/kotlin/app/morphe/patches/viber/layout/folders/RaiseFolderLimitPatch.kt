@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.layout.folders
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -15,7 +15,7 @@ import app.morphe.patches.viber.shared.addFilterCallAfter
 import app.morphe.patches.viber.shared.markPatchApplied
 
 @Suppress("unused")
-val raiseFolderLimitPatch: BytecodePatch = bytecodePatch(
+val raiseFolderLimitPatch: Patch = patch(
     name = "Raise folder limit",
     description = "Allows up to 10 chat folders.",
 ) {

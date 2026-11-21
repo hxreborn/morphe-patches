@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.raindrop.misc.upselling
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
 
@@ -16,7 +16,7 @@ private const val GO_PRO_ITEM_RETURNS_NULL =
         "44 04 04 00 1B 8B 00 09 6E 04 04 01 00 44 07 06 01 A0"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = rawResourcePatch(
+val hideUpgradePromotionsPatch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the Go Pro entry in Settings.",
 ) {

@@ -5,14 +5,14 @@
 package app.morphe.patches.allvideoplayer.rate
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 @Suppress("unused")
-val removeRatingPromptsPatch = bytecodePatch(
+val removeRatingPromptsPatch = patch(
     name = "Remove rating prompts",
     description = "Removes the prompts asking for a rating.",
 ) {

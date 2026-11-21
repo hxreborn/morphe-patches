@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.layout.ai
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.layout.business.ChatSelectionFingerprint
@@ -23,7 +23,7 @@ private const val PREFERENCE_KEY_OVERRIDE = "$EXTENSION_CLASS_DESCRIPTOR->prefer
 private val AI_FEATURES_BANNER_PREFERENCE_SITES = 2..2
 
 @Suppress("unused")
-val disableAiFeaturesPatch: BytecodePatch = bytecodePatch(
+val disableAiFeaturesPatch: Patch = patch(
     name = "Disable AI features",
     description = "Removes AI and inline Translate.",
 ) {

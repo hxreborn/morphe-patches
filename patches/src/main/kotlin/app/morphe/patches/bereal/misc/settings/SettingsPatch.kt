@@ -6,11 +6,12 @@ package app.morphe.patches.bereal.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
@@ -44,7 +45,7 @@ private const val SETTINGS_ROW_TITLE = "hxreborn patches"
 private const val SETTINGS_ROW_TAG = "settingsscreen_patches_button"
 private const val SETTINGS_ROW_ICON = "ic_gearshape_fill"
 
-private fun BytecodePatchContext.addSettingsRow() {
+private fun addSettingsRow() {
     val debugScreenAction = DebugScreenActionToStringFingerprint.matchSingle().classDef
     val debugScreenField = debugScreenAction.staticFields.single { it.type == debugScreenAction.type }
     val debugScreenReference = "${debugScreenAction.type}->${debugScreenField.name}:${debugScreenAction.type}"
@@ -89,11 +90,11 @@ private fun BytecodePatchContext.addSettingsRow() {
     )
 }
 
-internal val settingsPatch = bytecodePatch {
+internal val settingsPatch = patch {
     dependsOn(berealContactsPermissionExtensionPatch, berealDataCollectionExtensionPatch, berealSettingsExtensionPatch, berealSponsoredPostsExtensionPatch, berealUpdatePromptsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
     dependsOn(
         beRealBasePatch,
-        resourcePatch {
+        patch {
             finalize {
                 document("AndroidManifest.xml").use { document ->
                     val application = document.getElementsByTagName("application").item(0) as Element
@@ -138,12 +139,12 @@ internal val settingsPatch = bytecodePatch {
     }
 }
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) =
+internal fun markFeaturePatched(featureClass: String) =
     returnTrueFrom(featureClass, "isPatchIncluded")
 
-internal fun BytecodePatchContext.markFeaturePatched(
+internal fun markFeaturePatched(
     featureClass: String,
-    patch: BytecodePatch,
+    patch: Patch,
 ) {
     markFeaturePatched(featureClass)
     fillPatchDetails(featureClass, patch, "patchName", "patchDescription")

@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.protonpass.misc.theme
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.protonAccentColorPickerExtensionPatch
@@ -64,7 +64,7 @@ private val LIGHT_LOGIN_INTERACTION_ROLES = mapOf(
 private const val TRANSFORM_PACKED_BRAND_COLOR = "$ACCENT_COLOR_CLASS->transformPackedBrandColor(J)J"
 
 @Suppress("unused")
-val accentColorPatch: BytecodePatch = bytecodePatch(
+val accentColorPatch: Patch = patch(
     name = "Custom accent color",
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {

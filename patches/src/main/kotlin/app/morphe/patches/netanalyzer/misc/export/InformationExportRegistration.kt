@@ -5,8 +5,10 @@
 package app.morphe.patches.netanalyzer.misc.export
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -47,21 +49,17 @@ private fun ClassDef.fieldNames(properties: List<String>): String {
     }
 }
 
-context(context: BytecodePatchContext)
-private fun connectionsGetter(netState: String, connectionType: String): Method = with(context) {
+private fun connectionsGetter(netState: String, connectionType: String): Method =
     classDefBy(netState).methods.singleOrNull { method ->
         AccessFlags.STATIC.isSet(method.accessFlags) && method.parameterTypes.isEmpty() &&
             classDefByOrNull(method.returnType)?.instanceFields?.toList()?.let { fields ->
                 fields.size == CONNECTION_SLOT_FIELDS && fields.all { it.type == connectionType }
             } == true
     } ?: throw PatchException("$netState has no getter for $CONNECTION_SLOT_FIELDS $connectionType slots")
-}
 
-context(context: BytecodePatchContext)
-private fun Fingerprint.getter(): Method = with(context) { matchSingle().originalMethod }
+private fun Fingerprint.getter(): Method = matchSingle().originalMethod
 
-context(context: BytecodePatchContext)
-internal fun registerInformationExport() = with(context) {
+internal fun registerInformationExport() {
     val connection = NetInfoToStringFingerprint.matchSingle().classDef
     val wifi = WifiNetInfoToStringFingerprint.matchSingle().classDef
     val sim = SimInfoToStringFingerprint.matchSingle().classDef

@@ -6,7 +6,8 @@ package app.morphe.patches.oneweather.misc.shorts
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -14,7 +15,7 @@ internal const val TODAY_CARDS_ORDER_CLASS =
     "Lcom/oneweather/remotelibrary/sources/firebase/models/TodayCardsOderMap;"
 
 @Suppress("unused")
-val hideShortsPatch = bytecodePatch(
+val hideShortsPatch = patch(
     name = "Hide Shorts",
     description = "Hides the 1Weather Shorts card from the Today screen.",
 ) {

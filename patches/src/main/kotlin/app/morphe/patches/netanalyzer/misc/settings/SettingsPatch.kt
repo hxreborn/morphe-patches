@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.settings
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addMenuEntry
 import app.morphe.patches.netanalyzer.shared.patchesMenuPatch
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.extension.netanalyzerSettingsExtensionPatch
 
 @Suppress("unused")
-val settingsPatch = bytecodePatch(
+val settingsPatch = patch(
     name = "Settings",
     description = "Adds a Settings screen with the theme, Wi-Fi scan frequency and 6 GHz scan options.",
 ) {

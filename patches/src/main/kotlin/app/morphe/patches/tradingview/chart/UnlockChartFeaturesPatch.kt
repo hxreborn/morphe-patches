@@ -5,7 +5,7 @@
 package app.morphe.patches.tradingview.chart
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.tradingviewUnlockChartFeaturesExtensionPatch
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.misc.extension.tradingviewUnlockChartFeaturesEx
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/tradingview/ChartPlanLimits;"
 
 @Suppress("unused")
-val unlockChartFeaturesPatch = bytecodePatch(
+val unlockChartFeaturesPatch = patch(
     name = "Unlock chart features",
     description = "Unlocks layouts with up to 8 charts, more than 3 indicators per chart and the Renko, Kagi, Point & Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals follow your plan.",
 ) {

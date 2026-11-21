@@ -4,14 +4,14 @@
  */
 package app.morphe.patches.aliexpress.misc.gms
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 
-private val gmsCoreSupportMarkerPatch = bytecodePatch {
+private val gmsCoreSupportMarkerPatch = patch {
     dependsOn(spoofSignaturePatch)
 
     execute {
@@ -20,7 +20,7 @@ private val gmsCoreSupportMarkerPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val gmsCoreSupportPatch: BytecodePatch = gmsCoreSupportPatchFor(
+val gmsCoreSupportPatch: Patch = gmsCoreSupportPatchFor(
     AppCompatibilities.ALIEXPRESS,
     gmsCoreSupportMarkerPatch,
     default = true,

@@ -6,7 +6,8 @@ package app.morphe.patches.nextdoor.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -15,7 +16,7 @@ import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import java.security.MessageDigest
 import java.util.Base64
 
-internal val spoofSignaturePatch = bytecodePatch {
+internal val spoofSignaturePatch = patch {
     compatibleWith(AppCompatibilities.NEXTDOOR)
 
     execute {

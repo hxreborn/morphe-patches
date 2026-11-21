@@ -8,10 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -55,7 +56,7 @@ private const val CHECKED_TRACK_COLOR_ARGUMENT = 1
 private const val UNCHECKED_TRACK_COLOR_ARGUMENT = 5
 private const val SWITCH_ICON_SIZE_DP = 16f
 
-private fun BytecodePatchContext.addDrawIconMethod() {
+private fun addDrawIconMethod() {
     val checkmarkId = resourceId(ResourceType.DRAWABLE, "ic_proton_checkmark")
     val crossId = resourceId(ResourceType.DRAWABLE, "ic_proton_cross")
 
@@ -130,7 +131,7 @@ private class ColorTokenCalls(
     val tokenColor: MethodReference,
 )
 
-private fun BytecodePatchContext.checkedTrackColorCalls(switchColors: MethodReference): ColorTokenCalls {
+private fun checkedTrackColorCalls(switchColors: MethodReference): ColorTokenCalls {
     val match = checkedTrackColorDefaultFingerprint(switchColors).matchSingle()
     val (_, tokensInstance, tokenGetter, tokenColor) = match.instructionMatches.map { match.method.getInstruction(it.index) }
     return ColorTokenCalls(
@@ -140,7 +141,7 @@ private fun BytecodePatchContext.checkedTrackColorCalls(switchColors: MethodRefe
     )
 }
 
-private fun BytecodePatchContext.injectCheckedIconColor() {
+private fun injectCheckedIconColor() {
     val switchColorsType = ProtonSwitchFingerprint.matchSingle().method.parameterTypes[SWITCH_COLORS_PARAMETER].toString()
     val match = protonSwitchColorsFingerprint(switchColorsType).matchSingle()
     val callIndex = match.instructionMatches.last().index
@@ -186,7 +187,7 @@ private fun BytecodePatchContext.injectCheckedIconColor() {
     )
 }
 
-private fun BytecodePatchContext.injectCheckedThumbColor() {
+private fun injectCheckedThumbColor() {
     val colorsType = ProtonSwitchFingerprint.matchOrNull()?.method?.parameterTypes?.get(SWITCH_COLORS_PARAMETER)
         ?: switchImplFingerprint().matchSingle().method.parameterTypes.first { isSwitchColorsType(it) }
     val constructor = mutableClassDefBy(colorsType.toString()).methods.single { it.isSwitchColorsConstructor() }
@@ -200,7 +201,7 @@ private fun BytecodePatchContext.injectCheckedThumbColor() {
     )
 }
 
-private fun BytecodePatchContext.injectThumbContent() {
+private fun injectThumbContent() {
     val protonSwitch = ProtonSwitchFingerprint.matchSingle().method
     val thumbContentType = protonSwitch.parameterTypes[THUMB_CONTENT_PARAMETER].toString()
     val defaultMask = "p${protonSwitch.parameterTypes.lastIndex}"
@@ -255,7 +256,7 @@ private fun trackColorFields(switchColors: ClassDef): Pair<FieldReference, Field
     )
 }
 
-private fun BytecodePatchContext.injectThumbIconIntoSwitchImpl() {
+private fun injectThumbIconIntoSwitchImpl() {
     val switchImpl = switchImplFingerprint().matchSingle().method
     val parameters = switchImpl.parameterTypes.map(CharSequence::toString)
     val checkedIndex = parameters.indexOf("Z")
@@ -294,7 +295,7 @@ private fun BytecodePatchContext.injectThumbIconIntoSwitchImpl() {
     switchImpl.addInstructions(0, "invoke-static/range { p0 .. p${parameters.lastIndex} }, $rememberSwitchState")
 }
 
-private fun BytecodePatchContext.styleSettingsSwitchViews() {
+private fun styleSettingsSwitchViews() {
     val match = SettingsSwitchBindingFingerprint.matchSingle()
     val castIndex = match.instructionMatches[1].index
     val switchRegister = match.method.getInstruction<OneRegisterInstruction>(castIndex).registerA
@@ -332,7 +333,7 @@ private fun BytecodePatchContext.styleSettingsSwitchViews() {
 }
 
 @Suppress("unused")
-val materialSwitchesPatch: BytecodePatch = bytecodePatch(
+val materialSwitchesPatch: Patch = patch(
     name = "Material 3 switches",
     description = "Adds check and close icons to switches.",
 ) {

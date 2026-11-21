@@ -5,7 +5,7 @@
 package app.morphe.patches.albo.misc.imports
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -65,7 +65,7 @@ private val IMPORT_LIMIT_SITES = listOf(
 )
 
 @Suppress("unused")
-val removeBulkImportLimitPatch = resourcePatch(
+val removeBulkImportLimitPatch = patch(
     name = "Remove bulk import limit",
     description = "Removes the credit limit on bulk imports and the weekly limit on link imports.",
 ) {

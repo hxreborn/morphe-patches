@@ -9,9 +9,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.Document
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -247,17 +248,17 @@ private fun Document.readPalette(): Map<String, String> =
         .filter { it.tagName == "color" }
         .associate { it.getAttribute("name") to it.textContent.trim() }
 
-private fun ResourcePatchContext.resourceFiles(directoryPrefixes: List<String>, extension: String): List<File> {
+private fun resourceFiles(directoryPrefixes: List<String>, extension: String): List<File> {
     decode(*directoryPrefixes.map { "res/$it*" }.toTypedArray())
-    return get("res").listFiles().orEmpty()
+    return resourceFile("res").listFiles().orEmpty()
         .filter { directory -> directoryPrefixes.any { directory.name.startsWith(it) } }
         .sortedBy { it.name }
         .flatMap { directory -> directory.listFiles().orEmpty().sortedBy { it.name } }
         .filter { it.extension == extension && !isLibraryResource(it.name) }
 }
 
-private fun ResourcePatchContext.cloneDialogDrawables() {
-    val drawables = get("res/drawable")
+private fun cloneDialogDrawables() {
+    val drawables = resourceFile("res/drawable")
     val drawableReference = Regex("""@drawable/([a-z0-9_]+)"""")
 
     resourceFiles(listOf("layout"), "xml").filter { DIALOG_LAYOUT_MARKER in it.name }.forEach { layout ->
@@ -274,7 +275,7 @@ private fun ResourcePatchContext.cloneDialogDrawables() {
     }
 }
 
-private fun ResourcePatchContext.recolorXmlAttributes(recolorer: Recolorer) {
+private fun recolorXmlAttributes(recolorer: Recolorer) {
     var rewritten = 0
 
     resourceFiles(RESOURCE_DIRECTORY_PREFIXES, "xml").forEach { file ->
@@ -300,14 +301,14 @@ private fun ResourcePatchContext.recolorXmlAttributes(recolorer: Recolorer) {
     if (rewritten == 0) throw PatchException("No layout or drawable color was rewritten")
 }
 
-private fun ResourcePatchContext.addSplashIcon() {
+private fun addSplashIcon() {
     decode("res/mipmap*")
-    val logoExists = get("res").listFiles().orEmpty()
+    val logoExists = resourceFile("res").listFiles().orEmpty()
         .filter { it.name.startsWith("mipmap") }
         .any { directory -> directory.listFiles().orEmpty().any { it.nameWithoutExtension == SPLASH_LOGO } }
     if (!logoExists) throw PatchException("No mipmap/$SPLASH_LOGO to show on the system splash screen")
 
-    get("res/drawable/$SPLASH_ICON_DRAWABLE.xml").writeText(
+    resourceFile("res/drawable/$SPLASH_ICON_DRAWABLE.xml").writeText(
         """
         <inset xmlns:android="http://schemas.android.com/apk/res/android"
             android:drawable="@mipmap/$SPLASH_LOGO"
@@ -316,7 +317,7 @@ private fun ResourcePatchContext.addSplashIcon() {
     )
 }
 
-private fun ResourcePatchContext.recolorStyles(recolorer: Recolorer) {
+private fun recolorStyles(recolorer: Recolorer) {
     var rewrittenItems = 0
     var retargetedThemes = 0
 
@@ -362,7 +363,7 @@ private fun ResourcePatchContext.recolorStyles(recolorer: Recolorer) {
     if (rewrittenItems == 0) throw PatchException("No style color was rewritten")
 }
 
-private fun ResourcePatchContext.recolorPressedTitle(recolorer: Recolorer) {
+private fun recolorPressedTitle(recolorer: Recolorer) {
     document(PRESSED_TITLE_DRAWABLE).use { document ->
         val gradient = document.getElementsByTagName("gradient").item(0) as? Element
             ?: throw PatchException("$PRESSED_TITLE_DRAWABLE has no gradient")
@@ -371,7 +372,7 @@ private fun ResourcePatchContext.recolorPressedTitle(recolorer: Recolorer) {
     }
 }
 
-private fun ResourcePatchContext.addModeSwitchTrackSurface(recolorer: Recolorer) {
+private fun addModeSwitchTrackSurface(recolorer: Recolorer) {
     document(MODE_SWITCH_TRACK_DRAWABLE).use { document ->
         val surface = recolorer.whiteAs(Role.SURFACE)
         val items = document.documentElement.childElementsSequence()
@@ -395,7 +396,7 @@ private fun ResourcePatchContext.addModeSwitchTrackSurface(recolorer: Recolorer)
     }
 }
 
-private fun ResourcePatchContext.recolorLightNinePatches() {
+private fun recolorLightNinePatches() {
     val recolored = resourceFiles(listOf("drawable"), "png")
         .filter { it.name.endsWith(NINE_PATCH_SUFFIX) }
         .count { file ->
@@ -414,7 +415,7 @@ private fun ResourcePatchContext.recolorLightNinePatches() {
     if (recolored == 0) throw PatchException("No light nine-patch was recolored")
 }
 
-private fun ResourcePatchContext.invertDarkGlyphs() {
+private fun invertDarkGlyphs() {
     val inverted = resourceFiles(listOf("drawable", "mipmap"), "png")
         .filterNot { it.name.endsWith(NINE_PATCH_SUFFIX) }
         .count { file ->
@@ -432,9 +433,9 @@ private fun ResourcePatchContext.invertDarkGlyphs() {
     if (inverted == 0) throw PatchException("No dark glyph icon was inverted")
 }
 
-private fun ResourcePatchContext.rewriteColorsXml(recolorer: Recolorer) {
+private fun rewriteColorsXml(recolorer: Recolorer) {
     decode("res/**")
-    val xmlReferencingCodeInk = get("res").walk()
+    val xmlReferencingCodeInk = resourceFile("res").walk()
         .filter { it.extension == "xml" && it.name != "colors.xml" }
         .filter { file ->
             val xml = file.readText()
@@ -461,7 +462,7 @@ private fun ResourcePatchContext.rewriteColorsXml(recolorer: Recolorer) {
     }
 }
 
-private val amoledThemeResourcesPatch = resourcePatch {
+private val amoledThemeResourcesPatch = patch {
     execute {
         val recolorer = Recolorer(document("res/values/colors.xml").use { it.readPalette() })
 
@@ -478,7 +479,7 @@ private val amoledThemeResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the light theme with a pure black dark theme.",
 ) {

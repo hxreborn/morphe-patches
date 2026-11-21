@@ -6,10 +6,9 @@ package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonauthenticator.shared.themeColorReadInstructions
@@ -40,7 +39,7 @@ private const val SRC_IN_BLEND_MODE = 5
 private const val COLOR_FILTER_REGISTER_COUNT = 5
 private const val LAUNCHER_THEME = "Theme.ProtonAuthenticator"
 
-private val amoledSplashBackgroundPatch = resourcePatch {
+private val amoledSplashBackgroundPatch = patch {
     execute {
         document("res/values-night/styles.xml").use { document ->
             document.getElementsByTagName("style")
@@ -55,7 +54,7 @@ private val amoledSplashBackgroundPatch = resourcePatch {
     }
 }
 
-private val amoledWindowBackgroundPatch = resourcePatch {
+private val amoledWindowBackgroundPatch = patch {
     finalize {
         document("res/values/styles.xml").use { document ->
             document.getElementsByTagName("style")
@@ -70,7 +69,7 @@ private val amoledWindowBackgroundPatch = resourcePatch {
     }
 }
 
-private fun BytecodePatchContext.tintEmptyStatePlaceholder() {
+private fun tintEmptyStatePlaceholder() {
     val image = EmptyStateImageFingerprint.matchSingle()
     val imageIndex = image.instructionMatches.last().index
     val imageCall = image.method.getInstruction<RegisterRangeInstruction>(imageIndex)
@@ -112,7 +111,7 @@ private fun BytecodePatchContext.tintEmptyStatePlaceholder() {
 }
 
 @Suppress("unused")
-val amoledThemePatch: BytecodePatch = bytecodePatch(
+val amoledThemePatch: Patch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {

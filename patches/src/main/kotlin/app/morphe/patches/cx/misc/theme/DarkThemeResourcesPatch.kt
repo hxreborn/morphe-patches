@@ -5,7 +5,8 @@
 package app.morphe.patches.cx.misc.theme
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.adoptChild
 import app.morphe.util.childElementsSequence
 import app.morphe.util.findElementByAttributeValueOrThrow
@@ -82,7 +83,7 @@ private val CHROME_COLORS = mapOf(
     "view_setting_icon" to "@color/dark_primary_text",
 )
 
-internal val darkThemeResourcesPatch = resourcePatch {
+internal val darkThemeResourcesPatch = patch {
     execute {
         val palette = document("res/values/colors.xml").use { document ->
             val names = document.getNode("resources")

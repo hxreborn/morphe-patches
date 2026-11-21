@@ -5,8 +5,9 @@
 package app.morphe.patches.vpnify.misc.fix.signature
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.all.misc.hex.hexPatch
@@ -34,9 +35,9 @@ private val disableNativeSignatureCheckPatch = hexPatch(ignoreMissingTargetFiles
     "80 bd 5c de ff ff 01 0f 95 c0" asPatternTo "31 c0 90 90 90 90 90 90 90 90" inFile X86
 })
 
-private val disableArm64SignatureCheckPatch = rawResourcePatch {
+private val disableArm64SignatureCheckPatch = patch {
     execute {
-        val library = get(ARM64, true)
+        val library = resourceFile(ARM64, true)
         if (!library.exists()) return@execute
 
         val bytes = library.readBytes()
@@ -53,7 +54,7 @@ private val disableArm64SignatureCheckPatch = rawResourcePatch {
     }
 }
 
-val spoofSignaturePatch = bytecodePatch {
+val spoofSignaturePatch = patch {
     compatibleWith(AppCompatibilities.VPNIFY)
     dependsOn(disableNativeSignatureCheckPatch, disableArm64SignatureCheckPatch)
 

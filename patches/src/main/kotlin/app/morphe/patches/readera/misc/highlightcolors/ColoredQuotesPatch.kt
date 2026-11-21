@@ -5,7 +5,8 @@
 package app.morphe.patches.readera.misc.highlightcolors
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -25,7 +26,7 @@ private const val PALETTE_DAY_PARAMETER = 4
 private const val PALETTE_NIGHT_PARAMETER = 5
 
 @Suppress("unused")
-val coloredQuotesPatch = bytecodePatch(
+val coloredQuotesPatch = patch(
     name = "Colored quotes",
     description = "Saves selected text as a quote in one of five colors, picked from the text selection menu.",
 ) {

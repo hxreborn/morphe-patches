@@ -7,7 +7,7 @@ package app.morphe.patches.uptcl.misc.update
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.uptclRemoveForcedUpdateExtension
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/uptcl/AppVersionCheck;"
 
 @Suppress("unused")
-val removeForcedUpdatePatch = bytecodePatch(
+val removeForcedUpdatePatch = patch(
     name = "Remove forced update",
     description = "Removes the update prompts that block the app at launch.",
 ) {

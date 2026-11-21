@@ -5,7 +5,7 @@
 package app.morphe.patches.tunneldoom.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +19,7 @@ private const val REPORT_LOAD_FAILURE =
     "Lapp/hxreborn/extension/shared/AdMobLoadFailure;->report(Ljava/lang/Object;)V"
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes app open, banner, interstitial and rewarded ads and the ad consent form.",
 ) {

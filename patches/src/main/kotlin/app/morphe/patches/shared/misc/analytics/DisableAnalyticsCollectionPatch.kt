@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.shared.misc.analytics
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.asSequence
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -30,7 +31,7 @@ internal fun Document.putApplicationMetaData(name: String, value: String) {
     metadata.setAttribute("android:value", value)
 }
 
-val disableAnalyticsCollectionPatch = resourcePatch {
+val disableAnalyticsCollectionPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             disabledCollectionFlags.forEach { document.putApplicationMetaData(it, "false") }
@@ -38,7 +39,7 @@ val disableAnalyticsCollectionPatch = resourcePatch {
     }
 }
 
-val disableCrashlyticsCollectionPatch = resourcePatch {
+val disableCrashlyticsCollectionPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_crashlytics_collection_enabled", "false")
@@ -46,7 +47,7 @@ val disableCrashlyticsCollectionPatch = resourcePatch {
     }
 }
 
-val deactivateFirebaseAnalyticsPatch = resourcePatch {
+val deactivateFirebaseAnalyticsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_analytics_collection_deactivated", "true")
@@ -54,7 +55,7 @@ val deactivateFirebaseAnalyticsPatch = resourcePatch {
     }
 }
 
-val disableFirebaseSessionsPatch = resourcePatch {
+val disableFirebaseSessionsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_sessions_enabled", "false")

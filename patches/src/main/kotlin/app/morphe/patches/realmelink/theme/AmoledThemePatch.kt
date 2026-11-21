@@ -8,9 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.Document
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
@@ -418,9 +420,9 @@ private class ResourcePackage(val name: String, val directory: File)
 
 private const val PACKAGE_METADATA_FILE = "package.json"
 
-private fun ResourcePatchContext.resourcePackage(name: String): ResourcePackage {
+private fun resourcePackage(name: String): ResourcePackage {
     decode("res/**", packageName = name)
-    val packageDirectory = get("res").parentFile.parentFile.listFiles()
+    val packageDirectory = resourceFile("res").parentFile.parentFile.listFiles()
         ?.firstOrNull {
             it.resolve(PACKAGE_METADATA_FILE).takeIf(File::exists)?.readText()?.contains("\"$name\"") == true
         } ?: throw PatchException("Could not find the resources of $name")
@@ -456,7 +458,7 @@ private fun ResourcePackage.iconImageFiles(): List<File> =
 private val File.resourcePath: String
     get() = "res/${parentFile.name}/$name"
 
-private fun ResourcePatchContext.editDocuments(
+private fun editDocuments(
     pkg: ResourcePackage,
     files: List<File>,
     edit: Document.() -> Int,
@@ -465,7 +467,7 @@ private fun ResourcePatchContext.editDocuments(
 private fun File.declaresAnyOf(attributes: List<String>): Boolean =
     readText().let { text -> attributes.any { text.contains("$it=\"") } }
 
-private fun ResourcePatchContext.replaceAttributes(
+private fun replaceAttributes(
     pkg: ResourcePackage,
     directoryPrefix: String,
     attributes: List<String>,
@@ -555,7 +557,7 @@ private fun Document.invertIfMonochrome(onSurface: String): Int {
     return blackAttributes.size
 }
 
-private fun ResourcePatchContext.invertMonochromeVectors(pkg: ResourcePackage, onSurface: String): Int {
+private fun invertMonochromeVectors(pkg: ResourcePackage, onSurface: String): Int {
     val blackVectors = pkg.dayResourceFiles("drawable").filter { file ->
         val text = file.readText()
 
@@ -565,7 +567,7 @@ private fun ResourcePatchContext.invertMonochromeVectors(pkg: ResourcePackage, o
     return editDocuments(pkg, blackVectors) { invertIfMonochrome(onSurface) }
 }
 
-private fun ResourcePatchContext.replaceStyleItems(
+private fun replaceStyleItems(
     pkg: ResourcePackage,
     attributes: Set<String>,
     replacements: Map<String, String>,
@@ -655,11 +657,11 @@ private const val TAB_ANIMATION_PREFIX = "tab_"
 private const val LOTTIE_BLACK = "\"k\":[0,0,0,1]"
 private const val LOTTIE_WHITE = "\"k\":[1,1,1,1]"
 
-private fun ResourcePatchContext.invertTabAnimations(): Int {
+private fun invertTabAnimations(): Int {
     var replaced = 0
 
     decode("assets/$TAB_ANIMATION_PREFIX*")
-    get("assets").listFiles()
+    resourceFile("assets").listFiles()
         ?.filter { it.name.startsWith(TAB_ANIMATION_PREFIX) && it.extension == "json" }
         ?.forEach { file ->
             val text = file.readText()
@@ -685,7 +687,7 @@ private fun requireReplaced(description: String, replaced: Int) {
     }
 }
 
-private val amoledThemeResourcesPatch = resourcePatch {
+private val amoledThemeResourcesPatch = patch {
     execute {
         val app = resourcePackage(packageMetadata.packageName)
         val headset = resourcePackage(HEADSET_PACKAGE)
@@ -962,7 +964,7 @@ private val amoledThemeResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the light theme with a pure black dark theme. " +
         "Requires Android 13 or later.",

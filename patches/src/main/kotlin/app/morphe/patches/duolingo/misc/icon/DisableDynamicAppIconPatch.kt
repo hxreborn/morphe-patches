@@ -6,9 +6,9 @@ package app.morphe.patches.duolingo.misc.icon
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.duolingo.misc.settings.PATCH_SETTINGS_CLASS
@@ -19,7 +19,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val disableDynamicAppIconPatch: BytecodePatch = bytecodePatch(
+val disableDynamicAppIconPatch: Patch = patch(
     name = "Disable dynamic app icon",
     description = "Keeps the default launcher icon.",
     default = false,

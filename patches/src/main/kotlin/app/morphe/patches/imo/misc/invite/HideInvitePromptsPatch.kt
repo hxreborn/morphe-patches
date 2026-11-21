@@ -5,7 +5,7 @@
 package app.morphe.patches.imo.misc.invite
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -19,7 +19,7 @@ private const val CHATS_TABLE = "chats_new"
 private const val INVITE_ENTRY_ID = "entrance.inviteFriends"
 
 @Suppress("unused")
-val hideInvitePromptsPatch = bytecodePatch(
+val hideInvitePromptsPatch = patch(
     name = "Hide invite prompts",
     description = "Hides the invite friends dialog, the invite entry in the chat list, the call sharing banner " +
         "and the Invite to Official imo dialog for unregistered numbers.",

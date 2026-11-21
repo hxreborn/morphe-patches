@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.patreon.misc.prompts
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.patreon.misc.featureflags.featureFlagsPatch
 import app.morphe.patches.patreon.misc.settings.PATREON_EXTENSION_PACKAGE
 import app.morphe.patches.patreon.misc.settings.markFeaturePatched
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val APP_PROMPTS_CLASS = "${PATREON_EXTENSION_PACKAGE}AppPrompts;"
 
 @Suppress("unused")
-val removeAppPromptsPatch: BytecodePatch = bytecodePatch(
+val removeAppPromptsPatch: Patch = patch(
     name = "Remove app prompts",
     description = "Removes the rating prompt and the in-app update prompt.",
 ) {

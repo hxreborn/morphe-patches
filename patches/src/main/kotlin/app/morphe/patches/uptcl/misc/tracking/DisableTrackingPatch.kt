@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.uptcl.misc.tracking
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -16,7 +16,7 @@ import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatc
 import com.android.tools.smali.dexlib2.AccessFlags
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops Firebase Analytics, Crashlytics, Firebase Sessions, Facebook, TikTok and the app's own " +
         "event reporting from collecting usage data.",

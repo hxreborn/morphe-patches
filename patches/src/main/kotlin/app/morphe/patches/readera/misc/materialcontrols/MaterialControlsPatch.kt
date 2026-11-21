@@ -6,8 +6,11 @@ package app.morphe.patches.readera.misc.materialcontrols
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.readEraResourceRoles
@@ -34,7 +37,7 @@ private val controlResources = listOf(
     "check", "check_on", "check_off", "radio", "radio_on", "radio_off",
 )
 
-private val materialControlsResourcesPatch = resourcePatch {
+private val materialControlsResourcesPatch = patch {
     dependsOn(readeraMaterial3ControlsExtensionPatch, readeraMaterialRadioButtonExtensionPatch)
     execute {
         val roles = readEraResourceRoles()
@@ -79,14 +82,14 @@ private val materialControlsResourcesPatch = resourcePatch {
         controlResources.forEach { name ->
             val file = "hx_readera_control_$name.xml"
             MaterialControlResources::class.java.getResourceAsStream("/readera/controls/$file")!!.use { input ->
-                get("res/drawable/$file").outputStream().use(input::copyTo)
+                resourceFile("res/drawable/$file").outputStream().use(input::copyTo)
             }
         }
     }
 }
 
 @Suppress("unused")
-val materialControlsPatch = bytecodePatch(
+val materialControlsPatch = patch(
     name = "Material 3 controls",
     description = "Gives switches, checkboxes and radio buttons in Settings and dialogs the Material 3 look.",
 ) {

@@ -15,7 +15,7 @@ package app.morphe.patches.showly.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.returnEarly
@@ -24,7 +24,7 @@ import app.morphe.patches.showly.misc.fix.signature.spoofSignaturePatch
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks ad removal, light theme, custom images, list view types, quick ratings, transparent widgets, and the News feed.",
 ) {

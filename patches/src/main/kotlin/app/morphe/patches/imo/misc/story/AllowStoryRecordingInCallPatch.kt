@@ -5,7 +5,7 @@
 package app.morphe.patches.imo.misc.story
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -13,7 +13,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val allowStoryRecordingInCallPatch = bytecodePatch(
+val allowStoryRecordingInCallPatch = patch(
     name = "Allow story recording during calls",
     description = "Allows recording and posting stories while a call is active.",
 ) {

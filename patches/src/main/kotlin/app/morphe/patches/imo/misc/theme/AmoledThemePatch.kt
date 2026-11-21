@@ -5,7 +5,10 @@
 package app.morphe.patches.imo.misc.theme
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.childElementsSequence
 import org.w3c.dom.Element
@@ -55,14 +58,14 @@ private fun Element.addItem(name: String, value: String) {
 }
 
 @Suppress("unused")
-val amoledThemePatch = resourcePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black.",
 ) {
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        DRAWABLES.forEach { (name, xml) -> get("res/drawable/$name.xml").writeText(xml.trimIndent()) }
+        DRAWABLES.forEach { (name, xml) -> resourceFile("res/drawable/$name.xml").writeText(xml.trimIndent()) }
 
         document("res/values/attrs.xml").use { document ->
             document.documentElement.appendChild(document.createElement("attr").also {
@@ -99,7 +102,7 @@ val amoledThemePatch = resourcePatch(
         }
 
         decode("res/layout*")
-        val chatLayouts = get("res").listFiles { dir -> dir.name.startsWith("layout") }.orEmpty()
+        val chatLayouts = resourceFile("res").listFiles { dir -> dir.name.startsWith("layout") }.orEmpty()
             .flatMap { it.listFiles().orEmpty().toList() }
             .filter { CHAT_BACKGROUND_VIEW in it.readText() }
         val chatBackgroundTag = Regex("<[^<>]*$CHAT_BACKGROUND_VIEW[^<>]*>")

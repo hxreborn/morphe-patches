@@ -4,17 +4,18 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val internetspeedmeterAdPreferenceExtensionPatch = bytecodePatch {
+
+internal val internetspeedmeterAdPreferenceExtensionPatch = patch {
     extendWith("extensions/hxreborn/internetspeedmeter-ad-preference.mpe")
 }
 
-internal val internetspeedmeterUnlockPremiumExtensionPatch = bytecodePatch {
+internal val internetspeedmeterUnlockPremiumExtensionPatch = patch {
     dependsOn(internetspeedmeterAdPreferenceExtensionPatch, sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/internetspeedmeter-unlock-premium.mpe")
 }
 
-internal val internetspeedmeterInterfaceCountersExtensionPatch = bytecodePatch {
+internal val internetspeedmeterInterfaceCountersExtensionPatch = patch {
     extendWith("extensions/hxreborn/internetspeedmeter-interface-counters.mpe")
 }

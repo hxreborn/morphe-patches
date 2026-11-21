@@ -8,10 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
@@ -39,9 +40,9 @@ private const val SETTINGS_STYLE = "Lapp/hxreborn/extension/viber/SettingsStyle;
 
 private const val ACTIVITY = "app.hxreborn.extension.viber.PatchesSettingsActivity"
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
-    dependsOn(resourcePatch {
+    dependsOn(patch {
         execute {
             document("res/values/ids.xml").use { document ->
                 val id = document.createElement("item")
@@ -55,9 +56,9 @@ internal val patchesSettingsPatch = bytecodePatch {
                 title.textContent = "hxreborn patches"
                 document.documentElement.appendChild(title)
             }
-            val moreIcon = get("res/drawable/more_settings_icon.xml").readText()
+            val moreIcon = resourceFile("res/drawable/more_settings_icon.xml").readText()
                 .replace("@drawable/ic_settings_white", "@drawable/hx_viber_ic_patches")
-            get("res/drawable/hx_viber_more_patches.xml").writeText(moreIcon)
+            resourceFile("res/drawable/hx_viber_more_patches.xml").writeText(moreIcon)
             document("res/xml/settings_general.xml").use { document ->
                 val row = document.createElement("Preference")
                 row.setAttribute("android:layout", "@layout/_ics_custom_preference_layout")
@@ -104,7 +105,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 val stream = SettingsResources::class.java.getResourceAsStream("/viber/drawable/hx_viber_ic_$source.xml")
                     ?: SettingsResources::class.java.getResourceAsStream("/patreon/drawable/hx_patreon_ic_$source.xml")
                     ?: throw PatchException("No hx_viber_ic_$source or hx_patreon_ic_$source drawable in the bundle")
-                stream.use { get("res/drawable/hx_viber_ic_$target.xml").outputStream().use(it::copyTo) }
+                stream.use { resourceFile("res/drawable/hx_viber_ic_$target.xml").outputStream().use(it::copyTo) }
             }
         }
     })
@@ -160,7 +161,7 @@ internal val patchesSettingsPatch = bytecodePatch {
     }
 }
 
-private fun BytecodePatchContext.addMoreEntry() {
+private fun addMoreEntry() {
     val settingsItem = SettingsItemFingerprint.matchSingle()
     val (builderCall, titleCall, iconCall, itemCall, _) = settingsItem.instructionMatches
     val builder = builderCall.instruction.getReference<MethodReference>()!!

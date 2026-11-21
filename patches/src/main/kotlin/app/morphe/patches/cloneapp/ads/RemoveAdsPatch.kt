@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.cloneapp.ads
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -12,7 +12,7 @@ import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
 import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes splash, banner, native and interstitial ads, including the ad shown when a " +
         "cloned app opens, and the ad consent form.",

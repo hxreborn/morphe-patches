@@ -6,8 +6,9 @@ package app.morphe.patches.terabox.misc.recent
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
@@ -20,7 +21,7 @@ import app.morphe.patches.shared.misc.extension.teraboxRemoveRecentPanelExtensio
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/terabox/RecentPanel;"
 
 @Suppress("unused")
-val removeRecentPanelPatch: BytecodePatch = bytecodePatch(
+val removeRecentPanelPatch: Patch = patch(
     name = "Remove recent panel",
     description = "Removes Recent, Starred and Offline from Home.",
 ) {

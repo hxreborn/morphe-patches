@@ -5,7 +5,7 @@
 package app.morphe.patches.readera.misc.pagecounter
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val pageCounterInLongChaptersPatch = bytecodePatch(
+val pageCounterInLongChaptersPatch = patch(
     name = "Page counter in long chapters",
     description = "Keeps the page counter next to the chapter title in chapters of 1,000 pages or more.",
 ) {

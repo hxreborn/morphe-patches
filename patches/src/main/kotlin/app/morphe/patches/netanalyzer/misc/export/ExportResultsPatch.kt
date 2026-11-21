@@ -6,9 +6,10 @@ package app.morphe.patches.netanalyzer.misc.export
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -56,7 +57,7 @@ private const val LIST_SEPARATOR = ","
 private const val REGISTRATION_SEPARATOR = ";"
 
 @Suppress("unused")
-val exportResultsPatch = bytecodePatch(
+val exportResultsPatch = patch(
     name = "Export results",
     description = "Adds an export menu to Ping, Traceroute, Port Scan, DNS, Whois, LAN Scan, Wi-Fi Signal and " +
         "Information, with plain text and CSV output.",
@@ -82,8 +83,7 @@ val exportResultsPatch = bytecodePatch(
     }
 }
 
-context(context: BytecodePatchContext)
-private fun recordPortScanStarts() = with(context) {
+private fun recordPortScanStarts() {
     val starts = PortScanStartFingerprint.matchAll()
         .map { it.instructionMatches.single().instruction.getReference<MethodReference>()!! }
         .distinctBy { it.toString() }
@@ -102,8 +102,7 @@ private fun recordPortScanStarts() = with(context) {
     )
 }
 
-context(context: BytecodePatchContext)
-private fun observeDnsResponses() = with(context) {
+private fun observeDnsResponses() {
     val menu = composableFingerprint(TOOLS_DNS_MENU).matchSingle()
     val parameters = menu.composableParameters()
     val method = menu.method
@@ -135,7 +134,6 @@ private fun observeDnsResponses() = with(context) {
     )
 }
 
-context(context: BytecodePatchContext)
 private fun registerWifiScanHolders() {
     val hotspotType = WifiHotspotToStringFingerprint.matchSingle().originalMethod.definingClass
     val holders = hotspotConstructionFingerprint(hotspotType).matchAll()
@@ -146,12 +144,10 @@ private fun registerWifiScanHolders() {
     )
 }
 
-context(context: BytecodePatchContext)
 private fun whoisToolbarSlot() = WhoisToolbarFingerprint.matchAll().firstNotNullOfOrNull(::emptyGroupSlotOrNull)
     ?: throw PatchException("No $TOOLS_WHOIS_SCREEN toolbar lambda has an empty composer group")
 
-context(context: BytecodePatchContext)
-private fun observeWhoisResults() = with(context) {
+private fun observeWhoisResults() {
     val screen = composableFingerprint(TOOLS_WHOIS_SCREEN).matchSingle()
     val itemIndex = screen.composableParameters().indexOf(WHOIS_ITEM)
     if (itemIndex < 0) throw PatchException("$TOOLS_WHOIS_SCREEN takes no $WHOIS_ITEM parameter")

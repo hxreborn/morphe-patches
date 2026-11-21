@@ -7,13 +7,13 @@ package app.morphe.patches.botim.misc.signin
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
 @Suppress("unused")
-val fixSignInPatch = bytecodePatch(
+val fixSignInPatch = patch(
     name = "Fix sign-in",
     description = "Fixes sending the verification code when signing in with a phone number.",
 ) {

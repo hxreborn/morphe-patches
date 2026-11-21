@@ -5,7 +5,9 @@
 package app.morphe.patches.keepa.misc.offercount
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
@@ -24,7 +26,7 @@ private val overviewRatingRow = Regex(
 )
 
 @Suppress("unused")
-val showOfferCountsPatch = resourcePatch(
+val showOfferCountsPatch = patch(
     name = "Show offer counts",
     description = "Shows the new and used offer counts in the product overview.",
 ) {
@@ -32,7 +34,7 @@ val showOfferCountsPatch = resourcePatch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        val bundle = get("assets/app/bundle.mjs")
+        val bundle = resourceFile("assets/app/bundle.mjs")
         var bundleSource = bundle.readText()
         for ((name, csvType) in offerCountCsvTypes) {
             val declaration = Regex("""$name:\{index:$csvType,[^}]*\}""").findAll(bundleSource).singleOrNull()?.value
@@ -48,7 +50,7 @@ val showOfferCountsPatch = resourcePatch(
         bundle.writeText(bundleSource)
 
         decode("assets/app/*.mjs")
-        val chunks = get("assets/app").listFiles { file -> file.extension == "mjs" }
+        val chunks = resourceFile("assets/app").listFiles { file -> file.extension == "mjs" }
             ?: throw PatchException("Could not read the application bundle directory.")
 
         val overviewChunks = chunks.mapNotNull { chunk ->

@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.imo.misc.story
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val removeStoryNotificationLimitPatch = bytecodePatch(
+val removeStoryNotificationLimitPatch = patch(
     name = "Remove story notification limit",
     description = "Removes the 5 minute spacing between story notifications from 18:00 to 23:59.",
 ) {

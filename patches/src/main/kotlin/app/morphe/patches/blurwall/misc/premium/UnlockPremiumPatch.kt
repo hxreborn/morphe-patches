@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.blurwall.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
@@ -14,7 +14,7 @@ private const val ENTITLEMENT = "premium"
 private const val PRODUCT = "blurwall_premium"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the HalfBlur effect.",
 ) {

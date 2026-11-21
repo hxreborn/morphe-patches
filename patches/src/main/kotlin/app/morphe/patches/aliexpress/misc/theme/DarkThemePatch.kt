@@ -9,10 +9,12 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -36,10 +38,10 @@ private const val TEMPLATE_NODES_CLASS = "Lapp/hxreborn/extension/aliexpress/Tem
 private const val LIGHT_THEME_PARENT_PREFIX = "@android:style/Theme.Material.Light"
 private const val LIGHT_MARKER = ".Light"
 
-private val themeResourcesPatch = resourcePatch {
+private val themeResourcesPatch = patch {
     execute {
         decode("res/layout*", "res/drawable*", "res/color*", "res/values*/styles.xml", "res/values*/colors.xml")
-        DarkResources(get("res")).rewrite()
+        DarkResources(resourceFile("res")).rewrite()
         document("res/values/styles.xml").use { base ->
             document("res/values-night/styles.xml").use { night ->
                 val styles = base.getElementsByTagName("style")
@@ -58,7 +60,7 @@ private val themeResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val darkThemePatch: BytecodePatch = bytecodePatch(
+val darkThemePatch: Patch = patch(
     name = "Fix dark mode",
     description = "Fixes the screens and web pages the built-in Dark mode leaves white. Requires Android 10 or later.",
 ) {
@@ -173,7 +175,7 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.replaceTemplateNodeStubs() {
+private fun replaceTemplateNodeStubs() {
     val parent = TemplateParentFingerprint.matchSingle().originalMethod
     val children = TemplateChildrenFingerprint.matchSingle().originalMethod
     val backgroundColor = TemplateBackgroundColorFingerprint.matchSingle().originalMethod

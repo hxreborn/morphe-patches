@@ -4,14 +4,14 @@
  */
 package app.morphe.patches.narababy.misc.update
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.narababy.shared.DATABASE_SNAPSHOTS_CLASS
 import app.morphe.patches.narababy.shared.rewriteDatabaseSnapshots
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.narababyDatabaseSnapshotsExtensionPatch
 
 @Suppress("unused")
-val removeForcedUpdatePatch = bytecodePatch(
+val removeForcedUpdatePatch = patch(
     name = "Remove forced update",
     description = "Removes the update screen that blocks the app when a newer build is published.",
 ) {

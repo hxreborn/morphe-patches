@@ -5,7 +5,7 @@
 package app.morphe.patches.memoneet.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -37,7 +37,7 @@ internal val COMBO_PURCHASE_CHECK_PROLOGUE_MASK =
 internal val RETURN_TRUE = "c0820091c0035fd6".hexToByteArray()
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the premium question banks, notes, test series, previous-year papers " +
         "and shop plans, with no energy cost or ads. Signing in requires GmsCore support.",

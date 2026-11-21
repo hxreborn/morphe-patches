@@ -5,9 +5,9 @@
 package app.morphe.patches.ultimea.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -18,20 +18,20 @@ import app.morphe.patches.ultimea.misc.settings.patchesSettingsPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/ultimea/AccentColor;"
 
 @Suppress("unused")
-val accentColorPatch: BytecodePatch = bytecodePatch(
+val accentColorPatch: Patch = patch(
     name = "Accent color",
     description = "Changes accent colors with a chosen color or Material You.",
 ) {
     compatibleWith(AppCompatibilities.ULTIMEA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, resourcePatch {
+    dependsOn(patchesSettingsPatch, patch {
         execute {
             val library = dartAotLibrary()
             val image = ThemeElfImage(library.readBytes())
             val matches = AccentInstructions(image.bytes, image.codeStart, image.codeEnd).match()
             val palette = AccentHooks.apply(image, matches)
             library.writeBytes(image.bytes)
-            get("assets/hx_ultimea/accent_colors").apply {
+            resourceFile("assets/hx_ultimea/accent_colors").apply {
                 parentFile.mkdirs()
                 writeBytes(palette)
             }

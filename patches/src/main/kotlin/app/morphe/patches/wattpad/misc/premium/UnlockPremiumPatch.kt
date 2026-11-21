@@ -5,14 +5,14 @@
 package app.morphe.patches.wattpad.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val PREMIUM_PLUS_TIER = 60
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Premium+ with unlimited offline stories, reading themes and no " +
         "interstitials in the reader. Paid stories still cost coins.",

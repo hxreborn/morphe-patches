@@ -12,9 +12,11 @@ package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.string
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
@@ -35,7 +37,7 @@ private const val GMS_PACKAGE_NAME = "com.google.android.gms"
 
 private const val GMS_CORE_PACKAGE_NAME = "app.revanced.android.gms"
 
-internal val gmsCoreSpoofedSignaturePatch = resourcePatch {
+internal val gmsCoreSpoofedSignaturePatch = patch {
     execute {
         val certificateSha1 = MessageDigest.getInstance("SHA-1")
             .digest(packageMetadata.stockSigningCertificate().encoded)
@@ -52,7 +54,7 @@ internal val gmsCoreSpoofedSignaturePatch = resourcePatch {
     }
 }
 
-internal fun BytecodePatchContext.bindGmsCoreSignInTypes() {
+internal fun bindGmsCoreSignInTypes() {
     val resultClass = ObfuscatedResultToStringFingerprint.matchAllOrNull()
         ?.map { it.classDef.type }
         ?.distinct()
@@ -73,7 +75,7 @@ internal fun BytecodePatchContext.bindGmsCoreSignInTypes() {
     }
 }
 
-internal fun BytecodePatchContext.redirectGmsPackageToGmsCore() {
+internal fun redirectGmsPackageToGmsCore() {
     string(GMS_PACKAGE_NAME).matchAllMethodIndicesForEach(requireMatches = false) { index ->
         val register = getInstruction<OneRegisterInstruction>(index).registerA
         replaceInstruction(index, "const-string v$register, \"$GMS_CORE_PACKAGE_NAME\"")

@@ -10,7 +10,7 @@ import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.checkCast
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
 import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
 import com.android.tools.smali.dexlib2.Opcode
 
@@ -24,7 +24,7 @@ internal object NetShieldAvailabilityEnumFingerprint : Fingerprint(
     strings = listOf("AVAILABLE", "UPGRADE_VPN_PLUS"),
 )
 
-internal fun BytecodePatchContext.netShieldAvailabilityFingerprint(): Fingerprint {
+internal fun netShieldAvailabilityFingerprint(): Fingerprint {
     val netShieldAvailability = NetShieldAvailabilityEnumFingerprint.originalClassDef.type
     return freeUserCheckFingerprint(
         followingFilters = arrayOf(
@@ -38,7 +38,7 @@ internal fun BytecodePatchContext.netShieldAvailabilityFingerprint(): Fingerprin
     )
 }
 
-internal fun BytecodePatchContext.netShieldResetFingerprint(): Fingerprint {
+internal fun netShieldResetFingerprint(): Fingerprint {
     val netShieldGetters = classDefBy(LOCAL_USER_SETTINGS).methods.filter {
         NETSHIELD_PROPERTY in it.name && it.parameterTypes.isEmpty() && it.returnType != "V"
     }

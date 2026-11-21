@@ -6,7 +6,7 @@ package app.morphe.patches.pixlr.layout.home
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -26,7 +26,7 @@ private enum class HomeSection(
 }
 
 @Suppress("unused")
-val hideHomeSectionsPatch = bytecodePatch(
+val hideHomeSectionsPatch = patch(
     name = "Hide home sections",
     description = "Hides the selected sections from the home screen.",
 ) {

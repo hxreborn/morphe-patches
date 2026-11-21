@@ -5,7 +5,8 @@
 package app.morphe.patches.publicvideos.promotions
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -17,7 +18,7 @@ private const val VIP_PACKAGE_TOOL_ORDINAL = 5
 private const val TOOL_ITEM_PARAMETER_COUNT = 8
 
 @Suppress("unused")
-val removePromotionsPatch = bytecodePatch(
+val removePromotionsPatch = patch(
     name = "Remove promotions",
     description = "Removes advertiser banners under posts, the VIP package and advertising offers " +
         "on the profile, and the pop-ups over bottom bar tabs.",

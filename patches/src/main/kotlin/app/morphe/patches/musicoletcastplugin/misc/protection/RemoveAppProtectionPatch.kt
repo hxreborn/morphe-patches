@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.musicoletcastplugin.misc.protection
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 
 @Suppress("unused")
-val removeAppProtectionPatch = bytecodePatch(
+val removeAppProtectionPatch = patch(
     name = "Remove app protection",
     description = "Lets a patched build start. " +
         "Cast in Musicolet requires both apps patched with the same signing key.",

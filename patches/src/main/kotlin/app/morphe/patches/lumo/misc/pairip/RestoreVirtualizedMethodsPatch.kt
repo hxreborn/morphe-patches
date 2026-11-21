@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.lumo.misc.pairip
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -694,7 +695,7 @@ private val RESTORED_METHODS = listOf(
     ),
 )
 
-internal val restoreVirtualizedMethodsPatch = bytecodePatch {
+internal val restoreVirtualizedMethodsPatch = patch {
     compatibleWith(AppCompatibilities.LUMO)
     dependsOn(removePairipVirtualizationPatch)
 

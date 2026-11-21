@@ -4,8 +4,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
@@ -26,7 +27,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 @Suppress("unused")
-val removeSponsoredCardsPatch = bytecodePatch(
+val removeSponsoredCardsPatch = patch(
     name = "Remove sponsored cards",
     description = "Removes sponsored cards from feeds and banners from the article reader.",
 ) {
@@ -189,7 +190,6 @@ val removeSponsoredCardsPatch = bytecodePatch(
     }
 }
 
-context(_: BytecodePatchContext)
 private fun skipEmptyRoundupHeader() {
     val binding = BindRoundupAdapterFingerprint.matchSingle()
     val (_, createAdapter) = binding.instructionMatches
@@ -212,7 +212,6 @@ private fun skipEmptyRoundupHeader() {
     )
 }
 
-context(context: BytecodePatchContext)
 private fun skipAmazonLayoutBid() {
     val failure = CompleteAmazonLayoutBidFailureFingerprint.matchSingle()
     val (_, emptyBid, emitBid, completeBid) = failure.instructionMatches
@@ -247,12 +246,12 @@ private fun skipAmazonLayoutBid() {
         emitBidMethod.definingClass == emitterType && completeBidMethod.definingClass == emitterType) {
         "The Amazon layout callback no longer emits its empty map on the request emitter"
     }
-    val emptyMapClass = context.classDefBy(emptyBidField.type)
+    val emptyMapClass = classDefBy(emptyBidField.type)
     check("Ljava/util/Map;" in emptyMapClass.interfaces &&
-        context.classDefBy(emptyBidField.definingClass).staticFields.any { it == emptyBidField && PUBLIC.isSet(it.accessFlags) }) {
+        classDefBy(emptyBidField.definingClass).staticFields.any { it == emptyBidField && PUBLIC.isSet(it.accessFlags) }) {
         "Missing accessible empty map field $emptyBidField"
     }
-    val emitterClass = context.classDefBy(emitBidMethod.definingClass)
+    val emitterClass = classDefBy(emitBidMethod.definingClass)
     listOf(emitBidMethod, completeBidMethod).forEach { reference ->
         check(emitterClass.methods.any { it == reference && PUBLIC.isSet(it.accessFlags) && !STATIC.isSet(it.accessFlags) }) {
             "Missing public emitter method $reference"

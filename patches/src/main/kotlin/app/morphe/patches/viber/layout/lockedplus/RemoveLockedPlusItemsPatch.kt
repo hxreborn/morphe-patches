@@ -5,14 +5,15 @@
 package app.morphe.patches.viber.layout.lockedplus
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
 
 @Suppress("unused")
-val removeLockedPlusItemsPatch = resourcePatch(
+val removeLockedPlusItemsPatch = patch(
     name = "Remove locked Plus items",
     description = "Removes Invisible status options, Plus badge settings and locked Plus entries.",
     default = false,

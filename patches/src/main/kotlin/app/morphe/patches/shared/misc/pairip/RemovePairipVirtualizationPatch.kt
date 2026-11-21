@@ -17,8 +17,11 @@
 package app.morphe.patches.shared.misc.pairip
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.DEX_FILE_SIZE_OFFSET
@@ -108,17 +111,17 @@ internal fun recoverEmbeddedDex(asset: ByteArray): ByteArray? {
     return asset.copyOfRange(dexOffset, dexOffset + dexSize)
 }
 
-private val extractRecoveredDexPatch = rawResourcePatch {
+private val extractRecoveredDexPatch = patch {
     execute {
         recoveredDexFiles.clear()
         virtualizedCodeAssets.clear()
         hoistedFields = emptyList()
         pairipMethodsAreUsed = false
-        isPairipPacked = get("lib").listFiles { file -> file.isDirectory }
+        isPairipPacked = resourceFile("lib").listFiles { file -> file.isDirectory }
             ?.any { architecture -> architecture.resolve("libpairipcore.so").exists() } == true
         if (!isPairipPacked) return@execute
 
-        get("assets").listFiles { file -> file.isFile && file.isVirtualizedCode() }?.forEach { asset ->
+        resourceFile("assets").listFiles { file -> file.isFile && file.isVirtualizedCode() }?.forEach { asset ->
             virtualizedCodeAssets += asset
             recoverEmbeddedDex(asset.readBytes())?.let { recoveredDexFiles += it }
         }
@@ -126,7 +129,7 @@ private val extractRecoveredDexPatch = rawResourcePatch {
         check(virtualizedCodeAssets.isNotEmpty()) { "No pairip VM assets found" }
 
         val appDexFiles = generateSequence(1) { it + 1 }
-            .map { get(if (it == 1) "classes.dex" else "classes$it.dex") }
+            .map { resourceFile(if (it == 1) "classes.dex" else "classes$it.dex") }
             .takeWhile { it.exists() }
             .map { it.readBytes() }
             .toList()
@@ -141,7 +144,7 @@ private val extractRecoveredDexPatch = rawResourcePatch {
 
 private object PairipPayload
 
-internal val conditionalSharedPairipExtensionPatch = bytecodePatch {
+internal val conditionalSharedPairipExtensionPatch = patch {
     dependsOn(extractRecoveredDexPatch)
 
     extendWithAll {
@@ -153,7 +156,7 @@ internal val conditionalSharedPairipExtensionPatch = bytecodePatch {
     }
 }
 
-private val mergeRecoveredDexPatch = bytecodePatch {
+private val mergeRecoveredDexPatch = patch {
     dependsOn(extractRecoveredDexPatch)
 
     extendWithAll {
@@ -172,14 +175,14 @@ private class WrappedLibrary(val file: File, val wrapped: ByteArray, val keyName
 
 private fun ByteArray.sha256() = MessageDigest.getInstance("SHA-256").digest(this)
 
-private val removePairipResourcesPatch = rawResourcePatch {
+private val removePairipResourcesPatch = patch {
     dependsOn(mergeRecoveredDexPatch)
 
     execute {
         if (!isPairipPacked) return@execute
 
         var removedRuntimes = 0
-        get("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
+        resourceFile("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
             val libraries = architecture.listFiles { file ->
                 file.name.endsWith(".so") && file.name !in LIBRARIES_LEFT_WRAPPED
             }.orEmpty().mapNotNull { file ->
@@ -278,7 +281,7 @@ internal fun resolveHoistedFields(tableName: String, rows: List<String>, dexFile
     }
 }
 
-val removePairipVirtualizationPatch = bytecodePatch {
+val removePairipVirtualizationPatch = patch {
     compatibleWith(
         AppCompatibilities.ALL_IN_ONE_CALCULATOR,
         AppCompatibilities.AUDIOLAB,

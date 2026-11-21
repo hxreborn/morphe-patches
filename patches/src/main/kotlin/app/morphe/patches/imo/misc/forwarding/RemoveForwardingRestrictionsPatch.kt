@@ -5,7 +5,7 @@
 package app.morphe.patches.imo.misc.forwarding
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -18,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val SHAREABLE_PARAMETER_INDEX = 2
 
 @Suppress("unused")
-val removeForwardingRestrictionsPatch = bytecodePatch(
+val removeForwardingRestrictionsPatch = patch(
     name = "Remove forwarding restrictions",
     description = "Allows forwarding disappearing and view-once text messages.",
 ) {

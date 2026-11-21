@@ -6,8 +6,8 @@ package app.morphe.patches.internetspeedmeter.misc.counters
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
@@ -27,15 +27,15 @@ private val REPLACEMENTS = mapOf(
     "getTotalTxByte" to "getWifiTxBytes",
 )
 
-private val removeCountersLibraryPatch = rawResourcePatch {
+private val removeCountersLibraryPatch = patch {
     execute {
-        get("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
+        resourceFile("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
             architecture.resolve(COUNTERS_LIBRARY).delete()
         }
     }
 }
 
-internal val replaceInterfaceCountersPatch = bytecodePatch {
+internal val replaceInterfaceCountersPatch = patch {
     dependsOn(internetspeedmeterInterfaceCountersExtensionPatch)
     dependsOn(removeCountersLibraryPatch)
 

@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.imo.misc.screenshot
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val preventScreenshotDetectionPatch = bytecodePatch(
+val preventScreenshotDetectionPatch = patch(
     name = "Prevent screenshot detection",
     description = "Stops chats and calls from reporting screenshots and screen recordings to the other person.",
 ) {

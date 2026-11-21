@@ -5,7 +5,7 @@
 package app.morphe.patches.utorrent.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.getMutableMethod
 import app.morphe.patcher.util.matchSingle
@@ -20,7 +20,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.utorrentSettingsExtensionPatch
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro features and removes ads.",
 ) {

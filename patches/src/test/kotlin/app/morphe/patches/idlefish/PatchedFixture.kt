@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patches.shared.misc.smali.assembleDex
 import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
+import com.android.tools.smali.dexlib2.formatter.DexFormatter
 import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -17,7 +18,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.util.ReferenceUtil
 import java.nio.ByteBuffer
 import java.nio.file.Files
 import java.util.zip.ZipEntry
@@ -36,7 +36,7 @@ internal fun Instruction.describe(): String {
         is OneRegisterInstruction -> listOf(registerA)
         else -> emptyList()
     }
-    val reference = (this as? ReferenceInstruction)?.let { ReferenceUtil.getReferenceString(it.reference) }
+    val reference = (this as? ReferenceInstruction)?.let { DexFormatter.INSTANCE.getReference(it.reference) }
     return "${opcode.name} $registers $reference"
 }
 

@@ -4,9 +4,9 @@
  */
 package app.morphe.patches.musicolet.misc.pairip
 
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -48,7 +48,7 @@ private fun dateRefreshBody(dateChangedFlag: FieldReference, todayCalendar: Fiel
     return-object v0
 """
 
-private fun BytecodePatchContext.dateRefreshMethod(): RestoredMethod {
+private fun dateRefreshMethod(): RestoredMethod {
     val dateRefresh = DateChangeRefreshFingerprint.matchSingle()
     val (_, dateChangedFlagRead) = dateRefresh.instructionMatches
     val dateChangedFlag = dateChangedFlagRead.instruction.getReference<FieldReference>()!!
@@ -463,7 +463,7 @@ private val RESTORED_METHODS = listOf(
     ),
 )
 
-val restoreVirtualizedMethodsPatch = bytecodePatch {
+val restoreVirtualizedMethodsPatch = patch {
     compatibleWith(AppCompatibilities.MUSICOLET)
 
     dependsOn(removePairipVirtualizationPatch)

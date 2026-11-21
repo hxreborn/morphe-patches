@@ -15,6 +15,7 @@ app/morphe/extension/shared/Utils$SnackbarPresenter
 app/morphe/extension/shared/settings/AppLanguage
 app/morphe/extension/shared/settings/BaseSettings
 app/morphe/extension/shared/settings/BooleanSetting
+app/morphe/extension/shared/settings/DebugLevel
 app/morphe/extension/shared/settings/EnumSetting
 app/morphe/extension/shared/settings/FloatSetting
 app/morphe/extension/shared/settings/IntegerSetting
@@ -24,6 +25,7 @@ app/morphe/extension/shared/settings/Setting$1
 app/morphe/extension/shared/settings/Setting$2
 app/morphe/extension/shared/settings/Setting$3
 app/morphe/extension/shared/settings/Setting$4
+app/morphe/extension/shared/settings/Setting$5
 app/morphe/extension/shared/settings/Setting$Availability
 app/morphe/extension/shared/settings/Setting$ImportExportCallback
 app/morphe/extension/shared/settings/StringSetting

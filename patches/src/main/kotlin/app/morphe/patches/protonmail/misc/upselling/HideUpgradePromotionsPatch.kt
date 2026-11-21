@@ -6,10 +6,11 @@ package app.morphe.patches.protonmail.misc.upselling
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -28,9 +29,9 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import org.w3c.dom.Element
 
-private val unhandledSidebarUpsellingPatch = resourcePatch {
+private val unhandledSidebarUpsellingPatch = patch {
     execute {
-        val declared = document(get("res/values/public.xml").inputStream()).use { document ->
+        val declared = document(resourceFile("res/values/public.xml").inputStream()).use { document ->
             val resources = document.documentElement.childNodes
 
             (0 until resources.length)
@@ -49,7 +50,7 @@ private val unhandledSidebarUpsellingPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
+val hideUpgradePromotionsPatch: Patch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the top-bar upgrade button, promotional sidebar rows and the auto-delete " +
         "upgrade banner in Trash and Spam, and skips the seasonal sale screens shown at launch. " +

@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.viber.misc.premium
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -21,7 +21,7 @@ private const val ENABLED_SETTING = "$VIBER_SETTINGS_CLASS->unlockViberPlus()Z"
 private const val TYPING_SETTING = "$VIBER_SETTINGS_CLASS->unlockTypingPrivacy(Z)Z"
 
 @Suppress("unused")
-val unlockViberPlusPatch: BytecodePatch = bytecodePatch(
+val unlockViberPlusPatch: Patch = patch(
     name = "Enable Viber Plus features",
     description = "Enables Viber Plus app icons and the typing privacy switch. " +
         "The Plus badge and Invisible Mode need a paid subscription.",

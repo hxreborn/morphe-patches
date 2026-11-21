@@ -8,9 +8,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
@@ -38,7 +39,7 @@ private enum class NavigationTab(val label: String, val tabName: String) {
 private const val NAVIGATION_BUTTONS_CLASS = "${PATREON_EXTENSION_PACKAGE}NavigationButtons;"
 
 @Suppress("unused")
-val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
+val hideNavigationButtonsPatch: Patch = patch(
     name = "Hide navigation buttons",
     description = "Removes chosen tabs from the bottom bar.",
     default = false,

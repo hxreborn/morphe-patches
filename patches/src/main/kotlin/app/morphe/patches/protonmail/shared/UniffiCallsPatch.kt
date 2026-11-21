@@ -5,7 +5,8 @@
 package app.morphe.patches.protonmail.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -21,7 +22,7 @@ private const val THROWABLE_TYPE = "Ljava/lang/Throwable;"
 private const val BUNDLED_COROUTINE_SINGLETONS = "Lkotlin/coroutines/intrinsics/CoroutineSingletons;"
 private const val BUNDLED_RESULT_FAILURE = "Lkotlin/Result\$Failure;"
 
-internal val uniffiCallsPatch = bytecodePatch {
+internal val uniffiCallsPatch = patch {
     dependsOn(protonUniffiCallsExtensionPatch, sharedProxyHandlerExtensionPatch)
     execute {
         with(

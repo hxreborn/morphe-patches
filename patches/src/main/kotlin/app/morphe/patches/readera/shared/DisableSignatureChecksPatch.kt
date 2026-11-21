@@ -5,19 +5,19 @@
 package app.morphe.patches.readera.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 
-private val disableNativeSignatureChecksPatch = rawResourcePatch {
+private val disableNativeSignatureChecksPatch = patch {
     execute {
-        val library = get(NativeSignatureChecks.LIBRARY, true)
+        val library = resourceFile(NativeSignatureChecks.LIBRARY, true)
         val bytes = library.readBytes()
         NativeSignatureChecks.applyTo(bytes)
         library.writeBytes(bytes)
     }
 }
 
-internal val disableSignatureChecksPatch = bytecodePatch {
+internal val disableSignatureChecksPatch = patch {
     dependsOn(disableNativeSignatureChecksPatch)
 
     execute {

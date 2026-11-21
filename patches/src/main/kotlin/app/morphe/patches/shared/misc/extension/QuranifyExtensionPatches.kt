@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val quranifyUnlockPremiumExtensionPatch = bytecodePatch {
+
+internal val quranifyUnlockPremiumExtensionPatch = patch {
     extendWith("extensions/hxreborn/quranify-unlock-premium.mpe")
 }

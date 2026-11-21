@@ -5,7 +5,7 @@
 package app.morphe.patches.biwenger.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.biwenger.shared.PageStartedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.extension.biwengerUnlockPremiumExtensionPa
 private const val INSTALL = "Lapp/hxreborn/extension/biwenger/PremiumLeagues;->install(Landroid/webkit/WebView;)V"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the Premium league settings that the server accepts. " +
         "The server refuses custom scoring, release clauses, substitutes and player tracking. " +

@@ -4,12 +4,13 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val notesnookMaterialYouThemeExtensionPatch = bytecodePatch {
+
+internal val notesnookMaterialYouThemeExtensionPatch = patch {
     extendWith("extensions/hxreborn/notesnook-material-you-theme.mpe")
 }
 
-internal val notesnookUnlockProExtensionPatch = bytecodePatch {
+internal val notesnookUnlockProExtensionPatch = patch {
     extendWith("extensions/hxreborn/notesnook-unlock-pro.mpe")
 }

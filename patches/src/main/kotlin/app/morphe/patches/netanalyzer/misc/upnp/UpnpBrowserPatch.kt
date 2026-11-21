@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.upnp
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.addMenuEntry
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val upnpBrowserPatch = bytecodePatch(
+val upnpBrowserPatch = patch(
     name = "UPnP browser",
     description = "Lists the UPnP devices on the Wi-Fi network with their model, manufacturer, embedded " +
         "devices and services.",

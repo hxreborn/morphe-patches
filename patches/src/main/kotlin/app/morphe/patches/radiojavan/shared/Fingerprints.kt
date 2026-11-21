@@ -5,7 +5,6 @@
 package app.morphe.patches.radiojavan.shared
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.matchSingle
 
 internal object SubscriptionDetailsToStringFingerprint : Fingerprint(
@@ -14,7 +13,7 @@ internal object SubscriptionDetailsToStringFingerprint : Fingerprint(
     strings = listOf("UserSubscriptionDetails(subscription="),
 )
 
-internal fun BytecodePatchContext.subscriptionGetterFingerprint(getter: String) = Fingerprint(
+internal fun subscriptionGetterFingerprint(getter: String) = Fingerprint(
     definingClass = SubscriptionDetailsToStringFingerprint.matchSingle().classDef.type,
     name = getter,
     parameters = emptyList(),

@@ -8,7 +8,6 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.literal
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -74,7 +73,7 @@ private fun MutableMethod.injectAccentColorCalls(brandColors: Set<Long>): Set<Lo
         .toSet()
 }
 
-internal fun BytecodePatchContext.transformBrandColors(colors: Collection<Long>) {
+internal fun transformBrandColors(colors: Collection<Long>) {
     val brandColors = colors.toSet()
     val transformedBrandColors = BrandPaletteFingerprint.matchAll()
         .flatMap { match -> match.method.injectAccentColorCalls(brandColors) }

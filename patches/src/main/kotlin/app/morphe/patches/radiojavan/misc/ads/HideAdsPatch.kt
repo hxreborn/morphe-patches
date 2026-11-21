@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.radiojavan.misc.ads
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.radiojavan.shared.subscriptionGetterFingerprint
@@ -12,7 +12,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
 import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
 
-internal val disableSubscriptionAdFlagsPatch = bytecodePatch {
+internal val disableSubscriptionAdFlagsPatch = patch {
     execute {
         listOf("getDisplayAds", "getAudioAds").forEach {
             subscriptionGetterFingerprint(it).matchSingle().method.returnEarly(false)
@@ -21,7 +21,7 @@ internal val disableSubscriptionAdFlagsPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Removes banner, interstitial, app open and podcast audio ads, the launch promo video " +
         "and the ad consent form.",

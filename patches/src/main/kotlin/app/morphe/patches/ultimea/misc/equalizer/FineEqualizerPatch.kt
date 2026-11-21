@@ -4,10 +4,12 @@
  */
 package app.morphe.patches.ultimea.misc.equalizer
 
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import org.w3c.dom.Element
-import app.morphe.patcher.patch.ResourcePatch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.indexOfMasked
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -28,7 +30,7 @@ private val SLIDER_RANGE_AND_STEP_MASK = ByteArray(SLIDER_RANGE_AND_STEP.size) {
 private val LOAD_TENTH_DECIBEL = "4000005cc0035fd69a9999999999b93f".hexToByteArray()
 
 @Suppress("unused")
-val fineEqualizerPatch: ResourcePatch = resourcePatch(
+val fineEqualizerPatch: Patch = patch(
     name = "Fine equalizer",
     description = "Adds 0.1 dB bands, band values and Undo to the equalizer screen.",
 ) {
@@ -40,7 +42,7 @@ val fineEqualizerPatch: ResourcePatch = resourcePatch(
         for (name in listOf("movie", "music", "voice", "sport", "game", "night")) {
             val icon = EqualizerResources::class.java.getResourceAsStream("/ultimea/eq/$name.png")
                 ?: throw PatchException("Missing equalizer icon: $name")
-            get("assets/hx_ultimea/eq/$name.png").apply {
+            resourceFile("assets/hx_ultimea/eq/$name.png").apply {
                 parentFile.mkdirs()
                 icon.use { writeBytes(it.readBytes()) }
             }

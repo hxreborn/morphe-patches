@@ -8,8 +8,8 @@ import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
@@ -35,7 +35,7 @@ private fun Match.redirectAccountsByType() {
     )
 }
 
-private val systemAccountChooserPatch = bytecodePatch {
+private val systemAccountChooserPatch = patch {
     dependsOn(viberGmsCoreSupportExtensionPatch, viberSettingsExtensionPatch)
     execute {
         markPatchApplied("gmsCoreSupport", gmsCoreSupportPatch)
@@ -58,5 +58,5 @@ private val systemAccountChooserPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val gmsCoreSupportPatch: BytecodePatch =
+val gmsCoreSupportPatch: Patch =
     gmsCoreSupportPatchFor(AppCompatibilities.VIBER, spoofSignaturePatch, systemAccountChooserPatch)

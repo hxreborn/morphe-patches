@@ -11,7 +11,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
@@ -27,7 +27,7 @@ private const val ROW_ON_CLICK = "onClick"
 private const val ROW_DATA = "data"
 
 @Suppress("unused")
-val wifiDetailsPatch = bytecodePatch(
+val wifiDetailsPatch = patch(
     name = "Wi-Fi network details",
     description = "Adds a details page for each network in the Signal list with its channel range, " +
         "utilization, beamforming support, maximum speed and modulation.",

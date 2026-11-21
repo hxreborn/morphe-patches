@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.shared.misc.proton
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
 
@@ -20,7 +21,7 @@ private val SWITCH_COLOR_ROLES = mapOf(
     "colorSurfaceContainerHighest" to "?attr/proton_background_norm",
 )
 
-internal val switchColorsPatch = resourcePatch {
+internal val switchColorsPatch = patch {
     execute {
         val declaredAttributes = document("res/values/attrs.xml").use { document ->
             document.getElementsByTagName("attr").asSequence()

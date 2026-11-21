@@ -4,15 +4,15 @@
  */
 package app.morphe.patches.protonauthenticator.shared
 
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
 
 private const val THEME_INSTANCE_FIELD = "INSTANCE"
 private const val COLOR_SCHEME_CHANGED_FLAGS = 6
 
-internal fun BytecodePatchContext.themeColorReadInstructions(color: String): String {
+internal fun themeColorReadInstructions(color: String): String {
     val colorScheme = ColorSchemeGetterFingerprint.matchSingle()
     val theme = colorScheme.classDef
     val themeInstance = theme.fields.singleOrNull { it.name == THEME_INSTANCE_FIELD && it.type == theme.type }

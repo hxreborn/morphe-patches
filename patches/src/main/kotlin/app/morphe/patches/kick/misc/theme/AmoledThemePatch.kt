@@ -7,8 +7,10 @@ package app.morphe.patches.kick.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.replaceAsciiInPlace
 import app.morphe.util.findElementByAttributeValueOrThrow
@@ -31,11 +33,11 @@ private val WEB_ASSET_EXTENSIONS = setOf("css", "js")
 
 private var replacedBackground = false
 
-private val bundledAssetsThemePatch = resourcePatch {
+private val bundledAssetsThemePatch = patch {
     execute {
         replacedBackground = false
 
-        val javascriptBundle = get(JAVASCRIPT_BUNDLE)
+        val javascriptBundle = resourceFile(JAVASCRIPT_BUNDLE)
 
         if (javascriptBundle.exists()) {
             if (!javascriptBundle.replaceAsciiInPlace(DARK_BACKGROUND, BLACK)) {
@@ -54,7 +56,7 @@ private val bundledAssetsThemePatch = resourcePatch {
         }
 
         decode(WEB_ASSETS)
-        val webAssets = get(WEB_ASSETS)
+        val webAssets = resourceFile(WEB_ASSETS)
 
         if (!webAssets.isDirectory) return@execute
 
@@ -71,7 +73,7 @@ private val bundledAssetsThemePatch = resourcePatch {
             throw PatchException("Could not find the dark theme background in the web assets")
         }
 
-        get(CAPACITOR_CONFIG).apply {
+        resourceFile(CAPACITOR_CONFIG).apply {
             writeText(readText().replace(AUTO_UPDATE_ENABLED, AUTO_UPDATE_DISABLED))
         }
 
@@ -80,7 +82,7 @@ private val bundledAssetsThemePatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black. " +
         "Disables over-the-air updates that would restore the original background.",

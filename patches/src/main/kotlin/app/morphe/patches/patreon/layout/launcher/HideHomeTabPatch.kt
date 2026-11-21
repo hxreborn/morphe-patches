@@ -8,8 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.misc.settings.PATREON_EXTENSION_PACKAGE
@@ -23,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val HOME_TAB_CLASS = "${PATREON_EXTENSION_PACKAGE}HomeTab;"
 
 @Suppress("unused")
-val hideHomeTabPatch: BytecodePatch = bytecodePatch(
+val hideHomeTabPatch: Patch = patch(
     name = "Hide Home tab",
     description = "Removes the Home tab and starts on Memberships. " +
         "Accounts without memberships keep the tab.",

@@ -6,8 +6,8 @@ package app.morphe.patches.bereal.misc.blur
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -18,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}blur/FriendsPosts;"
 
 @Suppress("unused")
-val showFriendsPostsPatch: BytecodePatch = bytecodePatch(
+val showFriendsPostsPatch: Patch = patch(
     name = "Show friends' posts before posting",
     description = "Shows friends' BeReals in My Friends and Friends of Friends before you post your own.",
 ) {

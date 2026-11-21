@@ -5,7 +5,7 @@
 package app.morphe.patches.devcheck.layout.menu
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private val HIDDEN_MENU_ITEMS = listOf("action_manage_subscriptions", "action_share", "action_about")
 
 @Suppress("unused")
-val hideMenuItemsPatch = bytecodePatch(
+val hideMenuItemsPatch = patch(
     name = "Hide menu items",
     description = "Hides Manage subscription, Share and About from the main menu.",
 ) {

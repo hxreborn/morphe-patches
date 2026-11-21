@@ -7,8 +7,8 @@ package app.morphe.patches.viber.misc.secondary
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.addInstructionsAtControlFlowLabel
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
@@ -38,7 +38,7 @@ private fun Match.filterBackupPermissions() {
 }
 
 @Suppress("unused")
-val linkAsSecondaryDevicePatch: BytecodePatch = bytecodePatch(
+val linkAsSecondaryDevicePatch: Patch = patch(
     name = "Link as secondary device",
     description = "Links to your main Viber phone.",
 ) {

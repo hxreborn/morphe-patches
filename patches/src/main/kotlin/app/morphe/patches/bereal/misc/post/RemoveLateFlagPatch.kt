@@ -6,8 +6,10 @@ package app.morphe.patches.bereal.misc.post
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -35,7 +37,7 @@ private fun readFieldSmali(ownerType: String, reader: String) = """
 """
 
 @Suppress("unused")
-val removeLateFlagPatch: BytecodePatch = bytecodePatch(
+val removeLateFlagPatch: Patch = patch(
     name = "Remove late flag",
     description = "Sends BeReals you take after the moment's window as on time.",
 ) {

@@ -4,15 +4,15 @@
  */
 package app.morphe.patches.viber.layout.callerid
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 
 @Suppress("unused")
-val removeCallerIdPromptsPatch: BytecodePatch = bytecodePatch(
+val removeCallerIdPromptsPatch: Patch = patch(
     name = "Remove Caller ID prompts",
     description = "Removes Caller ID introduction sheets and the Calls tab banner.",
 ) {

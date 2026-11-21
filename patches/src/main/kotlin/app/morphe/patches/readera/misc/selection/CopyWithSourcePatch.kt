@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.readera.misc.selection
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.ClipboardCopyFingerprint
 import app.morphe.patches.readera.shared.SELECTION_COPY_TOAST_CALL_MATCH
@@ -33,14 +33,14 @@ private const val SELECTION_SOURCE = "Lapp/hxreborn/extension/readera/SelectionS
 private const val QUOTE_SHARE_SUBJECT = "Quote from the book %1\$s"
 
 private var quoteShareSubject = -1L
-private val quoteShareSubjectResourcePatch = resourcePatch {
+private val quoteShareSubjectResourcePatch = patch {
     execute {
         quoteShareSubject = stringResourceId(QUOTE_SHARE_SUBJECT)
     }
 }
 
 @Suppress("unused")
-val copyWithSourcePatch = bytecodePatch(
+val copyWithSourcePatch = patch(
     name = "Copy with source",
     description = "Copies selected text with the book title and author. Found under More in the text selection menu.",
 ) {

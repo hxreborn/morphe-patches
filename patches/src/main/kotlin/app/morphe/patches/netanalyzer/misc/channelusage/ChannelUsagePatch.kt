@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.EXTENSION_PACKAGE
@@ -35,7 +35,7 @@ private const val SHOW_USAGE_PAGE = 1
 private const val CHANNEL_USAGE_ACTIVITY = "ChannelUsageActivity"
 
 @Suppress("unused")
-val channelUsagePatch = bytecodePatch(
+val channelUsagePatch = patch(
     name = "Wi-Fi channel usage",
     description = "Adds a chart of how busy each Wi-Fi channel is, stacking the networks that share it.",
 ) {

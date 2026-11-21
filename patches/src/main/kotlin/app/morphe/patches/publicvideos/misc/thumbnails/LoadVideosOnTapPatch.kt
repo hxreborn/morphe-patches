@@ -8,7 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -35,7 +36,7 @@ private val DEFERRED_FLAG_FIELDS = listOf(
 )
 
 @Suppress("unused")
-val loadVideosOnTapPatch = bytecodePatch(
+val loadVideosOnTapPatch = patch(
     name = "Load videos on tap",
     description = "Loads feed videos only after a tap when Autoplay is set to Off in the app's settings. " +
         "YouTube videos are not affected.",

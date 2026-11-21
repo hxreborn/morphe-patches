@@ -5,7 +5,7 @@
 package app.morphe.patches.ultimateguitar.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.misc.extension.ultimateguitarUnlockPremiumExten
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/ultimateguitar/ApiResponseRewriter;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro, Sing and Practice features and removes ads. Paid course lessons and Songbooks are not unlocked.",
 ) {

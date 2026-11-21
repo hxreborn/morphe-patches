@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.blossomblast.misc.boosters
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.blossomblast.shared.MODIFIERS
 import app.morphe.patches.blossomblast.shared.blossomBlastModifiersPatch
 import app.morphe.patches.blossomblast.shared.replaceStringArrayStub
@@ -16,7 +17,7 @@ private const val BOOSTER_TARGET = 999
 private val BOOSTER_NAMES = listOf("shovel", "water", "color")
 
 @Suppress("unused")
-val addBoostersPatch = bytecodePatch(
+val addBoostersPatch = patch(
     name = "Add boosters",
     description = "Tops up each booster to 999 every time the game starts.",
 ) {

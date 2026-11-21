@@ -7,7 +7,7 @@ package app.morphe.patches.hypic.misc.prompt
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -15,7 +15,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val BUNDLE_QUERY_PARAMETER = "bundle"
 
 @Suppress("unused")
-val removeReinstallPromptPatch = bytecodePatch(
+val removeReinstallPromptPatch = patch(
     name = "Remove reinstall prompt",
     description = "Removes the prompt to download the official app. Keeps saved app data.",
 ) {

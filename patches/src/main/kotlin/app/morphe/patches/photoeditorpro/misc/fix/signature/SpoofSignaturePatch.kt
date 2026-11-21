@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.photoeditorpro.misc.fix.signature
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.photoeditorpro.shared.PATCH_APPLICATION_CLASS
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/camerasideas/collagemaker/activity/CollageMakerApplication;"
 
-val spoofSignaturePatch = bytecodePatch {
+val spoofSignaturePatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, photoeditorproSettingsExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     execute {

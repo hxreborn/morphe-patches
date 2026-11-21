@@ -7,8 +7,7 @@ package app.morphe.patches.imo.misc.screenshot
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
@@ -19,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.sharedRemoveScreenshotRestrictio
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/WindowFlags;"
 
 @Suppress("unused")
-val removeScreenshotRestrictionPatch = bytecodePatch(
+val removeScreenshotRestrictionPatch = patch(
     name = "Remove screenshot restriction",
     description = "Allows screenshots and screen recording in chats, calls, media and profiles.",
 ) {
@@ -33,7 +32,6 @@ val removeScreenshotRestrictionPatch = bytecodePatch(
     }
 }
 
-context(_: BytecodePatchContext)
 private fun routeWindowFlagsCalls(fingerprint: Fingerprint, extensionMethod: String) {
     fingerprint.matchAllMethodIndicesForEach { callIndex ->
         val call = getInstruction<FiveRegisterInstruction>(callIndex)

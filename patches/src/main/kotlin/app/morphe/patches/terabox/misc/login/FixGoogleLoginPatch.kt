@@ -7,9 +7,10 @@ package app.morphe.patches.terabox.misc.login
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
@@ -32,7 +33,7 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/GoogleLogin
 
 private const val LOADING_INDICATOR_SIZE = "64.0dp"
 
-private val loginLoadingIndicatorPatch = resourcePatch {
+private val loginLoadingIndicatorPatch = patch {
     execute {
         document("res/layout/activity_account_webview.xml").use { document ->
             document.getElementsByTagName("com.dubox.drive.ui.widget.DegradedPerformanceLottieView")
@@ -48,7 +49,7 @@ private val loginLoadingIndicatorPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val fixGoogleLoginPatch: BytecodePatch = bytecodePatch(
+val fixGoogleLoginPatch: Patch = patch(
     name = "Fix Google login",
     description = "Restores signing in with a Google account.",
 ) {

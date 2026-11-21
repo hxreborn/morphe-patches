@@ -12,10 +12,13 @@ package app.morphe.patches.aliexpress.misc.images
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
@@ -40,10 +43,10 @@ private val PRODUCT_PHOTO_VIEWERS = 2..2
 
 private lateinit var saveIconName: String
 
-private val stockSaveIconPatch = resourcePatch {
+private val stockSaveIconPatch = patch {
     execute {
         val iconNames = decode("res/layout")
-            .flatMap { path -> get(path).inputStream().use { saveButtonIconNames(document(it)) } }
+            .flatMap { path -> resourceFile(path).inputStream().use { saveButtonIconNames(document(it)) } }
             .distinct()
         saveIconName = iconNames.singleOrNull()
             ?: throw PatchException("Expected one save button icon in the layouts, found $iconNames")
@@ -65,7 +68,7 @@ private fun saveButtonIconNames(layout: Document): List<String> {
 }
 
 @Suppress("unused")
-val enableImageSavingPatch: BytecodePatch = bytecodePatch(
+val enableImageSavingPatch: Patch = patch(
     name = "Enable image saving",
     description = "Shows a save button on full-screen product and review photos.",
 ) {

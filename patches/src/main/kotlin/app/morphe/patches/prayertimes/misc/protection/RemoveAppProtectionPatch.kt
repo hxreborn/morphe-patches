@@ -4,12 +4,12 @@
  */
 package app.morphe.patches.prayertimes.misc.protection
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
 @Suppress("unused")
-val removeAppProtectionPatch = bytecodePatch(
+val removeAppProtectionPatch = patch(
     name = "Remove app protection",
     description = "Lets a patched build of the Wear OS app start. " +
         "Syncing with the phone app requires both apps patched with the same signing key.",

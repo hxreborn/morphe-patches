@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val vpnsuperAppliedPatchesExtensionPatch = bytecodePatch {
+
+internal val vpnsuperAppliedPatchesExtensionPatch = patch {
     extendWith("extensions/hxreborn/vpnsuper-applied-patches.mpe")
 }
 
-internal val vpnsuperSettingsExtensionPatch = bytecodePatch {
+internal val vpnsuperSettingsExtensionPatch = patch {
     dependsOn(vpnsuperAppliedPatchesExtensionPatch)
     extendWith("extensions/hxreborn/vpnsuper-settings.mpe")
 }

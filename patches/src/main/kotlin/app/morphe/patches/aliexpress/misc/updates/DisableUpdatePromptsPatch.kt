@@ -10,8 +10,8 @@
  */
 package app.morphe.patches.aliexpress.misc.updates
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
@@ -21,7 +21,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 
 @Suppress("unused")
-val disableUpdatePromptsPatch: BytecodePatch = bytecodePatch(
+val disableUpdatePromptsPatch: Patch = patch(
     name = "Disable update prompts",
     description = "Removes automatic update dialogs. The Version row in Settings still checks manually.",
 ) {

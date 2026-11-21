@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.idlefish.misc.share
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.idlefish.assembledClasses
 import app.morphe.patches.idlefish.body
 import app.morphe.patches.idlefish.describe
@@ -123,7 +123,7 @@ private val routeSmali = """
     .end method
 """.trimIndent()
 
-private val rewriteOnly = bytecodePatch { execute { rewriteShareRoute() } }
+private val rewriteOnly = patch { execute { rewriteShareRoute() } }
 
 private val original by lazy { assembledClasses(listOf(routeSmali)) }
 

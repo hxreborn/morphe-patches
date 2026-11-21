@@ -6,7 +6,7 @@ package app.morphe.patches.quranify.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.quranify.misc.integrity.bypassIntegrityCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -20,7 +20,7 @@ private const val ENTITLEMENT = "Quranify Premium"
 private const val PRODUCT = "quranify_premium"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks downloading every surah, lyrics and tafsir, Android Auto, " +
         "background playback controls, and insights. Removes the Free Premium challenge " +

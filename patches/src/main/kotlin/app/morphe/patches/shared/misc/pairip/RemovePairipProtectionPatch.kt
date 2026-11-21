@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.shared.misc.pairip
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
-val removePairipProtectionPatch: BytecodePatch = bytecodePatch {
+val removePairipProtectionPatch: Patch = patch {
     compatibleWith(
         AppCompatibilities.ALBO,
         AppCompatibilities.ALOA,

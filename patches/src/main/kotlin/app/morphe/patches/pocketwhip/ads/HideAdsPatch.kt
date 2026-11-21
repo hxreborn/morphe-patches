@@ -5,7 +5,7 @@
 package app.morphe.patches.pocketwhip.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
 private const val VIEW_GONE = 0x8
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Hides the banner and stops ads from loading.",
 ) {

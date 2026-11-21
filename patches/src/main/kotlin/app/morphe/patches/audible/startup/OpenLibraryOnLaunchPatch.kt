@@ -5,7 +5,7 @@
 package app.morphe.patches.audible.startup
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -15,7 +15,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 private const val LIBRARY_SWITCH_INDEX = 1
 
 @Suppress("unused")
-val openLibraryOnLaunchPatch = bytecodePatch(
+val openLibraryOnLaunchPatch = patch(
     name = "Open Library on launch",
     description = "Opens the Library tab instead of Home on launch. Applies only while signed in.",
 ) {
