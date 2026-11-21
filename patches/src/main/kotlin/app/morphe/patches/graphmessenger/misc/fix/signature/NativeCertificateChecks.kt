@@ -7,6 +7,7 @@ package app.morphe.patches.graphmessenger.misc.fix.signature
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patches.netanalyzer.shared.Arm64
 import app.morphe.patches.readera.shared.MaskedPattern
+import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -103,7 +104,7 @@ internal object NativeCertificateChecks {
         afterDigestCall.forEach(::emit)
         listOf(ADR_X8_DIGEST, LDP_Q0_Q1_X8, storeV1Digest, STP_Q0_Q1_X19).forEach(::emit)
         emit(Arm64.branch((resumeAt - at) / Arm64.INSTRUCTION_BYTES))
-        position(at)
+        (this as Buffer).position(at)
         put(stockCertificateDigest)
         if (position() > resumeAt) throw PatchException("V1 certificate lookup replacement overruns its block")
     }

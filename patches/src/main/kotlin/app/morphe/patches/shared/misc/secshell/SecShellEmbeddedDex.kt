@@ -10,6 +10,7 @@ import app.morphe.patches.shared.DEX_FILE_SIZE_OFFSET
 import app.morphe.patches.shared.DEX_HEADER_SIZE
 import app.morphe.patches.shared.DEX_MAP_ITEM_SIZE
 import app.morphe.patches.shared.DEX_SIGNATURE_OFFSET
+import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
@@ -159,7 +160,7 @@ internal class SecShellEmbeddedDex(bytes: ByteArray) : SecShellContainer {
             .minOf { it.offset }
         val header = ByteBuffer.allocate(DEX_HEADER_SIZE).order(ByteOrder.LITTLE_ENDIAN).apply {
             put(version)
-            position(DEX_FILE_SIZE_OFFSET)
+            (this as Buffer).position(DEX_FILE_SIZE_OFFSET)
             putInt(slot.size)
             putInt(DEX_HEADER_SIZE)
             putInt(ENDIAN_TAG)

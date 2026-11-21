@@ -11,6 +11,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
+import java.nio.Buffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.security.MessageDigest
@@ -61,7 +62,7 @@ private val spoofSecurityLibrarySignaturePatch = rawResourcePatch {
 
         val stockDigest = MessageDigest.getInstance("MD5").digest(packageMetadata.stockSigningCertificate().encoded)
         RETURN_STOCK_DIGEST.forEachIndexed { index, word -> words.putInt(site + index * Int.SIZE_BYTES, word) }
-        words.position(site + RETURN_STOCK_DIGEST.size * Int.SIZE_BYTES)
+        (words as Buffer).position(site + RETURN_STOCK_DIGEST.size * Int.SIZE_BYTES)
         words.put(stockDigest)
         library.writeBytes(bytes)
     }

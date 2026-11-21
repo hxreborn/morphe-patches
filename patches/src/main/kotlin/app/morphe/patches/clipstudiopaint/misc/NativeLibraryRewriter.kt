@@ -52,7 +52,7 @@ internal fun ResourcePatchContext.rewriteNativeLibrary(rewrite: (ByteBuffer) -> 
 
     RandomAccessFile(library, "rw").use { file ->
         val mapped = file.channel.map(FileChannel.MapMode.READ_WRITE, 0, file.length())
-        val buffer = mapped.duplicate().order(ByteOrder.LITTLE_ENDIAN)
+        val buffer = mapped.order(ByteOrder.LITTLE_ENDIAN)
         rewrite(buffer)
         mapped.force()
     }
