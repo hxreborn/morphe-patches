@@ -14,9 +14,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <!-- INDEX_START -->
 <p align="center">
-<a href="#-installing"><img src=".github/readme/install.svg" width="48%" alt="Install"></a>&nbsp;<a href="#-patches-list"><img src=".github/readme/patches.svg" width="48%" alt="Patches"></a><br>
-<a href="#-requests"><img src=".github/readme/request.svg" width="48%" alt="Request"></a>&nbsp;<a href="#-building"><img src=".github/readme/build.svg" width="48%" alt="Build"></a><br>
-<a href="#-disclaimer"><img src=".github/readme/disclaimer.svg" width="48%" alt="Disclaimer"></a>&nbsp;<a href="#-license"><img src=".github/readme/license.svg" width="48%" alt="License"></a>
+<a href="#-installing"><img src=".github/readme/install.svg" width="42%" alt="Install"></a>&nbsp;<a href="#-patches-list"><img src=".github/readme/patches.svg" width="42%" alt="Patches"></a><br>
+<a href="#-requests"><img src=".github/readme/request.svg" width="42%" alt="Request"></a>&nbsp;<a href="#-building"><img src=".github/readme/build.svg" width="42%" alt="Build"></a><br>
+<a href="#-disclaimer"><img src=".github/readme/disclaimer.svg" width="42%" alt="Disclaimer"></a>&nbsp;<a href="#-license"><img src=".github/readme/license.svg" width="42%" alt="License"></a>
 </p>
 
 <p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
