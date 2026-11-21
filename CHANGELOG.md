@@ -1,3 +1,9 @@
+## [1.85.1-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.85.0...v1.85.1-dev.1) (2026-11-21)
+
+### Bug Fixes
+
+* **VPN Super Unlimited Proxy - Unlock premium:** stop tampering alert ([07d048a](https://github.com/hxreborn/morphe-patches/commit/07d048a48165f260723758704312ac3b3ae893a2)), closes [#983](https://github.com/hxreborn/morphe-patches/issues/983)
+
 ## [1.85.0](https://github.com/hxreborn/morphe-patches/compare/v1.84.0...v1.85.0) (2026-11-21)
 
 ### Bug Fixes
