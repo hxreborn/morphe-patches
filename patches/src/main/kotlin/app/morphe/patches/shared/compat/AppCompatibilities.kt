@@ -2122,7 +2122,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "a7e3c4a612680186937b02e7b89574d5fd62798b8cb668973992fa89f6198fcb",
         ),
-        targets = listOf(AppTarget(version = "5.7", versionCode = 875, minSdk = 24)),
+        targets = listOf(AppTarget(version = "5.9.1", versionCode = 882, minSdk = 24)),
     )
 
     val USA_VPN = Compatibility(
