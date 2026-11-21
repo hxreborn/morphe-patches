@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.85.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.85.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -58,7 +58,7 @@
 
 **Supported versions:**
 
-| 1.25.6 |
+| 1.28.1 |
 | :---: |
 
 | Patch | Details |
@@ -297,7 +297,7 @@
 
 **Supported versions:**
 
-| 1.7.24 |
+| 1.7.30 |
 | :---: |
 
 | Patch | Details |
@@ -410,7 +410,7 @@
 
 **Supported versions:**
 
-| 26.19 |
+| 26.20 |
 | :---: |
 
 | Patch | Details |
@@ -425,8 +425,8 @@
 
 **Supported versions:**
 
-| 2.0.2 | 3.0.0 |
-| :---: | :---: |
+| 2.0.2 | 3.0.0 | 4.0.0 |
+| :---: | :---: | :---: |
 
 | Patch | Details |
 |---|---|
@@ -1478,7 +1478,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 2.99.419 |
+| 2.99.423 |
 | :---: |
 
 | Patch | Details |
@@ -2460,7 +2460,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 26.05.20+2300 | 26.10.28+2340 |
+| 26.05.20+2300 | 26.11.06+2360 |
 | :---: | :---: |
 
 | Patch | Details |
@@ -2549,7 +2549,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 1.32.6 |
+| 1.33.1 |
 | :---: |
 
 | Patch | Details |
@@ -2774,7 +2774,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 4.28.5 |
+| 4.29.0 |
 | :---: |
 
 | Patch | Details |
@@ -3231,7 +3231,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 5.7 |
+| 5.9.1 |
 | :---: |
 
 | Patch | Details |

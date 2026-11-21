@@ -1,3 +1,17 @@
+## [1.85.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.85.0-dev.2...v1.85.0-dev.3) (2026-11-21)
+
+### Updated App Support
+
+* **Albo:** add support for `1.28.1` ([508cd5a](https://github.com/hxreborn/morphe-patches/commit/508cd5a989b6058e2e2332f4b2838f4cadb95bb4)), closes [#789](https://github.com/hxreborn/morphe-patches/issues/789)
+* **Audiobook Unlimited for Kindle:** add support for `1.7.30` ([3bf689c](https://github.com/hxreborn/morphe-patches/commit/3bf689c51af1d9898420fa2f8359d295ddab68e5)), closes [#794](https://github.com/hxreborn/morphe-patches/issues/794)
+* **BetterSleep:** add support for `26.20` ([2831917](https://github.com/hxreborn/morphe-patches/commit/2831917f30c32c948ad701a886ab632dd070a16f))
+* **Biobird Flashcards:** add support for `4.0.0` ([7c41177](https://github.com/hxreborn/morphe-patches/commit/7c411775116ece9703090e20233d19845915bfa7)), closes [#798](https://github.com/hxreborn/morphe-patches/issues/798)
+* **LingoDeer:** add support for `2.99.423` ([792dc73](https://github.com/hxreborn/morphe-patches/commit/792dc73398dd64beef42f4520e8e3c0e5004ecc9)), closes [#819](https://github.com/hxreborn/morphe-patches/issues/819)
+* **ReadEra:** add support for `26.11.06+2360` ([d76a4e3](https://github.com/hxreborn/morphe-patches/commit/d76a4e32679576fb4d76d954620090b5b9048253)), closes [#842](https://github.com/hxreborn/morphe-patches/issues/842)
+* **Resprite:** add support for `1.33.1` ([c2355fa](https://github.com/hxreborn/morphe-patches/commit/c2355fae331acae9400bd5735dd7dd7b4042f726)), closes [#843](https://github.com/hxreborn/morphe-patches/issues/843)
+* **TeraBox:** add support for `4.29.0` ([1b19c28](https://github.com/hxreborn/morphe-patches/commit/1b19c28b36d50be9ee0b13e0cf61c92aa28d3939)), closes [#981](https://github.com/hxreborn/morphe-patches/issues/981)
+* **Yuka:** add support for `5.9.1` ([ae4db85](https://github.com/hxreborn/morphe-patches/commit/ae4db85c18fdd47c2127c89a23edd1517a4359ea))
+
 ## [1.85.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.85.0-dev.1...v1.85.0-dev.2) (2026-11-21)
 
 ### Bug Fixes
