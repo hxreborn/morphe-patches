@@ -35,7 +35,6 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val IMAGE_MODIFIER_PARAMETER = 2
 private const val IMAGE_COMPOSER_PARAMETER = 7
 private const val ANDROID_VIEW_PARAMETERS = 6
-private const val SIZE_CALL_MATCH = 1
 private const val INDICATOR_BOX_MODIFIER_REGISTER = 3
 
 @Suppress("unused")
@@ -53,10 +52,10 @@ val loadingIndicatorPatch: Patch = patch(
 
         val pullingIconMatch = PullToRefreshPullingIconFingerprint.match()
         val pullingIconMethod = pullingIconMatch.method
-        val rotateIndex = pullingIconMatch.instructionMatches[2].index
-        val rotateCall = pullingIconMethod.getInstruction<FiveRegisterInstruction>(rotateIndex)
-        val imageIndex = pullingIconMatch.instructionMatches.last().index
-        val imageCall = pullingIconMethod.getInstruction<RegisterRangeInstruction>(imageIndex)
+        val (_, _, rotation, image) = pullingIconMatch.instructionMatches
+        val rotateCall = rotation.getInstruction<FiveRegisterInstruction>()
+        val imageIndex = image.index
+        val imageCall = image.getInstruction<RegisterRangeInstruction>()
         val imageReference = imageCall.getReference<MethodReference>()!!
         val modifierType = imageReference.parameterTypes[IMAGE_MODIFIER_PARAMETER].toString()
         val composerType = imageReference.parameterTypes[IMAGE_COMPOSER_PARAMETER].toString()
@@ -106,8 +105,7 @@ val loadingIndicatorPatch: Patch = patch(
 
         PullToRefreshIndicatorSizeFingerprint.match().let { match ->
             val method = match.method
-            val sizeCall = match.instructionMatches[SIZE_CALL_MATCH]
-            val indicatorBox = match.instructionMatches.last()
+            val (_, sizeCall, indicatorBox) = match.instructionMatches
             val boxModifier = indicatorBox.getInstruction<RegisterRangeInstruction>().startRegister + INDICATOR_BOX_MODIFIER_REGISTER
             if (method.indexOfObjectSource(indicatorBox.index, boxModifier) != sizeCall.index + 1) {
                 throw PatchException(

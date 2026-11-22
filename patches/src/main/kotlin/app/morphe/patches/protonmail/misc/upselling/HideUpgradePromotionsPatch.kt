@@ -4,15 +4,16 @@
  */
 package app.morphe.patches.protonmail.misc.upselling
 
+import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.instanceOf
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonmail.misc.banner.answerAutoDeleteBannerCheck
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
@@ -24,9 +25,7 @@ import app.morphe.patches.shared.misc.proton.markUpgradePromotionsPatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
 import app.morphe.patches.shared.misc.proton.returnVoidWhenUpsellingHidden
 import app.morphe.util.findInstructionIndicesReversed
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import org.w3c.dom.Element
 
 private val unhandledSidebarUpsellingPatch = patch {
@@ -84,10 +83,9 @@ val hideUpgradePromotionsPatch: Patch = patch(
             .map { it.classDef.type }
             .toSet()
 
+        val modalShowChecks = anyInstruction(*promotionModalShowStates.map { instanceOf(it) }.toTypedArray())
         with(HomeInterstitialPriorityFingerprint.method) {
-            val showChecks = findInstructionIndicesReversed {
-                opcode == Opcode.INSTANCE_OF && getReference<TypeReference>()?.type in promotionModalShowStates
-            }
+            val showChecks = findInstructionIndicesReversed(modalShowChecks)
 
             if (showChecks.size != PROMOTION_MODAL_COUNT) {
                 throw PatchException(

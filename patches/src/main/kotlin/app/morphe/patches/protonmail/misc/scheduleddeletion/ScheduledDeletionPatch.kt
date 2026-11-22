@@ -107,10 +107,9 @@ val scheduledDeletionPatch: Patch = patch(
             }
 
         NewMailboxFingerprint.match().let { match ->
-            val newMailboxCall = match.instructionMatches.first()
+            val (newMailboxCall, mailboxResult) = match.instructionMatches
             val newMailboxInvoke = newMailboxCall.getInstruction<FiveRegisterInstruction>()
-            val moveResult = match.instructionMatches.last()
-            val resultRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
+            val resultRegister = mailboxResult.getInstruction<OneRegisterInstruction>().registerA
             val sessionRegister = match.method.getFreeRegisterProvider(
                 newMailboxCall.index, 1, newMailboxInvoke.registerC, newMailboxInvoke.registerD, resultRegister,
             ).getFreeRegister()
@@ -119,7 +118,7 @@ val scheduledDeletionPatch: Patch = patch(
             }
 
             match.method.addInstructions(
-                moveResult.index + 1,
+                mailboxResult.index + 1,
                 "invoke-static { v$resultRegister, v$sessionRegister }, " +
                     "$EXTENSION_CLASS->captureMailbox(Ljava/lang/Object;Ljava/lang/Object;)V",
             )

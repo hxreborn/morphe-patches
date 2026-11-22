@@ -260,7 +260,8 @@ val amoledThemePatch: Patch = patch(
 
         CONTACTS_COLOR_TRANSFORMS.forEach { (fingerprint, transform) ->
             val match = fingerprint.match()
-            match.method.injectColorTransformCall(match.instructionMatches.last().index, transform)
+            val (_, _, colorResult) = match.instructionMatches
+            match.method.injectColorTransformCall(colorResult.index, transform)
         }
 
         markFeaturePatched(AMOLED_THEME_CLASS)
@@ -270,7 +271,7 @@ val amoledThemePatch: Patch = patch(
             match.method.replaceInlineMessageBackground(match.instructionMatches.single().index)
         }
         ComposerCssFingerprint.match().let { match ->
-            val inputStreamResult = match.instructionMatches.last()
+            val (_, _, inputStreamResult) = match.instructionMatches
             val register = inputStreamResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstructions(
                 inputStreamResult.index + 1,

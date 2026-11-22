@@ -17,7 +17,6 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 @Suppress("unused")
 val unlockCustomTimePickerPatch: Patch = patch(
@@ -30,12 +29,12 @@ val unlockCustomTimePickerPatch: Patch = patch(
     execute {
         markPatchApplied(MAIL_SETTINGS_CLASS, "unlockCustomTimePicker", unlockCustomTimePickerPatch)
 
-        SnoozeOptionsFingerprint.instructionMatches.let { matches ->
-            val customUnset = matches[1].getInstruction<ReferenceInstruction>().reference
-            val upgradeRequired = matches[3]
+        SnoozeOptionsFingerprint.match().apply {
+            val (_, customOptionUnset, _, upgradeRequired) = instructionMatches
+            val customUnset = customOptionUnset.fieldReference
             val register = upgradeRequired.getInstruction<OneRegisterInstruction>().registerA
 
-            SnoozeOptionsFingerprint.method.replaceInstruction(
+            method.replaceInstruction(
                 upgradeRequired.index,
                 "sget-object v$register, $customUnset",
             )

@@ -7,11 +7,9 @@ package app.morphe.patches.protonmail.shared
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.AccessFlags
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.protonUniffiCallsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
@@ -47,7 +45,7 @@ internal val uniffiCallsPatch = patch {
         val (_, suspendedField) = CoroutineSuspendedFingerprint.matchAll(1..2)
             .single { it.classDef.type != BUNDLED_COROUTINE_SINGLETONS }
             .instructionMatches
-        val suspended = suspendedField.instruction.getReference<FieldReference>()!!
+        val suspended = suspendedField.fieldReference
         val failure = ResultFailureFingerprint.matchAll(1..2)
             .single { it.classDef.type != BUNDLED_RESULT_FAILURE }
             .classDef

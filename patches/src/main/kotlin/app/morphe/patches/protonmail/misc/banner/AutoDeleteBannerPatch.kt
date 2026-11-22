@@ -4,8 +4,10 @@
  */
 package app.morphe.patches.protonmail.misc.banner
 
+import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
@@ -60,10 +62,9 @@ val autoDeleteBannerStatePatch = patch {
             )
         }
 
+        val stateReads = anyInstruction(*stateFields.map { fieldAccess(it, Opcode.SGET_OBJECT) }.toTypedArray())
         with(AutoDeleteBannerFingerprint.method) {
-            val stateReadIndices = findInstructionIndicesReversed {
-                opcode == Opcode.SGET_OBJECT && getReference<FieldReference>() in stateFields
-            }
+            val stateReadIndices = findInstructionIndicesReversed(stateReads)
 
             if (stateReadIndices.size != stateFields.size) {
                 throw PatchException(

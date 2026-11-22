@@ -45,8 +45,8 @@ val swipeToSwitchAccountsPatch: Patch = patch(
         markPatchApplied(MAIL_SETTINGS_CLASS, "swipeToSwitchAccounts", swipeToSwitchAccountsPatch)
         forwardStub(MAIL_SETTINGS_CLASS, "addSwipeToSwitchAccountsRows", "Lapp/hxreborn/extension/protonmail/accountswipe/AccountSwipeRows;")
 
-        val onTouchEventField = PointerInteropFilterTouchFingerprint.match()
-            .instructionMatches[2].getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+        val (_, _, onTouchEventRead) = PointerInteropFilterTouchFingerprint.match().instructionMatches
+        val onTouchEventField = onTouchEventRead.fieldReference
         val interopFilterType = onTouchEventField.definingClass
         val function1Type = onTouchEventField.type
         val modifierType = classDefBy(classDefBy(interopFilterType).interfaces.single()).interfaces.single()
