@@ -33,8 +33,6 @@ import app.morphe.patches.shared.misc.extension.vpnsuperAppliedPatchesExtensionP
 
 private const val FUNCTION0_CLASS = "Lkotlin/jvm/functions/Function0;"
 private const val BOOLEAN_CLASS = "Ljava/lang/Boolean;"
-private const val USER_STATE_LABEL = ", userState="
-private const val MULTI_PLATFORM_LABEL = ", isMpfEnabled="
 private const val SHOW_BANNER_ADS_LABEL = ", showBannerAds="
 private const val FREE_TRIAL_LABEL = ", freeTrial="
 private const val PROMO_BANNER_COUNT = 4
@@ -55,11 +53,6 @@ private fun Method.booleanFieldsBetween(from: String, until: String): List<Field
             ?.let { (it as ReferenceInstruction).reference as FieldReference }
     }
 }
-
-private fun Method.fieldAfter(opcode: Opcode, startIndex: Int): FieldReference =
-    getInstruction<ReferenceInstruction>(
-        indexOfFirstInstructionOrThrow(startIndex, opcode),
-    ).reference as FieldReference
 
 private fun ClassDef.readsBooleanTrue() = methods.any { method ->
     method.indexOfFirstInstruction {
@@ -143,7 +136,8 @@ val unlockPremiumPatch: Patch = patch(
         }
 
         CrownClickFingerprint.match().let { crownClick ->
-            crownClick.method.addInstruction(crownClick.instructionMatches.first().index, "return-void")
+            val (crownTapEvent) = crownClick.instructionMatches
+            crownClick.method.addInstruction(crownTapEvent.index, "return-void")
         }
 
         val connectReport = ConnectReportToStringFingerprint.match()
@@ -169,15 +163,10 @@ val unlockPremiumPatch: Patch = patch(
             }
 
         val userInfo = UserInfoToStringFingerprint.match()
-        val isPremium = userInfo.method.fieldAfter(Opcode.IGET_BOOLEAN, 0)
-        val userState = userInfo.method.fieldAfter(
-            Opcode.IGET_OBJECT,
-            userInfo.method.indexOfFirstInstructionOrThrow(string(USER_STATE_LABEL)),
-        )
-        val multiPlatform = userInfo.method.fieldAfter(
-            Opcode.IGET_BOOLEAN,
-            userInfo.method.indexOfFirstInstructionOrThrow(string(MULTI_PLATFORM_LABEL)),
-        )
+        val (premiumRead, _, userStateRead, _, multiPlatformRead) = userInfo.instructionMatches
+        val isPremium = premiumRead.fieldReference
+        val userState = userStateRead.fieldReference
+        val multiPlatform = multiPlatformRead.fieldReference
 
         mutableClassDefBy(userInfo.classDef.type).methods
             .single { it.name == "<init>" && it.indexOfFirstInstruction(filter = writes(isPremium)) >= 0 }

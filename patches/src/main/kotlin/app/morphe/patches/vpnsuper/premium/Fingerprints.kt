@@ -5,6 +5,7 @@
 package app.morphe.patches.vpnsuper.premium
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -45,11 +46,22 @@ internal object PrivacyPolicyAcceptedFingerprint : Fingerprint(
     ),
 )
 
+private const val USER_STATE_LABEL = ", userState="
+private const val MULTI_PLATFORM_LABEL = ", isMpfEnabled="
+private const val USER_INFO_FIELD_READ_WINDOW = 1
+
 internal object UserInfoToStringFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "Ljava/lang/String;",
     parameters = emptyList(),
-    strings = listOf("UserInfo(email=", ", isPremium=", ", userState=", ", tokenStatus="),
+    strings = listOf("UserInfo(email=", ", isPremium=", USER_STATE_LABEL, ", tokenStatus="),
+    filters = listOf(
+        fieldAccess(opcode = Opcode.IGET_BOOLEAN),
+        string(USER_STATE_LABEL),
+        fieldAccess(opcode = Opcode.IGET_OBJECT, location = MatchAfterWithin(USER_INFO_FIELD_READ_WINDOW)),
+        string(MULTI_PLATFORM_LABEL),
+        fieldAccess(opcode = Opcode.IGET_BOOLEAN, location = MatchAfterWithin(USER_INFO_FIELD_READ_WINDOW)),
+    ),
 )
 
 internal object TvEverythingLoadedFingerprint : Fingerprint(
