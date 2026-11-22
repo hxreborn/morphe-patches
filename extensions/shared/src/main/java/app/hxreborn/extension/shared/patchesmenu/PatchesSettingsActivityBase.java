@@ -70,18 +70,12 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         }
         super.onCreate(savedInstanceState);
         initializeSettings();
-        if (useSharedStyle()) {
-            this.style = createStyle();
-            this.rows = createRows(this.style);
-        } else {
-            styleSystemBars(getWindow());
-        }
+        this.style = createStyle();
+        this.rows = createRows(this.style);
         if (showScreenOnCreate()) {
             showScreen(createScreen());
         }
-        if (useSharedStyle()) {
-            styleSystemBars(getWindow());
-        }
+        styleSystemBars(getWindow());
     }
 
     @SuppressWarnings({ "deprecation", "DataFlowIssue" })
@@ -166,10 +160,6 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     protected void showScreen(View screen) {
         setContentView(screen);
-    }
-
-    protected boolean useSharedStyle() {
-        return true;
     }
 
     protected boolean showScreenOnCreate() {

@@ -23,6 +23,7 @@ package app.hxreborn.extension.shared.patchesmenu;
 import android.app.Activity;
 import android.app.Dialog;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class PatchesSettingsDialogBase {
@@ -53,10 +54,9 @@ public abstract class PatchesSettingsDialogBase {
         return screen;
     }
 
-    protected final void refreshContent() {
-        attachContent(createContent());
+    protected final void refreshContent(ViewGroup container) {
+        container.removeAllViews();
+        container.addView(createContent());
     }
-
-    protected abstract void attachContent(View screen);
 
 }

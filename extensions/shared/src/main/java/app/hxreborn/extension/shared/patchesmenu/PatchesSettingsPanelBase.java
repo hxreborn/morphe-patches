@@ -22,7 +22,6 @@ package app.hxreborn.extension.shared.patchesmenu;
 
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class PatchesSettingsPanelBase {
@@ -46,9 +45,5 @@ public abstract class PatchesSettingsPanelBase {
     }
 
     public abstract View createContent();
-
-    public void buildContent(ViewGroup container) {
-        container.addView(createContent());
-    }
 
 }

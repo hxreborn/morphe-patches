@@ -2,9 +2,6 @@ app/hxreborn/extension/shared/patchesmenu/PatchesSettingsActivityBase
 app/hxreborn/extension/shared/patchesmenu/SettingsRows
 app/hxreborn/extension/shared/patchesmenu/SettingsStyle
 app/hxreborn/extension/shared/patchesmenu/SwitchChangeListener
-app/hxreborn/extension/shared/patchesmenu/SettingsStore
-app/hxreborn/extension/shared/patchesmenu/AppliedPatchCatalog
-app/hxreborn/extension/shared/patchesmenu/IndependentPatchStatus
 app/hxreborn/extension/shared/patchesmenu/PatchesSettingsPanelBase
 app/hxreborn/extension/shared/patchesmenu/PatchesSettingsDialogBase
 app/hxreborn/extension/shared/patchesmenu/MenuLayout

@@ -25,18 +25,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-final class MenuLayout {
+public final class MenuLayout {
 
     private MenuLayout() {
     }
 
-    static LinearLayout createColumn(Context context) {
+    public static LinearLayout createColumn(Context context) {
         LinearLayout column = new LinearLayout(context);
         column.setOrientation(LinearLayout.VERTICAL);
         return column;
     }
 
-    static void addWeightedContent(LinearLayout column, View content) {
+    public static void addWeightedContent(LinearLayout column, View content) {
         column.addView(content, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
     }
 
