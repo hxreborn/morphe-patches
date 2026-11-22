@@ -8,14 +8,12 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val GOLD = 1
 
@@ -30,7 +28,8 @@ val unlockPremiumPatch = patch(
     execute {
         val profileFieldSetter = ProfileFieldSetterFingerprint.match()
         val profileType = profileFieldSetter.classDef.type
-        val setGold = profileFieldSetter.instructionMatches.last().instruction.getReference<MethodReference>()!!
+        val (_, _, goldSetterCall) = profileFieldSetter.instructionMatches
+        val setGold = goldSetterCall.methodReference
 
         myProfileFingerprint(profileType).method.apply {
             val returnIndex = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
