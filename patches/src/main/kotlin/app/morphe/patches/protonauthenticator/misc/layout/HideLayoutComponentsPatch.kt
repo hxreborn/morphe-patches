@@ -69,9 +69,10 @@ val hideLayoutComponentsPatch: Patch = patch(
         }
 
         SpreadTheWordRowsFingerprint.match().apply {
-            val rows = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
+            val (_, _, rowsResult) = instructionMatches
+            val rows = rowsResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
-                instructionMatches.last().index + NEXT_INSTRUCTION,
+                rowsResult.index + NEXT_INSTRUCTION,
                 """
                     invoke-static/range { v$rows .. v$rows }, $SETTINGS_SECTIONS_CLASS->spreadTheWordRows(Ljava/util/List;)Ljava/util/List;
                     move-result-object v$rows

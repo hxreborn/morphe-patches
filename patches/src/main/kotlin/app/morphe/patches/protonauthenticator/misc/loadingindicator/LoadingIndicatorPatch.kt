@@ -52,11 +52,12 @@ val loadingIndicatorPatch: Patch = patch(
             """
         }
         PullToRefreshIndicatorSizeFingerprint.match().let { match ->
-            resizeLoadingIndicatorContainer(match.method, match.instructionMatches.last())
+            val (_, _, sizeModifier) = match.instructionMatches
+            resizeLoadingIndicatorContainer(match.method, sizeModifier)
         }
 
         PullToRefreshIndicatorColorsFingerprint.match().let { match ->
-            val indicatorCall = match.instructionMatches.last()
+            val (_, indicatorCall) = match.instructionMatches
             val indicatorInvoke = indicatorCall.instruction as? RegisterRangeInstruction
                 ?: throw PatchException("Expected a range invoke of the pull to refresh indicator in ${descriptor(match.method)}")
             val parameters = indicatorInvoke.getReference<MethodReference>()!!.parameterTypes.map(CharSequence::toString)
@@ -76,8 +77,9 @@ val loadingIndicatorPatch: Patch = patch(
         }
 
         ColorRoleToneFingerprint.match().let { match ->
-            val hctFromArgb = match.instructionMatches.first().instruction.getReference<MethodReference>()!!
-            val hctToArgb = match.instructionMatches.last().instruction.getReference<MethodReference>()!!
+            val (fromArgbCall, _, _, toArgbCall) = match.instructionMatches
+            val hctFromArgb = fromArgbCall.methodReference
+            val hctToArgb = toArgbCall.methodReference
             val hctType = hctFromArgb.returnType
             val hctFromComponents = hctFromComponentsFingerprint(hctType).originalMethod
             val hctHue = hctComponentGetterFingerprint(hctType, "getHue").originalMethod

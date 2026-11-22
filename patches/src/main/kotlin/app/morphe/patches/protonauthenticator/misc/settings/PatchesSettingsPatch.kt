@@ -45,7 +45,8 @@ private const val MENU_LIST_BORDER_COLOR = "menuListBorder"
 
 private fun addPatchesSettingsRow() {
     val row = ViewLogsRowFingerprint.match()
-    val rowIndex = row.instructionMatches.last().index
+    val (_, viewLogsRowCall) = row.instructionMatches
+    val rowIndex = viewLogsRowCall.index
     val rowCall = row.method.getInstruction<RegisterRangeInstruction>(rowIndex)
     val navigationRow = rowCall.getReference<MethodReference>()!!
     val titleType = navigationRow.parameterTypes[TITLE_PARAMETER].toString()

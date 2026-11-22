@@ -70,7 +70,8 @@ private val amoledWindowBackgroundPatch = patch {
 
 private fun tintEmptyStatePlaceholder() {
     val image = EmptyStateImageFingerprint.match()
-    val imageIndex = image.instructionMatches.last().index
+    val (_, imageInvocation) = image.instructionMatches
+    val imageIndex = imageInvocation.index
     val imageCall = image.method.getInstruction<RegisterRangeInstruction>(imageIndex)
 
     val colorFilterMethod = image.classDef.addMethod(

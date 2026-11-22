@@ -47,7 +47,7 @@ val accentColorPatch: Patch = patch(
         transformBrandColors(CORE_BRAND_COLORS + AUTHENTICATOR_BRAND_COLORS)
 
         ButtonShadowColorFingerprint.match().let { match ->
-            val shadowColor = match.instructionMatches.first()
+            val (shadowColor) = match.instructionMatches
             val register = shadowColor.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstructions(
                 shadowColor.index + 1,
