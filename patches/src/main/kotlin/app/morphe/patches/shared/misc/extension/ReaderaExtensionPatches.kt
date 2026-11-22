@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-internal val readeraSettingsExtensionPatch = extensionPayload("readera-settings")
+internal val readeraSettingsExtensionPatch = extensionPayload("readera-settings", sharedPatchesMenuExtensionPatch)
 
 internal val readeraChapterReaderExtensionPatch = extensionPayload("readera-chapter-reader")
 

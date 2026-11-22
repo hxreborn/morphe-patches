@@ -35,12 +35,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowInsets;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsPanel;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -84,24 +85,11 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private View screen() {
-        LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(this.style.screenBackground);
-        screen.setOnApplyWindowInsetsListener(this::applySystemBarInsets);
-        screen.addView(appBar());
-
+        View bar = appBar();
         ScrollView scroll = new ScrollView(this);
         scroll.addView(content(),
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        screen.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        return screen;
-    }
-
-    @SuppressWarnings("deprecation")
-    private WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
-        view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
-        return insets.consumeSystemWindowInsets();
+        return new PatchesSettingsPanel(this, this.style.screenBackground, bar, scroll).createContent();
     }
 
     private View appBar() {

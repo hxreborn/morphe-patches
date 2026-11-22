@@ -8,5 +8,6 @@ import app.morphe.patcher.patch.patch
 
 
 internal val redreaderSettingsExtensionPatch = patch {
+    dependsOn(sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/redreader-settings.mpe")
 }

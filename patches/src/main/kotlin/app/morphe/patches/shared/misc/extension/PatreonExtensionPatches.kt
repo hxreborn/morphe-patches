@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val patreonSettingsExtensionPatch = patch {
-    dependsOn(sharedProxyHandlerExtensionPatch)
+    dependsOn(sharedProxyHandlerExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/patreon-settings.mpe")
 }
 
