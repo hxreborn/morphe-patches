@@ -23,7 +23,7 @@ val hideAdsPatch = patch(
 
     execute {
         val match = OnQueryPurchasesResponseFingerprint.match()
-        val isEmptyResult = match.instructionMatches[2]
+        val (_, _, isEmptyResult) = match.instructionMatches
         val register = isEmptyResult.getInstruction<OneRegisterInstruction>().registerA
 
         match.method.addInstruction(isEmptyResult.index + 1, "const/4 v$register, 0x0")
