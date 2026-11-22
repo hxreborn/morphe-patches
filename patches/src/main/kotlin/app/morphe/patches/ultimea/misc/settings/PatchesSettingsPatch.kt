@@ -16,7 +16,7 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.ultimea.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.ultimeaSettingsExtensionPatch
 
@@ -34,7 +34,7 @@ private val icons = listOf(
 )
 
 internal fun markPatchApplied(methodName: String, patch: Patch) =
-    fillAppliedPatch("${ULTIMEA_EXTENSION}AppliedPatches;", methodName, patch, withDescription = false)
+    addAppliedPatchMetadata("${ULTIMEA_EXTENSION}AppliedPatches;", methodName, patch, withDescription = false)
 
 internal val patchesSettingsPatch = patch {
     dependsOn(ultimeaSettingsExtensionPatch)

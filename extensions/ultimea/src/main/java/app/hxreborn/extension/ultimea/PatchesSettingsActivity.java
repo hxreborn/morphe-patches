@@ -43,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.MenuLayout;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -102,8 +103,7 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private View screen() {
-        LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout screen = MenuLayout.createColumn(this);
         screen.setBackgroundColor(this.style.screenBackground);
         screen.setOnApplyWindowInsetsListener(this::applySystemBarInsets);
         screen.addView(appBar());
@@ -111,7 +111,7 @@ public final class PatchesSettingsActivity extends Activity {
         ScrollView scroll = new ScrollView(this);
         scroll.addView(content(),
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        screen.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        MenuLayout.addWeightedContent(screen, scroll);
         return screen;
     }
 
@@ -148,8 +148,7 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private View content() {
-        LinearLayout column = new LinearLayout(this);
-        column.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout column = MenuLayout.createColumn(this);
         column.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP),
                 this.style.dp(CONTENT_BOTTOM_PADDING_DP));
 

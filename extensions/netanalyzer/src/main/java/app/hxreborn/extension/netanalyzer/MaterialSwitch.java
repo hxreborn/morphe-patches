@@ -29,8 +29,10 @@ import android.view.View;
 import android.widget.Checkable;
 
 import app.hxreborn.extension.shared.Dimensions;
+import app.hxreborn.extension.shared.patchesmenu.SwitchChangeListener;
 
 @SuppressLint("ViewConstructor")
+
 final class MaterialSwitch extends View implements Checkable {
 
     private static final float TRACK_WIDTH_DP = 52f;

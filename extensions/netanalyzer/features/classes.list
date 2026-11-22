@@ -69,7 +69,6 @@ app/hxreborn/extension/netanalyzer/SsdpBrowser
 app/hxreborn/extension/netanalyzer/SsdpBrowser$DeviceOrder
 app/hxreborn/extension/netanalyzer/SsdpChangeListener
 app/hxreborn/extension/netanalyzer/StaticStates
-app/hxreborn/extension/netanalyzer/SwitchChangeListener
 app/hxreborn/extension/netanalyzer/TableExport
 app/hxreborn/extension/netanalyzer/TextChangeListener
 app/hxreborn/extension/netanalyzer/TileCache

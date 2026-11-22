@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val ultimeaSettingsExtensionPatch = patch {
-    dependsOn(sharedActivityCallbacksAdapterExtensionPatch)
+    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/ultimea-settings.mpe")
 }
 
