@@ -18,7 +18,7 @@ val unlockPremiumPatch = patch(
 
     execute {
         val premiumStateInit = PremiumStateInitFingerprint.match()
-        val premiumWrite = premiumStateInit.instructionMatches.last()
+        val (_, _, premiumWrite) = premiumStateInit.instructionMatches
         val premiumRegister = premiumWrite.getInstruction<OneRegisterInstruction>().registerA
 
         premiumStateInit.method.addInstruction(premiumWrite.index, "const/4 v$premiumRegister, 0x1")
