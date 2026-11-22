@@ -22,9 +22,9 @@ val hideAdsPatch = patch(
 
     execute {
         val adListResponse = AdListResponseFingerprint.match()
-        val moveResult = adListResponse.instructionMatches.last()
-        val adListRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
-        adListResponse.method.addInstruction(moveResult.index + 1, "const/16 v$adListRegister, 0x0")
+        val (_, _, adListResult) = adListResponse.instructionMatches
+        val adListRegister = adListResult.getInstruction<OneRegisterInstruction>().registerA
+        adListResponse.method.addInstruction(adListResult.index + 1, "const/16 v$adListRegister, 0x0")
 
         val consentRequest = ConsentRequestFingerprint.method
         val listenerType = consentRequest.parameterTypes.last().toString()
