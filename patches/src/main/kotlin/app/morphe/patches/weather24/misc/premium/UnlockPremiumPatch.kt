@@ -20,7 +20,7 @@ val unlockPremiumPatch = patch(
 
     execute {
         val expireDateRead = VoucherExpireDateFingerprint.match()
-        val moveResult = expireDateRead.instructionMatches.last()
+        val (_, _, moveResult) = expireDateRead.instructionMatches
         val expireDateRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
         expireDateRead.method.addInstruction(
             moveResult.index + 1,
