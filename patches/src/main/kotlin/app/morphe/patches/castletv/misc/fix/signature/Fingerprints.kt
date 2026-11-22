@@ -5,9 +5,13 @@
 package app.morphe.patches.castletv.misc.fix.signature
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.string
+import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 internal const val REQUEST_SIGNING_LOG = "differenceTime==="
 internal const val SECURITY_KEY_PREFERENCE = "server_security_key"
@@ -49,5 +53,20 @@ internal object HttpInterceptorFingerprint : Fingerprint(
         string(REQUEST_SIGNING_LOG),
         string(SECURITY_KEY_PREFERENCE),
         methodCall(definingClass = CIPHER_CLASS, name = "doFinal"),
+    ),
+)
+
+internal object ResponseBodyCreationFingerprint : Fingerprint(
+    filters = listOf(
+        string(SECURITY_KEY_PREFERENCE),
+        methodCall(definingClass = CIPHER_CLASS, name = "doFinal"),
+        InstructionFilter { _, instruction ->
+            instruction.opcode == Opcode.INVOKE_STATIC &&
+                instruction.getReference<MethodReference>()?.let { call ->
+                    call.parameterTypes.size == 2 &&
+                        call.parameterTypes.first() == STRING_CLASS &&
+                        call.returnType.startsWith("L")
+                } == true
+        },
     ),
 )

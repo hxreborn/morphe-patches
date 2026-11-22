@@ -18,7 +18,6 @@ import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.util.findInstructionIndicesReversed
-import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstStringInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -56,16 +55,9 @@ private fun MutableMethod.switchCaseStartIndices(): Map<Int, Int> {
 }
 
 private fun MutableMethod.addResponseObserver() {
-    val decryptionIndex = indexOfFirstInstructionOrThrow(indexOfFirstStringInstructionOrThrow(SECURITY_KEY_PREFERENCE)) {
-        getReference<MethodReference>()?.let { it.definingClass == CIPHER_CLASS && it.name == "doFinal" } == true
-    }
-    val bodyCreationIndex = indexOfFirstInstructionOrThrow(decryptionIndex) {
-        opcode == Opcode.INVOKE_STATIC && getReference<MethodReference>()?.let {
-            it.parameterTypes.size == 2 && it.parameterTypes[0] == STRING_CLASS && it.returnType.startsWith("L")
-        } == true
-    }
-    val json = getInstruction<FiveRegisterInstruction>(bodyCreationIndex).registerC
-    addInstruction(bodyCreationIndex, "invoke-static { v$json }, $DEVICE_GUID_CLASS->observeResponse($STRING_CLASS)V")
+    val (_, _, createResponseBody) = ResponseBodyCreationFingerprint.match(this).instructionMatches
+    val json = createResponseBody.getInstruction<FiveRegisterInstruction>().registerC
+    addInstruction(createResponseBody.index, "invoke-static { v$json }, $DEVICE_GUID_CLASS->observeResponse($STRING_CLASS)V")
 }
 
 private fun MutableMethod.addSignedRequestRetry() {
@@ -138,6 +130,7 @@ val spoofSignaturePatch = patch(
 
         HttpInterceptorFingerprint.method.apply {
             addSignedRequestRetry()
+            ResponseBodyCreationFingerprint.clearMatch()
             addResponseObserver()
         }
     }
