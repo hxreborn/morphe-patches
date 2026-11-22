@@ -30,7 +30,7 @@ val unlockPremiumPatch = patch(
         EntitlementCheckFingerprint.matchAll(2..2).forEach { it.method.returnEarly(true) }
 
         val adFreeRead = AdFreePreferenceReadFingerprint.match()
-        val adFreeStore = adFreeRead.instructionMatches.last()
+        val (_, _, _, adFreeStore) = adFreeRead.instructionMatches
         val adFreeField = adFreeStore.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
         val adFreeRegister = adFreeStore.getInstruction<TwoRegisterInstruction>().registerA
         adFreeRead.method.addInstruction(adFreeStore.index, "const v$adFreeRegister, 0x1")
