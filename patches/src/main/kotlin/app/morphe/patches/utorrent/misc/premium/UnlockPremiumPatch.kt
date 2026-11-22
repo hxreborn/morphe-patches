@@ -6,7 +6,6 @@ package app.morphe.patches.utorrent.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.getMutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -14,8 +13,6 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.torrent.ProStatusFingerprint
 import app.morphe.patches.shared.misc.torrent.removeAdsPatch
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.utorrentSettingsExtensionPatch
 
 @Suppress("unused")
@@ -31,7 +28,7 @@ val unlockPremiumPatch = patch(
     execute {
         returnTrueFrom("Lapp/hxreborn/extension/utorrent/PatchesSettingsActivity;", "hasPremiumPatch")
         val (_, paidStatusAssignment) = ProStatusFingerprint.match().instructionMatches
-        val paidStatus = paidStatusAssignment.instruction.getReference<FieldReference>()!!
+        val paidStatus = paidStatusAssignment.fieldReference
         proStatusGetterFingerprint(paidStatus.type).method.addInstructions(
             0,
             """
@@ -40,6 +37,6 @@ val unlockPremiumPatch = patch(
             """,
         )
         val (navigationCheck, _) = ProNavigationFingerprint.match().instructionMatches
-        navigationCheck.instruction.getReference<MethodReference>()!!.getMutableMethod().returnEarly(true)
+        navigationCheck.methodReference.getMutableMethod().returnEarly(true)
     }
 }

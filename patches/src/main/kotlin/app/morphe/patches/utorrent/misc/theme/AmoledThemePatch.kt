@@ -8,11 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
-import app.morphe.patcher.patch.document
-import app.morphe.patcher.patch.listDecodableFiles
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
@@ -23,11 +20,9 @@ import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.shared.misc.torrent.removeProtectionPatch
-import app.morphe.util.getNode
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.utorrentSettingsMenuExtensionPatch
 import app.morphe.patches.shared.misc.extension.utorrentSettingsExtensionPatch
 
@@ -58,134 +53,12 @@ private val DARK_DRAWABLES = mapOf(
     "bg_updatesuper_top_dark" to 1,
     "bg_main_top_img_dark" to 1,
 )
-private var amoledDrawableIds = emptyMap<String, Long>()
-private var switchLayoutId = 0L
-
-private fun Element.elementsByTag(name: String): List<Element> {
-    val nodes = getElementsByTagName(name)
-    return (0 until nodes.length).map { nodes.item(it) as Element }
-}
-
-private const val SPLASH_STYLE = "Theme.App.Splash"
-private const val NIGHT_STYLES_FILE = "res/values-night/styles.xml"
-private const val WHITE = "@android:color/white"
-private const val BLACK = "@android:color/black"
-
-private fun addNightSplash(drawables: List<String>, layouts: List<String>) {
-    val (parent, items) = document("res/values-v31/styles.xml").use { styles ->
-        val style = styles.documentElement.elementsByTag("style").single { it.getAttribute("name") == SPLASH_STYLE }
-        style.getAttribute("parent") to style.elementsByTag("item")
-            .map { it.getAttribute("name") to it.textContent.replace(WHITE, BLACK) }
-    }
-    document(NIGHT_STYLES_FILE).use { night ->
-        val style = night.createElement("style")
-        style.setAttribute("name", SPLASH_STYLE)
-        style.setAttribute("parent", parent)
-        items.forEach { (name, value) ->
-            val item = night.createElement("item")
-            item.setAttribute("name", name)
-            item.textContent = value
-            style.appendChild(item)
-        }
-        night.documentElement.appendChild(style)
-    }
-    drawables.forEach { copyWithBlackBackground("res/drawable/$it.xml", "res/drawable-night/$it.xml") }
-    layouts.forEach { copyWithBlackBackground("res/layout/$it.xml", "res/layout-night/$it.xml") }
-}
-
-private fun copyWithBlackBackground(source: String, target: String) {
-    val copy = resourceFile(target)
-    copy.parentFile.mkdirs()
-    resourceFile(source).copyTo(copy, overwrite = true)
-    document(target).use { resource ->
-        val root = resource.documentElement
-        (listOf(root) + root.elementsByTag("*")).forEach { element ->
-            val attributes = element.attributes
-            for (index in 0 until attributes.length) {
-                val attribute = attributes.item(index)
-                if (attribute.nodeValue == WHITE) attribute.nodeValue = BLACK
-            }
-        }
-    }
-}
+private lateinit var amoledResourceIds: AmoledResourceIds
 
 private val amoledResourcesPatch = patch {
     dependsOn(utorrentSettingsExtensionPatch)
     execute {
-        addNightSplash(listOf("splash_icon", "splash_icon_fix"), listOf())
-        amoledDrawableIds = document("res/values/public.xml").use { declarationsDocument ->
-            val declarations = declarationsDocument.getElementsByTagName("public")
-            var nextId = (0 until declarations.length).map { declarations.item(it) as Element }
-                .filter { it.getAttribute("type") == "drawable" }
-                .maxOf { it.getAttribute("id").removePrefix("0x").toLong(16) } + 1
-            switchLayoutId = (0 until declarations.length).map { declarations.item(it) as Element }
-                .filter { it.getAttribute("type") == "layout" }
-                .maxOf { it.getAttribute("id").removePrefix("0x").toLong(16) } + 1
-            val switchDeclaration = declarationsDocument.createElement("public")
-            switchDeclaration.setAttribute("type", "layout")
-            switchDeclaration.setAttribute("name", "hx_utorrent_amoled_switch")
-            switchDeclaration.setAttribute("id", "0x${switchLayoutId.toString(16)}")
-            declarationsDocument.documentElement.appendChild(switchDeclaration)
-            resourceFile("res/layout/hx_utorrent_amoled_switch.xml").writeText("""
-                <com.bittorrent.app.view.CustomSwitch
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="40dp" android:layout_height="21dp"
-                    app:openText="" app:closeText="" app:closeColor="#ff777777"
-                    app:openColor="@color/primaryColor" />
-            """.trimIndent())
-            DARK_DRAWABLES.keys.associateWith { original ->
-                val name = "hx_utorrent_amoled_$original"
-                val identifier = nextId++
-                val declaration = declarationsDocument.createElement("public")
-                declaration.setAttribute("type", "drawable")
-                declaration.setAttribute("name", name)
-                declaration.setAttribute("id", "0x${identifier.toString(16)}")
-                declarationsDocument.documentElement.appendChild(declaration)
-                if (original == "bg_main_top_img_dark") {
-                    if (listDecodableFiles("res/drawable*/$original.webp").isEmpty()) {
-                        throw PatchException("Missing dark header bitmap")
-                    }
-                    resourceFile("res/drawable/$name.xml").writeText("""
-                        <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:src="@drawable/$original" android:tint="#ff000000" />
-                    """.trimIndent())
-                } else {
-                    resourceFile("res/drawable/$original.xml").copyTo(resourceFile("res/drawable/$name.xml"), overwrite = true)
-                    document("res/drawable/$name.xml").use { drawable ->
-                    val fills = drawable.getElementsByTagName("solid")
-                    val gradients = drawable.getElementsByTagName("gradient")
-                    if (fills.length + gradients.length != 1) {
-                        throw PatchException("Expected one background fill in $original")
-                    }
-                    if (fills.length == 1) {
-                        (fills.item(0) as Element).setAttribute("android:color", "#ff000000")
-                    } else {
-                        val gradient = gradients.item(0)
-                        val solid = drawable.createElement("solid")
-                        solid.setAttribute("android:color", "#ff000000")
-                        gradient.parentNode.replaceChild(solid, gradient)
-                    }
-                }
-                }
-                identifier
-            }
-        }
-        document("res/values/colors.xml").use { colors ->
-            val names = setOf("color_dialog_content_dark", "color_notorrent_txt_dark", "color_unselect_tab_dark", "color_search_hint_dark")
-            val entries = colors.getElementsByTagName("color")
-            val matched = (0 until entries.length).map { entries.item(it) as Element }
-                .filter { it.getAttribute("name") in names }
-            if (matched.size != names.size) throw PatchException("Expected four dark label colors")
-            matched.forEach { it.textContent = "#ffb3b3b3" }
-        }
-        document("AndroidManifest.xml").use { document ->
-            val activity = document.createElement("activity")
-            activity.setAttribute("android:name", SETTINGS_ACTIVITY)
-            activity.setAttribute("android:exported", "false")
-            activity.setAttribute("android:theme", "@android:style/Theme.DeviceDefault.NoActionBar")
-            document.getNode("application").appendChild(activity)
-        }
+        amoledResourceIds = addAmoledResources(DARK_DRAWABLES.keys, SETTINGS_ACTIVITY)
     }
 }
 
@@ -200,6 +73,7 @@ val amoledThemePatch = patch(
     dependsOn(removeProtectionPatch, amoledResourcesPatch)
 
     execute {
+        val (drawableIds, switchLayoutId) = amoledResourceIds
         val themeClass = surfaceResourceFingerprint("color_controller_bg_dark").match().classDef.type
         val darkMode = darkModeFingerprint(themeClass).method
         darkMode.addInstructions(0, "invoke-static/range { p0 .. p0 }, $SETTINGS_CLASS->initialize(Landroid/content/Context;)V")
@@ -213,7 +87,7 @@ val amoledThemePatch = patch(
         )
 
         val replacements = DARK_COLORS.keys.associate { resourceId(ResourceType.COLOR, it) to ANDROID_BLACK } +
-            DARK_DRAWABLES.keys.associate { resourceId(ResourceType.DRAWABLE, it) to amoledDrawableIds.getValue(it) }
+            DARK_DRAWABLES.keys.associate { resourceId(ResourceType.DRAWABLE, it) to drawableIds.getValue(it) }
         val entries = replacements.entries.sortedBy { it.key }
         mutableClassDefBy(THEME_CLASS).replaceStub(
             "resourceId", 2,
