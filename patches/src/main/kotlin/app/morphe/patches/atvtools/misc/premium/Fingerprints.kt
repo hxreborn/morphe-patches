@@ -6,6 +6,7 @@ package app.morphe.patches.atvtools.misc.premium
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
@@ -33,5 +34,6 @@ internal object PremiumActivityOnCreateFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "V",
     parameters = listOf("Landroid/os/Bundle;"),
+    filters = listOf(methodCall(name = "onCreate", opcode = Opcode.INVOKE_SUPER)),
     custom = { _, classDef -> classDef.type == "Ldev/vodik7/atvtools/PremiumActivity;" },
 )
