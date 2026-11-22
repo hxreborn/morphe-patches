@@ -6,12 +6,10 @@ package app.morphe.patches.poe.misc.pairip
 
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
 import app.morphe.patches.shared.misc.smali.descriptor
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val RECEIVER_REGISTER_COUNT = 5
 
@@ -23,9 +21,9 @@ val restoreDownloadReceiverPatch = patch {
     execute {
         val receiverClass = DownloadCompleteReceiverFingerprint.match().classDef
         val (callbackCall) = DownloadCallbackFingerprint.matchAll(receiverClass, 1..1).single().instructionMatches
-        val callbackMethod = callbackCall.instruction.getReference<MethodReference>()!!
+        val callbackMethod = callbackCall.methodReference
         val (resumeCall) = DownloadResumeFingerprint.matchAll(receiverClass, 1..1).single().instructionMatches
-        val resumeMethod = resumeCall.instruction.getReference<MethodReference>()!!
+        val resumeMethod = resumeCall.methodReference
 
         receiverClass.apply {
             val callbackField = fields.single { it.type == callbackMethod.definingClass }
