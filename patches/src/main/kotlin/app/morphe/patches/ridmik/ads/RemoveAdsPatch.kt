@@ -67,7 +67,8 @@ val removeAdsPatch = patch(
         StoreAdRowFingerprint.method.returnEarly()
 
         GifAdsEnabledFingerprint.matchAll(2..2).forEach { match ->
-            val resultIndex = match.instructionMatches.last().index
+            val (_, _, adsEnabledResult) = match.instructionMatches
+            val resultIndex = adsEnabledResult.index
             val resultRegister = match.method.getInstruction<OneRegisterInstruction>(resultIndex).registerA
             match.method.addInstruction(resultIndex + 1, "const/4 v$resultRegister, 0x0")
         }
