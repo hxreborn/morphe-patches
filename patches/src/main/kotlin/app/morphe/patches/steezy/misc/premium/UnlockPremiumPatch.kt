@@ -23,8 +23,8 @@ val unlockPremiumPatch = patch(
     dependsOn(steezyUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.STEEZY)
     execute {
-        val cachedClientBuilder = CachedClientBuilderFingerprint.match()
-        val clientBuilder = cachedClientBuilder.instructionMatches.first().getMethodCalled()
+        val (createBuilder) = CachedClientBuilderFingerprint.match().instructionMatches
+        val clientBuilder = createBuilder.getMethodCalled()
 
         val returnIndex = clientBuilder.indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
         val builderRegister = clientBuilder.getInstruction<OneRegisterInstruction>(returnIndex).registerA
