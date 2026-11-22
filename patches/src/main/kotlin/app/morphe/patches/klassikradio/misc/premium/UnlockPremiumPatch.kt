@@ -25,19 +25,22 @@ val unlockPremiumPatch = patch(
 
     execute {
         val subscriptionType = SubscriptionTypeFingerprint.match()
-        val premium = subscriptionType.instructionMatches.last()
+        val (_, premiumEnumStore) = subscriptionType.instructionMatches
+        val premium = premiumEnumStore
             .getInstruction<ReferenceInstruction>()
             .getReference<FieldReference>()!!
 
         contractConstructorFingerprint(subscriptionType.classDef.type).match().apply {
-            val index = instructionMatches.first().index
+            val (subscriptionStore) = instructionMatches
+            val index = subscriptionStore.index
             val register = method.getInstruction<TwoRegisterInstruction>(index).registerA
 
             method.addInstruction(index, "sget-object v$register, $premium")
         }
 
         SectionTypeDecoderFingerprint.match().apply {
-            val index = instructionMatches.last().index
+            val (_, _, sectionOrdinal) = instructionMatches
+            val index = sectionOrdinal.index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
             method.addInstruction(index + 1, "const/4 v$register, 0x0")
