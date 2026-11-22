@@ -6,7 +6,6 @@ package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
@@ -129,10 +128,9 @@ internal val patchesMenuPatch = patch {
         val aboutSection = Fingerprint(
             filters = listOf(decryptedString(ABOUT_SECTION_BELOW), methodCall(reference = header)),
         ).match()
-        val sectionLabelIndex = aboutSection.instructionMatches.first().index
-        val composerRegister = aboutSection.method.getInstruction<FiveRegisterInstruction>(
-            aboutSection.instructionMatches.last().index,
-        ).registerD
+        val (sectionLabel, headerCall) = aboutSection.instructionMatches
+        val sectionLabelIndex = sectionLabel.index
+        val composerRegister = headerCall.getInstruction<FiveRegisterInstruction>().registerD
         val composerType = row.parameterTypes[rowParameters.size].toString()
         val onClickType = row.parameterTypes[rowParameters.indexOf(ROW_ON_CLICK)].toString()
 

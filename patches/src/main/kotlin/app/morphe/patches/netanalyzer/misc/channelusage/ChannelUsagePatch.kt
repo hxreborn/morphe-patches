@@ -58,7 +58,7 @@ val channelUsagePatch = patch(
         method.addInstruction(0, "const/16 v$usagePageRegister, $SHOW_USAGE_PAGE")
 
         val usageItem = ChannelUsageMenuItemFingerprint.match()
-        val itemCall = usageItem.instructionMatches.last()
+        val (_, _, itemCall) = usageItem.instructionMatches
         val onClickRegister = itemCall.getInstruction<FiveRegisterInstruction>().registerE
         val onClickType = usageItem.method.instructions.take(itemCall.index).last {
             it.opcode == Opcode.NEW_INSTANCE && (it as OneRegisterInstruction).registerA == onClickRegister

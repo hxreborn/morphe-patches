@@ -5,7 +5,6 @@
 package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.methodCall
@@ -14,7 +13,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
-import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -45,9 +43,6 @@ private const val LONG_TYPE = "J"
 private const val DOUBLE_TYPE = "D"
 private const val INT_TYPE = "I"
 private const val BOOLEAN_TYPE = "Z"
-private const val GET_CLASS = "getClass"
-private const val GROUP_KEY_LOAD_DISTANCE = 2
-private const val GROUP_END_LOAD_DISTANCE = 2
 private const val OPEN_ACTIVITY_CLICK = "$FEATURES_CLASS->onToolbarAction"
 private const val EXPORT_MENU_CLICK = "Lapp/hxreborn/extension/netanalyzer/ExportMenu;->onExportMenu"
 private const val MORE_VERT_ICON = "more_vert"
@@ -105,7 +100,7 @@ internal fun rowChevronMethod(classDef: MutableClass): Method =
                 ),
             ),
         ).match()
-        val iconCall = icon.instructionMatches.last()
+        val (_, iconCall) = icon.instructionMatches
         val chevron = icon.method.instructions.take(iconCall.index).last {
             it.opcode == Opcode.INVOKE_STATIC && it.getReference<MethodReference>()!!.let { reference ->
                 reference.parameterTypes.isEmpty() && reference.returnType == iconType
@@ -134,7 +129,7 @@ internal fun rowChevronMethod(classDef: MutableClass): Method =
             move-object v5, p0
             const/4 v6, 0x0
             const/4 v7, 0x0
-            invoke-static/range { v0 .. v7 }, ${descriptor(iconCall.instruction.getReference<MethodReference>()!!)}
+            invoke-static/range { v0 .. v7 }, ${descriptor(iconCall.methodReference)}
             return-void
         """
         classDef.addMethod(
@@ -163,15 +158,18 @@ private fun addIconButton(
 ) {
     val references = toolbarActionReferences()
     val onClickType = references.clickable.parameterTypes[CLICKABLE_ON_CLICK].toString()
-    val button = iconButton ?: Fingerprint(
-        filters = listOf(
-            composable(WIFI_PAGER_MENU),
-            methodCall(
-                parameters = listOf(imageVectorType(), STRING_TYPE, BOOLEAN_TYPE, onClickType, references.composerType, INT_TYPE, INT_TYPE),
-                returnType = "V",
+    val button = iconButton ?: run {
+        val (_, buttonCall) = Fingerprint(
+            filters = listOf(
+                composable(WIFI_PAGER_MENU),
+                methodCall(
+                    parameters = listOf(imageVectorType(), STRING_TYPE, BOOLEAN_TYPE, onClickType, references.composerType, INT_TYPE, INT_TYPE),
+                    returnType = "V",
+                ),
             ),
-        ),
-    ).match().instructionMatches.last().instruction.getReference<MethodReference>()!!.also { iconButton = it }
+        ).match().instructionMatches
+        buttonCall.methodReference.also { iconButton = it }
+    }
     val icon = iconMethod(slot.classDef, iconName, pathData)
     val smali = """
         invoke-static {}, ${descriptor(icon)}
@@ -204,50 +202,12 @@ private fun addIconButton(
     )
 }
 
-internal class ToolbarSlot(
-    val method: MutableMethod,
-    val classDef: MutableClass,
-    val index: Int,
-    val composerRegister: Int,
-    val composerType: String,
-)
-
-internal fun emptyGroupSlot(composableName: String): ToolbarSlot =
-    emptyGroupSlotOrNull(composableFingerprint(composableName).match())
-        ?: throw PatchException("$composableName has no empty composer group after a null check")
-
-internal fun emptyGroupSlotOrNull(match: Match): ToolbarSlot? {
-    val method = match.method
-    val instructions = method.instructions.toList()
-    fun groupCall(index: Int, parameterType: String) = instructions.getOrNull(index)
-        ?.takeIf { it.opcode == Opcode.INVOKE_VIRTUAL }
-        ?.getReference<MethodReference>()
-        ?.takeIf { it.returnType == "V" && it.parameterTypes.map(CharSequence::toString) == listOf(parameterType) }
-    fun isGetClass(index: Int) = instructions[index].let { instruction ->
-        instruction.opcode == Opcode.INVOKE_VIRTUAL &&
-            instruction.getReference<MethodReference>()!!.let { it.definingClass == OBJECT_TYPE && it.name == GET_CLASS }
-    }
-    (match.instructionMatches.first().index until instructions.size).filter(::isGetClass).forEach { getClass ->
-        (getClass + 1..getClass + GROUP_KEY_LOAD_DISTANCE).forEach { index ->
-            val key = groupCall(index, INT_TYPE) ?: return@forEach
-            val closes = (index + 1..index + GROUP_END_LOAD_DISTANCE).any {
-                groupCall(it, BOOLEAN_TYPE)?.definingClass == key.definingClass
-            }
-            if (closes) {
-                val keyCall = instructions[index] as FiveRegisterInstruction
-                return ToolbarSlot(method, match.classDef, index + 1, keyCall.registerC, key.definingClass)
-            }
-        }
-    }
-    return null
-}
-
 internal fun textButtonSlot(composableName: String): ToolbarSlot {
     val menu = Fingerprint(
         filters = listOf(composable(composableName), methodCall(reference = toolbarActionReferences().textButton)),
     ).match()
-    val call = menu.instructionMatches.last()
-    val reference = call.instruction.getReference<MethodReference>()!!
+    val (_, call) = menu.instructionMatches
+    val reference = call.methodReference
     val composerType = toolbarActionReferences().composerType
     val parameterTypes = reference.parameterTypes.map { it.toString() }
     val composerParameter = parameterTypes.indexOf(composerType)
@@ -316,18 +276,18 @@ private fun toolbarActionReferences(): ToolbarActionReferences = toolbarActionRe
     }
     val colorLocal = before.subList(0, currentValueIndex).last { it.opcode == Opcode.SGET_OBJECT }
 
-    val padding = HeaderWithButtonPaddingFingerprint.match().let { header ->
-        header.instructionMatches.last().instruction.getReference<MethodReference>()!!
-    }
+    val (_, paddingCall) = HeaderWithButtonPaddingFingerprint.match().instructionMatches
+    val padding = paddingCall.methodReference
     val clickableUse = Fingerprint(
         filters = listOf(composable(HEADER_WITH_BUTTON), methodCall(reference = clickable)),
     ).match()
-    val clickableReceiver = when (val call = clickableUse.instructionMatches.last().instruction) {
+    val (_, clickableCall) = clickableUse.instructionMatches
+    val clickableReceiver = when (val call = clickableCall.instruction) {
         is RegisterRangeInstruction -> call.startRegister
         is FiveRegisterInstruction -> call.registerC
         else -> throw PatchException("Unexpected clickable call ${call.opcode} in $HEADER_WITH_BUTTON")
     }
-    val modifierCompanion = clickableUse.method.instructions.take(clickableUse.instructionMatches.last().index)
+    val modifierCompanion = clickableUse.method.instructions.take(clickableCall.index)
         .last { it.opcode == Opcode.SGET_OBJECT && (it as OneRegisterInstruction).registerA == clickableReceiver }
         .getReference<FieldReference>()!!
 

@@ -48,9 +48,9 @@ internal val hostToolsPatch = patch {
     dependsOn(patchesMenuPatch)
 
     execute {
-        val starts = ToolStartFingerprint.match()
-        val tracerouteStart = starts.instructionMatches.first().instruction.getReference<MethodReference>()!!
-        val pingStart = starts.instructionMatches.last().instruction.getReference<MethodReference>()!!
+        val (tracerouteCall, pingCall) = ToolStartFingerprint.match().instructionMatches
+        val tracerouteStart = tracerouteCall.methodReference
+        val pingStart = pingCall.methodReference
         val tracerouteTool = tracerouteStart.definingClass
         val pingTool = pingStart.definingClass
         val runMethods = listOf(

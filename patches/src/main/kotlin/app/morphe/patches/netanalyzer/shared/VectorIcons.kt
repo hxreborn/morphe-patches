@@ -152,7 +152,8 @@ private fun vectorApi(): VectorApi = vectorApi ?: run {
         ),
     ).match()
     val instructions = reference.method.instructions.toList()
-    val initIndex = reference.instructionMatches.last().index
+    val (_, builderConstructor) = reference.instructionMatches
+    val initIndex = builderConstructor.index
     val builderInit = instructions[initIndex].getReference<MethodReference>()!!
     val builderType = builderInit.definingClass
     val range = instructions[initIndex] as RegisterRangeInstruction

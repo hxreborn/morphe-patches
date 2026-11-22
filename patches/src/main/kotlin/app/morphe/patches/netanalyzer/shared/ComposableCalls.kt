@@ -22,7 +22,8 @@ internal fun removeComposableCall(label: String, composable: Method) {
     val call = Fingerprint(
         filters = listOf(decryptedString(label), methodCall(reference = composable)),
     ).match()
-    call.method.replaceInstruction(call.instructionMatches.last().index, "nop")
+    val (_, composableCall) = call.instructionMatches
+    call.method.replaceInstruction(composableCall.index, "nop")
 }
 
 internal fun MutableMethod.insertBeforeStringLoad(index: Int, smali: String) {

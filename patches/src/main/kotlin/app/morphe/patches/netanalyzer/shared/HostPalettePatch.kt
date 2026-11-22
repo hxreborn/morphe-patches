@@ -7,7 +7,6 @@ package app.morphe.patches.netanalyzer.shared
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
@@ -48,9 +47,9 @@ internal val hostPalettePatch = patch {
 
     execute {
         val theme = Fingerprint(filters = listOf(composable(THEME), colorSchemeConstructor)).match()
-        val constructorCallIndex = theme.instructionMatches.last().index
-        val constructorCall = theme.method.getInstruction<RegisterRangeInstruction>(constructorCallIndex)
-        val schemeType = constructorCall.getReference<MethodReference>()!!.definingClass
+        val (_, schemeConstructor) = theme.instructionMatches
+        val constructorCall = schemeConstructor.getInstruction<RegisterRangeInstruction>()
+        val schemeType = schemeConstructor.methodReference.definingClass
 
         val paletteType = CustomColorsPaletteToStringFingerprint.originalMethod.definingClass
         val paletteInstances = theme.method.instructions.filter { it.opcode == Opcode.SGET_OBJECT }
@@ -81,7 +80,7 @@ internal val hostPalettePatch = patch {
         )
 
         theme.method.addInstructions(
-            constructorCallIndex + 1,
+            schemeConstructor.index + 1,
             "invoke-static/range { v${constructorCall.startRegister} .. v${constructorCall.startRegister} }, ${descriptor(captureMethod)}",
         )
     }

@@ -5,7 +5,6 @@
 package app.morphe.patches.netanalyzer.misc.tooloptions
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
@@ -53,8 +52,9 @@ val toolOptionsPatch = patch(
             "$property=${fields[property] ?: throw PatchException("$itemType has no $property property")}"
         }
 
-        val returnIndex = normaliser.instructionMatches.last().index
-        val itemRegister = normaliser.method.getInstruction<OneRegisterInstruction>(returnIndex).registerA
+        val (_, _, itemReturn) = normaliser.instructionMatches
+        val returnIndex = itemReturn.index
+        val itemRegister = itemReturn.getInstruction<OneRegisterInstruction>().registerA
         val fieldNamesRegister = normaliser.method.getFreeRegisterProvider(returnIndex, 1, itemRegister)
             .getFreeRegister4Bit()
         requireNibbleRegisters(itemRegister)

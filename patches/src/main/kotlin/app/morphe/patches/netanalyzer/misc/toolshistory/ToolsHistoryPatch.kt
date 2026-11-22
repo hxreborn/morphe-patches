@@ -34,7 +34,6 @@ import app.morphe.patches.shared.misc.extension.netanalyzerToolsHistoryExtension
 
 private val HISTORY_ITEM_PROPERTIES = listOf("address", "favorite")
 private const val CONSTRUCTOR = "<init>"
-private const val ROUTE_CLASS_MATCH = 1
 private const val REGISTRATION_SEPARATOR = ";"
 
 @Suppress("unused")
@@ -59,7 +58,8 @@ val toolsHistoryPatch = patch(
         }
         val historyClass = historyRecorderFingerprint(itemType).match().classDef.type
         val routeClasses = queryRouteNavigationFingerprint(itemType).matchAll().map { navigation ->
-            navigation.instructionMatches[ROUTE_CLASS_MATCH].instruction.getReference<TypeReference>()!!.type
+            val (_, routeClassLiteral) = navigation.instructionMatches
+            routeClassLiteral.instruction.getReference<TypeReference>()!!.type
         }.distinct()
         val routeClass = routeClasses.singleOrNull()
             ?: throw PatchException("Tools query navigation targets $routeClasses, expected one route class")

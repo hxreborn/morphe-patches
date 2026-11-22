@@ -32,7 +32,6 @@ import app.morphe.patches.shared.misc.smali.toJavaClassName
 import app.morphe.util.findMutableMethodOf
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
 private const val TOOLS_TRACEROUTE_MENU = "ToolsTracerouteMenu"
@@ -84,7 +83,7 @@ val exportResultsPatch = patch(
 
 private fun recordPortScanStarts() {
     val starts = PortScanStartFingerprint.matchAll()
-        .map { it.instructionMatches.single().instruction.getReference<MethodReference>()!! }
+        .map { it.instructionMatches.single().methodReference }
         .distinctBy { it.toString() }
     val start = starts.singleOrNull() ?: throw PatchException("The port scan start calls $starts, expected one method")
     val method = mutableClassDefBy(start.definingClass).findMutableMethodOf(start)
