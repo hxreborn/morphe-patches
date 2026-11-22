@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
@@ -87,7 +86,7 @@ val amoledThemePatch: Patch = patch(
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
 
-        CollapsingToolbarColorFingerprint.matchSingle().run {
+        CollapsingToolbarColorFingerprint.match().run {
             val lerpIndex = instructionMatches.last().index
             val collapsedColorRegister = method.getInstruction<FiveRegisterInstruction>(lerpIndex).registerE
             method.injectColorTransformCall(

@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -31,7 +30,7 @@ val changeDownloadLocationPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS)
 
-        val match = MediaStoreInsertFingerprint.matchSingle()
+        val match = MediaStoreInsertFingerprint.match()
         val insertIndex = match.instructionMatch(Opcode.INVOKE_VIRTUAL).index
         val insert = match.method.getInstruction<FiveRegisterInstruction>(insertIndex)
         match.method.replaceInstruction(

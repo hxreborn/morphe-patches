@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 internal const val TODAY_CARDS_ORDER_CLASS =
@@ -26,7 +25,7 @@ val hideShortsPatch = patch(
             .singleOrNull { it.type == "Ljava/util/Map;" }
             ?: throw PatchException("$TODAY_CARDS_ORDER_CLASS has no card map field")
 
-        TodayCardsFingerprint.matchSingle().method.addInstructions(
+        TodayCardsFingerprint.method.addInstructions(
             0,
             """
                 iget-object v0, p0, $TODAY_CARDS_ORDER_CLASS->${todayCards.name}:Ljava/util/Map;

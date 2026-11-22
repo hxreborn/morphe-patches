@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -35,10 +34,10 @@ val hideLayoutComponentsPatch: Patch = patch(
         markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(SETTINGS_SECTIONS_CLASS)
 
-        PassBannerFingerprint.matchSingle().method
+        PassBannerFingerprint.method
             .returnVoidWhen("$SETTINGS_SECTIONS_CLASS->isPassBannerHidden()Z")
 
-        DiscoverSectionVisibilityFingerprint.matchSingle().method.apply {
+        DiscoverSectionVisibilityFingerprint.method.apply {
             val free = getFreeRegisterProvider(0, 1).getFreeRegister()
 
             addInstructionsWithLabels(
@@ -54,7 +53,7 @@ val hideLayoutComponentsPatch: Patch = patch(
             )
         }
 
-        SettingsSectionFingerprint.matchSingle().method.apply {
+        SettingsSectionFingerprint.method.apply {
             val free = getFreeRegisterProvider(0, 1).getFreeRegister()
 
             addInstructionsWithLabels(
@@ -69,7 +68,7 @@ val hideLayoutComponentsPatch: Patch = patch(
             )
         }
 
-        SpreadTheWordRowsFingerprint.matchSingle().apply {
+        SpreadTheWordRowsFingerprint.match().apply {
             val rows = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
                 instructionMatches.last().index + NEXT_INSTRUCTION,

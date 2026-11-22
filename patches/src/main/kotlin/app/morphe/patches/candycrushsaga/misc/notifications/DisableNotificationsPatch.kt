@@ -6,7 +6,6 @@ package app.morphe.patches.candycrushsaga.misc.notifications
 
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.manifest.removeUsesPermissions
@@ -30,7 +29,7 @@ val disableNotificationsPatch = patch(
     dependsOn(removeNotificationPermissionPatch)
 
     execute {
-        EnableNotificationFingerprint.matchSingle().method.returnEarly()
-        ScheduleLocalNotificationFingerprint.matchSingle().method.returnEarly()
+        EnableNotificationFingerprint.method.returnEarly()
+        ScheduleLocalNotificationFingerprint.method.returnEarly()
     }
 }

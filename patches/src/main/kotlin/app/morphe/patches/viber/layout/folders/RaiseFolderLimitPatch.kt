@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.folders
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -24,7 +23,7 @@ val raiseFolderLimitPatch: Patch = patch(
 
     execute {
         markPatchApplied("raiseFolderLimit", raiseFolderLimitPatch)
-        MaxFoldersFingerprint.matchSingle().apply {
+        MaxFoldersFingerprint.match().apply {
             val (maxFolders) = instructionMatches
             method.addFilterCallAfter(maxFolders.index, "$VIBER_SETTINGS_CLASS->folderLimit(I)I")
         }

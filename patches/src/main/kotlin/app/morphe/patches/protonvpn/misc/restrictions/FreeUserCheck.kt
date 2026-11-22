@@ -15,7 +15,6 @@ import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -49,7 +48,7 @@ private fun Match.clearFreeUserResult() {
     method.addInstruction(freeUserResult.index + 1, "const/16 v$register, 0x0")
 }
 
-internal fun clearFreeUserCheck(check: Fingerprint) = check.matchSingle().clearFreeUserResult()
+internal fun clearFreeUserCheck(check: Fingerprint) = check.match().clearFreeUserResult()
 
 internal fun clearFreeUserChecks(check: Fingerprint) =
     check.matchAll().forEach { it.clearFreeUserResult() }

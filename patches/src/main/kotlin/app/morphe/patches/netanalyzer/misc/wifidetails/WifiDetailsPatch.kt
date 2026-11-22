@@ -12,7 +12,6 @@ import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.composableParameters
@@ -39,7 +38,7 @@ val wifiDetailsPatch = patch(
     execute {
         addFeatureActivity("WifiDetailsActivity")
 
-        val rowMatch = WifiSignalRowFingerprint.matchSingle()
+        val rowMatch = WifiSignalRowFingerprint.match()
         val row = rowMatch.originalMethod
         val rowCall = Fingerprint(
             filters = listOf(
@@ -49,7 +48,7 @@ val wifiDetailsPatch = patch(
                     location = MatchAfterImmediately(),
                 ),
             ),
-        ).matchSingle()
+        ).match()
 
         val nullIndex = rowCall.instructionMatches.first().index
         val nullRegister = rowCall.method.getInstruction<OneRegisterInstruction>(nullIndex).registerA

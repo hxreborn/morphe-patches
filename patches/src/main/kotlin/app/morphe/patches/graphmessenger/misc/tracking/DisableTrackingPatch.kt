@@ -7,7 +7,6 @@ package app.morphe.patches.graphmessenger.misc.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -24,7 +23,7 @@ val disableTrackingPatch = patch(
     dependsOn(spoofSignaturePatch, disableAnalyticsCollectionPatch)
 
     execute {
-        val activate = AppMetricaActivateFingerprint.matchSingle()
+        val activate = AppMetricaActivateFingerprint.match()
         val afterActivate = activate.instructionMatches.single().index + 1
         val register = activate.method.findFreeRegister(afterActivate)
         activate.method.addInstructions(

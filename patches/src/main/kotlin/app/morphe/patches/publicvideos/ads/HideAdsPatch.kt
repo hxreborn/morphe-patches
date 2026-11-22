@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -22,7 +21,7 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        InitializeMobileAdsFingerprint.matchSingle().method.addInstructions(
+        InitializeMobileAdsFingerprint.method.addInstructions(
             0,
             """
                 sget-object p1, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
@@ -30,13 +29,13 @@ val hideAdsPatch = patch(
             """,
         )
 
-        val amazon = RegisterAmazonAdsFingerprint.matchSingle()
+        val amazon = RegisterAmazonAdsFingerprint.match()
         amazon.instructionMatches.reversed().forEach { amazon.method.removeInstruction(it.index) }
 
-        val audienceNetwork = InitializeAudienceNetworkFingerprint.matchSingle()
+        val audienceNetwork = InitializeAudienceNetworkFingerprint.match()
         audienceNetwork.method.removeInstruction(audienceNetwork.instructionMatches.single().index)
 
-        SplashForegroundImageFingerprint.matchSingle().apply {
+        SplashForegroundImageFingerprint.match().apply {
             val index = instructionMatches.last().index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
             method.addInstruction(index + 1, "const/4 v$register, 0x0")

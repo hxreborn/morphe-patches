@@ -6,7 +6,6 @@ package app.morphe.patches.audible.startup
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -22,7 +21,7 @@ val openLibraryOnLaunchPatch = patch(
     compatibleWith(AppCompatibilities.AUDIBLE)
 
     execute {
-        val match = NextActivityRouterFingerprint.matchSingle()
+        val match = NextActivityRouterFingerprint.match()
         val matches = match.instructionMatches
 
         // Lowercased copy is Conflict at the merge

@@ -15,7 +15,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
@@ -54,7 +53,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
 
         val plusBadgeId = resourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
 
-        settingRowWithIconFingerprint().matchSingle().method.apply {
+        settingRowWithIconFingerprint().method.apply {
             addInstructionsWithLabels(
                 0,
                 """
@@ -72,7 +71,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             )
         }
 
-        val settingViewState = SettingsValueItemFingerprint.matchSingle().originalMethod.parameterTypes.first().toString()
+        val settingViewState = SettingsValueItemFingerprint.originalMethod.parameterTypes.first().toString()
         val settingViewStateClass = classDefBy(settingViewState)
         val isRestrictedGetter = settingViewStateClass.methods.singleOrNull {
             it.returnType == "Z" && it.parameterTypes.isEmpty() && !AccessFlags.STATIC.isSet(it.accessFlags)
@@ -119,7 +118,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
                 )
             }
         } else {
-            activeNotificationsFingerprint().matchSingle().method.filterReturnValue(
+            activeNotificationsFingerprint().method.filterReturnValue(
                 "$PROMOTIONS_CLASS->withoutPromoNotifications(Ljava/util/List;)Ljava/util/List;",
             )
         }
@@ -131,7 +130,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             "$PROMOTIONS_CLASS->withoutUpgradeBanners(Ljava/util/List;)Ljava/util/List;",
         )
 
-        (FreeConnectionsUpsellBannerFingerprint.matchOrNull() ?: InlinedFreeConnectionsUpsellBannerFingerprint.matchSingle()).run {
+        (FreeConnectionsUpsellBannerFingerprint.matchOrNull() ?: InlinedFreeConnectionsUpsellBannerFingerprint.match()).run {
             val bannerRoot = instructionMatches.last()
             val register = bannerRoot.getInstruction<OneRegisterInstruction>().registerA
             method.addInstruction(
@@ -140,7 +139,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             )
         }
 
-        upgradeCarouselFingerprint().matchSingle().run {
+        upgradeCarouselFingerprint().match().run {
             val freeUserResult = instructionMatches[1]
             val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
@@ -158,7 +157,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             "$PROMOTIONS_CLASS->showsUpsell(Z)Z",
         )
 
-        UpgradeDialogCreateFingerprint.matchSingle().run {
+        UpgradeDialogCreateFingerprint.match().run {
             val superOnCreate = instructionMatches.first().index
             val register = method.getFreeRegisterProvider(superOnCreate + 1, 1).getFreeRegister()
             method.addInstructionsWithLabels(
@@ -191,7 +190,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
                 )
             }
         } else {
-            onboardingLaunchCoroutineFingerprint().matchSingle().run {
+            onboardingLaunchCoroutineFingerprint().match().run {
                 val launcher = instructionMatches.first()
                 val register = launcher.getInstruction<OneRegisterInstruction>().registerA
                 method.addInstructionsWithLabels(

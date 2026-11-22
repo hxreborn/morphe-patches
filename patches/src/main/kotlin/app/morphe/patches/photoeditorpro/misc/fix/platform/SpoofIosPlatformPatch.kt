@@ -7,7 +7,6 @@ package app.morphe.patches.photoeditorpro.misc.fix.platform
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -22,7 +21,7 @@ val spoofIosPlatformPatch = patch {
     dependsOn(spoofSignaturePatch)
 
     execute {
-        val match = AiRequestInterceptorFingerprint.matchSingle()
+        val match = AiRequestInterceptorFingerprint.match()
         match.method.apply {
             val valueIndex = match.instructionMatches[3].index
             val decodedIndex = indexOfFirstInstructionOrThrow(valueIndex) {

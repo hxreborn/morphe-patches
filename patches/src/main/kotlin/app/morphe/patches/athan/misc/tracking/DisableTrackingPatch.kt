@@ -6,7 +6,6 @@ package app.morphe.patches.athan.misc.tracking
 
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -43,6 +42,6 @@ val disableTrackingPatch = patch(
 
     execute {
         AnalyticsTrackerFingerprint.matchAll().forEach { it.method.returnEarly() }
-        FacebookActivateAppFingerprint.matchSingle().method.returnEarly()
+        FacebookActivateAppFingerprint.method.returnEarly()
     }
 }

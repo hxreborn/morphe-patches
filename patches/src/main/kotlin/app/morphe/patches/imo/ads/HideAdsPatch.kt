@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -18,6 +17,6 @@ val hideAdsPatch = patch(
 
     execute {
         ShouldShowAdFingerprint.matchAll().forEach { it.method.returnEarly(false) }
-        ConsentSdkAvailabilityFingerprint.matchSingle().method.returnEarly(false)
+        ConsentSdkAvailabilityFingerprint.method.returnEarly(false)
     }
 }

@@ -5,7 +5,6 @@
 package app.morphe.patches.groundnews.misc.promotions
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val removePromotionsPatch = patch(
     compatibleWith(AppCompatibilities.GROUND_NEWS)
 
     execute {
-        SubscriptionBannerVisibilityFingerprint.matchSingle().method.returnEarly(false)
+        SubscriptionBannerVisibilityFingerprint.method.returnEarly(false)
     }
 }

@@ -7,7 +7,6 @@ package app.morphe.patches.alpinequest.misc.activation
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.alpinequest.misc.fix.signature.bypassSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -22,7 +21,7 @@ val unlockFullVersionPatch = patch(
     compatibleWith(AppCompatibilities.ALPINEQUEST)
 
     execute {
-        val restoreActivation = RestoreActivationFingerprint.matchSingle()
+        val restoreActivation = RestoreActivationFingerprint.match()
         val statusField = restoreActivation.classDef.fields.single { it.type == "C" }
 
         restoreActivation.method.apply {

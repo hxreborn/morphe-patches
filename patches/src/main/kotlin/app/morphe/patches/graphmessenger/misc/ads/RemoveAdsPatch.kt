@@ -5,7 +5,6 @@
 package app.morphe.patches.graphmessenger.misc.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.graphmessenger.shared.licenseCheck
@@ -28,9 +27,9 @@ val removeAdsPatch = patch(
     execute {
         LicenseCheckFingerprint.matchAll().forEach { it.method.overrideResultsOf(licenseCheck, 1) }
 
-        AdSdkInitFingerprint.matchSingle().method.returnEarly()
-        SponsoredMessagesReadParamsFingerprint.matchSingle().method.returnEarly()
-        SponsoredPeersReadParamsFingerprint.matchSingle().method.returnEarly()
-        PromoDataRequestFingerprint.matchSingle().method.returnEarly()
+        AdSdkInitFingerprint.method.returnEarly()
+        SponsoredMessagesReadParamsFingerprint.method.returnEarly()
+        SponsoredPeersReadParamsFingerprint.method.returnEarly()
+        PromoDataRequestFingerprint.method.returnEarly()
     }
 }

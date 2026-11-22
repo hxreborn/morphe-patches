@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
 import app.morphe.patches.netanalyzer.shared.MenuSection
@@ -47,7 +46,7 @@ val toolOptionsPatch = patch(
         addToolbarIcon(textButtonSlot("ToolsQueryMenu"), "settings", MaterialIcons.SETTINGS, "Options", "ToolOptionsActivity")
         addMenuEntry(MenuSection.SETTINGS, "Tool Options", "ToolOptionsActivity")
 
-        val normaliser = ToolItemNormaliserFingerprint.matchSingle()
+        val normaliser = ToolItemNormaliserFingerprint.match()
         val itemType = normaliser.originalMethod.returnType
         val fields = classDefBy(itemType).propertyFields()
         val fieldNames = TOOL_OPTION_PROPERTIES.joinToString(",") { property ->

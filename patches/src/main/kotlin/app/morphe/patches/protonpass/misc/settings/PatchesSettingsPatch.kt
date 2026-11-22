@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.proton.COMPOSER_TYPE
 import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
 import app.morphe.patches.shared.misc.proton.attachPatchContext
@@ -32,7 +31,7 @@ private const val TITLE_PARAMETER = 1
 private const val ON_CLICK_PARAMETER = 5
 
 private fun addPatchesSettingsRow() {
-    val match = ApplicationSectionFingerprint.matchSingle()
+    val match = ApplicationSectionFingerprint.match()
     val (optionIndex, dividerIndex) = match.instructionMatches.let { it[1].index to it[2].index }
 
     val settingsRowMethod = match.classDef.addSettingsRowMethod(

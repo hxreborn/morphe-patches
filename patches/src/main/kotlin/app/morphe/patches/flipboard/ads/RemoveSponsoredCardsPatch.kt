@@ -8,7 +8,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -34,7 +33,7 @@ val removeSponsoredCardsPatch = patch(
     compatibleWith(AppCompatibilities.FLIPBOARD)
 
     execute {
-        val preference = FeedAdPreferenceFingerprint.matchSingle()
+        val preference = FeedAdPreferenceFingerprint.match()
         val (_, _, preferenceResult, storeEnabled, readEnabled) = preference.instructionMatches
         preference.method.apply {
             val enabled = getInstruction<OneRegisterInstruction>(preferenceResult.index).registerA
@@ -50,9 +49,9 @@ val removeSponsoredCardsPatch = patch(
             }
             replaceInstruction(preferenceResult.index, "const/16 v$enabled, 0x0")
         }
-        LoadSectionAdsFingerprint.matchSingle().method.returnEarly()
+        LoadSectionAdsFingerprint.method.returnEarly()
 
-        val detailBanner = CheckDetailBannerPacingFingerprint.matchSingle()
+        val detailBanner = CheckDetailBannerPacingFingerprint.match()
         val (_, pacingResult, pacingBranch) = detailBanner.instructionMatches
         val pacing = (pacingResult.instruction as OneRegisterInstruction).registerA
         check((pacingBranch.instruction as OneRegisterInstruction).registerA == pacing) {
@@ -60,12 +59,12 @@ val removeSponsoredCardsPatch = patch(
         }
         detailBanner.method.replaceInstruction(pacingResult.index, "const/16 v$pacing, 0x0")
 
-        val registration = RegisterAmazonAdsFingerprint.matchSingle()
+        val registration = RegisterAmazonAdsFingerprint.match()
         listOf(registerAmazonAds, setAmazonMraidVersions, setAmazonMraidPolicy).forEach { call ->
             val match = registration.instructionMatches.single { it.filter === call }
             registration.method.replaceInstruction(match.index, "nop")
         }
-        val googleAds = InitializeGoogleAdsFingerprint.matchSingle()
+        val googleAds = InitializeGoogleAdsFingerprint.match()
         val (_, initializeAds) = googleAds.instructionMatches
         googleAds.method.replaceInstruction(initializeAds.index, "nop")
         skipAmazonLayoutBid()
@@ -162,7 +161,7 @@ val removeSponsoredCardsPatch = patch(
             """,
         )
 
-        ReplaceSectionItemsFingerprint.matchSingle().method.addInstructions(
+        ReplaceSectionItemsFingerprint.method.addInstructions(
             0,
             """
                 invoke-static/range {p1 .. p1}, $filterSponsoredItems
@@ -170,7 +169,7 @@ val removeSponsoredCardsPatch = patch(
             """,
         )
         nestedFeedItemFingerprints.forEach { fingerprint ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             val (readItems, returnItems) = match.instructionMatches
             match.method.apply {
                 val read = readItems.instruction as TwoRegisterInstruction
@@ -191,10 +190,10 @@ val removeSponsoredCardsPatch = patch(
 }
 
 private fun skipEmptyRoundupHeader() {
-    val binding = BindRoundupAdapterFingerprint.matchSingle()
+    val binding = BindRoundupAdapterFingerprint.match()
     val (_, createAdapter) = binding.instructionMatches
     val adapter = createAdapter.instruction.getReference<MethodReference>()!!.definingClass
-    val count = roundupAdapterCountFingerprint(adapter).matchSingle()
+    val count = roundupAdapterCountFingerprint(adapter).match()
     val (readItems, countItems, itemCount, countHeader, returnCount) = count.instructionMatches
     val itemsRegister = (readItems.instruction as TwoRegisterInstruction).registerA
     val countRegister = (itemCount.instruction as OneRegisterInstruction).registerA
@@ -213,12 +212,12 @@ private fun skipEmptyRoundupHeader() {
 }
 
 private fun skipAmazonLayoutBid() {
-    val failure = CompleteAmazonLayoutBidFailureFingerprint.matchSingle()
+    val failure = CompleteAmazonLayoutBidFailureFingerprint.match()
     val (_, emptyBid, emitBid, completeBid) = failure.instructionMatches
     val emptyBidField = emptyBid.instruction.getReference<FieldReference>()!!
     val emitBidMethod = emitBid.instruction.getReference<MethodReference>()!!
     val completeBidMethod = completeBid.instruction.getReference<MethodReference>()!!
-    val layout = LoadAmazonLayoutBidFingerprint.matchSingle()
+    val layout = LoadAmazonLayoutBidFingerprint.match()
     val (_, createCallback, loadAd) = layout.instructionMatches
     val callbackInit = createCallback.instruction.getReference<MethodReference>()!!
     val callbackCall = createCallback.instruction as FiveRegisterInstruction

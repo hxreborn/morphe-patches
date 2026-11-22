@@ -6,7 +6,6 @@ package app.morphe.patches.hinducalendar.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.hinducalendar.misc.pairip.restoreReminderReceiversPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -23,7 +22,7 @@ val hideAdsPatch = patch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, restoreReminderReceiversPatch)
 
     execute {
-        val match = OnQueryPurchasesResponseFingerprint.matchSingle()
+        val match = OnQueryPurchasesResponseFingerprint.match()
         val isEmptyResult = match.instructionMatches[2]
         val register = isEmptyResult.getInstruction<OneRegisterInstruction>().registerA
 

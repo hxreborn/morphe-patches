@@ -7,7 +7,6 @@ package app.morphe.patches.monet.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -20,18 +19,18 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.MONET)
 
     execute {
-        val billingManager = BillingManagerConstructorFingerprint.matchSingle()
+        val billingManager = BillingManagerConstructorFingerprint.match()
         val stateType = billingManager.method
             .getInstruction(billingManager.instructionMatches.single().index)
             .getReference<MethodReference>()!!
             .definingClass
 
-        val stateConstructor = premiumStateConstructorFingerprint(stateType).matchSingle()
+        val stateConstructor = premiumStateConstructorFingerprint(stateType).match()
         val isPremiumName = stateConstructor.method
             .getInstruction(stateConstructor.instructionMatches.single().index)
             .getReference<MethodReference>()!!
             .name
 
-        isPremiumFingerprint(stateType, isPremiumName).matchSingle().method.returnEarly(true)
+        isPremiumFingerprint(stateType, isPremiumName).method.returnEarly(true)
     }
 }

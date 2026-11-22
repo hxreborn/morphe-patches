@@ -5,7 +5,6 @@
 package app.morphe.patches.watchit.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -31,8 +30,8 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        VideoAnalyticsSubmitFingerprint.matchSingle().method.returnEarly()
-        InteractivityAnalyticsSubmitFingerprint.matchSingle().method.returnEarly()
-        FacebookAppEventsRequestFingerprint.matchSingle().method.returnEarly(null)
+        VideoAnalyticsSubmitFingerprint.method.returnEarly()
+        InteractivityAnalyticsSubmitFingerprint.method.returnEarly()
+        FacebookAppEventsRequestFingerprint.method.returnEarly(null)
     }
 }

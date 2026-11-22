@@ -15,7 +15,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.string
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.liapp.liappPackageFilterPatch
 import app.morphe.patches.vpnsuper.misc.fix.tamper.disableTamperResponsePatch
@@ -129,25 +128,25 @@ val unlockPremiumPatch: Patch = patch(
             """,
         )
 
-        TvSplashDestinationFingerprint.matchSingle().method.apply {
+        TvSplashDestinationFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow(Opcode.IGET_BOOLEAN)
             val register = getInstruction<TwoRegisterInstruction>(index).registerA
 
             replaceInstruction(index, "const/4 v$register, 0x1")
         }
 
-        PrivacyPolicyAcceptedFingerprint.matchSingle().method.apply {
+        PrivacyPolicyAcceptedFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow(Opcode.IGET_BOOLEAN)
             val register = getInstruction<TwoRegisterInstruction>(index).registerA
 
             replaceInstruction(index, "const/4 v$register, 0x1")
         }
 
-        CrownClickFingerprint.matchSingle().let { crownClick ->
+        CrownClickFingerprint.match().let { crownClick ->
             crownClick.method.addInstruction(crownClick.instructionMatches.first().index, "return-void")
         }
 
-        val connectReport = ConnectReportToStringFingerprint.matchSingle()
+        val connectReport = ConnectReportToStringFingerprint.match()
         val promoBanners = connectReport.method.booleanFieldsBetween(
             SHOW_BANNER_ADS_LABEL,
             FREE_TRIAL_LABEL,
@@ -169,7 +168,7 @@ val unlockPremiumPatch: Patch = patch(
                 }
             }
 
-        val userInfo = UserInfoToStringFingerprint.matchSingle()
+        val userInfo = UserInfoToStringFingerprint.match()
         val isPremium = userInfo.method.fieldAfter(Opcode.IGET_BOOLEAN, 0)
         val userState = userInfo.method.fieldAfter(
             Opcode.IGET_OBJECT,

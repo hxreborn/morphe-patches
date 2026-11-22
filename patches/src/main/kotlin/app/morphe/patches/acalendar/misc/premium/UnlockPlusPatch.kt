@@ -5,7 +5,6 @@
 package app.morphe.patches.acalendar.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val unlockPlusPatch = patch(
     compatibleWith(AppCompatibilities.ACALENDAR)
 
     execute {
-        IsPlusFingerprint.matchSingle().method.returnEarly(true)
+        IsPlusFingerprint.method.returnEarly(true)
     }
 }

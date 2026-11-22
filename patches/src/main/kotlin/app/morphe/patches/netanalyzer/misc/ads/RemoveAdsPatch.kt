@@ -5,7 +5,6 @@
 package app.morphe.patches.netanalyzer.misc.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.netanalyzer.shared.ClickableRowFingerprint
 import app.morphe.patches.netanalyzer.shared.HeaderRowFingerprint
@@ -27,12 +26,12 @@ val removeAdsPatch = patch(
     dependsOn(disableTamperDetectionPatch)
 
     execute {
-        AdsHostFingerprint.matchSingle().method.returnEarly()
-        AdSlotFingerprint.matchSingle().method.returnEarly()
-        ProUpsellRowFingerprint.matchSingle().method.returnEarly()
+        AdsHostFingerprint.method.returnEarly()
+        AdSlotFingerprint.method.returnEarly()
+        ProUpsellRowFingerprint.method.returnEarly()
 
-        removeComposableCall(PRO_VERSION_HEADER, HeaderRowFingerprint.matchSingle().originalMethod)
-        val clickableRow = ClickableRowFingerprint.matchSingle().originalMethod
+        removeComposableCall(PRO_VERSION_HEADER, HeaderRowFingerprint.originalMethod)
+        val clickableRow = ClickableRowFingerprint.originalMethod
         ABOUT_ROWS_TO_REMOVE.forEach { label -> removeComposableCall(label, clickableRow) }
     }
 }

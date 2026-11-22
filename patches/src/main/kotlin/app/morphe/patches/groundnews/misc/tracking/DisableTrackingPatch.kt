@@ -5,7 +5,6 @@
 package app.morphe.patches.groundnews.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -26,8 +25,8 @@ val disableTrackingPatch = patch(
         disableFirebaseSessionsPatch,
     )
     execute {
-        AnalyticsOptOutFingerprints.forEach { it.matchSingle().method.returnEarly(true) }
-        TelemetryFingerprints.forEach { it.matchSingle().method.returnEarly() }
+        AnalyticsOptOutFingerprints.forEach { it.method.returnEarly(true) }
+        TelemetryFingerprints.forEach { it.method.returnEarly() }
         AmplitudeEventFingerprint.matchAll(2..2).forEach { it.method.returnEarly() }
     }
 }

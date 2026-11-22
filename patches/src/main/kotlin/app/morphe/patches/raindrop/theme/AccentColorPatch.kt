@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
@@ -71,7 +70,7 @@ val accentColorPatch = patch(
             "#" + HEX_COLOR.matchEntire(it)!!.groupValues[1].lowercase()
         }
 
-        CreateBundleLoaderFingerprint.matchSingle().apply {
+        CreateBundleLoaderFingerprint.match().apply {
             val callIndex = instructionMatches.last().index
             val call = method.getInstruction<FiveRegisterInstruction>(callIndex)
             val companionRegister = call.registerC

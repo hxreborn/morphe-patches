@@ -18,7 +18,6 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.png.PngImage
 import app.morphe.util.adoptChild
@@ -974,7 +973,7 @@ val amoledThemePatch = patch(
     dependsOn(amoledThemeResourcesPatch)
 
     execute {
-        CommonTitleBarBackIconFingerprint.matchSingle().apply {
+        CommonTitleBarBackIconFingerprint.match().apply {
             val index = instructionMatches.single().index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
             val backIcon = resourceId(ResourceType.DRAWABLE, BACK_ICON_NAME)
@@ -982,14 +981,14 @@ val amoledThemePatch = patch(
             method.replaceInstruction(index, "const v$register, 0x${backIcon.toString(16)}")
         }
 
-        val setDefaultNightMode = SetDefaultNightModeFingerprint.matchSingle().method
+        val setDefaultNightMode = SetDefaultNightModeFingerprint.method
         setDefaultNightMode.addInstructions(0, "const/4 p0, 0x${MODE_NIGHT_YES.toString(16)}")
 
         SetAppearanceLightSystemBarsFingerprint.matchAll(LIGHT_SYSTEM_BARS_SETTERS).forEach { match ->
             match.method.addInstructions(0, "const/4 p1, 0x0")
         }
 
-        DefaultHomeBackgroundColorFingerprint.matchSingle().apply {
+        DefaultHomeBackgroundColorFingerprint.match().apply {
             val (colorString, _) = instructionMatches
             val index = colorString.index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
@@ -1001,7 +1000,7 @@ val amoledThemePatch = patch(
             HeadsetSubScreenBackgroundFingerprint to OPAQUE_BLACK_ARGB,
             SpatialAudioPlayButtonTextColorFingerprint to OPAQUE_WHITE_ARGB,
         ).forEach { (fingerprint, color) ->
-            fingerprint.matchSingle().apply {
+            fingerprint.match().apply {
                 val (colorLiteral, _) = instructionMatches
                 val index = colorLiteral.index
                 val register = method.getInstruction<OneRegisterInstruction>(index).registerA
@@ -1014,7 +1013,7 @@ val amoledThemePatch = patch(
             HeadsetSubScreenTitleFingerprint,
             HeadsetVirtualDeviceTitleFingerprint,
         ).forEach { fingerprint ->
-            fingerprint.matchSingle().apply {
+            fingerprint.match().apply {
                 val index = instructionMatches.single().index
                 val titleRegister = method.getInstruction<FiveRegisterInstruction>(index).registerC
                 val backgroundRegister = method.getFreeRegisterProvider(index + 1, 1, titleRegister)
@@ -1060,7 +1059,7 @@ val amoledThemePatch = patch(
             match.method.replaceInstruction(index, "const v$register, $OPAQUE_WHITE_ARGB")
         }
 
-        ApplicationOnCreateFingerprint.matchSingle().method.apply {
+        ApplicationOnCreateFingerprint.method.apply {
             val modeRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructions(

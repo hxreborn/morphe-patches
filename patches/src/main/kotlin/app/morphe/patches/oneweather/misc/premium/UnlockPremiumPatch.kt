@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -22,9 +21,9 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.ONE_WEATHER)
 
     execute {
-        PremiumUserFingerprint.matchSingle().method.returnEarly(true)
+        PremiumUserFingerprint.method.returnEarly(true)
 
-        PremiumUserFlowFingerprint.matchSingle().method.addInstructions(
+        PremiumUserFlowFingerprint.method.addInstructions(
             0,
             """
                 const/4 v0, 0x1
@@ -36,7 +35,7 @@ val unlockPremiumPatch = patch(
             """,
         )
 
-        SyncPremiumDataFingerprint.matchSingle().method.addInstructions(
+        SyncPremiumDataFingerprint.method.addInstructions(
             0,
             """
                 const/4 v0, 0x1
@@ -52,7 +51,7 @@ val unlockPremiumPatch = patch(
             .singleOrNull { it.type == LIFETIME_PLAN_CLASS }
             ?: throw PatchException("$LIFETIME_PLAN_CLASS has no singleton field")
 
-        UserPlanFingerprint.matchSingle().method.addInstructions(
+        UserPlanFingerprint.method.addInstructions(
             0,
             """
                 sget-object v0, $LIFETIME_PLAN_CLASS->${lifetimePlan.name}:$LIFETIME_PLAN_CLASS

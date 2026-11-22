@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -29,7 +28,7 @@ val customLocationPatch: Patch = patch(
 
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}CustomLocation;", customLocationPatch)
-        FusedLocationClientGetterFingerprint.matchSingle().let { getter ->
+        FusedLocationClientGetterFingerprint.match().let { getter ->
             val cast = getter.instructionMatches.single()
             val client = cast.getInstruction<OneRegisterInstruction>().registerA
             getter.method.addInstructions(
@@ -41,8 +40,8 @@ val customLocationPatch: Patch = patch(
                 """,
             )
         }
-        val retakeCounterSetter = CreatePostRetakeCounterSetterFingerprint.matchSingle().method
-        val builder = createPostRequestBuilderFingerprint(retakeCounterSetter).matchSingle()
+        val retakeCounterSetter = CreatePostRetakeCounterSetterFingerprint.method
+        val builder = createPostRequestBuilderFingerprint(retakeCounterSetter).match()
         val locationRead = LocationToStringFingerprint.matchAll(1..3)
             .mapNotNull { createPostLocationReadFingerprint(it.classDef.type).matchOrNull(builder.method, builder.classDef) }
             .single()

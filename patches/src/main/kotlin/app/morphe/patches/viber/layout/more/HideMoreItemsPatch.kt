@@ -15,7 +15,6 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -87,7 +86,7 @@ val hideMoreItemsPatch: Patch = patch(
 }
 
 private fun filterMoreItems(hiddenIds: List<Long>) {
-    val listItems = BuildMoreItemsFingerprint.matchSingle()
+    val listItems = BuildMoreItemsFingerprint.match()
     val (createItem, _, _, _, _) = listItems.instructionMatches
     val itemType = createItem.instruction.getReference<MethodReference>()!!.returnType
     val settings = mutableClassDefBy(VIBER_SETTINGS_CLASS)
@@ -111,12 +110,12 @@ private fun filterMoreItems(hiddenIds: List<Long>) {
             """)
         }
     }
-    val attached = moreViewAttachedFingerprint(listItems.method).matchSingle()
+    val attached = moreViewAttachedFingerprint(listItems.method).match()
     val (viewRead, repositoryRead, _, setItemsCall) = attached.instructionMatches
     val viewField = viewRead.instruction.getReference<FieldReference>()!!
     val repositoryField = repositoryRead.instruction.getReference<FieldReference>()!!
     val setItems = setItemsCall.instruction.getReference<MethodReference>()!!
-    val resumed = moreResumeFingerprint(attached.classDef.type).matchSingle()
+    val resumed = moreResumeFingerprint(attached.classDef.type).match()
     val (superResume) = resumed.instructionMatches
     val presenterRegister = resumed.method.p0Register
     val viewRegister = resumed.method.implementation!!.registerCount
@@ -135,26 +134,26 @@ private fun filterMoreItems(hiddenIds: List<Long>) {
 }
 
 private fun filterMainMenuItems(hiddenIds: List<Long>) {
-    val repository = BuildMoreItemsFingerprint.matchSingle()
+    val repository = BuildMoreItemsFingerprint.match()
     val hiddenCheck = mutableClassDefBy(repository.classDef).addHiddenIdCheck("isHiddenMainMenuItem", hiddenIds)
     mutableClassDefBy(VIBER_SETTINGS_CLASS).replaceStub("isHiddenMainMenuItem", 1, """
         invoke-static {p0}, $hiddenCheck
         move-result p0
         return p0
     """)
-    MainMenuItemVisibilityFingerprint.matchSingle().method.addInstructions(0, """
+    MainMenuItemVisibilityFingerprint.method.addInstructions(0, """
         invoke-static/range {p0 .. p1}, $VIBER_SETTINGS_CLASS->mainMenuItemVisible(Landroid/view/MenuItem;Z)Z
         move-result p1
     """)
 }
 
 private fun itemIdField(itemType: String): FieldReference {
-    val builderType = itemConstructorFingerprint(itemType).matchSingle().method.parameterTypes.single().toString()
-    val builderConstructor = itemBuilderConstructorFingerprint(builderType).matchSingle()
+    val builderType = itemConstructorFingerprint(itemType).method.parameterTypes.single().toString()
+    val builderConstructor = itemBuilderConstructorFingerprint(builderType).match()
     val idParameterRegister = builderConstructor.method.implementation!!.registerCount - builderConstructor.method.parameterTypes.lastIndex
     val builderIdField = builderConstructor.instructionMatches
         .single { (it.instruction as TwoRegisterInstruction).registerA == idParameterRegister }
         .instruction.getReference<FieldReference>()!!
-    val (_, itemIdWrite) = itemIdCopyFingerprint(itemType, builderIdField).matchSingle().instructionMatches
+    val (_, itemIdWrite) = itemIdCopyFingerprint(itemType, builderIdField).match().instructionMatches
     return itemIdWrite.instruction.getReference<FieldReference>()!!
 }

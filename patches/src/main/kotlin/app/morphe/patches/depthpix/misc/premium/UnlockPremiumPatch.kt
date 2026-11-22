@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.depthpix.misc.installer.playStoreInstallerHeaderPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -28,7 +27,7 @@ val unlockPremiumPatch = patch(
     dependsOn(removePairipProtectionPatch, playStoreInstallerHeaderPatch)
 
     execute {
-        val userToString = UserToStringFingerprint.matchSingle()
+        val userToString = UserToStringFingerprint.match()
         val (_, _, subscribedRead, _, lifetimeRead) = userToString.instructionMatches
         val subscribedField = subscribedRead.getInstruction<ReferenceInstruction>().reference as FieldReference
         val lifetimeField = lifetimeRead.getInstruction<ReferenceInstruction>().reference as FieldReference

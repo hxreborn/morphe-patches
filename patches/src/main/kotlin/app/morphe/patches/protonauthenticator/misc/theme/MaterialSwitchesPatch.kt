@@ -6,7 +6,6 @@ package app.morphe.patches.protonauthenticator.misc.theme
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
@@ -31,7 +30,7 @@ val materialSwitchesPatch: Patch = patch(
         markPatchMetadata("materialSwitches", materialSwitchesPatch, withDescription = true)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
         drawSwitchAsView(
-            MaterialSwitchFingerprint.matchSingle().method,
+            MaterialSwitchFingerprint.method,
             COMPOSER_PARAMETER,
             null,
             ::androidViewFingerprint,

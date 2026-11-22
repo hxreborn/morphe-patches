@@ -19,7 +19,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -60,7 +59,7 @@ private fun MethodReference.argumentSlotTypes() = (listOf(definingClass) + param
     .flatMap { if (it == "J" || it == "D") listOf(it, it) else listOf(it) }
 
 internal fun unlockUserSetting(viewState: Fingerprint, restriction: Fingerprint) {
-    viewState.matchSingle().run {
+    viewState.match().run {
         val title = instructionMatches.first()
         val titleRegister = title.getInstruction<OneRegisterInstruction>().registerA
         val superclass = classDef.superclass
@@ -81,7 +80,7 @@ internal fun unlockUserSetting(viewState: Fingerprint, restriction: Fingerprint)
 }
 
 internal fun keepUserSetting(restriction: Fingerprint) {
-    restriction.matchSingle().run {
+    restriction.match().run {
         method.replaceInstruction(instructionMatches.first().index, "nop")
     }
 }

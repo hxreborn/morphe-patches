@@ -12,7 +12,6 @@ package app.morphe.patches.protonvpn.misc.delay
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -29,6 +28,6 @@ val removeServerChangeDelayPatch: Patch = patch(
 
     execute {
         markPatchApplied(VPN_SETTINGS_CLASS, "removeServerChangeDelay", removeServerChangeDelayPatch)
-        changeServerDelayFingerprints.forEach { it.matchSingle().method.returnEarly(0) }
+        changeServerDelayFingerprints.forEach { it.method.returnEarly(0) }
     }
 }

@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.shared.isCandyCrushSodaSaga
 import app.morphe.patches.shared.misc.smali.addFieldReader
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -27,7 +26,7 @@ internal val editServerResponsesPatch = patch {
             const/4 v0, ${if (soda) "0x1" else "0x0"}
             return v0
         """)
-        val responseStreamMatch = ReadDataFingerprint.matchSingle()
+        val responseStreamMatch = ReadDataFingerprint.match()
         val (openStream) = responseStreamMatch.instructionMatches
         val readResponse = responseStreamMatch.method
         val requestBody = classDefBy(readResponse.definingClass).fields.single { it.type == "[B" }

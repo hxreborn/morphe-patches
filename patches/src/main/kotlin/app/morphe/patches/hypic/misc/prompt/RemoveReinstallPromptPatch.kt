@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -22,7 +21,7 @@ val removeReinstallPromptPatch = patch(
     compatibleWith(AppCompatibilities.HYPIC)
 
     execute {
-        RiskResponseInterceptorFingerprint.matchSingle().method.addInstructions(
+        RiskResponseInterceptorFingerprint.method.addInstructions(
             0,
             """
                 move-object/from16 v0, p1
@@ -34,7 +33,7 @@ val removeReinstallPromptPatch = patch(
             """,
         )
 
-        val riskModalDeepLink = RiskModalDeepLinkFingerprint.matchSingle().method
+        val riskModalDeepLink = RiskModalDeepLinkFingerprint.method
         riskModalDeepLink.addInstructionsWithLabels(
             0,
             """

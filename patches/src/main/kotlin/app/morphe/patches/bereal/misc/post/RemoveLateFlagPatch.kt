@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -46,12 +45,12 @@ val removeLateFlagPatch: Patch = patch(
 
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}LateFlag;", removeLateFlagPatch)
-        val moment = MomentToStringFingerprint.matchSingle().classDef
+        val moment = MomentToStringFingerprint.match().classDef
         val creationDate = moment.fields.single { it.name == CREATION_DATE_FIELD }
         val expirationDate = moment.fields.single { it.name == EXPIRATION_DATE_FIELD }
         val instantType = creationDate.type
         val instantValue = classDefBy(instantType).fields.single { it.type == JAVA_INSTANT_TYPE }
-        val instantConstructor = timestampConstructorFingerprint(instantType).matchSingle().originalMethod
+        val instantConstructor = timestampConstructorFingerprint(instantType).originalMethod
         val readCreationDate = mutableClassDefBy(moment.type).addFieldReader(creationDate)
         val readExpirationDate = mutableClassDefBy(moment.type).addFieldReader(expirationDate)
         val readInstantValue = mutableClassDefBy(instantType).addFieldReader(instantValue)
@@ -69,7 +68,7 @@ val removeLateFlagPatch: Patch = patch(
                 """,
             )
         }
-        lateCheckFingerprint(moment.type).matchSingle().let { lateCheck ->
+        lateCheckFingerprint(moment.type).match().let { lateCheck ->
             val momentCast = lateCheck.instructionMatches.single()
             val register = momentCast.getInstruction<OneRegisterInstruction>().registerA
             lateCheck.method.addInstruction(
@@ -78,12 +77,12 @@ val removeLateFlagPatch: Patch = patch(
             )
         }
 
-        val retakeCounterSetter = CreatePostRetakeCounterSetterFingerprint.matchSingle().method
-        val takenAtSetter = createPostTakenAtSetterFingerprint(retakeCounterSetter.definingClass).matchSingle().method
+        val retakeCounterSetter = CreatePostRetakeCounterSetterFingerprint.method
+        val takenAtSetter = createPostTakenAtSetterFingerprint(retakeCounterSetter.definingClass).method
         val (_, timestampParameter) = takenAtSetter.parameterTypes
         val timestampType = timestampParameter.toString()
-        val builder = createPostRequestBuilderFingerprint(retakeCounterSetter).matchSingle()
-        val (_, isMainRead) = CorePostToStringFingerprint.matchSingle().instructionMatches
+        val builder = createPostRequestBuilderFingerprint(retakeCounterSetter).match()
+        val (_, isMainRead) = CorePostToStringFingerprint.match().instructionMatches
         val isMainField = isMainRead.getInstruction<ReferenceInstruction>().reference as FieldReference
         val (takenAtRead, conversion) = createPostTakenAtConversionFingerprint(
             isMainField.definingClass,

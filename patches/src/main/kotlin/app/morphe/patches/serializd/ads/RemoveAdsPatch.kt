@@ -6,7 +6,6 @@ package app.morphe.patches.serializd.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.playwire.stopPlaywireSdkPatch
 import app.morphe.patches.shared.misc.extension.serializdRemoveAdsExtensionPatch
@@ -24,7 +23,7 @@ val removeAdsPatch = patch(
     dependsOn(stopPlaywireSdkPatch)
 
     execute {
-        TextResponseReceivedFingerprint.matchSingle().method.addInstructions(
+        TextResponseReceivedFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p2 }, $EXTENSION_CLASS->disable(Ljava/lang/String;)Ljava/lang/String;

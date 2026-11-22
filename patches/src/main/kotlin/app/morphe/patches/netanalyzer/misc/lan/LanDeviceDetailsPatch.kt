@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.patchesMenuPatch
@@ -36,7 +35,7 @@ val lanDeviceDetailsPatch = patch(
         addFeatureActivity("UpnpActivity")
         addFeatureActivity("UpnpServicesActivity")
 
-        val screen = LanScanScreenFingerprint.matchSingle().method
+        val screen = LanScanScreenFingerprint.method
         val callbackIndex = screen.parameterTypes.indexOfFirst { type ->
             val definition = classDefByOrNull(type.toString())
             definition != null && AccessFlags.INTERFACE.isSet(definition.accessFlags) &&

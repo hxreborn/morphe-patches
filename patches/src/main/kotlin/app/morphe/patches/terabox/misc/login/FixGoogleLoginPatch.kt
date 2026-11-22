@@ -14,7 +14,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -63,11 +62,11 @@ val fixGoogleLoginPatch: Patch = patch(
             ResourceType.ID,
             mapOf("backButtonId" to "left_button"),
         )
-        NativeAccountPageFingerprint.matchSingle().method.returnEarly(false)
+        NativeAccountPageFingerprint.method.returnEarly(false)
 
-        OfflinePackageManifestFingerprint.matchSingle().method.returnEarly(null)
+        OfflinePackageManifestFingerprint.method.returnEarly(null)
 
-        WebViewSetupFingerprint.matchSingle().method.apply {
+        WebViewSetupFingerprint.method.apply {
             val registers = getFreeRegisterProvider(0, 2)
             val enabled = registers.getFreeRegister4Bit()
             val receiver = registers.getFreeRegister4Bit()
@@ -87,7 +86,7 @@ val fixGoogleLoginPatch: Patch = patch(
             )
         }
 
-        WebViewUserAgentFingerprint.matchSingle().method.apply {
+        WebViewUserAgentFingerprint.method.apply {
             findInstructionIndicesReversed {
                 opcode == Opcode.INVOKE_VIRTUAL && getReference<MethodReference>()?.name == "setUserAgentString"
             }.forEach { index ->
@@ -102,6 +101,6 @@ val fixGoogleLoginPatch: Patch = patch(
             }
         }
 
-        WebChromeClientFingerprint.matchSingle().classDef.setSuperClass(EXTENSION_CLASS)
+        WebChromeClientFingerprint.match().classDef.setSuperClass(EXTENSION_CLASS)
     }
 }

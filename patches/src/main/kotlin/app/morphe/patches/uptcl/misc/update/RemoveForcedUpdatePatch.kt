@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.util.findInstructionIndicesReversedOrThrow
@@ -27,7 +26,7 @@ val removeForcedUpdatePatch = patch(
     dependsOn(trustInstalledCertificatePatch)
 
     execute {
-        AppVersionResultFingerprint.matchSingle().method.apply {
+        AppVersionResultFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(
                 methodCall(definingClass = "Ljava/lang/String;", name = "hashCode"),
             ).forEach { index ->

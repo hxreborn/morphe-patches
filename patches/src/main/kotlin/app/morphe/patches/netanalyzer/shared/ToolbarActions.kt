@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -105,7 +104,7 @@ internal fun rowChevronMethod(classDef: MutableClass): Method =
                     returnType = "V",
                 ),
             ),
-        ).matchSingle()
+        ).match()
         val iconCall = icon.instructionMatches.last()
         val chevron = icon.method.instructions.take(iconCall.index).last {
             it.opcode == Opcode.INVOKE_STATIC && it.getReference<MethodReference>()!!.let { reference ->
@@ -172,7 +171,7 @@ private fun addIconButton(
                 returnType = "V",
             ),
         ),
-    ).matchSingle().instructionMatches.last().instruction.getReference<MethodReference>()!!.also { iconButton = it }
+    ).match().instructionMatches.last().instruction.getReference<MethodReference>()!!.also { iconButton = it }
     val icon = iconMethod(slot.classDef, iconName, pathData)
     val smali = """
         invoke-static {}, ${descriptor(icon)}
@@ -214,7 +213,7 @@ internal class ToolbarSlot(
 )
 
 internal fun emptyGroupSlot(composableName: String): ToolbarSlot =
-    emptyGroupSlotOrNull(composableFingerprint(composableName).matchSingle())
+    emptyGroupSlotOrNull(composableFingerprint(composableName).match())
         ?: throw PatchException("$composableName has no empty composer group after a null check")
 
 internal fun emptyGroupSlotOrNull(match: Match): ToolbarSlot? {
@@ -246,7 +245,7 @@ internal fun emptyGroupSlotOrNull(match: Match): ToolbarSlot? {
 internal fun textButtonSlot(composableName: String): ToolbarSlot {
     val menu = Fingerprint(
         filters = listOf(composable(composableName), methodCall(reference = toolbarActionReferences().textButton)),
-    ).matchSingle()
+    ).match()
     val call = menu.instructionMatches.last()
     val reference = call.instruction.getReference<MethodReference>()!!
     val composerType = toolbarActionReferences().composerType
@@ -273,7 +272,7 @@ internal fun addToolbarAction(slot: ToolbarSlot, label: String, activity: String
 private fun toolbarActionReferences(): ToolbarActionReferences = toolbarActionReferences ?: run {
     val pingMenu = emptyGroupSlot(TOOLS_PING_MENU)
     val composerType = pingMenu.composerType
-    val clickable = ClickableModifierFingerprint.matchSingle().originalMethod
+    val clickable = ClickableModifierFingerprint.originalMethod
     val onClickType = clickable.parameterTypes[CLICKABLE_ON_CLICK].toString()
     val afterSlot = pingMenu.method.instructions.drop(pingMenu.index)
     val textButton = afterSlot.first {
@@ -317,12 +316,12 @@ private fun toolbarActionReferences(): ToolbarActionReferences = toolbarActionRe
     }
     val colorLocal = before.subList(0, currentValueIndex).last { it.opcode == Opcode.SGET_OBJECT }
 
-    val padding = HeaderWithButtonPaddingFingerprint.matchSingle().let { header ->
+    val padding = HeaderWithButtonPaddingFingerprint.match().let { header ->
         header.instructionMatches.last().instruction.getReference<MethodReference>()!!
     }
     val clickableUse = Fingerprint(
         filters = listOf(composable(HEADER_WITH_BUTTON), methodCall(reference = clickable)),
-    ).matchSingle()
+    ).match()
     val clickableReceiver = when (val call = clickableUse.instructionMatches.last().instruction) {
         is RegisterRangeInstruction -> call.startRegister
         is FiveRegisterInstruction -> call.registerC

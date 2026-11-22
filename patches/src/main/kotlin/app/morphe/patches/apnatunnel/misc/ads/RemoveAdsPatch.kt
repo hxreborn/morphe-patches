@@ -5,7 +5,6 @@
 package app.morphe.patches.apnatunnel.misc.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.apnatunnel.misc.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -21,7 +20,7 @@ val removeAdsPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        AdLoadFingerprint.matchSingle().method.returnEarly()
-        ConsentInfoUpdateFingerprint.matchSingle().method.returnEarly()
+        AdLoadFingerprint.method.returnEarly()
+        ConsentInfoUpdateFingerprint.method.returnEarly()
     }
 }

@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -37,9 +36,9 @@ val removeStreakPromptsPatch: Patch = patch(
             StreakRecoveryOfferEligibleToStringFingerprint,
             StreakSaveOfferEligibleToStringFingerprint,
         ).forEach { eligibleToString ->
-            val eligible = eligibleToString.matchSingle().classDef
-            val check = eligibilityCheckFingerprint(eligible.type).matchSingle().method
-            val notEligible = notEligibleSingletonFingerprint(eligible.interfaces).matchSingle()
+            val eligible = eligibleToString.match().classDef
+            val check = eligibilityCheckFingerprint(eligible.type).method
+            val notEligible = notEligibleSingletonFingerprint(eligible.interfaces).match()
                 .instructionMatches.single().getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
             notEligibleReadFingerprint(notEligible).matchOrNull(check)
                 ?: throw PatchException("${check.definingClass}->${check.name} does not read $notEligible")

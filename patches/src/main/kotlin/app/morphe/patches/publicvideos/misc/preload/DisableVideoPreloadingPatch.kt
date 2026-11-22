@@ -5,7 +5,6 @@
 package app.morphe.patches.publicvideos.misc.preload
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val disableVideoPreloadingPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        PreloadManagerAddFingerprint.matchSingle().method.returnEarly()
+        PreloadManagerAddFingerprint.method.returnEarly()
     }
 }

@@ -5,7 +5,6 @@
 package app.morphe.patches.arcplayer.misc.rate
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val removeRatingPromptsPatch = patch(
     compatibleWith(AppCompatibilities.ARC_PLAYER)
 
     execute {
-        ShowRatingDialogFingerprint.matchSingle().method.returnEarly()
+        ShowRatingDialogFingerprint.method.returnEarly()
     }
 }

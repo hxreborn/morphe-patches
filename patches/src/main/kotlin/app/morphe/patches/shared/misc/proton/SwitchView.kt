@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -38,7 +37,7 @@ internal fun drawSwitchAsView(
         function,
         method.parameterTypes[MODIFIER_PARAMETER].toString(),
         method.parameterTypes[composerParameter].toString(),
-    ).matchSingle().originalMethod
+    ).originalMethod
     val defaultMask = "p${method.parameterTypes.lastIndex}"
     val (lastArgument, defaultModifier) = when {
         androidView.parameterTypes.size == ANDROID_VIEW_PARAMETERS_WITH_DEFAULTS -> "v6" to """

@@ -7,7 +7,6 @@ package app.morphe.patches.viber.layout.gaps
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -29,12 +28,12 @@ val removeListGapsPatch: Patch = patch(
 
     execute {
         markPatchApplied("removeListGaps", removeListGapsPatch)
-        ChatFooterHeightFingerprint.matchSingle().apply {
+        ChatFooterHeightFingerprint.match().apply {
             val (_, _, height, _) = instructionMatches
             method.addFilterCallAfter(height.index, "$EXTENSION_CLASS_DESCRIPTOR->chatFooterHeight(I)I")
         }
         listOf(ChatListBindingFingerprint, MoreListBindingFingerprint).forEach { fingerprint ->
-            fingerprint.matchSingle().apply {
+            fingerprint.match().apply {
                 val (_, _, list) = instructionMatches
                 val register = (list.instruction as OneRegisterInstruction).registerA
                 method.addInstructions(list.index + 1, """

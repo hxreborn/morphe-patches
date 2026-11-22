@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.toJavaClassName
@@ -48,12 +47,12 @@ internal val hostPalettePatch = patch {
     dependsOn(stringKeyPatch)
 
     execute {
-        val theme = Fingerprint(filters = listOf(composable(THEME), colorSchemeConstructor)).matchSingle()
+        val theme = Fingerprint(filters = listOf(composable(THEME), colorSchemeConstructor)).match()
         val constructorCallIndex = theme.instructionMatches.last().index
         val constructorCall = theme.method.getInstruction<RegisterRangeInstruction>(constructorCallIndex)
         val schemeType = constructorCall.getReference<MethodReference>()!!.definingClass
 
-        val paletteType = CustomColorsPaletteToStringFingerprint.matchSingle().originalMethod.definingClass
+        val paletteType = CustomColorsPaletteToStringFingerprint.originalMethod.definingClass
         val paletteInstances = theme.method.instructions.filter { it.opcode == Opcode.SGET_OBJECT }
             .map { it.getReference<FieldReference>()!! }.filter { it.type == paletteType }.distinct()
         if (paletteInstances.size != THEME_PALETTES) {

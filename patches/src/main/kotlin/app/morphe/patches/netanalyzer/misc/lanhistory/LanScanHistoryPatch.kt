@@ -6,7 +6,6 @@ package app.morphe.patches.netanalyzer.misc.lanhistory
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MainActivityOnCreateFingerprint
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
@@ -40,7 +39,7 @@ val lanScanHistoryPatch = patch(
         addFeatureActivity("LanDeviceActivity")
         addFeatureActivity("LanCustomNameActivity")
         addFeatureActivity("WakeOnLanActivity")
-        MainActivityOnCreateFingerprint.matchSingle().method.addInstructions(
+        MainActivityOnCreateFingerprint.method.addInstructions(
             0,
             "invoke-static { }, $FEATURES_CLASS->enableLanScanHistory()V",
         )

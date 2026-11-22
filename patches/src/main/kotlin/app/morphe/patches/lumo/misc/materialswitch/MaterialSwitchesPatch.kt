@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -32,10 +31,10 @@ private const val MODIFIER_PARAMETER = 1
 private const val COMPOSER_PARAMETER = 4
 
 private fun drawNativeSwitchesAsViews() {
-    val switch = MaterialSwitchFingerprint.matchSingle().method
+    val switch = MaterialSwitchFingerprint.method
     val modifier = switch.parameterTypes[MODIFIER_PARAMETER].toString()
     val androidView = androidViewFingerprint(modifier, switch.parameterTypes[COMPOSER_PARAMETER].toString())
-        .matchSingle().originalMethod
+        .originalMethod
     val function = androidView.parameterTypes.first().toString()
     val modifierCompanion = switch.instructions.firstNotNullOf { instruction ->
         instruction.getReference<FieldReference>()?.takeIf { field ->
@@ -82,7 +81,7 @@ val materialSwitchesPatch = patch(
     availability(requireArm64)
 
     execute {
-        PageFinishedFingerprint.matchSingle().method.addInstructions(
+        PageFinishedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $WEB_SWITCH_CLASS->restyle(Landroid/webkit/WebView;)V",
         )

@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedBody
@@ -59,24 +58,24 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     fun field(owner: String, name: String, type: String, classDef: ClassDef) =
         field(owner, name, type, classDef.fields.single { it.type == type })
 
-    val postExecute = SystemInfoTaskPostExecuteFingerprint.matchSingle()
+    val postExecute = SystemInfoTaskPostExecuteFingerprint.match()
     stubs[stub("CpuTimeSensorTask")] = postExecute.classDef.type
     field("CpuTimeSensorTask", "owner", "Ljava/lang/Object;", postExecute.field(0))
 
     stubs[stub("CpuTimeActivity")] = CPU_TIME_ACTIVITY
     field("CpuTimeActivity", "states", "Ljava/util/ArrayList;", classDefBy(CPU_TIME_ACTIVITY))
-    field("CpuTimeActivity", "timeInStatePath", "Ljava/lang/String;", TimeInStatePathFingerprint.matchSingle().field(1))
+    field("CpuTimeActivity", "timeInStatePath", "Ljava/lang/String;", TimeInStatePathFingerprint.match().field(1))
 
     stubs[stub("SensorActivity")] = SENSOR_ACTIVITY
     field("SensorActivity", "sensor", "Landroid/hardware/Sensor;", classDefBy(SENSOR_ACTIVITY))
-    field("SensorActivity", "steps", "I", SensorStepsFingerprint.matchSingle().field(1))
+    field("SensorActivity", "steps", "I", SensorStepsFingerprint.match().field(1))
     member(
         "SensorActivity",
         "formatRange(Landroid/hardware/Sensor;Z)Ljava/lang/String;",
-        descriptor(SensorRangeFingerprint.matchSingle().method),
+        descriptor(SensorRangeFingerprint.method),
     )
 
-    val preferenceBoolean = PreferenceBooleanFingerprint.matchSingle()
+    val preferenceBoolean = PreferenceBooleanFingerprint.match()
     member(
         "EncryptedPrefs",
         "get()Landroid/content/SharedPreferences;",
@@ -85,26 +84,26 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     member(
         "EncryptedPrefs",
         "putBoolean(Ljava/lang/String;Z)V",
-        descriptor(preferencePutBooleanFingerprint(preferenceBoolean.classDef.type).matchSingle().method),
+        descriptor(preferencePutBooleanFingerprint(preferenceBoolean.classDef.type).method),
     )
 
-    val pathExists = PathExistsFingerprint.matchSingle()
+    val pathExists = PathExistsFingerprint.match()
     member("DeviceFiles", "exists(Ljava/lang/String;)Z", descriptor(pathExists.method))
     member(
         "CpuFrequency",
         "label(Ljava/lang/String;)Ljava/lang/String;",
-        descriptor(FrequencyLabelFingerprint.matchSingle().method),
+        descriptor(FrequencyLabelFingerprint.method),
     )
 
-    val timeInState = TimeInStateConstructorFingerprint.matchSingle()
+    val timeInState = TimeInStateConstructorFingerprint.match()
     stubs[stub("TimeInState")] = timeInState.classDef.type
     field("TimeInState", "name", "Ljava/lang/String;", timeInState.field(0))
     field("TimeInState", "duration", "Ljava/lang/String;", timeInState.field(2))
     field("TimeInState", "percent", "Ljava/lang/String;", timeInState.field(3))
     field("TimeInState", "progress", "I", timeInState.field(4))
 
-    val rowBinding = timeInStateRowBindingFingerprint(TimeInStateAdapterFingerprint.matchSingle().classDef.type)
-        .matchSingle()
+    val rowBinding = timeInStateRowBindingFingerprint(TimeInStateAdapterFingerprint.match().classDef.type)
+        .match()
     val rowFields = listOf(0, 2, 4, 6).map(rowBinding::field)
     val listRow = mutableClassDefBy(rowFields.map { it.definingClass }.distinct().single())
     stubs[stub("TimeInStateRow")] = listRow.type
@@ -115,18 +114,18 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     field("TimeInStateRow", "progress", "I", rowFields[3])
     listRow.addDefaultConstructor()
 
-    val infoRow = infoRowTypeFingerprint(postExecute.type(2)).matchSingle().type(0)
+    val infoRow = infoRowTypeFingerprint(postExecute.type(2)).match().type(0)
     check(
         classDefBy(infoRow).methods.any {
             it.name == "<init>" && it.parameterTypes == listOf("I", "Ljava/lang/String;", "Ljava/lang/String;")
         },
     ) { "$infoRow has no (int, String, String) constructor" }
     stubs[stub("InfoRow")] = infoRow
-    val signalRow = signalRowConstructorFingerprint(infoRow).matchSingle()
+    val signalRow = signalRowConstructorFingerprint(infoRow).match()
     field("InfoRow", "address", "Ljava/lang/String;", signalRow.field(2))
     field("InfoRow", "type", "I", signalRow.field(5))
 
-    val activityResult = HardwareActivityResultFingerprint.matchSingle()
+    val activityResult = HardwareActivityResultFingerprint.match()
     val hardwareFragment = activityResult.classDef.type
     val viewModel = activityResult.field(2)
     stubs[stub("HardwareFragment")] = hardwareFragment
@@ -139,7 +138,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     )
     member("HardwareViewModel", "reload()V", descriptor(activityResult.reference(3) as MethodReference))
 
-    val nearbyScan = nearbyScanFingerprint(hardwareFragment).matchSingle()
+    val nearbyScan = nearbyScanFingerprint(hardwareFragment).match()
     val nearbyRow = (nearbyScan.reference(4) as MethodReference).definingClass
     check(nearbyRow == infoRow) { "Nearby scan row class is $nearbyRow, expected $infoRow" }
     field("HardwareFragment", "nearbyRows", "Ljava/util/ArrayList;", nearbyScan.field(0))
@@ -147,16 +146,16 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     member(
         "HardwareFragment",
         "requestPermissions([Ljava/lang/String;I)V",
-        descriptor(bluetoothPermissionRequestFingerprint(hardwareFragment).matchSingle().reference(1) as MethodReference),
+        descriptor(bluetoothPermissionRequestFingerprint(hardwareFragment).match().reference(1) as MethodReference),
     )
 
-    val nearbyAdapter = nearbyAdapterFingerprint(hardwareFragment).matchSingle().field(1)
+    val nearbyAdapter = nearbyAdapterFingerprint(hardwareFragment).match().field(1)
     val adapterBase = classDefBy(nearbyAdapter.type).superclass!!
     stubs[stub("RowAdapter")] = nearbyAdapter.type
     member("HardwareFragment", "nearbyAdapter:${stub("RowAdapter")}", descriptor(nearbyAdapter))
-    member("RowAdapter", "notifyDataSetChanged()V", descriptor(notifyDataSetChangedFingerprint(adapterBase).matchSingle().method))
+    member("RowAdapter", "notifyDataSetChanged()V", descriptor(notifyDataSetChangedFingerprint(adapterBase).method))
 
-    val hardwareReceiver = hardwareReceiverConstructorFingerprint(hardwareFragment).matchSingle()
+    val hardwareReceiver = hardwareReceiverConstructorFingerprint(hardwareFragment).match()
     stubs[stub("HardwareReceiver")] = hardwareReceiver.classDef.type
     field("HardwareReceiver", "mode", "B", hardwareReceiver.field(0))
     member("HardwareReceiver", "fragment:${stub("HardwareFragment")}", descriptor(hardwareReceiver.field(1)))
@@ -164,12 +163,12 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
         "HardwareFragment",
         "isAdded()Z",
         descriptor(
-            hardwareReloadFingerprint(hardwareReceiver.classDef.type, hardwareFragment).matchSingle().reference(2)
+            hardwareReloadFingerprint(hardwareReceiver.classDef.type, hardwareFragment).match().reference(2)
                 as MethodReference,
         ),
     )
 
-    val batteryTask = BatteryTaskPostExecuteFingerprint.matchSingle()
+    val batteryTask = BatteryTaskPostExecuteFingerprint.match()
     stubs[stub("BatteryActivityTask")] = batteryTask.classDef.type
     stubs[stub("BatteryActivity")] = BATTERY_ACTIVITY
     stubs[stub("BatteryMonitorService")] = BATTERY_MONITOR_SERVICE
@@ -177,7 +176,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     member("BatteryActivityTask", "activity:${stub("BatteryActivity")}", descriptor(batteryTask.field(1)))
     field("BatteryActivity", "entries", "Ljava/util/ArrayList;", classDefBy(BATTERY_ACTIVITY))
 
-    val bluetoothTask = BluetoothTaskPostExecuteFingerprint.matchSingle()
+    val bluetoothTask = BluetoothTaskPostExecuteFingerprint.match()
     stubs[stub("BluetoothTask")] = bluetoothTask.classDef.type
     stubs[stub("BluetoothActivity")] = BLUETOOTH_ACTIVITY
     member("BluetoothTask", "activity:${stub("BluetoothActivity")}", descriptor(bluetoothTask.field(0)))
@@ -186,7 +185,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     field("BluetoothActivity", "emptyText", "Landroid/widget/TextView;", bluetoothTask.field(2))
     field("BluetoothActivity", "adapter", "Landroid/bluetooth/BluetoothAdapter;", classDefBy(BLUETOOTH_ACTIVITY))
 
-    val publicIpTask = PublicIpTaskPreExecuteFingerprint.matchSingle()
+    val publicIpTask = PublicIpTaskPreExecuteFingerprint.match()
     stubs[stub("PublicIpTask")] = publicIpTask.classDef.type
     field("PublicIpTask", "resultText", "Landroid/widget/TextView;", publicIpTask.field(1))
 
@@ -198,15 +197,15 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     member(
         "BootReceiver",
         "startBatteryMonitor(Landroid/content/Context;)V",
-        descriptor(BootBatteryMonitorFingerprint.matchSingle().method),
+        descriptor(BootBatteryMonitorFingerprint.method),
     )
     member(
         "BootReceiver",
         "startMonitorWindows(Landroid/content/Context;)V",
-        descriptor(BootMonitorWindowsFingerprint.matchSingle().method),
+        descriptor(BootMonitorWindowsFingerprint.method),
     )
 
-    val tempStart = TempMonitorStartFingerprint.matchSingle()
+    val tempStart = TempMonitorStartFingerprint.match()
     val tempReceiver = classDefBy(tempStart.field(2).type)
     stubs[stub("TempMonitorWindow")] = TEMP_MONITOR_WINDOW
     stubs[stub("TempMonitorReceiver")] = tempReceiver.type
@@ -221,7 +220,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     field("TempMonitorWindow", "handler", "Landroid/os/Handler;", tempStart.field(4))
     member("TempMonitorWindow", "poller:Ljava/lang/Runnable;", descriptor(tempStart.field(5)))
     field("TempMonitorWindow", "view", "Landroid/view/View;", classDefBy(TEMP_MONITOR_WINDOW))
-    val showTemperature = TempMonitorShowTemperatureFingerprint.matchSingle()
+    val showTemperature = TempMonitorShowTemperatureFingerprint.match()
     member("TempMonitorWindow", "showTemperature(I)V", descriptor(showTemperature.method))
     val appPrefs = showTemperature.field(1)
     stubs[stub("ProviderPrefs")] = appPrefs.type
@@ -231,11 +230,11 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
         "getBoolean(Ljava/lang/String;)Z",
         descriptor(showTemperature.reference(2) as MethodReference),
     )
-    member("MonitorPause", "offsetView(Landroid/view/View;)V", descriptor(MonitorToggleFingerprint.matchSingle().method))
+    member("MonitorPause", "offsetView(Landroid/view/View;)V", descriptor(MonitorToggleFingerprint.method))
 
-    val batteryStart = BatteryMonitorStartFingerprint.matchSingle()
+    val batteryStart = BatteryMonitorStartFingerprint.match()
     val batteryReceiver = classDefBy(batteryStart.field(1).type)
-    val batteryViews = BatteryMonitorViewsFingerprint.matchSingle()
+    val batteryViews = BatteryMonitorViewsFingerprint.match()
     stubs[stub("BatteryMonitorWindow")] = BATTERY_MONITOR_WINDOW
     stubs[stub("BatteryMonitorReceiver")] = batteryReceiver.type
     field("BatteryMonitorReceiver", "mode", "B", batteryReceiver)
@@ -249,7 +248,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     field("BatteryMonitorWindow", "temperatureText", "Landroid/widget/TextView;", batteryViews.field(3))
     field("BatteryMonitorWindow", "view", "Landroid/view/View;", classDefBy(BATTERY_MONITOR_WINDOW))
 
-    val shizukuReceiver = ShizukuBinderReceiverFingerprint.matchSingle().type(0)
+    val shizukuReceiver = ShizukuBinderReceiverFingerprint.match().type(0)
     stubs[stub("ShizukuReceiver")] = shizukuReceiver
     stubs[stub("BinderContainer")] = BINDER_CONTAINER
     field("BinderContainer", "binder", "Landroid/os/IBinder;", classDefBy(BINDER_CONTAINER))
@@ -258,7 +257,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
         .distinct().single()
     member("Shizuku", "onBinderReceived(Landroid/os/IBinder;Ljava/lang/String;)V", binderReceived)
 
-    val bind = RootServiceBindFingerprint.matchSingle()
+    val bind = RootServiceBindFingerprint.match()
     val rootServiceManager = bind.classDef
     stubs[stub("RootServiceManager")] = rootServiceManager.type
     member(
@@ -271,7 +270,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     field("RootServiceManager", "flags", "I", rootServiceManager.fields.single { it.type == "I" && !AccessFlags.STATIC.isSet(it.accessFlags) })
     field("RootServiceManager", "pendingTasks", "Ljava/util/ArrayList;", rootServiceManager)
 
-    val connect = RootManagerConnectFingerprint.matchSingle()
+    val connect = RootManagerConnectFingerprint.match()
     val rootManagerProxy = connect.classDef
     val rootManager = rootManagerProxy.interfaces.single()
     rootManagerProxy.addDefaultConstructor()
@@ -280,7 +279,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
     member("IRootServiceManager", "connect(Landroid/os/IBinder;)V", "$rootManager->${connect.method.name}(Landroid/os/IBinder;)V")
     field("IRootServiceManagerProxy", "remote", "Landroid/os/IBinder;", rootManagerProxy)
 
-    val remoteProcess = constructorFingerprint(rootServiceManager.type, rootManager).matchSingle()
+    val remoteProcess = constructorFingerprint(rootServiceManager.type, rootManager).match()
     stubs[stub("RemoteProcess")] = remoteProcess.classDef.type
     member(
         "RemoteProcess",
@@ -293,7 +292,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
         "Landroid/content/Intent;",
         "Ljava/util/concurrent/Executor;",
         "Landroid/content/ServiceConnection;",
-    ).matchSingle().classDef
+    ).match().classDef
     stubs[stub("BindTask")] = pendingBind.type
     listOf(
         "intent" to "Landroid/content/Intent;",
@@ -301,7 +300,7 @@ private fun resolveStubs(): Pair<Map<String, String>, Map<MutableMethod, String>
         "connection" to "Landroid/content/ServiceConnection;",
     ).forEach { (name, type) -> field("BindTask", name, type, pendingBind) }
 
-    val rootServiceReceiver = rootServiceReceiverConstructorFingerprint(rootServiceManager.type).matchSingle()
+    val rootServiceReceiver = rootServiceReceiverConstructorFingerprint(rootServiceManager.type).match()
     stubs[stub("RootServiceReceiver")] = rootServiceReceiver.classDef.type
     field("RootServiceReceiver", "mode", "B", rootServiceReceiver.field(0))
     field("RootServiceReceiver", "owner", "Ljava/lang/Object;", rootServiceReceiver.field(1))

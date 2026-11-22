@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.fillAppliedPatch
 import app.morphe.patches.shared.misc.reactnative.ScrollViewLayoutFingerprint
 import app.morphe.patches.shared.misc.revenuecat.InvalidateCustomerInfoCacheFingerprint
@@ -62,15 +61,15 @@ internal val patchesSettingsPatch = run {
             },
         )
         execute {
-            applicationOnCreateFingerprint(applicationType).matchSingle().method.addInstruction(
+            applicationOnCreateFingerprint(applicationType).method.addInstruction(
                 0,
                 "invoke-static/range { p0 .. p0 }, $LIFTOFF_PATCH_CONTEXT_CLASS->attach(Landroid/app/Application;)V",
             )
-            ScrollViewLayoutFingerprint.matchSingle().method.addInstruction(
+            ScrollViewLayoutFingerprint.method.addInstruction(
                 0,
                 "invoke-static/range { p0 .. p0 }, $LIFTOFF_PATCHES_MENU_CLASS->onScrollLayout(Landroid/widget/ScrollView;)V",
             )
-            val invalidation = InvalidateCustomerInfoCacheFingerprint.matchSingle().method
+            val invalidation = InvalidateCustomerInfoCacheFingerprint.method
             mutableClassDefBy(LIFTOFF_PATCH_SETTINGS_CLASS).replaceStub(
                 "invalidatePremiumCache",
                 CACHE_INVALIDATION_REGISTERS,

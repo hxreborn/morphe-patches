@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
@@ -40,7 +39,7 @@ val accentColorPatch: Patch = patch(
 
     execute {
         markPatchApplied("accentColor", accentColorPatch)
-        ActivityCreateFingerprint.matchSingle().method.addInstructions(0,
+        ActivityCreateFingerprint.method.addInstructions(0,
             "invoke-static { p0 }, $EXTENSION_CLASS->attach(Landroid/app/Activity;)V")
     }
 }

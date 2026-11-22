@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findMutableMethodOf
@@ -24,7 +23,7 @@ val unlockPlusPatch = patch(
     compatibleWith(AppCompatibilities.SHTTPS_MARKETLESS)
 
     execute {
-        val startupCheck = StartupLicenseCheckFingerprint.matchSingle()
+        val startupCheck = StartupLicenseCheckFingerprint.match()
         val (_, licenseKeyCall, _, _, confirmedResult) = startupCheck.instructionMatches
 
         val licenseKeyCheck = licenseKeyCall.getInstruction<ReferenceInstruction>().getReference<MethodReference>()!!

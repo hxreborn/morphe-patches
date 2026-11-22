@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.story
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val removeStoryNotificationLimitPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        StoryNotificationLimitFingerprint.matchSingle().method.returnEarly(false)
+        StoryNotificationLimitFingerprint.method.returnEarly(false)
     }
 }

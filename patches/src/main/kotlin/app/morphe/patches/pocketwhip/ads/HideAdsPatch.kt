@@ -6,7 +6,6 @@ package app.morphe.patches.pocketwhip.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
@@ -26,7 +25,7 @@ val hideAdsPatch = patch(
         // Hide the banner instead of loading it. Patching the SDK rather than the app keeps the app's own
         // banner setup intact (it still holds and later uses the view) and covers any banner it shows.
         // p1 (the ad request) is free to reuse because the method returns right away.
-        BannerLoadAdFingerprint.matchSingle().method.addInstructions(
+        BannerLoadAdFingerprint.method.addInstructions(
             0,
             """
                 const/16 p1, $VIEW_GONE
@@ -34,7 +33,7 @@ val hideAdsPatch = patch(
                 return-void
             """,
         )
-        MobileAdsInitializeFingerprint.matchSingle().method.returnEarly()
-        RewardedAdLoadFingerprint.matchSingle().method.returnEarly()
+        MobileAdsInitializeFingerprint.method.returnEarly()
+        RewardedAdLoadFingerprint.method.returnEarly()
     }
 }

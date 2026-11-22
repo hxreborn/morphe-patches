@@ -6,7 +6,6 @@ package app.morphe.patches.one4home.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -18,7 +17,7 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.ONE4HOME)
 
     execute {
-        val proBillingStateConstructor = ProBillingStateToStringFingerprint.matchSingle()
+        val proBillingStateConstructor = ProBillingStateToStringFingerprint.match()
             .classDef.methods.single { it.name == "<init>" }
         val proSourceType = proBillingStateConstructor.parameterTypes[1]
 
@@ -32,7 +31,7 @@ val unlockPremiumPatch = patch(
             """,
         )
 
-        val palAccessCheck = HomePalCatalogFingerprint.matchSingle()
+        val palAccessCheck = HomePalCatalogFingerprint.match()
             .classDef.methods.single { it.returnType == "Z" }
 
         palAccessCheck.returnEarly(true)

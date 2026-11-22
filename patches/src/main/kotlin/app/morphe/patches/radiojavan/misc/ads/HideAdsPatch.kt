@@ -5,7 +5,6 @@
 package app.morphe.patches.radiojavan.misc.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.radiojavan.shared.subscriptionGetterFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -15,7 +14,7 @@ import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
 internal val disableSubscriptionAdFlagsPatch = patch {
     execute {
         listOf("getDisplayAds", "getAudioAds").forEach {
-            subscriptionGetterFingerprint(it).matchSingle().method.returnEarly(false)
+            subscriptionGetterFingerprint(it).method.returnEarly(false)
         }
     }
 }
@@ -31,8 +30,8 @@ val hideAdsPatch = patch(
     dependsOn(disableSubscriptionAdFlagsPatch, failAdMobLoadsPatch, removeMobileAdsInitProviderPatch)
 
     execute {
-        SetCtaOverlayFingerprint.matchSingle().method.returnEarly()
-        ConsentRequestFingerprint.matchSingle().method.returnEarly()
-        MobileAdsInitializeFingerprint.matchSingle().method.returnEarly()
+        SetCtaOverlayFingerprint.method.returnEarly()
+        ConsentRequestFingerprint.method.returnEarly()
+        MobileAdsInitializeFingerprint.method.returnEarly()
     }
 }

@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -28,7 +27,7 @@ val removeScreenshotRestrictionPatch = patch(
     execute {
         routeWindowFlagsCalls(AddWindowFlagsFingerprint, "addFlags(Landroid/view/Window;I)V")
         routeWindowFlagsCalls(SetWindowFlagsFingerprint, "setFlags(Landroid/view/Window;II)V")
-        SetLayoutParamsSecureFlagFingerprint.matchSingle().method.returnEarly()
+        SetLayoutParamsSecureFlagFingerprint.method.returnEarly()
     }
 }
 

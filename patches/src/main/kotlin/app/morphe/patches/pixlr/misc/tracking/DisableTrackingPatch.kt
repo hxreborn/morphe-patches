@@ -7,7 +7,6 @@ package app.morphe.patches.pixlr.misc.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.SingularInitFingerprint
@@ -34,11 +33,11 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        SingularInitFingerprint.matchSingle().method.returnEarly(false)
+        SingularInitFingerprint.method.returnEarly(false)
 
-        ActivateFacebookAppFingerprint.matchSingle().method.returnEarly()
+        ActivateFacebookAppFingerprint.method.returnEarly()
 
-        EnableCrashlyticsCollectionFingerprint.matchSingle().apply {
+        EnableCrashlyticsCollectionFingerprint.match().apply {
             val enabledValue = instructionMatches.first()
             val putBoolean = instructionMatches.last()
             val enabledRegister = enabledValue.getInstruction<OneRegisterInstruction>().registerA
@@ -51,7 +50,7 @@ val disableTrackingPatch = patch(
             )
         }
 
-        SendMobileEventsFingerprint.matchSingle().apply {
+        SendMobileEventsFingerprint.match().apply {
             val enabledResult = instructionMatches.last()
             val enabledRegister = enabledResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstruction(enabledResult.index + 1, "const/4 v$enabledRegister, 0x0")

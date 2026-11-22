@@ -5,7 +5,6 @@
 package app.morphe.patches.ivoox.misc.rate
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val removeRatingPromptsPatch = patch(
     compatibleWith(AppCompatibilities.IVOOX)
 
     execute {
-        ShowRateDialogPreferenceFingerprint.matchSingle().method.returnEarly(false)
+        ShowRateDialogPreferenceFingerprint.method.returnEarly(false)
     }
 }

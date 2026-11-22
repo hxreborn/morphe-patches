@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.imo.shared.wideRegisterPairs
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -27,7 +26,7 @@ val hideInvitePromptsPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        inviteDialogCooldownFingerprint().matchSingle().apply {
+        inviteDialogCooldownFingerprint().match().apply {
             val (_, _, lastShown) = instructionMatches
             val register = lastShown.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
@@ -39,7 +38,7 @@ val hideInvitePromptsPatch = patch(
             )
         }
 
-        inviteChatEntryFingerprint().matchSingle().apply {
+        inviteChatEntryFingerprint().match().apply {
             val deleteRows = instructionMatches.first().instruction.getReference<MethodReference>()!!
             val closedIndex = instructionMatches.last().index
             val closed = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
@@ -62,10 +61,10 @@ val hideInvitePromptsPatch = patch(
             )
         }
 
-        CallShareGuideFingerprint.matchSingle().method.returnEarly(false)
-        ContactsInviteFingerprint.matchSingle().method.returnEarly(false)
-        DownloadFreeImoDialogFingerprint.matchSingle().method.returnEarly(false)
-        DownloadFreeImoTipsFingerprint.matchSingle().method.returnEarly(false)
-        DownloadFreeImoTips2Fingerprint.matchSingle().method.returnEarly(false)
+        CallShareGuideFingerprint.method.returnEarly(false)
+        ContactsInviteFingerprint.method.returnEarly(false)
+        DownloadFreeImoDialogFingerprint.method.returnEarly(false)
+        DownloadFreeImoTipsFingerprint.method.returnEarly(false)
+        DownloadFreeImoTips2Fingerprint.method.returnEarly(false)
     }
 }

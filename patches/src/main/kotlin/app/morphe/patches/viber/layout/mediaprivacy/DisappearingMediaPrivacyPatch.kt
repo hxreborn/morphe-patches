@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patcher.util.registersUsed
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -50,8 +49,8 @@ val disappearingMediaPrivacyPatch: Patch = patch(
 
     execute {
         markPatchApplied("disappearingMediaPrivacy", disappearingMediaPrivacyPatch)
-        ScreenshotTakenFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disappearingMediaPrivacy()Z")
-        SecretEventSendFingerprint.matchSingle().method.apply {
+        ScreenshotTakenFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disappearingMediaPrivacy()Z")
+        SecretEventSendFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
             addInstructionsWithLabels(
                 0,
@@ -64,7 +63,7 @@ val disappearingMediaPrivacyPatch: Patch = patch(
                 ExternalLabel("original", getInstruction(0)),
             )
         }
-        val timestampWriter = ReadTimestampWriteFingerprint.matchSingle()
+        val timestampWriter = ReadTimestampWriteFingerprint.match()
         val (selectionConstant, _) = timestampWriter.instructionMatches
         val inferredUpdate = ImmutableMethod(
             EXTENSION_CLASS,
@@ -89,11 +88,11 @@ val disappearingMediaPrivacyPatch: Patch = patch(
             methods.remove(methods.single { it.name == inferredUpdate.name })
             methods.add(inferredUpdate)
         }
-        inferredReadReceiptFingerprint(timestampWriter.originalMethod).matchSingle().apply {
+        inferredReadReceiptFingerprint(timestampWriter.originalMethod).match().apply {
             val (_, updateCall) = instructionMatches
             method.replaceInstruction(updateCall.index, staticInvoke(updateCall.instruction, descriptor(inferredUpdate)))
         }
-        ReadReceiptEnqueueFingerprint.matchSingle().apply {
+        ReadReceiptEnqueueFingerprint.match().apply {
             val (_, updateCall) = instructionMatches
             val update = updateCall.instruction.getReference<MethodReference>()!!
             mutableClassDefBy(EXTENSION_CLASS).replaceStub(

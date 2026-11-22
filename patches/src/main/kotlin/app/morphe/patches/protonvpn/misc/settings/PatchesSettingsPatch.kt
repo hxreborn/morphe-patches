@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.shared.misc.proton.SettingsRowIcon
 import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
@@ -40,7 +39,7 @@ private val logger = Logger.getLogger("app.morphe.patches.protonvpn.misc.setting
 private fun addPatchesSettingsRow() {
     val iconId = resourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
 
-    val match = WidgetSettingsRowFingerprint.matchSingle()
+    val match = WidgetSettingsRowFingerprint.match()
     val rowIndex = match.instructionMatches.last().index
 
     val settingsRowMethod = match.classDef.addSettingsRowMethod(

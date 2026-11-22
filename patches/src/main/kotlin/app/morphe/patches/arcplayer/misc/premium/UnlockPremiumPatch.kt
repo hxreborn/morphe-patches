@@ -6,7 +6,6 @@ package app.morphe.patches.arcplayer.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -18,7 +17,7 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.ARC_PLAYER)
 
     execute {
-        val premiumStateInit = PremiumStateInitFingerprint.matchSingle()
+        val premiumStateInit = PremiumStateInitFingerprint.match()
         val premiumWrite = premiumStateInit.instructionMatches.last()
         val premiumRegister = premiumWrite.getInstruction<OneRegisterInstruction>().registerA
 

@@ -7,7 +7,6 @@ package app.morphe.patches.viber.misc.analytics
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -31,11 +30,11 @@ val disableAnalyticsPatch: Patch = patch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
     execute {
         markPatchApplied("disableAnalytics", disableAnalyticsPatch)
-        TrackerAllowedFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
-        SnapKitInitFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
-        FirebaseSessionsEnabledFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
-        CrashlyticsEnabledFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
-        TrackerConsentFingerprint.matchSingle().apply {
+        TrackerAllowedFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
+        SnapKitInitFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
+        FirebaseSessionsEnabledFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
+        CrashlyticsEnabledFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disableAnalytics()Z")
+        TrackerConsentFingerprint.match().apply {
             val (setEnabled, _, _) = instructionMatches
             val reference = setEnabled.instruction.getReference<MethodReference>()!!
             val trackerRegister = method.implementation!!.registerCount - 1
@@ -45,8 +44,8 @@ val disableAnalyticsPatch: Patch = patch(
                 return-void
             """ }
         }
-        val metadataReader = FirebaseMetadataFingerprint.matchSingle().method
-        val collectionFlags = listOf(metadataFlagFingerprint(FIREBASE_ANALYTICS_KEY, metadataReader).matchSingle()) +
+        val metadataReader = FirebaseMetadataFingerprint.method
+        val collectionFlags = listOf(metadataFlagFingerprint(FIREBASE_ANALYTICS_KEY, metadataReader).match()) +
             metadataFlagFingerprint(ADID_COLLECTION_KEY, metadataReader).matchAll(ADID_COLLECTION_SITES)
         collectionFlags.forEach { match ->
             val (_, _, result) = match.instructionMatches

@@ -5,7 +5,6 @@
 package app.morphe.patches.oneweather.misc.skyla
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val hideSkylaPatch = patch(
     compatibleWith(AppCompatibilities.ONE_WEATHER)
 
     execute {
-        SkylaFeatureEnabledFingerprint.matchSingle().method.returnEarly(false)
+        SkylaFeatureEnabledFingerprint.method.returnEarly(false)
     }
 }

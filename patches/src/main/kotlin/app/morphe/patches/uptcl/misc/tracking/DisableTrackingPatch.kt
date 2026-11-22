@@ -5,7 +5,6 @@
 package app.morphe.patches.uptcl.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -31,7 +30,7 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        LogEventsToLibraryFingerprint.matchSingle().classDef.methods
+        LogEventsToLibraryFingerprint.match().classDef.methods
             .filter { method ->
                 method.returnType == "V" &&
                     AccessFlags.PUBLIC.isSet(method.accessFlags) &&

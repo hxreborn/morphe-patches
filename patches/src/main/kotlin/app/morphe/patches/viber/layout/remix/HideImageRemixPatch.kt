@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.remix
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -27,6 +26,6 @@ val hideImageRemixPatch: Patch = patch(
 
     execute {
         markPatchApplied("hideImageRemix", hideImageRemixPatch)
-        ImageRemixAvailabilityFingerprint.matchSingle().method.returnWhenEnabled(HIDE_IMAGE_REMIX)
+        ImageRemixAvailabilityFingerprint.method.returnWhenEnabled(HIDE_IMAGE_REMIX)
     }
 }

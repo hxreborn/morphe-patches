@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.uniffiCallsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -46,7 +45,7 @@ val swipeToSwitchAccountsPatch: Patch = patch(
         markPatchApplied(MAIL_SETTINGS_CLASS, "swipeToSwitchAccounts", swipeToSwitchAccountsPatch)
         forwardStub(MAIL_SETTINGS_CLASS, "addSwipeToSwitchAccountsRows", "Lapp/hxreborn/extension/protonmail/accountswipe/AccountSwipeRows;")
 
-        val onTouchEventField = PointerInteropFilterTouchFingerprint.matchSingle()
+        val onTouchEventField = PointerInteropFilterTouchFingerprint.match()
             .instructionMatches[2].getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
         val interopFilterType = onTouchEventField.definingClass
         val function1Type = onTouchEventField.type
@@ -58,7 +57,7 @@ val swipeToSwitchAccountsPatch: Patch = patch(
         val extension = mutableClassDefBy(EXTENSION_CLASS)
         extension.interfaces.add(function1Type)
 
-        val avatarMatch = AccountAvatarFingerprint.matchSingle()
+        val avatarMatch = AccountAvatarFingerprint.match()
         avatarMatch.method.apply {
             val buttonCallIndex = indexOfFirstInstructionOrThrow(avatarMatch.instructionMatches.single().index) {
                 (opcode == Opcode.INVOKE_STATIC || opcode == Opcode.INVOKE_STATIC_RANGE) &&
@@ -118,7 +117,7 @@ val swipeToSwitchAccountsPatch: Patch = patch(
             )
         }
 
-        WatchAccountsFingerprint.matchSingle().method.addInstructions(
+        WatchAccountsFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->captureMailSession(Ljava/lang/Object;)V",
         )

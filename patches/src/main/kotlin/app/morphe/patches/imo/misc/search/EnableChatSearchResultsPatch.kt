@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.search
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val enableChatSearchResultsPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        ChatRecordSearchFingerprint.matchSingle().method.returnEarly(true)
+        ChatRecordSearchFingerprint.method.returnEarly(true)
     }
 }

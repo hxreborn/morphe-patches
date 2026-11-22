@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -63,19 +62,19 @@ val removeFeedCardsPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        val cardModel = FeedCardModelFingerprint.matchSingle()
+        val cardModel = FeedCardModelFingerprint.match()
         val (_, cardTypeCheck) = cardModel.instructionMatches
         val cardTypeClass = cardModel.method.parameterTypes[cardModel.method.checkedParameterIndex(cardTypeCheck)].toString()
         val cardTypeFields = cardModel.classDef.fields.filter { it.type == cardTypeClass }
         val cardTypeField = cardTypeFields.singleOrNull()
             ?: throw PatchException("${cardModel.classDef.type} has ${cardTypeFields.size} fields of type $cardTypeClass, expected 1")
         val removedTypeFields = REMOVED_CARD_TYPES.map { constantName ->
-            val (_, _, assignment) = feedCardTypeConstantFingerprint(cardTypeClass, constantName).matchSingle().instructionMatches
+            val (_, _, assignment) = feedCardTypeConstantFingerprint(cardTypeClass, constantName).match().instructionMatches
             assignment.getInstruction<ReferenceInstruction>().reference as FieldReference
         }
 
-        val feedState = FeedStateConstructorFingerprint.matchSingle()
-        FeedStatePropertyOrderFingerprint.matchSingle()
+        val feedState = FeedStateConstructorFingerprint.match()
+        FeedStatePropertyOrderFingerprint.match()
         val (_, topicChipsCheck, _, cardListCheck) = feedState.instructionMatches
         val parameterTypes = feedState.method.parameterTypes.map(CharSequence::toString)
         val headerIdIndex = feedState.method.checkedParameterIndex(topicChipsCheck) + 1
@@ -87,7 +86,7 @@ val removeFeedCardsPatch = patch(
             )
         }
         val listType = parameterTypes[cardListIndex]
-        val toList = toImmutableListFingerprint(listType).matchSingle().method
+        val toList = toImmutableListFingerprint(listType).method
 
         val removedChecks = removedTypeFields.joinToString("\n") { field ->
             """

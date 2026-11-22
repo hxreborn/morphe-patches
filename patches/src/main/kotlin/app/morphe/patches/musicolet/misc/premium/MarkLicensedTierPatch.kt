@@ -9,7 +9,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
@@ -18,7 +17,7 @@ private const val REGISTERS_FOR_MARKER_WRITE = 1
 
 internal val markLicensedTierPatch = patch {
     execute {
-        val usageQuotaCheck = UsageQuotaCheckFingerprint.matchSingle()
+        val usageQuotaCheck = UsageQuotaCheckFingerprint.match()
         val (_, licensedTierLoad, _, _, tierMarkerRead) = usageQuotaCheck.instructionMatches
         val licensedTier = (licensedTierLoad.instruction as NarrowLiteralInstruction).narrowLiteral
         val tierMarker = tierMarkerRead.instruction.getReference<FieldReference>()!!

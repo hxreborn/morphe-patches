@@ -7,7 +7,6 @@ package app.morphe.patches.shared.misc.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.extension.sharedAdmobExtensionPatch
 
@@ -25,7 +24,7 @@ val failAdMobLoadsPatch = patch {
             )
         }
 
-        AdLoaderWithAdListenerFingerprint.matchSingle().method.addInstruction(
+        AdLoaderWithAdListenerFingerprint.method.addInstruction(
             0,
             "invoke-static { p1 }, $REPORT_LOAD_FAILURE",
         )

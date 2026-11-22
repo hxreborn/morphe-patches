@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.adoptChild
 import app.morphe.util.findElementByAttributeValueOrThrow
@@ -95,7 +94,7 @@ val amoledThemePatch = patch(
     dependsOn(darkThemePatch, amoledThemeResourcesPatch)
 
     execute {
-        val settingsClassDef = ThemePreferenceFingerprint.matchSingle().classDef
+        val settingsClassDef = ThemePreferenceFingerprint.match().classDef
         val preferenceChanged = settingsClassDef.methods.single {
             it.name == PREFERENCE_CHANGED_METHOD
         }

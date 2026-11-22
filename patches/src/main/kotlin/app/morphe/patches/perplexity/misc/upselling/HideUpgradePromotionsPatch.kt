@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.kotlin.returnUnitEarly
@@ -27,13 +26,13 @@ val hideUpgradePromotionsPatch = patch(
     compatibleWith(AppCompatibilities.PERPLEXITY)
 
     execute {
-        val userDataType = SignInFunnelUserDataToStringFingerprint.matchSingle().classDef.type
-        skipPaywallAfterSignInFingerprint(userDataType).matchSingle().method.returnEarly(true)
+        val userDataType = SignInFunnelUserDataToStringFingerprint.match().classDef.type
+        skipPaywallAfterSignInFingerprint(userDataType).method.returnEarly(true)
 
-        returnUnitEarly(HomeUpsellFetchFingerprint.matchSingle().method)
+        returnUnitEarly(HomeUpsellFetchFingerprint.method)
 
-        val upsellTypeEnum = UpsellTypeEnumFingerprint.matchSingle().classDef.type
-        ThreadUpsellMapperFingerprint.matchSingle().method.apply {
+        val upsellTypeEnum = UpsellTypeEnumFingerprint.match().classDef.type
+        ThreadUpsellMapperFingerprint.method.apply {
             val remoteUpsellType = parameterTypes.single().toString()
             val upsellTypeField = classDefBy(remoteUpsellType).fields.single { it.type == upsellTypeEnum }
             val registers = getFreeRegisterProvider(0, 2)
@@ -64,7 +63,7 @@ val hideUpgradePromotionsPatch = patch(
         }
 
         if (UpgradePlanBannerToStringFingerprint.matchOrNull() != null) {
-            UpgradePlanBannerFlagFingerprint.matchSingle().apply {
+            UpgradePlanBannerFlagFingerprint.match().apply {
                 val index = instructionMatches.last().index
                 val bannerFlag = method.getInstruction<ReferenceInstruction>(index).reference
                 val homeStateRegister = method.getInstruction<TwoRegisterInstruction>(index).registerB

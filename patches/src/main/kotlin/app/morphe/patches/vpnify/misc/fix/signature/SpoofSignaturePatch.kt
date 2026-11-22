@@ -8,7 +8,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.all.misc.hex.hexPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -64,6 +63,6 @@ val spoofSignaturePatch = patch {
             .joinToString("") { "%02x".format(it) }
             .take(DIGEST_PREFIX_LENGTH)
 
-        CertificateDigestFingerprint.matchSingle().method.returnEarly(stockDigestPrefix)
+        CertificateDigestFingerprint.method.returnEarly(stockDigestPrefix)
     }
 }

@@ -5,7 +5,6 @@
 package app.morphe.patches.iototoy.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -20,7 +19,7 @@ val disableTrackingPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        AppBrainInitFingerprint.matchSingle().method.returnEarly()
-        ScheduleTransportEventFingerprint.matchSingle().method.returnEarly()
+        AppBrainInitFingerprint.method.returnEarly()
+        ScheduleTransportEventFingerprint.method.returnEarly()
     }
 }

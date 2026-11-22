@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
@@ -32,9 +31,9 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.IVOOX)
 
     execute {
-        UserSkillEnumFingerprint.matchSingle()
+        UserSkillEnumFingerprint.match()
 
-        StoredUserSkillsFingerprint.matchSingle().apply {
+        StoredUserSkillsFingerprint.match().apply {
             val (_, _, readStoredKeys) = instructionMatches
             val keysRegister = readStoredKeys.getInstruction<OneRegisterInstruction>().registerA
             if (keysRegister >= NIBBLE_REGISTER_LIMIT) {
@@ -65,12 +64,12 @@ val unlockPremiumPatch = patch(
             )
         }
 
-        PremiumPurchasedFingerprint.matchSingle().method.returnEarly(true)
-        ProContractFingerprint.matchSingle().method.returnEarly(true)
-        HidePlusFingerprint.matchSingle().method.returnEarly(true)
-        DynamicAlertClosedFingerprint.matchSingle().method.returnEarly(true)
+        PremiumPurchasedFingerprint.method.returnEarly(true)
+        ProContractFingerprint.method.returnEarly(true)
+        HidePlusFingerprint.method.returnEarly(true)
+        DynamicAlertClosedFingerprint.method.returnEarly(true)
 
-        PlayerCtaBannerFingerprint.matchSingle().method.apply {
+        PlayerCtaBannerFingerprint.method.apply {
             val resultConstructorIndex = indexOfFirstInstructionReversedOrThrow {
                 val reference = getReference<MethodReference>()
                 opcode == Opcode.INVOKE_DIRECT && reference?.name == "<init>" && reference.parameterTypes.size == 1
@@ -91,7 +90,7 @@ val unlockPremiumPatch = patch(
             )
         }
 
-        ActiveSplashAdFingerprint.matchSingle().method.returnEarly(null)
-        PlayerMediaItemFingerprint.matchSingle().method.addInstruction(0, "const/4 p1, 0x0")
+        ActiveSplashAdFingerprint.method.returnEarly(null)
+        PlayerMediaItemFingerprint.method.addInstruction(0, "const/4 p1, 0x0")
     }
 }

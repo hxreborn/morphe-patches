@@ -7,7 +7,6 @@ package app.morphe.patches.hypic.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.hypic.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -26,9 +25,9 @@ val unlockPremiumPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        AccountVipCheckFingerprint.matchSingle().method.returnEarly(true)
+        AccountVipCheckFingerprint.method.returnEarly(true)
 
-        VipStateUpdateFingerprint.matchSingle().let { match ->
+        VipStateUpdateFingerprint.match().let { match ->
             val (stateWrite) = match.instructionMatches
             val stateRegister = match.method.getInstruction<TwoRegisterInstruction>(stateWrite.index).registerA
             match.method.addInstruction(

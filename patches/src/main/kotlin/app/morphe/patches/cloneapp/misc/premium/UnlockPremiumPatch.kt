@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.asSequence
@@ -79,13 +78,13 @@ val unlockPremiumPatch = patch(
     execute {
         val expiry = "0x${VIP_EXPIRY_MILLIS.toString(16)}L"
 
-        UserStateParseFingerprint.matchSingle().apply {
+        UserStateParseFingerprint.match().apply {
             val (vipWrite, _, expiryWrite) = instructionMatches.map { it.index }
             method.overwriteFieldAfter(expiryWrite, expiry)
             method.overwriteFieldAfter(vipWrite, "0x1")
         }
 
-        val engineVipSetter = UserStateRestoreFingerprint.matchSingle().run {
+        val engineVipSetter = UserStateRestoreFingerprint.match().run {
             val (_, _, _, vipWrite, setterCall) = instructionMatches
             val expiryWrite = instructionMatches.last()
             val setter = setterCall.getInstruction<ReferenceInstruction>().getReference<MethodReference>()!!
@@ -95,7 +94,7 @@ val unlockPremiumPatch = patch(
             setter
         }
 
-        engineVipStateSetterFingerprint(engineVipSetter).matchSingle().apply {
+        engineVipStateSetterFingerprint(engineVipSetter).match().apply {
             val (_, vipStore) = instructionMatches
             val vipField = vipStore.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
             val parameterRegister = method.implementation!!.registerCount - method.parameters.size
@@ -105,7 +104,7 @@ val unlockPremiumPatch = patch(
 
             method.addInstruction(0, "const/4 p1, 0x1")
 
-            staticInitializerFingerprint(vipField.definingClass).matchSingle().method.addInstructions(
+            staticInitializerFingerprint(vipField.definingClass).method.addInstructions(
                 0,
                 """
                     const/4 v0, 0x1
@@ -114,12 +113,12 @@ val unlockPremiumPatch = patch(
             )
         }
 
-        FCodeOfferFlagFingerprint.matchSingle().apply {
+        FCodeOfferFlagFingerprint.match().apply {
             val (_, offerFlagWrite) = instructionMatches
             method.overwriteFieldAfter(offerFlagWrite.index, "0x0")
         }
 
-        DiscountOfferPopupFingerprint.matchSingle().apply {
+        DiscountOfferPopupFingerprint.match().apply {
             val (_, _, _, offerCheck) = instructionMatches
             val register = offerCheck.getInstruction<OneRegisterInstruction>().registerA
 

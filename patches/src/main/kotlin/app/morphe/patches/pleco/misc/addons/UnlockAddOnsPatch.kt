@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -42,7 +41,7 @@ val unlockAddOnsPatch = patch(
     dependsOn(unlockNativeAddOnFlagsPatch)
 
     execute {
-        val method = PurchaseOwnedFingerprint.matchSingle().method
+        val method = PurchaseOwnedFingerprint.method
         val constantRegister = method.getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
         val checks = unlockedPurchaseIds.joinToString("\n") { id ->
             """

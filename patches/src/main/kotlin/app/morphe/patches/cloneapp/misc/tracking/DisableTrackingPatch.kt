@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
@@ -31,7 +30,7 @@ val disableTrackingPatch = patch(
 
     execute {
         UPLOAD_ENDPOINTS.forEach { endpoint ->
-            serverUploadFingerprint(endpoint).matchSingle().apply {
+            serverUploadFingerprint(endpoint).match().apply {
                 val newRequest = instructionMatches.last()
                 val requestType = newRequest.getInstruction<ReferenceInstruction>()
                     .getReference<MethodReference>()!!.returnType

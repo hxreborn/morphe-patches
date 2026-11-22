@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,6 +16,6 @@ val removePremiumEntryPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        MePagePremiumEntryFingerprint.matchSingle().method.returnEarly(false)
+        MePagePremiumEntryFingerprint.method.returnEarly(false)
     }
 }

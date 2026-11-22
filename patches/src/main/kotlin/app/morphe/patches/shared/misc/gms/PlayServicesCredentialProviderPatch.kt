@@ -6,13 +6,12 @@ package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal val playServicesCredentialProviderPatch = patch {
     execute {
-        CredentialProviderFrameworkAvailabilityFingerprint.matchSingle().method.returnEarly(false)
+        CredentialProviderFrameworkAvailabilityFingerprint.method.returnEarly(false)
 
         PlayServicesGetCredentialRoutingFingerprint.matchOrNull()?.let { match ->
             val (_, _, availabilityResult) = match.instructionMatches

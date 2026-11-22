@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -55,7 +54,7 @@ val fixWeatherPatch = patch(
     dependsOn(removePairipProtectionPatch, allowLoopbackCleartextPatch)
 
     execute {
-        val debugProviderType = DebugAppCheckRegistrarFingerprint.matchSingle().method.run {
+        val debugProviderType = DebugAppCheckRegistrarFingerprint.method.run {
             val builderCall = indexOfFirstInstructionOrThrow {
                 opcode == Opcode.INVOKE_STATIC &&
                     ((this as ReferenceInstruction).reference as? MethodReference)?.parameterTypes ==
@@ -64,15 +63,15 @@ val fixWeatherPatch = patch(
             (getInstruction<ReferenceInstruction>(builderCall - 1).reference as TypeReference).type
         }
 
-        AppCheckProviderInstallFingerprint.matchSingle().method.apply {
+        AppCheckProviderInstallFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow(Opcode.CONST_CLASS)
             val register = getInstruction<OneRegisterInstruction>(index).registerA
             replaceInstruction(index, "const-class v$register, $debugProviderType")
         }
 
-        AppCheckExchangeFingerprint.matchSingle().method.returnEarly(APP_CHECK_RESPONSE)
+        AppCheckExchangeFingerprint.method.returnEarly(APP_CHECK_RESPONSE)
 
-        WeatherApiClientFingerprint.matchSingle().method.apply {
+        WeatherApiClientFingerprint.method.apply {
             val index = indexOfFirstStringInstructionOrThrow(WEATHER_API_BASE_URL)
             val register = getInstruction<OneRegisterInstruction>(index).registerA
 

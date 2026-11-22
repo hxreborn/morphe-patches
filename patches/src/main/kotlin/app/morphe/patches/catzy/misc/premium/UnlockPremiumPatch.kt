@@ -4,7 +4,6 @@
  */
 package app.morphe.patches.catzy.misc.premium
 
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.catzy.catzyPatch
 
@@ -13,6 +12,6 @@ val unlockPremiumPatch = catzyPatch(
     name = "Unlock premium",
     description = "Unlocks premium goals, journeys, breathing exercises, focus timers, sounds and themes.",
 ) {
-    vipTimeCheckFingerprint("getVip_expired_at").matchSingle().method.returnEarly(true)
-    vipTimeCheckFingerprint("getRemaining_time").matchSingle().method.returnEarly(true)
+    vipTimeCheckFingerprint("getVip_expired_at").method.returnEarly(true)
+    vipTimeCheckFingerprint("getRemaining_time").method.returnEarly(true)
 }

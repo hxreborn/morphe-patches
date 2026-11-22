@@ -5,7 +5,6 @@
 package app.morphe.patches.vpnify.misc.review
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.vpnify.misc.fix.signature.spoofSignaturePatch
@@ -19,6 +18,6 @@ val disableRatingPromptPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        RequestReviewFingerprint.matchSingle().method.returnEarly()
+        RequestReviewFingerprint.method.returnEarly()
     }
 }

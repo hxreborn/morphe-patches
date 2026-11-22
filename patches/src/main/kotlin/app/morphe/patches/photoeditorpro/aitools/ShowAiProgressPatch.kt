@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
@@ -71,7 +70,7 @@ val showAiProgressPatch: Patch = patch(
 
     execute {
         markPatchMetadata("showAiProgress", showAiProgressPatch)
-        val submit = SubmitRequestFingerprint.matchSingle().method
+        val submit = SubmitRequestFingerprint.method
 
         TRACED_TOOLS.forEach { (callbackClass, tool) ->
             val (fragmentClass, feature) = tool

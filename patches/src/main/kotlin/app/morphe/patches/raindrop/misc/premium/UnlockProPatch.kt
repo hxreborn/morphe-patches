@@ -7,7 +7,6 @@ package app.morphe.patches.raindrop.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.raindrop.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -30,7 +29,7 @@ val unlockProPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        ResponseHandlerFingerprint.matchSingle().apply {
+        ResponseHandlerFingerprint.match().apply {
             val index = instructionMatches[0].index
             val register = method.getInstruction<FiveRegisterInstruction>(index).registerD
             val contextField = classDef.fields.single { it.type == REACT_CONTEXT_TYPE }
@@ -48,7 +47,7 @@ val unlockProPatch = patch(
             )
         }
 
-        SendRequestFingerprint.matchSingle().apply {
+        SendRequestFingerprint.match().apply {
             val bodyIndex = instructionMatches[1].index + 1
             val bodyRegister = method.getInstruction<OneRegisterInstruction>(bodyIndex).registerA
 
@@ -66,7 +65,7 @@ val unlockProPatch = patch(
             )
         }
 
-        WebViewSourceFingerprint.matchSingle().apply {
+        WebViewSourceFingerprint.match().apply {
             val index = instructionMatches[0].index
             val loadUrl = method.getInstruction<FiveRegisterInstruction>(index)
             val urlRegister = loadUrl.registerD

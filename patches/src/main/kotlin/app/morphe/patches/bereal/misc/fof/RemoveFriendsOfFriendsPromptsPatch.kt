@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -31,8 +30,8 @@ val removeFriendsOfFriendsPromptsPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, removeFriendsOfFriendsPromptsPatch)
 
-        val footerType = EndOfFeedFooterToStringFingerprint.matchSingle().classDef.type
-        val footer = endOfFeedFooterVisibilityFingerprint(footerType).matchSingle()
+        val footerType = EndOfFeedFooterToStringFingerprint.match().classDef.type
+        val footer = endOfFeedFooterVisibilityFingerprint(footerType).match()
         val flagIndex = footer.instructionMatch(Opcode.MOVE_RESULT).index
         val flag = footer.method.getInstruction<OneRegisterInstruction>(flagIndex).registerA
         footer.method.addInstructions(
@@ -43,8 +42,8 @@ val removeFriendsOfFriendsPromptsPatch: Patch = patch(
             """,
         )
 
-        val notActivatedType = NotActivatedToStringFingerprint.matchSingle().classDef.type
-        activationCardFingerprint(notActivatedType).matchSingle().method
+        val notActivatedType = NotActivatedToStringFingerprint.match().classDef.type
+        activationCardFingerprint(notActivatedType).method
             .returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
     }
 }

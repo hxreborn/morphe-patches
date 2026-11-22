@@ -7,7 +7,6 @@ package app.morphe.patches.wallmaa.misc.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
@@ -19,7 +18,7 @@ val disableTrackingPatch = patch(
     compatibleWith(AppCompatibilities.WALLMAA)
 
     execute {
-        LevelPlayInitFingerprint.matchSingle().method.apply {
+        LevelPlayInitFingerprint.method.apply {
             val nullRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructions(

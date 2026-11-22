@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.channel
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -19,6 +18,6 @@ val raiseChannelVideoLimitPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        ChannelVideoDurationFingerprint.matchSingle().method.returnEarly(CHANNEL_VIDEO_MINUTES)
+        ChannelVideoDurationFingerprint.method.returnEarly(CHANNEL_VIDEO_MINUTES)
     }
 }

@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -72,11 +71,11 @@ val disableDataCollectionPatch: Patch = patch(
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}DataCollection;", disableDataCollectionPatch)
 
-        val start = ShakeStartCallFingerprint.matchSingle()
+        val start = ShakeStartCallFingerprint.match()
         start.method.removeInstruction(start.instructionMatches.single().index)
 
-        val upload = AmplitudeUploadFingerprint.matchSingle()
-        val factory = amplitudeResponseFactoryFingerprint(upload.method.returnType).matchSingle().method
+        val upload = AmplitudeUploadFingerprint.match()
+        val factory = amplitudeResponseFactoryFingerprint(upload.method.returnType).method
         upload.method.addInstructions(
             0,
             """
@@ -88,8 +87,8 @@ val disableDataCollectionPatch: Patch = patch(
             """,
         )
 
-        val consentType = TrackingConsentEnumFingerprint.matchSingle().classDef.type
-        trackingConsentSetterFingerprint(consentType).matchSingle().method.apply {
+        val consentType = TrackingConsentEnumFingerprint.match().classDef.type
+        trackingConsentSetterFingerprint(consentType).method.apply {
             val registers = getFreeRegisterProvider(0, 2)
             val name = registers.getFreeRegister4Bit()
             val type = registers.getFreeRegister4Bit()
@@ -105,7 +104,7 @@ val disableDataCollectionPatch: Patch = patch(
             )
         }
 
-        val datadogUpload = DatadogUploadRequestFingerprint.matchSingle()
+        val datadogUpload = DatadogUploadRequestFingerprint.match()
         val successType = datadogUpload.instructionMatches.first()
             .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
         val successConstructor = datadogUpload.instructionMatches.last()
@@ -123,6 +122,6 @@ val disableDataCollectionPatch: Patch = patch(
             """,
         )
 
-        AdjustInitFingerprint.matchSingle().method.returnEarly()
+        AdjustInitFingerprint.method.returnEarly()
     }
 }

@@ -5,7 +5,6 @@
 package app.morphe.patches.mymoveset.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.expo.disableOtaUpdatesPatch
@@ -22,6 +21,6 @@ val disableTrackingPatch = patch(
     dependsOn(disableOtaUpdatesPatch, removePairipProtectionPatch)
 
     execute {
-        DefaultSchedulerScheduleFingerprint.matchSingle().method.returnEarly()
+        DefaultSchedulerScheduleFingerprint.method.returnEarly()
     }
 }

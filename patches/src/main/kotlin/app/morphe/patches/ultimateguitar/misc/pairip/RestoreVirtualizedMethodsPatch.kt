@@ -5,7 +5,6 @@
 package app.morphe.patches.ultimateguitar.misc.pairip
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -133,7 +132,7 @@ val restoreVirtualizedMethodsPatch = patch {
     execute {
         restoreVirtualizedMethods(RESTORED_METHODS)
 
-        GuardedAsyncTaskDoInBackgroundFingerprint.matchSingle().method.replaceVirtualizedBody(
+        GuardedAsyncTaskDoInBackgroundFingerprint.method.replaceVirtualizedBody(
             """
                 invoke-virtual {p0, p1}, $GUARDED_ASYNC_TASK->doInBackgroundGuarded([Ljava/lang/Object;)V
                 const/4 v0, 0x0

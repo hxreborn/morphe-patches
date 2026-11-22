@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -70,7 +69,7 @@ val backupMemoriesPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, backupMemoriesPatch)
 
-        RetrofitCreateFingerprint.matchSingle().method.addInstructions(
+        RetrofitCreateFingerprint.method.addInstructions(
             0,
             "invoke-static { p0, p1 }, $API_CLASS->onCreate(Ljava/lang/Object;Ljava/lang/Class;)V",
         )

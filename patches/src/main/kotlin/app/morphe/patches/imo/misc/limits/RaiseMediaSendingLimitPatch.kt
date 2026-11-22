@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.limits
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -21,9 +20,9 @@ val raiseMediaSendingLimitPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        GalleryMediaLimitFingerprint.matchSingle().method.returnEarly(MEDIA_LIMIT)
-        FileCountLimitFingerprint.matchSingle().method.returnEarly(MEDIA_LIMIT)
-        GalleryPhotoMaxSizeFingerprint.matchSingle().method.returnEarly(GALLERY_SIZE_LIMIT_BYTES)
-        GalleryVideoMaxSizeFingerprint.matchSingle().method.returnEarly(GALLERY_SIZE_LIMIT_BYTES)
+        GalleryMediaLimitFingerprint.method.returnEarly(MEDIA_LIMIT)
+        FileCountLimitFingerprint.method.returnEarly(MEDIA_LIMIT)
+        GalleryPhotoMaxSizeFingerprint.method.returnEarly(GALLERY_SIZE_LIMIT_BYTES)
+        GalleryVideoMaxSizeFingerprint.method.returnEarly(GALLERY_SIZE_LIMIT_BYTES)
     }
 }

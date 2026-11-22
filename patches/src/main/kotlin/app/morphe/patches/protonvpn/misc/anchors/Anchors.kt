@@ -16,7 +16,6 @@ import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.string
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -83,7 +82,7 @@ internal fun setExtensionMember(member: String, value: String) =
 private fun Instruction.reference() = (this as? ReferenceInstruction)?.reference
 
 internal fun findPropertyField(toString: Fingerprint, property: String): FieldReference {
-    toString.matchSingle()
+    toString.match()
     val instructions = toString.originalMethod.implementation!!.instructions.toList()
     val labels = instructions.mapNotNull { (it.reference() as? StringReference)?.string }.filter { it.endsWith("=") }
     val labelIndex = labels.indexOfFirst { label ->

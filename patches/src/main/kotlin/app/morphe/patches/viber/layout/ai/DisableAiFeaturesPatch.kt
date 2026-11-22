@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.ai
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.layout.business.ChatSelectionFingerprint
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -33,25 +32,26 @@ val disableAiFeaturesPatch: Patch = patch(
 
     execute {
         markPatchApplied("disableAiFeatures", disableAiFeaturesPatch)
-        ChatSelectionFingerprint.matchSingle().apply {
+        ChatSelectionFingerprint.clearMatch()
+        ChatSelectionFingerprint.match().apply {
             val (selectionPrefix, _) = instructionMatches
             method.addFilterCallAfter(selectionPrefix.index, "$EXTENSION_CLASS_DESCRIPTOR->filterSelection(Ljava/lang/String;)Ljava/lang/String;")
         }
-        SearchChatGptEntryPointAvailabilityFingerprint.matchSingle().method.returnWhenEnabled(
+        SearchChatGptEntryPointAvailabilityFingerprint.method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
         )
-        SettingsChatGptRowFingerprint.matchSingle().apply {
+        SettingsChatGptRowFingerprint.match().apply {
             val (_, availability, _) = instructionMatches
             method.addFilterCallAfter(availability.index, "$EXTENSION_CLASS_DESCRIPTOR->showFeature(Z)Z")
         }
-        InlineTranslateVisibilityFingerprint.matchSingle().apply {
+        InlineTranslateVisibilityFingerprint.match().apply {
             val (_, visibility, _, _) = instructionMatches
             method.addFilterCallAfter(visibility.index, "$EXTENSION_CLASS_DESCRIPTOR->showFeature(Z)Z")
         }
-        ImageRemixIntroductionFingerprint.matchSingle().method.returnWhenEnabled(
+        ImageRemixIntroductionFingerprint.method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
         )
-        ImageRemixPresetsFingerprint.matchSingle().apply {
+        ImageRemixPresetsFingerprint.match().apply {
             val (_, _, availability) = instructionMatches
             method.addFilterCallAfter(availability.index, "$EXTENSION_CLASS_DESCRIPTOR->showImageRemix(Z)Z")
         }
@@ -61,12 +61,12 @@ val disableAiFeaturesPatch: Patch = patch(
             AiInChatPreferenceFingerprint,
             AiReplyPreferenceFingerprint,
             SmartRecapPreferenceFingerprint,
-        ).map { it.matchSingle() }
+        ).map { it.match() }
             .redirectPreferences(PREFERENCE_KEY_OVERRIDE, "$EXTENSION_CLASS_DESCRIPTOR->showFeature(Z)Z")
-        NewsBriefBannerEligibilityFingerprint.matchSingle().method.returnWhenEnabled(
+        NewsBriefBannerEligibilityFingerprint.method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
         ) { register -> "sget-object v$register, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;\nreturn-object v$register" }
-        LinkSummaryHostAllowedFingerprint.matchSingle().method.returnWhenEnabled(
+        LinkSummaryHostAllowedFingerprint.method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->disableAiFeatures()Z",
         )
         AiFeaturesBannerPreferenceFingerprint.matchAll(AI_FEATURES_BANNER_PREFERENCE_SITES)

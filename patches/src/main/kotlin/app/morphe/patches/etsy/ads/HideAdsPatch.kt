@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -28,7 +27,7 @@ val hideAdsPatch = patch(
     dependsOn(etsyHideAdsExtensionPatch)
     compatibleWith(AppCompatibilities.ETSY)
     execute {
-        SearchGridBoxFingerprint.matchSingle().method.apply {
+        SearchGridBoxFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow {
                 opcode == Opcode.IGET_OBJECT &&
                     getReference<FieldReference>()?.let { field ->
@@ -45,6 +44,6 @@ val hideAdsPatch = patch(
             )
         }
 
-        SearchHeaderFingerprint.matchSingle().method.addInstructions(0, "const/16 p2, 0x0")
+        SearchHeaderFingerprint.method.addInstructions(0, "const/16 p2, 0x0")
     }
 }

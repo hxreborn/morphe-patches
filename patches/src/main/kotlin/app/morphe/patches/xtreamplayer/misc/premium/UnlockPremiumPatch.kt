@@ -6,7 +6,6 @@ package app.morphe.patches.xtreamplayer.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -18,7 +17,7 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.XTREAM_PLAYER)
 
     execute {
-        VerifyLicenseFingerprint.matchSingle().method.addInstructions(
+        VerifyLicenseFingerprint.method.addInstructions(
             0,
             """
                 sget-object p0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
@@ -26,6 +25,6 @@ val unlockPremiumPatch = patch(
                 return-void
             """,
         )
-        GuardActivityFingerprint.matchSingle().method.returnEarly(true)
+        GuardActivityFingerprint.method.returnEarly(true)
     }
 }

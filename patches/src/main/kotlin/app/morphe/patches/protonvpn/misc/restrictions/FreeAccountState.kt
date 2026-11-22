@@ -14,7 +14,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.VpnUserIsFreeUserFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
@@ -89,13 +88,13 @@ internal val freeAccountStatePatch = patch {
         )
         setExtensionMember("vpnUserIsFreeUser", VpnUserIsFreeUserFingerprint.originalMethod.name)
 
-        userInfoUpdateFingerprint().matchSingle().run {
+        userInfoUpdateFingerprint().match().run {
             method.addInstruction(
                 instructionMatches.last().index,
                 "invoke-static { p1 }, $FREE_ACCOUNT->onUserInfoChanged(Ljava/lang/Object;)V",
             )
         }
-        UserInfoInvalidateFingerprint.matchSingle().method.addInstruction(
+        UserInfoInvalidateFingerprint.method.addInstruction(
             0,
             "invoke-static { }, $FREE_ACCOUNT->onUserInfoInvalidated()V",
         )

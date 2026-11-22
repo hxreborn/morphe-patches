@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -59,10 +58,10 @@ val disableViewReceiptsPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, disableViewReceiptsPatch)
 
-        val requestType = MarkPostsAsSeenRpcFingerprint.matchSingle().method.parameterTypes.first().toString()
-        markPostsAsSeenRepositoryFingerprint(requestType).matchSingle().returnSuccessWhenSkipped()
+        val requestType = MarkPostsAsSeenRpcFingerprint.method.parameterTypes.first().toString()
+        markPostsAsSeenRepositoryFingerprint(requestType).match().returnSuccessWhenSkipped()
 
-        val operationType = EnterChatOperationFingerprint.matchSingle().classDef.type
-        enterChatRepositoryFingerprint(operationType).matchSingle().returnSuccessWhenSkipped()
+        val operationType = EnterChatOperationFingerprint.match().classDef.type
+        enterChatRepositoryFingerprint(operationType).match().returnSuccessWhenSkipped()
     }
 }

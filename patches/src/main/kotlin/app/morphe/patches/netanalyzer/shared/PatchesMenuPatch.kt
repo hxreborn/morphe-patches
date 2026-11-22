@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -109,7 +108,7 @@ internal val patchesMenuPatch = patch {
             mapOf("portDatabase" to "port_database"),
         )
         addFeatureActivity(PATCHES_MENU_ACTIVITY)
-        MainActivityOnCreateFingerprint.matchSingle().method.addInstructions(
+        MainActivityOnCreateFingerprint.method.addInstructions(
             0,
             "invoke-static { p0 }, $FEATURES_CLASS->attach(Landroid/app/Activity;)V",
         )
@@ -118,8 +117,8 @@ internal val patchesMenuPatch = patch {
     finalize {
         if (menuEntries.isEmpty()) return@finalize
 
-        val headerMatch = HeaderRowFingerprint.matchSingle()
-        val rowMatch = ClickableRowFingerprint.matchSingle()
+        val headerMatch = HeaderRowFingerprint.match()
+        val rowMatch = ClickableRowFingerprint.match()
         val header = headerMatch.originalMethod
         val row = rowMatch.originalMethod
         val headerParameters = headerMatch.composableParameters()
@@ -129,7 +128,7 @@ internal val patchesMenuPatch = patch {
 
         val aboutSection = Fingerprint(
             filters = listOf(decryptedString(ABOUT_SECTION_BELOW), methodCall(reference = header)),
-        ).matchSingle()
+        ).match()
         val sectionLabelIndex = aboutSection.instructionMatches.first().index
         val composerRegister = aboutSection.method.getInstruction<FiveRegisterInstruction>(
             aboutSection.instructionMatches.last().index,

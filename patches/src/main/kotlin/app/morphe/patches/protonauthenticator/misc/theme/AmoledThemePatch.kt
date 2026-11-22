@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonauthenticator.shared.themeColorReadInstructions
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -70,7 +69,7 @@ private val amoledWindowBackgroundPatch = patch {
 }
 
 private fun tintEmptyStatePlaceholder() {
-    val image = EmptyStateImageFingerprint.matchSingle()
+    val image = EmptyStateImageFingerprint.match()
     val imageIndex = image.instructionMatches.last().index
     val imageCall = image.method.getInstruction<RegisterRangeInstruction>(imageIndex)
 

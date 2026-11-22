@@ -6,7 +6,6 @@ package app.morphe.patches.lumo.misc.taphighlight
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -33,7 +32,7 @@ val removeWebTapHighlightPatch = patch(
     availability(requireArm64)
 
     execute {
-        PageFinishedFingerprint.matchSingle().method.addInstructions(
+        PageFinishedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $EXTENSION_CLASS->remove(Landroid/webkit/WebView;)V",
         )

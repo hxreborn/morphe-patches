@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.stringOption
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.requireArm64StandardInstall
@@ -71,9 +70,9 @@ val signInTokenPatch = patch(
             throw PatchException("App Check token expired at ${Instant.ofEpochSecond(expiry)}")
         }
 
-        AppCheckTokenFingerprint.matchSingle().method.replaceString("<app-check-token>", token)
+        AppCheckTokenFingerprint.method.replaceString("<app-check-token>", token)
 
-        FirebaseInitProviderOnCreateFingerprint.matchSingle().method.addInstructions(
+        FirebaseInitProviderOnCreateFingerprint.method.addInstructions(
             0,
             """
                 invoke-virtual { p0 }, Landroid/content/ContentProvider;->getContext()Landroid/content/Context;
@@ -85,7 +84,7 @@ val signInTokenPatch = patch(
         val certificateSha1 = Base64.getEncoder().encodeToString(
             MessageDigest.getInstance("SHA-1").digest(packageMetadata.stockSigningCertificate().encoded),
         )
-        CertificateSha1Fingerprint.matchSingle().method.addInstructions(
+        CertificateSha1Fingerprint.method.addInstructions(
             0,
             """
                 const-string v0, "$certificateSha1"

@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.decode
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.doRecursively
@@ -62,10 +61,10 @@ val removeAdsPatch = patch(
     dependsOn(collapseAdSlotsPatch)
 
     execute {
-        KeyboardPremiumStatusFingerprint.matchSingle().method.returnEarly(true)
-        AppPremiumStatusFingerprint.matchSingle().method.returnEarly(true)
-        EmojiSearchAdLoadFingerprint.matchSingle().method.returnEarly()
-        StoreAdRowFingerprint.matchSingle().method.returnEarly()
+        KeyboardPremiumStatusFingerprint.method.returnEarly(true)
+        AppPremiumStatusFingerprint.method.returnEarly(true)
+        EmojiSearchAdLoadFingerprint.method.returnEarly()
+        StoreAdRowFingerprint.method.returnEarly()
 
         GifAdsEnabledFingerprint.matchAll(2..2).forEach { match ->
             val resultIndex = match.instructionMatches.last().index

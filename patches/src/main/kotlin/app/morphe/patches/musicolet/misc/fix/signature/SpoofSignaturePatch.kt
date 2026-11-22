@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
@@ -25,7 +24,7 @@ val spoofSignaturePatch = patch {
 
         val certificate = Base64.getEncoder().encodeToString(packageMetadata.stockSigningCertificate().encoded)
         listOf(CertificateDigestFingerprint, CertificateChecksumFingerprint).forEach { fingerprint ->
-            fingerprint.matchSingle().method.apply {
+            fingerprint.method.apply {
                 val decodeFlags = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
                 addInstructions(
                     0,

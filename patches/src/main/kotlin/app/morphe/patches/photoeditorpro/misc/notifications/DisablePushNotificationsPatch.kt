@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
@@ -45,7 +44,7 @@ val disablePushNotificationsPatch: Patch = patch(
 
         FirebaseMessagingHandleIntentFingerprint.method.returnEarly()
 
-        NotificationPermissionPromptFingerprint.matchSingle().method.addInstructions(
+        NotificationPermissionPromptFingerprint.method.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;

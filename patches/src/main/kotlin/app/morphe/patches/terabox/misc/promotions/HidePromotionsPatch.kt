@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -48,13 +47,13 @@ val hidePromotionsPatch: Patch = patch(
             AccelerateTrialToastFingerprint,
             WebPlayerStutterGuideFingerprint,
             FloatWindowUpdateFingerprint,
-        ).forEach { it.matchSingle().method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly() } }
+        ).forEach { it.method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly() } }
 
-        PremiumPopupLimitFingerprint.matchSingle().method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(false) }
+        PremiumPopupLimitFingerprint.method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(false) }
 
-        SearchOperationEntryFingerprint.matchSingle().method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(null) }
+        SearchOperationEntryFingerprint.method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(null) }
 
-        SpeedUpSheetAutoShowFingerprint.matchSingle().apply {
+        SpeedUpSheetAutoShowFingerprint.match().apply {
             val flagResult = instructionMatches.last()
             val register = flagResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
@@ -66,7 +65,7 @@ val hidePromotionsPatch: Patch = patch(
             )
         }
 
-        HomeCardVisibilityFingerprint.matchSingle().method.apply {
+        HomeCardVisibilityFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructionsWithLabels(

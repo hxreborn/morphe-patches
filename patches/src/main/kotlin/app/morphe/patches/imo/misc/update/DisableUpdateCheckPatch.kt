@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.update
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,9 +16,9 @@ val disableUpdateCheckPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        UpdateDialogFingerprint.matchSingle().method.returnEarly(false)
-        UpdateScreenLauncherFingerprint.matchSingle().method.returnEarly()
-        VersionCheckResultFingerprint.matchSingle().method.returnEarly(false)
-        InAppUpdateCheckFingerprint.matchSingle().method.returnEarly()
+        UpdateDialogFingerprint.method.returnEarly(false)
+        UpdateScreenLauncherFingerprint.method.returnEarly()
+        VersionCheckResultFingerprint.method.returnEarly(false)
+        InAppUpdateCheckFingerprint.method.returnEarly()
     }
 }

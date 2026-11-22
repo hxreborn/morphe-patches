@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -47,7 +46,7 @@ val sortByOriginalDatePatch: Patch = patch(
     execute {
         markPatchApplied("sortByOriginalDate", sortByOriginalDatePatch)
 
-        ApplicationCreateFingerprint.matchSingle().method.apply {
+        ApplicationCreateFingerprint.method.apply {
             val contextSet = indexOfFirstInstructionOrThrow {
                 val reference = (this as? ReferenceInstruction)?.reference as? MethodReference
                 reference?.definingClass == UTILS_CLASS && reference.name == "setContext"
@@ -55,7 +54,7 @@ val sortByOriginalDatePatch: Patch = patch(
             addInstruction(contextSet + 1, "invoke-static {}, $EXTENSION_CLASS_DESCRIPTOR->loadProcessSetting()V")
         }
 
-        SortTypeOrderFingerprint.matchSingle().apply {
+        SortTypeOrderFingerprint.match().apply {
             val (defaultOrderName) = instructionMatches
             val builtInReturns = method.instructions.withIndex()
                 .filter { (index, instruction) -> index > defaultOrderName.index && instruction.opcode == Opcode.RETURN_OBJECT }
@@ -75,12 +74,12 @@ val sortByOriginalDatePatch: Patch = patch(
             }
         }
 
-        FileRowBindFingerprint.matchSingle().apply {
+        FileRowBindFingerprint.match().apply {
             val (_, uploadTimeRead) = instructionMatches
             method.useOriginalTimeAfter(uploadTimeRead.index)
         }
 
-        PlaylistTimeComparatorFingerprint.matchSingle().apply {
+        PlaylistTimeComparatorFingerprint.match().apply {
             val (firstUploadTimeRead, secondUploadTimeRead) = instructionMatches
             method.useOriginalTimeAfter(secondUploadTimeRead.index)
             method.useOriginalTimeAfter(firstUploadTimeRead.index)

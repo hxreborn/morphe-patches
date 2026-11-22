@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.typingbanner
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -24,7 +23,7 @@ val removeTypingPrivacyBannerPatch: Patch = patch(
 
     execute {
         markPatchApplied("removeTypingPrivacyBanner", removeTypingPrivacyBannerPatch)
-        TypingPrivacyBannerEligibilityFingerprint.matchSingle().method.returnWhenEnabled(
+        TypingPrivacyBannerEligibilityFingerprint.method.returnWhenEnabled(
             "$VIBER_SETTINGS_CLASS->removeTypingPrivacyBanner()Z",
         )
     }

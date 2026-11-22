@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -28,9 +27,9 @@ val showFriendsPostsPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, showFriendsPostsPatch)
 
-        val placementType = FeedPlacementEnumFingerprint.matchSingle().classDef.type
-        val flowType = postVisibilityFlowConstructorFingerprint(placementType).matchSingle().classDef.type
-        val flow = postVisibilityFlowFingerprint(flowType).matchSingle()
+        val placementType = FeedPlacementEnumFingerprint.match().classDef.type
+        val flowType = postVisibilityFlowConstructorFingerprint(placementType).match().classDef.type
+        val flow = postVisibilityFlowFingerprint(flowType).match()
 
         val resultIndex = flow.instructionMatches.last().index
         val register = flow.method.getInstruction<OneRegisterInstruction>(resultIndex).registerA

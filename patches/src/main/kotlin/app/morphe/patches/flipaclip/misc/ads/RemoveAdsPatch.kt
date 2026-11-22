@@ -6,7 +6,6 @@ package app.morphe.patches.flipaclip.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -22,7 +21,7 @@ val removeAdsPatch = patch(
     availability(requireArm64)
 
     execute {
-        val match = ShowInterstitialFingerprint.matchSingle()
+        val match = ShowInterstitialFingerprint.match()
         val branchIndex = match.instructionMatches.single { it.filter === interstitialStateBranch }.index
         match.method.replaceInstruction(branchIndex, "nop")
     }

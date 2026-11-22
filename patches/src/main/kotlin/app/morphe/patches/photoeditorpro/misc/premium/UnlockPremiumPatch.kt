@@ -7,7 +7,6 @@ package app.morphe.patches.photoeditorpro.misc.premium
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.ProGateFingerprint
@@ -29,7 +28,7 @@ val unlockPremiumPatch: Patch = patch(
 
     execute {
         markPatchMetadata("unlockPremium", unlockPremiumPatch)
-        val adsRemoved = RemoveAdsPurchasedFingerprint.matchSingle().method.name
+        val adsRemoved = RemoveAdsPurchasedFingerprint.method.name
 
         ProGateFingerprint.matchAll(2..2)
             .map { it.method }

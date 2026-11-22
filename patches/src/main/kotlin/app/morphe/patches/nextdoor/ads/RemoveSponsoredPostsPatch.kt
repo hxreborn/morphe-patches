@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.nextdoor.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -37,7 +36,7 @@ val removeSponsoredPostsPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        val match = AdsDataItemConverterFingerprint.matchSingle()
+        val match = AdsDataItemConverterFingerprint.match()
         fun indexOf(filter: InstructionFilter) = match.instructionMatches.single { it.filter === filter }.index
 
         match.method.apply {
@@ -52,7 +51,7 @@ val removeSponsoredPostsPatch = patch(
             }
         }
 
-        val gridRollup = ClassifiedGridRollupFingerprint.matchSingle()
+        val gridRollup = ClassifiedGridRollupFingerprint.match()
         val adWrapperMatch = gridRollup.match(gridAdWrapperConstructor)
         val adWrapper = adWrapperMatch.getInstruction<FiveRegisterInstruction>()
         val adWrapperTail = gridRollup.match(gridAdWrapperTail).getInstruction<TwoRegisterInstruction>()
@@ -90,7 +89,7 @@ val removeSponsoredPostsPatch = patch(
             ExternalLabel("keep_tile", gridRollup.method.getInstruction(tileConstructorMatch.index + 1)),
         )
 
-        val itemConverter = SearchResultItemConverterFingerprint.matchSingle()
+        val itemConverter = SearchResultItemConverterFingerprint.match()
         val itemTypeRead = itemConverter.match(searchItemTypeRead).getInstruction<TwoRegisterInstruction>()
         val switchMapMatch = itemConverter.match(searchItemTypeSwitchMap)
         val switchMap = switchMapMatch.getInstruction<OneRegisterInstruction>()

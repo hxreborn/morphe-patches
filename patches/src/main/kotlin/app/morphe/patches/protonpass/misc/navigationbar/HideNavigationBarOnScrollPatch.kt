@@ -18,7 +18,6 @@ import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -61,29 +60,30 @@ val hideNavigationBarOnScrollPatch: Patch = patch(
         )
         markFeaturePatched(NAVIGATION_BAR_CLASS)
         requireAppMethods(NAVIGATION_BAR_CLASS, SCROLL_HANDLER_CLASS, HIDDEN_OFFSET_CLASS)
-        VelocityConstructorFingerprint.matchSingle()
+        VelocityConstructorFingerprint.match()
 
-        val nestedScroll = descriptor(NestedScrollModifierFingerprint.matchSingle().originalMethod)
-        val offset = descriptor(OffsetModifierFingerprint.matchSingle().originalMethod)
+        val nestedScroll = descriptor(NestedScrollModifierFingerprint.originalMethod)
+        val offset = descriptor(OffsetModifierFingerprint.originalMethod)
 
-        HomeBottomBarFingerprint.matchSingle().let { match ->
+        HomeBottomBarFingerprint.clearMatch()
+        HomeBottomBarFingerprint.match().let { match ->
             match.method.offsetModifierArgument(
                 match.instructionMatches.last().index,
                 offset,
                 "$NAVIGATION_BAR_CLASS->barOffsetDp()F",
             )
         }
-        AppSnackbarHostFingerprint.matchSingle().let { match ->
+        AppSnackbarHostFingerprint.match().let { match ->
             match.method.offsetModifierArgument(
                 match.instructionMatches.last().index,
                 offset,
                 "$NAVIGATION_BAR_CLASS->snackbarOffsetDp()F",
             )
         }
-        AppContentPaddingFingerprint.matchSingle().let { match ->
+        AppContentPaddingFingerprint.match().let { match ->
             match.method.hookContentPadding(match, nestedScroll)
         }
-        LazyListApplyMeasureResultFingerprint.matchSingle().method.reportMeasuredList()
+        LazyListApplyMeasureResultFingerprint.method.reportMeasuredList()
     }
 }
 

@@ -6,7 +6,6 @@ package app.morphe.patches.viber.ads
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -25,6 +24,6 @@ val hideAdsPatch: Patch = patch(
 
     execute {
         markPatchApplied("hideAds", hideAdsPatch)
-        AdsEnabledFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->hideAds()Z")
+        AdsEnabledFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->hideAds()Z")
     }
 }

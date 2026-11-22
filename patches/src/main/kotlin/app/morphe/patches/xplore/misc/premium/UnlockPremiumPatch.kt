@@ -5,7 +5,6 @@
 package app.morphe.patches.xplore.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.xplore.misc.pairip.restoreVirtualizedMethodsPatch
@@ -18,7 +17,7 @@ val unlockPremiumPatch = patch(
     dependsOn(restoreVirtualizedMethodsPatch)
 
     execute {
-        HasDonationFingerprint.matchSingle().method.returnEarly(true)
-        FeatureRestrictionFingerprint.matchSingle().method.returnEarly(false)
+        HasDonationFingerprint.method.returnEarly(true)
+        FeatureRestrictionFingerprint.method.returnEarly(false)
     }
 }

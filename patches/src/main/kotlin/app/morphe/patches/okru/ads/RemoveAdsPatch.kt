@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.addFreeRegisters
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -38,27 +37,27 @@ val removeAdsPatch = patch(
     compatibleWith(AppCompatibilities.OK)
 
     execute {
-        BindReplaceableBannerFingerprint.matchSingle().method.returnEarly()
-        BindBannerLinkFingerprint.matchSingle().method.returnEarly()
-        ObtainInstreamAdControllerFingerprint.matchSingle().method.returnEarly(null)
+        BindReplaceableBannerFingerprint.method.returnEarly()
+        BindBannerLinkFingerprint.method.returnEarly()
+        ObtainInstreamAdControllerFingerprint.method.returnEarly(null)
 
-        MyTargetIsLoadCalledFingerprint.matchSingle().method.returnEarly(true)
-        MyTargetViewLoadFingerprint.matchSingle().method.returnEarly()
+        MyTargetIsLoadCalledFingerprint.method.returnEarly(true)
+        MyTargetViewLoadFingerprint.method.returnEarly()
 
         listOf(ZenLoadAdRequestFingerprint, ZenLoadAdRequestListFingerprint, GamesAdSourcesFingerprint).forEach { fingerprint ->
-            val method = fingerprint.matchSingle().method
+            val method = fingerprint.method
             val target = if (method.implementation!!.registerCount == 0) method.addFreeRegisters(1).first else method
             target.addInstructions(0, RETURN_EMPTY_LIST)
         }
 
-        VideoCatalogLoadBannersFingerprint.matchSingle().let { match ->
+        VideoCatalogLoadBannersFingerprint.match().let { match ->
             val (loadBannersRead) = match.instructionMatches
             val register = loadBannersRead.getInstruction<TwoRegisterInstruction>().registerA
             match.method.replaceInstruction(loadBannersRead.index, "const/4 v$register, 0x0")
         }
 
         DISABLED_AD_FLAG_KEYS.forEach { key ->
-            adFlagFingerprint(key).matchSingle().method.returnEarly(false)
+            adFlagFingerprint(key).method.returnEarly(false)
         }
     }
 }

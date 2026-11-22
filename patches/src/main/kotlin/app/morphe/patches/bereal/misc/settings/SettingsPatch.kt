@@ -15,7 +15,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.shared.misc.fillPatchDetails
 import app.morphe.patches.shared.misc.returnTrueFrom
@@ -46,12 +45,12 @@ private const val SETTINGS_ROW_TAG = "settingsscreen_patches_button"
 private const val SETTINGS_ROW_ICON = "ic_gearshape_fill"
 
 private fun addSettingsRow() {
-    val debugScreenAction = DebugScreenActionToStringFingerprint.matchSingle().classDef
+    val debugScreenAction = DebugScreenActionToStringFingerprint.match().classDef
     val debugScreenField = debugScreenAction.staticFields.single { it.type == debugScreenAction.type }
     val debugScreenReference = "${debugScreenAction.type}->${debugScreenField.name}:${debugScreenAction.type}"
 
-    val click = settingsActionClickFingerprint(debugScreenAction.type).matchSingle()
-    val rows = AboutSectionRowsFingerprint.matchSingle()
+    val click = settingsActionClickFingerprint(debugScreenAction.type).match()
+    val rows = AboutSectionRowsFingerprint.match()
     val rowCall = rows.instructionMatch(Opcode.INVOKE_STATIC_RANGE).getInstruction<RegisterRangeInstruction>()
     val rowFactory = rowCall.getReference<MethodReference>()!!
 

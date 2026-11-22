@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
@@ -28,7 +27,7 @@ val hideConsentFormPatch: Patch = patch(
 
     execute {
         markPatchApplied("hideConsentForm", hideConsentFormPatch)
-        ConsentRequestFingerprint.matchSingle().method.apply {
+        ConsentRequestFingerprint.method.apply {
             val index = indexOfFirstStringInstructionOrThrow(CONSENT_REQUEST_URL)
             val register = getInstruction<OneRegisterInstruction>(index).registerA
 

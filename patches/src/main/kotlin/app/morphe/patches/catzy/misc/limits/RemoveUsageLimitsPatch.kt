@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchAvailability
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.catzy.catzyPatch
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -40,7 +39,7 @@ val removeUsageLimitsPatch = catzyPatch(
     selection = PatchAvailability.DISABLED,
 ) {
     DAILY_USE_COUNTERS.forEach { property ->
-        dailyUseCounterFingerprint(property).matchSingle().method.returnEarly(0)
+        dailyUseCounterFingerprint(property).method.returnEarly(0)
     }
 
     val openingDayCheck = mutableClassDefBy(RECYCLE_SHOP_FRAGMENT_CLASS).methods.singleOrNull { method ->
@@ -55,7 +54,7 @@ val removeUsageLimitsPatch = catzyPatch(
         openingDayCheck.indexOfFirstInstructionOrThrow { opcode == Opcode.IF_NE },
     )
 
-    TravelDurationFingerprint.matchSingle().let { match ->
+    TravelDurationFingerprint.match().let { match ->
         match.method.removeInstruction(
             match.method.indexOfFirstInstructionReversedOrThrow(
                 match.instructionMatches.first().index,

@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
@@ -52,7 +51,7 @@ val loadingIndicatorPatch: Patch = patch(
         markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
         markLoadingIndicatorPatched()
 
-        val pullingIconMatch = PullToRefreshPullingIconFingerprint.matchSingle()
+        val pullingIconMatch = PullToRefreshPullingIconFingerprint.match()
         val pullingIconMethod = pullingIconMatch.method
         val rotateIndex = pullingIconMatch.instructionMatches[2].index
         val rotateCall = pullingIconMethod.getInstruction<FiveRegisterInstruction>(rotateIndex)
@@ -63,10 +62,10 @@ val loadingIndicatorPatch: Patch = patch(
         val composerType = imageReference.parameterTypes[IMAGE_COMPOSER_PARAMETER].toString()
 
         val androidView = androidViewFingerprint(modifierType, composerType, ANDROID_VIEW_PARAMETERS)
-            .matchSingle().originalMethod
+            .originalMethod
         bindLoadingIndicatorView(androidView, null)
 
-        PullToRefreshSpinnerFingerprint.matchSingle().method.apply {
+        PullToRefreshSpinnerFingerprint.method.apply {
             val registers = getFreeRegisterProvider(0, 3)
             val composer = registers.getFreeRegister4Bit()
             val indeterminate = registers.getFreeRegister4Bit()
@@ -105,7 +104,7 @@ val loadingIndicatorPatch: Patch = patch(
             ExternalLabel("drawn", pullingIconMethod.getInstruction(imageIndex + 1)),
         )
 
-        PullToRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
+        PullToRefreshIndicatorSizeFingerprint.match().let { match ->
             val method = match.method
             val sizeCall = match.instructionMatches[SIZE_CALL_MATCH]
             val indicatorBox = match.instructionMatches.last()

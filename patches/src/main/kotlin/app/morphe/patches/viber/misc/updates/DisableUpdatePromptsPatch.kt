@@ -12,7 +12,6 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -34,21 +33,21 @@ val disableUpdatePromptsPatch: Patch = patch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
     execute {
         markPatchApplied("disableUpdatePrompts", disableUpdatePromptsPatch)
-        val configType = UpdatePromptConfigFingerprint.matchSingle().classDef.type
-        updatePromptCheckFingerprint(configType).matchSingle().apply {
+        val configType = UpdatePromptConfigFingerprint.match().classDef.type
+        updatePromptCheckFingerprint(configType).match().apply {
             val (timedCheck, updateLinkCheck, _) = instructionMatches
             listOf(updateLinkCheck, timedCheck).forEach {
                 val flag = (it.instruction as TwoRegisterInstruction).registerA
                 method.replaceInstruction(it.index, "const/4 v$flag, 0x0")
             }
         }
-        ClientUpgradeFingerprint.matchSingle().method.returnEarly()
-        UnsupportedLinkDialogFingerprint.matchSingle().apply {
+        ClientUpgradeFingerprint.method.returnEarly()
+        UnsupportedLinkDialogFingerprint.match().apply {
             val (_, _, labelsCall, returnDialog) = instructionMatches
             val labels = labelsCall.instruction.getReference<MethodReference>()!!
-            val (_, messageSetter, positiveSetter, negativeSetter) = dialogLabelsFingerprint(labels).matchSingle()
+            val (_, messageSetter, positiveSetter, negativeSetter) = dialogLabelsFingerprint(labels).match()
                 .instructionMatches.map { it.instruction.getReference<MethodReference>()!! }
-            val (positiveLabelWrite) = positiveLabelFingerprint(positiveSetter).matchSingle().instructionMatches
+            val (positiveLabelWrite) = positiveLabelFingerprint(positiveSetter).match().instructionMatches
             val positiveLabel = positiveLabelWrite.instruction.getReference<FieldReference>()!!
             val dialog = (returnDialog.instruction as OneRegisterInstruction).registerA
             val label = method.getFreeRegisterProvider(returnDialog.index, 1, dialog).getFreeRegister4Bit()

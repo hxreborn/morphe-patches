@@ -6,7 +6,6 @@ package app.morphe.patches.imo.misc.forwarding
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.addInstructionsAtControlFlowLabel
@@ -25,7 +24,7 @@ val removeForwardingRestrictionsPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        ShareAvailabilityFingerprint.matchSingle().method.apply {
+        ShareAvailabilityFingerprint.method.apply {
             val shareableRegister = implementation!!.registerCount - parameterTypes.size + SHAREABLE_PARAMETER_INDEX
             val shareableCheckIndex = indexOfFirstInstructionOrThrow {
                 opcode == Opcode.IF_EQZ && (this as OneRegisterInstruction).registerA == shareableRegister

@@ -14,7 +14,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.opcode
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.settings.WidgetSettingsRowFingerprint
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
@@ -29,7 +28,8 @@ import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 internal const val UPGRADE_ONBOARDING_ACTIVITY = "Lcom/protonvpn/android/ui/planupgrade/UpgradeOnboardingDialogActivity;"
 
 internal fun settingRowWithIconFingerprint(): Fingerprint {
-    val settingRow = WidgetSettingsRowFingerprint.matchSingle().instructionMatches.last()
+    WidgetSettingsRowFingerprint.clearMatch()
+    val settingRow = WidgetSettingsRowFingerprint.match().instructionMatches.last()
         .instruction.getReference<MethodReference>()!!
     return Fingerprint(
         definingClass = settingRow.definingClass,

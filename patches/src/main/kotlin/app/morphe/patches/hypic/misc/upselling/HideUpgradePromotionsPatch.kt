@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -28,9 +27,9 @@ val hideUpgradePromotionsPatch = patch(
     compatibleWith(AppCompatibilities.HYPIC)
 
     execute {
-        HomeProButtonFingerprint.matchSingle().method.returnEarly(null)
+        HomeProButtonFingerprint.method.returnEarly(null)
 
-        fun Fingerprint.treatSubscriptionsAsDisabled() = matchSingle().let { match ->
+        fun Fingerprint.treatSubscriptionsAsDisabled() = match().let { match ->
             val (_, subscriptionsEnabled) = match.instructionMatches
             val subscriptionsEnabledRegister =
                 match.method.getInstruction<OneRegisterInstruction>(subscriptionsEnabled.index).registerA
@@ -39,7 +38,7 @@ val hideUpgradePromotionsPatch = patch(
         SettingsPlansRowFingerprint.treatSubscriptionsAsDisabled()
         ProfileProEntranceFingerprint.treatSubscriptionsAsDisabled()
 
-        val appFetch = LynxAppFetchFingerprint.matchSingle().method
+        val appFetch = LynxAppFetchFingerprint.method
         appFetch.addInstructionsWithLabels(
             0,
             """
@@ -52,7 +51,7 @@ val hideUpgradePromotionsPatch = patch(
             ExternalLabel("fetch", appFetch.getInstruction(0)),
         )
 
-        val slotRequest = PromotionSlotRequestFingerprint.matchSingle().method
+        val slotRequest = PromotionSlotRequestFingerprint.method
         val (_, slotCallback) = slotRequest.parameterTypes
         slotRequest.addInstructionsWithLabels(
             0,
@@ -65,7 +64,7 @@ val hideUpgradePromotionsPatch = patch(
             """,
         )
 
-        SubscribePageCreateFingerprint.matchSingle().let { match ->
+        SubscribePageCreateFingerprint.match().let { match ->
             val (subscribePageReferenceStored) = match.instructionMatches
             match.method.addInstructions(
                 subscribePageReferenceStored.index + 1,

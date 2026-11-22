@@ -7,7 +7,6 @@ package app.morphe.patches.publicvideos.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val THEME_MODE_READ_COUNT = 2
@@ -48,7 +47,7 @@ val followSystemThemePatch = patch(
             )
         }
 
-        SetDefaultNightModeFingerprint.matchSingle().method.addInstruction(
+        SetDefaultNightModeFingerprint.method.addInstruction(
             0,
             "const/4 p0, $MODE_NIGHT_FOLLOW_SYSTEM",
         )

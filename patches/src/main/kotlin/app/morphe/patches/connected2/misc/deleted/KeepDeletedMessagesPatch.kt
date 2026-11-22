@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -39,16 +38,16 @@ val keepDeletedMessagesPatch = patch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
 
     execute {
-        DeleteMessageHandlerFingerprint.matchSingle().apply {
+        DeleteMessageHandlerFingerprint.match().apply {
             val (_, _, lookupCall, _, ageCheckMatch) = instructionMatches
             val ageCheck = ageCheckMatch.index
             val message = method.getInstruction<OneRegisterInstruction>(lookupCall.index + 1).registerA
             val skipDelete = method.getInstruction<BuilderOffsetInstruction>(ageCheck).target.location.instruction!!
             val messageType = lookupCall.instruction.getReference<MethodReference>()!!.returnType
-            val contentTypeGetter = messageContentTypeGetterFingerprint(messageType).matchSingle().originalMethod
-            val bodyGetter = messageBodyGetterFingerprint(messageType).matchSingle().originalMethod
-            val bodySetter = messageBodySetterFingerprint(messageType).matchSingle().originalMethod
-            val save = recordSaveFingerprint(classDefBy(messageType).superclass!!).matchSingle().originalMethod
+            val contentTypeGetter = messageContentTypeGetterFingerprint(messageType).originalMethod
+            val bodyGetter = messageBodyGetterFingerprint(messageType).originalMethod
+            val bodySetter = messageBodySetterFingerprint(messageType).originalMethod
+            val save = recordSaveFingerprint(classDefBy(messageType).superclass!!).originalMethod
             with(mutableClassDefBy(EXTENSION_CLASS)) {
                 replaceStub(
                     "bodyOf",
@@ -71,7 +70,7 @@ val keepDeletedMessagesPatch = patch(
                     """,
                 )
             }
-            val (_, textField) = textContentTypeFingerprint(contentTypeGetter.returnType).matchSingle()
+            val (_, textField) = textContentTypeFingerprint(contentTypeGetter.returnType).match()
                 .instructionMatches
             val registers = method.getFreeRegisterProvider(ageCheck + 1, 2, message)
             val contentType = registers.getFreeRegister4Bit()

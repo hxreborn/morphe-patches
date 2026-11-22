@@ -6,7 +6,6 @@ package app.morphe.patches.deshtelugu.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
@@ -19,7 +18,7 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.DESH_TELUGU_KEYBOARD)
 
     execute {
-        val purchaseQuery = PremiumPurchaseQueryFingerprint.matchSingle()
+        val purchaseQuery = PremiumPurchaseQueryFingerprint.match()
         val (_, ownedFlowValue, _, ownedPreferenceWrite) = purchaseQuery.instructionMatches
 
         val preferenceValueRegister = ownedPreferenceWrite.getInstruction<FiveRegisterInstruction>().registerE

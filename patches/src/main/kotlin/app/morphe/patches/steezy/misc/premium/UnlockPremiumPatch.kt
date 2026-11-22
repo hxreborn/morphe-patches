@@ -7,7 +7,6 @@ package app.morphe.patches.steezy.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -24,7 +23,7 @@ val unlockPremiumPatch = patch(
     dependsOn(steezyUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.STEEZY)
     execute {
-        val cachedClientBuilder = CachedClientBuilderFingerprint.matchSingle()
+        val cachedClientBuilder = CachedClientBuilderFingerprint.match()
         val clientBuilder = cachedClientBuilder.instructionMatches.first().getMethodCalled()
 
         val returnIndex = clientBuilder.indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)

@@ -16,7 +16,6 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -201,8 +200,8 @@ val amoledThemePatch = patch(
     dependsOn(removeProtectionPatch, amoledResourcesPatch)
 
     execute {
-        val themeClass = surfaceResourceFingerprint("color_controller_bg_dark").matchSingle().classDef.type
-        val darkMode = darkModeFingerprint(themeClass).matchSingle().method
+        val themeClass = surfaceResourceFingerprint("color_controller_bg_dark").match().classDef.type
+        val darkMode = darkModeFingerprint(themeClass).method
         darkMode.addInstructions(0, "invoke-static/range { p0 .. p0 }, $SETTINGS_CLASS->initialize(Landroid/content/Context;)V")
         mutableClassDefBy(SETTINGS_CLASS).replaceStub(
             "isDark", 2,
@@ -251,11 +250,11 @@ val amoledThemePatch = patch(
             }
         }
 
-        val banner = LowPowerBannerFingerprint.matchSingle().method
+        val banner = LowPowerBannerFingerprint.method
         banner.addInstructions(banner.implementation!!.instructions.lastIndex,
             "invoke-static/range { p0 .. p0 }, $THEME_CLASS->lowPowerBanner(Landroid/view/View;)V")
 
-        val settingsTheme = SettingsThemeFingerprint.matchSingle().method
+        val settingsTheme = SettingsThemeFingerprint.method
         val returns = settingsTheme.implementation!!.instructions.withIndex()
             .filter { it.value.opcode == Opcode.RETURN_VOID }.map { it.index }
         if (returns.size != 1) throw PatchException("Expected one settings theme return")

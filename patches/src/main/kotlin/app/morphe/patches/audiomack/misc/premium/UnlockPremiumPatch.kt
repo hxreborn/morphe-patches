@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -23,8 +22,8 @@ val unlockPremiumPatch: Patch = patch(
     compatibleWith(AppCompatibilities.AUDIOMACK)
 
     execute {
-        PremiumStatusFingerprint.matchSingle().method.returnEarly(true)
-        val stateMatch = PremiumStateFingerprint.matchSingle()
+        PremiumStatusFingerprint.method.returnEarly(true)
+        val stateMatch = PremiumStateFingerprint.match()
         val (stateRead, _) = stateMatch.instructionMatches
         val stateField = stateRead.instruction.getReference<FieldReference>()!!
         premiumStatePublisherFingerprint(stateField).matchAll(2..2).forEach { match ->
@@ -35,7 +34,7 @@ val unlockPremiumPatch: Patch = patch(
                 "sget-object v$premiumRegister, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;",
             )
         }
-        val (_, _, configurationWrite) = LyricsConfigurationFingerprint.matchSingle().instructionMatches
+        val (_, _, configurationWrite) = LyricsConfigurationFingerprint.match().instructionMatches
         val configurationField = configurationWrite.instruction.getReference<FieldReference>()!!
         lyricsAvailabilityFingerprint(configurationField).matchAll(1..2).forEach { match ->
             val (_, _, configurationResult) = match.instructionMatches

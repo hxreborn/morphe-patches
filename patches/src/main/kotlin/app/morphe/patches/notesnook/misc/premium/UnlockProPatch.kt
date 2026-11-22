@@ -7,7 +7,6 @@ package app.morphe.patches.notesnook.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import app.morphe.patches.shared.misc.extension.notesnookUnlockProExtensionPatch
@@ -24,7 +23,7 @@ val unlockProPatch = patch(
     dependsOn(notesnookUnlockProExtensionPatch)
     compatibleWith(AppCompatibilities.NOTESNOOK)
     execute {
-        ResponseHandlerFingerprint.matchSingle().apply {
+        ResponseHandlerFingerprint.match().apply {
             val index = instructionMatches[0].index
             val register = method.getInstruction<FiveRegisterInstruction>(index).registerD
 

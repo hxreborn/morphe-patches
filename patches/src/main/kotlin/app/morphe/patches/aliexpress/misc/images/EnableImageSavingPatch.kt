@@ -20,7 +20,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -97,7 +96,7 @@ val enableImageSavingPatch: Patch = patch(
                 "invoke-static/range { v$register .. v$register }, $VIEWER_SAVE_BUTTON_CLASS->attach(Landroid/view/View;)V",
             )
         }
-        val imageUrlGetter = RemoteImageUrlFingerprint.matchSingle().method
+        val imageUrlGetter = RemoteImageUrlFingerprint.method
         val saveJobCalls = ImageDownloadJobFingerprint.matchAll()
             .map { match ->
                 match.instructionMatches.map {

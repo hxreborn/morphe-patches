@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
@@ -45,11 +44,11 @@ val unlockProfilesPatch: Patch = patch(
         setExtensionMember("serverIsFree", freeServerMethod.name)
         setExtensionMember("countryServers", findPropertyField(VpnCountryToStringFingerprint, "serverList").name)
         clearFreeUserCheck(profileAvailabilityFingerprint())
-        vpnCountriesFingerprint().matchSingle().method.filterReturnValue(
+        vpnCountriesFingerprint().method.filterReturnValue(
             "$FREE_SERVER_LOCATIONS->countriesForAccount(Ljava/util/List;)Ljava/util/List;",
         )
         invertFreeServerCheckForFreeAccount(profileServerFilterFingerprint())
-        profileCitiesOrStatesFingerprint().matchSingle().run {
+        profileCitiesOrStatesFingerprint().match().run {
             val serverList = instructionMatches.last()
             val register = serverList.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(

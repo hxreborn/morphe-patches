@@ -8,7 +8,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.protonLoadingIndicatorExtensionPatch
@@ -53,7 +52,7 @@ val loadingIndicatorPatch: Patch = patch(
                 div-float/2addr $progress, $scratch
             """
         }
-        PullRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
+        PullRefreshIndicatorSizeFingerprint.match().let { match ->
             resizeLoadingIndicatorContainer(match.method, match.instructionMatches.last())
         }
     }

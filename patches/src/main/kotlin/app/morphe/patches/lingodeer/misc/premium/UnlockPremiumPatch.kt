@@ -6,7 +6,6 @@ package app.morphe.patches.lingodeer.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lingodeer.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -26,7 +25,7 @@ val unlockPremiumPatch = patch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, spoofSignaturePatch)
 
     execute {
-        val match = PremiumStateFingerprint.matchSingle()
+        val match = PremiumStateFingerprint.match()
         val (_, _, _, isEmptyResult) = match.instructionMatches
         val register = isEmptyResult.getInstruction<OneRegisterInstruction>().registerA
         match.method.replaceInstruction(isEmptyResult.index, "const/4 v$register, 0x0")

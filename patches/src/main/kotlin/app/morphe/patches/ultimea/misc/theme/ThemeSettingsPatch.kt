@@ -23,7 +23,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.smali.replaceStub
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.extension.ultimeaDarkThemeExtensionPatch
 
 private const val THEME_ARTWORK_CLASS = "Lapp/hxreborn/extension/ultimea/ThemeArtwork;"
@@ -34,14 +33,14 @@ internal val themeSettingsPatch = patch {
     dependsOn(patchesSettingsPatch)
 
     execute {
-        FlutterInitFingerprint.matchSingle().method.addInstructions(0,
+        FlutterInitFingerprint.method.addInstructions(0,
             "invoke-static { p1 }, $THEME_SETTINGS_CLASS->prepare(Landroid/content/Context;)V")
-        val brightness = PlatformBrightnessFingerprint.matchSingle()
+        val brightness = PlatformBrightnessFingerprint.match()
         val (_, putBrightness) = brightness.instructionMatches
         val brightnessRegister = brightness.method.getInstruction<com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction>(putBrightness.index).registerE
         brightness.method.addInstructions(putBrightness.index, "const-string v$brightnessRegister, \"dark\"")
-        val imageDecoder = ImageDecoderFingerprint.matchSingle().method
-        val headerCallback = ImageHeaderCallbackFingerprint.matchSingle().method
+        val imageDecoder = ImageDecoderFingerprint.method
+        val headerCallback = ImageHeaderCallbackFingerprint.method
         mutableClassDefBy(THEME_ARTWORK_CLASS).replaceStub("onHeader", 4,
             "invoke-static { p0, p1, p2, p3 }, $headerCallback\nreturn-void")
         val bitmapRegister = imageDecoder.getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
@@ -49,12 +48,12 @@ internal val themeSettingsPatch = patch {
             "invoke-static { p0, p1, p2 }, $THEME_ARTWORK_CLASS->decodeHero(Ljava/nio/ByteBuffer;J)Landroid/graphics/Bitmap;\n" +
                 "move-result-object v$bitmapRegister\nif-eqz v$bitmapRegister, :stock_decoder\nreturn-object v$bitmapRegister",
             ExternalLabel("stock_decoder", imageDecoder.getInstruction(0)))
-        val systemBarStyle = SystemBarStyleFingerprint.matchSingle().method
+        val systemBarStyle = SystemBarStyleFingerprint.method
         val jsonParameter = systemBarStyle.parameterTypes.indexOf("Lorg/json/JSONObject;")
         check(jsonParameter >= 0) { "The Flutter system bar parser has no JSON argument" }
         val parameter = jsonParameter + if (systemBarStyle.accessFlags and AccessFlags.STATIC.value != 0) 0 else 1
         systemBarStyle.addInstructions(0, "invoke-static { p$parameter }, $THEME_SETTINGS_CLASS->rewriteSystemBars(Lorg/json/JSONObject;)V")
-        ActivityCreateFingerprint.matchSingle().method.addInstructions(
+        ActivityCreateFingerprint.method.addInstructions(
             0,
             "invoke-static { p0 }, $THEME_SETTINGS_CLASS->initialize(Landroid/app/Activity;)V",
         )

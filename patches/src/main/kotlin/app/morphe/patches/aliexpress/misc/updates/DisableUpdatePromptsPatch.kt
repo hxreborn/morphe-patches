@@ -12,7 +12,6 @@ package app.morphe.patches.aliexpress.misc.updates
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
@@ -30,6 +29,6 @@ val disableUpdatePromptsPatch: Patch = patch(
 
     execute {
         markPatchApplied("disableUpdatePrompts", disableUpdatePromptsPatch)
-        UpdateDialogFingerprint.matchSingle().method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableUpdatePrompts()Z")
+        UpdateDialogFingerprint.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableUpdatePrompts()Z")
     }
 }

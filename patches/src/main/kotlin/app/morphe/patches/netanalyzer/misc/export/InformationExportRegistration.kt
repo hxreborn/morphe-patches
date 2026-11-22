@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.netanalyzer.shared.propertyFields
@@ -57,15 +56,15 @@ private fun connectionsGetter(netState: String, connectionType: String): Method 
             } == true
     } ?: throw PatchException("$netState has no getter for $CONNECTION_SLOT_FIELDS $connectionType slots")
 
-private fun Fingerprint.getter(): Method = matchSingle().originalMethod
+private fun Fingerprint.getter(): Method = match().originalMethod
 
 internal fun registerInformationExport() {
-    val connection = NetInfoToStringFingerprint.matchSingle().classDef
-    val wifi = WifiNetInfoToStringFingerprint.matchSingle().classDef
-    val sim = SimInfoToStringFingerprint.matchSingle().classDef
-    val multiSim = MultiSimInfoToStringFingerprint.matchSingle().classDef
-    val proxy = ProxySettingsToStringFingerprint.matchSingle().classDef
-    val ipInfo = IpInfoToStringFingerprint.matchSingle().classDef
+    val connection = NetInfoToStringFingerprint.match().classDef
+    val wifi = WifiNetInfoToStringFingerprint.match().classDef
+    val sim = SimInfoToStringFingerprint.match().classDef
+    val multiSim = MultiSimInfoToStringFingerprint.match().classDef
+    val proxy = ProxySettingsToStringFingerprint.match().classDef
+    val ipInfo = IpInfoToStringFingerprint.match().classDef
 
     val wifiGetter = informationGetterFingerprint(wifi.type).getter()
     val getters = listOf(
@@ -77,7 +76,7 @@ internal fun registerInformationExport() {
     val netState = getters.map { it.definingClass }.distinct().singleOrNull()
         ?: throw PatchException("The network state getters are in ${getters.map { it.definingClass }.distinct()}, expected one class")
 
-    val holder = externalIpHolderFingerprint(ipInfo.type).matchSingle()
+    val holder = externalIpHolderFingerprint(ipInfo.type).match()
     val holderStores = listOf(FIRST_HOLDER_STORE, SECOND_HOLDER_STORE).map { match ->
         holder.instructionMatches[match].instruction.getReference<FieldReference>()!!
     }

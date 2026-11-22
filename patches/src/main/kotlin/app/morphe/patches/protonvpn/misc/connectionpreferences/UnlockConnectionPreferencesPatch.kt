@@ -15,7 +15,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patches.protonvpn.misc.anchors.VpnUserIsFreeUserFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
@@ -61,7 +60,7 @@ val unlockConnectionPreferencesPatch: Patch = patch(
         keepUserSetting(defaultConnectionRestrictionFingerprint())
         clearRecentsRecordingFreeUserCheck()
         clearFreeUserCheckInLambdaOf(RecentsListViewStateFlowFingerprint)
-        clearLastFreeUserCheckBefore(defaultConnectionRecentsFingerprint().matchSingle())
+        clearLastFreeUserCheckBefore(defaultConnectionRecentsFingerprint().match())
         clearFreeUserCheck(quickConnectIntentFingerprint())
         clearFreeUserCheck(addExcludedLocationFingerprint())
         clearFreeUserCheck(removeExcludedLocationFingerprint())
@@ -72,7 +71,7 @@ val unlockConnectionPreferencesPatch: Patch = patch(
         if (connectionCardLabel.matchOrNull() != null) {
             clearFreeUserCheck(connectionCardLabel)
         } else {
-            clearLastFreeUserCheckBefore(inlinedConnectionCardFingerprint().matchSingle())
+            clearLastFreeUserCheckBefore(inlinedConnectionCardFingerprint().match())
         }
 
         val recentIdLookup = defaultConnectionSettingFingerprint().matchOrNull()
@@ -80,7 +79,7 @@ val unlockConnectionPreferencesPatch: Patch = patch(
             val (_, recentIdLookupCall) = recentIdLookup.instructionMatches
             recentIdLookup.alwaysTakeLastIfEqz { it.target.location.index == recentIdLookupCall.index }
         } else {
-            inlinedDefaultConnectionSettingFingerprint().matchSingle().run {
+            inlinedDefaultConnectionSettingFingerprint().match().run {
                 val recentCheck = instructionMatches.first().index
                 alwaysTakeLastIfEqz { it.location.index < recentCheck && it.target.location.index <= recentCheck }
             }
@@ -89,7 +88,7 @@ val unlockConnectionPreferencesPatch: Patch = patch(
 }
 
 private fun excludeLocationsFromRandomServers() {
-    ExcludedLocationsConstructorFingerprint.matchSingle().run {
+    ExcludedLocationsConstructorFingerprint.match().run {
         val (returnVoid) = instructionMatches
         requireThisInP0()
         method.addInstruction(
@@ -98,7 +97,7 @@ private fun excludeLocationsFromRandomServers() {
         )
     }
 
-    randomServerFingerprint().matchSingle().run {
+    randomServerFingerprint().match().run {
         val (_, countriesResult) = instructionMatches
         val countries = countriesResult.getInstruction<OneRegisterInstruction>().registerA
         method.addInstructions(
@@ -111,7 +110,7 @@ private fun excludeLocationsFromRandomServers() {
     }
 
     val country = VpnCountryToStringFingerprint.originalClassDef.type
-    val countryConstructor = VpnCountryConstructorFingerprint.matchSingle().originalMethod
+    val countryConstructor = VpnCountryConstructorFingerprint.originalMethod
     val excludedLocations = ExcludedLocationsToStringFingerprint.originalClassDef.type
     mutableClassDefBy(EXCLUDED_LOCATIONS_CLASS).apply {
         replaceStub(
@@ -130,7 +129,7 @@ private fun excludeLocationsFromRandomServers() {
             """
                 check-cast p0, $SERVER
                 check-cast p1, $excludedLocations
-                invoke-static { p0, p1 }, ${descriptor(serverIsExcludedFingerprint().matchSingle().originalMethod)}
+                invoke-static { p0, p1 }, ${descriptor(serverIsExcludedFingerprint().originalMethod)}
                 move-result v0
                 return v0
             """,
@@ -151,7 +150,7 @@ private fun excludeLocationsFromRandomServers() {
 }
 
 private fun excludeLocationsFromFreeUserConnections() {
-    bestServerForConnectIntentCallFingerprint().matchSingle().run {
+    bestServerForConnectIntentCallFingerprint().match().run {
         val (bestServerCall, bestServerResult) = instructionMatches
         val arguments = bestServerCall.instruction as? RegisterRangeInstruction
             ?: throw PatchException("Best server call is not a range call in $method")
@@ -184,7 +183,7 @@ private fun excludeLocationsFromFreeUserConnections() {
 }
 
 private fun clearRecentsRecordingFreeUserCheck() {
-    val method = recentsRecordingFingerprint().matchSingle().method
+    val method = recentsRecordingFingerprint().method
     val instructions = method.instructions.toList()
     val isFreeUser = isFreeUserCall()
     val recentsDao = recentsDaoReference()

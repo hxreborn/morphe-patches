@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.torrent.removeProtectionPatch
@@ -38,13 +37,13 @@ val fixScreenInsetsPatch = patch(
                 "addButtonId" to "iv_add_torrent",
             ),
         )
-        val match = ActivityContentFingerprint.matchSingle()
+        val match = ActivityContentFingerprint.match()
         val (_, contentView) = match.instructionMatches
         match.method.addInstruction(
             contentView.index + 1,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->attach(Landroid/app/Activity;)V",
         )
-        val sheet = PlaylistSheetFingerprint.matchSingle()
+        val sheet = PlaylistSheetFingerprint.match()
         val (_, _, inflatedView) = sheet.instructionMatches
         val view = (inflatedView.instruction as OneRegisterInstruction).registerA
         sheet.method.addInstruction(

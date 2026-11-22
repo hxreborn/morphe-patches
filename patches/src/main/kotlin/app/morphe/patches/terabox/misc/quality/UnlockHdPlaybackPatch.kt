@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -42,9 +41,9 @@ internal val unlockHdPlaybackPatch = patch {
     dependsOn(patchesSettingsPatch)
 
     execute {
-        PremiumResolutionThresholdFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(Int.MAX_VALUE) }
+        PremiumResolutionThresholdFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(Int.MAX_VALUE) }
 
-        OnlineVideoInfoRequestFingerprint.matchSingle().apply {
+        OnlineVideoInfoRequestFingerprint.match().apply {
             val requestIndex = instructionMatches.first().index
             val waitingForMetadata = instructionMatches.last().instruction.getReference<FieldReference>()!!
 
@@ -76,7 +75,7 @@ internal val unlockHdPlaybackPatch = patch {
             }
         }
 
-        MediaFileMetaDlinkFingerprint.matchSingle().method.apply {
+        MediaFileMetaDlinkFingerprint.method.apply {
             val returnIndex = indexOfFirstInstructionOrThrow(Opcode.RETURN_OBJECT)
             val dlink = getInstruction<OneRegisterInstruction>(returnIndex).registerA
 
@@ -89,7 +88,7 @@ internal val unlockHdPlaybackPatch = patch {
             )
         }
 
-        SharedFileDlinkFingerprint.matchSingle().method.apply {
+        SharedFileDlinkFingerprint.method.apply {
             val returnIndex = indexOfFirstInstructionOrThrow(Opcode.RETURN_OBJECT)
             val dlink = getInstruction<OneRegisterInstruction>(returnIndex).registerA
 
@@ -102,7 +101,7 @@ internal val unlockHdPlaybackPatch = patch {
             )
         }
 
-        SetMediaUrlFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) {
+        SetMediaUrlFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) {
             addInstructions(
                 0,
                 """
@@ -112,11 +111,11 @@ internal val unlockHdPlaybackPatch = patch {
             )
         }
 
-        val reload = PlayerReloadFingerprint.matchSingle()
+        val reload = PlayerReloadFingerprint.match()
         val presenter = reload.classDef
         val finalInfoType = reload.method.parameterTypes[2]
         val finalInfo = presenter.fields.single { it.type == finalInfoType }
-        val switchResult = ResolutionSwitchResultFingerprint.matchSingle().method
+        val switchResult = ResolutionSwitchResultFingerprint.method
         val hdResolutions = classDefBy(VIDEO_PLAY_RESOLUTION_CLASS).fields
             .filter { AccessFlags.ENUM.isSet(it.accessFlags) && isHdResolution(it.name) }
         if (hdResolutions.isEmpty()) throw PatchException("$VIDEO_PLAY_RESOLUTION_CLASS has no HD resolution")
@@ -151,7 +150,7 @@ internal val unlockHdPlaybackPatch = patch {
             """,
         )
 
-        ResolutionSwitchFingerprint.matchSingle().apply {
+        ResolutionSwitchFingerprint.match().apply {
             val switchIndex = instructionMatches.first().index
             method.apply {
                 val (presenterRegister, resolutionRegister) = getFreeRegisterProvider(switchIndex, 2).let {

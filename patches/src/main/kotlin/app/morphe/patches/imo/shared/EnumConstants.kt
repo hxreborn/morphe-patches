@@ -8,7 +8,6 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.string
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
@@ -20,4 +19,4 @@ private fun enumConstantFingerprint(constantName: String) = Fingerprint(
 )
 
 internal fun enumConstantField(constantName: String) = enumConstantFingerprint(constantName)
-    .matchSingle().instructionMatches.last().instruction.getReference<FieldReference>()!!
+    .match().instructionMatches.last().instruction.getReference<FieldReference>()!!

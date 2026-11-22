@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonmail.misc.theme.webview.CachedMessageBodyFingerprint
 import app.morphe.patches.protonmail.misc.theme.webview.ComposerCssFingerprint
@@ -151,7 +150,7 @@ private fun shade40Getter(colorsClass: String): MethodReference {
         .filter { it.opcode == Opcode.IPUT_OBJECT }
         .map { it.getReference<FieldReference>()!! }
     val shade40Field = stateFields[STATE_FIELDS_BEFORE_COLORS + SHADE_40_COLOR_ARGUMENT]
-    return colorGetterFingerprint(colorsClass, shade40Field).matchSingle().method
+    return colorGetterFingerprint(colorsClass, shade40Field).method
 }
 
 private fun transformShade40CopyRoles(colorScheme: MutableMethod, shade40Palette: FieldReference) {
@@ -238,7 +237,7 @@ val amoledThemePatch: Patch = patch(
 
     execute {
         markPatchMetadata("amoledDarkTheme", amoledThemePatch, withDescription = true)
-        DarkPaletteFingerprint.matchSingle().method.apply {
+        DarkPaletteFingerprint.method.apply {
             DARK_BACKGROUND_COLORS.forEach { color ->
                 injectBackgroundTransformCall(indexOfFirstLiteralInstructionOrThrow(color))
             }
@@ -247,7 +246,7 @@ val amoledThemePatch: Patch = patch(
         transformCoreDarkBackgrounds()
 
         val shade40Palette = DarkPaletteFingerprint.method.paletteFieldAssignedFrom(SHADE_40_COLOR)
-        ColorSchemeFingerprint.matchSingle().method.apply {
+        ColorSchemeFingerprint.method.apply {
             setSidebarPressedAndSeparatorColors()
             transformShade40CopyRoles(this, shade40Palette)
         }
@@ -260,17 +259,17 @@ val amoledThemePatch: Patch = patch(
         }
 
         CONTACTS_COLOR_TRANSFORMS.forEach { (fingerprint, transform) ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             match.method.injectColorTransformCall(match.instructionMatches.last().index, transform)
         }
 
         markFeaturePatched(AMOLED_THEME_CLASS)
 
-        CachedMessageBodyFingerprint.matchSingle().method.replaceCachedMessageBackground()
-        InlineMessageBodyFingerprint.matchSingle().let { match ->
+        CachedMessageBodyFingerprint.method.replaceCachedMessageBackground()
+        InlineMessageBodyFingerprint.match().let { match ->
             match.method.replaceInlineMessageBackground(match.instructionMatches.single().index)
         }
-        ComposerCssFingerprint.matchSingle().let { match ->
+        ComposerCssFingerprint.match().let { match ->
             val inputStreamResult = match.instructionMatches.last()
             val register = inputStreamResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstructions(

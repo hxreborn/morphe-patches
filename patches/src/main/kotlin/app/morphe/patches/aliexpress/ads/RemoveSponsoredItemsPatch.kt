@@ -13,7 +13,6 @@ package app.morphe.patches.aliexpress.ads
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -32,7 +31,7 @@ val removeSponsoredItemsPatch: Patch = patch(
 
     execute {
         markPatchApplied("removeSponsoredItems", removeSponsoredItemsPatch)
-        ProductArrayFingerprint.matchSingle().method.addInstruction(
+        ProductArrayFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p1 }, " +
                 "$EXTENSION_CLASS_DESCRIPTOR->filterIfEnabled(Ljava/util/Map;Ljava/lang/String;)V",

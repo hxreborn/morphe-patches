@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
@@ -29,7 +28,7 @@ val hideAdsPatch: Patch = patch(
 
     execute {
         markPatchApplied("hideAds", hideAdsPatch)
-        HasPrivilegeFingerprint.matchSingle().method.apply {
+        HasPrivilegeFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructionsWithLabels(

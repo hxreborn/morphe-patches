@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.AI_TASK_CALLBACK_CLASSES
@@ -101,7 +100,7 @@ val speedUpAiToolsPatch = patch(
             }
         }
 
-        val uploadTask = mutableClassDefBy(UploadChunkSizeFingerprint.matchSingle().classDef.type)
+        val uploadTask = mutableClassDefBy(UploadChunkSizeFingerprint.match().classDef.type)
         val chunkSites = uploadTask.methods
             .filter { it.name == "<init>" }
             .mapNotNull { constructor ->

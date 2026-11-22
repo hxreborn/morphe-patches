@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -55,9 +54,9 @@ val disconnectFromNotificationPatch: Patch = patch(
 
     execute {
         markPatchApplied("disconnectFromNotification", disconnectFromNotificationPatch)
-        StopActionStringsFingerprint.matchSingle()
+        StopActionStringsFingerprint.match()
 
-        val disconnectAction = DisconnectActionFingerprint.matchSingle()
+        val disconnectAction = DisconnectActionFingerprint.match()
         val firstParameterType = disconnectAction.method.parameterTypes.firstOrNull()?.toString()
         if (firstParameterType != CONNECTION_SERVICE_CLASS) {
             throw PatchException(
@@ -75,7 +74,7 @@ val disconnectFromNotificationPatch: Patch = patch(
         )
 
         val (lazyFieldRead, lazyValueCall, flagWrite) =
-            ManualDisconnectFlagWriteFingerprint.matchSingle().instructionMatches
+            ManualDisconnectFlagWriteFingerprint.match().instructionMatches
         val flagHolderLazy = lazyFieldRead.getInstruction<ReferenceInstruction>().getReference<FieldReference>()
             ?: throw PatchException("Manual disconnect flag holder field not found in $WIDGET_ACTION_RECEIVER_CLASS")
         val lazyValueGetter = lazyValueCall.getInstruction<ReferenceInstruction>().getReference<MethodReference>()

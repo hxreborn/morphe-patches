@@ -6,7 +6,6 @@ package app.morphe.patches.allinonecalculator.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.GMS_CORE_SIGN_IN_CLASS
 import app.morphe.patches.shared.misc.gms.bindGmsCoreSignInTypes
@@ -32,7 +31,7 @@ val gmsCoreSupportPatch = patch(
     execute {
         bindGmsCoreSignInTypes()
 
-        GetCredentialFingerprint.matchSingle().method.addInstructions(
+        GetCredentialFingerprint.method.addInstructions(
             0,
             """
                 invoke-virtual { p0 }, $DELEGATE_CLASS->getActivity()Landroid/app/Activity;

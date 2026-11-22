@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
@@ -27,8 +26,8 @@ val disableAnalyticsPatch = patch(
         listOf(AppsFlyerStartFingerprint, AppsFlyerEventFingerprint).forEach { fingerprint ->
             fingerprint.matchAllMethodIndicesForEach { index -> replaceInstruction(index, "nop") }
         }
-        FirebaseCollectionSettingFingerprint.matchSingle().method.returnEarly(false)
-        MonitorEventFingerprint.matchSingle().method.apply {
+        FirebaseCollectionSettingFingerprint.method.returnEarly(false)
+        MonitorEventFingerprint.method.apply {
             val callback = classDefBy(parameterTypes.last().toString()).methods.single {
                 AccessFlags.ABSTRACT.isSet(it.accessFlags)
             }
@@ -45,6 +44,6 @@ val disableAnalyticsPatch = patch(
                 """,
             )
         }
-        listOf(StatEventFingerprint, AdvertisingIdUploadFingerprint).forEach { it.matchSingle().method.returnEarly() }
+        listOf(StatEventFingerprint, AdvertisingIdUploadFingerprint).forEach { it.method.returnEarly() }
     }
 }

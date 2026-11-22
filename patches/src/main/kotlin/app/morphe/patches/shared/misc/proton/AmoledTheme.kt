@@ -14,7 +14,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -89,7 +88,7 @@ private fun MutableMethod.transformShade(constructorCall: Match.InstructionMatch
 }
 
 internal fun transformCoreDarkBackgrounds() {
-    val palette = BalticSeaPaletteFingerprint.matchSingle()
+    val palette = BalticSeaPaletteFingerprint.match()
     val balticSea = palette.method.paletteFieldAssignedFrom(ProtonPalette.BALTIC_SEA)
     val bastille = palette.method.paletteFieldAssignedFrom(ProtonPalette.BASTILLE)
     palette.method.injectColorTransformCall(

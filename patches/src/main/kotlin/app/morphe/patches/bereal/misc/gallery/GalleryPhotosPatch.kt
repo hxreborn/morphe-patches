@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -55,12 +54,12 @@ val galleryPhotosPatch: Patch = patch(
             ResourceType.DRAWABLE,
             mapOf("photoIconId" to "ic_photo"),
         )
-        val cameraViewModel = CameraViewModelFingerprint.matchSingle().classDef
-        cameraBindFingerprint(cameraViewModel.type).matchSingle().method.addInstruction(
+        val cameraViewModel = CameraViewModelFingerprint.match().classDef
+        cameraBindFingerprint(cameraViewModel.type).method.addInstruction(
             0,
             "invoke-static/range { p0 .. p2 }, ${BEREAL_EXTENSION_PACKAGE}GalleryPhotos;->cameraOpened(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V",
         )
-        CapturedPhotoTransformFingerprint.matchSingle().method.apply {
+        CapturedPhotoTransformFingerprint.method.apply {
             addInstructionsWithLabels(
                 0,
                 """

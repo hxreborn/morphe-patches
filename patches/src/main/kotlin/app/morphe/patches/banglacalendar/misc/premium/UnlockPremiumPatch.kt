@@ -6,7 +6,6 @@ package app.morphe.patches.banglacalendar.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -26,16 +25,16 @@ val unlockPremiumPatch = patch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
 
     execute {
-        PremiumCodeFingerprint.matchSingle().method.returnEarly("p")
+        PremiumCodeFingerprint.method.returnEarly("p")
 
-        BillingStateConstructorFingerprint.matchSingle().let { match ->
+        BillingStateConstructorFingerprint.match().let { match ->
             val factoryCall = match.instructionMatches.first()
             val flag = factoryCall.getInstruction<FiveRegisterInstruction>().registerC
             match.method.addInstruction(factoryCall.index + 2, "sget-object v$flag, $BOOLEAN_FALSE")
             match.method.addInstruction(factoryCall.index, "sget-object v$flag, $BOOLEAN_TRUE")
         }
 
-        PurchasesQueriedFingerprint.matchSingle().let { match ->
+        PurchasesQueriedFingerprint.match().let { match ->
             val boxing = match.instructionMatches.first()
             val flag = boxing.getInstruction<FiveRegisterInstruction>().registerC
             match.method.addInstruction(boxing.index, "const/4 v$flag, 0x1")

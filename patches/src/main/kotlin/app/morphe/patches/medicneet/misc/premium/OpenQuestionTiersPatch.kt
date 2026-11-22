@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -33,14 +32,14 @@ internal val openQuestionTiersPatch = patch {
 }
 
 private fun retryDeniedQuestionQueries() {
-    val run = FirestoreQueryGetRunFingerprint.matchSingle()
+    val run = FirestoreQueryGetRunFingerprint.match()
     val (pathRead, _, paramsRead, handler) = run.instructionMatches
     val method = run.method
 
-    val parser = FirestoreQueryParserFingerprint.matchSingle().instructionMatches
+    val parser = FirestoreQueryParserFingerprint.match().instructionMatches
     val whereField = descriptor(parser.first().instruction.getReference<FieldReference>()!!)
     val fieldPathType = parser.last().instruction.getReference<TypeReference>()!!.type
-    val fieldPathFactory = descriptor(fieldPathFactoryFingerprint(fieldPathType).matchSingle().method)
+    val fieldPathFactory = descriptor(fieldPathFactoryFingerprint(fieldPathType).method)
 
     val thisRegister = method.implementation!!.registerCount - method.parameterTypes.size - 1
     val failure = handler.getInstruction<OneRegisterInstruction>().registerA
@@ -72,7 +71,7 @@ private fun retryDeniedQuestionQueries() {
 }
 
 private fun answerDeniedSegmentReads() {
-    val run = FirestoreDocumentGetRunFingerprint.matchSingle()
+    val run = FirestoreDocumentGetRunFingerprint.match()
     val matches = run.instructionMatches
     val method = run.method
 

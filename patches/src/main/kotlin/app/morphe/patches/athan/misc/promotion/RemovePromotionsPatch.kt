@@ -6,7 +6,6 @@ package app.morphe.patches.athan.misc.promotion
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -22,7 +21,7 @@ val removePromotionsPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        QuranReaderBannerConfigFingerprint.matchSingle().method.addInstructions(
+        QuranReaderBannerConfigFingerprint.method.addInstructions(
             0,
             """
                 const/4 v0, 0x0
@@ -30,8 +29,8 @@ val removePromotionsPatch = patch(
             """,
         )
 
-        AthanAcademyBannerDismissedFingerprint.matchSingle().method.returnEarly(true)
+        AthanAcademyBannerDismissedFingerprint.method.returnEarly(true)
 
-        AthanAcademyPopupDontAskAgainFingerprint.matchSingle().method.returnEarly(true)
+        AthanAcademyPopupDontAskAgainFingerprint.method.returnEarly(true)
     }
 }

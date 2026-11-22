@@ -7,7 +7,6 @@ package app.morphe.patches.flipaclip.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.flipaclip.misc.billing.ProductPurchaseFingerprint
 import app.morphe.patches.flipaclip.shared.restoreProjectExportPatch
@@ -46,7 +45,7 @@ val unlockPremiumPatch = patch(
                 if-nez v0, :grant
             """.trimIndent()
         }
-        ProductPurchaseFingerprint.matchSingle().method.apply {
+        ProductPurchaseFingerprint.method.apply {
             val original = getInstruction(0)
             addInstructionsWithLabels(
                 0,

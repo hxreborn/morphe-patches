@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -29,9 +28,9 @@ val unlockProPatch = patch(
     dependsOn(homeScreenWidgetPatch)
 
     execute {
-        IsProFingerprint.matchSingle().method.returnEarly(true)
+        IsProFingerprint.method.returnEarly(true)
 
-        PdfLicenceInitFingerprint.matchSingle().method.addInstructions(
+        PdfLicenceInitFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p0 }, $PRO_PACKAGE_CONTEXT->wrap(Landroid/content/Context;)Landroid/content/Context;
@@ -39,7 +38,7 @@ val unlockProPatch = patch(
             """,
         )
 
-        FreeTextButtonFingerprint.matchSingle().let { match ->
+        FreeTextButtonFingerprint.match().let { match ->
             val moveResult = match.instructionMatches.last()
             val resultRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(moveResult.index + 1, "const/4 v$resultRegister, 0x0")

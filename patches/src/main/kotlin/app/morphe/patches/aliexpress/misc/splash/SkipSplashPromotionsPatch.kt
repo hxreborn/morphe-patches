@@ -14,7 +14,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
@@ -37,7 +36,7 @@ val skipSplashPromotionsPatch: Patch = patch(
         if (promotion != null) {
             promotion.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->skipSplashPromotions()Z")
         } else {
-            val match = SplashIntentFingerprint.matchSingle()
+            val match = SplashIntentFingerprint.match()
             val (_, _, skipSplash) = match.instructionMatches
             val register = match.method.getInstruction<OneRegisterInstruction>(skipSplash.index).registerA
             match.method.addInstructions(

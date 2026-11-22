@@ -6,7 +6,6 @@ package app.morphe.patches.idlefish.misc.share
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.idlefish.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.addInstructionsAtControlFlowLabel
@@ -34,7 +33,7 @@ val shareWithoutLoginPatch = patch(
 }
 
 internal fun rewriteShareRoute() {
-    val shareRoute = ShareRouteFingerprint.matchSingle()
+    val shareRoute = ShareRouteFingerprint.match()
     val (queryParameterRead, sharePageParse) = shareRoute.instructionMatches
     val shareInfoKey = when (val instruction = queryParameterRead.instruction) {
         is FiveRegisterInstruction -> instruction.registerD

@@ -6,7 +6,6 @@ package app.morphe.patches.lumo.misc.strongbox
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -26,6 +25,6 @@ val storeKeyInTeePatch = patch(
     availability(requireArm64)
 
     execute {
-        GenerateMasterKeyFingerprint.matchSingle().method.addInstruction(0, "const/4 $STRONGBOX_BACKED_PARAMETER, 0x0")
+        GenerateMasterKeyFingerprint.method.addInstruction(0, "const/4 $STRONGBOX_BACKED_PARAMETER, 0x0")
     }
 }

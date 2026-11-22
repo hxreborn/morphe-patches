@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.util.findMutableMethodOf
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -49,7 +48,7 @@ internal val hostToolsPatch = patch {
     dependsOn(patchesMenuPatch)
 
     execute {
-        val starts = ToolStartFingerprint.matchSingle()
+        val starts = ToolStartFingerprint.match()
         val tracerouteStart = starts.instructionMatches.first().instruction.getReference<MethodReference>()!!
         val pingStart = starts.instructionMatches.last().instruction.getReference<MethodReference>()!!
         val tracerouteTool = tracerouteStart.definingClass
@@ -59,7 +58,7 @@ internal val hostToolsPatch = patch {
             recordStarts(tracerouteStart, "$FEATURES_CLASS->recordTracerouteStart(Ljava/lang/String;IIZZ)V"),
         ).joinToString(METHOD_SEPARATOR)
 
-        val row = PingResultRowFingerprint.matchSingle()
+        val row = PingResultRowFingerprint.match()
         val probeIndex = row.composableParameters().indexOf(PING_RESULT_ROW_PROBE)
         if (probeIndex < 0) throw PatchException("$PING_RESULT_ROW takes no $PING_RESULT_ROW_PROBE parameter")
         val probeType = row.originalMethod.parameterTypes[probeIndex].toString()

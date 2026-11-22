@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
@@ -68,7 +67,7 @@ internal val patchesSettingsPatch = patch {
 
         val iconId = resourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
 
-        with(MainSettingsItemsFingerprint.matchSingle().method) {
+        with(MainSettingsItemsFingerprint.method) {
             val (callIndex, settingsItemCall) =
                 settingsItemCalls().getOrNull(SETTINGS_ITEM_TEMPLATE_INDEX)
                     ?: throw PatchException(

@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
@@ -19,7 +18,7 @@ val disableTelemetryPatch = patch(
     compatibleWith(AppCompatibilities.CUBASIS_LE_3)
 
     execute {
-        val start = BugsnagStartFingerprint.matchSingle()
+        val start = BugsnagStartFingerprint.match()
         val startIndex = start.instructionMatches.first().index
 
         start.method.apply {

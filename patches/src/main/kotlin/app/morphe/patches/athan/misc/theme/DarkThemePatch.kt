@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -71,12 +70,12 @@ val darkThemePatch = patch(
             match.method.addInstruction(invoke.index, "const/4 v$mode, $MODE_NIGHT_AUTO")
         }
 
-        DefaultNightModeFingerprint.matchSingle().let { match ->
+        DefaultNightModeFingerprint.match().let { match ->
             val nightMode = match.instructionMatches[1]
             val register = nightMode.getInstruction<OneRegisterInstruction>().registerA
             match.method.replaceInstruction(nightMode.index, "const/4 v$register, $MODE_NIGHT_FOLLOW_SYSTEM")
         }
 
-        ComposeDisallowForceDarkFingerprint.matchSingle().method.returnEarly()
+        ComposeDisallowForceDarkFingerprint.method.returnEarly()
     }
 }

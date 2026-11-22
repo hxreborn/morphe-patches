@@ -12,7 +12,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -85,10 +84,10 @@ val hideUpgradePromotionsPatch: Patch = patch(
         markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
         markUpgradePromotionsPatched()
 
-        UpgradeInfoConstructorFingerprint.matchSingle().preserveAndResolveUpgradeAvailable()
-        PlanLimitReachedFingerprint.matchSingle().readOriginalUpgradeAvailable()
-        UpgradeButtonFingerprint.matchSingle().method.returnVoidWhenUpsellingHidden()
-        AttachmentsStateConstructorFingerprint.matchSingle().method.addInstructions(
+        UpgradeInfoConstructorFingerprint.match().preserveAndResolveUpgradeAvailable()
+        PlanLimitReachedFingerprint.match().readOriginalUpgradeAvailable()
+        UpgradeButtonFingerprint.method.returnVoidWhenUpsellingHidden()
+        AttachmentsStateConstructorFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p5 }, $UPSELLING_VISIBILITY_CLASS->resolveUpgradeAvailable(Z)Z
@@ -96,7 +95,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             """,
         )
 
-        DarkWebMonitoringSectionFingerprint.matchSingle().method.apply {
+        DarkWebMonitoringSectionFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructionsWithLabels(
@@ -118,7 +117,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             )
         }
 
-        SentinelUpsellRowFingerprint.matchSingle().run {
+        SentinelUpsellRowFingerprint.match().run {
             val rowIndex = instructionMatches.last().index
             val hidden = method.getFreeRegisterProvider(rowIndex, 1).getFreeRegister()
 
@@ -133,7 +132,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             )
         }
 
-        OnboardingRouteFingerprint.matchSingle().run {
+        OnboardingRouteFingerprint.match().run {
             val onboardingRoute = instructionMatches.last().getInstruction<ReferenceInstruction>().reference
             val shownIndex = firstIndex + 1
             val hidden = method.getFreeRegisterProvider(shownIndex, 1).getFreeRegister()

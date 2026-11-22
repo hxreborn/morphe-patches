@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -29,8 +28,8 @@ val removeFriendsOfFriendsTabPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, removeFriendsOfFriendsTabPatch)
 
-        val homeTabType = HomeTabToStringFingerprint.matchSingle().classDef.type
-        val match = homeTabListFingerprint(homeTabType).matchSingle()
+        val homeTabType = HomeTabToStringFingerprint.match().classDef.type
+        val match = homeTabListFingerprint(homeTabType).match()
         val addIndex = match.instructionMatches.last().index
         val add = match.method.getInstruction<FiveRegisterInstruction>(addIndex)
         match.method.replaceInstruction(

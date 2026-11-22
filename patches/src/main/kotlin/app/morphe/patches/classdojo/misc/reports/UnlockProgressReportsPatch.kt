@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.all.misc.hermes.hermesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -36,7 +35,7 @@ val unlockProgressReportsPatch = patch(
     )
 
     execute {
-        DownloadedBundleFingerprint.matchSingle().apply {
+        DownloadedBundleFingerprint.match().apply {
             val (_, _, logBundle) = instructionMatches
             val pathRegister = method.getInstruction<FiveRegisterInstruction>(logBundle.index).registerC
             val registers = method.getFreeRegisterProvider(logBundle.index, 3, pathRegister)

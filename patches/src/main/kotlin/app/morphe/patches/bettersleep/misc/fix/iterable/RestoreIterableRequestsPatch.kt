@@ -7,7 +7,6 @@ package app.morphe.patches.bettersleep.misc.fix.iterable
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -18,7 +17,7 @@ val restoreIterableRequestsPatch = patch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val executeRequest = ExecuteIterableRequestFingerprint.matchSingle().method
+        val executeRequest = ExecuteIterableRequestFingerprint.method
         val requestTask = mutableClassDefBy(executeRequest.definingClass)
         val requestType = executeRequest.parameterTypes.single().toString()
         val requestField = descriptor(requestTask.instanceFields.single { it.type == requestType })

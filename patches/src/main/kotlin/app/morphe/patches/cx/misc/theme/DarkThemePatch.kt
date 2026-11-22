@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.cx.misc.premium.unlockPremiumPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findMutableMethodOf
@@ -54,7 +53,7 @@ val darkThemePatch = patch(
     dependsOn(unlockPremiumPatch, darkThemeResourcesPatch)
 
     execute {
-        val themePreference = ThemePreferenceFingerprint.matchSingle().instructionMatches[0]
+        val themePreference = ThemePreferenceFingerprint.match().instructionMatches[0]
         val nightMode = themePreference
             .getInstruction<ReferenceInstruction>()
             .reference as MethodReference

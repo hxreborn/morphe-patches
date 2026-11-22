@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.addInstructionsAtControlFlowLabel
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -48,12 +47,12 @@ val linkAsSecondaryDevicePatch: Patch = patch(
     execute {
         markPatchApplied("linkAsSecondaryDevice", linkAsSecondaryDevicePatch)
         val activateAsSecondaryCall = "$VIBER_SETTINGS_CLASS->activateAsSecondary(Z)Z"
-        val secondaryDefault = SecondaryModeDefaultFingerprint.matchSingle()
+        val secondaryDefault = SecondaryModeDefaultFingerprint.match()
         val (tabletCall, defaultTabletResult) = secondaryDefault.instructionMatches
         val tabletCheck = tabletCall.instruction.getReference<MethodReference>()!!
         secondaryDefault.method.addFilterCallAfter(defaultTabletResult.index, activateAsSecondaryCall)
 
-        val setSecondaryMode = SetSecondaryModeFingerprint.matchSingle().originalMethod
+        val setSecondaryMode = SetSecondaryModeFingerprint.originalMethod
         secondaryModeResetFingerprint(tabletCheck, setSecondaryMode)
             .matchAll(SECONDARY_MODE_RESET_SITES..SECONDARY_MODE_RESET_SITES)
             .forEach { match ->
@@ -61,19 +60,19 @@ val linkAsSecondaryDevicePatch: Patch = patch(
                 match.method.addFilterCallAfter(tabletResult.index, activateAsSecondaryCall)
             }
 
-        val (secondaryModeCall) = SecondaryPlatformNameFingerprint.matchSingle().instructionMatches
+        val (secondaryModeCall) = SecondaryPlatformNameFingerprint.match().instructionMatches
         val secondaryModeGetter = secondaryModeCall.instruction.getReference<MethodReference>()!!
-        val backupAvailability = secondaryBackupAvailabilityFingerprint(secondaryModeGetter).matchSingle()
+        val backupAvailability = secondaryBackupAvailabilityFingerprint(secondaryModeGetter).match()
         backupAvailability.run {
             val (_, secondaryResult) = instructionMatches
             method.addFilterCallAfter(secondaryResult.index, "$VIBER_SETTINGS_CLASS->restrictBackupToPrimary(Z)Z")
         }
         backupAccountPermissionsFingerprint(backupAvailability.originalMethod.definingClass)
-            .matchSingle().filterBackupPermissions()
-        val (_, permissionCheck) = BackupAccountPermissionRequestFingerprint.matchSingle().instructionMatches
+            .match().filterBackupPermissions()
+        val (_, permissionCheck) = BackupAccountPermissionRequestFingerprint.match().instructionMatches
         val permissionHelper = permissionCheck.instruction.getReference<MethodReference>()!!
-        backupAccountPermissionHelperFingerprint(permissionHelper.definingClass).matchSingle().filterBackupPermissions()
-        RegistrationDeviceTypeFingerprint.matchSingle().run {
+        backupAccountPermissionHelperFingerprint(permissionHelper.definingClass).match().filterBackupPermissions()
+        RegistrationDeviceTypeFingerprint.match().run {
             val (_, _, tabletResult) = instructionMatches
             val register = (tabletResult.instruction as OneRegisterInstruction).registerA
             method.addInstructionsWithLabels(

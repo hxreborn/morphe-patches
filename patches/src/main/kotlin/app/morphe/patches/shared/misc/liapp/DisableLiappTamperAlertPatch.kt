@@ -6,11 +6,10 @@ package app.morphe.patches.shared.misc.liapp
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 
 val disableLiappTamperAlertPatch = patch {
     execute {
-        val match = LiappTamperAlertFingerprint.matchSingle()
+        val match = LiappTamperAlertFingerprint.match()
         val (_, showAlert, _) = match.instructionMatches
         match.method.replaceInstruction(showAlert.index, "nop")
     }

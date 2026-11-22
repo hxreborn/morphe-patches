@@ -6,7 +6,6 @@ package app.morphe.patches.biwenger.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.biwenger.shared.PageStartedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.biwengerFetchRewriteExtensionPatch
@@ -25,7 +24,7 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.BIWENGER)
 
     execute {
-        PageStartedFingerprint.matchSingle().method.addInstructions(
+        PageStartedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $INSTALL",
         )

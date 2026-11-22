@@ -14,7 +14,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -47,10 +46,10 @@ val unfiledChatsPatch: Patch = patch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 
     execute {
-        val folder = FolderEntityFingerprint.matchSingle().classDef
-        val tab = FolderTabEntityFingerprint.matchSingle().classDef
-        val folderConstructor = folderConstructorFingerprint(folder.type).matchSingle()
-        val tabConstructor = folderTabConstructorFingerprint(tab.type, folder.type).matchSingle()
+        val folder = FolderEntityFingerprint.match().classDef
+        val tab = FolderTabEntityFingerprint.match().classDef
+        val folderConstructor = folderConstructorFingerprint(folder.type).match()
+        val tabConstructor = folderTabConstructorFingerprint(tab.type, folder.type).match()
         val (idRead) = tabConstructor.instructionMatches
         val folderId = idRead.instruction.getReference<MethodReference>()!!
         val extension = mutableClassDefBy(EXTENSION_CLASS_DESCRIPTOR)
@@ -82,7 +81,7 @@ val unfiledChatsPatch: Patch = patch(
             move-result-object p0
             return-object p0
         """)
-        val tabs = FolderTabsFingerprint.matchSingle()
+        val tabs = FolderTabsFingerprint.match()
         val (_, emptyCheck) = tabs.instructionMatches
         val tabsRegister = (emptyCheck.instruction as FiveRegisterInstruction).registerC
         tabs.method.replaceInstruction(
@@ -90,12 +89,12 @@ val unfiledChatsPatch: Patch = patch(
             "invoke-static {v$tabsRegister}, $EXTENSION_CLASS_DESCRIPTOR->addTabAndIsEmpty(Ljava/util/List;)Z",
         )
 
-        FolderSelectionFingerprint.matchSingle().method.addInstruction(
+        FolderSelectionFingerprint.method.addInstruction(
             0, "invoke-static/range {p1 .. p1}, $EXTENSION_CLASS_DESCRIPTOR->selectFolder(Ljava/lang/Object;)V",
         )
-        val (selectedIdRead, _) = UnreadFolderFingerprint.matchSingle().instructionMatches
+        val (selectedIdRead, _) = UnreadFolderFingerprint.match().instructionMatches
         val selectedIdField = selectedIdRead.instruction.getReference<FieldReference>()!!
-        val loadParams = loadParamsFingerprint(selectedIdField).matchSingle()
+        val loadParams = loadParamsFingerprint(selectedIdField).match()
         val (folderRead, _, saveParams) = loadParams.instructionMatches
         val originalFolderRegister = (folderRead.instruction as OneRegisterInstruction).registerA
         val queryParamsRegister = (saveParams.instruction as FiveRegisterInstruction).registerD
@@ -112,9 +111,9 @@ val unfiledChatsPatch: Patch = patch(
             move-result-object v$originalFolderRegister
         """)
 
-        val folderQuery = FolderQueryFingerprint.matchSingle().method
+        val folderQuery = FolderQueryFingerprint.method
         val dispatcher = if (folderQuery.parameterTypes.isEmpty()) {
-            folderQueryDispatcherFingerprint(folderQuery).matchSingle().method
+            folderQueryDispatcherFingerprint(folderQuery).method
         } else {
             folderQuery
         }
@@ -133,7 +132,7 @@ val unfiledChatsPatch: Patch = patch(
                 move-result-object v$returned
             """)
         }
-        val emptyView = EmptyFolderViewFingerprint.matchSingle().method
+        val emptyView = EmptyFolderViewFingerprint.method
         val viewRegister = emptyView.implementation!!.registerCount
         val (expanded, _) = emptyView.addFreeRegisters(1)
         val receiver = expanded.p0Register

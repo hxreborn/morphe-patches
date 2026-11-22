@@ -6,7 +6,6 @@ package app.morphe.patches.idlefish.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.smali.parameterRegister
@@ -23,7 +22,7 @@ val spoofSignaturePatch = patch {
 
     execute {
         spoofSignature(APPLICATION_CLASS)
-        val initializer = SecurityContextInitializerFingerprint.matchSingle().method
+        val initializer = SecurityContextInitializerFingerprint.method
         val contextRegister = initializer.parameterRegister(0)
         initializer.addInstructions(
             0,

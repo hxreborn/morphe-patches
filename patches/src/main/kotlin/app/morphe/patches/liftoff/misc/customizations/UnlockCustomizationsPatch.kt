@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.liftoff.misc.settings.markPatchApplied
 import app.morphe.patches.liftoff.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,18 +29,18 @@ val unlockCustomizationsPatch: Patch = patch(
 
     execute {
         markPatchApplied("unlockCustomizations", unlockCustomizationsPatch)
-        NetworkResponseReceivedFingerprint.matchSingle().method.addInstructions(
+        NetworkResponseReceivedFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p4 .. p4 }, $EXTENSION_CLASS->onResponse(Ljava/lang/String;)V",
         )
-        TextResponseReceivedFingerprint.matchSingle().method.addInstructions(
+        TextResponseReceivedFingerprint.method.addInstructions(
             0,
             """
                 invoke-static/range { p2 .. p2 }, $EXTENSION_CLASS->rewriteBody(Ljava/lang/String;)Ljava/lang/String;
                 move-result-object p2
             """,
         )
-        BlobResponseDataFingerprint.matchSingle().let { match ->
+        BlobResponseDataFingerprint.match().let { match ->
             val (_, bytesResult, _) = match.instructionMatches
             val method = match.method
             val bytesRegister = method.getInstruction<OneRegisterInstruction>(bytesResult.index).registerA

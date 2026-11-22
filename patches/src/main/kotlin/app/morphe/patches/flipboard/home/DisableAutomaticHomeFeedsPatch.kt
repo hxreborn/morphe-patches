@@ -5,7 +5,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.addFreeRegisters
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.AccessFlags.PUBLIC
@@ -21,7 +20,7 @@ val disableAutomaticHomeFeedsPatch = patch(
 
     execute {
         val wasRestored = persistExplicitHomeRestores()
-        val converter = ConvertHomeFavoritesFingerprint.matchSingle()
+        val converter = ConvertHomeFavoritesFingerprint.match()
         val matches = converter.instructionMatches
         val hasNext = matches.single { it.filter === homeIteratorHasNext }
         val feedSection = matches.single { it.filter === castHomeFeedSection }

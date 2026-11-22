@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
@@ -24,7 +23,7 @@ internal val spoofSignaturePatch = patch {
             MessageDigest.getInstance("SHA-1").digest(packageMetadata.stockSigningCertificate().encoded),
         )
 
-        PackageCertificateHashFingerprint.matchSingle().method.apply {
+        PackageCertificateHashFingerprint.method.apply {
             val registers = getFreeRegisterProvider(0, 3)
             val packageMatches = registers.getFreeRegister4Bit()
             val certificate = registers.getFreeRegister4Bit()

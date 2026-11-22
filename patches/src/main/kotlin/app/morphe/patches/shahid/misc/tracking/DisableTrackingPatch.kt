@@ -7,7 +7,6 @@ package app.morphe.patches.shahid.misc.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -32,14 +31,14 @@ val disableTrackingPatch = patch(
     dependsOn(disableAnalyticsCollectionPatch, deactivateFirebaseAnalyticsPatch, disableBugsnagReportingPatch)
 
     execute {
-        AppsFlyerInitFingerprint.matchSingle().method.addInstruction(0, "return-object p0")
+        AppsFlyerInitFingerprint.method.addInstruction(0, "return-object p0")
         AppsFlyerReportingFingerprint.matchAll().forEach { it.method.returnEarly() }
 
-        MParticleConfigRequestFingerprint.matchSingle().method.returnEarly()
-        MParticleUploadFingerprint.matchSingle().method.returnEarly(202)
+        MParticleConfigRequestFingerprint.method.returnEarly()
+        MParticleUploadFingerprint.method.returnEarly(202)
 
-        NpawAnalyticsEnabledFingerprint.matchSingle().method.returnEarly(false)
-        NpawEventSendFingerprint.matchSingle().method.returnEarly()
-        CleverTapQueueFlushFingerprint.matchSingle().method.returnEarly()
+        NpawAnalyticsEnabledFingerprint.method.returnEarly(false)
+        NpawEventSendFingerprint.method.returnEarly()
+        CleverTapQueueFlushFingerprint.method.returnEarly()
     }
 }

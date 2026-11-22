@@ -6,7 +6,6 @@ package app.morphe.patches.uptcl.misc.systembars
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.patches.shared.misc.extension.uptclMatchSystemBarColorExtensionPatch
@@ -23,7 +22,7 @@ val matchSystemBarColorPatch = patch(
     dependsOn(trustInstalledCertificatePatch)
 
     execute {
-        BaseActivityOnCreateFingerprint.matchSingle().method.addInstruction(
+        BaseActivityOnCreateFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->paintWhite(Landroid/app/Activity;)V",
         )

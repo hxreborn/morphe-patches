@@ -14,7 +14,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.Document
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.png.PngImage
 import app.morphe.util.adoptChild
@@ -488,18 +487,18 @@ val amoledThemePatch = patch(
     dependsOn(amoledThemeResourcesPatch)
 
     execute {
-        HomeBackgroundPaintFingerprint.matchSingle().let { match ->
+        HomeBackgroundPaintFingerprint.match().let { match ->
             val setColorIndex = match.instructionMatches.last().index
             val colorRegister = match.method.getInstruction<FiveRegisterInstruction>(setColorIndex).registerD
             match.method.addInstruction(setColorIndex, "const v$colorRegister, $BLACK")
         }
 
-        StatusBarTintFingerprint.matchSingle().clearTranslucentStatusFlag()
-        SplashTranslucentStatusFingerprint.matchSingle().clearTranslucentStatusFlag()
+        StatusBarTintFingerprint.match().clearTranslucentStatusFlag()
+        SplashTranslucentStatusFingerprint.match().clearTranslucentStatusFlag()
 
         BrandHeaderBackgroundFingerprint.matchAll(2..2).forEach { it.replaceColorString(BLACK) }
         val labelColor = recolor(parseColor(STOCK_LABEL_COLOR)!!, Role.INK)!!
-        RadarLabelColorFingerprint.matchSingle().replaceColorString(labelColor)
+        RadarLabelColorFingerprint.match().replaceColorString(labelColor)
     }
 }
 

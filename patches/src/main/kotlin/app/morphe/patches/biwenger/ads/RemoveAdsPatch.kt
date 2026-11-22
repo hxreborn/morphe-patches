@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.biwenger.shared.PageStartedFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.biwengerFetchRewriteExtensionPatch
@@ -27,12 +26,12 @@ val removeAdsPatch = patch(
     compatibleWith(AppCompatibilities.BIWENGER)
 
     execute {
-        PageStartedFingerprint.matchSingle().method.addInstructions(
+        PageStartedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $AD_CONFIG_INSTALL",
         )
 
-        val method = BridgePostMessageFingerprint.matchSingle().method
+        val method = BridgePostMessageFingerprint.method
         val resultRegister = method.getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
         method.addInstructionsWithLabels(

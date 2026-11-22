@@ -6,7 +6,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -24,7 +23,7 @@ private const val LIST = "Ljava/util/List;"
 private const val OPTED_OUT = "Lflipboard/model/flapresponse/OptOutsResults;"
 
 internal fun persistExplicitHomeRestores(): String {
-    val restore = RestoreDynamicHomeFeedFingerprint.matchSingle()
+    val restore = RestoreDynamicHomeFeedFingerprint.match()
     val api = restore.instructionMatches.single { it.filter === restoreHomeRequest }
         .instruction.getReference<MethodReference>()!!
     val endpoint = "v1/userstate/optoutCarouselFavorite/{uid}"
@@ -36,9 +35,9 @@ internal fun persistExplicitHomeRestores(): String {
         it.parameterTypes == api.parameterTypes && it.returnType == api.returnType &&
             it.annotations.hasValue(endpoint) && it.parameters.single().annotations.hasValue("addSections")
     }
-    val hide = hideDynamicHomeFeedFingerprint(hideApi).matchSingle()
+    val hide = hideDynamicHomeFeedFingerprint(hideApi).match()
 
-    val account = HomeAccountPreferencesFingerprint.matchSingle()
+    val account = HomeAccountPreferencesFingerprint.match()
     val (contextCall, _, uidPrefsRead, resolvePrefs) = account.instructionMatches
     val singleton = account.originalClassDef.staticFields.single { it.type == account.originalClassDef.type }
     val getContext = contextCall.instruction.getReference<MethodReference>()!!

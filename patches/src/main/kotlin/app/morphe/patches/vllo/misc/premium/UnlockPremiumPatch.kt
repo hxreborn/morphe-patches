@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.listDecodableFiles
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -49,10 +48,10 @@ val unlockPremiumPatch: Patch = patch(
     availability(requireArm64)
 
     execute {
-        val (allFeaturesWrite) = EntitlementEnumFingerprint.matchSingle().instructionMatches
+        val (allFeaturesWrite) = EntitlementEnumFingerprint.match().instructionMatches
         val allFeatures = allFeaturesWrite.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
 
         premiumEntitlementCheckFingerprint(allFeatures.definingClass, allFeatures.name)
-            .matchSingle().method.returnEarly(true)
+            .method.returnEarly(true)
     }
 }

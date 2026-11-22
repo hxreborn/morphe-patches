@@ -5,7 +5,6 @@
 package app.morphe.patches.xtreamplayer.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,7 +16,7 @@ val disableTrackingPatch = patch(
     compatibleWith(AppCompatibilities.XTREAM_PLAYER)
 
     execute {
-        CommonLoggingFingerprint.matchSingle().method.returnEarly()
-        TranslationLoggingFingerprint.matchSingle().method.returnEarly()
+        CommonLoggingFingerprint.method.returnEarly()
+        TranslationLoggingFingerprint.method.returnEarly()
     }
 }

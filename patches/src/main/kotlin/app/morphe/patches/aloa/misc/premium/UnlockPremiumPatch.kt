@@ -7,7 +7,6 @@ package app.morphe.patches.aloa.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
@@ -25,7 +24,7 @@ val unlockPremiumPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        SetSubscriptionStatusFingerprint.matchSingle().method.apply {
+        SetSubscriptionStatusFingerprint.method.apply {
             val entitlementRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructions(

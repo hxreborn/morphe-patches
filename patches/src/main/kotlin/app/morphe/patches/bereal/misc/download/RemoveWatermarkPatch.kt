@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -28,7 +27,7 @@ val removeWatermarkPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, removeWatermarkPatch)
 
-        val method = DownloadImageFingerprint.matchSingle().method
+        val method = DownloadImageFingerprint.method
         method.addInstructionsWithLabels(
             0,
             """

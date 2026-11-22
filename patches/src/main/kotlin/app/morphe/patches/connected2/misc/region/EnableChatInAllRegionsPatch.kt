@@ -6,7 +6,6 @@ package app.morphe.patches.connected2.misc.region
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -24,7 +23,7 @@ val enableChatInAllRegionsPatch = patch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
 
     execute {
-        HandleFeaturesFingerprint.matchSingle().method.addInstructions(
+        HandleFeaturesFingerprint.method.addInstructions(
             0,
             """
                 const-string v0, "xmpp"

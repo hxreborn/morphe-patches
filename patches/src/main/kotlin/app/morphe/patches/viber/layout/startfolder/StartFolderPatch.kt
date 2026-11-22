@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addFieldReader
@@ -47,12 +46,12 @@ val startFolderPatch: Patch = patch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
 
     execute {
-        val folder = FolderEntityFingerprint.matchSingle().classDef
-        val tab = FolderTabEntityFingerprint.matchSingle().classDef
-        val tabConstructor = folderTabConstructorFingerprint(tab.type, folder.type).matchSingle()
+        val folder = FolderEntityFingerprint.match().classDef
+        val tab = FolderTabEntityFingerprint.match().classDef
+        val tabConstructor = folderTabConstructorFingerprint(tab.type, folder.type).match()
         val (idRead) = tabConstructor.instructionMatches
         val readId = descriptor(idRead.instruction.getReference<MethodReference>()!!)
-        val constructor = folderConstructorFingerprint(folder.type).matchSingle().method
+        val constructor = folderConstructorFingerprint(folder.type).method
         fun fieldWrittenFromParameter(parameterIndex: Int, type: String): FieldReference {
             val register = constructor.p0Register + 1 + parameterIndex
             return constructor.implementation!!.instructions.single {
@@ -65,7 +64,7 @@ val startFolderPatch: Patch = patch(
         val folderClass = mutableClassDefBy(folder)
         val readName = folderClass.addFieldReader(fieldWrittenFromParameter(FOLDER_NAME_PARAMETER_INDEX, "Ljava/lang/String;"))
         val readType = folderClass.addFieldReader(fieldWrittenFromParameter(FOLDER_TYPE_PARAMETER_INDEX, "I"))
-        val tabs = startFolderTabsFingerprint(folder.type, tab.type).matchSingle()
+        val tabs = startFolderTabsFingerprint(folder.type, tab.type).match()
         val (entityCall, _, pendingRead, indexLookup) = tabs.instructionMatches
         val readEntity = when (val entity = entityCall.instruction.getReference<Reference>()!!) {
             is MethodReference -> descriptor(entity)
@@ -113,8 +112,8 @@ val startFolderPatch: Patch = patch(
             move-result v${lookup.registerD}
             iput v${lookup.registerD}, v$owner, ${descriptor(pending)}
         """)
-        val controller = FolderSelectionFingerprint.matchSingle().classDef.type
-        resetFolderFingerprint(controller, folder.type).matchSingle().apply {
+        val controller = FolderSelectionFingerprint.match().classDef.type
+        resetFolderFingerprint(controller, folder.type).match().apply {
             val (_, position) = instructionMatches
             method.addFilterCallAfter(position.index, "$EXTENSION_CLASS_DESCRIPTOR->resetIndex(I)I")
         }

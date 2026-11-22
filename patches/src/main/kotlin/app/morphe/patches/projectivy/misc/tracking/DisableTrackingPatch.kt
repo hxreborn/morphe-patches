@@ -18,7 +18,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
@@ -39,14 +38,14 @@ val disableTrackingPatch = patch(
     compatibleWith(AppCompatibilities.PROJECTIVY)
 
     execute {
-        AnalyticsEventFingerprint.matchSingle().method.returnEarly()
+        AnalyticsEventFingerprint.method.returnEarly()
 
-        FirebaseConfigFingerprint.matchSingle().method.returnEarly()
+        FirebaseConfigFingerprint.method.returnEarly()
 
-        AdvertisingIdClientConnectFingerprint.matchSingle().method.returnEarly()
+        AdvertisingIdClientConnectFingerprint.method.returnEarly()
 
         redirectedHosts.forEach { (fingerprint: Fingerprint, host: String) ->
-            fingerprint.matchSingle().method.apply {
+            fingerprint.method.apply {
                 findInstructionIndicesReversed {
                     opcode == Opcode.CONST_STRING &&
                         getReference<StringReference>()?.string?.contains(host) == true

@@ -7,7 +7,6 @@ package app.morphe.patches.poe.misc.pairip
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
@@ -22,7 +21,7 @@ val restoreDownloadReceiverPatch = patch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val receiverClass = DownloadCompleteReceiverFingerprint.matchSingle().classDef
+        val receiverClass = DownloadCompleteReceiverFingerprint.match().classDef
         val (callbackCall) = DownloadCallbackFingerprint.matchAll(receiverClass, 1..1).single().instructionMatches
         val callbackMethod = callbackCall.instruction.getReference<MethodReference>()!!
         val (resumeCall) = DownloadResumeFingerprint.matchAll(receiverClass, 1..1).single().instructionMatches

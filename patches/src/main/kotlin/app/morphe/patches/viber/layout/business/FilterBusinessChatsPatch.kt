@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.business
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -27,12 +26,13 @@ val filterBusinessChatsPatch: Patch = patch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
     execute {
         markPatchApplied("filterBusinessChats", filterBusinessChatsPatch)
-        ChatSelectionFingerprint.matchSingle().apply {
+        ChatSelectionFingerprint.clearMatch()
+        ChatSelectionFingerprint.match().apply {
             val (selectionPrefix, _) = instructionMatches
             method.addFilterCallAfter(selectionPrefix.index, "$EXTENSION_CLASS_DESCRIPTOR->filterSelection(Ljava/lang/String;)Ljava/lang/String;")
         }
         listOf(BusinessInboxIntroPreferenceFingerprint, BusinessInboxTooltipPreferenceFingerprint)
-            .map { it.matchSingle() }
+            .map { it.match() }
             .redirectPreferences(
                 "$EXTENSION_CLASS_DESCRIPTOR->preferenceKey(Ljava/lang/String;)Ljava/lang/String;",
                 "$EXTENSION_CLASS_DESCRIPTOR->showPrompt(Z)Z",

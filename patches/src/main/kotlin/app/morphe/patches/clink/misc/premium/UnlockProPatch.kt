@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -32,7 +31,7 @@ val unlockProPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        val publish = PublishEntitlementFingerprint.matchSingle()
+        val publish = PublishEntitlementFingerprint.match()
         val holder = publish.classDef
         val purchasedField = publish.instructionMatches.first().instruction.getReference<FieldReference>()!!
         val purchasedFieldDescriptor = descriptor(purchasedField)

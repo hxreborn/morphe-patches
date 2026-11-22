@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -39,10 +38,10 @@ private val systemAccountChooserPatch = patch {
     dependsOn(viberGmsCoreSupportExtensionPatch, viberSettingsExtensionPatch)
     execute {
         markPatchApplied("gmsCoreSupport", gmsCoreSupportPatch)
-        GoogleAccountListFingerprint.matchSingle().redirectAccountsByType()
-        GoogleAccountCredentialFingerprint.matchSingle().redirectAccountsByType()
+        GoogleAccountListFingerprint.match().redirectAccountsByType()
+        GoogleAccountCredentialFingerprint.match().redirectAccountsByType()
 
-        GmsAccountPickerIntentFingerprint.matchSingle().method.apply {
+        GmsAccountPickerIntentFingerprint.method.apply {
             val returnIndex = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
             val intentRegister = getInstruction<OneRegisterInstruction>(returnIndex).registerA
 

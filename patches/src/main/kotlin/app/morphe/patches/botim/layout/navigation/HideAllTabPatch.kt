@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.Opcode
@@ -29,7 +28,7 @@ val hideAllTabPatch = patch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     execute {
-        val (allTabTypeCheck) = AllTabFragmentFactoryFingerprint.matchSingle().instructionMatches
+        val (allTabTypeCheck) = AllTabFragmentFactoryFingerprint.match().instructionMatches
         val allTabType = allTabTypeCheck.instruction.getReference<TypeReference>()!!.type
 
         mutableClassDefBy(EXTENSION_CLASS).replaceStub(
@@ -41,7 +40,7 @@ val hideAllTabPatch = patch(
             """,
         )
 
-        TabMapFingerprint.matchSingle().method.apply {
+        TabMapFingerprint.method.apply {
             val returnInstruction = instructions.single { it.opcode == Opcode.RETURN_OBJECT }
             val tabsRegister = (returnInstruction as OneRegisterInstruction).registerA
             addInstructions(

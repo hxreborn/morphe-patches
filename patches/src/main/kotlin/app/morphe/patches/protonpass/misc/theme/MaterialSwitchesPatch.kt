@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
@@ -34,7 +33,7 @@ val materialSwitchesPatch: Patch = patch(
         markPatchMetadata("materialSwitches", materialSwitchesPatch, withDescription = true)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
 
-        val match = MaterialSwitchFingerprint.matchSingle()
+        val match = MaterialSwitchFingerprint.match()
         val modifierCompanion = match.method.getInstruction(match.instructionMatches.first().index)
             .getReference<FieldReference>()!!
 

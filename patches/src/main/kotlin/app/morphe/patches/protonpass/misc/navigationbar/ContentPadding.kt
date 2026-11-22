@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patches.shared.misc.proton.FLOATING_NAVIGATION_BAR_CLASS
 import app.morphe.patches.shared.misc.proton.NAVIGATION_BAR_BACKDROP_CLASS
@@ -38,7 +37,7 @@ private const val SCAFFOLD_BACKGROUND_DEFAULT = 0x2000
 
 internal fun installFloatingContentPadding(content: Match) {
     captureScaffoldPageColor(
-        MainScaffoldFingerprint.matchSingle(), SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
+        MainScaffoldFingerprint.match(), SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
         "getBackground-0d7_KjU",
     )
     val bottomCall = content.instructionMatches.first().instruction.getReference<MethodReference>()!!
@@ -109,7 +108,7 @@ internal fun installFloatingContentPadding(content: Match) {
         return-object p0
     """)
     listOf("profile_option_account", "security_center_home_section_password_health", "home_empty_vault_create_login").forEach { resource ->
-        val scroll = scrollContentFingerprint(resource).matchSingle()
+        val scroll = scrollContentFingerprint(resource).match()
         val (_, result) = scroll.instructionMatches
         val register = result.getInstruction<OneRegisterInstruction>().registerA
         scroll.method.addInstructions(result.index + 1, """
@@ -117,7 +116,7 @@ internal fun installFloatingContentPadding(content: Match) {
             move-result-object v$register
         """)
     }
-    val items = HomeItemsContentFingerprint.matchAll(0..1).singleOrNull() ?: HomeItemsWithPaddingImplFingerprint.matchSingle()
+    val items = HomeItemsContentFingerprint.matchAll(0..1).singleOrNull() ?: HomeItemsWithPaddingImplFingerprint.match()
     val lists = listOfNotNull(items, HomePagedItemsContentFingerprint.matchAll(0..1).singleOrNull())
     val native = items.instructionMatches.last().instruction.getReference<MethodReference>()!!
     val parameters = native.parameterTypes.map(CharSequence::toString)

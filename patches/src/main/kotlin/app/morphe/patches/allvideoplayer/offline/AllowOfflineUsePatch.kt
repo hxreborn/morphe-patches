@@ -6,7 +6,6 @@ package app.morphe.patches.allvideoplayer.offline
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
@@ -17,8 +16,8 @@ val allowOfflineUsePatch = patch(
     compatibleWith(AppCompatibilities.ALL_VIDEO_PLAYER)
 
     execute {
-        val startNextActivity = StartNextActivityFingerprint.matchSingle().method
-        ShowOfflineDialogFingerprint.matchSingle().method.addInstructions(
+        val startNextActivity = StartNextActivityFingerprint.method
+        ShowOfflineDialogFingerprint.method.addInstructions(
             0,
             """
                 invoke-virtual { p0 }, $startNextActivity

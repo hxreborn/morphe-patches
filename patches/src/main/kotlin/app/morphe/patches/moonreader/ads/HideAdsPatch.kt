@@ -5,7 +5,6 @@
 package app.morphe.patches.moonreader.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,7 +16,7 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.MOON_READER)
 
     execute {
-        DisableAdsFingerprint.matchSingle().method.returnEarly(true)
-        CanShowAdsFingerprint.matchSingle().method.returnEarly(false)
+        DisableAdsFingerprint.method.returnEarly(true)
+        CanShowAdsFingerprint.method.returnEarly(false)
     }
 }

@@ -7,7 +7,6 @@ package app.morphe.patches.protonauthenticator.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.protonAccentColorPickerExtensionPatch
@@ -47,7 +46,7 @@ val accentColorPatch: Patch = patch(
         markPatchMetadata("accentColor", accentColorPatch)
         transformBrandColors(CORE_BRAND_COLORS + AUTHENTICATOR_BRAND_COLORS)
 
-        ButtonShadowColorFingerprint.matchSingle().let { match ->
+        ButtonShadowColorFingerprint.match().let { match ->
             val shadowColor = match.instructionMatches.first()
             val register = shadowColor.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstructions(

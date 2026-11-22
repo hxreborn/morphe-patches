@@ -6,7 +6,6 @@ package app.morphe.patches.connected2.misc.screenshot
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -26,7 +25,7 @@ val removeScreenshotRestrictionPatch = patch(
 
     execute {
         TIMED_MEDIA_EXTRAS.forEach { extra ->
-            timedMediaOnCreateFingerprint(extra).matchSingle().apply {
+            timedMediaOnCreateFingerprint(extra).match().apply {
                 method.removeInstruction(instructionMatches.last().index)
             }
         }

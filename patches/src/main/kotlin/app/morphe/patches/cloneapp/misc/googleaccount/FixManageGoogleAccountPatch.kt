@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -25,7 +24,7 @@ val fixManageGoogleAccountPatch = patch(
     compatibleWith(AppCompatibilities.CLONE_APP)
 
     execute {
-        AccountSettingsIntentFingerprint.matchSingle().apply {
+        AccountSettingsIntentFingerprint.match().apply {
             val (newIntentIndex, actionIndex, constructorIndex) = instructionMatches.map { it.index }
             val intentRegister = method.getInstruction<FiveRegisterInstruction>(constructorIndex).registerC
             val uriRegister = method.getInstruction<OneRegisterInstruction>(actionIndex).registerA

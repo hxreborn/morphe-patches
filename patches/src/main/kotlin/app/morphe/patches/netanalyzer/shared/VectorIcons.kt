@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.string
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
@@ -151,7 +150,7 @@ private fun vectorApi(): VectorApi = vectorApi ?: run {
             decryptedString(REFERENCE_ICON),
             methodCall(name = CONSTRUCTOR, parameters = VECTOR_BUILDER_PARAMETERS, opcode = Opcode.INVOKE_DIRECT_RANGE),
         ),
-    ).matchSingle()
+    ).match()
     val instructions = reference.method.instructions.toList()
     val initIndex = reference.instructionMatches.last().index
     val builderInit = instructions[initIndex].getReference<MethodReference>()!!
@@ -180,7 +179,7 @@ private fun vectorApi(): VectorApi = vectorApi ?: run {
         it.name == closeMethod.name && it.parameterTypes.isEmpty() && it.returnType == "V"
     }.implementation!!.instructions.first { it.opcode == Opcode.SGET_OBJECT }.getReference<FieldReference>()!!
     val nodes = NODE_PREFIXES.mapValues { (_, prefix) ->
-        val node = Fingerprint(name = TO_STRING, returnType = STRING_TYPE, filters = listOf(string(prefix))).matchSingle()
+        val node = Fingerprint(name = TO_STRING, returnType = STRING_TYPE, filters = listOf(string(prefix))).match()
         classDefBy(node.originalMethod.definingClass).methods.single { method ->
             method.name == CONSTRUCTOR && method.parameterTypes.isNotEmpty() &&
                 method.parameterTypes.all { it == FLOAT_TYPE }

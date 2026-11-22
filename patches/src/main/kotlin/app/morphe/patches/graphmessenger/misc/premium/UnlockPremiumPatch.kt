@@ -5,7 +5,6 @@
 package app.morphe.patches.graphmessenger.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.graphmessenger.shared.licenseDaysLeft
@@ -28,7 +27,7 @@ val unlockPremiumPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        UserIsPremiumFingerprint.matchSingle().method.returnEarly(true)
+        UserIsPremiumFingerprint.method.returnEarly(true)
         LicenseDaysLeftFingerprint.matchAll().forEach { it.method.overrideResultsOf(licenseDaysLeft, LICENSE_DAYS_LEFT) }
         LicenseExpiredFingerprint.matchAll().forEach { it.method.overrideResultsOf(licenseExpired, 0) }
     }

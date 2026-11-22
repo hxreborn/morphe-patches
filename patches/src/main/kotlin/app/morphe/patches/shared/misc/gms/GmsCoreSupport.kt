@@ -20,7 +20,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.string
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.signature.replaceString
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.patches.shared.misc.smali.toJavaClassName
@@ -62,8 +61,8 @@ internal fun bindGmsCoreSignInTypes() {
         ?: KOTLIN_RESULT_CLASS
 
     val placeholderTypes = mapOf(
-        "<success-class>" to GetCredentialSuccessToStringFingerprint.matchSingle().classDef.type,
-        "<failure-class>" to GetCredentialFailureToStringFingerprint.matchSingle().classDef.type,
+        "<success-class>" to GetCredentialSuccessToStringFingerprint.match().classDef.type,
+        "<failure-class>" to GetCredentialFailureToStringFingerprint.match().classDef.type,
         "<result-class>" to resultClass,
     ).mapValues { (_, type) -> type.toJavaClassName() }
 

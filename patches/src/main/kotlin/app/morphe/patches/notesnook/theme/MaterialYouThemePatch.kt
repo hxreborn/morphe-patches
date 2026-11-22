@@ -7,7 +7,6 @@ package app.morphe.patches.notesnook.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.notesnookMaterialYouThemeExtensionPatch
 
@@ -23,7 +22,7 @@ val materialYouThemePatch = patch(
     dependsOn(notesnookMaterialYouThemeExtensionPatch)
     compatibleWith(AppCompatibilities.NOTESNOOK)
     execute {
-        MmkvInstallFingerprint.matchSingle().apply {
+        MmkvInstallFingerprint.match().apply {
             val index = instructionMatches[0].index
             val register = method.getFreeRegisterProvider(index, 1).getFreeRegister4Bit()
 

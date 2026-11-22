@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.composableParameters
@@ -37,10 +36,10 @@ val externalIpDetailsPatch = patch(
     execute {
         addFeatureActivity("ExternalIpActivity")
 
-        val buttonRowMatch = ButtonRowFingerprint.matchSingle()
+        val buttonRowMatch = ButtonRowFingerprint.match()
         val buttonRow = buttonRowMatch.originalMethod
         val parameters = buttonRowMatch.composableParameters()
-        val externalIpRow = externalIpRowFingerprint(buttonRow).matchSingle()
+        val externalIpRow = externalIpRowFingerprint(buttonRow).match()
         val (_, stateRead, buttonCall) = externalIpRow.instructionMatches
         replaceExternalIpStateStub(stateRead)
         val method = externalIpRow.method

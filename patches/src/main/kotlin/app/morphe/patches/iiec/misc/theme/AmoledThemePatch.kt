@@ -16,7 +16,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.Document
 import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.iiec.misc.fix.signature.bypassSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -216,7 +215,7 @@ val amoledThemePatch = patch(
     dependsOn(bypassSignatureCheckPatch, amoledThemeResourcesPatch)
 
     execute {
-        val constructorMatch = DarkSchemeConstructorFingerprint.matchSingle()
+        val constructorMatch = DarkSchemeConstructorFingerprint.match()
         val darkSchemeType = constructorMatch.classDef.type
 
         val backgroundField = constructorMatch.instructionMatches.first()

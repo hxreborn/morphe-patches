@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -33,13 +32,13 @@ private fun Match.lateFlagFieldName() =
         .getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!.name
 
 private fun lateReads(): List<LateRead> {
-    val corePost = CorePostToStringFingerprint.matchSingle()
+    val corePost = CorePostToStringFingerprint.match()
     val lateBy = corePost.classDef.fields.single { it.type == "J" && it.accessFlags and AccessFlags.STATIC.value == 0 }
     return listOf(
         LateRead(Opcode.IGET_WIDE, corePost.classDef.type, lateBy.name, "lateBy(J)J"),
         LateRead(Opcode.IGET_BOOLEAN, corePost.classDef.type, corePost.lateFlagFieldName(), "isLate(Z)Z"),
     ) + listOf(MomentPostToStringFingerprint, ChatPostToStringFingerprint).map {
-        val match = it.matchSingle()
+        val match = it.match()
         LateRead(Opcode.IGET_BOOLEAN, match.classDef.type, match.lateFlagFieldName(), "isLate(Z)Z")
     }
 }
@@ -78,7 +77,7 @@ val removeLateLabelPatch: Patch = patch(
         markFeaturePatched(EXTENSION_CLASS, removeLateLabelPatch)
         val reads = lateReads()
 
-        val formatter = LateDurationFormatterFingerprint.matchSingle()
+        val formatter = LateDurationFormatterFingerprint.match()
         val labelMethods = mutableClassDefBy(formatter.classDef.type).methods.toList() +
             LateDurationLiteralFingerprint.matchAll(1..5).map { it.method } +
             LateTagLiteralFingerprint.matchAll(1..10).map { it.method } +
@@ -89,8 +88,8 @@ val removeLateLabelPatch: Patch = patch(
         )
         if (patched == 0) throw PatchException("No lateBy or isLate read found in the late label methods")
 
-        val placeholder = PostPlaceholderToStringFingerprint.matchSingle().classDef
-        val getter = placeholderLateSecondsGetterFingerprint(placeholder.type).matchSingle()
+        val placeholder = PostPlaceholderToStringFingerprint.match().classDef
+        val getter = placeholderLateSecondsGetterFingerprint(placeholder.type).match()
         val read = getter.instructionMatches.single()
         val register = read.getInstruction<OneRegisterInstruction>().registerA
         getter.method.addInstructions(

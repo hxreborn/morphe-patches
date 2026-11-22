@@ -7,7 +7,6 @@ package app.morphe.patches.botim.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.botim.misc.signin.fixSignInPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,13 +29,13 @@ val unlockVipPatch = patch(
     dependsOn(fixSignInPatch)
 
     execute {
-        val mapper = SelfProfileMapperFingerprint.matchSingle()
+        val mapper = SelfProfileMapperFingerprint.match()
         val moveResultIndex = mapper.instructionMatches.single().index + 1
         val register = mapper.method.getInstruction<OneRegisterInstruction>(moveResultIndex).registerA
 
         mapper.method.addInstruction(moveResultIndex + 1, "const/4 v$register, 0x1")
 
-        VipUpsellCardFingerprint.matchSingle().method.returnEarly()
+        VipUpsellCardFingerprint.method.returnEarly()
 
         SduiCollectionItemsFingerprint.matchOrNull()?.method?.apply {
             findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->

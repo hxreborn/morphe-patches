@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.botim.misc.premium.SduiCollectionItemsFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.parameterRegister
@@ -30,7 +29,7 @@ val removeHomeSectionsPatch = patch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     execute {
-        MainUiStateConstructorFingerprint.matchSingle().method.apply {
+        MainUiStateConstructorFingerprint.method.apply {
             val searchBarType = parameterTypes[SEARCH_BAR_PARAMETER_INDEX].toString()
             if (searchBarType != "Z") {
                 throw PatchException(
@@ -40,7 +39,7 @@ val removeHomeSectionsPatch = patch(
             addInstructions(0, "const/16 ${parameterRegister(SEARCH_BAR_PARAMETER_INDEX)}, 0x0")
         }
 
-        SduiCollectionItemsFingerprint.matchSingle().method.apply {
+        SduiCollectionItemsFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
                 val listRegister = getInstruction<OneRegisterInstruction>(index).registerA
                 addInstructionsAtControlFlowLabel(

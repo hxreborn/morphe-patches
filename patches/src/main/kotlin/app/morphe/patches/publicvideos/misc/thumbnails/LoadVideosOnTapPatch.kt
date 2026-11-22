@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -44,13 +43,13 @@ val loadVideosOnTapPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        val load = PlayerLoadFingerprint.matchSingle()
+        val load = PlayerLoadFingerprint.match()
         val loadImplementation = checkNotNull(load.method.implementation) { "${descriptor(load.method)} has no body" }
         if (loadImplementation.registerCount - load.method.parameterRegisterCount() < 1) {
             throw PatchException("${descriptor(load.method)} has no local register for the injected result")
         }
-        val togglePlayback = PlayerTogglePlaybackFingerprint.matchSingle().method
-        val autoplayAllowed = AutoplayAllowedFingerprint.matchSingle().method
+        val togglePlayback = PlayerTogglePlaybackFingerprint.method
+        val autoplayAllowed = AutoplayAllowedFingerprint.method
 
         val player = mutableClassDefBy(load.classDef)
         val playerType = player.type

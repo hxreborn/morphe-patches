@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.cloneParameters
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativePatch
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativeBuild
 import app.morphe.patches.candycrushsaga.shared.SODA_LIBRARY_WITH_EXTRA_MOVES_SHA256
@@ -55,10 +54,10 @@ internal val candyCrushRewardsPatch = patch {
     dependsOn(addBoosterLibraryPatch)
 
     execute {
-        val nativeHandleSetter = NativeHandleSetterFingerprint.matchSingle().method.cloneParameters()
-        val runOnGameThread = RunOnGameThreadFingerprint.matchSingle().originalMethod
-        val nativeApplicationGetter = NativeApplicationGetterFingerprint.matchSingle().originalMethod
-        val nativeHandleGetter = NativeHandleGetterFingerprint.matchSingle().originalMethod
+        val nativeHandleSetter = NativeHandleSetterFingerprint.method.cloneParameters()
+        val runOnGameThread = RunOnGameThreadFingerprint.originalMethod
+        val nativeApplicationGetter = NativeApplicationGetterFingerprint.originalMethod
+        val nativeHandleGetter = NativeHandleGetterFingerprint.originalMethod
         val activityType = runOnGameThread.definingClass
         val build = candyCrushNativeBuild(packageMetadata.packageName)
         val soda = isCandyCrushSodaSaga(packageMetadata.packageName)
@@ -127,16 +126,16 @@ internal val candyCrushRewardsPatch = patch {
                 "invoke-static/range { p0 .. p2 }, $BOOSTERS->onNativeHandle(Landroid/app/Activity;J)V",
             )
         }
-        HttpRequestFingerprint.matchSingle().method.addInstructions(
+        HttpRequestFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p1 .. p8 }, " +
                 "$BOOSTERS->onRequest(JILjava/lang/String;IZLjava/lang/Object;[B)V",
         )
-        HttpDataFingerprint.matchSingle().method.addInstructions(
+        HttpDataFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p1 .. p4 }, $BOOSTERS->onData(J[BI)V",
         )
-        val response = HttpResponseFingerprint.matchSingle().method
+        val response = HttpResponseFingerprint.method
         response.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             response.addInstructionsAtControlFlowLabel(
                 index,

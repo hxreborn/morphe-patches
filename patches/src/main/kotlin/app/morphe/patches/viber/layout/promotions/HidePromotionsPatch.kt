@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.promotions
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -26,20 +25,20 @@ val hidePromotionsPatch: Patch = patch(
     dependsOn(spoofSignaturePatch, patchesSettingsPatch)
     execute {
         markPatchApplied("hidePromotions", hidePromotionsPatch)
-        ChatSuggestionsVisibilityFingerprint.matchSingle().method.addFilterCall(0, "p1", SHOW_PROMOTION)
-        CallsBannerVisibilityFingerprint.matchSingle().apply {
+        ChatSuggestionsVisibilityFingerprint.method.addFilterCall(0, "p1", SHOW_PROMOTION)
+        CallsBannerVisibilityFingerprint.match().apply {
             val (cardVisible, _, shadowVisible, _) = instructionMatches
             listOf(shadowVisible, cardVisible).forEach { method.addFilterCallAfter(it.index, SHOW_PROMOTION) }
         }
-        ViberOutSectionVisibilityFingerprint.matchSingle().apply {
+        ViberOutSectionVisibilityFingerprint.match().apply {
             val (_, _, sectionVisible, _) = instructionMatches
             method.addFilterCallAfter(sectionVisible.index, SHOW_PROMOTION)
         }
-        ViberOutBannerVisibilityFingerprint.matchSingle().apply {
+        ViberOutBannerVisibilityFingerprint.match().apply {
             val (_, banner2Visible, _, bannerVisible, _) = instructionMatches
             listOf(bannerVisible, banner2Visible).forEach { method.addFilterCallAfter(it.index, SHOW_PROMOTION) }
         }
-        CallsIntroFingerprint.matchSingle().apply {
+        CallsIntroFingerprint.match().apply {
             val (_, flagResult, _) = instructionMatches
             method.addFilterCallAfter(flagResult.index, SHOW_PROMOTION)
         }

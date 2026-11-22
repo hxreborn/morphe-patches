@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -27,7 +26,7 @@ val hideAdsPatch = patch(
     dependsOn(failAdMobLoadsPatch)
 
     execute {
-        val applyRemoteConfig = ApplyRemoteConfigFingerprint.matchSingle()
+        val applyRemoteConfig = ApplyRemoteConfigFingerprint.match()
         val switches = applyRemoteConfig.instructionMatches.map {
             it.getInstruction<ReferenceInstruction>().reference
         }
@@ -41,7 +40,7 @@ val hideAdsPatch = patch(
             )
         }
 
-        val loadMoreApps = LoadMoreAppsFingerprint.matchSingle().method
+        val loadMoreApps = LoadMoreAppsFingerprint.method
         applyRemoteConfig.method.apply {
             turnOffSwitches(
                 indexOfFirstInstructionOrThrow {
@@ -49,7 +48,7 @@ val hideAdsPatch = patch(
                 },
             )
         }
-        ApplicationOnCreateFingerprint.matchSingle().method.turnOffSwitches(0)
+        ApplicationOnCreateFingerprint.method.turnOffSwitches(0)
         loadMoreApps.returnEarly()
     }
 }

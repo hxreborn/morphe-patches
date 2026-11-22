@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipKeyImportPatch
@@ -36,15 +35,15 @@ val unlockPremiumPatch = patch(
     availability(requireArm64)
 
     execute {
-        ProUserCheckFingerprint.matchSingle().method.returnEarly(true)
+        ProUserCheckFingerprint.method.returnEarly(true)
 
         val stockCertificateSha256 = MessageDigest.getInstance("SHA-256")
             .digest(packageMetadata.stockSigningCertificate().encoded)
             .joinToString("") { "%02X".format(it) }
 
-        AppSignatureHashFingerprint.matchSingle().method.returnEarly(stockCertificateSha256)
+        AppSignatureHashFingerprint.method.returnEarly(stockCertificateSha256)
 
-        val priceCallback = FreeProductPriceFingerprint.matchSingle().method
+        val priceCallback = FreeProductPriceFingerprint.method
         val freeProductFlag = priceCallback.implementation!!.instructions
             .filter { it.opcode == Opcode.SPUT_BOOLEAN }
             .map { it.getReference<FieldReference>()!! }

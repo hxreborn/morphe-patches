@@ -6,7 +6,6 @@ package app.morphe.patches.privacynotes.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 import app.morphe.patches.shared.misc.extension.privacynotesUnlockPremiumExtensionPatch
@@ -22,7 +21,7 @@ val unlockPremiumPatch = patch(
     dependsOn(morpheLibraryCoreExtensionPatch, privacynotesUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.PRIVACY_NOTES)
     execute {
-        PageStartedFingerprint.matchSingle().method.addInstructions(
+        PageStartedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $EXTENSION_CLASS->unlock(Landroid/webkit/WebView;)V",
         )

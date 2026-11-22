@@ -5,7 +5,6 @@
 package app.morphe.patches.botim.layout.ai
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patcher.util.returnEarly
 
@@ -18,6 +17,6 @@ val removeBotimAiPatch = patch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     execute {
-        BotimAiNavigationItemFingerprint.matchSingle().method.returnEarly(null)
+        BotimAiNavigationItemFingerprint.method.returnEarly(null)
     }
 }

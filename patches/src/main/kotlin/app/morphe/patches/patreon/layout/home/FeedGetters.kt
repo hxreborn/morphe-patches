@@ -6,7 +6,6 @@ package app.morphe.patches.patreon.layout.home
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.patch.mutableClassDefBy
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 
@@ -25,7 +24,7 @@ private class FeedGetter(val definingClass: String, val name: String)
 private fun replaceGetterStub(extensionClass: String, stub: String, vararg getters: FeedGetter) {
     val branches = getters.mapIndexed { index, getter ->
         val method = Fingerprint(definingClass = getter.definingClass, name = getter.name, parameters = emptyList())
-            .matchSingle().originalMethod
+            .originalMethod
         """
             instance-of v0, p0, ${getter.definingClass}
             if-eqz v0, :other$index

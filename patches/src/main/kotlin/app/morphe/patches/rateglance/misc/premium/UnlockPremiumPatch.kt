@@ -5,7 +5,6 @@
 package app.morphe.patches.rateglance.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -19,6 +18,6 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.RATEGLANCE)
 
     execute {
-        PremiumAccessFingerprint.matchSingle().method.returnEarly(true)
+        PremiumAccessFingerprint.method.returnEarly(true)
     }
 }

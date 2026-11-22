@@ -6,7 +6,6 @@ package app.morphe.patches.weather24.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -20,7 +19,7 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.WEATHER24)
 
     execute {
-        val expireDateRead = VoucherExpireDateFingerprint.matchSingle()
+        val expireDateRead = VoucherExpireDateFingerprint.match()
         val moveResult = expireDateRead.instructionMatches.last()
         val expireDateRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
         expireDateRead.method.addInstruction(

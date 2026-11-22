@@ -5,11 +5,10 @@
 package app.morphe.patches.shared.misc.playwire
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 
 internal val stopPlaywireSdkPatch = patch {
     execute {
-        StartPlaywireSdkFingerprint.matchSingle().method.returnEarly()
+        StartPlaywireSdkFingerprint.method.returnEarly()
     }
 }

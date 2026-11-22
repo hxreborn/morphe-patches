@@ -6,7 +6,6 @@ package app.morphe.patches.athan.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -25,9 +24,9 @@ val removeAdsPatch = patch(
     dependsOn(spoofSignaturePatch, failAdMobLoadsPatch, removeMobileAdsInitProviderPatch)
 
     execute {
-        BannerLoadAdFingerprint.matchSingle().method.returnEarly()
+        BannerLoadAdFingerprint.method.returnEarly()
 
-        InterstitialBeforeActionFingerprint.matchSingle().method.addInstructionsWithLabels(
+        InterstitialBeforeActionFingerprint.method.addInstructionsWithLabels(
             0,
             """
                 if-eqz p3, :done

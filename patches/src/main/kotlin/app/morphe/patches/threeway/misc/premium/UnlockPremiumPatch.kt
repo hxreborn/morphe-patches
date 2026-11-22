@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -29,11 +28,11 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.THREEWAY)
 
     execute {
-        val profileFieldSetter = ProfileFieldSetterFingerprint.matchSingle()
+        val profileFieldSetter = ProfileFieldSetterFingerprint.match()
         val profileType = profileFieldSetter.classDef.type
         val setGold = profileFieldSetter.instructionMatches.last().instruction.getReference<MethodReference>()!!
 
-        myProfileFingerprint(profileType).matchSingle().method.apply {
+        myProfileFingerprint(profileType).method.apply {
             val returnIndex = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
             val profileRegister = getInstruction<OneRegisterInstruction>(returnIndex).registerA
             val goldRegister = getFreeRegisterProvider(returnIndex, 1).getFreeRegister4Bit()

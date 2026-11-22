@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findElementByAttributeValueOrThrow
@@ -73,7 +72,7 @@ val amoledThemePatch = patch(
         val palette = darkPalettes.firstOrNull { it.fingerprint.methodOrNull != null }
             ?: throw PatchException("No known dark color palette matched")
 
-        palette.fingerprint.matchSingle().method.apply {
+        palette.fingerprint.method.apply {
             palette.backgrounds.forEach(::replaceColorWithBlack)
             palette.tints.forEach { matchTintToBlack(it, palette) }
         }

@@ -7,7 +7,6 @@ package app.morphe.patches.networkflow.misc.fix.signature
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 
@@ -20,7 +19,7 @@ internal val disableArchiveSignatureCheckPatch = patch {
             networkServiceArchiveSignatureFingerprint,
             appFunctionArchiveSignatureFingerprint,
         ).forEach { fingerprint ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             val (signatureArray, _, _, _, _) = match.instructionMatches
             val registers = signatureArray.getInstruction<FiveRegisterInstruction>()
             val archiveHash = registers.registerC

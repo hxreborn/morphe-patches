@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -24,12 +23,12 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.ECHOGRAM)
 
     execute {
-        val premiumStateClass = EntitlementSyncFingerprint.matchSingle().instructionMatches.last()
+        val premiumStateClass = EntitlementSyncFingerprint.match().instructionMatches.last()
             .getInstruction<ReferenceInstruction>()
             .getReference<FieldReference>()!!
             .definingClass
 
-        premiumStateInitializerFingerprint(premiumStateClass).matchSingle().apply {
+        premiumStateInitializerFingerprint(premiumStateClass).match().apply {
             val mutableStateFlowFactory = instructionMatches.first().getInstruction<ReferenceInstruction>().reference
             val asStateFlowCall = instructionMatches.last()
             val register = asStateFlowCall.getInstruction<FiveRegisterInstruction>().registerC

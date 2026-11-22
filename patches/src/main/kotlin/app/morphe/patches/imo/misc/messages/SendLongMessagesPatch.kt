@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -38,7 +37,7 @@ val sendLongMessagesPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        SendTextMessageFingerprint.matchSingle().method.apply {
+        SendTextMessageFingerprint.method.apply {
             val (parts, imdataParts, index, partCount) = freeRegisters(4)
             addInstructionsWithLabels(
                 0,
@@ -68,7 +67,7 @@ val sendLongMessagesPatch = patch(
             )
         }
 
-        SendIntervalCheckFingerprint.matchSingle().method.apply {
+        SendIntervalCheckFingerprint.method.apply {
             val (skipped) = freeRegisters(1)
             addInstructionsWithLabels(
                 0,
@@ -82,7 +81,7 @@ val sendLongMessagesPatch = patch(
             )
         }
 
-        ChatInputLimitFingerprint.matchSingle().apply {
+        ChatInputLimitFingerprint.match().apply {
             val limitCall = instructionMatches[1].index
             val input = method.getInstruction<FiveRegisterInstruction>(limitCall).registerC
             method.replaceInstruction(

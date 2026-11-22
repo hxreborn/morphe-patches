@@ -9,7 +9,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
@@ -41,7 +40,7 @@ val bypassIntegrityCheckPatch = patch {
     dependsOn(allowLocalCleartextPatch)
 
     execute {
-        ApiEndpointsFingerprint.matchSingle().apply {
+        ApiEndpointsFingerprint.match().apply {
             val (_, _, decodedBaseUrl) = instructionMatches
             val register = (decodedBaseUrl.instruction as OneRegisterInstruction).registerA
             method.addInstructions(
@@ -52,7 +51,7 @@ val bypassIntegrityCheckPatch = patch {
                 """,
             )
         }
-        FetchSessionTokenFingerprint.matchSingle().method.addInstructions(
+        FetchSessionTokenFingerprint.method.addInstructions(
             0,
             """
                 const-string v0, "morphe"

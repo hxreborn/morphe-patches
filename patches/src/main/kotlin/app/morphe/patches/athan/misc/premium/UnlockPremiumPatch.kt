@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -29,7 +28,7 @@ val unlockPremiumPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        val method = StoredSubscriptionFingerprint.matchSingle().method
+        val method = StoredSubscriptionFingerprint.method
         val returns = method.instructions.withIndex()
             .filter { it.value.opcode == Opcode.RETURN_OBJECT }
             .map { it.index }

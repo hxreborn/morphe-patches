@@ -6,7 +6,6 @@ package app.morphe.patches.publicvideos.misc.trailer
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.parameterRegister
 
@@ -21,7 +20,7 @@ val disableTrailerAutoplayPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        SeriesUiModelConstructorFingerprint.matchSingle().method.apply {
+        SeriesUiModelConstructorFingerprint.method.apply {
             addInstruction(0, "const/4 ${parameterRegister(TRAILER_URL_PARAMETER_INDEX)}, 0x0")
         }
     }

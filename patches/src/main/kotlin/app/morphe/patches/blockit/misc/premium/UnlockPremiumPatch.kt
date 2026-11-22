@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -25,7 +24,7 @@ val unlockPremiumPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        val ownedPurchases = OwnedPurchasesFingerprint.matchSingle()
+        val ownedPurchases = OwnedPurchasesFingerprint.match()
         val (premiumStoreMatch, _, bigSuitcasePut, _, soundPackPut) = ownedPurchases.instructionMatches
 
         ownedPurchases.method.apply {

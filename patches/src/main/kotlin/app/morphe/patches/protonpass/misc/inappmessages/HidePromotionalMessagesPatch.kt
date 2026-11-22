@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.PASS_SETTINGS_CLASS
@@ -25,7 +24,7 @@ val hidePromotionalMessagesPatch: Patch = patch(
     execute {
         markPatchApplied(PASS_SETTINGS_CLASS, "hidePromotionalMessages", hidePromotionalMessagesPatch)
 
-        StoreInAppMessagesFingerprint.matchSingle().method.apply {
+        StoreInAppMessagesFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister()
 
             addInstructions(

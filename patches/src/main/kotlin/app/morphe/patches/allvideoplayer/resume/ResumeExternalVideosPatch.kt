@@ -6,7 +6,6 @@ package app.morphe.patches.allvideoplayer.resume
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch
 
@@ -20,7 +19,7 @@ val resumeExternalVideosPatch = patch(
     dependsOn(allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch)
     compatibleWith(AppCompatibilities.ALL_VIDEO_PLAYER)
     execute {
-        PlayVideoFingerprint.matchSingle().method.addInstructions(
+        PlayVideoFingerprint.method.addInstructions(
             0,
             "invoke-static { p0, p1 }, $EXTENSION_CLASS->resolve(Landroid/app/Activity;Landroid/net/Uri;)Landroid/net/Uri;\n" +
                 "move-result-object p1",

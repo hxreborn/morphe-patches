@@ -12,7 +12,6 @@ package app.morphe.patches.aliexpress.misc.promotions
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
@@ -30,6 +29,6 @@ val removePromotionalPopupsPatch: Patch = patch(
 
     execute {
         markPatchApplied("removePromotionalPopups", removePromotionalPopupsPatch)
-        (PromotionActivityFingerprint.matchOrNull() ?: PromotionEventFingerprint.matchSingle()).method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->removePromotionalPopups()Z")
+        (PromotionActivityFingerprint.matchOrNull() ?: PromotionEventFingerprint.match()).method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->removePromotionalPopups()Z")
     }
 }

@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -30,7 +29,7 @@ val disableTypingIndicatorPatch: Patch = patch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, disableTypingIndicatorPatch)
 
-        val match = SendTypingStateFingerprint.matchSingle()
+        val match = SendTypingStateFingerprint.match()
         val moveResult = match.instructionMatch(Opcode.MOVE_RESULT).index
         val register = match.method.getInstruction<OneRegisterInstruction>(moveResult).registerA
         match.method.addInstructions(

@@ -6,7 +6,6 @@ package app.morphe.patches.idlefish.misc.login
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.idlefish.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -26,9 +25,9 @@ val skipLoginPromptsPatch = patch(
 }
 
 internal fun skipLoginPrompts() {
-    FirstLaunchLoginGuideFingerprint.matchSingle().method.returnEarly(false)
-    ExtraOpenLoginFingerprint.matchSingle().method.returnEarly(false)
-    RemoteLoginFingerprint.matchSingle().method.addInstructions(
+    FirstLaunchLoginGuideFingerprint.method.returnEarly(false)
+    ExtraOpenLoginFingerprint.method.returnEarly(false)
+    RemoteLoginFingerprint.method.addInstructions(
         0,
         """
             invoke-static {p0, p1}, $LOGIN_HANDLER->instance(Lmtopsdk/mtop/intf/Mtop;Ljava/lang/String;)$LOGIN_HANDLER

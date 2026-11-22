@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.musicolet.misc.fix.cast.castPluginAccessPatch
 import app.morphe.patches.musicolet.misc.fix.integrity.forcePassedIntegrityVerdictPatch
@@ -48,10 +47,10 @@ val unlockPremiumPatch = patch(
         val (lifetime, subscription) = flagPairs.singleOrNull()
             ?: throw PatchException("Pro access labels read different flags: $flagPairs")
 
-        proAccessFingerprint(lifetime, subscription).matchSingle().method.returnEarly(true)
+        proAccessFingerprint(lifetime, subscription).method.returnEarly(true)
 
         accessLabels.forEach { it.readFirstFlagAsTrue() }
-        proPurchaseStateFingerprint(lifetime).matchSingle().readFirstFlagAsTrue()
+        proPurchaseStateFingerprint(lifetime).match().readFirstFlagAsTrue()
     }
 }
 

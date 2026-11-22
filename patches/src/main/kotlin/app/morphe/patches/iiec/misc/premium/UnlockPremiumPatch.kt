@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.iiec.misc.fix.signature.bypassSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -28,10 +27,10 @@ val unlockPremiumPatch = patch(
     dependsOn(bypassSignatureCheckPatch, removeMobileAdsInitProviderPatch)
 
     execute {
-        EditorNavigationFingerprint.matchSingle()
-        PremiumUserFingerprint.matchSingle().method.returnEarly(true)
+        EditorNavigationFingerprint.match()
+        PremiumUserFingerprint.method.returnEarly(true)
 
-        MoreIdesMenuItemFingerprint.matchSingle().method.apply {
+        MoreIdesMenuItemFingerprint.method.apply {
             val visibleRegister = findFreeRegister(0)
             addInstructions(
                 0,
@@ -43,9 +42,9 @@ val unlockPremiumPatch = patch(
             )
         }
 
-        ConsentInfoUpdateFingerprint.matchSingle().method.returnEarly()
+        ConsentInfoUpdateFingerprint.method.returnEarly()
 
-        AdsManagerConstructorFingerprint.matchSingle().method.apply {
+        AdsManagerConstructorFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(
                 methodCall(definingClass = MOBILE_ADS_CLASS),
             ).forEach { removeInstruction(it) }

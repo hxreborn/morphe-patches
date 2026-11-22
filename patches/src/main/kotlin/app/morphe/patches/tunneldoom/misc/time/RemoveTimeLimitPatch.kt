@@ -6,7 +6,6 @@ package app.morphe.patches.tunneldoom.misc.time
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
@@ -20,6 +19,6 @@ val removeTimeLimitPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        CountdownStartFingerprint.matchSingle().method.addInstruction(0, "return-object p0")
+        CountdownStartFingerprint.method.addInstruction(0, "return-object p0")
     }
 }

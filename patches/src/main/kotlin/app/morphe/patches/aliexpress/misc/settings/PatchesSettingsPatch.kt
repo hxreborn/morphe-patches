@@ -14,7 +14,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.fillAppliedPatch
@@ -71,7 +70,7 @@ internal val patchesSettingsPatch = patch {
         },
     )
     execute {
-        val switchConstructor = SwitchConstructorFingerprint.matchSingle().method
+        val switchConstructor = SwitchConstructorFingerprint.method
         mutableClassDefBy(PATCHES_MENU_CLASS).replaceResourceIdStubs(
             ResourceType.ID,
             mapOf("versionRowId" to "rl_version_settings", "versionTitleId" to "tv_version_title"),
@@ -96,11 +95,11 @@ internal val patchesSettingsPatch = patch {
                 """.trimIndent(),
             )
         }
-        ApplicationOnCreateFingerprint.matchSingle().method.addInstruction(
+        ApplicationOnCreateFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, $PATCH_SETTINGS_CLASS->initialize(Landroid/content/Context;)V",
         )
-        SettingsViewFingerprint.matchSingle().method.apply {
+        SettingsViewFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
                 val viewRegister = getInstruction<OneRegisterInstruction>(index).registerA
                 addInstructionsAtControlFlowLabel(

@@ -5,7 +5,6 @@
 package app.morphe.patches.fddb.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -17,8 +16,8 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.FDDB)
 
     execute {
-        val hasPremiumMatch = HasPremiumFingerprint.matchSingle()
+        val hasPremiumMatch = HasPremiumFingerprint.match()
         hasPremiumMatch.method.returnEarly(true)
-        premiumMembershipCheckFingerprint(hasPremiumMatch.originalMethod).matchSingle().method.returnEarly(true)
+        premiumMembershipCheckFingerprint(hasPremiumMatch.originalMethod).method.returnEarly(true)
     }
 }

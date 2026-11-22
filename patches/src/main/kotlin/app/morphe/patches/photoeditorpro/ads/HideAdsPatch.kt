@@ -6,7 +6,6 @@ package app.morphe.patches.photoeditorpro.ads
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.RemoveAdsPurchasedFingerprint
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
@@ -26,7 +25,7 @@ val hideAdsPatch: Patch = patch(
 
     execute {
         markPatchMetadata("hideAds", hideAdsPatch)
-        RemoveAdsPurchasedFingerprint.matchSingle().method.returnTrueWhileEnabled("hideAds")
+        RemoveAdsPurchasedFingerprint.method.returnTrueWhileEnabled("hideAds")
         markPatchInstalled("pep_hide_ads")
     }
 }

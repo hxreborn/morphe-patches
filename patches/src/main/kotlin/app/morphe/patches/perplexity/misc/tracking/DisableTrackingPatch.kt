@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.kotlin.returnUnitEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -43,7 +42,7 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        val payloadBuilder = AnalyticsEventPayloadFingerprint.matchSingle().method
+        val payloadBuilder = AnalyticsEventPayloadFingerprint.method
         val dispatch = analyticsEventDispatchFingerprint(payloadBuilder).matchOrNull()
 
         if (dispatch == null) {
@@ -57,6 +56,6 @@ val disableTrackingPatch = patch(
             analyticsEventSinkFingerprint(sinkType).matchAll().forEach { returnUnitEarly(it.method) }
         }
 
-        SingularInitFingerprint.matchSingle().method.returnEarly(false)
+        SingularInitFingerprint.method.returnEarly(false)
     }
 }

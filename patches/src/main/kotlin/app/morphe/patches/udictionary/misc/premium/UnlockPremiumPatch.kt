@@ -5,7 +5,6 @@
 package app.morphe.patches.udictionary.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.udictionary.misc.fix.signature.spoofSignaturePatch
@@ -20,6 +19,6 @@ val unlockPremiumPatch = patch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        DebugVipFlagFingerprint.matchSingle().method.returnEarly(true)
+        DebugVipFlagFingerprint.method.returnEarly(true)
     }
 }

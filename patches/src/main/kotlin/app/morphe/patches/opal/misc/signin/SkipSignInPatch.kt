@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -45,7 +44,7 @@ val skipSignInPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        FirebaseAuthStoreFingerprint.matchSingle().apply {
+        FirebaseAuthStoreFingerprint.match().apply {
             val storeIndex = instructionMatches.last().index
             val storeRegister = method.getInstruction<OneRegisterInstruction>(storeIndex).registerA
             val idRegister = method.getFreeRegisterProvider(storeIndex + 1, 1, storeRegister).getFreeRegister4Bit()
@@ -59,7 +58,7 @@ val skipSignInPatch = patch(
             )
         }
 
-        CreateAllTablesFingerprint.matchSingle().method.apply {
+        CreateAllTablesFingerprint.method.apply {
             listOf(
                 ONBOARDING_TABLE_STATEMENT to listOf(MARK_ONBOARDING_COMPLETED),
                 USERS_TABLE_STATEMENT to listOf(INSERT_LOCAL_USER, RESTORE_LOCAL_USER_TRIGGER),
@@ -87,6 +86,6 @@ val skipSignInPatch = patch(
             }
         }
 
-        IsProfileIncompleteFingerprint.matchSingle().method.returnEarly(false)
+        IsProfileIncompleteFingerprint.method.returnEarly(false)
     }
 }

@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.torrent.removeProtectionPatch
@@ -30,20 +29,20 @@ val fixScreenInsetsPatch = patch(
             ResourceType.ID,
             mapOf("mainContentId" to "ll_bottom", "pageContentId" to "ll_body", "drawerContentId" to "navigation_list_layout"),
         )
-        val match = ActivityContentFingerprint.matchSingle()
+        val match = ActivityContentFingerprint.match()
         val (contentView) = match.instructionMatches
         match.method.addInstruction(
             contentView.index + 1,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->attach(Landroid/app/Activity;)V",
         )
-        val audio = AudioActivityFingerprint.matchSingle()
+        val audio = AudioActivityFingerprint.match()
         val (_, audioContentView) = audio.instructionMatches
         audio.method.addInstruction(
             audioContentView.index + 1,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->attachAudio(Landroid/app/Activity;)V",
         )
-        val queueOwner = QueueLayoutFingerprint.matchSingle().classDef.type
-        val queue = queueWindowFingerprint(queueOwner).matchSingle()
+        val queueOwner = QueueLayoutFingerprint.match().classDef.type
+        val queue = queueWindowFingerprint(queueOwner).match()
         val (queueLayout) = queue.instructionMatches
         queue.method.addInstruction(
             queueLayout.index + 1,

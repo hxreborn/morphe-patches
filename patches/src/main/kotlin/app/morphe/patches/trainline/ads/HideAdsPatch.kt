@@ -6,7 +6,6 @@ package app.morphe.patches.trainline.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val ADVERT_STATE_HIDDEN =
@@ -20,7 +19,7 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.TRAINLINE)
 
     execute {
-        AdvertContentFingerprint.matchSingle().method.addInstructions(
+        AdvertContentFingerprint.method.addInstructions(
             0,
             "sget-object p3, $ADVERT_STATE_HIDDEN->a:$ADVERT_STATE_HIDDEN",
         )

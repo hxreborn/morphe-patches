@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -28,7 +27,7 @@ val customRetakeCountPatch: Patch = patch(
 
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}RetakeCount;", customRetakeCountPatch)
-        CreatePostRetakeCounterSetterFingerprint.matchSingle().method.addInstructions(
+        CreatePostRetakeCounterSetterFingerprint.method.addInstructions(
             0,
             """
                 invoke-static/range { p1 .. p1 }, ${BEREAL_EXTENSION_PACKAGE}RetakeCount;->retakeCount(I)I
@@ -36,7 +35,7 @@ val customRetakeCountPatch: Patch = patch(
             """,
         )
 
-        val sendPost = SendPostDelegateFingerprint.matchSingle()
+        val sendPost = SendPostDelegateFingerprint.match()
         val continuationType = sendPost.instructionMatches.first()
             .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
         val construction = sendPostContinuationConstructionFingerprint(continuationType)

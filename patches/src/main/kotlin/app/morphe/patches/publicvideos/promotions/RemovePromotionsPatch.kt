@@ -7,7 +7,6 @@ package app.morphe.patches.publicvideos.promotions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -26,10 +25,10 @@ val removePromotionsPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        BottomBarCtaImageFingerprint.matchSingle().method.returnEarly()
-        BottomNavTabPugmarkFingerprint.matchSingle().method.returnEarly(null)
+        BottomBarCtaImageFingerprint.method.returnEarly()
+        BottomNavTabPugmarkFingerprint.method.returnEarly(null)
 
-        val toolType = ProfileHeaderToolsFingerprint.matchSingle().method.implementation!!.instructions
+        val toolType = ProfileHeaderToolsFingerprint.method.implementation!!.instructions
             .firstNotNullOf { instruction ->
                 val reference = (instruction as? ReferenceInstruction)?.reference as? MethodReference
                 reference?.takeIf {
@@ -41,7 +40,7 @@ val removePromotionsPatch = patch(
         val toolFields = classDefBy(toolType).staticFields.filter { it.type == toolType }
 
         listOf(AD_BOOKING_TOOL_ORDINAL, VIP_PACKAGE_TOOL_ORDINAL)
-            .map { profileToolAddedFingerprint(toolType, toolFields[it].name).matchSingle() }
+            .map { profileToolAddedFingerprint(toolType, toolFields[it].name).match() }
             .sortedByDescending { it.instructionMatches.last().index }
             .forEach { it.method.removeInstruction(it.instructionMatches.last().index) }
     }

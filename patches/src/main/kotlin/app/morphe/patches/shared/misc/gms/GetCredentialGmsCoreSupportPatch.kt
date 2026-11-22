@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
@@ -67,9 +66,9 @@ internal val getCredentialGmsCoreSignInPatch = patch {
         renameCloudMessagingToGmsCore()
 
         val originalMatch = GetCredentialHandlerFingerprint.matchAllOrNull()?.let {
-            GetCredentialHandlerFingerprint.matchSingle()
+            GetCredentialHandlerFingerprint.match()
         }
-        val match = originalMatch ?: InlinedGetCredentialHandlerFingerprint.matchSingle()
+        val match = originalMatch ?: InlinedGetCredentialHandlerFingerprint.match()
         val indices = match.instructionMatches.map { it.index }
         val (clientIdCheck, activityCheck, callbackCall) = if (originalMatch != null) {
             val (clientId, activity, _, _, callback) = indices

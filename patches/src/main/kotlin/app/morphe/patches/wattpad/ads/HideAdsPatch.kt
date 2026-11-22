@@ -6,7 +6,6 @@ package app.morphe.patches.wattpad.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -20,7 +19,7 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.WATTPAD)
 
     execute {
-        val match = AdsFreeHourOverrideFingerprint.matchSingle()
+        val match = AdsFreeHourOverrideFingerprint.match()
         val adsFreeHourActive = match.instructionMatches.first { it.instruction.opcode == Opcode.MOVE_RESULT }
         val register = adsFreeHourActive.getInstruction<OneRegisterInstruction>().registerA
         match.method.addInstruction(adsFreeHourActive.index + 1, "const/4 v$register, 0x1")

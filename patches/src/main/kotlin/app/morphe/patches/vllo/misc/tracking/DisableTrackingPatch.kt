@@ -5,7 +5,6 @@
 package app.morphe.patches.vllo.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
@@ -29,6 +28,6 @@ val disableTrackingPatch = patch(
     availability(requireArm64)
 
     execute {
-        AppsFlyerStartFingerprint.matchSingle().method.returnEarly()
+        AppsFlyerStartFingerprint.method.returnEarly()
     }
 }

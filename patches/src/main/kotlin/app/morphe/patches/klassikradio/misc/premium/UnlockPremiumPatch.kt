@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -25,26 +24,26 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.KLASSIK_RADIO)
 
     execute {
-        val subscriptionType = SubscriptionTypeFingerprint.matchSingle()
+        val subscriptionType = SubscriptionTypeFingerprint.match()
         val premium = subscriptionType.instructionMatches.last()
             .getInstruction<ReferenceInstruction>()
             .getReference<FieldReference>()!!
 
-        contractConstructorFingerprint(subscriptionType.classDef.type).matchSingle().apply {
+        contractConstructorFingerprint(subscriptionType.classDef.type).match().apply {
             val index = instructionMatches.first().index
             val register = method.getInstruction<TwoRegisterInstruction>(index).registerA
 
             method.addInstruction(index, "sget-object v$register, $premium")
         }
 
-        SectionTypeDecoderFingerprint.matchSingle().apply {
+        SectionTypeDecoderFingerprint.match().apply {
             val index = instructionMatches.last().index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
             method.addInstruction(index + 1, "const/4 v$register, 0x0")
         }
 
-        SkipToStringFingerprint.matchSingle().classDef.methods
+        SkipToStringFingerprint.match().classDef.methods
             .single { it.name == "<init>" && it.parameterTypes == listOf("I", "Z") }
             .addInstructionsWithLabels(
                 0,

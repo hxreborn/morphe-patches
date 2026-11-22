@@ -6,7 +6,6 @@ package app.morphe.patches.uptcl.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
@@ -20,7 +19,7 @@ val hideAdsPatch = patch(
     dependsOn(trustInstalledCertificatePatch, failAdMobLoadsPatch)
 
     execute {
-        AdPlacementsFingerprint.matchSingle().method.addInstructions(
+        AdPlacementsFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { }, Ljava/util/Collections;->emptyList()Ljava/util/List;

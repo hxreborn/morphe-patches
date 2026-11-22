@@ -6,7 +6,6 @@ package app.morphe.patches.readera.misc.speechfilter
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
@@ -38,7 +37,7 @@ val omitWordsAndSymbolsPatch = patch(
 }
 
 internal fun addSpeechTextFilter() {
-    val speakMatch = SpeakTextFingerprint.matchSingle()
+    val speakMatch = SpeakTextFingerprint.match()
     val contextField = speakMatch.classDef.fields.first { it.type == "Landroid/content/Context;" }
     val filterText = speakMatch.classDef.addMethod(
         "filterSpeechText", listOf("Ljava/lang/String;"), "Ljava/lang/String;", AccessFlags.PRIVATE.value, 3,

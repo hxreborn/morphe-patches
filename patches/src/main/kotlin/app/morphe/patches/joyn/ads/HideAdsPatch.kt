@@ -6,7 +6,6 @@ package app.morphe.patches.joyn.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -18,9 +17,9 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.JOYN, AppCompatibilities.JOYN_AT)
 
     execute {
-        val adsDisabledLogLambdaType = AdsDisabledLogMessageFingerprint.matchSingle().classDef.type
+        val adsDisabledLogLambdaType = AdsDisabledLogMessageFingerprint.match().classDef.type
         val playerFactoryType = adsDisabledLogLambdaType.substringBefore('$') + ";"
-        val match = enableAdsCheckFingerprint(playerFactoryType).matchSingle()
+        val match = enableAdsCheckFingerprint(playerFactoryType).match()
         val enableAdsResult = match.instructionMatches.last()
         val register = enableAdsResult.getInstruction<OneRegisterInstruction>().registerA
 

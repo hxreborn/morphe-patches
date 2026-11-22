@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.ultimea.misc.controls.xupmixPatch
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
@@ -45,7 +44,7 @@ internal val equalizerConnectionPatch = patch {
             listOf("Landroid/bluetooth/BluetoothGatt;", "Landroid/bluetooth/BluetoothGattCharacteristic;"),
             listOf("Landroid/bluetooth/BluetoothGatt;", "Landroid/bluetooth/BluetoothGattCharacteristic;", "[B", "I"),
         ).forEach { parameters ->
-            val match = ReadbackCallFingerprint("writeCharacteristic", parameters).matchSingle()
+            val match = ReadbackCallFingerprint("writeCharacteristic", parameters).match()
             val (write) = match.instructionMatches
             val call = match.method.getInstruction<ReferenceInstruction>(write.index)
             val reference = call.reference as MethodReference
@@ -60,7 +59,7 @@ internal val equalizerConnectionPatch = patch {
             match.method.replaceInstruction(write.index, replacement)
         }
         listOf("onCharacteristicWrite", "onCharacteristicReceived", "onConnectionStateChanged").forEach { name ->
-            val match = ReadbackCallFingerprint(name).matchSingle()
+            val match = ReadbackCallFingerprint(name).match()
             val (callback) = match.instructionMatches
             val call = match.method.getInstruction<ReferenceInstruction>(callback.index)
             val reference = call.reference as MethodReference
@@ -75,10 +74,10 @@ internal val equalizerConnectionPatch = patch {
             }
             match.method.replaceInstruction(callback.index, replacement)
         }
-        val activity = DeviceActivityFingerprint.matchSingle().method
+        val activity = DeviceActivityFingerprint.method
         activity.addInstructions(activity.implementation!!.instructions.lastIndex,
             "invoke-static { p0 }, $PANEL_CLASS_DESCRIPTOR->attach(Landroid/app/Activity;)V")
-        NavigationMessageFingerprint.matchSingle().method.addInstructions(0,
+        NavigationMessageFingerprint.method.addInstructions(0,
             "invoke-static { p1, p2 }, $PANEL_CLASS_DESCRIPTOR->navigation(Ljava/lang/String;Ljava/nio/ByteBuffer;)V")
     }
 }

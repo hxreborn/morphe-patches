@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -22,14 +21,14 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.SQCOM)
 
     execute {
-        val adListResponse = AdListResponseFingerprint.matchSingle()
+        val adListResponse = AdListResponseFingerprint.match()
         val moveResult = adListResponse.instructionMatches.last()
         val adListRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
         adListResponse.method.addInstruction(moveResult.index + 1, "const/16 v$adListRegister, 0x0")
 
-        val consentRequest = ConsentRequestFingerprint.matchSingle().method
+        val consentRequest = ConsentRequestFingerprint.method
         val listenerType = consentRequest.parameterTypes.last().toString()
-        val listenerMethod = consentListenerFingerprint(listenerType).matchSingle().method
+        val listenerMethod = consentListenerFingerprint(listenerType).method
         val listenerCall = "$listenerType->${listenerMethod.name}($FORM_ERROR_TYPE)V"
         val listenerRegister = consentRequest.implementation!!.registerCount - 1
         val nullFormError = consentRequest.getFreeRegisterProvider(0, 1, listenerRegister).getFreeRegister4Bit()

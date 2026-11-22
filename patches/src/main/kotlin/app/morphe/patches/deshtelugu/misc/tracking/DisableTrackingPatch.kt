@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -38,7 +37,7 @@ val disableTrackingPatch = patch(
     dependsOn(disableAnalyticsCollectionPatch, deactivateFirebaseAnalyticsPatch, disableCrashlyticsCollectionPatch)
 
     execute {
-        val fullSentenceSender = FullSentenceSenderFingerprint.matchSingle()
+        val fullSentenceSender = FullSentenceSenderFingerprint.match()
         val (_, _, _, fullSentenceEnqueue) = fullSentenceSender.instructionMatches
         val enqueue = fullSentenceEnqueue.getInstruction<ReferenceInstruction>().reference as MethodReference
         fullSentenceSender.method.removeInstruction(fullSentenceEnqueue.index)
@@ -61,18 +60,18 @@ val disableTrackingPatch = patch(
             AppSizeSenderFingerprint,
             UserHistorySenderFingerprint,
             SetupDeviceInfoSenderFingerprint,
-        ).forEach { it.matchSingle().removeRequestEnqueue(enqueue) }
+        ).forEach { it.match().removeRequestEnqueue(enqueue) }
 
-        KeystrokeSuggestionSenderFingerprint.matchSingle().let { match ->
+        KeystrokeSuggestionSenderFingerprint.match().let { match ->
             val (_, _, requestTagWrite) = match.instructionMatches
             match.method.addInstruction(requestTagWrite.index + 1, "return-void")
         }
 
-        val (pingerConstructorCall, _) = HeartbeatPingerFingerprint.matchSingle().instructionMatches
+        val (pingerConstructorCall, _) = HeartbeatPingerFingerprint.match().instructionMatches
         val pingerConstructor = pingerConstructorCall.getInstruction<ReferenceInstruction>().reference as MethodReference
-        heartbeatPingFingerprint(pingerConstructor.definingClass).matchSingle().method.returnEarly()
-        MetaRetentionPingFingerprint.matchSingle().method.returnEarly()
-        QuickMessageEventSenderFingerprint.matchSingle().method.returnEarly()
-        QuickMessageTrackingUrlSenderFingerprint.matchSingle().method.returnEarly()
+        heartbeatPingFingerprint(pingerConstructor.definingClass).method.returnEarly()
+        MetaRetentionPingFingerprint.method.returnEarly()
+        QuickMessageEventSenderFingerprint.method.returnEarly()
+        QuickMessageTrackingUrlSenderFingerprint.method.returnEarly()
     }
 }

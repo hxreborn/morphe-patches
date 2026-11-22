@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
@@ -30,7 +29,7 @@ val spoofSignaturePatch = patch {
             .digest(packageMetadata.stockSigningCertificate().publicKey.encoded)
             .joinToString("") { "%02X".format(it) }
 
-        ApkFileSignatureReportFingerprint.matchSingle().let { match ->
+        ApkFileSignatureReportFingerprint.match().let { match ->
             val (_, nativeSignatureResult) = match.instructionMatches
             val signatureRegister = match.method.getInstruction<OneRegisterInstruction>(nativeSignatureResult.index).registerA
             match.method.addInstruction(
@@ -39,7 +38,7 @@ val spoofSignaturePatch = patch {
             )
         }
 
-        SecuritySdkInitFingerprint.matchSingle().let { match ->
+        SecuritySdkInitFingerprint.match().let { match ->
             val (configBuilderNewInstance) = match.instructionMatches
             match.method.addInstruction(configBuilderNewInstance.index, "return-void")
         }

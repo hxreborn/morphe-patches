@@ -14,7 +14,6 @@ import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
@@ -123,7 +122,7 @@ val spoofSignaturePatch = patch(
     execute {
         val certificate = packageMetadata.stockSigningCertificate().encoded.joinToString("") { "%02x".format(it) }
 
-        SignatureDigestFingerprint.matchSingle().method.addInstructions(
+        SignatureDigestFingerprint.method.addInstructions(
             0,
             """
                 new-instance v0, $SIGNATURE_CLASS
@@ -134,10 +133,10 @@ val spoofSignaturePatch = patch(
         )
 
         listOf(RepositoryGuidFingerprint, ApplicationGuidFingerprint).forEach {
-            it.matchSingle().method.addInstructionsWithLabels(0, USE_SWITCHED_GUID)
+            it.method.addInstructionsWithLabels(0, USE_SWITCHED_GUID)
         }
 
-        HttpInterceptorFingerprint.matchSingle().method.apply {
+        HttpInterceptorFingerprint.method.apply {
             addSignedRequestRetry()
             addResponseObserver()
         }

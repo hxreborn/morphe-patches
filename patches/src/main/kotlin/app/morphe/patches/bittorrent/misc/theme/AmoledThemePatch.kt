@@ -16,7 +16,6 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -215,7 +214,7 @@ val amoledThemePatch = patch(
     dependsOn(removeProtectionPatch, amoledResourcesPatch)
 
     execute {
-        val darkMode = DarkModeFingerprint.matchSingle().method
+        val darkMode = DarkModeFingerprint.method
         darkMode.addInstructions(0, "invoke-static/range { p0 .. p0 }, $SETTINGS_CLASS->initialize(Landroid/content/Context;)V")
         mutableClassDefBy(SETTINGS_CLASS).replaceStub(
             "isDark", 2,
@@ -264,7 +263,7 @@ val amoledThemePatch = patch(
             }
         }
 
-        SettingsResumeFingerprint.matchSingle().method.addInstructions(
+        SettingsResumeFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p0 .. p0 }, $MENU_CLASS->attach(Landroid/app/Activity;)V",
         )

@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -23,7 +22,7 @@ val resumeAfterScreenLockPatch = patch(
     compatibleWith(AppCompatibilities.ALL_VIDEO_PLAYER)
 
     execute {
-        RestoreSavedPositionFingerprint.matchSingle().apply {
+        RestoreSavedPositionFingerprint.match().apply {
             val (_, _, missingEntry, _, sessionPosition) = instructionMatches
             val read = sessionPosition.getInstruction<TwoRegisterInstruction>()
             val field = method.getInstruction(sessionPosition.index).getReference<FieldReference>()!!

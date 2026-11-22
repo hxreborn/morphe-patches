@@ -11,7 +11,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -22,7 +21,7 @@ import com.android.tools.smali.dexlib2.iface.reference.StringReference
 internal fun removeComposableCall(label: String, composable: Method) {
     val call = Fingerprint(
         filters = listOf(decryptedString(label), methodCall(reference = composable)),
-    ).matchSingle()
+    ).match()
     call.method.replaceInstruction(call.instructionMatches.last().index, "nop")
 }
 

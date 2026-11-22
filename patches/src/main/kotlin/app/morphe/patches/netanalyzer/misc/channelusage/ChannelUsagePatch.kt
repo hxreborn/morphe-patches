@@ -10,7 +10,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.EXTENSION_PACKAGE
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MenuSection
@@ -47,7 +46,7 @@ val channelUsagePatch = patch(
     execute {
         addMenuEntry(MenuSection.NETWORK, "Channel Usage", CHANNEL_USAGE_ACTIVITY)
 
-        val menu = composableFingerprint(WIFI_PAGER_MENU).matchSingle()
+        val menu = composableFingerprint(WIFI_PAGER_MENU).match()
         val parameters = menu.composableParameters()
         val usagePageIndex = parameters.indexOf(HAS_USAGE_PAGE)
         if (usagePageIndex < 0) throw PatchException("$WIFI_PAGER_MENU takes $parameters, expected $HAS_USAGE_PAGE")
@@ -58,14 +57,14 @@ val channelUsagePatch = patch(
         val usagePageRegister = method.implementation!!.registerCount - MethodUtil.getParameterRegisterCount(method) + usagePageIndex
         method.addInstruction(0, "const/16 v$usagePageRegister, $SHOW_USAGE_PAGE")
 
-        val usageItem = ChannelUsageMenuItemFingerprint.matchSingle()
+        val usageItem = ChannelUsageMenuItemFingerprint.match()
         val itemCall = usageItem.instructionMatches.last()
         val onClickRegister = itemCall.getInstruction<FiveRegisterInstruction>().registerE
         val onClickType = usageItem.method.instructions.take(itemCall.index).last {
             it.opcode == Opcode.NEW_INSTANCE && (it as OneRegisterInstruction).registerA == onClickRegister
         }.getReference<TypeReference>()!!.type
 
-        val selection = pageSelectionFingerprint(onClickType).matchSingle()
+        val selection = pageSelectionFingerprint(onClickType).match()
         val (pageLiteral, selectPage, savePage) = selection.instructionMatches
         val register = pageLiteral.getInstruction<OneRegisterInstruction>().registerA
         requireNibbleRegisters(register)

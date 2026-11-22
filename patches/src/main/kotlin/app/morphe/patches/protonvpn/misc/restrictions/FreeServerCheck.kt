@@ -12,7 +12,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import app.morphe.patcher.patch.classDefBy
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -38,7 +37,7 @@ internal fun freeServerCheckFingerprint(
 )
 
 internal fun invertFreeServerCheckForFreeAccount(check: Fingerprint) {
-    check.matchSingle().run {
+    check.match().run {
         val isFreeServerResult = instructionMatches[1]
         val register = isFreeServerResult.getInstruction<OneRegisterInstruction>().registerA
         method.addInstructions(

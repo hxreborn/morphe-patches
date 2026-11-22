@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
@@ -18,7 +17,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 internal val disablePiracyCheckPatch = patch {
     execute {
-        PiracyCheckerStartFingerprint.matchSingle().method.apply {
+        PiracyCheckerStartFingerprint.method.apply {
             val allowCallbackField = getInstruction(
                 indexOfFirstInstructionOrThrow(Opcode.IGET_OBJECT),
             ).getReference<FieldReference>()!!

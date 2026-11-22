@@ -6,7 +6,6 @@ package app.morphe.patches.publicvideos.misc.splash
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
@@ -17,9 +16,9 @@ val removeStartupAnimationPatch = patch(
     compatibleWith(AppCompatibilities.PUBLIC)
 
     execute {
-        val beginFinishSplashGate = BeginFinishSplashGateFingerprint.matchSingle().method
+        val beginFinishSplashGate = BeginFinishSplashGateFingerprint.method
 
-        HandleSplashEventFingerprint.matchSingle().method.addInstructions(
+        HandleSplashEventFingerprint.method.addInstructions(
             0,
             """
                 const/4 v0, 0x0

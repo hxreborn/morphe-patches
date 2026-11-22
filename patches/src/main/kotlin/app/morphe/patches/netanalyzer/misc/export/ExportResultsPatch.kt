@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.LAN_SCAN_MENU
 import app.morphe.patches.netanalyzer.shared.TOOLS_PING_MENU
 import app.morphe.patches.netanalyzer.shared.WIFI_PAGER_MENU
@@ -103,7 +102,7 @@ private fun recordPortScanStarts() {
 }
 
 private fun observeDnsResponses() {
-    val menu = composableFingerprint(TOOLS_DNS_MENU).matchSingle()
+    val menu = composableFingerprint(TOOLS_DNS_MENU).match()
     val parameters = menu.composableParameters()
     val method = menu.method
     val types = method.parameterTypes.take(DNS_MENU_PARAMETERS.size).map { it.toString() }
@@ -125,7 +124,7 @@ private fun observeDnsResponses() {
     val recordRegistration = DNS_RECORD_PROPERTIES.joinToString(LIST_SEPARATOR) { property ->
         "$property=${recordFields[property] ?: throw PatchException("$recordType has no $property property")}"
     }
-    val mnemonics = DnsTypeMnemonicsFingerprint.matchSingle().originalMethod.definingClass
+    val mnemonics = DnsTypeMnemonicsFingerprint.originalMethod.definingClass
     registerAtLaunch(
         "$DNS_EXPORT_CLASS->register(Ljava/lang/Class;Ljava/lang/String;)V",
         sectionFields.filter { it.type == ARRAY_PREFIX + recordType }.joinToString(LIST_SEPARATOR) { it.name } +
@@ -135,7 +134,7 @@ private fun observeDnsResponses() {
 }
 
 private fun registerWifiScanHolders() {
-    val hotspotType = WifiHotspotToStringFingerprint.matchSingle().originalMethod.definingClass
+    val hotspotType = WifiHotspotToStringFingerprint.originalMethod.definingClass
     val holders = hotspotConstructionFingerprint(hotspotType).matchAll()
         .map { it.originalMethod.definingClass }.distinct()
     registerAtLaunch(
@@ -148,7 +147,7 @@ private fun whoisToolbarSlot() = WhoisToolbarFingerprint.matchAll().firstNotNull
     ?: throw PatchException("No $TOOLS_WHOIS_SCREEN toolbar lambda has an empty composer group")
 
 private fun observeWhoisResults() {
-    val screen = composableFingerprint(TOOLS_WHOIS_SCREEN).matchSingle()
+    val screen = composableFingerprint(TOOLS_WHOIS_SCREEN).match()
     val itemIndex = screen.composableParameters().indexOf(WHOIS_ITEM)
     if (itemIndex < 0) throw PatchException("$TOOLS_WHOIS_SCREEN takes no $WHOIS_ITEM parameter")
     val method = screen.method

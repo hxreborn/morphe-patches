@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
@@ -76,7 +75,7 @@ val hideHomeShortcutsPatch: Patch = patch(
         val groupTitleKeys = hidden.mapNotNull { it.groupTitleKey }.joinToString(",")
 
         listOf(HOME_SHORTCUTS_CONFIG_KEY, MORE_SHORTCUTS_CONFIG_KEY, SEARCH_SHORTCUTS_CONFIG_KEY).forEach { configKey ->
-            shortcutConfigFingerprint(configKey).matchSingle().apply {
+            shortcutConfigFingerprint(configKey).match().apply {
                 val returnIndex = instructionMatches.last().index
                 val configRegister = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
                 val valueRegister = method.findFreeRegister(returnIndex, configRegister)

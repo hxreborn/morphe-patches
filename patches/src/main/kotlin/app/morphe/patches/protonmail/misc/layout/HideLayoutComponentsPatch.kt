@@ -6,7 +6,6 @@ package app.morphe.patches.protonmail.misc.layout
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
@@ -27,9 +26,9 @@ val hideLayoutComponentsPatch: Patch = patch(
         markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(SIDEBAR_ENTRIES_CLASS)
 
-        SubscriptionEntryFingerprint.matchSingle().method
+        SubscriptionEntryFingerprint.method
             .returnVoidWhen("$SIDEBAR_ENTRIES_CLASS->isSubscriptionHidden()Z")
-        ReportAProblemEntryFingerprint.matchSingle().method
+        ReportAProblemEntryFingerprint.method
             .returnVoidWhen("$SIDEBAR_ENTRIES_CLASS->isReportAProblemHidden()Z")
     }
 }

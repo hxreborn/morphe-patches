@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.platform.AiRequestInterceptorFingerprint
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
@@ -42,7 +41,7 @@ val traceAiRequestsPatch: Patch = patch(
 
     execute {
         markPatchMetadata("traceAiRequests", traceAiRequestsPatch)
-        val appInterceptor = AiRequestInterceptorFingerprint.matchSingle()
+        val appInterceptor = AiRequestInterceptorFingerprint.match()
         val interceptorClass = appInterceptor.classDef.type
         val interceptorInterface = appInterceptor.classDef.interfaces.singleOrNull()
             ?: throw PatchException("$interceptorClass does not implement a single interface")
@@ -65,7 +64,7 @@ val traceAiRequestsPatch: Patch = patch(
             )
         }
 
-        requestClientInterceptorFingerprint(interceptorClass).matchSingle().let { match ->
+        requestClientInterceptorFingerprint(interceptorClass).match().let { match ->
             match.method.apply {
                 val newIndex = match.instructionMatches.single().index
                 val register = getInstruction<OneRegisterInstruction>(newIndex).registerA
@@ -84,7 +83,7 @@ val traceAiRequestsPatch: Patch = patch(
             }
         }
 
-        StoragePutFileFingerprint.matchSingle().method.addInstructions(
+        StoragePutFileFingerprint.method.addInstructions(
             0,
             "invoke-static { p0 }, $AI_TRACE_CLASS->upload($OBJECT)V",
         )

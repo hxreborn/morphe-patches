@@ -7,7 +7,6 @@ package app.morphe.patches.allvideoplayer.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
@@ -34,7 +33,7 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        FacebookOpenConnectionFingerprint.matchSingle().method.addInstructions(
+        FacebookOpenConnectionFingerprint.method.addInstructions(
             0,
             """
                 new-instance v0, Ljava/io/IOException;

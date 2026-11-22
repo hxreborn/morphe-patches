@@ -5,7 +5,6 @@
 package app.morphe.patches.imo.misc.story
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -20,7 +19,7 @@ val removeStoryVideoLimitPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        StoryGalleryDurationFingerprint.matchSingle().method.returnEarly(GALLERY_DURATION_SECONDS)
-        StoryRecordDurationFingerprint.matchSingle().method.returnEarly(RECORD_DURATION_MILLIS)
+        StoryGalleryDurationFingerprint.method.returnEarly(GALLERY_DURATION_SECONDS)
+        StoryRecordDurationFingerprint.method.returnEarly(RECORD_DURATION_MILLIS)
     }
 }

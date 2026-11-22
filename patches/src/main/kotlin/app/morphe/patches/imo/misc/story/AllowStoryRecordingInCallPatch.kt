@@ -6,7 +6,6 @@ package app.morphe.patches.imo.misc.story
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
@@ -20,7 +19,7 @@ val allowStoryRecordingInCallPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        DisableRecordStoryInCallFingerprint.matchSingle().method.returnEarly(false)
+        DisableRecordStoryInCallFingerprint.method.returnEarly(false)
 
         CameraCallConflictFingerprint.matchAll(2..2).forEach { match ->
             match.instructionMatches.filter { it.instruction.opcode == Opcode.MOVE_RESULT }.forEach { inCallResult ->

@@ -6,7 +6,6 @@ package app.morphe.patches.networkflow.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.networkflow.misc.fix.signature.disableArchiveSignatureCheckPatch
 import app.morphe.patches.networkflow.misc.fix.signature.disableNativeChecksPatch
 import app.morphe.patches.networkflow.misc.fix.signature.spoofSignaturePatch
@@ -25,6 +24,6 @@ val unlockProPatch = patch(
     dependsOn(spoofSignaturePatch, disableArchiveSignatureCheckPatch, disableNativeChecksPatch)
 
     execute {
-        ProStatusDefaultConstructorFingerprint.matchSingle().method.addInstructions(0, "const/4 p1, 0x0")
+        ProStatusDefaultConstructorFingerprint.method.addInstructions(0, "const/4 p1, 0x0")
     }
 }

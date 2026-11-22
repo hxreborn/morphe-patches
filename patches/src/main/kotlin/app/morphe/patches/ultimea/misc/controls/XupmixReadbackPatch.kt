@@ -13,7 +13,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -36,7 +35,7 @@ internal val xupmixReadbackPatch = patch {
     dependsOn(ultimeaSettingsExtensionPatch)
     execute {
         listOf(WriteCharacteristicFingerprint, WriteCharacteristicWithValueFingerprint).forEach { fingerprint ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             val (write) = match.instructionMatches
             val call = match.method.getInstruction<Instruction>(write.index)
             val reference = call.getReference<MethodReference>()!!
@@ -68,9 +67,9 @@ internal val xupmixReadbackPatch = patch {
             match.method.replaceInstruction(write.index, replacement)
         }
 
-        val written = CharacteristicWrittenFingerprint.matchSingle().method
-        val received = CharacteristicReceivedFingerprint.matchSingle().method
-        val connection = ConnectionChangedFingerprint.matchSingle().method
+        val written = CharacteristicWrittenFingerprint.method
+        val received = CharacteristicReceivedFingerprint.method
+        val connection = ConnectionChangedFingerprint.method
         if (written.definingClass != received.definingClass || written.definingClass != connection.definingClass) {
             throw PatchException("Expected one Bluetooth callback class")
         }
@@ -127,9 +126,9 @@ internal val xupmixReadbackPatch = patch {
                 nop
             """,
         )
-        val factory = GattConnectionFactoryFingerprint.matchSingle()
+        val factory = GattConnectionFactoryFingerprint.match()
         val (contextRead, callbackRead, transportConstant, connect) = factory.instructionMatches
-        val registration = GattRegistrationFingerprint.matchSingle()
+        val registration = GattRegistrationFingerprint.match()
         if (registration.method != factory.method) throw PatchException("Expected one Bluetooth connection factory")
         val (_, connectingRead, _, autoRead) = registration.instructionMatches
         fun field(index: Int) = factory.method.getInstruction<Instruction>(index).getReference<FieldReference>()

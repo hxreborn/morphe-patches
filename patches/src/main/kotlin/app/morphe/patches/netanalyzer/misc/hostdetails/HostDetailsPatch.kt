@@ -12,7 +12,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.ClickableModifierFingerprint
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.PING_RESULT_ROW
@@ -56,7 +55,7 @@ val hostDetailsPatch = patch(
     execute {
         addFeatureActivity("ProbeDetailsActivity")
 
-        val spacer = PingResultRowSpacerFingerprint.matchSingle()
+        val spacer = PingResultRowSpacerFingerprint.match()
         val spacerCall = spacer.instructionMatches.last()
         val composerRegister = spacerCall.getInstruction<FiveRegisterInstruction>().registerC
         spacer.method.replaceInstruction(
@@ -64,7 +63,7 @@ val hostDetailsPatch = patch(
             "invoke-static { v$composerRegister }, ${descriptor(rowChevronMethod(spacer.classDef))}",
         )
 
-        val row = PingResultRowBackgroundFingerprint.matchSingle()
+        val row = PingResultRowBackgroundFingerprint.match()
         val rowMethod = row.originalMethod
         val rowParameters = row.composableParameters()
         val probeIndex = rowParameters.indexOf(PING_RESULT_ROW_PROBE)
@@ -81,7 +80,7 @@ val hostDetailsPatch = patch(
             throw PatchException("The $PING_RESULT_ROW background call $background does not return its modifier")
         }
 
-        val clickable = ClickableModifierFingerprint.matchSingle().originalMethod
+        val clickable = ClickableModifierFingerprint.originalMethod
         if (clickable.returnType != modifierType || clickable.parameterTypes[CLICKABLE_ON_CLICK_PARAMETER].toString() != onClickType) {
             throw PatchException("Clickable helper $clickable does not take $modifierType and $onClickType")
         }

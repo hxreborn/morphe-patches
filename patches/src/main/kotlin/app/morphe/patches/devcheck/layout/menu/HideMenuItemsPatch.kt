@@ -9,7 +9,6 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private val HIDDEN_MENU_ITEMS = listOf("action_manage_subscriptions", "action_share", "action_about")
@@ -22,7 +21,7 @@ val hideMenuItemsPatch = patch(
     compatibleWith(AppCompatibilities.DEVCHECK)
 
     execute {
-        val prepareOptionsMenu = PrepareMainOptionsMenuFingerprint.matchSingle().method
+        val prepareOptionsMenu = PrepareMainOptionsMenuFingerprint.method
         val idRegister = prepareOptionsMenu.getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
         prepareOptionsMenu.addInstructions(

@@ -17,7 +17,6 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -69,7 +68,7 @@ private fun addDrawIconMethod() {
     val composerType = icon.parameterTypes[4].toString()
     val modifierType = icon.parameterTypes[2].toString()
 
-    val defaultIconSize = defaultIconSizeModifierFingerprint(icon.definingClass).matchSingle()
+    val defaultIconSize = defaultIconSizeModifierFingerprint(icon.definingClass).match()
     val companion = defaultIconSize.instructionMatches.first().instruction.getReference<FieldReference>()!!
     val size = defaultIconSize.instructionMatches.last().instruction.getReference<MethodReference>()!!
     val companionIsModifier = companion.type == modifierType || modifierType in classDefBy(companion.type).interfaces
@@ -132,7 +131,7 @@ private class ColorTokenCalls(
 )
 
 private fun checkedTrackColorCalls(switchColors: MethodReference): ColorTokenCalls {
-    val match = checkedTrackColorDefaultFingerprint(switchColors).matchSingle()
+    val match = checkedTrackColorDefaultFingerprint(switchColors).match()
     val (_, tokensInstance, tokenGetter, tokenColor) = match.instructionMatches.map { match.method.getInstruction(it.index) }
     return ColorTokenCalls(
         tokensInstance.getReference<FieldReference>()!!,
@@ -142,8 +141,8 @@ private fun checkedTrackColorCalls(switchColors: MethodReference): ColorTokenCal
 }
 
 private fun injectCheckedIconColor() {
-    val switchColorsType = ProtonSwitchFingerprint.matchSingle().method.parameterTypes[SWITCH_COLORS_PARAMETER].toString()
-    val match = protonSwitchColorsFingerprint(switchColorsType).matchSingle()
+    val switchColorsType = ProtonSwitchFingerprint.method.parameterTypes[SWITCH_COLORS_PARAMETER].toString()
+    val match = protonSwitchColorsFingerprint(switchColorsType).match()
     val callIndex = match.instructionMatches.last().index
     val call = match.method.getInstruction<RegisterRangeInstruction>(callIndex)
     val colors = call.getReference<MethodReference>()!!
@@ -189,7 +188,7 @@ private fun injectCheckedIconColor() {
 
 private fun injectCheckedThumbColor() {
     val colorsType = ProtonSwitchFingerprint.matchOrNull()?.method?.parameterTypes?.get(SWITCH_COLORS_PARAMETER)
-        ?: switchImplFingerprint().matchSingle().method.parameterTypes.first { isSwitchColorsType(it) }
+        ?: switchImplFingerprint().method.parameterTypes.first { isSwitchColorsType(it) }
     val constructor = mutableClassDefBy(colorsType.toString()).methods.single { it.isSwitchColorsConstructor() }
 
     constructor.addInstructions(
@@ -202,7 +201,7 @@ private fun injectCheckedThumbColor() {
 }
 
 private fun injectThumbContent() {
-    val protonSwitch = ProtonSwitchFingerprint.matchSingle().method
+    val protonSwitch = ProtonSwitchFingerprint.method
     val thumbContentType = protonSwitch.parameterTypes[THUMB_CONTENT_PARAMETER].toString()
     val defaultMask = "p${protonSwitch.parameterTypes.lastIndex}"
     val registers = protonSwitch.getFreeRegisterProvider(0, 2)
@@ -257,7 +256,7 @@ private fun trackColorFields(switchColors: ClassDef): Pair<FieldReference, Field
 }
 
 private fun injectThumbIconIntoSwitchImpl() {
-    val switchImpl = switchImplFingerprint().matchSingle().method
+    val switchImpl = switchImplFingerprint().method
     val parameters = switchImpl.parameterTypes.map(CharSequence::toString)
     val checkedIndex = parameters.indexOf("Z")
     val composerType = parameters[parameters.lastIndex - 1]
@@ -296,7 +295,7 @@ private fun injectThumbIconIntoSwitchImpl() {
 }
 
 private fun styleSettingsSwitchViews() {
-    val match = SettingsSwitchBindingFingerprint.matchSingle()
+    val match = SettingsSwitchBindingFingerprint.match()
     val castIndex = match.instructionMatches[1].index
     val switchRegister = match.method.getInstruction<OneRegisterInstruction>(castIndex).registerA
     val switchType = match.method.getInstruction(castIndex).getReference<TypeReference>()!!.type

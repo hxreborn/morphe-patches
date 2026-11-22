@@ -6,7 +6,6 @@ package app.morphe.patches.ultimateguitar.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.ultimateguitar.misc.pairip.restoreVirtualizedMethodsPatch
@@ -25,21 +24,21 @@ val unlockPremiumPatch = patch(
     dependsOn(restoreVirtualizedMethodsPatch, removePairipProtectionPatch)
 
     execute {
-        ResponseReceivedFingerprint.matchSingle().method.addInstructions(
+        ResponseReceivedFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p3, p4 }, $EXTENSION_CLASS->rewriteStatus(Ljava/lang/String;I)I
                 move-result p4
             """,
         )
-        TextDataReceivedFingerprint.matchSingle().method.addInstructions(
+        TextDataReceivedFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p3 }, $EXTENSION_CLASS->rewriteBody(Ljava/lang/String;)Ljava/lang/String;
                 move-result-object p3
             """,
         )
-        BlobResponseDataFingerprint.matchSingle().method.addInstructions(
+        BlobResponseDataFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p1 }, $EXTENSION_CLASS->rewriteBody([B)[B

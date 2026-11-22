@@ -15,7 +15,6 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -45,7 +44,7 @@ val saveFriendsBeRealsPatch: Patch = patch(
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}download/FriendsPostDownload;", saveFriendsBeRealsPatch)
 
-        val feedMenu = FeedPostMenuFingerprint.matchSingle()
+        val feedMenu = FeedPostMenuFingerprint.match()
         val method = feedMenu.method
         val resolveText = feedMenu.instructionMatch(Opcode.INVOKE_INTERFACE).getInstruction<ReferenceInstruction>()
             .getReference<MethodReference>()!!
@@ -96,7 +95,7 @@ val saveFriendsBeRealsPatch: Patch = patch(
             ExternalLabel("skip_download", method.getInstruction(listIndex + 1)),
         )
 
-        val reactionsMenu = ReactionsPostMenuFingerprint.matchSingle()
+        val reactionsMenu = ReactionsPostMenuFingerprint.match()
         val reactions = reactionsMenu.method
         val ownerCheck = reactionsMenu.instructionMatch(Opcode.IF_EQZ).index
         val ownerBranch = reactions.getInstruction<BuilderOffsetInstruction>(ownerCheck)

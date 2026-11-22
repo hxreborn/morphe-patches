@@ -7,7 +7,6 @@ package app.morphe.patches.quranify.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.quranify.misc.integrity.bypassIntegrityCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -33,7 +32,7 @@ val unlockPremiumPatch = patch(
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
 
-        val settingsSections = SettingsSectionsFingerprint.matchSingle()
+        val settingsSections = SettingsSectionsFingerprint.match()
         val (_, _, _, _, arrayMatch) = settingsSections.instructionMatches
         val arrayRange = arrayMatch.getInstruction<RegisterRangeInstruction>()
         val arrayRegisters = arrayRange.startRegister until arrayRange.startRegister + arrayRange.registerCount

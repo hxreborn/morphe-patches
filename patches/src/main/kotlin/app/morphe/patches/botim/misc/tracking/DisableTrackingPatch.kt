@@ -5,7 +5,6 @@
 package app.morphe.patches.botim.misc.tracking
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.botim.misc.signin.fixSignInPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,8 +29,8 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        AdjustInitFingerprint.matchSingle().method.returnEarly()
-        MoEngageInitFingerprint.matchSingle().method.returnEarly()
-        CrashlyticsEnableCollectionFingerprint.matchSingle().method.returnEarly()
+        AdjustInitFingerprint.method.returnEarly()
+        MoEngageInitFingerprint.method.returnEarly()
+        CrashlyticsEnableCollectionFingerprint.method.returnEarly()
     }
 }

@@ -7,7 +7,6 @@ package app.morphe.patches.viber.misc.premium
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -31,17 +30,17 @@ val unlockViberPlusPatch: Patch = patch(
 
     execute {
         markPatchApplied("unlockViberPlus", unlockViberPlusPatch)
-        AppIconLockedFingerprint.matchSingle().method.returnWhenEnabled(ENABLED_SETTING)
+        AppIconLockedFingerprint.method.returnWhenEnabled(ENABLED_SETTING)
 
-        val typingType = TypingPrivacyControllerFingerprint.matchSingle().classDef.type
-        val experiment = TypingPrivacyExperimentFingerprint.matchSingle().method
+        val typingType = TypingPrivacyControllerFingerprint.match().classDef.type
+        val experiment = TypingPrivacyExperimentFingerprint.method
         experiment.returnWhenEnabled(ENABLED_SETTING) { register ->
             "const/16 v$register, 0x1\nreturn v$register"
         }
-        val state = typingPrivacyStateFingerprint(typingType, experiment.name).matchSingle()
+        val state = typingPrivacyStateFingerprint(typingType, experiment.name).match()
         val (_, _, membershipCall, membershipResult) = state.instructionMatches
         val membership = membershipCall.instruction.getReference<MethodReference>()!!
-        val send = typingSendAllowedFingerprint(typingType, experiment.name, membership).matchSingle()
+        val send = typingSendAllowedFingerprint(typingType, experiment.name, membership).match()
         val (_, firstMembershipResult, _, _, secondMembershipResult) = send.instructionMatches
         state.method.addFilterCallAfter(membershipResult.index, TYPING_SETTING)
         send.method.addFilterCallAfter(secondMembershipResult.index, TYPING_SETTING)

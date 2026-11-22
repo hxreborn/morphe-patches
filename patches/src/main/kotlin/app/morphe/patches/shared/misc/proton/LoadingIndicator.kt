@@ -15,7 +15,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -125,10 +124,10 @@ internal fun drawPullRefreshAsLoadingIndicator(
 ) {
     markLoadingIndicatorPatched()
 
-    val match = contentFingerprint.matchSingle()
+    val match = contentFingerprint.match()
     val content = match.method
     val androidView = androidViewFingerprint(COMPOSE_MODIFIER, COMPOSE_COMPOSER, androidViewParameterCount)
-        .matchSingle().originalMethod
+        .originalMethod
     val modifierCompanion = match.instructionMatches.first().instruction.getReference<FieldReference>()
     bindLoadingIndicatorView(androidView, modifierCompanion)
 

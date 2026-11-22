@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -30,11 +29,11 @@ val unlockPremiumPatch = patch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        val snapshot = SnapshotToStringFingerprint.matchSingle()
+        val snapshot = SnapshotToStringFingerprint.match()
         val snapshotConstructor = snapshot.classDef.methods.single { it.name == "<init>" }
         val indexedType = snapshotConstructor.parameterTypes.last().toString()
         val indexedClass = classDefBy(indexedType)
-        val parseNode = ParseNodeFingerprint.matchSingle().method
+        val parseNode = ParseNodeFingerprint.method
         val nodeType = parseNode.returnType
         val nodeValueGetter = classDefBy(nodeType).methods.single {
             it.name == "getValue" && it.parameterTypes.isEmpty()
@@ -46,9 +45,9 @@ val unlockPremiumPatch = patch(
         val indexedNodeFactory = indexedClass.methods.single {
             it.returnType == indexedType && it.parameterTypes == listOf(nodeType)
         }
-        val userType = FirebaseUserMapFingerprint.matchSingle().method.parameterTypes.single().toString()
+        val userType = FirebaseUserMapFingerprint.method.parameterTypes.single().toString()
         val currentUserField = classDefBy(FIREBASE_AUTH_CLASS).fields.single { it.type == userType }
-        val userIdMatch = FirebaseUserIdFingerprint.matchSingle()
+        val userIdMatch = FirebaseUserIdFingerprint.match()
         val (_, userIdCall) = userIdMatch.instructionMatches
         val userIdGetter = userIdMatch.method.getInstruction(userIdCall.index).getReference<MethodReference>()!!
 

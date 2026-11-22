@@ -5,7 +5,6 @@
 package app.morphe.patches.radiojavan.misc.premium
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.radiojavan.misc.ads.disableSubscriptionAdFlagsPatch
 import app.morphe.patches.radiojavan.shared.subscriptionGetterFingerprint
@@ -22,7 +21,7 @@ val unlockPremiumPatch = patch(
     dependsOn(disableSubscriptionAdFlagsPatch)
 
     execute {
-        fun getter(name: String) = subscriptionGetterFingerprint(name).matchSingle().method
+        fun getter(name: String) = subscriptionGetterFingerprint(name).method
 
         getter("getSubscription").returnEarly("premium")
         listOf("getAllowSync", "getAllowSyncNewItems", "getAllowLyrics", "getAllowSelectPlay")

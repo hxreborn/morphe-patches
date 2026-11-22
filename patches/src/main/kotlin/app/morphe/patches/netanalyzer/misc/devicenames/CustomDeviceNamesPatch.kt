@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
@@ -34,7 +33,7 @@ val customDeviceNamesPatch = patch(
     execute {
         addFeatureActivity("LanCustomNameActivity")
 
-        val deviceName = LanDeviceNameFingerprint.matchSingle()
+        val deviceName = LanDeviceNameFingerprint.match()
         val nameMap = deviceName.instructionMatches.first().instruction.getReference<FieldReference>()!!
         val registration = listOf(nameMap.definingClass.toJavaClassName(), nameMap.name)
             .joinToString(REGISTRATION_SEPARATOR)

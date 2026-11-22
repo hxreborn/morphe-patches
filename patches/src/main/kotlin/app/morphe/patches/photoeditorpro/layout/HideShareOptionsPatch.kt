@@ -7,7 +7,6 @@ package app.morphe.patches.photoeditorpro.layout
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
@@ -30,7 +29,7 @@ val hideShareOptionsPatch: Patch = patch(
     execute {
         markPatchMetadata("hideShareOptions", hideShareOptionsPatch)
         SHARE_ROW_FINGERPRINTS.forEach { fingerprint ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             val setAdapterCall = match.instructionMatches.single()
             val shareRowRegister = setAdapterCall.getInstruction<FiveRegisterInstruction>().registerC
 

@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.castletv.shared.IsAdFreeMemberFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstruction
@@ -47,7 +46,7 @@ val unlockPremiumPatch = patch(
     dependsOn(castleFullHdPlaylistExtensionPatch, castletvUnlockPremiumExtensionPatch, sharedStreamsExtensionPatch)
     compatibleWith(AppCompatibilities.CASTLE_FOR_TV)
     execute {
-        VideoBodyConstructorFingerprint.matchSingle().method.addInstructions(
+        VideoBodyConstructorFingerprint.method.addInstructions(
             0,
             """
                 invoke-static/range { p4 .. p4 }, $FULL_HD_PLAYLIST_CLASS->resolution(Ljava/lang/Integer;)Ljava/lang/Integer;
@@ -55,7 +54,7 @@ val unlockPremiumPatch = patch(
             """,
         )
 
-        UserVipInfosFingerprint.matchSingle().method.addInstructions(
+        UserVipInfosFingerprint.method.addInstructions(
             0,
             """
                 const-class v0, $VIP_INFO_CLASS
@@ -66,7 +65,7 @@ val unlockPremiumPatch = patch(
             """,
         )
 
-        VideoIsPreviewFingerprint.matchSingle().method.addInstructions(
+        VideoIsPreviewFingerprint.method.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
@@ -74,7 +73,7 @@ val unlockPremiumPatch = patch(
             """,
         )
 
-        PlaylistParserFingerprint.matchSingle().method.addInstructions(
+        PlaylistParserFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p1, p2 }, $PREVIEW_PLAYLIST_CLASS->expand(Landroid/net/Uri;Ljava/io/InputStream;)Ljava/io/InputStream;
@@ -82,8 +81,8 @@ val unlockPremiumPatch = patch(
             """,
         )
 
-        val vipHelperType = IsAdFreeMemberFingerprint.matchSingle().classDef.type
-        val defaultResolution = DefaultResolutionFingerprint.matchSingle().method
+        val vipHelperType = IsAdFreeMemberFingerprint.match().classDef.type
+        val defaultResolution = DefaultResolutionFingerprint.method
         var checkIndex = defaultResolution.indexOfFreeUserCheck(vipHelperType)
         if (checkIndex < 0) throw PatchException("No free user check in the default resolution method")
         while (checkIndex >= 0) {

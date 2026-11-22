@@ -6,7 +6,6 @@ package app.morphe.patches.shahid.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val RECAPTCHA_CLIENT_INIT_FAILED_CODE = "RECAPTCHA_CLIENT_INIT_FAILED"
@@ -21,7 +20,7 @@ val fixSignInPatch = patch(
     compatibleWith(AppCompatibilities.SHAHID)
 
     execute {
-        val tokenRequest = RecaptchaTokenRequestFingerprint.matchSingle().method
+        val tokenRequest = RecaptchaTokenRequestFingerprint.method
         val failureCallbackType = tokenRequest.parameterTypes[2]
 
         tokenRequest.addInstructions(

@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.atvtools.misc.fix.signature.disableSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -27,9 +26,9 @@ val unlockPremiumPatch = patch(
     dependsOn(disableSignatureCheckPatch)
 
     execute {
-        val purchaseType = PurchaseGetProductsFingerprint.matchSingle().classDef.type
+        val purchaseType = PurchaseGetProductsFingerprint.match().classDef.type
 
-        BillingHelperConstructorFingerprint.matchSingle().apply {
+        BillingHelperConstructorFingerprint.match().apply {
             val purchasesFlowStore = instructionMatches.last()
             val purchasesFlowField = purchasesFlowStore
                 .getInstruction<ReferenceInstruction>()
@@ -59,7 +58,7 @@ val unlockPremiumPatch = patch(
             }
         }
 
-        PremiumActivityOnCreateFingerprint.matchSingle().method.apply {
+        PremiumActivityOnCreateFingerprint.method.apply {
             val superCallIndex = indexOfFirstInstructionOrThrow {
                 opcode == Opcode.INVOKE_SUPER &&
                     getReference<MethodReference>()?.name == "onCreate"

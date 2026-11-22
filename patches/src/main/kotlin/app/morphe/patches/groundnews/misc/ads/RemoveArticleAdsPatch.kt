@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private lateinit var adHosts: String
@@ -31,7 +30,7 @@ val removeArticleAdsPatch = patch(
     dependsOn(articleAdHostsPatch)
 
     execute {
-        val initializer = AdBlockerInitializerFingerprint.matchSingle()
+        val initializer = AdBlockerInitializerFingerprint.match()
         val hosts = initializer.classDef.fields.single { it.type == "Ljava/util/Set;" }
         initializer.method.apply {
             val insertionIndex = implementation!!.instructions.lastIndex

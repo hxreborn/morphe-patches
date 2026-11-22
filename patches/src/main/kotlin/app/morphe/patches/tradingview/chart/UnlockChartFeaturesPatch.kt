@@ -6,7 +6,6 @@ package app.morphe.patches.tradingview.chart
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.tradingviewUnlockChartFeaturesExtensionPatch
 
@@ -20,7 +19,7 @@ val unlockChartFeaturesPatch = patch(
     dependsOn(tradingviewUnlockChartFeaturesExtensionPatch)
     compatibleWith(AppCompatibilities.TRADINGVIEW)
     execute {
-        InitWebViewFingerprint.matchSingle().method.addInstructions(
+        InitWebViewFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $EXTENSION_CLASS->addPlanLimitsScript(Landroid/webkit/WebView;)V",
         )

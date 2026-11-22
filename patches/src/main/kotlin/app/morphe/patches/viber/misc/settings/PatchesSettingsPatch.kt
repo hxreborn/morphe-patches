@@ -16,7 +16,6 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -120,7 +119,7 @@ internal val patchesSettingsPatch = patch {
                 mapOf("adsFreeTitleText" to "viber_plus_settings_ads_free_title"),
             )
         }
-        val darknightTheme = DarknightThemeFingerprint.matchSingle().originalMethod
+        val darknightTheme = DarknightThemeFingerprint.originalMethod
         with(mutableClassDefBy(SETTINGS_STYLE)) {
             replaceStub(
                 "isDarknightTheme",
@@ -145,7 +144,7 @@ internal val patchesSettingsPatch = patch {
                 ),
             )
         }
-        PlusAdSwitchFingerprint.matchSingle().let { match ->
+        PlusAdSwitchFingerprint.match().let { match ->
             val (_, _, setChecked) = match.instructionMatches
             val toggle = match.method.getInstruction<FiveRegisterInstruction>(setChecked.index).registerC
             match.method.addInstruction(
@@ -154,7 +153,7 @@ internal val patchesSettingsPatch = patch {
             )
         }
         addMoreEntry()
-        ApplicationContextFingerprint.matchSingle().method.addInstruction(
+        ApplicationContextFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p1 .. p1 }, $VIBER_SETTINGS_CLASS->initialize(Landroid/content/Context;)V",
         )
@@ -162,7 +161,7 @@ internal val patchesSettingsPatch = patch {
 }
 
 private fun addMoreEntry() {
-    val settingsItem = SettingsItemFingerprint.matchSingle()
+    val settingsItem = SettingsItemFingerprint.match()
     val (builderCall, titleCall, iconCall, itemCall, _) = settingsItem.instructionMatches
     val builder = builderCall.instruction.getReference<MethodReference>()!!
     val title = titleCall.instruction.getReference<MethodReference>()!!
@@ -186,7 +185,7 @@ private fun addMoreEntry() {
         check-cast p0, ${item.definingClass}
         return-object p0
     """)
-    val creators = MoreCreatorsFingerprint.matchSingle()
+    val creators = MoreCreatorsFingerprint.match()
     val (_, addCall, nextRead) = creators.instructionMatches
     val add = addCall.instruction as FiveRegisterInstruction
     val creatorRegister = add.registerD
@@ -198,7 +197,7 @@ private fun addMoreEntry() {
         invoke-direct {v$creatorRegister, p1}, $PATCHES_MENU-><init>(Landroid/content/Context;)V
         invoke-virtual {v${add.registerC}, v$creatorRegister}, ${descriptor(addCall.instruction.getReference<MethodReference>()!!)}
     """)
-    val click = MoreClickFingerprint.matchSingle()
+    val click = MoreClickFingerprint.match()
     val (_, activityResult) = click.instructionMatches
     val activity = (activityResult.instruction as OneRegisterInstruction).registerA
     val id = click.method.p0Register + 1

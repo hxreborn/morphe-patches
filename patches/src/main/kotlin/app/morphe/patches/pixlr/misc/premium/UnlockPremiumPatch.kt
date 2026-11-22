@@ -9,7 +9,6 @@ import app.morphe.patcher.patch.decode
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.pixlr.ads.adRemovalEntitlementPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -48,6 +47,6 @@ val unlockPremiumPatch = patch(
     dependsOn(adRemovalEntitlementPatch, hidePremiumButtonPatch)
 
     execute {
-        HasSubscriptionFingerprint.matchSingle().method.returnEarly(true)
+        HasSubscriptionFingerprint.method.returnEarly(true)
     }
 }

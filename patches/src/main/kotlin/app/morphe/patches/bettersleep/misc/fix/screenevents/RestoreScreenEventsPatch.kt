@@ -7,7 +7,6 @@ package app.morphe.patches.bettersleep.misc.fix.screenevents
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
@@ -23,7 +22,7 @@ val restoreScreenEventsPatch = patch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val recorder = RecordScreenEventFingerprint.matchSingle().method
+        val recorder = RecordScreenEventFingerprint.method
 
         val receiverTypes = mutableListOf<String>()
         classDefForEach { classDef ->

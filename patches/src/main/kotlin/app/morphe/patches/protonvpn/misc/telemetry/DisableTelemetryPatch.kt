@@ -13,7 +13,6 @@ package app.morphe.patches.protonvpn.misc.telemetry
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.protonvpn.misc.anchors.unitInstanceField
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -44,9 +43,9 @@ val disableTelemetryPatch: Patch = patch(
             sget-object p0, $unitInstanceField
             return-object p0
         """
-        VpnTelemetryEventFingerprint.matchSingle().method.addInstructions(0, returnUnit)
-        ObservabilityUploadFingerprint.matchSingle().method.addInstructions(0, returnUnit)
-        CoreTelemetryEnqueueFingerprint.matchSingle().method.addInstructions(0, returnUnit)
-        PaymentsObservabilityWorkerFingerprint.matchSingle().method.addInstructions(0, returnUnit)
+        VpnTelemetryEventFingerprint.method.addInstructions(0, returnUnit)
+        ObservabilityUploadFingerprint.method.addInstructions(0, returnUnit)
+        CoreTelemetryEnqueueFingerprint.method.addInstructions(0, returnUnit)
+        PaymentsObservabilityWorkerFingerprint.method.addInstructions(0, returnUnit)
     }
 }

@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addFieldReader
@@ -76,10 +75,10 @@ val unlockPremiumPatch: Patch = patch(
             ResourceType.ID,
             mapOf("dataSaverRowId" to "video_rb_resolution_fluent_layout"),
         )
-        val isVipGetter = VipInfoIsVipFingerprint.matchSingle()
+        val isVipGetter = VipInfoIsVipFingerprint.match()
         val vipInfo = isVipGetter.classDef.type
         val serverIsVip = isVipGetter.originalMethod.fieldRead()
-        val serverVipLevel = VipInfoLevelFingerprint.matchSingle().originalMethod.fieldRead()
+        val serverVipLevel = VipInfoLevelFingerprint.originalMethod.fieldRead()
         val vipInfoClass = mutableClassDefBy(vipInfo)
         val readServerIsVip = vipInfoClass.addFieldReader(serverIsVip)
         val readServerVipLevel = vipInfoClass.addFieldReader(serverVipLevel)
@@ -105,15 +104,15 @@ val unlockPremiumPatch: Patch = patch(
                 """,
             )
         }
-        VipInfoIsVipFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
-        VipInfoLevelFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
-        VipInfoIdentityFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
-        NamedPrivilegeCheckFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
-        HasPrivilegeFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
-        VideoUploadPremiumSwitchFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(false) }
-        PlaybackSpeedFreeLimitFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(MAX_PLAYBACK_SPEED) }
+        VipInfoIsVipFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
+        VipInfoLevelFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
+        VipInfoIdentityFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(PREMIUM_PLUS_LEVEL) }
+        NamedPrivilegeCheckFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
+        HasPrivilegeFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(true) }
+        VideoUploadPremiumSwitchFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(false) }
+        PlaybackSpeedFreeLimitFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(MAX_PLAYBACK_SPEED) }
 
-        val currentVipInfo = CurrentVipInfoFingerprint.matchSingle()
+        val currentVipInfo = CurrentVipInfoFingerprint.match()
         val vipManager = currentVipInfo.classDef
         val vipManagerInstance = vipManager.fields.single {
             AccessFlags.STATIC.isSet(it.accessFlags) && it.type == vipManager.type
@@ -124,7 +123,7 @@ val unlockPremiumPatch: Patch = patch(
             move-result-object v0
         """
 
-        ReportedVipStatusFingerprint.matchSingle().method.addInstructions(
+        ReportedVipStatusFingerprint.method.addInstructions(
             0,
             """
                 $loadServerVipInfo
@@ -133,10 +132,10 @@ val unlockPremiumPatch: Patch = patch(
                 return v0
             """,
         )
-        val vipTypeGetter = VipTypeQueryParameterFingerprint.matchSingle().instructionMatches
+        val vipTypeGetter = VipTypeQueryParameterFingerprint.match().instructionMatches
             .first { it.instruction.opcode == Opcode.INVOKE_STATIC }
             .instruction.getReference<MethodReference>()!!
-        reportedVipTypeFingerprint(vipTypeGetter).matchSingle().method.addInstructions(
+        reportedVipTypeFingerprint(vipTypeGetter).method.addInstructions(
             0,
             """
                 $loadServerVipInfo

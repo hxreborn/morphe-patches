@@ -6,7 +6,6 @@ package app.morphe.patches.shared.misc.revenuecat
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.AccessFlags
 
@@ -28,7 +27,7 @@ private fun injectGrants(
     entitlements: Array<out Pair<String, String>>,
     enabledMethod: String? = null,
 ) {
-    BuildCustomerInfoFingerprint.matchSingle().method.apply {
+    BuildCustomerInfoFingerprint.method.apply {
         val registers = getFreeRegisterProvider(0, 3)
         val jsonRegister = registers.getFreeRegister4Bit()
         val entitlementRegister = registers.getFreeRegister4Bit()

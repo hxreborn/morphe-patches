@@ -6,7 +6,6 @@ package app.morphe.patches.allvideoplayer.rate
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -19,12 +18,12 @@ val removeRatingPromptsPatch = patch(
     compatibleWith(AppCompatibilities.ALL_VIDEO_PLAYER)
 
     execute {
-        RatingPromptGateFingerprint.matchSingle().apply {
+        RatingPromptGateFingerprint.match().apply {
             val gate = instructionMatches.last()
             val shownCount = gate.getInstruction<TwoRegisterInstruction>().registerA
             method.addInstruction(gate.index, "const/4 v$shownCount, 0x3")
         }
-        HomeRatingPromptGateFingerprint.matchSingle().apply {
+        HomeRatingPromptGateFingerprint.match().apply {
             val promptLaunchCount = instructionMatches.first()
             val register = promptLaunchCount.getInstruction<OneRegisterInstruction>().registerA
             method.addInstruction(promptLaunchCount.index + 1, "const/4 v$register, -0x1")

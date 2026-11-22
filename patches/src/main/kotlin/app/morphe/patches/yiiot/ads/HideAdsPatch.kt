@@ -12,7 +12,6 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
 import com.android.tools.smali.dexlib2.Opcode
@@ -47,7 +46,7 @@ val hideAdsPatch = patch(
 
     execute {
         val paidServiceCall = methodCall(
-            SetNoAdPlanFingerprint.matchSingle().instructionMatches.last()
+            SetNoAdPlanFingerprint.match().instructionMatches.last()
                 .getInstruction<ReferenceInstruction>().reference as MethodReference,
         )
 
@@ -65,13 +64,13 @@ val hideAdsPatch = patch(
             if (rewritten == 0) throw PatchException("No paid service check in $classType")
         }
 
-        LoadAppOpenAdFingerprint.matchSingle().let { match ->
+        LoadAppOpenAdFingerprint.match().let { match ->
             val userCheck = match.instructionMatches.first()
             val register = userCheck.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(userCheck.index, "const/4 v$register, 0x0")
         }
 
-        AdDialogFragmentOnCreateFingerprint.matchSingle().let { match ->
+        AdDialogFragmentOnCreateFingerprint.match().let { match ->
             match.method.addInstructions(
                 match.instructionMatches.first().index + 1,
                 """
@@ -82,21 +81,21 @@ val hideAdsPatch = patch(
         }
 
         listOf(TopBannerListFingerprint, BottomBannerListFingerprint).forEach { fingerprint ->
-            fingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
+            fingerprint.method.addInstructions(0, RETURN_EMPTY_LIST)
         }
 
-        HomePromoPopupFingerprint.matchSingle().method.addInstruction(0, "return-void")
+        HomePromoPopupFingerprint.method.addInstruction(0, "return-void")
 
-        NebulaPageListenersFingerprint.matchSingle().method.addInstruction(0, "return-void")
+        NebulaPageListenersFingerprint.method.addInstruction(0, "return-void")
 
-        HighlightAdPlaceholderRowsFingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
+        HighlightAdPlaceholderRowsFingerprint.method.addInstructions(0, RETURN_EMPTY_LIST)
 
-        with(PremiumCloudRowFingerprint.matchSingle()) {
+        with(PremiumCloudRowFingerprint.match()) {
             val (_, _, skipRowJump, rowStart) = instructionMatches
             val afterPremiumCloudRow = method.getInstruction<BuilderOffsetInstruction>(skipRowJump.index).target
             method.replaceInstruction(rowStart.index, BuilderInstruction30t(Opcode.GOTO_32, afterPremiumCloudRow))
         }
 
-        ShoppingProductsObserverFingerprint.matchSingle().method.addInstruction(0, "return-void")
+        ShoppingProductsObserverFingerprint.method.addInstruction(0, "return-void")
     }
 }

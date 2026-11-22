@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
@@ -27,7 +26,7 @@ val fixTransfersOverVpnPatch: Patch = patch(
 
     execute {
         markPatchApplied("fixTransfersOverVpn", fixTransfersOverVpnPatch)
-        NetworkConnectedFingerprint.matchSingle().apply {
+        NetworkConnectedFingerprint.match().apply {
             val (_, _, _, ethernetTransport, ethernetCheck) = instructionMatches
             method.apply {
                 val transport = getInstruction<OneRegisterInstruction>(ethernetTransport.index).registerA

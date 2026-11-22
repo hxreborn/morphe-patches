@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -22,7 +21,7 @@ val castPluginAccessPatch = patch {
     compatibleWith(AppCompatibilities.MUSICOLET)
 
     execute {
-        CastPluginVersionFingerprint.matchSingle().apply {
+        CastPluginVersionFingerprint.match().apply {
             val applicationField = instructionMatches.first().instruction.getReference<FieldReference>()!!
             val versionRead = instructionMatches.last()
             val versionRegister = versionRead.getInstruction<TwoRegisterInstruction>().registerA

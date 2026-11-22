@@ -9,7 +9,6 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patches.shared.misc.extension.blossomblastGameModifiersExtensionPatch
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -58,7 +57,7 @@ internal val blossomBlastModifiersPatch = patch {
     dependsOn(blossomblastGameModifiersExtensionPatch, addModifiersLibraryPatch)
 
     execute {
-        val gameThread = NativeApplicationGameThreadFingerprint.matchSingle().originalMethod
+        val gameThread = NativeApplicationGameThreadFingerprint.originalMethod
         mutableClassDefBy(MODIFIERS).apply {
             replaceArrayStub(
                 "gameBuildId",
@@ -74,7 +73,7 @@ internal val blossomBlastModifiersPatch = patch {
                 return-void
             """)
         }
-        val nativeHandleSetter = NativeApplicationHandleSetterFingerprint.matchSingle().method
+        val nativeHandleSetter = NativeApplicationHandleSetterFingerprint.method
         nativeHandleSetter.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             nativeHandleSetter.addInstructionsAtControlFlowLabel(
                 index,

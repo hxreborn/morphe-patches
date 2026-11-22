@@ -19,7 +19,6 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.filterConstructorProperty
@@ -52,7 +51,7 @@ val showFreeServerLocationsPatch: Patch = patch(
         val freeLocationsHeader = resourceId(ResourceType.STRING, "free_connections_info_server_locations")
         invertFreeServerCheckForFreeAccount(serverListFilterFingerprint())
 
-        serverGroupItemStateFingerprint().matchSingle().method.apply {
+        serverGroupItemStateFingerprint().method.apply {
             val tierIndex = tierParameterIndex()
             val serverGroupItem = parameterTypes[tierIndex - 1].toString()
             setExtensionMember(
@@ -72,7 +71,7 @@ val showFreeServerLocationsPatch: Patch = patch(
             )
         }
 
-        CountriesHeaderLabelFingerprint.matchSingle().run {
+        CountriesHeaderLabelFingerprint.match().run {
             val label = instructionMatches.first()
             val labelRegister = label.getInstruction<OneRegisterInstruction>().registerA
             method.replaceInstruction(label.index, "const v$labelRegister, $freeLocationsHeader")
@@ -92,7 +91,7 @@ val showFreeServerLocationsPatch: Patch = patch(
             )
         }
 
-        searchResultSectionFingerprint().matchSingle().method.addInstructions(
+        searchResultSectionFingerprint().method.addInstructions(
             0,
             """
                 invoke-static { p2, p4 }, $FREE_SERVER_LOCATIONS->itemsVisibleToTier(Ljava/util/List;Ljava/lang/Integer;)Ljava/util/List;

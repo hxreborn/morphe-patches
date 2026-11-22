@@ -6,7 +6,6 @@ package app.morphe.patches.neetprepessential.misc.screenshot
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
@@ -17,7 +16,7 @@ val removeScreenshotRestrictionPatch = patch(
     compatibleWith(AppCompatibilities.NEETPREP_ESSENTIAL)
 
     execute {
-        ScreenProtectorSecureFlagFingerprint.matchSingle().apply {
+        ScreenProtectorSecureFlagFingerprint.match().apply {
             method.removeInstruction(instructionMatches.last().index)
         }
     }

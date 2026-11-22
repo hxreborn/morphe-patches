@@ -7,7 +7,6 @@ package app.morphe.patches.protonpass.misc.layout
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -29,9 +28,9 @@ val hideLayoutComponentsPatch: Patch = patch(
         markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(LAYOUT_COMPONENTS_CLASS)
 
-        HelpCenterSectionFingerprint.matchSingle().method
+        HelpCenterSectionFingerprint.method
             .returnVoidWhen("$LAYOUT_COMPONENTS_CLASS->isHelpCenterHidden()Z")
-        AboutSectionFingerprint.matchSingle().method
+        AboutSectionFingerprint.method
             .returnVoidWhen("$LAYOUT_COMPONENTS_CLASS->isAboutHidden()Z")
 
         SpreadTheWordSectionFingerprint.matchOrNull()?.method?.let { section ->

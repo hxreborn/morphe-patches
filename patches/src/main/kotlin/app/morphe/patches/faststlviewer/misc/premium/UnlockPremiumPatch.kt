@@ -9,7 +9,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
@@ -31,7 +30,7 @@ val unlockPremiumPatch = patch(
     execute {
         forceBooleanFieldReadsTrue(ProductButtonTextFingerprint, PRODUCT_READER_COUNT)
         forceBooleanFieldReadsTrue(PurchasesUpdatedFingerprint, PRO_READER_COUNT)
-        RequestAdConsentFingerprint.matchSingle().method.returnEarly()
+        RequestAdConsentFingerprint.method.returnEarly()
     }
 }
 
@@ -39,7 +38,7 @@ private fun forceBooleanFieldReadsTrue(
     fieldAccessFingerprint: Fingerprint,
     readerCount: Int,
 ) {
-    val anchor = fieldAccessFingerprint.matchSingle()
+    val anchor = fieldAccessFingerprint.match()
     val (fieldAccess) = anchor.instructionMatches
     val field = fieldAccess.instruction.getReference<FieldReference>()!!
     booleanFieldReadFingerprint(field).matchAll(anchor.originalClassDef, readerCount..readerCount).forEach { reader ->

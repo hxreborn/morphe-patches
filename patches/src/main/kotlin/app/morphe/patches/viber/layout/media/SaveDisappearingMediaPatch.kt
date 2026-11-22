@@ -6,7 +6,6 @@ package app.morphe.patches.viber.layout.media
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -24,8 +23,8 @@ val saveDisappearingMediaPatch: Patch = patch(
 
     execute {
         markPatchApplied("saveDisappearingMedia", saveDisappearingMediaPatch)
-        val menuStateType = MediaMenuStateFingerprint.matchSingle().classDef.type
-        mediaMenuStateBuilderFingerprint(menuStateType).matchSingle().apply {
+        val menuStateType = MediaMenuStateFingerprint.match().classDef.type
+        mediaMenuStateBuilderFingerprint(menuStateType).match().apply {
             val (_, _, saveDisappearingCheck) = instructionMatches
             method.addFilterCallAfter(saveDisappearingCheck.index + 1, "$VIBER_SETTINGS_CLASS->blocksMediaSave(Z)Z")
         }

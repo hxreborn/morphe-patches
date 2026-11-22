@@ -11,7 +11,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.banner.answerAutoDeleteBannerCheck
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
@@ -70,7 +69,7 @@ val scheduledDeletionPatch: Patch = patch(
         forwardStub(MAIL_SETTINGS_CLASS, "addScheduledDeletionRows", "Lapp/hxreborn/extension/protonmail/ScheduledDeletionRows;")
         answerAutoDeleteBannerCheck("isScheduled", "$BANNER_CLASS->isScheduled()Z")
 
-        AutoDeleteBannerTextFingerprint.matchSingle().let { match ->
+        AutoDeleteBannerTextFingerprint.match().let { match ->
             val bannerTextIndex = match.instructionMatches.single().index
             val enabledIndex = match.method.indexOfFirstInstructionReversedOrThrow(
                 bannerTextIndex,
@@ -101,13 +100,13 @@ val scheduledDeletionPatch: Patch = patch(
 
         listOf(ScrollMessagesForLabelFingerprint, ScrollConversationsForLabelFingerprint)
             .forEach { fingerprint ->
-                fingerprint.matchSingle().method.addInstructions(
+                fingerprint.method.addInstructions(
                     0,
                     "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->onMailboxShown(Ljava/lang/Object;)V",
                 )
             }
 
-        NewMailboxFingerprint.matchSingle().let { match ->
+        NewMailboxFingerprint.match().let { match ->
             val newMailboxCall = match.instructionMatches.first()
             val newMailboxInvoke = newMailboxCall.getInstruction<FiveRegisterInstruction>()
             val moveResult = match.instructionMatches.last()
@@ -130,7 +129,7 @@ val scheduledDeletionPatch: Patch = patch(
             )
         }
 
-        StartBackgroundExecutionFingerprint.matchSingle().method.addInstructions(
+        StartBackgroundExecutionFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->onBackgroundExecution(Ljava/lang/Object;)V",
         )

@@ -5,7 +5,6 @@
 package app.morphe.patches.cloneapp.ads
 
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
@@ -22,9 +21,9 @@ val removeAdsPatch = patch(
     dependsOn(failAdMobLoadsPatch, removeMobileAdsInitProviderPatch)
 
     execute {
-        SplashAdEligibilityFingerprint.matchSingle().method.returnEarly(false)
-        OtherAdEligibilityFingerprint.matchSingle().method.returnEarly(false)
-        AdConsentAndInitFingerprint.matchSingle().method.returnEarly()
+        SplashAdEligibilityFingerprint.method.returnEarly(false)
+        OtherAdEligibilityFingerprint.method.returnEarly(false)
+        AdConsentAndInitFingerprint.method.returnEarly()
         EmbeddedAdsFlagFingerprint.matchAll(2..2).forEach { it.method.returnEarly(false) }
     }
 }
