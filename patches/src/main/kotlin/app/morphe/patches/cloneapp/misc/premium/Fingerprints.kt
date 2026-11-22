@@ -51,6 +51,13 @@ internal object FCodeOfferFlagFingerprint : Fingerprint(
     ),
 )
 
+internal val expiryPreferenceWrite = fieldAccess(
+    definingClass = "this",
+    type = "J",
+    opcode = Opcode.IPUT_WIDE,
+    location = MatchAfterImmediately(),
+)
+
 internal object UserStateRestoreFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "V",
@@ -75,12 +82,7 @@ internal object UserStateRestoreFingerprint : Fingerprint(
         string("ET"),
         methodCall(name = "getLong", returnType = "J", location = MatchAfterWithin(PREFERENCE_READ_WINDOW)),
         opcode(Opcode.MOVE_RESULT_WIDE, location = MatchAfterImmediately()),
-        fieldAccess(
-            definingClass = "this",
-            type = "J",
-            opcode = Opcode.IPUT_WIDE,
-            location = MatchAfterImmediately(),
-        ),
+        expiryPreferenceWrite,
     ),
 )
 

@@ -19,7 +19,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 
@@ -86,8 +85,8 @@ val unlockPremiumPatch = patch(
 
         val engineVipSetter = UserStateRestoreFingerprint.match().run {
             val (_, _, _, vipWrite, setterCall) = instructionMatches
-            val expiryWrite = instructionMatches.last()
-            val setter = setterCall.getInstruction<ReferenceInstruction>().getReference<MethodReference>()!!
+            val expiryWrite = instructionMatches.single { it.filter === expiryPreferenceWrite }
+            val setter = setterCall.methodReference
 
             method.overwriteFieldAfter(expiryWrite.index, expiry)
             method.overwriteFieldAfter(vipWrite.index, "0x1")
@@ -96,7 +95,7 @@ val unlockPremiumPatch = patch(
 
         engineVipStateSetterFingerprint(engineVipSetter).match().apply {
             val (_, vipStore) = instructionMatches
-            val vipField = vipStore.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+            val vipField = vipStore.fieldReference
             val parameterRegister = method.implementation!!.registerCount - method.parameters.size
             if (vipStore.getInstruction<OneRegisterInstruction>().registerA != parameterRegister) {
                 throw PatchException("$vipField is not set from the VIP parameter of ${method.name}")

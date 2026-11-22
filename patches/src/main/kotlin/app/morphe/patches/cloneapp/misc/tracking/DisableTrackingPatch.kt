@@ -31,7 +31,7 @@ val disableTrackingPatch = patch(
     execute {
         UPLOAD_ENDPOINTS.forEach { endpoint ->
             serverUploadFingerprint(endpoint).match().apply {
-                val newRequest = instructionMatches.last()
+                val (_, newRequest) = instructionMatches
                 val requestType = newRequest.getInstruction<ReferenceInstruction>()
                     .getReference<MethodReference>()!!.returnType
                 val send = method.indexOfFirstInstructionOrThrow(
