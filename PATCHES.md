@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.86.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.86.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**593 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -2782,6 +2782,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="terabox-clone-app"></a>[**Clone app**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/clone/CloneAppPatch.kt) | Installs TeraBox as a separate app alongside the original, with its own account. Each copy needs a different clone number.<br><sub>Options: Package name, App name</sub> |
 | <a id="terabox-fix-google-login"></a>[**Fix Google login**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |
 | <a id="terabox-fix-transfers-over-vpn"></a>[**Fix transfers over VPN**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/fix/vpn/FixTransfersOverVpnPatch.kt) | Runs uploads, downloads and saves from shared links while a VPN is active. |
+| <a id="terabox-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/gms/GmsCoreSupportPatch.kt) | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="terabox-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner and video ads, plus interstitial and app-open ads. Rewarded ads still play when requested from Benefits. |
 | <a id="terabox-hide-consent-form"></a>[**Hide consent form**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |
 | <a id="terabox-hide-home-shortcuts"></a>[**Hide home shortcuts**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Removes Trending and Short Drama from Home and More, and Translate where it appears. Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.<br><sub>Options: Hide Creative Generation, Hide Translate, Hide Signature, +4 more</sub> |

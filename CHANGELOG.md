@@ -1,3 +1,9 @@
+## [1.86.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.1...v1.86.0-dev.2) (2026-11-22)
+
+### New Features
+
+* **TeraBox - GmsCore support:** sign in with MicroG-RE account ([fbd8fc4](https://github.com/hxreborn/morphe-patches/commit/fbd8fc4749ee8dbcd4b1ed75661f969107dccfa1)), closes [#993](https://github.com/hxreborn/morphe-patches/issues/993)
+
 ## [1.86.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.85.1-dev.3...v1.86.0-dev.1) (2026-11-22)
 
 ### New Features

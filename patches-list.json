@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.86.0-dev.1",
+  "version": "1.86.0-dev.2",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -5583,7 +5583,7 @@
     {
       "name": "Fix Google login",
       "description": "Restores signing in with a Google account.",
-      "default": true,
+      "default": false,
       "category": null,
       "compatiblePackages": [
         {
@@ -7564,6 +7564,40 @@
               },
               "isExperimental": false,
               "minSdk": 26,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "GmsCore support",
+      "description": "Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dubox.drive",
+          "name": "TeraBox",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#226DF6",
+          "signatures": [
+            "b75fd2b70084d7e0813b8f74dd74b62ab79b2aa0ce1372331a1841bd88eed993"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.29.0",
+              "versionCodes": {
+                "ARM64_V8A": 710,
+                "ARMEABI_V7A": 710,
+                "X86_64": 710,
+                "X86": 710
+              },
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]

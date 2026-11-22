@@ -497,11 +497,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.86.0-dev.2"
         - "1.86.0-dev.1"
         - "1.85.1-dev.3"
         - "1.85.1-dev.2"
         - "1.85.1-dev.1"
-        - "1.85.0-dev.3"
         - "1.85.0"
         - "Older than these"
         # /generated
@@ -1070,6 +1070,7 @@ body:
         - "TeraBox \u00b7 Clone app"
         - "TeraBox \u00b7 Fix Google login"
         - "TeraBox \u00b7 Fix transfers over VPN"
+        - "TeraBox \u00b7 GmsCore support"
         - "TeraBox \u00b7 Hide ads"
         - "TeraBox \u00b7 Hide consent form"
         - "TeraBox \u00b7 Hide home shortcuts"

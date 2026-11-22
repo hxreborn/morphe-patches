@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.86.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.86.0-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.86.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.86.0-dev.2)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**593 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -48,7 +48,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <table align="center">
 <tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>5&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>5&nbsp;fixed<br>3&nbsp;new&nbsp;versions</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>6&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>5&nbsp;fixed<br>3&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>14&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>2&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#aliexpress-comalibabaaliexpresshd"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9&nbsp;new&nbsp;patches<br>5&nbsp;fixed</sub></td>
 </tr>
@@ -226,7 +226,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 158 | <img src="https://publicmetadata.co.uk/com.storywise.storywise" width="24" height="24" align="top" alt=""> [**Storywise**](PATCHES.md#storywise-comstorywisestorywise) | 3 | `1.0.3`, `1.0.5` | [`com.storywise.storywise`](https://play.google.com/store/apps/details?id=com.storywise.storywise) |
 | 159 | <img src="https://publicmetadata.co.uk/com.sygic.aura" width="24" height="24" align="top" alt=""> [**Sygic**](PATCHES.md#sygic-comsygicaura) | 2 | `26.6.1-120585`&nbsp;+1 | [`com.sygic.aura`](https://play.google.com/store/apps/details?id=com.sygic.aura) |
 | 160 | <img src="https://publicmetadata.co.uk/app.symfonik.music.player" width="24" height="24" align="top" alt=""> [**Symfonium**](PATCHES.md#symfonium-appsymfonikmusicplayer) | 1 | `14.0.0`, `14.1.0`&nbsp;+4 | [`app.symfonik.music.play…`](https://play.google.com/store/apps/details?id=app.symfonik.music.player "app.symfonik.music.player") |
-| 161 | <img src="https://publicmetadata.co.uk/com.dubox.drive" width="24" height="24" align="top" alt=""> [**TeraBox**](PATCHES.md#terabox-comduboxdrive) | 12 | `4.29.0` | [`com.dubox.drive`](https://play.google.com/store/apps/details?id=com.dubox.drive) |
+| 161 | <img src="https://publicmetadata.co.uk/com.dubox.drive" width="24" height="24" align="top" alt=""> [**TeraBox**](PATCHES.md#terabox-comduboxdrive) | 13 | `4.29.0` | [`com.dubox.drive`](https://play.google.com/store/apps/details?id=com.dubox.drive) |
 | 162 | <img src="https://publicmetadata.co.uk/com.tradingview.tradingviewapp" width="24" height="24" align="top" alt=""> [**TradingView**](PATCHES.md#tradingview-comtradingviewtradingviewapp) | 7 | `1.20.86.0.10025…` | [`com.tradingview.trading…`](https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp "com.tradingview.tradingviewapp") |
 | 163 | <img src="https://publicmetadata.co.uk/com.thetrainline" width="24" height="24" align="top" alt=""> [**Trainline**](PATCHES.md#trainline-comthetrainline) | 1 | `441.0.0.185329` | [`com.thetrainline`](https://play.google.com/store/apps/details?id=com.thetrainline) |
 | 164 | <img src="https://publicmetadata.co.uk/com.droid27.transparentclockweather" width="24" height="24" align="top" alt=""> [**Transparent clock…**](PATCHES.md#transparent-clock--weather-comdroid27transparentclockweather "Transparent clock &amp; weather") | 2 | `9.19.0` | [`com.droid27.transparent…`](https://play.google.com/store/apps/details?id=com.droid27.transparentclockweather "com.droid27.transparentclockweather") |
