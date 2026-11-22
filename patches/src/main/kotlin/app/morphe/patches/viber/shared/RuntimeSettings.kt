@@ -12,13 +12,13 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal const val VIBER_SETTINGS_CLASS = "Lapp/hxreborn/extension/viber/PatchSettings;"
 
 internal fun markPatchApplied(methodName: String, patch: Patch) =
-    fillAppliedPatch("Lapp/hxreborn/extension/viber/AppliedPatches;", methodName, patch)
+    addAppliedPatchMetadata("Lapp/hxreborn/extension/viber/AppliedPatches;", methodName, patch)
 
 internal fun MutableMethod.returnWhenEnabled(settingCall: String, result: ((Int) -> String)? = null) {
     val register = implementation!!.registerCount

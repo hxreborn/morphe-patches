@@ -30,280 +30,296 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
+    static boolean isApplied(String key) {
+        return name(key) != null;
+    }
+
+    static String name(String key) {
+        return metadata(key, false);
+    }
+
+    static String description(String key) {
+        return metadata(key, true);
+    }
+
     public static boolean disableAiFeatures() {
-        return false;
+        return isApplied("disableAiFeatures");
     }
 
     public static String disableAiFeaturesName() {
-        return null;
+        return name("disableAiFeatures");
     }
 
     public static String disableAiFeaturesDescription() {
-        return null;
+        return description("disableAiFeatures");
     }
 
     public static boolean removeChatPayments() {
-        return false;
+        return isApplied("removeChatPayments");
     }
 
     public static String removeChatPaymentsName() {
-        return null;
+        return name("removeChatPayments");
     }
 
     public static String removeChatPaymentsDescription() {
-        return null;
+        return description("removeChatPayments");
     }
 
     public static boolean hideAds() {
-        return false;
+        return isApplied("hideAds");
     }
 
     public static String hideAdsName() {
-        return null;
+        return name("hideAds");
     }
 
     public static String hideAdsDescription() {
-        return null;
+        return description("hideAds");
     }
 
     public static boolean hideMoreItems() {
-        return false;
+        return isApplied("hideMoreItems");
     }
 
     public static String hideMoreItemsName() {
-        return null;
+        return name("hideMoreItems");
     }
 
     public static String hideMoreItemsDescription() {
-        return null;
+        return description("hideMoreItems");
     }
 
     public static boolean hideNavigationButtons() {
-        return false;
+        return isApplied("hideNavigationButtons");
     }
 
     public static String hideNavigationButtonsName() {
-        return null;
+        return name("hideNavigationButtons");
     }
 
     public static String hideNavigationButtonsDescription() {
-        return null;
+        return description("hideNavigationButtons");
     }
 
     public static boolean startFolder() {
-        return false;
+        return isApplied("startFolder");
     }
 
     public static String startFolderName() {
-        return null;
+        return name("startFolder");
     }
 
     public static String startFolderDescription() {
-        return null;
+        return description("startFolder");
     }
 
     public static boolean unfiledChats() {
-        return false;
+        return isApplied("unfiledChats");
     }
 
     public static String unfiledChatsName() {
-        return null;
+        return name("unfiledChats");
     }
 
     public static String unfiledChatsDescription() {
-        return null;
+        return description("unfiledChats");
     }
 
     public static boolean raiseFolderLimit() {
-        return false;
+        return isApplied("raiseFolderLimit");
     }
 
     public static String raiseFolderLimitName() {
-        return null;
+        return name("raiseFolderLimit");
     }
 
     public static String raiseFolderLimitDescription() {
-        return null;
+        return description("raiseFolderLimit");
     }
 
     public static boolean filterBusinessChats() {
-        return false;
+        return isApplied("filterBusinessChats");
     }
 
     public static String filterBusinessChatsName() {
-        return null;
+        return name("filterBusinessChats");
     }
 
     public static String filterBusinessChatsDescription() {
-        return null;
+        return description("filterBusinessChats");
     }
 
     public static boolean disableAnalytics() {
-        return false;
+        return isApplied("disableAnalytics");
     }
 
     public static String disableAnalyticsName() {
-        return null;
+        return name("disableAnalytics");
     }
 
     public static String disableAnalyticsDescription() {
-        return null;
+        return description("disableAnalytics");
     }
 
     public static boolean removeOnlineStatusLimit() {
-        return false;
+        return isApplied("removeOnlineStatusLimit");
     }
 
     public static String removeOnlineStatusLimitName() {
-        return null;
+        return name("removeOnlineStatusLimit");
     }
 
     public static String removeOnlineStatusLimitDescription() {
-        return null;
+        return description("removeOnlineStatusLimit");
     }
 
     public static boolean disappearingMediaPrivacy() {
-        return false;
+        return isApplied("disappearingMediaPrivacy");
     }
 
     public static String disappearingMediaPrivacyName() {
-        return null;
+        return name("disappearingMediaPrivacy");
     }
 
     public static String disappearingMediaPrivacyDescription() {
-        return null;
+        return description("disappearingMediaPrivacy");
     }
 
     public static boolean saveDisappearingMedia() {
-        return false;
+        return isApplied("saveDisappearingMedia");
     }
 
     public static String saveDisappearingMediaName() {
-        return null;
+        return name("saveDisappearingMedia");
     }
 
     public static String saveDisappearingMediaDescription() {
-        return null;
+        return description("saveDisappearingMedia");
     }
 
     public static boolean hidePromotions() {
-        return false;
+        return isApplied("hidePromotions");
     }
 
     public static String hidePromotionsName() {
-        return null;
+        return name("hidePromotions");
     }
 
     public static String hidePromotionsDescription() {
-        return null;
+        return description("hidePromotions");
     }
 
     public static boolean disableUpdatePrompts() {
-        return false;
+        return isApplied("disableUpdatePrompts");
     }
 
     public static String disableUpdatePromptsName() {
-        return null;
+        return name("disableUpdatePrompts");
     }
 
     public static String disableUpdatePromptsDescription() {
-        return null;
+        return description("disableUpdatePrompts");
     }
 
     public static boolean linkAsSecondaryDevice() {
-        return false;
+        return isApplied("linkAsSecondaryDevice");
     }
 
     public static String linkAsSecondaryDeviceName() {
-        return null;
+        return name("linkAsSecondaryDevice");
     }
 
     public static String linkAsSecondaryDeviceDescription() {
-        return null;
+        return description("linkAsSecondaryDevice");
     }
 
     public static boolean spoofSignature() {
-        return false;
+        return isApplied("spoofSignature");
     }
 
     public static String spoofSignatureName() {
-        return null;
+        return name("spoofSignature");
     }
 
     public static String spoofSignatureDescription() {
-        return null;
+        return description("spoofSignature");
     }
 
     public static boolean gmsCoreSupport() {
-        return false;
+        return isApplied("gmsCoreSupport");
     }
 
     public static String gmsCoreSupportName() {
-        return null;
+        return name("gmsCoreSupport");
     }
 
     public static String gmsCoreSupportDescription() {
-        return null;
+        return description("gmsCoreSupport");
     }
 
     public static boolean unlockViberPlus() {
-        return false;
+        return isApplied("unlockViberPlus");
     }
 
     public static String unlockViberPlusName() {
-        return null;
+        return name("unlockViberPlus");
     }
 
     public static String unlockViberPlusDescription() {
-        return null;
+        return description("unlockViberPlus");
     }
 
     public static boolean removeListGaps() {
-        return false;
+        return isApplied("removeListGaps");
     }
 
     public static String removeListGapsName() {
-        return null;
+        return name("removeListGaps");
     }
 
     public static String removeListGapsDescription() {
-        return null;
+        return description("removeListGaps");
     }
 
     public static boolean removeTypingPrivacyBanner() {
-        return false;
+        return isApplied("removeTypingPrivacyBanner");
     }
 
     public static String removeTypingPrivacyBannerName() {
-        return null;
+        return name("removeTypingPrivacyBanner");
     }
 
     public static String removeTypingPrivacyBannerDescription() {
-        return null;
+        return description("removeTypingPrivacyBanner");
     }
 
     public static boolean removeDeletedMessageNotices() {
-        return false;
+        return isApplied("removeDeletedMessageNotices");
     }
 
     public static String removeDeletedMessageNoticesName() {
-        return null;
+        return name("removeDeletedMessageNotices");
     }
 
     public static String removeDeletedMessageNoticesDescription() {
-        return null;
+        return description("removeDeletedMessageNotices");
     }
 
     public static boolean hideImageRemix() {
-        return false;
+        return isApplied("hideImageRemix");
     }
 
     public static String hideImageRemixName() {
-        return null;
+        return name("hideImageRemix");
     }
 
     public static String hideImageRemixDescription() {
-        return null;
+        return description("hideImageRemix");
     }
 
     static List<AppliedPatch> applied() {
