@@ -5,7 +5,6 @@
 package app.morphe.patches.notesnook.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -24,11 +23,11 @@ val unlockProPatch = patch(
     compatibleWith(AppCompatibilities.NOTESNOOK)
     execute {
         ResponseHandlerFingerprint.match().apply {
-            val index = instructionMatches[0].index
-            val register = method.getInstruction<FiveRegisterInstruction>(index).registerD
+            val (toResponseData) = instructionMatches
+            val register = toResponseData.getInstruction<FiveRegisterInstruction>().registerD
 
             method.addInstructions(
-                index,
+                toResponseData.index,
                 "invoke-static { v$register }, $EXTENSION_CLASS->rewriteSubscription([B)[B\n" +
                     "move-result-object v$register",
             )

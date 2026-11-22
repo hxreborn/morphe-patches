@@ -23,11 +23,11 @@ val materialYouThemePatch = patch(
     compatibleWith(AppCompatibilities.NOTESNOOK)
     execute {
         MmkvInstallFingerprint.match().apply {
-            val index = instructionMatches[0].index
-            val register = method.getFreeRegisterProvider(index, 1).getFreeRegister4Bit()
+            val (nativeInstall) = instructionMatches
+            val register = method.getFreeRegisterProvider(nativeInstall.index, 1).getFreeRegister4Bit()
 
             method.addInstructions(
-                index,
+                nativeInstall.index,
                 "invoke-virtual { p0 }, Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->" +
                     "getReactApplicationContext()Lcom/facebook/react/bridge/ReactApplicationContext;\n" +
                     "move-result-object v$register\n" +
