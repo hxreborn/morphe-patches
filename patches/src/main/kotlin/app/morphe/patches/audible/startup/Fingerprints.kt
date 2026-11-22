@@ -11,6 +11,8 @@ import app.morphe.patcher.opcode
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.Opcode
 
+private const val ACTION_SWITCH_WINDOW = 8
+
 internal object NextActivityRouterFingerprint : Fingerprint(
     strings = listOf(
         "Launching next activity given intent action {}, {} data",
@@ -18,7 +20,7 @@ internal object NextActivityRouterFingerprint : Fingerprint(
     ),
     filters = listOf(
         methodCall(definingClass = "Ljava/lang/String;", name = "toLowerCase"),
-        opcode(Opcode.SPARSE_SWITCH, InstructionLocation.MatchAfterWithin(8)),
+        opcode(Opcode.SPARSE_SWITCH, InstructionLocation.MatchAfterWithin(ACTION_SWITCH_WINDOW)),
         opcode(Opcode.MOVE, InstructionLocation.MatchAfterImmediately()),
         string("my_library"),
         opcode(Opcode.PACKED_SWITCH),

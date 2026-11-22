@@ -22,13 +22,13 @@ val openLibraryOnLaunchPatch = patch(
 
     execute {
         val match = NextActivityRouterFingerprint.match()
-        val matches = match.instructionMatches
+        val (lowercaseAction, _, copyUnmatchedAction, libraryAction) = match.instructionMatches
 
         // Lowercased copy is Conflict at the merge
-        val actionRegister = matches[0].getInstruction<FiveRegisterInstruction>().registerC
-        val unmatchedActionIndex = matches[2].index
-        val switchRegister = matches[2].getInstruction<TwoRegisterInstruction>().registerA
-        val scratchRegister = matches[3].getInstruction<OneRegisterInstruction>().registerA
+        val actionRegister = lowercaseAction.getInstruction<FiveRegisterInstruction>().registerC
+        val unmatchedActionIndex = copyUnmatchedAction.index
+        val switchRegister = copyUnmatchedAction.getInstruction<TwoRegisterInstruction>().registerA
+        val scratchRegister = libraryAction.getInstruction<OneRegisterInstruction>().registerA
 
         match.method.addInstructionsWithLabels(
             unmatchedActionIndex + 1,
