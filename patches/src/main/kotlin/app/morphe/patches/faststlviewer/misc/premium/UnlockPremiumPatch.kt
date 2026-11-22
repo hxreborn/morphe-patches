@@ -5,16 +5,15 @@
 package app.morphe.patches.faststlviewer.misc.premium
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val PRODUCT_READER_COUNT = 2
 private const val PRO_READER_COUNT = 4
@@ -39,13 +38,11 @@ private fun forceBooleanFieldReadsTrue(
     readerCount: Int,
 ) {
     val anchor = fieldAccessFingerprint.match()
-    val (fieldAccess) = anchor.instructionMatches
-    val field = fieldAccess.instruction.getReference<FieldReference>()!!
+    val (fieldRead) = anchor.instructionMatches
+    val field = fieldRead.fieldReference
     booleanFieldReadFingerprint(field).matchAll(anchor.originalClassDef, readerCount..readerCount).forEach { reader ->
         val method = reader.method
-        method.findInstructionIndicesReversed {
-            opcode == Opcode.IGET_BOOLEAN && getReference<FieldReference>() == field
-        }.forEach { index ->
+        method.findInstructionIndicesReversed(fieldAccess(field, Opcode.IGET_BOOLEAN)).forEach { index ->
             val valueRegister = method.getInstruction<TwoRegisterInstruction>(index).registerA
             method.addInstruction(index + 1, "const/4 v$valueRegister, 0x1")
         }
