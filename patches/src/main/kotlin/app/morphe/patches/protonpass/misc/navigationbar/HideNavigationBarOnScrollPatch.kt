@@ -65,17 +65,18 @@ val hideNavigationBarOnScrollPatch: Patch = patch(
         val nestedScroll = descriptor(NestedScrollModifierFingerprint.originalMethod)
         val offset = descriptor(OffsetModifierFingerprint.originalMethod)
 
-        HomeBottomBarFingerprint.clearMatch()
-        HomeBottomBarFingerprint.match().let { match ->
+        matchHomeBottomBar().let { match ->
+            val (bottomNavigationCall) = match.instructionMatches
             match.method.offsetModifierArgument(
-                match.instructionMatches.last().index,
+                bottomNavigationCall.index,
                 offset,
                 "$NAVIGATION_BAR_CLASS->barOffsetDp()F",
             )
         }
         AppSnackbarHostFingerprint.match().let { match ->
+            val (_, _, snackbarHostCall) = match.instructionMatches
             match.method.offsetModifierArgument(
-                match.instructionMatches.last().index,
+                snackbarHostCall.index,
                 offset,
                 "$NAVIGATION_BAR_CLASS->snackbarOffsetDp()F",
             )

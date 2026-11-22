@@ -9,10 +9,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.extension.protonFloatingNavigationBarExtensionPatch
 import app.morphe.patches.shared.misc.smali.addStaticMethod
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patches.shared.misc.proton.installMeasuredBottomInsets
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
@@ -73,13 +71,12 @@ val floatingNavigationBarPatch: Patch = patch(
                 """,
             )
         }
-        HomeBottomBarFingerprint.clearMatch()
-        HomeBottomBarFingerprint.match().let { match ->
+        matchHomeBottomBar().let { match ->
             val (navigationCall) = match.instructionMatches
-            val outer = navigationCall.instruction.getReference<MethodReference>()!!
+            val outer = navigationCall.methodReference
             val nativeNavigation = nativeBottomNavigationFingerprint(outer).match()
             val (nativeCall) = nativeNavigation.instructionMatches
-            val native = nativeCall.instruction.getReference<MethodReference>()!!
+            val native = nativeCall.methodReference
             val parameters = native.parameterTypes.map(CharSequence::toString)
             check(parameters.count { it == "F" } == 1)
             val elevationRegister = parameters.take(parameters.indexOf("F")).sumOf { if (it == "J" || it == "D") 2 else 1 }
@@ -93,7 +90,7 @@ val floatingNavigationBarPatch: Patch = patch(
                     return-void
                 """,
             )
-            val nativeRange = nativeCall.instruction as RegisterRangeInstruction
+            val nativeRange = nativeCall.getInstruction<RegisterRangeInstruction>()
             nativeNavigation.method.replaceInstruction(
                 nativeCall.index,
                 "invoke-static/range { v${nativeRange.startRegister} .. v${nativeRange.startRegister + nativeRange.registerCount - 1} }, $bridge",

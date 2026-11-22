@@ -5,6 +5,7 @@
 package app.morphe.patches.protonpass.misc.navigationbar
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.Match
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.anyInstruction
@@ -44,11 +45,16 @@ internal object AppContentPaddingFingerprint : Fingerprint(
     ),
 )
 
-internal object HomeBottomBarFingerprint : Fingerprint(
+private object HomeBottomBarFingerprint : Fingerprint(
     returnType = "V",
     strings = listOf("BottomBarPadding"),
     filters = listOf(methodCall(name = "BottomNavigation-PEIptTM")),
 )
+
+internal fun matchHomeBottomBar(): Match {
+    HomeBottomBarFingerprint.clearMatch()
+    return HomeBottomBarFingerprint.match()
+}
 
 internal object MainScaffoldFingerprint : Fingerprint(
     name = "PassAppContent",
@@ -130,9 +136,11 @@ internal fun scrollContentFingerprint(resourceName: String) = Fingerprint(
     ),
 )
 
+internal val lazyItemsColumnCall = methodCall(name = "LazyColumn", returnType = "V")
+
 internal object HomeItemsContentFingerprint : Fingerprint(
     strings = listOf("\$this\$AnimatedVisibility"),
-    filters = listOf(methodCall(name = "LazyColumn", returnType = "V")),
+    filters = listOf(lazyItemsColumnCall),
     custom = { _, classDef ->
         classDef.methods.any { method ->
             method.name == "<init>" && method.parameterTypes.containsAll(listOf(
@@ -148,17 +156,19 @@ internal object HomePagedItemsContentFingerprint : Fingerprint(
     strings = listOf("homeLoading"),
     filters = listOf(
         fieldAccess(opcode = Opcode.IGET_OBJECT, type = LAZY_LIST_STATE),
-        methodCall(name = "LazyColumn", returnType = "V"),
+        lazyItemsColumnCall,
     ),
+)
+
+internal val lazyItemsColumnWithPaddingImplCall = methodCall(
+    name = "LazyColumn",
+    returnType = "V",
+    parameters = listOf(COMPOSE_MODIFIER, LAZY_LIST_STATE, "Landroidx/compose/foundation/layout/PaddingValuesImpl;", "L", "L", "L", "Z", "L", "L", "I", "I"),
 )
 
 internal object HomeItemsWithPaddingImplFingerprint : Fingerprint(
     strings = listOf("homeLoading"),
-    filters = listOf(methodCall(
-        name = "LazyColumn",
-        returnType = "V",
-        parameters = listOf(COMPOSE_MODIFIER, LAZY_LIST_STATE, "Landroidx/compose/foundation/layout/PaddingValuesImpl;", "L", "L", "L", "Z", "L", "L", "I", "I"),
-    )),
+    filters = listOf(lazyItemsColumnWithPaddingImplCall),
 )
 
 internal fun nativeBottomNavigationFingerprint(outer: MethodReference) = Fingerprint(

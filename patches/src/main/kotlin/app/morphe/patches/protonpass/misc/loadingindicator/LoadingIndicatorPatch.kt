@@ -53,7 +53,8 @@ val loadingIndicatorPatch: Patch = patch(
             """
         }
         PullRefreshIndicatorSizeFingerprint.match().let { match ->
-            resizeLoadingIndicatorContainer(match.method, match.instructionMatches.last())
+            val (_, sizeModifier) = match.instructionMatches
+            resizeLoadingIndicatorContainer(match.method, sizeModifier)
         }
     }
 }

@@ -27,19 +27,14 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 
-private val Match.firstIndex
-    get() = instructionMatches.first().index
-
-private val Match.firstRegister
-    get() = instructionMatches.first().getInstruction<OneRegisterInstruction>().registerA
-
 private const val ORIGINAL_UPGRADE_AVAILABLE_FIELD = "originalUpgradeAvailable"
 
 private val Match.originalUpgradeAvailableField
     get() = "${classDef.type}->$ORIGINAL_UPGRADE_AVAILABLE_FIELD:Z"
 
 private fun Match.preserveAndResolveUpgradeAvailable() {
-    val put = instructionMatches.first().getInstruction<TwoRegisterInstruction>()
+    val (upgradeAvailableWrite) = instructionMatches
+    val put = upgradeAvailableWrite.getInstruction<TwoRegisterInstruction>()
 
     classDef.instanceFields.add(
         ImmutableField(
@@ -53,7 +48,7 @@ private fun Match.preserveAndResolveUpgradeAvailable() {
         ).toMutable(),
     )
     method.addInstructions(
-        firstIndex,
+        upgradeAvailableWrite.index,
         """
             iput-boolean v${put.registerA}, v${put.registerB}, $originalUpgradeAvailableField
             invoke-static/range { v${put.registerA} .. v${put.registerA} }, $UPSELLING_VISIBILITY_CLASS->resolveUpgradeAvailable(Z)Z
@@ -63,9 +58,10 @@ private fun Match.preserveAndResolveUpgradeAvailable() {
 }
 
 private fun Match.readOriginalUpgradeAvailable() {
-    val get = instructionMatches.first().getInstruction<TwoRegisterInstruction>()
+    val (upgradeAvailableRead) = instructionMatches
+    val get = upgradeAvailableRead.getInstruction<TwoRegisterInstruction>()
     method.replaceInstruction(
-        firstIndex,
+        upgradeAvailableRead.index,
         "iget-boolean v${get.registerA}, v${get.registerB}, $originalUpgradeAvailableField",
     )
 }
@@ -118,7 +114,8 @@ val hideUpgradePromotionsPatch: Patch = patch(
         }
 
         SentinelUpsellRowFingerprint.match().run {
-            val rowIndex = instructionMatches.last().index
+            val (_, counterRowCall) = instructionMatches
+            val rowIndex = counterRowCall.index
             val hidden = method.getFreeRegisterProvider(rowIndex, 1).getFreeRegister()
 
             method.addInstructionsWithLabels(
@@ -133,8 +130,10 @@ val hideUpgradePromotionsPatch: Patch = patch(
         }
 
         OnboardingRouteFingerprint.match().run {
-            val onboardingRoute = instructionMatches.last().getInstruction<ReferenceInstruction>().reference
-            val shownIndex = firstIndex + 1
+            val (upsellRouteRead, onboardingRouteRead) = instructionMatches
+            val onboardingRoute = onboardingRouteRead.getInstruction<ReferenceInstruction>().reference
+            val firstRegister = upsellRouteRead.getInstruction<OneRegisterInstruction>().registerA
+            val shownIndex = upsellRouteRead.index + 1
             val hidden = method.getFreeRegisterProvider(shownIndex, 1).getFreeRegister()
 
             method.addInstructionsWithLabels(

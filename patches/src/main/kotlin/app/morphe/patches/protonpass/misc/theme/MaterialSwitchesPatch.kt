@@ -4,17 +4,14 @@
  */
 package app.morphe.patches.protonpass.misc.theme
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.protonMaterialSwitchViewExtensionPatch
 
 private const val COLORS_PARAMETER = 4
@@ -34,8 +31,8 @@ val materialSwitchesPatch: Patch = patch(
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
 
         val match = MaterialSwitchFingerprint.match()
-        val modifierCompanion = match.method.getInstruction(match.instructionMatches.first().index)
-            .getReference<FieldReference>()!!
+        val (modifierCompanionRead) = match.instructionMatches
+        val modifierCompanion = modifierCompanionRead.fieldReference
 
         drawSwitchAsView(
             match.method,
