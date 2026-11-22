@@ -71,7 +71,8 @@ val accentColorPatch = patch(
         }
 
         CreateBundleLoaderFingerprint.match().apply {
-            val callIndex = instructionMatches.last().index
+            val (_, _, createAssetLoader) = instructionMatches
+            val callIndex = createAssetLoader.index
             val call = method.getInstruction<FiveRegisterInstruction>(callIndex)
             val companionRegister = call.registerC
             val contextRegister = call.registerD
