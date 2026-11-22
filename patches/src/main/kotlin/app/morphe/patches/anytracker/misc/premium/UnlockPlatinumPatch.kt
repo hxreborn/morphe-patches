@@ -34,7 +34,8 @@ val unlockPlatinumPatch = patch(
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
 
         RequestCustomerInfoFingerprint.match().let { match ->
-            match.method.useCachedCustomerInfo(match.instructionMatches.first().index)
+            val (fetchPolicyCall) = match.instructionMatches
+            match.method.useCachedCustomerInfo(fetchPolicyCall.index)
 
             planStateConstructorFingerprint(match.classDef.type).match().let { constructor ->
                 constructor.method.loadPlatinumPlan(constructor.instructionMatches.single().index)
