@@ -64,7 +64,8 @@ val hideUpgradePromotionsPatch = patch(
 
         if (UpgradePlanBannerToStringFingerprint.matchOrNull() != null) {
             UpgradePlanBannerFlagFingerprint.match().apply {
-                val index = instructionMatches.last().index
+                val (_, bannerFlagWrite) = instructionMatches
+                val index = bannerFlagWrite.index
                 val bannerFlag = method.getInstruction<ReferenceInstruction>(index).reference
                 val homeStateRegister = method.getInstruction<TwoRegisterInstruction>(index).registerB
                 val falseRegister = method.getFreeRegisterProvider(index + 1, 1).getFreeRegister4Bit()

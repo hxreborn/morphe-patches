@@ -48,7 +48,8 @@ val disableTrackingPatch = patch(
         if (dispatch == null) {
             returnUnitEarly(payloadBuilder)
         } else {
-            val sinkType = dispatch.instructionMatches.last()
+            val (_, dispatchToSink) = dispatch.instructionMatches
+            val sinkType = dispatchToSink
                 .getInstruction<ReferenceInstruction>()
                 .getReference<MethodReference>()!!
                 .definingClass
