@@ -18,7 +18,7 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.shared.torrentmenu;
+package app.hxreborn.extension.shared.patchesmenu;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -30,6 +30,48 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
     boolean enabled = true;
 
     boolean optionalPatch = true;
+
+    private static final int CONTENT_BOTTOM_PADDING_DP = 24;
+
+    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
+
+    @Override
+    protected View createContent() {
+        LinearLayout column = new LinearLayout(this);
+        column.setOrientation(LinearLayout.VERTICAL);
+        column.setPadding(style().dp(app.hxreborn.extension.shared.patchesmenu.SettingsStyle.SCREEN_INSET_DP), 0,
+                style().dp(app.hxreborn.extension.shared.patchesmenu.SettingsStyle.SCREEN_INSET_DP),
+                style().dp(CONTENT_BOTTOM_PADDING_DP));
+
+        LinearLayout appearance = rows().card();
+        rows().switchRow(appearance, themeIconId(), settingTitle(), settingDescription(), isEnabled(), (enabled) -> {
+            setEnabled(enabled);
+            confirmRestart();
+        });
+        addSection(column, "Appearance", appearance);
+
+        LinearLayout about = rows().card();
+        rows().actionRow(about, resetIconId(), "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        rows().valueRow(about, infoIconId(), "App version", appVersion());
+        rows().valueRow(about, patchesIconId(), "Patch bundle", bundleVersion());
+        addSection(column, "About", about);
+
+        LinearLayout applied = rows().card();
+        rows().patchRow(applied, primaryPatchTitle(), settingDescription());
+        if (optionalPatchApplied()) {
+            rows().patchRow(applied, optionalPatchTitle(), optionalPatchDescription());
+        }
+        addSection(column, "Applied patches", applied);
+        return column;
+    }
+
+    private void addSection(LinearLayout column, String title, LinearLayout card) {
+        if (card.getChildCount() == 0) {
+            return;
+        }
+        column.addView(rows().sectionHeader(title));
+        column.addView(card);
+    }
 
     @Override
     protected void initializeSettings() {
@@ -63,13 +105,11 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
         };
     }
 
-    @Override
-    protected boolean isEnabled() {
+    private boolean isEnabled() {
         return this.enabled;
     }
 
-    @Override
-    protected void setEnabled(boolean enabled) {
+    private void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -78,23 +118,19 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
         this.enabled = true;
     }
 
-    @Override
-    protected int themeIconId() {
+    private int themeIconId() {
         return 0;
     }
 
-    @Override
-    protected int resetIconId() {
+    private int resetIconId() {
         return 0;
     }
 
-    @Override
-    protected int infoIconId() {
+    private int infoIconId() {
         return 0;
     }
 
-    @Override
-    protected int patchesIconId() {
+    private int patchesIconId() {
         return 0;
     }
 
@@ -103,33 +139,27 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
         return "test";
     }
 
-    @Override
-    protected String bundleVersion() {
+    private String bundleVersion() {
         return "1.0";
     }
 
-    @Override
-    protected String settingTitle() {
+    private String settingTitle() {
         return "Test setting";
     }
 
-    @Override
-    protected String settingDescription() {
+    private String settingDescription() {
         return "Test description";
     }
 
-    @Override
-    protected String primaryPatchTitle() {
+    private String primaryPatchTitle() {
         return "First patch";
     }
 
-    @Override
-    protected String optionalPatchTitle() {
+    private String optionalPatchTitle() {
         return "Second patch";
     }
 
-    @Override
-    protected String optionalPatchDescription() {
+    private String optionalPatchDescription() {
         return "Optional description";
     }
 
@@ -138,8 +168,7 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
         return "Restart test app.";
     }
 
-    @Override
-    protected boolean optionalPatchApplied() {
+    private boolean optionalPatchApplied() {
         return this.optionalPatch;
     }
 

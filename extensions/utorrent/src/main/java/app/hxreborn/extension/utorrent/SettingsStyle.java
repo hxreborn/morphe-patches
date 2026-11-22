@@ -22,7 +22,7 @@ package app.hxreborn.extension.utorrent;
 
 import android.content.Context;
 
-final class SettingsStyle extends app.hxreborn.extension.shared.torrentmenu.SettingsStyle {
+final class SettingsStyle extends app.hxreborn.extension.shared.patchesmenu.SettingsStyle {
 
     SettingsStyle(Context context) {
         this(context, PatchSettings.isDark(context));

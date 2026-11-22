@@ -23,7 +23,7 @@ package app.hxreborn.extension.bittorrent;
 import android.content.Context;
 import android.widget.LinearLayout;
 
-final class SettingsRows extends app.hxreborn.extension.shared.torrentmenu.SettingsRows {
+final class SettingsRows extends app.hxreborn.extension.shared.patchesmenu.SettingsRows {
 
     private final Context context;
 
@@ -34,7 +34,7 @@ final class SettingsRows extends app.hxreborn.extension.shared.torrentmenu.Setti
 
     @Override
     protected void attachSwitch(LinearLayout row, boolean checked, int accent,
-            app.hxreborn.extension.shared.torrentmenu.SwitchChangeListener listener, LinearLayout.LayoutParams params) {
+            app.hxreborn.extension.shared.patchesmenu.SwitchChangeListener listener, LinearLayout.LayoutParams params) {
         HostSwitch toggle = new HostSwitch(this.context, checked, accent, listener);
         row.addView(toggle.view(), params);
         toggle.attach(row);

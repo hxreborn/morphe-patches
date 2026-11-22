@@ -18,10 +18,14 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.shared.torrentmenu;
+package app.hxreborn.extension.shared.patchesmenu;
 
-public interface SwitchChangeListener {
+public interface AppliedPatchCatalog {
 
-    void onChanged(boolean checked);
+    boolean isApplied(String key);
+
+    String title(String key);
+
+    String description(String key);
 
 }

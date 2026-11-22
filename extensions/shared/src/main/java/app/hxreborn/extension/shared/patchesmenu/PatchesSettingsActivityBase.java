@@ -18,7 +18,7 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.shared.torrentmenu;
+package app.hxreborn.extension.shared.patchesmenu;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -56,8 +56,6 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     private static final int TITLE_START_PADDING_DP = 12;
 
-    private static final int CONTENT_BOTTOM_PADDING_DP = 24;
-
     private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private SettingsStyle style;
@@ -66,17 +64,29 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int theme = settingsTheme();
+        if (theme != 0) {
+            setTheme(theme);
+        }
         super.onCreate(savedInstanceState);
         initializeSettings();
-        this.style = createStyle();
-        this.rows = createRows(this.style);
-        setContentView(screen());
-        styleSystemBars(getWindow());
+        if (useSharedStyle()) {
+            this.style = createStyle();
+            this.rows = createRows(this.style);
+        } else {
+            styleSystemBars(getWindow());
+        }
+        if (showScreenOnCreate()) {
+            showScreen(createScreen());
+        }
+        if (useSharedStyle()) {
+            styleSystemBars(getWindow());
+        }
     }
 
     @SuppressWarnings({ "deprecation", "DataFlowIssue" })
     @SuppressLint("InlinedApi")
-    private void styleSystemBars(Window window) {
+    protected void styleSystemBars(Window window) {
         window.setStatusBarColor(this.style.screenBackground);
         window.setNavigationBarColor((Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !this.style.dark) ? Color.BLACK
                 : this.style.screenBackground);
@@ -91,22 +101,21 @@ public abstract class PatchesSettingsActivityBase extends Activity {
                     : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }
 
-    private View screen() {
-        LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
+    protected View createScreen() {
+        LinearLayout screen = MenuLayout.createColumn(this);
         screen.setBackgroundColor(this.style.screenBackground);
         screen.setOnApplyWindowInsetsListener(this::applySystemBarInsets);
         screen.addView(appBar());
 
         ScrollView scroll = new ScrollView(this);
-        scroll.addView(content(),
+        scroll.addView(createContent(),
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        screen.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        MenuLayout.addWeightedContent(screen, scroll);
         return screen;
     }
 
     @SuppressWarnings("deprecation")
-    private WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
+    protected WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Insets bars = insets.getInsets(
                     WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout() | WindowInsets.Type.ime());
@@ -143,43 +152,37 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         return bar;
     }
 
-    private View content() {
-        LinearLayout column = new LinearLayout(this);
-        column.setOrientation(LinearLayout.VERTICAL);
-        column.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP),
-                this.style.dp(CONTENT_BOTTOM_PADDING_DP));
-
-        LinearLayout appearance = this.rows.card();
-        this.rows.switchRow(appearance, themeIconId(), settingTitle(), settingDescription(), isEnabled(), (enabled) -> {
-            setEnabled(enabled);
-            confirmRestart();
-        });
-        addSection(column, "Appearance", appearance);
-
-        LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, resetIconId(), "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
-        this.rows.valueRow(about, infoIconId(), "App version", appVersion());
-        this.rows.valueRow(about, patchesIconId(), "Patch bundle", bundleVersion());
-        addSection(column, "About", about);
-
-        LinearLayout applied = this.rows.card();
-        this.rows.patchRow(applied, primaryPatchTitle(), settingDescription());
-        if (optionalPatchApplied()) {
-            this.rows.patchRow(applied, optionalPatchTitle(), optionalPatchDescription());
-        }
-        addSection(column, "Applied patches", applied);
-        return column;
+    protected final SettingsStyle style() {
+        return this.style;
     }
 
-    private void addSection(LinearLayout column, String title, LinearLayout card) {
-        if (card.getChildCount() == 0) {
-            return;
-        }
-        column.addView(this.rows.sectionHeader(title));
-        column.addView(card);
+    protected final SettingsRows rows() {
+        return this.rows;
     }
 
-    private String appVersion() {
+    protected final void refreshContent() {
+        showScreen(createScreen());
+    }
+
+    protected void showScreen(View screen) {
+        setContentView(screen);
+    }
+
+    protected boolean useSharedStyle() {
+        return true;
+    }
+
+    protected boolean showScreenOnCreate() {
+        return true;
+    }
+
+    protected int settingsTheme() {
+        return 0;
+    }
+
+    protected abstract View createContent();
+
+    protected final String appVersion() {
         try {
             String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             return (version != null) ? version : "";
@@ -189,12 +192,16 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         }
     }
 
-    private void confirmReset() {
+    protected String resetDescription() {
+        return RESET_DESCRIPTION;
+    }
+
+    protected void confirmReset() {
         styleDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(resetDescription())
             .setPositiveButton("Reset", (dialog, which) -> {
                 resetToDefaults();
-                setContentView(screen());
+                refreshContent();
                 confirmRestart();
             })
             .setNegativeButton("Cancel", null)
@@ -206,7 +213,7 @@ public abstract class PatchesSettingsActivityBase extends Activity {
                 : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
     }
 
-    private void confirmRestart() {
+    protected void confirmRestart() {
         styleDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Restart required")
             .setMessage(restartMessage())
             .setPositiveButton("Restart", (dialog, which) -> restartApp())
@@ -229,37 +236,11 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     protected abstract SettingsRows createRows(SettingsStyle style);
 
-    protected abstract boolean isEnabled();
-
-    protected abstract void setEnabled(boolean enabled);
-
     protected abstract void resetToDefaults();
-
-    protected abstract int themeIconId();
-
-    protected abstract int resetIconId();
-
-    protected abstract int infoIconId();
-
-    protected abstract int patchesIconId();
 
     protected abstract String logTag();
 
-    protected abstract String bundleVersion();
-
-    protected abstract String settingTitle();
-
-    protected abstract String settingDescription();
-
-    protected abstract String primaryPatchTitle();
-
-    protected abstract String optionalPatchTitle();
-
-    protected abstract String optionalPatchDescription();
-
     protected abstract String restartMessage();
-
-    protected abstract boolean optionalPatchApplied();
 
     private void restartApp() {
         Intent launch = getPackageManager().getLaunchIntentForPackage(getPackageName());

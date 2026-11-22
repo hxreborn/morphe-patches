@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Switch;
 
-import app.hxreborn.extension.shared.torrentmenu.SwitchChangeListener;
+import app.hxreborn.extension.shared.patchesmenu.SwitchChangeListener;
 
 @SuppressWarnings("unused")
 public final class HostSwitch extends View.AccessibilityDelegate {

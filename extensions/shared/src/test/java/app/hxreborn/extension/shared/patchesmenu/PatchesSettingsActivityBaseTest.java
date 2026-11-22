@@ -18,7 +18,7 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.shared.torrentmenu;
+package app.hxreborn.extension.shared.patchesmenu;
 
 import android.app.AlertDialog;
 import android.os.Looper;

@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val bittorrentSettingsExtensionPatch = patch {
-    dependsOn(sharedTorrentMenuExtensionPatch)
+    dependsOn(sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/bittorrent-settings.mpe")
 }
 

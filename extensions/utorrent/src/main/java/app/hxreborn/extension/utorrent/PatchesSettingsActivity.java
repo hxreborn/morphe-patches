@@ -20,10 +20,55 @@
  */
 package app.hxreborn.extension.utorrent;
 
-import app.hxreborn.extension.shared.torrentmenu.PatchesSettingsActivityBase;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsActivityBase;
 
 @SuppressWarnings("unused")
 public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
+
+    private static final int CONTENT_BOTTOM_PADDING_DP = 24;
+
+    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
+
+    @Override
+    protected View createContent() {
+        LinearLayout column = new LinearLayout(this);
+        column.setOrientation(LinearLayout.VERTICAL);
+        column.setPadding(style().dp(app.hxreborn.extension.shared.patchesmenu.SettingsStyle.SCREEN_INSET_DP), 0,
+                style().dp(app.hxreborn.extension.shared.patchesmenu.SettingsStyle.SCREEN_INSET_DP),
+                style().dp(CONTENT_BOTTOM_PADDING_DP));
+
+        LinearLayout appearance = rows().card();
+        rows().switchRow(appearance, themeIconId(), settingTitle(), settingDescription(), isEnabled(), (enabled) -> {
+            setEnabled(enabled);
+            confirmRestart();
+        });
+        addSection(column, "Appearance", appearance);
+
+        LinearLayout about = rows().card();
+        rows().actionRow(about, resetIconId(), "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        rows().valueRow(about, infoIconId(), "App version", appVersion());
+        rows().valueRow(about, patchesIconId(), "Patch bundle", bundleVersion());
+        addSection(column, "About", about);
+
+        LinearLayout applied = rows().card();
+        rows().patchRow(applied, primaryPatchTitle(), settingDescription());
+        if (optionalPatchApplied()) {
+            rows().patchRow(applied, optionalPatchTitle(), optionalPatchDescription());
+        }
+        addSection(column, "Applied patches", applied);
+        return column;
+    }
+
+    private void addSection(LinearLayout column, String title, LinearLayout card) {
+        if (card.getChildCount() == 0) {
+            return;
+        }
+        column.addView(rows().sectionHeader(title));
+        column.addView(card);
+    }
 
     @Override
     protected void initializeSettings() {
@@ -31,23 +76,21 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
     }
 
     @Override
-    protected app.hxreborn.extension.shared.torrentmenu.SettingsStyle createStyle() {
+    protected app.hxreborn.extension.shared.patchesmenu.SettingsStyle createStyle() {
         return new SettingsStyle(this);
     }
 
     @Override
-    protected app.hxreborn.extension.shared.torrentmenu.SettingsRows createRows(
-            app.hxreborn.extension.shared.torrentmenu.SettingsStyle style) {
+    protected app.hxreborn.extension.shared.patchesmenu.SettingsRows createRows(
+            app.hxreborn.extension.shared.patchesmenu.SettingsStyle style) {
         return new SettingsRows(this, (SettingsStyle) style);
     }
 
-    @Override
-    protected boolean isEnabled() {
+    private boolean isEnabled() {
         return PatchSettings.isEnabled();
     }
 
-    @Override
-    protected void setEnabled(boolean enabled) {
+    private void setEnabled(boolean enabled) {
         PatchSettings.setEnabled(enabled);
     }
 
@@ -56,23 +99,19 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
         PatchSettings.resetToDefaults();
     }
 
-    @Override
-    protected int themeIconId() {
+    private int themeIconId() {
         return SettingsStyle.themeIconId();
     }
 
-    @Override
-    protected int resetIconId() {
+    private int resetIconId() {
         return SettingsStyle.resetIconId();
     }
 
-    @Override
-    protected int infoIconId() {
+    private int infoIconId() {
         return SettingsStyle.infoIconId();
     }
 
-    @Override
-    protected int patchesIconId() {
+    private int patchesIconId() {
         return SettingsStyle.patchesIconId();
     }
 
@@ -81,33 +120,27 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
         return PatchSettings.LOG_TAG;
     }
 
-    @Override
-    protected String bundleVersion() {
+    private String bundleVersion() {
         return BuildConfig.BUNDLE_VERSION;
     }
 
-    @Override
-    protected String settingTitle() {
+    private String settingTitle() {
         return "Prefer AMOLED in dark mode";
     }
 
-    @Override
-    protected String primaryPatchTitle() {
+    private String primaryPatchTitle() {
         return "AMOLED dark theme";
     }
 
-    @Override
-    protected String optionalPatchTitle() {
+    private String optionalPatchTitle() {
         return "Unlock premium";
     }
 
-    @Override
-    protected String settingDescription() {
+    private String settingDescription() {
         return "Makes dark surfaces pure black.";
     }
 
-    @Override
-    protected String optionalPatchDescription() {
+    private String optionalPatchDescription() {
         return "Unlocks Pro features and removes ads.";
     }
 
@@ -116,8 +149,7 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
         return "µTorrent must restart to apply the change.";
     }
 
-    @Override
-    protected boolean optionalPatchApplied() {
+    private boolean optionalPatchApplied() {
         return hasPremiumPatch();
     }
 

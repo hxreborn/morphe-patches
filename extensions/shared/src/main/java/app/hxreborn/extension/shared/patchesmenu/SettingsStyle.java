@@ -18,7 +18,7 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.shared.torrentmenu;
+package app.hxreborn.extension.shared.patchesmenu;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -70,13 +70,17 @@ public abstract class SettingsStyle {
 
     public final int accent;
 
-    public final Typeface medium = Typeface.create("sans-serif-medium", Typeface.NORMAL);
+    public final Typeface medium;
+
+    private final int rippleColor;
 
     private final Context context;
 
     protected SettingsStyle(Context context, boolean dark, int backgroundId, int dividerId, int titleId, int labelId,
             int accentId) {
         this.context = context;
+        this.medium = Typeface.create("sans-serif-medium", Typeface.NORMAL);
+        this.rippleColor = dark ? DARK_RIPPLE : LIGHT_RIPPLE;
         this.dark = dark;
         this.screenBackground = this.dark ? color(backgroundId) : Color.WHITE;
         this.cardSurface = this.dark ? DARK_CARD_SURFACE : LIGHT_CARD_SURFACE;
@@ -84,6 +88,20 @@ public abstract class SettingsStyle {
         this.primaryText = color(titleId);
         this.secondaryText = color(labelId);
         this.accent = color(accentId);
+    }
+
+    protected SettingsStyle(Context context, boolean dark, int screenBackground, int cardSurface, int divider,
+            int primaryText, int secondaryText, int accent, int rippleColor, Typeface medium) {
+        this.context = context;
+        this.dark = dark;
+        this.screenBackground = screenBackground;
+        this.cardSurface = cardSurface;
+        this.divider = divider;
+        this.primaryText = primaryText;
+        this.secondaryText = secondaryText;
+        this.accent = accent;
+        this.rippleColor = rippleColor;
+        this.medium = medium;
     }
 
     public int dp(float value) {
@@ -108,8 +126,7 @@ public abstract class SettingsStyle {
     }
 
     public Drawable ripple(int radiusDp) {
-        return new RippleDrawable(ColorStateList.valueOf(this.dark ? DARK_RIPPLE : LIGHT_RIPPLE), null,
-                rounded(Color.WHITE, radiusDp));
+        return new RippleDrawable(ColorStateList.valueOf(this.rippleColor), null, rounded(Color.WHITE, radiusDp));
     }
 
     @SuppressWarnings("DataFlowIssue")
