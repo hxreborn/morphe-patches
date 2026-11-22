@@ -28,14 +28,14 @@ val unlockPremiumPatch = patch(
         PremiumCodeFingerprint.method.returnEarly("p")
 
         BillingStateConstructorFingerprint.match().let { match ->
-            val factoryCall = match.instructionMatches.first()
+            val factoryCall = match.instructionMatches.single()
             val flag = factoryCall.getInstruction<FiveRegisterInstruction>().registerC
             match.method.addInstruction(factoryCall.index + 2, "sget-object v$flag, $BOOLEAN_FALSE")
             match.method.addInstruction(factoryCall.index, "sget-object v$flag, $BOOLEAN_TRUE")
         }
 
         PurchasesQueriedFingerprint.match().let { match ->
-            val boxing = match.instructionMatches.first()
+            val (boxing, _) = match.instructionMatches
             val flag = boxing.getInstruction<FiveRegisterInstruction>().registerC
             match.method.addInstruction(boxing.index, "const/4 v$flag, 0x1")
         }
