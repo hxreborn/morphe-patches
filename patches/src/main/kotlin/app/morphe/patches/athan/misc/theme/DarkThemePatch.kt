@@ -65,15 +65,15 @@ val darkThemePatch = patch(
 
     execute {
         SetApplicationNightModeFingerprint.matchAll().forEach { match ->
-            val invoke = match.instructionMatches.first()
-            val mode = invoke.getInstruction<FiveRegisterInstruction>().registerD
-            match.method.addInstruction(invoke.index, "const/4 v$mode, $MODE_NIGHT_AUTO")
+            val (setNightModeCall) = match.instructionMatches
+            val mode = setNightModeCall.getInstruction<FiveRegisterInstruction>().registerD
+            match.method.addInstruction(setNightModeCall.index, "const/4 v$mode, $MODE_NIGHT_AUTO")
         }
 
         DefaultNightModeFingerprint.match().let { match ->
-            val nightMode = match.instructionMatches[1]
-            val register = nightMode.getInstruction<OneRegisterInstruction>().registerA
-            match.method.replaceInstruction(nightMode.index, "const/4 v$register, $MODE_NIGHT_FOLLOW_SYSTEM")
+            val (_, defaultNightMode) = match.instructionMatches
+            val register = defaultNightMode.getInstruction<OneRegisterInstruction>().registerA
+            match.method.replaceInstruction(defaultNightMode.index, "const/4 v$register, $MODE_NIGHT_FOLLOW_SYSTEM")
         }
 
         ComposeDisallowForceDarkFingerprint.method.returnEarly()
