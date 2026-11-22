@@ -39,9 +39,9 @@ val unlockProPatch = patch(
         )
 
         FreeTextButtonFingerprint.match().let { match ->
-            val moveResult = match.instructionMatches.last()
-            val resultRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
-            match.method.addInstruction(moveResult.index + 1, "const/4 v$resultRegister, 0x0")
+            val (_, _, _, _, packageSuffixResult) = match.instructionMatches
+            val resultRegister = packageSuffixResult.getInstruction<OneRegisterInstruction>().registerA
+            match.method.addInstruction(packageSuffixResult.index + 1, "const/4 v$resultRegister, 0x0")
         }
     }
 }
