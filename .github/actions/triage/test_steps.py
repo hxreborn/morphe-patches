@@ -583,6 +583,31 @@ check(status == 0 and mutations == [] and issues["20"]["state"] == "OPEN"
       and issues["20"]["labels"] == ["bug"],
       "a documented non-crashing failure without logs gets no close or needs info label")
 
+restore_title = "[Not working]: Supported: restore from Google drive not working"
+restore_payload = {**runtime_payload, "title": restore_title}
+restore_report = issue(restore_title, runtime_body, labels=("bug",))
+earlier_backup = issue("[Not working]: Supported backup fails without GmsCore support", runtime_body, labels=("bug",))
+status, issues, mutations = run({"19": earlier_backup, "20": restore_report}, BUG,
+                                issue_number=20, event_issue=restore_payload, action="opened")
+check(status == 0 and mutations == ["issue comment 20"] and issues["20"]["state"] == "OPEN"
+      and issues["20"]["comments"][0]["body"].startswith("<!-- related-issues-bot -->")
+      and "[#19](https://redirect.github.com/hxreborn/morphe-patches/issues/19)" in issues["20"]["comments"][0]["body"],
+      "a complete new report links an earlier report that names the same problem in other words")
+
+earlier_crash = issue("[Not working]: Supported crashes on launch", runtime_body, labels=("bug",))
+status, issues, mutations = run({"19": earlier_crash, "20": restore_report}, BUG,
+                                issue_number=20, event_issue=restore_payload, action="opened")
+check(status == 0 and mutations == [], "a complete new report gets no comment when no earlier report matches")
+
+status, issues, mutations = run({"19": earlier_backup, "20": restore_report}, BUG,
+                                issue_number=20, event_issue=restore_payload)
+check(status == 0 and mutations == [], "an edited complete report gets no related reports comment")
+
+answered_report = {**restore_report, "comments": [{"user": {"login": PERSON}, "body": "was GmsCore support enabled?"}]}
+status, issues, mutations = run({"19": earlier_backup, "20": answered_report}, BUG,
+                                issue_number=20, event_issue=restore_payload, action="opened")
+check(status == 0 and mutations == [], "a new report someone already answered gets no related reports comment")
+
 issues, payload = bug(("bug", "incomplete", "needs info"), BOT, runtime_body,
                       timeline=[labeled("incomplete", BOT), labeled("needs info", BOT)])
 issues["20"]["comments"] = [{"user": {"login": BOT}, "body": "<!-- triage-bot -->\nEarlier log requirement"}]
