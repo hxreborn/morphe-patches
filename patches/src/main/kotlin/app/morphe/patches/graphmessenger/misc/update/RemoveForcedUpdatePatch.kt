@@ -5,7 +5,6 @@
 package app.morphe.patches.graphmessenger.misc.update
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -24,8 +23,9 @@ val removeForcedUpdatePatch = patch(
 
     execute {
         val match = ForcedUpdateVersionFingerprint.match()
-        val moveResult = match.instructionMatches.last().index
-        val register = match.method.getInstruction<OneRegisterInstruction>(moveResult).registerA
+        val (_, _, forcedUpdateVersionResult) = match.instructionMatches
+        val moveResult = forcedUpdateVersionResult.index
+        val register = forcedUpdateVersionResult.getInstruction<OneRegisterInstruction>().registerA
         match.method.addInstruction(moveResult + 1, "const/16 v$register, 0x0")
     }
 }

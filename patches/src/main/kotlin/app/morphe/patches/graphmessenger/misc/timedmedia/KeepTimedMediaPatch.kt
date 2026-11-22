@@ -35,8 +35,9 @@ val keepTimedMediaPatch = patch(
         IsRoundOnceFingerprint.method.returnEarly(false)
 
         NeedDrawBluredPreviewFingerprint.match().let { match ->
-            val moveResult = match.instructionMatches.last().index
-            val register = match.method.getInstruction<OneRegisterInstruction>(moveResult).registerA
+            val (_, hasExtendedMediaPreviewResult) = match.instructionMatches
+            val moveResult = hasExtendedMediaPreviewResult.index
+            val register = hasExtendedMediaPreviewResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(moveResult + 1, "return v$register")
         }
 
