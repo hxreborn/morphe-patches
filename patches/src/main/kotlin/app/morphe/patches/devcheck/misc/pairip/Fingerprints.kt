@@ -103,17 +103,29 @@ internal object TimeInStateAdapterFingerprint : Fingerprint(
     parameters = listOf(CPU_TIME_ACTIVITY, "Ljava/util/ArrayList;"),
 )
 
+internal val timeInStateRowTitleRead =
+    fieldAccess(opcode = Opcode.IGET_OBJECT, type = STRING)
+
+internal val timeInStateRowDurationRead =
+    fieldAccess(opcode = Opcode.IGET_OBJECT, type = STRING, location = MatchAfterWithin(1))
+
+internal val timeInStateRowPercentRead =
+    fieldAccess(opcode = Opcode.IGET_OBJECT, type = STRING, location = MatchAfterWithin(1))
+
+internal val timeInStateRowProgressRead =
+    fieldAccess(opcode = Opcode.IGET, type = "I", location = MatchAfterWithin(1))
+
 internal fun timeInStateRowBindingFingerprint(adapterClass: String) = Fingerprint(
     definingClass = adapterClass,
     name = "getView",
     filters = listOf(
-        fieldAccess(opcode = Opcode.IGET_OBJECT, type = STRING),
+        timeInStateRowTitleRead,
         methodCall(name = "setText", location = MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, type = STRING, location = MatchAfterWithin(1)),
+        timeInStateRowDurationRead,
         methodCall(name = "setText", location = MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, type = STRING, location = MatchAfterWithin(1)),
+        timeInStateRowPercentRead,
         methodCall(name = "setText", location = MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.IGET, type = "I", location = MatchAfterWithin(1)),
+        timeInStateRowProgressRead,
         methodCall(name = "setProgress", location = MatchAfterImmediately()),
     ),
 )
@@ -204,15 +216,27 @@ internal const val TEMP_MONITOR_WINDOW = "Lflar2/devcheck/monitors/TempMonitorWi
 internal const val BATTERY_MONITOR_WINDOW = "Lflar2/devcheck/monitors/BatteryMonitorWindow;"
 private const val BATTERY_CHANGED = "android.intent.action.BATTERY_CHANGED"
 
+internal val batteryTemperatureSettingRead =
+    fieldAccess(opcode = Opcode.IGET_BOOLEAN, definingClass = "this")
+
+internal val temperatureBatteryReceiverRead =
+    fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this", location = MatchAfterWithin(1))
+
+internal val temperatureHandlerRead =
+    fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this", type = "Landroid/os/Handler;")
+
+internal val temperaturePollerRead =
+    fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this", location = MatchAfterImmediately())
+
 internal object TempMonitorStartFingerprint : Fingerprint(
     definingClass = TEMP_MONITOR_WINDOW,
     filters = listOf(
-        fieldAccess(opcode = Opcode.IGET_BOOLEAN, definingClass = "this"),
+        batteryTemperatureSettingRead,
         string(BATTERY_CHANGED),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this", location = MatchAfterWithin(1)),
+        temperatureBatteryReceiverRead,
         methodCall(name = "registerReceiver", location = MatchAfterImmediately()),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this", type = "Landroid/os/Handler;"),
-        fieldAccess(opcode = Opcode.IGET_OBJECT, definingClass = "this", location = MatchAfterImmediately()),
+        temperatureHandlerRead,
+        temperaturePollerRead,
         methodCall(definingClass = "Landroid/os/Handler;", name = "post", location = MatchAfterImmediately()),
     ),
 )
@@ -385,6 +409,10 @@ internal fun hardwareReloadFingerprint(receiverClass: String, fragmentClass: Str
     ),
 )
 
+internal val signalRowAddressStore = fieldAccess(opcode = Opcode.IPUT_OBJECT)
+
+internal val signalRowTypeStore = fieldAccess(opcode = Opcode.IPUT)
+
 internal fun signalRowConstructorFingerprint(rowClass: String) = Fingerprint(
     definingClass = rowClass,
     name = "<init>",
@@ -392,10 +420,10 @@ internal fun signalRowConstructorFingerprint(rowClass: String) = Fingerprint(
     filters = listOf(
         fieldAccess(opcode = Opcode.IPUT_OBJECT),
         fieldAccess(opcode = Opcode.IPUT_OBJECT),
-        fieldAccess(opcode = Opcode.IPUT_OBJECT),
+        signalRowAddressStore,
         fieldAccess(opcode = Opcode.IPUT_OBJECT),
         fieldAccess(opcode = Opcode.IPUT),
-        fieldAccess(opcode = Opcode.IPUT),
+        signalRowTypeStore,
     ),
 )
 
