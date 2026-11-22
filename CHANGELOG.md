@@ -1,3 +1,13 @@
+## [1.86.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.3...v1.86.0-dev.4) (2026-11-22)
+
+### Bug Fixes
+
+* **BeReal:** remove `3.97.1` app target ([6b9b080](https://github.com/hxreborn/morphe-patches/commit/6b9b080ed4cabf923bb10d64aa3d169d25f7ae4e))
+
+### New Features
+
+* **BeReal - Custom BeFake header:** switch between BeReal and BeFake ([ef08135](https://github.com/hxreborn/morphe-patches/commit/ef08135014132a30974e33d041d39b0d48b4acfb))
+
 ## [1.86.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.2...v1.86.0-dev.3) (2026-11-22)
 
 ### Bug Fixes

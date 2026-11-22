@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.86.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**593 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.86.0-dev.4** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -375,13 +375,14 @@
 
 **Supported versions:**
 
-| 3.97.1 | 3.98.0 |
-| :---: | :---: |
+| 3.98.0 |
+| :---: |
 
 | Patch | Details |
 |---|---|
 | <a id="bereal-back-up-memories"></a>[**Back up memories**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up memories to hxreborn patches. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' usernames and comments to Download/BeReal unless a folder is picked. |
 | <a id="bereal-change-download-location"></a>[**Change download location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/download/ChangeDownloadLocationPatch.kt) | Saves downloaded BeReals to Pictures/BeReal, DCIM/BeReal or a folder you pick. Requires Android 10 or newer. |
+| <a id="bereal-custom-befake-header"></a>[**Custom BeFake header**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/header/CustomBeFakeHeaderPatch.kt) | Replaces the BeReal wordmark in the top bar and posting header with BeFake. |
 | <a id="bereal-custom-location"></a>[**Custom location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomLocationPatch.kt) | Sets the location shown on your BeReal to a place you choose on a map or by name. |
 | <a id="bereal-custom-retake-count"></a>[**Custom retake count**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomRetakeCountPatch.kt) | Asks before each BeReal how many retakes your friends see on it. |
 | <a id="bereal-disable-data-collection"></a>[**Disable data collection**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/privacy/DisableDataCollectionPatch.kt) | Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, Adjust attribution and the Shake bug reporter. |

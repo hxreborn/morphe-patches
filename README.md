@@ -27,14 +27,14 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.86.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.86.0-dev.3)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**593 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.86.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.86.0-dev.4)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
 <table align="center">
 <tr>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#viber-comvibervoip"><img src="https://publicmetadata.co.uk/com.viber.voip" width="40" height="40" align="top" alt=""><br>Viber</a><br><sub>25&nbsp;patches</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#bereal-comberealft"><img src="https://publicmetadata.co.uk/com.bereal.ft" width="40" height="40" align="top" alt=""><br>BeReal</a><br><sub>21&nbsp;patches</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#bereal-comberealft"><img src="https://publicmetadata.co.uk/com.bereal.ft" width="40" height="40" align="top" alt=""><br>BeReal</a><br><sub>22&nbsp;patches</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#imo-comimoandroidimoim"><img src="https://publicmetadata.co.uk/com.imo.android.imoim" width="40" height="40" align="top" alt=""><br>imo</a><br><sub>31&nbsp;patches</sub></td>
 </tr>
 <tr>
@@ -88,7 +88,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 20 | <img src="https://publicmetadata.co.uk/com.audiomack" width="24" height="24" align="top" alt=""> [**Audiomack**](PATCHES.md#audiomack-comaudiomack) | 2 | `8.11.4` | [`com.audiomack`](https://play.google.com/store/apps/details?id=com.audiomack) |
 | 21 | <img src="https://publicmetadata.co.uk/com.outscar.bd.bongcal" width="24" height="24" align="top" alt=""> [**Bangla Calendar**](PATCHES.md#bangla-calendar-comoutscarbdbongcal) | 2 | `3.0.01q` | [`com.outscar.bd.bongcal`](https://play.google.com/store/apps/details?id=com.outscar.bd.bongcal) |
 | 22 | <img src="https://publicmetadata.co.uk/com.neonbhoot.behisabi" width="24" height="24" align="top" alt=""> [**BeHisabi**](PATCHES.md#behisabi-comneonbhootbehisabi) | 1 | `1.0.7` | [`com.neonbhoot.behisabi`](https://play.google.com/store/apps/details?id=com.neonbhoot.behisabi) |
-| 23 | <img src="https://publicmetadata.co.uk/com.bereal.ft" width="24" height="24" align="top" alt=""> [**BeReal**](PATCHES.md#bereal-comberealft) | 21 | `3.97.1`, `3.98.0` | [`com.bereal.ft`](https://play.google.com/store/apps/details?id=com.bereal.ft) |
+| 23 | <img src="https://publicmetadata.co.uk/com.bereal.ft" width="24" height="24" align="top" alt=""> [**BeReal**](PATCHES.md#bereal-comberealft) | 22 | `3.98.0` | [`com.bereal.ft`](https://play.google.com/store/apps/details?id=com.bereal.ft) |
 | 24 | <img src="https://publicmetadata.co.uk/ipnossoft.rma.free" width="24" height="24" align="top" alt=""> [**BetterSleep**](PATCHES.md#bettersleep-ipnossoftrmafree) | 1 | `26.20` | [`ipnossoft.rma.free`](https://play.google.com/store/apps/details?id=ipnossoft.rma.free) |
 | 25 | <img src="https://publicmetadata.co.uk/com.biobird.exvee" width="24" height="24" align="top" alt=""> [**Biobird Flashcards**](PATCHES.md#biobird-flashcards-combiobirdexvee) | 2 | `2.0.2`, `3.0.0`&nbsp;+1 | [`com.biobird.exvee`](https://play.google.com/store/apps/details?id=com.biobird.exvee) |
 | 26 | <img src="https://publicmetadata.co.uk/com.bittorrent.client" width="24" height="24" align="top" alt=""> [**BitTorrent**](PATCHES.md#bittorrent-combittorrentclient) | 3 | `8.4.3` | [`com.bittorrent.client`](https://play.google.com/store/apps/details?id=com.bittorrent.client) |

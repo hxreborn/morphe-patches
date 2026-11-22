@@ -78,7 +78,6 @@ body:
         - "Bangla Calendar (another version, type it below)"
         - "BeHisabi 1.0.7"
         - "BeHisabi (another version, type it below)"
-        - "BeReal 3.97.1"
         - "BeReal 3.98.0"
         - "BeReal (another version, type it below)"
         - "BetterSleep 26.20"
@@ -492,11 +491,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.86.0-dev.4"
         - "1.86.0-dev.3"
         - "1.86.0-dev.2"
         - "1.86.0-dev.1"
         - "1.85.1-dev.3"
-        - "1.85.1-dev.2"
         - "1.85.0"
         - "Older than these"
         # /generated
@@ -603,6 +602,7 @@ body:
         - "BeHisabi \u00b7 Unlock premium"
         - "BeReal \u00b7 Back up memories"
         - "BeReal \u00b7 Change download location"
+        - "BeReal \u00b7 Custom BeFake header"
         - "BeReal \u00b7 Custom location"
         - "BeReal \u00b7 Custom retake count"
         - "BeReal \u00b7 Disable data collection"
