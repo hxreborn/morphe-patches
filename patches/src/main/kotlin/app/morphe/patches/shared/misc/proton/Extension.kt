@@ -14,6 +14,7 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.fillAppliedPatch
 import app.morphe.patches.shared.misc.fillPatchMetadata
 import app.morphe.patches.shared.misc.returnTrueFrom
@@ -119,7 +120,13 @@ internal fun markPatchMetadata(
     patch: Patch,
     withDescription: Boolean = false,
     settingsClass: String = APPLIED_PATCHES_CLASS,
-) = fillPatchMetadata(settingsClass, methodName, patch, withDescription)
+) {
+    if (settingsClass == APPLIED_PATCHES_CLASS) {
+        addAppliedPatchMetadata(settingsClass, methodName, patch, withDescription)
+    } else {
+        fillPatchMetadata(settingsClass, methodName, patch, withDescription)
+    }
+}
 
 internal fun bindAppSettings(settingsClass: String) =
     mutableClassDefBy(APP_SETTINGS_BINDING_CLASS).methods.single { it.name == "current" }.addInstructions(

@@ -13,7 +13,7 @@ internal val protonSettingsThemeExtensionPatch = patch {
 }
 
 internal val protonSettingsExtensionPatch = patch {
-    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, sharedProxyHandlerExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, sharedProxyHandlerExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/proton-settings.mpe")
 }
 

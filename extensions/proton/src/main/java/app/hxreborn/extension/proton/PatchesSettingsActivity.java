@@ -128,7 +128,7 @@ public final class PatchesSettingsActivity extends Activity implements SettingsS
         this.textWeakColor = PatchesTheme.textWeak(this);
         this.iconDisabledColor = PatchesTheme.iconDisabled(this);
 
-        setContentView(buildScreen());
+        setContentView(new PatchesSettingsPanel(this).createContent());
     }
 
     @Override
@@ -137,17 +137,12 @@ public final class PatchesSettingsActivity extends Activity implements SettingsS
         recreateContent();
     }
 
-    private View buildScreen() {
-        final LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
+    ScrollView prepareScreen(LinearLayout screen) {
         screen.setBackgroundColor(this.screenBackgroundColor);
         screen.setPadding(0, systemBarHeight("status_bar_height", 24), 0, systemBarHeight("navigation_bar_height", 0));
         screen.addView(header());
-
         this.content = new ScrollView(this);
-        screen.addView(this.content, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        recreateContent();
-        return screen;
+        return this.content;
     }
 
     @Override
