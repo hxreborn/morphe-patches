@@ -24,22 +24,15 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-final class SettingsRows {
+final class SettingsRows extends app.hxreborn.extension.shared.patchesmenu.SettingsRows {
 
     private static final int HALF_TURN_DEGREES = 180;
-
-    private static final int SECTION_HEADER_START_PADDING_DP = 4;
-
-    private static final int SECTION_HEADER_TOP_PADDING_DP = 24;
-
-    private static final int SECTION_HEADER_BOTTOM_PADDING_DP = 8;
 
     private static final int DESCRIPTION_TOP_PADDING_DP = 2;
 
@@ -60,25 +53,9 @@ final class SettingsRows {
     private final SettingsStyle style;
 
     SettingsRows(Context context, SettingsStyle style) {
+        super(context, style);
         this.context = context;
         this.style = style;
-    }
-
-    TextView sectionHeader(String title) {
-        TextView header = this.style.text(title, SettingsStyle.SECTION_SP, this.style.secondaryText, this.style.medium);
-        header.setPadding(this.style.dp(SECTION_HEADER_START_PADDING_DP), this.style.dp(SECTION_HEADER_TOP_PADDING_DP),
-                0, this.style.dp(SECTION_HEADER_BOTTOM_PADDING_DP));
-        SettingsStyle.markHeading(header);
-        return header;
-    }
-
-    LinearLayout card() {
-        LinearLayout card = new LinearLayout(this.context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        card.setBackground(this.style.rounded(this.style.cardSurface, SettingsStyle.CARD_RADIUS_DP));
-        card.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
-        card.setClipToOutline(true);
-        return card;
     }
 
     void switchRow(LinearLayout card, PatchSetting setting, boolean checked,
@@ -160,6 +137,15 @@ final class SettingsRows {
             card.addView(divider, dividerParams);
         }
         card.addView(column);
+    }
+
+    @Override
+    protected void attachSwitch(LinearLayout row, boolean checked, int accent,
+            app.hxreborn.extension.shared.patchesmenu.SwitchChangeListener listener, LinearLayout.LayoutParams params) {
+        Switch toggle = new Switch(this.context);
+        toggle.setChecked(checked);
+        toggle.setOnCheckedChangeListener((button, enabled) -> listener.onChanged(enabled));
+        row.addView(toggle, params);
     }
 
     private LinearLayout baseRow(LinearLayout card, String iconName) {

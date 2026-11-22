@@ -23,38 +23,21 @@ package app.hxreborn.extension.viber;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsActivityBase;
 import app.hxreborn.extension.viber.AppliedPatches.AppliedPatch;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
-public final class PatchesSettingsActivity extends Activity {
-
-    private static final int APP_BAR_HEIGHT_DP = 64;
-
-    private static final int APP_BAR_START_PADDING_DP = 4;
-
-    private static final int BACK_TOUCH_TARGET_DP = 48;
-
-    private static final int BACK_ICON_INSET_DP = 12;
-
-    private static final int TITLE_START_PADDING_DP = 12;
+public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
 
     private static final int CONTENT_BOTTOM_PADDING_DP = 24;
 
@@ -68,19 +51,57 @@ public final class PatchesSettingsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(SettingsStyle.theme());
         super.onCreate(savedInstanceState);
+        setContentView(createScreen());
+    }
+
+    @Override
+    protected int settingsTheme() {
+        return SettingsStyle.theme();
+    }
+
+    @Override
+    protected boolean showScreenOnCreate() {
+        return false;
+    }
+
+    @Override
+    protected void initializeSettings() {
         PatchSettings.initialize(this);
-        this.style = new SettingsStyle(this);
-        this.rows = new SettingsRows(this, this.style);
         this.businessChatSelection = new BusinessChatSelection(this, this::confirmRestart);
-        styleSystemBars(getWindow());
-        setContentView(screen());
+    }
+
+    @Override
+    protected SettingsStyle createStyle() {
+        this.style = new SettingsStyle(this);
+        return this.style;
+    }
+
+    @Override
+    protected SettingsRows createRows(app.hxreborn.extension.shared.patchesmenu.SettingsStyle style) {
+        this.rows = new SettingsRows(this, (SettingsStyle) style);
+        return this.rows;
+    }
+
+    @Override
+    protected void resetToDefaults() {
+        PatchSettings.resetToDefaults();
+    }
+
+    @Override
+    protected String restartMessage() {
+        return "Viber must restart to apply the change.";
+    }
+
+    @Override
+    protected String logTag() {
+        return PatchSettings.LOG_TAG;
     }
 
     @SuppressLint("InlinedApi")
     @SuppressWarnings("deprecation")
-    private void styleSystemBars(Window window) {
+    @Override
+    protected void styleSystemBars(Window window) {
         window.setStatusBarColor(this.style.screenBackground);
         window.setNavigationBarColor(this.style.screenBackground);
         window.getDecorView()
@@ -88,53 +109,16 @@ public final class PatchesSettingsActivity extends Activity {
                     : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
     }
 
-    private View screen() {
-        LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(this.style.screenBackground);
-        screen.setOnApplyWindowInsetsListener(this::applySystemBarInsets);
-        screen.addView(appBar());
-
-        ScrollView scroll = new ScrollView(this);
-        scroll.addView(content(),
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        screen.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        return screen;
-    }
-
     @SuppressWarnings("deprecation")
-    private WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
+    @Override
+    protected WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
         view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
                 insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
         return insets.consumeSystemWindowInsets();
     }
 
-    private View appBar() {
-        LinearLayout bar = new LinearLayout(this);
-        bar.setGravity(Gravity.CENTER_VERTICAL);
-        bar.setPadding(this.style.dp(APP_BAR_START_PADDING_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0);
-        bar.setMinimumHeight(this.style.dp(APP_BAR_HEIGHT_DP));
-
-        ImageView back = new ImageView(this);
-        back.setImageDrawable(this.style.hostIcon("hx_viber_ic_back", this.style.primaryText));
-        back.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        int inset = this.style.dp(BACK_ICON_INSET_DP);
-        back.setPadding(inset, inset, inset, inset);
-        back.setContentDescription("Back");
-        back.setBackground(this.style.ripple(BACK_TOUCH_TARGET_DP / 2));
-        back.setOnClickListener((view) -> finish());
-        bar.addView(back, new LinearLayout.LayoutParams(this.style.dp(BACK_TOUCH_TARGET_DP),
-                this.style.dp(BACK_TOUCH_TARGET_DP)));
-
-        TextView title = this.style.text("hxreborn patches", SettingsStyle.BAR_TITLE_SP, this.style.primaryText,
-                this.style.medium);
-        title.setPadding(this.style.dp(TITLE_START_PADDING_DP), 0, 0, 0);
-        SettingsStyle.markHeading(title);
-        bar.addView(title);
-        return bar;
-    }
-
-    private View content() {
+    @Override
+    protected View createContent() {
         LinearLayout column = new LinearLayout(this);
         column.setOrientation(LinearLayout.VERTICAL);
         column.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), 0, this.style.dp(SettingsStyle.SCREEN_INSET_DP),
@@ -223,22 +207,13 @@ public final class PatchesSettingsActivity extends Activity {
         column.addView(card);
     }
 
-    private String appVersion() {
-        try {
-            String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            return (version != null) ? version : "";
-        } catch (PackageManager.NameNotFoundException ex) {
-            Log.w(PatchSettings.LOG_TAG, "Package info lookup failed for " + getPackageName(), ex);
-            return "unknown";
-        }
-    }
-
-    private void confirmReset() {
+    @Override
+    protected void confirmReset() {
         showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
             .setMessage(RESET_DESCRIPTION)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();
-                setContentView(screen());
+                setContentView(createScreen());
                 confirmRestart();
             })
             .setNegativeButton("Cancel", null));
@@ -259,7 +234,8 @@ public final class PatchesSettingsActivity extends Activity {
                 : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
     }
 
-    private void confirmRestart() {
+    @Override
+    protected void confirmRestart() {
         showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Restart required")
             .setMessage("Viber must restart to apply the change.")
             .setPositiveButton("Restart", (dialog, which) -> restartApp())
