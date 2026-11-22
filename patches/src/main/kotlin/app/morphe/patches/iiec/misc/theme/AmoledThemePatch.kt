@@ -34,7 +34,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.iiecAmoledDarkThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
@@ -218,10 +217,9 @@ val amoledThemePatch = patch(
         val constructorMatch = DarkSchemeConstructorFingerprint.match()
         val darkSchemeType = constructorMatch.classDef.type
 
-        val backgroundField = constructorMatch.instructionMatches.first()
-            .getInstruction<Instruction>().getReference<FieldReference>()!!
-        val setterMethod = constructorMatch.instructionMatches.last()
-            .getInstruction<Instruction>().getReference<MethodReference>()!!
+        val (backgroundFieldRead, _, setBackgroundCall) = constructorMatch.instructionMatches
+        val backgroundField = backgroundFieldRead.fieldReference
+        val setterMethod = setBackgroundCall.methodReference
 
         mutableClassDefBy(constructorMatch.classDef).addMethod(
             APPLY_AMOLED_METHOD,
