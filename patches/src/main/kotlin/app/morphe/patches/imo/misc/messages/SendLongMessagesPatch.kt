@@ -82,7 +82,8 @@ val sendLongMessagesPatch = patch(
         }
 
         ChatInputLimitFingerprint.match().apply {
-            val limitCall = instructionMatches[1].index
+            val (_, setInputLimit) = instructionMatches
+            val limitCall = setInputLimit.index
             val input = method.getInstruction<FiveRegisterInstruction>(limitCall).registerC
             method.replaceInstruction(
                 limitCall,

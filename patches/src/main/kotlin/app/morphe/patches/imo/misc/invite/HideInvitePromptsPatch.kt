@@ -7,12 +7,10 @@ package app.morphe.patches.imo.misc.invite
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.imo.shared.wideRegisterPairs
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val CHATS_TABLE = "chats_new"
 private const val INVITE_ENTRY_ID = "entrance.inviteFriends"
@@ -39,10 +37,10 @@ val hideInvitePromptsPatch = patch(
         }
 
         inviteChatEntryFingerprint().match().apply {
-            val deleteRows = instructionMatches.first().instruction.getReference<MethodReference>()!!
-            val closedIndex = instructionMatches.last().index
-            val closed = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
-            val insertIndex = closedIndex + 1
+            val (deleteRowsCall, _, _, entranceClosedResult) = instructionMatches
+            val deleteRows = deleteRowsCall.methodReference
+            val closed = entranceClosedResult.getInstruction<OneRegisterInstruction>().registerA
+            val insertIndex = entranceClosedResult.index + 1
             val wideRegisters = method.wideRegisterPairs().toIntArray()
             val registers = method.getFreeRegisterProvider(insertIndex, 4, closed, *wideRegisters)
             val (table, selection, selectionArgs, notify) = List(4) { registers.getFreeRegister4Bit() }

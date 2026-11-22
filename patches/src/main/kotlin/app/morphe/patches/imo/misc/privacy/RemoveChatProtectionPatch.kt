@@ -8,7 +8,6 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.imo.shared.enumConstantField
@@ -16,7 +15,6 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
 val removeChatProtectionPatch = patch(
@@ -27,7 +25,7 @@ val removeChatProtectionPatch = patch(
 
     execute {
         val protectedMessage = ProtectedMessageFingerprint.match()
-        val protectionFlag = protectedMessage.instructionMatches.first().instruction.getReference<FieldReference>()!!
+        val protectionFlag = protectedMessage.instructionMatches.single().fieldReference
 
         fieldAccess(protectionFlag, Opcode.SPUT_BOOLEAN).matchAllMethodIndicesForEach { index ->
             val register = getInstruction<OneRegisterInstruction>(index).registerA
