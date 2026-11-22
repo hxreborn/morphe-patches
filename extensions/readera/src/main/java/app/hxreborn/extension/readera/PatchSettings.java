@@ -27,7 +27,7 @@ import android.util.Log;
 
 public final class PatchSettings {
 
-    static final String LOG_TAG = "hxReadEra";
+    public static final String LOG_TAG = "hxReadEra";
 
     static final String PREFERENCES_NAME = "hx_readera_patches";
 
@@ -99,7 +99,7 @@ public final class PatchSettings {
         return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    static SharedPreferences speechPreferences(Context context) {
+    public static SharedPreferences speechPreferences(Context context) {
         return context.getSharedPreferences(SPEECH_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 

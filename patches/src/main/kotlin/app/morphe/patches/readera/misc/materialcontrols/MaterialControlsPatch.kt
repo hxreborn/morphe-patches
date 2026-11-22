@@ -24,7 +24,7 @@ import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.readeraMaterial3ControlsExtensionPatch
 import app.morphe.patches.shared.misc.extension.readeraMaterialRadioButtonExtensionPatch
 
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/MaterialControls;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/controls/MaterialControls;"
 internal const val MATERIAL_CHECK_BOX_TAG = "app.hxreborn.extension.readera.MaterialCheckBox"
 internal const val MATERIAL_RADIO_BUTTON_TAG = "app.hxreborn.extension.readera.MaterialRadioButton"
 private const val SWITCH_CLASS = "Landroidx/appcompat/widget/SwitchCompat;"

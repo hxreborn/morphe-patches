@@ -29,7 +29,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraCopyWithSourceExtensionPatch
 import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
-private const val SELECTION_SOURCE = "Lapp/hxreborn/extension/readera/SelectionSource;"
+private const val SELECTION_SOURCE = "Lapp/hxreborn/extension/readera/selection/SelectionSource;"
 private const val QUOTE_SHARE_SUBJECT = "Quote from the book %1\$s"
 
 private var quoteShareSubject = -1L

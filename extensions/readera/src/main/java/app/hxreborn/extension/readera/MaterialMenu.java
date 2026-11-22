@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-final class MaterialMenu {
+public final class MaterialMenu {
 
     private static final int MIN_WIDTH_DP = 196;
 
@@ -51,13 +51,13 @@ final class MaterialMenu {
 
     private final SettingsStyle style;
 
-    MaterialMenu(Context context, SettingsStyle style) {
+    public MaterialMenu(Context context, SettingsStyle style) {
         this.context = context;
         this.style = style;
     }
 
     @SuppressWarnings("resource")
-    void show(View anchor, Item... items) {
+    public void show(View anchor, Item... items) {
         LinearLayout menu = new LinearLayout(this.context);
         menu.setOrientation(LinearLayout.VERTICAL);
         menu.setPadding(0, this.style.dp(VERTICAL_PADDING_DP), 0, this.style.dp(VERTICAL_PADDING_DP));
@@ -118,7 +118,7 @@ final class MaterialMenu {
         popup.showAsDropDown(anchor, Math.max(0, anchor.getWidth() - this.style.dp(MIN_WIDTH_DP)), 0);
     }
 
-    static final class Item {
+    public static final class Item {
 
         final String label;
 
@@ -130,7 +130,7 @@ final class MaterialMenu {
 
         final Runnable action;
 
-        Item(String label, String icon, Runnable action) {
+        public Item(String label, String icon, Runnable action) {
             this.label = label;
             this.icon = icon;
             this.selected = false;

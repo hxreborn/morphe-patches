@@ -1,2 +1,2 @@
-app/hxreborn/extension/readera/SpeechPitchSlider
-app/hxreborn/extension/readera/SpeechPitchTarget
+app/hxreborn/extension/readera/speech/pitch/SpeechPitchSlider
+app/hxreborn/extension/readera/speech/pitch/SpeechPitchTarget

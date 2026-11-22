@@ -25,7 +25,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.readeraReadAloudNotificationControlsExtensionPatch
 
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechNotification;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/speech/notification/SpeechNotification;"
 private const val STOP_ACTION_REGISTERS = 4
 private const val TIMER_READER_REGISTERS = 4
 private const val STOP_ICON = 0x1080038

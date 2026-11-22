@@ -15,7 +15,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraChapterReaderExtensionPatch
 
-internal const val CHAPTER_READER = "Lapp/hxreborn/extension/readera/ChapterReader;"
+internal const val CHAPTER_READER = "Lapp/hxreborn/extension/readera/speech/ChapterReader;"
 
 internal val chapterReaderPatch = patch {
     dependsOn(readeraChapterReaderExtensionPatch)

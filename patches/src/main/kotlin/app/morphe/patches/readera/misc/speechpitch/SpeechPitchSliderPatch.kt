@@ -39,8 +39,8 @@ import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.readeraMaterialRadioButtonExtensionPatch
 import app.morphe.patches.shared.misc.extension.readeraSpeechPitchSliderExtensionPatch
 
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechPitchSlider;"
-private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechPitchTarget;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/speech/pitch/SpeechPitchSlider;"
+private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/speech/pitch/SpeechPitchTarget;"
 private const val PITCH_LAYOUT = "res/layout/hx_readera_pitch.xml"
 private val radioButtonTags = setOf("RadioButton", MATERIAL_RADIO_BUTTON_TAG)
 
@@ -175,7 +175,7 @@ val speechPitchSliderPatch = patch(
                 """
                     invoke-virtual {p0}, Landroid/app/Fragment;->getView()Landroid/view/View;
                     move-result-object v$rootRegister
-                    invoke-static {v$rootRegister, p0}, $EXTENSION_CLASS_DESCRIPTOR->attach(Landroid/view/View;Lapp/hxreborn/extension/readera/SpeechPitchTarget;)V
+                    invoke-static {v$rootRegister, p0}, $EXTENSION_CLASS_DESCRIPTOR->attach(Landroid/view/View;Lapp/hxreborn/extension/readera/speech/pitch/SpeechPitchTarget;)V
                 """,
             )
         }

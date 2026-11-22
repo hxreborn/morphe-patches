@@ -23,7 +23,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import app.morphe.patches.shared.misc.extension.readeraSearchSelectionInBookExtensionPatch
 import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
-private const val SELECTION_SEARCH = "Lapp/hxreborn/extension/readera/SelectionSearch;"
+private const val SELECTION_SEARCH = "Lapp/hxreborn/extension/readera/selection/SelectionSearch;"
 private const val TEXT_SEARCH_HINT = "Text search"
 
 private var textSearchHint = -1L

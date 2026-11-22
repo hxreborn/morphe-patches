@@ -21,7 +21,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import app.morphe.patches.shared.misc.extension.readeraLibraryViewModesExtensionPatch
 
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/LibraryViewMenu;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/library/LibraryViewMenu;"
 
 @Suppress("unused")
 val libraryViewModesPatch = patch(

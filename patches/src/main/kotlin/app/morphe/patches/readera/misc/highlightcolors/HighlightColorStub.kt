@@ -26,9 +26,9 @@ import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 
-internal const val PICKER_CLASS = "Lapp/hxreborn/extension/readera/HighlightColorPicker;"
+internal const val PICKER_CLASS = "Lapp/hxreborn/extension/readera/highlight/HighlightColorPicker;"
 internal const val READ_ACTIVITY_CLASS = "Lorg/readera/read/ReadActivity;"
-private const val HOST_INTERFACE = "Lapp/hxreborn/extension/readera/HighlightColorHost;"
+private const val HOST_INTERFACE = "Lapp/hxreborn/extension/readera/highlight/HighlightColorHost;"
 private const val PICKER_FACTORY_SIGNATURE =
     "(Landroid/app/Activity;Landroid/view/ViewGroup;Landroid/view/ViewGroup;$HOST_INTERFACE)$PICKER_CLASS"
 

@@ -21,7 +21,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraReadAloudFromSelectionExtensionPatch
 import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
-private const val SELECTION_READ_ALOUD = "Lapp/hxreborn/extension/readera/SelectionReadAloud;"
+private const val SELECTION_READ_ALOUD = "Lapp/hxreborn/extension/readera/selection/SelectionReadAloud;"
 
 @Suppress("unused")
 val readAloudFromSelectionPatch = patch(
