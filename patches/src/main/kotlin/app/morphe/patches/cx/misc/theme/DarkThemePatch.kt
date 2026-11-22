@@ -53,7 +53,7 @@ val darkThemePatch = patch(
     dependsOn(unlockPremiumPatch, darkThemeResourcesPatch)
 
     execute {
-        val themePreference = ThemePreferenceFingerprint.match().instructionMatches[0]
+        val (themePreference) = ThemePreferenceFingerprint.match().instructionMatches
         val nightMode = themePreference
             .getInstruction<ReferenceInstruction>()
             .reference as MethodReference
