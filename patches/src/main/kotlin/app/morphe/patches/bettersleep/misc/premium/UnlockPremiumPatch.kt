@@ -36,8 +36,8 @@ val unlockPremiumPatch = patch(
     execute {
         IsContentUnlockedFingerprint.method.returnEarly(true)
 
-        val hasSubscription = OnAskForUserPremiumFingerprint.match()
-            .instructionMatches.first().getMethodCalled()
+        val (subscriptionCheck) = OnAskForUserPremiumFingerprint.match().instructionMatches
+        val hasSubscription = subscriptionCheck.getMethodCalled()
         hasSubscription.returnEarly(true)
 
         val featureManager = mutableClassDefBy(hasSubscription.definingClass)
