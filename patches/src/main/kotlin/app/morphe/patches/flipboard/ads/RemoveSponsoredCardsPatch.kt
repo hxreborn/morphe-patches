@@ -22,7 +22,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 @Suppress("unused")
@@ -36,10 +35,10 @@ val removeSponsoredCardsPatch = patch(
         val preference = FeedAdPreferenceFingerprint.match()
         val (_, _, preferenceResult, storeEnabled, readEnabled) = preference.instructionMatches
         preference.method.apply {
-            val enabled = getInstruction<OneRegisterInstruction>(preferenceResult.index).registerA
-            val store = getInstruction<TwoRegisterInstruction>(storeEnabled.index)
-            val read = getInstruction<TwoRegisterInstruction>(readEnabled.index)
-            val field = storeEnabled.instruction.getReference<FieldReference>()!!
+            val enabled = preferenceResult.getInstruction<OneRegisterInstruction>().registerA
+            val store = storeEnabled.getInstruction<TwoRegisterInstruction>()
+            val read = readEnabled.getInstruction<TwoRegisterInstruction>()
+            val field = storeEnabled.fieldReference
             check(store.registerA == enabled && store.registerB == read.registerB &&
                 field == readEnabled.instruction.getReference<FieldReference>()) {
                 "The feed ad preference no longer flows into the ad controller flag"
@@ -192,7 +191,7 @@ val removeSponsoredCardsPatch = patch(
 private fun skipEmptyRoundupHeader() {
     val binding = BindRoundupAdapterFingerprint.match()
     val (_, createAdapter) = binding.instructionMatches
-    val adapter = createAdapter.instruction.getReference<MethodReference>()!!.definingClass
+    val adapter = createAdapter.methodReference.definingClass
     val count = roundupAdapterCountFingerprint(adapter).match()
     val (readItems, countItems, itemCount, countHeader, returnCount) = count.instructionMatches
     val itemsRegister = (readItems.instruction as TwoRegisterInstruction).registerA
@@ -214,12 +213,12 @@ private fun skipEmptyRoundupHeader() {
 private fun skipAmazonLayoutBid() {
     val failure = CompleteAmazonLayoutBidFailureFingerprint.match()
     val (_, emptyBid, emitBid, completeBid) = failure.instructionMatches
-    val emptyBidField = emptyBid.instruction.getReference<FieldReference>()!!
-    val emitBidMethod = emitBid.instruction.getReference<MethodReference>()!!
-    val completeBidMethod = completeBid.instruction.getReference<MethodReference>()!!
+    val emptyBidField = emptyBid.fieldReference
+    val emitBidMethod = emitBid.methodReference
+    val completeBidMethod = completeBid.methodReference
     val layout = LoadAmazonLayoutBidFingerprint.match()
     val (_, createCallback, loadAd) = layout.instructionMatches
-    val callbackInit = createCallback.instruction.getReference<MethodReference>()!!
+    val callbackInit = createCallback.methodReference
     val callbackCall = createCallback.instruction as FiveRegisterInstruction
     val request = loadAd.instruction as FiveRegisterInstruction
     val emitterType = layout.method.parameterTypes.single()

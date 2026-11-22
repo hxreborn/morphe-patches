@@ -12,7 +12,6 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.Annotation
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.value.StringEncodedValue
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 
@@ -24,8 +23,7 @@ private const val OPTED_OUT = "Lflipboard/model/flapresponse/OptOutsResults;"
 
 internal fun persistExplicitHomeRestores(): String {
     val restore = RestoreDynamicHomeFeedFingerprint.match()
-    val api = restore.instructionMatches.single { it.filter === restoreHomeRequest }
-        .instruction.getReference<MethodReference>()!!
+    val api = restore.instructionMatches.single { it.filter === restoreHomeRequest }.methodReference
     val endpoint = "v1/userstate/optoutCarouselFavorite/{uid}"
     val apiMethods = classDefBy(api.definingClass).methods
     check(apiMethods.single { it == api }.let {
@@ -40,14 +38,13 @@ internal fun persistExplicitHomeRestores(): String {
     val account = HomeAccountPreferencesFingerprint.match()
     val (contextCall, _, uidPrefsRead, resolvePrefs) = account.instructionMatches
     val singleton = account.originalClassDef.staticFields.single { it.type == account.originalClassDef.type }
-    val getContext = contextCall.instruction.getReference<MethodReference>()!!
-    val uidPrefs = uidPrefsRead.instruction.getReference<FieldReference>()!!
-    val getPrefs = resolvePrefs.instruction.getReference<MethodReference>()!!
+    val getContext = contextCall.methodReference
+    val uidPrefs = uidPrefsRead.fieldReference
+    val getPrefs = resolvePrefs.methodReference
     val remoteId = classDefBy(FEED_SECTION).instanceFields.single { it.name == "remoteid" && it.type == STRING }
 
     val callbacks = mutableClassDefBy(HOME_CALLBACK)
-    val originalCallback = restore.instructionMatches.single { it.filter === homeFavoritesCallback }
-        .instruction.getReference<FieldReference>()!!
+    val originalCallback = restore.instructionMatches.single { it.filter === homeFavoritesCallback }.fieldReference
     check(hide.instructionMatches.single { it.filter === homeFavoritesCallback }
         .instruction.getReference<FieldReference>() == originalCallback)
     val mode = callbacks.instanceFields.single { it.type == "B" }
