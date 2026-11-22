@@ -37,10 +37,6 @@ public abstract class PatchesSettingsDialogBase {
         this.dialog = dialog;
     }
 
-    protected final Activity activity() {
-        return this.activity;
-    }
-
     protected final Dialog dialog() {
         return this.dialog;
     }

@@ -73,7 +73,7 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         this.style = createStyle();
         this.rows = createRows(this.style);
         if (showScreenOnCreate()) {
-            showScreen(createScreen());
+            setContentView(createScreen());
         }
         styleSystemBars(getWindow());
     }
@@ -155,11 +155,7 @@ public abstract class PatchesSettingsActivityBase extends Activity {
     }
 
     protected final void refreshContent() {
-        showScreen(createScreen());
-    }
-
-    protected void showScreen(View screen) {
-        setContentView(screen);
+        setContentView(createScreen());
     }
 
     protected boolean showScreenOnCreate() {
@@ -182,13 +178,9 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         }
     }
 
-    protected String resetDescription() {
-        return RESET_DESCRIPTION;
-    }
-
     protected void confirmReset() {
         styleDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
-            .setMessage(resetDescription())
+            .setMessage(RESET_DESCRIPTION)
             .setPositiveButton("Reset", (dialog, which) -> {
                 resetToDefaults();
                 refreshContent();
