@@ -4,11 +4,11 @@
  */
 package app.morphe.patches.musicolet.misc.premium
 
-import app.morphe.patcher.Match
+import app.morphe.patcher.Match.InstructionMatch
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.musicolet.misc.fix.cast.castPluginAccessPatch
 import app.morphe.patches.musicolet.misc.fix.integrity.forcePassedIntegrityVerdictPatch
@@ -19,7 +19,6 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
 val unlockPremiumPatch = patch(
@@ -43,22 +42,26 @@ val unlockPremiumPatch = patch(
 
     execute {
         val accessLabels = ProAccessLabelFingerprint.matchAll()
-        val flagPairs = accessLabels.map { it.flagAt(0) to it.flagAt(2) }.distinct()
+        val flagPairs = accessLabels.map { label ->
+            val (lifetimeFlag, _, subscriptionFlag) = label.instructionMatches
+            lifetimeFlag.fieldReference to subscriptionFlag.fieldReference
+        }.distinct()
         val (lifetime, subscription) = flagPairs.singleOrNull()
             ?: throw PatchException("Pro access labels read different flags: $flagPairs")
 
         proAccessFingerprint(lifetime, subscription).method.returnEarly(true)
 
-        accessLabels.forEach { it.readFirstFlagAsTrue() }
-        proPurchaseStateFingerprint(lifetime).match().readFirstFlagAsTrue()
+        accessLabels.forEach { label ->
+            val (lifetimeFlag) = label.instructionMatches
+            label.method.readFlagAsTrue(lifetimeFlag)
+        }
+        val purchaseState = proPurchaseStateFingerprint(lifetime).match()
+        val (lifetimeFlag) = purchaseState.instructionMatches
+        purchaseState.method.readFlagAsTrue(lifetimeFlag)
     }
 }
 
-private fun Match.flagAt(filterIndex: Int) =
-    instructionMatches[filterIndex].instruction.getReference<FieldReference>()!!
-
-private fun Match.readFirstFlagAsTrue() {
-    val read = instructionMatches.first()
+private fun MutableMethod.readFlagAsTrue(read: InstructionMatch) {
     val register = read.getInstruction<OneRegisterInstruction>().registerA
-    method.replaceInstruction(read.index, "const/16 v$register, 0x1")
+    replaceInstruction(read.index, "const/16 v$register, 0x1")
 }

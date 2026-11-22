@@ -8,11 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val CAST_PLUGIN_PERMISSION = "in.krosbits.musicolet.ALLOW_CAST_AUDIO"
 private const val OUTDATED_PLUGIN_VERSION = 1
@@ -22,8 +20,8 @@ val castPluginAccessPatch = patch {
 
     execute {
         CastPluginVersionFingerprint.match().apply {
-            val applicationField = instructionMatches.first().instruction.getReference<FieldReference>()!!
-            val versionRead = instructionMatches.last()
+            val (applicationRead, _, _, versionRead) = instructionMatches
+            val applicationField = applicationRead.fieldReference
             val versionRegister = versionRead.getInstruction<TwoRegisterInstruction>().registerA
             val insertIndex = versionRead.index + 1
             val registers = method.getFreeRegisterProvider(insertIndex, 2)

@@ -8,9 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val STATIC_INITIALIZER = "<clinit>"
 private const val REGISTERS_FOR_MARKER_WRITE = 1
@@ -20,7 +18,7 @@ internal val markLicensedTierPatch = patch {
         val usageQuotaCheck = UsageQuotaCheckFingerprint.match()
         val (_, licensedTierLoad, _, _, tierMarkerRead) = usageQuotaCheck.instructionMatches
         val licensedTier = (licensedTierLoad.instruction as NarrowLiteralInstruction).narrowLiteral
-        val tierMarker = tierMarkerRead.instruction.getReference<FieldReference>()!!
+        val tierMarker = tierMarkerRead.fieldReference
 
         val staticInitializer = mutableClassDefBy(tierMarker.definingClass).methods
             .singleOrNull { it.name == STATIC_INITIALIZER }

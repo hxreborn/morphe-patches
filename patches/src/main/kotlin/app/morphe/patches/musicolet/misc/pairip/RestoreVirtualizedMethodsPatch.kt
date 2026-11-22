@@ -7,7 +7,6 @@ package app.morphe.patches.musicolet.misc.pairip
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -50,13 +49,13 @@ private fun dateRefreshBody(dateChangedFlag: FieldReference, todayCalendar: Fiel
 private fun dateRefreshMethod(): RestoredMethod {
     val dateRefresh = DateChangeRefreshFingerprint.match()
     val (_, dateChangedFlagRead) = dateRefresh.instructionMatches
-    val dateChangedFlag = dateChangedFlagRead.instruction.getReference<FieldReference>()!!
+    val dateChangedFlag = dateChangedFlagRead.fieldReference
     if (dateChangedFlag.definingClass != dateRefresh.originalClassDef.type) {
         throw PatchException("${dateRefresh.originalMethod} reads $dateChangedFlag, expected a flag of its own class")
     }
     val todayCalendarInit = TodayCalendarInitFingerprint.match()
     val (_, _, todayCalendarWrite) = todayCalendarInit.instructionMatches
-    val todayCalendar = todayCalendarWrite.instruction.getReference<FieldReference>()!!
+    val todayCalendar = todayCalendarWrite.fieldReference
     val todayCalendarField = todayCalendarInit.originalClassDef.fields.singleOrNull { it.name == todayCalendar.name }
     if (todayCalendarField == null || AccessFlags.FINAL.isSet(todayCalendarField.accessFlags)) {
         throw PatchException(
