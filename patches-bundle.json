@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-22T12:59:52",
-  "description": "## [1.86.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.1...v1.86.0-dev.2) (2026-11-22)\n\n### New Features\n\n* **TeraBox - GmsCore support:** sign in with MicroG-RE account ([fbd8fc4](https://github.com/hxreborn/morphe-patches/commit/fbd8fc4749ee8dbcd4b1ed75661f969107dccfa1)), closes [#993](https://github.com/hxreborn/morphe-patches/issues/993)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.86.0-dev.2/patches-1.86.0-dev.2.mpp",
+  "created_at": "2026-11-22T13:48:37",
+  "description": "## [1.86.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.2...v1.86.0-dev.3) (2026-11-22)\n\n### Bug Fixes\n\n* **Projectivy Launcher:** remove app support ([1cc5b83](https://github.com/hxreborn/morphe-patches/commit/1cc5b8356c7791f4286a3946741c4cb96a44f74c))\n\n### New Features\n\n* **TeraBox - Download generated files:** save chat files to Downloads ([849bace](https://github.com/hxreborn/morphe-patches/commit/849bace434e0652ef094ed6652fe93fc161d328a)), closes [#1016](https://github.com/hxreborn/morphe-patches/issues/1016)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.86.0-dev.3/patches-1.86.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.86.0-dev.2"
+  "version": "1.86.0-dev.3"
 }

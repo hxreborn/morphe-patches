@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.86.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**593 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.86.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**593 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -2172,21 +2172,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
-## Projectivy Launcher (com.spocky.projengmenu)
-
-<img src="https://publicmetadata.co.uk/com.spocky.projengmenu" width="48" height="48" align="top" alt="">
-
-**Supported versions:**
-
-| 4.73 | 4.72 | 4.71 | 4.70 |
-| :---: | :---: | :---: | :---: |
-
-| Patch | Details |
-|---|---|
-| <a id="projectivy-launcher-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/projectivy/misc/tracking/DisableTrackingPatch.kt) | Disables analytics and crash reporting. |
-
----
-
 ## Proton Authenticator (proton.android.authenticator)
 
 <img src="https://publicmetadata.co.uk/proton.android.authenticator" width="48" height="48" align="top" alt="">
@@ -2780,6 +2765,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="terabox-clone-app"></a>[**Clone app**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/clone/CloneAppPatch.kt) | Installs TeraBox as a separate app alongside the original, with its own account. Each copy needs a different clone number.<br><sub>Options: Package name, App name</sub> |
+| <a id="terabox-download-generated-files"></a>[**Download generated files**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/ai/DownloadAiFilesPatch.kt) | Downloads files generated in TeraBox chat to the Downloads folder. |
 | <a id="terabox-fix-google-login"></a>[**Fix Google login**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |
 | <a id="terabox-fix-transfers-over-vpn"></a>[**Fix transfers over VPN**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/fix/vpn/FixTransfersOverVpnPatch.kt) | Runs uploads, downloads and saves from shared links while a VPN is active. |
 | <a id="terabox-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/gms/GmsCoreSupportPatch.kt) | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |

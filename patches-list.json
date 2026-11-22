@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.86.0-dev.2",
+  "version": "1.86.0-dev.3",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -4134,74 +4134,6 @@
     },
     {
       "name": "Disable tracking",
-      "description": "Disables analytics and crash reporting.",
-      "default": true,
-      "category": null,
-      "compatiblePackages": [
-        {
-          "packageName": "com.spocky.projengmenu",
-          "name": "Projectivy Launcher",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F08029",
-          "signatures": null,
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "4.73",
-              "versionCodes": {
-                "ARM64_V8A": 98,
-                "ARMEABI_V7A": 98,
-                "X86_64": 98,
-                "X86": 98
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            },
-            {
-              "version": "4.72",
-              "versionCodes": {
-                "ARM64_V8A": 97,
-                "ARMEABI_V7A": 97,
-                "X86_64": 97,
-                "X86": 97
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            },
-            {
-              "version": "4.71",
-              "versionCodes": {
-                "ARM64_V8A": 95,
-                "ARMEABI_V7A": 95,
-                "X86_64": 95,
-                "X86": 95
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            },
-            {
-              "version": "4.70",
-              "versionCodes": {
-                "ARM64_V8A": 92,
-                "ARMEABI_V7A": 92,
-                "X86_64": 92,
-                "X86": 92
-              },
-              "isExperimental": false,
-              "minSdk": 23,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable tracking",
       "description": "Stops AppsFlyer, Flurry, comScore, Firebase Analytics and Facebook from collecting usage data.",
       "default": true,
       "category": null,
@@ -5072,6 +5004,40 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Download generated files",
+      "description": "Downloads files generated in TeraBox chat to the Downloads folder.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.dubox.drive",
+          "name": "TeraBox",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#226DF6",
+          "signatures": [
+            "b75fd2b70084d7e0813b8f74dd74b62ab79b2aa0ce1372331a1841bd88eed993"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "4.29.0",
+              "versionCodes": {
+                "ARM64_V8A": 710,
+                "ARMEABI_V7A": 710,
+                "X86_64": 710,
+                "X86": 710
+              },
+              "isExperimental": false,
+              "minSdk": 23,
               "description": null
             }
           ]

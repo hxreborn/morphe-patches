@@ -1,3 +1,13 @@
+## [1.86.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.2...v1.86.0-dev.3) (2026-11-22)
+
+### Bug Fixes
+
+* **Projectivy Launcher:** remove app support ([1cc5b83](https://github.com/hxreborn/morphe-patches/commit/1cc5b8356c7791f4286a3946741c4cb96a44f74c))
+
+### New Features
+
+* **TeraBox - Download generated files:** save chat files to Downloads ([849bace](https://github.com/hxreborn/morphe-patches/commit/849bace434e0652ef094ed6652fe93fc161d328a)), closes [#1016](https://github.com/hxreborn/morphe-patches/issues/1016)
+
 ## [1.86.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.1...v1.86.0-dev.2) (2026-11-22)
 
 ### New Features
