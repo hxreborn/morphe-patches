@@ -45,7 +45,8 @@ val skipSignInPatch = patch(
 
     execute {
         FirebaseAuthStoreFingerprint.match().apply {
-            val storeIndex = instructionMatches.last().index
+            val (_, _, preferencesResult) = instructionMatches
+            val storeIndex = preferencesResult.index
             val storeRegister = method.getInstruction<OneRegisterInstruction>(storeIndex).registerA
             val idRegister = method.getFreeRegisterProvider(storeIndex + 1, 1, storeRegister).getFreeRegister4Bit()
 
