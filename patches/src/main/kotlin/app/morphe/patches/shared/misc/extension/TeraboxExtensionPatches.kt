@@ -27,6 +27,10 @@ internal val teraboxFixGoogleLoginExtensionPatch = patch {
     extendWith("extensions/hxreborn/terabox-fix-google-login.mpe")
 }
 
+internal val teraboxGmsCoreSupportExtensionPatch = patch {
+    extendWith("extensions/hxreborn/terabox-gmscore-support.mpe")
+}
+
 internal val teraboxHideHomeShortcutsExtensionPatch = patch {
     extendWith("extensions/hxreborn/terabox-hide-home-shortcuts.mpe")
 }

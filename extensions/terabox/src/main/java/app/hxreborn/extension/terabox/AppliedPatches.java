@@ -51,6 +51,7 @@ public final class AppliedPatches {
         add(applied, cloneApp(), cloneAppName(), cloneAppDescription());
         add(applied, fixGoogleLogin(), fixGoogleLoginName(), fixGoogleLoginDescription());
         add(applied, fixTransfersOverVpn(), fixTransfersOverVpnName(), fixTransfersOverVpnDescription());
+        add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
         add(applied, hideAds(), hideAdsName(), hideAdsDescription());
         add(applied, hideConsentForm(), hideConsentFormName(), hideConsentFormDescription());
         add(applied, hideHomeShortcuts(), hideHomeShortcutsName(), hideHomeShortcutsDescription());
@@ -103,6 +104,18 @@ public final class AppliedPatches {
     }
 
     public static String fixTransfersOverVpnDescription() {
+        return null;
+    }
+
+    public static boolean gmsCoreSupport() {
+        return false;
+    }
+
+    public static String gmsCoreSupportName() {
+        return null;
+    }
+
+    public static String gmsCoreSupportDescription() {
         return null;
     }
 

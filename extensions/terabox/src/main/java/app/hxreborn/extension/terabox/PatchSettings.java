@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import app.morphe.extension.shared.Utils;
@@ -81,6 +82,13 @@ public final class PatchSettings {
 
     static boolean isFeatureEnabled(boolean patched, String key) {
         return patched && isEnabled(key);
+    }
+
+    static boolean hasGmsCoreSignIn() {
+        return false;
+    }
+
+    static void startGmsCoreSignIn(Activity activity, String clientId, Object listener) {
     }
 
     static boolean isEnabled(String key) {
