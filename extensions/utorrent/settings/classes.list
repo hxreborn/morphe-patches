@@ -4,4 +4,3 @@ app/hxreborn/extension/utorrent/PatchSettings
 app/hxreborn/extension/utorrent/PatchesSettingsActivity
 app/hxreborn/extension/utorrent/SettingsRows
 app/hxreborn/extension/utorrent/SettingsStyle
-app/hxreborn/extension/utorrent/SwitchChangeListener

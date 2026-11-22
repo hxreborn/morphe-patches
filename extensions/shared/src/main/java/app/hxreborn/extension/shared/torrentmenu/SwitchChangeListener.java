@@ -18,9 +18,9 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.bittorrent;
+package app.hxreborn.extension.shared.torrentmenu;
 
-interface SwitchChangeListener {
+public interface SwitchChangeListener {
 
     void onChanged(boolean checked);
 

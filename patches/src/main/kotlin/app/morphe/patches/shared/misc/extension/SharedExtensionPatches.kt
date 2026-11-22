@@ -67,3 +67,7 @@ internal val sharedStreamsExtensionPatch = patch {
 internal val sharedRemoveScreenshotRestrictionExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-remove-screenshot-restriction.mpe")
 }
+
+internal val sharedTorrentMenuExtensionPatch = patch {
+    extendWith("extensions/hxreborn/shared-torrent-menu.mpe")
+}
