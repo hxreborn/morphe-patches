@@ -37,7 +37,7 @@ internal val themeSettingsPatch = patch {
             "invoke-static { p1 }, $THEME_SETTINGS_CLASS->prepare(Landroid/content/Context;)V")
         val brightness = PlatformBrightnessFingerprint.match()
         val (_, putBrightness) = brightness.instructionMatches
-        val brightnessRegister = brightness.method.getInstruction<com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction>(putBrightness.index).registerE
+        val brightnessRegister = putBrightness.getInstruction<com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction>().registerE
         brightness.method.addInstructions(putBrightness.index, "const-string v$brightnessRegister, \"dark\"")
         val imageDecoder = ImageDecoderFingerprint.method
         val headerCallback = ImageHeaderCallbackFingerprint.method

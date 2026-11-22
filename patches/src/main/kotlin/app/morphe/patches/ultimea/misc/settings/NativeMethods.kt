@@ -5,13 +5,11 @@
 package app.morphe.patches.ultimea.misc.settings
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.arm64.arm64CompareAndSwapResultRegister
 import app.morphe.patches.shared.misc.arm64.arm64ExclusiveStoreStatusRegister
 import app.morphe.patches.shared.misc.arm64.arm64SecondLoadRegister
 import app.morphe.patches.shared.misc.arm64.writesArm64GeneralRegister
 import app.morphe.patches.shared.misc.dart.DartSnapshot
-import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.readInt
 import kotlin.math.abs
 
@@ -52,13 +50,6 @@ private const val PAIR_WRITEBACK_MASK = 0x3a800000
 private const val PAIR_WRITEBACK = 0x28800000
 private const val FRAME_PROLOGUE = 0xa9bf79fd.toInt()
 private const val FRAME_POINTER = 0xaa0f03fd.toInt()
-
-internal lateinit var nativeMethods: NativeMethods
-    private set
-
-internal val nativeMethodsPatch = patch {
-    execute { nativeMethods = NativeMethods(dartAotLibrary().readBytes()) }
-}
 
 internal class NativeFunction(val start: Int, val end: Int, val stringLoads: Map<Int, String>) {
     fun loads(value: String): List<Int> = stringLoads.filterValues { it == value }.keys.toList()

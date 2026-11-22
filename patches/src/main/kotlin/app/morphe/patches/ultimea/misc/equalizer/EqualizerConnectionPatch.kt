@@ -5,7 +5,6 @@
 package app.morphe.patches.ultimea.misc.equalizer
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
@@ -19,8 +18,6 @@ import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction3rc
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableMethodReference
 
@@ -46,8 +43,8 @@ internal val equalizerConnectionPatch = patch {
         ).forEach { parameters ->
             val match = ReadbackCallFingerprint("writeCharacteristic", parameters).match()
             val (write) = match.instructionMatches
-            val call = match.method.getInstruction<ReferenceInstruction>(write.index)
-            val reference = call.reference as MethodReference
+            val call = write.instruction
+            val reference = write.methodReference
             val target = ImmutableMethodReference(CONNECTION_CLASS_DESCRIPTOR, reference.name, reference.parameterTypes, reference.returnType)
             val replacement = when (call) {
                 is RegisterRangeInstruction -> BuilderInstruction3rc(Opcode.INVOKE_STATIC_RANGE,
@@ -61,8 +58,8 @@ internal val equalizerConnectionPatch = patch {
         listOf("onCharacteristicWrite", "onCharacteristicReceived", "onConnectionStateChanged").forEach { name ->
             val match = ReadbackCallFingerprint(name).match()
             val (callback) = match.instructionMatches
-            val call = match.method.getInstruction<ReferenceInstruction>(callback.index)
-            val reference = call.reference as MethodReference
+            val call = callback.instruction
+            val reference = callback.methodReference
             val target = ImmutableMethodReference(CONNECTION_CLASS_DESCRIPTOR, reference.name, reference.parameterTypes, reference.returnType)
             val replacement = when (call) {
                 is RegisterRangeInstruction ->

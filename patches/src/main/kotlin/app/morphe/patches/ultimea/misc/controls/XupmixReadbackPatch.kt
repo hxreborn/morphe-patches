@@ -21,7 +21,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstructio
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction3rc
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableMethodReference
@@ -37,8 +36,8 @@ internal val xupmixReadbackPatch = patch {
         listOf(WriteCharacteristicFingerprint, WriteCharacteristicWithValueFingerprint).forEach { fingerprint ->
             val match = fingerprint.match()
             val (write) = match.instructionMatches
-            val call = match.method.getInstruction<Instruction>(write.index)
-            val reference = call.getReference<MethodReference>()!!
+            val call = write.instruction
+            val reference = write.methodReference
             val wrapper = ImmutableMethodReference(
                 EXTENSION_CLASS_DESCRIPTOR,
                 "writeCharacteristic",
@@ -137,9 +136,9 @@ internal val xupmixReadbackPatch = patch {
         val callbackField = field(callbackRead.index)
         val connectingField = field(connectingRead.index)
         val autoField = field(autoRead.index)
-        val transport = factory.method.getInstruction<NarrowLiteralInstruction>(transportConstant.index).narrowLiteral
-        val transportRegister = factory.method.getInstruction<OneRegisterInstruction>(transportConstant.index).registerA
-        val connectCall = factory.method.getInstruction<Instruction>(connect.index)
+        val transport = transportConstant.getInstruction<NarrowLiteralInstruction>().narrowLiteral
+        val transportRegister = transportConstant.getInstruction<OneRegisterInstruction>().registerA
+        val connectCall = connect.instruction
         val connectTransportRegister = when (connectCall) {
             is FiveRegisterInstruction -> connectCall.registerG
             is RegisterRangeInstruction -> connectCall.startRegister + connectCall.registerCount - 1
