@@ -26,7 +26,8 @@ val removeScreenshotRestrictionPatch = patch(
     execute {
         TIMED_MEDIA_EXTRAS.forEach { extra ->
             timedMediaOnCreateFingerprint(extra).match().apply {
-                method.removeInstruction(instructionMatches.last().index)
+                val (_, setWindowFlags) = instructionMatches
+                method.removeInstruction(setWindowFlags.index)
             }
         }
     }
