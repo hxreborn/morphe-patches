@@ -38,8 +38,7 @@ val disableTrackingPatch = patch(
         ActivateFacebookAppFingerprint.method.returnEarly()
 
         EnableCrashlyticsCollectionFingerprint.match().apply {
-            val enabledValue = instructionMatches.first()
-            val putBoolean = instructionMatches.last()
+            val (enabledValue, _, putBoolean) = instructionMatches
             val enabledRegister = enabledValue.getInstruction<OneRegisterInstruction>().registerA
             val storedRegister = putBoolean.getInstruction<FiveRegisterInstruction>().registerE
 
@@ -51,7 +50,7 @@ val disableTrackingPatch = patch(
         }
 
         SendMobileEventsFingerprint.match().apply {
-            val enabledResult = instructionMatches.last()
+            val (_, _, enabledResult) = instructionMatches
             val enabledRegister = enabledResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstruction(enabledResult.index + 1, "const/4 v$enabledRegister, 0x0")
         }
