@@ -20,7 +20,7 @@ val hideAdsPatch = patch(
         val adsDisabledLogLambdaType = AdsDisabledLogMessageFingerprint.match().classDef.type
         val playerFactoryType = adsDisabledLogLambdaType.substringBefore('$') + ";"
         val match = enableAdsCheckFingerprint(playerFactoryType).match()
-        val enableAdsResult = match.instructionMatches.last()
+        val (_, enableAdsResult) = match.instructionMatches
         val register = enableAdsResult.getInstruction<OneRegisterInstruction>().registerA
 
         match.method.replaceInstruction(enableAdsResult.index, "const/4 v$register, 0x0")
