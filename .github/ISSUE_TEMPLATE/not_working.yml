@@ -497,11 +497,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.86.0-dev.1"
         - "1.85.1-dev.3"
         - "1.85.1-dev.2"
         - "1.85.1-dev.1"
         - "1.85.0-dev.3"
-        - "1.85.0-dev.2"
         - "1.85.0"
         - "Older than these"
         # /generated

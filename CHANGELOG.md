@@ -1,3 +1,9 @@
+## [1.86.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.85.1-dev.3...v1.86.0-dev.1) (2026-11-22)
+
+### New Features
+
+* update to Patcher 2.5.0 ([a781731](https://github.com/hxreborn/morphe-patches/commit/a781731aa0879139eb6b47e4bcf4cd51ee22cc9f))
+
 ## [1.85.1-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.85.1-dev.2...v1.85.1-dev.3) (2026-11-21)
 
 ### Updated App Support
