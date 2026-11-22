@@ -55,9 +55,10 @@ val removeUsageLimitsPatch = catzyPatch(
     )
 
     TravelDurationFingerprint.match().let { match ->
+        val (travelReductionMinutes) = match.instructionMatches
         match.method.removeInstruction(
             match.method.indexOfFirstInstructionReversedOrThrow(
-                match.instructionMatches.first().index,
+                travelReductionMinutes.index,
                 Opcode.IF_EQZ,
             ),
         )
