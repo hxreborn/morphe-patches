@@ -7,12 +7,10 @@ package app.morphe.patches.patreon.layout.search
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.patreon.misc.settings.markFeaturePatched
 import app.morphe.patches.patreon.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceMethod
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/patreon/SearchSuggestions;"
 private const val ITEMS_GETTER_REGISTERS = 3
@@ -33,9 +31,9 @@ val hideSearchSuggestionsPatch: Patch = patch(
         val (itemsRead) = itemsGetter.instructionMatches
         val (sectionTypeRead) = sectionTypeGetter.instructionMatches
         val (displayTypeRead) = displayTypeGetter.instructionMatches
-        val itemsField = itemsRead.instruction.getReference<FieldReference>()!!
-        val sectionTypeField = sectionTypeRead.instruction.getReference<FieldReference>()!!
-        val displayTypeField = displayTypeRead.instruction.getReference<FieldReference>()!!
+        val itemsField = itemsRead.fieldReference
+        val sectionTypeField = sectionTypeRead.fieldReference
+        val displayTypeField = displayTypeRead.fieldReference
         mutableClassDefBy(itemsGetter.method.definingClass).replaceMethod(
             itemsGetter.method.name,
             ITEMS_GETTER_REGISTERS,

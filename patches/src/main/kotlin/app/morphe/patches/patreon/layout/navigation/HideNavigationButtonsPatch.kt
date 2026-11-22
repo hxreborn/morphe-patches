@@ -25,7 +25,6 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.util.StringUtils.escapeString
 
 private enum class NavigationTab(val label: String, val tabName: String) {
@@ -104,7 +103,7 @@ val hideNavigationButtonsPatch: Patch = patch(
             tabClasses.getValue(NavigationTab.FEED).type,
         )
         val (_, routeCall, routeResult) = startRoute.instructionMatches
-        val routeGetter = routeCall.instruction.getReference<MethodReference>()!!
+        val routeGetter = routeCall.methodReference
         val routeIndex = routeResult.index
         startRoute.method.apply {
             val register = getInstruction<OneRegisterInstruction>(routeIndex).registerA
