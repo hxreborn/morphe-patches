@@ -14,8 +14,8 @@ import java.nio.channels.FileChannel
 private const val LIBRARY = "lib/arm64-v8a/libClipStudioPaint.so"
 internal const val WORD_SIZE = 4
 
-private const val MISSING_LIBRARY_MESSAGE = "$LIBRARY not found. This patch needs the arm64-v8a libraries, " +
-    "turn off \"Optimize for device architecture\" in Manager's Patcher settings and patch again"
+private const val MISSING_LIBRARY_MESSAGE = "$LIBRARY is missing. The input lacks the config.arm64_v8a split: " +
+    "base.apk alone, or \"Optimize for device architecture\" on a device whose primary ABI is not arm64-v8a"
 
 internal class PatchSite(val pattern: IntArray, val rewrite: (ByteBuffer, Int) -> Unit)
 
