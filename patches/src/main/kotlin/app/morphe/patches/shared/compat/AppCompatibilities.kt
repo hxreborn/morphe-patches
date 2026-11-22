@@ -1484,19 +1484,6 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "0.654.2", versionCode = 654002, minSdk = 24)),
     )
 
-    val PROJECTIVY = Compatibility(
-        name = "Projectivy Launcher",
-        packageName = "com.spocky.projengmenu",
-        apkFileType = ApkFileType.APK,
-        appIconColor = 0xF08029,
-        targets = listOf(
-            AppTarget(version = "4.73", versionCode = 98, minSdk = 23),
-            AppTarget(version = "4.72", versionCode = 97, minSdk = 23),
-            AppTarget(version = "4.71", versionCode = 95, minSdk = 23),
-            AppTarget(version = "4.70", versionCode = 92, minSdk = 23),
-        ),
-    )
-
     val PROTON_MAIL = Compatibility(
         name = "Proton Mail",
         packageName = "ch.protonmail.android",
