@@ -40,10 +40,10 @@ internal val replaceInterfaceCountersPatch = patch {
     dependsOn(removeCountersLibraryPatch)
 
     execute {
-        val classDef = InterfaceCountersInitializerFingerprint.classDef
-        InterfaceCountersInitializerFingerprint.method.removeInstruction(
-            InterfaceCountersInitializerFingerprint.instructionMatches.last().index,
-        )
+        val countersInitializer = InterfaceCountersInitializerFingerprint.match()
+        val classDef = countersInitializer.classDef
+        val (_, loadCountersLibrary) = countersInitializer.instructionMatches
+        countersInitializer.method.removeInstruction(loadCountersLibrary.index)
 
         val natives = classDef.directMethods.filter { AccessFlags.NATIVE.isSet(it.accessFlags) }
         val nativeNames = natives.map { it.name }

@@ -172,7 +172,8 @@ val unlockPremiumPatch = patch(
         }
 
         PremiumRowClickFingerprint.method.apply {
-            val buyDialogIndex = PremiumRowClickFingerprint.instructionMatches.first().index
+            val (buyDialogLayout) = PremiumRowClickFingerprint.instructionMatches
+            val buyDialogIndex = buyDialogLayout.index
             val rowViewRegister = getInstruction<OneRegisterInstruction>(buyDialogIndex).registerA
             addInstructionsWithLabels(
                 buyDialogIndex,

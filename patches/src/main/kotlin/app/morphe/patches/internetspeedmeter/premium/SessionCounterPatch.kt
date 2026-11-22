@@ -22,11 +22,11 @@ private const val SESSION_COUNTER_METHOD = "sessionCounter"
 internal val sessionCounterPatch = patch {
     dependsOn(internetspeedmeterAdPreferenceExtensionPatch, internetspeedmeterUnlockPremiumExtensionPatch, sharedDimensionsExtensionPatch)
     execute {
-        val reference = SessionReferenceFingerprint.method
-        val editIndex = SessionReferenceFingerprint.instructionMatches.first().index
-        val counterRegister = reference.getInstruction<FiveRegisterInstruction>(
-            SessionReferenceFingerprint.instructionMatches.last().index,
-        ).registerE
+        val sessionReference = SessionReferenceFingerprint.match()
+        val reference = sessionReference.method
+        val (editPreferences, storeCounter) = sessionReference.instructionMatches
+        val editIndex = editPreferences.index
+        val counterRegister = storeCounter.getInstruction<FiveRegisterInstruction>().registerE
 
         val counter = reference.cloneMutable(
             name = SESSION_COUNTER_METHOD,

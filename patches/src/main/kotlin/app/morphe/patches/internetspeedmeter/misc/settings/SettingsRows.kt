@@ -5,13 +5,12 @@
 package app.morphe.patches.internetspeedmeter.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
-import app.morphe.patcher.util.getReference
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 internal fun removeSettingsRow(titleName: String) {
-    val rowFingerprint = settingsRowFingerprint(titleName)
-    val row = rowFingerprint.instructionMatches.last().instruction.getReference<FieldReference>()!!
+    val (_, storeRow) = settingsRowFingerprint(titleName).match().instructionMatches
+    val row = storeRow.fieldReference
 
-    val addFingerprint = settingsRowAddFingerprint(row)
-    addFingerprint.method.removeInstructions(addFingerprint.instructionMatches.first().index, 2)
+    val add = settingsRowAddFingerprint(row).match()
+    val (loadRow, addRow) = add.instructionMatches
+    add.method.removeInstructions(loadRow.index, addRow.index - loadRow.index + 1)
 }
