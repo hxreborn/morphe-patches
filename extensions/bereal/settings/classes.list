@@ -40,6 +40,7 @@ app/hxreborn/extension/bereal/PatchGroup$Row
 app/hxreborn/extension/bereal/PatchSettings
 app/hxreborn/extension/bereal/PatchSummary
 app/hxreborn/extension/bereal/PatchesSettingsActivity
+app/hxreborn/extension/bereal/PatchesSettingsActivity$SettingsPanel
 app/hxreborn/extension/bereal/PickSelection
 app/hxreborn/extension/bereal/PickSelection$Side
 app/hxreborn/extension/bereal/RecentPhotos

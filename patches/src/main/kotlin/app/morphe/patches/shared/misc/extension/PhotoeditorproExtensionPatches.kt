@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val photoeditorproSettingsExtensionPatch = patch {
-    dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedSignatureExtensionPatch)
+    dependsOn(sharedPatchesMenuExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedSignatureExtensionPatch)
     extendWith("extensions/hxreborn/photoeditorpro-settings.mpe")
 }
 

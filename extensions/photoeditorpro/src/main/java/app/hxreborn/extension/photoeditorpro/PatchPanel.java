@@ -58,9 +58,10 @@ import app.morphe.extension.shared.settings.Setting;
 
 import app.hxreborn.extension.shared.ActivityCallbacksAdapter;
 import app.hxreborn.extension.shared.Dimensions;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsPanelBase;
 
 @SuppressWarnings("unused")
-public final class PatchPanel {
+public final class PatchPanel extends PatchesSettingsPanelBase {
 
     static final int FG = Color.parseColor("#FFFFFF");
     static final int DIM = Color.parseColor("#8E8E93");
@@ -149,7 +150,11 @@ public final class PatchPanel {
             new Entry(PatchSettings.OVERLAY_LINGER, DIAGNOSTICS, "Live overlay hold time",
                     "Sets the delay before the overlay disappears.", PatchSettings.LOG_ENDPOINTS));
 
-    private PatchPanel() {
+    private final Dialog dialog;
+
+    private PatchPanel(Activity activity, Dialog dialog) {
+        super(activity);
+        this.dialog = dialog;
     }
 
     public static String traceAiRequestsDescription() {
@@ -332,8 +337,22 @@ public final class PatchPanel {
         Dialog dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        LinearLayout root = new LinearLayout(activity);
-        root.setOrientation(LinearLayout.VERTICAL);
+        dialog.setContentView(new PatchPanel(activity, dialog).createContent());
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            window.setBackgroundDrawable(new ColorDrawable(BG));
+            window.setStatusBarColor(BG);
+            window.setNavigationBarColor(BG);
+        }
+        dialog.show();
+    }
+
+    @Override
+    public View createContent() {
+        Activity activity = activity();
+        Dialog dialog = this.dialog;
+        LinearLayout root = createColumn();
         root.setBackgroundColor(BG);
         fitSystemBars(root);
         root.addView(toolbar(activity, dialog, TITLE));
@@ -399,17 +418,9 @@ public final class PatchPanel {
         ScrollView scroll = new ScrollView(activity);
         scroll.setFillViewport(true);
         scroll.addView(content);
-        root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        addWeightedContent(root, scroll);
 
-        dialog.setContentView(root);
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            window.setBackgroundDrawable(new ColorDrawable(BG));
-            window.setStatusBarColor(BG);
-            window.setNavigationBarColor(BG);
-        }
-        dialog.show();
+        return root;
     }
 
     private static void stackAbove(Activity activity, ListView list, View row) {
