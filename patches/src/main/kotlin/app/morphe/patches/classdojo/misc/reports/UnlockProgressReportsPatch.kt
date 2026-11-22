@@ -5,7 +5,6 @@
 package app.morphe.patches.classdojo.misc.reports
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patches.all.misc.hermes.hermesPatch
@@ -37,7 +36,7 @@ val unlockProgressReportsPatch = patch(
     execute {
         DownloadedBundleFingerprint.match().apply {
             val (_, _, logBundle) = instructionMatches
-            val pathRegister = method.getInstruction<FiveRegisterInstruction>(logBundle.index).registerC
+            val pathRegister = logBundle.getInstruction<FiveRegisterInstruction>().registerC
             val registers = method.getFreeRegisterProvider(logBundle.index, 3, pathRegister)
             val contextRegister = registers.getFreeRegister4Bit()
             val originalRegister = registers.getFreeRegister4Bit()
