@@ -6,6 +6,7 @@ package app.morphe.patches.pocketwhip.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -28,10 +29,10 @@ val unlockPremiumPatch = patch(
         val toString = WhipToStringFingerprint.match()
         val whipClass = toString.classDef
 
-        val append = toString.instructionMatches.last()
-        val flagRegister = append.getInstruction<FiveRegisterInstruction>().registerD
+        val (_, appendAvailability) = toString.instructionMatches
+        val flagRegister = appendAvailability.getInstruction<FiveRegisterInstruction>().registerD
         val ownedField = toString.method.let { method ->
-            val readIndex = method.indexOfFirstInstructionReversedOrThrow(append.index) {
+            val readIndex = method.indexOfFirstInstructionReversedOrThrow(appendAvailability.index) {
                 opcode == Opcode.IGET_BOOLEAN &&
                     (this as TwoRegisterInstruction).registerA == flagRegister &&
                     getReference<FieldReference>()?.definingClass == whipClass.type
@@ -44,9 +45,7 @@ val unlockPremiumPatch = patch(
         whipClass.methods.forEach { method ->
             if (method.implementation == null) return@forEach
 
-            method.findInstructionIndicesReversed {
-                opcode == Opcode.IPUT_BOOLEAN && getReference<FieldReference>() == ownedField
-            }.forEach { index ->
+            method.findInstructionIndicesReversed(fieldAccess(ownedField, Opcode.IPUT_BOOLEAN)).forEach { index ->
                 val write = method.getInstruction<TwoRegisterInstruction>(index)
 
                 method.addInstructions(
