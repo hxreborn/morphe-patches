@@ -19,7 +19,7 @@ val disableTelemetryPatch = patch(
 
     execute {
         val start = BugsnagStartFingerprint.match()
-        val startIndex = start.instructionMatches.first().index
+        val startIndex = start.instructionMatches.single().index
 
         start.method.apply {
             val registers = getFreeRegisterProvider(startIndex, 3)
