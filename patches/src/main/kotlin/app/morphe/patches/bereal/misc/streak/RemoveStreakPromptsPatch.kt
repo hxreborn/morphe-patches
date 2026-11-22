@@ -10,14 +10,11 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}streak/StreakPrompts;"
 
@@ -39,7 +36,7 @@ val removeStreakPromptsPatch: Patch = patch(
             val eligible = eligibleToString.match().classDef
             val check = eligibilityCheckFingerprint(eligible.type).method
             val notEligible = notEligibleSingletonFingerprint(eligible.interfaces).match()
-                .instructionMatches.single().getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+                .instructionMatches.single().fieldReference
             notEligibleReadFingerprint(notEligible).matchOrNull(check)
                 ?: throw PatchException("${check.definingClass}->${check.name} does not read $notEligible")
 

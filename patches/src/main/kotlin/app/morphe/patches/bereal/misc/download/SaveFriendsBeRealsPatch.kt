@@ -56,7 +56,7 @@ val saveFriendsBeRealsPatch: Patch = patch(
             ?: throw PatchException("No friend menu items in ${method.definingClass}")
         val friendItem = friendItems.instructionMatch(Opcode.INVOKE_DIRECT_RANGE)
             .getInstruction<RegisterRangeInstruction>()
-        val listResult = friendItems.instructionMatches.last()
+        val (_, _, _, _, listResult) = friendItems.instructionMatches
         val listIndex = listResult.index
         val list = listResult.getInstruction<OneRegisterInstruction>().registerA
 

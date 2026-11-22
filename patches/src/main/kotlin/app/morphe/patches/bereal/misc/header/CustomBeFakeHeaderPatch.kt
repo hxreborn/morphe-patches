@@ -51,7 +51,7 @@ val customBeFakeHeaderPatch: Patch = patch(
 private fun Fingerprint.insertLogoSelector(selectorMethod: String) {
     val match = match()
     val (drawableLiteral) = match.instructionMatches
-    val register = match.method.getInstruction<OneRegisterInstruction>(drawableLiteral.index).registerA
+    val register = drawableLiteral.getInstruction<OneRegisterInstruction>().registerA
     match.method.addInstructions(
         drawableLiteral.index + 1,
         """

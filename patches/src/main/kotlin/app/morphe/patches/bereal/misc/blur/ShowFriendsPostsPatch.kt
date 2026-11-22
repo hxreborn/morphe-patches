@@ -31,7 +31,8 @@ val showFriendsPostsPatch: Patch = patch(
         val flowType = postVisibilityFlowConstructorFingerprint(placementType).match().classDef.type
         val flow = postVisibilityFlowFingerprint(flowType).match()
 
-        val resultIndex = flow.instructionMatches.last().index
+        val (_, booleanResult) = flow.instructionMatches
+        val resultIndex = booleanResult.index
         val register = flow.method.getInstruction<OneRegisterInstruction>(resultIndex).registerA
         flow.method.addInstructions(
             resultIndex + 1,

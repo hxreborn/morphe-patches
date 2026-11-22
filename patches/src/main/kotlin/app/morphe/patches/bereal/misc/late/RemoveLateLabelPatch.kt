@@ -10,7 +10,6 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -20,8 +19,6 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}latelabel/LateLabel;"
 
@@ -29,7 +26,7 @@ private class LateRead(val opcode: Opcode, val definingClass: String, val name: 
 
 private fun Match.lateFlagFieldName() =
     instructionMatch(Opcode.IGET_BOOLEAN)
-        .getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!.name
+        .fieldReference.name
 
 private fun lateReads(): List<LateRead> {
     val corePost = CorePostToStringFingerprint.match()

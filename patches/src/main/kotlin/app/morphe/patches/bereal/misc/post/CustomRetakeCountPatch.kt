@@ -36,7 +36,8 @@ val customRetakeCountPatch: Patch = patch(
         )
 
         val sendPost = SendPostDelegateFingerprint.match()
-        val continuationType = sendPost.instructionMatches.first()
+        val (continuationCheck) = sendPost.instructionMatches
+        val continuationType = continuationCheck
             .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
         val construction = sendPostContinuationConstructionFingerprint(continuationType)
             .matchOrNull(sendPost.method)

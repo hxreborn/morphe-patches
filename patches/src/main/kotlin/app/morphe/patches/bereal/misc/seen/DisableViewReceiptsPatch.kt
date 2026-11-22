@@ -19,7 +19,6 @@ import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}seen/ViewReceipts;"
@@ -28,7 +27,7 @@ private fun Match.returnSuccessWhenSkipped() {
     val success = instructionMatch(Opcode.NEW_INSTANCE)
         .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
     val unit = instructionMatch(Opcode.SGET_OBJECT)
-        .getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+        .fieldReference
     val registers = method.getFreeRegisterProvider(0, 2)
     val result = registers.getFreeRegister4Bit()
     val value = registers.getFreeRegister4Bit()

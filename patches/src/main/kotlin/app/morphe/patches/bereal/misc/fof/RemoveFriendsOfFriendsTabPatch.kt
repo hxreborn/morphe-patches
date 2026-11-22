@@ -30,7 +30,8 @@ val removeFriendsOfFriendsTabPatch: Patch = patch(
 
         val homeTabType = HomeTabToStringFingerprint.match().classDef.type
         val match = homeTabListFingerprint(homeTabType).match()
-        val addIndex = match.instructionMatches.last().index
+        val (_, _, addTab) = match.instructionMatches
+        val addIndex = addTab.index
         val add = match.method.getInstruction<FiveRegisterInstruction>(addIndex)
         match.method.replaceInstruction(
             addIndex,

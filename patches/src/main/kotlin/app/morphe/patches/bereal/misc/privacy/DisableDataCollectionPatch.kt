@@ -22,7 +22,6 @@ import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 import app.morphe.util.asSequence
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.berealDataCollectionExtensionPatch
@@ -105,10 +104,11 @@ val disableDataCollectionPatch: Patch = patch(
         }
 
         val datadogUpload = DatadogUploadRequestFingerprint.match()
-        val successType = datadogUpload.instructionMatches.first()
+        val (successAllocation, successInit) = datadogUpload.instructionMatches
+        val successType = successAllocation
             .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
-        val successConstructor = datadogUpload.instructionMatches.last()
-            .getInstruction<ReferenceInstruction>().getReference<MethodReference>()!!
+        val successConstructor = successInit
+            .methodReference
         datadogUpload.method.addInstructions(
             0,
             """

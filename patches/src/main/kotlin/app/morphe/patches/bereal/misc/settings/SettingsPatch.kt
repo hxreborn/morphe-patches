@@ -63,7 +63,7 @@ private fun addSettingsRow() {
         throw PatchException("The last About section row is not empty")
     }
 
-    val arrayResult = rows.instructionMatches.last()
+    val (_, _, _, _, arrayResult) = rows.instructionMatches
     if (arrayResult.getInstruction<OneRegisterInstruction>().registerA != emptySlot) {
         rows.method.addInstruction(arrayResult.index + 1, "const/16 v$emptySlot, 0x0")
     }
@@ -83,8 +83,9 @@ private fun addSettingsRow() {
         """,
     )
 
+    val (_, _, _, actionBranch) = click.instructionMatches
     click.method.addInstruction(
-        click.instructionMatches.last().index + 1,
+        actionBranch.index + 1,
         "invoke-static { }, $PATCH_CONTEXT_CLASS->openSettings()V",
     )
 }
