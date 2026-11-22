@@ -40,8 +40,12 @@ val removePromotionsPatch = patch(
         val toolFields = classDefBy(toolType).staticFields.filter { it.type == toolType }
 
         listOf(AD_BOOKING_TOOL_ORDINAL, VIP_PACKAGE_TOOL_ORDINAL)
-            .map { profileToolAddedFingerprint(toolType, toolFields[it].name).match() }
-            .sortedByDescending { it.instructionMatches.last().index }
-            .forEach { it.method.removeInstruction(it.instructionMatches.last().index) }
+            .map { ordinal ->
+                val match = profileToolAddedFingerprint(toolType, toolFields[ordinal].name).match()
+                val (_, addProfileTool) = match.instructionMatches
+                match to addProfileTool.index
+            }
+            .sortedByDescending { (_, index) -> index }
+            .forEach { (match, index) -> match.method.removeInstruction(index) }
     }
 }

@@ -17,7 +17,8 @@ val removeScreenshotRestrictionPatch = patch(
 
     execute {
         SecureWindowFlagFingerprint.match().apply {
-            method.removeInstruction(instructionMatches.last().index)
+            val (_, setWindowFlags) = instructionMatches
+            method.removeInstruction(setWindowFlags.index)
         }
     }
 }

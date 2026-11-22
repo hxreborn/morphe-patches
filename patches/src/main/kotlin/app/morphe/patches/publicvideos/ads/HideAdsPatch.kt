@@ -6,7 +6,6 @@ package app.morphe.patches.publicvideos.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -36,8 +35,9 @@ val hideAdsPatch = patch(
         audienceNetwork.method.removeInstruction(audienceNetwork.instructionMatches.single().index)
 
         SplashForegroundImageFingerprint.match().apply {
-            val index = instructionMatches.last().index
-            val register = method.getInstruction<OneRegisterInstruction>(index).registerA
+            val (_, _, imageUrlResult) = instructionMatches
+            val index = imageUrlResult.index
+            val register = imageUrlResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstruction(index + 1, "const/4 v$register, 0x0")
         }
     }
