@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val aliexpressSettingsExtensionPatch = patch {
-    dependsOn(sharedDimensionsExtensionPatch)
+    dependsOn(sharedDimensionsExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/aliexpress-settings.mpe")
 }
 

@@ -40,9 +40,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.aliexpress.AppliedPatches.AppliedPatch;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 
 @SuppressWarnings("deprecation")
-final class PatchesSettingsDialog {
+final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
 
     private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
@@ -67,22 +68,20 @@ final class PatchesSettingsDialog {
     private final ScrollView scroll;
 
     PatchesSettingsDialog(Activity activity, TextView nativeTitle) {
+        super(activity, new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar));
         this.activity = activity;
         this.style = new SettingsStyle(activity, nativeTitle);
         this.rows = new SettingsRows(activity, this.style);
-        this.dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar);
+        this.dialog = dialog();
         this.dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.scroll = new ScrollView(activity);
     }
 
     void show() {
-        LinearLayout root = new LinearLayout(this.activity);
-        root.setOrientation(LinearLayout.VERTICAL);
+        View root = createScreen(appBar(), this.scroll);
+        refreshContent(this.scroll);
         root.setBackgroundColor(this.style.screenBackground);
         root.setOnApplyWindowInsetsListener(PatchesSettingsDialog::applySystemBarInsets);
-        root.addView(appBar());
-        replaceContent();
-        root.addView(this.scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
         this.dialog.setContentView(root);
         this.dialog.show();
         Window window = this.dialog.getWindow();
@@ -135,12 +134,8 @@ final class PatchesSettingsDialog {
         return bar;
     }
 
-    private void replaceContent() {
-        this.scroll.removeAllViews();
-        this.scroll.addView(content());
-    }
-
-    private View content() {
+    @Override
+    protected View createContent() {
         LinearLayout column = new LinearLayout(this.activity);
         column.setOrientation(LinearLayout.VERTICAL);
         int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
@@ -220,7 +215,7 @@ final class PatchesSettingsDialog {
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();
-                replaceContent();
+                refreshContent(this.scroll);
             })
             .show();
         styleButtons(confirmation);

@@ -11,7 +11,7 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.reactnative.ScrollViewLayoutFingerprint
 import app.morphe.patches.shared.misc.revenuecat.InvalidateCustomerInfoCacheFingerprint
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -28,8 +28,8 @@ private const val LIFTOFF_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/lifto
 private const val CACHE_INVALIDATION_REGISTERS = 0
 private val ICON_NAMES = listOf("back", "premium", "customizations", "reset", "info", "patches", "entry", "expand")
 
-internal fun markPatchApplied(methodName: String, patch: Patch) =
-    fillAppliedPatch(LIFTOFF_APPLIED_PATCHES_CLASS, methodName, patch)
+internal fun markPatchApplied(key: String, patch: Patch) =
+    addAppliedPatchMetadata(LIFTOFF_APPLIED_PATCHES_CLASS, key, patch)
 
 internal val patchesSettingsPatch = run {
     lateinit var applicationType: String

@@ -8,6 +8,6 @@ import app.morphe.patcher.patch.patch
 
 
 internal val duolingoSettingsExtensionPatch = patch {
-    dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/duolingo-settings.mpe")
 }

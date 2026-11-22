@@ -9,6 +9,7 @@ internal val liftoffSettingsExtensionPatch = extensionPayload(
     morpheLibraryCoreExtensionPatch,
     sharedActivityCallbacksAdapterExtensionPatch,
     sharedDimensionsExtensionPatch,
+    sharedPatchesMenuExtensionPatch,
 )
 
 internal val liftoffUnlockCustomizationsExtensionPatch =

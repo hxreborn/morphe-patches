@@ -34,6 +34,22 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
+    static boolean isApplied(String key) {
+        return name(key) != null;
+    }
+
+    static String name(String key) {
+        return metadata(key, false);
+    }
+
+    static String description(String key) {
+        return metadata(key, true);
+    }
+
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
         add(applied, unlockPremium(), unlockPremiumName(), unlockPremiumDescription());
@@ -49,27 +65,27 @@ public final class AppliedPatches {
     }
 
     public static boolean unlockPremium() {
-        return false;
+        return isApplied("unlockPremium");
     }
 
     public static String unlockPremiumName() {
-        return null;
+        return name("unlockPremium");
     }
 
     public static String unlockPremiumDescription() {
-        return null;
+        return description("unlockPremium");
     }
 
     public static boolean unlockCustomizations() {
-        return false;
+        return isApplied("unlockCustomizations");
     }
 
     public static String unlockCustomizationsName() {
-        return null;
+        return name("unlockCustomizations");
     }
 
     public static String unlockCustomizationsDescription() {
-        return null;
+        return description("unlockCustomizations");
     }
 
     static final class AppliedPatch {
