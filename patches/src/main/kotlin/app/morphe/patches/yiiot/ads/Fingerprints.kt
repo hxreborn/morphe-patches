@@ -15,18 +15,21 @@ import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
+private const val PLAN_LOOKUP_WINDOW = 3
+private const val PAID_SERVICE_CHECK_WINDOW = 2
+
 internal object SetNoAdPlanFingerprint : Fingerprint(
     definingClass = "Lcom/xiaoyi/profile/UserFragment;",
     name = "setNoAdPlan",
     returnType = "V",
     filters = listOf(
         methodCall(name = "getIndicatorView"),
-        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = emptyList(), location = MatchAfterWithin(3)),
+        methodCall(opcode = Opcode.INVOKE_STATIC, parameters = emptyList(), location = MatchAfterWithin(PLAN_LOOKUP_WINDOW)),
         methodCall(
             opcode = Opcode.INVOKE_VIRTUAL,
             parameters = emptyList(),
             returnType = "Z",
-            location = MatchAfterWithin(2),
+            location = MatchAfterWithin(PAID_SERVICE_CHECK_WINDOW),
         ),
     ),
 )

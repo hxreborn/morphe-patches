@@ -19,8 +19,6 @@ import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction30t
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private val AD_CALLER_CLASSES = listOf(
     "Lcom/ants360/yicamera/util/AdUtil;",
@@ -45,10 +43,8 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.YI_IOT)
 
     execute {
-        val paidServiceCall = methodCall(
-            SetNoAdPlanFingerprint.match().instructionMatches.last()
-                .getInstruction<ReferenceInstruction>().reference as MethodReference,
-        )
+        val (_, _, checkPaidService) = SetNoAdPlanFingerprint.match().instructionMatches
+        val paidServiceCall = methodCall(checkPaidService.methodReference)
 
         AD_CALLER_CLASSES.forEach { classType ->
             var rewritten = 0
@@ -65,14 +61,15 @@ val hideAdsPatch = patch(
         }
 
         LoadAppOpenAdFingerprint.match().let { match ->
-            val userCheck = match.instructionMatches.first()
+            val (userCheck) = match.instructionMatches
             val register = userCheck.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(userCheck.index, "const/4 v$register, 0x0")
         }
 
         AdDialogFragmentOnCreateFingerprint.match().let { match ->
+            val (superOnCreate) = match.instructionMatches
             match.method.addInstructions(
-                match.instructionMatches.first().index + 1,
+                superOnCreate.index + 1,
                 """
                     invoke-virtual { p0 }, Landroid/app/Activity;->finish()V
                     return-void
