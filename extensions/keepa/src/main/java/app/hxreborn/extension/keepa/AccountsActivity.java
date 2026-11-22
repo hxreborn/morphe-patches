@@ -184,21 +184,19 @@ public final class AccountsActivity extends Activity {
         this.badgeBackgroundColor = withAlpha(this.accentColor, BADGE_ALPHA);
         this.mediumTypeface = Typeface.create("sans-serif-medium", Typeface.NORMAL);
 
-        final LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(backgroundColor);
-        screen.setPadding(0, systemBarHeight("status_bar_height", STATUS_BAR_FALLBACK_DP), 0,
-                systemBarHeight("navigation_bar_height", 0));
-        screen.addView(header());
-
+        final View header = header();
         this.scroll = new ScrollView(this);
         this.scroll.setFillViewport(true);
-        screen.addView(this.scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
         final View add = addButton();
         final LinearLayout.LayoutParams addParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 dp(BUTTON_HEIGHT_DP));
         addParams.setMargins(dp(GUTTER_DP), dp(GUTTER_DP), dp(GUTTER_DP), dp(GUTTER_DP));
-        screen.addView(add, addParams);
+        add.setLayoutParams(addParams);
+
+        final View screen = new AccountsScreen(this, header, this.scroll, add).createContent();
+        screen.setBackgroundColor(backgroundColor);
+        screen.setPadding(0, systemBarHeight("status_bar_height", STATUS_BAR_FALLBACK_DP), 0,
+                systemBarHeight("navigation_bar_height", 0));
         setContentView(screen);
     }
 

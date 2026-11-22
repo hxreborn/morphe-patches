@@ -8,6 +8,6 @@ import app.morphe.patcher.patch.patch
 
 
 internal val keepaMultipleAccountsExtensionPatch = patch {
-    dependsOn(sharedNightModeExtensionPatch)
+    dependsOn(sharedNightModeExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/keepa-multiple-accounts.mpe")
 }
