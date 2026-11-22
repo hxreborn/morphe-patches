@@ -18,9 +18,8 @@ val unlockPremiumPatch = patch(
     compatibleWith(AppCompatibilities.SYMFONIUM)
 
     execute {
-        val licensedState = IsLicensedFingerprint.match()
-            .instructionMatches.first()
-            .getInstruction<WideLiteralInstruction>()
+        val (licensedStateLiteral) = IsLicensedFingerprint.match().instructionMatches
+        val licensedState = licensedStateLiteral.getInstruction<WideLiteralInstruction>()
             .wideLiteral
 
         LicenseStateWriterFingerprint.method
