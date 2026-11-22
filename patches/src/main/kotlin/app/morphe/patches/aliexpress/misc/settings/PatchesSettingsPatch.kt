@@ -16,7 +16,7 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -34,8 +34,8 @@ private const val PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/aliexpress/Patch
 
 private val ICON_NAMES = listOf("promotions", "splash", "sponsored", "images", "analytics", "updates", "reset", "info", "bundle", "expand", "back")
 
-internal fun markPatchApplied(methodName: String, patch: Patch) =
-    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
+internal fun markPatchApplied(key: String, patch: Patch) =
+    addAppliedPatchMetadata(APPLIED_PATCHES_CLASS, key, patch)
 
 internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
     val returnInstructions = when (returnType) {

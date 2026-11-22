@@ -34,52 +34,68 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
+    static boolean isApplied(String key) {
+        return name(key) != null;
+    }
+
+    static String name(String key) {
+        return metadata(key, false);
+    }
+
+    static String description(String key) {
+        return metadata(key, true);
+    }
+
     public static boolean unlockPremium() {
-        return false;
+        return isApplied("unlockPremium");
     }
 
     public static boolean disableDynamicAppIcon() {
-        return false;
+        return isApplied("disableDynamicAppIcon");
     }
 
     public static boolean enableDebugMode() {
-        return false;
+        return isApplied("enableDebugMode");
     }
 
     public static boolean unlimitedRampUpTime() {
-        return false;
+        return isApplied("unlimitedRampUpTime");
     }
 
     public static String unlockPremiumDescription() {
-        return null;
+        return description("unlockPremium");
     }
 
     public static String unlockPremiumName() {
-        return null;
+        return name("unlockPremium");
     }
 
     public static String disableDynamicAppIconName() {
-        return null;
+        return name("disableDynamicAppIcon");
     }
 
     public static String disableDynamicAppIconDescription() {
-        return null;
+        return description("disableDynamicAppIcon");
     }
 
     public static String enableDebugModeDescription() {
-        return null;
+        return description("enableDebugMode");
     }
 
     public static String enableDebugModeName() {
-        return null;
+        return name("enableDebugMode");
     }
 
     public static String unlimitedRampUpTimeName() {
-        return null;
+        return name("unlimitedRampUpTime");
     }
 
     public static String unlimitedRampUpTimeDescription() {
-        return null;
+        return description("unlimitedRampUpTime");
     }
 
 }

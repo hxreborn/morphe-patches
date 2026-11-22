@@ -9,7 +9,9 @@ import app.morphe.patcher.PatcherConfig
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.fillAppliedPatch
+import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
@@ -37,22 +39,63 @@ internal class PatchMetadataTest {
         }
 
         // when
-        val methods = appliedPatchesMethods(selectedPatch)
+        val metadata = metadataInstructions(selectedPatch)
 
         // then
-        assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
-        assertEquals(selectedPatch.name,
-            ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
-        assertEquals(selectedPatch.description,
-            ((methods.getValue("disableAnalyticsDescription") as ReferenceInstruction).reference as StringReference).string)
-        for (name in listOf("removeSponsoredItems", "removeSponsoredItemsName", "removeSponsoredItemsDescription")) {
-            assertEquals(0, (methods.getValue(name) as NarrowLiteralInstruction).narrowLiteral)
-        }
+        assertEquals(
+            listOf("disableAnalytics", selectedPatch.name, selectedPatch.description),
+            metadata.strings(),
+        )
+        assertEquals(Opcode.CONST_4, metadata[metadata.lastIndex - 1].opcode)
+        assertEquals(Opcode.RETURN_OBJECT, metadata.last().opcode)
     }
 
     @Test
     fun `leave description unfilled when withDescription is false`() {
         // given
+        lateinit var selectedPatch: Patch
+        selectedPatch = patch(name = "Selected feature", description = "Unused description.") {
+            execute {
+                addAppliedPatchMetadata(
+                    "Lapp/hxreborn/extension/aliexpress/AppliedPatches;",
+                    "disableAnalytics",
+                    selectedPatch,
+                    withDescription = false,
+                )
+            }
+        }
+
+        // when
+        val metadata = metadataInstructions(selectedPatch)
+
+        // then
+        assertEquals(listOf("disableAnalytics", selectedPatch.name), metadata.strings())
+        assertEquals(2, metadata.count { it.opcode == Opcode.CONST_4 })
+    }
+
+    @Test
+    fun `retain metadata from each selected patch`() {
+        lateinit var first: Patch
+        lateinit var second: Patch
+        first = patch(name = "First", description = "First description") {
+            execute { markPatchApplied("disableAnalytics", first) }
+        }
+        second = patch(name = "Second", description = "Second description") {
+            dependsOn(first)
+            execute { markPatchApplied("removeSponsoredItems", second) }
+        }
+
+        assertEquals(
+            listOf(
+                "removeSponsoredItems", second.name, second.description,
+                "disableAnalytics", first.name, first.description,
+            ),
+            metadataInstructions(second).strings(),
+        )
+    }
+
+    @Test
+    fun `fill legacy applied patch without description`() {
         lateinit var selectedPatch: Patch
         selectedPatch = patch(name = "Selected feature", description = "Unused description.") {
             execute {
@@ -65,17 +108,18 @@ internal class PatchMetadataTest {
             }
         }
 
-        // when
         val methods = appliedPatchesMethods(selectedPatch)
-
-        // then
-        assertEquals(1, (methods.getValue("disableAnalytics") as NarrowLiteralInstruction).narrowLiteral)
-        assertEquals(selectedPatch.name,
-            ((methods.getValue("disableAnalyticsName") as ReferenceInstruction).reference as StringReference).string)
-        assertEquals(0, (methods.getValue("disableAnalyticsDescription") as NarrowLiteralInstruction).narrowLiteral)
+        assertEquals(1, (methods.getValue("disableAnalytics").first() as NarrowLiteralInstruction).narrowLiteral)
+        assertEquals(selectedPatch.name, methods.getValue("disableAnalyticsName").strings().first())
+        assertEquals(listOf("disableAnalytics"), methods.getValue("disableAnalyticsDescription").strings())
     }
 
-    private fun appliedPatchesMethods(patch: Patch): Map<String, Instruction> {
+    private fun List<Instruction>.strings() =
+        mapNotNull { ((it as? ReferenceInstruction)?.reference as? StringReference)?.string }
+
+    private fun metadataInstructions(patch: Patch) = appliedPatchesMethods(patch).getValue("metadata")
+
+    private fun appliedPatchesMethods(patch: Patch): Map<String, List<Instruction>> {
         val directory = Files.createTempDirectory("patch-metadata").toFile()
         try {
             val apk = directory.resolve("fixture.apk")
@@ -95,7 +139,7 @@ internal class PatchMetadataTest {
                 return patcher.get().dexFiles.flatMap { dex ->
                     dex.stream.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes }
                 }.single { it.type == "Lapp/hxreborn/extension/aliexpress/AppliedPatches;" }.methods
-                    .associate { it.name to it.implementation!!.instructions.first() }
+                    .associate { it.name to it.implementation!!.instructions.toList() }
             }
         } finally {
             directory.deleteRecursively()

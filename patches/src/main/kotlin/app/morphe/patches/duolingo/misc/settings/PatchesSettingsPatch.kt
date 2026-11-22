@@ -16,7 +16,7 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -58,9 +58,9 @@ internal val ICON_RESOURCES = listOf("patches", "premium", "dynamic_icon", "debu
 private val logger = Logger.getLogger("app.morphe.patches.duolingo.misc.settings")
 
 internal fun markPatchApplied(
-    methodName: String,
+    key: String,
     patch: Patch,
-) = fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
+) = addAppliedPatchMetadata(APPLIED_PATCHES_CLASS, key, patch)
 
 private fun resource(path: String) = DuolingoBundleResources::class.java.getResourceAsStream(path)
     ?: throw PatchException("Missing patch resource $path")
