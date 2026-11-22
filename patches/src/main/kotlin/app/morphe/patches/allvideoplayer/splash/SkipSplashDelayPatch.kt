@@ -18,7 +18,7 @@ val skipSplashDelayPatch = patch(
 
     execute {
         SplashDelayFingerprint.match().apply {
-            val delay = instructionMatches.first()
+            val (delay) = instructionMatches
             val register = delay.getInstruction<OneRegisterInstruction>().registerA
             method.replaceInstruction(delay.index, "const/16 v$register, 0x0")
         }

@@ -10,6 +10,9 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
+private const val RATING_PROMPT_LIMIT = 3
+private const val IGNORE_HOME_LAUNCH_COUNT = -1
+
 @Suppress("unused")
 val removeRatingPromptsPatch = patch(
     name = "Remove rating prompts",
@@ -19,14 +22,14 @@ val removeRatingPromptsPatch = patch(
 
     execute {
         RatingPromptGateFingerprint.match().apply {
-            val gate = instructionMatches.last()
-            val shownCount = gate.getInstruction<TwoRegisterInstruction>().registerA
-            method.addInstruction(gate.index, "const/4 v$shownCount, 0x3")
+            val (_, _, _, shownCountComparison) = instructionMatches
+            val shownCount = shownCountComparison.getInstruction<TwoRegisterInstruction>().registerA
+            method.addInstruction(shownCountComparison.index, "const/4 v$shownCount, $RATING_PROMPT_LIMIT")
         }
         HomeRatingPromptGateFingerprint.match().apply {
-            val promptLaunchCount = instructionMatches.first()
+            val (promptLaunchCount) = instructionMatches
             val register = promptLaunchCount.getInstruction<OneRegisterInstruction>().registerA
-            method.addInstruction(promptLaunchCount.index + 1, "const/4 v$register, -0x1")
+            method.addInstruction(promptLaunchCount.index + 1, "const/4 v$register, $IGNORE_HOME_LAUNCH_COUNT")
         }
     }
 }

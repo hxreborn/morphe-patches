@@ -5,17 +5,16 @@
 package app.morphe.patches.allvideoplayer.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
+import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Suppress("unused")
 val hideAdsPatch = patch(
@@ -27,9 +26,7 @@ val hideAdsPatch = patch(
 
     execute {
         val applyRemoteConfig = ApplyRemoteConfigFingerprint.match()
-        val switches = applyRemoteConfig.instructionMatches.map {
-            it.getInstruction<ReferenceInstruction>().reference
-        }
+        val switches = applyRemoteConfig.instructionMatches.map { it.fieldReference }
 
         fun MutableMethod.turnOffSwitches(index: Int) {
             val register = getFreeRegisterProvider(index, 1).getFreeRegister()
@@ -43,9 +40,9 @@ val hideAdsPatch = patch(
         val loadMoreApps = LoadMoreAppsFingerprint.method
         applyRemoteConfig.method.apply {
             turnOffSwitches(
-                indexOfFirstInstructionOrThrow {
-                    opcode == Opcode.INVOKE_STATIC && getReference<MethodReference>() == loadMoreApps
-                },
+                indexOfFirstInstructionOrThrow(
+                    methodCall(smali = descriptor(loadMoreApps), opcode = Opcode.INVOKE_STATIC),
+                ),
             )
         }
         ApplicationOnCreateFingerprint.method.turnOffSwitches(0)
