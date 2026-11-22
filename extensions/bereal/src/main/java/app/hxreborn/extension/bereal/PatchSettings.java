@@ -45,6 +45,8 @@ public final class PatchSettings {
     public static final BooleanSetting REMOVE_FRIENDS_OF_FRIENDS_PROMPTS = new BooleanSetting(
             "bereal_remove_friends_of_friends_prompts", true);
 
+    public static final BooleanSetting CUSTOM_BEFAKE_HEADER = new BooleanSetting("bereal_custom_befake_header", true);
+
     public static final BooleanSetting REMOVE_FRIENDS_OF_FRIENDS_TAB = new BooleanSetting(
             "bereal_remove_friends_of_friends_tab", false);
 

@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 private const val BEREAL_PACKAGE_PATH = "app/morphe/patches/bereal"
-private const val EXPECTED_FEATURE_PATCHES = 21
+private const val EXPECTED_FEATURE_PATCHES = 22
 
 internal class SpoofSignatureDependenciesTest {
     @Test

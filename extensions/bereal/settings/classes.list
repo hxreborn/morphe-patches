@@ -86,6 +86,7 @@ app/hxreborn/extension/bereal/download/DownloadWatermark
 app/hxreborn/extension/bereal/download/FriendsPostDownload
 app/hxreborn/extension/bereal/fof/FriendsOfFriendsPrompts
 app/hxreborn/extension/bereal/fof/FriendsOfFriendsTab
+app/hxreborn/extension/bereal/header/BeFakeHeader
 app/hxreborn/extension/bereal/latelabel/LateLabel
 app/hxreborn/extension/bereal/promos/Promotions
 app/hxreborn/extension/bereal/seen/ViewReceipts

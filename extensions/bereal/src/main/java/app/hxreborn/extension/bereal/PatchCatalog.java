@@ -30,6 +30,7 @@ import app.hxreborn.extension.bereal.download.DownloadWatermark;
 import app.hxreborn.extension.bereal.download.FriendsPostDownload;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsPrompts;
 import app.hxreborn.extension.bereal.fof.FriendsOfFriendsTab;
+import app.hxreborn.extension.bereal.header.BeFakeHeader;
 import app.hxreborn.extension.bereal.latelabel.LateLabel;
 import app.hxreborn.extension.bereal.promos.Promotions;
 import app.hxreborn.extension.bereal.seen.ViewReceipts;
@@ -149,6 +150,10 @@ final class PatchCatalog {
         if (LateLabel.isPatchIncluded()) {
             group.addToggle("ic_tag_fill", LateLabel.patchName(), LateLabel.patchDescription(),
                     PatchSettings.REMOVE_LATE_LABEL);
+        }
+        if (BeFakeHeader.isPatchIncluded()) {
+            group.addToggle("ic_pencil", BeFakeHeader.patchName(), BeFakeHeader.patchDescription(),
+                    PatchSettings.CUSTOM_BEFAKE_HEADER, true);
         }
         if (FriendsOfFriendsTab.isPatchIncluded()) {
             group.addToggle("ic_person_fill_and_arrow_left_and_arrow_right_outward", FriendsOfFriendsTab.patchName(),
