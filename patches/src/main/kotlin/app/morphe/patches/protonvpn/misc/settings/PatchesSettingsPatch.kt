@@ -40,7 +40,8 @@ private fun addPatchesSettingsRow() {
     val iconId = resourceId(ResourceType.DRAWABLE, "ic_proton_wrench")
 
     val match = WidgetSettingsRowFingerprint.match()
-    val rowIndex = match.instructionMatches.last().index
+    val (_, widgetRowCall) = match.instructionMatches
+    val rowIndex = widgetRowCall.index
 
     val settingsRowMethod = match.classDef.addSettingsRowMethod(
         match.method,

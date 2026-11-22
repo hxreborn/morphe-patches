@@ -87,7 +87,8 @@ val amoledThemePatch: Patch = patch(
         transformCoreDarkBackgrounds()
 
         CollapsingToolbarColorFingerprint.match().run {
-            val lerpIndex = instructionMatches.last().index
+            val (_, _, colorInterpolation) = instructionMatches
+            val lerpIndex = colorInterpolation.index
             val collapsedColorRegister = method.getInstruction<FiveRegisterInstruction>(lerpIndex).registerE
             method.injectColorTransformCall(
                 method.indexOfLastWrite(collapsedColorRegister, lerpIndex),

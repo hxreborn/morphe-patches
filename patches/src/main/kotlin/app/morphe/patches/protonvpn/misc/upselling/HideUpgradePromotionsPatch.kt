@@ -107,7 +107,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
         val inlinedActiveNotifications = inlinedActiveNotificationsFingerprint().matchOrNull()
         if (inlinedActiveNotifications != null) {
             inlinedActiveNotifications.run {
-                val sorted = instructionMatches.last()
+                val (_, _, _, sorted) = instructionMatches
                 val register = sorted.getInstruction<OneRegisterInstruction>().registerA
                 method.addInstructions(
                     sorted.index + 1,
@@ -140,7 +140,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
         }
 
         upgradeCarouselFingerprint().match().run {
-            val freeUserResult = instructionMatches[1]
+            val (_, freeUserResult) = instructionMatches
             val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
                 freeUserResult.index + 1,
@@ -158,10 +158,10 @@ val hideUpgradePromotionsPatch: Patch = patch(
         )
 
         UpgradeDialogCreateFingerprint.match().run {
-            val superOnCreate = instructionMatches.first().index
-            val register = method.getFreeRegisterProvider(superOnCreate + 1, 1).getFreeRegister()
+            val (superOnCreate) = instructionMatches
+            val register = method.getFreeRegisterProvider(superOnCreate.index + 1, 1).getFreeRegister()
             method.addInstructionsWithLabels(
-                superOnCreate + 1,
+                superOnCreate.index + 1,
                 """
                     invoke-static/range { p0 .. p0 }, $PROMOTIONS_CLASS->hidesOnboardingUpgrade(Landroid/app/Activity;)Z
                     move-result v$register
@@ -169,7 +169,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
                     invoke-virtual/range { p0 .. p0 }, Landroid/app/Activity;->finish()V
                     return-void
                 """,
-                ExternalLabel("shown", method.getInstruction(superOnCreate + 1)),
+                ExternalLabel("shown", method.getInstruction(superOnCreate.index + 1)),
             )
         }
 
@@ -191,7 +191,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
             }
         } else {
             onboardingLaunchCoroutineFingerprint().match().run {
-                val launcher = instructionMatches.first()
+                val (launcher) = instructionMatches
                 val register = launcher.getInstruction<OneRegisterInstruction>().registerA
                 method.addInstructionsWithLabels(
                     launcher.index,

@@ -86,10 +86,10 @@ val floatingNavigationBarPatch: Patch = patch(
             SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
         )
         val (barCall) = mainBar.instructionMatches
-        val bar = barCall.instruction.getReference<MethodReference>()!!
+        val bar = barCall.methodReference
         val navigation = navigationBarFingerprint(bar).match()
         val (navigationCall) = navigation.instructionMatches
-        val nativeBar = navigationCall.instruction.getReference<MethodReference>()!!
+        val nativeBar = navigationCall.methodReference
         val nativeMethod = classDefBy(nativeBar.definingClass).methods.single {
             it.name == nativeBar.name && it.parameterTypes == nativeBar.parameterTypes
         }
@@ -117,7 +117,7 @@ val floatingNavigationBarPatch: Patch = patch(
         }
         val sideMatch = navigationInsetSidesFingerprint(nativeBar, insetConstructor).match()
         val (sidesRead) = sideMatch.instructionMatches
-        val sides = sidesRead.instruction.getReference<FieldReference>()!!
+        val sides = sidesRead.fieldReference
         mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS).replaceStub(
             "outerInsets",
             5,
@@ -353,7 +353,7 @@ private fun installContentClearance(modifier: String, padding: String, footprint
     val scrolling = settingsScrollFingerprint(lambdaType, modifier, padding).match()
     val (_, _, stateCall, _, scrollCall) = scrolling.instructionMatches
     val scrollResult = scrolling.instructionMatches.last()
-    check(stateCall.instruction.getReference<MethodReference>()!!.returnType == scrollCall.instruction.getReference<MethodReference>()!!.parameterTypes[1])
+    check(stateCall.methodReference.returnType == scrollCall.methodReference.parameterTypes[1])
     transformArgument(scrolling.method, scrollResult.index + 1, scrollResult.getInstruction<OneRegisterInstruction>().registerA, append)
     val profileButtons = profileButtonPaddingFingerprint(modifier).matchAll().toList()
     check(profileButtons.size == PROFILE_BUTTON_COUNT) { "Expected populated and empty profile buttons" }
@@ -363,7 +363,7 @@ private fun installContentClearance(modifier: String, padding: String, footprint
     }
     val countries = countriesListFingerprint(modifier, padding).match()
     val (listCall) = countries.instructionMatches
-    val list = listCall.instruction.getReference<MethodReference>()!!
+    val list = listCall.methodReference
     val listRegister = (listCall.instruction as RegisterRangeInstruction).startRegister
     transformArgument(countries.method, listCall.index, listRegister + LIST_CONTENT_PADDING_ARGUMENT, reserve)
     val recents = recentsListFingerprint(list).match()

@@ -61,16 +61,17 @@ private fun addDrawIconMethod() {
 
     val callers = IconCallerFingerprint.matchAll()
     val (painterResource, icon) = callers.firstNotNullOfOrNull { caller ->
-        val painter = caller.instructionMatches[1].instruction.getReference<MethodReference>()!!
-        val icon = caller.instructionMatches[2].instruction.getReference<MethodReference>()!!
+        val (_, painterCall, iconCall) = caller.instructionMatches
+        val painter = painterCall.methodReference
+        val icon = iconCall.methodReference
         (painter to icon).takeIf { isPainterResource(painter, icon) }
     } ?: throw PatchException("No painterResource call feeding Icon for $checkmarkId")
     val composerType = icon.parameterTypes[4].toString()
     val modifierType = icon.parameterTypes[2].toString()
 
-    val defaultIconSize = defaultIconSizeModifierFingerprint(icon.definingClass).match()
-    val companion = defaultIconSize.instructionMatches.first().instruction.getReference<FieldReference>()!!
-    val size = defaultIconSize.instructionMatches.last().instruction.getReference<MethodReference>()!!
+    val (companionRead, sizeCall) = defaultIconSizeModifierFingerprint(icon.definingClass).match().instructionMatches
+    val companion = companionRead.fieldReference
+    val size = sizeCall.methodReference
     val companionIsModifier = companion.type == modifierType || modifierType in classDefBy(companion.type).interfaces
     if (!companionIsModifier || size.parameterTypes.first().toString() != modifierType) {
         throw PatchException("Default icon size does not read $modifierType: ${descriptor(companion)}, ${descriptor(size)}")
@@ -143,7 +144,8 @@ private fun checkedTrackColorCalls(switchColors: MethodReference): ColorTokenCal
 private fun injectCheckedIconColor() {
     val switchColorsType = ProtonSwitchFingerprint.method.parameterTypes[SWITCH_COLORS_PARAMETER].toString()
     val match = protonSwitchColorsFingerprint(switchColorsType).match()
-    val callIndex = match.instructionMatches.last().index
+    val (_, colorsCall) = match.instructionMatches
+    val callIndex = colorsCall.index
     val call = match.method.getInstruction<RegisterRangeInstruction>(callIndex)
     val colors = call.getReference<MethodReference>()!!
     val trackColor = checkedTrackColorCalls(colors)
@@ -296,7 +298,8 @@ private fun injectThumbIconIntoSwitchImpl() {
 
 private fun styleSettingsSwitchViews() {
     val match = SettingsSwitchBindingFingerprint.match()
-    val castIndex = match.instructionMatches[1].index
+    val (_, switchCast) = match.instructionMatches
+    val castIndex = switchCast.index
     val switchRegister = match.method.getInstruction<OneRegisterInstruction>(castIndex).registerA
     val switchType = match.method.getInstruction(castIndex).getReference<TypeReference>()!!.type
     val drawable = "Landroid/graphics/drawable/Drawable;"

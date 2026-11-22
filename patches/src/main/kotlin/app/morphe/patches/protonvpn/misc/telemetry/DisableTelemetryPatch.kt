@@ -33,7 +33,7 @@ val disableTelemetryPatch: Patch = patch(
     execute {
         markPatchApplied(VPN_SETTINGS_CLASS, "disableTelemetry", disableTelemetryPatch)
         ObservabilityEnabledFingerprint.matchAll().forEach {
-            val flagRead = it.instructionMatches.last()
+            val (_, _, flagRead) = it.instructionMatches
             it.method.addInstructions(
                 flagRead.index + 1,
                 "const/16 v${flagRead.getInstruction<OneRegisterInstruction>().registerA}, 0x0",

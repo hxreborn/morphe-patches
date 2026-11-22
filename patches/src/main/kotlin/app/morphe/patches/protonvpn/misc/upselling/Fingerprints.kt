@@ -21,7 +21,6 @@ import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.instruction.SwitchPayload
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
@@ -29,8 +28,8 @@ internal const val UPGRADE_ONBOARDING_ACTIVITY = "Lcom/protonvpn/android/ui/plan
 
 internal fun settingRowWithIconFingerprint(): Fingerprint {
     WidgetSettingsRowFingerprint.clearMatch()
-    val settingRow = WidgetSettingsRowFingerprint.match().instructionMatches.last()
-        .instruction.getReference<MethodReference>()!!
+    val (_, widgetRowCall) = WidgetSettingsRowFingerprint.match().instructionMatches
+    val settingRow = widgetRowCall.methodReference
     return Fingerprint(
         definingClass = settingRow.definingClass,
         name = settingRow.name,
@@ -118,7 +117,8 @@ private val onboardingLaunchKey: Int
         val instructions = UpgradeOnboardingLauncherFingerprint.originalMethod.implementation!!.instructions.toList()
         val addresses = instructions.runningFold(0) { address, instruction -> address + instruction.codeUnits }
         val switchAddress = addresses[instructions.indexOfFirst { it.opcode in switchOpcodes }]
-        val launchAddress = addresses[UpgradeOnboardingLauncherFingerprint.instructionMatches.first().index]
+        val (launcherClass) = UpgradeOnboardingLauncherFingerprint.instructionMatches
+        val launchAddress = addresses[launcherClass.index]
         val cases = instructions.filterIsInstance<SwitchPayload>().single().switchElements
         val launchCase = cases.filter { switchAddress + it.offset <= launchAddress }.maxByOrNull { it.offset }
         return launchCase?.key ?: (cases.maxOf { it.key } + 1)
