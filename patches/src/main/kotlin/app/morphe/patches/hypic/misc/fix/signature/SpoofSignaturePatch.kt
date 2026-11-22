@@ -5,7 +5,6 @@
 package app.morphe.patches.hypic.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -31,7 +30,7 @@ val spoofSignaturePatch = patch {
 
         ApkFileSignatureReportFingerprint.match().let { match ->
             val (_, nativeSignatureResult) = match.instructionMatches
-            val signatureRegister = match.method.getInstruction<OneRegisterInstruction>(nativeSignatureResult.index).registerA
+            val signatureRegister = nativeSignatureResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(
                 nativeSignatureResult.index + 1,
                 "const-string v$signatureRegister, \"$APK_SIGNATURE_V3_PREFIX$stockPublicKeyMd5Hex\"",

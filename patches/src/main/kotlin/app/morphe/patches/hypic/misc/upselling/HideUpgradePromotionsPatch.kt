@@ -31,8 +31,7 @@ val hideUpgradePromotionsPatch = patch(
 
         fun Fingerprint.treatSubscriptionsAsDisabled() = match().let { match ->
             val (_, subscriptionsEnabled) = match.instructionMatches
-            val subscriptionsEnabledRegister =
-                match.method.getInstruction<OneRegisterInstruction>(subscriptionsEnabled.index).registerA
+            val subscriptionsEnabledRegister = subscriptionsEnabled.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(subscriptionsEnabled.index + 1, "const/4 v$subscriptionsEnabledRegister, 0x0")
         }
         SettingsPlansRowFingerprint.treatSubscriptionsAsDisabled()
