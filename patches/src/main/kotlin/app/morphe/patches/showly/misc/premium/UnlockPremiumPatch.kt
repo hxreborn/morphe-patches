@@ -45,7 +45,8 @@ val unlockPremiumPatch = patch(
 
         // Fallback for paywall routes not gated by VIP
         TraktLoginPaywallNavigationFingerprint.method.apply {
-            val actionIdConstIndex = TraktLoginPaywallNavigationFingerprint.instructionMatches[0].index
+            val (actionIdLiteral) = TraktLoginPaywallNavigationFingerprint.instructionMatches
+            val actionIdConstIndex = actionIdLiteral.index
             val actionIdRegister = getInstruction<OneRegisterInstruction>(actionIdConstIndex).registerA
             val actionId = resourceId(ResourceType.ID, "actionNavigateProgressFragment")
 
