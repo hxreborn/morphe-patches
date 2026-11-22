@@ -44,3 +44,7 @@ internal val teraboxRemoveRecentPanelExtensionPatch = patch {
     dependsOn(teraboxSettingsExtensionPatch)
     extendWith("extensions/hxreborn/terabox-remove-recent-panel.mpe")
 }
+
+internal val teraboxDownloadAiFilesExtensionPatch = patch {
+    extendWith("extensions/hxreborn/terabox-download-ai-files.mpe")
+}
