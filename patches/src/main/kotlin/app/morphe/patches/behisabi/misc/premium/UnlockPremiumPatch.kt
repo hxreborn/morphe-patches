@@ -7,10 +7,8 @@ package app.morphe.patches.behisabi.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
 val unlockPremiumPatch = patch(
@@ -22,11 +20,11 @@ val unlockPremiumPatch = patch(
 
     execute {
         val (_, lifetimeWrite) = LifetimeTierFingerprint.match().instructionMatches
-        val lifetime = lifetimeWrite.instruction.getReference<FieldReference>()!!
+        val lifetime = lifetimeWrite.fieldReference
         val proState = publishProStateFingerprint(lifetime.type).match()
         val (_, playProRead, playTierRead) = proState.instructionMatches
-        val playPro = playProRead.instruction.getReference<FieldReference>()!!
-        val playTier = playTierRead.instruction.getReference<FieldReference>()!!
+        val playPro = playProRead.fieldReference
+        val playTier = playTierRead.fieldReference
         val proRegister = proState.method.getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
         proState.method.addInstructions(
             0,
