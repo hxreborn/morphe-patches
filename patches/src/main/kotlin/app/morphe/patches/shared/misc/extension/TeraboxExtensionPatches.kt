@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val teraboxSettingsExtensionPatch = patch {
-    dependsOn(morpheLibraryCoreExtensionPatch)
+    dependsOn(morpheLibraryCoreExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/terabox-settings.mpe")
 }
 

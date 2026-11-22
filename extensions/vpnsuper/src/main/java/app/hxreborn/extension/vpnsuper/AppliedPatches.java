@@ -42,20 +42,32 @@ public final class AppliedPatches {
         return names;
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
+    static boolean isApplied(String key) {
+        return name(key) != null;
+    }
+
+    static String name(String key) {
+        return metadata(key, false);
+    }
+
     public static boolean disconnectFromNotification() {
-        return false;
+        return isApplied("disconnectFromNotification");
     }
 
     public static String disconnectFromNotificationName() {
-        return null;
+        return name("disconnectFromNotification");
     }
 
     public static boolean unlockPremium() {
-        return false;
+        return isApplied("unlockPremium");
     }
 
     public static String unlockPremiumName() {
-        return null;
+        return name("unlockPremium");
     }
 
 }

@@ -10,7 +10,7 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.util.ResourceGroup
 import app.morphe.util.asSequence
@@ -38,7 +38,7 @@ private val logger = Logger.getLogger("app.morphe.patches.vpnsuper.misc.settings
 private var menuStylesResolved = false
 
 internal fun markPatchApplied(methodName: String, patch: Patch) =
-    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch, withDescription = false)
+    addAppliedPatchMetadata(APPLIED_PATCHES_CLASS, methodName, patch, withDescription = false)
 
 private fun Document.elementWithId(id: String) = getElementsByTagName("*").asSequence()
     .map { it as Element }

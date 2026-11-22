@@ -14,7 +14,7 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.ResourceGroup
@@ -33,7 +33,7 @@ private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "
     .map { "hx_terabox_ic_$it" }
 
 internal fun markPatchApplied(methodName: String, patch: Patch) =
-    fillAppliedPatch(TERABOX_APPLIED_PATCHES_CLASS, methodName, patch)
+    addAppliedPatchMetadata(TERABOX_APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: MutableMethod.() -> Unit) {
     val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()

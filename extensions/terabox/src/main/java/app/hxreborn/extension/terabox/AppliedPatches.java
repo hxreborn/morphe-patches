@@ -71,160 +71,176 @@ public final class AppliedPatches {
         }
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
+    static boolean isApplied(String key) {
+        return name(key) != null;
+    }
+
+    static String name(String key) {
+        return metadata(key, false);
+    }
+
+    static String description(String key) {
+        return metadata(key, true);
+    }
+
     public static boolean cloneApp() {
-        return false;
+        return isApplied("cloneApp");
     }
 
     public static String cloneAppName() {
-        return null;
+        return name("cloneApp");
     }
 
     public static String cloneAppDescription() {
-        return null;
+        return description("cloneApp");
     }
 
     public static boolean fixGoogleLogin() {
-        return false;
+        return isApplied("fixGoogleLogin");
     }
 
     public static String fixGoogleLoginName() {
-        return null;
+        return name("fixGoogleLogin");
     }
 
     public static String fixGoogleLoginDescription() {
-        return null;
+        return description("fixGoogleLogin");
     }
 
     public static boolean fixTransfersOverVpn() {
-        return false;
+        return isApplied("fixTransfersOverVpn");
     }
 
     public static String fixTransfersOverVpnName() {
-        return null;
+        return name("fixTransfersOverVpn");
     }
 
     public static String fixTransfersOverVpnDescription() {
-        return null;
+        return description("fixTransfersOverVpn");
     }
 
     public static boolean gmsCoreSupport() {
-        return false;
+        return isApplied("gmsCoreSupport");
     }
 
     public static String gmsCoreSupportName() {
-        return null;
+        return name("gmsCoreSupport");
     }
 
     public static String gmsCoreSupportDescription() {
-        return null;
+        return description("gmsCoreSupport");
     }
 
     public static boolean hideAds() {
-        return false;
+        return isApplied("hideAds");
     }
 
     public static String hideAdsName() {
-        return null;
+        return name("hideAds");
     }
 
     public static String hideAdsDescription() {
-        return null;
+        return description("hideAds");
     }
 
     public static boolean hideConsentForm() {
-        return false;
+        return isApplied("hideConsentForm");
     }
 
     public static String hideConsentFormName() {
-        return null;
+        return name("hideConsentForm");
     }
 
     public static String hideConsentFormDescription() {
-        return null;
+        return description("hideConsentForm");
     }
 
     public static boolean hideHomeShortcuts() {
-        return false;
+        return isApplied("hideHomeShortcuts");
     }
 
     public static String hideHomeShortcutsName() {
-        return null;
+        return name("hideHomeShortcuts");
     }
 
     public static String hideHomeShortcutsDescription() {
-        return null;
+        return description("hideHomeShortcuts");
     }
 
     public static boolean hidePromotions() {
-        return false;
+        return isApplied("hidePromotions");
     }
 
     public static String hidePromotionsName() {
-        return null;
+        return name("hidePromotions");
     }
 
     public static String hidePromotionsDescription() {
-        return null;
+        return description("hidePromotions");
     }
 
     public static boolean hideVideoRecommendations() {
-        return false;
+        return isApplied("hideVideoRecommendations");
     }
 
     public static String hideVideoRecommendationsName() {
-        return null;
+        return name("hideVideoRecommendations");
     }
 
     public static String hideVideoRecommendationsDescription() {
-        return null;
+        return description("hideVideoRecommendations");
     }
 
     public static boolean removeRecentPanel() {
-        return false;
+        return isApplied("removeRecentPanel");
     }
 
     public static String removeRecentPanelName() {
-        return null;
+        return name("removeRecentPanel");
     }
 
     public static String removeRecentPanelDescription() {
-        return null;
+        return description("removeRecentPanel");
     }
 
     public static boolean showBackupCount() {
-        return false;
+        return isApplied("showBackupCount");
     }
 
     public static String showBackupCountName() {
-        return null;
+        return name("showBackupCount");
     }
 
     public static String showBackupCountDescription() {
-        return null;
+        return description("showBackupCount");
     }
 
     public static boolean sortByOriginalDate() {
-        return false;
+        return isApplied("sortByOriginalDate");
     }
 
     public static String sortByOriginalDateName() {
-        return null;
+        return name("sortByOriginalDate");
     }
 
     public static String sortByOriginalDateDescription() {
-        return null;
+        return description("sortByOriginalDate");
     }
 
     public static boolean unlockPremium() {
-        return false;
+        return isApplied("unlockPremium");
     }
 
     public static String unlockPremiumName() {
-        return null;
+        return name("unlockPremium");
     }
 
     public static String unlockPremiumDescription() {
-        return null;
+        return description("unlockPremium");
     }
 
     static final class AppliedPatch {

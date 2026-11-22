@@ -12,6 +12,6 @@ internal val vpnsuperAppliedPatchesExtensionPatch = patch {
 }
 
 internal val vpnsuperSettingsExtensionPatch = patch {
-    dependsOn(vpnsuperAppliedPatchesExtensionPatch)
+    dependsOn(vpnsuperAppliedPatchesExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/vpnsuper-settings.mpe")
 }
