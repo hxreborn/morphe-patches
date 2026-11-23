@@ -6,6 +6,8 @@ package app.morphe.patches.bereal.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.instructions
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
@@ -43,6 +45,46 @@ private const val PAIRIP_APPLICATION_CLASS = "Lcom/pairip/application/Applicatio
 private const val SETTINGS_ROW_TITLE = "hxreborn patches"
 private const val SETTINGS_ROW_TAG = "settingsscreen_patches_button"
 private const val SETTINGS_ROW_ICON = "ic_gearshape_fill"
+
+// Mount installs keep the stock manifest, so the patch screens open through stock activities with the same
+// manifest flags. Keep these in sync with HostedScreens in the extension.
+private const val OPAQUE_HOST_ACTIVITY = "com.pairip.licensecheck.LicenseActivity"
+private const val TRANSLUCENT_HOST_ACTIVITY = "com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+private const val CORE_COMPONENT_FACTORY_NAME = "androidx.core.app.CoreComponentFactory"
+private const val CORE_COMPONENT_FACTORY_CLASS = "Landroidx/core/app/CoreComponentFactory;"
+private const val APP_COMPONENT_FACTORY_CLASS = "Landroid/app/AppComponentFactory;"
+private const val PATCHES_COMPONENT_FACTORY_CLASS = "${BEREAL_EXTENSION_PACKAGE}PatchesComponentFactory;"
+
+private fun Element.androidAttribute(name: String) = getAttribute("android:$name")
+
+private fun checkHostActivity(activities: List<Element>, name: String, translucent: Boolean) {
+    val host = activities.singleOrNull { it.androidAttribute("name") == name }
+        ?: throw PatchException("Missing host activity $name")
+    val excluded = host.androidAttribute("excludeFromRecents") == "true"
+    val ownProcess = host.androidAttribute("process").isNotEmpty()
+    val customLaunch = host.androidAttribute("launchMode").let { it.isNotEmpty() && it != "standard" && it != "0" }
+    if (host.androidAttribute("exported") == "true" || ownProcess || customLaunch || excluded != translucent) {
+        throw PatchException("Host activity $name changed its manifest flags")
+    }
+}
+
+private fun hostPatchScreens() {
+    mutableClassDefBy(CORE_COMPONENT_FACTORY_CLASS).apply {
+        if (superclass != APP_COMPONENT_FACTORY_CLASS) {
+            throw PatchException("$CORE_COMPONENT_FACTORY_CLASS extends $superclass")
+        }
+        setSuperClass(PATCHES_COMPONENT_FACTORY_CLASS)
+
+        methods.single { it.name == "<init>" && it.parameterTypes.isEmpty() }.apply {
+            val index = instructions.indexOfFirst {
+                it.opcode == Opcode.INVOKE_DIRECT &&
+                    it.getReference<MethodReference>()?.definingClass == APP_COMPONENT_FACTORY_CLASS
+            }
+            if (index < 0) throw PatchException("$CORE_COMPONENT_FACTORY_CLASS doesn't call its superclass constructor")
+            replaceInstruction(index, "invoke-direct { p0 }, $PATCHES_COMPONENT_FACTORY_CLASS-><init>()V")
+        }
+    }
+}
 
 private fun addSettingsRow() {
     val debugScreenAction = DebugScreenActionToStringFingerprint.match().classDef
@@ -98,6 +140,16 @@ internal val settingsPatch = patch {
             finalize {
                 document("AndroidManifest.xml").use { document ->
                     val application = document.getElementsByTagName("application").item(0) as Element
+                    val componentFactory = application.getAttribute("android:appComponentFactory")
+                    if (componentFactory != CORE_COMPONENT_FACTORY_NAME) {
+                        throw PatchException("Unexpected appComponentFactory $componentFactory")
+                    }
+                    val activities = document.getElementsByTagName("activity").let { nodes ->
+                        (0 until nodes.length).map { nodes.item(it) as Element }
+                    }
+                    checkHostActivity(activities, OPAQUE_HOST_ACTIVITY, translucent = false)
+                    checkHostActivity(activities, TRANSLUCENT_HOST_ACTIVITY, translucent = true)
+
                     val activity = document.createElement("activity")
                     activity.setAttribute("android:name", SETTINGS_ACTIVITY_CLASS)
                     activity.setAttribute("android:exported", "false")
@@ -136,6 +188,7 @@ internal val settingsPatch = patch {
             ),
         )
         addSettingsRow()
+        hostPatchScreens()
     }
 }
 

@@ -79,6 +79,8 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Hosted on mount installs by an activity that uses BeReal's theme.
+        setTheme(android.R.style.Theme_DeviceDefault_NoActionBar);
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(SettingsStyle.SCREEN_BACKGROUND);
         getWindow().setNavigationBarColor(SettingsStyle.SCREEN_BACKGROUND);

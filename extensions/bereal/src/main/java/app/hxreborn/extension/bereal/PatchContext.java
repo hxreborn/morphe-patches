@@ -67,7 +67,7 @@ public final class PatchContext {
     static void open(Class<? extends Activity> screen) {
         final Activity activity = resumedActivityReference.get();
         final Context context = (activity != null) ? activity : Utils.getContext();
-        final Intent intent = new Intent(context, screen);
+        final Intent intent = HostedScreens.intent(context, screen);
         if (activity == null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
