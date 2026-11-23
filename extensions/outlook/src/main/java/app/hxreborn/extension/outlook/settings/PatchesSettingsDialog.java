@@ -67,7 +67,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
 
     private static final String REMOVE_INBOX_ADS_SUMMARY = "Hides sponsored inbox messages. Experimental.";
 
-    private static final String OPEN_EMAIL_TEMPLATES_SUMMARY = "Opens .oft files as new drafts.";
+    private static final String OPEN_EMAIL_TEMPLATES_SUMMARY = "Opens .oft template attachments as new drafts, "
+            + "without Microsoft 365.";
 
     private static final String SELECT_MULTIPLE_SEARCH_RESULTS_SUMMARY = "Lets you select several results. "
             + "Experimental.";
