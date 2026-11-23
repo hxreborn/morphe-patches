@@ -43,7 +43,12 @@ public class HostedComponentFactory extends AppComponentFactory {
     Activity instantiateActivity(ClassLoader classLoader, String className, Intent intent, Map<String, String> hosts)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         String hosted = HostedComponents.hostedClass(className, intent, hosts);
-        return super.instantiateActivity(classLoader, (hosted != null) ? hosted : className, intent);
+        if (hosted != null) {
+            return super.instantiateActivity(classLoader, hosted, intent);
+        }
+        Activity activity = super.instantiateActivity(classLoader, className, intent);
+        watchActivity(activity);
+        return activity;
     }
 
     @Override
@@ -57,6 +62,9 @@ public class HostedComponentFactory extends AppComponentFactory {
             Map<String, String> hosts) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         String hosted = HostedComponents.hostedClass(className, intent, hosts);
         return super.instantiateReceiver(classLoader, (hosted != null) ? hosted : className, intent);
+    }
+
+    public static void watchActivity(Activity activity) {
     }
 
 }

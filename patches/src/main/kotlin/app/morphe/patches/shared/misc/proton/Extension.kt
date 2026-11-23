@@ -40,7 +40,7 @@ private const val APP_SETTINGS_BINDING_CLASS = "${PROTON_EXTENSION_PACKAGE}AppSe
 private const val PATCH_CONTEXT_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchContext;"
 private const val APPLIED_PATCHES_CLASS = "${PROTON_EXTENSION_PACKAGE}AppliedPatches;"
 private const val PATCHES_SETTINGS_ACTIVITY_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesSettingsActivity;"
-private const val PATCHES_COMPONENT_FACTORY_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesComponentFactory;"
+private const val HOSTED_COMPONENT_FACTORY_CLASS = "Lapp/hxreborn/extension/shared/HostedComponentFactory;"
 
 internal fun attachPatchContext(applicationClass: String) =
     mutableClassDefBy(applicationClass).methods
@@ -85,7 +85,7 @@ internal fun markFloatingNavigationBarPatched() {
     markFeaturePatched(FLOATING_NAVIGATION_BAR_CLASS)
     returnTrueFrom(APPLIED_PATCHES_CLASS, "floatingNavigationBar")
     showSettingsRows("addNavigationRows", "${PROTON_EXTENSION_PACKAGE}NavigationBarRows;")
-    forwardStub(PATCHES_COMPONENT_FACTORY_CLASS, "watchActivity", "${PROTON_EXTENSION_PACKAGE}NavigationBarBackdrop;", "watch")
+    forwardStub(HOSTED_COMPONENT_FACTORY_CLASS, "watchActivity", "${PROTON_EXTENSION_PACKAGE}NavigationBarBackdrop;", "watch")
 }
 
 internal fun MutableMethod.returnVoidWhenUpsellingHidden() = returnVoidWhen("$UPSELLING_VISIBILITY_CLASS->isHidden()Z")

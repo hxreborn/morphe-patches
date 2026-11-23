@@ -32,7 +32,7 @@ import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedNightModeExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 
-private const val HOST_ACTIVITY = "proton.android.authenticator.app.ui.MainActivity"
+private const val HOST_ACTIVITY = "me.proton.core.devicemigration.presentation.DeviceMigrationActivity"
 private const val APPLICATION_CLASS = "Lproton/android/authenticator/app/App;"
 private const val SETTINGS_ROW_METHOD = "patchesSettingsRow"
 private const val TITLE_PARAMETER = 0
