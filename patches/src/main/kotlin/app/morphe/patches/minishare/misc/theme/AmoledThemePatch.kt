@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.minishare.misc.theme
 
+import app.morphe.patcher.InstructionFilter
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
@@ -29,21 +30,16 @@ val amoledThemePatch = patch(
             match.method.addInstruction(setColorIndex, "const v$colorRegister, $AMOLED_BLACK")
         }
 
-        StatusBarTintFingerprint.match().apply {
-            val (_, translucentStatusFlag, _, _) = instructionMatches
-            clearTranslucentStatusFlag(translucentStatusFlag.index)
-        }
-        SplashTranslucentStatusFingerprint.match().apply {
-            val (_, _, translucentStatusFlag, _) = instructionMatches
-            clearTranslucentStatusFlag(translucentStatusFlag.index)
-        }
+        StatusBarTintFingerprint.match().clearTranslucentStatusFlag(statusBarTintTranslucentFlag)
+        SplashTranslucentStatusFingerprint.match().clearTranslucentStatusFlag(splashTranslucentStatusFlag)
 
         BrandHeaderBackgroundFingerprint.matchAll(2..2).forEach { it.replaceColorString(AMOLED_BLACK) }
         RadarLabelColorFingerprint.match().replaceColorString(radarLabelInkColor())
     }
 }
 
-private fun Match.clearTranslucentStatusFlag(index: Int) {
+private fun Match.clearTranslucentStatusFlag(flagFilter: InstructionFilter) {
+    val index = instructionMatches.single { it.filter === flagFilter }.index
     val register = method.getInstruction<OneRegisterInstruction>(index).registerA
     method.replaceInstruction(index, "const/16 v$register, 0x0")
 }
