@@ -74,7 +74,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String SELECT_MULTIPLE_SEARCH_RESULTS_SUMMARY = "Long-press a result in the Mail tab of "
             + "search to select several, then mark, move or delete them together.";
 
-    private static final String HIDE_COPILOT_SUMMARY = "Hides Copilot chat and AI tools. Experimental.";
+    private static final String HIDE_COPILOT_SUMMARY = "Hides the Copilot tab, inbox card, Get a Summary, Help me "
+            + "write and Schedule with Copilot.";
 
     private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Long-press the Outlook icon for an Unread entry that "
             + "opens unread mail from every account.";

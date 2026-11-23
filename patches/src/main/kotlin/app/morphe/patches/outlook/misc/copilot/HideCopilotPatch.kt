@@ -60,7 +60,7 @@ private val unavailable = { register: Int, _: String ->
 val hideCopilotPatch: Patch = patch(
     name = "Hide Copilot",
     description = "Hides Copilot chat, summaries, scheduling and AI writing tools on every account, " +
-        "whatever the Copilot setting in Outlook says. Experimental.",
+        "whatever the Copilot setting in Outlook says.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)
