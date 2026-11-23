@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.86.0-dev.4** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.86.0-dev.5** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -2988,7 +2988,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="video-editor-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/videoeditor/UnlockPremiumPatch.kt) | Unlocks Pro features. |
+| <a id="video-editor-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/videoeditor/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features. |
 
 ---
 

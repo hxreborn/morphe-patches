@@ -1,3 +1,9 @@
+## [1.86.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.4...v1.86.0-dev.5) (2026-11-23)
+
+### Bug Fixes
+
+* **BitTorrent, µTorrent, Viber:** skip restart prompt when reset fails ([6de70c3](https://github.com/hxreborn/morphe-patches/commit/6de70c3e9b4c79090c530cda3b6d62c4fd11e3ee))
+
 ## [1.86.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.3...v1.86.0-dev.4) (2026-11-22)
 
 ### Bug Fixes
