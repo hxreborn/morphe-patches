@@ -62,7 +62,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
 
     private static final int CONTENT_BOTTOM_PADDING_DP = 24;
 
-    private static final String KEEP_MESSAGES_UNREAD_SUMMARY = "Leaves opened messages unread.";
+    private static final String KEEP_MESSAGES_UNREAD_SUMMARY = "Opening a message, or flagging or moving it from "
+            + "the reading pane, leaves it unread.";
 
     private static final String REMOVE_INBOX_ADS_SUMMARY = "Hides sponsored inbox messages. Experimental.";
 
