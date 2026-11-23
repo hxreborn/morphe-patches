@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val viberSettingsExtensionPatch = patch {
-    dependsOn(sharedPatchesMenuExtensionPatch)
+    dependsOn(sharedPatchesMenuExtensionPatch, sharedHostedComponentsExtensionPatch)
     extendWith("extensions/hxreborn/viber-settings.mpe")
 }
 

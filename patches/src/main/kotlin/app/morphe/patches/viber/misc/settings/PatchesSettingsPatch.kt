@@ -18,6 +18,8 @@ import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.shared.misc.hostedcomponents.ComponentHost
+import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -39,8 +41,22 @@ private const val SETTINGS_STYLE = "Lapp/hxreborn/extension/viber/SettingsStyle;
 
 private const val ACTIVITY = "app.hxreborn.extension.viber.PatchesSettingsActivity"
 
+private const val ACTIVITY_THEME = "@style/Theme.Viber.NoActionBar"
+
+private const val COMPONENT_FACTORY = "com.viber.voip.startup.appfactory.ViberAppComponentFactory"
+
+private const val SETTINGS_HEADERS_ACTIVITY = "com.viber.voip.settings.ui.SettingsHeadersActivity"
+
+private val settingsHostActivity = ComponentHost(
+    "activity",
+    "com.viber.voip.user.more.MoreActivity",
+    mapOf("theme" to ACTIVITY_THEME, "windowSoftInputMode" to "adjustPan"),
+)
+
+private val hostedComponents = HostedComponents(COMPONENT_FACTORY)
+
 internal val patchesSettingsPatch = patch {
-    dependsOn(viberSettingsExtensionPatch)
+    dependsOn(viberSettingsExtensionPatch, hostedComponents.patch)
     dependsOn(patch {
         execute {
             document("res/values/ids.xml").use { document ->
@@ -75,7 +91,7 @@ internal val patchesSettingsPatch = patch {
                 val activity = document.createElement("activity")
                 activity.setAttribute("android:name", ACTIVITY)
                 activity.setAttribute("android:exported", "false")
-                activity.setAttribute("android:theme", "@style/Theme.Viber.NoActionBar")
+                activity.setAttribute("android:theme", ACTIVITY_THEME)
                 application.appendChild(activity)
             }
             mapOf(
@@ -109,6 +125,8 @@ internal val patchesSettingsPatch = patch {
         }
     })
     execute {
+        hostedComponents.host(ACTIVITY, settingsHostActivity)
+        hostedComponents.routeLaunchesFrom(SETTINGS_HEADERS_ACTIVITY)
         with(mutableClassDefBy(PLUS_AD_ROW)) {
             replaceResourceIdStubs(
                 ResourceType.ID,
