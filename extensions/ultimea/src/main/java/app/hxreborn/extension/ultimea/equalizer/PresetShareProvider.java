@@ -45,6 +45,8 @@ import android.provider.OpenableColumns;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import app.hxreborn.extension.shared.ManifestDeclarations;
+
 @SuppressWarnings("NullableProblems")
 public final class PresetShareProvider extends ContentProvider {
 
@@ -53,6 +55,8 @@ public final class PresetShareProvider extends ContentProvider {
     private static final String DIRECTORY = "equalizer-presets";
 
     private static final String MIME_TYPE = "application/json";
+
+    private static final String TEXT_MIME_TYPE = "text/plain";
 
     private static final int BUFFER_BYTES = 4096;
 
@@ -72,6 +76,11 @@ public final class PresetShareProvider extends ContentProvider {
         byte[] document = content.getBytes(StandardCharsets.UTF_8);
         if (document.length > EqualizerPresetBundleFile.MAX_BYTES) {
             throw new IOException("Preset file exceeds size limit");
+        }
+        if (!ManifestDeclarations.isProviderDeclared(activity, activity.getPackageName() + AUTHORITY_SUFFIX)) {
+            Intent send = new Intent(Intent.ACTION_SEND).setType(TEXT_MIME_TYPE).putExtra(Intent.EXTRA_TEXT, content);
+            activity.startActivity(Intent.createChooser(send, title));
+            return;
         }
         File directory = new File(activity.getCacheDir(), DIRECTORY);
         if (!directory.isDirectory() && !directory.mkdirs()) {

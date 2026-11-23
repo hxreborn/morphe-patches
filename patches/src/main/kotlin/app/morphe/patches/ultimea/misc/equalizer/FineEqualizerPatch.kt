@@ -32,7 +32,8 @@ private val LOAD_TENTH_DECIBEL = "4000005cc0035fd69a9999999999b93f".hexToByteArr
 @Suppress("unused")
 val fineEqualizerPatch: Patch = patch(
     name = "Fine equalizer",
-    description = "Adds 0.1 dB bands, band values and Undo to the equalizer screen.",
+    description = "Adds 0.1 dB bands, band values and Undo to the equalizer screen. " +
+        "On a mount install, presets are shared as text instead of a file.",
 ) {
     compatibleWith(AppCompatibilities.ULTIMEA)
     availability(requireArm64)
