@@ -20,7 +20,7 @@ val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks Pro features, including PDF annotations and form filling, " +
         "WebDAV and FTP sync, text-to-speech controls, the home screen widget " +
-        "and extra toolbar and shelf options.",
+        "and extra toolbar and shelf options. On a mount install, the home screen widget is not available.",
 ) {
     dependsOn(moonreaderUnlockProExtensionPatch)
     compatibleWith(AppCompatibilities.MOON_READER)
