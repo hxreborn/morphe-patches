@@ -33,7 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsPanel;
 
 @SuppressWarnings("unused")
@@ -46,8 +46,6 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int EDITOR_MIN_LINES = 4;
 
     private static final int EDITOR_MAX_LINES = 12;
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private SettingsStyle style;
 
@@ -93,7 +91,7 @@ public final class PatchesSettingsActivity extends Activity {
                 () -> editRules("Post flair filters", PatchSettings.FLAIRS_KEY));
         this.rows.section(column, "About");
         LinearLayout about = this.rows.card(column);
-        this.rows.row(about, "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.row(about, "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION, this::confirmReset);
         this.rows.row(about, "App version", appVersion(), null);
         this.rows.row(about, "Patch bundle", BuildConfig.BUNDLE_VERSION, null);
         this.rows.section(column, "Applied patches");
@@ -150,7 +148,7 @@ public final class PatchesSettingsActivity extends Activity {
 
     private void confirmReset() {
         showDialog(new AlertDialog.Builder(this).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();

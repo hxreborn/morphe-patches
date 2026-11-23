@@ -38,12 +38,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 import app.hxreborn.extension.terabox.AppliedPatches.AppliedPatch;
 
 final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private static final int APP_BAR_HEIGHT_DP = 64;
 
@@ -171,7 +170,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
                 false);
         addSection(column, "Ads", ads);
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_terabox_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.actionRow(about, "hx_terabox_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                this::confirmReset);
         this.rows.valueRow(about, "hx_terabox_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_terabox_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
@@ -217,7 +217,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
 
     private void confirmReset() {
         AlertDialog confirmation = new AlertDialog.Builder(this.activity).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();

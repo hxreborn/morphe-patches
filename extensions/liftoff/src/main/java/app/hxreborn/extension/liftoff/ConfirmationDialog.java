@@ -30,9 +30,9 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-final class ConfirmationDialog {
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 
-    static final String RESET_DESCRIPTION = "Restores every switch to its default.";
+final class ConfirmationDialog {
 
     private static final int WIDTH_DP = 320;
 
@@ -112,7 +112,7 @@ final class ConfirmationDialog {
 
     private enum Choice {
 
-        RESET("Reset to defaults?", RESET_DESCRIPTION, "Reset", "Cancel"),
+        RESET("Reset to defaults?", PatchesMenuText.RESET_DESCRIPTION, "Reset", "Cancel"),
         RESTART("Restart required", "Liftoff must restart to apply the change.", "Restart", "Later");
 
         final String title;

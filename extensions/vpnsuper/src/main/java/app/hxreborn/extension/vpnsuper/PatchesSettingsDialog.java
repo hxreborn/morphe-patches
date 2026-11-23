@@ -38,11 +38,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 
 final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private static final String DISCONNECT_DESCRIPTION = "Skips opening the app on Disconnect.";
 
@@ -148,7 +147,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
         }
         addSection(column, "Notification", notification);
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_vpnsuper_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.actionRow(about, "hx_vpnsuper_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                this::confirmReset);
         this.rows.valueRow(about, "hx_vpnsuper_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_vpnsuper_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
@@ -181,7 +181,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
 
     private void confirmReset() {
         AlertDialog confirmation = new AlertDialog.Builder(this.activity).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults(this.activity);

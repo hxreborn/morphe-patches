@@ -23,14 +23,13 @@ package app.hxreborn.extension.bittorrent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsActivityBase;
 
 @SuppressWarnings("unused")
 public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
 
     private static final int CONTENT_BOTTOM_PADDING_DP = 24;
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     @Override
     protected View createContent() {
@@ -48,7 +47,8 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
         addSection(column, "Appearance", appearance);
 
         LinearLayout about = rows().card();
-        rows().actionRow(about, resetIconId(), "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        rows().actionRow(about, resetIconId(), "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                this::confirmReset);
         rows().valueRow(about, infoIconId(), "App version", appVersion());
         rows().valueRow(about, patchesIconId(), "Patch bundle", bundleVersion());
         addSection(column, "About", about);

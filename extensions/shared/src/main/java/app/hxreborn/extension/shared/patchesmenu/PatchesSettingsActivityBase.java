@@ -56,8 +56,6 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     private static final int TITLE_START_PADDING_DP = 12;
 
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
-
     private SettingsStyle style;
 
     private SettingsRows rows;
@@ -180,7 +178,7 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     protected void confirmReset() {
         styleDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setPositiveButton("Reset", (dialog, which) -> {
                 resetToDefaults();
                 refreshContent();

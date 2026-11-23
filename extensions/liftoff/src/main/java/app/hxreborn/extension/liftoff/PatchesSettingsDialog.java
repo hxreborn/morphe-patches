@@ -38,6 +38,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.liftoff.AppliedPatches.AppliedPatch;
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 
 @SuppressWarnings({ "deprecation", "NullableProblems" })
@@ -148,7 +149,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
         addSection(column, "Features", features);
 
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_liftoff_ic_reset", "Reset to defaults", ConfirmationDialog.RESET_DESCRIPTION,
+        this.rows.actionRow(about, "hx_liftoff_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
                 this::confirmReset);
         this.rows.valueRow(about, "hx_liftoff_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_liftoff_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);

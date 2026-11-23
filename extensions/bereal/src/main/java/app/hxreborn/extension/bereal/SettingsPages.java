@@ -33,10 +33,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 
 final class SettingsPages {
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private final Activity activity;
 
@@ -77,9 +76,9 @@ final class SettingsPages {
         }
         content.addView(this.rows.sectionHeader("About"));
         final LinearLayout card = this.rows.card();
-        this.rows.actionRow(card, "ic_arrow_counterclockwise", "Reset to defaults", RESET_DESCRIPTION,
-                () -> ConfirmDialog.show(this.activity, this.style, "Reset to defaults?", RESET_DESCRIPTION, "Cancel",
-                        "Reset", this.host::resetToDefaults));
+        this.rows.actionRow(card, "ic_arrow_counterclockwise", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                () -> ConfirmDialog.show(this.activity, this.style, "Reset to defaults?",
+                        PatchesMenuText.RESET_DESCRIPTION, "Cancel", "Reset", this.host::resetToDefaults));
         this.rows.valueRow(card, "ic_info_circle", "App version", this.hostVersion);
         this.rows.valueRow(card, "ic_hammer_circle", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addCard(content, card);

@@ -40,12 +40,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.aliexpress.AppliedPatches.AppliedPatch;
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
 import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 
 @SuppressWarnings("deprecation")
 final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private static final int APP_BAR_HEIGHT_DP = 64;
 
@@ -171,7 +170,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
         }
         addSection(column, "Privacy", privacy);
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_aliexpress_ic_reset", "Reset to defaults", RESET_DESCRIPTION,
+        this.rows.actionRow(about, "hx_aliexpress_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
                 this::confirmReset);
         this.rows.valueRow(about, "hx_aliexpress_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_aliexpress_ic_bundle", "Patch bundle", BuildConfig.BUNDLE_VERSION);
@@ -211,7 +210,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
 
     private void confirmReset() {
         AlertDialog confirmation = new AlertDialog.Builder(this.activity).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();
