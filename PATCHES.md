@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.86.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.87.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**607 patches** across **191 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -380,7 +380,7 @@
 
 | Patch | Details |
 |---|---|
-| <a id="bereal-back-up-memories"></a>[**Back up memories**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up memories to hxreborn patches. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' usernames and comments to Download/BeReal unless a folder is picked. |
+| <a id="bereal-back-up-memories"></a>[**Back up memories**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up memories to hxreborn patches. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' usernames and comments to Download/BeReal unless a folder is picked. On a mount install, keep BeReal open until it finishes. |
 | <a id="bereal-change-download-location"></a>[**Change download location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/download/ChangeDownloadLocationPatch.kt) | Saves downloaded BeReals to Pictures/BeReal, DCIM/BeReal or a folder you pick. Requires Android 10 or newer. |
 | <a id="bereal-custom-befake-header"></a>[**Custom BeFake header**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/header/CustomBeFakeHeaderPatch.kt) | Replaces the BeReal wordmark in the top bar and posting header with BeFake. |
 | <a id="bereal-custom-location"></a>[**Custom location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomLocationPatch.kt) | Sets the location shown on your BeReal to a place you choose on a map or by name. |
@@ -1087,6 +1087,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## FV File Explorer (com.folderv.file)
+
+<img src="https://publicmetadata.co.uk/com.folderv.file" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.28.6 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="fv-file-explorer-remove-banner-ads"></a>[**Remove banner ads**](patches/src/main/kotlin/app/morphe/patches/fvfileexplorer/ads/RemoveBannerAdsPatch.kt) | Removes banner ads from the home screen and archive viewer. |
+
+---
+
 ## Glass Widgets (com.jndapp.glass.widgets)
 
 <img src="https://publicmetadata.co.uk/com.jndapp.glass.widgets" width="48" height="48" align="top" alt="">
@@ -1264,7 +1279,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="internet-speed-meter-lite-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics and Sessions from collecting usage data. |
 | <a id="internet-speed-meter-lite-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/ads/RemoveAdsPatch.kt) | Removes ads and the prompts to allow them. |
-| <a id="internet-speed-meter-lite-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/premium/UnlockPremiumPatch.kt) | Unlocks the notification dialog, smart notifications, themes, notification accent and the starting hour of the day. |
+| <a id="internet-speed-meter-lite-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/premium/UnlockPremiumPatch.kt) | Unlocks the notification dialog, smart notifications, themes, notification accent and the starting hour of the day. On a mount install, the quick overview has no per-app usage. |
 
 ---
 
@@ -1631,7 +1646,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="moon-reader-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics from collecting usage data and the Google Mobile Ads SDK from starting at launch. |
 | <a id="moon-reader-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/moonreader/ads/HideAdsPatch.kt) | Hides full-screen ads and the Remove ads button in the side menu. |
-| <a id="moon-reader-unlock-pro"></a>[**Unlock pro**](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including PDF annotations and form filling, WebDAV and FTP sync, text-to-speech controls, the home screen widget and extra toolbar and shelf options. |
+| <a id="moon-reader-unlock-pro"></a>[**Unlock pro**](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including PDF annotations and form filling, WebDAV and FTP sync, text-to-speech controls, the home screen widget and extra toolbar and shelf options. On a mount install, the home screen widget is not available. |
 
 ---
 
@@ -1646,10 +1661,12 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="moviebox-all-in-one"></a>[**All-In-One**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/allinone/AllInOnePatch.kt) | Enables video playback and downloads, removes ads and upsell prompts, and unlocks the Laboratory menu. Requires Android 10 or later. |
+| <a id="moviebox-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/update/DisableUpdatePromptsPatch.kt) | Removes update prompts and forced updates. |
 | <a id="moviebox-hide-buzzbox"></a>[**Hide BuzzBox**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/buzzbox/HideBuzzBoxPatch.kt) | Removes the BuzzBox tabs from the bottom navigation bar and the home screen. |
-| <a id="moviebox-hide-midnight-tab"></a>[**Hide Midnight tab**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/midnight/HideMidnightTabPatch.kt) | Removes the Midnight 18+ tab from the home screen. Requires All-In-One. |
-| <a id="moviebox-hide-permanent-notification"></a>[**Hide permanent notification**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/permanentnotification/HidePermanentNotificationPatch.kt) | Hides the permanent notification. Requires All-In-One. |
+| <a id="moviebox-hide-midnight-tab"></a>[**Hide Midnight tab**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/midnight/HideMidnightTabPatch.kt) | Removes the Midnight 18+ tab from the home screen. |
+| <a id="moviebox-hide-permanent-notification"></a>[**Hide permanent notification**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/permanentnotification/HidePermanentNotificationPatch.kt) | Hides the permanent notification. |
+| <a id="moviebox-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/moviebox/ads/RemoveAdsPatch.kt) | Removes ads. |
+| <a id="moviebox-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium, unlimited playback time, unlimited downloads, every resolution and the Laboratory menu, and removes membership offers. |
 
 ---
 
@@ -1985,6 +2002,28 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Outlook (com.microsoft.office.outlook)
+
+<img src="https://publicmetadata.co.uk/com.microsoft.office.outlook" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.2645.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="outlook-add-unread-shortcut"></a>[**Add unread shortcut**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/shortcut/AddUnreadShortcutPatch.kt) | Adds an Unread shortcut to the app icon that lists unread mail from every account and folder. Experimental. |
+| <a id="outlook-fix-sign-in"></a>[**Fix sign-in**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/fix/signin/FixSignInPatch.kt) | Fixes signing in with Microsoft accounts. |
+| <a id="outlook-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/gms/GmsCoreSupportPatch.kt) | Lets you add Google accounts through GmsCore. Requires GmsCore. |
+| <a id="outlook-hide-copilot"></a>[**Hide Copilot**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/copilot/HideCopilotPatch.kt) | Hides Copilot chat, summaries, scheduling and AI writing tools on every account, whatever the Copilot setting in Outlook says. Experimental. |
+| <a id="outlook-keep-messages-unread"></a>[**Keep messages unread**](patches/src/main/kotlin/app/morphe/patches/outlook/mail/unread/KeepMessagesUnreadPatch.kt) | Leaves messages unread when you open them, or flag or move them from the reading pane. |
+| <a id="outlook-open-email-templates"></a>[**Open email templates**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/templates/OpenEmailTemplatesPatch.kt) | Opens Outlook template (.oft) attachments as new drafts without a Microsoft 365 subscription. |
+| <a id="outlook-remove-inbox-ads"></a>[**Remove inbox ads**](patches/src/main/kotlin/app/morphe/patches/outlook/ads/RemoveInboxAdsPatch.kt) | Removes sponsored messages from the Focused and Other inbox. Experimental. |
+| <a id="outlook-select-multiple-search-results"></a>[**Select multiple search results**](patches/src/main/kotlin/app/morphe/patches/outlook/search/bulkactions/SearchBulkActionsPatch.kt) | Lets you long-press search results to select several and mark, move or delete them together. Works in the Mail tab of search. Experimental. |
+
+---
+
 ## Patreon (com.patreon.android)
 
 <img src="https://publicmetadata.co.uk/com.patreon.android" width="48" height="48" align="top" alt="">
@@ -2126,6 +2165,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Podcast Republic (com.itunestoppodcastplayer.app)
+
+<img src="https://publicmetadata.co.uk/com.itunestoppodcastplayer.app" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 26.11.4R |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="podcast-republic-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/podcastrepublic/misc/ads/RemoveAdsPatch.kt) | Removes in-app ads and frees up banner space. |
+
+---
+
 ## Poe (com.poe.android)
 
 <img src="https://publicmetadata.co.uk/com.poe.android" width="48" height="48" align="top" alt="">
@@ -2139,6 +2193,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="poe-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/poe/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Sessions and Performance Monitoring from collecting usage data. |
 | <a id="poe-spoof-signature"></a>[**Spoof signature**](patches/src/main/kotlin/app/morphe/patches/poe/misc/fix/signature/SpoofSignaturePatch.kt) | Enables push notifications. |
+
+---
+
+## Poweramp Equalizer (com.maxmpz.equalizer)
+
+<img src="https://publicmetadata.co.uk/com.maxmpz.equalizer" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| build-1035-bundle-play |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="poweramp-equalizer-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/powerampequalizer/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features and removes the time-limited trial. |
 
 ---
 
@@ -2895,7 +2964,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="ultimea-accent-color"></a>[**Accent color**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/AccentColorPatch.kt) | Changes accent colors with a chosen color or Material You. |
 | <a id="ultimea-dark-theme"></a>[**Dark theme**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/DarkThemePatch.kt) | Adds dark and AMOLED themes with light text and controls. |
 | <a id="ultimea-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Crashlytics, Logan and usage event uploads. |
-| <a id="ultimea-fine-equalizer"></a>[**Fine equalizer**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB bands, band values and Undo to the equalizer screen. |
+| <a id="ultimea-fine-equalizer"></a>[**Fine equalizer**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB bands, band values and Undo to the equalizer screen. On a mount install, presets are shared as text instead of a file. |
 | <a id="ultimea-local-equalizer-presets"></a>[**Local equalizer presets**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/presets/LocalEqualizerPresetsPatch.kt) | Adds named local curves with duplicate, export and import actions. |
 | <a id="ultimea-remove-distractions"></a>[**Remove distractions**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/distractions/RemoveDistractionsPatch.kt) | Removes community, message and support entries. |
 | <a id="ultimea-remove-popups"></a>[**Remove popups**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/popups/RemovePopupsPatch.kt) | Removes promotional and rating popups. |
