@@ -66,3 +66,22 @@ internal object AdjustInitFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("Lcom/adjust/sdk/AdjustConfig;"),
 )
+
+internal object CrashlyticsManifestFlagFingerprint : Fingerprint(
+    returnType = "Ljava/lang/Boolean;",
+    parameters = listOf("Landroid/content/Context;"),
+    strings = listOf("firebase_crashlytics_collection_enabled"),
+)
+
+internal object FirebaseSessionsManifestFlagFingerprint : Fingerprint(
+    returnType = "Ljava/lang/Boolean;",
+    parameters = listOf(),
+    strings = listOf("firebase_sessions_enabled"),
+)
+
+internal object BigQueryMetricsManifestFlagFingerprint : Fingerprint(
+    isStatic = true,
+    returnType = "Z",
+    parameters = listOf(),
+    strings = listOf("delivery_metrics_exported_to_big_query_enabled"),
+)
