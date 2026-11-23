@@ -70,8 +70,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String OPEN_EMAIL_TEMPLATES_SUMMARY = "Opens .oft template attachments as new drafts, "
             + "without Microsoft 365.";
 
-    private static final String SELECT_MULTIPLE_SEARCH_RESULTS_SUMMARY = "Lets you select several results. "
-            + "Experimental.";
+    private static final String SELECT_MULTIPLE_SEARCH_RESULTS_SUMMARY = "Long-press a result in the Mail tab of "
+            + "search to select several, then mark, move or delete them together.";
 
     private static final String HIDE_COPILOT_SUMMARY = "Hides Copilot chat and AI tools. Experimental.";
 
