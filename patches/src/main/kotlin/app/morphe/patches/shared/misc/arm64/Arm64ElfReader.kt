@@ -136,6 +136,10 @@ internal object Arm64 {
 
     private const val MOVE_WIDE_MASK = 0xffe00000.toInt()
     private const val MOVE_WIDE_ZERO_W = 0x52800000
+    private const val MOVE_WIDE_ZERO_X = 0xd2800000.toInt()
+    private const val ADD_IMMEDIATE_X = 0x91000000.toInt()
+    private const val ADD_IMMEDIATE_SHIFT = 10
+    private const val PAGE_OFFSET_MASK = 0xfffL
     const val NOP = 0xd503201f.toInt()
     private const val MOVE_WIDE_IMMEDIATE_SHIFT = 5
     private const val MOVE_WIDE_IMMEDIATE_MASK = 0xffff
@@ -161,11 +165,13 @@ internal object Arm64 {
 
     fun baseRegister(instruction: Int) = (instruction ushr BASE_REGISTER_SHIFT) and REGISTER_MASK
 
+    fun page(address: Long) = address shr PAGE_BITS shl PAGE_BITS
+
     fun adrpPage(instruction: Int, address: Long): Long {
         val low = (instruction ushr ADRP_LOW_SHIFT) and ADRP_LOW_MASK
         val high = (instruction ushr ADRP_HIGH_SHIFT) and ADRP_HIGH_MASK
         val immediate = signExtend((high shl ADRP_HIGH_BITS) or low, ADRP_IMMEDIATE_BITS).toLong()
-        return (address shr PAGE_BITS shl PAGE_BITS) + (immediate shl PAGE_BITS)
+        return page(address) + (immediate shl PAGE_BITS)
     }
 
     fun load64Offset(instruction: Int) =
@@ -178,6 +184,23 @@ internal object Arm64 {
         signExtend((instruction ushr TEST_IMMEDIATE_SHIFT) and ((1 shl TEST_IMMEDIATE_BITS) - 1), TEST_IMMEDIATE_BITS)
 
     fun branch(offsetWords: Int) = BRANCH or (offsetWords and BRANCH_IMMEDIATE_MASK)
+
+    fun adrp(register: Int, address: Long, target: Long): Int {
+        val pages = ((target shr PAGE_BITS) - (address shr PAGE_BITS)).toInt()
+        return ADRP or ((pages and ADRP_LOW_MASK) shl ADRP_LOW_SHIFT) or
+            (((pages shr ADRP_HIGH_BITS) and ADRP_HIGH_MASK) shl ADRP_HIGH_SHIFT) or register
+    }
+
+    fun addPageOffset(destination: Int, source: Int, target: Long) =
+        ADD_IMMEDIATE_X or ((target and PAGE_OFFSET_MASK).toInt() shl ADD_IMMEDIATE_SHIFT) or
+            (source shl BASE_REGISTER_SHIFT) or destination
+
+    fun withTransferRegister(instruction: Int, register: Int) = (instruction and REGISTER_MASK.inv()) or register
+
+    fun moveWideZero(register: Int, immediate: Int): Int {
+        require(immediate in 0..MOVE_WIDE_IMMEDIATE_MASK) { "$immediate does not fit a 16-bit move" }
+        return MOVE_WIDE_ZERO_X or (immediate shl MOVE_WIDE_IMMEDIATE_SHIFT) or register
+    }
 
     fun branchLink(offsetWords: Int) = BRANCH_LINK or (offsetWords and BRANCH_IMMEDIATE_MASK)
 

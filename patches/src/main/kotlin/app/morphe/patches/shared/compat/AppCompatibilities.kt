@@ -1471,6 +1471,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "a3.80.1", versionCode = 3080004, minSdk = 26)),
     )
 
+    val POWERAMP_EQUALIZER = Compatibility(
+        name = "Poweramp Equalizer",
+        packageName = "com.maxmpz.equalizer",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x1A1A1A,
+        signatures = setOf(
+            "f6355bdd54f8cedd64f9f6e9813bb0b55a2ac24b82b461e99f86db336ee64255",
+        ),
+        targets = listOf(AppTarget(version = "build-1035-bundle-play", versionCode = 1035009, minSdk = 28)),
+    )
+
     val PRAYER_TIMES = Compatibility(
         name = "Prayer Times and Qibla",
         packageName = "com.reworewo.prayertimes",
