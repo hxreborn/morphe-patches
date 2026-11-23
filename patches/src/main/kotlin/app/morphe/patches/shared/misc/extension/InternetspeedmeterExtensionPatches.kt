@@ -12,7 +12,7 @@ internal val internetspeedmeterAdPreferenceExtensionPatch = patch {
 }
 
 internal val internetspeedmeterUnlockPremiumExtensionPatch = patch {
-    dependsOn(internetspeedmeterAdPreferenceExtensionPatch, sharedDimensionsExtensionPatch)
+    dependsOn(internetspeedmeterAdPreferenceExtensionPatch, sharedDimensionsExtensionPatch, sharedHostedComponentsExtensionPatch)
     extendWith("extensions/hxreborn/internetspeedmeter-unlock-premium.mpe")
 }
 
