@@ -41,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -180,8 +181,12 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
             .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setPositiveButton("Reset", (dialog, which) -> {
-                resetToDefaults();
+                boolean saved = resetToDefaults();
                 refreshContent();
+                if (!saved) {
+                    Toast.makeText(this, "Couldn't reset. Try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 confirmRestart();
             })
             .setNegativeButton("Cancel", null));
@@ -220,7 +225,7 @@ public abstract class PatchesSettingsActivityBase extends Activity {
 
     protected abstract SettingsRows createRows(SettingsStyle style);
 
-    protected abstract void resetToDefaults();
+    protected abstract boolean resetToDefaults();
 
     protected abstract String logTag();
 

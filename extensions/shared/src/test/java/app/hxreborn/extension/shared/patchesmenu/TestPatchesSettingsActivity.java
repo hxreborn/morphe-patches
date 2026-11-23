@@ -31,6 +31,8 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
 
     boolean optionalPatch = true;
 
+    boolean resetSaves = true;
+
     private static final int CONTENT_BOTTOM_PADDING_DP = 24;
 
     @Override
@@ -113,8 +115,9 @@ public final class TestPatchesSettingsActivity extends PatchesSettingsActivityBa
     }
 
     @Override
-    protected void resetToDefaults() {
+    protected boolean resetToDefaults() {
         this.enabled = true;
+        return this.resetSaves;
     }
 
     private int themeIconId() {

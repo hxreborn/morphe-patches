@@ -36,6 +36,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowToast;
 import org.robolectric.util.ReflectionHelpers;
 
 @RunWith(RobolectricTestRunner.class)
@@ -87,6 +88,23 @@ public class PatchesSettingsActivityBaseTest {
         View root = activity.getWindow().getDecorView();
         Assertions.assertThat(findText(root, "First patch")).isNotNull();
         Assertions.assertThat(findText(root, "Second patch")).isNull();
+    }
+
+    @Test
+    public void redrawScreenAndSkipRestartPromptWhenResetFailsToSave() {
+        TestPatchesSettingsActivity activity = Robolectric.buildActivity(TestPatchesSettingsActivity.class)
+            .setup()
+            .get();
+        activity.enabled = false;
+        activity.resetSaves = false;
+        View screen = installedScreen(activity);
+
+        AlertDialog reset = confirmReset(activity);
+
+        Assertions.assertThat(activity.enabled).isTrue();
+        Assertions.assertThat(installedScreen(activity)).isNotSameAs(screen);
+        Assertions.assertThat(ShadowAlertDialog.getLatestAlertDialog()).isSameAs(reset);
+        Assertions.assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Couldn't reset. Try again.");
     }
 
     @Test

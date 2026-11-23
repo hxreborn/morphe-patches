@@ -82,8 +82,8 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
     }
 
     @Override
-    protected void resetToDefaults() {
-        PatchSettings.resetToDefaults();
+    protected boolean resetToDefaults() {
+        return PatchSettings.resetToDefaults();
     }
 
     @Override
