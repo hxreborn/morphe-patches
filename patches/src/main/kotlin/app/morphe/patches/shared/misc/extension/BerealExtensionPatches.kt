@@ -24,6 +24,6 @@ internal val berealUpdatePromptsExtensionPatch = patch {
 }
 
 internal val berealSettingsExtensionPatch = patch {
-    dependsOn(sharedPatchesMenuExtensionPatch, berealContactsPermissionExtensionPatch, berealDataCollectionExtensionPatch, berealSponsoredPostsExtensionPatch, berealUpdatePromptsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
+    dependsOn(sharedPatchesMenuExtensionPatch, berealContactsPermissionExtensionPatch, berealDataCollectionExtensionPatch, berealSponsoredPostsExtensionPatch, berealUpdatePromptsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedHostedComponentsExtensionPatch)
     extendWith("extensions/hxreborn/bereal-settings.mpe")
 }

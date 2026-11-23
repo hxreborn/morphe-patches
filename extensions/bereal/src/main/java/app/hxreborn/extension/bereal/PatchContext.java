@@ -30,6 +30,7 @@ import android.content.Intent;
 import app.morphe.extension.shared.Utils;
 
 import app.hxreborn.extension.shared.ActivityCallbacksAdapter;
+import app.hxreborn.extension.shared.HostedComponents;
 
 @SuppressWarnings("unused")
 public final class PatchContext {
@@ -67,11 +68,11 @@ public final class PatchContext {
     static void open(Class<? extends Activity> screen) {
         final Activity activity = resumedActivityReference.get();
         final Context context = (activity != null) ? activity : Utils.getContext();
-        final Intent intent = HostedScreens.intent(context, screen);
+        final Intent intent = new Intent(context, screen);
         if (activity == null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        context.startActivity(intent);
+        HostedComponents.startActivity(context, intent);
     }
 
 }
