@@ -15,6 +15,7 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.extension.outlookSettingsExtensionPatch
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -25,7 +26,6 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -91,8 +91,8 @@ private fun constructorParametersByField(constructor: Method): Map<String, Int> 
     }
     val parameterByField = mutableMapOf<String, Int>()
     implementation.instructions.forEach { instruction ->
-        val reference = (instruction as? ReferenceInstruction)?.reference
-        if (reference is FieldReference && reference.definingClass == constructor.definingClass &&
+        val reference = instruction.getReference<FieldReference>()
+        if (reference != null && reference.definingClass == constructor.definingClass &&
             instruction.opcode in INSTANCE_FIELD_WRITES
         ) {
             parameterOf[(instruction as TwoRegisterInstruction).registerA]?.let { parameterByField[reference.name] = it }
@@ -223,14 +223,14 @@ internal val patchesSettingsPatch = patch {
 private fun addSettingsRow() {
     val components = SettingsComponentsFingerprint.match()
     val (generalCategoryRead, _, rowConstructorCall, componentsReturn) = components.instructionMatches
-    val generalCategory = generalCategoryRead.getInstruction<ReferenceInstruction>().reference as FieldReference
-    val rowConstructor = rowConstructorCall.getInstruction<ReferenceInstruction>().reference as MethodReference
+    val generalCategory = generalCategoryRead.instruction.getReference<FieldReference>()!!
+    val rowConstructor = rowConstructorCall.instruction.getReference<MethodReference>()!!
     val componentsRegister = componentsReturn.getInstruction<OneRegisterInstruction>().registerA
 
     val mailIcon = MailSettingsIconFingerprint.match()
     val (_, iconCall, unitRead) = mailIcon.instructionMatches
-    val iconReference = iconCall.getInstruction<ReferenceInstruction>().reference as MethodReference
-    val unit = unitRead.getInstruction<ReferenceInstruction>().reference as FieldReference
+    val iconReference = iconCall.instruction.getReference<MethodReference>()!!
+    val unit = unitRead.instruction.getReference<FieldReference>()!!
 
     val searchExclusion = descriptor(SettingsSearchExclusionFingerprint.originalMethod)
 

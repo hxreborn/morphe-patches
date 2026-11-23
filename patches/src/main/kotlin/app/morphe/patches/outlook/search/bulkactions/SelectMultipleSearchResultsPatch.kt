@@ -22,7 +22,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 @Suppress("unused")
-val searchBulkActionsPatch: Patch = patch(
+val selectMultipleSearchResultsPatch: Patch = patch(
     name = "Select multiple search results",
     description = "Lets you long-press search results to select several and mark, move or delete them together. " +
         "Works in the Mail tab of search. Experimental.",
@@ -33,7 +33,7 @@ val searchBulkActionsPatch: Patch = patch(
     dependsOn(fixSignInPatch, patchesSettingsPatch)
 
     execute {
-        markPatchApplied("selectMultipleSearchResults", searchBulkActionsPatch)
+        markPatchApplied("selectMultipleSearchResults", selectMultipleSearchResultsPatch)
         val constructor = MailSearchResultsViewModelConstructorFingerprint.match()
         val (messageListActionBarResult, centralActionBarResult, searchListActionBarResult) =
             constructor.instructionMatches.filter { it.instruction.opcode == Opcode.MOVE_RESULT }
