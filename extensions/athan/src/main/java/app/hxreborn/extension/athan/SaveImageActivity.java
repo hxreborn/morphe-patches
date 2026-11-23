@@ -39,6 +39,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class SaveImageActivity extends Activity {
 
@@ -58,7 +60,12 @@ public final class SaveImageActivity extends Activity {
         if (image == null || context == null) {
             return chooser;
         }
-        Intent save = new Intent(context, SaveImageActivity.class).setDataAndType(image, target.getType())
+        Intent screen = new Intent(context, SaveImageActivity.class);
+        if (!HostedComponents.isReachable(context, screen)) {
+            return chooser;
+        }
+        Intent save = HostedComponents.route(context, screen)
+            .setDataAndType(image, target.getType())
             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         LabeledIntent option = new LabeledIntent(save, "android", SAVE_LABEL, android.R.drawable.ic_menu_save);
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { option });
