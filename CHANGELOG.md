@@ -1,3 +1,10 @@
+## [1.86.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.5...v1.86.0-dev.6) (2026-11-23)
+
+### Bug Fixes
+
+* **BeReal:** open hosted patch screens only through their own host ([d525c02](https://github.com/hxreborn/morphe-patches/commit/d525c0262adb338e861761df39733c272c74d97f))
+* **BeReal:** open patches screens on mount installs ([55a29ab](https://github.com/hxreborn/morphe-patches/commit/55a29ab5ce4d8777085ed90db5338a70d016f36b))
+
 ## [1.86.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.86.0-dev.4...v1.86.0-dev.5) (2026-11-23)
 
 ### Bug Fixes
