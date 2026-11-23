@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.87.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**607 patches** across **191 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.87.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**610 patches** across **191 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -1683,7 +1683,10 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="moviebox-tv-all-in-one"></a>[**All-In-One**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/allinone/AllInOnePatch.kt) | Unlocks video playback and removes ads and forced updates. Requires Android 10 or later. |
+| <a id="moviebox-tv-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/update/DisableUpdatePromptsPatch.kt) | Removes update prompts and forced updates. Requires Android 10 or later. |
+| <a id="moviebox-tv-fix-quality-selection"></a>[**Fix quality selection**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/quality/FixQualitySelectionPatch.kt) | Makes the quality choices in the player switch the stream to 480p, 720p or 1080p. Requires Android 10 or later. |
+| <a id="moviebox-tv-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/ads/RemoveAdsPatch.kt) | Removes ads. Requires Android 10 or later. |
+| <a id="moviebox-tv-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/premium/UnlockPremiumPatch.kt) | Unlocks full-length playback and removes region blocks. Requires Android 10 or later. |
 
 ---
 
@@ -2013,14 +2016,14 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="outlook-add-unread-shortcut"></a>[**Add unread shortcut**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/shortcut/AddUnreadShortcutPatch.kt) | Adds an Unread shortcut to the app icon that lists unread mail from every account and folder. Experimental. |
+| <a id="outlook-add-unread-shortcut"></a>[**Add unread shortcut**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/shortcut/AddUnreadShortcutPatch.kt) | Adds an Unread shortcut to the app icon's long-press menu that opens unread mail from all accounts and folders. Launchers with four shortcut slots show it in place of View calendar. |
 | <a id="outlook-fix-sign-in"></a>[**Fix sign-in**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/fix/signin/FixSignInPatch.kt) | Fixes signing in with Microsoft accounts. |
-| <a id="outlook-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/gms/GmsCoreSupportPatch.kt) | Lets you add Google accounts through GmsCore. Requires GmsCore. |
-| <a id="outlook-hide-copilot"></a>[**Hide Copilot**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/copilot/HideCopilotPatch.kt) | Hides Copilot chat, summaries, scheduling and AI writing tools on every account, whatever the Copilot setting in Outlook says. Experimental. |
-| <a id="outlook-keep-messages-unread"></a>[**Keep messages unread**](patches/src/main/kotlin/app/morphe/patches/outlook/mail/unread/KeepMessagesUnreadPatch.kt) | Leaves messages unread when you open them, or flag or move them from the reading pane. |
-| <a id="outlook-open-email-templates"></a>[**Open email templates**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/templates/OpenEmailTemplatesPatch.kt) | Opens Outlook template (.oft) attachments as new drafts without a Microsoft 365 subscription. |
-| <a id="outlook-remove-inbox-ads"></a>[**Remove inbox ads**](patches/src/main/kotlin/app/morphe/patches/outlook/ads/RemoveInboxAdsPatch.kt) | Removes sponsored messages from the Focused and Other inbox. Experimental. |
-| <a id="outlook-select-multiple-search-results"></a>[**Select multiple search results**](patches/src/main/kotlin/app/morphe/patches/outlook/search/bulkactions/SearchBulkActionsPatch.kt) | Lets you long-press search results to select several and mark, move or delete them together. Works in the Mail tab of search. Experimental. |
+| <a id="outlook-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/gms/GmsCoreSupportPatch.kt) | Signs in to Google accounts through GmsCore instead of Google Play Services. Requires GmsCore. |
+| <a id="outlook-hide-copilot"></a>[**Hide Copilot**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/copilot/HideCopilotPatch.kt) | Hides Copilot chat, summaries, scheduling and writing help on all accounts, regardless of the Copilot setting in Outlook. |
+| <a id="outlook-keep-messages-unread"></a>[**Keep messages unread**](patches/src/main/kotlin/app/morphe/patches/outlook/mail/unread/KeepMessagesUnreadPatch.kt) | Leaves messages unread after opening them, or flagging or moving them from the reading pane. |
+| <a id="outlook-open-email-templates"></a>[**Open email templates**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/templates/OpenEmailTemplatesPatch.kt) | Opens .oft template attachments as new drafts without a Microsoft 365 subscription. |
+| <a id="outlook-remove-inbox-ads"></a>[**Remove inbox ads**](patches/src/main/kotlin/app/morphe/patches/outlook/ads/RemoveInboxAdsPatch.kt) | Removes sponsored messages from Focused and Other. |
+| <a id="outlook-select-multiple-search-results"></a>[**Select multiple search results**](patches/src/main/kotlin/app/morphe/patches/outlook/search/bulkactions/SelectMultipleSearchResultsPatch.kt) | Adds long-press selection to search results for marking, moving or deleting several messages at once. Works in the Mail tab of search. |
 
 ---
 

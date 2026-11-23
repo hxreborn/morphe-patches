@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.87.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.87.0-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**607 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.87.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.87.0-dev.2)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**610 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -163,7 +163,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 95 | <img src="https://publicmetadata.co.uk/com.klevico.monet" width="24" height="24" align="top" alt=""> [**Monet Launcher**](PATCHES.md#monet-launcher-comklevicomonet) | 1 | `1.1.1` | [`com.klevico.monet`](https://play.google.com/store/apps/details?id=com.klevico.monet) |
 | 96 | <img src="https://publicmetadata.co.uk/com.flyersoft.moonreader" width="24" height="24" align="top" alt=""> [**Moon+ Reader**](PATCHES.md#moon-reader-comflyersoftmoonreader) | 3 | `10.7`, `10.8` | [`com.flyersoft.moonreader`](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader) |
 | 97 | <img src="https://publicmetadata.co.uk/com.community.oneroom" width="24" height="24" align="top" alt=""> [**MovieBox**](PATCHES.md#moviebox-comcommunityoneroom) | 6 | `4.0.03.1020.03` | [`com.community.oneroom`](https://play.google.com/store/apps/details?id=com.community.oneroom) |
-| 98 | <img src="https://publicmetadata.co.uk/com.community.mbox.tv" width="24" height="24" align="top" alt=""> [**MovieBox TV**](PATCHES.md#moviebox-tv-comcommunitymboxtv) | 1 | `1.2.0.0923.web_…` | [`com.community.mbox.tv`](https://play.google.com/store/apps/details?id=com.community.mbox.tv) |
+| 98 | <img src="https://publicmetadata.co.uk/com.community.mbox.tv" width="24" height="24" align="top" alt=""> [**MovieBox TV**](PATCHES.md#moviebox-tv-comcommunitymboxtv) | 4 | `1.2.0.0923.web_…` | [`com.community.mbox.tv`](https://play.google.com/store/apps/details?id=com.community.mbox.tv) |
 | 99 | <img src="https://publicmetadata.co.uk/com.musclewiki.macro" width="24" height="24" align="top" alt=""> [**MuscleWiki**](PATCHES.md#musclewiki-commusclewikimacro) | 2 | `3.2.7` | [`com.musclewiki.macro`](https://play.google.com/store/apps/details?id=com.musclewiki.macro) |
 | 100 | <img src="https://publicmetadata.co.uk/in.krosbits.musicolet" width="24" height="24" align="top" alt=""> [**Musicolet**](PATCHES.md#musicolet-inkrosbitsmusicolet) | 1 | `6.14.1 build540` | [`in.krosbits.musicolet`](https://play.google.com/store/apps/details?id=in.krosbits.musicolet) |
 | 101 | <img src="https://publicmetadata.co.uk/com.musixmatch.android.lyrify" width="24" height="24" align="top" alt=""> [**Musixmatch**](PATCHES.md#musixmatch-commusixmatchandroidlyrify) | 1 | `8.5.0` | [`com.musixmatch.android.…`](https://play.google.com/store/apps/details?id=com.musixmatch.android.lyrify "com.musixmatch.android.lyrify") |

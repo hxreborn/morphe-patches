@@ -1,3 +1,9 @@
+## [1.87.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.87.0-dev.1...v1.87.0-dev.2) (2026-11-23)
+
+### Bug Fixes
+
+* **Outlook - Add unread shortcut:** open unread mail on every tap ([1d27ef2](https://github.com/hxreborn/morphe-patches/commit/1d27ef2dfa559c337338abe04c9cb9c53344258c))
+
 ## [1.87.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.86.0...v1.87.0-dev.1) (2026-11-23)
 
 ### Bug Fixes
