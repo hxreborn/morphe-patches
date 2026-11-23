@@ -1449,6 +1449,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.3", versionCode = 20, minSdk = 26)),
     )
 
+    val PODCAST_REPUBLIC = Compatibility(
+        name = "Podcast Republic",
+        packageName = "com.itunestoppodcastplayer.app",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x5183DE,
+        signatures = setOf(
+            "d60c533725fa7d24d82e34977e2b54a62255eee11975b7594c78a878bcca4f53",
+        ),
+        targets = listOf(AppTarget(version = "26.11.4R", versionCode = 25146920, minSdk = 31)),
+    )
+
     val POE = Compatibility(
         name = "Poe",
         packageName = "com.poe.android",
