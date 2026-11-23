@@ -724,6 +724,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "7.18.2", versionCode = 9634, minSdk = 25)),
     )
 
+    val FV_FILE_EXPLORER = Compatibility(
+        name = "FV File Explorer",
+        packageName = "com.folderv.file",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xFFFFFF,
+        signatures = setOf(
+            "6b94f6ef0ad9b6854f38fd0b56a0b86e5b18d781bc10db96b83f5b0212b453de",
+        ),
+        targets = listOf(AppTarget(version = "1.28.6", versionCode = 1804, minSdk = 26)),
+    )
+
     val GAMMA_SCAN = Compatibility(
         name = "QR & Barcode Scanner",
         packageName = "com.gamma.scan",
