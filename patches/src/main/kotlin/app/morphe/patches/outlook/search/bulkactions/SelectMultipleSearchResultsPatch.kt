@@ -24,8 +24,8 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 @Suppress("unused")
 val selectMultipleSearchResultsPatch: Patch = patch(
     name = "Select multiple search results",
-    description = "Lets you long-press search results to select several and mark, move or delete them together. " +
-        "Works in the Mail tab of search.",
+    description = "Adds long-press selection to search results for marking, moving or deleting several " +
+        "messages at once. Works in the Mail tab of search.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)

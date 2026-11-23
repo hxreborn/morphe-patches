@@ -18,7 +18,7 @@ import app.morphe.patches.shared.misc.requireStandardInstall
 @Suppress("unused")
 val gmsCoreSupportPatch: Patch = patch(
     name = "GmsCore support",
-    description = "Lets you add Google accounts through GmsCore. Requires GmsCore.",
+    description = "Signs in to Google accounts through GmsCore instead of Google Play Services. Requires GmsCore.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)

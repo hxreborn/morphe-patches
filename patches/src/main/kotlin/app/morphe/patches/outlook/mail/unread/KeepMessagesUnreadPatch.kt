@@ -26,7 +26,7 @@ private const val READING_PANE_CLOSE_SOURCE = "READING_PANE_CLOSE"
 @Suppress("unused")
 val keepMessagesUnreadPatch: Patch = patch(
     name = "Keep messages unread",
-    description = "Leaves messages unread when you open them, or flag or move them from the reading pane.",
+    description = "Leaves messages unread after opening them, or flagging or moving them from the reading pane.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)

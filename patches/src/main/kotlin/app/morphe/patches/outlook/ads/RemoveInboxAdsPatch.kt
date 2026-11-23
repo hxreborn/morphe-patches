@@ -22,7 +22,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 @Suppress("unused")
 val removeInboxAdsPatch: Patch = patch(
     name = "Remove inbox ads",
-    description = "Removes sponsored messages from the Focused and Other inbox.",
+    description = "Removes sponsored messages from Focused and Other.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)

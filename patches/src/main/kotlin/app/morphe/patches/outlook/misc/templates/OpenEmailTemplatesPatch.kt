@@ -23,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 @Suppress("unused")
 val openEmailTemplatesPatch: Patch = patch(
     name = "Open email templates",
-    description = "Opens Outlook template (.oft) attachments as new drafts without a Microsoft 365 subscription.",
+    description = "Opens .oft template attachments as new drafts without a Microsoft 365 subscription.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)
