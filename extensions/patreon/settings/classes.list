@@ -3,7 +3,6 @@ app/hxreborn/extension/patreon/HomeFeedFilter
 app/hxreborn/extension/patreon/HomeTab
 app/hxreborn/extension/patreon/NavigationButtons
 app/hxreborn/extension/patreon/PatchSettings
-app/hxreborn/extension/patreon/PatchesComponentFactory
 app/hxreborn/extension/patreon/PatchesMenu
 app/hxreborn/extension/patreon/PatchesMenu$RowClickHandler
 app/hxreborn/extension/patreon/PatchesSettingsActivity

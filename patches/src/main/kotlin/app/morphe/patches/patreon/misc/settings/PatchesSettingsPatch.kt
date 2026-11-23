@@ -7,7 +7,6 @@ package app.morphe.patches.patreon.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
@@ -16,9 +15,11 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.patreon.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.fillPatchDetails
+import app.morphe.patches.shared.misc.hostedcomponents.CORE_COMPONENT_FACTORY
+import app.morphe.patches.shared.misc.hostedcomponents.ComponentHost
+import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
 import app.morphe.patches.shared.misc.returnTrueFrom
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -40,7 +41,6 @@ import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 internal const val PATREON_EXTENSION_PACKAGE = "Lapp/hxreborn/extension/patreon/"
 private const val PATCHES_MENU_CLASS = "${PATREON_EXTENSION_PACKAGE}PatchesMenu;"
 private const val SETTINGS_STYLE_CLASS = "${PATREON_EXTENSION_PACKAGE}SettingsStyle;"
-private const val PATCHES_COMPONENT_FACTORY_CLASS = "${PATREON_EXTENSION_PACKAGE}PatchesComponentFactory;"
 private const val SETTINGS_ACTIVITY_CLASS = "app.hxreborn.extension.patreon.PatchesSettingsActivity"
 private const val SETTINGS_ROW_TITLE = "hxreborn patches"
 private const val SETTINGS_ROW_METHOD = "patchesSettingsRow"
@@ -50,10 +50,12 @@ private val ICON_RESOURCES = listOf(
     "hx_patreon_ic_info", "hx_patreon_ic_reset", "hx_patreon_ic_promotions",
     "hx_patreon_ic_prompts", "hx_patreon_ic_tracking", "hx_patreon_ic_quips", "hx_patreon_ic_search",
 )
-private const val HOST_ACTIVITY = "com.patreon.android.screens.profile.edit.EditProfileActivity"
-private const val CORE_COMPONENT_FACTORY_CLASS = "Landroidx/core/app/CoreComponentFactory;"
-private const val CORE_COMPONENT_FACTORY_NAME = "androidx.core.app.CoreComponentFactory"
-private const val APP_COMPONENT_FACTORY_CLASS = "Landroid/app/AppComponentFactory;"
+private val settingsHostActivity = ComponentHost(
+    "activity",
+    "com.patreon.android.screens.profile.edit.EditProfileActivity",
+    mapOf("theme" to "@style/BaseTheme", "windowSoftInputMode" to "adjustResize"),
+)
+private val hostedComponents = HostedComponents(CORE_COMPONENT_FACTORY)
 private const val ROW_TITLE_PARAMETER = 0
 private const val ROW_ON_CLICK_PARAMETER = 5
 private const val ROW_COMPOSER_PARAMETER = 6
@@ -134,6 +136,7 @@ internal val patchesSettingsPatch = patch {
     dependsOn(patreonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
+        hostedComponents.patch,
         patch {
             execute {
                 ICON_RESOURCES.forEach { name ->
@@ -144,18 +147,7 @@ internal val patchesSettingsPatch = patch {
             }
             finalize {
                 document("AndroidManifest.xml").use { document ->
-                    val activities = document.getElementsByTagName("activity")
-                    val hostDeclared = (0 until activities.length).any {
-                        (activities.item(it) as Element).getAttribute("android:name") == HOST_ACTIVITY
-                    }
-                    if (!hostDeclared) throw PatchException("Missing host activity $HOST_ACTIVITY")
-
                     val application = document.getElementsByTagName("application").item(0) as Element
-                    val componentFactory = application.getAttribute("android:appComponentFactory")
-                    if (componentFactory != CORE_COMPONENT_FACTORY_NAME) {
-                        throw PatchException("Unexpected appComponentFactory $componentFactory")
-                    }
-
                     val activity = document.createElement("activity")
                     activity.setAttribute("android:name", SETTINGS_ACTIVITY_CLASS)
                     activity.setAttribute("android:exported", "false")
@@ -166,21 +158,7 @@ internal val patchesSettingsPatch = patch {
         },
     )
     execute {
-        mutableClassDefBy(PATCHES_MENU_CLASS).methods.single { it.name == "hostActivity" }.returnEarly(HOST_ACTIVITY)
-
-        mutableClassDefBy(CORE_COMPONENT_FACTORY_CLASS).apply {
-            if (superclass != APP_COMPONENT_FACTORY_CLASS) {
-                throw PatchException("$CORE_COMPONENT_FACTORY_CLASS extends $superclass")
-            }
-            setSuperClass(PATCHES_COMPONENT_FACTORY_CLASS)
-            methods.single { it.name == "<init>" && it.parameterTypes.isEmpty() }.apply {
-                val index = indexOfFirstInstructionOrThrow {
-                    opcode == Opcode.INVOKE_DIRECT &&
-                        getReference<MethodReference>()?.definingClass == APP_COMPONENT_FACTORY_CLASS
-                }
-                replaceInstruction(index, "invoke-direct { p0 }, $PATCHES_COMPONENT_FACTORY_CLASS-><init>()V")
-            }
-        }
+        hostedComponents.host(SETTINGS_ACTIVITY_CLASS, settingsHostActivity)
 
         try {
             replaceSettingsStyleStubs()

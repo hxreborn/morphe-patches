@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import app.hxreborn.extension.shared.HostedComponents;
 import app.hxreborn.extension.shared.ProxyHandler;
 
 @SuppressWarnings("unused")
@@ -36,17 +37,11 @@ public final class PatchesMenu {
 
     public static final String SETTINGS_ROW_TITLE = "hxreborn patches";
 
-    static final String ACTION_SHOW_PATCHES_SETTINGS = "app.hxreborn.extension.patreon.SHOW_PATCHES_SETTINGS";
-
     private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
 
     private static volatile Object settingsRowOnClickProxy;
 
     private PatchesMenu() {
-    }
-
-    public static String hostActivity() {
-        return "";
     }
 
     public static Object settingsRowOnClick(Class<?> onClickType) {
@@ -63,12 +58,8 @@ public final class PatchesMenu {
             Log.w(PatchSettings.LOG_TAG, "No application context to open the patches menu with");
             return;
         }
-        Intent intent = new Intent(context, PatchesSettingsActivity.class);
-        if (context.getPackageManager().resolveActivity(intent, 0) == null) {
-            intent.setClassName(context, hostActivity()).setAction(ACTION_SHOW_PATCHES_SETTINGS);
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        HostedComponents.startActivity(context,
+                new Intent(context, PatchesSettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     private static final class RowClickHandler extends ProxyHandler {
