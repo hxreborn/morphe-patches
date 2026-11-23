@@ -24,7 +24,10 @@ import java.util.zip.ZipOutputStream
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+
+private const val MISSPELLED_KEY = "disableAnayltics"
 
 internal class PatchMetadataTest {
     @Test
@@ -95,6 +98,22 @@ internal class PatchMetadataTest {
     }
 
     @Test
+    fun `fail patching when the app never reads the key`() {
+        // given
+        lateinit var selectedPatch: Patch
+        selectedPatch = patch(name = "Selected feature", description = "Selected description.") {
+            execute { markPatchApplied(MISSPELLED_KEY, selectedPatch) }
+        }
+
+        // when
+        val failure = patchFailure(selectedPatch)
+
+        // then
+        assertNotNull(failure)
+        assertEquals(true, generateSequence(failure) { it.cause }.any { it.message?.contains(MISSPELLED_KEY) == true })
+    }
+
+    @Test
     fun `fill legacy applied patch without description`() {
         lateinit var selectedPatch: Patch
         selectedPatch = patch(name = "Selected feature", description = "Unused description.") {
@@ -119,7 +138,22 @@ internal class PatchMetadataTest {
 
     private fun metadataInstructions(patch: Patch) = appliedPatchesMethods(patch).getValue("metadata")
 
-    private fun appliedPatchesMethods(patch: Patch): Map<String, List<Instruction>> {
+    private fun appliedPatchesMethods(patch: Patch): Map<String, List<Instruction>> =
+        withFixturePatcher(patch) { patcher ->
+            runBlocking { patcher().collect { assertNull(it.exception) } }
+            patcher.get().dexFiles.flatMap { dex ->
+                dex.stream.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes }
+            }.single { it.type == "Lapp/hxreborn/extension/aliexpress/AppliedPatches;" }.methods
+                .associate { it.name to it.implementation!!.instructions.toList() }
+        }
+
+    private fun patchFailure(patch: Patch): Throwable? = withFixturePatcher(patch) { patcher ->
+        var failure: Throwable? = null
+        runBlocking { patcher().collect { result -> result.exception?.let { failure = it } } }
+        failure
+    }
+
+    private fun <T> withFixturePatcher(patch: Patch, block: (Patcher) -> T): T {
         val directory = Files.createTempDirectory("patch-metadata").toFile()
         try {
             val apk = directory.resolve("fixture.apk")
@@ -135,11 +169,7 @@ internal class PatchMetadataTest {
             }
             Patcher(PatcherConfig(apk, directory.resolve("work"))).use { patcher ->
                 patcher += setOf(patch)
-                runBlocking { patcher().collect { assertNull(it.exception) } }
-                return patcher.get().dexFiles.flatMap { dex ->
-                    dex.stream.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes }
-                }.single { it.type == "Lapp/hxreborn/extension/aliexpress/AppliedPatches;" }.methods
-                    .associate { it.name to it.implementation!!.instructions.toList() }
+                return block(patcher)
             }
         } finally {
             directory.deleteRecursively()

@@ -7,11 +7,14 @@ package app.morphe.patches.shared.misc
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.parameterRegisterCount
 import app.morphe.patches.shared.misc.smali.replaceMethod
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.util.StringUtils.escapeString
 
 internal fun returnTrueFrom(extensionClass: String, methodName: String) =
@@ -61,6 +64,12 @@ internal fun addAppliedPatchMetadata(
     val appliedPatches = mutableClassDefBy(extensionClass)
     val lookupMethod = "metadata"
     val lookup = appliedPatches.methods.single { it.name == lookupMethod }
+    val keyIsRead = appliedPatches.methods.any { reader ->
+        reader !== lookup && reader.implementation?.instructions?.any { instruction ->
+            ((instruction as? ReferenceInstruction)?.reference as? StringReference)?.string == key
+        } == true
+    }
+    if (!keyIsRead) throw PatchException("$extensionClass never reads applied patch key $key")
     val parameterRegisters = lookup.parameterRegisterCount()
     val method = if (lookup.implementation!!.registerCount == parameterRegisters) {
         appliedPatches.replaceMethod(lookupMethod, parameterRegisters + 1, "const/4 v0, 0x0\nreturn-object v0")
