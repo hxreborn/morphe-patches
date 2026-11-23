@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import app.hxreborn.extension.shared.ActivityCallbacksAdapter;
+import app.hxreborn.extension.shared.HostedComponents;
 
 final class HostActivity {
 
@@ -62,7 +63,7 @@ final class HostActivity {
             return;
         }
         final Intent intent = (extras != null) ? new Intent(extras) : new Intent();
-        activity.startActivity(intent.setClassName(activity, activityClass));
+        HostedComponents.startActivity(activity, intent.setClassName(activity, activityClass));
     }
 
     private static final class HostRefresh extends ActivityCallbacksAdapter {
