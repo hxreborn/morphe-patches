@@ -5,12 +5,12 @@
 package app.morphe.patches.graphmessenger.misc.fix.signature
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patches.netanalyzer.shared.Arm64
-import app.morphe.patches.readera.shared.MaskedPattern
+import app.morphe.patches.shared.misc.arm64.ANY_WORD
+import app.morphe.patches.shared.misc.arm64.Arm64
+import app.morphe.patches.shared.misc.arm64.MaskedPattern
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-private const val ANY_WORD = "?? ?? ?? ??"
 private const val V1_CERTIFICATE_LOOKUP_OFFSET = 0x34
 
 private const val MOV_X0_X21 = 0xaa1503e0.toInt()

@@ -5,8 +5,8 @@
 package app.morphe.patches.clipstudiopaint.misc.launch
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patches.netanalyzer.shared.Arm64
-import app.morphe.patches.netanalyzer.shared.Arm64.INSTRUCTION_BYTES
+import app.morphe.patches.shared.misc.arm64.Arm64
+import app.morphe.patches.shared.misc.arm64.Arm64.INSTRUCTION_BYTES
 import app.morphe.patches.shared.misc.arm64.arm64SecondLoadRegister
 import app.morphe.patches.shared.misc.arm64.writesArm64GeneralRegister
 import java.nio.ByteBuffer

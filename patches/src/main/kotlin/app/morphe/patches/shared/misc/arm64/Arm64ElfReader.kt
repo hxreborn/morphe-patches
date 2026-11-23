@@ -2,7 +2,7 @@
  * Copyright (C) 2026 hxreborn
  * SPDX-License-Identifier: GPL-3.0-only
  */
-package app.morphe.patches.netanalyzer.shared
+package app.morphe.patches.shared.misc.arm64
 
 import app.morphe.patcher.patch.PatchException
 import java.nio.ByteBuffer
@@ -136,6 +136,7 @@ internal object Arm64 {
 
     private const val MOVE_WIDE_MASK = 0xffe00000.toInt()
     private const val MOVE_WIDE_ZERO_W = 0x52800000
+    const val NOP = 0xd503201f.toInt()
     private const val MOVE_WIDE_IMMEDIATE_SHIFT = 5
     private const val MOVE_WIDE_IMMEDIATE_MASK = 0xffff
 

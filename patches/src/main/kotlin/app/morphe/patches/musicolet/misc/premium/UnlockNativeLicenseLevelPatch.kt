@@ -7,8 +7,8 @@ package app.morphe.patches.musicolet.misc.premium
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
-import app.morphe.patches.netanalyzer.shared.Arm64
-import app.morphe.patches.netanalyzer.shared.Arm64ElfReader
+import app.morphe.patches.shared.misc.arm64.Arm64
+import app.morphe.patches.shared.misc.arm64.Arm64ElfReader
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

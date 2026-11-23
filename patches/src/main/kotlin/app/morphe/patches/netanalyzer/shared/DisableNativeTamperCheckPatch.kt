@@ -7,6 +7,7 @@ package app.morphe.patches.netanalyzer.shared
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
+import app.morphe.patches.shared.misc.arm64.Arm64
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

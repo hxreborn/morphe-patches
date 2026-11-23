@@ -5,6 +5,7 @@
 package app.morphe.patches.flights25.misc.premium
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.shared.misc.arm64.Arm64.NOP
 import app.morphe.patches.shared.readInt
 import app.morphe.patches.shared.writeInt
 
@@ -29,7 +30,6 @@ private const val PREMIUM_BRANCH_BEFORE_IMPORT_CALL = 3 * INSTRUCTION_BYTES
 private const val BOOLEAN_BRANCH_MASK = 0xfff8001f.toInt()
 private const val BRANCH_ON_PREMIUM = 0x36200000
 private const val MOVE_FREE_IMPORT_ALLOWANCE = 0xd2800061.toInt()
-private const val NOP = 0xd503201f.toInt()
 private const val COUNTER_KEY = "singleFlightFreeImportCount"
 private const val PREMIUM_KEY = "isPremiumEnabled"
 private val IMPORTER_STRINGS = setOf("calendar_single_import_completed", "is_free", "remaining")

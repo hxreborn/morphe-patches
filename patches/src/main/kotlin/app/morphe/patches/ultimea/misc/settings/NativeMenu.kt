@@ -5,6 +5,7 @@
 package app.morphe.patches.ultimea.misc.settings
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.shared.misc.arm64.Arm64.NOP
 import app.morphe.patches.shared.readInt
 import app.morphe.patches.shared.writeInt
 import app.morphe.patches.shared.readShort
@@ -20,7 +21,6 @@ private const val ARGUMENT_DESCRIPTOR_REGISTER = 4
 private const val INSTRUCTION_BYTES = 4
 private const val BRANCH_IMMEDIATE_MASK = 0x03ffffff
 private const val BRANCH_WITH_LINK = 0x94000000.toInt()
-private const val NOP = 0xd503201f.toInt()
 private const val ELF_PROGRAM_HEADERS = 32
 private const val ELF_PROGRAM_HEADER_SIZE = 54
 private const val ELF_PROGRAM_HEADER_COUNT = 56

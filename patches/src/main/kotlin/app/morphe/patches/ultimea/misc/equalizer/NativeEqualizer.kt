@@ -5,13 +5,13 @@
 package app.morphe.patches.ultimea.misc.equalizer
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.shared.misc.arm64.Arm64.NOP
 import app.morphe.patches.shared.readInt
 import app.morphe.patches.shared.writeInt
 import app.morphe.patches.ultimea.misc.settings.NativeFunction
 import app.morphe.patches.ultimea.misc.settings.NativeMethods
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
 
-private const val NOP = 0xd503201f.toInt()
 private const val INSTRUCTION_BYTES = 4
 private const val REGISTER_MASK = 31
 private const val BASE_REGISTER_SHIFT = 5
