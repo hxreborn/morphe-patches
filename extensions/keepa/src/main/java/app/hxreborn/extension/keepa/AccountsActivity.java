@@ -170,6 +170,10 @@ public final class AccountsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int theme = appTheme();
+        if (theme != 0) {
+            setTheme(theme);
+        }
         super.onCreate(savedInstanceState);
         this.dark = NightMode.isActive(this);
         final int backgroundColor = (this.dark) ? DARK_BACKGROUND : LIGHT_BACKGROUND;
@@ -632,6 +636,10 @@ public final class AccountsActivity extends Activity {
 
     private int dp(int value) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
+    }
+
+    static int appTheme() {
+        return 0;
     }
 
 }
