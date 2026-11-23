@@ -71,9 +71,19 @@ public final class HostedScreensTest {
 
     @Test
     public void leavesOtherIntentsToTheApp() {
-        assertNull(HostedScreens.instantiate(null));
-        assertNull(HostedScreens.instantiate(new Intent()));
-        assertNull(HostedScreens.instantiate(new Intent(Intent.ACTION_VIEW)));
+        assertNull(HostedScreens.instantiate(HostedScreens.OPAQUE_HOST, null));
+        assertNull(HostedScreens.instantiate(HostedScreens.OPAQUE_HOST, new Intent()));
+        assertNull(HostedScreens.instantiate(HostedScreens.OPAQUE_HOST, new Intent(Intent.ACTION_VIEW)));
+    }
+
+    @Test
+    public void ignoresScreenActionsSentToOtherActivities() {
+        final Intent settings = new Intent(HostedScreens.ACTION_SETTINGS);
+        final Intent picker = new Intent(HostedScreens.ACTION_GALLERY_PICKER);
+
+        assertNull(HostedScreens.instantiate("bereal.app.MainActivity", settings));
+        assertNull(HostedScreens.instantiate(HostedScreens.TRANSLUCENT_HOST, settings));
+        assertNull(HostedScreens.instantiate(HostedScreens.OPAQUE_HOST, picker));
     }
 
     private static void assertHosted(Class<? extends Activity> screen, String host, Class<?> created) {
@@ -81,7 +91,7 @@ public final class HostedScreensTest {
         final Intent intent = HostedScreens.intent(context, screen);
 
         assertEquals(new ComponentName(context, host), intent.getComponent());
-        assertTrue(created.isInstance(HostedScreens.instantiate(intent)));
+        assertTrue(created.isInstance(HostedScreens.instantiate(intent.getComponent().getClassName(), intent)));
     }
 
 }

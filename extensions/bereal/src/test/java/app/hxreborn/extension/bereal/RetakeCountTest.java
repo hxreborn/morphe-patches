@@ -107,7 +107,7 @@ public final class RetakeCountTest {
 
         final Intent started = Shadows.shadowOf(RuntimeEnvironment.getApplication()).getNextStartedActivity();
         assertNotNull(started);
-        assertTrue(HostedScreens.instantiate(started) instanceof RetakeCountActivity);
+        assertTrue(HostedScreens.instantiate(started.getComponent().getClassName(), started) instanceof RetakeCountActivity);
         assertEquals(5, RetakeCount.realCount());
     }
 

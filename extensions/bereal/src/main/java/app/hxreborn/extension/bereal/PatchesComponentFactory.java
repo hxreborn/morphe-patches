@@ -34,7 +34,7 @@ public class PatchesComponentFactory extends AppComponentFactory {
     @Override
     public Activity instantiateActivity(ClassLoader classLoader, String className, Intent intent)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        final Activity screen = HostedScreens.instantiate(intent);
+        final Activity screen = HostedScreens.instantiate(className, intent);
         if (screen != null) {
             return screen;
         }

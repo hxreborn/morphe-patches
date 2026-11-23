@@ -53,15 +53,15 @@ public final class HostedScreens {
                 && context.getPackageManager().resolveActivity(intent, 0) == null) {
             final String action = action(screen);
             if (action != null) {
-                intent.setClassName(context, (screen == PatchesSettingsActivity.class) ? OPAQUE_HOST : TRANSLUCENT_HOST)
-                        .setAction(action);
+                intent.setClassName(context, host(action)).setAction(action);
             }
         }
         return intent;
     }
 
-    static Activity instantiate(Intent intent) {
-        if (intent == null || intent.getAction() == null) {
+    /** Returns the patch screen only for an intent to its own host, so exported activities can't be swapped. */
+    static Activity instantiate(String className, Intent intent) {
+        if (intent == null || intent.getAction() == null || !host(intent.getAction()).equals(className)) {
             return null;
         }
         switch (intent.getAction()) {
@@ -73,6 +73,18 @@ public final class HostedScreens {
                 return new RetakeCountActivity();
             default:
                 return null;
+        }
+    }
+
+    private static String host(String action) {
+        switch (action) {
+            case ACTION_SETTINGS:
+                return OPAQUE_HOST;
+            case ACTION_GALLERY_PICKER:
+            case ACTION_RETAKE_COUNT:
+                return TRANSLUCENT_HOST;
+            default:
+                return "";
         }
     }
 
