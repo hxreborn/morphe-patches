@@ -50,6 +50,8 @@ public class PatchesSettingsActivityBaseTest {
 
     private static final int BOTTOM_INSET = 44;
 
+    private static final int CUTOUT_LEFT_INSET = 55;
+
     @Test
     public void renderSectionsAndApplySwitchThenReset() {
         TestPatchesSettingsActivity activity = Robolectric.buildActivity(TestPatchesSettingsActivity.class)
@@ -89,36 +91,64 @@ public class PatchesSettingsActivityBaseTest {
 
     @Test
     @Config(sdk = 30)
-    public void padScreenBySystemBarsAndConsumeInsetsOnApi30() {
+    public void padInstalledScreenBySystemBarsAndCutoutOnApi30() {
         TestPatchesSettingsActivity activity = Robolectric.buildActivity(TestPatchesSettingsActivity.class)
             .setup()
             .get();
-        View screen = new View(activity);
         WindowInsets insets = new WindowInsets.Builder()
             .setInsets(WindowInsets.Type.systemBars(), Insets.of(LEFT_INSET, TOP_INSET, RIGHT_INSET, BOTTOM_INSET))
+            .setInsets(WindowInsets.Type.displayCutout(), Insets.of(CUTOUT_LEFT_INSET, 0, 0, 0))
             .build();
 
-        WindowInsets remaining = activity.applySystemBarInsets(screen, insets);
-
-        assertPadding(screen);
-        Assertions.assertThat(remaining).isSameAs(WindowInsets.CONSUMED);
+        assertConsumedApi30(installedScreen(activity), insets);
+        confirmReset(activity);
+        assertConsumedApi30(installedScreen(activity), insets);
     }
 
     @Test
-    @Config(sdk = 28)
-    public void padScreenBySystemWindowInsetsAndConsumeThemBeforeApi30() {
+    @Config(sdk = { 23, 28 })
+    public void padInstalledScreenBySystemWindowInsetsBeforeApi30() {
         TestPatchesSettingsActivity activity = Robolectric.buildActivity(TestPatchesSettingsActivity.class)
             .setup()
             .get();
-        View screen = new View(activity);
+
+        assertConsumedBeforeApi30(installedScreen(activity));
+        confirmReset(activity);
+        assertConsumedBeforeApi30(installedScreen(activity));
+    }
+
+    private void assertConsumedApi30(View screen, WindowInsets insets) {
+        WindowInsets remaining = screen.dispatchApplyWindowInsets(insets);
+
+        Assertions.assertThat(screen.getPaddingLeft()).isEqualTo(CUTOUT_LEFT_INSET);
+        Assertions.assertThat(screen.getPaddingTop()).isEqualTo(TOP_INSET);
+        Assertions.assertThat(screen.getPaddingRight()).isEqualTo(RIGHT_INSET);
+        Assertions.assertThat(screen.getPaddingBottom()).isEqualTo(BOTTOM_INSET);
+        Assertions.assertThat(remaining.isConsumed()).isTrue();
+    }
+
+    private void assertConsumedBeforeApi30(View screen) {
         WindowInsets insets = ReflectionHelpers.callConstructor(WindowInsets.class, ReflectionHelpers.ClassParameter
             .from(Rect.class, new Rect(LEFT_INSET, TOP_INSET, RIGHT_INSET, BOTTOM_INSET)));
 
-        WindowInsets remaining = activity.applySystemBarInsets(screen, insets);
+        WindowInsets remaining = screen.dispatchApplyWindowInsets(insets);
 
         assertPadding(screen);
         Assertions.assertThat(remaining.getSystemWindowInsetTop()).isZero();
         Assertions.assertThat(remaining.getSystemWindowInsetBottom()).isZero();
+    }
+
+    private View installedScreen(TestPatchesSettingsActivity activity) {
+        return ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+    }
+
+    private AlertDialog confirmReset(TestPatchesSettingsActivity activity) {
+        View resetTitle = findText(installedScreen(activity), "Reset to defaults");
+        ((View) resetTitle.getParent().getParent()).performClick();
+        AlertDialog reset = (AlertDialog) ShadowAlertDialog.getLatestAlertDialog();
+        reset.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+        Shadows.shadowOf(Looper.getMainLooper()).idle();
+        return reset;
     }
 
     private void assertPadding(View screen) {
