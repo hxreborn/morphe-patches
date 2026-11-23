@@ -216,7 +216,7 @@ final class GalleryAlbumDialog {
             }
             row.addView(tile, params);
         }
-        if (!RecentPhotos.hasAccess(this.activity)) {
+        if (!RecentPhotos.hasAccess(this.activity) && RecentPhotos.isPhotoPermissionRequested(this.activity)) {
             final TextView note = label(13, Typeface.NORMAL, GREY);
             note.setSingleLine(false);
             note.setText("Allow photo access in Settings to see recent photos here.");

@@ -238,7 +238,7 @@ final class GalleryButton {
         refresh();
         if (RecentPhotos.hasAccess(this.activity)) {
             loadRecent();
-        } else if (!permissionRequested) {
+        } else if (!permissionRequested && RecentPhotos.isPhotoPermissionRequested(this.activity)) {
             permissionRequested = true;
             this.activity.requestPermissions(RecentPhotos.permissions(), 0);
         }
