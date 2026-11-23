@@ -71,6 +71,15 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
     }
 
     @Override
+    protected int settingsTheme() {
+        return menuTheme();
+    }
+
+    static int menuTheme() {
+        return 0;
+    }
+
+    @Override
     protected void initializeSettings() {
         PatchSettings.initialize(this);
     }

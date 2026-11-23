@@ -27,6 +27,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class PatchesMenu {
 
@@ -48,8 +50,8 @@ public final class PatchesMenu {
             return;
         }
         title.post(() -> copyNativeColor(activity, title, chevron));
-        Intent intent = new Intent(activity, PatchesSettingsActivity.class);
-        View.OnClickListener open = (view) -> activity.startActivity(intent);
+        View.OnClickListener open = (view) -> HostedComponents.startActivity(activity,
+                new Intent(activity, PatchesSettingsActivity.class));
         title.setOnClickListener(open);
         chevron.setOnClickListener(open);
     }
