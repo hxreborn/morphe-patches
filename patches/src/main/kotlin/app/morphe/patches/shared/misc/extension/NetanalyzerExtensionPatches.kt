@@ -8,7 +8,7 @@ import app.morphe.patcher.patch.patch
 
 
 internal val netanalyzerFeaturesExtensionPatch = patch {
-    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch, sharedPatchesMenuExtensionPatch)
+    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch, sharedPatchesMenuLayoutExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-features.mpe")
 }
 

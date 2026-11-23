@@ -68,6 +68,11 @@ internal val sharedRemoveScreenshotRestrictionExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-remove-screenshot-restriction.mpe")
 }
 
+internal val sharedPatchesMenuLayoutExtensionPatch = patch {
+    extendWith("extensions/hxreborn/shared-patches-menu-layout.mpe")
+}
+
 internal val sharedPatchesMenuExtensionPatch = patch {
+    dependsOn(sharedPatchesMenuLayoutExtensionPatch)
     extendWith("extensions/hxreborn/shared-patches-menu.mpe")
 }
