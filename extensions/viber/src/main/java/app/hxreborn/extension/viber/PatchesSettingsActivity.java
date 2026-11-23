@@ -24,7 +24,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -208,18 +207,7 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
     }
 
     @Override
-    protected void confirmReset() {
-        showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
-            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
-            .setPositiveButton("Reset", (dialog, which) -> {
-                PatchSettings.resetToDefaults();
-                setContentView(createScreen());
-                confirmRestart();
-            })
-            .setNegativeButton("Cancel", null));
-    }
-
-    AlertDialog showDialog(AlertDialog.Builder builder) {
+    protected AlertDialog showDialog(AlertDialog.Builder builder) {
         AlertDialog dialog = builder.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
         Button negative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -227,30 +215,6 @@ public final class PatchesSettingsActivity extends PatchesSettingsActivityBase {
             negative.setAllCaps(false);
         }
         return dialog;
-    }
-
-    int dialogTheme() {
-        return this.style.dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
-                : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
-    }
-
-    @Override
-    protected void confirmRestart() {
-        showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Restart required")
-            .setMessage("Viber must restart to apply the change.")
-            .setPositiveButton("Restart", (dialog, which) -> restartApp())
-            .setNegativeButton("Later", null));
-    }
-
-    private void restartApp() {
-        Intent launch = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        if (launch == null) {
-            return;
-        }
-        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(launch);
-        finishAffinity();
-        Runtime.getRuntime().exit(0);
     }
 
 }

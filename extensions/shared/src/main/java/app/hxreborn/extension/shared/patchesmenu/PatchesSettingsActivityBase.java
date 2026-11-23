@@ -176,29 +176,33 @@ public abstract class PatchesSettingsActivityBase extends Activity {
         }
     }
 
-    protected void confirmReset() {
-        styleDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
+    protected final void confirmReset() {
+        showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
             .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setPositiveButton("Reset", (dialog, which) -> {
                 resetToDefaults();
                 refreshContent();
                 confirmRestart();
             })
-            .setNegativeButton("Cancel", null)
-            .show());
+            .setNegativeButton("Cancel", null));
     }
 
-    private int dialogTheme() {
+    public final int dialogTheme() {
         return this.style.dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
                 : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
     }
 
-    protected void confirmRestart() {
-        styleDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Restart required")
+    protected final void confirmRestart() {
+        showDialog(new AlertDialog.Builder(this, dialogTheme()).setTitle("Restart required")
             .setMessage(restartMessage())
             .setPositiveButton("Restart", (dialog, which) -> restartApp())
-            .setNegativeButton("Later", null)
-            .show());
+            .setNegativeButton("Later", null));
+    }
+
+    protected AlertDialog showDialog(AlertDialog.Builder builder) {
+        AlertDialog dialog = builder.show();
+        styleDialog(dialog);
+        return dialog;
     }
 
     @SuppressWarnings("DataFlowIssue")
