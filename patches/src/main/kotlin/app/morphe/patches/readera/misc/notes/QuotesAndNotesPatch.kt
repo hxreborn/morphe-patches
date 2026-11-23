@@ -18,6 +18,8 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.DRAWER_QUOTES_ITEM
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
+import app.morphe.patches.readera.shared.readEraHostedComponents
+import app.morphe.patches.readera.shared.readEraScreenHost
 import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.readera.shared.showDrawerItem
 import app.morphe.patches.readera.shared.stringNamesByEnglishText
@@ -86,8 +88,9 @@ private val notesStringsPatch = patch {
 }
 
 private val notesActivityManifestPatch = patch {
-    dependsOn(readeraQuotesAndNotesSectionExtensionPatch, sharedDimensionsExtensionPatch)
+    dependsOn(readeraQuotesAndNotesSectionExtensionPatch, sharedDimensionsExtensionPatch, readEraHostedComponents.patch)
     execute {
+        readEraHostedComponents.host(NOTES_ACTIVITY, readEraScreenHost)
         document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
             val activity = document.createElement("activity")
