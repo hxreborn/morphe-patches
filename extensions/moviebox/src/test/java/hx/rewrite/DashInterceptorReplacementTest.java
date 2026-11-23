@@ -132,7 +132,7 @@ public final class DashInterceptorReplacementTest {
             return (replacement != null && accepted.accepts(replacement)) ? replacement : null;
         };
         ApiClient api = new ApiClient(this.loader, new OkHttpClient(), "https://api6.example.com/");
-        return new DashInterceptor(this.loader, new MovieBoxSource(api, lookup), true, Collections.emptySet());
+        return new DashInterceptor(this.loader, new MovieBoxSource(api, lookup), true, Collections.emptySet(), true);
     }
 
     private String intercept(DashInterceptor interceptor, boolean responseKnowsItsRequest)

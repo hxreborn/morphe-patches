@@ -5,10 +5,10 @@
 package app.morphe.patches.moviebox.misc.buzzbox
 
 import app.morphe.patcher.patch.patch
+import app.morphe.patches.moviebox.misc.playback.playbackPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
-import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
-import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.requireArm64StandardInstall
 
 private const val BOTTOM_TAB_TYPE = "Lcom/transsion/home/enum/BottomTabType;"
 private const val COMMUNITY_BOTTOM_TAB_VALUE = "BT_COMMUNITY"
@@ -24,8 +24,8 @@ val hideBuzzBoxPatch = patch(
     description = "Removes the BuzzBox tabs from the bottom navigation bar and the home screen.",
 ) {
     compatibleWith(AppCompatibilities.MOVIEBOX)
-    dependsOn(ijiamiPatch)
-    availability(requireArm64)
+    dependsOn(playbackPatch)
+    availability(requireArm64StandardInstall)
 
     execute {
         editIjiamiPayload {
