@@ -15,6 +15,7 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.encodedValue.MutableStringEncodedValue
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.requireStandardInstall
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import app.morphe.util.asSequence
@@ -71,6 +72,7 @@ val cloneAppPatch: Patch = patch(
     default = false,
 ) {
     compatibleWith(AppCompatibilities.TERABOX)
+    availability(requireStandardInstall)
 
     val packageName by stringOption(
         key = "packageName",
