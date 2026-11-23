@@ -25,6 +25,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class NotificationDisconnect {
 
@@ -35,7 +37,8 @@ public final class NotificationDisconnect {
         if (!PatchSettings.isDisconnectFromNotificationEnabled(context)) {
             return PendingIntent.getActivity(context, requestCode, openAppIntent, flags);
         }
-        Intent disconnectBroadcast = new Intent(context, NotificationDisconnectReceiver.class);
+        Intent disconnectBroadcast = HostedComponents.route(context,
+                new Intent(context, NotificationDisconnectReceiver.class));
         return PendingIntent.getBroadcast(context, requestCode, disconnectBroadcast, flags);
     }
 

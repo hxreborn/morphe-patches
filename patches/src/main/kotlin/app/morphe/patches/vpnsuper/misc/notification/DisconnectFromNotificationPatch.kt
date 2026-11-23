@@ -13,6 +13,9 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.hostedcomponents.CORE_COMPONENT_FACTORY
+import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
+import app.morphe.patches.shared.misc.hostedcomponents.workManagerReceiverHost
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.vpnsuper.misc.fix.tamper.disableTamperResponsePatch
@@ -30,9 +33,12 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/vpnsuper/Notificati
 private const val CONNECTION_SERVICE_CLASS = "Lcom/superunlimited/feature/vpn/connection/presentation/VpnControlService;"
 private const val DISCONNECT_RECEIVER_CLASS_NAME = "app.hxreborn.extension.vpnsuper.NotificationDisconnectReceiver"
 
+private val hostedComponents = HostedComponents(CORE_COMPONENT_FACTORY)
+
 private val notificationDisconnectReceiverPatch = patch {
-    dependsOn(vpnsuperAppliedPatchesExtensionPatch, vpnsuperSettingsExtensionPatch)
+    dependsOn(vpnsuperAppliedPatchesExtensionPatch, vpnsuperSettingsExtensionPatch, hostedComponents.patch)
     execute {
+        hostedComponents.host(DISCONNECT_RECEIVER_CLASS_NAME, workManagerReceiverHost)
         document("AndroidManifest.xml").use { document ->
             (document.getElementsByTagName("application").item(0) as Element).appendChild(
                 document.createElement("receiver").apply {
