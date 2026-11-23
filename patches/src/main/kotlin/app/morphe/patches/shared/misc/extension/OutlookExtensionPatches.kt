@@ -19,3 +19,8 @@ internal val outlookSettingsExtensionPatch = patch {
     )
     extendWith("extensions/hxreborn/outlook-settings.mpe")
 }
+
+internal val outlookUnreadShortcutExtensionPatch = patch {
+    dependsOn(outlookSettingsExtensionPatch)
+    extendWith("extensions/hxreborn/outlook-unread-shortcut.mpe")
+}
