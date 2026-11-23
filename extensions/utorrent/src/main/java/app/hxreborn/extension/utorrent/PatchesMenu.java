@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class PatchesMenu {
 
@@ -76,7 +78,8 @@ public final class PatchesMenu {
         chevron.setImageDrawable(style.hostIcon(SettingsStyle.chevronIconId(), style.secondaryText));
         chevron.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         row.addView(chevron, new LinearLayout.LayoutParams(style.dp(CHEVRON_SIZE_DP), style.dp(CHEVRON_SIZE_DP)));
-        row.setOnClickListener((view) -> activity.startActivity(new Intent(activity, PatchesSettingsActivity.class)));
+        row.setOnClickListener((view) -> HostedComponents.startActivity(activity,
+                new Intent(activity, PatchesSettingsActivity.class)));
         parent.addView(row, parent.indexOfChild(anchor), new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }

@@ -13,7 +13,7 @@ internal val utorrentSettingsExtensionPatch = patch {
 }
 
 internal val utorrentSettingsMenuExtensionPatch = patch {
-    dependsOn(utorrentSettingsExtensionPatch)
+    dependsOn(utorrentSettingsExtensionPatch, sharedHostedComponentsExtensionPatch)
     extendWith("extensions/hxreborn/utorrent-settings-menu.mpe")
 }
 
