@@ -105,6 +105,7 @@ public final class UnreadShortcut {
         for (ShortcutInfo shortcut : manager.getDynamicShortcuts()) {
             Intent intent = shortcut.getIntent();
             if (SHORTCUT_ID.equals(shortcut.getId()) && intent != null && expected.filterEquals(intent)
+                    && expected.getFlags() == intent.getFlags()
                     && intent.getBooleanExtra(OPEN_UNREAD_SEARCH_EXTRA, false)) {
                 return true;
             }
@@ -126,7 +127,7 @@ public final class UnreadShortcut {
         if (launch == null) {
             launch = new Intent(Intent.ACTION_VIEW, UNREAD_SEARCH).setPackage(context.getPackageName());
         }
-        launch.putExtra(OPEN_UNREAD_SEARCH_EXTRA, true);
+        launch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra(OPEN_UNREAD_SEARCH_EXTRA, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             launch.setIdentifier(SHORTCUT_ID);
         }
