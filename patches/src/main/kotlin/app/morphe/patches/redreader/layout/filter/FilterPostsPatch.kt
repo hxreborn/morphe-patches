@@ -12,6 +12,9 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.hostedcomponents.CORE_COMPONENT_FACTORY
+import app.morphe.patches.shared.misc.hostedcomponents.ComponentHost
+import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -23,16 +26,32 @@ import app.morphe.patches.shared.misc.extension.redreaderSettingsExtensionPatch
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/redreader/PostFilter;"
 private const val SETTINGS_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/redreader/PatchSettings;"
 private const val SETTINGS_ACTIVITY = "app.hxreborn.extension.redreader.PatchesSettingsActivity"
+private const val SETTINGS_ACTIVITY_TYPE = "Lapp/hxreborn/extension/redreader/PatchesSettingsActivity;"
+private const val SETTINGS_THEME = "RR.Settings"
+private const val PREFERENCES_ACTIVITY = ".settings.SettingsActivity"
+private val settingsHostActivity = ComponentHost(
+    "activity",
+    ".activities.ChangelogActivity",
+    mapOf("configChanges" to "keyboardHidden|orientation|screenSize"),
+)
+
+private val hostedComponents = HostedComponents(CORE_COMPONENT_FACTORY)
 
 private val filterResourcesPatch = patch {
-    dependsOn(redreaderSettingsExtensionPatch)
+    dependsOn(redreaderSettingsExtensionPatch, hostedComponents.patch)
     execute {
+        hostedComponents.host(SETTINGS_ACTIVITY, settingsHostActivity)
+        hostedComponents.routeLaunchesFrom(PREFERENCES_ACTIVITY)
+        mutableClassDefBy(SETTINGS_ACTIVITY_TYPE).replaceResourceIdStubs(
+            ResourceType.STYLE,
+            mapOf("settingsTheme" to SETTINGS_THEME),
+        )
         val packageName = document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
             val activity = document.createElement("activity")
             activity.setAttribute("android:name", SETTINGS_ACTIVITY)
             activity.setAttribute("android:exported", "false")
-            activity.setAttribute("android:theme", "@style/RR.Settings")
+            activity.setAttribute("android:theme", "@style/$SETTINGS_THEME")
             application.appendChild(activity)
             document.documentElement.getAttribute("package")
         }
