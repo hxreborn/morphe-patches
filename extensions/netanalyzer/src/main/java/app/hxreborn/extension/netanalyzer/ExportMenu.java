@@ -115,7 +115,8 @@ public final class ExportMenu {
             return;
         }
         final DropdownMenu formats = new DropdownMenu(activity).add("Plain Text", MaterialIcons.TEXT_SNIPPET, plainText)
-            .add("CSV File", MaterialIcons.TABLE_CHART, () -> ExportDelivery.shareCsv(activity, table.csv(activity)))
+            .add("CSV File", MaterialIcons.TABLE_CHART,
+                    () -> ExportDelivery.shareCsv(activity, source.subject(activity), table.csv(activity)))
             .add("Configure…", MaterialIcons.SETTINGS, () -> ExportConfiguration.show(activity));
         new DropdownMenu(activity).addSubmenu("Export", MaterialIcons.SHARE, () -> formats.show(anchor)).show(anchor);
     }

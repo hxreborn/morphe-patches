@@ -32,6 +32,8 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
 
+import app.hxreborn.extension.shared.ManifestDeclarations;
+
 @SuppressWarnings("unused")
 public final class ExportFileProvider extends ContentProvider {
 
@@ -53,6 +55,10 @@ public final class ExportFileProvider extends ContentProvider {
             .authority(context.getPackageName() + AUTHORITY_SUFFIX)
             .appendPath(CSV_FILE)
             .build();
+    }
+
+    static boolean isDeclared(Context context) {
+        return ManifestDeclarations.isProviderDeclared(context, context.getPackageName() + AUTHORITY_SUFFIX);
     }
 
     static File file(Context context) {
