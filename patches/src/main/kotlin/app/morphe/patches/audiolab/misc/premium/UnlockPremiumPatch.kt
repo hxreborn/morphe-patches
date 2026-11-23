@@ -5,10 +5,11 @@
 package app.morphe.patches.audiolab.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipKeyImportPatch
@@ -22,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import java.security.MessageDigest
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro tools and removes ads, reward videos and upgrade prompts. " +
         "The AI tools are not included.",
@@ -34,15 +35,15 @@ val unlockPremiumPatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        ProUserCheckFingerprint.matchSingle().method.returnEarly(true)
+        ProUserCheckFingerprint.method.returnEarly(true)
 
         val stockCertificateSha256 = MessageDigest.getInstance("SHA-256")
             .digest(packageMetadata.stockSigningCertificate().encoded)
             .joinToString("") { "%02X".format(it) }
 
-        AppSignatureHashFingerprint.matchSingle().method.returnEarly(stockCertificateSha256)
+        AppSignatureHashFingerprint.method.returnEarly(stockCertificateSha256)
 
-        val priceCallback = FreeProductPriceFingerprint.matchSingle().method
+        val priceCallback = FreeProductPriceFingerprint.method
         val freeProductFlag = priceCallback.implementation!!.instructions
             .filter { it.opcode == Opcode.SPUT_BOOLEAN }
             .map { it.getReference<FieldReference>()!! }

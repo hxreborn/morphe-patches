@@ -7,7 +7,7 @@ package app.morphe.patches.readera.misc.viewmode
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -21,10 +21,10 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import app.morphe.patches.shared.misc.extension.readeraLibraryViewModesExtensionPatch
 
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/LibraryViewMenu;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/library/LibraryViewMenu;"
 
 @Suppress("unused")
-val libraryViewModesPatch = bytecodePatch(
+val libraryViewModesPatch = patch(
     name = "Library view modes",
     description = "Adds Full, Brief, Thumbnails and Grid layouts for book lists to the library menu.",
 ) {

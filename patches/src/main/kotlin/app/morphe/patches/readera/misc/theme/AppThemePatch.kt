@@ -6,9 +6,10 @@ package app.morphe.patches.readera.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.readera.shared.AppCompatAttachBaseContextFingerprint
 import app.morphe.patches.readera.shared.CONTEXT_CLASS
 import app.morphe.patches.readera.shared.ReadEraPalette
@@ -45,9 +46,9 @@ private val amoledMenuDrawableColors = mapOf(
     "hx_readera_switch_thumb_on" to mapOf("#051e25" to "#000000"),
 )
 
-private fun ResourcePatchContext.addColors(path: String, colors: Map<String, String>) {
-    get(path).parentFile.mkdirs()
-    if (!get(path).exists()) get(path).writeText("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources />\n")
+private fun addColors(path: String, colors: Map<String, String>) {
+    resourceFile(path).parentFile.mkdirs()
+    if (!resourceFile(path).exists()) resourceFile(path).writeText("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources />\n")
     document(path).use { document ->
         colors.forEach { (name, value) ->
             document.documentElement.appendChild(document.createElement("color").also {
@@ -64,7 +65,7 @@ private fun amoledPath(path: String): String {
     return "${directory.removeSuffix(version)}-$AMOLED_QUALIFIER$version/${path.substringAfterLast('/')}"
 }
 
-private fun ResourcePatchContext.replaceColorReferences(
+private fun replaceColorReferences(
     paths: List<String>,
     select: (Element) -> List<String>,
     replace: (String) -> String?,
@@ -78,7 +79,7 @@ private fun ResourcePatchContext.replaceColorReferences(
     }
 }.filterValues { it > 0 }
 
-private fun ResourcePatchContext.splitSharedColorRoles(palette: ReadEraPalette): Map<String, String> {
+private fun splitSharedColorRoles(palette: ReadEraPalette): Map<String, String> {
     val layouts = decode("res/layout*/*.xml")
     val drawables = decode("res/drawable*/*.xml")
     val cardFills = replaceColorReferences(layouts, { element ->
@@ -116,7 +117,7 @@ private fun ResourcePatchContext.splitSharedColorRoles(palette: ReadEraPalette):
     )
 }
 
-private val appThemeResourcesPatch = resourcePatch {
+private val appThemeResourcesPatch = patch {
     lateinit var palette: ReadEraPalette
 
     execute {
@@ -134,7 +135,7 @@ private val appThemeResourcesPatch = resourcePatch {
         }
         themeIcons.forEach { name ->
             AppThemeResources::class.java.getResourceAsStream("/readera/theme/hx_readera_$name.xml")!!.use { input ->
-                get("res/drawable/hx_readera_$name.xml").outputStream().use(input::copyTo)
+                resourceFile("res/drawable/hx_readera_$name.xml").outputStream().use(input::copyTo)
             }
         }
     }
@@ -155,7 +156,7 @@ private val appThemeResourcesPatch = resourcePatch {
         val drawer = decode("res/layout*/*.xml").filter { path ->
             document(path).use { document -> document.getElementsByTagName(NAVIGATION_VIEW).length > 0 }
         }.single()
-        get(amoledPath(drawer)).apply { parentFile.mkdirs() }.writeText(get(drawer).readText())
+        resourceFile(amoledPath(drawer)).apply { parentFile.mkdirs() }.writeText(resourceFile(drawer).readText())
         document(amoledPath(drawer)).use { document ->
             (document.getElementsByTagName(NAVIGATION_VIEW).asSequence().single() as Element)
                 .setAttribute("android:theme", "@style/$DRAWER_THEME")
@@ -163,17 +164,17 @@ private val appThemeResourcesPatch = resourcePatch {
 
         amoledMenuDrawableColors.forEach { (name, colors) ->
             val path = "res/drawable/$name.xml"
-            val text = colors.entries.fold(get(path).readText()) { text, (stock, amoled) ->
+            val text = colors.entries.fold(resourceFile(path).readText()) { text, (stock, amoled) ->
                 if (stock !in text) throw PatchException("$path has no color $stock")
                 text.replace(stock, amoled)
             }
-            get(amoledPath(path)).apply { parentFile.mkdirs() }.writeText(text)
+            resourceFile(amoledPath(path)).apply { parentFile.mkdirs() }.writeText(text)
         }
     }
 }
 
 @Suppress("unused")
-val appThemePatch = bytecodePatch(
+val appThemePatch = patch(
     name = "App theme",
     description = "Adds a black AMOLED theme for the library, menus and Settings, picked in the patches menu. " +
         "Book pages keep their own colors.",

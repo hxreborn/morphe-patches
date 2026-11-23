@@ -17,7 +17,7 @@ package app.morphe.patches.moviebox.misc.allinone
 import app.morphe.patcher.patch.ApkArchitecture
 import app.morphe.patcher.patch.PatchAvailability
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
 import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
@@ -139,7 +139,7 @@ private val MINTEGRAL_LOADERS = listOf(
 )
 
 @Suppress("unused")
-val allInOnePatch = resourcePatch(
+val allInOnePatch = patch(
     name = "All-In-One",
     description = "Enables video playback and downloads, removes ads and upsell prompts, " +
         "and unlocks the Laboratory menu. " +

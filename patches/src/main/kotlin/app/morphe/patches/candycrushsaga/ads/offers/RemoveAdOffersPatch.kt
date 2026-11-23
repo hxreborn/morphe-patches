@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.candycrushsaga.ads.offers
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.shared.serverresponse.SERVER_RESPONSES
 import app.morphe.patches.candycrushsaga.shared.serverresponse.editServerResponsesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceStub
 
 @Suppress("unused")
-val removeAdOffersPatch = bytecodePatch(
+val removeAdOffersPatch = patch(
     name = "Remove ad offers",
     description = "Removes offers to watch an ad for extra moves, lives or boosters.",
 ) {

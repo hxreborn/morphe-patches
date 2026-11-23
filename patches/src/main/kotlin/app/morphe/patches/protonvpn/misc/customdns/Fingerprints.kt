@@ -11,7 +11,6 @@
 package app.morphe.patches.protonvpn.misc.customdns
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import app.morphe.patches.protonvpn.misc.restrictions.restrictionGuardFingerprint
@@ -21,4 +20,4 @@ internal object CustomDnsViewStateFingerprint : Fingerprint(
     filters = listOf(resourceField(ResourceType.STRING, "settings_custom_dns_title")),
 )
 
-internal fun BytecodePatchContext.customDnsRestrictionFingerprint() = restrictionGuardFingerprint("getCustomDns")
+internal fun customDnsRestrictionFingerprint() = restrictionGuardFingerprint("getCustomDns")

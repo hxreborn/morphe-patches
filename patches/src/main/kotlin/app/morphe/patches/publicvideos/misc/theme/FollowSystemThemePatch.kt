@@ -6,8 +6,7 @@ package app.morphe.patches.publicvideos.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val THEME_MODE_READ_COUNT = 2
@@ -19,7 +18,7 @@ private const val UI_MODE_NIGHT_MASK = 0x30
 private const val UI_MODE_NIGHT_YES = 0x20
 
 @Suppress("unused")
-val followSystemThemePatch = bytecodePatch(
+val followSystemThemePatch = patch(
     name = "Follow system theme",
     description = "Switches the app between light and dark with the system theme. " +
         "The app's Night Mode setting has no effect.",
@@ -48,7 +47,7 @@ val followSystemThemePatch = bytecodePatch(
             )
         }
 
-        SetDefaultNightModeFingerprint.matchSingle().method.addInstruction(
+        SetDefaultNightModeFingerprint.method.addInstruction(
             0,
             "const/4 p0, $MODE_NIGHT_FOLLOW_SYSTEM",
         )

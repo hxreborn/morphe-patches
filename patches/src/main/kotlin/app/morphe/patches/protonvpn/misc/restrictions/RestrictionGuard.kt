@@ -17,10 +17,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -32,7 +30,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val LOCAL_USER_SETTINGS = "Lcom/protonvpn/android/settings/data/LocalUserSettings;"
 
-internal fun BytecodePatchContext.restrictionGuardFingerprint(settingGetter: String): Fingerprint {
+internal fun restrictionGuardFingerprint(settingGetter: String): Fingerprint {
     val vpnUser = vpnUserType
     return Fingerprint(
         returnType = LOCAL_USER_SETTINGS,
@@ -60,8 +58,8 @@ private fun Instruction.argumentRegisters() = when (this) {
 private fun MethodReference.argumentSlotTypes() = (listOf(definingClass) + parameterTypes.map { it.toString() })
     .flatMap { if (it == "J" || it == "D") listOf(it, it) else listOf(it) }
 
-internal fun BytecodePatchContext.unlockUserSetting(viewState: Fingerprint, restriction: Fingerprint) {
-    viewState.matchSingle().run {
+internal fun unlockUserSetting(viewState: Fingerprint, restriction: Fingerprint) {
+    viewState.match().run {
         val title = instructionMatches.first()
         val titleRegister = title.getInstruction<OneRegisterInstruction>().registerA
         val superclass = classDef.superclass
@@ -81,8 +79,8 @@ internal fun BytecodePatchContext.unlockUserSetting(viewState: Fingerprint, rest
     keepUserSetting(restriction)
 }
 
-internal fun BytecodePatchContext.keepUserSetting(restriction: Fingerprint) {
-    restriction.matchSingle().run {
+internal fun keepUserSetting(restriction: Fingerprint) {
+    restriction.match().run {
         method.replaceInstruction(instructionMatches.first().index, "nop")
     }
 }

@@ -7,16 +7,14 @@ package app.morphe.patches.terabox.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.util.ResourceGroup
@@ -34,8 +32,8 @@ private const val TERABOX_PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/terabox/
 private val ICON_RESOURCES = listOf("ads", "promotions", "shortcuts", "video", "premium", "recent", "backup", "sort", "reset", "info", "patches", "expand")
     .map { "hx_terabox_ic_$it" }
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
-    fillAppliedPatch(TERABOX_APPLIED_PATCHES_CLASS, methodName, patch)
+internal fun markPatchApplied(methodName: String, patch: Patch) =
+    addAppliedPatchMetadata(TERABOX_APPLIED_PATCHES_CLASS, methodName, patch)
 
 internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: MutableMethod.() -> Unit) {
     val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
@@ -52,11 +50,11 @@ internal fun MutableMethod.overrideWhenEnabled(settingCall: String, override: Mu
     )
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, teraboxSettingsExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
-        resourcePatch {
+        patch {
             execute {
                 copyResources("terabox", ResourceGroup("drawable", *ICON_RESOURCES.map { "$it.xml" }.toTypedArray()))
             }
@@ -83,11 +81,11 @@ internal val patchesSettingsPatch = bytecodePatch {
                 mapOf("switchButtonDrawable" to "chb_on_off_selector", "backIconDrawable" to "ic_arrow_back_black_24"),
             )
         }
-        ApplicationCreateFingerprint.matchSingle().method.addInstruction(
+        ApplicationCreateFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, Lapp/morphe/extension/shared/Utils;->setContext(Landroid/content/Context;)V",
         )
-        SettingsViewFingerprint.matchSingle().method.apply {
+        SettingsViewFingerprint.method.apply {
             addInstruction(
                 implementation!!.instructions.lastIndex,
                 "invoke-static/range { p0 .. p0 }, $TERABOX_PATCHES_MENU_CLASS->attach(Landroid/app/Activity;)V",

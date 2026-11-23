@@ -12,13 +12,14 @@ package app.morphe.patches.shared.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.InstallerType
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.returnEarly
 import app.morphe.util.findInstructionIndicesReversed
 import app.morphe.util.findMutableMethodOf
@@ -303,7 +304,7 @@ private val CLOUD_MESSAGING_NAMES: Map<String, String> =
             name.startsWith("$GOOGLE_VENDOR_GROUP_ID.iid.")
     }
 
-internal fun BytecodePatchContext.renameGmsReferencesToGmsCore() {
+internal fun renameGmsReferencesToGmsCore() {
     (GooglePlayServicesAvailabilityFingerprint.methodOrNull
         ?: GooglePlayServicesUtilAvailabilityFingerprint.methodOrNull
         ?: GooglePlayServicesPackageSignaturesFingerprint.method)
@@ -312,11 +313,11 @@ internal fun BytecodePatchContext.renameGmsReferencesToGmsCore() {
     replaceStringConstants(::gmsCoreName)
 }
 
-internal fun BytecodePatchContext.renameCloudMessagingToGmsCore() {
+internal fun renameCloudMessagingToGmsCore() {
     replaceStringConstants(CLOUD_MESSAGING_NAMES::get)
 }
 
-private fun BytecodePatchContext.replaceStringConstants(replacement: (String) -> String?) {
+private fun replaceStringConstants(replacement: (String) -> String?) {
     fun Instruction.replacementString() = stringConstant()?.let(replacement)
 
     classDefForEach { classDef ->
@@ -339,9 +340,9 @@ private fun Instruction.stringConstant(): String? {
     return ((this as? ReferenceInstruction)?.reference as? StringReference)?.string
 }
 
-internal val gmsCoreManifestPatch = resourcePatch {
+internal val gmsCoreManifestPatch = patch {
     execute {
-        val manifest = get("AndroidManifest.xml")
+        val manifest = resourceFile("AndroidManifest.xml")
         manifest.writeText(
             manifest.readText()
                 .replace("$GOOGLE_VENDOR_GROUP_ID.android.c2dm", "$GMS_CORE_VENDOR_GROUP_ID.android.c2dm")
@@ -357,7 +358,7 @@ internal fun gmsCoreSupportPatchFor(
     compatibility: Compatibility,
     vararg dependencies: Patch,
     default: Boolean = false,
-) = bytecodePatch(
+) = patch(
     name = "GmsCore support",
     description = "Signs in through GmsCore instead of Google Play Services. " +
         "Requires GmsCore to be installed.",

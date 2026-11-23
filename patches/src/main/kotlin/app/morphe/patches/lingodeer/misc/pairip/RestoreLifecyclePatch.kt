@@ -4,7 +4,9 @@
  */
 package app.morphe.patches.lingodeer.misc.pairip
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -183,7 +185,7 @@ private fun hiddenActivityOnCreate(activity: MutableClass): String {
     """
 }
 
-val restoreLifecyclePatch = bytecodePatch {
+val restoreLifecyclePatch = patch {
     compatibleWith(AppCompatibilities.LINGODEER)
 
     dependsOn(removePairipVirtualizationPatch)

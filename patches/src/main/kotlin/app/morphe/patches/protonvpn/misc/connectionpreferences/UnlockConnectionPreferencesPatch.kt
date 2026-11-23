@@ -10,12 +10,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patches.protonvpn.misc.anchors.VpnUserIsFreeUserFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
@@ -47,7 +46,7 @@ private const val EXCLUDED_LOCATIONS_ARGUMENT_OFFSET = 5
 private const val MAX_INVOKE_REGISTER = 15
 
 @Suppress("unused")
-val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
+val unlockConnectionPreferencesPatch: Patch = patch(
     name = "Unlock connection preferences",
     description = "Unlocks the default connection, recent connections and excluded locations on free plans.",
 ) {
@@ -61,7 +60,7 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
         keepUserSetting(defaultConnectionRestrictionFingerprint())
         clearRecentsRecordingFreeUserCheck()
         clearFreeUserCheckInLambdaOf(RecentsListViewStateFlowFingerprint)
-        clearLastFreeUserCheckBefore(defaultConnectionRecentsFingerprint().matchSingle())
+        clearLastFreeUserCheckBefore(defaultConnectionRecentsFingerprint().match())
         clearFreeUserCheck(quickConnectIntentFingerprint())
         clearFreeUserCheck(addExcludedLocationFingerprint())
         clearFreeUserCheck(removeExcludedLocationFingerprint())
@@ -72,7 +71,7 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
         if (connectionCardLabel.matchOrNull() != null) {
             clearFreeUserCheck(connectionCardLabel)
         } else {
-            clearLastFreeUserCheckBefore(inlinedConnectionCardFingerprint().matchSingle())
+            clearLastFreeUserCheckBefore(inlinedConnectionCardFingerprint().match())
         }
 
         val recentIdLookup = defaultConnectionSettingFingerprint().matchOrNull()
@@ -80,7 +79,7 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
             val (_, recentIdLookupCall) = recentIdLookup.instructionMatches
             recentIdLookup.alwaysTakeLastIfEqz { it.target.location.index == recentIdLookupCall.index }
         } else {
-            inlinedDefaultConnectionSettingFingerprint().matchSingle().run {
+            inlinedDefaultConnectionSettingFingerprint().match().run {
                 val recentCheck = instructionMatches.first().index
                 alwaysTakeLastIfEqz { it.location.index < recentCheck && it.target.location.index <= recentCheck }
             }
@@ -88,8 +87,8 @@ val unlockConnectionPreferencesPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
-    ExcludedLocationsConstructorFingerprint.matchSingle().run {
+private fun excludeLocationsFromRandomServers() {
+    ExcludedLocationsConstructorFingerprint.match().run {
         val (returnVoid) = instructionMatches
         requireThisInP0()
         method.addInstruction(
@@ -98,7 +97,7 @@ private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
         )
     }
 
-    randomServerFingerprint().matchSingle().run {
+    randomServerFingerprint().match().run {
         val (_, countriesResult) = instructionMatches
         val countries = countriesResult.getInstruction<OneRegisterInstruction>().registerA
         method.addInstructions(
@@ -111,7 +110,7 @@ private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
     }
 
     val country = VpnCountryToStringFingerprint.originalClassDef.type
-    val countryConstructor = VpnCountryConstructorFingerprint.matchSingle().originalMethod
+    val countryConstructor = VpnCountryConstructorFingerprint.originalMethod
     val excludedLocations = ExcludedLocationsToStringFingerprint.originalClassDef.type
     mutableClassDefBy(EXCLUDED_LOCATIONS_CLASS).apply {
         replaceStub(
@@ -130,7 +129,7 @@ private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
             """
                 check-cast p0, $SERVER
                 check-cast p1, $excludedLocations
-                invoke-static { p0, p1 }, ${descriptor(serverIsExcludedFingerprint().matchSingle().originalMethod)}
+                invoke-static { p0, p1 }, ${descriptor(serverIsExcludedFingerprint().originalMethod)}
                 move-result v0
                 return v0
             """,
@@ -150,8 +149,8 @@ private fun BytecodePatchContext.excludeLocationsFromRandomServers() {
     }
 }
 
-private fun BytecodePatchContext.excludeLocationsFromFreeUserConnections() {
-    bestServerForConnectIntentCallFingerprint().matchSingle().run {
+private fun excludeLocationsFromFreeUserConnections() {
+    bestServerForConnectIntentCallFingerprint().match().run {
         val (bestServerCall, bestServerResult) = instructionMatches
         val arguments = bestServerCall.instruction as? RegisterRangeInstruction
             ?: throw PatchException("Best server call is not a range call in $method")
@@ -183,8 +182,8 @@ private fun BytecodePatchContext.excludeLocationsFromFreeUserConnections() {
     )
 }
 
-private fun BytecodePatchContext.clearRecentsRecordingFreeUserCheck() {
-    val method = recentsRecordingFingerprint().matchSingle().method
+private fun clearRecentsRecordingFreeUserCheck() {
+    val method = recentsRecordingFingerprint().method
     val instructions = method.instructions.toList()
     val isFreeUser = isFreeUserCall()
     val recentsDao = recentsDaoReference()
@@ -224,7 +223,7 @@ private fun Match.alwaysTakeLastIfEqz(isTarget: (BuilderOffsetInstruction) -> Bo
     method.replaceInstruction(branch.location.index, BuilderInstruction20t(Opcode.GOTO_16, branch.target))
 }
 
-private fun BytecodePatchContext.clearLastFreeUserCheckBefore(anchor: Match) {
+private fun clearLastFreeUserCheckBefore(anchor: Match) {
     val isFreeUser = VpnUserIsFreeUserFingerprint.originalMethod
     val instructions = anchor.method.instructions
     val callIndex = instructions.take(anchor.instructionMatches.last().index).indexOfLast {

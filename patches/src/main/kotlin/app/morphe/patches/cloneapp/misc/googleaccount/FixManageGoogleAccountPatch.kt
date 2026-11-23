@@ -8,8 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -18,14 +17,14 @@ private const val BROWSE_ACCOUNT_SETTINGS_URI =
     "intent:#Intent;action=com.google.android.gms.accountsettings.action.BROWSE_SETTINGS;i.extra.screenId=1;end"
 
 @Suppress("unused")
-val fixManageGoogleAccountPatch = bytecodePatch(
+val fixManageGoogleAccountPatch = patch(
     name = "Fix Manage Google account",
     description = "Opens the Google Account settings from Manage Google account.",
 ) {
     compatibleWith(AppCompatibilities.CLONE_APP)
 
     execute {
-        AccountSettingsIntentFingerprint.matchSingle().apply {
+        AccountSettingsIntentFingerprint.match().apply {
             val (newIntentIndex, actionIndex, constructorIndex) = instructionMatches.map { it.index }
             val intentRegister = method.getInstruction<FiveRegisterInstruction>(constructorIndex).registerC
             val uriRegister = method.getInstruction<OneRegisterInstruction>(actionIndex).registerA

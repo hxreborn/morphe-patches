@@ -26,68 +26,72 @@ public final class AppliedPatches {
     private AppliedPatches() {
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
     public static boolean disableTracking() {
-        return false;
+        return metadata("disableTracking", false) != null;
     }
 
     public static String disableTrackingName() {
-        return null;
+        return metadata("disableTracking", false);
     }
 
     public static boolean removeDistractions() {
-        return false;
+        return metadata("removeDistractions", false) != null;
     }
 
     public static String removeDistractionsName() {
-        return null;
+        return metadata("removeDistractions", false);
     }
 
     public static boolean removePopups() {
-        return false;
+        return metadata("removePopups", false) != null;
     }
 
     public static String removePopupsName() {
-        return null;
+        return metadata("removePopups", false);
     }
 
     public static boolean stopFirmwareReminders() {
-        return false;
+        return metadata("stopFirmwareReminders", false) != null;
     }
 
     public static String stopFirmwareRemindersName() {
-        return null;
+        return metadata("stopFirmwareReminders", false);
     }
 
     public static boolean xupmix() {
-        return false;
+        return metadata("xupmix", false) != null;
     }
 
     public static String xupmixName() {
-        return null;
+        return metadata("xupmix", false);
     }
 
     public static boolean fineEqualizer() {
-        return false;
+        return metadata("fineEqualizer", false) != null;
     }
 
     public static String fineEqualizerName() {
-        return null;
+        return metadata("fineEqualizer", false);
     }
 
     public static boolean localEqualizerPresets() {
-        return false;
+        return metadata("localEqualizerPresets", false) != null;
     }
 
     public static String localEqualizerPresetsName() {
-        return null;
+        return metadata("localEqualizerPresets", false);
     }
 
     public static boolean accentColor() {
-        return false;
+        return metadata("accentColor", false) != null;
     }
 
     public static String accentColorName() {
-        return null;
+        return metadata("accentColor", false);
     }
 
 }

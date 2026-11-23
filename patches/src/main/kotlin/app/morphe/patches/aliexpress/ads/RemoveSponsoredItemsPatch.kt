@@ -11,9 +11,8 @@
 package app.morphe.patches.aliexpress.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -22,7 +21,7 @@ import app.morphe.patches.shared.misc.extension.aliexpressRemoveSponsoredItemsEx
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/aliexpress/SponsoredProducts;"
 
 @Suppress("unused")
-val removeSponsoredItemsPatch: BytecodePatch = bytecodePatch(
+val removeSponsoredItemsPatch: Patch = patch(
     name = "Remove sponsored items",
     description = "Removes paid placements from search results and product feeds.",
 ) {
@@ -32,7 +31,7 @@ val removeSponsoredItemsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("removeSponsoredItems", removeSponsoredItemsPatch)
-        ProductArrayFingerprint.matchSingle().method.addInstruction(
+        ProductArrayFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p1 }, " +
                 "$EXTENSION_CLASS_DESCRIPTOR->filterIfEnabled(Ljava/util/Map;Ljava/lang/String;)V",

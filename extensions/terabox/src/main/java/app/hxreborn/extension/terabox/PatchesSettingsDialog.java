@@ -38,11 +38,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 import app.hxreborn.extension.terabox.AppliedPatches.AppliedPatch;
 
-final class PatchesSettingsDialog {
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
+final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
 
     private static final int APP_BAR_HEIGHT_DP = 64;
 
@@ -71,10 +71,19 @@ final class PatchesSettingsDialog {
     private final ScrollView scroll;
 
     PatchesSettingsDialog(Activity activity) {
+        this(activity, new SettingsStyle(activity));
+    }
+
+    private PatchesSettingsDialog(Activity activity, SettingsStyle style) {
+        this(activity, style, new SettingsRows(activity, style));
+    }
+
+    private PatchesSettingsDialog(Activity activity, SettingsStyle style, SettingsRows rows) {
+        super(activity, new Dialog(activity));
         this.activity = activity;
-        this.style = new SettingsStyle(activity);
-        this.rows = new SettingsRows(activity, this.style);
-        this.dialog = new Dialog(activity);
+        this.style = style;
+        this.rows = rows;
+        this.dialog = dialog();
         this.dialog.getContext().getTheme().setTo(activity.getTheme());
         this.dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.scroll = new ScrollView(activity);
@@ -86,7 +95,7 @@ final class PatchesSettingsDialog {
         screen.setBackgroundColor(this.style.screenBackground);
         screen.setOnApplyWindowInsetsListener(PatchesSettingsDialog::applySystemBarInsets);
         screen.addView(appBar());
-        replaceContent();
+        refreshContent(this.scroll);
         screen.addView(this.scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
         this.dialog.setContentView(screen);
         Window window = this.dialog.getWindow();
@@ -122,12 +131,8 @@ final class PatchesSettingsDialog {
         return bar;
     }
 
-    private void replaceContent() {
-        this.scroll.removeAllViews();
-        this.scroll.addView(content());
-    }
-
-    private View content() {
+    @Override
+    protected View createContent() {
         LinearLayout column = new LinearLayout(this.activity);
         column.setOrientation(LinearLayout.VERTICAL);
         int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
@@ -165,7 +170,8 @@ final class PatchesSettingsDialog {
                 false);
         addSection(column, "Ads", ads);
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_terabox_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.actionRow(about, "hx_terabox_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                this::confirmReset);
         this.rows.valueRow(about, "hx_terabox_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_terabox_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
@@ -211,11 +217,11 @@ final class PatchesSettingsDialog {
 
     private void confirmReset() {
         AlertDialog confirmation = new AlertDialog.Builder(this.activity).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();
-                replaceContent();
+                refreshContent(this.scroll);
                 confirmRestart();
             })
             .create();

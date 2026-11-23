@@ -6,20 +6,19 @@ package app.morphe.patches.sygic.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
-private val playServicesFallbackPatch = bytecodePatch {
+private val playServicesFallbackPatch = patch {
     execute {
-        CredentialManagerAvailabilityFingerprint.matchSingle().method.returnEarly(false)
+        CredentialManagerAvailabilityFingerprint.method.returnEarly(false)
 
-        GooglePlayServicesAvailabilityFingerprint.matchSingle().method.returnEarly(false)
+        GooglePlayServicesAvailabilityFingerprint.method.returnEarly(false)
 
-        PlayServicesGetCredentialFingerprint.matchSingle().let { match ->
+        PlayServicesGetCredentialFingerprint.match().let { match ->
             val resultIndex = match.instructionMatches.last().index
             val register = match.method.getInstruction<OneRegisterInstruction>(resultIndex).registerA
             match.method.replaceInstruction(resultIndex, "const/4 v$register, 0x0")

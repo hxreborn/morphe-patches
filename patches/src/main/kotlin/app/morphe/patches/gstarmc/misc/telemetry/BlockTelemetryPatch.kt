@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.gstarmc.misc.telemetry
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.gstarmc.misc.jiagu.enableRuntimeFeature
 import app.morphe.patches.gstarmc.misc.jiagu.jiaguRuntimePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val blockTelemetryPatch = rawResourcePatch(
+val blockTelemetryPatch = patch(
     name = "Block telemetry",
     description = "Blocks the Umeng, ByteDance and ad network analytics endpoints.",
 ) {

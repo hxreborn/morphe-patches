@@ -11,13 +11,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -44,7 +44,7 @@ private const val LAST_FIVE_REGISTER_INVOKE_REGISTER = 15
 private const val PADDING_BOTTOM_ARGUMENT = 4
 
 @Suppress("unused")
-val hideNavigationBarOnScrollPatch: BytecodePatch = bytecodePatch(
+val hideNavigationBarOnScrollPatch: Patch = patch(
     name = "Hide navigation bar on scroll",
     description = "Hides the bottom navigation bar on scroll down and shows it on scroll up.",
 ) {
@@ -60,33 +60,35 @@ val hideNavigationBarOnScrollPatch: BytecodePatch = bytecodePatch(
         )
         markFeaturePatched(NAVIGATION_BAR_CLASS)
         requireAppMethods(NAVIGATION_BAR_CLASS, SCROLL_HANDLER_CLASS, HIDDEN_OFFSET_CLASS)
-        VelocityConstructorFingerprint.matchSingle()
+        VelocityConstructorFingerprint.match()
 
-        val nestedScroll = descriptor(NestedScrollModifierFingerprint.matchSingle().originalMethod)
-        val offset = descriptor(OffsetModifierFingerprint.matchSingle().originalMethod)
+        val nestedScroll = descriptor(NestedScrollModifierFingerprint.originalMethod)
+        val offset = descriptor(OffsetModifierFingerprint.originalMethod)
 
-        HomeBottomBarFingerprint.matchSingle().let { match ->
+        matchHomeBottomBar().let { match ->
+            val (bottomNavigationCall) = match.instructionMatches
             match.method.offsetModifierArgument(
-                match.instructionMatches.last().index,
+                bottomNavigationCall.index,
                 offset,
                 "$NAVIGATION_BAR_CLASS->barOffsetDp()F",
             )
         }
-        AppSnackbarHostFingerprint.matchSingle().let { match ->
+        AppSnackbarHostFingerprint.match().let { match ->
+            val (_, _, snackbarHostCall) = match.instructionMatches
             match.method.offsetModifierArgument(
-                match.instructionMatches.last().index,
+                snackbarHostCall.index,
                 offset,
                 "$NAVIGATION_BAR_CLASS->snackbarOffsetDp()F",
             )
         }
-        AppContentPaddingFingerprint.matchSingle().let { match ->
+        AppContentPaddingFingerprint.match().let { match ->
             match.method.hookContentPadding(match, nestedScroll)
         }
-        LazyListApplyMeasureResultFingerprint.matchSingle().method.reportMeasuredList()
+        LazyListApplyMeasureResultFingerprint.method.reportMeasuredList()
     }
 }
 
-private fun BytecodePatchContext.requireAppMethods(vararg extensionClasses: String) {
+private fun requireAppMethods(vararg extensionClasses: String) {
     val missing = extensionClasses
         .flatMap { classDefBy(it).methods }
         .mapNotNull { it.implementation }
@@ -100,7 +102,7 @@ private fun BytecodePatchContext.requireAppMethods(vararg extensionClasses: Stri
     }
 }
 
-private fun BytecodePatchContext.declares(type: String, method: MethodReference): Boolean {
+private fun declares(type: String, method: MethodReference): Boolean {
     val classDef = classDefByOrNull(type) ?: return false
     return classDef.methods.any { MethodUtil.methodSignaturesMatch(it, method) } ||
         (listOfNotNull(classDef.superclass) + classDef.interfaces).any { declares(it, method) }

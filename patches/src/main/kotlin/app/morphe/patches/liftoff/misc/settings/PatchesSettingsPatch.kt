@@ -5,13 +5,13 @@
 package app.morphe.patches.liftoff.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.reactnative.ScrollViewLayoutFingerprint
 import app.morphe.patches.shared.misc.revenuecat.InvalidateCustomerInfoCacheFingerprint
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -28,15 +28,15 @@ private const val LIFTOFF_APPLIED_PATCHES_CLASS = "Lapp/hxreborn/extension/lifto
 private const val CACHE_INVALIDATION_REGISTERS = 0
 private val ICON_NAMES = listOf("back", "premium", "customizations", "reset", "info", "patches", "entry", "expand")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
-    fillAppliedPatch(LIFTOFF_APPLIED_PATCHES_CLASS, methodName, patch)
+internal fun markPatchApplied(key: String, patch: Patch) =
+    addAppliedPatchMetadata(LIFTOFF_APPLIED_PATCHES_CLASS, key, patch)
 
 internal val patchesSettingsPatch = run {
     lateinit var applicationType: String
-    bytecodePatch {
+    patch {
     dependsOn(liftoffSettingsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
         dependsOn(
-            resourcePatch {
+            patch {
                 execute {
                     document("AndroidManifest.xml").use { document ->
                         val application = document.getElementsByTagName("application").item(0) as Element
@@ -54,22 +54,22 @@ internal val patchesSettingsPatch = run {
                         val resource = LiftoffResources::class.java.getResourceAsStream("/liftoff/drawable/$filename")
                             ?: throw PatchException("Missing patch icon $filename")
                         resource.use { icon ->
-                            get("res/drawable/$filename").outputStream().use(icon::copyTo)
+                            resourceFile("res/drawable/$filename").outputStream().use(icon::copyTo)
                         }
                     }
                 }
             },
         )
         execute {
-            applicationOnCreateFingerprint(applicationType).matchSingle().method.addInstruction(
+            applicationOnCreateFingerprint(applicationType).method.addInstruction(
                 0,
                 "invoke-static/range { p0 .. p0 }, $LIFTOFF_PATCH_CONTEXT_CLASS->attach(Landroid/app/Application;)V",
             )
-            ScrollViewLayoutFingerprint.matchSingle().method.addInstruction(
+            ScrollViewLayoutFingerprint.method.addInstruction(
                 0,
                 "invoke-static/range { p0 .. p0 }, $LIFTOFF_PATCHES_MENU_CLASS->onScrollLayout(Landroid/widget/ScrollView;)V",
             )
-            val invalidation = InvalidateCustomerInfoCacheFingerprint.matchSingle().method
+            val invalidation = InvalidateCustomerInfoCacheFingerprint.method
             mutableClassDefBy(LIFTOFF_PATCH_SETTINGS_CLASS).replaceStub(
                 "invalidatePremiumCache",
                 CACHE_INVALIDATION_REGISTERS,

@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -27,7 +27,7 @@ private const val LOAD_CUSTOM_FONTS_METHOD = "loadCustomFonts"
 private const val FONT_FOLDER_PICKER_REQUEST = 63555
 
 @Suppress("unused")
-val customFontsPatch = bytecodePatch(
+val customFontsPatch = patch(
     name = "Custom fonts",
     description = "Adds reading fonts from a folder on the device. " +
         "The folder is picked on ReadEra's Fonts screen.",

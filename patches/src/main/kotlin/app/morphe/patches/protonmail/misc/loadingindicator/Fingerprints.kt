@@ -19,6 +19,8 @@ internal object PullToRefreshSpinnerFingerprint : Fingerprint(
     filters = listOf(resourceLiteral(ResourceType.RAW, "proton_spinner")),
 )
 
+private const val ROTATION_CALL_WINDOW = 1
+
 internal object PullToRefreshPullingIconFingerprint : Fingerprint(
     filters = listOf(
         resourceLiteral(ResourceType.DRAWABLE, "proton_spinner_stationary"),
@@ -27,7 +29,7 @@ internal object PullToRefreshPullingIconFingerprint : Fingerprint(
             parameters = listOf("L", "F"),
             returnType = "L",
             opcode = Opcode.INVOKE_STATIC,
-            location = MatchAfterWithin(1),
+            location = MatchAfterWithin(ROTATION_CALL_WINDOW),
         ),
         methodCall(
             parameters = listOf("L", "Ljava/lang/String;", "L", "L", "L", "F", "L", "L", "I", "I"),

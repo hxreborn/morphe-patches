@@ -5,8 +5,7 @@
 package app.morphe.patches.banglacalendar.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -17,7 +16,7 @@ private const val BOOLEAN_TRUE = "Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;"
 private const val BOOLEAN_FALSE = "Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks premium and removes ads.",
 ) {
@@ -26,17 +25,17 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
 
     execute {
-        PremiumCodeFingerprint.matchSingle().method.returnEarly("p")
+        PremiumCodeFingerprint.method.returnEarly("p")
 
-        BillingStateConstructorFingerprint.matchSingle().let { match ->
-            val factoryCall = match.instructionMatches.first()
+        BillingStateConstructorFingerprint.match().let { match ->
+            val factoryCall = match.instructionMatches.single()
             val flag = factoryCall.getInstruction<FiveRegisterInstruction>().registerC
             match.method.addInstruction(factoryCall.index + 2, "sget-object v$flag, $BOOLEAN_FALSE")
             match.method.addInstruction(factoryCall.index, "sget-object v$flag, $BOOLEAN_TRUE")
         }
 
-        PurchasesQueriedFingerprint.matchSingle().let { match ->
-            val boxing = match.instructionMatches.first()
+        PurchasesQueriedFingerprint.match().let { match ->
+            val (boxing, _) = match.instructionMatches
             val flag = boxing.getInstruction<FiveRegisterInstruction>().registerC
             match.method.addInstruction(boxing.index, "const/4 v$flag, 0x1")
         }

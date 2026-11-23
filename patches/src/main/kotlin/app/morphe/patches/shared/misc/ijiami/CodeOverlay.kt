@@ -5,7 +5,7 @@
 package app.morphe.patches.shared.misc.ijiami
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.DEX_FILE_SIZE_OFFSET
 import app.morphe.patches.shared.DEX_MAP_OFF_OFFSET
 import java.io.ByteArrayOutputStream
@@ -16,15 +16,15 @@ private const val OVERLAY_CLASSES_ASSET = "assets/hx.classes"
 private const val OVERLAY_CODE_ASSET = "assets/hx.code"
 private const val RECORD_HEADER_SIZE = 16
 
-internal fun ResourcePatchContext.appendCodeOverlay(bodies: List<MethodBody>) {
+internal fun appendCodeOverlay(bodies: List<MethodBody>) {
     if (bodies.isEmpty()) return
 
-    val classesAsset = get(OVERLAY_CLASSES_ASSET, copy = false)
+    val classesAsset = resourceFile(OVERLAY_CLASSES_ASSET, copy = false)
     val classNames = (if (classesAsset.exists()) classesAsset.readLines() else emptyList()) +
         bodies.map { it.classDescriptor.removePrefix("L").removeSuffix(";").replace('/', '.') }
     classesAsset.writeText(classNames.filter { it.isNotEmpty() }.distinct().joinToString("\n"))
 
-    val codeAsset = get(OVERLAY_CODE_ASSET, copy = false)
+    val codeAsset = resourceFile(OVERLAY_CODE_ASSET, copy = false)
     val records = ByteArrayOutputStream()
     if (codeAsset.exists()) records.write(codeAsset.readBytes())
     bodies.forEach { records.write(it.overlayRecord()) }

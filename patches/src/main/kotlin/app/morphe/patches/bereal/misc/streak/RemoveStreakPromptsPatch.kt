@@ -6,24 +6,20 @@ package app.morphe.patches.bereal.misc.streak
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}streak/StreakPrompts;"
 
 @Suppress("unused")
-val removeStreakPromptsPatch: BytecodePatch = bytecodePatch(
+val removeStreakPromptsPatch: Patch = patch(
     name = "Remove streak prompts",
     description = "Removes the offers to recover your streak and the Save your streak sheet. Your streak count doesn't change.",
 ) {
@@ -37,10 +33,10 @@ val removeStreakPromptsPatch: BytecodePatch = bytecodePatch(
             StreakRecoveryOfferEligibleToStringFingerprint,
             StreakSaveOfferEligibleToStringFingerprint,
         ).forEach { eligibleToString ->
-            val eligible = eligibleToString.matchSingle().classDef
-            val check = eligibilityCheckFingerprint(eligible.type).matchSingle().method
-            val notEligible = notEligibleSingletonFingerprint(eligible.interfaces).matchSingle()
-                .instructionMatches.single().getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+            val eligible = eligibleToString.match().classDef
+            val check = eligibilityCheckFingerprint(eligible.type).method
+            val notEligible = notEligibleSingletonFingerprint(eligible.interfaces).match()
+                .instructionMatches.single().fieldReference
             notEligibleReadFingerprint(notEligible).matchOrNull(check)
                 ?: throw PatchException("${check.definingClass}->${check.name} does not read $notEligible")
 

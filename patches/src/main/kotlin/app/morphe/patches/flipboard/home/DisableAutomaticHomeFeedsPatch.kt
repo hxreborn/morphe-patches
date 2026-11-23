@@ -2,9 +2,9 @@ package app.morphe.patches.flipboard.home
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.addFreeRegisters
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.AccessFlags.PUBLIC
@@ -12,7 +12,7 @@ import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val disableAutomaticHomeFeedsPatch = bytecodePatch(
+val disableAutomaticHomeFeedsPatch = patch(
     name = "Disable automatic Home feeds",
     description = "Skips automatically added Home tabs.",
 ) {
@@ -20,7 +20,7 @@ val disableAutomaticHomeFeedsPatch = bytecodePatch(
 
     execute {
         val wasRestored = persistExplicitHomeRestores()
-        val converter = ConvertHomeFavoritesFingerprint.matchSingle()
+        val converter = ConvertHomeFavoritesFingerprint.match()
         val matches = converter.instructionMatches
         val hasNext = matches.single { it.filter === homeIteratorHasNext }
         val feedSection = matches.single { it.filter === castHomeFeedSection }

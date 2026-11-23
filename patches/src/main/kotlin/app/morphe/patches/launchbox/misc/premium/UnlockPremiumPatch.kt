@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.launchbox.misc.premium
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dotnet.RETURN_TRUE
 import app.morphe.patches.shared.misc.dotnet.editManagedAssembly
@@ -17,7 +17,7 @@ private const val IS_LICENSED_GETTER = "get_Calibrated"
 private const val UPDATES_EXPIRY_GETTER = "get_EDate"
 
 @Suppress("unused")
-val unlockPremiumPatch = rawResourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Removes the 100-game limit and the license prompts.",
 ) {

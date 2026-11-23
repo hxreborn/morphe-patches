@@ -14,11 +14,11 @@ package app.morphe.patches.protonvpn.misc.freeservers
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.filterConstructorProperty
@@ -36,7 +36,7 @@ import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensi
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"
 
 @Suppress("unused")
-val showFreeServerLocationsPatch: BytecodePatch = bytecodePatch(
+val showFreeServerLocationsPatch: Patch = patch(
     name = "Show free server locations",
     description = "Lists free server locations in Countries and Search and connects to the one you pick. " +
         "Applies only to free plans.",
@@ -51,7 +51,7 @@ val showFreeServerLocationsPatch: BytecodePatch = bytecodePatch(
         val freeLocationsHeader = resourceId(ResourceType.STRING, "free_connections_info_server_locations")
         invertFreeServerCheckForFreeAccount(serverListFilterFingerprint())
 
-        serverGroupItemStateFingerprint().matchSingle().method.apply {
+        serverGroupItemStateFingerprint().method.apply {
             val tierIndex = tierParameterIndex()
             val serverGroupItem = parameterTypes[tierIndex - 1].toString()
             setExtensionMember(
@@ -71,7 +71,7 @@ val showFreeServerLocationsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        CountriesHeaderLabelFingerprint.matchSingle().run {
+        CountriesHeaderLabelFingerprint.match().run {
             val label = instructionMatches.first()
             val labelRegister = label.getInstruction<OneRegisterInstruction>().registerA
             method.replaceInstruction(label.index, "const v$labelRegister, $freeLocationsHeader")
@@ -91,7 +91,7 @@ val showFreeServerLocationsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        searchResultSectionFingerprint().matchSingle().method.addInstructions(
+        searchResultSectionFingerprint().method.addInstructions(
             0,
             """
                 invoke-static { p2, p4 }, $FREE_SERVER_LOCATIONS->itemsVisibleToTier(Ljava/util/List;Ljava/lang/Integer;)Ljava/util/List;

@@ -5,9 +5,8 @@
 package app.morphe.patches.hypic.misc.fix.signature
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
@@ -19,7 +18,7 @@ private const val APPLICATION_CLASS = "Lcom/xt/retouch/MainApplication;"
 
 private const val APK_SIGNATURE_V3_PREFIX = "S3:"
 
-val spoofSignaturePatch = bytecodePatch {
+val spoofSignaturePatch = patch {
     dependsOn(sharedSignatureExtensionPatch)
     compatibleWith(AppCompatibilities.HYPIC)
     execute {
@@ -29,16 +28,16 @@ val spoofSignaturePatch = bytecodePatch {
             .digest(packageMetadata.stockSigningCertificate().publicKey.encoded)
             .joinToString("") { "%02X".format(it) }
 
-        ApkFileSignatureReportFingerprint.matchSingle().let { match ->
+        ApkFileSignatureReportFingerprint.match().let { match ->
             val (_, nativeSignatureResult) = match.instructionMatches
-            val signatureRegister = match.method.getInstruction<OneRegisterInstruction>(nativeSignatureResult.index).registerA
+            val signatureRegister = nativeSignatureResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(
                 nativeSignatureResult.index + 1,
                 "const-string v$signatureRegister, \"$APK_SIGNATURE_V3_PREFIX$stockPublicKeyMd5Hex\"",
             )
         }
 
-        SecuritySdkInitFingerprint.matchSingle().let { match ->
+        SecuritySdkInitFingerprint.match().let { match ->
             val (configBuilderNewInstance) = match.instructionMatches
             match.method.addInstruction(configBuilderNewInstance.index, "return-void")
         }

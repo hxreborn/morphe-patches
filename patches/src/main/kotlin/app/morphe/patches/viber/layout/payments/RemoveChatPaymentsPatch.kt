@@ -5,11 +5,10 @@
 package app.morphe.patches.viber.layout.payments
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -21,7 +20,7 @@ import app.morphe.patches.shared.misc.extension.viberRemoveChatPaymentActionsExt
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/viber/ChatPayments;"
 
 @Suppress("unused")
-val removeChatPaymentsPatch: BytecodePatch = bytecodePatch(
+val removeChatPaymentsPatch: Patch = patch(
     name = "Remove chat payment actions",
     description = "Removes payment actions from chat menus.",
 ) {
@@ -31,17 +30,17 @@ val removeChatPaymentsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("removeChatPayments", removeChatPaymentsPatch)
-        SendMoneyConstructorFingerprint.matchSingle().method.addInstructions(
+        SendMoneyConstructorFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p1 }, $EXTENSION_CLASS_DESCRIPTOR->showSendMoney(Z)Z
                 move-result p1
             """,
         )
-        val (_, bankField, _, payField) = AttachmentTypesFingerprint.matchSingle().instructionMatches
+        val (_, bankField, _, payField) = AttachmentTypesFingerprint.match().instructionMatches
         val bank = bankField.instruction.getReference<FieldReference>()!!
         val pay = payField.instruction.getReference<FieldReference>()!!
-        attachmentListFingerprint(bank).matchSingle().apply {
+        attachmentListFingerprint(bank).match().apply {
             val (_, returnList) = instructionMatches
             val register = (returnList.instruction as OneRegisterInstruction).registerA
             val registers = method.getFreeRegisterProvider(returnList.index, 2, register)

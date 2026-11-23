@@ -5,20 +5,19 @@
 package app.morphe.patches.one4home.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks One4Home Pro and the collector Pals.",
 ) {
     compatibleWith(AppCompatibilities.ONE4HOME)
 
     execute {
-        val proBillingStateConstructor = ProBillingStateToStringFingerprint.matchSingle()
+        val proBillingStateConstructor = ProBillingStateToStringFingerprint.match()
             .classDef.methods.single { it.name == "<init>" }
         val proSourceType = proBillingStateConstructor.parameterTypes[1]
 
@@ -32,7 +31,7 @@ val unlockPremiumPatch = bytecodePatch(
             """,
         )
 
-        val palAccessCheck = HomePalCatalogFingerprint.matchSingle()
+        val palAccessCheck = HomePalCatalogFingerprint.match()
             .classDef.methods.single { it.returnType == "Z" }
 
         palAccessCheck.returnEarly(true)

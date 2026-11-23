@@ -248,7 +248,6 @@ internal object AppCompatibilities {
             "2efdbd738f3fdae901ecb96ead2d7b9b1ee6d2ceab911bdf7b1a3df812f3cfc4",
         ),
         targets = listOf(
-            AppTarget(version = "3.97.1", versionCode = 3599414, minSdk = 26),
             AppTarget(version = "3.98.0", versionCode = 3600852, minSdk = 26),
         ),
     )
@@ -1484,19 +1483,6 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "0.654.2", versionCode = 654002, minSdk = 24)),
     )
 
-    val PROJECTIVY = Compatibility(
-        name = "Projectivy Launcher",
-        packageName = "com.spocky.projengmenu",
-        apkFileType = ApkFileType.APK,
-        appIconColor = 0xF08029,
-        targets = listOf(
-            AppTarget(version = "4.73", versionCode = 98, minSdk = 23),
-            AppTarget(version = "4.72", versionCode = 97, minSdk = 23),
-            AppTarget(version = "4.71", versionCode = 95, minSdk = 23),
-            AppTarget(version = "4.70", versionCode = 92, minSdk = 23),
-        ),
-    )
-
     val PROTON_MAIL = Compatibility(
         name = "Proton Mail",
         packageName = "ch.protonmail.android",
@@ -2165,7 +2151,7 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKM,
         appIconColor = 0xB6D790,
         signatures = setOf("e7d5ad736aeecd2fe237679e4deaf2a40bb32fc07837fe48778a5b41c0418862"),
-        targets = listOf(AppTarget(version = "13.2.2.0", versionCode = 73031, minSdk = 23)),
+        targets = listOf(AppTarget(version = "13.2.2.2", versionCode = 73051, minSdk = 23)),
     )
 
     val NEXTDOOR = Compatibility(

@@ -7,10 +7,9 @@ package app.morphe.patches.protonauthenticator.misc.layout
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -23,7 +22,7 @@ private const val SETTINGS_SECTIONS_CLASS = "Lapp/hxreborn/extension/protonauthe
 private const val NEXT_INSTRUCTION = 1
 
 @Suppress("unused")
-val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
+val hideLayoutComponentsPatch: Patch = patch(
     name = "Hide layout components",
     description = "Adds settings to hide the Spread the word section, the Discover Proton section " +
         "and the Proton Pass banner.",
@@ -35,10 +34,10 @@ val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
         markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(SETTINGS_SECTIONS_CLASS)
 
-        PassBannerFingerprint.matchSingle().method
+        PassBannerFingerprint.method
             .returnVoidWhen("$SETTINGS_SECTIONS_CLASS->isPassBannerHidden()Z")
 
-        DiscoverSectionVisibilityFingerprint.matchSingle().method.apply {
+        DiscoverSectionVisibilityFingerprint.method.apply {
             val free = getFreeRegisterProvider(0, 1).getFreeRegister()
 
             addInstructionsWithLabels(
@@ -54,7 +53,7 @@ val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        SettingsSectionFingerprint.matchSingle().method.apply {
+        SettingsSectionFingerprint.method.apply {
             val free = getFreeRegisterProvider(0, 1).getFreeRegister()
 
             addInstructionsWithLabels(
@@ -69,10 +68,11 @@ val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        SpreadTheWordRowsFingerprint.matchSingle().apply {
-            val rows = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
+        SpreadTheWordRowsFingerprint.match().apply {
+            val (_, _, rowsResult) = instructionMatches
+            val rows = rowsResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
-                instructionMatches.last().index + NEXT_INSTRUCTION,
+                rowsResult.index + NEXT_INSTRUCTION,
                 """
                     invoke-static/range { v$rows .. v$rows }, $SETTINGS_SECTIONS_CLASS->spreadTheWordRows(Ljava/util/List;)Ljava/util/List;
                     move-result-object v$rows

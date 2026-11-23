@@ -4,8 +4,7 @@
  */
 package app.morphe.patches.tradingview.misc.analytics
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -20,17 +19,17 @@ private const val INTERCEPT_REQUEST_METHOD = "shouldInterceptRequest"
 private const val INTERCEPT_REQUEST_REGISTER_COUNT = 4
 
 @Suppress("unused")
-val disableAnalyticsPatch = bytecodePatch(
+val disableAnalyticsPatch = patch(
     name = "Disable analytics",
     description = "Disables network telemetry and Snowplow analytics.",
 ) {
     dependsOn(tradingviewDisableAnalyticsExtensionPatch)
     compatibleWith(AppCompatibilities.TRADINGVIEW)
     execute {
-        NetworkTelemetryInitializationFingerprint.matchSingle().method.returnEarly()
-        SnowPlowTrackerInitializationFingerprint.matchSingle().method.returnEarly()
+        NetworkTelemetryInitializationFingerprint.method.returnEarly()
+        SnowPlowTrackerInitializationFingerprint.method.returnEarly()
 
-        ChartWebViewClientFingerprint.matchSingle().classDef.apply {
+        ChartWebViewClientFingerprint.match().classDef.apply {
             check(methods.none { it.name == INTERCEPT_REQUEST_METHOD }) {
                 "WebView client already intercepts requests"
             }

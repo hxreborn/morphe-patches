@@ -4,11 +4,13 @@
  */
 package app.morphe.patches.castle.misc.premium
 
+import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.methodCall
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
@@ -89,7 +91,7 @@ private const val EXPAND_PREVIEW_PLAYLIST = """
 """
 
 @Suppress("unused")
-val unlockPremiumPatch = rawResourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks member-only titles, shows the account as Premium and removes the premium bundle offer. " +
         "Requires a signed-in account.",
@@ -120,12 +122,12 @@ val unlockPremiumPatch = rawResourcePatch(
                 addInstruction(bodyCreation, "invoke-static { v$json }, $DEVICE_GUID_CLASS->observeResponse($STRING_CLASS)V")
             }
             methodUsingString(REQUEST_SIGNING_LOG, firstParameter = CHAIN_CLASS).apply {
-                val proceedCalls = findInstructionIndicesReversed {
-                    getReference<MethodReference>()?.let {
-                        (it.definingClass == REAL_CHAIN_CLASS || it.definingClass == CHAIN_CLASS) &&
-                            it.parameterTypes == listOf(REQUEST_CLASS) && it.returnType == RESPONSE_CLASS
-                    } == true
-                }
+                val proceedCalls = findInstructionIndicesReversed(
+                    anyInstruction(
+                        methodCall(definingClass = REAL_CHAIN_CLASS, parameters = listOf(REQUEST_CLASS), returnType = RESPONSE_CLASS),
+                        methodCall(definingClass = CHAIN_CLASS, parameters = listOf(REQUEST_CLASS), returnType = RESPONSE_CLASS),
+                    ),
+                )
                 check(proceedCalls.isNotEmpty()) { "No proceed call in the request signer" }
                 proceedCalls.forEach { index ->
                     val call = getInstruction<FiveRegisterInstruction>(index)
@@ -167,9 +169,9 @@ val unlockPremiumPatch = rawResourcePatch(
             addExtensionPackage(EXTENSION_PACKAGE, besideClass = playlistParser, extensionDexes = EXTENSION_DEXES)
 
             method(DOWNLOAD_PLAYLIST_TASK_CLASS, "handleConnect").apply {
-                val streamIndex = indexOfFirstInstructionOrThrow {
-                    opcode == Opcode.INVOKE_STATIC && getReference<MethodReference>()?.name == "convertInputStream"
-                } + 1
+                val streamIndex = indexOfFirstInstructionOrThrow(
+                    methodCall(name = "convertInputStream", opcode = Opcode.INVOKE_STATIC),
+                ) + 1
                 val stream = getInstruction<OneRegisterInstruction>(streamIndex).registerA
                 addInstructions(
                     streamIndex + 1,

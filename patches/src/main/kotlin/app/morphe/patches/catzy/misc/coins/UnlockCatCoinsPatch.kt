@@ -5,7 +5,6 @@
 package app.morphe.patches.catzy.misc.coins
 
 import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.catzy.catzyPatch
 
@@ -15,5 +14,5 @@ val unlockCatCoinsPatch = catzyPatch(
     description = "Buys every store item without running out of cat coins.",
     selection = PatchAvailability.DISABLED,
 ) {
-    CatCoinBalanceFingerprint.matchSingle().method.returnEarly(999_999_999L)
+    CatCoinBalanceFingerprint.method.returnEarly(999_999_999L)
 }

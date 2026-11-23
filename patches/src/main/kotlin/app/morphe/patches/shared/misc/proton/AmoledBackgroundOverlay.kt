@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.shared.misc.proton
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.protonSettingsExtensionPatch
@@ -15,7 +15,7 @@ internal const val AMOLED_BACKGROUND_OVERLAY_STYLE = "ThemeOverlay.Patches.Amole
 private const val BACKGROUND_ATTRIBUTE = "proton_background_norm"
 private const val AMOLED_BACKGROUND_OVERLAY_CLASS = "${PROTON_EXTENSION_PACKAGE}AmoledBackgroundOverlay;"
 
-private val amoledBackgroundOverlayStylePatch = resourcePatch {
+private val amoledBackgroundOverlayStylePatch = patch {
     execute {
         document("res/values/styles.xml").use { document ->
             val style = document.createElement("style")
@@ -31,7 +31,7 @@ private val amoledBackgroundOverlayStylePatch = resourcePatch {
     }
 }
 
-internal val amoledBackgroundOverlayPatch = bytecodePatch {
+internal val amoledBackgroundOverlayPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch)
     dependsOn(amoledBackgroundOverlayStylePatch)
 

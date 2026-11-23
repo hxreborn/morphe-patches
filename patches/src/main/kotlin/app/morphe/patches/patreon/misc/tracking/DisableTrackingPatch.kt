@@ -7,8 +7,8 @@ package app.morphe.patches.patreon.misc.tracking
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.misc.featureflags.featureFlagsPatch
@@ -32,7 +32,7 @@ private fun MutableMethod.skipWhenTrackingDisabled(returnInstructions: String) =
 )
 
 @Suppress("unused")
-val disableTrackingPatch: BytecodePatch = bytecodePatch(
+val disableTrackingPatch: Patch = patch(
     name = "Disable tracking",
     description = "Disables Amplitude, AppsFlyer, Sentry, Sift and Mux data collection.",
 ) {

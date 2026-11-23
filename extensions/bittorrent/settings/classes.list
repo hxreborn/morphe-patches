@@ -3,4 +3,3 @@ app/hxreborn/extension/bittorrent/PatchSettings
 app/hxreborn/extension/bittorrent/PatchesSettingsActivity
 app/hxreborn/extension/bittorrent/SettingsRows
 app/hxreborn/extension/bittorrent/SettingsStyle
-app/hxreborn/extension/bittorrent/SwitchChangeListener

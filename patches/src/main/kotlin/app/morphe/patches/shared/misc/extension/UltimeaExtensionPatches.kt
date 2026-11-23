@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val ultimeaSettingsExtensionPatch = bytecodePatch {
-    dependsOn(sharedActivityCallbacksAdapterExtensionPatch)
+
+internal val ultimeaSettingsExtensionPatch = patch {
+    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/ultimea-settings.mpe")
 }
 
-internal val ultimeaDarkThemeExtensionPatch = bytecodePatch {
+internal val ultimeaDarkThemeExtensionPatch = patch {
     dependsOn(ultimeaSettingsExtensionPatch)
     extendWith("extensions/hxreborn/ultimea-dark-theme.mpe")
 }

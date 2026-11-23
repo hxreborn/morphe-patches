@@ -5,8 +5,9 @@
 package app.morphe.patches.shared.misc.pairip
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.asSequence
 import app.morphe.util.removeFromParent
 import com.android.tools.smali.dexlib2.iface.value.StringEncodedValue
@@ -23,7 +24,7 @@ private class KeyImportOriginals(val application: String?, val componentFactory:
 
 private lateinit var keyImportOriginals: KeyImportOriginals
 
-private val readKeyImportOriginalsPatch = bytecodePatch {
+private val readKeyImportOriginalsPatch = patch {
     execute {
         val constants = classDefBy(KEY_IMPORT_CONSTANTS_CLASS)
 
@@ -47,7 +48,7 @@ private fun Element.restoreAttribute(name: String, expectedStub: String, origina
     setAttribute(name, original)
 }
 
-internal val removePairipKeyImportPatch = resourcePatch {
+internal val removePairipKeyImportPatch = patch {
     dependsOn(readKeyImportOriginalsPatch)
 
     execute {

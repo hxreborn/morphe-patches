@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val connected2KeepDeletedMessagesExtensionPatch = bytecodePatch {
+
+internal val connected2KeepDeletedMessagesExtensionPatch = patch {
     extendWith("extensions/hxreborn/connected2-keep-deleted-messages.mpe")
 }

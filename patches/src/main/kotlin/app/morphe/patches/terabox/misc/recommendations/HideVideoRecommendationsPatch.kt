@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.terabox.misc.recommendations
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.settings.VIDEO_RECOMMENDATIONS_HIDDEN
@@ -14,7 +14,7 @@ import app.morphe.patches.terabox.misc.settings.overrideWhenEnabled
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 
 @Suppress("unused")
-val hideVideoRecommendationsPatch: BytecodePatch = bytecodePatch(
+val hideVideoRecommendationsPatch: Patch = patch(
     name = "Hide video recommendations",
     description = "Removes recommendations below the player.",
 ) {

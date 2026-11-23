@@ -5,15 +5,14 @@
 package app.morphe.patches.steezy.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableCrashlyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops RudderStack, Branch, Firebase Sessions and Crashlytics from " +
         "collecting usage data.",
@@ -23,7 +22,7 @@ val disableTrackingPatch = bytecodePatch(
     dependsOn(disableCrashlyticsCollectionPatch, disableFirebaseSessionsPatch)
 
     execute {
-        RudderSetupFingerprint.matchSingle().method.addInstructions(
+        RudderSetupFingerprint.method.addInstructions(
             0,
             """
                 const/4 v0, 0x0
@@ -32,9 +31,9 @@ val disableTrackingPatch = bytecodePatch(
             """,
         )
 
-        val trackingDisabledForContext = BranchTrackingDisabledForContextFingerprint.matchSingle()
+        val trackingDisabledForContext = BranchTrackingDisabledForContextFingerprint.match()
         trackingDisabledForContext.method.returnEarly(true)
         branchTrackingDisabledFingerprint(trackingDisabledForContext.classDef.type)
-            .matchSingle().method.returnEarly(true)
+            .method.returnEarly(true)
     }
 }

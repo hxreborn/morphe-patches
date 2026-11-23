@@ -4,8 +4,7 @@
  */
 package app.morphe.patches.watchit.misc.tracking
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -15,7 +14,7 @@ import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.watchit.misc.piracy.disablePiracyCheckPatch
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops Firebase Analytics, Crashlytics, Facebook app events and Brightcove video " +
         "analytics from collecting usage data.",
@@ -31,8 +30,8 @@ val disableTrackingPatch = bytecodePatch(
     )
 
     execute {
-        VideoAnalyticsSubmitFingerprint.matchSingle().method.returnEarly()
-        InteractivityAnalyticsSubmitFingerprint.matchSingle().method.returnEarly()
-        FacebookAppEventsRequestFingerprint.matchSingle().method.returnEarly(null)
+        VideoAnalyticsSubmitFingerprint.method.returnEarly()
+        InteractivityAnalyticsSubmitFingerprint.method.returnEarly()
+        FacebookAppEventsRequestFingerprint.method.returnEarly(null)
     }
 }

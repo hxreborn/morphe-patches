@@ -6,9 +6,9 @@ package app.morphe.patches.pocketwhip.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.fieldAccess
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.findInstructionIndicesReversed
@@ -19,20 +19,20 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all whips.",
 ) {
     compatibleWith(AppCompatibilities.POCKET_WHIP)
 
     execute {
-        val toString = WhipToStringFingerprint.matchSingle()
+        val toString = WhipToStringFingerprint.match()
         val whipClass = toString.classDef
 
-        val append = toString.instructionMatches.last()
-        val flagRegister = append.getInstruction<FiveRegisterInstruction>().registerD
+        val (_, appendAvailability) = toString.instructionMatches
+        val flagRegister = appendAvailability.getInstruction<FiveRegisterInstruction>().registerD
         val ownedField = toString.method.let { method ->
-            val readIndex = method.indexOfFirstInstructionReversedOrThrow(append.index) {
+            val readIndex = method.indexOfFirstInstructionReversedOrThrow(appendAvailability.index) {
                 opcode == Opcode.IGET_BOOLEAN &&
                     (this as TwoRegisterInstruction).registerA == flagRegister &&
                     getReference<FieldReference>()?.definingClass == whipClass.type
@@ -45,9 +45,7 @@ val unlockPremiumPatch = bytecodePatch(
         whipClass.methods.forEach { method ->
             if (method.implementation == null) return@forEach
 
-            method.findInstructionIndicesReversed {
-                opcode == Opcode.IPUT_BOOLEAN && getReference<FieldReference>() == ownedField
-            }.forEach { index ->
+            method.findInstructionIndicesReversed(fieldAccess(ownedField, Opcode.IPUT_BOOLEAN)).forEach { index ->
                 val write = method.getInstruction<TwoRegisterInstruction>(index)
 
                 method.addInstructions(

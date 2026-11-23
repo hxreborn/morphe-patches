@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val etsyHideAdsExtensionPatch = bytecodePatch {
+
+internal val etsyHideAdsExtensionPatch = patch {
     extendWith("extensions/hxreborn/etsy-hide-ads.mpe")
 }

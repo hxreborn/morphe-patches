@@ -47,14 +47,16 @@ public final class PatchSettings {
         return preferences == null || preferences.getBoolean(AMOLED_KEY, true);
     }
 
-    static void setEnabled(boolean enabled) {
-        if (!preferences.edit().putBoolean(AMOLED_KEY, enabled).commit()) {
+    static boolean setEnabled(boolean enabled) {
+        boolean saved = preferences.edit().putBoolean(AMOLED_KEY, enabled).commit();
+        if (!saved) {
             Log.w(LOG_TAG, "Failed to save the AMOLED setting");
         }
+        return saved;
     }
 
-    static void resetToDefaults() {
-        setEnabled(true);
+    static boolean resetToDefaults() {
+        return setEnabled(true);
     }
 
     static boolean isDark(Context context) {

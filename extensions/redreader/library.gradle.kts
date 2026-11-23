@@ -7,3 +7,8 @@ extensions.configure<com.android.build.api.dsl.LibraryExtension> {
         buildConfig = true
     }
 }
+
+dependencies {
+    add("compileOnly", project(":extensions:shared"))
+    add("testImplementation", project(":extensions:shared"))
+}

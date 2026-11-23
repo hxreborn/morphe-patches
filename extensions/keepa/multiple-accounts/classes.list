@@ -4,5 +4,6 @@ app/hxreborn/extension/keepa/AccountState
 app/hxreborn/extension/keepa/AccountStore
 app/hxreborn/extension/keepa/Accounts
 app/hxreborn/extension/keepa/AccountsActivity
+app/hxreborn/extension/keepa/AccountsScreen
 app/hxreborn/extension/keepa/AccountsUpdate
 app/hxreborn/extension/keepa/ChoiceListener

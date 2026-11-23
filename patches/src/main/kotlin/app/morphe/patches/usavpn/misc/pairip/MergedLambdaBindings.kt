@@ -4,8 +4,8 @@
  */
 package app.morphe.patches.usavpn.misc.pairip
 
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.classDefBy
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
@@ -129,7 +129,7 @@ private fun Method.referencesForSelector(selector: Int): List<String> {
     return references
 }
 
-internal fun BytecodePatchContext.checkMergedLambdaBindings() = MERGED_LAMBDA_BINDINGS.forEach { binding ->
+internal fun checkMergedLambdaBindings() = MERGED_LAMBDA_BINDINGS.forEach { binding ->
     val signature = "${binding.type}->${binding.method}"
     val method = classDefBy(binding.type).methods.singleOrNull { descriptor(it) == signature }
         ?: throw PatchException("$signature not found")

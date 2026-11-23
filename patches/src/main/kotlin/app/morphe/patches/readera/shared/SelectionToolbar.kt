@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.readera.shared
 
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -18,11 +19,11 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
-private const val SELECTION_TOOLBAR = "Lapp/hxreborn/extension/readera/SelectionToolbar;"
+private const val SELECTION_TOOLBAR = "Lapp/hxreborn/extension/readera/selection/SelectionToolbar;"
 private const val SCROLL_VIEW = "Landroid/widget/ScrollView;"
 private const val ATTACH_REGISTERS = 3
 
-internal val selectionToolbarPatch = bytecodePatch {
+internal val selectionToolbarPatch = patch {
     dependsOn(readeraSelectionMenuExtensionPatch)
     execute {
         val clipboard = ClipboardCopyFingerprint.matchAll(1..1).single().originalMethod
@@ -91,7 +92,7 @@ internal val selectionToolbarPatch = bytecodePatch {
     }
 }
 
-internal fun BytecodePatchContext.addSelectionAction(actionClass: String) {
+internal fun addSelectionAction(actionClass: String) {
     val menus = SelectionMenusFingerprint.matchAll(1..1).single()
     val (_, selectionMenuWrite, _, quoteMenuWrite) = menus.instructionMatches
     val selectionMenu = selectionMenuWrite.instruction.getReference<FieldReference>()!!

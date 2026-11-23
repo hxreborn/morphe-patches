@@ -5,16 +5,14 @@
 package app.morphe.patches.graphmessenger.misc.update
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val removeForcedUpdatePatch = bytecodePatch(
+val removeForcedUpdatePatch = patch(
     name = "Remove forced update",
     description = "Removes the dialog that blocks the app when Graph marks this version unsupported.",
 ) {
@@ -24,9 +22,10 @@ val removeForcedUpdatePatch = bytecodePatch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        val match = ForcedUpdateVersionFingerprint.matchSingle()
-        val moveResult = match.instructionMatches.last().index
-        val register = match.method.getInstruction<OneRegisterInstruction>(moveResult).registerA
+        val match = ForcedUpdateVersionFingerprint.match()
+        val (_, _, forcedUpdateVersionResult) = match.instructionMatches
+        val moveResult = forcedUpdateVersionResult.index
+        val register = forcedUpdateVersionResult.getInstruction<OneRegisterInstruction>().registerA
         match.method.addInstruction(moveResult + 1, "const/16 v$register, 0x0")
     }
 }

@@ -10,8 +10,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.findInstructionIndicesReversed
 import com.android.tools.smali.dexlib2.Opcode
@@ -19,8 +19,6 @@ import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction30t
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private val AD_CALLER_CLASSES = listOf(
     "Lcom/ants360/yicamera/util/AdUtil;",
@@ -36,7 +34,7 @@ private const val RETURN_EMPTY_LIST = """
 """
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Removes splash, interstitial, banner and native ads. " +
         "Hides promotional cards and popups on Home and Highlights. " +
@@ -45,10 +43,8 @@ val hideAdsPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.YI_IOT)
 
     execute {
-        val paidServiceCall = methodCall(
-            SetNoAdPlanFingerprint.matchSingle().instructionMatches.last()
-                .getInstruction<ReferenceInstruction>().reference as MethodReference,
-        )
+        val (_, _, checkPaidService) = SetNoAdPlanFingerprint.match().instructionMatches
+        val paidServiceCall = methodCall(checkPaidService.methodReference)
 
         AD_CALLER_CLASSES.forEach { classType ->
             var rewritten = 0
@@ -64,15 +60,16 @@ val hideAdsPatch = bytecodePatch(
             if (rewritten == 0) throw PatchException("No paid service check in $classType")
         }
 
-        LoadAppOpenAdFingerprint.matchSingle().let { match ->
-            val userCheck = match.instructionMatches.first()
+        LoadAppOpenAdFingerprint.match().let { match ->
+            val (userCheck) = match.instructionMatches
             val register = userCheck.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(userCheck.index, "const/4 v$register, 0x0")
         }
 
-        AdDialogFragmentOnCreateFingerprint.matchSingle().let { match ->
+        AdDialogFragmentOnCreateFingerprint.match().let { match ->
+            val (superOnCreate) = match.instructionMatches
             match.method.addInstructions(
-                match.instructionMatches.first().index + 1,
+                superOnCreate.index + 1,
                 """
                     invoke-virtual { p0 }, Landroid/app/Activity;->finish()V
                     return-void
@@ -81,21 +78,21 @@ val hideAdsPatch = bytecodePatch(
         }
 
         listOf(TopBannerListFingerprint, BottomBannerListFingerprint).forEach { fingerprint ->
-            fingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
+            fingerprint.method.addInstructions(0, RETURN_EMPTY_LIST)
         }
 
-        HomePromoPopupFingerprint.matchSingle().method.addInstruction(0, "return-void")
+        HomePromoPopupFingerprint.method.addInstruction(0, "return-void")
 
-        NebulaPageListenersFingerprint.matchSingle().method.addInstruction(0, "return-void")
+        NebulaPageListenersFingerprint.method.addInstruction(0, "return-void")
 
-        HighlightAdPlaceholderRowsFingerprint.matchSingle().method.addInstructions(0, RETURN_EMPTY_LIST)
+        HighlightAdPlaceholderRowsFingerprint.method.addInstructions(0, RETURN_EMPTY_LIST)
 
-        with(PremiumCloudRowFingerprint.matchSingle()) {
+        with(PremiumCloudRowFingerprint.match()) {
             val (_, _, skipRowJump, rowStart) = instructionMatches
             val afterPremiumCloudRow = method.getInstruction<BuilderOffsetInstruction>(skipRowJump.index).target
             method.replaceInstruction(rowStart.index, BuilderInstruction30t(Opcode.GOTO_32, afterPremiumCloudRow))
         }
 
-        ShoppingProductsObserverFingerprint.matchSingle().method.addInstruction(0, "return-void")
+        ShoppingProductsObserverFingerprint.method.addInstruction(0, "return-void")
     }
 }

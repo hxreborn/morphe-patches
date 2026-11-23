@@ -8,15 +8,15 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -57,15 +57,15 @@ internal val ICON_RESOURCES = listOf("patches", "premium", "dynamic_icon", "debu
 
 private val logger = Logger.getLogger("app.morphe.patches.duolingo.misc.settings")
 
-internal fun BytecodePatchContext.markPatchApplied(
-    methodName: String,
-    patch: BytecodePatch,
-) = fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
+internal fun markPatchApplied(
+    key: String,
+    patch: Patch,
+) = addAppliedPatchMetadata(APPLIED_PATCHES_CLASS, key, patch)
 
 private fun resource(path: String) = DuolingoBundleResources::class.java.getResourceAsStream(path)
     ?: throw PatchException("Missing patch resource $path")
 
-private fun BytecodePatchContext.attachPatchContext() =
+private fun attachPatchContext() =
     mutableClassDefBy(APPLICATION_CLASS).methods
         .single { it.name == "onCreate" && it.parameterTypes.isEmpty() && it.returnType == "V" }
         .addInstruction(0, "invoke-static/range { p0 .. p0 }, $PATCH_CONTEXT_CLASS->attach(Landroid/app/Application;)V")
@@ -94,7 +94,7 @@ private fun MutableMethod.replayCallSmali(callIndex: Int, replaced: Map<Int, Str
     return "$arguments\ninvoke-static/range { v0 .. v${target.parameterTypes.lastIndex} }, ${descriptor(target)}"
 }
 
-private fun BytecodePatchContext.addPatchesSettingsSection() {
+private fun addPatchesSettingsSection() {
     val support = SupportSectionFingerprint
     val (header, _, row) = support.instructionMatches.map { it.index }
     val rowTarget = support.method.getInstruction<RegisterRangeInstruction>(row).getReference<MethodReference>()!!
@@ -159,14 +159,14 @@ private fun BytecodePatchContext.addPatchesSettingsSection() {
     }
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(duolingoSettingsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch)
     dependsOn(
-        resourcePatch {
+        patch {
             execute {
                 ICON_RESOURCES.forEach { name ->
                     resource("/duolingo/drawable/$name.xml").use { icon ->
-                        get("res/drawable/$name.xml").outputStream().use(icon::copyTo)
+                        resourceFile("res/drawable/$name.xml").outputStream().use(icon::copyTo)
                     }
                 }
             }
@@ -183,7 +183,7 @@ internal val patchesSettingsPatch = bytecodePatch {
     }
 }
 
-private fun BytecodePatchContext.replaceSettingsStyleStubs() {
+private fun replaceSettingsStyleStubs() {
     with(mutableClassDefBy(SETTINGS_STYLE_CLASS)) {
         replaceResourceIdStubs(
             ResourceType.COLOR,

@@ -6,9 +6,8 @@ package app.morphe.patches.terabox.misc.consent
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
@@ -19,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val BLOCKED_REQUEST_URL = "https://consent.invalid/a/consent"
 
 @Suppress("unused")
-val hideConsentFormPatch: BytecodePatch = bytecodePatch(
+val hideConsentFormPatch: Patch = patch(
     name = "Hide consent form",
     description = "Hides the ad consent form shown at startup.",
 ) {
@@ -28,7 +27,7 @@ val hideConsentFormPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("hideConsentForm", hideConsentFormPatch)
-        ConsentRequestFingerprint.matchSingle().method.apply {
+        ConsentRequestFingerprint.method.apply {
             val index = indexOfFirstStringInstructionOrThrow(CONSENT_REQUEST_URL)
             val register = getInstruction<OneRegisterInstruction>(index).registerA
 

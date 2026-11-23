@@ -8,9 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.getReference
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.misc.settings.PATREON_EXTENSION_PACKAGE
 import app.morphe.patches.patreon.misc.settings.markFeaturePatched
@@ -18,12 +17,11 @@ import app.morphe.patches.patreon.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val HOME_TAB_CLASS = "${PATREON_EXTENSION_PACKAGE}HomeTab;"
 
 @Suppress("unused")
-val hideHomeTabPatch: BytecodePatch = bytecodePatch(
+val hideHomeTabPatch: Patch = patch(
     name = "Hide Home tab",
     description = "Removes the Home tab and starts on Memberships. " +
         "Accounts without memberships keep the tab.",
@@ -41,13 +39,13 @@ val hideHomeTabPatch: BytecodePatch = bytecodePatch(
         val (fallbackResult, fallbackCall) = launcherTabs.instructionMatches.asReversed()
 
         launcherTabs.method.apply {
-            val membershipsRegister = getInstruction<OneRegisterInstruction>(membershipsRead.index).registerA
+            val membershipsRegister = membershipsRead.getInstruction<OneRegisterInstruction>().registerA
             val homeIndex = homeRead.index
-            val homeRegister = getInstruction<OneRegisterInstruction>(homeIndex).registerA
-            val homeTab = homeRead.instruction.getReference<FieldReference>()!!
-            val tabsRegister = getInstruction<OneRegisterInstruction>(tabsResult.index).registerA
+            val homeRegister = homeRead.getInstruction<OneRegisterInstruction>().registerA
+            val homeTab = homeRead.fieldReference
+            val tabsRegister = tabsResult.getInstruction<OneRegisterInstruction>().registerA
             val fallbackIndex = fallbackCall.index
-            val fallbackRegister = getInstruction<OneRegisterInstruction>(fallbackResult.index).registerA
+            val fallbackRegister = fallbackResult.getInstruction<OneRegisterInstruction>().registerA
 
             addInstruction(fallbackResult.index + 1, "check-cast v$fallbackRegister, ${membershipsTab.interfaces.single()}")
             addInstruction(

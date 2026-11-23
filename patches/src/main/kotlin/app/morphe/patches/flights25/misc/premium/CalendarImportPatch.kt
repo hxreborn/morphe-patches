@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.flights25.misc.premium
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DartSnapshot
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -12,7 +12,7 @@ import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val calendarImportPatch = resourcePatch(
+val calendarImportPatch = patch(
     name = "Remove calendar import limit",
     description = "Removes limit on single-flight calendar imports.",
 ) {

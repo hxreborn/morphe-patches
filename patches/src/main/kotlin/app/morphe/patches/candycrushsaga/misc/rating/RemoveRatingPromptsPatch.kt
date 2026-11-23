@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.candycrushsaga.misc.rating
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.shared.serverresponse.SERVER_RESPONSES
 import app.morphe.patches.candycrushsaga.shared.serverresponse.editServerResponsesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceStub
 
 @Suppress("unused")
-val removeRatingPromptsPatch = bytecodePatch(
+val removeRatingPromptsPatch = patch(
     name = "Remove rating prompts",
     description = "Removes prompts asking to rate the game after a level.",
 ) {

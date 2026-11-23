@@ -4,9 +4,8 @@
  */
 package app.morphe.patches.viber.ads
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -15,7 +14,7 @@ import app.morphe.patches.viber.shared.markPatchApplied
 import app.morphe.patches.viber.shared.returnWhenEnabled
 
 @Suppress("unused")
-val hideAdsPatch: BytecodePatch = bytecodePatch(
+val hideAdsPatch: Patch = patch(
     name = "Hide ads",
     description = "Hides ads in the chat list, the More screen, Explore, search and after calls.",
 ) {
@@ -25,6 +24,6 @@ val hideAdsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("hideAds", hideAdsPatch)
-        AdsEnabledFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->hideAds()Z")
+        AdsEnabledFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->hideAds()Z")
     }
 }

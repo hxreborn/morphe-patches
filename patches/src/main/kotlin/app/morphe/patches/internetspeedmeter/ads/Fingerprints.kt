@@ -5,11 +5,14 @@
 package app.morphe.patches.internetspeedmeter.ads
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.InstructionLocation.MatchAfterWithin
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.opcode
 import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.Opcode
 
 internal object LoadAdsFingerprint : Fingerprint(
     returnType = "V",
@@ -23,6 +26,7 @@ internal object AllowAdsPromptFingerprint : Fingerprint(
     filters = listOf(
         string("ad_enable_attempt"),
         methodCall(definingClass = "Landroid/content/SharedPreferences;", name = "getInt"),
+        opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
     ),
 )
 

@@ -6,11 +6,10 @@ package app.morphe.patches.protonauthenticator.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.shared.themeColorReadInstructions
 import app.morphe.patches.shared.misc.proton.COMPOSER_TYPE
 import app.morphe.patches.shared.misc.proton.PATCHES_MENU_CLASS
@@ -44,9 +43,10 @@ private const val DEFAULTS_PARAMETER = 7
 private const val ROW_REGISTER_COUNT = 9
 private const val MENU_LIST_BORDER_COLOR = "menuListBorder"
 
-private fun BytecodePatchContext.addPatchesSettingsRow() {
-    val row = ViewLogsRowFingerprint.matchSingle()
-    val rowIndex = row.instructionMatches.last().index
+private fun addPatchesSettingsRow() {
+    val row = ViewLogsRowFingerprint.match()
+    val (_, viewLogsRowCall) = row.instructionMatches
+    val rowIndex = viewLogsRowCall.index
     val rowCall = row.method.getInstruction<RegisterRangeInstruction>(rowIndex)
     val navigationRow = rowCall.getReference<MethodReference>()!!
     val titleType = navigationRow.parameterTypes[TITLE_PARAMETER].toString()
@@ -98,7 +98,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
     )
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonAuthenticatorSettingsExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(patchesSettingsActivityPatch("@style/Theme.ProtonAuthenticator", HOST_ACTIVITY, AUTHENTICATOR_SETTINGS_CLASS))
     execute {

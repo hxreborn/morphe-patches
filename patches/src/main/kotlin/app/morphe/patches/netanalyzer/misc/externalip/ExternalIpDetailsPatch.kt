@@ -7,8 +7,7 @@ package app.morphe.patches.netanalyzer.misc.externalip
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.composableParameters
@@ -25,7 +24,7 @@ private const val BUTTON_LABEL = "buttonLabel"
 private const val BUTTON_ON_CLICK = "onButtonClick"
 
 @Suppress("unused")
-val externalIpDetailsPatch = bytecodePatch(
+val externalIpDetailsPatch = patch(
     name = "External IP details",
     description = "Adds a Details button to the External IP rows that shows the address's hostname, " +
         "network operator and location.",
@@ -37,10 +36,10 @@ val externalIpDetailsPatch = bytecodePatch(
     execute {
         addFeatureActivity("ExternalIpActivity")
 
-        val buttonRowMatch = ButtonRowFingerprint.matchSingle()
+        val buttonRowMatch = ButtonRowFingerprint.match()
         val buttonRow = buttonRowMatch.originalMethod
         val parameters = buttonRowMatch.composableParameters()
-        val externalIpRow = externalIpRowFingerprint(buttonRow).matchSingle()
+        val externalIpRow = externalIpRowFingerprint(buttonRow).match()
         val (_, stateRead, buttonCall) = externalIpRow.instructionMatches
         replaceExternalIpStateStub(stateRead)
         val method = externalIpRow.method

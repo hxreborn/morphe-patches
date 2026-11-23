@@ -6,11 +6,11 @@ package app.morphe.patches.terabox.misc.recent
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
@@ -20,7 +20,7 @@ import app.morphe.patches.shared.misc.extension.teraboxRemoveRecentPanelExtensio
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/terabox/RecentPanel;"
 
 @Suppress("unused")
-val removeRecentPanelPatch: BytecodePatch = bytecodePatch(
+val removeRecentPanelPatch: Patch = patch(
     name = "Remove recent panel",
     description = "Removes Recent, Starred and Offline from Home.",
 ) {
@@ -34,14 +34,14 @@ val removeRecentPanelPatch: BytecodePatch = bytecodePatch(
             ResourceType.ID,
             mapOf("panelTabsId" to "shortcut_tab", "panelContentId" to "shortcut_bottom_scroll"),
         )
-        val fragment = HomeCardFragmentFingerprint.matchSingle().classDef
-        homeViewCreatedFingerprint(fragment.type).matchSingle().method.apply {
+        val fragment = HomeCardFragmentFingerprint.match().classDef
+        homeViewCreatedFingerprint(fragment.type).method.apply {
             addInstruction(
                 0,
                 "invoke-static/range { p1 .. p1 }, $EXTENSION_CLASS_DESCRIPTOR->updateRecentPanel(Landroid/view/View;)V",
             )
         }
-        homeResumeFingerprint(fragment.type).matchSingle().method.apply {
+        homeResumeFingerprint(fragment.type).method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
             addInstructions(
                 0,

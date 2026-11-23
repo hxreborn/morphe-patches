@@ -4,12 +4,11 @@
  */
 package app.morphe.patches.notein.misc.integrity
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 
-internal val disablePlayIntegrityDialogPatch = bytecodePatch {
+internal val disablePlayIntegrityDialogPatch = patch {
     execute {
-        ShowRemediationDialogFingerprint.matchSingle().method.returnEarly()
+        ShowRemediationDialogFingerprint.method.returnEarly()
     }
 }

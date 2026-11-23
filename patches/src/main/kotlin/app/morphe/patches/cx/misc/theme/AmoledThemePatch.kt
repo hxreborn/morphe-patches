@@ -5,11 +5,12 @@
 package app.morphe.patches.cx.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.adoptChild
 import app.morphe.util.findElementByAttributeValueOrThrow
@@ -46,12 +47,12 @@ private fun ClassDef.onCreateOrNull() = methods.firstOrNull {
         it.parameterTypes.map(CharSequence::toString) == listOf(BUNDLE_CLASS)
 }
 
-private fun BytecodePatchContext.extendsActivity(classDef: ClassDef) =
+private fun extendsActivity(classDef: ClassDef) =
     generateSequence(classDef.superclass) { classDefByOrNull(it)?.superclass }
         .take(MAX_HIERARCHY_DEPTH)
         .any { it == ACTIVITY_CLASS }
 
-private val amoledThemeResourcesPatch = resourcePatch {
+private val amoledThemeResourcesPatch = patch {
     execute {
         document("res/values/styles.xml").use { document ->
             document.getNode("resources").adoptChild("style") {
@@ -83,7 +84,7 @@ private val amoledThemeResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Adds a pure black option to the dark theme.",
 ) {
@@ -93,7 +94,7 @@ val amoledThemePatch = bytecodePatch(
     dependsOn(darkThemePatch, amoledThemeResourcesPatch)
 
     execute {
-        val settingsClassDef = ThemePreferenceFingerprint.matchSingle().classDef
+        val settingsClassDef = ThemePreferenceFingerprint.match().classDef
         val preferenceChanged = settingsClassDef.methods.single {
             it.name == PREFERENCE_CHANGED_METHOD
         }

@@ -5,8 +5,7 @@
 package app.morphe.patches.allinonecalculator.misc.gms
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.GMS_CORE_SIGN_IN_CLASS
 import app.morphe.patches.shared.misc.gms.bindGmsCoreSignInTypes
@@ -19,7 +18,7 @@ private const val REQUEST_PARAMS_CLASS =
     "Lio/flutter/plugins/googlesignin/GetCredentialRequestParams;"
 
 @Suppress("unused")
-val gmsCoreSupportPatch = bytecodePatch(
+val gmsCoreSupportPatch = patch(
     name = "GmsCore support",
     description = "Signs in through GmsCore instead of Google Play Services. " +
         "Requires GmsCore to be installed.",
@@ -32,7 +31,7 @@ val gmsCoreSupportPatch = bytecodePatch(
     execute {
         bindGmsCoreSignInTypes()
 
-        GetCredentialFingerprint.matchSingle().method.addInstructions(
+        GetCredentialFingerprint.method.addInstructions(
             0,
             """
                 invoke-virtual { p0 }, $DELEGATE_CLASS->getActivity()Landroid/app/Activity;

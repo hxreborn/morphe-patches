@@ -5,14 +5,13 @@
 package app.morphe.patches.wattpad.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val PREMIUM_PLUS_TIER = 60
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Premium+ with unlimited offline stories, reading themes and no " +
         "interstitials in the reader. Paid stories still cost coins.",
@@ -20,11 +19,11 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.WATTPAD)
 
     execute {
-        val subscriptionStatusType = SubscriptionStatusToStringFingerprint.matchSingle().classDef.type
+        val subscriptionStatusType = SubscriptionStatusToStringFingerprint.match().classDef.type
         constructorFingerprint(
             subscriptionStatusType,
             "Z", "I", "Ljava/lang/String;", "Ljava/lang/String;", "Ljava/lang/String;", "Z",
-        ).matchSingle().method.addInstructions(
+        ).method.addInstructions(
             0,
             """
                 const/16 p2, $PREMIUM_PLUS_TIER
@@ -33,10 +32,10 @@ val unlockPremiumPatch = bytecodePatch(
             """,
         )
 
-        val headerSectionType = HeaderSectionToStringFingerprint.matchSingle().classDef.type
+        val headerSectionType = HeaderSectionToStringFingerprint.match().classDef.type
         constructorFingerprint(
             headerSectionType,
             "Ljava/lang/String;", "Z", "Ljava/lang/String;", "Ljava/lang/String;",
-        ).matchSingle().method.addInstructions(0, "const/4 p3, 0x0")
+        ).method.addInstructions(0, "const/4 p3, 0x0")
     }
 }

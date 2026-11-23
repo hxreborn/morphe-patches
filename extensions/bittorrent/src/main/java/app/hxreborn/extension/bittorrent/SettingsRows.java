@@ -21,146 +21,23 @@
 package app.hxreborn.extension.bittorrent;
 
 import android.content.Context;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-final class SettingsRows {
-
-    private static final int SECTION_HEADER_START_PADDING_DP = 4;
-
-    private static final int SECTION_HEADER_TOP_PADDING_DP = 24;
-
-    private static final int SECTION_HEADER_BOTTOM_PADDING_DP = 8;
-
-    private static final int DESCRIPTION_TOP_PADDING_DP = 2;
-
-    private static final int ROW_MIN_HEIGHT_DP = 64;
-
-    private static final int ROW_VERTICAL_PADDING_DP = 14;
-
-    private static final int ICON_END_MARGIN_DP = 16;
-
-    private static final int SWITCH_START_MARGIN_DP = 16;
-
-    private static final int SWITCH_WIDTH_DP = 40;
-
-    private static final int SWITCH_HEIGHT_DP = 21;
-
-    private static final int FIELD_LABEL_WIDTH_DP = 112;
+final class SettingsRows extends app.hxreborn.extension.shared.patchesmenu.SettingsRows {
 
     private final Context context;
 
-    private final SettingsStyle style;
-
     SettingsRows(Context context, SettingsStyle style) {
+        super(context, style);
         this.context = context;
-        this.style = style;
     }
 
-    TextView sectionHeader(String title) {
-        TextView header = this.style.text(title, SettingsStyle.SECTION_SP, this.style.secondaryText, this.style.medium);
-        header.setPadding(this.style.dp(SECTION_HEADER_START_PADDING_DP), this.style.dp(SECTION_HEADER_TOP_PADDING_DP),
-                0, this.style.dp(SECTION_HEADER_BOTTOM_PADDING_DP));
-        SettingsStyle.markHeading(header);
-        return header;
-    }
-
-    LinearLayout card() {
-        LinearLayout card = new LinearLayout(this.context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        card.setBackground(this.style.rounded(this.style.cardSurface, SettingsStyle.CARD_RADIUS_DP));
-        card.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
-        card.setClipToOutline(true);
-        return card;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    void switchRow(LinearLayout card, int iconId, String title, String description, boolean checked,
-            SwitchChangeListener listener) {
-        HostSwitch toggle = new HostSwitch(this.context, checked, this.style.accent, listener);
-        LinearLayout row = baseRow(card, iconId);
-        addTitleAndDescription(row, title, description);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(this.style.dp(SWITCH_WIDTH_DP),
-                this.style.dp(SWITCH_HEIGHT_DP));
-        params.setMarginStart(this.style.dp(SWITCH_START_MARGIN_DP));
+    @Override
+    protected void attachSwitch(LinearLayout row, boolean checked, int accent,
+            app.hxreborn.extension.shared.patchesmenu.SwitchChangeListener listener, LinearLayout.LayoutParams params) {
+        HostSwitch toggle = new HostSwitch(this.context, checked, accent, listener);
         row.addView(toggle.view(), params);
-        row.setBackground(this.style.ripple(0));
-        row.setContentDescription(title + ". " + description);
-        row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         toggle.attach(row);
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    void actionRow(LinearLayout card, int iconId, String title, String description, Runnable action) {
-        LinearLayout row = baseRow(card, iconId);
-        addTitleAndDescription(row, title, description);
-        row.setBackground(this.style.ripple(0));
-        row.setOnClickListener((view) -> action.run());
-    }
-
-    void valueRow(LinearLayout card, int iconId, String label, String value) {
-        LinearLayout row = baseRow(card, iconId);
-        TextView labelView = this.style.text(label, SettingsStyle.BODY_SP, this.style.secondaryText, null);
-        row.addView(labelView, new LinearLayout.LayoutParams(this.style.dp(FIELD_LABEL_WIDTH_DP),
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        TextView valueView = this.style.text(value, SettingsStyle.BODY_SP, this.style.primaryText, null);
-        row.addView(valueView, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-    }
-
-    void patchRow(LinearLayout card, String title, String description) {
-        if (card.getChildCount() > 0) {
-            divider(card);
-        }
-        LinearLayout row = new LinearLayout(this.context);
-        row.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP),
-                this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP));
-        addTitleAndDescription(row, title, description);
-        card.addView(row);
-    }
-
-    private LinearLayout baseRow(LinearLayout card, int iconId) {
-        if (card.getChildCount() > 0) {
-            divider(card);
-        }
-        LinearLayout row = new LinearLayout(this.context);
-        row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setMinimumHeight(this.style.dp(ROW_MIN_HEIGHT_DP));
-        row.setPadding(this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP),
-                this.style.dp(SettingsStyle.SCREEN_INSET_DP), this.style.dp(ROW_VERTICAL_PADDING_DP));
-        ImageView icon = new ImageView(this.context);
-        icon.setImageDrawable(this.style.hostIcon(iconId, this.style.primaryText));
-        icon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(this.style.dp(SettingsStyle.ICON_DP),
-                this.style.dp(SettingsStyle.ICON_DP));
-        iconParams.setMarginEnd(this.style.dp(ICON_END_MARGIN_DP));
-        row.addView(icon, iconParams);
-        card.addView(row, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        return row;
-    }
-
-    private void addTitleAndDescription(LinearLayout row, String title, String description) {
-        LinearLayout labels = new LinearLayout(this.context);
-        labels.setOrientation(LinearLayout.VERTICAL);
-        row.addView(labels, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-        labels.addView(this.style.text(title, SettingsStyle.ROW_TITLE_SP, this.style.primaryText, this.style.medium));
-        TextView body = this.style.text(description, SettingsStyle.BODY_SP, this.style.secondaryText, null);
-        body.setPadding(0, this.style.dp(DESCRIPTION_TOP_PADDING_DP), 0, 0);
-        labels.addView(body);
-    }
-
-    private void divider(LinearLayout card) {
-        View divider = new View(this.context);
-        divider.setBackgroundColor(this.style.divider);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        params
-            .setMarginStart(this.style.dp(SettingsStyle.SCREEN_INSET_DP + SettingsStyle.ICON_DP + ICON_END_MARGIN_DP));
-        card.addView(divider, params);
     }
 
 }

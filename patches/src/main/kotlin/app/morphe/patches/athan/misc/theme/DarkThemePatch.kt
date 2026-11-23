@@ -7,9 +7,8 @@ package app.morphe.patches.athan.misc.theme
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.athan.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -31,7 +30,7 @@ private val styleFiles = listOf("res/values/styles.xml", "res/values-v29/styles.
 
 private fun Document.styles() = getElementsByTagName("style").asSequence().filterIsInstance<Element>()
 
-private val allowForceDarkPatch = resourcePatch {
+private val allowForceDarkPatch = patch {
     execute {
         document(styleFiles.first()).use { styles ->
             val baseTheme = styles.styles().singleOrNull { it.getAttribute("name") == APPCOMPAT_LIGHT_BASE_THEME }
@@ -56,7 +55,7 @@ private val allowForceDarkPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val darkThemePatch = bytecodePatch(
+val darkThemePatch = patch(
     name = "Dark theme",
     description = "Shows the app in dark colors when the system dark theme is on.",
 ) {
@@ -66,17 +65,17 @@ val darkThemePatch = bytecodePatch(
 
     execute {
         SetApplicationNightModeFingerprint.matchAll().forEach { match ->
-            val invoke = match.instructionMatches.first()
-            val mode = invoke.getInstruction<FiveRegisterInstruction>().registerD
-            match.method.addInstruction(invoke.index, "const/4 v$mode, $MODE_NIGHT_AUTO")
+            val (setNightModeCall) = match.instructionMatches
+            val mode = setNightModeCall.getInstruction<FiveRegisterInstruction>().registerD
+            match.method.addInstruction(setNightModeCall.index, "const/4 v$mode, $MODE_NIGHT_AUTO")
         }
 
-        DefaultNightModeFingerprint.matchSingle().let { match ->
-            val nightMode = match.instructionMatches[1]
-            val register = nightMode.getInstruction<OneRegisterInstruction>().registerA
-            match.method.replaceInstruction(nightMode.index, "const/4 v$register, $MODE_NIGHT_FOLLOW_SYSTEM")
+        DefaultNightModeFingerprint.match().let { match ->
+            val (_, defaultNightMode) = match.instructionMatches
+            val register = defaultNightMode.getInstruction<OneRegisterInstruction>().registerA
+            match.method.replaceInstruction(defaultNightMode.index, "const/4 v$register, $MODE_NIGHT_FOLLOW_SYSTEM")
         }
 
-        ComposeDisallowForceDarkFingerprint.matchSingle().method.returnEarly()
+        ComposeDisallowForceDarkFingerprint.method.returnEarly()
     }
 }

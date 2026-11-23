@@ -6,9 +6,8 @@ package app.morphe.patches.sygic.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -16,7 +15,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 private const val PREMIUM_VALID_UNTIL_MILLIS = "4102444800000"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Premium+ features, including live traffic, speed cameras and " +
         "Motorbike mode.",
@@ -24,10 +23,10 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.SYGIC)
 
     execute {
-        FeatureIsValidFingerprint.matchSingle().method.returnEarly(true)
-        PremiumLicenseConstructorFingerprint.matchSingle()
+        FeatureIsValidFingerprint.method.returnEarly(true)
+        PremiumLicenseConstructorFingerprint.match()
 
-        LicenseParserFingerprint.matchSingle().let { match ->
+        LicenseParserFingerprint.match().let { match ->
             val constructorIndex = match.instructionMatches.last().index
             match.method.apply {
                 val constructor = getInstruction<FiveRegisterInstruction>(constructorIndex)

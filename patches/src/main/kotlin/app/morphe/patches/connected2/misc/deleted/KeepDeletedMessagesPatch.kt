@@ -6,10 +6,10 @@ package app.morphe.patches.connected2.misc.deleted
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -19,14 +19,12 @@ import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.connected2KeepDeletedMessagesExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/connected2/DeletedMessages;"
 
 @Suppress("unused")
-val keepDeletedMessagesPatch = bytecodePatch(
+val keepDeletedMessagesPatch = patch(
     name = "Keep deleted messages",
     description = "Keeps messages the other person deletes and marks deleted text messages with 🗑.",
 ) {
@@ -37,16 +35,16 @@ val keepDeletedMessagesPatch = bytecodePatch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
 
     execute {
-        DeleteMessageHandlerFingerprint.matchSingle().apply {
+        DeleteMessageHandlerFingerprint.match().apply {
             val (_, _, lookupCall, _, ageCheckMatch) = instructionMatches
             val ageCheck = ageCheckMatch.index
             val message = method.getInstruction<OneRegisterInstruction>(lookupCall.index + 1).registerA
             val skipDelete = method.getInstruction<BuilderOffsetInstruction>(ageCheck).target.location.instruction!!
-            val messageType = lookupCall.instruction.getReference<MethodReference>()!!.returnType
-            val contentTypeGetter = messageContentTypeGetterFingerprint(messageType).matchSingle().originalMethod
-            val bodyGetter = messageBodyGetterFingerprint(messageType).matchSingle().originalMethod
-            val bodySetter = messageBodySetterFingerprint(messageType).matchSingle().originalMethod
-            val save = recordSaveFingerprint(classDefBy(messageType).superclass!!).matchSingle().originalMethod
+            val messageType = lookupCall.methodReference.returnType
+            val contentTypeGetter = messageContentTypeGetterFingerprint(messageType).originalMethod
+            val bodyGetter = messageBodyGetterFingerprint(messageType).originalMethod
+            val bodySetter = messageBodySetterFingerprint(messageType).originalMethod
+            val save = recordSaveFingerprint(classDefBy(messageType).superclass!!).originalMethod
             with(mutableClassDefBy(EXTENSION_CLASS)) {
                 replaceStub(
                     "bodyOf",
@@ -69,7 +67,7 @@ val keepDeletedMessagesPatch = bytecodePatch(
                     """,
                 )
             }
-            val (_, textField) = textContentTypeFingerprint(contentTypeGetter.returnType).matchSingle()
+            val (_, textField) = textContentTypeFingerprint(contentTypeGetter.returnType).match()
                 .instructionMatches
             val registers = method.getFreeRegisterProvider(ageCheck + 1, 2, message)
             val contentType = registers.getFreeRegister4Bit()
@@ -80,7 +78,7 @@ val keepDeletedMessagesPatch = bytecodePatch(
                 """
                     invoke-virtual { v$message }, ${descriptor(contentTypeGetter)}
                     move-result-object v$contentType
-                    sget-object v$textContentType, ${textField.instruction.getReference<FieldReference>()!!}
+                    sget-object v$textContentType, ${textField.fieldReference}
                     invoke-static { v$message, v$contentType, v$textContentType }, $EXTENSION_CLASS->mark(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
                     goto :skip_delete
                 """,

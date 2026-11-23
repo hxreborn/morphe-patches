@@ -5,20 +5,19 @@
 package app.morphe.patches.xtreamplayer.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks premium media features and visualizers.",
 ) {
     compatibleWith(AppCompatibilities.XTREAM_PLAYER)
 
     execute {
-        VerifyLicenseFingerprint.matchSingle().method.addInstructions(
+        VerifyLicenseFingerprint.method.addInstructions(
             0,
             """
                 sget-object p0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
@@ -26,6 +25,6 @@ val unlockPremiumPatch = bytecodePatch(
                 return-void
             """,
         )
-        GuardActivityFingerprint.matchSingle().method.returnEarly(true)
+        GuardActivityFingerprint.method.returnEarly(true)
     }
 }

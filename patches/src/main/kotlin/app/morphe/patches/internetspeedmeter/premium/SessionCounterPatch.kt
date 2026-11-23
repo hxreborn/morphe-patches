@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.smali.replaceMethod
 import app.morphe.util.cloneMutable
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -19,14 +19,14 @@ import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 
 private const val SESSION_COUNTER_METHOD = "sessionCounter"
 
-internal val sessionCounterPatch = bytecodePatch {
+internal val sessionCounterPatch = patch {
     dependsOn(internetspeedmeterAdPreferenceExtensionPatch, internetspeedmeterUnlockPremiumExtensionPatch, sharedDimensionsExtensionPatch)
     execute {
-        val reference = SessionReferenceFingerprint.method
-        val editIndex = SessionReferenceFingerprint.instructionMatches.first().index
-        val counterRegister = reference.getInstruction<FiveRegisterInstruction>(
-            SessionReferenceFingerprint.instructionMatches.last().index,
-        ).registerE
+        val sessionReference = SessionReferenceFingerprint.match()
+        val reference = sessionReference.method
+        val (editPreferences, storeCounter) = sessionReference.instructionMatches
+        val editIndex = editPreferences.index
+        val counterRegister = storeCounter.getInstruction<FiveRegisterInstruction>().registerE
 
         val counter = reference.cloneMutable(
             name = SESSION_COUNTER_METHOD,

@@ -4,12 +4,12 @@
  */
 package app.morphe.patches.shahid.ads
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes video ads, pause ads and sponsored cards on the home, show and Shorts pages.",
 ) {

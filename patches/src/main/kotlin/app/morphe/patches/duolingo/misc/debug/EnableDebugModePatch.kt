@@ -12,8 +12,8 @@ package app.morphe.patches.duolingo.misc.debug
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.duolingo.misc.settings.PATCH_SETTINGS_CLASS
 import app.morphe.patches.duolingo.misc.settings.markPatchApplied
@@ -24,7 +24,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val enableDebugModePatch: BytecodePatch = bytecodePatch(
+val enableDebugModePatch: Patch = patch(
     name = "Enable debug mode",
     description = "Shows the debug menu and debug button. Turn it on in the patches menu.",
     default = false,

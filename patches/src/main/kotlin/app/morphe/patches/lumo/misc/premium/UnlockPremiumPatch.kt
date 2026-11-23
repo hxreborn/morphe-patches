@@ -5,8 +5,7 @@
 package app.morphe.patches.lumo.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.lumo.misc.PageStartedFingerprint
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/lumo/LumoPlus;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks unlimited projects and removes upgrade prompts. " +
         "Usage limits for models, messages and images still apply.",
@@ -34,7 +33,7 @@ val unlockPremiumPatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        PageStartedFingerprint.matchSingle().method.addInstructions(
+        PageStartedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $EXTENSION_CLASS->unlock(Landroid/webkit/WebView;)V",
         )

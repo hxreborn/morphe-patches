@@ -7,8 +7,7 @@ package app.morphe.patches.moonreader.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -17,7 +16,7 @@ import app.morphe.patches.shared.misc.extension.moonreaderUnlockProExtensionPatc
 private const val PRO_PACKAGE_CONTEXT = "Lapp/hxreborn/extension/moonreader/ProPackageContext;"
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks Pro features, including PDF annotations and form filling, " +
         "WebDAV and FTP sync, text-to-speech controls, the home screen widget " +
@@ -29,9 +28,9 @@ val unlockProPatch = bytecodePatch(
     dependsOn(homeScreenWidgetPatch)
 
     execute {
-        IsProFingerprint.matchSingle().method.returnEarly(true)
+        IsProFingerprint.method.returnEarly(true)
 
-        PdfLicenceInitFingerprint.matchSingle().method.addInstructions(
+        PdfLicenceInitFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p0 }, $PRO_PACKAGE_CONTEXT->wrap(Landroid/content/Context;)Landroid/content/Context;
@@ -39,10 +38,10 @@ val unlockProPatch = bytecodePatch(
             """,
         )
 
-        FreeTextButtonFingerprint.matchSingle().let { match ->
-            val moveResult = match.instructionMatches.last()
-            val resultRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
-            match.method.addInstruction(moveResult.index + 1, "const/4 v$resultRegister, 0x0")
+        FreeTextButtonFingerprint.match().let { match ->
+            val (_, _, _, _, packageSuffixResult) = match.instructionMatches
+            val resultRegister = packageSuffixResult.getInstruction<OneRegisterInstruction>().registerA
+            match.method.addInstruction(packageSuffixResult.index + 1, "const/4 v$resultRegister, 0x0")
         }
     }
 }

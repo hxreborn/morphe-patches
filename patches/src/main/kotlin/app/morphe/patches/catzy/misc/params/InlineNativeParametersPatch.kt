@@ -6,8 +6,9 @@ package app.morphe.patches.catzy.misc.params
 
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patcher.util.returnEarly
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -63,9 +64,9 @@ private fun ByteArray.readParameter(offset: Int): String {
     return value
 }
 
-private val extractNativeParametersPatch = rawResourcePatch {
+private val extractNativeParametersPatch = patch {
     execute {
-        val library = get("$ARM64_LIBRARY_DIRECTORY/$PARAMS_LIBRARY")
+        val library = resourceFile("$ARM64_LIBRARY_DIRECTORY/$PARAMS_LIBRARY")
         check(library.exists()) { "No $ARM64_LIBRARY_DIRECTORY/$PARAMS_LIBRARY" }
 
         val contents = library.readBytes()
@@ -84,14 +85,14 @@ private val extractNativeParametersPatch = rawResourcePatch {
             value
         }
 
-        get("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
+        resourceFile("lib").listFiles { file -> file.isDirectory }?.forEach { architecture ->
             architecture.resolve(PARAMS_LIBRARY).delete()
             architecture.resolve(CONCEAL_LIBRARY).delete()
         }
     }
 }
 
-internal val inlineNativeParametersPatch = bytecodePatch {
+internal val inlineNativeParametersPatch = patch {
     dependsOn(extractNativeParametersPatch)
 
     execute {

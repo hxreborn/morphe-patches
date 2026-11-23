@@ -6,8 +6,10 @@ package app.morphe.patches.candycrushsaga.shared.serverresponse
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.shared.isCandyCrushSodaSaga
 import app.morphe.patches.shared.misc.smali.addFieldReader
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -16,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.candycrushsagaServerResponsesExt
 
 internal const val SERVER_RESPONSES = "Lapp/hxreborn/extension/candycrushsaga/ServerResponses;"
 
-internal val editServerResponsesPatch = bytecodePatch {
+internal val editServerResponsesPatch = patch {
     dependsOn(candycrushsagaServerResponsesExtensionPatch)
     execute {
         val soda = isCandyCrushSodaSaga(packageMetadata.packageName)
@@ -24,7 +26,7 @@ internal val editServerResponsesPatch = bytecodePatch {
             const/4 v0, ${if (soda) "0x1" else "0x0"}
             return v0
         """)
-        val responseStreamMatch = ReadDataFingerprint.matchSingle()
+        val responseStreamMatch = ReadDataFingerprint.match()
         val (openStream) = responseStreamMatch.instructionMatches
         val readResponse = responseStreamMatch.method
         val requestBody = classDefBy(readResponse.definingClass).fields.single { it.type == "[B" }

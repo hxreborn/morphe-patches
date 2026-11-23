@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.myscriptmath.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatLifetimeEntitlement
 import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
@@ -13,7 +13,7 @@ private const val ENTITLEMENT = "MyScript Math – Full Access"
 private const val PRODUCT = "msmath_standard_lifetime"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all features after the free trial ends.",
 ) {

@@ -7,8 +7,7 @@ package app.morphe.patches.blockit.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -16,7 +15,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Premium, the big suitcase and the sound pack.",
 ) {
@@ -25,7 +24,7 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        val ownedPurchases = OwnedPurchasesFingerprint.matchSingle()
+        val ownedPurchases = OwnedPurchasesFingerprint.match()
         val (premiumStoreMatch, _, bigSuitcasePut, _, soundPackPut) = ownedPurchases.instructionMatches
 
         ownedPurchases.method.apply {

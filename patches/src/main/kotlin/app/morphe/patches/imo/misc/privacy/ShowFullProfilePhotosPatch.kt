@@ -6,8 +6,7 @@ package app.morphe.patches.imo.misc.privacy
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnBoxedBooleanEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -16,14 +15,14 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val showFullProfilePhotosPatch = bytecodePatch(
+val showFullProfilePhotosPatch = patch(
     name = "Show full profile photos",
     description = "Opens profile photos in full size when their owner restricts it.",
 ) {
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        ProfileAvatarFlagsFingerprint.matchSingle().method.apply {
+        ProfileAvatarFlagsFingerprint.method.apply {
             avatarPrivacyKeys.forEach { key ->
                 val readIndex = indexOfFirstInstructionOrThrow(indexOfFirstStringInstructionOrThrow(key), jsonFlagRead)
                 val flagIndex = indexOfFirstInstructionOrThrow(readIndex, Opcode.MOVE_RESULT)
@@ -32,6 +31,6 @@ val showFullProfilePhotosPatch = bytecodePatch(
             }
         }
 
-        VoiceRoomFullAvatarFingerprint.matchSingle().method.returnBoxedBooleanEarly(true)
+        VoiceRoomFullAvatarFingerprint.method.returnBoxedBooleanEarly(true)
     }
 }

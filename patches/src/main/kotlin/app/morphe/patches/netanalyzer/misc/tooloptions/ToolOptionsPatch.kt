@@ -5,11 +5,10 @@
 package app.morphe.patches.netanalyzer.misc.tooloptions
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
 import app.morphe.patches.netanalyzer.shared.MenuSection
@@ -32,7 +31,7 @@ private val TOOL_OPTION_PROPERTIES = listOf(
 )
 
 @Suppress("unused")
-val toolOptionsPatch = bytecodePatch(
+val toolOptionsPatch = patch(
     name = "Tool options",
     description = "Adds ping protocol, TCP ping, probe delay, payload size, don't fragment and audible ping, " +
         "traceroute and port scan delays, whois and RDAP servers, and DNS flags.",
@@ -46,15 +45,16 @@ val toolOptionsPatch = bytecodePatch(
         addToolbarIcon(textButtonSlot("ToolsQueryMenu"), "settings", MaterialIcons.SETTINGS, "Options", "ToolOptionsActivity")
         addMenuEntry(MenuSection.SETTINGS, "Tool Options", "ToolOptionsActivity")
 
-        val normaliser = ToolItemNormaliserFingerprint.matchSingle()
+        val normaliser = ToolItemNormaliserFingerprint.match()
         val itemType = normaliser.originalMethod.returnType
         val fields = classDefBy(itemType).propertyFields()
         val fieldNames = TOOL_OPTION_PROPERTIES.joinToString(",") { property ->
             "$property=${fields[property] ?: throw PatchException("$itemType has no $property property")}"
         }
 
-        val returnIndex = normaliser.instructionMatches.last().index
-        val itemRegister = normaliser.method.getInstruction<OneRegisterInstruction>(returnIndex).registerA
+        val (_, _, itemReturn) = normaliser.instructionMatches
+        val returnIndex = itemReturn.index
+        val itemRegister = itemReturn.getInstruction<OneRegisterInstruction>().registerA
         val fieldNamesRegister = normaliser.method.getFreeRegisterProvider(returnIndex, 1, itemRegister)
             .getFreeRegister4Bit()
         requireNibbleRegisters(itemRegister)

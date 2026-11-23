@@ -5,11 +5,11 @@
 package app.morphe.patches.vllo.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.listDecodableFiles
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
@@ -19,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import org.w3c.dom.Element
 
-private val hideStoreButtonPatch = resourcePatch {
+private val hideStoreButtonPatch = patch {
     execute {
         val layouts = listDecodableFiles("res/layout*/controller_main_v6.xml")
         check(layouts.isNotEmpty()) { "No main-screen layout found" }
@@ -36,7 +36,7 @@ private val hideStoreButtonPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val unlockPremiumPatch: BytecodePatch = bytecodePatch(
+val unlockPremiumPatch: Patch = patch(
     name = "Unlock premium",
     description = "Unlocks premium editing features, removes ads and the export watermark, and skips " +
         "the ad before importing audio. Hides the store button. The AI tools are not included.",
@@ -48,10 +48,10 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        val (allFeaturesWrite) = EntitlementEnumFingerprint.matchSingle().instructionMatches
+        val (allFeaturesWrite) = EntitlementEnumFingerprint.match().instructionMatches
         val allFeatures = allFeaturesWrite.getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
 
         premiumEntitlementCheckFingerprint(allFeatures.definingClass, allFeatures.name)
-            .matchSingle().method.returnEarly(true)
+            .method.returnEarly(true)
     }
 }

@@ -8,12 +8,12 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -39,7 +39,7 @@ private const val BODY_UNLESS_REMOVING = "$VIBER_SETTINGS_CLASS->deletedMessageB
 private const val SHOW_DELETE_WITHOUT_TRACE_OPTION = "$VIBER_SETTINGS_CLASS->showDeleteWithoutTraceOption(Z)Z"
 
 @Suppress("unused")
-val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
+val removeDeletedMessagesPatch: Patch = patch(
     name = "Remove deleted message notices",
     description = "Makes Delete for everyone leave no notice on either side and clears deleted message notices from chats. " +
         "Hides Viber's own Delete without a trace option.",
@@ -49,7 +49,7 @@ val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("removeDeletedMessageNotices", removeDeletedMessagesPatch)
-        val request = DeleteMessageRequestFingerprint.matchSingle()
+        val request = DeleteMessageRequestFingerprint.match()
         val (requestCall) = request.instructionMatches
         val requestRegisters = requestCall.instruction as RegisterRangeInstruction
         val silentFlag = requestRegisters.startRegister + requestRegisters.registerCount - 1
@@ -61,26 +61,26 @@ val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        val silent = SilentDeletedMessageFingerprint.matchSingle()
+        val silent = SilentDeletedMessageFingerprint.match()
         val (_, _, statusResult, _, statusBranch) = silent.instructionMatches
         val statusRegister = (statusResult.instruction as OneRegisterInstruction).registerA
         check((statusBranch.instruction as OneRegisterInstruction).registerA == statusRegister) {
             "Silent deletion status branch uses a different register"
         }
-        val lookup = SilentMessageLookupFingerprint.matchSingle()
+        val lookup = SilentMessageLookupFingerprint.match()
         check(lookup.originalMethod == silent.originalMethod) { "Silent deletion lookup method differs" }
         val (providerField, providerGet, lookupCall) = lookup.instructionMatches
         val messageQueryProvider = providerField.instruction.getReference<FieldReference>()!!
         val providerGetMethod = providerGet.instruction.getReference<MethodReference>()!!
         val findMessageByToken = lookupCall.instruction.getReference<MethodReference>()!!
-        val deleted = DeletedMessageFingerprint.matchSingle()
+        val deleted = DeletedMessageFingerprint.match()
         val (_, messageResult, _, messageUpdate, controllerRead) = deleted.instructionMatches
         val (_, bodyResult, mimeConstant) = deleted.instructionMatches.takeLast(NOTICE_FILTER_COUNT)
         val messageRegister = (messageResult.instruction as OneRegisterInstruction).registerA
         check((messageUpdate.instruction as FiveRegisterInstruction).registerD == messageRegister) {
             "Deleted message update uses a different entity register"
         }
-        val event = DeletedMessageEventFingerprint.matchSingle()
+        val event = DeletedMessageEventFingerprint.match()
         val (silentCall, normalCall) = event.instructionMatches
         check(silentCall.instruction.getReference<MethodReference>() == silent.originalMethod) {
             "Silent event handler calls a different method"
@@ -169,7 +169,7 @@ val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
         )
         deleted.method.addInstructions(messageUpdate.index + 1, "invoke-virtual {v${(controllerRead.instruction as TwoRegisterInstruction).registerB}, v$messageRegister}, $deleteSilently")
 
-        DeleteWithoutTraceMenuItemFingerprint.matchSingle().apply {
+        DeleteWithoutTraceMenuItemFingerprint.match().apply {
             val (_, removeItem) = instructionMatches
             val keepIndex = removeItem.index + 1
             val removing = method.getFreeRegisterProvider(keepIndex, 1).getFreeRegister4Bit()
@@ -184,7 +184,7 @@ val removeDeletedMessagesPatch: BytecodePatch = bytecodePatch(
                 ExternalLabel("keep", method.getInstruction(keepIndex)),
             )
         }
-        DeleteOptionsDialogConstructorFingerprint.matchSingle().method.addInstructions(
+        DeleteOptionsDialogConstructorFingerprint.method.addInstructions(
             0,
             """
                 invoke-static {p1}, $SHOW_DELETE_WITHOUT_TRACE_OPTION

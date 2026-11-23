@@ -7,12 +7,10 @@ package app.morphe.patches.netanalyzer.misc.wifidetails
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.composableParameters
@@ -27,7 +25,7 @@ private const val ROW_ON_CLICK = "onClick"
 private const val ROW_DATA = "data"
 
 @Suppress("unused")
-val wifiDetailsPatch = bytecodePatch(
+val wifiDetailsPatch = patch(
     name = "Wi-Fi network details",
     description = "Adds a details page for each network in the Signal list with its channel range, " +
         "utilization, beamforming support, maximum speed and modulation.",
@@ -39,7 +37,7 @@ val wifiDetailsPatch = bytecodePatch(
     execute {
         addFeatureActivity("WifiDetailsActivity")
 
-        val rowMatch = WifiSignalRowFingerprint.matchSingle()
+        val rowMatch = WifiSignalRowFingerprint.match()
         val row = rowMatch.originalMethod
         val rowCall = Fingerprint(
             filters = listOf(
@@ -49,11 +47,11 @@ val wifiDetailsPatch = bytecodePatch(
                     location = MatchAfterImmediately(),
                 ),
             ),
-        ).matchSingle()
+        ).match()
 
-        val nullIndex = rowCall.instructionMatches.first().index
-        val nullRegister = rowCall.method.getInstruction<OneRegisterInstruction>(nullIndex).registerA
-        val call = rowCall.method.getInstruction<FiveRegisterInstruction>(rowCall.instructionMatches.last().index)
+        val (nullLiteral, signalRowCall) = rowCall.instructionMatches
+        val nullRegister = nullLiteral.getInstruction<OneRegisterInstruction>().registerA
+        val call = signalRowCall.getInstruction<FiveRegisterInstruction>()
         val parameters = rowMatch.composableParameters()
         val callRegisters = listOf(call.registerC, call.registerD, call.registerE, call.registerF, call.registerG)
         if (callRegisters[parameters.indexOf(ROW_ON_CLICK)] != nullRegister) {
@@ -63,7 +61,7 @@ val wifiDetailsPatch = bytecodePatch(
         val dataRegister = callRegisters[parameters.indexOf(ROW_DATA)]
 
         rowCall.method.addInstructions(
-            nullIndex + 1,
+            nullLiteral.index + 1,
             """
                 const-class v$nullRegister, $onClickType
                 invoke-static { v$nullRegister, v$dataRegister }, $FEATURES_CLASS->onHotspotClick(Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;

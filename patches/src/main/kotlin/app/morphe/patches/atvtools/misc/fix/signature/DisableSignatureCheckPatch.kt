@@ -5,12 +5,13 @@
 package app.morphe.patches.atvtools.misc.fix.signature
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 
-internal val disableSignatureCheckPatch = rawResourcePatch {
+internal val disableSignatureCheckPatch = patch {
     execute {
         val present = AtvToolsSignatureCheckTarget.targets
-            .map { it to get(it.libraryPath, true) }
+            .map { it to resourceFile(it.libraryPath, true) }
             .filter { (_, library) -> library.exists() }
 
         if (present.isEmpty()) {

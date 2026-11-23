@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val duolingoSettingsExtensionPatch = bytecodePatch {
-    dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch)
+
+internal val duolingoSettingsExtensionPatch = patch {
+    dependsOn(morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/duolingo-settings.mpe")
 }

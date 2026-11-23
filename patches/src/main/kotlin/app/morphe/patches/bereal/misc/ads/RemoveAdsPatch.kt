@@ -5,11 +5,10 @@
 package app.morphe.patches.bereal.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.base.beRealBasePatch
@@ -35,7 +34,7 @@ private fun MutableMethod.returnNull() = addInstructions(
 )
 
 @Suppress("unused")
-val removeAdsPatch: BytecodePatch = bytecodePatch(
+val removeAdsPatch: Patch = patch(
     name = "Remove ads",
     description = "Removes the full-screen ad at launch and sponsored BeReals in both feeds. " +
         "Stops the ad networks from loading.",
@@ -50,31 +49,31 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}SponsoredPosts;", removeAdsPatch)
 
-        val adRequestType = AdRequestIdToStringFingerprint.matchSingle().classDef.type
-        val adSelector = adSelectorFingerprint(adRequestType).matchSingle()
+        val adRequestType = AdRequestIdToStringFingerprint.match().classDef.type
+        val adSelector = adSelectorFingerprint(adRequestType).match()
         adSelector.method.returnNull()
 
-        val placementType = AdPlacementEnumFingerprint.matchSingle().classDef.type
-        adProviderSetupFingerprint(adSelector.classDef.type, placementType).matchSingle().method.returnNull()
+        val placementType = AdPlacementEnumFingerprint.match().classDef.type
+        adProviderSetupFingerprint(adSelector.classDef.type, placementType).method.returnNull()
 
-        val nativeAdLoader = NativeAdLoaderFingerprint.matchSingle().classDef.type
-        nativeAdBatchLoadFingerprint(nativeAdLoader).matchSingle().method.addInstructions(0, "return-object p0")
+        val nativeAdLoader = NativeAdLoaderFingerprint.match().classDef.type
+        nativeAdBatchLoadFingerprint(nativeAdLoader).method.addInstructions(0, "return-object p0")
 
         SpotlightAdLoadFingerprint.matchAll(1..2).forEach { loader ->
             loader.method.returnNull()
-            spotlightAdEntryFingerprint(loader.classDef.type).matchSingle().method.returnNull()
+            spotlightAdEntryFingerprint(loader.classDef.type).method.returnNull()
         }
 
-        AdsSetupFingerprint.matchSingle().method.returnNull()
-        AdnInitializeFingerprint.matchSingle().method.returnNull()
+        AdsSetupFingerprint.method.returnNull()
+        AdnInitializeFingerprint.method.returnNull()
 
         FeedAddMessageFingerprint.matchAll(1..2).forEach {
-            feedAddHasAdFingerprint(it.classDef.type).matchSingle().method.returnEarly(false)
+            feedAddHasAdFingerprint(it.classDef.type).method.returnEarly(false)
         }
 
         val feedPostEntries = FeedPostEntryMessageFingerprint.matchAll(1..2)
         feedPostEntries.forEach { entry ->
-            val loop = feedPostEntryLoopFingerprint(entry.classDef.type).matchSingle()
+            val loop = feedPostEntryLoopFingerprint(entry.classDef.type).match()
             val (iteratorCall, _) = loop.instructionMatches
             val items = iteratorCall.getInstruction<FiveRegisterInstruction>().registerC
             loop.method.addInstructions(
@@ -88,7 +87,7 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
 
         replaceSponsoredStub(feedPostEntries.map { it.classDef })
 
-        val experiment = ServerFeedAdsExperimentFingerprint.matchSingle()
+        val experiment = ServerFeedAdsExperimentFingerprint.match()
         val (resultInstance, _, _) = experiment.instructionMatches
         val resultType = resultInstance.getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
         experiment.method.addInstructions(
@@ -103,7 +102,7 @@ val removeAdsPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.replaceSponsoredStub(entries: List<ClassDef>) {
+private fun replaceSponsoredStub(entries: List<ClassDef>) {
     val checks = entries.mapIndexed { index, entry ->
         val readSponsored = mutableClassDefBy(entry.type)
             .addFieldReader(entry.fields.single { it.name == SPONSORED_FIELD })

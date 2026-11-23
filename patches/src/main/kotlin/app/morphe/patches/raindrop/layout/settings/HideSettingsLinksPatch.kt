@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.raindrop.layout.settings
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
 
@@ -14,7 +14,7 @@ private const val LINKS_FORM_NULL =
     "6F 11 13 01 12 11 5A 10 11 03 52 02 10 00 94 02 94 02 94 02 8B 00 11"
 
 @Suppress("unused")
-val hideSettingsLinksPatch = rawResourcePatch(
+val hideSettingsLinksPatch = patch(
     name = "Hide Settings links",
     description = "Hides the Web and Desktop app, Blog, Help and Support links in Settings.",
 ) {

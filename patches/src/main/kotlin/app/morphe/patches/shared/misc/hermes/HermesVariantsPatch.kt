@@ -5,16 +5,17 @@
 package app.morphe.patches.shared.misc.hermes
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.all.misc.hermes.HERMES_BUNDLE_PATH
 import app.morphe.util.byteArrayOf
 import java.security.MessageDigest
 
 private const val SHA1_LENGTH = 20
 
-internal fun hermesVariantsPatch(vararg variants: Set<Pair<String, String>>) = rawResourcePatch {
+internal fun hermesVariantsPatch(vararg variants: Set<Pair<String, String>>) = patch {
     execute {
-        val file = get(HERMES_BUNDLE_PATH, true)
+        val file = resourceFile(HERMES_BUNDLE_PATH, true)
         val bundle = file.readBytes()
         val bundleText = bundle.toString(Charsets.ISO_8859_1)
 

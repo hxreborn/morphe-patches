@@ -7,8 +7,7 @@ package app.morphe.patches.imo.misc.limits
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -19,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val CONTACT_LIMIT = 999
 
 @Suppress("unused")
-val removeContactSelectionLimitPatch = bytecodePatch(
+val removeContactSelectionLimitPatch = patch(
     name = "Remove contact selection limit",
     description = "Raises the limit on contacts selected for iBubble close friends, Family Guard invites and " +
         "group calls to 999. Experimental.",
@@ -27,17 +26,17 @@ val removeContactSelectionLimitPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        CloseFriendLimitFingerprint.matchSingle().method.apply {
+        CloseFriendLimitFingerprint.method.apply {
             val limitIndex = indexOfFirstLiteralInstructionOrThrow(STOCK_CLOSE_FRIEND_LIMIT)
             val register = getInstruction<OneRegisterInstruction>(limitIndex).registerA
             replaceInstruction(limitIndex, "const/16 v$register, $CONTACT_LIMIT")
         }
-        CloseFriendPreselectionFingerprint.matchSingle().method.apply {
+        CloseFriendPreselectionFingerprint.method.apply {
             val countIndex = indexOfFirstInstructionOrThrow(preselectionCountCall)
             val limitRegister = getInstruction<FiveRegisterInstruction>(countIndex).registerC
             addInstruction(countIndex, "const/16 v$limitRegister, $STOCK_CLOSE_FRIEND_LIMIT")
         }
-        FamilyGuardContactLimitFingerprint.matchSingle().method.returnEarly(CONTACT_LIMIT)
-        GroupCallParticipantLimitFingerprint.matchSingle().method.returnEarly(CONTACT_LIMIT)
+        FamilyGuardContactLimitFingerprint.method.returnEarly(CONTACT_LIMIT)
+        GroupCallParticipantLimitFingerprint.method.returnEarly(CONTACT_LIMIT)
     }
 }

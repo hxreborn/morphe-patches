@@ -10,10 +10,10 @@
  */
 package app.morphe.patches.aliexpress.misc.analytics
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
@@ -25,7 +25,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 private const val FIREBASE_INITIALIZER_REGISTERS = 3
 
-private val analyticsDefaultsPatch = resourcePatch {
+private val analyticsDefaultsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_analytics_collection_enabled", "false")
@@ -34,7 +34,7 @@ private val analyticsDefaultsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
+val disableAnalyticsPatch: Patch = patch(
     name = "Disable analytics",
     description = "Stops usage statistics and affiliate link reports.",
 ) {
@@ -43,8 +43,8 @@ val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("disableAnalytics", disableAnalyticsPatch)
-        val firebaseInstance = FirebaseInstanceFingerprint.matchSingle().method
-        val firebaseCollection = FirebaseCollectionFingerprint.matchSingle().method
+        val firebaseInstance = FirebaseInstanceFingerprint.method
+        val firebaseCollection = FirebaseCollectionFingerprint.method
         mutableClassDefBy(PATCH_SETTINGS_CLASS).replaceStub(
             "initializeAnalytics",
             FIREBASE_INITIALIZER_REGISTERS,
@@ -55,8 +55,8 @@ val disableAnalyticsPatch: BytecodePatch = bytecodePatch(
                 return-void
             """.trimIndent(),
         )
-        UtSendFingerprint.matchSingle().method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableAnalytics()Z")
-        AffiliateUrlTrackingFingerprint.matchSingle().method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableAnalytics()Z")
+        UtSendFingerprint.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableAnalytics()Z")
+        AffiliateUrlTrackingFingerprint.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableAnalytics()Z")
         AffiliateLongUrlTrackingFingerprint.matchAll(2..2).forEach { it.method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->disableAnalytics()Z") }
     }
 }

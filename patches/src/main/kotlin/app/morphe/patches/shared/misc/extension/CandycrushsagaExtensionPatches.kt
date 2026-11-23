@@ -4,16 +4,17 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val candycrushsagaBoostersExtensionPatch = bytecodePatch {
+
+internal val candycrushsagaBoostersExtensionPatch = patch {
     extendWith("extensions/hxreborn/candycrushsaga-boosters.mpe")
 }
 
-internal val candycrushsagaGameModifiersExtensionPatch = bytecodePatch {
+internal val candycrushsagaGameModifiersExtensionPatch = patch {
     extendWith("extensions/hxreborn/candycrushsaga-game-modifiers.mpe")
 }
 
-internal val candycrushsagaServerResponsesExtensionPatch = bytecodePatch {
+internal val candycrushsagaServerResponsesExtensionPatch = patch {
     extendWith("extensions/hxreborn/candycrushsaga-server-responses.mpe")
 }

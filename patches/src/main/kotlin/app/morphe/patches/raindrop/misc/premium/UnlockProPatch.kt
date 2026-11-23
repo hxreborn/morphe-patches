@@ -6,8 +6,7 @@ package app.morphe.patches.raindrop.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.raindrop.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -19,7 +18,7 @@ private const val REACT_CONTEXT_TYPE = "Lcom/facebook/react/bridge/ReactApplicat
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/raindrop/ProUnlock;"
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks reminders and highlight notes. Adds duplicate and broken link filters, collection and tag " +
         "suggestions, full-text search of saved pages, Wayback Machine copies and a weekly bookmark export to Downloads. " +
@@ -30,7 +29,7 @@ val unlockProPatch = bytecodePatch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        ResponseHandlerFingerprint.matchSingle().apply {
+        ResponseHandlerFingerprint.match().apply {
             val index = instructionMatches[0].index
             val register = method.getInstruction<FiveRegisterInstruction>(index).registerD
             val contextField = classDef.fields.single { it.type == REACT_CONTEXT_TYPE }
@@ -48,7 +47,7 @@ val unlockProPatch = bytecodePatch(
             )
         }
 
-        SendRequestFingerprint.matchSingle().apply {
+        SendRequestFingerprint.match().apply {
             val bodyIndex = instructionMatches[1].index + 1
             val bodyRegister = method.getInstruction<OneRegisterInstruction>(bodyIndex).registerA
 
@@ -66,7 +65,7 @@ val unlockProPatch = bytecodePatch(
             )
         }
 
-        WebViewSourceFingerprint.matchSingle().apply {
+        WebViewSourceFingerprint.match().apply {
             val index = instructionMatches[0].index
             val loadUrl = method.getInstruction<FiveRegisterInstruction>(index)
             val urlRegister = loadUrl.registerD

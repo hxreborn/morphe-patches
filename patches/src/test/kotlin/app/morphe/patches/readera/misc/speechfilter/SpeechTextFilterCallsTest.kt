@@ -6,7 +6,7 @@ package app.morphe.patches.readera.misc.speechfilter
 
 import app.morphe.patcher.Patcher
 import app.morphe.patcher.PatcherConfig
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.smali.assembleDex
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.Opcodes
@@ -74,7 +74,7 @@ class SpeechTextFilterCallsTest {
                 zip.closeEntry()
             }
             Patcher(PatcherConfig(apk, directory.resolve("work"))).use { patcher ->
-                patcher += setOf(bytecodePatch { execute { addSpeechTextFilter() } })
+                patcher += setOf(patch { execute { addSpeechTextFilter() } })
                 runBlocking { patcher().collect { assertNull(it.exception) } }
                 val speech = patcher.get().dexFiles.flatMap { output ->
                     output.stream.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes }

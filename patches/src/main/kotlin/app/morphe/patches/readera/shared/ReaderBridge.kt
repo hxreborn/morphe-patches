@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.readera.shared
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.misc.highlightcolors.READ_ACTIVITY_CLASS
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -14,9 +15,9 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraChapterReaderExtensionPatch
 
-internal const val CHAPTER_READER = "Lapp/hxreborn/extension/readera/ChapterReader;"
+internal const val CHAPTER_READER = "Lapp/hxreborn/extension/readera/speech/ChapterReader;"
 
-internal val chapterReaderPatch = bytecodePatch {
+internal val chapterReaderPatch = patch {
     dependsOn(readeraChapterReaderExtensionPatch)
     execute {
         val (_, documentRead, positionRead, copyCall, speechCall) =

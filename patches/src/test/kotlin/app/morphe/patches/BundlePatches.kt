@@ -4,7 +4,6 @@
  */
 package app.morphe.patches
 
-import app.morphe.patcher.patch.BytecodePatch
 import app.morphe.patcher.patch.Patch
 import app.morphe.patches.devcheck.misc.pairip.restoreVirtualizedMethodsPatch
 import java.io.File
@@ -44,7 +43,7 @@ internal object BundlePatches {
 
     private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch>(restoreVirtualizedMethodsPatch)
 
-    fun payloadsLoadedDirectlyBy(patch: BytecodePatch): Set<String> {
+    fun payloadsLoadedDirectlyBy(patch: Patch): Set<String> {
         if (patch in patchesAssemblingTheirDexAtPatchTime) return emptySet()
         @Suppress("UNCHECKED_CAST")
         val providers = extensionStreamProviders.get(patch) as List<Supplier<out Iterable<Supplier<InputStream>>>>
@@ -55,7 +54,7 @@ internal object BundlePatches {
 
     fun payloadsLoadedBy(patch: Patch, visited: MutableSet<Patch> = mutableSetOf()): Set<String> {
         if (!visited.add(patch)) return emptySet()
-        val own = (patch as? BytecodePatch)?.let(::payloadsLoadedDirectlyBy).orEmpty()
+        val own = payloadsLoadedDirectlyBy(patch)
         return own + patch.dependencies.flatMap { payloadsLoadedBy(it, visited) }
     }
 }

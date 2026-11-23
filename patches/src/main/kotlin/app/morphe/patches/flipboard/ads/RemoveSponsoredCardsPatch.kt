@@ -4,10 +4,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -22,24 +22,23 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 @Suppress("unused")
-val removeSponsoredCardsPatch = bytecodePatch(
+val removeSponsoredCardsPatch = patch(
     name = "Remove sponsored cards",
     description = "Removes sponsored cards from feeds and banners from the article reader.",
 ) {
     compatibleWith(AppCompatibilities.FLIPBOARD)
 
     execute {
-        val preference = FeedAdPreferenceFingerprint.matchSingle()
+        val preference = FeedAdPreferenceFingerprint.match()
         val (_, _, preferenceResult, storeEnabled, readEnabled) = preference.instructionMatches
         preference.method.apply {
-            val enabled = getInstruction<OneRegisterInstruction>(preferenceResult.index).registerA
-            val store = getInstruction<TwoRegisterInstruction>(storeEnabled.index)
-            val read = getInstruction<TwoRegisterInstruction>(readEnabled.index)
-            val field = storeEnabled.instruction.getReference<FieldReference>()!!
+            val enabled = preferenceResult.getInstruction<OneRegisterInstruction>().registerA
+            val store = storeEnabled.getInstruction<TwoRegisterInstruction>()
+            val read = readEnabled.getInstruction<TwoRegisterInstruction>()
+            val field = storeEnabled.fieldReference
             check(store.registerA == enabled && store.registerB == read.registerB &&
                 field == readEnabled.instruction.getReference<FieldReference>()) {
                 "The feed ad preference no longer flows into the ad controller flag"
@@ -49,9 +48,9 @@ val removeSponsoredCardsPatch = bytecodePatch(
             }
             replaceInstruction(preferenceResult.index, "const/16 v$enabled, 0x0")
         }
-        LoadSectionAdsFingerprint.matchSingle().method.returnEarly()
+        LoadSectionAdsFingerprint.method.returnEarly()
 
-        val detailBanner = CheckDetailBannerPacingFingerprint.matchSingle()
+        val detailBanner = CheckDetailBannerPacingFingerprint.match()
         val (_, pacingResult, pacingBranch) = detailBanner.instructionMatches
         val pacing = (pacingResult.instruction as OneRegisterInstruction).registerA
         check((pacingBranch.instruction as OneRegisterInstruction).registerA == pacing) {
@@ -59,12 +58,12 @@ val removeSponsoredCardsPatch = bytecodePatch(
         }
         detailBanner.method.replaceInstruction(pacingResult.index, "const/16 v$pacing, 0x0")
 
-        val registration = RegisterAmazonAdsFingerprint.matchSingle()
+        val registration = RegisterAmazonAdsFingerprint.match()
         listOf(registerAmazonAds, setAmazonMraidVersions, setAmazonMraidPolicy).forEach { call ->
             val match = registration.instructionMatches.single { it.filter === call }
             registration.method.replaceInstruction(match.index, "nop")
         }
-        val googleAds = InitializeGoogleAdsFingerprint.matchSingle()
+        val googleAds = InitializeGoogleAdsFingerprint.match()
         val (_, initializeAds) = googleAds.instructionMatches
         googleAds.method.replaceInstruction(initializeAds.index, "nop")
         skipAmazonLayoutBid()
@@ -161,7 +160,7 @@ val removeSponsoredCardsPatch = bytecodePatch(
             """,
         )
 
-        ReplaceSectionItemsFingerprint.matchSingle().method.addInstructions(
+        ReplaceSectionItemsFingerprint.method.addInstructions(
             0,
             """
                 invoke-static/range {p1 .. p1}, $filterSponsoredItems
@@ -169,7 +168,7 @@ val removeSponsoredCardsPatch = bytecodePatch(
             """,
         )
         nestedFeedItemFingerprints.forEach { fingerprint ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             val (readItems, returnItems) = match.instructionMatches
             match.method.apply {
                 val read = readItems.instruction as TwoRegisterInstruction
@@ -189,12 +188,11 @@ val removeSponsoredCardsPatch = bytecodePatch(
     }
 }
 
-context(_: BytecodePatchContext)
 private fun skipEmptyRoundupHeader() {
-    val binding = BindRoundupAdapterFingerprint.matchSingle()
+    val binding = BindRoundupAdapterFingerprint.match()
     val (_, createAdapter) = binding.instructionMatches
-    val adapter = createAdapter.instruction.getReference<MethodReference>()!!.definingClass
-    val count = roundupAdapterCountFingerprint(adapter).matchSingle()
+    val adapter = createAdapter.methodReference.definingClass
+    val count = roundupAdapterCountFingerprint(adapter).match()
     val (readItems, countItems, itemCount, countHeader, returnCount) = count.instructionMatches
     val itemsRegister = (readItems.instruction as TwoRegisterInstruction).registerA
     val countRegister = (itemCount.instruction as OneRegisterInstruction).registerA
@@ -212,16 +210,15 @@ private fun skipEmptyRoundupHeader() {
     )
 }
 
-context(context: BytecodePatchContext)
 private fun skipAmazonLayoutBid() {
-    val failure = CompleteAmazonLayoutBidFailureFingerprint.matchSingle()
+    val failure = CompleteAmazonLayoutBidFailureFingerprint.match()
     val (_, emptyBid, emitBid, completeBid) = failure.instructionMatches
-    val emptyBidField = emptyBid.instruction.getReference<FieldReference>()!!
-    val emitBidMethod = emitBid.instruction.getReference<MethodReference>()!!
-    val completeBidMethod = completeBid.instruction.getReference<MethodReference>()!!
-    val layout = LoadAmazonLayoutBidFingerprint.matchSingle()
+    val emptyBidField = emptyBid.fieldReference
+    val emitBidMethod = emitBid.methodReference
+    val completeBidMethod = completeBid.methodReference
+    val layout = LoadAmazonLayoutBidFingerprint.match()
     val (_, createCallback, loadAd) = layout.instructionMatches
-    val callbackInit = createCallback.instruction.getReference<MethodReference>()!!
+    val callbackInit = createCallback.methodReference
     val callbackCall = createCallback.instruction as FiveRegisterInstruction
     val request = loadAd.instruction as FiveRegisterInstruction
     val emitterType = layout.method.parameterTypes.single()
@@ -247,12 +244,12 @@ private fun skipAmazonLayoutBid() {
         emitBidMethod.definingClass == emitterType && completeBidMethod.definingClass == emitterType) {
         "The Amazon layout callback no longer emits its empty map on the request emitter"
     }
-    val emptyMapClass = context.classDefBy(emptyBidField.type)
+    val emptyMapClass = classDefBy(emptyBidField.type)
     check("Ljava/util/Map;" in emptyMapClass.interfaces &&
-        context.classDefBy(emptyBidField.definingClass).staticFields.any { it == emptyBidField && PUBLIC.isSet(it.accessFlags) }) {
+        classDefBy(emptyBidField.definingClass).staticFields.any { it == emptyBidField && PUBLIC.isSet(it.accessFlags) }) {
         "Missing accessible empty map field $emptyBidField"
     }
-    val emitterClass = context.classDefBy(emitBidMethod.definingClass)
+    val emitterClass = classDefBy(emitBidMethod.definingClass)
     listOf(emitBidMethod, completeBidMethod).forEach { reference ->
         check(emitterClass.methods.any { it == reference && PUBLIC.isSet(it.accessFlags) && !STATIC.isSet(it.accessFlags) }) {
             "Missing public emitter method $reference"

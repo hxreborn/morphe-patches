@@ -5,10 +5,10 @@
 package app.morphe.patches.devcheck.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.devcheck.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -20,7 +20,7 @@ import java.security.MessageDigest
 import java.util.Base64
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the Pro tools, tests, themes and colors.",
 ) {
@@ -34,18 +34,18 @@ val unlockPremiumPatch = bytecodePatch(
         val stockCertificateSha1Base64 = Base64.getEncoder().encodeToString(
             MessageDigest.getInstance("SHA-1").digest(packageMetadata.stockSigningCertificate().encoded),
         )
-        SigningCertificateDigestFingerprint.matchSingle().method.returnEarly(stockCertificateSha1Base64)
+        SigningCertificateDigestFingerprint.method.returnEarly(stockCertificateSha1Base64)
 
-        IsPremiumFingerprint.matchSingle().method.returnEarly(true)
+        IsPremiumFingerprint.method.returnEarly(true)
 
-        val premiumStateMatch = PremiumStateFingerprint.matchSingle()
+        val premiumStateMatch = PremiumStateFingerprint.match()
         val premiumState = premiumStateMatch.method
         val (_, _, mediatorInstantiation) = premiumStateMatch.instructionMatches
         val mediatorType = requireNotNull(mediatorInstantiation.instruction.getReference<TypeReference>()).type
-        val (mode, _) = liveDataModeFingerprint(mediatorType, premiumState.returnType).matchSingle().instructionMatches
+        val (mode, _) = liveDataModeFingerprint(mediatorType, premiumState.returnType).match().instructionMatches
         val liveDataMode = mode.getInstruction<WideLiteralInstruction>().wideLiteral
-        val liveDataConstructor = liveDataConstructorFingerprint(premiumState.returnType).matchSingle().method
-        val setValue = LiveDataSetValueFingerprint.matchSingle().method
+        val liveDataConstructor = liveDataConstructorFingerprint(premiumState.returnType).method
+        val setValue = LiveDataSetValueFingerprint.method
         val registers = premiumState.getFreeRegisterProvider(0, 2)
         val liveDataRegister = registers.getFreeRegister4Bit()
         val valueRegister = registers.getFreeRegister4Bit()

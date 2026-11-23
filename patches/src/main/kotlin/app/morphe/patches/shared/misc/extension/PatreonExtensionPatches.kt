@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val patreonSettingsExtensionPatch = bytecodePatch {
-    dependsOn(sharedProxyHandlerExtensionPatch)
+
+internal val patreonSettingsExtensionPatch = patch {
+    dependsOn(sharedProxyHandlerExtensionPatch, sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/patreon-settings.mpe")
 }
 
-internal val patreonFeatureFlagsExtensionPatch = bytecodePatch {
+internal val patreonFeatureFlagsExtensionPatch = patch {
     dependsOn(patreonSettingsExtensionPatch)
     extendWith("extensions/hxreborn/patreon-feature-flags.mpe")
 }

@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.candycrushsaga.misc.events
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.shared.serverresponse.SERVER_RESPONSES
 import app.morphe.patches.candycrushsaga.shared.serverresponse.editServerResponsesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.replaceStub
 
 @Suppress("unused")
-val disableEventsPatch = bytecodePatch(
+val disableEventsPatch = patch(
     name = "Disable events",
     description = "Turns off limited-time events such as races, quests and leagues.",
 ) {

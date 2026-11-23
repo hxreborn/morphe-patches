@@ -5,7 +5,9 @@
 package app.morphe.patches.readera.misc.highlightcolors
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
@@ -23,7 +25,7 @@ import app.morphe.patches.shared.misc.extension.sharedDimensionsExtensionPatch
 private const val DICTIONARY_WORD_COLOR_KEY = "pref_dict_word_color"
 
 @Suppress("unused")
-val dictionaryWordColorsPatch = bytecodePatch(
+val dictionaryWordColorsPatch = patch(
     name = "Dictionary word colors",
     description = "Saves a selected word to Dictionary in one of five colors.",
 ) {

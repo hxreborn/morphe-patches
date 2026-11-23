@@ -6,15 +6,14 @@ package app.morphe.patches.pixlr.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes ads and the advertising consent prompt.",
 ) {
@@ -23,7 +22,7 @@ val removeAdsPatch = bytecodePatch(
     dependsOn(adRemovalEntitlementPatch)
 
     execute {
-        RequestAdConsentFingerprint.matchSingle().method.apply {
+        RequestAdConsentFingerprint.method.apply {
             val returnIndex = indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
             val completionIndex = indexOfFirstInstructionReversedOrThrow(returnIndex, Opcode.SGET_OBJECT)
 

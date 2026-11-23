@@ -6,21 +6,19 @@ package app.morphe.patches.musicolet.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val STATIC_INITIALIZER = "<clinit>"
 private const val REGISTERS_FOR_MARKER_WRITE = 1
 
-internal val markLicensedTierPatch = bytecodePatch {
+internal val markLicensedTierPatch = patch {
     execute {
-        val usageQuotaCheck = UsageQuotaCheckFingerprint.matchSingle()
+        val usageQuotaCheck = UsageQuotaCheckFingerprint.match()
         val (_, licensedTierLoad, _, _, tierMarkerRead) = usageQuotaCheck.instructionMatches
         val licensedTier = (licensedTierLoad.instruction as NarrowLiteralInstruction).narrowLiteral
-        val tierMarker = tierMarkerRead.instruction.getReference<FieldReference>()!!
+        val tierMarker = tierMarkerRead.fieldReference
 
         val staticInitializer = mutableClassDefBy(tierMarker.definingClass).methods
             .singleOrNull { it.name == STATIC_INITIALIZER }

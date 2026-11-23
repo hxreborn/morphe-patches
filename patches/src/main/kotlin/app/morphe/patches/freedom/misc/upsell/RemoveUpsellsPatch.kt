@@ -5,7 +5,7 @@
 package app.morphe.patches.freedom.misc.upsell
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -63,7 +63,7 @@ internal val OUTRO_LENGTH_ONE_STEP = "400080d2".hexToByteArray()
 internal const val OUTRO_LENGTH_OFFSET = 72
 
 @Suppress("unused")
-val removeUpsellsPatch = resourcePatch(
+val removeUpsellsPatch = patch(
     name = "Remove upsells",
     description = "Removes the sign-up trial offers and the Unlock Premium prompts on Today and in Settings.",
 ) {

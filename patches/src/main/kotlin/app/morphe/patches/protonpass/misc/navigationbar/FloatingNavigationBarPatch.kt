@@ -6,14 +6,12 @@ package app.morphe.patches.protonpass.misc.navigationbar
 
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.util.getReference
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.extension.protonFloatingNavigationBarExtensionPatch
 import app.morphe.patches.shared.misc.smali.addStaticMethod
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.proton.installMeasuredBottomInsets
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -28,7 +26,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
+val floatingNavigationBarPatch: Patch = patch(
     name = "Floating navigation bar",
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
@@ -54,7 +52,8 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
             ),
             showLabels = false,
         )
-        contentPadding = AppContentPaddingFingerprint.matchSingle()
+        AppContentPaddingFingerprint.clearMatch()
+        contentPadding = AppContentPaddingFingerprint.match()
         markPatchMetadata("floatingNavigationBar", floatingNavigationBarPatch)
         markFloatingNavigationBarPatched()
         val insets = NavigationBarsPaddingFingerprint.matchOrNull()?.method
@@ -72,12 +71,12 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
                 """,
             )
         }
-        HomeBottomBarFingerprint.matchSingle().let { match ->
+        matchHomeBottomBar().let { match ->
             val (navigationCall) = match.instructionMatches
-            val outer = navigationCall.instruction.getReference<MethodReference>()!!
-            val nativeNavigation = nativeBottomNavigationFingerprint(outer).matchSingle()
+            val outer = navigationCall.methodReference
+            val nativeNavigation = nativeBottomNavigationFingerprint(outer).match()
             val (nativeCall) = nativeNavigation.instructionMatches
-            val native = nativeCall.instruction.getReference<MethodReference>()!!
+            val native = nativeCall.methodReference
             val parameters = native.parameterTypes.map(CharSequence::toString)
             check(parameters.count { it == "F" } == 1)
             val elevationRegister = parameters.take(parameters.indexOf("F")).sumOf { if (it == "J" || it == "D") 2 else 1 }
@@ -91,14 +90,14 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
                     return-void
                 """,
             )
-            val nativeRange = nativeCall.instruction as RegisterRangeInstruction
+            val nativeRange = nativeCall.getInstruction<RegisterRangeInstruction>()
             nativeNavigation.method.replaceInstruction(
                 nativeCall.index,
                 "invoke-static/range { v${nativeRange.startRegister} .. v${nativeRange.startRegister + nativeRange.registerCount - 1} }, $bridge",
             )
             injectFloatingNavigationBar(match.method, navigationCall.index)
             if (insets == null) {
-                val animation = navigationInsetAnimationFingerprint(match.method).matchSingle()
+                val animation = navigationInsetAnimationFingerprint(match.method).match()
                 val (animationCall) = animation.instructionMatches
                 val register = animationCall.getInstruction<RegisterRangeInstruction>().startRegister
                 match.method.addInstructions(
@@ -109,7 +108,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
                     """,
                 )
             } else {
-                val conversion = navigationInsetConversionFingerprint(match.method).matchSingle()
+                val conversion = navigationInsetConversionFingerprint(match.method).match()
                 val (_, paddingResult) = conversion.instructionMatches
                 val register = paddingResult.getInstruction<OneRegisterInstruction>().registerA
                 match.method.addInstructions(

@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.idlefish.misc.login
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.idlefish.assembledClasses
 import app.morphe.patches.idlefish.body
 import app.morphe.patches.idlefish.describe
@@ -73,7 +73,7 @@ private val remoteLoginSmali = """
 
 private val fixtureSmali = listOf(loginModuleSmali, remoteLoginSmali)
 
-private val promptsOnly = bytecodePatch { execute { skipLoginPrompts() } }
+private val promptsOnly = patch { execute { skipLoginPrompts() } }
 
 private val original by lazy { assembledClasses(fixtureSmali) }
 

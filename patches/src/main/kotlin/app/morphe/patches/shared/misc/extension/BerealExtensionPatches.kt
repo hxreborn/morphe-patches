@@ -4,25 +4,26 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val berealContactsPermissionExtensionPatch = bytecodePatch {
+
+internal val berealContactsPermissionExtensionPatch = patch {
     extendWith("extensions/hxreborn/bereal-contacts-permission.mpe")
 }
 
-internal val berealDataCollectionExtensionPatch = bytecodePatch {
+internal val berealDataCollectionExtensionPatch = patch {
     extendWith("extensions/hxreborn/bereal-data-collection.mpe")
 }
 
-internal val berealSponsoredPostsExtensionPatch = bytecodePatch {
+internal val berealSponsoredPostsExtensionPatch = patch {
     extendWith("extensions/hxreborn/bereal-sponsored-posts.mpe")
 }
 
-internal val berealUpdatePromptsExtensionPatch = bytecodePatch {
+internal val berealUpdatePromptsExtensionPatch = patch {
     extendWith("extensions/hxreborn/bereal-update-prompts.mpe")
 }
 
-internal val berealSettingsExtensionPatch = bytecodePatch {
-    dependsOn(berealContactsPermissionExtensionPatch, berealDataCollectionExtensionPatch, berealSponsoredPostsExtensionPatch, berealUpdatePromptsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
+internal val berealSettingsExtensionPatch = patch {
+    dependsOn(sharedPatchesMenuExtensionPatch, berealContactsPermissionExtensionPatch, berealDataCollectionExtensionPatch, berealSponsoredPostsExtensionPatch, berealUpdatePromptsExtensionPatch, morpheLibraryCoreExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/bereal-settings.mpe")
 }

@@ -5,7 +5,7 @@
 package app.morphe.patches.storywise.misc.update
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -18,7 +18,7 @@ private val BUILD_COMPARISON_MASK = "ffffffffff0fe0ffffffffffff03c0ffff03c0fffff
 private val BRANCH_TO_UP_TO_DATE = "0a000014".hexToByteArray()
 
 @Suppress("unused")
-val removeForcedUpdatePatch = resourcePatch(
+val removeForcedUpdatePatch = patch(
     name = "Remove forced update",
     description = "Removes the update screen that blocks the app when a newer build is published.",
 ) {

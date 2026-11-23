@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val idlefishAllowSharingWithoutLoginExtensionPatch = bytecodePatch {
+
+internal val idlefishAllowSharingWithoutLoginExtensionPatch = patch {
     extendWith("extensions/hxreborn/idlefish-allow-sharing-without-login.mpe")
 }

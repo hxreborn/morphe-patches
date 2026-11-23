@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val classdojoUnlockProgressReportsExtensionPatch = bytecodePatch {
+
+internal val classdojoUnlockProgressReportsExtensionPatch = patch {
     extendWith("extensions/hxreborn/classdojo-unlock-progress-reports.mpe")
 }

@@ -4,14 +4,14 @@
  */
 package app.morphe.patches.gstarmc.misc.jiagu
 
-import app.morphe.patcher.patch.ResourcePatchContext
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.misc.jiagu.JiaguCipher
 import app.morphe.patches.shared.misc.jiagu.JiaguPayloadDex
 import app.morphe.patches.shared.misc.jiagu.PayloadDexEditor
 import app.morphe.patches.shared.misc.jiagu.asJiaguDex
 
-internal fun ResourcePatchContext.editPayloadDexes(edit: (PayloadDexEditor) -> Unit): Int {
-    val classes = get("classes.dex")
+internal fun editPayloadDexes(edit: (PayloadDexEditor) -> Unit): Int {
+    val classes = resourceFile("classes.dex")
     val packed = classes.readBytes().asJiaguDex()
     val cipher = JiaguCipher(JiaguProfiles.forConfig(packed.config).key)
 

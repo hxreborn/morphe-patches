@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.bonjour
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.addMenuEntry
@@ -13,7 +13,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val bonjourBrowserPatch = bytecodePatch(
+val bonjourBrowserPatch = patch(
     name = "Bonjour browser",
     description = "Lists the Bonjour services announced on the Wi-Fi network, grouped by type, with each " +
         "service's host, address, port and TXT records.",

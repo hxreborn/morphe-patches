@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.readera.shared
 
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.misc.smali.addMethod
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -12,7 +12,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 private const val APPLICATION_CLASS = "Lorg/readera/App;"
 internal const val CONTEXT_CLASS = "Landroid/content/Context;"
 
-internal fun BytecodePatchContext.getOrAddApplicationAttachBaseContext(): MutableMethod =
+internal fun getOrAddApplicationAttachBaseContext(): MutableMethod =
     mutableClassDefBy(APPLICATION_CLASS).let { application ->
         application.methods.singleOrNull { method ->
             method.name == "attachBaseContext" && method.parameterTypes.map(CharSequence::toString) == listOf(CONTEXT_CLASS)

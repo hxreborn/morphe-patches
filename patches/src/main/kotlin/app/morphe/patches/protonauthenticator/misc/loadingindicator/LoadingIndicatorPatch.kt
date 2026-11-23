@@ -5,11 +5,12 @@
 package app.morphe.patches.protonauthenticator.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonauthenticator.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.protonLoadingIndicatorExtensionPatch
@@ -32,7 +33,7 @@ private const val LOADING_INDICATOR_CONTAINER_CLASS =
     "Lapp/hxreborn/extension/protonauthenticator/LoadingIndicatorContainer;"
 
 @Suppress("unused")
-val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
+val loadingIndicatorPatch: Patch = patch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
@@ -50,12 +51,13 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
                 move-result $progress
             """
         }
-        PullToRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
-            resizeLoadingIndicatorContainer(match.method, match.instructionMatches.last())
+        PullToRefreshIndicatorSizeFingerprint.match().let { match ->
+            val (_, _, sizeModifier) = match.instructionMatches
+            resizeLoadingIndicatorContainer(match.method, sizeModifier)
         }
 
-        PullToRefreshIndicatorColorsFingerprint.matchSingle().let { match ->
-            val indicatorCall = match.instructionMatches.last()
+        PullToRefreshIndicatorColorsFingerprint.match().let { match ->
+            val (_, indicatorCall) = match.instructionMatches
             val indicatorInvoke = indicatorCall.instruction as? RegisterRangeInstruction
                 ?: throw PatchException("Expected a range invoke of the pull to refresh indicator in ${descriptor(match.method)}")
             val parameters = indicatorInvoke.getReference<MethodReference>()!!.parameterTypes.map(CharSequence::toString)
@@ -74,13 +76,14 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        ColorRoleToneFingerprint.matchSingle().let { match ->
-            val hctFromArgb = match.instructionMatches.first().instruction.getReference<MethodReference>()!!
-            val hctToArgb = match.instructionMatches.last().instruction.getReference<MethodReference>()!!
+        ColorRoleToneFingerprint.match().let { match ->
+            val (fromArgbCall, _, _, toArgbCall) = match.instructionMatches
+            val hctFromArgb = fromArgbCall.methodReference
+            val hctToArgb = toArgbCall.methodReference
             val hctType = hctFromArgb.returnType
-            val hctFromComponents = hctFromComponentsFingerprint(hctType).matchSingle().originalMethod
-            val hctHue = hctComponentGetterFingerprint(hctType, "getHue").matchSingle().originalMethod
-            val hctChroma = hctComponentGetterFingerprint(hctType, "getChroma").matchSingle().originalMethod
+            val hctFromComponents = hctFromComponentsFingerprint(hctType).originalMethod
+            val hctHue = hctComponentGetterFingerprint(hctType, "getHue").originalMethod
+            val hctChroma = hctComponentGetterFingerprint(hctType, "getChroma").originalMethod
             val toneWithMaxChroma = mutableClassDefBy(match.classDef.type).addStaticMethod(
                 "toneWithMaxChroma",
                 listOf("I", "F", "F"),

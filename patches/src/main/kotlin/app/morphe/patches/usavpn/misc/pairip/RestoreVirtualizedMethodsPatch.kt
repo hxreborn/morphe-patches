@@ -5,10 +5,10 @@
 package app.morphe.patches.usavpn.misc.pairip
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.RestoredMethod
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -129,7 +129,7 @@ private fun appRestoredMethods(packageName: String) = when (packageName) {
     else -> throw PatchException("No restored methods for $packageName")
 }
 
-val restoreVirtualizedMethodsPatch = bytecodePatch {
+val restoreVirtualizedMethodsPatch = patch {
     dependsOn(sharedUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.USA_VPN, AppCompatibilities.VPN_INDIA)
 
@@ -137,7 +137,7 @@ val restoreVirtualizedMethodsPatch = bytecodePatch {
 
     execute {
         checkMergedLambdaBindings()
-        val landscapeInsets = LandscapeInsetsFingerprint.matchSingle().originalMethod
+        val landscapeInsets = LandscapeInsetsFingerprint.originalMethod
         val landscapeInsetsCall = when (landscapeInsets.parameterTypes.map { it.toString() }) {
             emptyList<String>() -> "invoke-virtual {p0}, ${descriptor(landscapeInsets)}"
             listOf("Ljava/lang/Boolean;") -> """

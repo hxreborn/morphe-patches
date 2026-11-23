@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.speedtest
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addFeatureActivity
 import app.morphe.patches.netanalyzer.shared.addMenuEntry
@@ -16,7 +16,7 @@ import app.morphe.patches.shared.misc.extension.netanalyzerChartViewExtensionPat
 import app.morphe.patches.shared.misc.extension.netanalyzerSpeedTestExtensionPatch
 
 @Suppress("unused")
-val speedTestPatch = bytecodePatch(
+val speedTestPatch = patch(
     name = "Speed test",
     description = "Adds an internet speed test with download and upload charts and a test history.",
 ) {

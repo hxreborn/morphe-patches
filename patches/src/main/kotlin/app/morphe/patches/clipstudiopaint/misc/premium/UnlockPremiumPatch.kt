@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.clipstudiopaint.misc.premium
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.clipstudiopaint.misc.PatchSite
 import app.morphe.patches.clipstudiopaint.misc.WORD_SIZE
 import app.morphe.patches.clipstudiopaint.misc.rewriteNativeLibrary
@@ -67,7 +67,7 @@ private val patchSites = listOf(
 )
 
 @Suppress("unused")
-val unlockPremiumPatch = rawResourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Removes the monthly drawing time limit. " +
         "Unlocks saving and exporting in doodle mode and full-length timelapse export with an optional logo.",

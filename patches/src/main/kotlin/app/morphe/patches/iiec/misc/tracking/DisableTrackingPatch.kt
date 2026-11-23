@@ -5,13 +5,12 @@
 package app.morphe.patches.iiec.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.iiec.misc.fix.signature.bypassSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops Firebase Analytics from collecting usage data.",
 ) {
@@ -20,6 +19,6 @@ val disableTrackingPatch = bytecodePatch(
     dependsOn(bypassSignatureCheckPatch)
 
     execute {
-        EnableFirebaseFingerprint.matchSingle().method.addInstruction(0, "const/4 p1, 0x0")
+        EnableFirebaseFingerprint.method.addInstruction(0, "const/4 p1, 0x0")
     }
 }

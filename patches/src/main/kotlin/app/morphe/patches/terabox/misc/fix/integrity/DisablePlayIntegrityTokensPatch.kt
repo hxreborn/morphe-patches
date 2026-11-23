@@ -6,18 +6,17 @@ package app.morphe.patches.terabox.misc.fix.integrity
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
-internal val disablePlayIntegrityTokensPatch = bytecodePatch {
+internal val disablePlayIntegrityTokensPatch = patch {
     execute {
-        StandardIntegrityTokenRequestFingerprint.matchSingle().method.apply {
+        StandardIntegrityTokenRequestFingerprint.method.apply {
             val providerIndex = indexOfFirstInstructionOrThrow {
                 opcode == Opcode.IGET_OBJECT &&
                     getReference<FieldReference>()?.type == STANDARD_INTEGRITY_TOKEN_PROVIDER
@@ -27,6 +26,6 @@ internal val disablePlayIntegrityTokensPatch = bytecodePatch {
             addInstruction(providerIndex + 1, "const/4 v$providerRegister, 0x0")
         }
 
-        ClassicIntegrityTokenRequestFingerprint.matchSingle().method.returnEarly()
+        ClassicIntegrityTokenRequestFingerprint.method.returnEarly()
     }
 }

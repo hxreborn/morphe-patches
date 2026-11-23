@@ -31,7 +31,6 @@ import java.util.concurrent.Executors;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -395,7 +394,7 @@ final class GalleryButton {
 
     void openAllPhotos() {
         this.album.dismiss();
-        this.activity.startActivity(new Intent(this.activity, GalleryPickerActivity.class));
+        this.activity.startActivity(HostedScreens.intent(this.activity, GalleryPickerActivity.class));
     }
 
     @SuppressWarnings("NonAtomicOperationOnVolatileField")

@@ -9,7 +9,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
@@ -43,7 +46,7 @@ private const val SPEECH_CROPS_FIELD = "speechCrops"
 private const val SPARSE_ARRAY_TYPE = "Landroid/util/SparseArray;"
 
 @Suppress("unused")
-val skipHeadersPatch = bytecodePatch(
+val skipHeadersPatch = patch(
     name = "Skip headers and footers",
     description = "Makes Read aloud skip page headers, footers and page numbers in PDF and DjVu files.",
 ) {

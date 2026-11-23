@@ -8,10 +8,7 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.string
-import app.morphe.patcher.util.matchSingle
-import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.Opcode
 
 internal const val MAIN_ACTIVITY = "Lcom/myscript/nebo/main/ui/MainActivity;"
@@ -396,21 +393,21 @@ internal object BillingReceiveFingerprint : Fingerprint(
     returnType = "V",
 )
 
-internal fun BytecodePatchContext.callbackClass(consumer: Fingerprint, parameters: List<String>): String = Fingerprint(
+internal fun callbackClass(consumer: Fingerprint, parameters: List<String>): String = Fingerprint(
     name = "invoke",
     parameters = parameters,
     returnType = "Ljava/lang/Object;",
-    filters = listOf(methodCall(consumer.matchSingle().method)),
-).matchSingle().method.definingClass
+    filters = listOf(methodCall(consumer.method)),
+).method.definingClass
 
-internal fun BytecodePatchContext.listenerClass(consumer: Fingerprint, name: String, returnType: String): String = Fingerprint(
+internal fun listenerClass(consumer: Fingerprint, name: String, returnType: String): String = Fingerprint(
     name = name,
     returnType = returnType,
-    filters = listOf(methodCall(consumer.matchSingle().method)),
-).matchSingle().method.definingClass
+    filters = listOf(methodCall(consumer.method)),
+).method.definingClass
 
-internal fun BytecodePatchContext.editorContentClass(): String {
-    val consumer = EditorContentConsumerFingerprint.matchSingle().method
+internal fun editorContentClass(): String {
+    val consumer = EditorContentConsumerFingerprint.method
     val bridge = Fingerprint(
         definingClass = EDITOR_ACTIVITY,
         parameters = consumer.parameterTypes.map { it.toString() },
@@ -420,20 +417,20 @@ internal fun BytecodePatchContext.editorContentClass(): String {
     return callbackClass(bridge, listOf("Ljava/lang/Object;", "Ljava/lang/Object;"))
 }
 
-internal fun BytecodePatchContext.laserObserverClass(): String {
-    val observer = LaserObserverFingerprint.matchSingle().method.definingClass
+internal fun laserObserverClass(): String {
+    val observer = LaserObserverFingerprint.method.definingClass
     val constructor = Fingerprint(
         definingClass = observer,
         name = "<init>",
         parameters = listOf(EDITOR_ACTIVITY, "Lkotlin/coroutines/Continuation;"),
-    ).matchSingle().method
+    ).method
     return Fingerprint(
         name = "invokeSuspend",
         filters = listOf(methodCall(constructor)),
-    ).matchSingle().method.definingClass
+    ).method.definingClass
 }
 
-internal fun BytecodePatchContext.paywallContentClass(): String = Fingerprint(
+internal fun paywallContentClass(): String = Fingerprint(
     classFingerprint = Fingerprint(
         filters = listOf(
             string(
@@ -447,9 +444,9 @@ internal fun BytecodePatchContext.paywallContentClass(): String = Fingerprint(
         "Lcom/revenuecat/purchases/ui/revenuecatui/activity/PaywallActivity;",
         "Lcom/revenuecat/purchases/ui/revenuecatui/OfferingSelection\$IdAndPresentedOfferingContext;",
         "Lcom/revenuecat/purchases/ui/revenuecatui/activity/PaywallActivityArgs;",
-        PaywallListenerFingerprint.matchSingle().method.definingClass,
+        PaywallListenerFingerprint.method.definingClass,
         "Lcom/revenuecat/purchases/ui/revenuecatui/PaywallPurchaseLogic;",
         "Lkotlin/jvm/functions/Function1;",
     ),
     returnType = "V",
-).matchSingle().method.definingClass
+).method.definingClass

@@ -5,11 +5,10 @@
 package app.morphe.patches.ultimea.misc.equalizer
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.ultimea.misc.controls.xupmixPatch
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
@@ -19,8 +18,6 @@ import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction3rc
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableMethodReference
 
@@ -28,7 +25,7 @@ private const val CONNECTION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea
 
 private const val PANEL_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/equalizer/FineEqualizer;"
 
-internal val equalizerConnectionPatch = bytecodePatch {
+internal val equalizerConnectionPatch = patch {
     dependsOn(xupmixPatch)
     execute {
         markPatchApplied("fineEqualizer", fineEqualizerPatch)
@@ -44,10 +41,10 @@ internal val equalizerConnectionPatch = bytecodePatch {
             listOf("Landroid/bluetooth/BluetoothGatt;", "Landroid/bluetooth/BluetoothGattCharacteristic;"),
             listOf("Landroid/bluetooth/BluetoothGatt;", "Landroid/bluetooth/BluetoothGattCharacteristic;", "[B", "I"),
         ).forEach { parameters ->
-            val match = ReadbackCallFingerprint("writeCharacteristic", parameters).matchSingle()
+            val match = ReadbackCallFingerprint("writeCharacteristic", parameters).match()
             val (write) = match.instructionMatches
-            val call = match.method.getInstruction<ReferenceInstruction>(write.index)
-            val reference = call.reference as MethodReference
+            val call = write.instruction
+            val reference = write.methodReference
             val target = ImmutableMethodReference(CONNECTION_CLASS_DESCRIPTOR, reference.name, reference.parameterTypes, reference.returnType)
             val replacement = when (call) {
                 is RegisterRangeInstruction -> BuilderInstruction3rc(Opcode.INVOKE_STATIC_RANGE,
@@ -59,10 +56,10 @@ internal val equalizerConnectionPatch = bytecodePatch {
             match.method.replaceInstruction(write.index, replacement)
         }
         listOf("onCharacteristicWrite", "onCharacteristicReceived", "onConnectionStateChanged").forEach { name ->
-            val match = ReadbackCallFingerprint(name).matchSingle()
+            val match = ReadbackCallFingerprint(name).match()
             val (callback) = match.instructionMatches
-            val call = match.method.getInstruction<ReferenceInstruction>(callback.index)
-            val reference = call.reference as MethodReference
+            val call = callback.instruction
+            val reference = callback.methodReference
             val target = ImmutableMethodReference(CONNECTION_CLASS_DESCRIPTOR, reference.name, reference.parameterTypes, reference.returnType)
             val replacement = when (call) {
                 is RegisterRangeInstruction ->
@@ -74,10 +71,10 @@ internal val equalizerConnectionPatch = bytecodePatch {
             }
             match.method.replaceInstruction(callback.index, replacement)
         }
-        val activity = DeviceActivityFingerprint.matchSingle().method
+        val activity = DeviceActivityFingerprint.method
         activity.addInstructions(activity.implementation!!.instructions.lastIndex,
             "invoke-static { p0 }, $PANEL_CLASS_DESCRIPTOR->attach(Landroid/app/Activity;)V")
-        NavigationMessageFingerprint.matchSingle().method.addInstructions(0,
+        NavigationMessageFingerprint.method.addInstructions(0,
             "invoke-static { p1, p2 }, $PANEL_CLASS_DESCRIPTOR->navigation(Ljava/lang/String;Ljava/nio/ByteBuffer;)V")
     }
 }

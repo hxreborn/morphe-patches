@@ -6,9 +6,8 @@ package app.morphe.patches.lingodeer.misc.signin
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lingodeer.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -23,7 +22,7 @@ private const val PROMPT_METHOD_COUNT = 2
 private const val BYPASS_CONSTANT_COUNT = 3
 
 @Suppress("unused")
-val skipSignInPromptPatch = bytecodePatch(
+val skipSignInPromptPatch = patch(
     name = "Skip sign-in prompt",
     description = "Opens lessons past the second unit without an account.",
 ) {
@@ -34,7 +33,7 @@ val skipSignInPromptPatch = bytecodePatch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch, spoofSignaturePatch)
 
     execute {
-        val (_, loginWrite) = LessonAccessFingerprint.matchSingle().instructionMatches
+        val (_, loginWrite) = LessonAccessFingerprint.match().instructionMatches
         val requireLogin = loginWrite.instruction.getReference<FieldReference>()!!
         val promptMatches = signInPromptFingerprint(requireLogin).matchAll(PROMPT_METHOD_COUNT..PROMPT_METHOD_COUNT)
         val bypassFlag = promptMatches.map { match ->

@@ -6,13 +6,12 @@ package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
@@ -70,7 +69,7 @@ internal fun addFeatureActivity(activity: String) {
 private const val EXPORT_FILE_PROVIDER = "ExportFileProvider"
 private const val EXPORT_PROVIDER_AUTHORITY_SUFFIX = ".netanalyzer-an.provider"
 
-private val featureActivitiesPatch = resourcePatch {
+private val featureActivitiesPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     finalize {
         document("AndroidManifest.xml").use { document ->
@@ -92,7 +91,7 @@ private val featureActivitiesPatch = resourcePatch {
     }
 }
 
-internal val patchesMenuPatch = bytecodePatch {
+internal val patchesMenuPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch, sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         disableTamperDetectionPatch,
@@ -108,7 +107,7 @@ internal val patchesMenuPatch = bytecodePatch {
             mapOf("portDatabase" to "port_database"),
         )
         addFeatureActivity(PATCHES_MENU_ACTIVITY)
-        MainActivityOnCreateFingerprint.matchSingle().method.addInstructions(
+        MainActivityOnCreateFingerprint.method.addInstructions(
             0,
             "invoke-static { p0 }, $FEATURES_CLASS->attach(Landroid/app/Activity;)V",
         )
@@ -117,8 +116,8 @@ internal val patchesMenuPatch = bytecodePatch {
     finalize {
         if (menuEntries.isEmpty()) return@finalize
 
-        val headerMatch = HeaderRowFingerprint.matchSingle()
-        val rowMatch = ClickableRowFingerprint.matchSingle()
+        val headerMatch = HeaderRowFingerprint.match()
+        val rowMatch = ClickableRowFingerprint.match()
         val header = headerMatch.originalMethod
         val row = rowMatch.originalMethod
         val headerParameters = headerMatch.composableParameters()
@@ -128,11 +127,10 @@ internal val patchesMenuPatch = bytecodePatch {
 
         val aboutSection = Fingerprint(
             filters = listOf(decryptedString(ABOUT_SECTION_BELOW), methodCall(reference = header)),
-        ).matchSingle()
-        val sectionLabelIndex = aboutSection.instructionMatches.first().index
-        val composerRegister = aboutSection.method.getInstruction<FiveRegisterInstruction>(
-            aboutSection.instructionMatches.last().index,
-        ).registerD
+        ).match()
+        val (sectionLabel, headerCall) = aboutSection.instructionMatches
+        val sectionLabelIndex = sectionLabel.index
+        val composerRegister = headerCall.getInstruction<FiveRegisterInstruction>().registerD
         val composerType = row.parameterTypes[rowParameters.size].toString()
         val onClickType = row.parameterTypes[rowParameters.indexOf(ROW_ON_CLICK)].toString()
 

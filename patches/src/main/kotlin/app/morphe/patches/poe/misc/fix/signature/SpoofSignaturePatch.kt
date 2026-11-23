@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.poe.misc.fix.signature
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.poe.misc.pairip.restoreDownloadReceiverPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
 
 private const val APPLICATION_CLASS = "Lcom/pairip/application/Application;"
 
-val spoofSignaturePatch = bytecodePatch(
+val spoofSignaturePatch = patch(
     name = "Spoof signature",
     description = "Enables push notifications.",
 ) {

@@ -6,10 +6,7 @@ package app.morphe.patches.imo.shared
 
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.fieldAccess
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.string
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
@@ -20,6 +17,7 @@ private fun enumConstantFingerprint(constantName: String) = Fingerprint(
     ),
 )
 
-context(_: BytecodePatchContext)
-internal fun enumConstantField(constantName: String) = enumConstantFingerprint(constantName)
-    .matchSingle().instructionMatches.last().instruction.getReference<FieldReference>()!!
+internal fun enumConstantField(constantName: String): FieldReference {
+    val (_, enumFieldStore) = enumConstantFingerprint(constantName).match().instructionMatches
+    return enumFieldStore.fieldReference
+}

@@ -5,16 +5,15 @@
 package app.morphe.patches.notesnook.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.notesnookMaterialYouThemeExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/notesnook/MaterialYouTheme;"
 
 @Suppress("unused")
-val materialYouThemePatch = bytecodePatch(
+val materialYouThemePatch = patch(
     name = "Material You theme",
     description = "Applies the system accent colours to the default light and dark themes. " +
         "Colours refresh when the app restarts, and start from the second launch. " +
@@ -23,12 +22,12 @@ val materialYouThemePatch = bytecodePatch(
     dependsOn(notesnookMaterialYouThemeExtensionPatch)
     compatibleWith(AppCompatibilities.NOTESNOOK)
     execute {
-        MmkvInstallFingerprint.matchSingle().apply {
-            val index = instructionMatches[0].index
-            val register = method.getFreeRegisterProvider(index, 1).getFreeRegister4Bit()
+        MmkvInstallFingerprint.match().apply {
+            val (nativeInstall) = instructionMatches
+            val register = method.getFreeRegisterProvider(nativeInstall.index, 1).getFreeRegister4Bit()
 
             method.addInstructions(
-                index,
+                nativeInstall.index,
                 "invoke-virtual { p0 }, Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->" +
                     "getReactApplicationContext()Lcom/facebook/react/bridge/ReactApplicationContext;\n" +
                     "move-result-object v$register\n" +

@@ -30,6 +30,10 @@ public final class AppliedPatches {
 
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
     public static boolean accentColor() {
         return AccentColor.isPatched();
     }
@@ -79,47 +83,47 @@ public final class AppliedPatches {
     }
 
     public static String accentColorName() {
-        return null;
+        return metadata("accentColor", false);
     }
 
     public static String amoledDarkThemeDescription() {
-        return null;
+        return metadata("amoledDarkTheme", true);
     }
 
     public static String amoledDarkThemeName() {
-        return null;
+        return metadata("amoledDarkTheme", false);
     }
 
     public static String hideUpgradePromotionsDescription() {
-        return null;
+        return metadata("hideUpgradePromotions", true);
     }
 
     public static String hideUpgradePromotionsName() {
-        return null;
+        return metadata("hideUpgradePromotions", false);
     }
 
     public static String materialSwitchesDescription() {
-        return null;
+        return metadata("materialSwitches", true);
     }
 
     public static String materialSwitchesName() {
-        return null;
+        return metadata("materialSwitches", false);
     }
 
     public static String loadingIndicatorDescription() {
-        return null;
+        return metadata("loadingIndicator", true);
     }
 
     public static String loadingIndicatorName() {
-        return null;
+        return metadata("loadingIndicator", false);
     }
 
     public static String hideLayoutComponentsName() {
-        return null;
+        return metadata("hideLayoutComponents", false);
     }
 
     public static String floatingNavigationBarName() {
-        return null;
+        return metadata("floatingNavigationBar", false);
     }
 
 }

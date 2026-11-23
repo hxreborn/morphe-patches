@@ -5,8 +5,7 @@
 package app.morphe.patches.candycrushsaga.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private const val SDK_CLASS = "Lcom/king/abm/adprovider/AdProviderSDKAndroid;"
@@ -15,7 +14,7 @@ private const val NO_FILL_ERROR_CODE = 0x3
 private const val DISABLED_MESSAGE = "ads disabled"
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Stops ad networks from starting and blocks rewarded and interstitial ads.",
 ) {
@@ -26,7 +25,7 @@ val hideAdsPatch = bytecodePatch(
     )
 
     execute {
-        AdSdkInitFingerprint.matchSingle().method.addInstructions(
+        AdSdkInitFingerprint.method.addInstructions(
             0,
             """
                 iput-wide p1, p0, $SDK_CLASS->mAdProviderAddress:J
@@ -35,7 +34,7 @@ val hideAdsPatch = bytecodePatch(
                 return-void
             """,
         )
-        AdSdkCollectBidderTokenFingerprint.matchSingle().method.addInstructions(
+        AdSdkCollectBidderTokenFingerprint.method.addInstructions(
             0,
             """
                 iget-wide v0, p0, $SDK_CLASS->mAdProviderAddress:J
@@ -45,7 +44,7 @@ val hideAdsPatch = bytecodePatch(
                 return-void
             """,
         )
-        AdLoadFingerprint.matchSingle().method.addInstructions(
+        AdLoadFingerprint.method.addInstructions(
             0,
             """
                 iput-wide p1, p0, $MODULE_CLASS->mAdProviderAddress:J

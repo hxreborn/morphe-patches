@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.85.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**592 patches** across **188 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.86.0-dev.6** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -375,13 +375,14 @@
 
 **Supported versions:**
 
-| 3.97.1 | 3.98.0 |
-| :---: | :---: |
+| 3.98.0 |
+| :---: |
 
 | Patch | Details |
 |---|---|
 | <a id="bereal-back-up-memories"></a>[**Back up memories**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up memories to hxreborn patches. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' usernames and comments to Download/BeReal unless a folder is picked. |
 | <a id="bereal-change-download-location"></a>[**Change download location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/download/ChangeDownloadLocationPatch.kt) | Saves downloaded BeReals to Pictures/BeReal, DCIM/BeReal or a folder you pick. Requires Android 10 or newer. |
+| <a id="bereal-custom-befake-header"></a>[**Custom BeFake header**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/header/CustomBeFakeHeaderPatch.kt) | Replaces the BeReal wordmark in the top bar and posting header with BeFake. |
 | <a id="bereal-custom-location"></a>[**Custom location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomLocationPatch.kt) | Sets the location shown on your BeReal to a place you choose on a map or by name. |
 | <a id="bereal-custom-retake-count"></a>[**Custom retake count**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomRetakeCountPatch.kt) | Asks before each BeReal how many retakes your friends see on it. |
 | <a id="bereal-disable-data-collection"></a>[**Disable data collection**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/privacy/DisableDataCollectionPatch.kt) | Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, Adjust attribution and the Shake bug reporter. |
@@ -1107,7 +1108,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 13.2.2.0 |
+| 13.2.2.2 |
 | :---: |
 
 | Patch | Details |
@@ -2172,21 +2173,6 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
-## Projectivy Launcher (com.spocky.projengmenu)
-
-<img src="https://publicmetadata.co.uk/com.spocky.projengmenu" width="48" height="48" align="top" alt="">
-
-**Supported versions:**
-
-| 4.73 | 4.72 | 4.71 | 4.70 |
-| :---: | :---: | :---: | :---: |
-
-| Patch | Details |
-|---|---|
-| <a id="projectivy-launcher-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/projectivy/misc/tracking/DisableTrackingPatch.kt) | Disables analytics and crash reporting. |
-
----
-
 ## Proton Authenticator (proton.android.authenticator)
 
 <img src="https://publicmetadata.co.uk/proton.android.authenticator" width="48" height="48" align="top" alt="">
@@ -2780,8 +2766,10 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="terabox-clone-app"></a>[**Clone app**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/clone/CloneAppPatch.kt) | Installs TeraBox as a separate app alongside the original, with its own account. Each copy needs a different clone number.<br><sub>Options: Package name, App name</sub> |
+| <a id="terabox-download-generated-files"></a>[**Download generated files**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/ai/DownloadAiFilesPatch.kt) | Downloads files generated in TeraBox chat to the Downloads folder. |
 | <a id="terabox-fix-google-login"></a>[**Fix Google login**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/login/FixGoogleLoginPatch.kt) | Restores signing in with a Google account. |
 | <a id="terabox-fix-transfers-over-vpn"></a>[**Fix transfers over VPN**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/fix/vpn/FixTransfersOverVpnPatch.kt) | Runs uploads, downloads and saves from shared links while a VPN is active. |
+| <a id="terabox-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/gms/GmsCoreSupportPatch.kt) | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="terabox-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/terabox/ads/HideAdsPatch.kt) | Removes feed, banner and video ads, plus interstitial and app-open ads. Rewarded ads still play when requested from Benefits. |
 | <a id="terabox-hide-consent-form"></a>[**Hide consent form**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/consent/HideConsentFormPatch.kt) | Hides the ad consent form shown at startup. |
 | <a id="terabox-hide-home-shortcuts"></a>[**Hide home shortcuts**](patches/src/main/kotlin/app/morphe/patches/terabox/misc/shortcuts/HideHomeShortcutsPatch.kt) | Removes Trending and Short Drama from Home and More, and Translate where it appears. Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.<br><sub>Options: Hide Creative Generation, Hide Translate, Hide Signature, +4 more</sub> |
@@ -2889,7 +2877,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="ultimate-guitar-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
-| <a id="ultimate-guitar-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/ultimateguitar/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro, Courses, Sing and Practice features and removes ads. Songbooks are not unlocked. |
+| <a id="ultimate-guitar-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/ultimateguitar/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro, Sing and Practice features and removes ads. Paid course lessons and Songbooks are not unlocked. |
 
 ---
 
@@ -3000,7 +2988,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="video-editor-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/videoeditor/UnlockPremiumPatch.kt) | Unlocks Pro features. |
+| <a id="video-editor-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/videoeditor/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features. |
 
 ---
 

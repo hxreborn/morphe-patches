@@ -13,19 +13,18 @@
  */
 package app.morphe.patches.forus.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all premium features.",
 ) {
     compatibleWith(AppCompatibilities.FORUS)
 
     execute {
-        AppModuleHasAccessFingerprint.matchSingle().method.returnEarly(true)
+        AppModuleHasAccessFingerprint.method.returnEarly(true)
     }
 }

@@ -9,14 +9,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.Document
 import app.morphe.patcher.util.cloneParameters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.iiec.misc.fix.signature.bypassSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -35,7 +34,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.iiecAmoledDarkThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedActivityCallbacksAdapterExtensionPatch
@@ -112,7 +110,7 @@ private fun cloneArrayWithExtraItem(document: Document, sourceName: String, newN
     }
 }
 
-private val amoledThemeResourcesPatch = resourcePatch {
+private val amoledThemeResourcesPatch = patch {
     execute {
         document("res/values/arrays.xml").use { document ->
             cloneArrayWithExtraItem(document, EDITOR_THEME_TITLES_ARRAY, DARK_EDITOR_THEME_TITLES_ARRAY, AMOLED_TITLE)
@@ -160,7 +158,6 @@ private val amoledThemeResourcesPatch = resourcePatch {
     }
 }
 
-context(patchContext: BytecodePatchContext)
 private fun Method.injectAmoledSchemeSelection(darkSchemeType: String, applyMethodName: String) {
     val tempRegister = implementation!!.registerCount
     val method = cloneParameters()
@@ -206,7 +203,7 @@ private fun Method.injectAmoledSchemeSelection(darkSchemeType: String, applyMeth
 }
 
 @Suppress("unused")
-val amoledThemePatch = bytecodePatch(
+val amoledThemePatch = patch(
     name = "AMOLED dark theme",
     description = "Adds an AMOLED option to Settings > Appearance > Editor theme (dark). " +
         "Applies only while the Dark theme is active.",
@@ -217,13 +214,12 @@ val amoledThemePatch = bytecodePatch(
     dependsOn(bypassSignatureCheckPatch, amoledThemeResourcesPatch)
 
     execute {
-        val constructorMatch = DarkSchemeConstructorFingerprint.matchSingle()
+        val constructorMatch = DarkSchemeConstructorFingerprint.match()
         val darkSchemeType = constructorMatch.classDef.type
 
-        val backgroundField = constructorMatch.instructionMatches.first()
-            .getInstruction<Instruction>().getReference<FieldReference>()!!
-        val setterMethod = constructorMatch.instructionMatches.last()
-            .getInstruction<Instruction>().getReference<MethodReference>()!!
+        val (backgroundFieldRead, _, setBackgroundCall) = constructorMatch.instructionMatches
+        val backgroundField = backgroundFieldRead.fieldReference
+        val setterMethod = setBackgroundCall.methodReference
 
         mutableClassDefBy(constructorMatch.classDef).addMethod(
             APPLY_AMOLED_METHOD,

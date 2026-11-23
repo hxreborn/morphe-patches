@@ -45,11 +45,21 @@ internal object PrivacyPolicyAcceptedFingerprint : Fingerprint(
     ),
 )
 
+private const val USER_STATE_LABEL = ", userState="
+private const val MULTI_PLATFORM_LABEL = ", isMpfEnabled="
+
 internal object UserInfoToStringFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "Ljava/lang/String;",
     parameters = emptyList(),
-    strings = listOf("UserInfo(email=", ", isPremium=", ", userState=", ", tokenStatus="),
+    strings = listOf("UserInfo(email=", ", isPremium=", USER_STATE_LABEL, ", tokenStatus="),
+    filters = listOf(
+        fieldAccess(opcode = Opcode.IGET_BOOLEAN),
+        string(USER_STATE_LABEL),
+        fieldAccess(opcode = Opcode.IGET_OBJECT),
+        string(MULTI_PLATFORM_LABEL),
+        fieldAccess(opcode = Opcode.IGET_BOOLEAN),
+    ),
 )
 
 internal object TvEverythingLoadedFingerprint : Fingerprint(

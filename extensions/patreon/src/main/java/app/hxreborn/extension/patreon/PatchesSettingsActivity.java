@@ -35,12 +35,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowInsets;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsPanel;
 
 @SuppressLint("SetTextI18n")
 @SuppressWarnings("unused")
@@ -57,8 +58,6 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int TITLE_START_PADDING_DP = 12;
 
     private static final int CONTENT_BOTTOM_PADDING_DP = 24;
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private SettingsStyle style;
 
@@ -84,24 +83,11 @@ public final class PatchesSettingsActivity extends Activity {
     }
 
     private View screen() {
-        LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(this.style.screenBackground);
-        screen.setOnApplyWindowInsetsListener(this::applySystemBarInsets);
-        screen.addView(appBar());
-
+        View bar = appBar();
         ScrollView scroll = new ScrollView(this);
         scroll.addView(content(),
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        screen.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        return screen;
-    }
-
-    @SuppressWarnings("deprecation")
-    private WindowInsets applySystemBarInsets(View view, WindowInsets insets) {
-        view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
-        return insets.consumeSystemWindowInsets();
+        return new PatchesSettingsPanel(this, this.style.screenBackground, bar, scroll).createContent();
     }
 
     private View appBar() {
@@ -209,7 +195,8 @@ public final class PatchesSettingsActivity extends Activity {
         addSection(column, "App", app);
 
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_patreon_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.actionRow(about, "hx_patreon_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                this::confirmReset);
         this.rows.valueRow(about, "hx_patreon_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_patreon_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
@@ -267,7 +254,7 @@ public final class PatchesSettingsActivity extends Activity {
 
     private void confirmReset() {
         new AlertDialog.Builder(this, dialogTheme()).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();
                 setContentView(screen());

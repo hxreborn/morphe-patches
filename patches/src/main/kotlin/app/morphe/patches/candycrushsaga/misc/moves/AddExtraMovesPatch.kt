@@ -5,8 +5,10 @@
 package app.morphe.patches.candycrushsaga.misc.moves
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.candycrushsaga.shared.candyCrushModifiersPatch
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativeBuild
 import app.morphe.patches.candycrushsaga.shared.candyCrushNativePatch
@@ -34,12 +36,12 @@ private val INITIALIZE_MOVES_CODE = intArrayOf(0x29000401, 0x29017c01, 0xb900100
 private val ADJUST_MOVES_CODE = intArrayOf(0x31001428, 0x1a886028, 0x7100003f, 0x144c325e)
 private val STORE_MOVES_CODE = intArrayOf(0x1a81c101, 0x29000401, 0x14604e7c)
 
-private val addSodaExtraMovesPatch = resourcePatch {
+private val addSodaExtraMovesPatch = patch {
     dependsOn(candyCrushNativePatch)
 
     execute {
         if (!isCandyCrushSodaSaga(packageMetadata.packageName)) return@execute
-        val library = get(candyCrushNativeBuild(packageMetadata.packageName).libraryEntry)
+        val library = resourceFile(candyCrushNativeBuild(packageMetadata.packageName).libraryEntry)
         val bytes = library.readBytes()
         val words = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
         fun requireInstructions(offset: Int, expected: IntArray) {
@@ -76,7 +78,7 @@ private val addSodaExtraMovesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val addExtraMovesPatch = bytecodePatch(
+val addExtraMovesPatch = patch(
     name = "Add extra moves",
     description = "Starts every level with five extra moves.",
 ) {

@@ -4,9 +4,8 @@
  */
 package app.morphe.patches.viber.layout.media
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.viber.misc.settings.patchesSettingsPatch
@@ -15,7 +14,7 @@ import app.morphe.patches.viber.shared.addFilterCallAfter
 import app.morphe.patches.viber.shared.markPatchApplied
 
 @Suppress("unused")
-val saveDisappearingMediaPatch: BytecodePatch = bytecodePatch(
+val saveDisappearingMediaPatch: Patch = patch(
     name = "Save disappearing media",
     description = "Shows Save to gallery for disappearing photos and videos.",
 ) {
@@ -24,8 +23,8 @@ val saveDisappearingMediaPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("saveDisappearingMedia", saveDisappearingMediaPatch)
-        val menuStateType = MediaMenuStateFingerprint.matchSingle().classDef.type
-        mediaMenuStateBuilderFingerprint(menuStateType).matchSingle().apply {
+        val menuStateType = MediaMenuStateFingerprint.match().classDef.type
+        mediaMenuStateBuilderFingerprint(menuStateType).match().apply {
             val (_, _, saveDisappearingCheck) = instructionMatches
             method.addFilterCallAfter(saveDisappearingCheck.index + 1, "$VIBER_SETTINGS_CLASS->blocksMediaSave(Z)Z")
         }

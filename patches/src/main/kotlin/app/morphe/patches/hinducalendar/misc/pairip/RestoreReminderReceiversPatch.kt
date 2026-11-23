@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.hinducalendar.misc.pairip
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
@@ -12,7 +13,7 @@ import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
 private const val APP_PACKAGE = "Lcom/alokm/hinducalendar"
 private const val ON_RECEIVE = "onReceive"
 
-val restoreReminderReceiversPatch = bytecodePatch {
+val restoreReminderReceiversPatch = patch {
     compatibleWith(AppCompatibilities.HINDU_CALENDAR)
 
     dependsOn(removePairipVirtualizationPatch)

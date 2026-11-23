@@ -6,12 +6,11 @@ package app.morphe.patches.protonmail.misc.loadingindicator
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
@@ -36,11 +35,10 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val IMAGE_MODIFIER_PARAMETER = 2
 private const val IMAGE_COMPOSER_PARAMETER = 7
 private const val ANDROID_VIEW_PARAMETERS = 6
-private const val SIZE_CALL_MATCH = 1
 private const val INDICATOR_BOX_MODIFIER_REGISTER = 3
 
 @Suppress("unused")
-val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
+val loadingIndicatorPatch: Patch = patch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
@@ -52,21 +50,21 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
         markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
         markLoadingIndicatorPatched()
 
-        val pullingIconMatch = PullToRefreshPullingIconFingerprint.matchSingle()
+        val pullingIconMatch = PullToRefreshPullingIconFingerprint.match()
         val pullingIconMethod = pullingIconMatch.method
-        val rotateIndex = pullingIconMatch.instructionMatches[2].index
-        val rotateCall = pullingIconMethod.getInstruction<FiveRegisterInstruction>(rotateIndex)
-        val imageIndex = pullingIconMatch.instructionMatches.last().index
-        val imageCall = pullingIconMethod.getInstruction<RegisterRangeInstruction>(imageIndex)
+        val (_, _, rotation, image) = pullingIconMatch.instructionMatches
+        val rotateCall = rotation.getInstruction<FiveRegisterInstruction>()
+        val imageIndex = image.index
+        val imageCall = image.getInstruction<RegisterRangeInstruction>()
         val imageReference = imageCall.getReference<MethodReference>()!!
         val modifierType = imageReference.parameterTypes[IMAGE_MODIFIER_PARAMETER].toString()
         val composerType = imageReference.parameterTypes[IMAGE_COMPOSER_PARAMETER].toString()
 
         val androidView = androidViewFingerprint(modifierType, composerType, ANDROID_VIEW_PARAMETERS)
-            .matchSingle().originalMethod
+            .originalMethod
         bindLoadingIndicatorView(androidView, null)
 
-        PullToRefreshSpinnerFingerprint.matchSingle().method.apply {
+        PullToRefreshSpinnerFingerprint.method.apply {
             val registers = getFreeRegisterProvider(0, 3)
             val composer = registers.getFreeRegister4Bit()
             val indeterminate = registers.getFreeRegister4Bit()
@@ -105,10 +103,9 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
             ExternalLabel("drawn", pullingIconMethod.getInstruction(imageIndex + 1)),
         )
 
-        PullToRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
+        PullToRefreshIndicatorSizeFingerprint.match().let { match ->
             val method = match.method
-            val sizeCall = match.instructionMatches[SIZE_CALL_MATCH]
-            val indicatorBox = match.instructionMatches.last()
+            val (_, sizeCall, indicatorBox) = match.instructionMatches
             val boxModifier = indicatorBox.getInstruction<RegisterRangeInstruction>().startRegister + INDICATOR_BOX_MODIFIER_REGISTER
             if (method.indexOfObjectSource(indicatorBox.index, boxModifier) != sizeCall.index + 1) {
                 throw PatchException(

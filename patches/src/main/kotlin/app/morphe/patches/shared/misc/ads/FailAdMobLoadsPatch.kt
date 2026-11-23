@@ -6,15 +6,14 @@ package app.morphe.patches.shared.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.misc.extension.sharedAdmobExtensionPatch
 
 private const val REPORT_LOAD_FAILURE =
     "Lapp/hxreborn/extension/shared/AdMobLoadFailure;->report(Ljava/lang/Object;)V"
 
-val failAdMobLoadsPatch = bytecodePatch {
+val failAdMobLoadsPatch = patch {
     dependsOn(sharedAdmobExtensionPatch)
     execute {
         (AppOpenAdLoadFingerprint.matchAll() + InterstitialAdLoadFingerprint.matchAll()).forEach { match ->
@@ -25,7 +24,7 @@ val failAdMobLoadsPatch = bytecodePatch {
             )
         }
 
-        AdLoaderWithAdListenerFingerprint.matchSingle().method.addInstruction(
+        AdLoaderWithAdListenerFingerprint.method.addInstruction(
             0,
             "invoke-static { p1 }, $REPORT_LOAD_FAILURE",
         )

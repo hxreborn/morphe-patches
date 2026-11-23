@@ -6,11 +6,10 @@ package app.morphe.patches.terabox.misc.shortcuts
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
@@ -48,7 +47,7 @@ private enum class Shortcut(
 }
 
 @Suppress("unused")
-val hideHomeShortcutsPatch: BytecodePatch = bytecodePatch(
+val hideHomeShortcutsPatch: Patch = patch(
     name = "Hide home shortcuts",
     description = "Removes Trending and Short Drama from Home and More, and Translate where it appears. " +
         "Options hide the Creative Generation tools, Signature, PDF Encryption and Add Watermark too.",
@@ -76,7 +75,7 @@ val hideHomeShortcutsPatch: BytecodePatch = bytecodePatch(
         val groupTitleKeys = hidden.mapNotNull { it.groupTitleKey }.joinToString(",")
 
         listOf(HOME_SHORTCUTS_CONFIG_KEY, MORE_SHORTCUTS_CONFIG_KEY, SEARCH_SHORTCUTS_CONFIG_KEY).forEach { configKey ->
-            shortcutConfigFingerprint(configKey).matchSingle().apply {
+            shortcutConfigFingerprint(configKey).match().apply {
                 val returnIndex = instructionMatches.last().index
                 val configRegister = instructionMatches.last().getInstruction<OneRegisterInstruction>().registerA
                 val valueRegister = method.findFreeRegister(returnIndex, configRegister)

@@ -5,29 +5,27 @@
 package app.morphe.patches.symfonium.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all premium features.",
 ) {
     compatibleWith(AppCompatibilities.SYMFONIUM)
 
     execute {
-        val licensedState = IsLicensedFingerprint.matchSingle()
-            .instructionMatches.first()
-            .getInstruction<WideLiteralInstruction>()
+        val (licensedStateLiteral) = IsLicensedFingerprint.match().instructionMatches
+        val licensedState = licensedStateLiteral.getInstruction<WideLiteralInstruction>()
             .wideLiteral
 
-        LicenseStateWriterFingerprint.matchSingle().method
+        LicenseStateWriterFingerprint.method
             .addInstructions(0, "const-wide p1, ${licensedState}L")
 
-        LicenseKeyCheckFingerprint.matchSingle().method.addInstructions(
+        LicenseKeyCheckFingerprint.method.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
@@ -35,8 +33,8 @@ val unlockPremiumPatch = bytecodePatch(
             """,
         )
 
-        TrialExpiryTextFingerprint.matchSingle().method.returnEarly(null)
+        TrialExpiryTextFingerprint.method.returnEarly(null)
 
-        NativeVerdictHandlerFingerprint.matchSingle().method.returnEarly()
+        NativeVerdictHandlerFingerprint.method.returnEarly()
     }
 }

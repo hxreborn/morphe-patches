@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.candycrushsaga.misc.lives
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.misc.boosters.candyCrushRewardsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64StandardInstall
@@ -13,7 +14,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 private const val BOOSTERS = "Lapp/hxreborn/extension/candycrushsaga/Boosters;"
 
 @Suppress("unused")
-val unlimitedLivesPatch = bytecodePatch(
+val unlimitedLivesPatch = patch(
     name = "Unlimited lives",
     description = "Adds 24 hours of unlimited lives every time the game starts.",
 ) {

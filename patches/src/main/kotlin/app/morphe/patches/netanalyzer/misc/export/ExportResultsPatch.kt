@@ -6,12 +6,12 @@ package app.morphe.patches.netanalyzer.misc.export
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.LAN_SCAN_MENU
 import app.morphe.patches.netanalyzer.shared.TOOLS_PING_MENU
 import app.morphe.patches.netanalyzer.shared.WIFI_PAGER_MENU
@@ -32,7 +32,6 @@ import app.morphe.patches.shared.misc.smali.toJavaClassName
 import app.morphe.util.findMutableMethodOf
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
 private const val TOOLS_TRACEROUTE_MENU = "ToolsTracerouteMenu"
@@ -56,7 +55,7 @@ private const val LIST_SEPARATOR = ","
 private const val REGISTRATION_SEPARATOR = ";"
 
 @Suppress("unused")
-val exportResultsPatch = bytecodePatch(
+val exportResultsPatch = patch(
     name = "Export results",
     description = "Adds an export menu to Ping, Traceroute, Port Scan, DNS, Whois, LAN Scan, Wi-Fi Signal and " +
         "Information, with plain text and CSV output.",
@@ -82,10 +81,9 @@ val exportResultsPatch = bytecodePatch(
     }
 }
 
-context(context: BytecodePatchContext)
-private fun recordPortScanStarts() = with(context) {
+private fun recordPortScanStarts() {
     val starts = PortScanStartFingerprint.matchAll()
-        .map { it.instructionMatches.single().instruction.getReference<MethodReference>()!! }
+        .map { it.instructionMatches.single().methodReference }
         .distinctBy { it.toString() }
     val start = starts.singleOrNull() ?: throw PatchException("The port scan start calls $starts, expected one method")
     val method = mutableClassDefBy(start.definingClass).findMutableMethodOf(start)
@@ -102,9 +100,8 @@ private fun recordPortScanStarts() = with(context) {
     )
 }
 
-context(context: BytecodePatchContext)
-private fun observeDnsResponses() = with(context) {
-    val menu = composableFingerprint(TOOLS_DNS_MENU).matchSingle()
+private fun observeDnsResponses() {
+    val menu = composableFingerprint(TOOLS_DNS_MENU).match()
     val parameters = menu.composableParameters()
     val method = menu.method
     val types = method.parameterTypes.take(DNS_MENU_PARAMETERS.size).map { it.toString() }
@@ -126,7 +123,7 @@ private fun observeDnsResponses() = with(context) {
     val recordRegistration = DNS_RECORD_PROPERTIES.joinToString(LIST_SEPARATOR) { property ->
         "$property=${recordFields[property] ?: throw PatchException("$recordType has no $property property")}"
     }
-    val mnemonics = DnsTypeMnemonicsFingerprint.matchSingle().originalMethod.definingClass
+    val mnemonics = DnsTypeMnemonicsFingerprint.originalMethod.definingClass
     registerAtLaunch(
         "$DNS_EXPORT_CLASS->register(Ljava/lang/Class;Ljava/lang/String;)V",
         sectionFields.filter { it.type == ARRAY_PREFIX + recordType }.joinToString(LIST_SEPARATOR) { it.name } +
@@ -135,9 +132,8 @@ private fun observeDnsResponses() = with(context) {
     )
 }
 
-context(context: BytecodePatchContext)
 private fun registerWifiScanHolders() {
-    val hotspotType = WifiHotspotToStringFingerprint.matchSingle().originalMethod.definingClass
+    val hotspotType = WifiHotspotToStringFingerprint.originalMethod.definingClass
     val holders = hotspotConstructionFingerprint(hotspotType).matchAll()
         .map { it.originalMethod.definingClass }.distinct()
     registerAtLaunch(
@@ -146,13 +142,11 @@ private fun registerWifiScanHolders() {
     )
 }
 
-context(context: BytecodePatchContext)
 private fun whoisToolbarSlot() = WhoisToolbarFingerprint.matchAll().firstNotNullOfOrNull(::emptyGroupSlotOrNull)
     ?: throw PatchException("No $TOOLS_WHOIS_SCREEN toolbar lambda has an empty composer group")
 
-context(context: BytecodePatchContext)
-private fun observeWhoisResults() = with(context) {
-    val screen = composableFingerprint(TOOLS_WHOIS_SCREEN).matchSingle()
+private fun observeWhoisResults() {
+    val screen = composableFingerprint(TOOLS_WHOIS_SCREEN).match()
     val itemIndex = screen.composableParameters().indexOf(WHOIS_ITEM)
     if (itemIndex < 0) throw PatchException("$TOOLS_WHOIS_SCREEN takes no $WHOIS_ITEM parameter")
     val method = screen.method

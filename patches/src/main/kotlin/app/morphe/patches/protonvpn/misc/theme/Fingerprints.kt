@@ -12,7 +12,7 @@ import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.string
 import app.morphe.patches.protonvpn.misc.anchors.resourceField
@@ -76,10 +76,10 @@ internal object IconCallerFingerprint : Fingerprint(
 internal fun Method.isSwitchColorsConstructor() = name == "<init>" &&
     parameterTypes.size == SWITCH_COLORS_ARGUMENT_COUNT && parameterTypes.all { it == "J" }
 
-internal fun BytecodePatchContext.isSwitchColorsType(type: CharSequence) =
+internal fun isSwitchColorsType(type: CharSequence) =
     classDefByOrNull(type.toString())?.methods?.any { it.isSwitchColorsConstructor() } == true
 
-internal fun BytecodePatchContext.switchImplFingerprint() = Fingerprint(
+internal fun switchImplFingerprint() = Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
     returnType = "V",
     parameters = listOf("L", "Z", "Z", "L", "L", "L", "L", "I"),

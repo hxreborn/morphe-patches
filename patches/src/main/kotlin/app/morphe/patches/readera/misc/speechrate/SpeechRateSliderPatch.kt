@@ -8,7 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
@@ -26,11 +26,11 @@ import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.readeraSpeechRateSliderExtensionPatch
 
-private const val EXTENSION_SLIDER_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechRateSlider;"
-private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechRateTarget;"
+private const val EXTENSION_SLIDER_DESCRIPTOR = "Lapp/hxreborn/extension/readera/speech/rate/SpeechRateSlider;"
+private const val EXTENSION_TARGET_DESCRIPTOR = "Lapp/hxreborn/extension/readera/speech/rate/SpeechRateTarget;"
 
 @Suppress("unused")
-val speechRateSliderPatch = bytecodePatch(
+val speechRateSliderPatch = patch(
     name = "Speech rate slider",
     description = "Sets Read aloud speed from 0.1x to 4x with a slider on the Speech rate screen.",
 ) {
@@ -85,7 +85,7 @@ val speechRateSliderPatch = bytecodePatch(
                     iget-object v$rootRegister, p0, $rootField
                     const v$seekBarRegister, $seekBarId
                     const v$labelRegister, $labelId
-                    invoke-static { v$rootRegister, v$seekBarRegister, v$labelRegister, p0 }, $EXTENSION_SLIDER_DESCRIPTOR->attach(Landroid/view/View;IILapp/hxreborn/extension/readera/SpeechRateTarget;)V
+                    invoke-static { v$rootRegister, v$seekBarRegister, v$labelRegister, p0 }, $EXTENSION_SLIDER_DESCRIPTOR->attach(Landroid/view/View;IILapp/hxreborn/extension/readera/speech/rate/SpeechRateTarget;)V
                 """,
             )
         }

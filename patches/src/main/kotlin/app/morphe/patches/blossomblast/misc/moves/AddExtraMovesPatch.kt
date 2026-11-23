@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.blossomblast.misc.moves
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.blossomblast.shared.MODIFIERS
 import app.morphe.patches.blossomblast.shared.blossomBlastModifiersPatch
 import app.morphe.patches.blossomblast.shared.replaceStringArrayStub
@@ -15,7 +16,7 @@ private const val INCREASE_STARTING_MOVES_SKILL = 2
 private const val EXTRA_MOVES = 5
 
 @Suppress("unused")
-val addExtraMovesPatch = bytecodePatch(
+val addExtraMovesPatch = patch(
     name = "Add extra moves",
     description = "Starts every level with five extra moves.",
 ) {

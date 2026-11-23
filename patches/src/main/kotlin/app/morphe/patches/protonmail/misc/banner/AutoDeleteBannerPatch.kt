@@ -4,11 +4,13 @@
  */
 package app.morphe.patches.protonmail.misc.banner
 
+import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.protonmail.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,7 +32,7 @@ import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 internal const val AUTO_DELETE_BANNER_EXTENSION_CLASS =
     "Lapp/hxreborn/extension/protonmail/AutoDeleteBanner;"
 
-internal fun BytecodePatchContext.answerAutoDeleteBannerCheck(stubName: String, check: String) =
+internal fun answerAutoDeleteBannerCheck(stubName: String, check: String) =
     mutableClassDefBy(AUTO_DELETE_BANNER_EXTENSION_CLASS).replaceStub(
         stubName,
         1,
@@ -46,7 +48,7 @@ private fun Method.enumConstant(name: String): FieldReference =
         indexOfFirstInstructionOrThrow(indexOfFirstStringInstructionOrThrow(name), Opcode.SPUT_OBJECT),
     ).reference as FieldReference
 
-val autoDeleteBannerStatePatch = bytecodePatch {
+val autoDeleteBannerStatePatch = patch {
     dependsOn(protonAutoDeleteBannerExtensionPatch, protonPatchApplicationExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     compatibleWith(AppCompatibilities.PROTON_MAIL)
     dependsOn(spoofSignaturePatch)
@@ -60,10 +62,9 @@ val autoDeleteBannerStatePatch = bytecodePatch {
             )
         }
 
+        val stateReads = anyInstruction(*stateFields.map { fieldAccess(it, Opcode.SGET_OBJECT) }.toTypedArray())
         with(AutoDeleteBannerFingerprint.method) {
-            val stateReadIndices = findInstructionIndicesReversed {
-                opcode == Opcode.SGET_OBJECT && getReference<FieldReference>() in stateFields
-            }
+            val stateReadIndices = findInstructionIndicesReversed(stateReads)
 
             if (stateReadIndices.size != stateFields.size) {
                 throw PatchException(

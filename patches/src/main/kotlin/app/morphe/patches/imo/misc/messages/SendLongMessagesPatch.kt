@@ -7,9 +7,8 @@ package app.morphe.patches.imo.misc.messages
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -28,7 +27,7 @@ private fun MutableMethod.freeRegisters(count: Int): List<Int> {
 }
 
 @Suppress("unused")
-val sendLongMessagesPatch = bytecodePatch(
+val sendLongMessagesPatch = patch(
     name = "Send long messages",
     description = "Sends text longer than 2000 characters as consecutive messages. " +
         "Raises the chat input limit to 10000 characters. " +
@@ -38,7 +37,7 @@ val sendLongMessagesPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        SendTextMessageFingerprint.matchSingle().method.apply {
+        SendTextMessageFingerprint.method.apply {
             val (parts, imdataParts, index, partCount) = freeRegisters(4)
             addInstructionsWithLabels(
                 0,
@@ -68,7 +67,7 @@ val sendLongMessagesPatch = bytecodePatch(
             )
         }
 
-        SendIntervalCheckFingerprint.matchSingle().method.apply {
+        SendIntervalCheckFingerprint.method.apply {
             val (skipped) = freeRegisters(1)
             addInstructionsWithLabels(
                 0,
@@ -82,8 +81,9 @@ val sendLongMessagesPatch = bytecodePatch(
             )
         }
 
-        ChatInputLimitFingerprint.matchSingle().apply {
-            val limitCall = instructionMatches[1].index
+        ChatInputLimitFingerprint.match().apply {
+            val (_, setInputLimit) = instructionMatches
+            val limitCall = setInputLimit.index
             val input = method.getInstruction<FiveRegisterInstruction>(limitCall).registerC
             method.replaceInstruction(
                 limitCall,

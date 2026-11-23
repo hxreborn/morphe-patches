@@ -5,13 +5,10 @@
 package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 
-context(context: BytecodePatchContext)
 internal fun registerAtLaunch(receiver: String, registration: String, classes: List<String> = emptyList()) {
-    val onCreate = MainActivityOnCreateFingerprint.matchSingle().method
+    val onCreate = MainActivityOnCreateFingerprint.method
     val registers = onCreate.getFreeRegisterProvider(0, classes.size + 1)
     val classRegisters = classes.map { registers.getFreeRegister4Bit() }
     val registrationRegister = registers.getFreeRegister4Bit()

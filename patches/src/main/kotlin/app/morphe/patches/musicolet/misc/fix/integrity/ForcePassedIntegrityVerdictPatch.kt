@@ -6,16 +6,15 @@ package app.morphe.patches.musicolet.misc.fix.integrity
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val PASSED_VERDICT = 1
 
-internal val forcePassedIntegrityVerdictPatch = bytecodePatch {
+internal val forcePassedIntegrityVerdictPatch = patch {
     execute {
-        val verdictRead = StoredIntegrityVerdictReadFingerprint.matchSingle()
+        val verdictRead = StoredIntegrityVerdictReadFingerprint.match()
         val (verdictKey, getIntCall, getIntResult) = verdictRead.instructionMatches
         val keyRegister = (verdictKey.instruction as OneRegisterInstruction).registerA
         val getIntKeyRegister = (getIntCall.instruction as FiveRegisterInstruction).registerD

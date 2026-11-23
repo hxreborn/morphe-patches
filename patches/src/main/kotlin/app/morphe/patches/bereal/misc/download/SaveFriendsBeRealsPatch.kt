@@ -7,14 +7,14 @@ package app.morphe.patches.bereal.misc.download
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -34,7 +34,7 @@ private const val DOWNLOAD_ENABLED = "${BEREAL_EXTENSION_PACKAGE}download/Friend
 private const val LAST_FOUR_BIT_REGISTER = 15
 
 @Suppress("unused")
-val saveFriendsBeRealsPatch: BytecodePatch = bytecodePatch(
+val saveFriendsBeRealsPatch: Patch = patch(
     name = "Save friends' BeReals",
     description = "Adds Download to the 3-dot menu of friends' BeReals in the feed and on the RealMoji screen.",
 ) {
@@ -44,7 +44,7 @@ val saveFriendsBeRealsPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}download/FriendsPostDownload;", saveFriendsBeRealsPatch)
 
-        val feedMenu = FeedPostMenuFingerprint.matchSingle()
+        val feedMenu = FeedPostMenuFingerprint.match()
         val method = feedMenu.method
         val resolveText = feedMenu.instructionMatch(Opcode.INVOKE_INTERFACE).getInstruction<ReferenceInstruction>()
             .getReference<MethodReference>()!!
@@ -56,7 +56,7 @@ val saveFriendsBeRealsPatch: BytecodePatch = bytecodePatch(
             ?: throw PatchException("No friend menu items in ${method.definingClass}")
         val friendItem = friendItems.instructionMatch(Opcode.INVOKE_DIRECT_RANGE)
             .getInstruction<RegisterRangeInstruction>()
-        val listResult = friendItems.instructionMatches.last()
+        val (_, _, _, _, listResult) = friendItems.instructionMatches
         val listIndex = listResult.index
         val list = listResult.getInstruction<OneRegisterInstruction>().registerA
 
@@ -95,7 +95,7 @@ val saveFriendsBeRealsPatch: BytecodePatch = bytecodePatch(
             ExternalLabel("skip_download", method.getInstruction(listIndex + 1)),
         )
 
-        val reactionsMenu = ReactionsPostMenuFingerprint.matchSingle()
+        val reactionsMenu = ReactionsPostMenuFingerprint.match()
         val reactions = reactionsMenu.method
         val ownerCheck = reactionsMenu.instructionMatch(Opcode.IF_EQZ).index
         val ownerBranch = reactions.getInstruction<BuilderOffsetInstruction>(ownerCheck)

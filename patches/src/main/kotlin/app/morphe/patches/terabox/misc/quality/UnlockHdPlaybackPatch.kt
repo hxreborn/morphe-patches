@@ -8,10 +8,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -35,15 +35,15 @@ private const val FIRST_HD_HEIGHT = 720
 private const val ORIGINAL_RESOLUTION_LABEL = "ORIGIN"
 private const val KILO_RESOLUTION_SUFFIX = "K"
 
-internal val unlockHdPlaybackPatch = bytecodePatch {
+internal val unlockHdPlaybackPatch = patch {
     dependsOn(teraboxUnlockPremiumPlusExtensionPatch)
     compatibleWith(AppCompatibilities.TERABOX)
     dependsOn(patchesSettingsPatch)
 
     execute {
-        PremiumResolutionThresholdFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(Int.MAX_VALUE) }
+        PremiumResolutionThresholdFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) { returnEarly(Int.MAX_VALUE) }
 
-        OnlineVideoInfoRequestFingerprint.matchSingle().apply {
+        OnlineVideoInfoRequestFingerprint.match().apply {
             val requestIndex = instructionMatches.first().index
             val waitingForMetadata = instructionMatches.last().instruction.getReference<FieldReference>()!!
 
@@ -75,7 +75,7 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             }
         }
 
-        MediaFileMetaDlinkFingerprint.matchSingle().method.apply {
+        MediaFileMetaDlinkFingerprint.method.apply {
             val returnIndex = indexOfFirstInstructionOrThrow(Opcode.RETURN_OBJECT)
             val dlink = getInstruction<OneRegisterInstruction>(returnIndex).registerA
 
@@ -88,7 +88,7 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             )
         }
 
-        SharedFileDlinkFingerprint.matchSingle().method.apply {
+        SharedFileDlinkFingerprint.method.apply {
             val returnIndex = indexOfFirstInstructionOrThrow(Opcode.RETURN_OBJECT)
             val dlink = getInstruction<OneRegisterInstruction>(returnIndex).registerA
 
@@ -101,7 +101,7 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             )
         }
 
-        SetMediaUrlFingerprint.matchSingle().method.overrideWhenEnabled(PREMIUM_ENABLED) {
+        SetMediaUrlFingerprint.method.overrideWhenEnabled(PREMIUM_ENABLED) {
             addInstructions(
                 0,
                 """
@@ -111,11 +111,11 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             )
         }
 
-        val reload = PlayerReloadFingerprint.matchSingle()
+        val reload = PlayerReloadFingerprint.match()
         val presenter = reload.classDef
         val finalInfoType = reload.method.parameterTypes[2]
         val finalInfo = presenter.fields.single { it.type == finalInfoType }
-        val switchResult = ResolutionSwitchResultFingerprint.matchSingle().method
+        val switchResult = ResolutionSwitchResultFingerprint.method
         val hdResolutions = classDefBy(VIDEO_PLAY_RESOLUTION_CLASS).fields
             .filter { AccessFlags.ENUM.isSet(it.accessFlags) && isHdResolution(it.name) }
         if (hdResolutions.isEmpty()) throw PatchException("$VIDEO_PLAY_RESOLUTION_CLASS has no HD resolution")
@@ -150,7 +150,7 @@ internal val unlockHdPlaybackPatch = bytecodePatch {
             """,
         )
 
-        ResolutionSwitchFingerprint.matchSingle().apply {
+        ResolutionSwitchFingerprint.match().apply {
             val switchIndex = instructionMatches.first().index
             method.apply {
                 val (presenterRegister, resolutionRegister) = getFreeRegisterProvider(switchIndex, 2).let {

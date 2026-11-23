@@ -5,7 +5,7 @@
 package app.morphe.patches.medicneet.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -58,7 +58,7 @@ internal val PYQ_GENERATOR_TESTER_CALL = DartCheck(
 internal val DART_CHECKS = listOf(FULL_ACCESS_CHECK, PREDICTED_BATCH_TEST_PANEL_CALL, PYQ_GENERATOR_TESTER_CALL)
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the AIMTS test series, the PYQ generator, video lectures and tier 1 and 2 " +
         "questions in every topic. Tier 3 questions and flashcards are not included.",

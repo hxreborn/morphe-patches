@@ -5,8 +5,7 @@
 package app.morphe.patches.audible.startup
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -15,21 +14,21 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 private const val LIBRARY_SWITCH_INDEX = 1
 
 @Suppress("unused")
-val openLibraryOnLaunchPatch = bytecodePatch(
+val openLibraryOnLaunchPatch = patch(
     name = "Open Library on launch",
     description = "Opens the Library tab instead of Home on launch. Applies only while signed in.",
 ) {
     compatibleWith(AppCompatibilities.AUDIBLE)
 
     execute {
-        val match = NextActivityRouterFingerprint.matchSingle()
-        val matches = match.instructionMatches
+        val match = NextActivityRouterFingerprint.match()
+        val (lowercaseAction, _, copyUnmatchedAction, libraryAction) = match.instructionMatches
 
         // Lowercased copy is Conflict at the merge
-        val actionRegister = matches[0].getInstruction<FiveRegisterInstruction>().registerC
-        val unmatchedActionIndex = matches[2].index
-        val switchRegister = matches[2].getInstruction<TwoRegisterInstruction>().registerA
-        val scratchRegister = matches[3].getInstruction<OneRegisterInstruction>().registerA
+        val actionRegister = lowercaseAction.getInstruction<FiveRegisterInstruction>().registerC
+        val unmatchedActionIndex = copyUnmatchedAction.index
+        val switchRegister = copyUnmatchedAction.getInstruction<TwoRegisterInstruction>().registerA
+        val scratchRegister = libraryAction.getInstruction<OneRegisterInstruction>().registerA
 
         match.method.addInstructionsWithLabels(
             unmatchedActionIndex + 1,

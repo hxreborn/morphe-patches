@@ -7,10 +7,9 @@ package app.morphe.patches.terabox.misc.promotions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -24,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val PREMIUM_HOME_CARD_TYPE = 6
 
 @Suppress("unused")
-val hidePromotionsPatch: BytecodePatch = bytecodePatch(
+val hidePromotionsPatch: Patch = patch(
     name = "Hide promotions",
     description = "Removes Premium and sale offers, plus prize and campaign cards, speed-up prompts, " +
         "floating invites and coupon popups.",
@@ -48,13 +47,13 @@ val hidePromotionsPatch: BytecodePatch = bytecodePatch(
             AccelerateTrialToastFingerprint,
             WebPlayerStutterGuideFingerprint,
             FloatWindowUpdateFingerprint,
-        ).forEach { it.matchSingle().method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly() } }
+        ).forEach { it.method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly() } }
 
-        PremiumPopupLimitFingerprint.matchSingle().method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(false) }
+        PremiumPopupLimitFingerprint.method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(false) }
 
-        SearchOperationEntryFingerprint.matchSingle().method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(null) }
+        SearchOperationEntryFingerprint.method.overrideWhenEnabled(PROMOTIONS_HIDDEN) { returnEarly(null) }
 
-        SpeedUpSheetAutoShowFingerprint.matchSingle().apply {
+        SpeedUpSheetAutoShowFingerprint.match().apply {
             val flagResult = instructionMatches.last()
             val register = flagResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
@@ -66,7 +65,7 @@ val hidePromotionsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        HomeCardVisibilityFingerprint.matchSingle().method.apply {
+        HomeCardVisibilityFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructionsWithLabels(

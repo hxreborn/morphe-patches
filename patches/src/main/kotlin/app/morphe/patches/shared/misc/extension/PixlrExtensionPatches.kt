@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val pixlrHideHomeSectionsExtensionPatch = bytecodePatch {
+
+internal val pixlrHideHomeSectionsExtensionPatch = patch {
     extendWith("extensions/hxreborn/pixlr-hide-home-sections.mpe")
 }

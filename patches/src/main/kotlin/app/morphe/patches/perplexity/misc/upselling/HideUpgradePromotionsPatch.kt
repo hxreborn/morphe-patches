@@ -7,9 +7,9 @@ package app.morphe.patches.perplexity.misc.upselling
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.kotlin.returnUnitEarly
@@ -18,7 +18,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = bytecodePatch(
+val hideUpgradePromotionsPatch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the subscription offer after signing in, the Upgrade plan banner, home screen " +
         "promotions and upgrade cards in answers. Plan limits still apply.",
@@ -26,13 +26,13 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PERPLEXITY)
 
     execute {
-        val userDataType = SignInFunnelUserDataToStringFingerprint.matchSingle().classDef.type
-        skipPaywallAfterSignInFingerprint(userDataType).matchSingle().method.returnEarly(true)
+        val userDataType = SignInFunnelUserDataToStringFingerprint.match().classDef.type
+        skipPaywallAfterSignInFingerprint(userDataType).method.returnEarly(true)
 
-        returnUnitEarly(HomeUpsellFetchFingerprint.matchSingle().method)
+        returnUnitEarly(HomeUpsellFetchFingerprint.method)
 
-        val upsellTypeEnum = UpsellTypeEnumFingerprint.matchSingle().classDef.type
-        ThreadUpsellMapperFingerprint.matchSingle().method.apply {
+        val upsellTypeEnum = UpsellTypeEnumFingerprint.match().classDef.type
+        ThreadUpsellMapperFingerprint.method.apply {
             val remoteUpsellType = parameterTypes.single().toString()
             val upsellTypeField = classDefBy(remoteUpsellType).fields.single { it.type == upsellTypeEnum }
             val registers = getFreeRegisterProvider(0, 2)
@@ -63,8 +63,9 @@ val hideUpgradePromotionsPatch = bytecodePatch(
         }
 
         if (UpgradePlanBannerToStringFingerprint.matchOrNull() != null) {
-            UpgradePlanBannerFlagFingerprint.matchSingle().apply {
-                val index = instructionMatches.last().index
+            UpgradePlanBannerFlagFingerprint.match().apply {
+                val (_, bannerFlagWrite) = instructionMatches
+                val index = bannerFlagWrite.index
                 val bannerFlag = method.getInstruction<ReferenceInstruction>(index).reference
                 val homeStateRegister = method.getInstruction<TwoRegisterInstruction>(index).registerB
                 val falseRegister = method.getFreeRegisterProvider(index + 1, 1).getFreeRegister4Bit()

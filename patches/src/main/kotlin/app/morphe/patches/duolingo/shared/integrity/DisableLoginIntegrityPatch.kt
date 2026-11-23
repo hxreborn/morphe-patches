@@ -12,13 +12,13 @@ package app.morphe.patches.duolingo.shared.integrity
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.duolingo.shared.constructorWritingFingerprint
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
-internal val disableLoginIntegrityPatch = bytecodePatch {
+internal val disableLoginIntegrityPatch = patch {
     execute {
         val (signalRead, emptySignalRead, _) = EmailLoginRequestSerializeFingerprint.instructionMatches
         val signalField = signalRead.instruction.getReference<FieldReference>()!!

@@ -6,7 +6,7 @@ package app.morphe.patches.patreon.misc.featureflags
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.patreon.misc.settings.PATREON_EXTENSION_PACKAGE
 import app.morphe.patches.shared.misc.extension.patreonFeatureFlagsExtensionPatch
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.misc.extension.patreonSettingsExtensionPatch
 
 private const val FEATURE_FLAGS_CLASS = "${PATREON_EXTENSION_PACKAGE}FeatureFlags;"
 
-internal val featureFlagsPatch = bytecodePatch {
+internal val featureFlagsPatch = patch {
     dependsOn(patreonFeatureFlagsExtensionPatch, patreonSettingsExtensionPatch)
     execute {
         listOf(UserFlagCheckFingerprint, CampaignFlagCheckFingerprint).forEach { fingerprint ->

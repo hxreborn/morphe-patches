@@ -6,8 +6,7 @@ package app.morphe.patches.steezy.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -17,15 +16,15 @@ import app.morphe.patches.shared.misc.extension.steezyUnlockPremiumExtensionPatc
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/steezy/PremiumInterceptor;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all classes and programs. Requires a STEEZY account.",
 ) {
     dependsOn(steezyUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.STEEZY)
     execute {
-        val cachedClientBuilder = CachedClientBuilderFingerprint.matchSingle()
-        val clientBuilder = cachedClientBuilder.instructionMatches.first().getMethodCalled()
+        val (createBuilder) = CachedClientBuilderFingerprint.match().instructionMatches
+        val clientBuilder = createBuilder.getMethodCalled()
 
         val returnIndex = clientBuilder.indexOfFirstInstructionReversedOrThrow(Opcode.RETURN_OBJECT)
         val builderRegister = clientBuilder.getInstruction<OneRegisterInstruction>(returnIndex).registerA

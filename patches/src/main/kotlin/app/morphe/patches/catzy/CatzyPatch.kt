@@ -4,9 +4,8 @@
  */
 package app.morphe.patches.catzy
 
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.catzy.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.arm64Availability
@@ -16,8 +15,8 @@ internal fun catzyPatch(
     name: String,
     description: String,
     selection: PatchAvailability = PatchAvailability.ENABLED,
-    block: BytecodePatchContext.() -> Unit,
-) = bytecodePatch(name, description) {
+    block: () -> Unit,
+) = patch(name, description) {
     compatibleWith(AppCompatibilities.CATZY)
 
     availability(arm64Availability(selection))

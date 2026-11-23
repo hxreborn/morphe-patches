@@ -4,20 +4,19 @@
  */
 package app.morphe.patches.myapk.premium
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks premium and removes ads.",
 ) {
     compatibleWith(AppCompatibilities.MY_APK)
 
     execute {
-        HasActivePurchaseFingerprint.matchSingle().method.returnEarly(true)
-        PreCacheAdFingerprint.matchSingle().method.returnEarly()
+        HasActivePurchaseFingerprint.method.returnEarly(true)
+        PreCacheAdFingerprint.method.returnEarly()
     }
 }

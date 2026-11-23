@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.clink.misc.premium
 
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -19,12 +19,11 @@ import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock Pro",
     description = "Unlocks Clink Pro.",
 ) {
@@ -32,18 +31,18 @@ val unlockProPatch = bytecodePatch(
     dependsOn(removePairipProtectionPatch)
 
     execute {
-        val publish = PublishEntitlementFingerprint.matchSingle()
+        val publish = PublishEntitlementFingerprint.match()
         val holder = publish.classDef
-        val purchasedField = publish.instructionMatches.first().instruction.getReference<FieldReference>()!!
+        val (purchasedRead, _, _) = publish.instructionMatches
+        val purchasedField = purchasedRead.fieldReference
         val purchasedFieldDescriptor = descriptor(purchasedField)
 
+        val purchasedWrites = fieldAccess(purchasedField, Opcode.IPUT_BOOLEAN)
         var writes = 0
         holder.methods.forEach { method ->
             if (method.implementation == null) return@forEach
 
-            method.findInstructionIndicesReversed {
-                opcode == Opcode.IPUT_BOOLEAN && getReference<FieldReference>() == purchasedField
-            }.forEach { index ->
+            method.findInstructionIndicesReversed(purchasedWrites).forEach { index ->
                 val write = method.getInstruction<TwoRegisterInstruction>(index)
                 method.addInstructions(
                     index + 1,
@@ -58,7 +57,7 @@ val unlockProPatch = bytecodePatch(
         check(writes > 0) { "No writes to $purchasedFieldDescriptor found" }
 
         ApplyPurchasesFingerprint.match(holder).let { apply ->
-            val ownsLifetimeResult = apply.instructionMatches.last()
+            val (_, _, ownsLifetimeResult) = apply.instructionMatches
             val register = ownsLifetimeResult.getInstruction<OneRegisterInstruction>().registerA
             apply.method.replaceInstruction(ownsLifetimeResult.index, "const/4 v$register, 0x1")
         }

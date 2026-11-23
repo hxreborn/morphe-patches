@@ -6,7 +6,8 @@ package app.morphe.patches.readera.misc.notification
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -24,13 +25,13 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.readeraReadAloudNotificationControlsExtensionPatch
 
-private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechNotification;"
+private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/speech/notification/SpeechNotification;"
 private const val STOP_ACTION_REGISTERS = 4
 private const val TIMER_READER_REGISTERS = 4
 private const val STOP_ICON = 0x1080038
 
 @Suppress("unused")
-val readAloudNotificationControlsPatch = bytecodePatch(
+val readAloudNotificationControlsPatch = patch(
     name = "Read aloud notification controls",
     description = "Adds Stop, Previous and Next buttons to the Read aloud notification. " +
         "On Android 7 to 10 it also counts down the sleep timer.",

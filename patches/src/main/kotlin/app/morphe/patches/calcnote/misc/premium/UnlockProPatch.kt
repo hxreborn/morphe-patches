@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.calcnote.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.calcnote.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
@@ -14,7 +14,7 @@ private const val ENTITLEMENT = "pro"
 private const val PRODUCT = "calcnote_pro_plan"
 
 @Suppress("unused")
-val unlockProPatch = bytecodePatch(
+val unlockProPatch = patch(
     name = "Unlock pro",
     description = "Unlocks Pro features and removes ads.",
 ) {

@@ -28,12 +28,13 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsPanel;
 
 @SuppressWarnings("unused")
 public final class PatchesSettingsActivity extends Activity {
@@ -45,8 +46,6 @@ public final class PatchesSettingsActivity extends Activity {
     private static final int EDITOR_MIN_LINES = 4;
 
     private static final int EDITOR_MAX_LINES = 12;
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
 
     private SettingsStyle style;
 
@@ -63,14 +62,6 @@ public final class PatchesSettingsActivity extends Activity {
 
     @SuppressWarnings("deprecation")
     private void showContent() {
-        LinearLayout screen = new LinearLayout(this);
-        screen.setOrientation(LinearLayout.VERTICAL);
-        screen.setBackgroundColor(this.style.background);
-        screen.setOnApplyWindowInsetsListener((view, insets) -> {
-            view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
-                    insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
-            return insets.consumeSystemWindowInsets();
-        });
         LinearLayout bar = new LinearLayout(this);
         bar.setGravity(Gravity.CENTER_VERTICAL);
         bar.setMinimumHeight(this.style.dp(APP_BAR_HEIGHT_DP));
@@ -85,7 +76,6 @@ public final class PatchesSettingsActivity extends Activity {
         bar.addView(back, new LinearLayout.LayoutParams(this.style.dp(SettingsStyle.TOUCH_TARGET_DP),
                 this.style.dp(SettingsStyle.TOUCH_TARGET_DP)));
         bar.addView(this.style.text("hxreborn patches", SettingsStyle.TITLE_SP, this.style.text));
-        screen.addView(bar);
         ScrollView scroll = new ScrollView(this);
         LinearLayout column = new LinearLayout(this);
         column.setOrientation(LinearLayout.VERTICAL);
@@ -101,15 +91,14 @@ public final class PatchesSettingsActivity extends Activity {
                 () -> editRules("Post flair filters", PatchSettings.FLAIRS_KEY));
         this.rows.section(column, "About");
         LinearLayout about = this.rows.card(column);
-        this.rows.row(about, "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.row(about, "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION, this::confirmReset);
         this.rows.row(about, "App version", appVersion(), null);
         this.rows.row(about, "Patch bundle", BuildConfig.BUNDLE_VERSION, null);
         this.rows.section(column, "Applied patches");
         LinearLayout applied = this.rows.card(column);
         this.rows.row(applied, "Filter posts", "Filters posts by title, subreddit or flair.", null);
         scroll.addView(column);
-        screen.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
-        setContentView(screen);
+        setContentView(new PatchesSettingsPanel(this, this.style.background, bar, scroll).createContent());
     }
 
     private void editRules(String title, String key) {
@@ -159,7 +148,7 @@ public final class PatchesSettingsActivity extends Activity {
 
     private void confirmReset() {
         showDialog(new AlertDialog.Builder(this).setTitle("Reset to defaults?")
-            .setMessage(RESET_DESCRIPTION)
+            .setMessage(PatchesMenuText.RESET_DESCRIPTION)
             .setNegativeButton("Cancel", null)
             .setPositiveButton("Reset", (dialog, which) -> {
                 PatchSettings.resetToDefaults();

@@ -9,7 +9,6 @@ import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.string
 import app.morphe.patches.imo.shared.RemoteSettingFingerprint
 import app.morphe.patches.imo.shared.enumConstantField
@@ -20,7 +19,6 @@ private val chatRowsDelete = methodCall(
     parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;", "[Ljava/lang/String;", "Z"),
 )
 
-context(_: BytecodePatchContext)
 internal fun inviteDialogCooldownFingerprint() = Fingerprint(
     filters = listOf(
         fieldAccess(enumConstantField("LAST_INVITE_SUGGEST_TIME"), Opcode.SGET_OBJECT),
@@ -30,7 +28,6 @@ internal fun inviteDialogCooldownFingerprint() = Fingerprint(
     ),
 )
 
-context(_: BytecodePatchContext)
 internal fun inviteChatEntryFingerprint() = Fingerprint(
     filters = listOf(
         chatRowsDelete,

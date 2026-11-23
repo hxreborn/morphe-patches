@@ -5,8 +5,7 @@
 package app.morphe.patches.privacynotes.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.morpheLibraryCoreExtensionPatch
 import app.morphe.patches.shared.misc.extension.privacynotesUnlockPremiumExtensionPatch
@@ -14,7 +13,7 @@ import app.morphe.patches.shared.misc.extension.privacynotesUnlockPremiumExtensi
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/privacynotes/ProUnlock;"
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro features, unlimited devices and larger file uploads. " +
         "The server still blocks note history and caps storage at 50 MB.",
@@ -22,7 +21,7 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(morpheLibraryCoreExtensionPatch, privacynotesUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.PRIVACY_NOTES)
     execute {
-        PageStartedFingerprint.matchSingle().method.addInstructions(
+        PageStartedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $EXTENSION_CLASS->unlock(Landroid/webkit/WebView;)V",
         )

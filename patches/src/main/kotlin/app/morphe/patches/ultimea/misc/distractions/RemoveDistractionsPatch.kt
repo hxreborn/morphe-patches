@@ -4,10 +4,9 @@
  */
 package app.morphe.patches.ultimea.misc.distractions
 
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
@@ -41,13 +40,13 @@ private const val FALSE_X1 = 0x9100c2c1.toInt()
 private fun Int.bytes() = ByteArray(INSTRUCTION_BYTES) { (this ushr (it * Byte.SIZE_BITS)).toByte() }
 
 @Suppress("unused")
-val removeDistractionsPatch: BytecodePatch = bytecodePatch(
+val removeDistractionsPatch: Patch = patch(
     name = "Remove distractions",
     description = "Removes community, message and support entries.",
 ) {
     compatibleWith(AppCompatibilities.ULTIMEA)
     availability(requireArm64)
-    dependsOn(patchesSettingsPatch, resourcePatch {
+    dependsOn(patchesSettingsPatch, patch {
         execute {
             val library = dartAotLibrary().readBytes()
             val home = nativeMethods.single("homepage_nodevice_mydevice", "#161616")

@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.clipstudiopaint.misc.launch
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.clipstudiopaint.misc.PatchSite
 import app.morphe.patches.clipstudiopaint.misc.WORD_SIZE
 import app.morphe.patches.clipstudiopaint.misc.rewriteNativeLibrary
@@ -53,7 +53,7 @@ private val patchSites = listOf(
 )
 
 @Suppress("unused")
-val skipPlanSelectionPatch = rawResourcePatch(
+val skipPlanSelectionPatch = patch(
     name = "Skip plan selection",
     description = "Opens the app in doodle mode without showing the plan selection screen. " +
         "Log in from the home screen to use a plan.",

@@ -10,15 +10,14 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLa
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.util.findInstructionIndicesReversed
-import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstStringInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -56,16 +55,9 @@ private fun MutableMethod.switchCaseStartIndices(): Map<Int, Int> {
 }
 
 private fun MutableMethod.addResponseObserver() {
-    val decryptionIndex = indexOfFirstInstructionOrThrow(indexOfFirstStringInstructionOrThrow(SECURITY_KEY_PREFERENCE)) {
-        getReference<MethodReference>()?.let { it.definingClass == CIPHER_CLASS && it.name == "doFinal" } == true
-    }
-    val bodyCreationIndex = indexOfFirstInstructionOrThrow(decryptionIndex) {
-        opcode == Opcode.INVOKE_STATIC && getReference<MethodReference>()?.let {
-            it.parameterTypes.size == 2 && it.parameterTypes[0] == STRING_CLASS && it.returnType.startsWith("L")
-        } == true
-    }
-    val json = getInstruction<FiveRegisterInstruction>(bodyCreationIndex).registerC
-    addInstruction(bodyCreationIndex, "invoke-static { v$json }, $DEVICE_GUID_CLASS->observeResponse($STRING_CLASS)V")
+    val (_, _, createResponseBody) = ResponseBodyCreationFingerprint.match(this).instructionMatches
+    val json = createResponseBody.getInstruction<FiveRegisterInstruction>().registerC
+    addInstruction(createResponseBody.index, "invoke-static { v$json }, $DEVICE_GUID_CLASS->observeResponse($STRING_CLASS)V")
 }
 
 private fun MutableMethod.addSignedRequestRetry() {
@@ -113,7 +105,7 @@ private fun MutableMethod.addSignedRequestRetry() {
 }
 
 @Suppress("unused")
-val spoofSignaturePatch = bytecodePatch(
+val spoofSignaturePatch = patch(
     name = "Spoof signature",
     description = "Removes the modified app warning that stops video playback.",
 ) {
@@ -122,7 +114,7 @@ val spoofSignaturePatch = bytecodePatch(
     execute {
         val certificate = packageMetadata.stockSigningCertificate().encoded.joinToString("") { "%02x".format(it) }
 
-        SignatureDigestFingerprint.matchSingle().method.addInstructions(
+        SignatureDigestFingerprint.method.addInstructions(
             0,
             """
                 new-instance v0, $SIGNATURE_CLASS
@@ -133,11 +125,12 @@ val spoofSignaturePatch = bytecodePatch(
         )
 
         listOf(RepositoryGuidFingerprint, ApplicationGuidFingerprint).forEach {
-            it.matchSingle().method.addInstructionsWithLabels(0, USE_SWITCHED_GUID)
+            it.method.addInstructionsWithLabels(0, USE_SWITCHED_GUID)
         }
 
-        HttpInterceptorFingerprint.matchSingle().method.apply {
+        HttpInterceptorFingerprint.method.apply {
             addSignedRequestRetry()
+            ResponseBodyCreationFingerprint.clearMatch()
             addResponseObserver()
         }
     }

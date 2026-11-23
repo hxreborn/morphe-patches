@@ -8,14 +8,16 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.string
 import app.morphe.patcher.util.findFreeRegister
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.liapp.liappPackageFilterPatch
+import app.morphe.patches.vpnsuper.misc.fix.tamper.disableTamperResponsePatch
 import app.morphe.patches.vpnsuper.misc.settings.markPatchApplied
 import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstInstructionOrThrow
@@ -31,8 +33,6 @@ import app.morphe.patches.shared.misc.extension.vpnsuperAppliedPatchesExtensionP
 
 private const val FUNCTION0_CLASS = "Lkotlin/jvm/functions/Function0;"
 private const val BOOLEAN_CLASS = "Ljava/lang/Boolean;"
-private const val USER_STATE_LABEL = ", userState="
-private const val MULTI_PLATFORM_LABEL = ", isMpfEnabled="
 private const val SHOW_BANNER_ADS_LABEL = ", showBannerAds="
 private const val FREE_TRIAL_LABEL = ", freeTrial="
 private const val PROMO_BANNER_COUNT = 4
@@ -54,11 +54,6 @@ private fun Method.booleanFieldsBetween(from: String, until: String): List<Field
     }
 }
 
-private fun Method.fieldAfter(opcode: Opcode, startIndex: Int): FieldReference =
-    getInstruction<ReferenceInstruction>(
-        indexOfFirstInstructionOrThrow(startIndex, opcode),
-    ).reference as FieldReference
-
 private fun ClassDef.readsBooleanTrue() = methods.any { method ->
     method.indexOfFirstInstruction {
         opcode == Opcode.SGET_OBJECT &&
@@ -72,7 +67,7 @@ private fun ClassDef.hasInstanceFields() =
     fields.any { !AccessFlags.STATIC.isSet(it.accessFlags) }
 
 @Suppress("unused")
-val unlockPremiumPatch: BytecodePatch = bytecodePatch(
+val unlockPremiumPatch: Patch = patch(
     name = "Unlock premium",
     description = "Unlocks premium servers and removes ads, upgrade banners, the launch paywall and " +
         "the Android TV sign-in screen.",
@@ -80,7 +75,7 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
     dependsOn(vpnsuperAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.VPN_SUPER)
 
-    dependsOn(liappPackageFilterPatch)
+    dependsOn(liappPackageFilterPatch, disableTamperResponsePatch)
 
     execute {
         markPatchApplied("unlockPremium", unlockPremiumPatch)
@@ -126,25 +121,26 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        TvSplashDestinationFingerprint.matchSingle().method.apply {
+        TvSplashDestinationFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow(Opcode.IGET_BOOLEAN)
             val register = getInstruction<TwoRegisterInstruction>(index).registerA
 
             replaceInstruction(index, "const/4 v$register, 0x1")
         }
 
-        PrivacyPolicyAcceptedFingerprint.matchSingle().method.apply {
+        PrivacyPolicyAcceptedFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow(Opcode.IGET_BOOLEAN)
             val register = getInstruction<TwoRegisterInstruction>(index).registerA
 
             replaceInstruction(index, "const/4 v$register, 0x1")
         }
 
-        CrownClickFingerprint.matchSingle().let { crownClick ->
-            crownClick.method.addInstruction(crownClick.instructionMatches.first().index, "return-void")
+        CrownClickFingerprint.match().let { crownClick ->
+            val (crownTapEvent) = crownClick.instructionMatches
+            crownClick.method.addInstruction(crownTapEvent.index, "return-void")
         }
 
-        val connectReport = ConnectReportToStringFingerprint.matchSingle()
+        val connectReport = ConnectReportToStringFingerprint.match()
         val promoBanners = connectReport.method.booleanFieldsBetween(
             SHOW_BANNER_ADS_LABEL,
             FREE_TRIAL_LABEL,
@@ -166,16 +162,11 @@ val unlockPremiumPatch: BytecodePatch = bytecodePatch(
                 }
             }
 
-        val userInfo = UserInfoToStringFingerprint.matchSingle()
-        val isPremium = userInfo.method.fieldAfter(Opcode.IGET_BOOLEAN, 0)
-        val userState = userInfo.method.fieldAfter(
-            Opcode.IGET_OBJECT,
-            userInfo.method.indexOfFirstInstructionOrThrow(string(USER_STATE_LABEL)),
-        )
-        val multiPlatform = userInfo.method.fieldAfter(
-            Opcode.IGET_BOOLEAN,
-            userInfo.method.indexOfFirstInstructionOrThrow(string(MULTI_PLATFORM_LABEL)),
-        )
+        val userInfo = UserInfoToStringFingerprint.match()
+        val (premiumRead, _, userStateRead, _, multiPlatformRead) = userInfo.instructionMatches
+        val isPremium = premiumRead.fieldReference
+        val userState = userStateRead.fieldReference
+        val multiPlatform = multiPlatformRead.fieldReference
 
         mutableClassDefBy(userInfo.classDef.type).methods
             .single { it.name == "<init>" && it.indexOfFirstInstruction(filter = writes(isPremium)) >= 0 }

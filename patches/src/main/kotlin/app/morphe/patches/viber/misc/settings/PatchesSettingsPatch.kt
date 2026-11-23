@@ -8,14 +8,14 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.addMethod
@@ -39,9 +39,9 @@ private const val SETTINGS_STYLE = "Lapp/hxreborn/extension/viber/SettingsStyle;
 
 private const val ACTIVITY = "app.hxreborn.extension.viber.PatchesSettingsActivity"
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
-    dependsOn(resourcePatch {
+    dependsOn(patch {
         execute {
             document("res/values/ids.xml").use { document ->
                 val id = document.createElement("item")
@@ -55,9 +55,9 @@ internal val patchesSettingsPatch = bytecodePatch {
                 title.textContent = "hxreborn patches"
                 document.documentElement.appendChild(title)
             }
-            val moreIcon = get("res/drawable/more_settings_icon.xml").readText()
+            val moreIcon = resourceFile("res/drawable/more_settings_icon.xml").readText()
                 .replace("@drawable/ic_settings_white", "@drawable/hx_viber_ic_patches")
-            get("res/drawable/hx_viber_more_patches.xml").writeText(moreIcon)
+            resourceFile("res/drawable/hx_viber_more_patches.xml").writeText(moreIcon)
             document("res/xml/settings_general.xml").use { document ->
                 val row = document.createElement("Preference")
                 row.setAttribute("android:layout", "@layout/_ics_custom_preference_layout")
@@ -104,7 +104,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 val stream = SettingsResources::class.java.getResourceAsStream("/viber/drawable/hx_viber_ic_$source.xml")
                     ?: SettingsResources::class.java.getResourceAsStream("/patreon/drawable/hx_patreon_ic_$source.xml")
                     ?: throw PatchException("No hx_viber_ic_$source or hx_patreon_ic_$source drawable in the bundle")
-                stream.use { get("res/drawable/hx_viber_ic_$target.xml").outputStream().use(it::copyTo) }
+                stream.use { resourceFile("res/drawable/hx_viber_ic_$target.xml").outputStream().use(it::copyTo) }
             }
         }
     })
@@ -119,7 +119,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 mapOf("adsFreeTitleText" to "viber_plus_settings_ads_free_title"),
             )
         }
-        val darknightTheme = DarknightThemeFingerprint.matchSingle().originalMethod
+        val darknightTheme = DarknightThemeFingerprint.originalMethod
         with(mutableClassDefBy(SETTINGS_STYLE)) {
             replaceStub(
                 "isDarknightTheme",
@@ -144,7 +144,7 @@ internal val patchesSettingsPatch = bytecodePatch {
                 ),
             )
         }
-        PlusAdSwitchFingerprint.matchSingle().let { match ->
+        PlusAdSwitchFingerprint.match().let { match ->
             val (_, _, setChecked) = match.instructionMatches
             val toggle = match.method.getInstruction<FiveRegisterInstruction>(setChecked.index).registerC
             match.method.addInstruction(
@@ -153,15 +153,15 @@ internal val patchesSettingsPatch = bytecodePatch {
             )
         }
         addMoreEntry()
-        ApplicationContextFingerprint.matchSingle().method.addInstruction(
+        ApplicationContextFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p1 .. p1 }, $VIBER_SETTINGS_CLASS->initialize(Landroid/content/Context;)V",
         )
     }
 }
 
-private fun BytecodePatchContext.addMoreEntry() {
-    val settingsItem = SettingsItemFingerprint.matchSingle()
+private fun addMoreEntry() {
+    val settingsItem = SettingsItemFingerprint.match()
     val (builderCall, titleCall, iconCall, itemCall, _) = settingsItem.instructionMatches
     val builder = builderCall.instruction.getReference<MethodReference>()!!
     val title = titleCall.instruction.getReference<MethodReference>()!!
@@ -185,7 +185,7 @@ private fun BytecodePatchContext.addMoreEntry() {
         check-cast p0, ${item.definingClass}
         return-object p0
     """)
-    val creators = MoreCreatorsFingerprint.matchSingle()
+    val creators = MoreCreatorsFingerprint.match()
     val (_, addCall, nextRead) = creators.instructionMatches
     val add = addCall.instruction as FiveRegisterInstruction
     val creatorRegister = add.registerD
@@ -197,7 +197,7 @@ private fun BytecodePatchContext.addMoreEntry() {
         invoke-direct {v$creatorRegister, p1}, $PATCHES_MENU-><init>(Landroid/content/Context;)V
         invoke-virtual {v${add.registerC}, v$creatorRegister}, ${descriptor(addCall.instruction.getReference<MethodReference>()!!)}
     """)
-    val click = MoreClickFingerprint.matchSingle()
+    val click = MoreClickFingerprint.match()
     val (_, activityResult) = click.instructionMatches
     val activity = (activityResult.instruction as OneRegisterInstruction).registerA
     val id = click.method.p0Register + 1

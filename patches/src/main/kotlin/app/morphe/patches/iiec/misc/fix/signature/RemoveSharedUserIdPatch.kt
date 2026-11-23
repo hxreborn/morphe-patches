@@ -4,10 +4,11 @@
  */
 package app.morphe.patches.iiec.misc.fix.signature
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import org.w3c.dom.Element
 
-internal val removeSharedUserIdPatch = resourcePatch {
+internal val removeSharedUserIdPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val manifest = document.getElementsByTagName("manifest").item(0) as Element

@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.readera.misc.dictionary
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.readera.shared.DRAWER_DICTIONARY_ITEM
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -14,7 +14,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val dictionarySectionPatch = bytecodePatch(
+val dictionarySectionPatch = patch(
     name = "Dictionary section",
     description = "Adds a side menu page with the words saved from every book.",
 ) {

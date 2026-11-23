@@ -6,11 +6,11 @@ package app.morphe.patches.protonpass.misc.navigationbar
 
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.instructions
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.methodCall
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patches.shared.misc.proton.FLOATING_NAVIGATION_BAR_CLASS
 import app.morphe.patches.shared.misc.proton.NAVIGATION_BAR_BACKDROP_CLASS
@@ -18,6 +18,7 @@ import app.morphe.patches.shared.misc.proton.literalWrittenTo
 import app.morphe.patches.shared.misc.proton.captureScaffoldPageColor
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
@@ -36,13 +37,13 @@ private const val LIST_CONTENT_PADDING_ARGUMENT = 2
 private const val SCAFFOLD_BACKGROUND_PARAMETER = 13
 private const val SCAFFOLD_BACKGROUND_DEFAULT = 0x2000
 
-internal fun BytecodePatchContext.installFloatingContentPadding(content: Match) {
+internal fun installFloatingContentPadding(content: Match) {
     captureScaffoldPageColor(
-        MainScaffoldFingerprint.matchSingle(), SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
+        MainScaffoldFingerprint.match(), SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
         "getBackground-0d7_KjU",
     )
-    val bottomCall = content.instructionMatches.first().instruction.getReference<MethodReference>()!!
-    val paddingCall = content.instructionMatches.single { it.filter === contentPaddingCall }.instruction.getReference<MethodReference>()!!
+    val bottomCall = content.instructionMatches.single { it.filter === scaffoldBottomPaddingCall }.methodReference
+    val paddingCall = content.instructionMatches.single { it.filter === contentPaddingCall }.methodReference
     val extension = mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS)
     val scaffold = ImmutableField(extension.type, "passScaffoldPadding", PADDING_VALUES, AccessFlags.PRIVATE.value or AccessFlags.STATIC.value, null, null, null)
     extension.fields.add(scaffold.toMutable())
@@ -86,11 +87,11 @@ internal fun BytecodePatchContext.installFloatingContentPadding(content: Match) 
         check-cast p0, $COMPOSE_MODIFIER
         return-object p0
     """)
-    val bottomIndex = content.method.instructions.indexOfFirst { it.getReference<MethodReference>() == bottomCall }
-    val bottom = content.method.instructions.elementAt(bottomIndex)
+    val bottomIndex = content.method.indexOfFirstInstructionOrThrow(methodCall(bottomCall))
+    val bottom = content.method.getInstruction<Instruction>(bottomIndex)
     content.method.replaceInstruction(bottomIndex, staticInvocation(bottom, capture))
-    val paddingIndex = content.method.instructions.indexOfFirst { it.getReference<MethodReference>() == paddingCall }
-    val padding = content.method.instructions.elementAt(paddingIndex)
+    val paddingIndex = content.method.indexOfFirstInstructionOrThrow(methodCall(paddingCall))
+    val padding = content.method.getInstruction<Instruction>(paddingIndex)
     content.method.replaceInstruction(paddingIndex, staticInvocation(padding, overlay))
     val append = extension.addStaticMethod("passScrollClearance", listOf(COMPOSE_MODIFIER), COMPOSE_MODIFIER, 7, """
         invoke-static {}, $FLOATING_NAVIGATION_BAR_CLASS->isEnabled()Z
@@ -109,7 +110,7 @@ internal fun BytecodePatchContext.installFloatingContentPadding(content: Match) 
         return-object p0
     """)
     listOf("profile_option_account", "security_center_home_section_password_health", "home_empty_vault_create_login").forEach { resource ->
-        val scroll = scrollContentFingerprint(resource).matchSingle()
+        val scroll = scrollContentFingerprint(resource).match()
         val (_, result) = scroll.instructionMatches
         val register = result.getInstruction<OneRegisterInstruction>().registerA
         scroll.method.addInstructions(result.index + 1, """
@@ -117,9 +118,9 @@ internal fun BytecodePatchContext.installFloatingContentPadding(content: Match) 
             move-result-object v$register
         """)
     }
-    val items = HomeItemsContentFingerprint.matchAll(0..1).singleOrNull() ?: HomeItemsWithPaddingImplFingerprint.matchSingle()
+    val items = HomeItemsContentFingerprint.matchAll(0..1).singleOrNull() ?: HomeItemsWithPaddingImplFingerprint.match()
     val lists = listOfNotNull(items, HomePagedItemsContentFingerprint.matchAll(0..1).singleOrNull())
-    val native = items.instructionMatches.last().instruction.getReference<MethodReference>()!!
+    val native = items.itemsColumnCall().methodReference
     val parameters = native.parameterTypes.map(CharSequence::toString)
     check(parameters[LIST_CONTENT_PADDING_ARGUMENT] in listOf(PADDING_VALUES, "Landroidx/compose/foundation/layout/PaddingValuesImpl;") && parameters.takeLast(2) == listOf("I", "I"))
     val count = parameters.size
@@ -146,12 +147,16 @@ internal fun BytecodePatchContext.installFloatingContentPadding(content: Match) 
         return-void
     """)
     lists.forEach { match ->
-        val call = match.instructionMatches.last()
+        val call = match.itemsColumnCall()
         check(call.instruction.getReference<MethodReference>() == native) { "Expected shared item list layout" }
         val defaultRegister = (call.instruction as RegisterRangeInstruction).let { it.startRegister + it.registerCount - 1 }
         check(match.method.literalWrittenTo(defaultRegister, call.index) and DEFAULT_LIST_PADDING.toLong() != 0L) { "Expected default item list padding" }
         match.method.replaceInstruction(call.index, staticInvocation(call.instruction, bridge))
     }
+}
+
+private fun Match.itemsColumnCall() = instructionMatches.single {
+    it.filter === lazyItemsColumnCall || it.filter === lazyItemsColumnWithPaddingImplCall
 }
 
 private fun staticInvocation(call: Instruction, method: String): String = when (call) {

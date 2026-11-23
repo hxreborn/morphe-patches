@@ -13,9 +13,7 @@ import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.newInstance
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonvpn.misc.settings.WidgetSettingsRowFingerprint
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
@@ -23,15 +21,15 @@ import app.morphe.patches.protonvpn.misc.anchors.resourceField
 import app.morphe.patches.protonvpn.misc.restrictions.freeUserCheckFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.instruction.SwitchPayload
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 internal const val UPGRADE_ONBOARDING_ACTIVITY = "Lcom/protonvpn/android/ui/planupgrade/UpgradeOnboardingDialogActivity;"
 
-internal fun BytecodePatchContext.settingRowWithIconFingerprint(): Fingerprint {
-    val settingRow = WidgetSettingsRowFingerprint.matchSingle().instructionMatches.last()
-        .instruction.getReference<MethodReference>()!!
+internal fun settingRowWithIconFingerprint(): Fingerprint {
+    WidgetSettingsRowFingerprint.clearMatch()
+    val (_, widgetRowCall) = WidgetSettingsRowFingerprint.match().instructionMatches
+    val settingRow = widgetRowCall.methodReference
     return Fingerprint(
         definingClass = settingRow.definingClass,
         name = settingRow.name,
@@ -48,22 +46,22 @@ internal object SettingsValueItemFingerprint : Fingerprint(
 
 internal object ApiNotificationToStringFingerprint : ToStringFingerprint("ApiNotification(id=")
 
-private val BytecodePatchContext.apiNotificationType
+private val apiNotificationType
     get() = ApiNotificationToStringFingerprint.originalClassDef.type
 
-private fun BytecodePatchContext.apiNotificationTimeCall() = methodCall(
+private fun apiNotificationTimeCall() = methodCall(
     definingClass = apiNotificationType,
     parameters = emptyList(),
     returnType = "J",
 )
 
-internal fun BytecodePatchContext.activeNotificationsFingerprint() = Fingerprint(
+internal fun activeNotificationsFingerprint() = Fingerprint(
     returnType = "Ljava/util/List;",
     parameters = listOf("J", "Ljava/util/List;"),
     filters = listOf(apiNotificationTimeCall(), apiNotificationTimeCall()),
 )
 
-internal fun BytecodePatchContext.inlinedActiveNotificationsFingerprint() = Fingerprint(
+internal fun inlinedActiveNotificationsFingerprint() = Fingerprint(
     returnType = "Ljava/lang/Object;",
     filters = listOf(
         apiNotificationTimeCall(),
@@ -105,7 +103,7 @@ internal object UpgradeOnboardingLauncherFingerprint : Fingerprint(
     filters = listOf(upgradeOnboardingActivityClass),
 )
 
-internal fun BytecodePatchContext.launchOnboardingFingerprint() = Fingerprint(
+internal fun launchOnboardingFingerprint() = Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.FINAL),
     returnType = "V",
     parameters = listOf("Landroid/content/Context;"),
@@ -114,18 +112,19 @@ internal fun BytecodePatchContext.launchOnboardingFingerprint() = Fingerprint(
 
 private val switchOpcodes = setOf(Opcode.PACKED_SWITCH, Opcode.SPARSE_SWITCH)
 
-private val BytecodePatchContext.onboardingLaunchKey: Int
+private val onboardingLaunchKey: Int
     get() {
         val instructions = UpgradeOnboardingLauncherFingerprint.originalMethod.implementation!!.instructions.toList()
         val addresses = instructions.runningFold(0) { address, instruction -> address + instruction.codeUnits }
         val switchAddress = addresses[instructions.indexOfFirst { it.opcode in switchOpcodes }]
-        val launchAddress = addresses[UpgradeOnboardingLauncherFingerprint.instructionMatches.first().index]
+        val (launcherClass) = UpgradeOnboardingLauncherFingerprint.instructionMatches
+        val launchAddress = addresses[launcherClass.index]
         val cases = instructions.filterIsInstance<SwitchPayload>().single().switchElements
         val launchCase = cases.filter { switchAddress + it.offset <= launchAddress }.maxByOrNull { it.offset }
         return launchCase?.key ?: (cases.maxOf { it.key } + 1)
     }
 
-internal fun BytecodePatchContext.onboardingLaunchCoroutineFingerprint() = Fingerprint(
+internal fun onboardingLaunchCoroutineFingerprint() = Fingerprint(
     returnType = "Ljava/lang/Object;",
     filters = listOf(
         newInstance(UpgradeOnboardingLauncherFingerprint.originalClassDef.type),
@@ -143,7 +142,7 @@ internal object UpgradeDialogCreateFingerprint : Fingerprint(
 
 internal object AccountSettingsViewStateToStringFingerprint : ToStringFingerprint("AccountSettingsViewState(userId=")
 
-internal fun BytecodePatchContext.upgradeCarouselFingerprint() = freeUserCheckFingerprint(
+internal fun upgradeCarouselFingerprint() = freeUserCheckFingerprint(
     followingFilters = arrayOf(
         opcode(Opcode.DIV_INT_LIT8),
         opcode(Opcode.MUL_INT_LIT8, MatchAfterImmediately()),

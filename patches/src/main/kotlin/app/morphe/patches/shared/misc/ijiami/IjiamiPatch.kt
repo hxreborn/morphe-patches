@@ -5,8 +5,10 @@
 package app.morphe.patches.shared.misc.ijiami
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.util.inputStreamFromBundledResource
 import org.w3c.dom.Element
@@ -38,8 +40,8 @@ internal fun bundledIjiamiResource(name: String): ByteArray {
     return resource.use { it.readBytes() }
 }
 
-internal fun ResourcePatchContext.editIjiamiPayload(block: IjiamiPayload.() -> Unit) {
-    val classes = get("classes.dex")
+internal fun editIjiamiPayload(block: IjiamiPayload.() -> Unit) {
+    val classes = resourceFile("classes.dex")
     val container = IjiamiContainer.of(classes.readBytes())
 
     val payload = container.decrypt()
@@ -51,7 +53,7 @@ internal fun ResourcePatchContext.editIjiamiPayload(block: IjiamiPayload.() -> U
     appendCodeOverlay(editable.editedPackerStubs)
 }
 
-internal val ijiamiPatch = resourcePatch {
+internal val ijiamiPatch = patch {
     execute {
         val profiles = nativeProfiles()
         if (profiles.isEmpty()) {
@@ -63,12 +65,12 @@ internal val ijiamiPatch = resourcePatch {
         profiles.forEach { (abi, profile) -> installNativeLibrary(abi, profile) }
 
         val dexEntry = freeDexEntry()
-        get(dexEntry, copy = false).writeBytes(bundledIjiamiResource("boot.dex"))
-        get(CERTIFICATE_ASSET, copy = false)
+        resourceFile(dexEntry, copy = false).writeBytes(bundledIjiamiResource("boot.dex"))
+        resourceFile(CERTIFICATE_ASSET, copy = false)
             .writeBytes(packageMetadata.stockSigningCertificate().encoded)
 
         val packerFactory = interposeComponentFactory()
-        get(FACTORY_ASSET, copy = false).writeText(packerFactory)
+        resourceFile(FACTORY_ASSET, copy = false).writeText(packerFactory)
         logger.info("Component factory: $packerFactory -> $DELEGATE_FACTORY ($dexEntry)")
 
         editIjiamiPayload {
@@ -83,12 +85,12 @@ internal val ijiamiPatch = resourcePatch {
     }
 }
 
-private fun ResourcePatchContext.packerLibraries(packerAbi: String): List<File> =
-    get("assets").listFiles().orEmpty().sorted().flatMap { directory ->
+private fun packerLibraries(packerAbi: String): List<File> =
+    resourceFile("assets").listFiles().orEmpty().sorted().flatMap { directory ->
         File(directory, packerAbi).listFiles { file -> file.name.endsWith(".so") }.orEmpty().sorted()
     }
 
-private fun ResourcePatchContext.nativeProfiles(): Map<String, NativeProfile> =
+private fun nativeProfiles(): Map<String, NativeProfile> =
     PACKER_ABI_BY_LIBRARY_ABI.mapNotNull { (abi, packerAbi) ->
         val libraries = packerLibraries(packerAbi)
         if (libraries.isEmpty() || !shipsNativeLibraries(abi)) return@mapNotNull null
@@ -105,15 +107,15 @@ private fun ResourcePatchContext.nativeProfiles(): Map<String, NativeProfile> =
         profile?.let { abi to it }
     }.toMap()
 
-private fun ResourcePatchContext.installNativeLibrary(abi: String, profile: NativeProfile) {
-    get("lib/$abi/$NATIVE_LIBRARY", copy = false).writeBytes(bundledIjiamiResource(profile.resource))
+private fun installNativeLibrary(abi: String, profile: NativeProfile) {
+    resourceFile("lib/$abi/$NATIVE_LIBRARY", copy = false).writeBytes(bundledIjiamiResource(profile.resource))
     logger.info("Native packer profile for $abi: ${profile.name}")
 }
 
-private fun ResourcePatchContext.shipsNativeLibraries(abi: String) =
-    get("lib/$abi").isDirectory || !get("lib").isDirectory
+private fun shipsNativeLibraries(abi: String) =
+    resourceFile("lib/$abi").isDirectory || !resourceFile("lib").isDirectory
 
-private fun ResourcePatchContext.interposeComponentFactory(): String =
+private fun interposeComponentFactory(): String =
     document("AndroidManifest.xml").use { manifest ->
         val application = manifest.getElementsByTagName("application").item(0) as? Element
             ?: throw PatchException("AndroidManifest.xml declares no application")
@@ -140,16 +142,16 @@ private fun resolveComponentName(name: String, packageName: String) = when {
     else -> "$packageName.$name"
 }
 
-private fun ResourcePatchContext.freeDexEntry() =
+private fun freeDexEntry() =
     generateSequence(2) { it + 1 }
         .map { "classes$it.dex" }
-        .first { !get(it).exists() }
+        .first { !resourceFile(it).exists() }
 
-internal fun ResourcePatchContext.installAppHook(hookDex: ByteArray, hookClass: String) {
+internal fun installAppHook(hookDex: ByteArray, hookClass: String) {
     installIjiamiExtension(hookDex)
-    get(APP_HOOK_ASSET, copy = false).writeText(hookClass)
+    resourceFile(APP_HOOK_ASSET, copy = false).writeText(hookClass)
 }
 
-internal fun ResourcePatchContext.installIjiamiExtension(dex: ByteArray) {
-    get(freeDexEntry(), copy = false).writeBytes(dex)
+internal fun installIjiamiExtension(dex: ByteArray) {
+    resourceFile(freeDexEntry(), copy = false).writeBytes(dex)
 }

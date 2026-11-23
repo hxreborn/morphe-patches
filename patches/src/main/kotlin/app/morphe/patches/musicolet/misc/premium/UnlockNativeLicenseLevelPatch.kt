@@ -5,7 +5,8 @@
 package app.morphe.patches.musicolet.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.netanalyzer.shared.Arm64
 import app.morphe.patches.netanalyzer.shared.Arm64ElfReader
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
@@ -27,11 +28,11 @@ private const val BASE_REGISTER_SHIFT = 5
 private const val LOCKED_LICENSE_LEVEL = 3.1415f
 private const val UNLOCKED_LICENSE_LEVEL = 99.999f
 
-internal val unlockNativeLicenseLevelPatch = rawResourcePatch {
+internal val unlockNativeLicenseLevelPatch = patch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val library = get(LIBRARY, true)
+        val library = resourceFile(LIBRARY, true)
         if (!library.exists()) throw PatchException("$LIBRARY is missing")
 
         val bytes = library.readBytes()

@@ -4,13 +4,12 @@
  */
 package app.morphe.patches.atlomaps.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the custom map sources, navigation settings and backup restore. " +
         "Premium map packages are not included.",
@@ -18,7 +17,7 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.ATLOMAPS)
 
     execute {
-        OwnsFeatureFingerprint.matchSingle().method.returnEarly(true)
-        PremiumEnabledFingerprint.matchSingle().method.returnEarly(true)
+        OwnsFeatureFingerprint.method.returnEarly(true)
+        PremiumEnabledFingerprint.method.returnEarly(true)
     }
 }

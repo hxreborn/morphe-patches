@@ -5,17 +5,16 @@
 package app.morphe.patches.groundnews.misc.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 private lateinit var adHosts: String
 
-private val articleAdHostsPatch = resourcePatch {
+private val articleAdHostsPatch = patch {
     execute {
-        adHosts = get("assets/hosts").readLines().map(String::trim).filter(String::isNotEmpty)
+        adHosts = resourceFile("assets/hosts").readLines().map(String::trim).filter(String::isNotEmpty)
             .onEach { require(it.all { character -> character.isLetterOrDigit() || character in ".-" }) }
             .distinct().joinToString("\\n")
         require(adHosts.isNotEmpty()) { "Article ad host list is empty" }
@@ -23,7 +22,7 @@ private val articleAdHostsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val removeArticleAdsPatch = bytecodePatch(
+val removeArticleAdsPatch = patch(
     name = "Remove article ads",
     description = "Blocks advertising hosts in the in-app article browser.",
 ) {
@@ -31,7 +30,7 @@ val removeArticleAdsPatch = bytecodePatch(
     dependsOn(articleAdHostsPatch)
 
     execute {
-        val initializer = AdBlockerInitializerFingerprint.matchSingle()
+        val initializer = AdBlockerInitializerFingerprint.match()
         val hosts = initializer.classDef.fields.single { it.type == "Ljava/util/Set;" }
         initializer.method.apply {
             val insertionIndex = implementation!!.instructions.lastIndex

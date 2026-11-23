@@ -45,3 +45,16 @@ internal object WebChromeClientFingerprint : Fingerprint(
     parameters = listOf("Landroid/webkit/WebView;", "I"),
     filters = listOf(methodCall(name = "onWebLoadProgress")),
 )
+
+internal object WebChromePromptFingerprint : Fingerprint(
+    classFingerprint = WebChromeClientFingerprint,
+    name = "onJsPrompt",
+    returnType = "Z",
+    parameters = listOf(
+        "Landroid/webkit/WebView;",
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "Landroid/webkit/JsPromptResult;",
+    ),
+)

@@ -8,6 +8,19 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.methodCall
 import com.android.tools.smali.dexlib2.AccessFlags
 
+internal object LiappTamperAlertFingerprint : Fingerprint(
+    definingClass = "Lcom/liapp/x;",
+    returnType = "V",
+    parameters = emptyList(),
+    filters = listOf(
+        methodCall(smali = "Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;"),
+        methodCall(
+            smali = "Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;",
+        ),
+        methodCall(smali = "Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z"),
+    ),
+)
+
 internal object LiappInitFingerprint : Fingerprint(
     definingClass = "Lcom/liapp/x;",
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),

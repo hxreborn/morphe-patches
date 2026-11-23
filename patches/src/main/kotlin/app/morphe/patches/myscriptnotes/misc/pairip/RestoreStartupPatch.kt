@@ -4,8 +4,10 @@
  */
 package app.morphe.patches.myscriptnotes.misc.pairip
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.virtualizedMethods
@@ -62,19 +64,19 @@ private val RESTORED_SOURCES = listOf(
     "BillingReceiver.smali",
 )
 
-internal val restoreStartupPatch = bytecodePatch {
+internal val restoreStartupPatch = patch {
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val startupTargets = STARTUP_METHODS.map { it.matchSingle().method }
+        val startupTargets = STARTUP_METHODS.map { it.method }
         val (collectionResult, _) = CollectionResultCallbackFingerprint.matchAll(2..2)
         val startupReplacements = mapOf(
             "Lstub/CollectionResultCallback;" to collectionResult.method.definingClass,
-            "Lstub/FolderResultCallback;" to FolderResultCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/FolderChangedCallback;" to FolderChangedCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/LibraryChangedCallback;" to LibraryChangedCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/PdfImportCallback;" to PdfImportCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/WhatsNewCallback;" to WhatsNewCallbackFingerprint.matchSingle().method.definingClass,
+            "Lstub/FolderResultCallback;" to FolderResultCallbackFingerprint.method.definingClass,
+            "Lstub/FolderChangedCallback;" to FolderChangedCallbackFingerprint.method.definingClass,
+            "Lstub/LibraryChangedCallback;" to LibraryChangedCallbackFingerprint.method.definingClass,
+            "Lstub/PdfImportCallback;" to PdfImportCallbackFingerprint.method.definingClass,
+            "Lstub/WhatsNewCallback;" to WhatsNewCallbackFingerprint.method.definingClass,
             "Lstub/SyncCanceledCallback;" to callbackClass(SyncCanceledConsumerFingerprint, listOf("Ljava/lang/Object;")),
             "Lstub/CloudExpiredCallback;" to callbackClass(CloudExpiredConsumerFingerprint, listOf("Ljava/lang/Object;")),
             "Lstub/LanguageCanceledCallback;" to callbackClass(LanguageCanceledConsumerFingerprint, listOf("Ljava/lang/Object;")),
@@ -84,41 +86,41 @@ internal val restoreStartupPatch = bytecodePatch {
             ),
         )
         if (classDefByOrNull("Lcom/pairip/VMRunner;") == null) return@execute
-        val targets = (startupTargets + ADDITIONAL_METHODS.map { it.matchSingle().method }).associateBy(::descriptor)
+        val targets = (startupTargets + ADDITIONAL_METHODS.map { it.method }).associateBy(::descriptor)
         val replacements = startupReplacements + mapOf(
-            "Lstub/EditorObserver;" to EditorObserverFingerprint.matchSingle().method.definingClass,
+            "Lstub/EditorObserver;" to EditorObserverFingerprint.method.definingClass,
             "Lstub/EditorSyncListener;" to classDefBy(EDITOR_ACTIVITY).fields.single { it.name == "syncListener" }.type,
-            "Lstub/EditorMethods;->setContentType(Ljava/lang/String;)V" to descriptor(EditorContentTypeSetterFingerprint.matchSingle().method),
-            "Lstub/EditorMethods;->NoteEditorViewModel()Lcom/myscript/nebo/editing/NoteEditorViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/editing/NoteEditorViewModel;").matchSingle().method),
-            "Lstub/EditorMethods;->ChildPagesViewModel()Lcom/myscript/nebo/editing/ChildPagesViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/editing/ChildPagesViewModel;").matchSingle().method),
-            "Lstub/EditorMethods;->SearchPageViewModel()Lcom/myscript/nebo/editing/search/SearchPageViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/editing/search/SearchPageViewModel;").matchSingle().method),
-            "Lstub/EditorMethods;->AIContainerViewModel()Lcom/myscript/nebo/ai/presentation/compose/AIContainerViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/ai/presentation/compose/AIContainerViewModel;").matchSingle().method),
-            "Lstub/EditorMethods;->AIQuizViewModel()Lcom/myscript/nebo/ai/presentation/AIQuizViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/ai/presentation/AIQuizViewModel;").matchSingle().method),
-            "Lstub/InspectorObserver;" to InspectorObserverFingerprint.matchSingle().method.definingClass,
-            "Lstub/LoginObserver;" to LoginObserverFingerprint.matchSingle().method.definingClass,
-            "Lstub/BillingReceiver;" to BillingReceiveFingerprint.matchSingle().method.definingClass,
+            "Lstub/EditorMethods;->setContentType(Ljava/lang/String;)V" to descriptor(EditorContentTypeSetterFingerprint.method),
+            "Lstub/EditorMethods;->NoteEditorViewModel()Lcom/myscript/nebo/editing/NoteEditorViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/editing/NoteEditorViewModel;").method),
+            "Lstub/EditorMethods;->ChildPagesViewModel()Lcom/myscript/nebo/editing/ChildPagesViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/editing/ChildPagesViewModel;").method),
+            "Lstub/EditorMethods;->SearchPageViewModel()Lcom/myscript/nebo/editing/search/SearchPageViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/editing/search/SearchPageViewModel;").method),
+            "Lstub/EditorMethods;->AIContainerViewModel()Lcom/myscript/nebo/ai/presentation/compose/AIContainerViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/ai/presentation/compose/AIContainerViewModel;").method),
+            "Lstub/EditorMethods;->AIQuizViewModel()Lcom/myscript/nebo/ai/presentation/AIQuizViewModel;" to descriptor(editorGetterFingerprint("Lcom/myscript/nebo/ai/presentation/AIQuizViewModel;").method),
+            "Lstub/InspectorObserver;" to InspectorObserverFingerprint.method.definingClass,
+            "Lstub/LoginObserver;" to LoginObserverFingerprint.method.definingClass,
+            "Lstub/BillingReceiver;" to BillingReceiveFingerprint.method.definingClass,
             "EDITOR_CONTENT_KEY" to EDITOR_CONTENT_KEY.toString(),
-            "Lstub/SearchNavigationCallback;" to SearchNavigationCallbackFingerprint.matchSingle().method.definingClass,
+            "Lstub/SearchNavigationCallback;" to SearchNavigationCallbackFingerprint.method.definingClass,
             "Lstub/LaserObserver;" to laserObserverClass(),
-            "Lstub/ZoomObserver;" to ZoomObserverFingerprint.matchSingle().method.definingClass,
+            "Lstub/ZoomObserver;" to ZoomObserverFingerprint.method.definingClass,
             "Lstub/ToolbarCallback;" to callbackClass(EditorToolbarConsumerFingerprint, listOf("Ljava/lang/Object;")),
             "Lstub/ToolCallback;" to callbackClass(EditorToolConsumerFingerprint, listOf("Ljava/lang/Object;")),
             "Lstub/WritingCallback;" to listenerClass(EditorWritingConsumerFingerprint, "onFragmentResult", "V"),
-            "Lstub/NotePropertiesCallback;" to NotePropertiesCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/TooltipCallback;" to TooltipCallbackFingerprint.matchSingle().method.definingClass,
+            "Lstub/NotePropertiesCallback;" to NotePropertiesCallbackFingerprint.method.definingClass,
+            "Lstub/TooltipCallback;" to TooltipCallbackFingerprint.method.definingClass,
             "Lstub/EditorCloudCallback;" to callbackClass(EditorCloudConsumerFingerprint, listOf("Ljava/lang/Object;")),
             "Lstub/NoteNameCallback;" to listenerClass(EditorNoteNameConsumerFingerprint, "onFragmentResult", "V"),
             "Lstub/EditorContentCallback;" to editorContentClass(),
-            "Lstub/EditorResumeCallback;" to EditorResumeCallbackFingerprint.matchSingle().method.definingClass,
+            "Lstub/EditorResumeCallback;" to EditorResumeCallbackFingerprint.method.definingClass,
             "Lstub/InspectorStateCallback;" to callbackClass(InspectorStateConsumerFingerprint, listOf("Ljava/lang/Object;")),
             "Lstub/InspectorDetailsCallback;" to listenerClass(InspectorDetailsConsumerFingerprint, "onClick", "V"),
             "Lstub/InspectorCopyCallback;" to listenerClass(InspectorCopyConsumerFingerprint, "onLongClick", "Z"),
             "Lstub/InspectorReloadCallback;" to listenerClass(InspectorReloadConsumerFingerprint, "onRefresh", "V"),
-            "Lstub/InspectorInformationCallback;" to InspectorInformationCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/WebViewClient;" to WebViewClientFingerprint.matchSingle().method.definingClass,
-            "Lstub/LoginResultCallback;" to LoginResultCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/LoginStateCallback;" to LoginStateCallbackFingerprint.matchSingle().method.definingClass,
-            "Lstub/PaywallListener;" to PaywallListenerFingerprint.matchSingle().method.definingClass,
+            "Lstub/InspectorInformationCallback;" to InspectorInformationCallbackFingerprint.method.definingClass,
+            "Lstub/WebViewClient;" to WebViewClientFingerprint.method.definingClass,
+            "Lstub/LoginResultCallback;" to LoginResultCallbackFingerprint.method.definingClass,
+            "Lstub/LoginStateCallback;" to LoginStateCallbackFingerprint.method.definingClass,
+            "Lstub/PaywallListener;" to PaywallListenerFingerprint.method.definingClass,
             "Lstub/PaywallContent;" to paywallContentClass(),
         )
 

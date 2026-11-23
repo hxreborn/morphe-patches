@@ -8,11 +8,12 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
@@ -59,9 +60,9 @@ private const val ROW_COMPOSER_PARAMETER = 6
 
 private val logger = Logger.getLogger("app.morphe.patches.patreon.misc.settings")
 
-internal fun BytecodePatchContext.markFeaturePatched(
+internal fun markFeaturePatched(
     featureClass: String,
-    patch: BytecodePatch,
+    patch: Patch,
     withDescription: Boolean = true,
 ) {
     returnTrueFrom(featureClass, "isPatched")
@@ -74,7 +75,7 @@ private fun MethodReference.isSettingsNavigationRow() =
             types.zip(settingsNavigationRowParameters).all { (type, expected) -> type.startsWith(expected) }
     }
 
-private fun BytecodePatchContext.addPatchesSettingsRow() {
+private fun addPatchesSettingsRow() {
     val section = AccountSettingsSectionFingerprint.method
     val rowIndex = section.indexOfFirstInstructionReversedOrThrow {
         opcode == Opcode.INVOKE_STATIC && getReference<MethodReference>()?.isSettingsNavigationRow() == true
@@ -129,16 +130,16 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
     section.addInstruction(rowIndex + 1, "invoke-static/range { v$composer .. v$composer }, ${descriptor(settingsRow)}")
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(patreonSettingsExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(
         spoofSignaturePatch,
-        resourcePatch {
+        patch {
             execute {
                 ICON_RESOURCES.forEach { name ->
                     val icon = PatreonResources::class.java.getResourceAsStream("/patreon/drawable/$name.xml")
                         ?: throw PatchException("Missing icon resource $name")
-                    icon.use { get("res/drawable/$name.xml").outputStream().use(it::copyTo) }
+                    icon.use { resourceFile("res/drawable/$name.xml").outputStream().use(it::copyTo) }
                 }
             }
             finalize {
@@ -190,7 +191,7 @@ internal val patchesSettingsPatch = bytecodePatch {
     }
 }
 
-private fun BytecodePatchContext.replaceSettingsStyleStubs() {
+private fun replaceSettingsStyleStubs() {
     mutableClassDefBy(SETTINGS_STYLE_CLASS).replaceResourceIdStubs(
         ResourceType.DRAWABLE,
         mapOf(

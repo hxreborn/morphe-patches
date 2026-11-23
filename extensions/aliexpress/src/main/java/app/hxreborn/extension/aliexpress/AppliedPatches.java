@@ -68,112 +68,128 @@ public final class AppliedPatches {
         }
     }
 
+    private static String metadata(String key, boolean description) {
+        return null;
+    }
+
+    static boolean isApplied(String key) {
+        return name(key) != null;
+    }
+
+    static String name(String key) {
+        return metadata(key, false);
+    }
+
+    static String description(String key) {
+        return metadata(key, true);
+    }
+
     public static boolean disableAnalytics() {
-        return false;
+        return isApplied("disableAnalytics");
     }
 
     public static String disableAnalyticsName() {
-        return null;
+        return name("disableAnalytics");
     }
 
     public static String disableAnalyticsDescription() {
-        return null;
+        return description("disableAnalytics");
     }
 
     public static boolean disableUpdatePrompts() {
-        return false;
+        return isApplied("disableUpdatePrompts");
     }
 
     public static String disableUpdatePromptsName() {
-        return null;
+        return name("disableUpdatePrompts");
     }
 
     public static String disableUpdatePromptsDescription() {
-        return null;
+        return description("disableUpdatePrompts");
     }
 
     public static boolean enableImageSaving() {
-        return false;
+        return isApplied("enableImageSaving");
     }
 
     public static String enableImageSavingName() {
-        return null;
+        return name("enableImageSaving");
     }
 
     public static String enableImageSavingDescription() {
-        return null;
+        return description("enableImageSaving");
     }
 
     public static boolean darkTheme() {
-        return false;
+        return isApplied("darkTheme");
     }
 
     public static String darkThemeName() {
-        return null;
+        return name("darkTheme");
     }
 
     public static String darkThemeDescription() {
-        return null;
+        return description("darkTheme");
     }
 
     public static boolean gmsCoreSupport() {
-        return false;
+        return isApplied("gmsCoreSupport");
     }
 
     public static String gmsCoreSupportName() {
-        return null;
+        return name("gmsCoreSupport");
     }
 
     public static String gmsCoreSupportDescription() {
-        return null;
+        return description("gmsCoreSupport");
     }
 
     public static boolean removePromotionalPopups() {
-        return false;
+        return isApplied("removePromotionalPopups");
     }
 
     public static String removePromotionalPopupsName() {
-        return null;
+        return name("removePromotionalPopups");
     }
 
     public static String removePromotionalPopupsDescription() {
-        return null;
+        return description("removePromotionalPopups");
     }
 
     public static boolean removeSponsoredItems() {
-        return false;
+        return isApplied("removeSponsoredItems");
     }
 
     public static String removeSponsoredItemsName() {
-        return null;
+        return name("removeSponsoredItems");
     }
 
     public static String removeSponsoredItemsDescription() {
-        return null;
+        return description("removeSponsoredItems");
     }
 
     public static boolean skipSplashPromotions() {
-        return false;
+        return isApplied("skipSplashPromotions");
     }
 
     public static String skipSplashPromotionsName() {
-        return null;
+        return name("skipSplashPromotions");
     }
 
     public static String skipSplashPromotionsDescription() {
-        return null;
+        return description("skipSplashPromotions");
     }
 
     public static boolean spoofSignature() {
-        return false;
+        return isApplied("spoofSignature");
     }
 
     public static String spoofSignatureName() {
-        return null;
+        return name("spoofSignature");
     }
 
     public static String spoofSignatureDescription() {
-        return null;
+        return description("spoofSignature");
     }
 
     static final class AppliedPatch {

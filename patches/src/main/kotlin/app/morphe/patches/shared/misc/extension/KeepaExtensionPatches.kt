@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val keepaMultipleAccountsExtensionPatch = bytecodePatch {
-    dependsOn(sharedNightModeExtensionPatch)
+
+internal val keepaMultipleAccountsExtensionPatch = patch {
+    dependsOn(sharedNightModeExtensionPatch, sharedPatchesMenuLayoutExtensionPatch)
     extendWith("extensions/hxreborn/keepa-multiple-accounts.mpe")
 }

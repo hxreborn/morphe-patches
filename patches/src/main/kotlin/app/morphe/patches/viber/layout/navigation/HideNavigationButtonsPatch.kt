@@ -7,12 +7,12 @@ package app.morphe.patches.viber.layout.navigation
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.viber.misc.fix.signature.spoofSignaturePatch
@@ -35,7 +35,7 @@ private enum class HomeTab(val label: String, val default: Boolean, vararg val i
 }
 
 @Suppress("unused")
-val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
+val hideNavigationButtonsPatch: Patch = patch(
     name = "Hide navigation buttons",
     description = "Hides the selected tabs from the bottom navigation bar.",
 ) {
@@ -57,17 +57,17 @@ val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
         val hiddenIds = hideTabOptions.filterValues { it.value == true }.keys.flatMap { it.ids.toList() }
         if (hiddenIds.isEmpty()) return@execute
 
-        val (visibilityCall, _) = BuildHomeTabsFingerprint.matchSingle().instructionMatches
+        val (visibilityCall, _) = BuildHomeTabsFingerprint.match().instructionMatches
         val tabVisibilityMethod = visibilityCall.instruction.getReference<MethodReference>()!!
-        val tabVisibility = tabVisibilityFingerprint(tabVisibilityMethod).matchSingle()
+        val tabVisibility = tabVisibilityFingerprint(tabVisibilityMethod).match()
         val isHiddenTab = mutableClassDefBy(tabVisibility.classDef).addHiddenIdCheck("isHiddenTab", hiddenIds)
 
-        homeTabCountRangeFingerprint(tabVisibilityMethod.definingClass).matchSingle().let { range ->
+        homeTabCountRangeFingerprint(tabVisibilityMethod.definingClass).match().let { range ->
             val (minimumCount, _) = range.instructionMatches
             val register = (minimumCount.instruction as OneRegisterInstruction).registerA
             range.method.replaceInstruction(minimumCount.index, "const/4 v$register, $MINIMUM_HOME_TAB_COUNT")
         }
-        InflateHomeTabsFingerprint.matchSingle().let { inflation ->
+        InflateHomeTabsFingerprint.match().let { inflation ->
             val (_, minimumCount, _) = inflation.instructionMatches
             val register = (minimumCount.instruction as OneRegisterInstruction).registerA
             inflation.method.replaceInstruction(minimumCount.index, "const/4 v$register, $MINIMUM_HOME_TAB_COUNT")

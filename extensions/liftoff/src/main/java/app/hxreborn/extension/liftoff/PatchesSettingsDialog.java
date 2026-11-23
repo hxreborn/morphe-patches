@@ -38,9 +38,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.liftoff.AppliedPatches.AppliedPatch;
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 
 @SuppressWarnings({ "deprecation", "NullableProblems" })
-final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
+final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements View.OnAttachStateChangeListener {
 
     private static final String UNKNOWN_VERSION = "unknown";
 
@@ -67,10 +69,11 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
     private Dialog confirmationDialog;
 
     PatchesSettingsDialog(Activity activity, TextView template) {
+        super(activity, new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar));
         this.activity = activity;
         this.style = new SettingsStyle(activity, template);
         this.rows = new SettingsRows(activity, this.style);
-        this.dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar);
+        this.dialog = dialog();
         this.scroll = new ScrollView(activity);
         this.dialog.setOwnerActivity(activity);
         this.dialog.setOnDismissListener((dismissed) -> {
@@ -83,15 +86,10 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
 
     @SuppressWarnings("DataFlowIssue")
     void show() {
-        LinearLayout root = new LinearLayout(this.activity);
-        root.setOrientation(LinearLayout.VERTICAL);
+        View root = createScreen(appBar(), this.scroll);
+        refreshContent(this.scroll);
         root.setBackgroundColor(this.style.screenBackground);
         root.setOnApplyWindowInsetsListener(PatchesSettingsDialog::applySystemBarInsets);
-        root.addView(appBar());
-
-        replaceContent();
-        root.addView(this.scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
-
         this.dialog.setContentView(root);
         styleWindow(this.dialog.getWindow());
         this.activity.getWindow().getDecorView().addOnAttachStateChangeListener(this);
@@ -124,12 +122,8 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         return bar;
     }
 
-    private void replaceContent() {
-        this.scroll.removeAllViews();
-        this.scroll.addView(content());
-    }
-
-    private View content() {
+    @Override
+    protected View createContent() {
         LinearLayout column = new LinearLayout(this.activity);
         column.setOrientation(LinearLayout.VERTICAL);
         int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
@@ -155,7 +149,7 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
         addSection(column, "Features", features);
 
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_liftoff_ic_reset", "Reset to defaults", ConfirmationDialog.RESET_DESCRIPTION,
+        this.rows.actionRow(about, "hx_liftoff_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
                 this::confirmReset);
         this.rows.valueRow(about, "hx_liftoff_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_liftoff_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
@@ -191,7 +185,7 @@ final class PatchesSettingsDialog implements View.OnAttachStateChangeListener {
     private void confirmReset() {
         observeConfirmation(ConfirmationDialog.showReset(this.activity, this.style, () -> {
             PatchSettings.resetToDefaults();
-            replaceContent();
+            refreshContent(this.scroll);
             confirmRestart();
         }));
     }

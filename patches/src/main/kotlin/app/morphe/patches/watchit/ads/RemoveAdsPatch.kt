@@ -5,7 +5,9 @@
 package app.morphe.patches.watchit.ads
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.watchit.misc.piracy.disablePiracyCheckPatch
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -24,7 +26,7 @@ private val Field.serializedName: String?
         ?.let { (it.value as? StringEncodedValue)?.value }
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes video ads, pause ads, sponsor overlays, interactive ads and advertiser logos.",
 ) {

@@ -69,10 +69,8 @@ public final class PatchSettings {
     }
 
     @SuppressLint("ApplySharedPref")
-    static void resetToDefaults() {
-        if (preferences != null) {
-            preferences.edit().clear().commit();
-        }
+    static boolean resetToDefaults() {
+        return (preferences != null) && preferences.edit().clear().commit();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

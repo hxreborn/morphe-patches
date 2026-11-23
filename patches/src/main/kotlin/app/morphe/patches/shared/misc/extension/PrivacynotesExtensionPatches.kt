@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val privacynotesUnlockPremiumExtensionPatch = bytecodePatch {
+
+internal val privacynotesUnlockPremiumExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch)
     extendWith("extensions/hxreborn/privacynotes-unlock-premium.mpe")
 }

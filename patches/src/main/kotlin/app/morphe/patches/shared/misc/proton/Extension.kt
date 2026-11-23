@@ -8,12 +8,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.Patch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.fillAppliedPatch
 import app.morphe.patches.shared.misc.fillPatchMetadata
 import app.morphe.patches.shared.misc.returnTrueFrom
@@ -41,7 +42,7 @@ private const val APPLIED_PATCHES_CLASS = "${PROTON_EXTENSION_PACKAGE}AppliedPat
 private const val PATCHES_SETTINGS_ACTIVITY_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesSettingsActivity;"
 private const val PATCHES_COMPONENT_FACTORY_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesComponentFactory;"
 
-internal fun BytecodePatchContext.attachPatchContext(applicationClass: String) =
+internal fun attachPatchContext(applicationClass: String) =
     mutableClassDefBy(applicationClass).methods
         .single { it.name == "onCreate" && it.parameterTypes.isEmpty() && it.returnType == "V" }
         .addInstruction(
@@ -49,9 +50,9 @@ internal fun BytecodePatchContext.attachPatchContext(applicationClass: String) =
             "invoke-static/range { p0 .. p0 }, $PATCH_CONTEXT_CLASS->attach(Landroid/app/Application;)V",
         )
 
-internal fun BytecodePatchContext.markFeaturePatched(featureClass: String) = returnTrueFrom(featureClass, "isPatched")
+internal fun markFeaturePatched(featureClass: String) = returnTrueFrom(featureClass, "isPatched")
 
-internal fun BytecodePatchContext.forwardStub(stubClass: String, stubName: String, targetClass: String, targetName: String = "add") {
+internal fun forwardStub(stubClass: String, stubName: String, targetClass: String, targetName: String = "add") {
     val stubs = mutableClassDefBy(stubClass)
     val parameterTypes = stubs.methods.single { it.name == stubName }.parameterTypes
     val registers = parameterTypes.indices.joinToString { "p$it" }
@@ -65,22 +66,22 @@ internal fun BytecodePatchContext.forwardStub(stubClass: String, stubName: Strin
     )
 }
 
-internal fun BytecodePatchContext.showSettingsRows(stubName: String, rowsClass: String) =
+internal fun showSettingsRows(stubName: String, rowsClass: String) =
     forwardStub(PATCHES_SETTINGS_ACTIVITY_CLASS, stubName, rowsClass)
 
-internal fun BytecodePatchContext.markUpgradePromotionsPatched() {
+internal fun markUpgradePromotionsPatched() {
     markFeaturePatched(UPSELLING_VISIBILITY_CLASS)
     returnTrueFrom(APPLIED_PATCHES_CLASS, "hideUpgradePromotions")
     showSettingsRows("addUpgradePromotionRows", "${PROTON_EXTENSION_PACKAGE}UpgradePromotionRows;")
 }
 
-internal fun BytecodePatchContext.markLoadingIndicatorPatched() {
+internal fun markLoadingIndicatorPatched() {
     markFeaturePatched(LOADING_INDICATOR_CLASS)
     returnTrueFrom(APPLIED_PATCHES_CLASS, "loadingIndicator")
     showSettingsRows("addLoadingIndicatorRows", "${PROTON_EXTENSION_PACKAGE}LoadingIndicatorRows;")
 }
 
-internal fun BytecodePatchContext.markFloatingNavigationBarPatched() {
+internal fun markFloatingNavigationBarPatched() {
     markFeaturePatched(FLOATING_NAVIGATION_BAR_CLASS)
     returnTrueFrom(APPLIED_PATCHES_CLASS, "floatingNavigationBar")
     showSettingsRows("addNavigationRows", "${PROTON_EXTENSION_PACKAGE}NavigationBarRows;")
@@ -104,24 +105,30 @@ internal fun MutableMethod.returnVoidWhen(condition: String) {
     )
 }
 
-internal fun BytecodePatchContext.markPatchApplied(settingsClass: String, methodName: String, patch: Patch) =
+internal fun markPatchApplied(settingsClass: String, methodName: String, patch: Patch) =
     fillAppliedPatch(settingsClass, methodName, patch, withDescription = false)
 
-internal fun appliedPatchMarkerPatch(settingsClass: String, methodName: String, patch: () -> Patch) = bytecodePatch {
+internal fun appliedPatchMarkerPatch(settingsClass: String, methodName: String, patch: () -> Patch) = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonPatchApplicationExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     execute {
         markPatchApplied(settingsClass, methodName, patch())
     }
 }
 
-internal fun BytecodePatchContext.markPatchMetadata(
+internal fun markPatchMetadata(
     methodName: String,
     patch: Patch,
     withDescription: Boolean = false,
     settingsClass: String = APPLIED_PATCHES_CLASS,
-) = fillPatchMetadata(settingsClass, methodName, patch, withDescription)
+) {
+    if (settingsClass == APPLIED_PATCHES_CLASS) {
+        addAppliedPatchMetadata(settingsClass, methodName, patch, withDescription)
+    } else {
+        fillPatchMetadata(settingsClass, methodName, patch, withDescription)
+    }
+}
 
-internal fun BytecodePatchContext.bindAppSettings(settingsClass: String) =
+internal fun bindAppSettings(settingsClass: String) =
     mutableClassDefBy(APP_SETTINGS_BINDING_CLASS).methods.single { it.name == "current" }.addInstructions(
         0,
         """

@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.window.OnBackInvokedDispatcher;
 
 import app.hxreborn.extension.bereal.download.DownloadFolder;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsPanelBase;
 
 @SuppressWarnings({ "unused", "deprecation" })
 public final class PatchesSettingsActivity extends Activity implements PageHost {
@@ -78,6 +79,8 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Hosted on mount installs by an activity that uses BeReal's theme.
+        setTheme(android.R.style.Theme_DeviceDefault_NoActionBar);
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(SettingsStyle.SCREEN_BACKGROUND);
         getWindow().setNavigationBarColor(SettingsStyle.SCREEN_BACKGROUND);
@@ -86,24 +89,7 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
         this.pages = new SettingsPages(this, this.style, new SettingsRows(this, this.style), catalog, this,
                 hostVersion());
 
-        final int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
-        this.content = new ColumnLayout(this, this.style.dp(SettingsStyle.CONTENT_MAX_DP));
-        this.content.setPadding(inset, 0, inset, this.style.dp(88));
-        final ScrollView scroll = new ScrollView(this);
-        scroll.addView(this.content, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
-
-        final LinearLayout page = new LinearLayout(this);
-        page.setOrientation(LinearLayout.VERTICAL);
-        page.addView(toolbar());
-        page.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
-        final FrameLayout root = new FrameLayout(this);
-        root.setBackgroundColor(SettingsStyle.SCREEN_BACKGROUND);
-        root.setFitsSystemWindows(true);
-        root.addView(page,
-                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        root.addView(undoBar(), undoBarParams());
-        setContentView(root);
+        setContentView(new SettingsPanel().createContent());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT,
@@ -322,6 +308,38 @@ public final class PatchesSettingsActivity extends Activity implements PageHost 
         final int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
         params.setMargins(inset, 0, inset, this.style.dp(16));
         return params;
+    }
+
+    private final class SettingsPanel extends PatchesSettingsPanelBase {
+
+        SettingsPanel() {
+            super(PatchesSettingsActivity.this);
+        }
+
+        @Override
+        public View createContent() {
+            final SettingsStyle style = PatchesSettingsActivity.this.style;
+            final int inset = style.dp(SettingsStyle.SCREEN_INSET_DP);
+            PatchesSettingsActivity.this.content = new ColumnLayout(PatchesSettingsActivity.this,
+                    style.dp(SettingsStyle.CONTENT_MAX_DP));
+            PatchesSettingsActivity.this.content.setPadding(inset, 0, inset, style.dp(88));
+            final ScrollView scroll = new ScrollView(PatchesSettingsActivity.this);
+            scroll.addView(PatchesSettingsActivity.this.content,
+                    new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
+
+            final LinearLayout page = createColumn();
+            page.addView(toolbar());
+            addWeightedContent(page, scroll);
+            final FrameLayout root = new FrameLayout(PatchesSettingsActivity.this);
+            root.setBackgroundColor(SettingsStyle.SCREEN_BACKGROUND);
+            root.setFitsSystemWindows(true);
+            root.addView(page, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            root.addView(undoBar(), undoBarParams());
+            return root;
+        }
+
     }
 
 }

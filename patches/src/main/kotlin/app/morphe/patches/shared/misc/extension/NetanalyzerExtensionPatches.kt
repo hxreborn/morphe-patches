@@ -4,64 +4,65 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val netanalyzerFeaturesExtensionPatch = bytecodePatch {
-    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch)
+
+internal val netanalyzerFeaturesExtensionPatch = patch {
+    dependsOn(sharedActivityCallbacksAdapterExtensionPatch, sharedDimensionsExtensionPatch, sharedProxyHandlerExtensionPatch, sharedPatchesMenuLayoutExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-features.mpe")
 }
 
-internal val netanalyzerChartViewExtensionPatch = bytecodePatch {
+internal val netanalyzerChartViewExtensionPatch = patch {
     dependsOn(sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-chart-view.mpe")
 }
 
-internal val netanalyzerChannelUsageActivityExtensionPatch = bytecodePatch {
+internal val netanalyzerChannelUsageActivityExtensionPatch = patch {
     dependsOn(netanalyzerChartViewExtensionPatch, netanalyzerFeaturesExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-channel-usage-activity.mpe")
 }
 
-internal val netanalyzerCommonPortsListExtensionPatch = bytecodePatch {
+internal val netanalyzerCommonPortsListExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-common-ports-list.mpe")
 }
 
-internal val netanalyzerVisualTracerouteExtensionPatch = bytecodePatch {
+internal val netanalyzerVisualTracerouteExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-visual-traceroute.mpe")
 }
 
-internal val netanalyzerHistoryRowsExtensionPatch = bytecodePatch {
+internal val netanalyzerHistoryRowsExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-history-rows.mpe")
 }
 
-internal val netanalyzerLanScanHistoryExtensionPatch = bytecodePatch {
+internal val netanalyzerLanScanHistoryExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch, netanalyzerHistoryRowsExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-lan-scan-history.mpe")
 }
 
-internal val netanalyzerToolOptionsExtensionPatch = bytecodePatch {
+internal val netanalyzerToolOptionsExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch, sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-tool-options.mpe")
 }
 
-internal val netanalyzerPingStatisticsExtensionPatch = bytecodePatch {
+internal val netanalyzerPingStatisticsExtensionPatch = patch {
     dependsOn(netanalyzerChartViewExtensionPatch, netanalyzerFeaturesExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-ping-statistics.mpe")
 }
 
-internal val netanalyzerSpeedTestExtensionPatch = bytecodePatch {
+internal val netanalyzerSpeedTestExtensionPatch = patch {
     dependsOn(netanalyzerChannelUsageActivityExtensionPatch, netanalyzerChartViewExtensionPatch, netanalyzerFeaturesExtensionPatch, sharedDimensionsExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-speed-test.mpe")
 }
 
-internal val netanalyzerSettingsExtensionPatch = bytecodePatch {
+internal val netanalyzerSettingsExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-settings.mpe")
 }
 
-internal val netanalyzerToolsHistoryExtensionPatch = bytecodePatch {
+internal val netanalyzerToolsHistoryExtensionPatch = patch {
     dependsOn(netanalyzerFeaturesExtensionPatch, netanalyzerHistoryRowsExtensionPatch)
     extendWith("extensions/hxreborn/netanalyzer-tools-history.mpe")
 }

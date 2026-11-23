@@ -25,7 +25,8 @@ internal fun composableLambda(sourceFile: String) = InstructionFilter { _, instr
 }
 
 internal fun Match.composableParameters(): List<String> {
-    val source = instructionMatches.first().instruction.decryptedString()
+    val (sourceInformation) = instructionMatches
+    val source = sourceInformation.instruction.decryptedString()
         ?.takeIf { it.startsWith(SOURCE_INFORMATION_PREFIX) }
         ?: throw PatchException("The first match in $originalMethod is not composable source information")
     val parameters = source.substringAfter(')', "")

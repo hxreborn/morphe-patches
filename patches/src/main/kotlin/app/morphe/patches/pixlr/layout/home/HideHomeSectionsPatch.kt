@@ -6,9 +6,8 @@ package app.morphe.patches.pixlr.layout.home
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.pixlrHideHomeSectionsExtensionPatch
 
@@ -26,7 +25,7 @@ private enum class HomeSection(
 }
 
 @Suppress("unused")
-val hideHomeSectionsPatch = bytecodePatch(
+val hideHomeSectionsPatch = patch(
     name = "Hide home sections",
     description = "Hides the selected sections from the home screen.",
 ) {
@@ -53,7 +52,7 @@ val hideHomeSectionsPatch = bytecodePatch(
         val hideAiVideo = hideAiVideoOption.value == true
         if (hiddenSections.isEmpty() && !hideAiVideo) return@execute
 
-        HomeSectionConstructorFingerprint.matchSingle().method.apply {
+        HomeSectionConstructorFingerprint.method.apply {
             val nameRegister = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             val disableSectionCalls = hiddenSections.joinToString("\n") { section ->

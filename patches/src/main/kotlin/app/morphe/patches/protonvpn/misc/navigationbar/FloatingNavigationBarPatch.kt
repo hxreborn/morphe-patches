@@ -7,11 +7,12 @@ package app.morphe.patches.protonvpn.misc.navigationbar
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -53,7 +54,7 @@ private const val PROFILE_BUTTON_COUNT = 2
 private const val CLEAR_DEFAULT_CONTENT_PADDING = -5
 
 @Suppress("unused")
-val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
+val floatingNavigationBarPatch: Patch = patch(
     name = "Floating navigation bar",
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
@@ -79,16 +80,16 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
         )
         markPatchMetadata("floatingNavigationBar", floatingNavigationBarPatch)
         markFloatingNavigationBarPatched()
-        val mainBar = MainBottomBarFingerprint.matchSingle()
+        val mainBar = MainBottomBarFingerprint.match()
         captureScaffoldPageColor(
-            mainScaffoldFingerprint(mainBar.originalClassDef.type).matchSingle(),
+            mainScaffoldFingerprint(mainBar.originalClassDef.type).match(),
             SCAFFOLD_BACKGROUND_PARAMETER, SCAFFOLD_BACKGROUND_DEFAULT,
         )
         val (barCall) = mainBar.instructionMatches
-        val bar = barCall.instruction.getReference<MethodReference>()!!
-        val navigation = navigationBarFingerprint(bar).matchSingle()
+        val bar = barCall.methodReference
+        val navigation = navigationBarFingerprint(bar).match()
         val (navigationCall) = navigation.instructionMatches
-        val nativeBar = navigationCall.instruction.getReference<MethodReference>()!!
+        val nativeBar = navigationCall.methodReference
         val nativeMethod = classDefBy(nativeBar.definingClass).methods.single {
             it.name == nativeBar.name && it.parameterTypes == nativeBar.parameterTypes
         }
@@ -108,15 +109,15 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
         }.definingClass
         val content = navigationInsetsContentFingerprint(
             holder, insetType, nativeBar.parameterTypes.first().toString(),
-        ).matchSingle()
+        ).match()
         val contentInstructions = content.method.instructions.toList()
         val padding = contentInstructions.mapNotNull { it.getReference<MethodReference>() }.single {
             it.parameterTypes == listOf(nativeBar.parameterTypes.first().toString(), insetType) &&
                 it.returnType == nativeBar.parameterTypes.first().toString()
         }
-        val sideMatch = navigationInsetSidesFingerprint(nativeBar, insetConstructor).matchSingle()
+        val sideMatch = navigationInsetSidesFingerprint(nativeBar, insetConstructor).match()
         val (sidesRead) = sideMatch.instructionMatches
-        val sides = sidesRead.instruction.getReference<FieldReference>()!!
+        val sides = sidesRead.fieldReference
         mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS).replaceStub(
             "outerInsets",
             5,
@@ -156,7 +157,7 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
             } == true
         }
         installFloatingContentPadding(navType, modifierType)
-        val indicatorMatch = navigationIndicatorFingerprint(bar).matchSingle()
+        val indicatorMatch = navigationIndicatorFingerprint(bar).match()
         val (_, _, _, indicatorResult) = indicatorMatch.instructionMatches
         val indicatorRegister = indicatorResult.getInstruction<OneRegisterInstruction>().registerA
         val indicator = mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS).addStaticMethod(
@@ -183,8 +184,8 @@ val floatingNavigationBarPatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.installFloatingContentPadding(navType: String, modifierType: String) {
-    val values = PaddingValuesFingerprint.matchSingle().originalClassDef
+private fun installFloatingContentPadding(navType: String, modifierType: String) {
+    val values = PaddingValuesFingerprint.match().originalClassDef
     val paddingType = values.interfaces.single()
     val constructor = values.methods.single { it.name == "<init>" && it.parameterTypes == List(4) { "F" } }
     val bottomParameter = constructor.implementation!!.registerCount - 1
@@ -266,7 +267,7 @@ private fun BytecodePatchContext.installFloatingContentPadding(navType: String, 
         """,
     )
     installContentClearance(modifierType, paddingType, footprintHeight)
-    val content = mainContentPaddingFingerprint(navType, modifierType, paddingType).matchSingle()
+    val content = mainContentPaddingFingerprint(navType, modifierType, paddingType).match()
     val (paddingCall, paddingResult) = content.instructionMatches
     val modifierRegister = paddingResult.getInstruction<OneRegisterInstruction>().registerA
     content.method.addInstructions(
@@ -287,9 +288,9 @@ private fun BytecodePatchContext.installFloatingContentPadding(navType: String, 
     )
 }
 
-private fun BytecodePatchContext.installContentClearance(modifier: String, padding: String, footprintHeight: String) {
+private fun installContentClearance(modifier: String, padding: String, footprintHeight: String) {
     val extension = mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS)
-    val values = PaddingValuesFingerprint.matchSingle().originalClassDef
+    val values = PaddingValuesFingerprint.match().originalClassDef
     val valuesConstructor = values.methods.single { it.name == "<init>" && it.parameterTypes == List(4) { "F" } }
     val reserve = extension.addStaticMethod("reserveContentPadding", listOf(padding), padding, 3, """
         invoke-static {}, $FLOATING_NAVIGATION_BAR_CLASS->isEnabled()Z
@@ -307,8 +308,8 @@ private fun BytecodePatchContext.installContentClearance(modifier: String, paddi
         :original
         return-object p0
     """)
-    val layer = GraphicsLayerElementFingerprint.matchSingle().originalClassDef
-    val element = paddingElementFingerprint(layer.superclass!!).matchSingle().originalClassDef
+    val layer = GraphicsLayerElementFingerprint.match().originalClassDef
+    val element = paddingElementFingerprint(layer.superclass!!).match().originalClassDef
     val constructor = element.methods.single { it.name == "<init>" }
     val then = classDefBy(modifier).methods.single { it.parameterTypes == listOf(modifier) && it.returnType == modifier }
     val append = extension.addStaticMethod("appendContentClearance", listOf(modifier), modifier, 6, """
@@ -333,7 +334,7 @@ private fun BytecodePatchContext.installContentClearance(modifier: String, paddi
             move-result-object v$register
         """)
     }
-    val settings = settingsScreenFingerprint(modifier).matchSingle()
+    val settings = settingsScreenFingerprint(modifier).match()
     val (_, scaffoldCall) = settings.instructionMatches
     val callbackRegister = (scaffoldCall.instruction as RegisterRangeInstruction).startRegister + SETTINGS_CONTENT_ARGUMENT
     val instructions = settings.method.instructions.toList()
@@ -349,10 +350,10 @@ private fun BytecodePatchContext.installContentClearance(modifier: String, paddi
         it.opcode == Opcode.NEW_INSTANCE && (it as OneRegisterInstruction).registerA == lambdaRegister
     }
     val lambdaType = allocation.getReference<TypeReference>()!!.type
-    val scrolling = settingsScrollFingerprint(lambdaType, modifier, padding).matchSingle()
+    val scrolling = settingsScrollFingerprint(lambdaType, modifier, padding).match()
     val (_, _, stateCall, _, scrollCall) = scrolling.instructionMatches
     val scrollResult = scrolling.instructionMatches.last()
-    check(stateCall.instruction.getReference<MethodReference>()!!.returnType == scrollCall.instruction.getReference<MethodReference>()!!.parameterTypes[1])
+    check(stateCall.methodReference.returnType == scrollCall.methodReference.parameterTypes[1])
     transformArgument(scrolling.method, scrollResult.index + 1, scrollResult.getInstruction<OneRegisterInstruction>().registerA, append)
     val profileButtons = profileButtonPaddingFingerprint(modifier).matchAll().toList()
     check(profileButtons.size == PROFILE_BUTTON_COUNT) { "Expected populated and empty profile buttons" }
@@ -360,12 +361,12 @@ private fun BytecodePatchContext.installContentClearance(modifier: String, paddi
         val (_, _, result) = match.instructionMatches
         transformArgument(match.method, result.index + 1, result.getInstruction<OneRegisterInstruction>().registerA, append)
     }
-    val countries = countriesListFingerprint(modifier, padding).matchSingle()
+    val countries = countriesListFingerprint(modifier, padding).match()
     val (listCall) = countries.instructionMatches
-    val list = listCall.instruction.getReference<MethodReference>()!!
+    val list = listCall.methodReference
     val listRegister = (listCall.instruction as RegisterRangeInstruction).startRegister
     transformArgument(countries.method, listCall.index, listRegister + LIST_CONTENT_PADDING_ARGUMENT, reserve)
-    val recents = recentsListFingerprint(list).matchSingle()
+    val recents = recentsListFingerprint(list).match()
     val (recentsCall) = recents.instructionMatches
     val recentsRange = recentsCall.instruction as RegisterRangeInstruction
     check(recentsCall.instruction.opcode == Opcode.INVOKE_STATIC_RANGE) { "Expected static recents list call" }

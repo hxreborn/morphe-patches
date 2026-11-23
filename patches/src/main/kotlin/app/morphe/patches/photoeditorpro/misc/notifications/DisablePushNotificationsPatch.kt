@@ -6,10 +6,10 @@ package app.morphe.patches.photoeditorpro.misc.notifications
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
@@ -22,7 +22,7 @@ import app.morphe.patches.shared.misc.extension.photoeditorproDisablePushNotific
 
 private const val PUSH_NOTIFICATIONS_CLASS = "$EXTENSION_PACKAGE/PushNotifications;"
 
-private val disableNotificationDelegationPatch = resourcePatch {
+private val disableNotificationDelegationPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("firebase_messaging_notification_delegation_enabled", "false")
@@ -31,7 +31,7 @@ private val disableNotificationDelegationPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disablePushNotificationsPatch: BytecodePatch = bytecodePatch(
+val disablePushNotificationsPatch: Patch = patch(
     name = "Disable push notifications",
     description = "Blocks push notifications and the prompt asking to allow them.",
 ) {
@@ -44,7 +44,7 @@ val disablePushNotificationsPatch: BytecodePatch = bytecodePatch(
 
         FirebaseMessagingHandleIntentFingerprint.method.returnEarly()
 
-        NotificationPermissionPromptFingerprint.matchSingle().method.addInstructions(
+        NotificationPermissionPromptFingerprint.method.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;

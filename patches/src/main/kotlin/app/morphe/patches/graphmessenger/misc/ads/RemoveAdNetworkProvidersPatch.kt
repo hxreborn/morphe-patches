@@ -5,7 +5,8 @@
 package app.morphe.patches.graphmessenger.misc.ads
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.asSequence
 import app.morphe.util.removeFromParent
 import org.w3c.dom.Element
@@ -15,7 +16,7 @@ private val AD_NETWORK_PROVIDERS = listOf(
     "com.facebook.ads.AudienceNetworkContentProvider",
 )
 
-internal val removeAdNetworkProvidersPatch = resourcePatch {
+internal val removeAdNetworkProvidersPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val providers = document.getElementsByTagName("provider").asSequence().filterIsInstance<Element>().toList()

@@ -5,9 +5,7 @@
 package app.morphe.patches.readera.misc.speechfilter
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
@@ -21,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/readera/SpeechFilterSettings;"
 
 @Suppress("unused")
-val omitWordsAndSymbolsPatch = bytecodePatch(
+val omitWordsAndSymbolsPatch = patch(
     name = "Omit words and symbols",
     description = "Makes Read aloud skip the words and symbols on a list, without changing the book. " +
         "The list is edited in the patches menu.",
@@ -38,8 +36,8 @@ val omitWordsAndSymbolsPatch = bytecodePatch(
     }
 }
 
-internal fun BytecodePatchContext.addSpeechTextFilter() {
-    val speakMatch = SpeakTextFingerprint.matchSingle()
+internal fun addSpeechTextFilter() {
+    val speakMatch = SpeakTextFingerprint.match()
     val contextField = speakMatch.classDef.fields.first { it.type == "Landroid/content/Context;" }
     val filterText = speakMatch.classDef.addMethod(
         "filterSpeechText", listOf("Ljava/lang/String;"), "Ljava/lang/String;", AccessFlags.PRIVATE.value, 3,

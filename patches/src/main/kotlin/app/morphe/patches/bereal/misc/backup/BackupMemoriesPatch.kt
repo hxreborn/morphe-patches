@@ -5,10 +5,9 @@
 package app.morphe.patches.bereal.misc.backup
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.bereal.misc.settings.settingsPatch
@@ -29,7 +28,7 @@ private val backupPermissions = listOf(
     "android.permission.POST_NOTIFICATIONS",
 )
 
-private val addBackupServicePatch = resourcePatch {
+private val addBackupServicePatch = patch {
     dependsOn(berealSettingsExtensionPatch, morpheLibraryCoreExtensionPatch)
     execute {
         document("AndroidManifest.xml").use { document ->
@@ -58,7 +57,7 @@ private val addBackupServicePatch = resourcePatch {
 }
 
 @Suppress("unused")
-val backupMemoriesPatch: BytecodePatch = bytecodePatch(
+val backupMemoriesPatch: Patch = patch(
     name = "Back up memories",
     description = "Adds Back up memories to hxreborn patches. Saves every memory as separate back and front " +
         "photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' " +
@@ -70,7 +69,7 @@ val backupMemoriesPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, backupMemoriesPatch)
 
-        RetrofitCreateFingerprint.matchSingle().method.addInstructions(
+        RetrofitCreateFingerprint.method.addInstructions(
             0,
             "invoke-static { p0, p1 }, $API_CLASS->onCreate(Ljava/lang/Object;Ljava/lang/Class;)V",
         )

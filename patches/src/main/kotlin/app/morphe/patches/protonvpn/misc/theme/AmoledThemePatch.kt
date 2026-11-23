@@ -5,10 +5,9 @@
 package app.morphe.patches.protonvpn.misc.theme
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.AMOLED_THEME_CLASS
@@ -43,7 +42,7 @@ private val SPLASH_STYLE_BACKGROUNDS = mapOf(
     "res/values-v31/styles.xml" to SPLASH_BACKGROUND_COLOR_V31,
 )
 
-private val amoledSplashBackgroundPatch = resourcePatch {
+private val amoledSplashBackgroundPatch = patch {
     execute {
         SPLASH_BACKGROUND_VALUES.forEach { (color, values) ->
             values.forEach { (file, value) ->
@@ -75,7 +74,7 @@ private val amoledSplashBackgroundPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val amoledThemePatch: BytecodePatch = bytecodePatch(
+val amoledThemePatch: Patch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
@@ -87,8 +86,9 @@ val amoledThemePatch: BytecodePatch = bytecodePatch(
         markFeaturePatched(AMOLED_THEME_CLASS)
         transformCoreDarkBackgrounds()
 
-        CollapsingToolbarColorFingerprint.matchSingle().run {
-            val lerpIndex = instructionMatches.last().index
+        CollapsingToolbarColorFingerprint.match().run {
+            val (_, _, colorInterpolation) = instructionMatches
+            val lerpIndex = colorInterpolation.index
             val collapsedColorRegister = method.getInstruction<FiveRegisterInstruction>(lerpIndex).registerE
             method.injectColorTransformCall(
                 method.indexOfLastWrite(collapsedColorRegister, lerpIndex),

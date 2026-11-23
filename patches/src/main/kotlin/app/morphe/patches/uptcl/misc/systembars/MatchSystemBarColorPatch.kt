@@ -5,8 +5,7 @@
 package app.morphe.patches.uptcl.misc.systembars
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.uptcl.misc.fix.signature.trustInstalledCertificatePatch
 import app.morphe.patches.shared.misc.extension.uptclMatchSystemBarColorExtensionPatch
@@ -14,7 +13,7 @@ import app.morphe.patches.shared.misc.extension.uptclMatchSystemBarColorExtensio
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/uptcl/WindowBackground;"
 
 @Suppress("unused")
-val matchSystemBarColorPatch = bytecodePatch(
+val matchSystemBarColorPatch = patch(
     name = "Match system bar color",
     description = "Colors the status bar and navigation bar white to match the app's screens.",
 ) {
@@ -23,7 +22,7 @@ val matchSystemBarColorPatch = bytecodePatch(
     dependsOn(trustInstalledCertificatePatch)
 
     execute {
-        BaseActivityOnCreateFingerprint.matchSingle().method.addInstruction(
+        BaseActivityOnCreateFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->paintWhite(Landroid/app/Activity;)V",
         )

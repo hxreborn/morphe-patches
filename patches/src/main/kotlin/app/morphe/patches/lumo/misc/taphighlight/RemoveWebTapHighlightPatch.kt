@@ -5,8 +5,7 @@
 package app.morphe.patches.lumo.misc.taphighlight
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.webTapHighlightHighlightExtensio
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/shared/WebTapHighlight;"
 
 @Suppress("unused")
-val removeWebTapHighlightPatch = bytecodePatch(
+val removeWebTapHighlightPatch = patch(
     name = "Remove tap highlight",
     description = "Removes the highlight flash on tapped buttons and links.",
 ) {
@@ -33,7 +32,7 @@ val removeWebTapHighlightPatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        PageFinishedFingerprint.matchSingle().method.addInstructions(
+        PageFinishedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $EXTENSION_CLASS->remove(Landroid/webkit/WebView;)V",
         )

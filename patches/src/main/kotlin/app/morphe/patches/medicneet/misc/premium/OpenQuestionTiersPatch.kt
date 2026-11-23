@@ -6,18 +6,14 @@ package app.morphe.patches.medicneet.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import app.morphe.patches.shared.misc.extension.medicneetUnlockPremiumExtensionPatch
 
@@ -25,7 +21,7 @@ private const val OPEN_TIER_RETRY_CLASS = "Lapp/hxreborn/extension/medicneet/Ope
 
 private const val TIER_FIELD = "tier"
 
-internal val openQuestionTiersPatch = bytecodePatch {
+internal val openQuestionTiersPatch = patch {
     dependsOn(medicneetUnlockPremiumExtensionPatch)
     execute {
         retryDeniedQuestionQueries()
@@ -33,15 +29,15 @@ internal val openQuestionTiersPatch = bytecodePatch {
     }
 }
 
-private fun BytecodePatchContext.retryDeniedQuestionQueries() {
-    val run = FirestoreQueryGetRunFingerprint.matchSingle()
+private fun retryDeniedQuestionQueries() {
+    val run = FirestoreQueryGetRunFingerprint.match()
     val (pathRead, _, paramsRead, handler) = run.instructionMatches
     val method = run.method
 
-    val parser = FirestoreQueryParserFingerprint.matchSingle().instructionMatches
-    val whereField = descriptor(parser.first().instruction.getReference<FieldReference>()!!)
+    val parser = FirestoreQueryParserFingerprint.match().instructionMatches
+    val whereField = descriptor(parser.first().fieldReference)
     val fieldPathType = parser.last().instruction.getReference<TypeReference>()!!.type
-    val fieldPathFactory = descriptor(fieldPathFactoryFingerprint(fieldPathType).matchSingle().method)
+    val fieldPathFactory = descriptor(fieldPathFactoryFingerprint(fieldPathType).method)
 
     val thisRegister = method.implementation!!.registerCount - method.parameterTypes.size - 1
     val failure = handler.getInstruction<OneRegisterInstruction>().registerA
@@ -55,8 +51,8 @@ private fun BytecodePatchContext.retryDeniedQuestionQueries() {
     method.addInstructionsWithLabels(
         resumeIndex,
         """
-            iget-object v$path, p0, ${descriptor(pathRead.instruction.getReference<FieldReference>()!!)}
-            iget-object v$where, p0, ${descriptor(paramsRead.instruction.getReference<FieldReference>()!!)}
+            iget-object v$path, p0, ${descriptor(pathRead.fieldReference)}
+            iget-object v$where, p0, ${descriptor(paramsRead.fieldReference)}
             if-eqz v$where, :resume
             iget-object v$where, v$where, $whereField
             const-string v$tier, "$TIER_FIELD"
@@ -72,18 +68,18 @@ private fun BytecodePatchContext.retryDeniedQuestionQueries() {
     )
 }
 
-private fun BytecodePatchContext.answerDeniedSegmentReads() {
-    val run = FirestoreDocumentGetRunFingerprint.matchSingle()
+private fun answerDeniedSegmentReads() {
+    val run = FirestoreDocumentGetRunFingerprint.match()
     val matches = run.instructionMatches
     val method = run.method
 
     val holderRead = matches[0]
     val requestType = matches[1].instruction.getReference<TypeReference>()!!.type
-    val requestPath = matches[6].instruction.getReference<FieldReference>()!!
+    val requestPath = matches[6].fieldReference
     val snapshotCall = matches[11]
-    val resultList = matches[12].instruction.getReference<FieldReference>()!!
-    val resultReply = matches[14].instruction.getReference<FieldReference>()!!
-    val send = matches[15].instruction.getReference<MethodReference>()!!
+    val resultList = matches[12].fieldReference
+    val resultReply = matches[14].fieldReference
+    val send = matches[15].methodReference
     val handler = matches[16]
     val report = matches[17].getInstruction<FiveRegisterInstruction>()
 
@@ -91,7 +87,7 @@ private fun BytecodePatchContext.answerDeniedSegmentReads() {
     val (metadataCall, snapshotPath, _, snapshotMetadata) = snapshotMessage.instructionMatches
     val metadataFlags = FirestoreSnapshotMetadataFingerprint.match(metadataCall.getMethodCalled()).instructionMatches
     val snapshotType = snapshotMessage.originalMethod.returnType
-    val metadataType = snapshotMetadata.instruction.getReference<FieldReference>()!!.type
+    val metadataType = snapshotMetadata.fieldReference.type
 
     val thisRegister = holderRead.getInstruction<TwoRegisterInstruction>().registerB
     val failure = handler.getInstruction<OneRegisterInstruction>().registerA
@@ -110,7 +106,7 @@ private fun BytecodePatchContext.answerDeniedSegmentReads() {
     method.addInstructionsWithLabels(
         resumeIndex,
         """
-            iget-object v$path, v$thisRegister, ${descriptor(holderRead.instruction.getReference<FieldReference>()!!)}
+            iget-object v$path, v$thisRegister, ${descriptor(holderRead.fieldReference)}
             check-cast v$path, $requestType
             iget-object v$path, v$path, ${descriptor(requestPath)}
             invoke-static { v$failure, v$path }, $OPEN_TIER_RETRY_CLASS->isOpenSegmentRead(Ljava/lang/Throwable;Ljava/lang/String;)Z
@@ -118,13 +114,13 @@ private fun BytecodePatchContext.answerDeniedSegmentReads() {
             if-eqz v$isOpenSegment, :resume
             new-instance v$snapshot, $snapshotType
             invoke-direct { v$snapshot }, $snapshotType-><init>()V
-            iput-object v$path, v$snapshot, ${descriptor(snapshotPath.instruction.getReference<FieldReference>()!!)}
+            iput-object v$path, v$snapshot, ${descriptor(snapshotPath.fieldReference)}
             new-instance v$metadata, $metadataType
             invoke-direct { v$metadata }, $metadataType-><init>()V
             sget-object v$flag, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
-            iput-object v$flag, v$metadata, ${descriptor(metadataFlags[0].instruction.getReference<FieldReference>()!!)}
-            iput-object v$flag, v$metadata, ${descriptor(metadataFlags[1].instruction.getReference<FieldReference>()!!)}
-            iput-object v$metadata, v$snapshot, ${descriptor(snapshotMetadata.instruction.getReference<FieldReference>()!!)}
+            iput-object v$flag, v$metadata, ${descriptor(metadataFlags[0].fieldReference)}
+            iput-object v$flag, v$metadata, ${descriptor(metadataFlags[1].fieldReference)}
+            iput-object v$metadata, v$snapshot, ${descriptor(snapshotMetadata.fieldReference)}
             iget-object v$results, v$resultRegister, ${descriptor(resultList)}
             const/4 v$insertIndex, 0x0
             invoke-virtual { v$results, v$insertIndex, v$snapshot }, Ljava/util/ArrayList;->add(ILjava/lang/Object;)V

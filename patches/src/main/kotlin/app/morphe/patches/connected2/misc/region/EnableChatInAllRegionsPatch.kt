@@ -5,15 +5,14 @@
 package app.morphe.patches.connected2.misc.region
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val enableChatInAllRegionsPatch = bytecodePatch(
+val enableChatInAllRegionsPatch = patch(
     name = "Enable chat in all regions",
     description = "Enables sign-in and chat in regions the server blocks. " +
         "Creating an account still requires a supported region.",
@@ -24,7 +23,7 @@ val enableChatInAllRegionsPatch = bytecodePatch(
     dependsOn(removePairipVirtualizationPatch, removePairipProtectionPatch)
 
     execute {
-        HandleFeaturesFingerprint.matchSingle().method.addInstructions(
+        HandleFeaturesFingerprint.method.addInstructions(
             0,
             """
                 const-string v0, "xmpp"

@@ -28,49 +28,27 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 
-final class SettingsStyle {
-
-    static final float BAR_TITLE_SP = 24f;
-    static final float SECTION_SP = 14f;
-    static final float ROW_TITLE_SP = 17f;
-    static final float BODY_SP = 14f;
-    static final int SCREEN_INSET_DP = 16;
-    static final int CARD_RADIUS_DP = 16;
-    static final int ICON_DP = 24;
+final class SettingsStyle extends app.hxreborn.extension.shared.patchesmenu.SettingsStyle {
 
     private static final int DIVIDER_ALPHA = 0x1F;
-
-    final boolean dark;
-
-    final int screenBackground;
-
-    final int cardSurface;
-
-    final int divider;
-
-    final int primaryText;
-
-    final int secondaryText;
-
-    final Typeface medium;
 
     private final Context context;
 
     SettingsStyle(Context context) {
+        super(context, isDarknightTheme(), color(context, mainBackgroundAttribute()),
+                color(context, secondaryBackgroundAttribute()), divider(context),
+                color(context, textPrimaryAttribute()), color(context, textSecondaryAttribute()),
+                color(context, textPrimaryAttribute()), divider(context),
+                Typeface.create(new TextView(context).getTypeface(), Typeface.BOLD));
         this.context = context;
-        this.screenBackground = color(mainBackgroundAttribute());
-        this.cardSurface = color(secondaryBackgroundAttribute());
-        this.primaryText = color(textPrimaryAttribute());
-        this.secondaryText = color(textSecondaryAttribute());
-        this.divider = Color.argb(DIVIDER_ALPHA, Color.red(this.primaryText), Color.green(this.primaryText),
-                Color.blue(this.primaryText));
-        this.dark = isDarknightTheme();
-        this.medium = Typeface.create(new TextView(context).getTypeface(), Typeface.BOLD);
+    }
+
+    private static int divider(Context context) {
+        int primary = color(context, textPrimaryAttribute());
+        return Color.argb(DIVIDER_ALPHA, Color.red(primary), Color.green(primary), Color.blue(primary));
     }
 
     static int lightTheme() {
@@ -105,17 +83,19 @@ final class SettingsStyle {
         return isDarknightTheme() ? darknightTheme() : lightTheme();
     }
 
-    private int color(int attribute) {
+    private static int color(Context context, int attribute) {
         TypedValue value = new TypedValue();
-        this.context.getTheme().resolveAttribute(attribute, value, true);
-        return (value.resourceId != 0) ? this.context.getColor(value.resourceId) : value.data;
+        context.getTheme().resolveAttribute(attribute, value, true);
+        return (value.resourceId != 0) ? context.getColor(value.resourceId) : value.data;
     }
 
-    int dp(float value) {
+    @Override
+    public int dp(float value) {
         return Math.round(value * this.context.getResources().getDisplayMetrics().density);
     }
 
-    TextView text(String value, float size, int color, Typeface typeface) {
+    @Override
+    public TextView text(String value, float size, int color, Typeface typeface) {
         TextView text = new TextView(this.context);
         text.setText(value);
         text.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
@@ -126,14 +106,16 @@ final class SettingsStyle {
         return text;
     }
 
-    GradientDrawable rounded(int color, int radius) {
+    @Override
+    public GradientDrawable rounded(int color, int radius) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(color);
         drawable.setCornerRadius(dp(radius));
         return drawable;
     }
 
-    Drawable ripple(int radius) {
+    @Override
+    public Drawable ripple(int radius) {
         return new RippleDrawable(ColorStateList.valueOf(this.divider), null, rounded(this.primaryText, radius));
     }
 
@@ -146,10 +128,14 @@ final class SettingsStyle {
         return drawable;
     }
 
-    static void markHeading(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            view.setAccessibilityHeading(true);
-        }
+    @Override
+    public Drawable backIcon(int tint) {
+        return hostIcon("hx_viber_ic_back", tint);
+    }
+
+    @Override
+    protected int backIconResource() {
+        return this.context.getResources().getIdentifier("hx_viber_ic_back", "drawable", this.context.getPackageName());
     }
 
 }

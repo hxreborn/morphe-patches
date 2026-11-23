@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.bettersleep.misc.fix.screenevents
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.pairip.replaceVirtualizedMethod
@@ -15,13 +16,13 @@ import com.android.tools.smali.dexlib2.AccessFlags
 private const val BROADCAST_RECEIVER = "Landroid/content/BroadcastReceiver;"
 private const val OBJECT = "Ljava/lang/Object;"
 
-val restoreScreenEventsPatch = bytecodePatch {
+val restoreScreenEventsPatch = patch {
     compatibleWith(AppCompatibilities.BETTERSLEEP)
 
     dependsOn(removePairipVirtualizationPatch)
 
     execute {
-        val recorder = RecordScreenEventFingerprint.matchSingle().method
+        val recorder = RecordScreenEventFingerprint.method
 
         val receiverTypes = mutableListOf<String>()
         classDefForEach { classDef ->

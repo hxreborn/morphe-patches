@@ -5,22 +5,21 @@
 package app.morphe.patches.allvideoplayer.resume
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch
 
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/allvideoplayer/MediaStoreVideoUri;"
 
 @Suppress("unused")
-val resumeExternalVideosPatch = bytecodePatch(
+val resumeExternalVideosPatch = patch(
     name = "Resume videos opened from other apps",
     description = "Resumes videos opened from a file manager or gallery where playback stopped.",
 ) {
     dependsOn(allvideoplayerResumeVideosOpenedFromOtherAppsExtensionPatch)
     compatibleWith(AppCompatibilities.ALL_VIDEO_PLAYER)
     execute {
-        PlayVideoFingerprint.matchSingle().method.addInstructions(
+        PlayVideoFingerprint.method.addInstructions(
             0,
             "invoke-static { p0, p1 }, $EXTENSION_CLASS->resolve(Landroid/app/Activity;Landroid/net/Uri;)Landroid/net/Uri;\n" +
                 "move-result-object p1",

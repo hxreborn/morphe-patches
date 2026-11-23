@@ -4,72 +4,44 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+internal val readeraSettingsExtensionPatch = extensionPayload("readera-settings", sharedPatchesMenuExtensionPatch)
 
-internal val readeraSettingsExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-settings.mpe")
-}
+internal val readeraChapterReaderExtensionPatch = extensionPayload("readera-chapter-reader")
 
-internal val readeraChapterReaderExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-chapter-reader.mpe")
-}
+internal val readeraChapterSpeechExtensionPatch =
+    extensionPayload("readera-chapter-speech", readeraChapterReaderExtensionPatch, readeraSettingsExtensionPatch)
 
-internal val readeraChapterSpeechExtensionPatch = bytecodePatch {
-    dependsOn(readeraChapterReaderExtensionPatch, readeraSettingsExtensionPatch)
-    extendWith("extensions/hxreborn/readera-chapter-speech.mpe")
-}
+internal val readeraHighlightColorPickerExtensionPatch =
+    extensionPayload("readera-highlight-color-picker", sharedDimensionsExtensionPatch)
 
-internal val readeraHighlightColorPickerExtensionPatch = bytecodePatch {
-    dependsOn(sharedDimensionsExtensionPatch)
-    extendWith("extensions/hxreborn/readera-highlight-color-picker.mpe")
-}
+internal val readeraLibraryViewModesExtensionPatch = extensionPayload("readera-library-view-modes")
 
-internal val readeraLibraryViewModesExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-library-view-modes.mpe")
-}
+internal val readeraMaterialRadioButtonExtensionPatch = extensionPayload("readera-material-radio-button")
 
-internal val readeraMaterialRadioButtonExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-material-radio-button.mpe")
-}
+internal val readeraMaterial3ControlsExtensionPatch =
+    extensionPayload("readera-material-3-controls", readeraMaterialRadioButtonExtensionPatch)
 
-internal val readeraMaterial3ControlsExtensionPatch = bytecodePatch {
-    dependsOn(readeraMaterialRadioButtonExtensionPatch)
-    extendWith("extensions/hxreborn/readera-material-3-controls.mpe")
-}
+internal val readeraQuotesAndNotesSectionExtensionPatch =
+    extensionPayload("readera-quotes-and-notes-section", sharedDimensionsExtensionPatch)
 
-internal val readeraQuotesAndNotesSectionExtensionPatch = bytecodePatch {
-    dependsOn(sharedDimensionsExtensionPatch)
-    extendWith("extensions/hxreborn/readera-quotes-and-notes-section.mpe")
-}
+internal val readeraSelectionMenuExtensionPatch = extensionPayload("readera-selection-menu")
 
-internal val readeraSelectionMenuExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-selection-menu.mpe")
-}
+internal val readeraReadAloudFromSelectionExtensionPatch = extensionPayload(
+    "readera-read-aloud-from-selection",
+    readeraChapterReaderExtensionPatch,
+    readeraSelectionMenuExtensionPatch,
+)
 
-internal val readeraReadAloudFromSelectionExtensionPatch = bytecodePatch {
-    dependsOn(readeraChapterReaderExtensionPatch, readeraSelectionMenuExtensionPatch)
-    extendWith("extensions/hxreborn/readera-read-aloud-from-selection.mpe")
-}
+internal val readeraSearchSelectionInBookExtensionPatch =
+    extensionPayload("readera-search-selection-in-book", readeraSelectionMenuExtensionPatch)
 
-internal val readeraSearchSelectionInBookExtensionPatch = bytecodePatch {
-    dependsOn(readeraSelectionMenuExtensionPatch)
-    extendWith("extensions/hxreborn/readera-search-selection-in-book.mpe")
-}
+internal val readeraCopyWithSourceExtensionPatch =
+    extensionPayload("readera-copy-with-source", readeraSelectionMenuExtensionPatch)
 
-internal val readeraCopyWithSourceExtensionPatch = bytecodePatch {
-    dependsOn(readeraSelectionMenuExtensionPatch)
-    extendWith("extensions/hxreborn/readera-copy-with-source.mpe")
-}
+internal val readeraReadAloudNotificationControlsExtensionPatch =
+    extensionPayload("readera-read-aloud-notification-controls")
 
-internal val readeraReadAloudNotificationControlsExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-read-aloud-notification-controls.mpe")
-}
+internal val readeraSpeechPitchSliderExtensionPatch =
+    extensionPayload("readera-speech-pitch-slider", readeraSettingsExtensionPatch)
 
-internal val readeraSpeechPitchSliderExtensionPatch = bytecodePatch {
-    dependsOn(readeraSettingsExtensionPatch)
-    extendWith("extensions/hxreborn/readera-speech-pitch-slider.mpe")
-}
-
-internal val readeraSpeechRateSliderExtensionPatch = bytecodePatch {
-    extendWith("extensions/hxreborn/readera-speech-rate-slider.mpe")
-}
+internal val readeraSpeechRateSliderExtensionPatch = extensionPayload("readera-speech-rate-slider")

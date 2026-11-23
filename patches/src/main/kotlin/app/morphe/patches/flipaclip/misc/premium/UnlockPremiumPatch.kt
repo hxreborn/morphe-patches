@@ -6,8 +6,7 @@ package app.morphe.patches.flipaclip.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.flipaclip.misc.billing.ProductPurchaseFingerprint
 import app.morphe.patches.flipaclip.shared.restoreProjectExportPatch
@@ -29,7 +28,7 @@ private val FEATURE_PRODUCTS = listOf(
 )
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks paid editing tools and export options. Voice maker and Magic Cut are excluded.",
 ) {
@@ -46,7 +45,7 @@ val unlockPremiumPatch = bytecodePatch(
                 if-nez v0, :grant
             """.trimIndent()
         }
-        ProductPurchaseFingerprint.matchSingle().method.apply {
+        ProductPurchaseFingerprint.method.apply {
             val original = getInstruction(0)
             addInstructionsWithLabels(
                 0,

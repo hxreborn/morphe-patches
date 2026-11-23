@@ -9,7 +9,6 @@ import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.methodCall
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.string
 import app.morphe.patcher.util.addFreeRegisters
@@ -28,7 +27,6 @@ internal fun preferenceFilters(key: String) = listOf(
     ),
 )
 
-context(_: BytecodePatchContext)
 internal fun List<Match>.redirectPreferences(keyOverride: String, defaultOverride: String) {
     groupBy { it.method }.forEach { (method, matches) ->
         val savedKey = method.implementation!!.registerCount

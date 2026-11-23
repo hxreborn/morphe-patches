@@ -5,7 +5,7 @@
 package app.morphe.patches.biobird.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -109,7 +109,7 @@ internal val CONTENT_LOCKED_PROVIDER_MASK =
     ).hexToByteArray()
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all chapters and previous-year papers. " +
         "Signing in requires GmsCore support.",

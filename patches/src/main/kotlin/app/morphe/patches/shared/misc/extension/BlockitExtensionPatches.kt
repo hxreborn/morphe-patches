@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val blockitFreeParachutesExtensionPatch = bytecodePatch {
+
+internal val blockitFreeParachutesExtensionPatch = patch {
     extendWith("extensions/hxreborn/blockit-free-parachutes.mpe")
 }

@@ -4,13 +4,14 @@
  */
 package app.morphe.patches.candycrushsaga.misc.androidauto
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.androidauto.declareParkedGame
 import app.morphe.patches.shared.misc.requireStandardInstall
 
 @Suppress("unused")
-val parkedAppForAndroidAutoPatch = resourcePatch(
+val parkedAppForAndroidAutoPatch = patch(
     name = "Parked app for Android Auto",
     description = "Lists the game on the Android Auto car screen while parked. " +
         "Requires Android 15 or newer. " +

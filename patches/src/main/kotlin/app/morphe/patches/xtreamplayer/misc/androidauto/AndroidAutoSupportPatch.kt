@@ -5,7 +5,8 @@
 package app.morphe.patches.xtreamplayer.misc.androidauto
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.xtreamplayer.misc.premium.unlockPremiumPatch
 import app.morphe.util.asSequence
@@ -17,7 +18,7 @@ private val carServiceActions = setOf(
 )
 
 @Suppress("unused")
-val androidAutoSupportPatch = resourcePatch(
+val androidAutoSupportPatch = patch(
     name = "Full Android Auto screen",
     description = "Shows full app in Android Auto while parked. " +
         "Requires Android 15 or newer and Unknown sources in Android Auto developer settings.",

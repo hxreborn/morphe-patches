@@ -5,19 +5,18 @@
 package app.morphe.patches.tradingview.misc.onboarding
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val skipSignUpPatch = bytecodePatch(
+val skipSignUpPatch = patch(
     name = "Skip sign-up screen",
     description = "Opens the app without signing in. Sign in later from the menu.",
 ) {
     compatibleWith(AppCompatibilities.TRADINGVIEW)
 
     execute {
-        OnboardingAvailabilityFingerprint.matchSingle().method.addInstructions(
+        OnboardingAvailabilityFingerprint.method.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;

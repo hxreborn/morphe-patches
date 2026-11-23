@@ -4,12 +4,11 @@
  */
 package app.morphe.patches.pixlr.ads
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 
-internal val adRemovalEntitlementPatch = bytecodePatch {
+internal val adRemovalEntitlementPatch = patch {
     execute {
-        HasAdRemovalFingerprint.matchSingle().method.returnEarly(true)
+        HasAdRemovalFingerprint.method.returnEarly(true)
     }
 }

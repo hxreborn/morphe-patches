@@ -4,18 +4,19 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val biwengerFetchRewriteExtensionPatch = bytecodePatch {
+
+internal val biwengerFetchRewriteExtensionPatch = patch {
     extendWith("extensions/hxreborn/biwenger-fetch-rewrite.mpe")
 }
 
-internal val biwengerRemoveAdsExtensionPatch = bytecodePatch {
+internal val biwengerRemoveAdsExtensionPatch = patch {
     dependsOn(biwengerFetchRewriteExtensionPatch)
     extendWith("extensions/hxreborn/biwenger-remove-ads.mpe")
 }
 
-internal val biwengerUnlockPremiumExtensionPatch = bytecodePatch {
+internal val biwengerUnlockPremiumExtensionPatch = patch {
     dependsOn(biwengerFetchRewriteExtensionPatch)
     extendWith("extensions/hxreborn/biwenger-unlock-premium.mpe")
 }

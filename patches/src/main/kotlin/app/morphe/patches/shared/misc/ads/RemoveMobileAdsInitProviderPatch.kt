@@ -5,14 +5,15 @@
 package app.morphe.patches.shared.misc.ads
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.asSequence
 import app.morphe.util.removeFromParent
 import org.w3c.dom.Element
 
 private const val MOBILE_ADS_INIT_PROVIDER = "com.google.android.gms.ads.MobileAdsInitProvider"
 
-val removeMobileAdsInitProviderPatch = resourcePatch {
+val removeMobileAdsInitProviderPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val providers = document.getElementsByTagName("provider")

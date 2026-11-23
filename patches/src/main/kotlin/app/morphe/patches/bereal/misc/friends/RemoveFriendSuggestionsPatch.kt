@@ -7,12 +7,12 @@ package app.morphe.patches.bereal.misc.friends
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -44,7 +44,7 @@ private fun MutableMethod.filterRegisterAfter(index: Int, body: (register: Int, 
 }
 
 @Suppress("unused")
-val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
+val removeFriendSuggestionsPatch: Patch = patch(
     name = "Remove friend suggestions",
     description = "Removes suggested friends, Contacts on BeReal and popular accounts from the Friends screen and the feed.",
 ) {
@@ -54,12 +54,12 @@ val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, removeFriendSuggestionsPatch)
 
-        val recommendationType = FriendRecommendationToStringFingerprint.matchSingle().classDef.type
-        friendRecommendationMapperFingerprint(recommendationType).matchSingle().method
+        val recommendationType = FriendRecommendationToStringFingerprint.match().classDef.type
+        friendRecommendationMapperFingerprint(recommendationType).method
             .returnEarlyWhen("$EXTENSION_CLASS->removed()Z", returnsNull = true)
 
-        val sectionsType = RelationshipSectionsToStringFingerprint.matchSingle().classDef.type
-        relationshipSectionsConstructorFingerprint(sectionsType).matchSingle().method.addInstructions(
+        val sectionsType = RelationshipSectionsToStringFingerprint.match().classDef.type
+        relationshipSectionsConstructorFingerprint(sectionsType).method.addInstructions(
             0,
             """
                 invoke-static/range { p7 .. p7 }, $EXTENSION_CLASS->suggestions(Ljava/util/List;)Ljava/util/List;
@@ -67,7 +67,7 @@ val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        val carouselType = FeedCarouselToStringFingerprint.matchSingle().classDef.type
+        val carouselType = FeedCarouselToStringFingerprint.match().classDef.type
         feedCarouselConstructionFingerprint(carouselType).matchAll(2..2).forEach { match ->
             val index = match.instructionMatches.single().index
             match.method.filterRegisterAfter(index) { register, temp ->
@@ -80,8 +80,8 @@ val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
             }
         }
 
-        val widgetType = FeedWidgetToStringFingerprint.matchSingle().classDef.type
-        feedWidgetConstructorFingerprint(widgetType).matchSingle().method.addInstructions(
+        val widgetType = FeedWidgetToStringFingerprint.match().classDef.type
+        feedWidgetConstructorFingerprint(widgetType).method.addInstructions(
             0,
             """
                 invoke-static/range { p1 .. p1 }, $EXTENSION_CLASS->shouldDisplay(Z)Z
@@ -89,15 +89,15 @@ val removeFriendSuggestionsPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        val placeholderType = ContactsPlaceholderToStringFingerprint.matchSingle().classDef.type
-        contactsPlaceholderFingerprint(placeholderType).matchSingle().method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
-        SuggestionSectionFingerprint.matchSingle().method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
-        ContactsOnBeRealSectionFingerprint.matchSingle().method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
+        val placeholderType = ContactsPlaceholderToStringFingerprint.match().classDef.type
+        contactsPlaceholderFingerprint(placeholderType).method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
+        SuggestionSectionFingerprint.method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
+        ContactsOnBeRealSectionFingerprint.method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
 
         PopularAccountsToStringFingerprint.matchAll(2..2).forEach { visible ->
             val visibleType = visible.classDef
             val stateInterface = visibleType.interfaces.single()
-            val popularAccounts = popularAccountsConstructionFingerprint(visibleType.type).matchSingle()
+            val popularAccounts = popularAccountsConstructionFingerprint(visibleType.type).match()
             val constructionIndex = popularAccounts.instructionMatches.single().index
             val removedState = (0 until constructionIndex)
                 .map { popularAccounts.method.getInstruction(it) }

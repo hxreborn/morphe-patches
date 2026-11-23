@@ -6,9 +6,8 @@ package app.morphe.patches.bereal.misc.download
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
@@ -20,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}download/DownloadFolder;"
 
 @Suppress("unused")
-val changeDownloadLocationPatch: BytecodePatch = bytecodePatch(
+val changeDownloadLocationPatch: Patch = patch(
     name = "Change download location",
     description = "Saves downloaded BeReals to Pictures/BeReal, DCIM/BeReal or a folder you pick. " +
         "Requires Android 10 or newer.",
@@ -31,7 +30,7 @@ val changeDownloadLocationPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched(EXTENSION_CLASS)
 
-        val match = MediaStoreInsertFingerprint.matchSingle()
+        val match = MediaStoreInsertFingerprint.match()
         val insertIndex = match.instructionMatch(Opcode.INVOKE_VIRTUAL).index
         val insert = match.method.getInstruction<FiveRegisterInstruction>(insertIndex)
         match.method.replaceInstruction(

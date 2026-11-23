@@ -4,9 +4,9 @@
  */
 package app.morphe.patches.protonpass.misc.layout
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -17,7 +17,7 @@ import app.morphe.patches.shared.misc.proton.returnVoidWhen
 private const val LAYOUT_COMPONENTS_CLASS = "Lapp/hxreborn/extension/protonpass/LayoutComponents;"
 
 @Suppress("unused")
-val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
+val hideLayoutComponentsPatch: Patch = patch(
     name = "Hide layout components",
     description = "Adds settings to hide the Help center, Spread the word and About sections.",
 ) {
@@ -28,9 +28,9 @@ val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
         markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(LAYOUT_COMPONENTS_CLASS)
 
-        HelpCenterSectionFingerprint.matchSingle().method
+        HelpCenterSectionFingerprint.method
             .returnVoidWhen("$LAYOUT_COMPONENTS_CLASS->isHelpCenterHidden()Z")
-        AboutSectionFingerprint.matchSingle().method
+        AboutSectionFingerprint.method
             .returnVoidWhen("$LAYOUT_COMPONENTS_CLASS->isAboutHidden()Z")
 
         SpreadTheWordSectionFingerprint.matchOrNull()?.method?.let { section ->

@@ -24,6 +24,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 
+import app.hxreborn.extension.readera.controls.MaterialControls;
+
 @SuppressWarnings("unused")
 public final class MaterialCheckBox extends CheckBox {
 

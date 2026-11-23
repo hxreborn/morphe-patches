@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val serializdRemoveAdsExtensionPatch = bytecodePatch {
+
+internal val serializdRemoveAdsExtensionPatch = patch {
     extendWith("extensions/hxreborn/serializd-remove-ads.mpe")
 }

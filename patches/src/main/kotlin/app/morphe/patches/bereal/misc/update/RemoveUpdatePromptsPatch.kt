@@ -5,9 +5,8 @@
 package app.morphe.patches.bereal.misc.update
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -16,7 +15,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.berealUpdatePromptsExtensionPatch
 
 @Suppress("unused")
-val removeUpdatePromptsPatch: BytecodePatch = bytecodePatch(
+val removeUpdatePromptsPatch: Patch = patch(
     name = "Remove update prompts",
     description = "Removes BeReal's required and suggested update dialogs and the Play Store update prompt.",
 ) {
@@ -28,7 +27,7 @@ val removeUpdatePromptsPatch: BytecodePatch = bytecodePatch(
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}UpdatePrompts;", removeUpdatePromptsPatch)
 
         listOf("androidMandatoryVersion", "androidRecommendedVersion").forEach { fieldName ->
-            requiredVersionGetterFingerprint(fieldName).matchSingle().method.addInstructions(
+            requiredVersionGetterFingerprint(fieldName).method.addInstructions(
                 0,
                 """
                     const/16 p0, 0x0
@@ -37,8 +36,8 @@ val removeUpdatePromptsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        val settingsType = InAppUpdateSettingsFingerprint.matchSingle().classDef.type
-        val managerType = inAppUpdateManagerFingerprint(settingsType).matchSingle().classDef.type
-        inAppUpdateEnabledFingerprint(managerType).matchSingle().method.returnEarly(false)
+        val settingsType = InAppUpdateSettingsFingerprint.match().classDef.type
+        val managerType = inAppUpdateManagerFingerprint(settingsType).match().classDef.type
+        inAppUpdateEnabledFingerprint(managerType).method.returnEarly(false)
     }
 }

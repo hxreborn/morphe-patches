@@ -5,10 +5,8 @@
 package app.morphe.patches.classdojo.misc.reports
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.all.misc.hermes.hermesPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -22,7 +20,7 @@ private const val DETAILED_REPORT_CONTENT =
     "B0 1C 0E 5E 0B 02 08 6E 0B 03 00 0B 45 11 0B 17 3F 78 04 0B 6F 0B 13 00 11 0B AE 19 5E 11 02 08 6E 11 03 00 11 45 12 11 18 3F 78 04 11 6F 0B 13 00 12 11"
 
 @Suppress("unused")
-val unlockProgressReportsPatch = bytecodePatch(
+val unlockProgressReportsPatch = patch(
     name = "Unlock progress reports",
     description = "Unlocks detailed progress statistics. Date and points filters keep their existing limits. " +
         "Report limits can return after in-app updates.",
@@ -36,9 +34,9 @@ val unlockProgressReportsPatch = bytecodePatch(
     )
 
     execute {
-        DownloadedBundleFingerprint.matchSingle().apply {
+        DownloadedBundleFingerprint.match().apply {
             val (_, _, logBundle) = instructionMatches
-            val pathRegister = method.getInstruction<FiveRegisterInstruction>(logBundle.index).registerC
+            val pathRegister = logBundle.getInstruction<FiveRegisterInstruction>().registerC
             val registers = method.getFreeRegisterProvider(logBundle.index, 3, pathRegister)
             val contextRegister = registers.getFreeRegister4Bit()
             val originalRegister = registers.getFreeRegister4Bit()

@@ -55,6 +55,14 @@ public final class ApiResponseRewriter {
 
     private static final String EXPERIMENTS_PATH = "/api/v1/ab/test";
 
+    private static final String COURSE_CONTENT_PATH = "/api/v1/edu/content/content";
+
+    private static final String COURSE_PATH = "/api/v1/edu/content/course";
+
+    private static final String COURSE_SUBSCRIPTION_CODE = "code:SA";
+
+    private static final String COURSE_SUBSCRIPTION_MESSAGE = "This lesson requires an Ultimate Guitar subscription.";
+
     private static final String ACTIVE_EXPERIMENTS = "experiments";
 
     private static final String CLOSED_EXPERIMENTS = "closed_experiments";
@@ -75,23 +83,31 @@ public final class ApiResponseRewriter {
 
     private static final ThreadLocal<String> RESPONSE_PATH = new ThreadLocal<>();
 
+    private static final ThreadLocal<Integer> RESPONSE_STATUS = new ThreadLocal<>();
+
     private ApiResponseRewriter() {
     }
 
     public static int rewriteStatus(String url, int statusCode) {
         String path = (url != null) ? Uri.parse(url).getPath() : null;
         RESPONSE_PATH.set(path);
+        RESPONSE_STATUS.set(statusCode);
         return SERVICE_ACCESS_PATH.equals(path) ? HttpURLConnection.HTTP_OK : statusCode;
     }
 
     public static byte[] rewriteBody(byte[] body) {
         String path = takeResponsePath();
+        int status = takeResponseStatus();
         if (SERVICE_ACCESS_PATH.equals(path)) {
             return replaceServiceAccessBody((body != null) ? new String(body, StandardCharsets.UTF_8) : "")
                 .getBytes(StandardCharsets.UTF_8);
         }
         if (EXPERIMENTS_PATH.equals(path) && body != null) {
             return assignExperiments(new String(body, StandardCharsets.UTF_8)).getBytes(StandardCharsets.UTF_8);
+        }
+        if (isCourseContentPath(path) && status == HttpURLConnection.HTTP_PAYMENT_REQUIRED && body != null) {
+            return replaceCourseSubscriptionError(new String(body, StandardCharsets.UTF_8))
+                .getBytes(StandardCharsets.UTF_8);
         }
         if (body == null || indexOf(body, SERVICE_ACCESS_KEY) < 0) {
             return body;
@@ -101,11 +117,15 @@ public final class ApiResponseRewriter {
 
     public static String rewriteBody(String body) {
         String path = takeResponsePath();
+        int status = takeResponseStatus();
         if (SERVICE_ACCESS_PATH.equals(path)) {
             return replaceServiceAccessBody((body != null) ? body : "");
         }
         if (EXPERIMENTS_PATH.equals(path) && body != null) {
             return assignExperiments(body);
+        }
+        if (isCourseContentPath(path) && status == HttpURLConnection.HTTP_PAYMENT_REQUIRED && body != null) {
+            return replaceCourseSubscriptionError(body);
         }
         return grantInJson(body);
     }
@@ -115,6 +135,34 @@ public final class ApiResponseRewriter {
             return RESPONSE_PATH.get();
         } finally {
             RESPONSE_PATH.remove();
+        }
+    }
+
+    private static int takeResponseStatus() {
+        try {
+            Integer status = RESPONSE_STATUS.get();
+            return (status != null) ? status : -1;
+        } finally {
+            RESPONSE_STATUS.remove();
+        }
+    }
+
+    private static boolean isCourseContentPath(String path) {
+        return COURSE_CONTENT_PATH.equals(path) || COURSE_PATH.equals(path);
+    }
+
+    private static String replaceCourseSubscriptionError(String body) {
+        try {
+            JSONObject root = new JSONObject(body);
+            JSONObject error = root.optJSONObject("error");
+            if (error == null || !error.optString("message").contains(COURSE_SUBSCRIPTION_CODE)) {
+                return body;
+            }
+            root.put("error", COURSE_SUBSCRIPTION_MESSAGE);
+            return root.toString();
+        } catch (JSONException ex) {
+            Log.w(LOG_TAG, "Cannot parse the course subscription error");
+            return body;
         }
     }
 

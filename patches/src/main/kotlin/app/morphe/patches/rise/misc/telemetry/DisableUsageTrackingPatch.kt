@@ -5,12 +5,11 @@
 package app.morphe.patches.rise.misc.telemetry
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val disableUsageTrackingPatch = bytecodePatch(
+val disableUsageTrackingPatch = patch(
     name = "Disable usage tracking",
     description = "Stops app usage events from being uploaded. " +
         "Local usage tracking remains enabled.",
@@ -18,9 +17,9 @@ val disableUsageTrackingPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.RISE)
 
     execute {
-        val eventType = UsageEventToStringFingerprint.matchSingle().originalClassDef.type
+        val eventType = UsageEventToStringFingerprint.match().originalClassDef.type
 
-        usageEventMapFingerprint(eventType).matchSingle().method
+        usageEventMapFingerprint(eventType).method
             .addInstructions(
                 0,
                 """

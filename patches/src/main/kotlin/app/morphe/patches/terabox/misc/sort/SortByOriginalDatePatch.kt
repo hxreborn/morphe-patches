@@ -9,11 +9,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -36,7 +35,7 @@ private const val BUILT_IN_SORT_ORDER_RETURNS = 9
 private const val FILE_ROW_CHANGE_CALLBACKS = 2
 
 @Suppress("unused")
-val sortByOriginalDatePatch: BytecodePatch = bytecodePatch(
+val sortByOriginalDatePatch: Patch = patch(
     name = "Sort by original date",
     description = "Sorts and displays files by their original modification dates.",
 ) {
@@ -47,7 +46,7 @@ val sortByOriginalDatePatch: BytecodePatch = bytecodePatch(
     execute {
         markPatchApplied("sortByOriginalDate", sortByOriginalDatePatch)
 
-        ApplicationCreateFingerprint.matchSingle().method.apply {
+        ApplicationCreateFingerprint.method.apply {
             val contextSet = indexOfFirstInstructionOrThrow {
                 val reference = (this as? ReferenceInstruction)?.reference as? MethodReference
                 reference?.definingClass == UTILS_CLASS && reference.name == "setContext"
@@ -55,7 +54,7 @@ val sortByOriginalDatePatch: BytecodePatch = bytecodePatch(
             addInstruction(contextSet + 1, "invoke-static {}, $EXTENSION_CLASS_DESCRIPTOR->loadProcessSetting()V")
         }
 
-        SortTypeOrderFingerprint.matchSingle().apply {
+        SortTypeOrderFingerprint.match().apply {
             val (defaultOrderName) = instructionMatches
             val builtInReturns = method.instructions.withIndex()
                 .filter { (index, instruction) -> index > defaultOrderName.index && instruction.opcode == Opcode.RETURN_OBJECT }
@@ -75,12 +74,12 @@ val sortByOriginalDatePatch: BytecodePatch = bytecodePatch(
             }
         }
 
-        FileRowBindFingerprint.matchSingle().apply {
+        FileRowBindFingerprint.match().apply {
             val (_, uploadTimeRead) = instructionMatches
             method.useOriginalTimeAfter(uploadTimeRead.index)
         }
 
-        PlaylistTimeComparatorFingerprint.matchSingle().apply {
+        PlaylistTimeComparatorFingerprint.match().apply {
             val (firstUploadTimeRead, secondUploadTimeRead) = instructionMatches
             method.useOriginalTimeAfter(secondUploadTimeRead.index)
             method.useOriginalTimeAfter(firstUploadTimeRead.index)

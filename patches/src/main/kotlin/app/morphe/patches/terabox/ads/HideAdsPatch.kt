@@ -6,10 +6,9 @@ package app.morphe.patches.terabox.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.terabox.misc.settings.TERABOX_PATCH_SETTINGS_CLASS
@@ -19,7 +18,7 @@ import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 private const val PRIVILEGE_AD_FREE = 4
 
 @Suppress("unused")
-val hideAdsPatch: BytecodePatch = bytecodePatch(
+val hideAdsPatch: Patch = patch(
     name = "Hide ads",
     description = "Removes feed, banner and video ads, plus interstitial and app-open ads. " +
         "Rewarded ads still play when requested from Benefits.",
@@ -29,7 +28,7 @@ val hideAdsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("hideAds", hideAdsPatch)
-        HasPrivilegeFingerprint.matchSingle().method.apply {
+        HasPrivilegeFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructionsWithLabels(

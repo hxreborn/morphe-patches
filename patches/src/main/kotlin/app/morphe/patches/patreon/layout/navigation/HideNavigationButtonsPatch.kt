@@ -8,9 +8,10 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.booleanOption
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.findFreeRegister
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
@@ -24,7 +25,6 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.util.StringUtils.escapeString
 
 private enum class NavigationTab(val label: String, val tabName: String) {
@@ -38,7 +38,7 @@ private enum class NavigationTab(val label: String, val tabName: String) {
 private const val NAVIGATION_BUTTONS_CLASS = "${PATREON_EXTENSION_PACKAGE}NavigationButtons;"
 
 @Suppress("unused")
-val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
+val hideNavigationButtonsPatch: Patch = patch(
     name = "Hide navigation buttons",
     description = "Removes chosen tabs from the bottom bar.",
     default = false,
@@ -103,7 +103,7 @@ val hideNavigationButtonsPatch: BytecodePatch = bytecodePatch(
             tabClasses.getValue(NavigationTab.FEED).type,
         )
         val (_, routeCall, routeResult) = startRoute.instructionMatches
-        val routeGetter = routeCall.instruction.getReference<MethodReference>()!!
+        val routeGetter = routeCall.methodReference
         val routeIndex = routeResult.index
         startRoute.method.apply {
             val register = getInstruction<OneRegisterInstruction>(routeIndex).registerA

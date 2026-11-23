@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.blossomblast.misc.lives
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.blossomblast.shared.MODIFIERS
 import app.morphe.patches.blossomblast.shared.blossomBlastModifiersPatch
 import app.morphe.patches.blossomblast.shared.replaceStringArrayStub
@@ -15,7 +16,7 @@ private const val LIVES_HOURS = 24
 private const val SECONDS_PER_HOUR = 3600
 
 @Suppress("unused")
-val unlimitedLivesPatch = bytecodePatch(
+val unlimitedLivesPatch = patch(
     name = "Unlimited lives",
     description = "Gives unlimited lives for 24 hours every time the game starts.",
 ) {

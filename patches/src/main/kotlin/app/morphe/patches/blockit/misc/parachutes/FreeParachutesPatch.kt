@@ -6,7 +6,8 @@ package app.morphe.patches.blockit.misc.parachutes
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -15,7 +16,7 @@ import app.morphe.patches.shared.misc.extension.blockitFreeParachutesExtensionPa
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/blockit/ParachutePacks;"
 
 @Suppress("unused")
-val freeParachutesPatch = bytecodePatch(
+val freeParachutesPatch = patch(
     name = "Free parachutes",
     description = "Adds parachute packs without a purchase.",
 ) {

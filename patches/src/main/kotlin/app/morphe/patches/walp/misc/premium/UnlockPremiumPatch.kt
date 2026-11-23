@@ -5,7 +5,7 @@
 package app.morphe.patches.walp.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -34,7 +34,7 @@ private val LOAD_TRUE_INTO_X0 = "c0820091".hexToByteArray()
 private val LOAD_TRUE_INTO_X1 = "c1820091".hexToByteArray()
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Pro filters and wallpaper rotation from categories, and removes ads.",
 ) {

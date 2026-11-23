@@ -5,7 +5,6 @@
 package app.morphe.patches.catzy.misc.intimacy
 
 import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.catzy.catzyPatch
 
@@ -15,5 +14,5 @@ val maxIntimacyLevelPatch = catzyPatch(
     description = "Raises pet intimacy to the highest level.",
     selection = PatchAvailability.DISABLED,
 ) {
-    IntimacyPointsFingerprint.matchSingle().method.returnEarly(999_999)
+    IntimacyPointsFingerprint.method.returnEarly(999_999)
 }

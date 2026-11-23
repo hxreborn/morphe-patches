@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.readera.misc.selection
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.ReadAloudFromCurrentPositionFingerprint
 import app.morphe.patches.readera.shared.SelectionPositionFingerprint
@@ -21,10 +21,10 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraReadAloudFromSelectionExtensionPatch
 import app.morphe.patches.shared.misc.extension.readeraSelectionMenuExtensionPatch
 
-private const val SELECTION_READ_ALOUD = "Lapp/hxreborn/extension/readera/SelectionReadAloud;"
+private const val SELECTION_READ_ALOUD = "Lapp/hxreborn/extension/readera/selection/SelectionReadAloud;"
 
 @Suppress("unused")
-val readAloudFromSelectionPatch = bytecodePatch(
+val readAloudFromSelectionPatch = patch(
     name = "Read aloud from selection",
     description = "Starts Read aloud from the selected text. Found under More in the text selection menu.",
 ) {

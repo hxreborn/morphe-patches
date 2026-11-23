@@ -6,9 +6,8 @@ package app.morphe.patches.bereal.misc.promos
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -30,7 +29,7 @@ private fun MutableMethod.filterBoolean(index: Int, register: String, filter: St
 )
 
 @Suppress("unused")
-val removePromotionsPatch: BytecodePatch = bytecodePatch(
+val removePromotionsPatch: Patch = patch(
     name = "Remove promotions",
     description = "Removes Recap cards, the \"How's BeReal?\" review prompt, the " +
         "profile completion card, the notifications banner and the music tooltip.",
@@ -41,24 +40,24 @@ val removePromotionsPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, removePromotionsPatch)
 
-        val yearRecapType = YearRecapWidgetToStringFingerprint.matchSingle().classDef.type
-        yearRecapWidgetConstructorFingerprint(yearRecapType).matchSingle().method.filterBoolean(0, "p1", "shown")
+        val yearRecapType = YearRecapWidgetToStringFingerprint.match().classDef.type
+        yearRecapWidgetConstructorFingerprint(yearRecapType).method.filterBoolean(0, "p1", "shown")
 
-        val monthlyRecapType = MonthlyRecapWidgetToStringFingerprint.matchSingle().classDef.type
-        val monthlyRecap = monthlyRecapDismissedFingerprint(monthlyRecapType).matchSingle()
+        val monthlyRecapType = MonthlyRecapWidgetToStringFingerprint.match().classDef.type
+        val monthlyRecap = monthlyRecapDismissedFingerprint(monthlyRecapType).match()
         val dismissedIndex = monthlyRecap.instructionMatch(Opcode.MOVE_RESULT).index
         val dismissed = monthlyRecap.method.getInstruction<OneRegisterInstruction>(dismissedIndex).registerA
         monthlyRecap.method.filterBoolean(dismissedIndex + 1, "v$dismissed", "dismissed")
 
-        val reviewSheetType = ReviewSheetToStringFingerprint.matchSingle().classDef.type
-        val reviewPrompt = reviewPromptEnabledFingerprint(reviewSheetType).matchSingle()
+        val reviewSheetType = ReviewSheetToStringFingerprint.match().classDef.type
+        val reviewPrompt = reviewPromptEnabledFingerprint(reviewSheetType).match()
         val enabledIndex = reviewPrompt.instructionMatch(Opcode.MOVE_RESULT).index
         val enabled = reviewPrompt.method.getInstruction<OneRegisterInstruction>(enabledIndex).registerA
         reviewPrompt.method.filterBoolean(enabledIndex + 1, "v$enabled", "shown")
 
-        ProfileCompletionBannerFingerprint.matchSingle().method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
-        NotificationPermissionBannerFingerprint.matchSingle().method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
+        ProfileCompletionBannerFingerprint.method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
+        NotificationPermissionBannerFingerprint.method.returnEarlyWhen("$EXTENSION_CLASS->removed()Z")
 
-        MusicButtonFingerprint.matchSingle().method.filterBoolean(0, "p1", "shown")
+        MusicButtonFingerprint.method.filterBoolean(0, "p1", "shown")
     }
 }

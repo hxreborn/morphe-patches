@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.pingstatistics
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addMenuEntry
@@ -18,7 +18,7 @@ import app.morphe.patches.shared.misc.extension.netanalyzerChartViewExtensionPat
 import app.morphe.patches.shared.misc.extension.netanalyzerPingStatisticsExtensionPatch
 
 @Suppress("unused")
-val pingStatisticsPatch = bytecodePatch(
+val pingStatisticsPatch = patch(
     name = "Ping statistics",
     description = "Adds a bar chart of the current or last ping's round-trip times with min, median, max " +
         "and lost packets.",

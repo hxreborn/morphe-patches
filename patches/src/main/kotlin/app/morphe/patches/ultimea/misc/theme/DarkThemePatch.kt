@@ -4,7 +4,9 @@
  */
 package app.morphe.patches.ultimea.misc.theme
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
@@ -26,7 +28,7 @@ private const val AVATAR_RED_SHIFT = 16
 private const val AVATAR_GREEN_SHIFT = 8
 
 @Suppress("unused")
-val darkThemePatch = resourcePatch(
+val darkThemePatch = patch(
     name = "Dark theme",
     description = "Adds dark and AMOLED themes with light text and controls.",
 ) {
@@ -58,11 +60,11 @@ val darkThemePatch = resourcePatch(
         val matches = ThemeInstructions(stock.bytes, stock.codeStart, stock.codeEnd).match()
         ThemeHooks.apply(image, matches)
         library.writeBytes(image.bytes)
-        val flutter = get("lib/arm64-v8a/libflutter.so")
+        val flutter = resourceFile("lib/arm64-v8a/libflutter.so")
         val engine = flutter.readBytes()
         FlutterImageDecoder.apply(engine)
         flutter.writeBytes(engine)
-        val icons = get("assets/flutter_assets/assets/icons")
+        val icons = resourceFile("assets/flutter_assets/assets/icons")
         icons.resolve("login_logo_dark.svg").copyTo(icons.resolve("login_logo.svg"), overwrite = true)
         for (name in listOf("device_nomsgchat", "msg_center_noready", "msg_center_ready")) {
             icons.resolve("${name}_night.svg").copyTo(icons.resolve("$name.svg"), overwrite = true)
@@ -78,13 +80,13 @@ val darkThemePatch = resourcePatch(
         val guide = icons.resolve("guide.svg")
         guide.writeText(guide.readText().replace("\"white\"", "\"#24242A\"").replace("#AAB0B5", "#B8BCC2"))
         for (name in listOf("hdmi", "usb", "optical", "aux", "bluetooth")) {
-            val iconFile = get("assets/flutter_assets/assets/images/device_input_${name}_n.png")
+            val iconFile = resourceFile("assets/flutter_assets/assets/images/device_input_${name}_n.png")
             val icon = PngImage.read(iconFile)
             for (index in icon.argb.indices) icon.argb[index] = (icon.argb[index] and AVATAR_ALPHA_MASK) or SECONDARY_INK
             icon.write(iconFile)
         }
         for (name in listOf("store_icon", "store_icon_select", "home_icon", "home_icon_select", "mine_icon", "mine_icon_select")) {
-            val icon = get("assets/flutter_assets/assets/images/$name.svg")
+            val icon = resourceFile("assets/flutter_assets/assets/images/$name.svg")
             icon.writeText(icon.readText().replace("#646464", "#B8BCC2").replace("#541597", "#C499FF")
                 .replace("\"white\"", "\"#24242A\""))
         }
@@ -95,7 +97,7 @@ val darkThemePatch = resourcePatch(
                 if (color.getAttribute("name") == "splash_bg_color") color.textContent = "#ff000000"
             }
         }
-        val avatarFile = get("assets/flutter_assets/assets/images/mine_user_icon.png")
+        val avatarFile = resourceFile("assets/flutter_assets/assets/images/mine_user_icon.png")
         val avatar = PngImage.read(avatarFile)
         for (index in avatar.argb.indices) {
             val pixel = avatar.argb[index]
@@ -108,7 +110,7 @@ val darkThemePatch = resourcePatch(
                 channel(AVATAR_BACKGROUND_BLUE, AVATAR_INK_BLUE)
         }
         avatar.write(avatarFile)
-        val images = get("assets/flutter_assets/assets/images/home")
+        val images = resourceFile("assets/flutter_assets/assets/images/home")
         images.resolve("home_add_device_dark.png").copyTo(images.resolve("home_add_device.png"), overwrite = true)
     }
 }

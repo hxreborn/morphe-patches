@@ -7,8 +7,7 @@ package app.morphe.patches.tradingview.misc.upselling
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -21,7 +20,7 @@ private const val BLACK_FRIDAY_TEASER_BANNER = "$BANNER_MODEL_PACKAGE/WatchlistB
 private const val REFER_FRIEND_ITEM = "Lcom/tradingview/tradingviewapp/feature/menu/impl/state/MenuItem\$ReferFriend;"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch = bytecodePatch(
+val hideUpgradePromotionsPatch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the Upgrade button, plan banners, subscription card and paywalls. " +
         "Extra indicators, watchlists, flag colors, alerts, second and tick intervals, " +
@@ -30,15 +29,15 @@ val hideUpgradePromotionsPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.TRADINGVIEW)
 
     execute {
-        PaywallEventPushFingerprint.matchSingle().method.returnUnit()
-        GoProActionDispatchFingerprint.matchSingle().method.returnEarly()
-        UpgradeButtonParamsFingerprint.matchSingle().method.returnStateFlowOfNull()
-        MenuBannerContentFingerprint.matchSingle().method
+        PaywallEventPushFingerprint.method.returnUnit()
+        GoProActionDispatchFingerprint.method.returnEarly()
+        UpgradeButtonParamsFingerprint.method.returnStateFlowOfNull()
+        MenuBannerContentFingerprint.method
             .returnNullUnlessFirstParameterIsInstanceOf(PAYMENT_ERROR_BANNER)
-        MenuProfileItemsFingerprint.matchSingle().let { match ->
+        MenuProfileItemsFingerprint.match().let { match ->
             match.method.returnOnlyReferFriend(match.classDef.type)
         }
-        WatchlistBannerUpdateFingerprint.matchSingle().method.nullFirstParameterIfInstanceOf(
+        WatchlistBannerUpdateFingerprint.method.nullFirstParameterIfInstanceOf(
             GO_PRO_WATCHLIST_BANNER,
             BLACK_FRIDAY_TEASER_BANNER,
         )

@@ -9,19 +9,18 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.fieldAccess
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val TAMPER_ANALYTICS_EVENT = "is_tampered"
 private const val SIGNATURE_VERIFIED = 1
 
-internal val disableTamperDetectionPatch = bytecodePatch {
+internal val disableTamperDetectionPatch = patch {
     dependsOn(stringKeyPatch, disableNativeTamperCheckPatch)
 
     execute {
-        val tamperClass = TamperDialogFingerprint.matchSingle().classDef
+        val tamperClass = TamperDialogFingerprint.match().classDef
         val signatureMatched = tamperClass.staticFields.single { it.type == "Z" }
 
         val check = Fingerprint(
@@ -29,7 +28,7 @@ internal val disableTamperDetectionPatch = bytecodePatch {
                 fieldAccess(signatureMatched, Opcode.SPUT_BOOLEAN),
                 decryptedString(TAMPER_ANALYTICS_EVENT),
             ),
-        ).matchSingle()
+        ).match()
 
         val writeIndex = check.instructionMatches.first().index
         val flagRegister = check.method.getInstruction<OneRegisterInstruction>(writeIndex).registerA

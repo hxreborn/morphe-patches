@@ -4,19 +4,18 @@
  */
 package app.morphe.patches.imo.misc.recording
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val keepScreenOnWhileRecordingPatch = bytecodePatch(
+val keepScreenOnWhileRecordingPatch = patch(
     name = "Keep screen on while recording",
     description = "Keeps the screen on while recording a voice message.",
 ) {
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        RecordDisableScreenOffFingerprint.matchSingle().method.returnEarly(true)
+        RecordDisableScreenOffFingerprint.method.returnEarly(true)
     }
 }

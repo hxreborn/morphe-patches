@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.moonreader.misc.premium
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 
@@ -18,7 +19,7 @@ private val TRANSLUCENT_WINDOW_ATTRIBUTES = mapOf(
     "android:backgroundDimEnabled" to "false",
 )
 
-internal val homeScreenWidgetPatch = resourcePatch {
+internal val homeScreenWidgetPatch = patch {
     execute {
         document("res/values/styles.xml").use { document ->
             document.documentElement.appendChild(

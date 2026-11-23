@@ -18,6 +18,7 @@ app/hxreborn/extension/bereal/GalleryPhotos
 app/hxreborn/extension/bereal/GalleryPickerActivity
 app/hxreborn/extension/bereal/HostFonts
 app/hxreborn/extension/bereal/HostToggle
+app/hxreborn/extension/bereal/HostedScreens
 app/hxreborn/extension/bereal/LateFlag
 app/hxreborn/extension/bereal/LateFlag$MomentWindow
 app/hxreborn/extension/bereal/LocationRows
@@ -39,7 +40,9 @@ app/hxreborn/extension/bereal/PatchGroup$Kind
 app/hxreborn/extension/bereal/PatchGroup$Row
 app/hxreborn/extension/bereal/PatchSettings
 app/hxreborn/extension/bereal/PatchSummary
+app/hxreborn/extension/bereal/PatchesComponentFactory
 app/hxreborn/extension/bereal/PatchesSettingsActivity
+app/hxreborn/extension/bereal/PatchesSettingsActivity$SettingsPanel
 app/hxreborn/extension/bereal/PickSelection
 app/hxreborn/extension/bereal/PickSelection$Side
 app/hxreborn/extension/bereal/RecentPhotos
@@ -86,6 +89,7 @@ app/hxreborn/extension/bereal/download/DownloadWatermark
 app/hxreborn/extension/bereal/download/FriendsPostDownload
 app/hxreborn/extension/bereal/fof/FriendsOfFriendsPrompts
 app/hxreborn/extension/bereal/fof/FriendsOfFriendsTab
+app/hxreborn/extension/bereal/header/BeFakeHeader
 app/hxreborn/extension/bereal/latelabel/LateLabel
 app/hxreborn/extension/bereal/promos/Promotions
 app/hxreborn/extension/bereal/seen/ViewReceipts

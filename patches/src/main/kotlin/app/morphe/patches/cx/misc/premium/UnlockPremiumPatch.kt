@@ -5,8 +5,7 @@
 package app.morphe.patches.cx.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
@@ -14,14 +13,14 @@ private const val STRING_CLASS = "Ljava/lang/String;"
 private const val LICENSE_CHECK_COUNT = 2
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks premium and removes ads.",
 ) {
     compatibleWith(AppCompatibilities.CX_FILE_EXPLORER)
 
     execute {
-        val licenseChecks = LicenseHolderFingerprint.matchSingle().classDef.methods.filter {
+        val licenseChecks = LicenseHolderFingerprint.match().classDef.methods.filter {
             it.returnType == "Z" &&
                 it.parameterTypes.map(CharSequence::toString) == listOf(STRING_CLASS)
         }

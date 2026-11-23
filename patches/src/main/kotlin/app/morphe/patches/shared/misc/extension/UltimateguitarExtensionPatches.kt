@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val ultimateguitarUnlockPremiumExtensionPatch = bytecodePatch {
+
+internal val ultimateguitarUnlockPremiumExtensionPatch = patch {
     extendWith("extensions/hxreborn/ultimateguitar-unlock-premium.mpe")
 }

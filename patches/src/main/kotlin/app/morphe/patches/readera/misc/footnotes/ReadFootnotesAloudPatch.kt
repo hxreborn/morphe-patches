@@ -7,9 +7,8 @@ package app.morphe.patches.readera.misc.footnotes
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.readera.shared.TTS_FOOTNOTE_ROW
 import app.morphe.patches.readera.shared.TTS_UPSELL_ROW
 import app.morphe.patches.readera.shared.bindTtsPreference
@@ -23,7 +22,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val readFootnotesAloudPatch = bytecodePatch(
+val readFootnotesAloudPatch = patch(
     name = "Read footnotes aloud",
     description = "Reads each footnote aloud where the book refers to it, in place of its number. " +
         "Works in EPUB, FB2 and MOBI books.",
@@ -59,7 +58,7 @@ val readFootnotesAloudPatch = bytecodePatch(
             )
         }
 
-        SpeakFootnoteFingerprint.matchSingle().let { speak ->
+        SpeakFootnoteFingerprint.match().let { speak ->
             val (_, numberResult, _, textCall, _) = speak.instructionMatches
             val numberRegister = speak.method.getInstruction<OneRegisterInstruction>(numberResult.index).registerA
             val textIndex = textCall.index + 1

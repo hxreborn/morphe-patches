@@ -5,10 +5,9 @@
 package app.morphe.patches.ultimea.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
@@ -32,7 +31,7 @@ private const val BRANCH_SCALE_SHIFT = 4
 private const val RETURN_NULL = 0xaa1603e0.toInt()
 
 @Suppress("unused")
-val disableTrackingPatch: BytecodePatch = bytecodePatch(
+val disableTrackingPatch: Patch = patch(
     name = "Disable tracking",
     description = "Disables Firebase Analytics, Crashlytics, Logan and usage event uploads.",
 ) {
@@ -43,7 +42,7 @@ val disableTrackingPatch: BytecodePatch = bytecodePatch(
         deactivateFirebaseAnalyticsPatch,
         disableCrashlyticsCollectionPatch,
         disableFirebaseSessionsPatch,
-        resourcePatch {
+        patch {
             execute {
                 val library = dartAotLibrary()
                 library.writeBytes(library.readBytes().apply {

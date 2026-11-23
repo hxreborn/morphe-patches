@@ -6,8 +6,7 @@ package app.morphe.patches.photoeditorpro.misc.fix.platform
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -17,12 +16,12 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 private const val IOS_PLATFORM = "iOS"
 
-val spoofIosPlatformPatch = bytecodePatch {
+val spoofIosPlatformPatch = patch {
     compatibleWith(AppCompatibilities.PHOTO_EDITOR_PRO)
     dependsOn(spoofSignaturePatch)
 
     execute {
-        val match = AiRequestInterceptorFingerprint.matchSingle()
+        val match = AiRequestInterceptorFingerprint.match()
         match.method.apply {
             val valueIndex = match.instructionMatches[3].index
             val decodedIndex = indexOfFirstInstructionOrThrow(valueIndex) {

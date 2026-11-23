@@ -4,8 +4,7 @@
  */
 package app.morphe.patches.graphmessenger.misc.premium
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.graphmessenger.shared.licenseDaysLeft
@@ -17,7 +16,7 @@ import app.morphe.patches.shared.misc.requireArm64
 private const val LICENSE_DAYS_LEFT = 999
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks Graph Premium and Telegram Premium features in the client. " +
         "Features Telegram's servers meter still need a Premium account.",
@@ -28,7 +27,7 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        UserIsPremiumFingerprint.matchSingle().method.returnEarly(true)
+        UserIsPremiumFingerprint.method.returnEarly(true)
         LicenseDaysLeftFingerprint.matchAll().forEach { it.method.overrideResultsOf(licenseDaysLeft, LICENSE_DAYS_LEFT) }
         LicenseExpiredFingerprint.matchAll().forEach { it.method.overrideResultsOf(licenseExpired, 0) }
     }

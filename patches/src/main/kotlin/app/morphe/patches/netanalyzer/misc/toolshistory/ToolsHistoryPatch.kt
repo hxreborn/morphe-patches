@@ -6,9 +6,9 @@ package app.morphe.patches.netanalyzer.misc.toolshistory
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
 import app.morphe.patches.netanalyzer.shared.MenuSection
@@ -34,11 +34,10 @@ import app.morphe.patches.shared.misc.extension.netanalyzerToolsHistoryExtension
 
 private val HISTORY_ITEM_PROPERTIES = listOf("address", "favorite")
 private const val CONSTRUCTOR = "<init>"
-private const val ROUTE_CLASS_MATCH = 1
 private const val REGISTRATION_SEPARATOR = ";"
 
 @Suppress("unused")
-val toolsHistoryPatch = bytecodePatch(
+val toolsHistoryPatch = patch(
     name = "Tools history",
     description = "Lists the hosts queried in Tools with their last options, and lets you star or delete them. " +
         "Tapping an entry opens it in Tools.",
@@ -52,19 +51,20 @@ val toolsHistoryPatch = bytecodePatch(
         addToolbarIcon(textButtonSlot("ToolsQueryMenu"), "history", MaterialIcons.HISTORY, "History", "ToolsHistoryActivity")
         addMenuEntry(MenuSection.TOOLS, "Tools History", "ToolsHistoryActivity")
 
-        val itemType = ToolItemNormaliserFingerprint.matchSingle().originalMethod.returnType
+        val itemType = ToolItemNormaliserFingerprint.originalMethod.returnType
         val itemFields = classDefBy(itemType).propertyFields()
         val fieldNames = HISTORY_ITEM_PROPERTIES.joinToString(",") { property ->
             "$property=${itemFields[property] ?: throw PatchException("$itemType has no $property property")}"
         }
-        val historyClass = historyRecorderFingerprint(itemType).matchSingle().classDef.type
+        val historyClass = historyRecorderFingerprint(itemType).match().classDef.type
         val routeClasses = queryRouteNavigationFingerprint(itemType).matchAll().map { navigation ->
-            navigation.instructionMatches[ROUTE_CLASS_MATCH].instruction.getReference<TypeReference>()!!.type
+            val (_, routeClassLiteral) = navigation.instructionMatches
+            routeClassLiteral.instruction.getReference<TypeReference>()!!.type
         }.distinct()
         val routeClass = routeClasses.singleOrNull()
             ?: throw PatchException("Tools query navigation targets $routeClasses, expected one route class")
 
-        val navigate = NavigateFingerprint.matchSingle()
+        val navigate = NavigateFingerprint.match()
         val navigatorType = navigate.originalMethod.parameterTypes.first().toString()
         if (navigate.classDef.type != navigatorType) {
             throw PatchException("${navigate.originalMethod} does not navigate its own class $navigatorType")

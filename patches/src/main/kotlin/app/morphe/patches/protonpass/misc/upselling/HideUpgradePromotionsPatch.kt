@@ -9,10 +9,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
@@ -28,19 +27,14 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 
-private val Match.firstIndex
-    get() = instructionMatches.first().index
-
-private val Match.firstRegister
-    get() = instructionMatches.first().getInstruction<OneRegisterInstruction>().registerA
-
 private const val ORIGINAL_UPGRADE_AVAILABLE_FIELD = "originalUpgradeAvailable"
 
 private val Match.originalUpgradeAvailableField
     get() = "${classDef.type}->$ORIGINAL_UPGRADE_AVAILABLE_FIELD:Z"
 
 private fun Match.preserveAndResolveUpgradeAvailable() {
-    val put = instructionMatches.first().getInstruction<TwoRegisterInstruction>()
+    val (upgradeAvailableWrite) = instructionMatches
+    val put = upgradeAvailableWrite.getInstruction<TwoRegisterInstruction>()
 
     classDef.instanceFields.add(
         ImmutableField(
@@ -54,7 +48,7 @@ private fun Match.preserveAndResolveUpgradeAvailable() {
         ).toMutable(),
     )
     method.addInstructions(
-        firstIndex,
+        upgradeAvailableWrite.index,
         """
             iput-boolean v${put.registerA}, v${put.registerB}, $originalUpgradeAvailableField
             invoke-static/range { v${put.registerA} .. v${put.registerA} }, $UPSELLING_VISIBILITY_CLASS->resolveUpgradeAvailable(Z)Z
@@ -64,15 +58,16 @@ private fun Match.preserveAndResolveUpgradeAvailable() {
 }
 
 private fun Match.readOriginalUpgradeAvailable() {
-    val get = instructionMatches.first().getInstruction<TwoRegisterInstruction>()
+    val (upgradeAvailableRead) = instructionMatches
+    val get = upgradeAvailableRead.getInstruction<TwoRegisterInstruction>()
     method.replaceInstruction(
-        firstIndex,
+        upgradeAvailableRead.index,
         "iget-boolean v${get.registerA}, v${get.registerB}, $originalUpgradeAvailableField",
     )
 }
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
+val hideUpgradePromotionsPatch: Patch = patch(
     name = "Hide upgrade promotions",
     description = "Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. " +
         "Plan limits still apply.",
@@ -85,10 +80,10 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
         markPatchMetadata("hideUpgradePromotions", hideUpgradePromotionsPatch, withDescription = true)
         markUpgradePromotionsPatched()
 
-        UpgradeInfoConstructorFingerprint.matchSingle().preserveAndResolveUpgradeAvailable()
-        PlanLimitReachedFingerprint.matchSingle().readOriginalUpgradeAvailable()
-        UpgradeButtonFingerprint.matchSingle().method.returnVoidWhenUpsellingHidden()
-        AttachmentsStateConstructorFingerprint.matchSingle().method.addInstructions(
+        UpgradeInfoConstructorFingerprint.match().preserveAndResolveUpgradeAvailable()
+        PlanLimitReachedFingerprint.match().readOriginalUpgradeAvailable()
+        UpgradeButtonFingerprint.method.returnVoidWhenUpsellingHidden()
+        AttachmentsStateConstructorFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p5 }, $UPSELLING_VISIBILITY_CLASS->resolveUpgradeAvailable(Z)Z
@@ -96,7 +91,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        DarkWebMonitoringSectionFingerprint.matchSingle().method.apply {
+        DarkWebMonitoringSectionFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
 
             addInstructionsWithLabels(
@@ -118,8 +113,9 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        SentinelUpsellRowFingerprint.matchSingle().run {
-            val rowIndex = instructionMatches.last().index
+        SentinelUpsellRowFingerprint.match().run {
+            val (_, counterRowCall) = instructionMatches
+            val rowIndex = counterRowCall.index
             val hidden = method.getFreeRegisterProvider(rowIndex, 1).getFreeRegister()
 
             method.addInstructionsWithLabels(
@@ -133,9 +129,11 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        OnboardingRouteFingerprint.matchSingle().run {
-            val onboardingRoute = instructionMatches.last().getInstruction<ReferenceInstruction>().reference
-            val shownIndex = firstIndex + 1
+        OnboardingRouteFingerprint.match().run {
+            val (upsellRouteRead, onboardingRouteRead) = instructionMatches
+            val onboardingRoute = onboardingRouteRead.getInstruction<ReferenceInstruction>().reference
+            val firstRegister = upsellRouteRead.getInstruction<OneRegisterInstruction>().registerA
+            val shownIndex = upsellRouteRead.index + 1
             val hidden = method.getFreeRegisterProvider(shownIndex, 1).getFreeRegister()
 
             method.addInstructionsWithLabels(

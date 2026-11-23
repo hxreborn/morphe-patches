@@ -4,13 +4,12 @@
  */
 package app.morphe.patches.gammascan.ads
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Disables banner, interstitial, and native ads.",
 ) {
@@ -19,6 +18,6 @@ val hideAdsPatch = bytecodePatch(
     execute {
         BannerAdLoadFingerprint.matchOrNull()?.method?.returnEarly()
         InterstitialAdLoadFingerprint.matchOrNull()?.method?.returnEarly()
-        NativeAdLoadFingerprint.matchSingle().method.returnEarly()
+        NativeAdLoadFingerprint.method.returnEarly()
     }
 }

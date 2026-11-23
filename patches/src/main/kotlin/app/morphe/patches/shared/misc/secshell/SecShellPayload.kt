@@ -6,8 +6,8 @@ package app.morphe.patches.shared.misc.secshell
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.ResourcePatchContext
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
@@ -132,11 +132,11 @@ private class OpenPayload(val entryName: String, val payload: SecShellPayload)
 
 private var openPayload: OpenPayload? = null
 
-internal val secShellPayloadPatch = rawResourcePatch {
+internal val secShellPayloadPatch = patch {
     execute {
-        val jar = get(PAYLOAD_JAR)
+        val jar = resourceFile(PAYLOAD_JAR)
         val entryName = if (jar.exists()) PAYLOAD_JAR else SHELL_DEX
-        val bytes = get(entryName).readBytes()
+        val bytes = resourceFile(entryName).readBytes()
         val container = when {
             jar.exists() -> SecShellJar.of(bytes)
             SecShellEmbeddedDex.isEmbedded(bytes) -> SecShellEmbeddedDex(bytes)
@@ -149,7 +149,7 @@ internal val secShellPayloadPatch = rawResourcePatch {
         val open = openPayload ?: return@finalize
         openPayload = null
         val sealed = open.payload.sealed()
-        get(open.entryName).writeBytes(sealed)
+        resourceFile(open.entryName).writeBytes(sealed)
         updateManifestDigest(open.entryName, sealed)
     }
 }
@@ -159,8 +159,8 @@ internal fun editSecShellPayload(block: SecShellPayload.() -> Unit) {
     open.payload.block()
 }
 
-private fun ResourcePatchContext.updateManifestDigest(entryName: String, bytes: ByteArray) {
-    val manifest = get(JAR_MANIFEST)
+private fun updateManifestDigest(entryName: String, bytes: ByteArray) {
+    val manifest = resourceFile(JAR_MANIFEST)
     if (!manifest.exists()) return
 
     val text = manifest.readText()

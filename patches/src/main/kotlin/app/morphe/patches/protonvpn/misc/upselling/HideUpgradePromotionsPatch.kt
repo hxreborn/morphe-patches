@@ -8,12 +8,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.protonvpn.misc.anchors.ServerGroupsMainScreenStateToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
@@ -37,7 +38,7 @@ private const val PROMOTIONS_CLASS = "Lapp/hxreborn/extension/protonvpn/Promotio
 private const val IS_HIDDEN = "$UPSELLING_VISIBILITY_CLASS->isHidden()Z"
 
 @Suppress("unused")
-val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
+val hideUpgradePromotionsPatch: Patch = patch(
     name = "Hide upgrade promotions",
     description = "Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers.",
 ) {
@@ -52,7 +53,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
 
         val plusBadgeId = resourceId(ResourceType.DRAWABLE, "vpn_plus_badge")
 
-        settingRowWithIconFingerprint().matchSingle().method.apply {
+        settingRowWithIconFingerprint().method.apply {
             addInstructionsWithLabels(
                 0,
                 """
@@ -70,7 +71,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        val settingViewState = SettingsValueItemFingerprint.matchSingle().originalMethod.parameterTypes.first().toString()
+        val settingViewState = SettingsValueItemFingerprint.originalMethod.parameterTypes.first().toString()
         val settingViewStateClass = classDefBy(settingViewState)
         val isRestrictedGetter = settingViewStateClass.methods.singleOrNull {
             it.returnType == "Z" && it.parameterTypes.isEmpty() && !AccessFlags.STATIC.isSet(it.accessFlags)
@@ -106,7 +107,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
         val inlinedActiveNotifications = inlinedActiveNotificationsFingerprint().matchOrNull()
         if (inlinedActiveNotifications != null) {
             inlinedActiveNotifications.run {
-                val sorted = instructionMatches.last()
+                val (_, _, _, sorted) = instructionMatches
                 val register = sorted.getInstruction<OneRegisterInstruction>().registerA
                 method.addInstructions(
                     sorted.index + 1,
@@ -117,7 +118,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
                 )
             }
         } else {
-            activeNotificationsFingerprint().matchSingle().method.filterReturnValue(
+            activeNotificationsFingerprint().method.filterReturnValue(
                 "$PROMOTIONS_CLASS->withoutPromoNotifications(Ljava/util/List;)Ljava/util/List;",
             )
         }
@@ -129,7 +130,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             "$PROMOTIONS_CLASS->withoutUpgradeBanners(Ljava/util/List;)Ljava/util/List;",
         )
 
-        (FreeConnectionsUpsellBannerFingerprint.matchOrNull() ?: InlinedFreeConnectionsUpsellBannerFingerprint.matchSingle()).run {
+        (FreeConnectionsUpsellBannerFingerprint.matchOrNull() ?: InlinedFreeConnectionsUpsellBannerFingerprint.match()).run {
             val bannerRoot = instructionMatches.last()
             val register = bannerRoot.getInstruction<OneRegisterInstruction>().registerA
             method.addInstruction(
@@ -138,8 +139,8 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        upgradeCarouselFingerprint().matchSingle().run {
-            val freeUserResult = instructionMatches[1]
+        upgradeCarouselFingerprint().match().run {
+            val (_, freeUserResult) = instructionMatches
             val register = freeUserResult.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(
                 freeUserResult.index + 1,
@@ -156,11 +157,11 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
             "$PROMOTIONS_CLASS->showsUpsell(Z)Z",
         )
 
-        UpgradeDialogCreateFingerprint.matchSingle().run {
-            val superOnCreate = instructionMatches.first().index
-            val register = method.getFreeRegisterProvider(superOnCreate + 1, 1).getFreeRegister()
+        UpgradeDialogCreateFingerprint.match().run {
+            val (superOnCreate) = instructionMatches
+            val register = method.getFreeRegisterProvider(superOnCreate.index + 1, 1).getFreeRegister()
             method.addInstructionsWithLabels(
-                superOnCreate + 1,
+                superOnCreate.index + 1,
                 """
                     invoke-static/range { p0 .. p0 }, $PROMOTIONS_CLASS->hidesOnboardingUpgrade(Landroid/app/Activity;)Z
                     move-result v$register
@@ -168,7 +169,7 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
                     invoke-virtual/range { p0 .. p0 }, Landroid/app/Activity;->finish()V
                     return-void
                 """,
-                ExternalLabel("shown", method.getInstruction(superOnCreate + 1)),
+                ExternalLabel("shown", method.getInstruction(superOnCreate.index + 1)),
             )
         }
 
@@ -189,8 +190,8 @@ val hideUpgradePromotionsPatch: BytecodePatch = bytecodePatch(
                 )
             }
         } else {
-            onboardingLaunchCoroutineFingerprint().matchSingle().run {
-                val launcher = instructionMatches.first()
+            onboardingLaunchCoroutineFingerprint().match().run {
+                val (launcher) = instructionMatches
                 val register = launcher.getInstruction<OneRegisterInstruction>().registerA
                 method.addInstructionsWithLabels(
                     launcher.index,

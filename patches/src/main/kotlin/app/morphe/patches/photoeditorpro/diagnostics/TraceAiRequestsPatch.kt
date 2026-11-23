@@ -6,10 +6,10 @@ package app.morphe.patches.photoeditorpro.diagnostics
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.photoeditorpro.misc.fix.platform.AiRequestInterceptorFingerprint
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
@@ -30,7 +30,7 @@ private const val AI_TRACE_INTERCEPTOR_CLASS = "$EXTENSION_PACKAGE/AiTraceInterc
 private const val OBJECT = "Ljava/lang/Object;"
 
 @Suppress("unused")
-val traceAiRequestsPatch: BytecodePatch = bytecodePatch(
+val traceAiRequestsPatch: Patch = patch(
     name = "Inspect AI requests",
     description = "Shows the network calls an AI tool makes, such as HTTP requests and " +
         "Firebase uploads. Keeps a log of them.",
@@ -41,7 +41,7 @@ val traceAiRequestsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchMetadata("traceAiRequests", traceAiRequestsPatch)
-        val appInterceptor = AiRequestInterceptorFingerprint.matchSingle()
+        val appInterceptor = AiRequestInterceptorFingerprint.match()
         val interceptorClass = appInterceptor.classDef.type
         val interceptorInterface = appInterceptor.classDef.interfaces.singleOrNull()
             ?: throw PatchException("$interceptorClass does not implement a single interface")
@@ -64,7 +64,7 @@ val traceAiRequestsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        requestClientInterceptorFingerprint(interceptorClass).matchSingle().let { match ->
+        requestClientInterceptorFingerprint(interceptorClass).match().let { match ->
             match.method.apply {
                 val newIndex = match.instructionMatches.single().index
                 val register = getInstruction<OneRegisterInstruction>(newIndex).registerA
@@ -83,7 +83,7 @@ val traceAiRequestsPatch: BytecodePatch = bytecodePatch(
             }
         }
 
-        StoragePutFileFingerprint.matchSingle().method.addInstructions(
+        StoragePutFileFingerprint.method.addInstructions(
             0,
             "invoke-static { p0 }, $AI_TRACE_CLASS->upload($OBJECT)V",
         )

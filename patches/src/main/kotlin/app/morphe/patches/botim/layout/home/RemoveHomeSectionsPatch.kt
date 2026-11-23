@@ -7,8 +7,7 @@ package app.morphe.patches.botim.layout.home
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.botim.misc.premium.SduiCollectionItemsFingerprint
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.parameterRegister
@@ -21,7 +20,7 @@ import app.morphe.patches.shared.misc.extension.botimRemoveHomeSectionsExtension
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/HomeSections;"
 
 @Suppress("unused")
-val removeHomeSectionsPatch = bytecodePatch(
+val removeHomeSectionsPatch = patch(
     name = "Remove Home sections",
     description = "Removes the Services grid, Discover more banners and the search bar from Home.",
     default = false,
@@ -30,7 +29,7 @@ val removeHomeSectionsPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     execute {
-        MainUiStateConstructorFingerprint.matchSingle().method.apply {
+        MainUiStateConstructorFingerprint.method.apply {
             val searchBarType = parameterTypes[SEARCH_BAR_PARAMETER_INDEX].toString()
             if (searchBarType != "Z") {
                 throw PatchException(
@@ -40,7 +39,7 @@ val removeHomeSectionsPatch = bytecodePatch(
             addInstructions(0, "const/16 ${parameterRegister(SEARCH_BAR_PARAMETER_INDEX)}, 0x0")
         }
 
-        SduiCollectionItemsFingerprint.matchSingle().method.apply {
+        SduiCollectionItemsFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
                 val listRegister = getInstruction<OneRegisterInstruction>(index).registerA
                 addInstructionsAtControlFlowLabel(

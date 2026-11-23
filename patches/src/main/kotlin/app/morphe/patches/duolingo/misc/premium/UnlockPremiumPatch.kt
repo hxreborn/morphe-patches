@@ -14,8 +14,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.removeFlags
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -32,7 +32,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 private const val ENERGY_CONFIG_CONSTRUCTOR_COUNT = 2
 
 @Suppress("unused")
-val unlockPremiumPatch: BytecodePatch = bytecodePatch(
+val unlockPremiumPatch: Patch = patch(
     name = "Unlock premium",
     description = "Unlocks Super or Max and keeps energy full. " +
         "Max Video Call does not work.",

@@ -8,8 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
@@ -38,19 +39,19 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import app.morphe.patches.shared.misc.extension.readeraChapterSpeechExtensionPatch
 
-private const val BOUNDARY_RESOLVER = "Lapp/hxreborn/extension/readera/SpeechBoundaryResolver;"
+private const val BOUNDARY_RESOLVER = "Lapp/hxreborn/extension/readera/speech/chapter/SpeechBoundaryResolver;"
 private const val CONTENTS_PANEL_CHAIN_LENGTH = 2
-private const val CHAPTER_SPEECH = "Lapp/hxreborn/extension/readera/ChapterSpeech;"
-private const val READING_POSITION = "Lapp/hxreborn/extension/readera/ReadingPosition;"
-private const val CONTENTS_ENTRY = "Lapp/hxreborn/extension/readera/ContentsEntry;"
-private const val SPEECH_TRACK = "Lapp/hxreborn/extension/readera/SpeechTrack;"
-private const val CONTENTS_ROW = "Lapp/hxreborn/extension/readera/ContentsRow;"
-private const val CONTENTS_PANEL = "Lapp/hxreborn/extension/readera/ContentsPanel;"
+private const val CHAPTER_SPEECH = "Lapp/hxreborn/extension/readera/speech/chapter/ChapterSpeech;"
+private const val READING_POSITION = "Lapp/hxreborn/extension/readera/speech/chapter/ReadingPosition;"
+private const val CONTENTS_ENTRY = "Lapp/hxreborn/extension/readera/speech/chapter/ContentsEntry;"
+private const val SPEECH_TRACK = "Lapp/hxreborn/extension/readera/speech/chapter/SpeechTrack;"
+private const val CONTENTS_ROW = "Lapp/hxreborn/extension/readera/speech/chapter/ContentsRow;"
+private const val CONTENTS_PANEL = "Lapp/hxreborn/extension/readera/speech/chapter/ContentsPanel;"
 
 private const val EMPTY_CONTENTS_MESSAGE = "Table of Contents is not available for this document"
 
 private var emptyContentsMessage = -1L
-private val contentsMessageResourcePatch = resourcePatch {
+private val contentsMessageResourcePatch = patch {
     execute {
         val name = stringNamesByEnglishText()[EMPTY_CONTENTS_MESSAGE]?.first()
             ?: throw PatchException("No string \"$EMPTY_CONTENTS_MESSAGE\" in res/values/strings.xml")
@@ -59,7 +60,7 @@ private val contentsMessageResourcePatch = resourcePatch {
 }
 
 @Suppress("unused")
-val readChapterAloudPatch = bytecodePatch(
+val readChapterAloudPatch = patch(
     name = "Read chapter aloud",
     description = "Reads one chapter aloud and stops at its end. " +
         "Long-press the chapter in Contents to start.",
@@ -394,10 +395,10 @@ val readChapterAloudPatch = bytecodePatch(
         skip.method.addInstructions(manualCall.index, "invoke-static {}, $CHAPTER_SPEECH->beginManualAdvance()V")
         val rowRegister = (rowClickListener.instruction as FiveRegisterInstruction).registerC
         rowInit.method.addInstructions(rowClickListener.index + 1, """
-            invoke-static {v$rowRegister, p0}, $CHAPTER_SPEECH->attachContentsRow(Landroid/view/View;Lapp/hxreborn/extension/readera/ContentsRow;)V
+            invoke-static {v$rowRegister, p0}, $CHAPTER_SPEECH->attachContentsRow(Landroid/view/View;Lapp/hxreborn/extension/readera/speech/chapter/ContentsRow;)V
         """)
         placeholder.method.addInstructions(placeholderText.index + 1, """
-            invoke-static {v$placeholderRegister, p0}, $CHAPTER_SPEECH->attachContentsPlaceholder(Landroid/widget/TextView;Lapp/hxreborn/extension/readera/ContentsPanel;)V
+            invoke-static {v$placeholderRegister, p0}, $CHAPTER_SPEECH->attachContentsPlaceholder(Landroid/widget/TextView;Lapp/hxreborn/extension/readera/speech/chapter/ContentsPanel;)V
         """)
     }
 }

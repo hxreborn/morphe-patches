@@ -8,10 +8,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.ClickableModifierFingerprint
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.PING_RESULT_ROW
@@ -30,7 +29,6 @@ import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
 private const val ROW_ON_CLICK = "onClick"
@@ -40,10 +38,9 @@ private const val CLICKABLE_NO_LABEL = 0
 private const val CLICKABLE_NO_DEFAULTS = 0
 private const val CLICKABLE_ROW_LOCALS = 5
 private const val CLICKABLE_ON_CLICK_PARAMETER = 3
-private const val BACKGROUND_CALL_MATCH = 1
 
 @Suppress("unused")
-val hostDetailsPatch = bytecodePatch(
+val hostDetailsPatch = patch(
     name = "Host details",
     description = "Adds a details page for each ping reply and traceroute hop with its address, hostname, " +
         "round-trip times, TTL, AS and location.",
@@ -55,15 +52,15 @@ val hostDetailsPatch = bytecodePatch(
     execute {
         addFeatureActivity("ProbeDetailsActivity")
 
-        val spacer = PingResultRowSpacerFingerprint.matchSingle()
-        val spacerCall = spacer.instructionMatches.last()
+        val spacer = PingResultRowSpacerFingerprint.match()
+        val (_, _, _, spacerCall) = spacer.instructionMatches
         val composerRegister = spacerCall.getInstruction<FiveRegisterInstruction>().registerC
         spacer.method.replaceInstruction(
             spacerCall.index,
             "invoke-static { v$composerRegister }, ${descriptor(rowChevronMethod(spacer.classDef))}",
         )
 
-        val row = PingResultRowBackgroundFingerprint.matchSingle()
+        val row = PingResultRowBackgroundFingerprint.match()
         val rowMethod = row.originalMethod
         val rowParameters = row.composableParameters()
         val probeIndex = rowParameters.indexOf(PING_RESULT_ROW_PROBE)
@@ -74,13 +71,14 @@ val hostDetailsPatch = bytecodePatch(
         val probeType = rowMethod.parameterTypes[probeIndex].toString()
         val onClickType = rowMethod.parameterTypes[onClickIndex].toString()
 
-        val background = row.instructionMatches[BACKGROUND_CALL_MATCH].instruction.getReference<MethodReference>()!!
+        val (_, backgroundCall, backgroundResult) = row.instructionMatches
+        val background = backgroundCall.methodReference
         val modifierType = background.returnType
         if (background.parameterTypes.first().toString() != modifierType) {
             throw PatchException("The $PING_RESULT_ROW background call $background does not return its modifier")
         }
 
-        val clickable = ClickableModifierFingerprint.matchSingle().originalMethod
+        val clickable = ClickableModifierFingerprint.originalMethod
         if (clickable.returnType != modifierType || clickable.parameterTypes[CLICKABLE_ON_CLICK_PARAMETER].toString() != onClickType) {
             throw PatchException("Clickable helper $clickable does not take $modifierType and $onClickType")
         }
@@ -109,7 +107,7 @@ val hostDetailsPatch = bytecodePatch(
             """,
         )
 
-        val resultIndex = row.instructionMatches.last().index
+        val resultIndex = backgroundResult.index
         val modifierRegister = row.method.getInstruction<OneRegisterInstruction>(resultIndex).registerA
         val probeRegister = row.method.implementation!!.registerCount - MethodUtil.getParameterRegisterCount(row.method) + probeIndex
         val registers = row.method.getFreeRegisterProvider(resultIndex + 1, 2, modifierRegister, probeRegister)

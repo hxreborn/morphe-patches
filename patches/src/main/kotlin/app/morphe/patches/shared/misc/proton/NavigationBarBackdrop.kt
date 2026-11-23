@@ -5,9 +5,9 @@
 package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -20,8 +20,8 @@ internal const val NAVIGATION_BAR_BACKDROP_CLASS = "${PROTON_EXTENSION_PACKAGE}N
 private const val NATIVE_CANVAS = "Landroid/graphics/Canvas;"
 private const val DRAW_NODE_KIND = 4
 
-internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: String) {
-    val drawMatch = BackdropDrawContentFingerprint.matchSingle()
+internal fun installNavigationBarBackdrop(modifierType: String) {
+    val drawMatch = BackdropDrawContentFingerprint.match()
     val draw = drawMatch.method
     val scopeType = draw.definingClass
     val (scopeRead, contextRead, canvasCall) = drawMatch.instructionMatches
@@ -30,7 +30,7 @@ internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: Str
     val contextType = contextField.type
     val canvasGetter = canvasCall.instruction.getReference<MethodReference>()!!
     check(contextField.definingClass == scopeField.type && canvasGetter.definingClass == contextType)
-    val canvasClass = backdropCanvasFingerprint(canvasGetter.returnType).matchSingle().originalClassDef
+    val canvasClass = backdropCanvasFingerprint(canvasGetter.returnType).match().originalClassDef
     val canvasField = canvasClass.fields.single { it.type == NATIVE_CANVAS }
     check(!AccessFlags.FINAL.isSet(canvasField.accessFlags))
     val sizeGetter = classDefBy(scopeType).methods.flatMap { method ->
@@ -79,7 +79,7 @@ internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: Str
         move-result-wide v0
         return-wide v0
     """)
-    val coordinates = BackdropCoordinatesFingerprint.matchSingle().originalClassDef
+    val coordinates = BackdropCoordinatesFingerprint.match().originalClassDef
     val position = coordinates.methods.single { method ->
         method.returnType == "J" && method.parameterTypes.size == 2 && method.parameterTypes[1] == "J" &&
             method.parameterTypes[0] != coordinates.type &&
@@ -125,7 +125,7 @@ internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: Str
         move-result-object v0
         return-object v0
     """)
-    val callback = backdropCallbackFingerprint(scopeType).matchSingle()
+    val callback = backdropCallbackFingerprint(scopeType).match()
     val (invocation) = callback.instructionMatches
     val host = invocation.instruction.getReference<MethodReference>()!!
     check(callback.method.instructions.elementAtOrNull(invocation.index + 1)?.opcode !in setOf(Opcode.MOVE_RESULT_OBJECT, Opcode.MOVE_RESULT, Opcode.MOVE_RESULT_WIDE))
@@ -136,7 +136,7 @@ internal fun BytecodePatchContext.installNavigationBarBackdrop(modifierType: Str
         const/4 p1, 0x0
         return-object p1
     """)
-    val element = backdropElementFingerprint(callback.method.definingClass).matchSingle().originalClassDef
+    val element = backdropElementFingerprint(callback.method.definingClass).match().originalClassDef
     val constructor = element.methods.single { it.name == "<init>" && it.parameterTypes == listOf(host.definingClass) }
     mutableClassDefBy(element.type).apply { accessFlags = accessFlags or AccessFlags.PUBLIC.value }
     val then = classDefBy(modifierType).methods.single { it.parameterTypes == listOf(modifierType) && it.returnType == modifierType }

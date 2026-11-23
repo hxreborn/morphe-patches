@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.mymoveset.misc.premium
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.expo.disableOtaUpdatesPatch
 import app.morphe.patches.shared.misc.hermes.hermesVariantsPatch
@@ -30,7 +30,7 @@ private const val SYNC_INTERVAL_PRO_1_5 =
     "37 05 05 07 43 B8 90 0B 06 37 06 05 08 2B 56 8E 08 37 06 05 09 2B 56"
 
 @Suppress("unused")
-val unlockPremiumPatch = rawResourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks unlimited move views, goals and move cards, manual sync, earlier " +
         "library updates and card customization. Disables OTA updates.",

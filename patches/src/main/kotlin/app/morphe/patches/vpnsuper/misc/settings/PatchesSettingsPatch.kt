@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.vpnsuper.misc.settings
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.util.ResourceGroup
 import app.morphe.util.asSequence
@@ -37,8 +37,8 @@ private val logger = Logger.getLogger("app.morphe.patches.vpnsuper.misc.settings
 
 private var menuStylesResolved = false
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
-    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch, withDescription = false)
+internal fun markPatchApplied(methodName: String, patch: Patch) =
+    addAppliedPatchMetadata(APPLIED_PATCHES_CLASS, methodName, patch, withDescription = false)
 
 private fun Document.elementWithId(id: String) = getElementsByTagName("*").asSequence()
     .map { it as Element }
@@ -73,10 +73,10 @@ private fun Document.addPatchesMenuRow() {
     card.appendChild(row)
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(vpnsuperAppliedPatchesExtensionPatch, vpnsuperSettingsExtensionPatch)
     dependsOn(
-        resourcePatch {
+        patch {
             execute {
                 copyResources("vpnsuper", ResourceGroup("drawable", *ICON_RESOURCES.map { "$it.xml" }.toTypedArray()))
             }

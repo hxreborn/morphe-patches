@@ -4,15 +4,14 @@
  */
 package app.morphe.patches.mymoveset.misc.tracking
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.expo.disableOtaUpdatesPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops the install identifier from reaching Expo and usage events from " +
         "reaching Google. Disables OTA updates.",
@@ -22,6 +21,6 @@ val disableTrackingPatch = bytecodePatch(
     dependsOn(disableOtaUpdatesPatch, removePairipProtectionPatch)
 
     execute {
-        DefaultSchedulerScheduleFingerprint.matchSingle().method.returnEarly()
+        DefaultSchedulerScheduleFingerprint.method.returnEarly()
     }
 }

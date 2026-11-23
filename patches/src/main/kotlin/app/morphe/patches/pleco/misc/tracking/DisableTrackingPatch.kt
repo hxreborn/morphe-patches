@@ -5,14 +5,12 @@
 package app.morphe.patches.pleco.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops device identifiers and usage counters from reaching Pleco's servers and " +
         "usage events from reaching Google.",
@@ -20,14 +18,15 @@ val disableTrackingPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.PLECO)
 
     execute {
-        ServerRequestDeviceFieldsFingerprint.matchSingle().let {
-            it.method.addInstruction(it.instructionMatches.last().index, "return-void")
+        ServerRequestDeviceFieldsFingerprint.match().apply {
+            val (_, getContentResolverCall) = instructionMatches
+            method.addInstruction(getContentResolverCall.index, "return-void")
         }
 
-        TransportEventScheduleFingerprint.matchSingle().let {
-            val backendCheckIndex = it.instructionMatches.last().index
-            val backendRegister = it.method.getInstruction<OneRegisterInstruction>(backendCheckIndex).registerA
-            it.method.addInstruction(backendCheckIndex, "const/16 v$backendRegister, 0x0")
+        TransportEventScheduleFingerprint.match().apply {
+            val (_, _, backendCheck) = instructionMatches
+            val backendRegister = backendCheck.getInstruction<OneRegisterInstruction>().registerA
+            method.addInstruction(backendCheck.index, "const/16 v$backendRegister, 0x0")
         }
     }
 }

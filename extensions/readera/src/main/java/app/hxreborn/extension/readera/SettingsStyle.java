@@ -34,7 +34,7 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
-final class SettingsStyle {
+public final class SettingsStyle {
 
     static final float BAR_TITLE_SP = 20f;
 
@@ -96,7 +96,7 @@ final class SettingsStyle {
 
     private final Context context;
 
-    SettingsStyle(Context context) {
+    public SettingsStyle(Context context) {
         this.context = context;
         boolean amoled = AppTheme.amoledApplied();
         this.appBarBackground = amoled ? AMOLED_APP_BAR_BACKGROUND : APP_BAR_BACKGROUND;

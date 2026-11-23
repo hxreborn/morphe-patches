@@ -4,25 +4,21 @@
  */
 package app.morphe.patches.protonpass.misc.theme
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.MATERIAL_SWITCHES_CLASS
 import app.morphe.patches.shared.misc.proton.drawSwitchAsView
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
 import app.morphe.patches.shared.misc.proton.markPatchMetadata
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import app.morphe.patches.shared.misc.extension.protonMaterialSwitchViewExtensionPatch
 
 private const val COLORS_PARAMETER = 4
 private const val COMPOSER_PARAMETER = 5
 
 @Suppress("unused")
-val materialSwitchesPatch: BytecodePatch = bytecodePatch(
+val materialSwitchesPatch: Patch = patch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
@@ -34,9 +30,9 @@ val materialSwitchesPatch: BytecodePatch = bytecodePatch(
         markPatchMetadata("materialSwitches", materialSwitchesPatch, withDescription = true)
         markFeaturePatched(MATERIAL_SWITCHES_CLASS)
 
-        val match = MaterialSwitchFingerprint.matchSingle()
-        val modifierCompanion = match.method.getInstruction(match.instructionMatches.first().index)
-            .getReference<FieldReference>()!!
+        val match = MaterialSwitchFingerprint.match()
+        val (modifierCompanionRead) = match.instructionMatches
+        val modifierCompanion = modifierCompanionRead.fieldReference
 
         drawSwitchAsView(
             match.method,

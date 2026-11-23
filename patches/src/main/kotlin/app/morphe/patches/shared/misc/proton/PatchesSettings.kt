@@ -14,10 +14,10 @@ import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
 import app.morphe.patcher.util.getReference
@@ -68,10 +68,10 @@ internal fun patchesSettingsActivityPatch(
     themeStyle: String,
     hostActivity: String,
     settingsClass: String,
-) = bytecodePatch {
+) = patch {
     dependsOn(
         switchColorsPatch,
-        resourcePatch {
+        patch {
             finalize {
                 document("AndroidManifest.xml").use { document ->
                     val activities = document.getElementsByTagName("activity")
@@ -122,7 +122,7 @@ internal fun patchesSettingsActivityPatch(
     }
 }
 
-private fun BytecodePatchContext.replacePatchesThemeStubs() {
+private fun replacePatchesThemeStubs() {
     with(mutableClassDefBy(PATCHES_THEME_CLASS)) {
         replaceResourceIdStubs(
             ResourceType.ATTR,
@@ -150,7 +150,7 @@ private fun BytecodePatchContext.replacePatchesThemeStubs() {
     }
 }
 
-internal fun BytecodePatchContext.injectBundleVersion() {
+internal fun injectBundleVersion() {
     val bundleVersion = PatchesSettingsVersion::class.java
         .getResourceAsStream(BUNDLE_VERSION_RESOURCE)?.bufferedReader()?.use {
             it.readText().trim()
@@ -160,7 +160,7 @@ internal fun BytecodePatchContext.injectBundleVersion() {
         .returnEarly(bundleVersion)
 }
 
-internal fun BytecodePatchContext.injectAppCompatDefaultNightMode() {
+internal fun injectAppCompatDefaultNightMode() {
     val appCompatDelegate = AppCompatDelegateImplFingerprint.originalClassDef.superclass
     val nightModeReads = CoreNightModeFingerprint.matchAll()
         .map { (it.instructionMatches.first().instruction as ReferenceInstruction).reference }

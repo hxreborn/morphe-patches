@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val medicneetUnlockPremiumExtensionPatch = bytecodePatch {
+
+internal val medicneetUnlockPremiumExtensionPatch = patch {
     extendWith("extensions/hxreborn/medicneet-unlock-premium.mpe")
 }

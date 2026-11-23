@@ -160,7 +160,7 @@ configure(extensionProjects) {
                 }
                 dependencies {
                     add("implementation", files(payloadClasses.flatMap { it.archiveFile }))
-                    add("compileOnly", library)
+                    add("compileOnly", project(library.path))
                 }
             }
 

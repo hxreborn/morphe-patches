@@ -11,6 +11,8 @@ import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.Opcode
 
+private const val UNBOX_ADS_FREE_HOUR_WINDOW = 3
+
 internal object AdsFreeHourOverrideFingerprint : Fingerprint(
     returnType = "Ljava/util/List;",
     filters = listOf(
@@ -18,7 +20,7 @@ internal object AdsFreeHourOverrideFingerprint : Fingerprint(
         methodCall(
             definingClass = "Ljava/lang/Boolean;",
             name = "booleanValue",
-            location = MatchAfterWithin(3),
+            location = MatchAfterWithin(UNBOX_ADS_FREE_HOUR_WINDOW),
         ),
         opcode(Opcode.MOVE_RESULT, MatchAfterImmediately()),
         methodCall(definingClass = "Ljava/util/List;", name = "contains"),

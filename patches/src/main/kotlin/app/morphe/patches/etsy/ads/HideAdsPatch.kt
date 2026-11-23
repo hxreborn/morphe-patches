@@ -6,9 +6,8 @@ package app.morphe.patches.etsy.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -21,14 +20,14 @@ private const val BOX_DATA_CLASS =
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/etsy/EtsyAdsFilter;"
 
 @Suppress("unused")
-val hideAdsPatch = bytecodePatch(
+val hideAdsPatch = patch(
     name = "Hide ads",
     description = "Removes promoted listings and the \"with Ads\" label from search results.",
 ) {
     dependsOn(etsyHideAdsExtensionPatch)
     compatibleWith(AppCompatibilities.ETSY)
     execute {
-        SearchGridBoxFingerprint.matchSingle().method.apply {
+        SearchGridBoxFingerprint.method.apply {
             val index = indexOfFirstInstructionOrThrow {
                 opcode == Opcode.IGET_OBJECT &&
                     getReference<FieldReference>()?.let { field ->
@@ -45,6 +44,6 @@ val hideAdsPatch = bytecodePatch(
             )
         }
 
-        SearchHeaderFingerprint.matchSingle().method.addInstructions(0, "const/16 p2, 0x0")
+        SearchHeaderFingerprint.method.addInstructions(0, "const/16 p2, 0x0")
     }
 }

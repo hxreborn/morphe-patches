@@ -5,10 +5,11 @@
 package app.morphe.patches.candycrushsaga.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.util.cloneParameters
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.candycrushsaga.misc.boosters.HttpResponseFingerprint
 import app.morphe.patches.candycrushsaga.misc.boosters.NativeHandleSetterFingerprint
 import app.morphe.patches.candycrushsaga.misc.boosters.RunOnGameThreadFingerprint
@@ -22,35 +23,35 @@ import app.morphe.patches.shared.misc.extension.candycrushsagaGameModifiersExten
 
 private const val MODIFIERS = "Lapp/hxreborn/extension/candycrushsaga/GameModifiers;"
 
-private val addModifiersLibraryPatch = resourcePatch {
+private val addModifiersLibraryPatch = patch {
     dependsOn(candyCrushNativePatch)
     execute {
         val build = candyCrushNativeBuild(packageMetadata.packageName)
         val resource = inputStreamFromBundledResource(build.resourceDirectory, "libccsmodifiers.so")
             ?: throw PatchException("Missing Candy Crush game modifier library")
-        get("lib/arm64-v8a/libccsmodifiers.so", copy = false).writeBytes(resource.use { it.readBytes() })
+        resourceFile("lib/arm64-v8a/libccsmodifiers.so", copy = false).writeBytes(resource.use { it.readBytes() })
     }
 }
 
-internal val candyCrushModifiersPatch = bytecodePatch {
+internal val candyCrushModifiersPatch = patch {
     dependsOn(candycrushsagaGameModifiersExtensionPatch)
     dependsOn(addModifiersLibraryPatch)
 
     execute {
-        val gameThread = RunOnGameThreadFingerprint.matchSingle().originalMethod
+        val gameThread = RunOnGameThreadFingerprint.originalMethod
         mutableClassDefBy(MODIFIERS).replaceStub("runOnGameThread", 2, """
             check-cast p0, ${gameThread.definingClass}
             invoke-virtual {p0, p1}, ${descriptor(gameThread)}
             return-void
         """)
-        val nativeHandleSetter = NativeHandleSetterFingerprint.matchSingle().method.cloneParameters()
+        val nativeHandleSetter = NativeHandleSetterFingerprint.method.cloneParameters()
         nativeHandleSetter.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             nativeHandleSetter.addInstructionsAtControlFlowLabel(
                 index,
                 "invoke-static/range { p0 .. p2 }, $MODIFIERS->onNativeHandle(Landroid/app/Activity;J)V",
             )
         }
-        val response = HttpResponseFingerprint.matchSingle().method
+        val response = HttpResponseFingerprint.method
         response.findInstructionIndicesReversedOrThrow(Opcode.RETURN_VOID).forEach { index ->
             response.addInstructionsAtControlFlowLabel(
                 index,

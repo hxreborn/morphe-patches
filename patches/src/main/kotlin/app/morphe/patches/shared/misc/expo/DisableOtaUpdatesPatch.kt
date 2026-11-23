@@ -4,12 +4,13 @@
  */
 package app.morphe.patches.shared.misc.expo
 
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.util.findElementByAttributeValueOrThrow
 
 private const val UPDATES_ENABLED = "expo.modules.updates.ENABLED"
 
-internal val disableOtaUpdatesPatch = resourcePatch {
+internal val disableOtaUpdatesPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.getElementsByTagName("meta-data")

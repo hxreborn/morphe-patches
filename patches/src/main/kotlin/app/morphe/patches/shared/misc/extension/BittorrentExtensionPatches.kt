@@ -4,17 +4,19 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val bittorrentSettingsExtensionPatch = bytecodePatch {
+
+internal val bittorrentSettingsExtensionPatch = patch {
+    dependsOn(sharedPatchesMenuExtensionPatch)
     extendWith("extensions/hxreborn/bittorrent-settings.mpe")
 }
 
-internal val bittorrentSettingsMenuAndAmoledThemeExtensionPatch = bytecodePatch {
+internal val bittorrentSettingsMenuAndAmoledThemeExtensionPatch = patch {
     dependsOn(bittorrentSettingsExtensionPatch)
     extendWith("extensions/hxreborn/bittorrent-settings-menu-and-amoled-theme.mpe")
 }
 
-internal val bittorrentFixScreenInsetsExtensionPatch = bytecodePatch {
+internal val bittorrentFixScreenInsetsExtensionPatch = patch {
     extendWith("extensions/hxreborn/bittorrent-fix-screen-insets.mpe")
 }

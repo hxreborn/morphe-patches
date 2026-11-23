@@ -6,11 +6,12 @@ package app.morphe.patches.protonmail.misc.accountswipe
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.protonmail.shared.uniffiCallsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -32,7 +33,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/accountswipe/AccountAvatarSwipe;"
 
 @Suppress("unused")
-val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
+val swipeToSwitchAccountsPatch: Patch = patch(
     name = "Swipe to switch accounts",
     description = "Switches between signed-in accounts by swiping up or down on the account avatar.",
 ) {
@@ -44,8 +45,8 @@ val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
         markPatchApplied(MAIL_SETTINGS_CLASS, "swipeToSwitchAccounts", swipeToSwitchAccountsPatch)
         forwardStub(MAIL_SETTINGS_CLASS, "addSwipeToSwitchAccountsRows", "Lapp/hxreborn/extension/protonmail/accountswipe/AccountSwipeRows;")
 
-        val onTouchEventField = PointerInteropFilterTouchFingerprint.matchSingle()
-            .instructionMatches[2].getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+        val (_, _, onTouchEventRead) = PointerInteropFilterTouchFingerprint.match().instructionMatches
+        val onTouchEventField = onTouchEventRead.fieldReference
         val interopFilterType = onTouchEventField.definingClass
         val function1Type = onTouchEventField.type
         val modifierType = classDefBy(classDefBy(interopFilterType).interfaces.single()).interfaces.single()
@@ -56,7 +57,7 @@ val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
         val extension = mutableClassDefBy(EXTENSION_CLASS)
         extension.interfaces.add(function1Type)
 
-        val avatarMatch = AccountAvatarFingerprint.matchSingle()
+        val avatarMatch = AccountAvatarFingerprint.match()
         avatarMatch.method.apply {
             val buttonCallIndex = indexOfFirstInstructionOrThrow(avatarMatch.instructionMatches.single().index) {
                 (opcode == Opcode.INVOKE_STATIC || opcode == Opcode.INVOKE_STATIC_RANGE) &&
@@ -116,7 +117,7 @@ val swipeToSwitchAccountsPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        WatchAccountsFingerprint.matchSingle().method.addInstructions(
+        WatchAccountsFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->captureMailSession(Ljava/lang/Object;)V",
         )

@@ -5,7 +5,7 @@
 package app.morphe.patches.neetprepessential.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -46,7 +46,7 @@ private val ARM64_NOP = "1f2003d5".hexToByteArray()
 private const val PYQ_ACCESS_GATE_BRANCH_OFFSET = 16
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all chapters, practice sets, flashcards, hardest questions, mock tests and PYQ Marked NCERT questions.",
 ) {

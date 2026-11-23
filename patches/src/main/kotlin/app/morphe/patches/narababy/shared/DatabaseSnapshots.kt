@@ -6,16 +6,14 @@ package app.morphe.patches.narababy.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.util.matchSingle
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 internal const val DATABASE_SNAPSHOTS_CLASS = "Lapp/hxreborn/extension/narababy/DatabaseSnapshots;"
 
-internal fun BytecodePatchContext.rewriteDatabaseSnapshots(extensionCall: String) {
-    DatabaseSnapshotToMapFingerprint.matchSingle().method.apply {
+internal fun rewriteDatabaseSnapshots(extensionCall: String) {
+    DatabaseSnapshotToMapFingerprint.method.apply {
         findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { returnIndex ->
             val mapRegister = getInstruction<OneRegisterInstruction>(returnIndex).registerA
             addInstruction(

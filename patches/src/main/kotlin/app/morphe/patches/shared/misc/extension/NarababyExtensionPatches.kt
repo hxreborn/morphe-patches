@@ -4,8 +4,9 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val narababyDatabaseSnapshotsExtensionPatch = bytecodePatch {
+
+internal val narababyDatabaseSnapshotsExtensionPatch = patch {
     extendWith("extensions/hxreborn/narababy-database-snapshots.mpe")
 }

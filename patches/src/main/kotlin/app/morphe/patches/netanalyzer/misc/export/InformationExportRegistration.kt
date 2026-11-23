@@ -5,10 +5,10 @@
 package app.morphe.patches.netanalyzer.misc.export
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.classDefByOrNull
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.netanalyzer.shared.propertyFields
@@ -16,15 +16,12 @@ import app.morphe.patches.netanalyzer.shared.registerAtLaunch
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.ClassDef
 import com.android.tools.smali.dexlib2.iface.Method
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val INFORMATION_EXPORT_CLASS = "Lapp/hxreborn/extension/netanalyzer/InformationExport;"
 private const val EXTERNAL_IP_CLASS = "Lapp/hxreborn/extension/netanalyzer/ExternalIp;"
 private const val REGISTRATION_SEPARATOR = ";"
 private const val LIST_SEPARATOR = ","
 private const val CONNECTION_SLOT_FIELDS = 8
-private const val FIRST_HOLDER_STORE = 1
-private const val SECOND_HOLDER_STORE = 3
 private val SIM_SLOTS = (1..4).map { "sim$it" }
 
 private val CONNECTION_PROPERTIES = listOf(
@@ -47,27 +44,23 @@ private fun ClassDef.fieldNames(properties: List<String>): String {
     }
 }
 
-context(context: BytecodePatchContext)
-private fun connectionsGetter(netState: String, connectionType: String): Method = with(context) {
+private fun connectionsGetter(netState: String, connectionType: String): Method =
     classDefBy(netState).methods.singleOrNull { method ->
         AccessFlags.STATIC.isSet(method.accessFlags) && method.parameterTypes.isEmpty() &&
             classDefByOrNull(method.returnType)?.instanceFields?.toList()?.let { fields ->
                 fields.size == CONNECTION_SLOT_FIELDS && fields.all { it.type == connectionType }
             } == true
     } ?: throw PatchException("$netState has no getter for $CONNECTION_SLOT_FIELDS $connectionType slots")
-}
 
-context(context: BytecodePatchContext)
-private fun Fingerprint.getter(): Method = with(context) { matchSingle().originalMethod }
+private fun Fingerprint.getter(): Method = match().originalMethod
 
-context(context: BytecodePatchContext)
-internal fun registerInformationExport() = with(context) {
-    val connection = NetInfoToStringFingerprint.matchSingle().classDef
-    val wifi = WifiNetInfoToStringFingerprint.matchSingle().classDef
-    val sim = SimInfoToStringFingerprint.matchSingle().classDef
-    val multiSim = MultiSimInfoToStringFingerprint.matchSingle().classDef
-    val proxy = ProxySettingsToStringFingerprint.matchSingle().classDef
-    val ipInfo = IpInfoToStringFingerprint.matchSingle().classDef
+internal fun registerInformationExport() {
+    val connection = NetInfoToStringFingerprint.match().classDef
+    val wifi = WifiNetInfoToStringFingerprint.match().classDef
+    val sim = SimInfoToStringFingerprint.match().classDef
+    val multiSim = MultiSimInfoToStringFingerprint.match().classDef
+    val proxy = ProxySettingsToStringFingerprint.match().classDef
+    val ipInfo = IpInfoToStringFingerprint.match().classDef
 
     val wifiGetter = informationGetterFingerprint(wifi.type).getter()
     val getters = listOf(
@@ -79,9 +72,10 @@ internal fun registerInformationExport() = with(context) {
     val netState = getters.map { it.definingClass }.distinct().singleOrNull()
         ?: throw PatchException("The network state getters are in ${getters.map { it.definingClass }.distinct()}, expected one class")
 
-    val holder = externalIpHolderFingerprint(ipInfo.type).matchSingle()
-    val holderStores = listOf(FIRST_HOLDER_STORE, SECOND_HOLDER_STORE).map { match ->
-        holder.instructionMatches[match].instruction.getReference<FieldReference>()!!
+    val holder = externalIpHolderFingerprint(ipInfo.type).match()
+    val (_, firstHolderStore, _, secondHolderStore) = holder.instructionMatches
+    val holderStores = listOf(firstHolderStore, secondHolderStore).map { store ->
+        store.fieldReference
     }
     if (holderStores.any { it.definingClass != holder.classDef.type }) {
         throw PatchException("${holder.classDef.type} stores its external IP holders in ${holderStores.map { it.definingClass }}, expected itself")

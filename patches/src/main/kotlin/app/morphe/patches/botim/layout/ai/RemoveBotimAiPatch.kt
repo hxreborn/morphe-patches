@@ -4,13 +4,12 @@
  */
 package app.morphe.patches.botim.layout.ai
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patcher.util.returnEarly
 
 @Suppress("unused")
-val removeBotimAiPatch = bytecodePatch(
+val removeBotimAiPatch = patch(
     name = "Remove botim AI",
     description = "Removes Chat with botim AI from New chat and New call.",
     default = false,
@@ -18,6 +17,6 @@ val removeBotimAiPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     execute {
-        BotimAiNavigationItemFingerprint.matchSingle().method.returnEarly(null)
+        BotimAiNavigationItemFingerprint.method.returnEarly(null)
     }
 }

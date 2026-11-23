@@ -33,6 +33,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.WindowInsetsController;
 import android.webkit.CookieManager;
+import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -46,6 +47,10 @@ import app.hxreborn.extension.shared.NightMode;
 
 @SuppressWarnings("unused")
 public class GoogleLoginChromeClient extends WebChromeClient {
+
+    private static final String GMS_CORE_PROMPT_PREFIX = "hx-terabox-google:";
+
+    private static final String GOOGLE_CLIENT_ID_SUFFIX = ".apps.googleusercontent.com";
 
     private static final String LOGIN_PATH = "/hylogin/";
 
@@ -96,6 +101,15 @@ public class GoogleLoginChromeClient extends WebChromeClient {
     private static final String LOGIN_PAGE_SCRIPT = """
             (function(){if(window.__tbFix)return;window.__tbFix=1;\
             var rawFetch=window.fetch?window.fetch.bind(window):null,receivedCredential=null;\
+            var clientId='',gmsButtonAdded=false;\
+            function addGmsButton(h){if(gmsButtonAdded||!clientId||typeof prompt!=='function')return;gmsButtonAdded=true;\
+            if(prompt('hx-terabox-google:available','')!=='yes')return;\
+            var row=h.parentElement,b=row.cloneNode(true),hidden=b.querySelector('.hidden-google-btn');\
+            if(hidden)hidden.remove();var label=b.querySelector('.text');\
+            if(label)label.textContent='Continue with MicroG-RE (Recommended)';\
+            b.onclick=function(e){e.preventDefault();e.stopPropagation();prompt('hx-terabox-google:signin',clientId)};\
+            row.parentNode.insertBefore(b,row);label=row.querySelector('.fake-btn .text');\
+            if(label)label.textContent='Continue with Google manually';}\
             function send(d){try{var p={state:1,ndus:d.ndus,uid:String(d.userid||''),\
             displayName:d.displayName||'',headUrl:d.headUrl||'',\
             region_domain_prefix:d.region_domain_prefix||'www',cur_country:d.cur_country||'',\
@@ -140,7 +154,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             if(!googleId||typeof googleId.initialize!=='function'||googleId.initialize.__tb)return;\
             var originalInitialize=googleId.initialize;\
             function initialize(c){if(!c||!c.callback)return originalInitialize.apply(this,arguments);\
-            var cb=c.callback;window.__tbCb=function(r){var credential=r&&r.credential;\
+            clientId=c.client_id||'';var cb=c.callback;window.__tbCb=function(r){var credential=r&&r.credential;\
             if(credential&&credential===receivedCredential)return;receivedCredential=credential;\
             try{return cb(r);}catch(e){receivedCredential=null;throw e;}};\
             var config={};Object.keys(c).forEach(function(k){config[k]=c[k]});\
@@ -164,7 +178,7 @@ public class GoogleLoginChromeClient extends WebChromeClient {
             g.renderButton(d2,{type:'standard',theme:'outline',size:'large',\
             width:Math.round(h.getBoundingClientRect().width)||340,text:'continue_with'});\
             }catch(e){d2.__tb=0;}}\
-            if(d2.__tb&&h.querySelector('iframe')){clearInterval(t);return;}}\
+            if(d2.__tb&&h.querySelector('iframe')){addGmsButton(h);clearInterval(t);return;}}\
             if(++n>300)clearInterval(t);},50);})()\
             """;
 
@@ -204,6 +218,30 @@ public class GoogleLoginChromeClient extends WebChromeClient {
 
     static int backButtonId() {
         return 0;
+    }
+
+    public static boolean onLoginPrompt(WebView view, String url, String message, String defaultValue,
+            JsPromptResult result) {
+        Uri uri = Uri.parse((url != null) ? url : "");
+        if (!"https".equals(uri.getScheme()) || uri.getPath() == null || !uri.getPath().contains(LOGIN_PATH)
+                || message == null || !message.startsWith(GMS_CORE_PROMPT_PREFIX)) {
+            return false;
+        }
+        boolean available = PatchSettings.hasGmsCoreSignIn();
+        String request = message.substring(GMS_CORE_PROMPT_PREFIX.length());
+        if ("available".equals(request)) {
+            result.confirm(available ? "yes" : "no");
+            return true;
+        }
+        Activity activity = activityOf(view.getContext());
+        if ("signin".equals(request) && available && activity != null && !activity.isFinishing() && defaultValue != null
+                && defaultValue.endsWith(GOOGLE_CLIENT_ID_SUFFIX)) {
+            result.confirm("");
+            PatchSettings.startGmsCoreSignIn(activity, defaultValue, view);
+            return true;
+        }
+        result.cancel();
+        return true;
     }
 
     private static void applyDarkTheme(WebView view) {

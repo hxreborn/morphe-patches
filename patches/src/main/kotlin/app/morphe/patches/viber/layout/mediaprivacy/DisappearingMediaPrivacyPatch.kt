@@ -8,11 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patcher.util.registersUsed
 import app.morphe.patcher.util.smali.ExternalLabel
@@ -39,7 +39,7 @@ private const val UPDATE_READ_STATE = "$EXTENSION_CLASS->updateReadState(Ljava/l
 private const val SCREENSHOT_EVENT_PARAMETER = "p5"
 
 @Suppress("unused")
-val disappearingMediaPrivacyPatch: BytecodePatch = bytecodePatch(
+val disappearingMediaPrivacyPatch: Patch = patch(
     name = "Disappearing media privacy",
     description = "Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat.",
 ) {
@@ -49,8 +49,8 @@ val disappearingMediaPrivacyPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("disappearingMediaPrivacy", disappearingMediaPrivacyPatch)
-        ScreenshotTakenFingerprint.matchSingle().method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disappearingMediaPrivacy()Z")
-        SecretEventSendFingerprint.matchSingle().method.apply {
+        ScreenshotTakenFingerprint.method.returnWhenEnabled("$VIBER_SETTINGS_CLASS->disappearingMediaPrivacy()Z")
+        SecretEventSendFingerprint.method.apply {
             val register = getFreeRegisterProvider(0, 1).getFreeRegister4Bit()
             addInstructionsWithLabels(
                 0,
@@ -63,7 +63,7 @@ val disappearingMediaPrivacyPatch: BytecodePatch = bytecodePatch(
                 ExternalLabel("original", getInstruction(0)),
             )
         }
-        val timestampWriter = ReadTimestampWriteFingerprint.matchSingle()
+        val timestampWriter = ReadTimestampWriteFingerprint.match()
         val (selectionConstant, _) = timestampWriter.instructionMatches
         val inferredUpdate = ImmutableMethod(
             EXTENSION_CLASS,
@@ -88,11 +88,11 @@ val disappearingMediaPrivacyPatch: BytecodePatch = bytecodePatch(
             methods.remove(methods.single { it.name == inferredUpdate.name })
             methods.add(inferredUpdate)
         }
-        inferredReadReceiptFingerprint(timestampWriter.originalMethod).matchSingle().apply {
+        inferredReadReceiptFingerprint(timestampWriter.originalMethod).match().apply {
             val (_, updateCall) = instructionMatches
             method.replaceInstruction(updateCall.index, staticInvoke(updateCall.instruction, descriptor(inferredUpdate)))
         }
-        ReadReceiptEnqueueFingerprint.matchSingle().apply {
+        ReadReceiptEnqueueFingerprint.match().apply {
             val (_, updateCall) = instructionMatches
             val update = updateCall.instruction.getReference<MethodReference>()!!
             mutableClassDefBy(EXTENSION_CLASS).replaceStub(

@@ -8,9 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.ClassDef
@@ -22,7 +21,7 @@ import app.morphe.patches.shared.misc.extension.botimMainTabsExtensionPatch
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/botim/MainTabs;"
 
 @Suppress("unused")
-val hideHomeTabPatch = bytecodePatch(
+val hideHomeTabPatch = patch(
     name = "Hide Home tab",
     description = "Hides the Home tab from the bottom bar and opens the app on Calls.",
     default = false,
@@ -31,7 +30,7 @@ val hideHomeTabPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.BOTIM)
 
     execute {
-        val factory = TabFragmentFactoryFingerprint.matchSingle()
+        val factory = TabFragmentFactoryFingerprint.match()
         val (homeTypeMatch, _, callsTypeMatch) = factory.instructionMatches
         val homeTabType = homeTypeMatch.instruction.getReference<TypeReference>()!!.type
         val callsTabType = callsTypeMatch.instruction.getReference<TypeReference>()!!.type
@@ -39,7 +38,7 @@ val hideHomeTabPatch = bytecodePatch(
         val homeTabGetter = factory.classDef.tabGetter(homeTabType)
         val callsTabGetter = factory.classDef.tabGetter(callsTabType)
 
-        SelectedTabInitializerFingerprint.matchSingle().method.apply {
+        SelectedTabInitializerFingerprint.method.apply {
             val homeTabCall = instructions.single { instruction ->
                 val call = instruction.getReference<MethodReference>()
                 instruction.opcode == Opcode.INVOKE_VIRTUAL &&
@@ -52,7 +51,7 @@ val hideHomeTabPatch = bytecodePatch(
             )
         }
 
-        TabMapFingerprint.matchSingle().method.apply {
+        TabMapFingerprint.method.apply {
             val returnInstruction = instructions.single { it.opcode == Opcode.RETURN_OBJECT }
             val tabsRegister = (returnInstruction as OneRegisterInstruction).registerA
             addInstructions(

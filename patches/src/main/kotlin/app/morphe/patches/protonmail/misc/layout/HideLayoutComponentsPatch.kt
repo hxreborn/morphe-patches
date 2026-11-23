@@ -4,9 +4,8 @@
  */
 package app.morphe.patches.protonmail.misc.layout
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.proton.markFeaturePatched
@@ -16,7 +15,7 @@ import app.morphe.patches.shared.misc.proton.returnVoidWhen
 private const val SIDEBAR_ENTRIES_CLASS = "Lapp/hxreborn/extension/protonmail/SidebarEntries;"
 
 @Suppress("unused")
-val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
+val hideLayoutComponentsPatch: Patch = patch(
     name = "Hide layout components",
     description = "Adds settings to hide the Subscription and Report a problem sidebar entries.",
 ) {
@@ -27,9 +26,9 @@ val hideLayoutComponentsPatch: BytecodePatch = bytecodePatch(
         markPatchMetadata("hideLayoutComponents", hideLayoutComponentsPatch)
         markFeaturePatched(SIDEBAR_ENTRIES_CLASS)
 
-        SubscriptionEntryFingerprint.matchSingle().method
+        SubscriptionEntryFingerprint.method
             .returnVoidWhen("$SIDEBAR_ENTRIES_CLASS->isSubscriptionHidden()Z")
-        ReportAProblemEntryFingerprint.matchSingle().method
+        ReportAProblemEntryFingerprint.method
             .returnVoidWhen("$SIDEBAR_ENTRIES_CLASS->isReportAProblemHidden()Z")
     }
 }

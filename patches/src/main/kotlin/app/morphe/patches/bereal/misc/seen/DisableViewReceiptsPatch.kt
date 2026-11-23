@@ -7,11 +7,10 @@ package app.morphe.patches.bereal.misc.seen
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.instructionMatch
@@ -20,7 +19,6 @@ import app.morphe.patches.bereal.misc.settings.settingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 private const val EXTENSION_CLASS = "${BEREAL_EXTENSION_PACKAGE}seen/ViewReceipts;"
@@ -29,7 +27,7 @@ private fun Match.returnSuccessWhenSkipped() {
     val success = instructionMatch(Opcode.NEW_INSTANCE)
         .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
     val unit = instructionMatch(Opcode.SGET_OBJECT)
-        .getInstruction<ReferenceInstruction>().getReference<FieldReference>()!!
+        .fieldReference
     val registers = method.getFreeRegisterProvider(0, 2)
     val result = registers.getFreeRegister4Bit()
     val value = registers.getFreeRegister4Bit()
@@ -49,7 +47,7 @@ private fun Match.returnSuccessWhenSkipped() {
 }
 
 @Suppress("unused")
-val disableViewReceiptsPatch: BytecodePatch = bytecodePatch(
+val disableViewReceiptsPatch: Patch = patch(
     name = "Disable view receipts",
     description = "Stops sending which BeReals you viewed and which chats you opened.",
 ) {
@@ -59,10 +57,10 @@ val disableViewReceiptsPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched(EXTENSION_CLASS, disableViewReceiptsPatch)
 
-        val requestType = MarkPostsAsSeenRpcFingerprint.matchSingle().method.parameterTypes.first().toString()
-        markPostsAsSeenRepositoryFingerprint(requestType).matchSingle().returnSuccessWhenSkipped()
+        val requestType = MarkPostsAsSeenRpcFingerprint.method.parameterTypes.first().toString()
+        markPostsAsSeenRepositoryFingerprint(requestType).match().returnSuccessWhenSkipped()
 
-        val operationType = EnterChatOperationFingerprint.matchSingle().classDef.type
-        enterChatRepositoryFingerprint(operationType).matchSingle().returnSuccessWhenSkipped()
+        val operationType = EnterChatOperationFingerprint.match().classDef.type
+        enterChatRepositoryFingerprint(operationType).match().returnSuccessWhenSkipped()
     }
 }

@@ -11,9 +11,8 @@
 package app.morphe.patches.protonvpn.misc.telemetry
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonvpn.misc.anchors.resourceFieldsPatch
 import app.morphe.patches.protonvpn.misc.anchors.unitInstanceField
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -24,7 +23,7 @@ import app.morphe.patches.shared.misc.proton.markPatchApplied
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
 @Suppress("unused")
-val disableTelemetryPatch: BytecodePatch = bytecodePatch(
+val disableTelemetryPatch: Patch = patch(
     name = "Disable telemetry",
     description = "Stops sending usage statistics and diagnostics to Proton.",
 ) {
@@ -34,7 +33,7 @@ val disableTelemetryPatch: BytecodePatch = bytecodePatch(
     execute {
         markPatchApplied(VPN_SETTINGS_CLASS, "disableTelemetry", disableTelemetryPatch)
         ObservabilityEnabledFingerprint.matchAll().forEach {
-            val flagRead = it.instructionMatches.last()
+            val (_, _, flagRead) = it.instructionMatches
             it.method.addInstructions(
                 flagRead.index + 1,
                 "const/16 v${flagRead.getInstruction<OneRegisterInstruction>().registerA}, 0x0",
@@ -44,9 +43,9 @@ val disableTelemetryPatch: BytecodePatch = bytecodePatch(
             sget-object p0, $unitInstanceField
             return-object p0
         """
-        VpnTelemetryEventFingerprint.matchSingle().method.addInstructions(0, returnUnit)
-        ObservabilityUploadFingerprint.matchSingle().method.addInstructions(0, returnUnit)
-        CoreTelemetryEnqueueFingerprint.matchSingle().method.addInstructions(0, returnUnit)
-        PaymentsObservabilityWorkerFingerprint.matchSingle().method.addInstructions(0, returnUnit)
+        VpnTelemetryEventFingerprint.method.addInstructions(0, returnUnit)
+        ObservabilityUploadFingerprint.method.addInstructions(0, returnUnit)
+        CoreTelemetryEnqueueFingerprint.method.addInstructions(0, returnUnit)
+        PaymentsObservabilityWorkerFingerprint.method.addInstructions(0, returnUnit)
     }
 }

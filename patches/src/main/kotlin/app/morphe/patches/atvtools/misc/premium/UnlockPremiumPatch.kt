@@ -5,21 +5,13 @@
 package app.morphe.patches.atvtools.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.atvtools.misc.fix.signature.disableSignatureCheckPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.util.indexOfFirstInstructionOrThrow
-import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all features and removes the ads.",
 ) {
@@ -27,13 +19,11 @@ val unlockPremiumPatch = bytecodePatch(
     dependsOn(disableSignatureCheckPatch)
 
     execute {
-        val purchaseType = PurchaseGetProductsFingerprint.matchSingle().classDef.type
+        val purchaseType = PurchaseGetProductsFingerprint.match().classDef.type
 
-        BillingHelperConstructorFingerprint.matchSingle().apply {
-            val purchasesFlowStore = instructionMatches.last()
-            val purchasesFlowField = purchasesFlowStore
-                .getInstruction<ReferenceInstruction>()
-                .getReference<FieldReference>()!!
+        BillingHelperConstructorFingerprint.match().apply {
+            val (_, _, purchasesFlowStore) = instructionMatches
+            val purchasesFlowField = purchasesFlowStore.fieldReference
 
             method.apply {
                 val index = purchasesFlowStore.index + 1
@@ -59,13 +49,10 @@ val unlockPremiumPatch = bytecodePatch(
             }
         }
 
-        PremiumActivityOnCreateFingerprint.matchSingle().method.apply {
-            val superCallIndex = indexOfFirstInstructionOrThrow {
-                opcode == Opcode.INVOKE_SUPER &&
-                    getReference<MethodReference>()?.name == "onCreate"
-            }
-            addInstructions(
-                superCallIndex + 1,
+        PremiumActivityOnCreateFingerprint.match().apply {
+            val (superOnCreate) = instructionMatches
+            method.addInstructions(
+                superOnCreate.index + 1,
                 """
                     invoke-virtual { p0 }, Ldev/vodik7/atvtools/PremiumActivity;->finish()V
                     return-void

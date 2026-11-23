@@ -5,7 +5,7 @@
 package app.morphe.patches.jujo.misc.premium
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
@@ -44,7 +44,7 @@ private const val LOOKUP_DOCUMENT_FETCH_OFFSET = 0
 private const val LOOKUP_CLASS_CHECK_OFFSET = 64
 
 @Suppress("unused")
-val unlockPremiumPatch = resourcePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks unlimited journals and widgets, premium templates, brushes, papers, stamp options, " +
         "HD video export without a watermark, more pictures per page, longer PDF imports " +

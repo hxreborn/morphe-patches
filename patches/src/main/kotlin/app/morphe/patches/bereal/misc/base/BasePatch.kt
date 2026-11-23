@@ -4,10 +4,10 @@
  */
 package app.morphe.patches.bereal.misc.base
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.bereal.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 
-internal val beRealBasePatch = bytecodePatch {
+internal val beRealBasePatch = patch {
     dependsOn(removePairipProtectionPatch, spoofSignaturePatch)
 }

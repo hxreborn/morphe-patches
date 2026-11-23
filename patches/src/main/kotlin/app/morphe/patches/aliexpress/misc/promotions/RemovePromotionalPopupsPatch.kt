@@ -10,9 +10,8 @@
  */
 package app.morphe.patches.aliexpress.misc.promotions
 
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
 import app.morphe.patches.aliexpress.misc.signin.spoofSignaturePatch
@@ -21,7 +20,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 private const val PATCH_SETTINGS_CLASS = "Lapp/hxreborn/extension/aliexpress/PatchSettings;"
 
 @Suppress("unused")
-val removePromotionalPopupsPatch: BytecodePatch = bytecodePatch(
+val removePromotionalPopupsPatch: Patch = patch(
     name = "Remove promotional popups",
     description = "Stops coupon offers opening over Home and search results.",
 ) {
@@ -30,6 +29,6 @@ val removePromotionalPopupsPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("removePromotionalPopups", removePromotionalPopupsPatch)
-        (PromotionActivityFingerprint.matchOrNull() ?: PromotionEventFingerprint.matchSingle()).method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->removePromotionalPopups()Z")
+        (PromotionActivityFingerprint.matchOrNull() ?: PromotionEventFingerprint.match()).method.returnWhenEnabled("$PATCH_SETTINGS_CLASS->removePromotionalPopups()Z")
     }
 }

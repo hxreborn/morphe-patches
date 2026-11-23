@@ -4,11 +4,10 @@
  */
 package app.morphe.patches.protonpass.misc.loadingindicator
 
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonpass.misc.settings.patchesSettingsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.extension.protonLoadingIndicatorExtensionPatch
@@ -22,7 +21,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val ANDROID_VIEW_PARAMETERS = 5
 
 @Suppress("unused")
-val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
+val loadingIndicatorPatch: Patch = patch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
@@ -53,8 +52,9 @@ val loadingIndicatorPatch: BytecodePatch = bytecodePatch(
                 div-float/2addr $progress, $scratch
             """
         }
-        PullRefreshIndicatorSizeFingerprint.matchSingle().let { match ->
-            resizeLoadingIndicatorContainer(match.method, match.instructionMatches.last())
+        PullRefreshIndicatorSizeFingerprint.match().let { match ->
+            val (_, sizeModifier) = match.instructionMatches
+            resizeLoadingIndicatorContainer(match.method, sizeModifier)
         }
     }
 }

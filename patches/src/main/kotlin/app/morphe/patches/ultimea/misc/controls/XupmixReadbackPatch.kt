@@ -8,11 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -21,7 +21,6 @@ import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstructio
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction3rc
 import com.android.tools.smali.dexlib2.immutable.reference.ImmutableMethodReference
@@ -31,14 +30,14 @@ private const val CALLBACKS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/contro
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/ultimea/controls/XupmixReadback;"
 
-internal val xupmixReadbackPatch = bytecodePatch {
+internal val xupmixReadbackPatch = patch {
     dependsOn(ultimeaSettingsExtensionPatch)
     execute {
         listOf(WriteCharacteristicFingerprint, WriteCharacteristicWithValueFingerprint).forEach { fingerprint ->
-            val match = fingerprint.matchSingle()
+            val match = fingerprint.match()
             val (write) = match.instructionMatches
-            val call = match.method.getInstruction<Instruction>(write.index)
-            val reference = call.getReference<MethodReference>()!!
+            val call = write.instruction
+            val reference = write.methodReference
             val wrapper = ImmutableMethodReference(
                 EXTENSION_CLASS_DESCRIPTOR,
                 "writeCharacteristic",
@@ -67,9 +66,9 @@ internal val xupmixReadbackPatch = bytecodePatch {
             match.method.replaceInstruction(write.index, replacement)
         }
 
-        val written = CharacteristicWrittenFingerprint.matchSingle().method
-        val received = CharacteristicReceivedFingerprint.matchSingle().method
-        val connection = ConnectionChangedFingerprint.matchSingle().method
+        val written = CharacteristicWrittenFingerprint.method
+        val received = CharacteristicReceivedFingerprint.method
+        val connection = ConnectionChangedFingerprint.method
         if (written.definingClass != received.definingClass || written.definingClass != connection.definingClass) {
             throw PatchException("Expected one Bluetooth callback class")
         }
@@ -126,9 +125,9 @@ internal val xupmixReadbackPatch = bytecodePatch {
                 nop
             """,
         )
-        val factory = GattConnectionFactoryFingerprint.matchSingle()
+        val factory = GattConnectionFactoryFingerprint.match()
         val (contextRead, callbackRead, transportConstant, connect) = factory.instructionMatches
-        val registration = GattRegistrationFingerprint.matchSingle()
+        val registration = GattRegistrationFingerprint.match()
         if (registration.method != factory.method) throw PatchException("Expected one Bluetooth connection factory")
         val (_, connectingRead, _, autoRead) = registration.instructionMatches
         fun field(index: Int) = factory.method.getInstruction<Instruction>(index).getReference<FieldReference>()
@@ -137,9 +136,9 @@ internal val xupmixReadbackPatch = bytecodePatch {
         val callbackField = field(callbackRead.index)
         val connectingField = field(connectingRead.index)
         val autoField = field(autoRead.index)
-        val transport = factory.method.getInstruction<NarrowLiteralInstruction>(transportConstant.index).narrowLiteral
-        val transportRegister = factory.method.getInstruction<OneRegisterInstruction>(transportConstant.index).registerA
-        val connectCall = factory.method.getInstruction<Instruction>(connect.index)
+        val transport = transportConstant.getInstruction<NarrowLiteralInstruction>().narrowLiteral
+        val transportRegister = transportConstant.getInstruction<OneRegisterInstruction>().registerA
+        val connectCall = connect.instruction
         val connectTransportRegister = when (connectCall) {
             is FiveRegisterInstruction -> connectCall.registerG
             is RegisterRangeInstruction -> connectCall.startRegister + connectCall.registerCount - 1

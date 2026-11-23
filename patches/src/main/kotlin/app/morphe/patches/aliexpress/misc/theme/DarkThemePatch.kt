@@ -9,12 +9,13 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.decode
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.aliexpress.misc.settings.markPatchApplied
 import app.morphe.patches.aliexpress.misc.settings.returnWhenEnabled
@@ -36,10 +37,10 @@ private const val TEMPLATE_NODES_CLASS = "Lapp/hxreborn/extension/aliexpress/Tem
 private const val LIGHT_THEME_PARENT_PREFIX = "@android:style/Theme.Material.Light"
 private const val LIGHT_MARKER = ".Light"
 
-private val themeResourcesPatch = resourcePatch {
+private val themeResourcesPatch = patch {
     execute {
         decode("res/layout*", "res/drawable*", "res/color*", "res/values*/styles.xml", "res/values*/colors.xml")
-        DarkResources(get("res")).rewrite()
+        DarkResources(resourceFile("res")).rewrite()
         document("res/values/styles.xml").use { base ->
             document("res/values-night/styles.xml").use { night ->
                 val styles = base.getElementsByTagName("style")
@@ -58,7 +59,7 @@ private val themeResourcesPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val darkThemePatch: BytecodePatch = bytecodePatch(
+val darkThemePatch: Patch = patch(
     name = "Fix dark mode",
     description = "Fixes the screens and web pages the built-in Dark mode leaves white. Requires Android 10 or later.",
 ) {
@@ -67,11 +68,11 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("darkTheme", darkThemePatch)
-        ActivityConfigurationFingerprint.matchSingle().method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
-        DefaultNightModeFingerprint.matchSingle().method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
-        val darkModeEnabledMatch = DarkModeEnabledFingerprint.matchOrNull(DefaultNightModeFingerprint.matchSingle().classDef)
+        ActivityConfigurationFingerprint.method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
+        DefaultNightModeFingerprint.method.returnWhenEnabled("$DARK_THEME_CLASS->followsDarkMode()Z")
+        val darkModeEnabledMatch = DarkModeEnabledFingerprint.matchOrNull(DefaultNightModeFingerprint.match().classDef)
         if (darkModeEnabledMatch == null) {
-            val serverFlag = DarkModeServerFlagFingerprint.matchSingle().method
+            val serverFlag = DarkModeServerFlagFingerprint.method
             serverFlag.findInstructionIndicesReversedOrThrow(Opcode.RETURN).forEach { index ->
                 val register = serverFlag.getInstruction<OneRegisterInstruction>(index).registerA
                 serverFlag.addInstructionsAtControlFlowLabel(
@@ -105,7 +106,7 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
                 ExternalLabel("original", darkModeEnabled.getInstruction(0)),
             )
         }
-        val nativeSwitch = NativeDarkSwitchFingerprint.matchSingle().method
+        val nativeSwitch = NativeDarkSwitchFingerprint.method
         nativeSwitch.addInstructionsWithLabels(
             0,
             """
@@ -118,7 +119,7 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
             """.trimIndent(),
             ExternalLabel("original", nativeSwitch.getInstruction(0)),
         )
-        NavigationBarFillerFingerprint.matchSingle().let { match ->
+        NavigationBarFillerFingerprint.match().let { match ->
             val (_, setBackground) = match.instructionMatches
             val fill = match.method.getInstruction<FiveRegisterInstruction>(setBackground.index)
             match.method.replaceInstruction(
@@ -126,30 +127,30 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
                 "invoke-static { v${fill.registerC}, v${fill.registerD} }, $DARK_THEME_CLASS->fillNavigationBar(Landroid/view/View;I)V",
             )
         }
-        TemplateColorFingerprint.matchSingle().method.addInstructions(
+        TemplateColorFingerprint.method.addInstructions(
             0,
             """
                 invoke-static { p0, p2, p3 }, $DARK_THEME_CLASS->templateColor(Ljava/lang/Object;II)I
                 move-result p3
             """.trimIndent(),
         )
-        WebPageAttachFingerprint.matchSingle().method.addInstruction(
+        WebPageAttachFingerprint.method.addInstruction(
             0,
             "invoke-static { p0 }, $DARK_THEME_CLASS->coverWebPage(Landroid/view/View;)V",
         )
-        WebPageMessageFingerprint.matchSingle().method.addInstruction(
+        WebPageMessageFingerprint.method.addInstruction(
             0,
             "invoke-static { p0, p1 }, $DARK_THEME_CLASS->revealWebPage(Landroid/view/View;Landroid/os/Message;)V",
         )
-        BackdropImageFingerprint.matchSingle().method.addInstruction(
+        BackdropImageFingerprint.method.addInstruction(
             0,
             "invoke-static { p0, p2 }, $DARK_THEME_CLASS->dimBackdropImage(Ljava/lang/Object;Landroid/view/View;)V",
         )
-        SearchBackdropImageFingerprint.matchSingle().method.addInstruction(
+        SearchBackdropImageFingerprint.method.addInstruction(
             0,
             "invoke-static { p0, p2 }, $DARK_THEME_CLASS->dimSearchBackdropImage(Ljava/lang/Object;Landroid/view/View;)V",
         )
-        QuantityControlFingerprint.matchSingle().let { match ->
+        QuantityControlFingerprint.match().let { match ->
             val (returnVoid) = match.instructionMatches
             match.method.addInstruction(
                 returnVoid.index,
@@ -173,11 +174,11 @@ val darkThemePatch: BytecodePatch = bytecodePatch(
     }
 }
 
-private fun BytecodePatchContext.replaceTemplateNodeStubs() {
-    val parent = TemplateParentFingerprint.matchSingle().originalMethod
-    val children = TemplateChildrenFingerprint.matchSingle().originalMethod
-    val backgroundColor = TemplateBackgroundColorFingerprint.matchSingle().originalMethod
-    val homeImageNode = BackdropImageFingerprint.matchSingle().classDef.type
+private fun replaceTemplateNodeStubs() {
+    val parent = TemplateParentFingerprint.originalMethod
+    val children = TemplateChildrenFingerprint.originalMethod
+    val backgroundColor = TemplateBackgroundColorFingerprint.originalMethod
+    val homeImageNode = BackdropImageFingerprint.match().classDef.type
     with(mutableClassDefBy(TEMPLATE_NODES_CLASS)) {
         replaceStub(
             "isHomeImageNode",

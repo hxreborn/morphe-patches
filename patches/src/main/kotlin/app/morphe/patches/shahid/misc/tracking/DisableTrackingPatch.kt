@@ -5,16 +5,15 @@
 package app.morphe.patches.shahid.misc.tracking
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.deactivateFirebaseAnalyticsPatch
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 
-private val disableBugsnagReportingPatch = resourcePatch {
+private val disableBugsnagReportingPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             document.putApplicationMetaData("com.bugsnag.android.ENABLED_RELEASE_STAGES", "none")
@@ -24,7 +23,7 @@ private val disableBugsnagReportingPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disableTrackingPatch = bytecodePatch(
+val disableTrackingPatch = patch(
     name = "Disable tracking",
     description = "Stops AppsFlyer, mParticle, CleverTap, NPAW, Bugsnag, Firebase Analytics and Facebook from collecting usage data.",
 ) {
@@ -32,14 +31,14 @@ val disableTrackingPatch = bytecodePatch(
     dependsOn(disableAnalyticsCollectionPatch, deactivateFirebaseAnalyticsPatch, disableBugsnagReportingPatch)
 
     execute {
-        AppsFlyerInitFingerprint.matchSingle().method.addInstruction(0, "return-object p0")
+        AppsFlyerInitFingerprint.method.addInstruction(0, "return-object p0")
         AppsFlyerReportingFingerprint.matchAll().forEach { it.method.returnEarly() }
 
-        MParticleConfigRequestFingerprint.matchSingle().method.returnEarly()
-        MParticleUploadFingerprint.matchSingle().method.returnEarly(202)
+        MParticleConfigRequestFingerprint.method.returnEarly()
+        MParticleUploadFingerprint.method.returnEarly(202)
 
-        NpawAnalyticsEnabledFingerprint.matchSingle().method.returnEarly(false)
-        NpawEventSendFingerprint.matchSingle().method.returnEarly()
-        CleverTapQueueFlushFingerprint.matchSingle().method.returnEarly()
+        NpawAnalyticsEnabledFingerprint.method.returnEarly(false)
+        NpawEventSendFingerprint.method.returnEarly()
+        CleverTapQueueFlushFingerprint.method.returnEarly()
     }
 }

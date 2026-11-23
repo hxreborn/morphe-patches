@@ -6,7 +6,8 @@ package app.morphe.patches.protonvpn.misc.anchors
 
 import app.morphe.patcher.InstructionLocation
 import app.morphe.patcher.OpcodesFilter
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import com.android.tools.smali.dexlib2.Opcode
@@ -23,7 +24,7 @@ private var resourceIdsByField: Map<String, Long> = emptyMap()
 
 private fun FieldReference.fieldKey() = "$definingClass->$name"
 
-internal val resourceFieldsPatch = bytecodePatch {
+internal val resourceFieldsPatch = patch {
     execute {
         val resourceIds = HashMap<String, Long>()
         classDefForEach { classDef ->

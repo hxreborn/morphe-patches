@@ -6,17 +6,13 @@ package app.morphe.patches.echogram.misc.premium
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks all premium features.",
 ) {
@@ -24,14 +20,12 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.ECHOGRAM)
 
     execute {
-        val premiumStateClass = EntitlementSyncFingerprint.matchSingle().instructionMatches.last()
-            .getInstruction<ReferenceInstruction>()
-            .getReference<FieldReference>()!!
-            .definingClass
+        val (_, entitlementStore) = EntitlementSyncFingerprint.match().instructionMatches
+        val premiumStateClass = entitlementStore.fieldReference.definingClass
 
-        premiumStateInitializerFingerprint(premiumStateClass).matchSingle().apply {
-            val mutableStateFlowFactory = instructionMatches.first().getInstruction<ReferenceInstruction>().reference
-            val asStateFlowCall = instructionMatches.last()
+        premiumStateInitializerFingerprint(premiumStateClass).match().apply {
+            val (mutableStateFlowCall, _, asStateFlowCall) = instructionMatches
+            val mutableStateFlowFactory = mutableStateFlowCall.methodReference
             val register = asStateFlowCall.getInstruction<FiveRegisterInstruction>().registerC
 
             method.addInstructions(

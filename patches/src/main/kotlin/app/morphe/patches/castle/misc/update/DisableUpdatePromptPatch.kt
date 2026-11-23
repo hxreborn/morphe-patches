@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.castle.misc.update
 
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.secshell.editSecShellPayload
@@ -20,7 +20,7 @@ private const val ZERO_VERSION_CODE = """
 """
 
 @Suppress("unused")
-val disableUpdatePromptPatch = rawResourcePatch(
+val disableUpdatePromptPatch = patch(
     name = "Disable update prompt",
     description = "Disables the new version dialog and the required update.",
 ) {

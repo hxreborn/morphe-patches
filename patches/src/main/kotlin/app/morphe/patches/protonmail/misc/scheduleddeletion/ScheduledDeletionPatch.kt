@@ -6,12 +6,11 @@ package app.morphe.patches.protonmail.misc.scheduleddeletion
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.protonmail.misc.banner.answerAutoDeleteBannerCheck
 import app.morphe.patches.protonmail.misc.banner.autoDeleteBannerStatePatch
 import app.morphe.patches.protonmail.misc.settings.patchesSettingsPatch
@@ -29,7 +28,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 private const val BANNER_CLASS = "Lapp/hxreborn/extension/protonmail/ScheduledDeletionBanner;"
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/protonmail/ScheduledDeletion;"
 
-private val scheduledDeletionStringsPatch = resourcePatch {
+private val scheduledDeletionStringsPatch = patch {
     execute {
         document("res/values/strings.xml").use { document ->
             mapOf(
@@ -51,7 +50,7 @@ private val scheduledDeletionStringsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
+val scheduledDeletionPatch: Patch = patch(
     name = "Scheduled Trash and Spam deletion",
     description = "Deletes all messages in Trash and Spam on separate configurable schedules, " +
         "also while the app is closed. Deleted messages cannot be recovered.",
@@ -70,7 +69,7 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
         forwardStub(MAIL_SETTINGS_CLASS, "addScheduledDeletionRows", "Lapp/hxreborn/extension/protonmail/ScheduledDeletionRows;")
         answerAutoDeleteBannerCheck("isScheduled", "$BANNER_CLASS->isScheduled()Z")
 
-        AutoDeleteBannerTextFingerprint.matchSingle().let { match ->
+        AutoDeleteBannerTextFingerprint.match().let { match ->
             val bannerTextIndex = match.instructionMatches.single().index
             val enabledIndex = match.method.indexOfFirstInstructionReversedOrThrow(
                 bannerTextIndex,
@@ -101,17 +100,16 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
 
         listOf(ScrollMessagesForLabelFingerprint, ScrollConversationsForLabelFingerprint)
             .forEach { fingerprint ->
-                fingerprint.matchSingle().method.addInstructions(
+                fingerprint.method.addInstructions(
                     0,
                     "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->onMailboxShown(Ljava/lang/Object;)V",
                 )
             }
 
-        NewMailboxFingerprint.matchSingle().let { match ->
-            val newMailboxCall = match.instructionMatches.first()
+        NewMailboxFingerprint.match().let { match ->
+            val (newMailboxCall, mailboxResult) = match.instructionMatches
             val newMailboxInvoke = newMailboxCall.getInstruction<FiveRegisterInstruction>()
-            val moveResult = match.instructionMatches.last()
-            val resultRegister = moveResult.getInstruction<OneRegisterInstruction>().registerA
+            val resultRegister = mailboxResult.getInstruction<OneRegisterInstruction>().registerA
             val sessionRegister = match.method.getFreeRegisterProvider(
                 newMailboxCall.index, 1, newMailboxInvoke.registerC, newMailboxInvoke.registerD, resultRegister,
             ).getFreeRegister()
@@ -120,7 +118,7 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
             }
 
             match.method.addInstructions(
-                moveResult.index + 1,
+                mailboxResult.index + 1,
                 "invoke-static { v$resultRegister, v$sessionRegister }, " +
                     "$EXTENSION_CLASS->captureMailbox(Ljava/lang/Object;Ljava/lang/Object;)V",
             )
@@ -130,7 +128,7 @@ val scheduledDeletionPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        StartBackgroundExecutionFingerprint.matchSingle().method.addInstructions(
+        StartBackgroundExecutionFingerprint.method.addInstructions(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS->onBackgroundExecution(Ljava/lang/Object;)V",
         )

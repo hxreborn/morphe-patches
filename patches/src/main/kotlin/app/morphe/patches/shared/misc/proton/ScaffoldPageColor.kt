@@ -6,7 +6,8 @@ package app.morphe.patches.shared.misc.proton
 
 import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -22,7 +23,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 private const val DEFAULT_COLOR_READ_WINDOW = 7
 private const val BRIDGE_LOCALS = 3
 
-internal fun BytecodePatchContext.captureScaffoldPageColor(
+internal fun captureScaffoldPageColor(
     match: Match,
     backgroundParameter: Int,
     backgroundDefault: Int,

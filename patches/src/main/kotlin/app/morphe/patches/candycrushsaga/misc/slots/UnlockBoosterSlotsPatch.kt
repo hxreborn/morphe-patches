@@ -4,7 +4,8 @@
  */
 package app.morphe.patches.candycrushsaga.misc.slots
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.candycrushsaga.shared.candyCrushModifiersPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64StandardInstall
@@ -13,7 +14,7 @@ import app.morphe.patches.shared.misc.smali.replaceStub
 private const val MODIFIERS = "Lapp/hxreborn/extension/candycrushsaga/GameModifiers;"
 
 @Suppress("unused")
-val unlockBoosterSlotsPatch = bytecodePatch(
+val unlockBoosterSlotsPatch = patch(
     name = "Unlock booster slots",
     description = "Unlocks all booster slots from the first level.",
 ) {

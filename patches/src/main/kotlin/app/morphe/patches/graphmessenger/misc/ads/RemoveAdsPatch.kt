@@ -4,8 +4,7 @@
  */
 package app.morphe.patches.graphmessenger.misc.ads
 
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.graphmessenger.shared.licenseCheck
@@ -15,7 +14,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.ads.removeMobileAdsInitProviderPatch
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes banner, interstitial, native, app open and rewarded ads, " +
         "Graph's own promotions, Telegram sponsored messages and the proxy sponsor channel.",
@@ -28,9 +27,9 @@ val removeAdsPatch = bytecodePatch(
     execute {
         LicenseCheckFingerprint.matchAll().forEach { it.method.overrideResultsOf(licenseCheck, 1) }
 
-        AdSdkInitFingerprint.matchSingle().method.returnEarly()
-        SponsoredMessagesReadParamsFingerprint.matchSingle().method.returnEarly()
-        SponsoredPeersReadParamsFingerprint.matchSingle().method.returnEarly()
-        PromoDataRequestFingerprint.matchSingle().method.returnEarly()
+        AdSdkInitFingerprint.method.returnEarly()
+        SponsoredMessagesReadParamsFingerprint.method.returnEarly()
+        SponsoredPeersReadParamsFingerprint.method.returnEarly()
+        PromoDataRequestFingerprint.method.returnEarly()
     }
 }

@@ -8,11 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -30,7 +30,7 @@ import app.morphe.patches.shared.misc.extension.teraboxShowBackupCountExtensionP
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/terabox/BackupCount;"
 
 @Suppress("unused")
-val showBackupCountPatch: BytecodePatch = bytecodePatch(
+val showBackupCountPatch: Patch = patch(
     name = "Show backup count",
     description = "Shows remaining files on Home and Photos, including paused backups.",
 ) {
@@ -40,7 +40,7 @@ val showBackupCountPatch: BytecodePatch = bytecodePatch(
 
     execute {
         markPatchApplied("showBackupCount", showBackupCountPatch)
-        val backupQuery = BackupCountQueryFingerprint.matchSingle()
+        val backupQuery = BackupCountQueryFingerprint.match()
         val pendingQuery = ImmutableMethod.of(backupQuery.method).toMutable().apply {
             setName("patch_queryPendingBackupFiles")
         }
@@ -56,8 +56,8 @@ val showBackupCountPatch: BytecodePatch = bytecodePatch(
                 """,
             )
         }
-        val monitorType = HomeTransferMonitorFingerprint.matchSingle().classDef.type
-        val homeQuery = homeBackupQueryFingerprint(monitorType, descriptor(backupQuery.method)).matchSingle()
+        val monitorType = HomeTransferMonitorFingerprint.match().classDef.type
+        val homeQuery = homeBackupQueryFingerprint(monitorType, descriptor(backupQuery.method)).match()
         val homePendingQuery = ImmutableMethod.of(homeQuery.method).toMutable().apply {
             setName("patch_queryPendingBackupFiles")
             setAccessFlags(AccessFlags.PUBLIC.value or AccessFlags.STATIC.value)
@@ -86,11 +86,11 @@ val showBackupCountPatch: BytecodePatch = bytecodePatch(
                 """,
             )
         }
-        val stateType = BackupUiStateFingerprint.matchSingle().classDef.type
-        val pendingCount = descriptor(pendingBackupCountFingerprint(stateType).matchSingle().method)
-        val compactTitle = CompactTitleFingerprint.matchSingle().method
+        val stateType = BackupUiStateFingerprint.match().classDef.type
+        val pendingCount = descriptor(pendingBackupCountFingerprint(stateType).method)
+        val compactTitle = CompactTitleFingerprint.method
         compactBackupModuleFingerprint(stateType, descriptor(compactTitle), compactTitle.parameterTypes.first().toString())
-            .matchSingle().apply {
+            .match().apply {
                 val (_, stateRead, _, titleRead) = instructionMatches
                 val stateRegister = (stateRead.instruction as FiveRegisterInstruction).registerC
                 val titleRegister = (titleRead.instruction as OneRegisterInstruction).registerA
@@ -107,7 +107,7 @@ val showBackupCountPatch: BytecodePatch = bytecodePatch(
                     )
                 }
             }
-        val nativeTitle = nativeBackupTitleFingerprint(stateType).matchSingle()
+        val nativeTitle = nativeBackupTitleFingerprint(stateType).match()
         nativeTitle.apply {
             val (stateCast, titleWrite) = instructionMatches
             val stateRegister = (stateCast.instruction as OneRegisterInstruction).registerA
@@ -128,7 +128,7 @@ val showBackupCountPatch: BytecodePatch = bytecodePatch(
                 )
             }
         }
-        renderBackupTitleFingerprint(nativeTitle.classDef.type, descriptor(nativeTitle.method), stateType, compactTitle.parameterTypes.first().toString()).matchSingle().apply {
+        renderBackupTitleFingerprint(nativeTitle.classDef.type, descriptor(nativeTitle.method), stateType, compactTitle.parameterTypes.first().toString()).match().apply {
             val (_, stateRead, cachedStatus, _) = instructionMatches
             val stateRegister = (stateRead.instruction as FiveRegisterInstruction).registerC
             val statusField = cachedStatus.instruction.getReference<FieldReference>()!!

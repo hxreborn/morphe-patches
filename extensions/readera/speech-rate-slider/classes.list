@@ -1,2 +1,2 @@
-app/hxreborn/extension/readera/SpeechRateSlider
-app/hxreborn/extension/readera/SpeechRateTarget
+app/hxreborn/extension/readera/speech/rate/SpeechRateSlider
+app/hxreborn/extension/readera/speech/rate/SpeechRateTarget

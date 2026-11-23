@@ -7,17 +7,16 @@ package app.morphe.patches.aliexpress.misc.settings
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.BytecodePatchContext
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.shared.misc.fillAppliedPatch
+import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -35,8 +34,8 @@ private const val PATCHES_MENU_CLASS = "Lapp/hxreborn/extension/aliexpress/Patch
 
 private val ICON_NAMES = listOf("promotions", "splash", "sponsored", "images", "analytics", "updates", "reset", "info", "bundle", "expand", "back")
 
-internal fun BytecodePatchContext.markPatchApplied(methodName: String, patch: BytecodePatch) =
-    fillAppliedPatch(APPLIED_PATCHES_CLASS, methodName, patch)
+internal fun markPatchApplied(key: String, patch: Patch) =
+    addAppliedPatchMetadata(APPLIED_PATCHES_CLASS, key, patch)
 
 internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
     val returnInstructions = when (returnType) {
@@ -56,22 +55,22 @@ internal fun MutableMethod.returnWhenEnabled(settingMethod: String) {
     )
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(aliexpressSettingsExtensionPatch, sharedDimensionsExtensionPatch)
     dependsOn(
-        resourcePatch {
+        patch {
             execute {
                 ICON_NAMES.forEach { name ->
                     val fileName = "hx_aliexpress_ic_$name.xml"
                     val icon = AliExpressResources::class.java.getResourceAsStream("/aliexpress/drawable/$fileName")
                         ?: throw PatchException("Missing patch icon $fileName")
-                    icon.use { get("res/drawable/$fileName").outputStream().use(it::copyTo) }
+                    icon.use { resourceFile("res/drawable/$fileName").outputStream().use(it::copyTo) }
                 }
             }
         },
     )
     execute {
-        val switchConstructor = SwitchConstructorFingerprint.matchSingle().method
+        val switchConstructor = SwitchConstructorFingerprint.method
         mutableClassDefBy(PATCHES_MENU_CLASS).replaceResourceIdStubs(
             ResourceType.ID,
             mapOf("versionRowId" to "rl_version_settings", "versionTitleId" to "tv_version_title"),
@@ -96,11 +95,11 @@ internal val patchesSettingsPatch = bytecodePatch {
                 """.trimIndent(),
             )
         }
-        ApplicationOnCreateFingerprint.matchSingle().method.addInstruction(
+        ApplicationOnCreateFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, $PATCH_SETTINGS_CLASS->initialize(Landroid/content/Context;)V",
         )
-        SettingsViewFingerprint.matchSingle().method.apply {
+        SettingsViewFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
                 val viewRegister = getInstruction<OneRegisterInstruction>(index).registerA
                 addInstructionsAtControlFlowLabel(

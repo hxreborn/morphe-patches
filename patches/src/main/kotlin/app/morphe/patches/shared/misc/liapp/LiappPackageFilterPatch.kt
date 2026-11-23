@@ -5,17 +5,16 @@
 package app.morphe.patches.shared.misc.liapp
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.extension.sharedProxyHandlerExtensionPatch
 import app.morphe.patches.shared.misc.extension.sharedLiappPackageFilterExtensionPatch
 
 private const val EXTENSION_CLASS_DESCRIPTOR = "Lapp/hxreborn/extension/shared/LiappPackageFilter;"
 
-val liappPackageFilterPatch = bytecodePatch {
+val liappPackageFilterPatch = patch {
     dependsOn(sharedProxyHandlerExtensionPatch, sharedLiappPackageFilterExtensionPatch)
     execute {
-        LiappInitFingerprint.matchSingle().method.addInstruction(
+        LiappInitFingerprint.method.addInstruction(
             0,
             "invoke-static/range { p0 .. p0 }, $EXTENSION_CLASS_DESCRIPTOR->install(Landroid/content/Context;)V",
         )

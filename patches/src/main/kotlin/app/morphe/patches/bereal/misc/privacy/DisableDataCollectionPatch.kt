@@ -6,13 +6,12 @@ package app.morphe.patches.bereal.misc.privacy
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
@@ -23,7 +22,6 @@ import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.shared.misc.analytics.putApplicationMetaData
 import app.morphe.util.asSequence
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.berealDataCollectionExtensionPatch
@@ -37,7 +35,7 @@ private val removedPermissions = setOf(
     "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
 )
 
-private val removePermissionsAndCollectionFlagsPatch = resourcePatch {
+private val removePermissionsAndCollectionFlagsPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val manifest = document.documentElement
@@ -54,7 +52,7 @@ private val removePermissionsAndCollectionFlagsPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
+val disableDataCollectionPatch: Patch = patch(
     name = "Disable data collection",
     description = "Turns off ad tracking, Firebase crash reports and sessions, Amplitude and Datadog analytics, Adjust " +
         "attribution and the Shake bug reporter.",
@@ -72,11 +70,11 @@ val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
     execute {
         markFeaturePatched("${BEREAL_EXTENSION_PACKAGE}DataCollection;", disableDataCollectionPatch)
 
-        val start = ShakeStartCallFingerprint.matchSingle()
+        val start = ShakeStartCallFingerprint.match()
         start.method.removeInstruction(start.instructionMatches.single().index)
 
-        val upload = AmplitudeUploadFingerprint.matchSingle()
-        val factory = amplitudeResponseFactoryFingerprint(upload.method.returnType).matchSingle().method
+        val upload = AmplitudeUploadFingerprint.match()
+        val factory = amplitudeResponseFactoryFingerprint(upload.method.returnType).method
         upload.method.addInstructions(
             0,
             """
@@ -88,8 +86,8 @@ val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        val consentType = TrackingConsentEnumFingerprint.matchSingle().classDef.type
-        trackingConsentSetterFingerprint(consentType).matchSingle().method.apply {
+        val consentType = TrackingConsentEnumFingerprint.match().classDef.type
+        trackingConsentSetterFingerprint(consentType).method.apply {
             val registers = getFreeRegisterProvider(0, 2)
             val name = registers.getFreeRegister4Bit()
             val type = registers.getFreeRegister4Bit()
@@ -105,11 +103,12 @@ val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
             )
         }
 
-        val datadogUpload = DatadogUploadRequestFingerprint.matchSingle()
-        val successType = datadogUpload.instructionMatches.first()
+        val datadogUpload = DatadogUploadRequestFingerprint.match()
+        val (successAllocation, successInit) = datadogUpload.instructionMatches
+        val successType = successAllocation
             .getInstruction<ReferenceInstruction>().getReference<TypeReference>()!!.type
-        val successConstructor = datadogUpload.instructionMatches.last()
-            .getInstruction<ReferenceInstruction>().getReference<MethodReference>()!!
+        val successConstructor = successInit
+            .methodReference
         datadogUpload.method.addInstructions(
             0,
             """
@@ -123,6 +122,6 @@ val disableDataCollectionPatch: BytecodePatch = bytecodePatch(
             """,
         )
 
-        AdjustInitFingerprint.matchSingle().method.returnEarly()
+        AdjustInitFingerprint.method.returnEarly()
     }
 }

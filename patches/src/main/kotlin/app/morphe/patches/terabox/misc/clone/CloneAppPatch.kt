@@ -5,9 +5,11 @@
 package app.morphe.patches.terabox.misc.clone
 
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.classDefForEach
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
@@ -62,7 +64,7 @@ internal fun ClassDef.renameCloneStrings(renames: Map<String, String>, resolveMu
 }
 
 @Suppress("unused")
-val cloneAppPatch: BytecodePatch = bytecodePatch(
+val cloneAppPatch: Patch = patch(
     name = "Clone app",
     description = "Installs TeraBox as a separate app alongside the original, with its own account. " +
         "Each copy needs a different clone number.",
@@ -94,7 +96,7 @@ val cloneAppPatch: BytecodePatch = bytecodePatch(
 
     dependsOn(
         patchesSettingsPatch,
-        resourcePatch {
+        patch {
             execute {
                 val clonePackageName = packageName!!
                 val originalPackageName = AppCompatibilities.TERABOX.packageName!!

@@ -9,7 +9,6 @@ import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
 import app.morphe.patcher.anyInstruction
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
-import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.isFreeUserCall
 import app.morphe.patches.protonvpn.misc.anchors.propertyGetterCall
@@ -19,7 +18,7 @@ import app.morphe.patches.protonvpn.misc.restrictions.freeServerCheckFingerprint
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 
-internal fun BytecodePatchContext.profileAvailabilityFingerprint(): Fingerprint {
+internal fun profileAvailabilityFingerprint(): Fingerprint {
     val vpnUser = vpnUserType
     return Fingerprint(
         returnType = "Ljava/lang/Object;",
@@ -36,7 +35,7 @@ internal fun BytecodePatchContext.profileAvailabilityFingerprint(): Fingerprint 
 
 internal object ServerListsToStringFingerprint : ToStringFingerprint("ServerLists(allServers=")
 
-internal fun BytecodePatchContext.vpnCountriesFingerprint() = Fingerprint(
+internal fun vpnCountriesFingerprint() = Fingerprint(
     definingClass = "Lcom/protonvpn/android/utils/ServerManager;",
     returnType = "Ljava/util/List;",
     parameters = emptyList(),
@@ -50,7 +49,7 @@ internal val profileTypesToStringFingerprints = listOf("Standard", "SecureCore",
     ToStringFingerprint("$type(availableTypes=")
 }
 
-internal fun BytecodePatchContext.profileServerFilterFingerprint() = freeServerCheckFingerprint(
+internal fun profileServerFilterFingerprint() = freeServerCheckFingerprint(
     anyInstruction(
         opcode(Opcode.XOR_INT_LIT8),
         opcode(Opcode.XOR_INT_2ADDR),
@@ -62,7 +61,7 @@ internal object VpnCountryToStringFingerprint : ToStringFingerprint("VpnCountry(
 
 internal object CityStateIdToStringFingerprint : ToStringFingerprint("CityStateId(name=")
 
-internal fun BytecodePatchContext.profileCitiesOrStatesFingerprint(): Fingerprint {
+internal fun profileCitiesOrStatesFingerprint(): Fingerprint {
     val cityStateId = CityStateIdToStringFingerprint.originalClassDef.type
     return Fingerprint(
         filters = listOf(

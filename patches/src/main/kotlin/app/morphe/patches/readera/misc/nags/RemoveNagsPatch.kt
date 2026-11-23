@@ -5,7 +5,8 @@
 package app.morphe.patches.readera.misc.nags
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
 import app.morphe.patches.readera.shared.patchesSettingsPatch
@@ -14,7 +15,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
 
 @Suppress("unused")
-val removeNagsPatch = bytecodePatch(
+val removeNagsPatch = patch(
     name = "Remove nags",
     description = "Removes the rate-the-app and promotion pop-ups and the Go to Premium button.",
 ) {

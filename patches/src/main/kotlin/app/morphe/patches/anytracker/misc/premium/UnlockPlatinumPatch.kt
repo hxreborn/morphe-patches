@@ -8,9 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
@@ -22,7 +21,7 @@ private const val ENTITLEMENT = "android-platinum"
 private const val PRODUCT = "android_platinum_yearly"
 
 @Suppress("unused")
-val unlockPlatinumPatch = bytecodePatch(
+val unlockPlatinumPatch = patch(
     name = "Unlock Platinum",
     description = "Unlocks the Platinum plan with unlimited tracked items, every-minute updates, widgets, " +
         "watchlists and backups.",
@@ -34,15 +33,16 @@ val unlockPlatinumPatch = bytecodePatch(
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
 
-        RequestCustomerInfoFingerprint.matchSingle().let { match ->
-            match.method.useCachedCustomerInfo(match.instructionMatches.first().index)
+        RequestCustomerInfoFingerprint.match().let { match ->
+            val (fetchPolicyCall) = match.instructionMatches
+            match.method.useCachedCustomerInfo(fetchPolicyCall.index)
 
-            planStateConstructorFingerprint(match.classDef.type).matchSingle().let { constructor ->
+            planStateConstructorFingerprint(match.classDef.type).match().let { constructor ->
                 constructor.method.loadPlatinumPlan(constructor.instructionMatches.single().index)
             }
         }
 
-        FetchPlanFingerprint.matchSingle().let { match ->
+        FetchPlanFingerprint.match().let { match ->
             val (invalidateCacheIndex, fetchPolicyIndex, _, basicFallbackIndex) =
                 match.instructionMatches.map { it.index }
             match.method.apply {

@@ -8,9 +8,8 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.netanalyzer.shared.EXTENSION_PACKAGE
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MenuSection
@@ -35,7 +34,7 @@ private const val SHOW_USAGE_PAGE = 1
 private const val CHANNEL_USAGE_ACTIVITY = "ChannelUsageActivity"
 
 @Suppress("unused")
-val channelUsagePatch = bytecodePatch(
+val channelUsagePatch = patch(
     name = "Wi-Fi channel usage",
     description = "Adds a chart of how busy each Wi-Fi channel is, stacking the networks that share it.",
 ) {
@@ -47,7 +46,7 @@ val channelUsagePatch = bytecodePatch(
     execute {
         addMenuEntry(MenuSection.NETWORK, "Channel Usage", CHANNEL_USAGE_ACTIVITY)
 
-        val menu = composableFingerprint(WIFI_PAGER_MENU).matchSingle()
+        val menu = composableFingerprint(WIFI_PAGER_MENU).match()
         val parameters = menu.composableParameters()
         val usagePageIndex = parameters.indexOf(HAS_USAGE_PAGE)
         if (usagePageIndex < 0) throw PatchException("$WIFI_PAGER_MENU takes $parameters, expected $HAS_USAGE_PAGE")
@@ -58,14 +57,14 @@ val channelUsagePatch = bytecodePatch(
         val usagePageRegister = method.implementation!!.registerCount - MethodUtil.getParameterRegisterCount(method) + usagePageIndex
         method.addInstruction(0, "const/16 v$usagePageRegister, $SHOW_USAGE_PAGE")
 
-        val usageItem = ChannelUsageMenuItemFingerprint.matchSingle()
-        val itemCall = usageItem.instructionMatches.last()
+        val usageItem = ChannelUsageMenuItemFingerprint.match()
+        val (_, _, itemCall) = usageItem.instructionMatches
         val onClickRegister = itemCall.getInstruction<FiveRegisterInstruction>().registerE
         val onClickType = usageItem.method.instructions.take(itemCall.index).last {
             it.opcode == Opcode.NEW_INSTANCE && (it as OneRegisterInstruction).registerA == onClickRegister
         }.getReference<TypeReference>()!!.type
 
-        val selection = pageSelectionFingerprint(onClickType).matchSingle()
+        val selection = pageSelectionFingerprint(onClickType).match()
         val (pageLiteral, selectPage, savePage) = selection.instructionMatches
         val register = pageLiteral.getInstruction<OneRegisterInstruction>().registerA
         requireNibbleRegisters(register)

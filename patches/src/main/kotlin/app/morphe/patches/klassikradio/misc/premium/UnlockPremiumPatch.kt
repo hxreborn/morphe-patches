@@ -7,9 +7,8 @@ package app.morphe.patches.klassikradio.misc.premium
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
@@ -17,7 +16,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 @Suppress("unused")
-val unlockPremiumPatch = bytecodePatch(
+val unlockPremiumPatch = patch(
     name = "Unlock premium",
     description = "Unlocks the premium music channels, on-demand playback and unlimited track skipping, " +
         "and hides the trial banner. Requires a signed-in account.",
@@ -25,26 +24,29 @@ val unlockPremiumPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.KLASSIK_RADIO)
 
     execute {
-        val subscriptionType = SubscriptionTypeFingerprint.matchSingle()
-        val premium = subscriptionType.instructionMatches.last()
+        val subscriptionType = SubscriptionTypeFingerprint.match()
+        val (_, premiumEnumStore) = subscriptionType.instructionMatches
+        val premium = premiumEnumStore
             .getInstruction<ReferenceInstruction>()
             .getReference<FieldReference>()!!
 
-        contractConstructorFingerprint(subscriptionType.classDef.type).matchSingle().apply {
-            val index = instructionMatches.first().index
+        contractConstructorFingerprint(subscriptionType.classDef.type).match().apply {
+            val (subscriptionStore) = instructionMatches
+            val index = subscriptionStore.index
             val register = method.getInstruction<TwoRegisterInstruction>(index).registerA
 
             method.addInstruction(index, "sget-object v$register, $premium")
         }
 
-        SectionTypeDecoderFingerprint.matchSingle().apply {
-            val index = instructionMatches.last().index
+        SectionTypeDecoderFingerprint.match().apply {
+            val (_, _, sectionOrdinal) = instructionMatches
+            val index = sectionOrdinal.index
             val register = method.getInstruction<OneRegisterInstruction>(index).registerA
 
             method.addInstruction(index + 1, "const/4 v$register, 0x0")
         }
 
-        SkipToStringFingerprint.matchSingle().classDef.methods
+        SkipToStringFingerprint.match().classDef.methods
             .single { it.name == "<init>" && it.parameterTypes == listOf("I", "Z") }
             .addInstructionsWithLabels(
                 0,

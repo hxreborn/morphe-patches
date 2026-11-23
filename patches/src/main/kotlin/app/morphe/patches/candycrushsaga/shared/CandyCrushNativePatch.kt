@@ -5,7 +5,10 @@
 package app.morphe.patches.candycrushsaga.shared
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.packageMetadata
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.sha256Hex
 import org.w3c.dom.Element
@@ -31,10 +34,10 @@ internal fun candyCrushNativeBuild(packageName: String): CandyCrushNativeBuild =
     else -> throw PatchException("Unsupported Candy Crush package: $packageName")
 }
 
-internal val candyCrushNativePatch = resourcePatch {
+internal val candyCrushNativePatch = patch {
     execute {
         val build = candyCrushNativeBuild(packageMetadata.packageName)
-        val gameLibrary = get(build.libraryEntry)
+        val gameLibrary = resourceFile(build.libraryEntry)
         if (!gameLibrary.isFile) throw PatchException("Missing Candy Crush native library")
         val hash = gameLibrary.sha256Hex()
         if (hash != build.sha256Hex) {

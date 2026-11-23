@@ -26,12 +26,6 @@ patches {
     }
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-parameters")
-    }
-}
-
 java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
@@ -146,6 +140,7 @@ tasks {
     }
 
     val desugarPatchesClasses = register("desugarPatchesClasses") {
+        description = "Desugars the patches file classes to API level 26 for the Android API check"
         val patchesFile = jar.flatMap { it.archiveFile }
         val classpath = sourceSets["main"].compileClasspath
         val output = layout.buildDirectory.file("animalsniffer/patches-desugared.jar")
@@ -171,6 +166,7 @@ tasks {
     }
 
     val extractPatchesClasses = register<Sync>("extractPatchesClasses") {
+        description = "Extracts the desugared patches classes for the Android API check"
         from(desugarPatchesClasses.map { zipTree(it.outputs.files.singleFile) }) {
             include("**/*.class")
         }

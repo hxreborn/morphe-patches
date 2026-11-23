@@ -4,9 +4,10 @@
  */
 package app.morphe.patches.shared.misc.extension
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 
-internal val webTapHighlightHighlightExtensionPatch = bytecodePatch {
+
+internal val webTapHighlightHighlightExtensionPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch)
     extendWith("extensions/hxreborn/web-tap-highlight-highlight.mpe")
 }

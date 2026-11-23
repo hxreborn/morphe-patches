@@ -4,13 +4,13 @@
  */
 package app.morphe.patches.audiomack.misc.gms
 
-import app.morphe.patcher.patch.BytecodePatch
+import app.morphe.patcher.patch.Patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.gms.gmsCoreSupportPatchFor
 import app.morphe.patches.shared.misc.gms.playServicesCredentialProviderPatch
 
 @Suppress("unused")
-val gmsCoreSupportPatch: BytecodePatch = gmsCoreSupportPatchFor(
+val gmsCoreSupportPatch: Patch = gmsCoreSupportPatchFor(
     AppCompatibilities.AUDIOMACK,
     playServicesCredentialProviderPatch,
     default = true,

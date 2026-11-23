@@ -30,7 +30,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-final class SpeechScreenLock {
+public final class SpeechScreenLock {
 
     static final String TITLE = "Lock screen on Read chapter aloud";
 
@@ -90,7 +90,7 @@ final class SpeechScreenLock {
         }
     }
 
-    static void onChapterSpeechStart(Context context) {
+    public static void onChapterSpeechStart(Context context) {
         if (!applied() || context == null || !enabled(context)) {
             return;
         }

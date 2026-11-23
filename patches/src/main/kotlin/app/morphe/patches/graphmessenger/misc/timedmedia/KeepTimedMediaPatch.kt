@@ -8,8 +8,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.graphmessenger.misc.fix.signature.spoofSignaturePatch
@@ -20,7 +19,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 @Suppress("unused")
-val keepTimedMediaPatch = bytecodePatch(
+val keepTimedMediaPatch = patch(
     name = "Keep timed media",
     description = "Stops photos, videos and voice messages with a timer from self-destructing after you open them. " +
         "Media Telegram's servers already deleted can't be restored.",
@@ -31,17 +30,18 @@ val keepTimedMediaPatch = bytecodePatch(
     dependsOn(spoofSignaturePatch)
 
     execute {
-        IsSecretMediaFingerprint.matchSingle().method.returnEarly(false)
-        IsVoiceOnceFingerprint.matchSingle().method.returnEarly(false)
-        IsRoundOnceFingerprint.matchSingle().method.returnEarly(false)
+        IsSecretMediaFingerprint.method.returnEarly(false)
+        IsVoiceOnceFingerprint.method.returnEarly(false)
+        IsRoundOnceFingerprint.method.returnEarly(false)
 
-        NeedDrawBluredPreviewFingerprint.matchSingle().let { match ->
-            val moveResult = match.instructionMatches.last().index
-            val register = match.method.getInstruction<OneRegisterInstruction>(moveResult).registerA
+        NeedDrawBluredPreviewFingerprint.match().let { match ->
+            val (_, hasExtendedMediaPreviewResult) = match.instructionMatches
+            val moveResult = hasExtendedMediaPreviewResult.index
+            val register = hasExtendedMediaPreviewResult.getInstruction<OneRegisterInstruction>().registerA
             match.method.addInstruction(moveResult + 1, "return v$register")
         }
 
-        ShouldEncryptPhotoOrVideoFingerprint.matchSingle().method.apply {
+        ShouldEncryptPhotoOrVideoFingerprint.method.apply {
             (findInstructionIndicesReversed(mediaTimerRead) + findInstructionIndicesReversed(messageTimerRead))
                 .forEach { index ->
                     val register = getInstruction<TwoRegisterInstruction>(index).registerA
@@ -49,7 +49,7 @@ val keepTimedMediaPatch = bytecodePatch(
                 }
         }
 
-        MarkMessageContentAsReadFingerprint.matchSingle().method.apply {
+        MarkMessageContentAsReadFingerprint.method.apply {
             val messageObject = parameterTypes.first()
             addInstructionsWithLabels(
                 0,

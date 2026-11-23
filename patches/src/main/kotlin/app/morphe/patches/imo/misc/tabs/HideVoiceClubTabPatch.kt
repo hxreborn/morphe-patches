@@ -5,8 +5,7 @@
 package app.morphe.patches.imo.misc.tabs
 
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
@@ -17,7 +16,7 @@ import app.morphe.patches.shared.misc.extension.imoHideVoiceClubTabExtensionPatc
 private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/imo/HomeTabs;"
 
 @Suppress("unused")
-val hideVoiceClubTabPatch = bytecodePatch(
+val hideVoiceClubTabPatch = patch(
     name = "Hide Voice Club tab",
     description = "Removes the Voice Club tab from the home screen.",
 ) {
@@ -25,7 +24,7 @@ val hideVoiceClubTabPatch = bytecodePatch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        HomeTabIdsFingerprint.matchSingle().method.apply {
+        HomeTabIdsFingerprint.method.apply {
             findInstructionIndicesReversedOrThrow(Opcode.RETURN_OBJECT).forEach { index ->
                 val register = getInstruction<OneRegisterInstruction>(index).registerA
                 addInstructionsAtControlFlowLabel(

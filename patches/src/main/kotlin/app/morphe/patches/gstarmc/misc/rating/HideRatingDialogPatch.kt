@@ -5,7 +5,7 @@
 package app.morphe.patches.gstarmc.misc.rating
 
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.rawResourcePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.gstarmc.misc.jiagu.editPayloadDexes
 import app.morphe.patches.gstarmc.misc.jiagu.jiaguRuntimePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -15,7 +15,7 @@ private const val HOME = "Lcom/stone/app/ui/activity/MainActivityHome;"
 private val PROMPTS = listOf("showPraiseView", "showPraiseViewNew", "showPraiseViewNewComment")
 
 @Suppress("unused")
-val hideRatingDialogPatch = rawResourcePatch(
+val hideRatingDialogPatch = patch(
     name = "Hide rating dialog",
     description = "Removes the prompt asking for a store review.",
 ) {

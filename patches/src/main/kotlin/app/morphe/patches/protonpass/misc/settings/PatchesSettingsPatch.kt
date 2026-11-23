@@ -6,10 +6,8 @@ package app.morphe.patches.protonpass.misc.settings
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.shared.misc.proton.COMPOSER_TYPE
 import app.morphe.patches.shared.misc.proton.addSettingsRowMethod
 import app.morphe.patches.shared.misc.proton.attachPatchContext
@@ -32,8 +30,8 @@ private const val APPLICATION_CLASS = "Lproton/android/pass/App;"
 private const val TITLE_PARAMETER = 1
 private const val ON_CLICK_PARAMETER = 5
 
-private fun BytecodePatchContext.addPatchesSettingsRow() {
-    val match = ApplicationSectionFingerprint.matchSingle()
+private fun addPatchesSettingsRow() {
+    val match = ApplicationSectionFingerprint.match()
     val (optionIndex, dividerIndex) = match.instructionMatches.let { it[1].index to it[2].index }
 
     val settingsRowMethod = match.classDef.addSettingsRowMethod(
@@ -60,7 +58,7 @@ private fun BytecodePatchContext.addPatchesSettingsRow() {
     }
 }
 
-internal val patchesSettingsPatch = bytecodePatch {
+internal val patchesSettingsPatch = patch {
     dependsOn(morpheLibraryCoreExtensionPatch, protonPassSettingsExtensionPatch, protonSettingsThemeExtensionPatch, protonSettingsExtensionPatch, sharedNightModeExtensionPatch, sharedProxyHandlerExtensionPatch)
     dependsOn(patchesSettingsActivityPatch("@style/ProtonTheme.Pass", HOST_ACTIVITY, PASS_SETTINGS_CLASS))
     execute {

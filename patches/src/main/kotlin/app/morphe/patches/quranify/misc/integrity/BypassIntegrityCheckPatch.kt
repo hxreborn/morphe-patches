@@ -6,9 +6,9 @@ package app.morphe.patches.quranify.misc.integrity
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import org.w3c.dom.Element
@@ -21,7 +21,7 @@ private const val LOCAL_CLEARTEXT_CONFIG =
     """<network-security-config><domain-config cleartextTrafficPermitted="true">""" +
         """<domain>127.0.0.1</domain></domain-config></network-security-config>"""
 
-private val allowLocalCleartextPatch = resourcePatch {
+private val allowLocalCleartextPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             val application = document.getElementsByTagName("application").item(0) as Element
@@ -30,17 +30,17 @@ private val allowLocalCleartextPatch = resourcePatch {
             }
             application.setAttribute(NETWORK_SECURITY_CONFIG_ATTRIBUTE, "@xml/$NETWORK_SECURITY_CONFIG_NAME")
         }
-        get("res/xml/$NETWORK_SECURITY_CONFIG_NAME.xml").writeText(LOCAL_CLEARTEXT_CONFIG)
+        resourceFile("res/xml/$NETWORK_SECURITY_CONFIG_NAME.xml").writeText(LOCAL_CLEARTEXT_CONFIG)
     }
 }
 
-val bypassIntegrityCheckPatch = bytecodePatch {
+val bypassIntegrityCheckPatch = patch {
     dependsOn(quranifyUnlockPremiumExtensionPatch)
     compatibleWith(AppCompatibilities.QURANIFY)
     dependsOn(allowLocalCleartextPatch)
 
     execute {
-        ApiEndpointsFingerprint.matchSingle().apply {
+        ApiEndpointsFingerprint.match().apply {
             val (_, _, decodedBaseUrl) = instructionMatches
             val register = (decodedBaseUrl.instruction as OneRegisterInstruction).registerA
             method.addInstructions(
@@ -51,7 +51,7 @@ val bypassIntegrityCheckPatch = bytecodePatch {
                 """,
             )
         }
-        FetchSessionTokenFingerprint.matchSingle().method.addInstructions(
+        FetchSessionTokenFingerprint.method.addInstructions(
             0,
             """
                 const-string v0, "morphe"

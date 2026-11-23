@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.netanalyzer.misc.commonports
 
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.netanalyzer.shared.MenuSection
 import app.morphe.patches.netanalyzer.shared.addMenuEntry
 import app.morphe.patches.netanalyzer.shared.addToolbarAction
@@ -16,7 +16,7 @@ import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.extension.netanalyzerCommonPortsListExtensionPatch
 
 @Suppress("unused")
-val commonPortsPatch = bytecodePatch(
+val commonPortsPatch = patch(
     name = "Common ports list",
     description = "Adds an editor for the ports the Common port scan checks.",
 ) {

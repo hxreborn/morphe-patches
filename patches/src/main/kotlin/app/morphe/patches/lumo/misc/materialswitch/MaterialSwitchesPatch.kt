@@ -6,10 +6,9 @@ package app.morphe.patches.lumo.misc.materialswitch
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
-import app.morphe.patcher.patch.BytecodePatchContext
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchSingle
 import app.morphe.patches.lumo.misc.PageFinishedFingerprint
 import app.morphe.patches.lumo.misc.pairip.restoreVirtualizedMethodsPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -31,11 +30,11 @@ private const val SWITCH_VIEW_CLASS = "Lapp/hxreborn/extension/proton/MaterialSw
 private const val MODIFIER_PARAMETER = 1
 private const val COMPOSER_PARAMETER = 4
 
-private fun BytecodePatchContext.drawNativeSwitchesAsViews() {
-    val switch = MaterialSwitchFingerprint.matchSingle().method
+private fun drawNativeSwitchesAsViews() {
+    val switch = MaterialSwitchFingerprint.method
     val modifier = switch.parameterTypes[MODIFIER_PARAMETER].toString()
     val androidView = androidViewFingerprint(modifier, switch.parameterTypes[COMPOSER_PARAMETER].toString())
-        .matchSingle().originalMethod
+        .originalMethod
     val function = androidView.parameterTypes.first().toString()
     val modifierCompanion = switch.instructions.firstNotNullOf { instruction ->
         instruction.getReference<FieldReference>()?.takeIf { field ->
@@ -68,7 +67,7 @@ private fun BytecodePatchContext.drawNativeSwitchesAsViews() {
 }
 
 @Suppress("unused")
-val materialSwitchesPatch = bytecodePatch(
+val materialSwitchesPatch = patch(
     name = "Material 3 switches",
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
@@ -82,7 +81,7 @@ val materialSwitchesPatch = bytecodePatch(
     availability(requireArm64)
 
     execute {
-        PageFinishedFingerprint.matchSingle().method.addInstructions(
+        PageFinishedFingerprint.method.addInstructions(
             0,
             "invoke-static { p1 }, $WEB_SWITCH_CLASS->restyle(Landroid/webkit/WebView;)V",
         )

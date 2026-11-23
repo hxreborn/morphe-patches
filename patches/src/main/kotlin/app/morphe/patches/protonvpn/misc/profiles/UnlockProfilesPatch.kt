@@ -6,9 +6,8 @@ package app.morphe.patches.protonvpn.misc.profiles
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.patch.BytecodePatch
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.Patch
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
 import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.restrictions.clearFreeUserCheck
@@ -27,7 +26,7 @@ import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensi
 private const val FREE_SERVER_LOCATIONS = "Lapp/hxreborn/extension/protonvpn/FreeServerLocations;"
 
 @Suppress("unused")
-val unlockProfilesPatch: BytecodePatch = bytecodePatch(
+val unlockProfilesPatch: Patch = patch(
     name = "Unlock profiles",
     description = "Unlocks profiles on free plans and limits them to free locations. " +
         "Profiles for other locations are hidden.",
@@ -45,11 +44,11 @@ val unlockProfilesPatch: BytecodePatch = bytecodePatch(
         setExtensionMember("serverIsFree", freeServerMethod.name)
         setExtensionMember("countryServers", findPropertyField(VpnCountryToStringFingerprint, "serverList").name)
         clearFreeUserCheck(profileAvailabilityFingerprint())
-        vpnCountriesFingerprint().matchSingle().method.filterReturnValue(
+        vpnCountriesFingerprint().method.filterReturnValue(
             "$FREE_SERVER_LOCATIONS->countriesForAccount(Ljava/util/List;)Ljava/util/List;",
         )
         invertFreeServerCheckForFreeAccount(profileServerFilterFingerprint())
-        profileCitiesOrStatesFingerprint().matchSingle().run {
+        profileCitiesOrStatesFingerprint().match().run {
             val serverList = instructionMatches.last()
             val register = serverList.getInstruction<OneRegisterInstruction>().registerA
             method.addInstructions(

@@ -40,10 +40,10 @@ import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.patchesmenu.PatchesMenuText;
+import app.hxreborn.extension.shared.patchesmenu.PatchesSettingsDialogBase;
 
-final class PatchesSettingsDialog {
-
-    private static final String RESET_DESCRIPTION = "Restores every switch to its default.";
+final class PatchesSettingsDialog extends PatchesSettingsDialogBase {
 
     private static final String UNKNOWN_VERSION = "unknown";
 
@@ -78,23 +78,19 @@ final class PatchesSettingsDialog {
     private final ScrollView scroll;
 
     PatchesSettingsDialog(Activity activity) {
+        super(activity, new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar));
         this.activity = activity;
         this.style = new SettingsStyle(activity);
         this.rows = new SettingsRows(this.style);
-        this.dialog = new Dialog(activity, android.R.style.Theme_DeviceDefault_NoActionBar);
+        this.dialog = dialog();
         this.scroll = new ScrollView(activity);
     }
 
     void show() {
-        LinearLayout root = new LinearLayout(this.activity);
-        root.setOrientation(LinearLayout.VERTICAL);
+        View root = createScreen(appBar(), this.scroll);
+        refreshContent(this.scroll);
         root.setBackgroundColor(this.style.snow);
         root.setOnApplyWindowInsetsListener(PatchesSettingsDialog::applySystemBarInsets);
-        root.addView(appBar());
-
-        replaceContent();
-        root.addView(this.scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
-
         this.dialog.setContentView(root);
         styleWindow(this.dialog.getWindow());
         this.dialog.show();
@@ -125,12 +121,8 @@ final class PatchesSettingsDialog {
         return bar;
     }
 
-    private void replaceContent() {
-        this.scroll.removeAllViews();
-        this.scroll.addView(content());
-    }
-
-    private View content() {
+    @Override
+    protected View createContent() {
         LinearLayout column = new LinearLayout(this.activity);
         column.setOrientation(LinearLayout.VERTICAL);
         int inset = this.style.dp(SettingsStyle.SCREEN_INSET_DP);
@@ -166,7 +158,8 @@ final class PatchesSettingsDialog {
         addSection(column, "App", app);
 
         LinearLayout about = this.rows.card();
-        this.rows.actionRow(about, "hx_duolingo_ic_reset", "Reset to defaults", RESET_DESCRIPTION, this::confirmReset);
+        this.rows.actionRow(about, "hx_duolingo_ic_reset", "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
+                this::confirmReset);
         this.rows.valueRow(about, "hx_duolingo_ic_info", "App version", appVersion());
         this.rows.valueRow(about, "hx_duolingo_ic_patches", "Patch bundle", BuildConfig.BUNDLE_VERSION);
         addSection(column, "About", about);
@@ -191,9 +184,9 @@ final class PatchesSettingsDialog {
     }
 
     private void confirmReset() {
-        showConfirmation("Reset to defaults?", RESET_DESCRIPTION, "Reset", "Cancel", () -> {
+        showConfirmation("Reset to defaults?", PatchesMenuText.RESET_DESCRIPTION, "Reset", "Cancel", () -> {
             PatchSettings.resetToDefaults();
-            replaceContent();
+            refreshContent(this.scroll);
             confirmRestart();
         });
     }
@@ -213,7 +206,7 @@ final class PatchesSettingsDialog {
                 chooser.dismiss();
                 if (subscription != current) {
                     PatchSettings.setSubscription(subscription);
-                    replaceContent();
+                    refreshContent(this.scroll);
                     confirmRestart();
                 }
             }), fullWidth(this.style.dp(DIALOG_GAP_DP)));

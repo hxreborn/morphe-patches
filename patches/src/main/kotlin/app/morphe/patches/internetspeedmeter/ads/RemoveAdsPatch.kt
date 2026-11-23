@@ -6,11 +6,10 @@ package app.morphe.patches.internetspeedmeter.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.internetspeedmeter.misc.protection.removeAppProtectionPatch
 import app.morphe.patches.internetspeedmeter.misc.settings.removeSettingsRow
@@ -34,7 +33,7 @@ private val AD_SDK_STARTUP_ENTRIES = listOf(
     "meta-data" to UNITY_ADS_INITIALIZER,
 )
 
-private val removeAdSdkStartupPatch = resourcePatch {
+private val removeAdSdkStartupPatch = patch {
     execute {
         document("AndroidManifest.xml").use { document ->
             AD_SDK_STARTUP_ENTRIES.forEach { (tag, name) ->
@@ -47,7 +46,7 @@ private val removeAdSdkStartupPatch = resourcePatch {
 }
 
 @Suppress("unused")
-val removeAdsPatch = bytecodePatch(
+val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes ads and the prompts to allow them.",
 ) {
@@ -59,13 +58,16 @@ val removeAdsPatch = bytecodePatch(
     execute {
         LoadAdsFingerprint.method.returnEarly()
 
-        AllowAdsPromptFingerprint.method.apply {
-            val attemptsIndex = AllowAdsPromptFingerprint.instructionMatches.last().index + 1
-            val attemptsRegister = getInstruction<OneRegisterInstruction>(attemptsIndex).registerA
-            addInstruction(attemptsIndex + 1, "const/4 v$attemptsRegister, $PROMPT_ATTEMPTS_PAST_LIMIT")
+        AllowAdsPromptFingerprint.match().apply {
+            val (_, _, attemptsResult) = instructionMatches
+            val attemptsRegister = attemptsResult.getInstruction<OneRegisterInstruction>().registerA
+            method.addInstruction(attemptsResult.index + 1, "const/4 v$attemptsRegister, $PROMPT_ATTEMPTS_PAST_LIMIT")
         }
 
-        FirstRunAdNoticeFingerprint.let { it.method.removeInstruction(it.instructionMatches.last().index) }
+        FirstRunAdNoticeFingerprint.match().apply {
+            val (_, showDialog) = instructionMatches
+            method.removeInstruction(showDialog.index)
+        }
 
         ApplicationOnCreateFingerprint.method.addInstructions(
             0,

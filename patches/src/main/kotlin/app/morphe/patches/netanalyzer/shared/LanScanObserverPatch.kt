@@ -6,9 +6,8 @@ package app.morphe.patches.netanalyzer.shared
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
-import app.morphe.patcher.util.matchSingle
 import com.android.tools.smali.dexlib2.util.MethodUtil
 
 private const val MENU_RUNNING = "running"
@@ -17,11 +16,11 @@ private const val MENU_ON_START = "onStart"
 private const val MENU_ON_STOP = "onStop"
 private const val BOOLEAN_TYPE = "Z"
 
-internal val lanScanObserverPatch = bytecodePatch {
+internal val lanScanObserverPatch = patch {
     dependsOn(patchesMenuPatch)
 
     execute {
-        val menu = LanScanMenuFingerprint.matchSingle()
+        val menu = LanScanMenuFingerprint.match()
         val parameters = menu.composableParameters()
         val observed = listOf(MENU_RUNNING, MENU_SCAN_INFO, MENU_ON_START, MENU_ON_STOP)
         val indices = observed.map(parameters::indexOf)
@@ -54,7 +53,7 @@ internal val lanScanObserverPatch = bytecodePatch {
         )
 
         val networkScan = networkScanItemFingerprint(method.parameterTypes[scanInfoIndex].toString())
-            .matchSingle().originalMethod
+            .originalMethod
         registerAtLaunch(
             "$FEATURES_CLASS->registerNetworkScanItem(Ljava/lang/Class;Ljava/lang/String;)V",
             networkScan.name,

@@ -8,8 +8,7 @@ import app.morphe.patcher.Match
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.util.matchSingle
+import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction
@@ -57,7 +56,7 @@ private fun requireInlinedSignInSafe(
     }
 }
 
-internal val getCredentialGmsCoreSignInPatch = bytecodePatch {
+internal val getCredentialGmsCoreSignInPatch = patch {
     dependsOn(sharedGmsSignInExtensionPatch)
 
     dependsOn(gmsCoreSpoofedSignaturePatch, gmsCoreManifestPatch)
@@ -67,9 +66,9 @@ internal val getCredentialGmsCoreSignInPatch = bytecodePatch {
         renameCloudMessagingToGmsCore()
 
         val originalMatch = GetCredentialHandlerFingerprint.matchAllOrNull()?.let {
-            GetCredentialHandlerFingerprint.matchSingle()
+            GetCredentialHandlerFingerprint.match()
         }
-        val match = originalMatch ?: InlinedGetCredentialHandlerFingerprint.matchSingle()
+        val match = originalMatch ?: InlinedGetCredentialHandlerFingerprint.match()
         val indices = match.instructionMatches.map { it.index }
         val (clientIdCheck, activityCheck, callbackCall) = if (originalMatch != null) {
             val (clientId, activity, _, _, callback) = indices
@@ -104,7 +103,7 @@ internal val getCredentialGmsCoreSignInPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val getCredentialGmsCoreSupportPatch = bytecodePatch(
+val getCredentialGmsCoreSupportPatch = patch(
     name = "GmsCore support",
     description = "Signs in through GmsCore instead of Google Play Services. " +
         "Requires GmsCore to be installed.",
