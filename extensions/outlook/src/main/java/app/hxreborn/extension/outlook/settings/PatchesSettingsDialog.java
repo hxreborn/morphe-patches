@@ -65,7 +65,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String KEEP_MESSAGES_UNREAD_SUMMARY = "Opening a message, or flagging or moving it from "
             + "the reading pane, leaves it unread.";
 
-    private static final String REMOVE_INBOX_ADS_SUMMARY = "Hides sponsored inbox messages. Experimental.";
+    private static final String REMOVE_INBOX_ADS_SUMMARY = "Hides the sponsored rows between your mail in Focused "
+            + "and Other.";
 
     private static final String OPEN_EMAIL_TEMPLATES_SUMMARY = "Opens .oft template attachments as new drafts, "
             + "without Microsoft 365.";
