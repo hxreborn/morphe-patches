@@ -1356,6 +1356,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val OUTLOOK = Compatibility(
+        name = "Outlook",
+        packageName = "com.microsoft.office.outlook",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x0078D4,
+        signatures = setOf(
+            "cc66de496bc68a04cfcdc4db906b602a1a3ee916af6c4b3e772ac2755190f50f",
+        ),
+        targets = listOf(AppTarget(version = "5.2645.1", versionCode = 72645119, minSdk = 30)),
+    )
+
     val PATREON = Compatibility(
         name = "Patreon",
         packageName = "com.patreon.android",
