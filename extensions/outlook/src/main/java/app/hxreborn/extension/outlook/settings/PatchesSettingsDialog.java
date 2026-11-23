@@ -75,7 +75,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
 
     private static final String HIDE_COPILOT_SUMMARY = "Hides Copilot chat and AI tools. Experimental.";
 
-    private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Adds Unread to the icon menu. Experimental.";
+    private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Long-press the Outlook icon for an Unread entry that "
+            + "opens unread mail from every account.";
 
     private final Activity activity;
 
