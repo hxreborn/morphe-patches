@@ -16,6 +16,11 @@ import app.morphe.patches.readera.misc.fullscreen.RootPreferencesFingerprint
 import app.morphe.patches.readera.misc.highlightcolors.QuoteColorIconFingerprint
 import app.morphe.patches.readera.misc.highlightcolors.prefsReloadFingerprint
 import app.morphe.patches.readera.misc.highlightcolors.prefsStoreFingerprint
+import app.morphe.patches.shared.misc.hostedcomponents.CORE_COMPONENT_FACTORY
+import app.morphe.patches.shared.misc.hostedcomponents.ComponentHost
+import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
+import app.morphe.patches.shared.misc.hostedcomponents.addStyle
+import app.morphe.patches.shared.misc.hostedcomponents.replaceThemeStub
 import app.morphe.patches.shared.misc.smali.replaceMethod
 import app.morphe.util.asSequence
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -24,6 +29,12 @@ import app.morphe.patches.shared.misc.extension.readeraSettingsExtensionPatch
 
 internal const val READERA_SETTINGS = "Lapp/hxreborn/extension/readera/PatchSettings;"
 private const val SETTINGS_ACTIVITY = "app.hxreborn.extension.readera.PatchesSettingsActivity"
+private const val SETTINGS_ACTIVITY_TYPE = "Lapp/hxreborn/extension/readera/PatchesSettingsActivity;"
+private const val SETTINGS_STYLE = "hx_readera_settings"
+private const val SETTINGS_THEME = "@android:style/Theme.DeviceDefault.NoActionBar"
+private const val PREFERENCES_ACTIVITY = "org.readera.pref.PrefsActivity"
+internal val readEraScreenHost = ComponentHost("activity", "org.readera.AboutAppActivity")
+internal val readEraHostedComponents = HostedComponents(CORE_COMPONENT_FACTORY)
 private const val GENERAL_CATEGORY_TITLE = "General"
 private val appliedExplanations = sortedMapOf<String, String>()
 private val drawables = listOf(
@@ -39,6 +50,7 @@ internal val patchesSettingsPatch = patch {
     dependsOn(readeraSettingsExtensionPatch)
     dependsOn(
         disableSignatureChecksPatch,
+        readEraHostedComponents.patch,
         patch {
             execute {
                 val generalTitleName = stringNameByEnglishText(GENERAL_CATEGORY_TITLE)
@@ -73,9 +85,11 @@ internal val patchesSettingsPatch = patch {
                     val activity = document.createElement("activity")
                     activity.setAttribute("android:name", SETTINGS_ACTIVITY)
                     activity.setAttribute("android:exported", "false")
-                    activity.setAttribute("android:theme", "@android:style/Theme.DeviceDefault.NoActionBar")
+                    activity.setAttribute("android:theme", "@style/$SETTINGS_STYLE")
                     document.getElementsByTagName("application").item(0).appendChild(activity)
                 }
+                mutableClassDefBy(SETTINGS_ACTIVITY_TYPE)
+                    .replaceThemeStub("settingsTheme", addStyle(SETTINGS_STYLE, SETTINGS_THEME))
                 drawables.forEach { name ->
                     val path = "readera/drawable/hx_readera_${name.lowercase()}.xml"
                     SettingsResources::class.java.getResourceAsStream("/$path")!!.use { input ->
@@ -87,6 +101,8 @@ internal val patchesSettingsPatch = patch {
     )
     execute {
         appliedExplanations.clear()
+        readEraHostedComponents.host(SETTINGS_ACTIVITY, readEraScreenHost)
+        readEraHostedComponents.routeLaunchesFrom(PREFERENCES_ACTIVITY)
         RootPreferencesFingerprint.matchAll(1..1)
         val (settingsAccessor) = QuoteColorIconFingerprint.matchAll(1..1).single().instructionMatches
         val settingsClass = settingsAccessor.instruction.getReference<MethodReference>()!!.definingClass
