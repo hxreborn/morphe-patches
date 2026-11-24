@@ -51,6 +51,25 @@ private const val THEME_ASSET_DATA = "Lcom/microsoft/office/outlook/uikit/access
 private const val THEME_ASSET_FILE_NAMES = "Lcom/microsoft/office/outlook/uikit/accessibility/ThemeAssetFileNames;"
 private const val URI = "Landroid/net/Uri;"
 private const val OBJECT = "Ljava/lang/Object;"
+private const val OUTLOOK_THEME = "Lcom/microsoft/office/outlook/uicomposekit/theme/OutlookTheme;"
+private const val THEME_COLOR_SET = "Lcom/microsoft/office/outlook/uicomposekit/theme/ThemeColorSet;"
+private const val BRAND_COLORS = "Lcom/microsoft/office/outlook/uicomposekit/theme/BrandSemanticColors;"
+private const val BRAND_COLORS_KT = "Lcom/microsoft/office/outlook/uicomposekit/theme/BrandSemanticColorsKt;"
+private const val THEME_PALETTE_GETTER = "getThemePalette\$Compose_release"
+private const val TAB_COLORS_FACTORY = "colors-zjMxDiM"
+private const val PILL_SWITCH_COLORS_FACTORY = "colors-oq7We08"
+private const val SEMANTIC_COLORS_READ_FLAGS = 0x6
+private const val WHITE_COMPOSE_COLOR = "-0x100000000L"
+private const val SEARCH_PILL_LAYOUT = "hx_custom_search_pill"
+private const val SEARCH_PILL_TEXT = "hx_custom_search_pill_text"
+private const val SEARCH_PILL_SELECTED = "hx_custom_search_pill_selected"
+private const val SEARCH_PILL_BACKGROUND = "hx_custom_search_pill_background"
+private val SEARCH_PILL_SELECTED_TEXT_COLOR = Regex("""\?(attr/)?brand_brandForeground1\b""") to "?attr/themeColor80"
+private const val FILTER_BUTTON_HOOK_REGISTERS = 2
+private val WIDE_TYPES = setOf("J", "D")
+private const val NAVIGATION_BAR_HOOK_REGISTERS = 2
+private const val TAB_COLORS_HOOK_REGISTERS = 14
+private const val PILL_SWITCH_COLORS_HOOK_REGISTERS = 21
 
 private const val STOCK_STYLE_SUFFIX = ".BlueV2"
 private const val CUSTOM_STYLE_SUFFIX = ".HxCustom"
@@ -62,6 +81,9 @@ private const val REFERENCE_COLOR = "color_comm80"
 private const val CUSTOMIZE_OVERLAY = "ThemeOverlay.Outlook.Customize.HxCustom"
 private const val CUSTOMIZE_OVERLAY_HIGH_CONTRAST = "ThemeOverlay.Outlook.Customize.HxCustom.HighContrastColors"
 private const val PROMINENT_DIALOG_OVERLAY = "ThemeOverlay.Outlook.Dialog.Alert.Prominent.HxCustom"
+private val CUSTOMIZE_OVERLAYS = setOf(CUSTOMIZE_OVERLAY, CUSTOMIZE_OVERLAY_HIGH_CONTRAST)
+private const val DARK_MODE_VALUES_PREFIX = "values-night"
+private val HEADER_COLOR_ATTRIBUTES = listOf("colorPrimary", "colorPrimaryDark", "android:colorPrimary", "android:colorPrimaryDark")
 private const val WHITE_TOOLBAR_OVERLAY = "PhotoToolbarBackgroundTheme.Default"
 private const val DARK_TOOLBAR_OVERLAY = "PhotoToolbarBackgroundTheme.Dark"
 private const val STATUS_BAR_TEXT_COLOR = "Lcom/microsoft/office/outlook/uikit/accessibility/ThemeColorOption\$ThemeStatusBarTextColor;"
@@ -84,6 +106,7 @@ private const val SET_PICTURE_THEME_PARAMETERS = 5
 
 private class CustomThemeResources(
     val styleIds: Map<String, Long>,
+    val searchPillLayoutId: Long,
     val colorPairs: List<Pair<Long, Long>>,
     val stringIds: Map<String, Long>,
 )
@@ -92,6 +115,7 @@ private lateinit var customThemeResources: CustomThemeResources
 
 private val customThemeResourcesPatch = patch {
     execute {
+        val lightModeHeaderColors = lightModeHeaderColors()
         val stockColors = sortedSetOf<String>()
         val styleNames = linkedSetOf<String>()
         resourceFile("res").listFiles { file -> file.name.startsWith("values") }.orEmpty()
@@ -109,6 +133,19 @@ private val customThemeResourcesPatch = patch {
                                 item.textContent = item.textContent
                                     .replace("@color/$STOCK_COLOR_PREFIX", "@color/$CUSTOM_COLOR_PREFIX")
                                     .replace(STOCK_STYLE_SUFFIX, CUSTOM_STYLE_SUFFIX)
+                            }
+                            if (directory.name.startsWith(DARK_MODE_VALUES_PREFIX)) {
+                                val darkModeAttributes = custom.items().map { it.getAttribute("name") }.toSet()
+                                lightModeHeaderColors[name].orEmpty()
+                                    .filterKeys { it !in darkModeAttributes }
+                                    .forEach { (attribute, color) ->
+                                        custom.appendChild(
+                                            styles.createElement("item").apply {
+                                                setAttribute("name", attribute)
+                                                textContent = color
+                                            },
+                                        )
+                                    }
                             }
                             styles.documentElement.appendChild(custom)
                             styleNames += name
@@ -141,9 +178,23 @@ private val customThemeResourcesPatch = patch {
                 )
             }
         }
+        copyResource("color/tab_item_pill_toolbar_text_selector.xml", "color/$SEARCH_PILL_TEXT.xml", SEARCH_PILL_SELECTED_TEXT_COLOR)
+        copyResource("drawable/tab_item_pill_toolbar_background_selected.xml", "drawable/$SEARCH_PILL_SELECTED.xml")
+        copyResource(
+            "drawable/tab_item_pill_toolbar_background.xml",
+            "drawable/$SEARCH_PILL_BACKGROUND.xml",
+            Regex.fromLiteral("@drawable/tab_item_pill_toolbar_background_selected") to "@drawable/$SEARCH_PILL_SELECTED",
+        )
+        copyResource(
+            "layout/$SEARCH_PILL_STOCK_LAYOUT.xml",
+            "layout/$SEARCH_PILL_LAYOUT.xml",
+            Regex.fromLiteral("@color/tab_item_pill_toolbar_text_selector") to "@color/$SEARCH_PILL_TEXT",
+            Regex.fromLiteral("@drawable/tab_item_pill_toolbar_background") to "@drawable/$SEARCH_PILL_BACKGROUND",
+        )
         val customColorIds = declarePublicResources("color", stockColors.map { CUSTOM_COLOR_PREFIX + it })
         customThemeResources = CustomThemeResources(
             declarePublicResources("style", styleNames.toList()),
+            declarePublicResources("layout", listOf(SEARCH_PILL_LAYOUT)).getValue(SEARCH_PILL_LAYOUT),
             stockColors.map { step ->
                 resourceId(ResourceType.COLOR, STOCK_COLOR_PREFIX + step) to
                     customColorIds.getValue(CUSTOM_COLOR_PREFIX + step)
@@ -151,6 +202,66 @@ private val customThemeResourcesPatch = patch {
             declarePublicResources("string", STRINGS.keys.toList()),
         )
     }
+}
+
+private fun copyResource(stock: String, copy: String, vararg replacements: Pair<Regex, String>) {
+    val text = replacements.fold(resourceFile("res/$stock").readText()) { text, (stockValue, copyValue) ->
+        if (!stockValue.containsMatchIn(text)) throw PatchException("res/$stock has no $stockValue")
+        text.replace(stockValue, copyValue)
+    }
+    resourceFile("res/$copy", copy = false).writeText(text)
+}
+
+private fun Method.requireLocalRegisters(count: Int) {
+    val parameterRegisters = parameterTypes.sumOf { if (it.toString() in WIDE_TYPES) 2 else 1 } + 1
+    val localRegisters = implementation!!.registerCount - parameterRegisters
+    if (localRegisters < count) throw PatchException("$name has $localRegisters local registers, needs $count")
+}
+
+private fun hostMethod(definingClass: String, name: String) =
+    classDefBy(definingClass).methods.singleOrNull { it.name == name }?.let(::descriptor)
+        ?: throw PatchException("No single method $name in $definingClass")
+
+private fun lightModeBrandColorsSmali(composer: String) = """
+    sget-object v0, $OUTLOOK_THEME->INSTANCE:$OUTLOOK_THEME
+    const/4 v1, $SEMANTIC_COLORS_READ_FLAGS
+    move-object/from16 v2, p1
+    invoke-virtual { v0, v2, v1 }, $OUTLOOK_THEME->getSemanticColors(${composer}I)$SEMANTIC_COLORS
+    move-result-object v0
+    invoke-virtual { v0 }, $SEMANTIC_COLORS->$THEME_PALETTE_GETTER()$THEME_PALETTE
+    move-result-object v2
+    invoke-virtual { v0 }, $SEMANTIC_COLORS->getDarkTheme()Z
+    move-result v1
+    invoke-static { v2, v1 }, $CUSTOM_THEME_CLASS->isCustomPaletteInDarkMode(${OBJECT}Z)Z
+    move-result v1
+    if-eqz v1, :stock
+    check-cast v2, $COMPOSE_THEME_CLASS
+    invoke-virtual { v2 }, $COMPOSE_THEME_CLASS->getPalette()$TOKENS_CLASS
+    move-result-object v2
+    invoke-virtual { v0 }, $SEMANTIC_COLORS->isHighContrast()Z
+    move-result v1
+    invoke-static { v2, v1 }, $BRAND_COLORS_KT->lightBrandColorsV2(${TOKENS_CLASS}Z)$BRAND_COLORS
+    move-result-object v0
+"""
+
+private fun Element.items() = getElementsByTagName("item").asSequence().filterIsInstance<Element>()
+
+private fun lightModeHeaderColors() = document("res/values/styles.xml").use { styles ->
+    styles.getElementsByTagName("style").asSequence().filterIsInstance<Element>()
+        .map { stock -> stock.getAttribute("name").replace(STOCK_STYLE_SUFFIX, CUSTOM_STYLE_SUFFIX) to stock }
+        .filter { (name, _) -> name in CUSTOMIZE_OVERLAYS }
+        .associate { (name, stock) ->
+            name to stock.items()
+                .filter { it.getAttribute("name") in HEADER_COLOR_ATTRIBUTES }
+                .associate {
+                    it.getAttribute("name") to
+                        it.textContent.replace("@color/$STOCK_COLOR_PREFIX", "@color/$CUSTOM_COLOR_PREFIX")
+                }
+        }
+        .also { found ->
+            val missing = CUSTOMIZE_OVERLAYS.filter { found[it]?.keys != HEADER_COLOR_ATTRIBUTES.toSet() }
+            if (missing.isNotEmpty()) throw PatchException("Missing light mode header colors in $missing")
+        }
 }
 
 @Suppress("unused")
@@ -187,6 +298,124 @@ val customThemesPatch: Patch = patch(
                     return-object v$palette
                 """,
                 ExternalLabel("stock", getInstruction(0)),
+            )
+        }
+
+        PrimaryNavigationBarFingerprint.method.apply {
+            requireLocalRegisters(NAVIGATION_BAR_HOOK_REGISTERS)
+            val palette = 0
+            val flag = 1
+            addInstructionsWithLabels(
+                0,
+                """
+                    invoke-virtual { p0 }, $SEMANTIC_COLORS->$THEME_PALETTE_GETTER()$THEME_PALETTE
+                    move-result-object v$palette
+                    invoke-virtual { p0 }, $SEMANTIC_COLORS->getDarkTheme()Z
+                    move-result v$flag
+                    invoke-static { v$palette, v$flag }, $CUSTOM_THEME_CLASS->isCustomPaletteInDarkMode(${OBJECT}Z)Z
+                    move-result v$flag
+                    if-eqz v$flag, :stock
+                    invoke-interface { v$palette }, $THEME_PALETTE->getAccent()$THEME_COLOR_SET
+                    move-result-object v$palette
+                    invoke-virtual { p0 }, $SEMANTIC_COLORS->isHighContrast()Z
+                    move-result p0
+                    const/4 v$flag, 0x0
+                    invoke-virtual { v$palette, v$flag, p0 }, $THEME_COLOR_SET->getColor-WaAFU9c(ZZ)J
+                    move-result-wide v$palette
+                    return-wide v$palette
+                """,
+                ExternalLabel("stock", getInstruction(0)),
+            )
+        }
+
+        TabDefaultColorsFingerprint.method.apply {
+            requireLocalRegisters(TAB_COLORS_HOOK_REGISTERS)
+            addInstructionsWithLabels(
+                0,
+                lightModeBrandColorsSmali(parameterTypes.first().toString()) + """
+                    invoke-virtual { v0 }, $BRAND_COLORS->getBrandForeground1-0d7_KjU()J
+                    move-result-wide v3
+                    invoke-virtual { v0 }, $BRAND_COLORS->getBrandBackground2-0d7_KjU()J
+                    move-result-wide v5
+                    const-wide v1, $WHITE_COMPOSE_COLOR
+                    move-wide v7, v1
+                    move-wide v9, v5
+                    move-object/from16 v0, p0
+                    move-object/from16 v11, p1
+                    const/4 v12, 0x0
+                    const/4 v13, 0x0
+                    invoke-virtual/range { v0 .. v13 }, ${hostMethod(TAB_DEFAULTS, TAB_COLORS_FACTORY)}
+                    move-result-object v0
+                    return-object v0
+                """,
+                ExternalLabel("stock", getInstruction(0)),
+            )
+        }
+
+        PillSwitchDefaultColorsFingerprint.method.apply {
+            requireLocalRegisters(PILL_SWITCH_COLORS_HOOK_REGISTERS)
+            addInstructionsWithLabels(
+                0,
+                lightModeBrandColorsSmali(parameterTypes.first().toString()) + """
+                    invoke-virtual { v0 }, $BRAND_COLORS->getBrandBackground2-0d7_KjU()J
+                    move-result-wide v4
+                    invoke-virtual { v0 }, $BRAND_COLORS->getBrandForeground1-0d7_KjU()J
+                    move-result-wide v6
+                    invoke-virtual { v0 }, $BRAND_COLORS->getBrandForegroundDisabled2-0d7_KjU()J
+                    move-result-wide v14
+                    invoke-virtual { v0 }, $BRAND_COLORS->getBrandForegroundDisabled1-0d7_KjU()J
+                    move-result-wide v16
+                    const-wide v2, $WHITE_COMPOSE_COLOR
+                    move-wide v8, v2
+                    move-wide v10, v2
+                    move-wide v12, v4
+                    move-object/from16 v1, p0
+                    move-object/from16 v18, p1
+                    const/4 v0, 0x0
+                    move/from16 v19, v0
+                    move/from16 v20, v0
+                    invoke-virtual/range { v1 .. v20 }, ${hostMethod(PILL_SWITCH_DEFAULTS, PILL_SWITCH_COLORS_FACTORY)}
+                    move-result-object v0
+                    return-object v0
+                """,
+                ExternalLabel("stock", getInstruction(0)),
+            )
+        }
+
+        FilterButtonColorsFingerprint.method.apply {
+            requireLocalRegisters(FILTER_BUTTON_HOOK_REGISTERS)
+            addInstructions(
+                0,
+                """
+                    sget-object v0, $OUTLOOK_THEME->INSTANCE:$OUTLOOK_THEME
+                    const/4 v1, $SEMANTIC_COLORS_READ_FLAGS
+                    invoke-virtual { v0, p4, v1 }, $OUTLOOK_THEME->getSemanticColors(${parameterTypes[4]}I)$SEMANTIC_COLORS
+                    move-result-object v0
+                    invoke-virtual { v0 }, $SEMANTIC_COLORS->$THEME_PALETTE_GETTER()$THEME_PALETTE
+                    move-result-object v1
+                    invoke-virtual { v0 }, $SEMANTIC_COLORS->getDarkTheme()Z
+                    move-result v0
+                    invoke-static { v1, v0 }, $CUSTOM_THEME_CLASS->isCustomPaletteInDarkMode(${OBJECT}Z)Z
+                    move-result v0
+                    or-int/2addr p3, v0
+                """,
+            )
+        }
+
+        val searchPill = SearchPillLayoutFingerprint.match()
+        val (stockLayoutRead) = searchPill.instructionMatches
+        searchPill.method.apply {
+            val layout = getInstruction<OneRegisterInstruction>(stockLayoutRead.index).registerA
+            addInstructionsWithLabels(
+                stockLayoutRead.index,
+                """
+                    invoke-virtual/range { p0 .. p0 }, Landroidx/fragment/app/Fragment;->requireContext()Landroid/content/Context;
+                    move-result-object v$layout
+                    invoke-static { v$layout }, $CUSTOM_THEME_CLASS->customSearchPillLayout(Landroid/content/Context;)I
+                    move-result v$layout
+                    if-nez v$layout, :custom
+                """,
+                ExternalLabel("custom", getInstruction(stockLayoutRead.index + 1)),
             )
         }
 
@@ -346,6 +575,7 @@ val customThemesPatch: Patch = patch(
             replaceStub("customPalette", TOKEN_MARKER_REGISTER + 1, customPaletteSmali())
             replaceStub("colorPairs", 3, colorPairsSmali())
             replaceIntStub("referenceColorId", resourceId(ResourceType.COLOR, REFERENCE_COLOR))
+            replaceIntStub("searchPillLayoutId", customThemeResources.searchPillLayoutId)
             replaceIntStub("prominentDialogStyleId", customThemeResources.styleIds.getValue(PROMINENT_DIALOG_OVERLAY))
             replaceResourceIdStubs(
                 ResourceType.DRAWABLE,

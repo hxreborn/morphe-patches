@@ -17,6 +17,12 @@ internal const val THEME_CATEGORY = "Lcom/microsoft/office/outlook/uikit/accessi
 internal const val THEME_STYLE = "Lcom/microsoft/office/outlook/uikit/accessibility/ThemeStyle;"
 internal const val COLOR_PALETTE_MANAGER = "Lcom/microsoft/office/outlook/uikit/accessibility/ColorPaletteManager;"
 internal const val THEME_PALETTE = "Lcom/microsoft/office/outlook/uicomposekit/theme/ThemePalette;"
+internal const val SEARCH_PILL_STOCK_LAYOUT = "tab_item_pill_toolbar"
+internal const val SEMANTIC_COLORS = "Lcom/microsoft/office/outlook/uicomposekit/theme/SemanticColors;"
+internal const val TAB_DEFAULTS = "Lcom/microsoft/office/outlook/uicomposekit/ui/TabDefaults;"
+internal const val TAB_COLORS = "Lcom/microsoft/office/outlook/uicomposekit/ui/TabColors;"
+internal const val PILL_SWITCH_DEFAULTS = "Lcom/microsoft/office/outlook/uicomposekit/ui/PillSwitchDefaults;"
+internal const val PILL_SWITCH_COLORS = "Lcom/microsoft/office/outlook/uicomposekit/ui/PillSwitchColors;"
 private const val CONTEXT = "Landroid/content/Context;"
 private const val BASE_ACTIVITY = "Lcom/microsoft/office/outlook/appui/core/BaseActivity;"
 private const val APPEARANCE_PANE = "Lcom/microsoft/office/outlook/settingsui/compose/ui/AppearancePaneKt;"
@@ -129,4 +135,44 @@ internal object ThemeItemClickFingerprint : Fingerprint(
         fieldAccess(definingClass = THEME_CATEGORY, name = "PHOTOS"),
         methodCall(definingClass = "Lkotlin/jvm/functions/Function0;", name = "invoke"),
     ),
+)
+
+internal object FilterButtonColorsFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/office/outlook/ui/mail/actions/MailFilterElementsKt;",
+    name = "getFilterButtonColors",
+    isStatic = true,
+    parameters = listOf(PILL_SWITCH_COLORS, "Z", "Z", "Z", "L", "I"),
+)
+
+internal object SearchPillLayoutFingerprint : Fingerprint(
+    definingClass = "Lcom/acompli/acompli/ui/search/SearchListFragmentV2;",
+    name = "onCreateView",
+    filters = listOf(
+        fieldAccess(
+            definingClass = "Lcom/microsoft/office/outlook/uikit/R\$layout;",
+            name = SEARCH_PILL_STOCK_LAYOUT,
+            opcode = Opcode.SGET,
+        ),
+    ),
+)
+
+internal object PrimaryNavigationBarFingerprint : Fingerprint(
+    definingClass = SEMANTIC_COLORS,
+    name = "getPrimaryNavigationBar-0d7_KjU",
+    returnType = "J",
+    parameters = listOf(),
+)
+
+internal object TabDefaultColorsFingerprint : Fingerprint(
+    definingClass = TAB_DEFAULTS,
+    name = "defaultColors",
+    returnType = TAB_COLORS,
+    parameters = listOf("L", "I"),
+)
+
+internal object PillSwitchDefaultColorsFingerprint : Fingerprint(
+    definingClass = PILL_SWITCH_DEFAULTS,
+    name = "default",
+    returnType = PILL_SWITCH_COLORS,
+    parameters = listOf("L", "I"),
 )

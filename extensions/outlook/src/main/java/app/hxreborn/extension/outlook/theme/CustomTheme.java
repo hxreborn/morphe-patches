@@ -143,6 +143,17 @@ public final class CustomTheme {
         return palette;
     }
 
+    public static boolean isCustomPaletteInDarkMode(Object themePalette, boolean darkTheme) {
+        return darkTheme && themePalette != null && themePalette == palette;
+    }
+
+    public static int customSearchPillLayout(Context context) {
+        if (!isNightMode(context) || currentOption(context) != colorOption()) {
+            return 0;
+        }
+        return searchPillLayoutId();
+    }
+
     public static long transformPackedColor(long packed) {
         if ((packed & COLOR_SPACE_MASK) != 0 || composeRamp == null) {
             return packed;
@@ -344,6 +355,10 @@ public final class CustomTheme {
     }
 
     private static int darkToolbarOverlayId() {
+        return 0;
+    }
+
+    private static int searchPillLayoutId() {
         return 0;
     }
 
