@@ -72,7 +72,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
     description = "Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. " +
         "Plan limits still apply.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(protonUpgradePromotionRowsExtensionPatch)
     dependsOn(patchesSettingsPatch)
 

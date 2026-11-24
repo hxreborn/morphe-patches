@@ -44,7 +44,7 @@ val hideUpgradePromotionsPatch: Patch = patch(
 ) {
     dependsOn(protonUpgradePromotionRowsExtensionPatch)
     dependsOn(protonHideUpgradePromotionsExtensionPatch, protonMembersExtensionPatch)
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

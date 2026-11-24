@@ -23,7 +23,7 @@ val unlockSplitTunnelingPatch: Patch = patch(
     name = "Unlock split tunneling",
     description = "Unlocks split tunneling on free plans.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

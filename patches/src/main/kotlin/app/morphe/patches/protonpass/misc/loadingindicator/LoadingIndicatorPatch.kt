@@ -25,7 +25,7 @@ val loadingIndicatorPatch: Patch = patch(
     name = "M3E loading indicator",
     description = "Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(protonLoadingIndicatorExtensionPatch)
     dependsOn(patchesSettingsPatch)
 

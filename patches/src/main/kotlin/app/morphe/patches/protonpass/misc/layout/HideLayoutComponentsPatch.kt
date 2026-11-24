@@ -21,7 +21,7 @@ val hideLayoutComponentsPatch: Patch = patch(
     name = "Hide layout components",
     description = "Adds settings to hide the Help center, Spread the word and About sections.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

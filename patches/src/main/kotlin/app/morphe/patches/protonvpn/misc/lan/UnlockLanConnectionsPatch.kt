@@ -23,7 +23,7 @@ val unlockLanConnectionsPatch: Patch = patch(
     name = "Unlock LAN connections",
     description = "Unlocks LAN connections on free plans.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

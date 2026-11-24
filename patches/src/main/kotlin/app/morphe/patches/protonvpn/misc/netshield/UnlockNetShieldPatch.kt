@@ -18,7 +18,7 @@ val unlockNetShieldPatch: Patch = patch(
     name = "Unlock NetShield",
     description = "Unlocks NetShield ad and tracker blocking on free plans.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

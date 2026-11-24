@@ -1564,6 +1564,19 @@ internal object AppCompatibilities {
         ),
     )
 
+    val PROTON_PASS_FDROID = Compatibility(
+        name = "Proton Pass (F-Droid)",
+        packageName = "proton.android.pass.fdroid",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x6D4AFF,
+        signatures = setOf(
+            "572c25048e6e6229bc0393619f7c640f8cbccf11d2ebf8b2fa7bc9a76363b812",
+        ),
+        targets = listOf(
+            AppTarget(version = "1.41.5", versionCode = 14105000, minSdk = 27),
+        ),
+    )
+
     val PROTON_PASS = Compatibility(
         name = "Proton Pass",
         packageName = "proton.android.pass",
@@ -1585,6 +1598,19 @@ internal object AppCompatibilities {
         name = "Proton VPN",
         packageName = "ch.protonvpn.android",
         apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x6D4AFF,
+        signatures = setOf(
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",
+        ),
+        targets = listOf(
+            AppTarget(version = "5.21.57.0", versionCode = 605215700, minSdk = 26),
+        ),
+    )
+
+    val PROTON_VPN_FDROID = Compatibility(
+        name = "Proton VPN (F-Droid)",
+        packageName = "ch.protonvpn.android.reproducible",
+        apkFileType = ApkFileType.APK,
         appIconColor = 0x6D4AFF,
         signatures = setOf(
             "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853",

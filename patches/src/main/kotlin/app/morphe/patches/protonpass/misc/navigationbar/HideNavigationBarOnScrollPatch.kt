@@ -48,7 +48,7 @@ val hideNavigationBarOnScrollPatch: Patch = patch(
     name = "Hide navigation bar on scroll",
     description = "Hides the bottom navigation bar on scroll down and shows it on scroll up.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {
