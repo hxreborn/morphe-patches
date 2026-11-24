@@ -176,6 +176,53 @@ assert older["notes"] == ["behind current: aptoide 486"], older
 print("version code comparison passes")
 
 
+class Reply:
+    def __init__(self, payload, status=200):
+        self.payload, self.status_code = payload, status
+
+    def json(self):
+        return self.payload
+
+    def raise_for_status(self):
+        assert self.status_code < 400, self.status_code
+
+
+FDROID_PASS = {"packageName": "proton.android.pass.fdroid", "suggestedVersionCode": 14105000,
+               "packages": [{"versionName": "1.41.5", "versionCode": 14105000},
+                            {"versionName": "1.41.4", "versionCode": 14104000}]}
+VPN_RELEASE = {"tag_name": "5.21.57.0", "html_url": "https://github.com/ProtonVPN/android-app/releases/tag/5.21.57.0",
+               "assets": [{"name": "ProtonVPN-5.21.57.0.605215700.-production-vanilla-direct-release.apk",
+                           "browser_download_url": "https://example.test/direct.apk"},
+                          {"name": "ProtonVPN-5.21.57.0.605215700.-production-vanilla-openSource-release-fdroid.apk",
+                           "browser_download_url": "https://example.test/fdroid.apk"}]}
+MAIL_RELEASE = {"tag_name": "7.12.1(19175)", "html_url": "https://example.test/mail",
+                "assets": [{"name": "ProtonMail-7.12.1_19175.apk", "browser_download_url": "https://example.test/mail.apk"}]}
+RESPONSES = {
+    app_updates.FDROID_API + "proton.android.pass.fdroid": Reply(FDROID_PASS),
+    app_updates.FDROID_API + "ch.protonmail.android": Reply({"error": "NOT_FOUND"}, 404),
+    app_updates.GITHUB_API + "ProtonVPN/android-app/releases/latest": Reply(VPN_RELEASE),
+    app_updates.GITHUB_API + "ProtonMail/android-mail/releases/latest": Reply(MAIL_RELEASE),
+}
+real_get = app_updates.requests.get
+app_updates.requests.get = lambda url, **_: RESPONSES[url]
+try:
+    assert app_updates.lookup_fdroid({"package": "proton.android.pass.fdroid"}, {}) == {
+        "version": "1.41.5", "version_code": 14105000,
+        "download": "https://f-droid.org/repo/proton.android.pass.fdroid_14105000.apk",
+        "url": "https://f-droid.org/packages/proton.android.pass.fdroid/"}
+    assert app_updates.lookup_fdroid({"package": "ch.protonmail.android"}, {}) == {"error": "not listed"}
+    direct = app_updates.lookup_github({"package": "ch.protonvpn.android"}, {})
+    assert (direct["version"], direct["version_code"], direct["download"]) == ("5.21.57.0", 605215700, "https://example.test/direct.apk")
+    fdroid = app_updates.lookup_github({"package": "ch.protonvpn.android.reproducible"}, {})
+    assert fdroid["download"] == "https://example.test/fdroid.apk", fdroid
+    mail = app_updates.lookup_github({"package": "ch.protonmail.android"}, {})
+    assert (mail["version"], mail["version_code"]) == ("7.12.1", 19175), mail
+    assert app_updates.lookup_github({"package": "com.example.other"}, {}) == {"error": "not listed"}
+finally:
+    app_updates.requests.get = real_get
+print("F-Droid and GitHub release lookups pass")
+
+
 def base_apk_with_dex(folder, version):
     apk = Path(folder) / f"{version}.apk"
     with zipfile.ZipFile(apk, "w") as archive:

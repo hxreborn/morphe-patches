@@ -218,6 +218,55 @@ def lookup_apkpure(app, _ctx):
     return {"error": "not listed"}
 
 
+FDROID_API = "https://f-droid.org/api/v1/packages/"
+GITHUB_API = "https://api.github.com/repos/"
+GITHUB_RELEASE_ASSETS = {
+    "ch.protonvpn.android": ("ProtonVPN/android-app", r"vanilla-direct-release\.apk$"),
+    "ch.protonvpn.android.reproducible": ("ProtonVPN/android-app", r"openSource-release-fdroid\.apk$"),
+    "ch.protonmail.android": ("ProtonMail/android-mail", r"^ProtonMail-.*\.apk$"),
+}
+RELEASE_TAG = re.compile(r"^v?(?P<version>\d[^()\s]*)(?:\((?P<code>\d+)\))?$")
+ASSET_VERSION_CODE = re.compile(r"\.(\d{8,})\.")
+
+
+def lookup_fdroid(app, _ctx):
+    response = requests.get(FDROID_API + app["package"], timeout=30, headers={"User-Agent": UA})
+    if response.status_code == 404:
+        return {"error": "not listed"}
+    response.raise_for_status()
+    data = response.json()
+    packages = data.get("packages") or []
+    if not packages:
+        return {"error": "not listed"}
+    latest = next((p for p in packages if p["versionCode"] == data.get("suggestedVersionCode")),
+                  max(packages, key=lambda p: p["versionCode"]))
+    return {"version": latest["versionName"], "version_code": latest["versionCode"],
+            "download": f"https://f-droid.org/repo/{app['package']}_{latest['versionCode']}.apk",
+            "url": f"https://f-droid.org/packages/{app['package']}/"}
+
+
+def lookup_github(app, _ctx):
+    if app["package"] not in GITHUB_RELEASE_ASSETS:
+        return {"error": "not listed"}
+    repo, asset_pattern = GITHUB_RELEASE_ASSETS[app["package"]]
+    headers = {"User-Agent": UA, "Accept": "application/vnd.github+json"}
+    if os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = f"Bearer {os.environ['GITHUB_TOKEN']}"
+    response = requests.get(f"{GITHUB_API}{repo}/releases/latest", timeout=30, headers=headers)
+    response.raise_for_status()
+    release = response.json()
+    asset = next((a for a in release.get("assets") or [] if re.search(asset_pattern, a["name"])), None)
+    tag = RELEASE_TAG.match(release.get("tag_name") or "")
+    if not asset or not tag:
+        return {"error": f"no matching asset in {release.get('tag_name')}"}
+    code = tag.group("code")
+    if not code:
+        asset_code = ASSET_VERSION_CODE.search(asset["name"])
+        code = asset_code.group(1) if asset_code else None
+    return {"version": tag.group("version"), "version_code": int(code) if code else None,
+            "download": asset["browser_download_url"], "url": release["html_url"]}
+
+
 def scraped_lookup(source):
     def lookup(app, ctx):
         url = ctx["urls"].get(app["package"], {}).get(source)
@@ -237,6 +286,8 @@ SOURCES = {
     "apkpure": lookup_apkpure,
     "aptoide": lookup_aptoide,
     "apkcombo": scraped_lookup("apkcombo"),
+    "fdroid": lookup_fdroid,
+    "github": lookup_github,
 }
 
 
@@ -421,7 +472,7 @@ def verify(app, version, sources, ctx):
         if ctx.get("cli"):
             facts["patch_check"] = patch_check(Path(play["path"]), ctx, Path(play["path"]).parent)
         return [facts]
-    order = [s for s in ("aptoide", "apkpure", "apkmirror", "uptodown", "apkcombo")
+    order = [s for s in ("github", "fdroid", "aptoide", "apkpure", "apkmirror", "uptodown", "apkcombo")
              if s in sources and compare(sources[s].get("version"), version) == 0]
     for source in order:
         workdir = Path(tempfile.mkdtemp(prefix=f"verify-{source}-", dir=ctx["workdir"]))

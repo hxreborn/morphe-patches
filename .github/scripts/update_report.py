@@ -2,7 +2,7 @@ from versions import compare
 
 
 STORE_NAMES = {"play": "Play", "apkmirror": "APKMirror", "uptodown": "Uptodown", "apkpure": "APKPure",
-               "aptoide": "Aptoide", "apkcombo": "ApkCombo"}
+               "aptoide": "Aptoide", "apkcombo": "ApkCombo", "fdroid": "F-Droid", "github": "GitHub"}
 
 
 def store_name(source):
