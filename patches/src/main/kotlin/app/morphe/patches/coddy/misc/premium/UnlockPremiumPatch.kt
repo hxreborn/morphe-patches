@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.patches.coddy.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.indexOfMasked
+import app.morphe.patches.shared.misc.arm64.Arm64.NOP
 import app.morphe.patches.shared.misc.dart.DART_AOT_LIBRARY
 import app.morphe.patches.shared.misc.requireArm
 import app.morphe.patches.shared.readInt
@@ -98,8 +99,6 @@ private const val FACTORY_ALLOCATION_OFFSET = 8
 private const val PREMIUM_FIELD_STORE = 0xb8013001.toInt()
 
 private const val LOAD_TRUE_INTO_X1 = 0x910082c1.toInt()
-
-private const val NOP = 0xd503201f.toInt()
 
 private const val BRANCH = 0x14000000
 

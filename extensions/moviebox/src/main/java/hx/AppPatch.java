@@ -37,6 +37,7 @@ import hx.okhttp.ApiClient;
 import hx.platform.HotPatches;
 import hx.platform.InstalledApp;
 import hx.platform.Notices;
+import hx.platform.PremiumMarker;
 import hx.rewrite.DashInterceptor;
 import hx.rewrite.HomeTabs;
 import hx.source.MovieBoxSource;
@@ -85,8 +86,8 @@ public final class AppPatch {
         }
     }
 
-    private static void installInterceptors(Class<?> manager, BuildTag buildTag, BuildTagInterceptor tagger)
-            throws ReflectiveOperationException {
+    private static void installInterceptors(Class<?> manager, BuildTag buildTag, BuildTagInterceptor tagger,
+            boolean premiumUnlocked) throws ReflectiveOperationException {
         AppNetwork network = AppNetwork.locate(manager);
         Object taggedClient = withBuildTagInterceptor(network.loader, network.client, tagger);
         MovieBoxSource source = new MovieBoxSource(new ApiClient(network.loader, taggedClient, network.apiBase),
@@ -97,7 +98,8 @@ public final class AppPatch {
             if (server != null) {
                 server.start();
             }
-            DashInterceptor dash = new DashInterceptor(network.loader, source, routeDownloads, HomeTabs.readHidden());
+            DashInterceptor dash = new DashInterceptor(network.loader, source, routeDownloads, HomeTabs.readHidden(),
+                    premiumUnlocked);
             Object dashProxy = ClientInterceptors.proxy(network.loader, dash);
             network.useClient(ClientInterceptors.addFirst(taggedClient, dashProxy));
         } catch (ReflectiveOperationException | RuntimeException ex) {
@@ -153,7 +155,9 @@ public final class AppPatch {
 
         private int attempts;
 
-        private boolean laboratoryUnlocked;
+        private boolean laboratoryChecked;
+
+        private boolean premiumUnlocked;
 
         private boolean hotPatchesChecked;
 
@@ -196,16 +200,19 @@ public final class AppPatch {
             if (manager == null) {
                 return false;
             }
-            if (!this.laboratoryUnlocked) {
-                Laboratory.unlock(manager.getClassLoader());
-                this.laboratoryUnlocked = true;
+            if (!this.laboratoryChecked) {
+                this.premiumUnlocked = PremiumMarker.read();
+                if (this.premiumUnlocked) {
+                    Laboratory.unlock(manager.getClassLoader());
+                }
+                this.laboratoryChecked = true;
             }
             if (this.tagger == null && !createTagger(manager.getClassLoader())) {
                 return false;
             }
             this.tagger.tagSharedHeaders();
             try {
-                installInterceptors(manager, this.buildTag, this.tagger);
+                installInterceptors(manager, this.buildTag, this.tagger, this.premiumUnlocked);
                 return true;
             } catch (Throwable ex) {
                 this.failure = ex;
@@ -240,7 +247,7 @@ public final class AppPatch {
         }
 
         private void reportFailure() {
-            if (this.laboratoryUnlocked && this.tagger == null) {
+            if (this.laboratoryChecked && this.tagger == null) {
                 Log.e(Logs.TAG, "certificate unreadable, requests go out untagged");
                 Notices.show(CERTIFICATE_UNREADABLE);
                 return;

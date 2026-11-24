@@ -53,6 +53,10 @@ public final class PatchesSettingsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle state) {
+        int theme = settingsTheme();
+        if (theme != 0) {
+            setTheme(theme);
+        }
         super.onCreate(state);
         PatchSettings.initialize(this);
         this.style = new SettingsStyle(this);
@@ -184,6 +188,10 @@ public final class PatchesSettingsActivity extends Activity {
             Log.w(PatchSettings.LOG_TAG, "App version lookup failed");
             return "";
         }
+    }
+
+    static int settingsTheme() {
+        return 0;
     }
 
 }

@@ -18,6 +18,9 @@ private const val LDR_X9_LAUNCH_SETTINGS = 0xf9401d29u
 private const val MOV_W10_DOODLE_MODE_CHOICE = 0x5280004a
 private const val STR_W10_LAUNCH_CHOICE = 0xb900212au
 private const val B_EXIT_STATE_FACTORY = 0x14000eab
+private const val ADRP_X9_APP_CONTEXT_PAGE_FROM_NO_PLAN_RESULT = 0xb0003429u
+private const val CLEAR_REFERENCE_RELEASED_BY_FINISH_BLOCK = 0xf900efffu
+private const val B_POST_FINISH_EVENT = 0x17ffffa9
 
 private val chooseDoodleModeAndExit = intArrayOf(
     ADRP_X9_APP_CONTEXT_PAGE.toInt(),
@@ -28,8 +31,18 @@ private val chooseDoodleModeAndExit = intArrayOf(
     B_EXIT_STATE_FACTORY,
 )
 
-private val replacePlanSelectionState: (ByteBuffer, Int) -> Unit = { buffer, start ->
-    chooseDoodleModeAndExit.forEachIndexed { index, word -> buffer.putInt(start + index * WORD_SIZE, word) }
+private val chooseDoodleModeAndFinish = intArrayOf(
+    ADRP_X9_APP_CONTEXT_PAGE_FROM_NO_PLAN_RESULT.toInt(),
+    LDR_X9_APP_CONTEXT.toInt(),
+    LDR_X9_LAUNCH_SETTINGS.toInt(),
+    MOV_W10_DOODLE_MODE_CHOICE,
+    STR_W10_LAUNCH_CHOICE.toInt(),
+    CLEAR_REFERENCE_RELEASED_BY_FINISH_BLOCK.toInt(),
+    B_POST_FINISH_EVENT,
+)
+
+private fun writeWords(words: IntArray): (ByteBuffer, Int) -> Unit = { buffer, start ->
+    words.forEachIndexed { index, word -> buffer.putInt(start + index * WORD_SIZE, word) }
 }
 
 private val patchSites = listOf(
@@ -48,7 +61,20 @@ private val patchSites = listOf(
             0xf9401708u.toInt(),
             0xaa0003f5u.toInt(),
         ),
-        replacePlanSelectionState,
+        writeWords(chooseDoodleModeAndExit),
+    ),
+    PatchSite(
+        intArrayOf(
+            0xb0001b38u.toInt(),
+            0x910c0318u.toInt(),
+            0xd2c00108u.toInt(),
+            0x781e03bfu.toInt(),
+            0x7903e3ffu.toInt(),
+            0xa93c7fb8u.toInt(),
+            0xa93d23bfu.toInt(),
+            0xa91d7ff8u.toInt(),
+        ),
+        writeWords(chooseDoodleModeAndFinish),
     ),
 )
 

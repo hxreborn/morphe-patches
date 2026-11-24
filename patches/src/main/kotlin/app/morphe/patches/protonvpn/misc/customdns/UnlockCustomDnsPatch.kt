@@ -23,7 +23,7 @@ val unlockCustomDnsPatch: Patch = patch(
     name = "Unlock custom DNS",
     description = "Unlocks custom DNS on free plans.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

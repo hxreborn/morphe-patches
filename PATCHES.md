@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.86.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**594 patches** across **187 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.87.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**611 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -380,7 +380,7 @@
 
 | Patch | Details |
 |---|---|
-| <a id="bereal-back-up-memories"></a>[**Back up memories**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up memories to hxreborn patches. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' usernames and comments to Download/BeReal unless a folder is picked. |
+| <a id="bereal-back-up-memories"></a>[**Back up memories**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/backup/BackupMemoriesPatch.kt) | Adds Back up memories to hxreborn patches. Saves every memory as separate back and front photos with the time, place and caption, plus the BTS video. Writes JSON sidecars with location, friends' usernames and comments to Download/BeReal unless a folder is picked. On a mount install, keep BeReal open until it finishes. |
 | <a id="bereal-change-download-location"></a>[**Change download location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/download/ChangeDownloadLocationPatch.kt) | Saves downloaded BeReals to Pictures/BeReal, DCIM/BeReal or a folder you pick. Requires Android 10 or newer. |
 | <a id="bereal-custom-befake-header"></a>[**Custom BeFake header**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/header/CustomBeFakeHeaderPatch.kt) | Replaces the BeReal wordmark in the top bar and posting header with BeFake. |
 | <a id="bereal-custom-location"></a>[**Custom location**](patches/src/main/kotlin/app/morphe/patches/bereal/misc/post/CustomLocationPatch.kt) | Sets the location shown on your BeReal to a place you choose on a map or by name. |
@@ -679,6 +679,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="catzy-remove-usage-limits"></a>**Remove usage limits** | Removes daily caps on store refreshes, blind boxes, feeding, petting and the Book of Answers. Opens the Item Recycling Center every day and shortens pet exploration to three minutes. |
 | <a id="catzy-unlimited-cat-coins"></a>**Unlimited cat coins** | Buys every store item without running out of cat coins. |
 | <a id="catzy-unlock-premium"></a>**Unlock premium** | Unlocks premium goals, journeys, breathing exercises, focus timers, sounds and themes. |
+
+---
+
+## Chess Scanner (com.stervs.chessscanner)
+
+<img src="https://publicmetadata.co.uk/com.stervs.chessscanner" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.8.36 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="chess-scanner-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/chessscanner/misc/premium/UnlockPremiumPatch.kt) | Unlocks Chess Scanner Pro. |
 
 ---
 
@@ -1087,6 +1102,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## FV File Explorer (com.folderv.file)
+
+<img src="https://publicmetadata.co.uk/com.folderv.file" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.28.6 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="fv-file-explorer-remove-banner-ads"></a>[**Remove banner ads**](patches/src/main/kotlin/app/morphe/patches/fvfileexplorer/ads/RemoveBannerAdsPatch.kt) | Removes banner ads from the home screen and archive viewer. |
+
+---
+
 ## Glass Widgets (com.jndapp.glass.widgets)
 
 <img src="https://publicmetadata.co.uk/com.jndapp.glass.widgets" width="48" height="48" align="top" alt="">
@@ -1264,7 +1294,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="internet-speed-meter-lite-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics and Sessions from collecting usage data. |
 | <a id="internet-speed-meter-lite-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/ads/RemoveAdsPatch.kt) | Removes ads and the prompts to allow them. |
-| <a id="internet-speed-meter-lite-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/premium/UnlockPremiumPatch.kt) | Unlocks the notification dialog, smart notifications, themes, notification accent and the starting hour of the day. |
+| <a id="internet-speed-meter-lite-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/internetspeedmeter/premium/UnlockPremiumPatch.kt) | Unlocks the notification dialog, smart notifications, themes, notification accent and the starting hour of the day. On a mount install, the quick overview has no per-app usage. |
 
 ---
 
@@ -1631,7 +1661,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="moon-reader-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics from collecting usage data and the Google Mobile Ads SDK from starting at launch. |
 | <a id="moon-reader-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/moonreader/ads/HideAdsPatch.kt) | Hides full-screen ads and the Remove ads button in the side menu. |
-| <a id="moon-reader-unlock-pro"></a>[**Unlock pro**](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including PDF annotations and form filling, WebDAV and FTP sync, text-to-speech controls, the home screen widget and extra toolbar and shelf options. |
+| <a id="moon-reader-unlock-pro"></a>[**Unlock pro**](patches/src/main/kotlin/app/morphe/patches/moonreader/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including PDF annotations and form filling, WebDAV and FTP sync, text-to-speech controls, the home screen widget and extra toolbar and shelf options. On a mount install, the home screen widget is not available. |
 
 ---
 
@@ -1646,10 +1676,12 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="moviebox-all-in-one"></a>[**All-In-One**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/allinone/AllInOnePatch.kt) | Enables video playback and downloads, removes ads and upsell prompts, and unlocks the Laboratory menu. Requires Android 10 or later. |
+| <a id="moviebox-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/update/DisableUpdatePromptsPatch.kt) | Removes update prompts and forced updates. |
 | <a id="moviebox-hide-buzzbox"></a>[**Hide BuzzBox**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/buzzbox/HideBuzzBoxPatch.kt) | Removes the BuzzBox tabs from the bottom navigation bar and the home screen. |
-| <a id="moviebox-hide-midnight-tab"></a>[**Hide Midnight tab**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/midnight/HideMidnightTabPatch.kt) | Removes the Midnight 18+ tab from the home screen. Requires All-In-One. |
-| <a id="moviebox-hide-permanent-notification"></a>[**Hide permanent notification**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/permanentnotification/HidePermanentNotificationPatch.kt) | Hides the permanent notification. Requires All-In-One. |
+| <a id="moviebox-hide-midnight-tab"></a>[**Hide Midnight tab**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/midnight/HideMidnightTabPatch.kt) | Removes the Midnight 18+ tab from the home screen. |
+| <a id="moviebox-hide-permanent-notification"></a>[**Hide permanent notification**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/permanentnotification/HidePermanentNotificationPatch.kt) | Hides the permanent notification. |
+| <a id="moviebox-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/moviebox/ads/RemoveAdsPatch.kt) | Removes ads. |
+| <a id="moviebox-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/moviebox/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium, unlimited playback time, unlimited downloads, every resolution and the Laboratory menu, and removes membership offers. |
 
 ---
 
@@ -1666,7 +1698,10 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="moviebox-tv-all-in-one"></a>[**All-In-One**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/allinone/AllInOnePatch.kt) | Unlocks video playback and removes ads and forced updates. Requires Android 10 or later. |
+| <a id="moviebox-tv-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/update/DisableUpdatePromptsPatch.kt) | Removes update prompts and forced updates. Requires Android 10 or later. |
+| <a id="moviebox-tv-fix-quality-selection"></a>[**Fix quality selection**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/quality/FixQualitySelectionPatch.kt) | Makes the quality choices in the player switch the stream to 480p, 720p or 1080p. Requires Android 10 or later. |
+| <a id="moviebox-tv-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/ads/RemoveAdsPatch.kt) | Removes ads. Requires Android 10 or later. |
+| <a id="moviebox-tv-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/premium/UnlockPremiumPatch.kt) | Unlocks full-length playback and removes region blocks. Requires Android 10 or later. |
 
 ---
 
@@ -1985,6 +2020,28 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Outlook (com.microsoft.office.outlook)
+
+<img src="https://publicmetadata.co.uk/com.microsoft.office.outlook" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.2645.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="outlook-add-unread-shortcut"></a>[**Add unread shortcut**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/shortcut/AddUnreadShortcutPatch.kt) | Adds an Unread shortcut to the app icon's long-press menu that opens unread mail from all accounts and folders. Launchers with four shortcut slots show it in place of View calendar. |
+| <a id="outlook-fix-sign-in"></a>[**Fix sign-in**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/fix/signin/FixSignInPatch.kt) | Fixes signing in with Microsoft accounts. |
+| <a id="outlook-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/gms/GmsCoreSupportPatch.kt) | Signs in to Google accounts through GmsCore instead of Google Play Services. Requires GmsCore. |
+| <a id="outlook-hide-copilot"></a>[**Hide Copilot**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/copilot/HideCopilotPatch.kt) | Hides Copilot chat, summaries, scheduling and writing help on all accounts, regardless of the Copilot setting in Outlook. |
+| <a id="outlook-keep-messages-unread"></a>[**Keep messages unread**](patches/src/main/kotlin/app/morphe/patches/outlook/mail/unread/KeepMessagesUnreadPatch.kt) | Leaves messages unread after opening them, or flagging or moving them from the reading pane. |
+| <a id="outlook-open-email-templates"></a>[**Open email templates**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/templates/OpenEmailTemplatesPatch.kt) | Opens .oft template attachments as new drafts without a Microsoft 365 subscription. |
+| <a id="outlook-remove-inbox-ads"></a>[**Remove inbox ads**](patches/src/main/kotlin/app/morphe/patches/outlook/ads/RemoveInboxAdsPatch.kt) | Removes sponsored messages from Focused and Other. |
+| <a id="outlook-select-multiple-search-results"></a>[**Select multiple search results**](patches/src/main/kotlin/app/morphe/patches/outlook/search/bulkactions/SelectMultipleSearchResultsPatch.kt) | Adds long-press selection to search results for marking, moving or deleting several messages at once. Works in the Mail tab of search. |
+
+---
+
 ## Patreon (com.patreon.android)
 
 <img src="https://publicmetadata.co.uk/com.patreon.android" width="48" height="48" align="top" alt="">
@@ -2126,6 +2183,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Podcast Republic (com.itunestoppodcastplayer.app)
+
+<img src="https://publicmetadata.co.uk/com.itunestoppodcastplayer.app" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 26.11.4R |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="podcast-republic-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/podcastrepublic/misc/ads/RemoveAdsPatch.kt) | Removes in-app ads and frees up banner space. |
+
+---
+
 ## Poe (com.poe.android)
 
 <img src="https://publicmetadata.co.uk/com.poe.android" width="48" height="48" align="top" alt="">
@@ -2139,6 +2211,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="poe-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/poe/misc/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics, Crashlytics, Sessions and Performance Monitoring from collecting usage data. |
 | <a id="poe-spoof-signature"></a>[**Spoof signature**](patches/src/main/kotlin/app/morphe/patches/poe/misc/fix/signature/SpoofSignaturePatch.kt) | Enables push notifications. |
+
+---
+
+## Poweramp Equalizer (com.maxmpz.equalizer)
+
+<img src="https://publicmetadata.co.uk/com.maxmpz.equalizer" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| build-1035-bundle-play |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="poweramp-equalizer-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/powerampequalizer/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium features and removes the time-limited trial. |
 
 ---
 
@@ -2258,6 +2345,29 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Proton Pass (F-Droid) (proton.android.pass.fdroid)
+
+<img src="https://publicmetadata.co.uk/proton.android.pass.fdroid" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.41.5 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="proton-pass-f-droid-amoled-dark-theme"></a>**AMOLED dark theme** | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
+| <a id="proton-pass-f-droid-custom-accent-color"></a>**Custom accent color** | Changes the accent color. Choose a color in the patches menu. |
+| <a id="proton-pass-f-droid-floating-navigation-bar"></a>**Floating navigation bar** | Adds optional floating navigation with adjustable blur and glass. |
+| <a id="proton-pass-f-droid-hide-layout-components"></a>**Hide layout components** | Adds settings to hide the Help center, Spread the word and About sections. |
+| <a id="proton-pass-f-droid-hide-navigation-bar-on-scroll"></a>**Hide navigation bar on scroll** | Hides the bottom navigation bar on scroll down and shows it on scroll up. |
+| <a id="proton-pass-f-droid-hide-promotional-messages"></a>**Hide promotional messages** | Hides promotional banners, offers and pop-up messages. |
+| <a id="proton-pass-f-droid-hide-upgrade-promotions"></a>**Hide upgrade promotions** | Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. Plan limits still apply. |
+| <a id="proton-pass-f-droid-m3e-loading-indicator"></a>**M3E loading indicator** | Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator. |
+| <a id="proton-pass-f-droid-material-3-switches"></a>**Material 3 switches** | Shows switches in the Material 3 style with check and close icons. |
+
+---
+
 ## Proton VPN (ch.protonvpn.android)
 
 <img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="48" height="48" align="top" alt="">
@@ -2283,6 +2393,34 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-unlock-custom-dns"></a>[**Unlock custom DNS**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/customdns/UnlockCustomDnsPatch.kt) | Unlocks custom DNS on free plans. |
 | <a id="proton-vpn-unlock-profiles"></a>[**Unlock profiles**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/profiles/UnlockProfilesPatch.kt) | Unlocks profiles on free plans and limits them to free locations. Profiles for other locations are hidden. |
 | <a id="proton-vpn-unlock-split-tunneling"></a>[**Unlock split tunneling**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/splittunneling/UnlockSplitTunnelingPatch.kt) | Unlocks split tunneling on free plans. |
+
+---
+
+## Proton VPN (F-Droid) (ch.protonvpn.android.reproducible)
+
+<img src="https://publicmetadata.co.uk/ch.protonvpn.android.reproducible" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.21.57.0 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="proton-vpn-f-droid-amoled-dark-theme"></a>**AMOLED dark theme** | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
+| <a id="proton-vpn-f-droid-custom-accent-color"></a>**Custom accent color** | Changes the accent color. Choose a color in the patches menu. |
+| <a id="proton-vpn-f-droid-disable-telemetry"></a>**Disable telemetry** | Stops sending usage statistics and diagnostics to Proton. |
+| <a id="proton-vpn-f-droid-floating-navigation-bar"></a>**Floating navigation bar** | Adds optional floating navigation with adjustable blur and glass. |
+| <a id="proton-vpn-f-droid-hide-upgrade-promotions"></a>**Hide upgrade promotions** | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
+| <a id="proton-vpn-f-droid-material-3-switches"></a>**Material 3 switches** | Adds check and close icons to switches. |
+| <a id="proton-vpn-f-droid-remove-server-change-delay"></a>**Remove server change delay** | Removes the wait between server changes on free plans. |
+| <a id="proton-vpn-f-droid-show-free-server-locations"></a>**Show free server locations** | Lists free server locations in Countries and Search and connects to the one you pick. Applies only to free plans. |
+| <a id="proton-vpn-f-droid-unlock-lan-connections"></a>**Unlock LAN connections** | Unlocks LAN connections on free plans. |
+| <a id="proton-vpn-f-droid-unlock-netshield"></a>**Unlock NetShield** | Unlocks NetShield ad and tracker blocking on free plans. |
+| <a id="proton-vpn-f-droid-unlock-connection-preferences"></a>**Unlock connection preferences** | Unlocks the default connection, recent connections and excluded locations on free plans. |
+| <a id="proton-vpn-f-droid-unlock-custom-dns"></a>**Unlock custom DNS** | Unlocks custom DNS on free plans. |
+| <a id="proton-vpn-f-droid-unlock-profiles"></a>**Unlock profiles** | Unlocks profiles on free plans and limits them to free locations. Profiles for other locations are hidden. |
+| <a id="proton-vpn-f-droid-unlock-split-tunneling"></a>**Unlock split tunneling** | Unlocks split tunneling on free plans. |
 
 ---
 
@@ -2895,7 +3033,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="ultimea-accent-color"></a>[**Accent color**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/AccentColorPatch.kt) | Changes accent colors with a chosen color or Material You. |
 | <a id="ultimea-dark-theme"></a>[**Dark theme**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/theme/DarkThemePatch.kt) | Adds dark and AMOLED themes with light text and controls. |
 | <a id="ultimea-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/tracking/DisableTrackingPatch.kt) | Disables Firebase Analytics, Crashlytics, Logan and usage event uploads. |
-| <a id="ultimea-fine-equalizer"></a>[**Fine equalizer**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB bands, band values and Undo to the equalizer screen. |
+| <a id="ultimea-fine-equalizer"></a>[**Fine equalizer**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/equalizer/FineEqualizerPatch.kt) | Adds 0.1 dB bands, band values and Undo to the equalizer screen. On a mount install, presets are shared as text instead of a file. |
 | <a id="ultimea-local-equalizer-presets"></a>[**Local equalizer presets**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/presets/LocalEqualizerPresetsPatch.kt) | Adds named local curves with duplicate, export and import actions. |
 | <a id="ultimea-remove-distractions"></a>[**Remove distractions**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/distractions/RemoveDistractionsPatch.kt) | Removes community, message and support entries. |
 | <a id="ultimea-remove-popups"></a>[**Remove popups**](patches/src/main/kotlin/app/morphe/patches/ultimea/misc/popups/RemovePopupsPatch.kt) | Removes promotional and rating popups. |

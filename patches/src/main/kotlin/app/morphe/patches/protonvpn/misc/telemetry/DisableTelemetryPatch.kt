@@ -27,7 +27,7 @@ val disableTelemetryPatch: Patch = patch(
     name = "Disable telemetry",
     description = "Stops sending usage statistics and diagnostics to Proton.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch, resourceFieldsPatch, disableAnalyticsCollectionPatch)
 
     execute {

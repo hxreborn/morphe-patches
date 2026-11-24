@@ -68,11 +68,19 @@ public final class PatchesSettingsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int theme = settingsTheme();
+        if (theme != 0) {
+            setTheme(theme);
+        }
         super.onCreate(savedInstanceState);
         this.style = new SettingsStyle(this);
         this.rows = new SettingsRows(this, this.style);
         styleSystemBars(getWindow());
         setContentView(screen());
+    }
+
+    static int settingsTheme() {
+        return 0;
     }
 
     @Override

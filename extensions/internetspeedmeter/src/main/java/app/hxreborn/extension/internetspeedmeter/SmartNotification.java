@@ -31,6 +31,8 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Build;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class SmartNotification {
 
@@ -140,7 +142,8 @@ public final class SmartNotification {
 
     private static PendingIntent networkIntent(Context context) {
         int mutability = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) ? PendingIntent.FLAG_MUTABLE : 0;
-        return PendingIntent.getBroadcast(context, 0, new Intent(context, NetworkAvailableReceiver.class),
+        return PendingIntent.getBroadcast(context, 0,
+                HostedComponents.route(context, new Intent(context, NetworkAvailableReceiver.class)),
                 PendingIntent.FLAG_UPDATE_CURRENT | mutability);
     }
 

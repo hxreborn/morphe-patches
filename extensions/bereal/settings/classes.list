@@ -18,7 +18,6 @@ app/hxreborn/extension/bereal/GalleryPhotos
 app/hxreborn/extension/bereal/GalleryPickerActivity
 app/hxreborn/extension/bereal/HostFonts
 app/hxreborn/extension/bereal/HostToggle
-app/hxreborn/extension/bereal/HostedScreens
 app/hxreborn/extension/bereal/LateFlag
 app/hxreborn/extension/bereal/LateFlag$MomentWindow
 app/hxreborn/extension/bereal/LocationRows
@@ -40,7 +39,6 @@ app/hxreborn/extension/bereal/PatchGroup$Kind
 app/hxreborn/extension/bereal/PatchGroup$Row
 app/hxreborn/extension/bereal/PatchSettings
 app/hxreborn/extension/bereal/PatchSummary
-app/hxreborn/extension/bereal/PatchesComponentFactory
 app/hxreborn/extension/bereal/PatchesSettingsActivity
 app/hxreborn/extension/bereal/PatchesSettingsActivity$SettingsPanel
 app/hxreborn/extension/bereal/PickSelection
@@ -62,12 +60,16 @@ app/hxreborn/extension/bereal/SettingsStyle
 app/hxreborn/extension/bereal/backup/BackupProgress
 app/hxreborn/extension/bereal/backup/BackupRun
 app/hxreborn/extension/bereal/backup/BackupRun$Outcome
+app/hxreborn/extension/bereal/backup/BackupCancelReceiver
+app/hxreborn/extension/bereal/backup/BackupHost
 app/hxreborn/extension/bereal/backup/BackupService
-app/hxreborn/extension/bereal/backup/BackupService$1
-app/hxreborn/extension/bereal/backup/BackupService$Ids
+app/hxreborn/extension/bereal/backup/BackupTask
+app/hxreborn/extension/bereal/backup/BackupTask$1
+app/hxreborn/extension/bereal/backup/BackupTask$Ids
 app/hxreborn/extension/bereal/backup/BeRealApi
 app/hxreborn/extension/bereal/backup/BeRealApi$1
 app/hxreborn/extension/bereal/backup/ExifValues
+app/hxreborn/extension/bereal/backup/InAppBackup
 app/hxreborn/extension/bereal/backup/MediaDownloader
 app/hxreborn/extension/bereal/backup/MemoriesApi
 app/hxreborn/extension/bereal/backup/MemoriesBackup

@@ -11,6 +11,8 @@ import app.morphe.patcher.patch.resourceFile
 import app.morphe.util.getNode
 import org.w3c.dom.Element
 
+internal const val SETTINGS_STYLE = "hx_utorrent_settings"
+internal const val SETTINGS_THEME = "@android:style/Theme.DeviceDefault.NoActionBar"
 private fun Element.elementsByTag(name: String): List<Element> {
     val nodes = getElementsByTagName(name)
     return (0 until nodes.length).map { nodes.item(it) as Element }
@@ -134,7 +136,7 @@ internal fun addAmoledResources(darkDrawables: Set<String>, settingsActivity: St
         val activity = document.createElement("activity")
         activity.setAttribute("android:name", settingsActivity)
         activity.setAttribute("android:exported", "false")
-        activity.setAttribute("android:theme", "@android:style/Theme.DeviceDefault.NoActionBar")
+        activity.setAttribute("android:theme", "@style/$SETTINGS_STYLE")
         document.getNode("application").appendChild(activity)
     }
     return resources

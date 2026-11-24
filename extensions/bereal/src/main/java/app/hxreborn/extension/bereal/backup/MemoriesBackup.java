@@ -25,6 +25,7 @@ import java.util.Date;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,6 +33,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import app.hxreborn.extension.bereal.PatchSettings;
+import app.hxreborn.extension.shared.ManifestDeclarations;
 
 @SuppressWarnings("unused")
 public final class MemoriesBackup {
@@ -56,7 +58,11 @@ public final class MemoriesBackup {
             .checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             ((Activity) context).requestPermissions(new String[] { Manifest.permission.POST_NOTIFICATIONS }, 0);
         }
-        context.startForegroundService(new Intent(context, BackupService.class));
+        if (ManifestDeclarations.isServiceDeclared(context, new ComponentName(context, BackupService.class))) {
+            context.startForegroundService(new Intent(context, BackupService.class));
+            return;
+        }
+        InAppBackup.start(context.getApplicationContext());
     }
 
     public static String summary() {

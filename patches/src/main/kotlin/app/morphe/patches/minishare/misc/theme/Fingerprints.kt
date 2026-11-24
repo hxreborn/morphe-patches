@@ -54,12 +54,14 @@ internal object RadarLabelColorFingerprint : Fingerprint(
     ),
 )
 
+internal val statusBarTintTranslucentFlag = literal(FLAG_TRANSLUCENT_STATUS)
+
 internal object StatusBarTintFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("Landroid/app/Activity;", "I", "I"),
     filters = listOf(
         fieldAccess(definingClass = LAYOUT_PARAMS_CLASS, name = "flags", opcode = Opcode.IGET),
-        literal(FLAG_TRANSLUCENT_STATUS),
+        statusBarTintTranslucentFlag,
         fieldAccess(
             definingClass = LAYOUT_PARAMS_CLASS,
             name = "flags",
@@ -70,11 +72,13 @@ internal object StatusBarTintFingerprint : Fingerprint(
     ),
 )
 
+internal val splashTranslucentStatusFlag = literal(FLAG_TRANSLUCENT_STATUS, location = MatchAfterWithin(1))
+
 internal object SplashTranslucentStatusFingerprint : Fingerprint(
     filters = listOf(
         string("arg_is_running"),
         methodCall(definingClass = "Landroid/app/Activity;", name = "getWindow"),
-        literal(FLAG_TRANSLUCENT_STATUS, location = MatchAfterWithin(1)),
+        splashTranslucentStatusFlag,
         methodCall(definingClass = "Landroid/view/Window;", name = "addFlags", location = MatchAfterImmediately()),
     ),
 )

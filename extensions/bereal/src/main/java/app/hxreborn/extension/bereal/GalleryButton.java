@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -59,6 +60,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import app.hxreborn.extension.shared.Dimensions;
+import app.hxreborn.extension.shared.HostedComponents;
 
 @SuppressLint("StaticFieldLeak")
 final class GalleryButton {
@@ -236,7 +238,7 @@ final class GalleryButton {
         refresh();
         if (RecentPhotos.hasAccess(this.activity)) {
             loadRecent();
-        } else if (!permissionRequested) {
+        } else if (!permissionRequested && RecentPhotos.isPhotoPermissionRequested(this.activity)) {
             permissionRequested = true;
             this.activity.requestPermissions(RecentPhotos.permissions(), 0);
         }
@@ -394,7 +396,7 @@ final class GalleryButton {
 
     void openAllPhotos() {
         this.album.dismiss();
-        this.activity.startActivity(HostedScreens.intent(this.activity, GalleryPickerActivity.class));
+        HostedComponents.startActivity(this.activity, new Intent(this.activity, GalleryPickerActivity.class));
     }
 
     @SuppressWarnings("NonAtomicOperationOnVolatileField")

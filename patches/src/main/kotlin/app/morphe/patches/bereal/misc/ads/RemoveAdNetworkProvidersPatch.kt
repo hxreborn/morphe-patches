@@ -6,7 +6,9 @@ package app.morphe.patches.bereal.misc.ads
 
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.returnEarly
 import app.morphe.util.asSequence
 import app.morphe.util.removeFromParent
 import org.w3c.dom.Element
@@ -24,6 +26,9 @@ internal val removeAdNetworkProvidersPatch = patch {
             AD_NETWORK_PROVIDERS.forEach { name ->
                 providers.singleOrNull { it.getAttribute("android:name") == name }?.removeFromParent()
                     ?: throw PatchException("Expected exactly one $name in the manifest")
+                mutableClassDefBy("L${name.replace('.', '/')};").methods
+                    .single { it.name == "onCreate" && it.parameterTypes.isEmpty() }
+                    .returnEarly(true)
             }
         }
     }

@@ -30,7 +30,7 @@ val floatingNavigationBarPatch: Patch = patch(
     name = "Floating navigation bar",
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(protonFloatingNavigationBarExtensionPatch)
     dependsOn(patchesSettingsPatch)
 

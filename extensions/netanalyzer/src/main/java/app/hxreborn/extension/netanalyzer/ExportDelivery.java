@@ -77,7 +77,11 @@ final class ExportDelivery {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    static void shareCsv(Activity activity, String csv) {
+    static void shareCsv(Activity activity, String subject, String csv) {
+        if (!ExportFileProvider.isDeclared(activity)) {
+            shareText(activity, subject, csv);
+            return;
+        }
         final File file = ExportFileProvider.file(activity);
         final File directory = file.getParentFile();
         try {

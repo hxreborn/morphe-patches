@@ -32,7 +32,7 @@ val unlockProfilesPatch: Patch = patch(
         "Profiles for other locations are hidden.",
 ) {
     dependsOn(protonFreeServerLocationsExtensionPatch)
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch, freeAccountStatePatch)
 
     execute {

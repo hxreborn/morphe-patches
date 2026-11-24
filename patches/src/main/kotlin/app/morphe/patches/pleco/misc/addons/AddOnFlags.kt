@@ -4,7 +4,7 @@
  */
 package app.morphe.patches.pleco.misc.addons
 
-import app.morphe.patches.readera.shared.MaskedPattern
+import app.morphe.patches.shared.misc.arm64.MaskedPattern
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

@@ -123,5 +123,16 @@ val disableDataCollectionPatch: Patch = patch(
         )
 
         AdjustInitFingerprint.method.returnEarly()
+
+        listOf(CrashlyticsManifestFlagFingerprint, FirebaseSessionsManifestFlagFingerprint).forEach {
+            it.method.addInstructions(
+                0,
+                """
+                    sget-object v0, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
+                    return-object v0
+                """,
+            )
+        }
+        BigQueryMetricsManifestFlagFingerprint.method.returnEarly(false)
     }
 }

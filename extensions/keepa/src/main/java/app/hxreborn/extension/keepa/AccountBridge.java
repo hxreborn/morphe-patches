@@ -27,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class AccountBridge {
 
@@ -67,9 +69,9 @@ public final class AccountBridge {
                 store.clearPending();
                 return snapshot(store, store.load());
             case "openAccounts":
-                context
-                    .startActivity(new Intent().setClassName(context.getPackageName(), AccountsActivity.class.getName())
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                HostedComponents.startActivity(context,
+                        new Intent().setClassName(context.getPackageName(), AccountsActivity.class.getName())
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 return "";
             default:
                 break;

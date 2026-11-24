@@ -47,13 +47,16 @@ public final class DashInterceptor extends ChainInterceptor {
 
     private final Set<String> hiddenHomeTabs;
 
+    private final boolean premiumUnlocked;
+
     public DashInterceptor(ClassLoader loader, MovieBoxSource source, boolean routeDownloads,
-            Set<String> hiddenHomeTabs) {
+            Set<String> hiddenHomeTabs, boolean premiumUnlocked) {
         super("MovieBoxDashInterceptor", "MovieBox interceptor failed");
         this.loader = loader;
         this.source = source;
         this.routeDownloads = routeDownloads;
         this.hiddenHomeTabs = hiddenHomeTabs;
+        this.premiumUnlocked = premiumUnlocked;
     }
 
     @Override
@@ -90,14 +93,15 @@ public final class DashInterceptor extends ChainInterceptor {
         if (url.contains(Endpoints.RESOURCE_LIST_SEGMENT)) {
             return Endpoint.RESOURCE_LIST;
         }
-        if (url.contains(Endpoints.OPERATING_PAGE)) {
+        if (this.premiumUnlocked && url.contains(Endpoints.OPERATING_PAGE)) {
             return Endpoint.OPERATING_PAGE;
         }
-        if (url.contains(Endpoints.SKU_PROMOTION)) {
+        if (this.premiumUnlocked && url.contains(Endpoints.SKU_PROMOTION)) {
             return Endpoint.SKU_PROMOTION;
         }
         boolean appTab = !this.hiddenHomeTabs.isEmpty() && url.contains(Endpoints.APP_TAB);
-        boolean memberInfo = url.contains(Endpoints.USER_PROFILE) || url.contains(Endpoints.MEMBER_DETAIL);
+        boolean memberInfo = this.premiumUnlocked
+                && (url.contains(Endpoints.USER_PROFILE) || url.contains(Endpoints.MEMBER_DETAIL));
         if (!appTab && !memberInfo) {
             return Endpoint.OTHER;
         }

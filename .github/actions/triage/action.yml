@@ -348,6 +348,12 @@ runs:
             elif [ -n "$previous" ]; then
               printf '<!-- triage-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" report-passes)" > comment.md
               post_comment
+            elif [ "$ACTION" = opened ] && [ "$(gh api "repos/$REPO/issues/$ISSUE/comments" --jq length)" = 0 ]; then
+              related=$(python3 "${{ github.action_path }}/related_issues.py" "$event" "$list" bug verdict.json comment) || related=""
+              if [ -n "$related" ]; then
+                printf '<!-- related-issues-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" related issues="$related")" > comment.md
+                change_issue comment --body-file comment.md
+              fi
             fi
             ;;
         esac

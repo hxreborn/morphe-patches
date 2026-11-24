@@ -12,6 +12,8 @@ import app.morphe.util.getNode
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 
+internal const val SETTINGS_STYLE = "hx_bittorrent_settings"
+internal const val SETTINGS_THEME = "@android:style/Theme.DeviceDefault.NoActionBar"
 private const val SWITCH_LAYOUT_NAME = "hx_bittorrent_switch"
 private const val ENTRY_TAG = "hx_bittorrent_patches_entry"
 internal const val ANCHOR_ROW_ID = "tv_incoming_port_title"
@@ -158,7 +160,7 @@ internal fun addAmoledResources(darkDrawables: Set<String>, settingsActivity: St
         val activity = document.createElement("activity")
         activity.setAttribute("android:name", settingsActivity)
         activity.setAttribute("android:exported", "false")
-        activity.setAttribute("android:theme", "@android:style/Theme.DeviceDefault.NoActionBar")
+        activity.setAttribute("android:theme", "@style/$SETTINGS_STYLE")
         document.getNode("application").appendChild(activity)
     }
     return resources

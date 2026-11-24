@@ -25,6 +25,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.BLOCKIT,
         AppCompatibilities.BLURWALL,
         AppCompatibilities.CATZY,
+        AppCompatibilities.CHESS_SCANNER,
         AppCompatibilities.CLINK,
         AppCompatibilities.CODDY,
         AppCompatibilities.CONNECTED2,

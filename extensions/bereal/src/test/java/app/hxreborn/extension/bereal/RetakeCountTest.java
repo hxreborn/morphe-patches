@@ -23,7 +23,6 @@ package app.hxreborn.extension.bereal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -107,7 +106,7 @@ public final class RetakeCountTest {
 
         final Intent started = Shadows.shadowOf(RuntimeEnvironment.getApplication()).getNextStartedActivity();
         assertNotNull(started);
-        assertTrue(HostedScreens.instantiate(started.getComponent().getClassName(), started) instanceof RetakeCountActivity);
+        assertEquals(RetakeCountActivity.class.getName(), started.getComponent().getClassName());
         assertEquals(5, RetakeCount.realCount());
     }
 

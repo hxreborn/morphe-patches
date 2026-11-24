@@ -8,5 +8,6 @@ import app.morphe.patcher.patch.patch
 
 
 internal val athanSaveImagesToGalleryExtensionPatch = patch {
+    dependsOn(sharedHostedComponentsExtensionPatch)
     extendWith("extensions/hxreborn/athan-save-images-to-gallery.mpe")
 }

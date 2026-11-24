@@ -25,6 +25,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class PatchesMenu {
 
@@ -54,7 +56,7 @@ public final class PatchesMenu {
         if (entryId == 0 || id != entryId) {
             return false;
         }
-        activity.startActivity(new Intent(activity, PatchesSettingsActivity.class));
+        HostedComponents.startActivity(activity, new Intent(activity, PatchesSettingsActivity.class));
         return true;
     }
 

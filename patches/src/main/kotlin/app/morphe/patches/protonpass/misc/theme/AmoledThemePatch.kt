@@ -49,7 +49,7 @@ val amoledThemePatch: Patch = patch(
     name = "AMOLED dark theme",
     description = "Replaces the dark theme background with pure black and can dim menus, bars and buttons.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(patchesSettingsPatch, amoledSplashBackgroundPatch, amoledBackgroundOverlayPatch)
 
     execute {

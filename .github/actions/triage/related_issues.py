@@ -13,12 +13,20 @@ GENERIC_WORDS = set(
     "add app are bug can does dont error fail failed feature for from have how issue just not now option "
     "patch please request since still the this when will with work working would".split()
 )
+SAME_MEANING = {
+    "backing": "backup", "backups": "backup", "drive": "backup", "restore": "backup", "restoring": "backup",
+    "gms": "gmscore", "google": "gmscore", "microg": "gmscore",
+}
 ERROR_CODE = re.compile(r"\b(?:INSTALL_FAILED_[A-Z0-9_]+|[A-Z][A-Za-z]+(?:Exception|Error))\b")
 MAX_RESULTS = 3
 
 
 def words(text):
     return re.findall(r"[^\W_]+", text.casefold())
+
+
+def meaning(word):
+    return SAME_MEANING.get(word, word)
 
 
 def suggestions(issue, app, label, repo):
@@ -31,14 +39,15 @@ def suggestions(issue, app, label, repo):
     patch_words = words(patch)
     excluded = GENERIC_WORDS | set(app_words) | set(patch_words)
     terms = list(dict.fromkeys(word for word in words(f"{title} {subject}") if len(word) >= 3 and word not in excluded))
-    queries = [error[0] if error else "", " ".join(terms[:2]), " ".join(patch_words)]
+    term_meanings = list(dict.fromkeys(meaning(term) for term in terms))
+    queries = ["", *filter(None, [error[0] if error else "", " ".join(terms[:2]), " ".join(patch_words)])]
     candidates = {}
     search_failed = False
-    for query in dict.fromkeys(filter(None, queries)):
+    for query in dict.fromkeys(queries):
         try:
             result = subprocess.run(
                 ["gh", "search", "issues", "--repo", repo, "--label", label, "--match", "title",
-                 "--limit", "15", "--json", "number,title,state", "--", f"{' '.join(app_words)} {query}"],
+                 "--limit", "30", "--json", "number,title,state", "--", " ".join([*app_words, query]).strip()],
                 capture_output=True, text=True, check=True, timeout=15,
             )
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
@@ -50,7 +59,8 @@ def suggestions(issue, app, label, repo):
             candidate_words = words(candidate["title"])
             if not set(app_words) <= set(candidate_words):
                 continue
-            shared = [term for term in terms if term in candidate_words]
+            candidate_meanings = {meaning(word) for word in candidate_words}
+            shared = [term for term in term_meanings if term in candidate_meanings]
             has_patch = patch_words and f" {' '.join(patch_words)} " in f" {' '.join(candidate_words)} "
             has_error = error and error[0].casefold() in candidate["title"].casefold()
             reasons = []
@@ -67,7 +77,14 @@ def suggestions(issue, app, label, repo):
     return ranked[:MAX_RESULTS], search_failed
 
 
-def main(event_path, manifest_path, label, verdict_path=None):
+def comment_lines(candidates, repo):
+    for _, candidate, _ in candidates:
+        number = candidate["number"]
+        title = " ".join(candidate["title"].replace("`", "'").split())
+        print(f"- [#{number}](https://redirect.github.com/{repo}/issues/{number}) `{title}`")
+
+
+def main(event_path, manifest_path, label, verdict_path=None, output="summary"):
     issue = json.loads(Path(event_path).read_text())["issue"]
     if verdict_path:
         app = json.loads(Path(verdict_path).read_text())["app"]
@@ -80,6 +97,9 @@ def main(event_path, manifest_path, label, verdict_path=None):
     if not app:
         return
     candidates, search_failed = suggestions(issue, app, label, repo)
+    if output == "comment":
+        comment_lines(candidates, repo)
+        return
     if search_failed:
         print("\nSome related issue searches failed.")
     if candidates:

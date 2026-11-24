@@ -8,6 +8,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.requireStandardInstall
 import app.morphe.patches.xtreamplayer.misc.premium.unlockPremiumPatch
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
@@ -24,6 +25,7 @@ val androidAutoSupportPatch = patch(
         "Requires Android 15 or newer and Unknown sources in Android Auto developer settings.",
 ) {
     compatibleWith(AppCompatibilities.XTREAM_PLAYER)
+    availability(requireStandardInstall)
     dependsOn(unlockPremiumPatch)
 
     execute {

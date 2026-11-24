@@ -63,6 +63,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.shared.Dimensions;
+import app.hxreborn.extension.shared.HostedComponents;
 
 @SuppressWarnings("unused")
 public final class NotesActivity extends Activity {
@@ -134,7 +135,7 @@ public final class NotesActivity extends Activity {
     private TextView emptyView;
 
     public static void open(Activity activity) {
-        activity.startActivity(new Intent(activity, NotesActivity.class));
+        HostedComponents.startActivity(activity, new Intent(activity, NotesActivity.class));
     }
 
     private static void postNotePosition(Cursor note, int type, long docId) {

@@ -58,7 +58,7 @@ val floatingNavigationBarPatch: Patch = patch(
     name = "Floating navigation bar",
     description = "Adds optional floating navigation with adjustable blur and glass.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(protonFloatingNavigationBarExtensionPatch)
     dependsOn(patchesSettingsPatch)
 

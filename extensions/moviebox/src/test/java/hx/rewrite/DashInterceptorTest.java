@@ -97,6 +97,18 @@ public final class DashInterceptorTest {
     }
 
     @Test
+    public void leavesTheProfileResponseAloneWithoutPremium() throws IOException {
+        // given
+        this.server.put(PROFILE, MEMBER.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetchWithoutPremium(PROFILE);
+
+        // then
+        Assertions.assertThat(body).isEqualTo(MEMBER);
+    }
+
+    @Test
     public void leavesOtherResponsesAlone() throws IOException {
         // given
         this.server.put("/other", MEMBER.getBytes(StandardCharsets.UTF_8));
@@ -252,10 +264,46 @@ public final class DashInterceptorTest {
         Assertions.assertThat(new JSONObject(body).isNull("data")).as(body).isTrue();
     }
 
+    @Test
+    public void keepsTheHomeFeedPromotionsWithoutPremium() throws IOException {
+        // given
+        String feed = "{\"data\":{\"items\":[{\"type\":\"BANNER\",\"banner\":{\"banners\":["
+                + "{\"deepLink\":\"oneroom://x?type=/member/MemberActivity\"}]}}]}}";
+        this.server.put(OPERATING_PAGE, feed.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetchWithoutPremium(OPERATING_PAGE);
+
+        // then
+        Assertions.assertThat(body).isEqualTo(feed);
+    }
+
+    @Test
+    public void keepsTheSkuPromotionWithoutPremium() throws IOException {
+        // given
+        String promotion = "{\"code\":0,\"data\":{\"marketingActivityId\":\"1\",\"items\":[]}}";
+        this.server.put(SKU_PROMOTION, promotion.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String body = fetchWithoutPremium(SKU_PROMOTION);
+
+        // then
+        Assertions.assertThat(body).isEqualTo(promotion);
+    }
+
     private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs) throws IOException {
+        return fetch(pathAndQuery, routeDownloads, hiddenTabs, true);
+    }
+
+    private String fetchWithoutPremium(String pathAndQuery) throws IOException {
+        return fetch(pathAndQuery, true, Collections.emptySet(), false);
+    }
+
+    private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs, boolean premiumUnlocked)
+            throws IOException {
         ApiClient api = new ApiClient(this.loader, new OkHttpClient(), this.server.url(""));
         DashInterceptor interceptor = new DashInterceptor(this.loader,
-                new MovieBoxSource(api, (path, accepted) -> null), routeDownloads, hiddenTabs);
+                new MovieBoxSource(api, (path, accepted) -> null), routeDownloads, hiddenTabs, premiumUnlocked);
         Interceptor proxy = (Interceptor) Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
                 interceptor);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(proxy).build();

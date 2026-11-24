@@ -29,6 +29,10 @@ private const val MACHINE_AARCH64 = 183
 
 private const val PAIRIP_RUNTIME_LIBRARY = "libpairipcore.so"
 private const val ELF32_HEADER_SIZE = 52
+private const val ELF32_PROGRAM_TABLE_OFFSET_FIELD = 0x1C
+private const val ELF64_PROGRAM_TABLE_OFFSET_FIELD = 0x20
+private const val ELF32_SECTION_TABLE_OFFSET_FIELD = 0x20
+private const val ELF64_SECTION_TABLE_OFFSET_FIELD = 0x28
 private val ELF_MAGIC = byteArrayOf(0x7F, 'E'.code.toByte(), 'L'.code.toByte(), 'F'.code.toByte())
 private const val PAIRIP_RUNNER_SYMBOL = "ExecuteProgram"
 private const val GLOBAL_FUNCTION_SYMBOL = (1 shl 4) or 2
@@ -66,13 +70,16 @@ private class DynamicEntry(val tag: Long, var value: Long)
 
 private class Placement(val offset: Long, val address: Long, val size: Long)
 
+internal class AppendedData(val library: ByteArray, val address: Long)
+
 internal class ElfImage(private val bytes: ByteArray) {
     private val buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
     private val wide = bytes[4].toInt() == 2
     private val wordSize = if (wide) 8 else 4
     private val machine = buffer.getShort(0x12).toInt() and 0xFFFF
-    private val programOffset = word(if (wide) 0x20 else 0x1C).toInt()
-    private val sectionOffset = word(if (wide) 0x28 else 0x20).toInt()
+    private val sectionTableOffsetField = if (wide) ELF64_SECTION_TABLE_OFFSET_FIELD else ELF32_SECTION_TABLE_OFFSET_FIELD
+    private val programOffset = word(if (wide) ELF64_PROGRAM_TABLE_OFFSET_FIELD else ELF32_PROGRAM_TABLE_OFFSET_FIELD).toInt()
+    private val sectionOffset = word(sectionTableOffsetField).toInt()
     private val headerFieldsAt = if (wide) 0x36 else 0x2A
     private val programEntrySize = u16(headerFieldsAt)
     private val programCount = u16(headerFieldsAt + 2)
@@ -202,15 +209,56 @@ internal class ElfImage(private val bytes: ByteArray) {
         output.write(bytes, 0, segmentEnd.toInt())
         output.write(tail.toByteArray())
         output.write(ByteArray((wordSize - output.size() % wordSize) % wordSize))
-        val newSectionOffset = output.size()
-        sections.forEach { output.write(encodeSection(it)) }
+        return appendHeaderTables(output)
+    }
 
+    fun address(fileOffset: Int): Long = programs
+        .first { it.type == PT_LOAD && fileOffset >= it.offset && fileOffset < it.offset + it.fileSize }
+        .let { it.vaddr + fileOffset - it.offset }
+
+    fun appendToWritableSegment(data: ByteArray, alignment: Long): AppendedData {
+        val segment = programs.filter { it.type == PT_LOAD }.maxBy { it.vaddr }
+        check(segment.flags and PF_WRITE != 0) { "The last segment is not writable" }
+        val segmentEnd = segment.offset + segment.fileSize
+        val initializedEnd = segment.vaddr + segment.fileSize
+        val address = alignUp(initializedEnd, alignment)
+        val insertedSize = alignUp(address + data.size - initializedEnd, wordSize.toLong())
+        val uninitializedStart = sections
+            .filter { it.type == SHT_NOBITS && it.address >= initializedEnd }
+            .minOfOrNull { it.address } ?: (segment.vaddr + segment.memorySize)
+        check(initializedEnd + insertedSize <= uninitializedStart) {
+            "${data.size} bytes do not fit between 0x${initializedEnd.toString(16)} and 0x${uninitializedStart.toString(16)}"
+        }
+        check(sectionOffset >= segmentEnd && sections.none { it.type != SHT_NOBITS && it.flags != 0L && it.offset >= segmentEnd }) {
+            "Allocated section after the last loaded segment"
+        }
+
+        sections.filter { it.offset >= segmentEnd }.forEach { it.offset += insertedSize }
+        segment.fileSize += insertedSize
+        val output = ByteArrayOutputStream()
+        output.write(bytes, 0, segmentEnd.toInt())
+        output.write(ByteArray((address - initializedEnd).toInt()))
+        output.write(data)
+        output.write(ByteArray((initializedEnd + insertedSize - address - data.size).toInt()))
+        output.write(bytes, segmentEnd.toInt(), sectionOffset - segmentEnd.toInt())
+        return AppendedData(appendHeaderTables(output), address)
+    }
+
+    private fun appendHeaderTables(output: ByteArrayOutputStream): ByteArray {
+        val sectionTableOffset = output.size()
+        sections.forEach { output.write(encodeSection(it)) }
         val result = output.toByteArray()
         val resultBuffer = ByteBuffer.wrap(result).order(ByteOrder.LITTLE_ENDIAN)
-        if (wide) resultBuffer.putLong(0x28, newSectionOffset.toLong()) else resultBuffer.putInt(0x20, newSectionOffset)
+        writeWord(resultBuffer, sectionTableOffsetField, sectionTableOffset.toLong())
         programs.forEachIndexed { index, segment -> writeSegment(resultBuffer, programOffset + index * programEntrySize, segment) }
         return result
     }
+
+    private fun writeWord(target: ByteBuffer, at: Int, value: Long) {
+        if (wide) target.putLong(at, value) else target.putInt(at, value.toInt())
+    }
+
+    private fun alignUp(value: Long, alignment: Long) = (value + alignment - 1) / alignment * alignment
 
     private fun extendedHashTable(symbolCount: Int): ByteArray {
         val table = sectionBytes(".hash")

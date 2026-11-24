@@ -18,7 +18,7 @@ val hidePromotionalMessagesPatch: Patch = patch(
     name = "Hide promotional messages",
     description = "Hides promotional banners, offers and pop-up messages.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

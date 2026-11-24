@@ -28,14 +28,19 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ProviderInfo;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 import org.robolectric.android.controller.ActivityController;
@@ -44,6 +49,36 @@ import org.robolectric.android.controller.ActivityController;
 @Config(sdk = 23)
 @SuppressWarnings({ "deprecation", "DataFlowIssue" })
 public class PresetShareProviderTest {
+
+    private static final String AUTHORITY_SUFFIX = ".hx_equalizer_presets";
+
+    @Before
+    public void declareProvider() {
+        Application application = RuntimeEnvironment.getApplication();
+        ProviderInfo provider = new ProviderInfo();
+        provider.name = PresetShareProvider.class.getName();
+        provider.packageName = application.getPackageName();
+        provider.authority = application.getPackageName() + AUTHORITY_SUFFIX;
+        Shadows.shadowOf(application.getPackageManager()).addOrUpdateProvider(provider);
+    }
+
+    @Test
+    public void sharesPresetAsTextWhenProviderIsUndeclared() throws Exception {
+        Application application = RuntimeEnvironment.getApplication();
+        Shadows.shadowOf(application.getPackageManager())
+            .removeProvider(new ComponentName(application.getPackageName(), PresetShareProvider.class.getName()));
+        try (ActivityController<Activity> controller = Robolectric.buildActivity(Activity.class).setup()) {
+            Activity activity = controller.get();
+            SoundState state = new SoundState(new EqualizerCurve(7, new int[10]), 1);
+            PresetShareProvider.share(activity, EqualizerPreset.create("Movie custom", state, "Movie", state));
+            Intent chooser = Shadows.shadowOf(activity).getNextStartedActivity();
+            Intent send = chooser.getParcelableExtra(Intent.EXTRA_INTENT);
+            Assert.assertEquals("text/plain", send.getType());
+            Assert.assertNull(send.getParcelableExtra(Intent.EXTRA_STREAM));
+            EqualizerPresetFile shared = EqualizerPresetFile.parse(send.getStringExtra(Intent.EXTRA_TEXT));
+            Assert.assertEquals(state, shared.state);
+        }
+    }
 
     @Test
     public void sharesCompleteSoundStateWithReadGrant() throws Exception {
@@ -81,8 +116,7 @@ public class PresetShareProviderTest {
                 while ((count = input.read(buffer)) != -1) {
                     bytes.write(buffer, 0, count);
                 }
-                EqualizerPresetFile shared = EqualizerPresetFile
-                    .parse(bytes.toString(StandardCharsets.UTF_8));
+                EqualizerPresetFile shared = EqualizerPresetFile.parse(bytes.toString(StandardCharsets.UTF_8));
                 Assert.assertEquals(state, shared.state);
                 Assert.assertEquals(base, shared.base);
                 Assert.assertEquals("Movie", shared.baseName);

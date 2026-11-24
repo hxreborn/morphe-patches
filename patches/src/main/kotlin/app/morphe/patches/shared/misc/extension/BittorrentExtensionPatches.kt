@@ -13,7 +13,7 @@ internal val bittorrentSettingsExtensionPatch = patch {
 }
 
 internal val bittorrentSettingsMenuAndAmoledThemeExtensionPatch = patch {
-    dependsOn(bittorrentSettingsExtensionPatch)
+    dependsOn(bittorrentSettingsExtensionPatch, sharedHostedComponentsExtensionPatch)
     extendWith("extensions/hxreborn/bittorrent-settings-menu-and-amoled-theme.mpe")
 }
 

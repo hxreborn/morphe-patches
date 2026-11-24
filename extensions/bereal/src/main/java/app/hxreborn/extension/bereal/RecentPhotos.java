@@ -37,6 +37,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 
+import app.hxreborn.extension.shared.ManifestDeclarations;
+
 final class RecentPhotos {
 
     private static final String TAG = "RecentPhotos";
@@ -56,6 +58,10 @@ final class RecentPhotos {
             return new String[] { READ_MEDIA_IMAGES };
         }
         return new String[] { Manifest.permission.READ_EXTERNAL_STORAGE };
+    }
+
+    static boolean isPhotoPermissionRequested(Context context) {
+        return ManifestDeclarations.isPermissionRequested(context, permissions()[0]);
     }
 
     static boolean hasAccess(Context context) {

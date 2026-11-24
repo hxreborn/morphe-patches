@@ -22,7 +22,7 @@ internal val readeraMaterial3ControlsExtensionPatch =
     extensionPayload("readera-material-3-controls", readeraMaterialRadioButtonExtensionPatch)
 
 internal val readeraQuotesAndNotesSectionExtensionPatch =
-    extensionPayload("readera-quotes-and-notes-section", sharedDimensionsExtensionPatch)
+    extensionPayload("readera-quotes-and-notes-section", sharedDimensionsExtensionPatch, sharedHostedComponentsExtensionPatch)
 
 internal val readeraSelectionMenuExtensionPatch = extensionPayload("readera-selection-menu")
 

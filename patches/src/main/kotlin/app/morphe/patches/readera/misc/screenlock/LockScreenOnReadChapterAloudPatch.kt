@@ -13,7 +13,7 @@ import app.morphe.patches.readera.misc.background.backgroundListeningPatch
 import app.morphe.patches.readera.misc.chapterspeech.readChapterAloudPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.shared.misc.requireArm64StandardInstall
 import app.morphe.util.ResourceGroup
 import app.morphe.util.copyResources
 
@@ -29,7 +29,7 @@ val lockScreenOnReadChapterAloudPatch = patch(
         "Needs device admin access.",
 ) {
     compatibleWith(AppCompatibilities.READERA)
-    availability(requireArm64)
+    availability(requireArm64StandardInstall)
     dependsOn(
         readChapterAloudPatch,
         backgroundListeningPatch,

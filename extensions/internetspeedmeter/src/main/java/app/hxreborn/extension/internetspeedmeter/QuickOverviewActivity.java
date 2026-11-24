@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AppOpsManager;
@@ -57,6 +58,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import app.hxreborn.extension.shared.Dimensions;
+import app.hxreborn.extension.shared.ManifestDeclarations;
 
 public final class QuickOverviewActivity extends Activity {
 
@@ -106,10 +108,17 @@ public final class QuickOverviewActivity extends Activity {
 
     private int usageRequest;
 
+    private boolean usageAvailable;
+
     @Override
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
+        int theme = overviewTheme();
+        if (theme != 0) {
+            setTheme(theme);
+        }
         super.onCreate(savedInstanceState);
+        this.usageAvailable = ManifestDeclarations.isPermissionRequested(this, Manifest.permission.PACKAGE_USAGE_STATS);
         this.preferences = AppResources.preferences(this);
         this.headerColor = AppResources.headerColor(this.preferences);
         this.bits = this.preferences.getBoolean("Use_bits", false);
@@ -128,14 +137,16 @@ public final class QuickOverviewActivity extends Activity {
         root.addView(this.graph,
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(GRAPH_HEIGHT_DP)));
 
-        root.addView(tabs());
-        ScrollView usageScroll = new ScrollView(this);
-        this.usageRows = new LinearLayout(this);
-        this.usageRows.setOrientation(LinearLayout.VERTICAL);
-        this.usageRows.setPadding(dp(PADDING_DP), dp(ROW_PADDING_DP), dp(PADDING_DP), dp(PADDING_DP));
-        usageScroll.addView(this.usageRows);
-        root.addView(usageScroll,
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(USAGE_HEIGHT_DP)));
+        if (this.usageAvailable) {
+            root.addView(tabs());
+            ScrollView usageScroll = new ScrollView(this);
+            this.usageRows = new LinearLayout(this);
+            this.usageRows.setOrientation(LinearLayout.VERTICAL);
+            this.usageRows.setPadding(dp(PADDING_DP), dp(ROW_PADDING_DP), dp(PADDING_DP), dp(PADDING_DP));
+            usageScroll.addView(this.usageRows);
+            root.addView(usageScroll,
+                    new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(USAGE_HEIGHT_DP)));
+        }
 
         setContentView(root);
     }
@@ -227,6 +238,9 @@ public final class QuickOverviewActivity extends Activity {
 
     @SuppressWarnings("deprecation")
     private void showUsage() {
+        if (!this.usageAvailable) {
+            return;
+        }
         boolean mobile = this.usageNetwork == ConnectivityManager.TYPE_MOBILE;
         styleTab(this.mobileTab, mobile);
         styleTab(this.wifiTab, !mobile);
@@ -345,6 +359,10 @@ public final class QuickOverviewActivity extends Activity {
         } catch (PackageManager.NameNotFoundException ex) {
             return packages[0];
         }
+    }
+
+    static int overviewTheme() {
+        return 0;
     }
 
     private boolean hasUsageAccess() {

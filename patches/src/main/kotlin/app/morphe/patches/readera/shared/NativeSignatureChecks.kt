@@ -5,26 +5,14 @@
 package app.morphe.patches.readera.shared
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.shared.misc.arm64.ANY_WORD
+import app.morphe.patches.shared.misc.arm64.Arm64.NOP
+import app.morphe.patches.shared.misc.arm64.MaskedPattern
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-private const val ANY_WORD = "?? ?? ?? ??"
-private const val NOP = 0xd503201f.toInt()
 private const val RET = 0xd65f03c0.toInt()
 private const val MOV_W9_1 = 0x52800029
-
-internal class MaskedPattern(val name: String, hex: String) {
-    private val bytes = hex.trim().split(Regex("\\s+")).map { if (it == "??") null else it.toInt(16).toByte() }
-
-    val size get() = bytes.size
-
-    fun indicesIn(library: ByteArray): List<Int> = (0..library.size - bytes.size).filter { start ->
-        bytes.indices.all { bytes[it] == null || library[start + it] == bytes[it] }
-    }
-
-    fun singleIn(library: ByteArray): Int = indicesIn(library).singleOrNull()
-        ?: throw PatchException("$name: expected 1 match, found ${indicesIn(library).size}")
-}
 
 internal object NativeSignatureChecks {
     const val LIBRARY = "lib/arm64-v8a/libreadera.so"

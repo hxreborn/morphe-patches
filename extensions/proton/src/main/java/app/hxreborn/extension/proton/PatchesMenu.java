@@ -31,14 +31,13 @@ import android.os.Looper;
 import android.util.Log;
 import app.morphe.extension.shared.Utils;
 
+import app.hxreborn.extension.shared.HostedComponents;
 import app.hxreborn.extension.shared.ProxyHandler;
 
 @SuppressWarnings("unused")
 public final class PatchesMenu {
 
     public static final String SETTINGS_ROW_TITLE = "hxreborn patches";
-
-    static final String ACTION_SHOW_PATCHES_SETTINGS = "app.hxreborn.extension.proton.SHOW_PATCHES_SETTINGS";
 
     private static final String TAG = "PatchesMenu";
 
@@ -54,10 +53,6 @@ public final class PatchesMenu {
         return "unknown";
     }
 
-    public static String hostActivity() {
-        return "";
-    }
-
     public static synchronized Object settingsRowOnClick(Class<?> onClickType) {
         if (settingsRowOnClickProxy == null) {
             settingsRowOnClickProxy = Proxy.newProxyInstance(PatchesMenu.class.getClassLoader(),
@@ -69,7 +64,7 @@ public final class PatchesMenu {
     private static void show() {
         final Activity activity = PatchContext.resumedActivity();
         if (activity != null && !activity.isFinishing()) {
-            activity.startActivity(settingsIntent(activity));
+            HostedComponents.startActivity(activity, new Intent(activity, PatchesSettingsActivity.class));
             return;
         }
 
@@ -79,17 +74,8 @@ public final class PatchesMenu {
             return;
         }
 
-        final Intent intent = settingsIntent(context);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    private static Intent settingsIntent(Context context) {
-        final Intent intent = new Intent(context, PatchesSettingsActivity.class);
-        if (context.getPackageManager().resolveActivity(intent, 0) == null) {
-            intent.setClassName(context, hostActivity()).setAction(ACTION_SHOW_PATCHES_SETTINGS);
-        }
-        return intent;
+        HostedComponents.startActivity(context,
+                new Intent(context, PatchesSettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     private static final class RowClickHandler extends ProxyHandler {

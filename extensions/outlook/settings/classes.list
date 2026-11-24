@@ -1,0 +1,9 @@
+app/hxreborn/extension/outlook/settings/PatchContext
+app/hxreborn/extension/outlook/settings/PatchContext$1
+app/hxreborn/extension/outlook/settings/PatchSettings
+app/hxreborn/extension/outlook/settings/PatchesMenu
+app/hxreborn/extension/outlook/settings/PatchesMenu$RowTitleHandler
+app/hxreborn/extension/outlook/settings/PatchesMenu$RowIconHandler
+app/hxreborn/extension/outlook/settings/PatchesSettingsDialog
+app/hxreborn/extension/outlook/settings/SettingsRows
+app/hxreborn/extension/outlook/settings/SettingsStyle

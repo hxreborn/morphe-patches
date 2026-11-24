@@ -28,6 +28,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class NotificationSettings {
 
@@ -75,9 +77,18 @@ public final class NotificationSettings {
 
     private static PendingIntent overviewIntent(Context context) {
         if (overviewIntent == null) {
-            overviewIntent = activityIntent(context, new Intent(context, QuickOverviewActivity.class));
+            overviewIntent = activityIntent(context, overviewActivityIntent(context));
         }
         return overviewIntent;
+    }
+
+    private static Intent overviewActivityIntent(Context context) {
+        Intent intent = HostedComponents.route(context, new Intent(context, QuickOverviewActivity.class));
+        boolean hosted = !QuickOverviewActivity.class.getName().equals(intent.getComponent().getClassName());
+        if (hosted) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        }
+        return intent;
     }
 
     private static PendingIntent mainIntent(Context context) {

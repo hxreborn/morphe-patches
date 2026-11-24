@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import app.hxreborn.extension.shared.ActivityCallbacksAdapter;
+import app.hxreborn.extension.shared.HostedComponents;
 
 @SuppressWarnings("unused")
 public final class PatchesMenu {
@@ -72,7 +73,7 @@ public final class PatchesMenu {
         if (activity == null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        launchContext.startActivity(intent);
+        HostedComponents.startActivity(launchContext, intent);
         return true;
     }
 

@@ -23,7 +23,7 @@ val materialSwitchesPatch: Patch = patch(
     description = "Shows switches in the Material 3 style with check and close icons.",
 ) {
     dependsOn(protonMaterialSwitchViewExtensionPatch)
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(patchesSettingsPatch)
 
     execute {

@@ -14,6 +14,11 @@ import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.hostedcomponents.CORE_COMPONENT_FACTORY
+import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
+import app.morphe.patches.shared.misc.hostedcomponents.addStyle
+import app.morphe.patches.shared.misc.hostedcomponents.replaceThemeStub
+import app.morphe.patches.shared.misc.hostedcomponents.licenseCheckActivityHost
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
@@ -44,11 +49,15 @@ private val DARK_DRAWABLES = mapOf(
     "bg_artist_icon_dark" to 1,
 )
 private lateinit var amoledResourceIds: AmoledResourceIds
+private val hostedComponents = HostedComponents(CORE_COMPONENT_FACTORY)
 
 private val amoledResourcesPatch = patch {
-    dependsOn(bittorrentSettingsExtensionPatch)
+    dependsOn(bittorrentSettingsExtensionPatch, hostedComponents.patch)
     execute {
         amoledResourceIds = addAmoledResources(DARK_DRAWABLES.keys, SETTINGS_ACTIVITY)
+        mutableClassDefBy("${EXTENSION_PACKAGE}PatchesSettingsActivity;")
+            .replaceThemeStub("menuTheme", addStyle(SETTINGS_STYLE, SETTINGS_THEME))
+        hostedComponents.host(SETTINGS_ACTIVITY, licenseCheckActivityHost)
     }
 }
 

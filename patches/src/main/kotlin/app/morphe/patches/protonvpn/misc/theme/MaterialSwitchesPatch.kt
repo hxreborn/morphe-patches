@@ -340,7 +340,7 @@ val materialSwitchesPatch: Patch = patch(
     description = "Adds check and close icons to switches.",
 ) {
     dependsOn(protonMaterial3SwitchesExtensionPatch)
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(patchesSettingsPatch, resourceFieldsPatch)
 
     execute {

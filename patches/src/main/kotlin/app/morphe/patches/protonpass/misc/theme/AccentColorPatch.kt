@@ -68,7 +68,7 @@ val accentColorPatch: Patch = patch(
     name = "Custom accent color",
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_PASS)
+    compatibleWith(AppCompatibilities.PROTON_PASS, AppCompatibilities.PROTON_PASS_FDROID)
     dependsOn(protonAccentColorPickerExtensionPatch)
     dependsOn(patchesSettingsPatch, accentOverlayPatch)
 

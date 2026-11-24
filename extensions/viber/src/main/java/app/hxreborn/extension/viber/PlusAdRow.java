@@ -32,6 +32,8 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import app.hxreborn.extension.shared.HostedComponents;
+
 @SuppressWarnings("unused")
 public final class PlusAdRow {
 
@@ -83,7 +85,8 @@ public final class PlusAdRow {
         toggle.setClickable(false);
         toggle.setFocusable(false);
         row.setVisibility(View.VISIBLE);
-        row.setOnClickListener((view) -> context.startActivity(new Intent(context, PatchesSettingsActivity.class)));
+        row.setOnClickListener(
+                (view) -> HostedComponents.startActivity(context, new Intent(context, PatchesSettingsActivity.class)));
     }
 
     private static final class PatchChip extends ReplacementSpan {

@@ -12,6 +12,7 @@ import app.morphe.patches.bereal.misc.base.beRealBasePatch
 import app.morphe.patches.bereal.misc.settings.BEREAL_EXTENSION_PACKAGE
 import app.morphe.patches.bereal.misc.settings.markFeaturePatched
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.requireStandardInstall
 import app.morphe.util.asSequence
 import org.w3c.dom.Element
 import app.morphe.patches.shared.misc.extension.berealContactsPermissionExtensionPatch
@@ -42,6 +43,7 @@ val removeContactsPermissionPatch: Patch = patch(
 ) {
     dependsOn(berealContactsPermissionExtensionPatch)
     compatibleWith(AppCompatibilities.BEREAL)
+    availability(requireStandardInstall)
 
     dependsOn(removeContactsPermissionsResourcePatch, beRealBasePatch)
 

@@ -19,7 +19,7 @@ val accentColorPatch: Patch = patch(
     name = "Custom accent color",
     description = "Changes the accent color. Choose a color in the patches menu.",
 ) {
-    compatibleWith(AppCompatibilities.PROTON_VPN)
+    compatibleWith(AppCompatibilities.PROTON_VPN, AppCompatibilities.PROTON_VPN_FDROID)
     dependsOn(protonAccentColorPickerExtensionPatch)
     dependsOn(patchesSettingsPatch, accentOverlayPatch)
 
