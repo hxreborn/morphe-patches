@@ -1,3 +1,19 @@
+## [1.88.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.4...v1.88.0-dev.5) (2026-11-24)
+
+### Bug Fixes
+
+* **MovieBox TV:** remove `1.2.0.0923.web_socialmedia` app target ([488042e](https://github.com/hxreborn/morphe-patches/commit/488042e9cb395c1289d27ca9e36b829ca37f4a47))
+* **Outlook - Add custom themes:** color the header in dark mode ([9e7bbcc](https://github.com/hxreborn/morphe-patches/commit/9e7bbcc35a7f18b1ce587905f15c42d3357974e0))
+
+### New Features
+
+* **MovieBox TV - Custom skip length:** skip up to 10 minutes per press ([9783d70](https://github.com/hxreborn/morphe-patches/commit/9783d70ceade64a32b38fd389687157b85172adb))
+* **MovieBox TV - Prefer highest resolution:** start playback at 1080p ([135dcd6](https://github.com/hxreborn/morphe-patches/commit/135dcd6bc5cfd18fb410aa0794a256e716be5a52))
+
+### Updated App Support
+
+* **MovieBox TV:** add support for `1.2.3.1113.03` ([38726da](https://github.com/hxreborn/morphe-patches/commit/38726da9c9534f5643aecdab9ea3118c5bb59bea))
+
 ## [1.88.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.3...v1.88.0-dev.4) (2026-11-24)
 
 ### Bug Fixes

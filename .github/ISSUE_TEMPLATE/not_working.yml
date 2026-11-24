@@ -260,7 +260,7 @@ body:
         - "Moon+ Reader (another version, type it below)"
         - "MovieBox 4.0.03.1020.03"
         - "MovieBox (another version, type it below)"
-        - "MovieBox TV 1.2.0.0923.web_socialmedia"
+        - "MovieBox TV 1.2.3.1113.03"
         - "MovieBox TV (another version, type it below)"
         - "MuscleWiki 3.2.7"
         - "MuscleWiki (another version, type it below)"
@@ -506,11 +506,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.88.0-dev.5"
         - "1.88.0-dev.4"
         - "1.88.0-dev.3"
         - "1.88.0-dev.2"
         - "1.88.0-dev.1"
-        - "1.87.0-dev.3"
         - "1.87.0"
         - "Older than these"
         # /generated
@@ -860,8 +860,10 @@ body:
         - "Moon+ Reader \u00b7 Disable tracking"
         - "Moon+ Reader \u00b7 Hide ads"
         - "Moon+ Reader \u00b7 Unlock pro"
+        - "MovieBox TV \u00b7 Custom skip length"
         - "MovieBox TV \u00b7 Disable update prompts"
         - "MovieBox TV \u00b7 Fix quality selection"
+        - "MovieBox TV \u00b7 Prefer highest resolution"
         - "MovieBox TV \u00b7 Remove ads"
         - "MovieBox TV \u00b7 Unlock premium"
         - "MovieBox \u00b7 Disable update prompts"

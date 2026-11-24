@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.88.0-dev.4** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**616 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.88.0-dev.5** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**618 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -1692,17 +1692,19 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| [1.2.0.0923.web_socialmedia](https://apk.aoneroom.com/apk/moviebox/release/1.2.0.0923/com.community.mbox.tv-release-1.2.0.0923-ws-50040018-h.apk "Download stock APK") |
+| [1.2.3.1113.03](https://apk.aoneroom.com/apk/moviebox/release/1.2.3.1113/50040022/com.community.mbox.tv-release-1.2.3.1113-of-50040022.apk "Download stock APK") |
 | :---: |
 
 Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | Patch | Details |
 |---|---|
-| <a id="moviebox-tv-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/update/DisableUpdatePromptsPatch.kt) | Removes update prompts and forced updates. Requires Android 10 or later. |
-| <a id="moviebox-tv-fix-quality-selection"></a>[**Fix quality selection**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/quality/FixQualitySelectionPatch.kt) | Makes the quality choices in the player switch the stream to 480p, 720p or 1080p. Requires Android 10 or later. |
-| <a id="moviebox-tv-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/ads/RemoveAdsPatch.kt) | Removes ads. Requires Android 10 or later. |
-| <a id="moviebox-tv-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/premium/UnlockPremiumPatch.kt) | Unlocks full-length playback and removes region blocks. Requires Android 10 or later. |
+| <a id="moviebox-tv-custom-skip-length"></a>[**Custom skip length**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/seek/CustomSkipLengthPatch.kt) | Adds skip lengths from 10 seconds to 10 minutes to the player's speed settings. |
+| <a id="moviebox-tv-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/update/DisableUpdatePromptsPatch.kt) | Removes update prompts and forced updates. |
+| <a id="moviebox-tv-fix-quality-selection"></a>[**Fix quality selection**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/quality/FixQualitySelectionPatch.kt) | Makes the quality choices in the player switch the stream to 480p, 720p or 1080p. |
+| <a id="moviebox-tv-prefer-highest-resolution"></a>[**Prefer highest resolution**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/quality/PreferHighestResolutionPatch.kt) | Starts videos at the highest available quality until you pick one in the player. |
+| <a id="moviebox-tv-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/ads/RemoveAdsPatch.kt) | Removes ads. |
+| <a id="moviebox-tv-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/movieboxtv/misc/premium/UnlockPremiumPatch.kt) | Unlocks full-length playback and VIP titles, and removes region blocks. |
 
 ---
 

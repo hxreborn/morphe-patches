@@ -27,20 +27,20 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.88.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.88.0-dev.4)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**616 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.88.0-dev.5](https://github.com/hxreborn/morphe-patches/releases/tag/v1.88.0-dev.5)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**618 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
 <table align="center">
 <tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#viber-comvibervoip"><img src="https://publicmetadata.co.uk/com.viber.voip" width="40" height="40" align="top" alt=""><br>Viber</a><br><sub>26&nbsp;patches</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#bereal-comberealft"><img src="https://publicmetadata.co.uk/com.bereal.ft" width="40" height="40" align="top" alt=""><br>BeReal</a><br><sub>22&nbsp;patches</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#imo-comimoandroidimoim"><img src="https://publicmetadata.co.uk/com.imo.android.imoim" width="40" height="40" align="top" alt=""><br>imo</a><br><sub>31&nbsp;patches</sub></td>
-</tr>
-<tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#moviebox-comcommunityoneroom"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>6&nbsp;patches</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#proton-mail-chprotonmailandroid"><img src="https://publicmetadata.co.uk/ch.protonmail.android" width="40" height="40" align="top" alt=""><br>Proton Mail</a><br><sub>11&nbsp;patches</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#proton-vpn-chprotonvpnandroid"><img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="40" height="40" align="top" alt=""><br>Proton VPN</a><br><sub>14&nbsp;patches</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#proton-pass-protonandroidpass"><img src="https://publicmetadata.co.uk/proton.android.pass" width="40" height="40" align="top" alt=""><br>Proton Pass</a><br><sub>10&nbsp;patches</sub></td>
+</tr>
+<tr>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#outlook-commicrosoftofficeoutlook"><img src="https://publicmetadata.co.uk/com.microsoft.office.outlook" width="40" height="40" align="top" alt=""><br>Outlook</a><br><sub>10&nbsp;patches</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#bereal-comberealft"><img src="https://publicmetadata.co.uk/com.bereal.ft" width="40" height="40" align="top" alt=""><br>BeReal</a><br><sub>22&nbsp;patches</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#viber-comvibervoip"><img src="https://publicmetadata.co.uk/com.viber.voip" width="40" height="40" align="top" alt=""><br>Viber</a><br><sub>26&nbsp;patches</sub></td>
 </tr>
 </table>
 
@@ -48,14 +48,14 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <table align="center">
 <tr>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#moviebox-comcommunityoneroom"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>3&nbsp;new&nbsp;patches<br>16&nbsp;fixed<br>1&nbsp;removed<br>2&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>7&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>6&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>14&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>5&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#aliexpress-comalibabaaliexpresshd"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9&nbsp;new&nbsp;patches<br>5&nbsp;fixed</sub></td>
 </tr>
 <tr>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#imo-comimoandroidimoim"><img src="https://publicmetadata.co.uk/com.imo.android.imoim" width="40" height="40" align="top" alt=""><br>imo</a><br><sub>14&nbsp;new&nbsp;patches<br>1&nbsp;improved<br>5&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#aliexpress-comalibabaaliexpresshd"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9&nbsp;new&nbsp;patches<br>5&nbsp;fixed</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#public-comcardfeedvideo_public"><img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="40" height="40" align="top" alt=""><br>Public</a><br><sub>8&nbsp;new&nbsp;patches<br>1&nbsp;fixed<br>3&nbsp;new&nbsp;versions</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#candy-crush-saga-comkingcandycrushsaga"><img src="https://publicmetadata.co.uk/com.king.candycrushsaga" width="40" height="40" align="top" alt=""><br>Candy Crush Saga</a><br><sub>12&nbsp;new&nbsp;patches<br>4&nbsp;fixed</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#outlook-commicrosoftofficeoutlook"><img src="https://publicmetadata.co.uk/com.microsoft.office.outlook" width="40" height="40" align="top" alt=""><br>Outlook</a><br><sub>10&nbsp;new&nbsp;patches<br>2&nbsp;fixed</sub></td>
 </tr>
 </table>
 
@@ -164,7 +164,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 96 | <img src="https://publicmetadata.co.uk/com.klevico.monet" width="24" height="24" align="top" alt=""> [**Monet Launcher**](PATCHES.md#monet-launcher-comklevicomonet) | 1 | `1.1.1` | [`com.klevico.monet`](https://play.google.com/store/apps/details?id=com.klevico.monet) |
 | 97 | <img src="https://publicmetadata.co.uk/com.flyersoft.moonreader" width="24" height="24" align="top" alt=""> [**Moon+ Reader**](PATCHES.md#moon-reader-comflyersoftmoonreader) | 3 | `10.7`, `10.8` | [`com.flyersoft.moonreader`](https://play.google.com/store/apps/details?id=com.flyersoft.moonreader) |
 | 98 | <img src="https://publicmetadata.co.uk/com.community.oneroom" width="24" height="24" align="top" alt=""> [**MovieBox**](PATCHES.md#moviebox-comcommunityoneroom) | 6 | `4.0.03.1020.03` | [`com.community.oneroom`](https://play.google.com/store/apps/details?id=com.community.oneroom) |
-| 99 | <img src="https://publicmetadata.co.uk/com.community.mbox.tv" width="24" height="24" align="top" alt=""> [**MovieBox TV**](PATCHES.md#moviebox-tv-comcommunitymboxtv) | 4 | `1.2.0.0923.web_…` | [`com.community.mbox.tv`](https://play.google.com/store/apps/details?id=com.community.mbox.tv) |
+| 99 | <img src="https://publicmetadata.co.uk/com.community.mbox.tv" width="24" height="24" align="top" alt=""> [**MovieBox TV**](PATCHES.md#moviebox-tv-comcommunitymboxtv) | 6 | `1.2.3.1113.03` | [`com.community.mbox.tv`](https://play.google.com/store/apps/details?id=com.community.mbox.tv) |
 | 100 | <img src="https://publicmetadata.co.uk/com.musclewiki.macro" width="24" height="24" align="top" alt=""> [**MuscleWiki**](PATCHES.md#musclewiki-commusclewikimacro) | 2 | `3.2.7` | [`com.musclewiki.macro`](https://play.google.com/store/apps/details?id=com.musclewiki.macro) |
 | 101 | <img src="https://publicmetadata.co.uk/in.krosbits.musicolet" width="24" height="24" align="top" alt=""> [**Musicolet**](PATCHES.md#musicolet-inkrosbitsmusicolet) | 1 | `6.14.1 build540` | [`in.krosbits.musicolet`](https://play.google.com/store/apps/details?id=in.krosbits.musicolet) |
 | 102 | <img src="https://publicmetadata.co.uk/com.musixmatch.android.lyrify" width="24" height="24" align="top" alt=""> [**Musixmatch**](PATCHES.md#musixmatch-commusixmatchandroidlyrify) | 1 | `8.5.0` | [`com.musixmatch.android.…`](https://play.google.com/store/apps/details?id=com.musixmatch.android.lyrify "com.musixmatch.android.lyrify") |
