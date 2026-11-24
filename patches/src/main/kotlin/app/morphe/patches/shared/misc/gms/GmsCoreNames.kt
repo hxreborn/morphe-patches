@@ -358,10 +358,11 @@ internal fun gmsCoreSupportPatchFor(
     compatibility: Compatibility,
     vararg dependencies: Patch,
     default: Boolean = false,
+    description: String = "Signs in through GmsCore instead of Google Play Services. " +
+        "Requires GmsCore to be installed.",
 ) = patch(
     name = "GmsCore support",
-    description = "Signs in through GmsCore instead of Google Play Services. " +
-        "Requires GmsCore to be installed.",
+    description = description,
     default = default,
 ) {
     compatibleWith(compatibility)
