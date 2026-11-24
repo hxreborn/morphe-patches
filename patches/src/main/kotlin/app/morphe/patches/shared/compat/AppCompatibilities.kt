@@ -1133,7 +1133,9 @@ internal object AppCompatibilities {
         signatures = setOf(
             "03d4b741632d136bc23e2de4c6adcdb7712f1980b619c183221801730bbd0410",
         ),
-        targets = listOf(),
+        targets = listOf(
+            AppTarget(version = "1.2.3.1113.03", versionCode = 50040022, minSdk = 23),
+        ),
     )
 
     val MUSICOLET = Compatibility(

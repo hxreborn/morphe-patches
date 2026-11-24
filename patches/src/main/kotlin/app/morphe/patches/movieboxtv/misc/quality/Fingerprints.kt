@@ -4,23 +4,18 @@
  */
 package app.morphe.patches.movieboxtv.misc.quality
 
-import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.util.getReference
-import com.android.tools.smali.dexlib2.iface.ClassDef
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
+import app.morphe.patcher.Fingerprint
 
-internal const val COUNTRY_HEADER_TAG = "CountryIsoCodeHeader"
-internal const val RESPONSE_TEXT = "Response{protocol="
-internal const val REQUEST_TEXT = "Request{method="
+internal object CountryHeaderFingerprint : Fingerprint(
+    strings = listOf("CountryIsoCodeHeader"),
+)
 
-internal val qualityStreamAnchors = listOf(COUNTRY_HEADER_TAG, RESPONSE_TEXT, REQUEST_TEXT)
+internal object ResponseToStringFingerprint : Fingerprint(
+    name = "toString",
+    strings = listOf("Response{protocol="),
+)
 
-internal fun List<ClassDef>.classWithStringLiteral(value: String): ClassDef {
-    val matches = flatMap { classDef ->
-        classDef.methods.filter { method ->
-            method.implementation?.instructions?.any { it.getReference<StringReference>()?.string == value } == true
-        }.map { classDef }
-    }
-    return matches.singleOrNull()
-        ?: throw PatchException("Expected one payload method loading \"$value\", found ${matches.size}")
-}
+internal object RequestToStringFingerprint : Fingerprint(
+    name = "toString",
+    strings = listOf("Request{method="),
+)
