@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-23T23:07:53",
-  "description": "## [1.87.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.87.0-dev.1...v1.87.0-dev.2) (2026-11-23)\n\n### Bug Fixes\n\n* **Outlook - Add unread shortcut:** open unread mail on every tap ([1d27ef2](https://github.com/hxreborn/morphe-patches/commit/1d27ef2dfa559c337338abe04c9cb9c53344258c))",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.87.0-dev.2/patches-1.87.0-dev.2.mpp",
+  "created_at": "2026-11-24T07:44:41",
+  "description": "## [1.87.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.87.0-dev.2...v1.87.0-dev.3) (2026-11-24)\n\n### Bug Fixes\n\n* **Clip Studio Paint - Skip plan selection:** work when signed in ([cfea61c](https://github.com/hxreborn/morphe-patches/commit/cfea61c33785546cfe2affc26f2f396525730909)), closes [#774](https://github.com/hxreborn/morphe-patches/issues/774)\n\n### New Features\n\n* **Chess Scanner - Unlock premium:** unlock unlimited scans and exports ([13e31f0](https://github.com/hxreborn/morphe-patches/commit/13e31f0073b97222bf7308d343b914b4f091c8b4))\n* **Proton VPN, Proton Pass:** add support for F-Droid builds ([98dd895](https://github.com/hxreborn/morphe-patches/commit/98dd895883971ba25307c217fa9e410bb8c38948)), closes [#1029](https://github.com/hxreborn/morphe-patches/issues/1029)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.87.0-dev.3/patches-1.87.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.87.0-dev.2"
+  "version": "1.87.0-dev.3"
 }

@@ -1,3 +1,14 @@
+## [1.87.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.87.0-dev.2...v1.87.0-dev.3) (2026-11-24)
+
+### Bug Fixes
+
+* **Clip Studio Paint - Skip plan selection:** work when signed in ([cfea61c](https://github.com/hxreborn/morphe-patches/commit/cfea61c33785546cfe2affc26f2f396525730909)), closes [#774](https://github.com/hxreborn/morphe-patches/issues/774)
+
+### New Features
+
+* **Chess Scanner - Unlock premium:** unlock unlimited scans and exports ([13e31f0](https://github.com/hxreborn/morphe-patches/commit/13e31f0073b97222bf7308d343b914b4f091c8b4))
+* **Proton VPN, Proton Pass:** add support for F-Droid builds ([98dd895](https://github.com/hxreborn/morphe-patches/commit/98dd895883971ba25307c217fa9e410bb8c38948)), closes [#1029](https://github.com/hxreborn/morphe-patches/issues/1029)
+
 ## [1.87.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.87.0-dev.1...v1.87.0-dev.2) (2026-11-23)
 
 ### Bug Fixes

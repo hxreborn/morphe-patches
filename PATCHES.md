@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.87.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**610 patches** across **191 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.87.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**611 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -679,6 +679,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="catzy-remove-usage-limits"></a>**Remove usage limits** | Removes daily caps on store refreshes, blind boxes, feeding, petting and the Book of Answers. Opens the Item Recycling Center every day and shortens pet exploration to three minutes. |
 | <a id="catzy-unlimited-cat-coins"></a>**Unlimited cat coins** | Buys every store item without running out of cat coins. |
 | <a id="catzy-unlock-premium"></a>**Unlock premium** | Unlocks premium goals, journeys, breathing exercises, focus timers, sounds and themes. |
+
+---
+
+## Chess Scanner (com.stervs.chessscanner)
+
+<img src="https://publicmetadata.co.uk/com.stervs.chessscanner" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.8.36 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="chess-scanner-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/chessscanner/misc/premium/UnlockPremiumPatch.kt) | Unlocks Chess Scanner Pro. |
 
 ---
 
@@ -2330,6 +2345,29 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Proton Pass (F-Droid) (proton.android.pass.fdroid)
+
+<img src="https://publicmetadata.co.uk/proton.android.pass.fdroid" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.41.5 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="proton-pass-f-droid-amoled-dark-theme"></a>**AMOLED dark theme** | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
+| <a id="proton-pass-f-droid-custom-accent-color"></a>**Custom accent color** | Changes the accent color. Choose a color in the patches menu. |
+| <a id="proton-pass-f-droid-floating-navigation-bar"></a>**Floating navigation bar** | Adds optional floating navigation with adjustable blur and glass. |
+| <a id="proton-pass-f-droid-hide-layout-components"></a>**Hide layout components** | Adds settings to hide the Help center, Spread the word and About sections. |
+| <a id="proton-pass-f-droid-hide-navigation-bar-on-scroll"></a>**Hide navigation bar on scroll** | Hides the bottom navigation bar on scroll down and shows it on scroll up. |
+| <a id="proton-pass-f-droid-hide-promotional-messages"></a>**Hide promotional messages** | Hides promotional banners, offers and pop-up messages. |
+| <a id="proton-pass-f-droid-hide-upgrade-promotions"></a>**Hide upgrade promotions** | Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. Plan limits still apply. |
+| <a id="proton-pass-f-droid-m3e-loading-indicator"></a>**M3E loading indicator** | Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator. |
+| <a id="proton-pass-f-droid-material-3-switches"></a>**Material 3 switches** | Shows switches in the Material 3 style with check and close icons. |
+
+---
+
 ## Proton VPN (ch.protonvpn.android)
 
 <img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="48" height="48" align="top" alt="">
@@ -2355,6 +2393,34 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-unlock-custom-dns"></a>[**Unlock custom DNS**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/customdns/UnlockCustomDnsPatch.kt) | Unlocks custom DNS on free plans. |
 | <a id="proton-vpn-unlock-profiles"></a>[**Unlock profiles**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/profiles/UnlockProfilesPatch.kt) | Unlocks profiles on free plans and limits them to free locations. Profiles for other locations are hidden. |
 | <a id="proton-vpn-unlock-split-tunneling"></a>[**Unlock split tunneling**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/splittunneling/UnlockSplitTunnelingPatch.kt) | Unlocks split tunneling on free plans. |
+
+---
+
+## Proton VPN (F-Droid) (ch.protonvpn.android.reproducible)
+
+<img src="https://publicmetadata.co.uk/ch.protonvpn.android.reproducible" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.21.57.0 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="proton-vpn-f-droid-amoled-dark-theme"></a>**AMOLED dark theme** | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
+| <a id="proton-vpn-f-droid-custom-accent-color"></a>**Custom accent color** | Changes the accent color. Choose a color in the patches menu. |
+| <a id="proton-vpn-f-droid-disable-telemetry"></a>**Disable telemetry** | Stops sending usage statistics and diagnostics to Proton. |
+| <a id="proton-vpn-f-droid-floating-navigation-bar"></a>**Floating navigation bar** | Adds optional floating navigation with adjustable blur and glass. |
+| <a id="proton-vpn-f-droid-hide-upgrade-promotions"></a>**Hide upgrade promotions** | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
+| <a id="proton-vpn-f-droid-material-3-switches"></a>**Material 3 switches** | Adds check and close icons to switches. |
+| <a id="proton-vpn-f-droid-remove-server-change-delay"></a>**Remove server change delay** | Removes the wait between server changes on free plans. |
+| <a id="proton-vpn-f-droid-show-free-server-locations"></a>**Show free server locations** | Lists free server locations in Countries and Search and connects to the one you pick. Applies only to free plans. |
+| <a id="proton-vpn-f-droid-unlock-lan-connections"></a>**Unlock LAN connections** | Unlocks LAN connections on free plans. |
+| <a id="proton-vpn-f-droid-unlock-netshield"></a>**Unlock NetShield** | Unlocks NetShield ad and tracker blocking on free plans. |
+| <a id="proton-vpn-f-droid-unlock-connection-preferences"></a>**Unlock connection preferences** | Unlocks the default connection, recent connections and excluded locations on free plans. |
+| <a id="proton-vpn-f-droid-unlock-custom-dns"></a>**Unlock custom DNS** | Unlocks custom DNS on free plans. |
+| <a id="proton-vpn-f-droid-unlock-profiles"></a>**Unlock profiles** | Unlocks profiles on free plans and limits them to free locations. Profiles for other locations are hidden. |
+| <a id="proton-vpn-f-droid-unlock-split-tunneling"></a>**Unlock split tunneling** | Unlocks split tunneling on free plans. |
 
 ---
 
