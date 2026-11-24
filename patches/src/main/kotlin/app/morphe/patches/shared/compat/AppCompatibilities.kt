@@ -844,6 +844,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val INFINITE_PAINTER = Compatibility(
+        name = "Infinite Painter",
+        packageName = "com.brakefield.painter",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF04050,
+        signatures = setOf(
+            "c98988028ae81d5bb4c324263fed11b820aba9f84466b876131fd74406308c90",
+        ),
+        targets = listOf(AppTarget(version = "7.2.12", versionCode = 400803, minSdk = 29)),
+    )
+
     val INTERNET_SPEED_METER_LITE = Compatibility(
         name = "Internet Speed Meter Lite",
         packageName = "com.internet.speed.meter.lite",
