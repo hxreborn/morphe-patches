@@ -29,3 +29,8 @@ internal val outlookUnreadShortcutExtensionPatch = patch {
     dependsOn(outlookSettingsExtensionPatch)
     extendWith("extensions/hxreborn/outlook-unread-shortcut.mpe")
 }
+
+internal val outlookCustomThemeExtensionPatch = patch {
+    dependsOn(sharedColorResourceTableExtensionPatch)
+    extendWith("extensions/hxreborn/outlook-custom-theme.mpe")
+}

@@ -18,7 +18,7 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.readera;
+package app.hxreborn.extension.shared;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,11 +34,14 @@ import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import android.content.res.Resources;
 import android.util.Log;
 
-final class AccentResourceTable {
+public final class ColorResourceTable {
 
-    static final String TEMPORARY_SUFFIX = ".tmp";
+    public static final String TEMPORARY_SUFFIX = ".tmp";
+
+    private static final String TAG = "hxColorResourceTable";
 
     private static final String TABLE_ENTRY = "resources.arsc";
 
@@ -140,10 +143,6 @@ final class AccentResourceTable {
 
     private static final int SPEC_PRIVATE = 0;
 
-    private static final int FIRST_ENTRY_OFFSET = 0;
-
-    private static final int FIRST_KEY_STRING = 0;
-
     private static final int NO_STYLES = 0;
 
     private static final int UTF16_FLAG = 0;
@@ -168,12 +167,25 @@ final class AccentResourceTable {
 
     private static final String PACKAGE_ATTRIBUTE = "package";
 
-    private AccentResourceTable() {
+    private ColorResourceTable() {
     }
 
-    static void writeApk(File target, String packageName, int resourceId, String typeName, String entryName,
-            int entryCount, int color) throws IOException {
-        byte[] table = table(packageName, resourceId, typeName, entryName, entryCount, color);
+    public static void writeApk(File target, String packageName, Resources resources, ColorEntries entries)
+            throws IOException {
+        if (entries.size() == 0) {
+            throw new IllegalArgumentException("The color table has no entries");
+        }
+        int lastId = entries.resourceId(0);
+        for (int position = 1; position < entries.size(); position++) {
+            lastId = Math.max(lastId, entries.resourceId(position));
+        }
+        writeApk(target, packageName, resources.getResourceTypeName(lastId), typeEntryCount(resources, lastId),
+                entries);
+    }
+
+    static void writeApk(File target, String packageName, String typeName, int entryCount, ColorEntries entries)
+            throws IOException {
+        byte[] table = table(packageName, typeName, entryCount, entries);
         byte[] manifest = manifest(packageName);
         File temporary = File.createTempFile(target.getName(), TEMPORARY_SUFFIX, target.getParentFile());
         try {
@@ -186,26 +198,37 @@ final class AccentResourceTable {
             }
         } finally {
             if (temporary.exists() && !temporary.delete()) {
-                Log.w(PatchSettings.LOG_TAG, "Cannot delete " + temporary.getName());
+                Log.w(TAG, "Cannot delete " + temporary.getName());
             }
         }
     }
 
-    private static byte[] table(String packageName, int resourceId, String typeName, String entryName, int entryCount,
-            int color) {
+    private static byte[] table(String packageName, String typeName, int entryCount, ColorEntries entries) {
         if (packageName.length() >= PACKAGE_NAME_CHARS) {
             throw new IllegalArgumentException("Package name exceeds " + (PACKAGE_NAME_CHARS - 1) + " characters");
         }
-        int packageId = resourceId >>> PACKAGE_ID_SHIFT;
-        int typeId = (resourceId >>> TYPE_ID_SHIFT) & TYPE_ID_MASK;
-        int entryIndex = resourceId & ENTRY_INDEX_MASK;
+        if (entries.size() == 0) {
+            throw new IllegalArgumentException("The color table has no entries");
+        }
+        int firstId = entries.resourceId(0);
+        int packageId = firstId >>> PACKAGE_ID_SHIFT;
+        int typeId = (firstId >>> TYPE_ID_SHIFT) & TYPE_ID_MASK;
         if (packageId == 0 || typeId == 0) {
             throw new IllegalArgumentException(
-                    "Resource id " + Integer.toHexString(resourceId) + " has no package or type");
+                    "Resource id " + Integer.toHexString(firstId) + " has no package or type");
         }
-        if (entryCount <= entryIndex) {
-            throw new IllegalArgumentException(
-                    "Entry count " + entryCount + " does not cover resource id " + Integer.toHexString(resourceId));
+        int[] entryIndexes = new int[entries.size()];
+        for (int position = 0; position < entries.size(); position++) {
+            int resourceId = entries.resourceId(position);
+            if (resourceId >>> TYPE_ID_SHIFT != firstId >>> TYPE_ID_SHIFT) {
+                throw new IllegalArgumentException(
+                        "Resource id " + Integer.toHexString(resourceId) + " is not in the type of the first entry");
+            }
+            entryIndexes[position] = resourceId & ENTRY_INDEX_MASK;
+            if (entryCount <= entryIndexes[position]) {
+                throw new IllegalArgumentException(
+                        "Entry count " + entryCount + " does not cover resource id " + Integer.toHexString(resourceId));
+            }
         }
         List<String> typeNames = new ArrayList<>();
         for (int id = FIRST_TYPE_ID; id < typeId; id++) {
@@ -214,9 +237,9 @@ final class AccentResourceTable {
         typeNames.add(typeName);
         byte[] valueStrings = stringPool(Collections.emptyList(), true);
         byte[] typeStrings = stringPool(typeNames, false);
-        byte[] keyStrings = stringPool(Collections.singletonList(entryName), true);
+        byte[] keyStrings = stringPool(entries.names(), true);
         int typeSpecSize = TYPE_SPEC_HEADER_SIZE + entryCount * INT_BYTES;
-        int typeSize = TYPE_HEADER_SIZE + entryCount * INT_BYTES + ENTRY_SIZE + VALUE_SIZE;
+        int typeSize = TYPE_HEADER_SIZE + entryCount * INT_BYTES + entries.size() * (ENTRY_SIZE + VALUE_SIZE);
         int packageSize = PACKAGE_HEADER_SIZE + typeStrings.length + keyStrings.length + typeSpecSize + typeSize;
         int tableSize = TABLE_HEADER_SIZE + valueStrings.length + packageSize;
 
@@ -225,8 +248,8 @@ final class AccentResourceTable {
         out.putInt(PACKAGES_IN_TABLE);
         out.put(valueStrings);
         putPackageHeader(out, packageSize, packageId, packageName, typeStrings, keyStrings);
-        putTypeSpecChunk(out, typeSpecSize, typeId, entryCount, entryIndex);
-        putTypeChunk(out, typeSize, typeId, entryCount, entryIndex, color);
+        putTypeSpecChunk(out, typeSpecSize, typeId, entryCount, entryIndexes);
+        putTypeChunk(out, typeSize, typeId, entryCount, entryIndexes, entries);
         return out.array();
     }
 
@@ -246,19 +269,24 @@ final class AccentResourceTable {
         out.put(keyStrings);
     }
 
-    private static void putTypeSpecChunk(ByteBuffer out, int typeSpecSize, int typeId, int entryCount, int entryIndex) {
+    private static void putTypeSpecChunk(ByteBuffer out, int typeSpecSize, int typeId, int entryCount,
+            int[] entryIndexes) {
         putChunkHeader(out, RES_TABLE_TYPE_SPEC_TYPE, TYPE_SPEC_HEADER_SIZE, typeSpecSize);
         out.put((byte) typeId);
         out.put((byte) RESERVED);
         out.putShort((short) TYPES_IN_SPEC);
         out.putInt(entryCount);
-        for (int index = 0; index < entryCount; index++) {
-            out.putInt((index == entryIndex) ? SPEC_PUBLIC : SPEC_PRIVATE);
+        int[] flags = new int[entryCount];
+        for (int entryIndex : entryIndexes) {
+            flags[entryIndex] = SPEC_PUBLIC;
+        }
+        for (int flag : flags) {
+            out.putInt(flag);
         }
     }
 
-    private static void putTypeChunk(ByteBuffer out, int typeSize, int typeId, int entryCount, int entryIndex,
-            int color) {
+    private static void putTypeChunk(ByteBuffer out, int typeSize, int typeId, int entryCount, int[] entryIndexes,
+            ColorEntries entries) {
         putChunkHeader(out, RES_TABLE_TYPE_TYPE, TYPE_HEADER_SIZE, typeSize);
         out.put((byte) typeId);
         out.put((byte) TYPE_FLAGS);
@@ -270,16 +298,23 @@ final class AccentResourceTable {
         out.putShort((short) SDK_QUALIFIER);
         out.putShort((short) CONFIG_SDK_MINOR_VERSION);
         out.put(new byte[CONFIG_BYTES_AFTER_SDK_VERSION]);
-        for (int index = 0; index < entryCount; index++) {
-            out.putInt((index == entryIndex) ? FIRST_ENTRY_OFFSET : NO_ENTRY);
+        int[] offsets = new int[entryCount];
+        Arrays.fill(offsets, NO_ENTRY);
+        for (int position = 0; position < entryIndexes.length; position++) {
+            offsets[entryIndexes[position]] = position * (ENTRY_SIZE + VALUE_SIZE);
         }
-        out.putShort((short) ENTRY_SIZE);
-        out.putShort(ENTRY_FLAG_PUBLIC);
-        out.putInt(FIRST_KEY_STRING);
-        out.putShort((short) VALUE_SIZE);
-        out.put((byte) RESERVED);
-        out.put(TYPE_INT_COLOR_ARGB8);
-        out.putInt(color);
+        for (int offset : offsets) {
+            out.putInt(offset);
+        }
+        for (int position = 0; position < entries.size(); position++) {
+            out.putShort((short) ENTRY_SIZE);
+            out.putShort(ENTRY_FLAG_PUBLIC);
+            out.putInt(position);
+            out.putShort((short) VALUE_SIZE);
+            out.put((byte) RESERVED);
+            out.put(TYPE_INT_COLOR_ARGB8);
+            out.putInt(entries.color(position));
+        }
     }
 
     private static byte[] manifest(String packageName) {
@@ -370,8 +405,7 @@ final class AccentResourceTable {
         if (value.length() > MAX_SHORT_STRING_LENGTH) {
             throw new IllegalArgumentException("String exceeds " + MAX_SHORT_STRING_LENGTH + " characters: " + value);
         }
-        ByteBuffer out = ByteBuffer
-            .allocate((UTF16_LENGTH_CHARS + value.length() + TERMINATOR_LENGTH) * CHAR_BYTES)
+        ByteBuffer out = ByteBuffer.allocate((UTF16_LENGTH_CHARS + value.length() + TERMINATOR_LENGTH) * CHAR_BYTES)
             .order(ByteOrder.LITTLE_ENDIAN);
         out.putShort((short) value.length());
         for (int index = 0; index < value.length(); index++) {
@@ -389,6 +423,24 @@ final class AccentResourceTable {
 
     private static int align(int size) {
         return (size + CHUNK_ALIGNMENT - 1) / CHUNK_ALIGNMENT * CHUNK_ALIGNMENT;
+    }
+
+    private static int typeEntryCount(Resources resources, int resourceId) {
+        int typeBase = resourceId & ~ENTRY_INDEX_MASK;
+        int count = (resourceId & ENTRY_INDEX_MASK) + 1;
+        while (count <= ENTRY_INDEX_MASK && hasEntry(resources, typeBase | count)) {
+            count++;
+        }
+        return count;
+    }
+
+    private static boolean hasEntry(Resources resources, int resourceId) {
+        try {
+            resources.getResourceEntryName(resourceId);
+            return true;
+        } catch (Resources.NotFoundException ex) {
+            return false;
+        }
     }
 
     private static void putStoredEntry(ZipOutputStream zip, String name, byte[] content) throws IOException {

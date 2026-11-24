@@ -16,20 +16,26 @@ private const val STYLE_TYPE = "style"
 private const val HEX_PREFIX = "0x"
 private const val HEX_RADIX = 16
 
-internal fun declarePublicStyle(name: String): Long = document("res/values/public.xml").use { declarations ->
-    val styles = declarations.getElementsByTagName("public").asSequence().filterIsInstance<Element>()
-        .filter { it.getAttribute("type") == STYLE_TYPE }.toList()
-    if (styles.any { it.getAttribute("name") == name }) throw PatchException("Style $name is already declared")
-    val id = styles.maxOf { it.getAttribute("id").removePrefix(HEX_PREFIX).toLong(HEX_RADIX) } + 1
-    declarations.documentElement.appendChild(
-        declarations.createElement("public").apply {
-            setAttribute("type", STYLE_TYPE)
-            setAttribute("name", name)
-            setAttribute("id", HEX_PREFIX + id.toString(HEX_RADIX))
-        },
-    )
-    id
-}
+internal fun declarePublicResources(type: String, names: List<String>): Map<String, Long> =
+    document("res/values/public.xml").use { declarations ->
+        val declared = declarations.getElementsByTagName("public").asSequence().filterIsInstance<Element>()
+            .filter { it.getAttribute("type") == type }.toList()
+        val declaredNames = declared.mapTo(HashSet()) { it.getAttribute("name") }
+        var nextId = declared.maxOf { it.getAttribute("id").removePrefix(HEX_PREFIX).toLong(HEX_RADIX) } + 1
+        names.associateWith { name ->
+            if (!declaredNames.add(name)) throw PatchException("Resource $type/$name is already declared")
+            declarations.documentElement.appendChild(
+                declarations.createElement("public").apply {
+                    setAttribute("type", type)
+                    setAttribute("name", name)
+                    setAttribute("id", HEX_PREFIX + nextId.toString(HEX_RADIX))
+                },
+            )
+            nextId++
+        }
+    }
+
+internal fun declarePublicStyle(name: String): Long = declarePublicResources(STYLE_TYPE, listOf(name)).getValue(name)
 
 internal fun addStyle(name: String, parent: String): Long {
     document("res/values/styles.xml").use { styles ->
