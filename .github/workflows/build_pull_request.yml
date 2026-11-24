@@ -31,6 +31,9 @@ jobs:
       - name: Check regexes for Android
         run: python3 .github/scripts/check_android_regex.py
 
+      - name: Check vendor content
+        run: python3 .github/scripts/check_vendor_content.py
+
       - name: Setup Python
         uses: actions/setup-python@v7
         with:

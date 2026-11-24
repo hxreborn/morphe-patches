@@ -3,6 +3,7 @@ set -e
 hook=$(basename "$0")
 if [[ "$hook" == pre-commit ]]; then
   python3 .github/scripts/check_android_regex.py --staged
+  python3 .github/scripts/check_vendor_content.py --staged
 fi
 global_dir="$(git config --global --get core.hooksPath || true)"
 if [[ -n "$global_dir" && -x "$global_dir/$hook" && ! "$global_dir/$hook" -ef "$0" ]]; then
