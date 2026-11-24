@@ -427,6 +427,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val CHESS_SCANNER = Compatibility(
+        name = "Chess Scanner",
+        packageName = "com.stervs.chessscanner",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xA06E59,
+        signatures = setOf(
+            "ca685e41c4a9e9f3f9c8638aa5c032041fe42daf11f5abd59796f1c65cf666e6",
+        ),
+        targets = listOf(AppTarget(version = "1.8.36", versionCode = 84, minSdk = 26)),
+    )
+
     val CLASSDOJO = Compatibility(
         name = "ClassDojo",
         packageName = "com.classdojo.android",
