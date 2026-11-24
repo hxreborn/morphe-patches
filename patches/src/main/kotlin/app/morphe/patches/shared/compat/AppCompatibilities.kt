@@ -435,7 +435,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "ca685e41c4a9e9f3f9c8638aa5c032041fe42daf11f5abd59796f1c65cf666e6",
         ),
-        targets = listOf(AppTarget(version = "1.8.36", versionCode = 84, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "1.8.33", versionCode = 81, minSdk = 26),
+            AppTarget(version = "1.8.36", versionCode = 84, minSdk = 26),
+        ),
     )
 
     val CLASSDOJO = Compatibility(
