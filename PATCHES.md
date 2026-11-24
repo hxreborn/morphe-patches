@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.88.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.88.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -688,8 +688,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 1.8.36 |
-| :---: |
+| 1.8.33 | 1.8.36 |
+| :---: | :---: |
 
 | Patch | Details |
 |---|---|

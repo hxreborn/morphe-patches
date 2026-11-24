@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-24T10:47:37",
-  "description": "## [1.88.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.1...v1.88.0-dev.2) (2026-11-24)\n\n### Bug Fixes\n\n* **BetterSleep - Unlock premium:** stop crash on armeabi-v7a devices ([5624a4a](https://github.com/hxreborn/morphe-patches/commit/5624a4a9d4592592f9a91e72d1400fd35c38b35a)), closes [#797](https://github.com/hxreborn/morphe-patches/issues/797)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.88.0-dev.2/patches-1.88.0-dev.2.mpp",
+  "created_at": "2026-11-24T11:34:48",
+  "description": "## [1.88.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.2...v1.88.0-dev.3) (2026-11-24)\n\n### Updated App Support\n\n* **Chess Scanner:** add support for `1.8.33` ([5ab1c86](https://github.com/hxreborn/morphe-patches/commit/5ab1c8689b1bd41f282e64ee19783b75e1937d37))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.88.0-dev.3/patches-1.88.0-dev.3.mpp",
   "signature_download_url": "",
-  "version": "1.88.0-dev.2"
+  "version": "1.88.0-dev.3"
 }

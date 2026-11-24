@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.88.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.88.0-dev.2)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.88.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.88.0-dev.3)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -104,7 +104,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 36 | <img src="https://publicmetadata.co.uk/com.external.castle" width="24" height="24" align="top" alt=""> [**Castle**](PATCHES.md#castle-comexternalcastle) | 4 | `2.1.1`, `2.1.3` | [`com.external.castle`](https://play.google.com/store/apps/details?id=com.external.castle) |
 | 37 | <img src="https://publicmetadata.co.uk/com.gxnet.castle.indiatv" width="24" height="24" align="top" alt=""> [**Castle for TV**](PATCHES.md#castle-for-tv-comgxnetcastleindiatv) | 3 | `1.1.5` | [`com.gxnet.castle.indiatv`](https://play.google.com/store/apps/details?id=com.gxnet.castle.indiatv) |
 | 38 | <img src="https://publicmetadata.co.uk/com.nieruo.healthapp" width="24" height="24" align="top" alt=""> [**Catzy**](PATCHES.md#catzy-comnieruohealthapp) | 4 | `1.61.0` | [`com.nieruo.healthapp`](https://play.google.com/store/apps/details?id=com.nieruo.healthapp) |
-| 39 | <img src="https://publicmetadata.co.uk/com.stervs.chessscanner" width="24" height="24" align="top" alt=""> [**Chess Scanner**](PATCHES.md#chess-scanner-comstervschessscanner) | 1 | `1.8.36` | [`com.stervs.chessscanner`](https://play.google.com/store/apps/details?id=com.stervs.chessscanner) |
+| 39 | <img src="https://publicmetadata.co.uk/com.stervs.chessscanner" width="24" height="24" align="top" alt=""> [**Chess Scanner**](PATCHES.md#chess-scanner-comstervschessscanner) | 1 | `1.8.33`, `1.8.36` | [`com.stervs.chessscanner`](https://play.google.com/store/apps/details?id=com.stervs.chessscanner) |
 | 40 | <img src="https://publicmetadata.co.uk/com.classdojo.android" width="24" height="24" align="top" alt=""> [**ClassDojo**](PATCHES.md#classdojo-comclassdojoandroid) | 1 | `9.12.0` | [`com.classdojo.android`](https://play.google.com/store/apps/details?id=com.classdojo.android) |
 | 41 | <img src="https://publicmetadata.co.uk/ltd.anti.clink" width="24" height="24" align="top" alt=""> [**Clink**](PATCHES.md#clink-ltdanticlink) | 1 | `1.9.2`, `2.0.2` | [`ltd.anti.clink`](https://play.google.com/store/apps/details?id=ltd.anti.clink) |
 | 42 | <img src="https://publicmetadata.co.uk/jp.co.celsys.clipstudiopaint.googleplay" width="24" height="24" align="top" alt=""> [**Clip Studio Paint**](PATCHES.md#clip-studio-paint-jpcocelsysclipstudiopaintgoogleplay) | 3 | `5.1.4` | [`jp.co.celsys.clipstudio…`](https://play.google.com/store/apps/details?id=jp.co.celsys.clipstudiopaint.googleplay "jp.co.celsys.clipstudiopaint.googleplay") |

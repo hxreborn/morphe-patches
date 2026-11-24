@@ -1,3 +1,9 @@
+## [1.88.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.2...v1.88.0-dev.3) (2026-11-24)
+
+### Updated App Support
+
+* **Chess Scanner:** add support for `1.8.33` ([5ab1c86](https://github.com/hxreborn/morphe-patches/commit/5ab1c8689b1bd41f282e64ee19783b75e1937d37))
+
 ## [1.88.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.1...v1.88.0-dev.2) (2026-11-24)
 
 ### Bug Fixes
