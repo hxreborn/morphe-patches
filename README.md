@@ -19,7 +19,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 <a href="#-disclaimer"><img src=".github/readme/disclaimer.svg" width="42%" alt="Disclaimer"></a>&nbsp;<a href="#-license"><img src=".github/readme/license.svg" width="42%" alt="License"></a>
 </p>
 
-<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
+<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/dev/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/dev/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
 <!-- INDEX_END -->
 
 </div>
@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.87.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.87.0)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`main`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**611 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.88.0-dev.1](https://github.com/hxreborn/morphe-patches/releases/tag/v1.88.0-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -201,8 +201,8 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 133 | <img src="https://publicmetadata.co.uk/proton.android.authenticator" width="24" height="24" align="top" alt=""> [**Proton Authenticator**](PATCHES.md#proton-authenticator-protonandroidauthenticator) | 5 | `1.3.10` | [`proton.android.authenti…`](https://play.google.com/store/apps/details?id=proton.android.authenticator "proton.android.authenticator") |
 | 134 | <img src="https://publicmetadata.co.uk/me.proton.android.lumo" width="24" height="24" align="top" alt=""> [**Proton Lumo**](PATCHES.md#proton-lumo-meprotonandroidlumo) | 4 | `2.2.0-gms`&nbsp;+1 | [`me.proton.android.lumo`](https://play.google.com/store/apps/details?id=me.proton.android.lumo) |
 | 135 | <img src="https://publicmetadata.co.uk/ch.protonmail.android" width="24" height="24" align="top" alt=""> [**Proton Mail**](PATCHES.md#proton-mail-chprotonmailandroid) | 11 | `7.12.1` | [`ch.protonmail.android`](https://play.google.com/store/apps/details?id=ch.protonmail.android) |
-| 136 | <img src="https://publicmetadata.co.uk/proton.android.pass" width="24" height="24" align="top" alt=""> [**Proton Pass**](PATCHES.md#proton-pass-protonandroidpass) | 9 | `1.40.3`, `1.41.2`&nbsp;+3 | [`proton.android.pass`](https://play.google.com/store/apps/details?id=proton.android.pass) |
-| 137 | <img src="https://publicmetadata.co.uk/proton.android.pass.fdroid" width="24" height="24" align="top" alt=""> [**Proton Pass…**](PATCHES.md#proton-pass-f-droid-protonandroidpassfdroid "Proton Pass (F-Droid)") | 9 | `1.41.5` | [`proton.android.pass.fdr…`](https://play.google.com/store/apps/details?id=proton.android.pass.fdroid "proton.android.pass.fdroid") |
+| 136 | <img src="https://publicmetadata.co.uk/proton.android.pass" width="24" height="24" align="top" alt=""> [**Proton Pass**](PATCHES.md#proton-pass-protonandroidpass) | 10 | `1.40.3`, `1.41.2`&nbsp;+3 | [`proton.android.pass`](https://play.google.com/store/apps/details?id=proton.android.pass) |
+| 137 | <img src="https://publicmetadata.co.uk/proton.android.pass.fdroid" width="24" height="24" align="top" alt=""> [**Proton Pass…**](PATCHES.md#proton-pass-f-droid-protonandroidpassfdroid "Proton Pass (F-Droid)") | 10 | `1.41.5` | [`proton.android.pass.fdr…`](https://play.google.com/store/apps/details?id=proton.android.pass.fdroid "proton.android.pass.fdroid") |
 | 138 | <img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="24" height="24" align="top" alt=""> [**Proton VPN**](PATCHES.md#proton-vpn-chprotonvpnandroid) | 14 | `5.21.57.0` | [`ch.protonvpn.android`](https://play.google.com/store/apps/details?id=ch.protonvpn.android) |
 | 139 | <img src="https://publicmetadata.co.uk/ch.protonvpn.android.reproducible" width="24" height="24" align="top" alt=""> [**Proton VPN (F-Droid)**](PATCHES.md#proton-vpn-f-droid-chprotonvpnandroidreproducible) | 14 | `5.21.57.0` | [`ch.protonvpn.android.re…`](https://play.google.com/store/apps/details?id=ch.protonvpn.android.reproducible "ch.protonvpn.android.reproducible") |
 | 140 | <img src="https://publicmetadata.co.uk/com.psiphon3.subscription" width="24" height="24" align="top" alt=""> [**Psiphon**](PATCHES.md#psiphon-compsiphon3subscription) | 1 | `2.5.13` | [`com.psiphon3.subscripti…`](https://play.google.com/store/apps/details?id=com.psiphon3.subscription "com.psiphon3.subscription") |

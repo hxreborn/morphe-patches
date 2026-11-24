@@ -505,12 +505,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
-        - "1.87.0"
+        - "1.88.0-dev.1"
         - "1.87.0-dev.3"
         - "1.87.0-dev.2"
         - "1.87.0-dev.1"
+        - "1.87.0"
         - "1.86.0-dev.6"
-        - "1.86.0-dev.5"
         - "Older than these"
         # /generated
     validations:
@@ -990,6 +990,7 @@ body:
         - "Proton Pass (F-Droid) \u00b7 Hide upgrade promotions"
         - "Proton Pass (F-Droid) \u00b7 M3E loading indicator"
         - "Proton Pass (F-Droid) \u00b7 Material 3 switches"
+        - "Proton Pass (F-Droid) \u00b7 Remove free accounts limit"
         - "Proton Pass \u00b7 AMOLED dark theme"
         - "Proton Pass \u00b7 Custom accent color"
         - "Proton Pass \u00b7 Floating navigation bar"
@@ -999,6 +1000,7 @@ body:
         - "Proton Pass \u00b7 Hide upgrade promotions"
         - "Proton Pass \u00b7 M3E loading indicator"
         - "Proton Pass \u00b7 Material 3 switches"
+        - "Proton Pass \u00b7 Remove free accounts limit"
         - "Proton VPN (F-Droid) \u00b7 AMOLED dark theme"
         - "Proton VPN (F-Droid) \u00b7 Custom accent color"
         - "Proton VPN (F-Droid) \u00b7 Disable telemetry"

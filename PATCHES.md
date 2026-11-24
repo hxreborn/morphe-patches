@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.87.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**611 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.88.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -2342,6 +2342,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-pass-hide-upgrade-promotions"></a>[**Hide upgrade promotions**](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. Plan limits still apply. |
 | <a id="proton-pass-m3e-loading-indicator"></a>[**M3E loading indicator**](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/loadingindicator/LoadingIndicatorPatch.kt) | Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator. |
 | <a id="proton-pass-material-3-switches"></a>[**Material 3 switches**](patches/src/main/kotlin/app/morphe/patches/protonpass/misc/theme/MaterialSwitchesPatch.kt) | Shows switches in the Material 3 style with check and close icons. |
+| <a id="proton-pass-remove-free-accounts-limit"></a>[**Remove free accounts limit**](patches/src/main/kotlin/app/morphe/patches/protonpass/account/RemoveFreeAccountsLimitPatch.kt) | Removes the limit on signed-in free accounts. |
 
 ---
 
@@ -2365,6 +2366,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-pass-f-droid-hide-upgrade-promotions"></a>**Hide upgrade promotions** | Hides the Upgrade buttons, upgrade prompts and the welcome offer after signing in. Plan limits still apply. |
 | <a id="proton-pass-f-droid-m3e-loading-indicator"></a>**M3E loading indicator** | Shows the pull to refresh indicator as the Material 3 Expressive shape-morphing loading indicator. |
 | <a id="proton-pass-f-droid-material-3-switches"></a>**Material 3 switches** | Shows switches in the Material 3 style with check and close icons. |
+| <a id="proton-pass-f-droid-remove-free-accounts-limit"></a>**Remove free accounts limit** | Removes the limit on signed-in free accounts. |
 
 ---
 

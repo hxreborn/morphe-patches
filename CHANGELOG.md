@@ -1,3 +1,9 @@
+## [1.88.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.87.0...v1.88.0-dev.1) (2026-11-24)
+
+### New Features
+
+* **Proton Pass - Remove free accounts limit:** add more free accounts ([271aee5](https://github.com/hxreborn/morphe-patches/commit/271aee5e99ad1373426e99b304e9a0ee1ec59db6)), closes [#1049](https://github.com/hxreborn/morphe-patches/issues/1049)
+
 ## [1.87.0](https://github.com/hxreborn/morphe-patches/compare/v1.86.0...v1.87.0) (2026-11-24)
 
 ### Bug Fixes
