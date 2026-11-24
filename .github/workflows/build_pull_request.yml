@@ -49,10 +49,32 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v6
 
+      - name: Restore Robolectric runtime jars
+        id: robolectric-cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: robolectric-${{ github.sha }}
+          restore-keys: robolectric-
+
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :patches:test :testExtensions :checkExtensions --no-daemon
+        run: .github/scripts/run_gradle_tests.sh :patches:test :testExtensions :checkExtensions
+
+      - name: List Robolectric runtime jars
+        id: robolectric-jars
+        if: always()
+        run: |
+          jars=$(find ~/.m2/repository/org/robolectric -name '*.jar' 2>/dev/null | sort | sha256sum | cut -c1-16)
+          echo "key=robolectric-$jars" >> "$GITHUB_OUTPUT"
+
+      - name: Save Robolectric runtime jars
+        if: always() && steps.robolectric-jars.outputs.key != steps.robolectric-cache.outputs.cache-matched-key
+        uses: actions/cache/save@v6
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: ${{ steps.robolectric-jars.outputs.key }}
 
       - name: Run extension script tests
         run: |

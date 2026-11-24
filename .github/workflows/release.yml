@@ -67,10 +67,32 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew :checkExtensions --no-daemon
 
+      - name: Restore Robolectric runtime jars
+        id: robolectric-cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: robolectric-${{ github.sha }}
+          restore-keys: robolectric-
+
       - name: Run tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :patches:test :testExtensions --no-daemon
+        run: .github/scripts/run_gradle_tests.sh :patches:test :testExtensions
+
+      - name: List Robolectric runtime jars
+        id: robolectric-jars
+        if: always()
+        run: |
+          jars=$(find ~/.m2/repository/org/robolectric -name '*.jar' 2>/dev/null | sort | sha256sum | cut -c1-16)
+          echo "key=robolectric-$jars" >> "$GITHUB_OUTPUT"
+
+      - name: Save Robolectric runtime jars
+        if: always() && steps.robolectric-jars.outputs.key != steps.robolectric-cache.outputs.cache-matched-key
+        uses: actions/cache/save@v6
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: ${{ steps.robolectric-jars.outputs.key }}
 
       - name: Remove test build outputs
         run: rm -rf patches/build/libs
