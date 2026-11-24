@@ -31,6 +31,8 @@ final class SettingsRows extends app.hxreborn.extension.shared.patchesmenu.Setti
 
     private static final int SWITCH_TRACK_ALPHA = 0x80;
 
+    private static final float DISABLED_ROW_ALPHA = 0.38f;
+
     private final Context context;
 
     private final SettingsStyle style;
@@ -54,6 +56,14 @@ final class SettingsRows extends app.hxreborn.extension.shared.patchesmenu.Setti
         params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
         row.addView(toggle, params);
         row.setOnClickListener((view) -> toggle.toggle());
+    }
+
+    void setRowEnabled(LinearLayout row, boolean enabled) {
+        row.setEnabled(enabled);
+        row.setAlpha(enabled ? 1f : DISABLED_ROW_ALPHA);
+        for (int index = 0; index < row.getChildCount(); index++) {
+            row.getChildAt(index).setEnabled(enabled);
+        }
     }
 
     private static ColorStateList switchColors(int checked, int unchecked) {

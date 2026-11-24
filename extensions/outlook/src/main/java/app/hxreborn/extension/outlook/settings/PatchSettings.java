@@ -41,6 +41,14 @@ public final class PatchSettings {
 
     static final String ADD_UNREAD_SHORTCUT = "add_unread_shortcut";
 
+    static final String HIDE_CALENDAR_TAB = "hide_calendar_tab";
+
+    static final String HIDE_APPS_TAB = "hide_apps_tab";
+
+    static final String HIDE_NAVIGATION_BAR = "hide_navigation_bar";
+
+    static final boolean HIDE_NAVIGATION_BAR_DEFAULT = false;
+
     private static final String PREFERENCES_NAME = "hx_outlook_patches";
 
     private static volatile SharedPreferences preferences;
@@ -82,11 +90,27 @@ public final class PatchSettings {
         return isEnabled(ADD_UNREAD_SHORTCUT);
     }
 
+    public static boolean hideCalendarTab() {
+        return isEnabled(HIDE_CALENDAR_TAB);
+    }
+
+    public static boolean hideAppsTab() {
+        return isEnabled(HIDE_APPS_TAB);
+    }
+
+    public static boolean hideNavigationBar() {
+        return isEnabled(HIDE_NAVIGATION_BAR, HIDE_NAVIGATION_BAR_DEFAULT);
+    }
+
     static void updateUnreadShortcut(Context context) {
     }
 
     static boolean isEnabled(String key) {
-        return preferences == null || preferences.getBoolean(key, true);
+        return isEnabled(key, true);
+    }
+
+    static boolean isEnabled(String key, boolean defaultValue) {
+        return (preferences != null) ? preferences.getBoolean(key, defaultValue) : defaultValue;
     }
 
     static boolean setEnabled(String key, boolean enabled) {
