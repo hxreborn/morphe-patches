@@ -65,7 +65,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String KEEP_MESSAGES_UNREAD_SUMMARY = "Opening a message, or flagging or moving it from "
             + "the reading pane, leaves it unread.";
 
-    private static final String REMOVE_INBOX_ADS_SUMMARY = "Hides sponsored rows in Focused and Other.";
+    private static final String REMOVE_INBOX_ADS_SUMMARY = "Removes sponsored messages from Focused and Other.";
 
     private static final String OPEN_EMAIL_TEMPLATES_SUMMARY = "Opens .oft template attachments as new drafts, "
             + "without Microsoft 365.";
@@ -76,8 +76,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String HIDE_COPILOT_SUMMARY = "Hides the Copilot tab, inbox card, Get a Summary, Help me "
             + "write and Schedule with Copilot.";
 
-    private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Long-press the Outlook icon for an Unread entry that "
-            + "opens unread mail from every account.";
+    private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Long-press the Outlook icon, then tap Unread.";
 
     private final Activity activity;
 
