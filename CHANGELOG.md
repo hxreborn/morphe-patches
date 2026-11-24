@@ -1,3 +1,9 @@
+## [1.88.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.1...v1.88.0-dev.2) (2026-11-24)
+
+### Bug Fixes
+
+* **BetterSleep - Unlock premium:** stop crash on armeabi-v7a devices ([5624a4a](https://github.com/hxreborn/morphe-patches/commit/5624a4a9d4592592f9a91e72d1400fd35c38b35a)), closes [#797](https://github.com/hxreborn/morphe-patches/issues/797)
+
 ## [1.88.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.87.0...v1.88.0-dev.1) (2026-11-24)
 
 ### New Features
