@@ -39,6 +39,14 @@ public final class PassSettings implements AppSettings {
         return null;
     }
 
+    public static boolean removeFreeAccountsLimit() {
+        return false;
+    }
+
+    public static String removeFreeAccountsLimitName() {
+        return null;
+    }
+
     public static String hideNavigationBarOnScrollName() {
         return null;
     }
@@ -86,6 +94,9 @@ public final class PassSettings implements AppSettings {
         }
         if (hidePromotionalMessages()) {
             names.add(hidePromotionalMessagesName());
+        }
+        if (removeFreeAccountsLimit()) {
+            names.add(removeFreeAccountsLimitName());
         }
         return names;
     }

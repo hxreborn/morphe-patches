@@ -262,6 +262,16 @@ public final class PatchedBuild {
         }
 
         @Implementation
+        public static boolean removeFreeAccountsLimit() {
+            return true;
+        }
+
+        @Implementation
+        public static String removeFreeAccountsLimitName() {
+            return "Remove free accounts limit";
+        }
+
+        @Implementation
         public static String hideNavigationBarOnScrollName() {
             return "Hide navigation bar on scroll";
         }
