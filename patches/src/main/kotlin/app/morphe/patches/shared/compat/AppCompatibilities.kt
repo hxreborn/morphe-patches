@@ -593,10 +593,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731",
         ),
-        targets = listOf(
-            AppTarget(version = "6.106.6", versionCode = 2506, minSdk = 29),
-            AppTarget(version = "6.105.2", versionCode = 2497, minSdk = 29),
-        ),
+        targets = listOf(AppTarget(version = "6.106.6", versionCode = 2506, minSdk = 29)),
     )
 
     val DWG_FASTVIEW = Compatibility(
