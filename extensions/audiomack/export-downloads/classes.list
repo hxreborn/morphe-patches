@@ -1,0 +1,9 @@
+app/hxreborn/extension/audiomack/AudioFormat
+app/hxreborn/extension/audiomack/ExportActions
+app/hxreborn/extension/audiomack/ExportRow
+app/hxreborn/extension/audiomack/Id3Tags
+app/hxreborn/extension/audiomack/Mp4Box
+app/hxreborn/extension/audiomack/Mp4Tags
+app/hxreborn/extension/audiomack/SavedSong
+app/hxreborn/extension/audiomack/SongExport
+app/hxreborn/extension/audiomack/SongTags
