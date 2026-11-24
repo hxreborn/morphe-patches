@@ -1,3 +1,21 @@
+## [1.88.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.3...v1.88.0-dev.4) (2026-11-24)
+
+### Bug Fixes
+
+* **Duolingo:** remove `6.105.2` app target ([b853cf6](https://github.com/hxreborn/morphe-patches/commit/b853cf622b725e6a0da7394e7b7b6ff83f5c2b56))
+* **Outlook - Fix sign-in:** sign in with work accounts ([b5b54d0](https://github.com/hxreborn/morphe-patches/commit/b5b54d0a40f5ec1e72dd72fb97242f531baf69c0))
+
+### New Features
+
+* **Audiomack - Export downloaded songs:** save and share tagged files ([a79d1f6](https://github.com/hxreborn/morphe-patches/commit/a79d1f675f35f523b4272931770cc1d176f5515a)), closes [#1070](https://github.com/hxreborn/morphe-patches/issues/1070)
+* **Outlook - Add custom themes:** choose any color or photo as theme ([7a64962](https://github.com/hxreborn/morphe-patches/commit/7a64962387785126c2aff2d43c0e2c3bc5a3f199)), closes [#1046](https://github.com/hxreborn/morphe-patches/issues/1046)
+* **Outlook - Hide navigation buttons:** hide Calendar, Apps or full bar ([e7eca62](https://github.com/hxreborn/morphe-patches/commit/e7eca625f6ec44bac31201b2dc902a2ea64d8987)), closes [#1045](https://github.com/hxreborn/morphe-patches/issues/1045)
+* **Viber - Explain Google Drive errors:** show fix in Drive errors ([bdefa77](https://github.com/hxreborn/morphe-patches/commit/bdefa773f5b07a16e20b43dabf441305dab51180))
+
+### Updated App Support
+
+* **Duolingo:** add support for `6.106.6` ([10c5656](https://github.com/hxreborn/morphe-patches/commit/10c56569d9b1364162b4e3bb6d7a00fb0cb68c3b)), closes [#1048](https://github.com/hxreborn/morphe-patches/issues/1048)
+
 ## [1.88.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.2...v1.88.0-dev.3) (2026-11-24)
 
 ### Updated App Support

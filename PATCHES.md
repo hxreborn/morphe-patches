@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.88.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**612 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.88.0-dev.4** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**616 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -333,6 +333,7 @@
 
 | Patch | Details |
 |---|---|
+| <a id="audiomack-export-downloaded-songs"></a>[**Export downloaded songs**](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/downloads/ExportDownloadedSongsPatch.kt) | Adds Save to device and Share file to the menu of downloaded songs. Saved songs go to Music/Audiomack, named by artist and title and tagged with title, artist and album. Requires Android 10 or later. |
 | <a id="audiomack-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="audiomack-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/premium/UnlockPremiumPatch.kt) | Unlocks Plus features. Region-limited songs are still restricted. |
 
@@ -901,7 +902,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 6.105.2 |
+| 6.106.6 |
 | :---: |
 
 | Patch | Details |
@@ -2031,14 +2032,16 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
-| <a id="outlook-add-unread-shortcut"></a>[**Add unread shortcut**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/shortcut/AddUnreadShortcutPatch.kt) | Adds an Unread shortcut to the app icon's long-press menu that opens unread mail from all accounts and folders. Launchers with four shortcut slots show it in place of View calendar. |
+| <a id="outlook-add-custom-themes"></a>[**Add custom themes**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/theme/CustomThemesPatch.kt) | Adds Custom color and Custom picture to Outlook's theme picker. Pick any color on a color wheel or any photo from the gallery. |
+| <a id="outlook-add-unread-shortcut"></a>[**Add unread shortcut**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/shortcut/AddUnreadShortcutPatch.kt) | Adds an Unread shortcut to the Outlook icon that opens unread mail from every account. |
 | <a id="outlook-fix-sign-in"></a>[**Fix sign-in**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/fix/signin/FixSignInPatch.kt) | Fixes signing in with Microsoft accounts. |
 | <a id="outlook-gmscore-support"></a>[**GmsCore support**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/gms/GmsCoreSupportPatch.kt) | Signs in to Google accounts through GmsCore instead of Google Play Services. Requires GmsCore. |
 | <a id="outlook-hide-copilot"></a>[**Hide Copilot**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/copilot/HideCopilotPatch.kt) | Hides Copilot chat, summaries, scheduling and writing help on all accounts, regardless of the Copilot setting in Outlook. |
+| <a id="outlook-hide-navigation-buttons"></a>[**Hide navigation buttons**](patches/src/main/kotlin/app/morphe/patches/outlook/layout/navigation/HideNavigationButtonsPatch.kt) | Hides Calendar, Apps or the whole bottom bar. Choose which in the patches menu. |
 | <a id="outlook-keep-messages-unread"></a>[**Keep messages unread**](patches/src/main/kotlin/app/morphe/patches/outlook/mail/unread/KeepMessagesUnreadPatch.kt) | Leaves messages unread after opening them, or flagging or moving them from the reading pane. |
 | <a id="outlook-open-email-templates"></a>[**Open email templates**](patches/src/main/kotlin/app/morphe/patches/outlook/misc/templates/OpenEmailTemplatesPatch.kt) | Opens .oft template attachments as new drafts without a Microsoft 365 subscription. |
 | <a id="outlook-remove-inbox-ads"></a>[**Remove inbox ads**](patches/src/main/kotlin/app/morphe/patches/outlook/ads/RemoveInboxAdsPatch.kt) | Removes sponsored messages from Focused and Other. |
-| <a id="outlook-select-multiple-search-results"></a>[**Select multiple search results**](patches/src/main/kotlin/app/morphe/patches/outlook/search/bulkactions/SelectMultipleSearchResultsPatch.kt) | Adds long-press selection to search results for marking, moving or deleting several messages at once. Works in the Mail tab of search. |
+| <a id="outlook-select-multiple-search-results"></a>[**Select multiple search results**](patches/src/main/kotlin/app/morphe/patches/outlook/search/bulkactions/SelectMultipleSearchResultsPatch.kt) | Long-press search results to select several, then mark, move or delete them together. Mail tab of search only. |
 
 ---
 
@@ -3094,8 +3097,9 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-disable-update-prompts"></a>[**Disable update prompts**](patches/src/main/kotlin/app/morphe/patches/viber/misc/updates/DisableUpdatePromptsPatch.kt) | Stops the Google Play update dialog, the suggested and required upgrade dialogs and the update request on links this version can't open. Viber's servers can still stop serving an old version. |
 | <a id="viber-disappearing-media-privacy"></a>[**Disappearing media privacy**](patches/src/main/kotlin/app/morphe/patches/viber/layout/mediaprivacy/DisappearingMediaPrivacyPatch.kt) | Stops screenshot alerts and opening reports for disappearing messages. Opening reports resume once you read a newer message in that chat. |
 | <a id="viber-enable-viber-plus-features"></a>[**Enable Viber Plus features**](patches/src/main/kotlin/app/morphe/patches/viber/misc/premium/UnlockViberPlusPatch.kt) | Enables Viber Plus app icons and the typing privacy switch. The Plus badge and Invisible Mode need a paid subscription. |
+| <a id="viber-explain-google-drive-errors"></a>[**Explain Google Drive errors**](patches/src/main/kotlin/app/morphe/patches/viber/misc/drive/ExplainDriveErrorsPatch.kt) | Shows how to fix Google Drive backup and restore errors when GmsCore support is not applied. |
 | <a id="viber-filter-business-chats"></a>[**Filter business chats**](patches/src/main/kotlin/app/morphe/patches/viber/layout/business/FilterBusinessChatsPatch.kt) | Filters selected business chats after reading and removes inbox discovery prompts. Shows unread chats and verification-code chats. |
-| <a id="viber-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
+| <a id="viber-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Google Drive backup and restore work only with this patch. Requires GmsCore to be installed. |
 | <a id="viber-hide-more-screen-items"></a>[**Hide More screen items**](patches/src/main/kotlin/app/morphe/patches/viber/layout/more/HideMoreItemsPatch.kt) | Hides selected entries from the main screen and More screen.<br><sub>Options: Hide About and FAQ, Hide Business Account, Hide Caller ID, +11 more</sub> |
 | <a id="viber-hide-viber-out-and-channel-promotions"></a>[**Hide Viber Out and channel promotions**](patches/src/main/kotlin/app/morphe/patches/viber/layout/promotions/HidePromotionsPatch.kt) | Hides the Viber Out banners and intro on the Calls tab and the channel and bot suggestions in the chat list. |
 | <a id="viber-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/viber/ads/HideAdsPatch.kt) | Hides ads in the chat list, the More screen, Explore, search and after calls. |
@@ -3114,6 +3118,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-spoof-signature"></a>[**Spoof signature**](patches/src/main/kotlin/app/morphe/patches/viber/misc/fix/signature/SpoofSignaturePatch.kt) | Lets the app send and receive messages and get its push token. |
 | <a id="viber-start-folder"></a>[**Start folder**](patches/src/main/kotlin/app/morphe/patches/viber/layout/startfolder/StartFolderPatch.kt) | Opens Chats in the selected folder. |
 | <a id="viber-unfiled-chats"></a>[**Unfiled chats**](patches/src/main/kotlin/app/morphe/patches/viber/layout/unfiled/UnfiledChatsPatch.kt) | Adds a folder tab for chats outside your custom folders. |
+
+**Google Drive backup and restore** need **GmsCore support**. Without it, Google refuses Drive access to the patched
+Viber, and the backup and restore error dialogs say "Google Drive backup and restore need the GmsCore support patch."
+
+1. Install a microG build that uses the `app.revanced.android.gms` package and sign in to the Google account that
+   holds the backup. [MicroG RE](https://github.com/MorpheApp/MicroG-RE/releases/latest), Morphe's own build, is
+   recommended.
+2. In Morphe Manager, turn on Settings → Patching → Expert mode, enable **GmsCore support** in Viber's patch list,
+   then patch and install over the current copy. Manager keeps this selection for later repatches while expert mode
+   is on.
+3. In Viber, open Settings → Account → Viber Backup, tap the account row and pick the account that holds the
+   backup.
+
+Viber offers restore right after activation on the primary device, the phone registered with the Viber number.
+
+Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hxreborn/morphe-patches/discussions/1052).
 
 ---
 
