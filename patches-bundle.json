@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-25T12:41:47",
-  "description": "## [1.89.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.88.0...v1.89.0-dev.1) (2026-11-25)\n\n### Bug Fixes\n\n* **MovieBox:** adapt to 25/11/2026 backend changes ([081f528](https://github.com/hxreborn/morphe-patches/commit/081f52829a29f1c6ea4979dba9d7bea0c7b46009))\n* **TradingView - Unlock chart features:** restore bar replay ([8894610](https://github.com/hxreborn/morphe-patches/commit/8894610fa3417815638547e694ee0e629bade985)), closes [#1077](https://github.com/hxreborn/morphe-patches/issues/1077)\n\n### New Features\n\n* **Audiomack - Export downloaded songs:** add cover art to saved songs ([49fc8de](https://github.com/hxreborn/morphe-patches/commit/49fc8de7df77e57afe24bd21950a34b12a6b2aeb)), closes [#1078](https://github.com/hxreborn/morphe-patches/issues/1078)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.89.0-dev.1/patches-1.89.0-dev.1.mpp",
+  "created_at": "2026-11-25T13:58:50",
+  "description": "## [1.89.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.1...v1.89.0-dev.2) (2026-11-25)\n\n### New Features\n\n* **TradingView - Unlock chart features:** run long scripts in replay ([8140dc8](https://github.com/hxreborn/morphe-patches/commit/8140dc89e789397a6e3d71377f52e8be26440968))",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.89.0-dev.2/patches-1.89.0-dev.2.mpp",
   "signature_download_url": "",
-  "version": "1.89.0-dev.1"
+  "version": "1.89.0-dev.2"
 }
