@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.89.0-dev.2](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.2)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**619 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.89.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.3)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -107,7 +107,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 | 39 | <img src="https://publicmetadata.co.uk/com.stervs.chessscanner" width="24" height="24" align="top" alt=""> [**Chess Scanner**](PATCHES.md#chess-scanner-comstervschessscanner) | 1 | `1.8.33`, `1.8.36` | [`com.stervs.chessscanner`](https://play.google.com/store/apps/details?id=com.stervs.chessscanner) |
 | 40 | <img src="https://publicmetadata.co.uk/com.classdojo.android" width="24" height="24" align="top" alt=""> [**ClassDojo**](PATCHES.md#classdojo-comclassdojoandroid) | 1 | `9.12.0` | [`com.classdojo.android`](https://play.google.com/store/apps/details?id=com.classdojo.android) |
 | 41 | <img src="https://publicmetadata.co.uk/ltd.anti.clink" width="24" height="24" align="top" alt=""> [**Clink**](PATCHES.md#clink-ltdanticlink) | 1 | `1.9.2`, `2.0.2` | [`ltd.anti.clink`](https://play.google.com/store/apps/details?id=ltd.anti.clink) |
-| 42 | <img src="https://publicmetadata.co.uk/jp.co.celsys.clipstudiopaint.googleplay" width="24" height="24" align="top" alt=""> [**Clip Studio Paint**](PATCHES.md#clip-studio-paint-jpcocelsysclipstudiopaintgoogleplay) | 3 | `5.1.4` | [`jp.co.celsys.clipstudio…`](https://play.google.com/store/apps/details?id=jp.co.celsys.clipstudiopaint.googleplay "jp.co.celsys.clipstudiopaint.googleplay") |
+| 42 | <img src="https://publicmetadata.co.uk/jp.co.celsys.clipstudiopaint.googleplay" width="24" height="24" align="top" alt=""> [**Clip Studio Paint**](PATCHES.md#clip-studio-paint-jpcocelsysclipstudiopaintgoogleplay) | 4 | `5.1.4` | [`jp.co.celsys.clipstudio…`](https://play.google.com/store/apps/details?id=jp.co.celsys.clipstudiopaint.googleplay "jp.co.celsys.clipstudiopaint.googleplay") |
 | 43 | <img src="https://publicmetadata.co.uk/com.pengyou.cloneapp" width="24" height="24" align="top" alt=""> [**Clone App**](PATCHES.md#clone-app-compengyoucloneapp) | 4 | `4.2.3`, `4.2.5` | [`com.pengyou.cloneapp`](https://play.google.com/store/apps/details?id=com.pengyou.cloneapp) |
 | 44 | <img src="https://publicmetadata.co.uk/tech.coddy.coddyapp" width="24" height="24" align="top" alt=""> [**Coddy**](PATCHES.md#coddy-techcoddycoddyapp) | 1 | `2.3.0` | [`tech.coddy.coddyapp`](https://play.google.com/store/apps/details?id=tech.coddy.coddyapp) |
 | 45 | <img src="https://publicmetadata.co.uk/com.connected2.ozzy.c2m" width="24" height="24" align="top" alt=""> [**Connected2.me**](PATCHES.md#connected2me-comconnected2ozzyc2m) | 5 | `3.396` | [`com.connected2.ozzy.c2m`](https://play.google.com/store/apps/details?id=com.connected2.ozzy.c2m) |

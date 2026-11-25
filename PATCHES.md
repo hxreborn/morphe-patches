@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**619 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -739,6 +739,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
+| <a id="clip-studio-paint-lower-android-requirement"></a>[**Lower Android requirement**](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/compatibility/Android12SupportPatch.kt) | Lowers the minimum Android version to Android 12. |
 | <a id="clip-studio-paint-open-drawing-on-launch"></a>[**Open drawing on launch**](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/launch/OpenDrawingOnLaunchPatch.kt) | Opens the selected Studio or Simple Mode workspace on launch. |
 | <a id="clip-studio-paint-skip-plan-selection"></a>[**Skip plan selection**](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/launch/SkipPlanSelectionPatch.kt) | Opens the app in doodle mode without showing the plan selection screen. Log in from the home screen to use a plan. |
 | <a id="clip-studio-paint-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/clipstudiopaint/misc/premium/UnlockPremiumPatch.kt) | Removes the monthly drawing time limit. Unlocks saving and exporting in doodle mode and full-length timelapse export with an optional logo. |

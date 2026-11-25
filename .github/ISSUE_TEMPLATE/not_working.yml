@@ -508,11 +508,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.89.0-dev.3"
         - "1.89.0-dev.2"
         - "1.89.0-dev.1"
         - "1.88.0-dev.6"
         - "1.88.0-dev.5"
-        - "1.88.0-dev.4"
         - "1.88.0"
         - "Older than these"
         # /generated
@@ -708,6 +708,7 @@ body:
         - "Chess Scanner \u00b7 Unlock premium"
         - "ClassDojo \u00b7 Unlock progress reports"
         - "Clink \u00b7 Unlock Pro"
+        - "Clip Studio Paint \u00b7 Lower Android requirement"
         - "Clip Studio Paint \u00b7 Open drawing on launch"
         - "Clip Studio Paint \u00b7 Skip plan selection"
         - "Clip Studio Paint \u00b7 Unlock premium"

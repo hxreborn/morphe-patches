@@ -1,3 +1,9 @@
+## [1.89.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.2...v1.89.0-dev.3) (2026-11-25)
+
+### New Features
+
+* **Clip Studio Paint - Lower Android requirement:** run on Android 12 ([4ac098b](https://github.com/hxreborn/morphe-patches/commit/4ac098b1eb9a14c0d39d04dfe83a45ddac18b4b3)), closes [#1083](https://github.com/hxreborn/morphe-patches/issues/1083)
+
 ## [1.89.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.1...v1.89.0-dev.2) (2026-11-25)
 
 ### New Features
