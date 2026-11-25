@@ -32,7 +32,7 @@ val disableTrackingPatch = patch(
 
     execute {
         AppsFlyerInitFingerprint.method.addInstruction(0, "return-object p0")
-        AppsFlyerReportingFingerprint.matchAll().forEach { it.method.returnEarly() }
+        AppsFlyerReportingFingerprint.matchAll(8..8).forEach { it.method.returnEarly() }
 
         MParticleConfigRequestFingerprint.method.returnEarly()
         MParticleUploadFingerprint.method.returnEarly(202)
