@@ -12,6 +12,7 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.hostedcomponents.CORE_COMPONENT_FACTORY
@@ -20,12 +21,10 @@ import app.morphe.patches.shared.misc.hostedcomponents.addStyle
 import app.morphe.patches.shared.misc.hostedcomponents.replaceThemeStub
 import app.morphe.patches.shared.misc.hostedcomponents.licenseCheckActivityHost
 import app.morphe.patches.shared.misc.requireArm64
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.shared.misc.torrent.removeProtectionPatch
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import app.morphe.patches.shared.misc.extension.bittorrentSettingsMenuAndAmoledThemeExtensionPatch
 import app.morphe.patches.shared.misc.extension.bittorrentSettingsExtensionPatch
@@ -145,8 +144,7 @@ val amoledThemePatch = patch(
         val setter = classDefBy(HOST_SWITCH_CLASS).methods.single { it.name == "setCheckedChangeListener" }
         val listenerType = setter.parameterTypes.single().toString()
         mutableClassDefBy(SWITCH_CLASS).apply {
-            interfaces.add(listenerType)
-            addMethod("invoke", listOf("Ljava/lang/Object;"), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 3,
+            addPatchInterface(listenerType, "invoke",
                 """
                     check-cast p1, Ljava/lang/Boolean;
                     invoke-virtual { p1 }, Ljava/lang/Boolean;->booleanValue()Z
