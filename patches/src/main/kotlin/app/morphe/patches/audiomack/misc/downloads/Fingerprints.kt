@@ -73,25 +73,15 @@ internal fun mediaMetadataTitleFingerprint(metadataMethod: Method) = Fingerprint
 )
 
 internal object OriginalImageSetterFingerprint : Fingerprint(
-    definingClass = RESULT_ITEM_CLASS,
-    returnType = "V",
-    parameters = listOf("Ljava/lang/String;"),
     filters = listOf(
         fieldAccess(definingClass = RESULT_ITEM_CLASS, name = "originalImage", opcode = Opcode.IPUT_OBJECT),
     ),
 )
 
-internal fun originalImageCopyFingerprint(originalImageSetter: Method) = Fingerprint(
-    returnType = RESULT_ITEM_CLASS,
-    parameters = listOf(MUSIC_CLASS),
+internal object OriginalImageCopyFingerprint : Fingerprint(
     filters = listOf(
         musicStringRead(),
-        methodCall(
-            definingClass = originalImageSetter.definingClass,
-            name = originalImageSetter.name,
-            parameters = originalImageSetter.parameterTypes.map { it.toString() },
-            location = MatchAfterImmediately(),
-        ),
+        methodCall(reference = { OriginalImageSetterFingerprint.method }, location = MatchAfterImmediately()),
     ),
 )
 
@@ -99,11 +89,7 @@ internal object CoverFileFingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
     returnType = "Ljava/io/File;",
     parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "Z"),
-    filters = listOf(
-        string("file://"),
-        string("UTF-8"),
-        string("artworks"),
-    ),
+    filters = listOf(string("artworks")),
 )
 
 internal object DownloadFolderFingerprint : Fingerprint(

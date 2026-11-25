@@ -56,8 +56,7 @@ private val exportRowLabelsPatch = patch {
 val exportDownloadedSongsPatch: Patch = patch(
     name = "Export downloaded songs",
     description = "Adds Save to device and Share file to the menu of downloaded songs. " +
-        "Saves songs to Music/Audiomack as Artist - Title, " +
-        "with title, artist, album and cover art tags. " +
+        "Saves songs to Music/Audiomack as Artist - Title, with their tags and cover art. " +
         "Requires Android 10 or later.",
 ) {
     compatibleWith(AppCompatibilities.AUDIOMACK)
@@ -74,8 +73,7 @@ val exportDownloadedSongsPatch: Patch = patch(
         val (albumRead, _, albumFallbackRead) =
             mediaMetadataAlbumFingerprint(artistMatch.method).match().instructionMatches
         val (titleRead) = mediaMetadataTitleFingerprint(artistMatch.method).match().instructionMatches
-        val (coverUrlRead) =
-            originalImageCopyFingerprint(OriginalImageSetterFingerprint.method).match().instructionMatches
+        val (coverUrlRead) = OriginalImageCopyFingerprint.match().instructionMatches
         val coverFileMethod = CoverFileFingerprint.method
         val downloadFolder = DownloadFolderFingerprint.matchAll(DOWNLOAD_FOLDER_SITES).map { match ->
             val (_, _, folderNameRead) = match.instructionMatches

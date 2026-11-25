@@ -100,15 +100,13 @@ public final class Mp4TagsTest {
         final SongTags tags = new SongTags("1", "Thanks and Praise", "Evang. John Okah", "Praise", COVER);
 
         // when
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Mp4Tags.write(source, out, tags);
-        final byte[] tagged = out.toByteArray();
+        final byte[] tagged = tagged(source, tags);
 
         // then
-        final int item = indexOf(tagged, "covr".getBytes(StandardCharsets.US_ASCII));
-        final ByteBuffer data = ByteBuffer.wrap(tagged);
-        Assert.assertEquals(JPEG_DATA_TYPE, data.getInt(item + DATA_TYPE_AFTER_ITEM_TYPE));
-        Assert.assertEquals(item + PAYLOAD_AFTER_ITEM_TYPE, indexOf(tagged, COVER));
+        final int coverTypeOffset = indexOf(tagged, "covr".getBytes(StandardCharsets.US_ASCII));
+        final ByteBuffer file = ByteBuffer.wrap(tagged);
+        Assert.assertEquals(JPEG_DATA_TYPE, file.getInt(coverTypeOffset + DATA_TYPE_AFTER_ITEM_TYPE));
+        Assert.assertEquals(coverTypeOffset + PAYLOAD_AFTER_ITEM_TYPE, indexOf(tagged, COVER));
         Assert.assertEquals(indexOf(tagged, AUDIO), chunkOffset(tagged));
     }
 
@@ -181,8 +179,12 @@ public final class Mp4TagsTest {
     }
 
     private static byte[] tagged(File source) throws IOException {
+        return tagged(source, TAGS);
+    }
+
+    private static byte[] tagged(File source, SongTags tags) throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Mp4Tags.write(source, out, TAGS);
+        Mp4Tags.write(source, out, tags);
         return out.toByteArray();
     }
 

@@ -93,9 +93,9 @@ public final class ExportActions {
     private static void export(ExportRow row) {
         final Context context = appContext;
         final File file = downloadedFile(row.music);
-        final byte[] cover = CoverArt.readAsJpeg(coverFile(context, musicCoverUrl(row.music)));
+        final byte[] coverJpeg = CoverArt.readAsJpeg(coverFile(context, musicCoverUrl(row.music)));
         final SongTags tags = new SongTags(musicId(row.music), musicTitle(row.music), musicArtist(row.music),
-                musicAlbum(row.music), cover);
+                musicAlbum(row.music), coverJpeg);
         try {
             final SavedSong song = new SongExport(context).save(file, tags);
             if (row.share) {
