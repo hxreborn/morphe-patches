@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -39,6 +41,14 @@ public final class HomeFeedFilter {
     static final String HIDE_RECOMMENDED_CREATORS = "hide_recommended_creators";
 
     private static final String EXPLORE_SECTION_TYPE = "chunked_explore";
+
+    private static final String POST_VIEWER_SURFACE = "post_viewer";
+
+    private static final Set<String> VIEWED_POST_IDS = Collections.synchronizedSet(new HashSet<String>());
+
+    private static final Map<Object, String> SECTION_VIEWED_POST_IDS = new WeakHashMap<>();
+
+    private static volatile String lastViewedPostId;
 
     private static final String DATABASE_PREFIX = "room_primary_patreon_database_";
 
@@ -82,15 +92,101 @@ public final class HomeFeedFilter {
         return null;
     }
 
+    static Object feedSurfaceOf(Object section) {
+        return null;
+    }
+
+    static Object idValueOf(Object id) {
+        return null;
+    }
+
+    static Object dataOf(Object state) {
+        return null;
+    }
+
+    static Object feedPostStateOf(Object rowState) {
+        return null;
+    }
+
+    static Object postOwnerOf(Object feedPostState) {
+        return null;
+    }
+
+    static Object campaignIdOf(Object postOwner) {
+        return null;
+    }
+
     static boolean isEnabled() {
         return PatchSettings.isEnabled(HIDE_RECOMMENDED_CREATORS, true);
     }
 
-    public static List<Object> removeNonMemberItems(List<Object> items) {
+    public static void recordViewedPost(Object postId) {
+        Object value = idValueOf(postId);
+        if (value instanceof String) {
+            VIEWED_POST_IDS.add((String) value);
+            lastViewedPostId = (String) value;
+        }
+    }
+
+    public static List<Object> removeNonMemberItems(Object section, List<Object> items) {
+        return removeNonMemberItems(items, POST_VIEWER_SURFACE.equals(feedSurfaceOf(section)));
+    }
+
+    public static List<Object> removePostViewerItems(List<Object> items) {
+        return removeNonMemberItems(items, true);
+    }
+
+    public static Object removeNonMemberItemState(Object state, Object item, Object section) {
+        if (state == null || item == null || !isEnabled() || !POST_VIEWER_SURFACE.equals(feedSurfaceOf(section))) {
+            return state;
+        }
+        if (isRecommendation(item)) {
+            return null;
+        }
+        Object campaignId = idValueOf(campaignIdOf(postOwnerOf(feedPostStateOf(dataOf(state)))));
+        if (!(campaignId instanceof String)) {
+            return state;
+        }
+        return isKeptCampaign((String) campaignId, viewedPostIdOf(section)) ? state : null;
+    }
+
+    private static String viewedPostIdOf(Object section) {
+        synchronized (SECTION_VIEWED_POST_IDS) {
+            String postId = SECTION_VIEWED_POST_IDS.get(section);
+            if (postId == null && lastViewedPostId != null) {
+                postId = lastViewedPostId;
+                SECTION_VIEWED_POST_IDS.put(section, postId);
+            }
+            return postId;
+        }
+    }
+
+    private static boolean isKeptCampaign(String campaignId, String viewedPostId) {
+        File databaseFile = roomDatabaseFile();
+        if (databaseFile == null) {
+            return true;
+        }
+        String query = "SELECT ? IN (" + MEMBER_CAMPAIGNS_QUERY;
+        String[] arguments = { campaignId };
+        if (viewedPostId != null) {
+            query += " UNION SELECT server_campaign_id FROM post_campaign_cross_ref_table WHERE server_post_id = ?";
+            arguments = new String[] { campaignId, viewedPostId };
+        }
+        try (SQLiteDatabase db = SQLiteDatabase.openDatabase(databaseFile.getPath(), null,
+                SQLiteDatabase.OPEN_READONLY); Cursor cursor = db.rawQuery(query + ")", arguments)) {
+            return !cursor.moveToFirst() || cursor.getInt(0) != 0;
+        } catch (RuntimeException ex) {
+            Log.w(PatchSettings.LOG_TAG, "Membership query failed on " + databaseFile.getName(), ex);
+            return true;
+        }
+    }
+
+    private static List<Object> removeNonMemberItems(List<Object> items, boolean keepViewedCreators) {
         if (items == null || items.isEmpty() || !isEnabled()) {
             return items;
         }
-        Set<String> nonMemberPosts = nonMemberPostIds(items);
+        Set<String> nonMemberPosts = nonMemberPostIds(items,
+                keepViewedCreators ? new ArrayList<>(VIEWED_POST_IDS) : Collections.<String>emptyList());
         List<Object> kept = new ArrayList<>(items.size());
         for (Object item : items) {
             if (!isRecommendation(item) && !nonMemberPosts.contains(postId(item))) {
@@ -126,7 +222,7 @@ public final class HomeFeedFilter {
         return (kept.size() == sections.size()) ? sections : kept;
     }
 
-    private static Set<String> nonMemberPostIds(List<Object> items) {
+    private static Set<String> nonMemberPostIds(List<Object> items, List<String> viewedPostIds) {
         List<String> postIds = new ArrayList<>(items.size());
         for (Object item : items) {
             String postId = postId(item);
@@ -138,12 +234,16 @@ public final class HomeFeedFilter {
         if (postIds.isEmpty() || databaseFile == null) {
             return Collections.emptySet();
         }
-        String query = "SELECT server_post_id, server_campaign_id IN (" + MEMBER_CAMPAIGNS_QUERY
-                + ") FROM post_campaign_cross_ref_table WHERE server_post_id IN ("
-                + TextUtils.join(",", Collections.nCopies(postIds.size(), "?")) + ")";
+        String keptCampaignsQuery = viewedPostIds.isEmpty() ? MEMBER_CAMPAIGNS_QUERY : MEMBER_CAMPAIGNS_QUERY
+                + " UNION SELECT server_campaign_id FROM post_campaign_cross_ref_table WHERE server_post_id IN ("
+                + placeholders(viewedPostIds.size()) + ")";
+        String query = "SELECT server_post_id, server_campaign_id IN (" + keptCampaignsQuery
+                + ") FROM post_campaign_cross_ref_table WHERE server_post_id IN (" + placeholders(postIds.size()) + ")";
+        List<String> arguments = new ArrayList<>(viewedPostIds);
+        arguments.addAll(postIds);
         Set<String> nonMemberPosts = new HashSet<>();
         try (SQLiteDatabase db = SQLiteDatabase.openDatabase(databaseFile.getPath(), null,
-                SQLiteDatabase.OPEN_READONLY); Cursor cursor = db.rawQuery(query, postIds.toArray(new String[0]))) {
+                SQLiteDatabase.OPEN_READONLY); Cursor cursor = db.rawQuery(query, arguments.toArray(new String[0]))) {
             while (cursor.moveToNext()) {
                 if (cursor.getInt(1) == 0) {
                     nonMemberPosts.add(cursor.getString(0));
@@ -154,6 +254,10 @@ public final class HomeFeedFilter {
             return Collections.emptySet();
         }
         return nonMemberPosts;
+    }
+
+    private static String placeholders(int count) {
+        return TextUtils.join(",", Collections.nCopies(count, "?"));
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -174,7 +278,8 @@ public final class HomeFeedFilter {
     }
 
     private static String postId(Object item) {
-        Object postId = stringIdOf(postOf(postCardOf(item)));
+        Object postCard = postCardOf(item);
+        Object postId = stringIdOf(postOf((postCard != null) ? postCard : quickPostCardOf(item)));
         return (postId instanceof String) ? (String) postId : null;
     }
 

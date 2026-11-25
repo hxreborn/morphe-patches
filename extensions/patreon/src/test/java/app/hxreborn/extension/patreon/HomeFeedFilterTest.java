@@ -36,8 +36,24 @@ public final class HomeFeedFilterTest {
         PatchSettings.setEnabled(HomeFeedFilter.HIDE_RECOMMENDED_CREATORS, false);
         List<Object> items = Collections.singletonList(new Object());
 
-        assertSame(items, HomeFeedFilter.removeNonMemberItems(items));
+        assertSame(items, HomeFeedFilter.removeNonMemberItems(new Object(), items));
+        assertSame(items, HomeFeedFilter.removePostViewerItems(items));
         assertSame(items, HomeFeedFilter.removeExploreSections(items));
+    }
+
+    @Test
+    public void postViewerFilterKeepsItemsWithoutPostIds() {
+        HomeFeedFilter.recordViewedPost(new Object());
+        List<Object> items = Collections.singletonList(new Object());
+
+        assertSame(items, HomeFeedFilter.removePostViewerItems(items));
+    }
+
+    @Test
+    public void itemStateOutsidePostViewerStays() {
+        Object state = new Object();
+
+        assertSame(state, HomeFeedFilter.removeNonMemberItemState(state, new Object(), new Object()));
     }
 
     @Test

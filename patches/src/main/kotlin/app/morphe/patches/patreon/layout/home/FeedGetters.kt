@@ -17,9 +17,18 @@ private const val BASE_FEED_SECTION = "$SCHEMA_PACKAGE/BaseFeedSectionSchema;"
 private const val FEEDS_V2_FEED_SECTION = "$SCHEMA_PACKAGE/FeedsV2LauncherFeedSectionSchema;"
 private const val LAUNCHER_CARD_POST = "$SCHEMA_PACKAGE/LauncherCardPostSchema;"
 private const val FEEDS_V2_CARD_POST = "$SCHEMA_PACKAGE/FeedsV2LauncherCardPostSchema;"
+private const val QUICK_POST_CARD = "$SCHEMA_PACKAGE/FeedCardQuickPostLevel2Schema;"
+private const val POST_ID = "Lcom/patreon/android/database/model/ids/PostId;"
+private const val CAMPAIGN_ID = "Lcom/patreon/android/database/model/ids/CampaignId;"
+private const val DATA_RESULT_SUCCESS = "Lcom/patreon/android/data/model/DataResult\$Success;"
 private const val NETWORK_SCHEMA = "Lcom/patreon/android/network/intf/schema/NetworkSchema;"
 
 private class FeedGetter(val definingClass: String, val name: String)
+
+private fun getterReturning(definingClass: String, returnType: String) = FeedGetter(
+    definingClass,
+    Fingerprint(definingClass = definingClass, returnType = returnType, parameters = emptyList()).originalMethod.name,
+)
 
 private fun replaceGetterStub(extensionClass: String, stub: String, vararg getters: FeedGetter) {
     val branches = getters.mapIndexed { index, getter ->
@@ -54,6 +63,7 @@ internal fun replaceHomeFeedStubs(extensionClass: String) {
         "postOf",
         FeedGetter(LAUNCHER_CARD_POST, "getPost"),
         FeedGetter(FEEDS_V2_CARD_POST, "getPost"),
+        FeedGetter(QUICK_POST_CARD, "getPost"),
     )
     replaceGetterStub(extensionClass, "stringIdOf", FeedGetter(NETWORK_SCHEMA, "getStringId"))
     replaceGetterStub(
@@ -73,6 +83,40 @@ internal fun replaceHomeFeedStubs(extensionClass: String) {
         FeedGetter(BASE_FEED_SECTION, "getRawSectionTypeId"),
         FeedGetter(FEEDS_V2_FEED_SECTION, "getRawSectionTypeId"),
     )
+    replaceGetterStub(
+        extensionClass,
+        "feedSurfaceOf",
+        FeedGetter(BASE_FEED_SECTION, "getRawFeedSurface"),
+        FeedGetter(FEEDS_V2_FEED_SECTION, "getRawFeedSurface"),
+    )
+    replaceGetterStub(
+        extensionClass,
+        "idValueOf",
+        FeedGetter(POST_ID, "getValue"),
+        FeedGetter(CAMPAIGN_ID, "getValue"),
+    )
+    replaceQuickPostCardStub(extensionClass)
+    replaceRowCampaignStubs(extensionClass)
+}
+
+private fun replaceRowCampaignStubs(extensionClass: String) {
+    val quickPostCardState = QuickPostCardStateToStringFingerprint.originalClassDef.type
+    val launcherFeedPostState = LauncherFeedPostStateToStringFingerprint.originalClassDef.type
+    val feedPostState = FeedPostStateToStringFingerprint.originalClassDef.type
+    val campaignPostOwner = CampaignPostOwnerToStringFingerprint.originalClassDef
+    replaceGetterStub(extensionClass, "dataOf", FeedGetter(DATA_RESULT_SUCCESS, "getData"))
+    replaceGetterStub(
+        extensionClass,
+        "feedPostStateOf",
+        getterReturning(quickPostCardState, feedPostState),
+        getterReturning(launcherFeedPostState, feedPostState),
+    )
+    replaceGetterStub(
+        extensionClass,
+        "postOwnerOf",
+        getterReturning(feedPostState, campaignPostOwner.interfaces.single()),
+    )
+    replaceGetterStub(extensionClass, "campaignIdOf", getterReturning(campaignPostOwner.type, CAMPAIGN_ID))
 }
 
 internal fun replaceQuickPostCardStub(extensionClass: String) =
