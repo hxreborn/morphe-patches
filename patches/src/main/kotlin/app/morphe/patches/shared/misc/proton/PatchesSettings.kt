@@ -41,11 +41,16 @@ private const val PATCHES_THEME_CLASS = "${PROTON_EXTENSION_PACKAGE}PatchesTheme
 private const val APP_COMPAT_MODE_NIGHT_NO = 1
 private const val APP_COMPAT_MODE_NIGHT_YES = 2
 
-internal object CoreNightModeFingerprint : Fingerprint(
+private fun coreNightModeFingerprint(appCompatDelegate: String) = Fingerprint(
     filters = listOf(
         anyInstruction(
-            fieldAccess(opcode = Opcode.SGET, type = "I"),
-            methodCall(opcode = Opcode.INVOKE_STATIC, parameters = emptyList(), returnType = "I"),
+            fieldAccess(definingClass = appCompatDelegate, opcode = Opcode.SGET, type = "I"),
+            methodCall(
+                definingClass = appCompatDelegate,
+                opcode = Opcode.INVOKE_STATIC,
+                parameters = emptyList(),
+                returnType = "I",
+            ),
         ),
         literal(APP_COMPAT_MODE_NIGHT_NO, location = MatchAfterWithin(2)),
         opcode(Opcode.IF_EQ, location = MatchAfterImmediately()),
@@ -133,16 +138,9 @@ internal fun injectBundleVersion() {
 
 internal fun injectAppCompatDefaultNightMode() {
     val appCompatDelegate = AppCompatDelegateImplFingerprint.originalClassDef.superclass
-    val nightModeReads = CoreNightModeFingerprint.matchAll()
+        ?: throw PatchException("AppCompat delegate implementation has no superclass")
+    val nightModeReads = coreNightModeFingerprint(appCompatDelegate).matchAll()
         .map { (it.instructionMatches.first().instruction as ReferenceInstruction).reference }
-        .filter {
-            val definingClass = when (it) {
-                is FieldReference -> it.definingClass
-                is MethodReference -> it.definingClass
-                else -> null
-            }
-            definingClass == appCompatDelegate
-        }
         .distinctBy(Any::toString)
     val nightModeRead = nightModeReads.singleOrNull()
         ?: throw PatchException("Expected one AppCompat default night mode read, found $nightModeReads")
