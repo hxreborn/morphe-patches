@@ -38,18 +38,16 @@ internal val resourceFieldsPatch = patch {
 }
 
 internal class ResourceFieldFilter(
-    type: ResourceType,
-    name: String,
+    private val type: ResourceType,
+    private val name: String,
     location: InstructionLocation,
 ) : OpcodesFilter(null as List<Opcode>?, location) {
-    private val resolvedId by lazy { resourceId(type, name) }
-
     override fun matches(enclosingMethod: Method, instruction: Instruction): Boolean {
         if (!super.matches(enclosingMethod, instruction)) return false
-        if (instruction is WideLiteralInstruction) return instruction.wideLiteral == resolvedId
+        if (instruction is WideLiteralInstruction) return instruction.wideLiteral == resourceId(type, name)
         if (instruction.opcode != Opcode.SGET) return false
         val field = (instruction as ReferenceInstruction).reference as FieldReference
-        return resourceIdsByField[field.fieldKey()] == resolvedId
+        return resourceIdsByField[field.fieldKey()] == resourceId(type, name)
     }
 }
 

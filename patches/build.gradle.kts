@@ -44,6 +44,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.asm)
+    testImplementation(libs.arsclib)
     testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
 
     signature(libs.android.api.signature) { artifact { type = "signature" } }
