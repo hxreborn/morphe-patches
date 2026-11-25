@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patches.photoeditorpro.misc.fix.platform.AiRequestInterceptorFingerprint
 import app.morphe.patches.photoeditorpro.misc.fix.platform.spoofIosPlatformPatch
 import app.morphe.patches.photoeditorpro.misc.fix.signature.spoofSignaturePatch
@@ -17,9 +18,7 @@ import app.morphe.patches.photoeditorpro.shared.EXTENSION_PACKAGE
 import app.morphe.patches.photoeditorpro.shared.markPatchInstalled
 import app.morphe.patches.photoeditorpro.shared.markPatchMetadata
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.util.indexOfFirstInstructionOrThrow
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -48,19 +47,12 @@ val traceAiRequestsPatch: Patch = patch(
         val interceptMethod = appInterceptor.method
 
         mutableClassDefBy(AI_TRACE_INTERCEPTOR_CLASS).apply {
-            interfaces.add(interceptorInterface)
-            addMethod(
+            val intercept = methods.single { it.name == "intercept" && it.parameterTypes == listOf(OBJECT) }
+            addPatchInterface(
+                interceptorInterface,
                 interceptMethod.name,
+                intercept,
                 interceptMethod.parameterTypes.map(CharSequence::toString),
-                interceptMethod.returnType,
-                AccessFlags.PUBLIC.value or AccessFlags.FINAL.value,
-                3,
-                """
-                    invoke-virtual { p0, p1 }, $AI_TRACE_INTERCEPTOR_CLASS->intercept($OBJECT)$OBJECT
-                    move-result-object v0
-                    check-cast v0, ${interceptMethod.returnType}
-                    return-object v0
-                """,
             )
         }
 
