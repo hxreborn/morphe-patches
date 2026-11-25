@@ -21,6 +21,13 @@ internal object MsaConfigurationFingerprint : Fingerprint(
     ),
 )
 
+internal object SigningCertificateSha1Fingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/identity/common/internal/broker/PackageHelper;",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Ljava/lang/String;"),
+    strings = listOf("CallerInfo:getSha1SignatureForPackage"),
+)
+
 internal object ConfigureMsalAuthenticatorFingerprint : Fingerprint(
     definingClass = "Lcom/microsoft/authentication/OneAuth;",
     name = "configureMsalAuthenticator",

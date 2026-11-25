@@ -85,6 +85,18 @@ final class SettingsStyle extends app.hxreborn.extension.shared.patchesmenu.Sett
         return 0;
     }
 
+    static int calendarTabIconId() {
+        return 0;
+    }
+
+    static int appsTabIconId() {
+        return 0;
+    }
+
+    static int navigationBarIconId() {
+        return 0;
+    }
+
     static int resetIconId() {
         return 0;
     }

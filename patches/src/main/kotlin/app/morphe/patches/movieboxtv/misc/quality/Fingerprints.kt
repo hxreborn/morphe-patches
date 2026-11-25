@@ -4,23 +4,37 @@
  */
 package app.morphe.patches.movieboxtv.misc.quality
 
-import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.util.getReference
-import com.android.tools.smali.dexlib2.iface.ClassDef
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
+import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.methodCall
+import app.morphe.patcher.string
 
-internal const val COUNTRY_HEADER_TAG = "CountryIsoCodeHeader"
-internal const val RESPONSE_TEXT = "Response{protocol="
-internal const val REQUEST_TEXT = "Request{method="
+private const val RESOLUTION_MANAGER = "Lcom/transsion/tvplayer/TvResolutionManager;"
+internal const val LIST = "Ljava/util/List;"
+private const val STRING = "Ljava/lang/String;"
+private const val STOCK_DEFAULT_RESOLUTION = "480"
 
-internal val qualityStreamAnchors = listOf(COUNTRY_HEADER_TAG, RESPONSE_TEXT, REQUEST_TEXT)
+internal object CountryHeaderFingerprint : Fingerprint(
+    strings = listOf("CountryIsoCodeHeader"),
+)
 
-internal fun List<ClassDef>.classWithStringLiteral(value: String): ClassDef {
-    val matches = flatMap { classDef ->
-        classDef.methods.filter { method ->
-            method.implementation?.instructions?.any { it.getReference<StringReference>()?.string == value } == true
-        }.map { classDef }
-    }
-    return matches.singleOrNull()
-        ?: throw PatchException("Expected one payload method loading \"$value\", found ${matches.size}")
-}
+internal object ResponseToStringFingerprint : Fingerprint(
+    name = "toString",
+    strings = listOf("Response{protocol="),
+)
+
+internal object RequestToStringFingerprint : Fingerprint(
+    name = "toString",
+    strings = listOf("Request{method="),
+)
+
+internal object DefaultStreamFingerprint : Fingerprint(
+    definingClass = RESOLUTION_MANAGER,
+    isStatic = false,
+    parameters = listOf(LIST),
+    filters = listOf(
+        methodCall(definingClass = RESOLUTION_MANAGER, parameters = listOf(LIST), returnType = LIST),
+        methodCall(definingClass = RESOLUTION_MANAGER, parameters = listOf(), returnType = STRING),
+        methodCall(parameters = listOf(), returnType = STRING),
+        string(STOCK_DEFAULT_RESOLUTION),
+    ),
+)

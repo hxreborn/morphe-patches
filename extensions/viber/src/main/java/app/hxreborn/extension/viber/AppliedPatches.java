@@ -322,6 +322,18 @@ public final class AppliedPatches {
         return description("hideImageRemix");
     }
 
+    public static boolean explainDriveErrors() {
+        return isApplied("explainDriveErrors");
+    }
+
+    public static String explainDriveErrorsName() {
+        return name("explainDriveErrors");
+    }
+
+    public static String explainDriveErrorsDescription() {
+        return description("explainDriveErrors");
+    }
+
     static List<AppliedPatch> applied() {
         List<AppliedPatch> applied = new ArrayList<>();
         add(applied, removeListGaps(), removeListGapsName(), removeListGapsDescription());
@@ -348,6 +360,7 @@ public final class AppliedPatches {
         add(applied, linkAsSecondaryDevice(), linkAsSecondaryDeviceName(), linkAsSecondaryDeviceDescription());
         add(applied, spoofSignature(), spoofSignatureName(), spoofSignatureDescription());
         add(applied, gmsCoreSupport(), gmsCoreSupportName(), gmsCoreSupportDescription());
+        add(applied, explainDriveErrors(), explainDriveErrorsName(), explainDriveErrorsDescription());
         add(applied, unlockViberPlus(), unlockViberPlusName(), unlockViberPlusDescription());
         Collections.sort(applied, (first, second) -> first.name.compareToIgnoreCase(second.name));
         return applied;

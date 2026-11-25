@@ -199,7 +199,7 @@ private fun replaceSettingsStyleStubs() {
         )
         replaceResourceIdStubs(
             ResourceType.FONT,
-            mapOf("boldFont" to "din_next_for_duolingo_bold", "regularFont" to "din_next_for_duolingo"),
+            mapOf("boldFont" to "duolingosans_bold", "regularFont" to "duolingosans_regular"),
         )
         replaceResourceIdStubs(ResourceType.DRAWABLE, mapOf("backIconDrawable" to "ic_arrow_back_black_24dp"))
     }

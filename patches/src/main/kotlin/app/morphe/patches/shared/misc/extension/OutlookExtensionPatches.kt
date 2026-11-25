@@ -20,7 +20,17 @@ internal val outlookSettingsExtensionPatch = patch {
     extendWith("extensions/hxreborn/outlook-settings.mpe")
 }
 
+internal val outlookHideNavigationButtonsExtensionPatch = patch {
+    dependsOn(outlookSettingsExtensionPatch)
+    extendWith("extensions/hxreborn/outlook-hide-navigation-buttons.mpe")
+}
+
 internal val outlookUnreadShortcutExtensionPatch = patch {
     dependsOn(outlookSettingsExtensionPatch)
     extendWith("extensions/hxreborn/outlook-unread-shortcut.mpe")
+}
+
+internal val outlookCustomThemeExtensionPatch = patch {
+    dependsOn(sharedColorResourceTableExtensionPatch)
+    extendWith("extensions/hxreborn/outlook-custom-theme.mpe")
 }

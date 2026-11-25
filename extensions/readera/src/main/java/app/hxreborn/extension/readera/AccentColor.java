@@ -36,6 +36,9 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import app.hxreborn.extension.shared.ColorEntries;
+import app.hxreborn.extension.shared.ColorResourceTable;
+
 @SuppressWarnings("unused")
 public final class AccentColor {
 
@@ -44,8 +47,6 @@ public final class AccentColor {
     private static final String TABLE_PREFIX = "hx_readera_accent_";
 
     private static final String TABLE_SUFFIX = ".apk";
-
-    private static final int ENTRY_INDEX_MASK = 0xFFFF;
 
     private static final int TABLE_FORMAT_VERSION = 1;
 
@@ -142,26 +143,9 @@ public final class AccentColor {
         if (directory != null && !directory.isDirectory() && !directory.mkdirs()) {
             throw new IOException("Cannot create " + directory.getName());
         }
-        AccentResourceTable.writeApk(tableApk, packageName, resourceId, resources.getResourceTypeName(resourceId),
-                resources.getResourceEntryName(resourceId), typeEntryCount(resources, resourceId), accent);
-    }
-
-    private static int typeEntryCount(Resources resources, int resourceId) {
-        int typeBase = resourceId & ~ENTRY_INDEX_MASK;
-        int count = (resourceId & ENTRY_INDEX_MASK) + 1;
-        while (count <= ENTRY_INDEX_MASK && hasEntry(resources, typeBase | count)) {
-            count++;
-        }
-        return count;
-    }
-
-    private static boolean hasEntry(Resources resources, int resourceId) {
-        try {
-            resources.getResourceEntryName(resourceId);
-            return true;
-        } catch (Resources.NotFoundException ex) {
-            return false;
-        }
+        ColorEntries entries = new ColorEntries();
+        entries.add(resourceId, resources.getResourceEntryName(resourceId), accent);
+        ColorResourceTable.writeApk(tableApk, packageName, resources, entries);
     }
 
     private static void deleteTableFiles(File directory, File kept) {
@@ -172,7 +156,7 @@ public final class AccentColor {
         for (File file : files) {
             String name = file.getName();
             boolean tableFile = name.startsWith(TABLE_PREFIX)
-                    && (name.endsWith(TABLE_SUFFIX) || name.endsWith(AccentResourceTable.TEMPORARY_SUFFIX));
+                    && (name.endsWith(TABLE_SUFFIX) || name.endsWith(ColorResourceTable.TEMPORARY_SUFFIX));
             if (tableFile && !file.equals(kept) && !file.delete()) {
                 Log.w(PatchSettings.LOG_TAG, "Cannot delete the old accent color table " + name);
             }

@@ -65,7 +65,7 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String KEEP_MESSAGES_UNREAD_SUMMARY = "Opening a message, or flagging or moving it from "
             + "the reading pane, leaves it unread.";
 
-    private static final String REMOVE_INBOX_ADS_SUMMARY = "Hides sponsored rows in Focused and Other.";
+    private static final String REMOVE_INBOX_ADS_SUMMARY = "Removes sponsored messages from Focused and Other.";
 
     private static final String OPEN_EMAIL_TEMPLATES_SUMMARY = "Opens .oft template attachments as new drafts, "
             + "without Microsoft 365.";
@@ -76,8 +76,19 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
     private static final String HIDE_COPILOT_SUMMARY = "Hides the Copilot tab, inbox card, Get a Summary, Help me "
             + "write and Schedule with Copilot.";
 
-    private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Long-press the Outlook icon for an Unread entry that "
-            + "opens unread mail from every account.";
+    private static final String ADD_UNREAD_SHORTCUT_SUMMARY = "Long-press the Outlook icon, then tap Unread.";
+
+    private static final String HIDE_CALENDAR_TAB_TITLE = "Hide Calendar";
+
+    private static final String HIDE_CALENDAR_TAB_SUMMARY = "Moves Calendar into the Apps drawer.";
+
+    private static final String HIDE_APPS_TAB_TITLE = "Hide Apps";
+
+    private static final String HIDE_APPS_TAB_SUMMARY = "Removes the Apps button.";
+
+    private static final String HIDE_NAVIGATION_BAR_TITLE = "Hide bottom bar";
+
+    private static final String HIDE_NAVIGATION_BAR_SUMMARY = "Removes the whole bar, leaving only Mail.";
 
     private final Activity activity;
 
@@ -157,10 +168,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
         }
         if (AppliedPatches.isApplied(AppliedPatches.REMOVE_INBOX_ADS)) {
             this.rows.switchRow(mail, SettingsStyle.adsIconId(), AppliedPatches.name(AppliedPatches.REMOVE_INBOX_ADS),
-                    REMOVE_INBOX_ADS_SUMMARY, PatchSettings.isEnabled(PatchSettings.REMOVE_INBOX_ADS), (enabled) -> {
-                        PatchSettings.setEnabled(PatchSettings.REMOVE_INBOX_ADS, enabled);
-                        confirmRestart();
-                    });
+                    REMOVE_INBOX_ADS_SUMMARY, PatchSettings.isEnabled(PatchSettings.REMOVE_INBOX_ADS),
+                    (enabled) -> saveAndConfirmRestart(PatchSettings.REMOVE_INBOX_ADS, enabled));
         }
         if (AppliedPatches.isApplied(AppliedPatches.OPEN_EMAIL_TEMPLATES)) {
             this.rows.switchRow(mail, SettingsStyle.templatesIconId(),
@@ -183,10 +192,8 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
         LinearLayout app = this.rows.card();
         if (AppliedPatches.isApplied(AppliedPatches.HIDE_COPILOT)) {
             this.rows.switchRow(app, SettingsStyle.copilotIconId(), AppliedPatches.name(AppliedPatches.HIDE_COPILOT),
-                    HIDE_COPILOT_SUMMARY, PatchSettings.isEnabled(PatchSettings.HIDE_COPILOT), (enabled) -> {
-                        PatchSettings.setEnabled(PatchSettings.HIDE_COPILOT, enabled);
-                        confirmRestart();
-                    });
+                    HIDE_COPILOT_SUMMARY, PatchSettings.isEnabled(PatchSettings.HIDE_COPILOT),
+                    (enabled) -> saveAndConfirmRestart(PatchSettings.HIDE_COPILOT, enabled));
         }
         if (AppliedPatches.isApplied(AppliedPatches.ADD_UNREAD_SHORTCUT)) {
             this.rows.switchRow(app, SettingsStyle.shortcutIconId(),
@@ -197,6 +204,25 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
                     });
         }
         addSection(column, "App", app);
+
+        LinearLayout navigation = this.rows.card();
+        if (AppliedPatches.isApplied(AppliedPatches.HIDE_NAVIGATION_BUTTONS)) {
+            LinearLayout calendarRow = this.rows.switchRow(navigation, SettingsStyle.calendarTabIconId(),
+                    HIDE_CALENDAR_TAB_TITLE, HIDE_CALENDAR_TAB_SUMMARY, PatchSettings.hideCalendarTab(),
+                    (enabled) -> saveAndConfirmRestart(PatchSettings.HIDE_CALENDAR_TAB, enabled));
+            LinearLayout appsRow = this.rows.switchRow(navigation, SettingsStyle.appsTabIconId(), HIDE_APPS_TAB_TITLE,
+                    HIDE_APPS_TAB_SUMMARY, PatchSettings.hideAppsTab(),
+                    (enabled) -> saveAndConfirmRestart(PatchSettings.HIDE_APPS_TAB, enabled));
+            this.rows.switchRow(navigation, SettingsStyle.navigationBarIconId(), HIDE_NAVIGATION_BAR_TITLE,
+                    HIDE_NAVIGATION_BAR_SUMMARY, PatchSettings.hideNavigationBar(), (enabled) -> {
+                        this.rows.setRowEnabled(calendarRow, !enabled);
+                        this.rows.setRowEnabled(appsRow, !enabled);
+                        saveAndConfirmRestart(PatchSettings.HIDE_NAVIGATION_BAR, enabled);
+                    });
+            this.rows.setRowEnabled(calendarRow, !PatchSettings.hideNavigationBar());
+            this.rows.setRowEnabled(appsRow, !PatchSettings.hideNavigationBar());
+        }
+        addSection(column, "Bottom bar", navigation);
 
         LinearLayout about = this.rows.card();
         this.rows.actionRow(about, SettingsStyle.resetIconId(), "Reset to defaults", PatchesMenuText.RESET_DESCRIPTION,
@@ -258,6 +284,15 @@ final class PatchesSettingsDialog extends PatchesSettingsDialogBase implements V
             })
             .create();
         showConfirmation(confirmation);
+    }
+
+    private void saveAndConfirmRestart(String key, boolean enabled) {
+        if (PatchSettings.setEnabled(key, enabled)) {
+            confirmRestart();
+            return;
+        }
+        PatchSettings.setEnabled(key, !enabled);
+        this.scroll.post(() -> refreshContent(this.scroll));
     }
 
     private void confirmRestart() {

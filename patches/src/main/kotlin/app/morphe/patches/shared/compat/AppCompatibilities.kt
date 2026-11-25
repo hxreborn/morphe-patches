@@ -435,7 +435,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "ca685e41c4a9e9f3f9c8638aa5c032041fe42daf11f5abd59796f1c65cf666e6",
         ),
-        targets = listOf(AppTarget(version = "1.8.36", versionCode = 84, minSdk = 26)),
+        targets = listOf(
+            AppTarget(version = "1.8.33", versionCode = 81, minSdk = 26),
+            AppTarget(version = "1.8.36", versionCode = 84, minSdk = 26),
+        ),
     )
 
     val CLASSDOJO = Compatibility(
@@ -590,7 +593,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "1233ff6de4c70ef4d7deae54af15b167fc7cfd2539517bd2175870f3cb771731",
         ),
-        targets = listOf(AppTarget(version = "6.105.2", versionCode = 2497, minSdk = 29)),
+        targets = listOf(AppTarget(version = "6.106.6", versionCode = 2506, minSdk = 29)),
     )
 
     val DWG_FASTVIEW = Compatibility(
@@ -839,6 +842,17 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "2026.10.1031", versionCode = 26101031, minSdk = 23),
         ),
+    )
+
+    val INFINITE_PAINTER = Compatibility(
+        name = "Infinite Painter",
+        packageName = "com.brakefield.painter",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0xF04050,
+        signatures = setOf(
+            "c98988028ae81d5bb4c324263fed11b820aba9f84466b876131fd74406308c90",
+        ),
+        targets = listOf(AppTarget(version = "7.2.12", versionCode = 400803, minSdk = 29)),
     )
 
     val INTERNET_SPEED_METER_LITE = Compatibility(
@@ -1131,7 +1145,7 @@ internal object AppCompatibilities {
             "03d4b741632d136bc23e2de4c6adcdb7712f1980b619c183221801730bbd0410",
         ),
         targets = listOf(
-            AppTarget(version = "1.2.0.0923.web_socialmedia", versionCode = 50040018, minSdk = 29),
+            AppTarget(version = "1.2.3.1113.03", versionCode = 50040022, minSdk = 23),
         ),
     )
 

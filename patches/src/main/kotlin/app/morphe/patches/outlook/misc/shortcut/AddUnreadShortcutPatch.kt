@@ -26,8 +26,7 @@ private const val UNREAD_SHORTCUT_CLASS = "Lapp/hxreborn/extension/outlook/short
 @Suppress("unused")
 val addUnreadShortcutPatch: Patch = patch(
     name = "Add unread shortcut",
-    description = "Adds an Unread shortcut to the app icon's long-press menu that opens unread mail from all " +
-        "accounts and folders. Launchers with four shortcut slots show it in place of View calendar.",
+    description = "Adds an Unread shortcut to the Outlook icon that opens unread mail from every account.",
 ) {
     dependsOn(outlookAppliedPatchesExtensionPatch)
     compatibleWith(AppCompatibilities.OUTLOOK)

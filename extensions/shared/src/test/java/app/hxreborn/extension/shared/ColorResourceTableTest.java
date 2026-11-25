@@ -18,7 +18,7 @@
  * or modified versions, preserve this notice and credit hxreborn for this
  * material in any Appropriate Legal Notices displayed by works containing it.
  */
-package app.hxreborn.extension.readera;
+package app.hxreborn.extension.shared;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public final class AccentResourceTableTest {
+public final class ColorResourceTableTest {
 
     private static final String PACKAGE_NAME = "org.readera";
 
@@ -70,6 +70,16 @@ public final class AccentResourceTableTest {
 
     private static final int COLOR = 0xFFA5D6A7;
 
+    private static final int OTHER_COLOR = 0xFF8A5A2B;
+
+    private static final int SECOND_COLOR_ID = 0x7f060001;
+
+    private static final int FOURTH_COLOR_ID = 0x7f060003;
+
+    private static final int SPARSE_ENTRY_COUNT = 4;
+
+    private static final int ENTRY_AND_VALUE_SIZE = 16;
+
     private static final int AAPT2_TABLE_SIZE = 796;
 
     private static final short PACKAGE_CHUNK = 0x0200;
@@ -100,7 +110,7 @@ public final class AccentResourceTableTest {
     public final TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void writeAccentColorEntryInSdk21Configuration() throws IOException {
+    public void writeColorEntryInSdk21Configuration() throws IOException {
         ByteBuffer table = entry(writeApk(ACCENT_ID, "z", ACCENT_ENTRY_COUNT), TABLE_ENTRY);
 
         Assert.assertEquals(AAPT2_TABLE_SIZE, table.capacity());
@@ -134,6 +144,25 @@ public final class AccentResourceTableTest {
         Assert.assertEquals(entriesStart, type + TYPE_HEADER_END + STOCK_COLOR_ENTRY_COUNT * Integer.BYTES);
         Assert.assertEquals(NO_ENTRY, table.getInt(entriesStart - Integer.BYTES));
         Assert.assertEquals(COLOR, table.getInt(table.capacity() - Integer.BYTES));
+    }
+
+    @Test
+    public void writeEveryEntryAtItsResourceIndex() throws IOException {
+        File target = new File(this.folder.getRoot(), APK_NAME);
+        ColorEntries entries = new ColorEntries();
+        entries.add(SECOND_COLOR_ID, "b", COLOR);
+        entries.add(FOURTH_COLOR_ID, "d", OTHER_COLOR);
+        ColorResourceTable.writeApk(target, PACKAGE_NAME, "color", SPARSE_ENTRY_COUNT, entries);
+        ByteBuffer table = entry(target, TABLE_ENTRY);
+
+        int type = chunk(table, TYPE_CHUNK);
+        int offsets = type + TYPE_HEADER_END;
+        Assert.assertEquals(NO_ENTRY, table.getInt(offsets));
+        Assert.assertEquals(0, table.getInt(offsets + Integer.BYTES));
+        Assert.assertEquals(NO_ENTRY, table.getInt(offsets + 2 * Integer.BYTES));
+        Assert.assertEquals(ENTRY_AND_VALUE_SIZE, table.getInt(offsets + 3 * Integer.BYTES));
+        Assert.assertEquals(OTHER_COLOR, table.getInt(table.capacity() - Integer.BYTES));
+        Assert.assertEquals(COLOR, table.getInt(table.capacity() - Integer.BYTES - ENTRY_AND_VALUE_SIZE));
     }
 
     @Test
@@ -173,7 +202,9 @@ public final class AccentResourceTableTest {
 
     private File writeApk(int resourceId, String entryName, int entryCount) throws IOException {
         File target = new File(this.folder.getRoot(), APK_NAME);
-        AccentResourceTable.writeApk(target, PACKAGE_NAME, resourceId, "color", entryName, entryCount, COLOR);
+        ColorEntries entries = new ColorEntries();
+        entries.add(resourceId, entryName, COLOR);
+        ColorResourceTable.writeApk(target, PACKAGE_NAME, "color", entryCount, entries);
         return target;
     }
 

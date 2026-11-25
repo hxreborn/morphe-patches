@@ -6,7 +6,6 @@ app/hxreborn/extension/readera/AccentColorDialog$2
 app/hxreborn/extension/readera/AccentColorDialog$Swatch
 app/hxreborn/extension/readera/AccentPalette
 app/hxreborn/extension/readera/AccentPalette$Fixed
-app/hxreborn/extension/readera/AccentResourceTable
 app/hxreborn/extension/readera/AppTheme
 app/hxreborn/extension/readera/MaterialMenu
 app/hxreborn/extension/readera/MaterialMenu$1

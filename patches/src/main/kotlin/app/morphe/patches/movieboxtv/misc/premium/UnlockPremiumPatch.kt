@@ -4,36 +4,54 @@
  */
 package app.morphe.patches.movieboxtv.misc.premium
 
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
-import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
-import app.morphe.patches.shared.misc.requireArm
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
-private const val SERVICE_LOCATOR = "Lcom/transsion/tvdata/TvServiceLocator;"
-private const val VIP_USER_INFO = "Lcom/transsion/tvdata/bean/BffGetVipUserInfoData;"
-private const val SUBJECT_INFO = "Lcom/transsion/tvdata/bean/BffSubjectInfo;"
-private const val VISITOR_LOGIN = "Lcom/transsion/tvdata/bean/BffVisitorLoginData;"
+private val accountBeans = setOf(
+    "${BEAN_PACKAGE}BffGetVipUserInfoData;",
+    "${BEAN_PACKAGE}BffUserInfoData;",
+)
 
-private const val IS_VIP = "o0"
-private const val SET_VIP_HEADERS = "S0"
+private fun MutableMethod.returnBoolean(value: Boolean) {
+    if (returnType == "Z") return returnEarly(value)
+    addInstructions(
+        0,
+        """
+            sget-object v0, $BOOLEAN->${value.toString().uppercase()}:$BOOLEAN
+            return-object v0
+        """,
+    )
+}
 
 @Suppress("unused")
 val unlockPremiumPatch = patch(
     name = "Unlock premium",
-    description = "Unlocks full-length playback and removes region blocks. Requires Android 10 or later.",
+    description = "Unlocks full-length playback and VIP titles, and removes region blocks.",
 ) {
     compatibleWith(AppCompatibilities.MOVIEBOX_TV)
-    dependsOn(ijiamiPatch)
-    availability(requireArm)
 
     execute {
-        editIjiamiPayload {
-            method(SERVICE_LOCATOR, IS_VIP).returnEarly(true)
-            method(VIP_USER_INFO, "isVip").returnBoxed(true)
-            method(SERVICE_LOCATOR, SET_VIP_HEADERS).returnEarly()
-            method(SUBJECT_INFO, "isVip").returnEarly(false)
-            method(VISITOR_LOGIN, "getRegionBlock").returnBoxed(false)
-        }
+        val (stateRead) = ServiceLocatorIsVipFingerprint.instructionMatches
+        val state = stateRead.methodReference.definingClass
+
+        val initialState = vipStateInitialValueFingerprint(state)
+        val (initialValue) = initialState.instructionMatches
+        val initialRegister = initialValue.getInstruction<OneRegisterInstruction>().registerA
+        initialState.method.replaceInstruction(initialValue.index, "sget-object v$initialRegister, $BOOLEAN->TRUE:$BOOLEAN")
+        vipStateWriterFingerprint(state).method.addInstruction(0, "const/4 p1, 0x1")
+
+        val vipGetters = VipGetterFingerprint.matchAll()
+        val missingAccounts = accountBeans - vipGetters.map { it.classDef.type }.toSet()
+        if (missingAccounts.isNotEmpty()) throw PatchException("No isVip getter in $missingAccounts")
+        vipGetters.forEach { it.method.returnBoolean(it.classDef.type in accountBeans) }
+        VipHeadersFingerprint.method.returnEarly()
+        RegionBlockFingerprint.method.returnBoolean(false)
     }
 }

@@ -4,28 +4,35 @@
  */
 package app.morphe.patches.movieboxtv.misc.update
 
+import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
-import app.morphe.patches.shared.misc.ijiami.editIjiamiPayload
-import app.morphe.patches.shared.misc.ijiami.ijiamiPatch
-import app.morphe.patches.shared.misc.requireArm
 
 private const val REMOTE_VERSION_INFO = "Lcom/transsion/version/update/RemoteVersionInfo;"
+
+private object ForceUpdateFingerprint : Fingerprint(
+    definingClass = REMOTE_VERSION_INFO,
+    name = "getForceUpdate",
+    returnType = "Z",
+    parameters = listOf(),
+)
+
+private object HasUpdateFingerprint : Fingerprint(
+    definingClass = REMOTE_VERSION_INFO,
+    name = "getHasUpdate",
+    returnType = "Z",
+    parameters = listOf(),
+)
 
 @Suppress("unused")
 val disableUpdatePromptsPatch = patch(
     name = "Disable update prompts",
-    description = "Removes update prompts and forced updates. Requires Android 10 or later.",
+    description = "Removes update prompts and forced updates.",
 ) {
     compatibleWith(AppCompatibilities.MOVIEBOX_TV)
-    dependsOn(ijiamiPatch)
-    availability(requireArm)
 
     execute {
-        editIjiamiPayload {
-            listOf("getForceUpdate", "getHasUpdate").forEach {
-                method(REMOTE_VERSION_INFO, it).returnEarly(false)
-            }
-        }
+        listOf(ForceUpdateFingerprint, HasUpdateFingerprint).forEach { it.method.returnEarly(false) }
     }
 }

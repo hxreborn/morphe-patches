@@ -37,6 +37,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.GLASS_WIDGETS,
         AppCompatibilities.HABITIFY,
         AppCompatibilities.HINDU_CALENDAR,
+        AppCompatibilities.INFINITE_PAINTER,
         AppCompatibilities.INTERNET_SPEED_METER_LITE,
         AppCompatibilities.IOTOTOY,
         AppCompatibilities.JUJO,

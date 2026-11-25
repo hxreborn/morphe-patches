@@ -14,6 +14,7 @@ import app.morphe.patches.bettersleep.misc.fix.screenevents.restoreScreenEventsP
 import app.morphe.patches.bettersleep.misc.fix.signature.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
+import app.morphe.patches.shared.misc.requireArm
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -30,6 +31,8 @@ val unlockPremiumPatch = patch(
     description = "Unlocks all premium content and skips the free trial screen.",
 ) {
     compatibleWith(AppCompatibilities.BETTERSLEEP)
+
+    availability(requireArm)
 
     dependsOn(removePairipVirtualizationPatch, restoreIterablePushActionPatch, restoreIterableRequestsPatch, restoreScreenEventsPatch, spoofSignaturePatch)
 

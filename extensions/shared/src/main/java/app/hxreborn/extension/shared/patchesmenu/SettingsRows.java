@@ -80,7 +80,7 @@ public abstract class SettingsRows {
     }
 
     @SuppressWarnings("SameParameterValue")
-    public void switchRow(LinearLayout card, int iconId, String title, String description, boolean checked,
+    public LinearLayout switchRow(LinearLayout card, int iconId, String title, String description, boolean checked,
             SwitchChangeListener listener) {
         LinearLayout row = baseRow(card, iconId);
         addTitleAndDescription(row, title, description);
@@ -91,6 +91,7 @@ public abstract class SettingsRows {
         row.setBackground(this.style.ripple(0));
         row.setContentDescription(title + ". " + description);
         row.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        return row;
     }
 
     @SuppressWarnings("SameParameterValue")

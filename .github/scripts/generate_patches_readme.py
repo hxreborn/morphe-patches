@@ -201,12 +201,12 @@ ICON_URLS = {
 }
 
 FEATURED_PACKAGES = [
-    "com.viber.voip",
-    "com.bereal.ft",
-    "com.imo.android.imoim",
-    "com.community.oneroom",
     "ch.protonmail.android",
     "ch.protonvpn.android",
+    "proton.android.pass",
+    "com.microsoft.office.outlook",
+    "com.bereal.ft",
+    "com.viber.voip",
 ]
 HOT_LIMIT = 6
 REPORT_WEIGHT = 2

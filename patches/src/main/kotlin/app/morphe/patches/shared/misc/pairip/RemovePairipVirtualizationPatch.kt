@@ -294,6 +294,7 @@ val removePairipVirtualizationPatch = patch {
         AppCompatibilities.FLIPACLIP,
         AppCompatibilities.GLASS_WIDGETS,
         AppCompatibilities.HINDU_CALENDAR,
+        AppCompatibilities.INFINITE_PAINTER,
         AppCompatibilities.INTERNET_SPEED_METER_LITE,
         AppCompatibilities.LINGODEER,
         AppCompatibilities.LUMO,

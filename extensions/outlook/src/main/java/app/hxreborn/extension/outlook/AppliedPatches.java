@@ -39,9 +39,14 @@ public final class AppliedPatches {
 
     public static final String ADD_UNREAD_SHORTCUT = "addUnreadShortcut";
 
+    public static final String HIDE_NAVIGATION_BUTTONS = "hideNavigationButtons";
+
+    public static final String ADD_CUSTOM_THEMES = "addCustomThemes";
+
     private static final List<String> KEYS = Collections
         .unmodifiableList(Arrays.asList("fixSignIn", REMOVE_INBOX_ADS, KEEP_MESSAGES_UNREAD, ADD_UNREAD_SHORTCUT,
-                OPEN_EMAIL_TEMPLATES, HIDE_COPILOT, SELECT_MULTIPLE_SEARCH_RESULTS, "gmsCoreSupport"));
+                OPEN_EMAIL_TEMPLATES, HIDE_COPILOT, SELECT_MULTIPLE_SEARCH_RESULTS, HIDE_NAVIGATION_BUTTONS,
+                ADD_CUSTOM_THEMES, "gmsCoreSupport"));
 
     private AppliedPatches() {
     }

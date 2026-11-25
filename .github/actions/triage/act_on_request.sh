@@ -28,7 +28,10 @@ if [ -n "$previous" ] && [ ! -s bundles.json ]; then
   echo "#$n: skipped while the bundle registry is unavailable"
   exit 0
 fi
-if [ "$verdict" = pass ] && [ ! -s comment.md ] && [ -n "$previous" ]; then
+edited_since_reply=$(jq -r --argjson n "$n" '.[] | select(.number == $n)
+  | ([.comments[] | select(.author.login == "github-actions" and (.body | contains("<!-- app-request-bot"))) | .createdAt] | last) as $reply
+  | (.lastEditedAt // "") > ($reply // "")' requests.json)
+if [ "$verdict" = pass ] && [ ! -s comment.md ] && [ -n "$previous" ] && [ "$edited_since_reply" = true ]; then
   printf '<!-- app-request-bot facts=%s -->\n%s\n' "$facts" "$(python3 "$here/replies.py" request-passes)" > comment.md
 fi
 previous_facts=$(head -n 1 <<< "$previous" | sed -n 's/^<!-- app-request-bot facts=\([0-9a-f]*\) -->$/\1/p')
@@ -66,7 +69,7 @@ if [ -s comment.md ] && [ "$unchanged" != true ]; then
 fi
 if [ -n "$previous" ]; then
   mapfile -t outdated < <(jq -r --argjson n "$n" --slurpfile verdict verdict.json \
-    '.[] | select(.number == $n) | .labels[].name | select(. == "needs info" or . == "duplicate")
+    '.[] | select(.number == $n) | .labels[].name | select(. == "needs info" or . == "duplicate" or . == "other bundle")
      | select(. as $label | $verdict[0].labels | index($label) | not)' requests.json)
   [ "${#outdated[@]}" -eq 0 ] || discussion remove-labels "$n" "${outdated[@]}"
 fi

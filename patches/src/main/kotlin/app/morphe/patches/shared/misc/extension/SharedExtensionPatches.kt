@@ -48,6 +48,10 @@ internal val sharedLiappPackageFilterExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-liapp-package-filter.mpe")
 }
 
+internal val sharedColorResourceTableExtensionPatch = patch {
+    extendWith("extensions/hxreborn/shared-color-resource-table.mpe")
+}
+
 internal val sharedNightModeExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-night-mode.mpe")
 }

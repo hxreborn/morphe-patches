@@ -58,4 +58,10 @@ private val systemAccountChooserPatch = patch {
 
 @Suppress("unused")
 val gmsCoreSupportPatch: Patch =
-    gmsCoreSupportPatchFor(AppCompatibilities.VIBER, spoofSignaturePatch, systemAccountChooserPatch)
+    gmsCoreSupportPatchFor(
+        AppCompatibilities.VIBER,
+        spoofSignaturePatch,
+        systemAccountChooserPatch,
+        description = "Signs in through GmsCore instead of Google Play Services. " +
+            "Google Drive backup and restore work only with this patch. Requires GmsCore to be installed.",
+    )

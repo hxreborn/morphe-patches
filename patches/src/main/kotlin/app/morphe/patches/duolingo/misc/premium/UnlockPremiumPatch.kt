@@ -44,10 +44,10 @@ val unlockPremiumPatch: Patch = patch(
     execute {
         markPatchApplied("unlockPremium", unlockPremiumPatch)
 
-        val (subscriberLevelRead, _, hasPlusRead, isPaidWrite) = UserIsPaidFingerprint.instructionMatches
-        val (subscriberLevelField, hasPlusField, isPaidField) = listOf(subscriberLevelRead, hasPlusRead, isPaidWrite)
+        val (subscriberLevelWrite, _, hasPlusRead, isPaidWrite) = UserIsPaidFingerprint.instructionMatches
+        val (subscriberLevelField, hasPlusField, isPaidField) = listOf(subscriberLevelWrite, hasPlusRead, isPaidWrite)
             .map { it.instruction.getReference<FieldReference>()!! }
-        val (_, _, hasMaxWrite) = UserHasMaxFingerprint.instructionMatches
+        val (_, hasMaxWrite) = UserHasMaxFingerprint.instructionMatches
         val hasMaxField = hasMaxWrite.instruction.getReference<FieldReference>()!!
         val unlockedFlags = listOf(isPaidField, hasPlusField)
         (unlockedFlags + hasMaxField + subscriberLevelField).forEach {

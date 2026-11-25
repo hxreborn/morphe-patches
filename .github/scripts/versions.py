@@ -5,6 +5,10 @@ PRERELEASE = {"alpha", "beta", "rc", "pre", "preview", "dev", "canary", "snapsho
 APP_UPDATE_TITLE_PREFIX = "[App Update]: "
 APK_DOWNLOAD_WARNING = "Always verify the downloaded APK's SHA-256 against a trusted checksum before patching."
 APK_VERSION_URLS = {
+    ("com.community.mbox.tv", "1.2.3.1113.03"): (
+        "https://apk.aoneroom.com/apk/moviebox/release/1.2.3.1113/50040022/"
+        "com.community.mbox.tv-release-1.2.3.1113-of-50040022.apk"
+    ),
     ("com.community.mbox.tv", "1.2.0.0923.web_socialmedia"): (
         "https://apk.aoneroom.com/apk/moviebox/release/1.2.0.0923/"
         "com.community.mbox.tv-release-1.2.0.0923-ws-50040018-h.apk"

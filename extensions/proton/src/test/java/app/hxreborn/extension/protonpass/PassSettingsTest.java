@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,8 +48,9 @@ public final class PassSettingsTest {
 
     @Test
     @Config(shadows = { PatchedBuild.Pass.class })
-    public void patchedBuildListsTheNavigationAndPromotionPatches() {
-        assertEquals(Collections.singletonList("Hide promotional messages"), new PassSettings().appliedPatchNames());
+    public void patchedBuildListsThePromotionAndAccountPatches() {
+        assertEquals(Arrays.asList("Hide promotional messages", "Remove free accounts limit"),
+                new PassSettings().appliedPatchNames());
     }
 
     @Test
