@@ -12,11 +12,12 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.literal
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
+import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.protonvpn.misc.anchors.ToStringFingerprint
 import app.morphe.patches.protonvpn.misc.anchors.VpnUserIsFreeUserFingerprint
-import app.morphe.patches.protonvpn.misc.anchors.setExtensionMember
 import app.morphe.patches.protonvpn.misc.anchors.vpnUserType
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -27,6 +28,8 @@ import app.morphe.patches.shared.misc.extension.protonFreeServerLocationsExtensi
 import app.morphe.patches.shared.misc.extension.protonMembersExtensionPatch
 
 private const val FREE_ACCOUNT = "Lapp/hxreborn/extension/protonvpn/FreeAccount;"
+private const val USER_INFO_BRIDGE = "Lapp/hxreborn/extension/protonvpn/FreeAccountUserInfo;"
+private const val VPN_USER_BRIDGE = "Lapp/hxreborn/extension/protonvpn/FreeAccountVpnUser;"
 
 private val stateFlowInvokes = listOf(Opcode.INVOKE_INTERFACE, Opcode.INVOKE_VIRTUAL)
 
@@ -80,13 +83,12 @@ internal val freeAccountStatePatch = patch {
 
     execute {
         val userInfo = UserInfoToStringFingerprint.originalClassDef
-        setExtensionMember(
-            "userInfoVpnUser",
-            userInfo.fields.single {
-                it.type == vpnUserType && !AccessFlags.STATIC.isSet(it.accessFlags)
-            }.name,
-        )
-        setExtensionMember("vpnUserIsFreeUser", VpnUserIsFreeUserFingerprint.originalMethod.name)
+        val vpnUserField = userInfo.fields.single {
+            it.type == vpnUserType && !AccessFlags.STATIC.isSet(it.accessFlags)
+        }
+        val isFreeUser = VpnUserIsFreeUserFingerprint.originalMethod
+        mutableClassDefBy(vpnUserField.definingClass).addPatchInterface(USER_INFO_BRIDGE, "vpnUser", vpnUserField)
+        mutableClassDefBy(isFreeUser.definingClass).addPatchInterface(VPN_USER_BRIDGE, "isFreeUser", isFreeUser)
 
         userInfoUpdateFingerprint().match().run {
             method.addInstruction(

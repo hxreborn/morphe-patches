@@ -26,14 +26,6 @@ public final class Members {
 
     }
 
-    public static String userInfoVpnUser() {
-        return "vpnUser";
-    }
-
-    public static String vpnUserIsFreeUser() {
-        return "isFreeUser";
-    }
-
     public static String serverGroupTier() {
         return "getTier";
     }
