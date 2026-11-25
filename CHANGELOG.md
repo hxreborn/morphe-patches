@@ -1,3 +1,9 @@
+## [1.89.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.1...v1.89.0-dev.2) (2026-11-25)
+
+### New Features
+
+* **TradingView - Unlock chart features:** run long scripts in replay ([8140dc8](https://github.com/hxreborn/morphe-patches/commit/8140dc89e789397a6e3d71377f52e8be26440968))
+
 ## [1.89.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.88.0...v1.89.0-dev.1) (2026-11-25)
 
 ### Bug Fixes
