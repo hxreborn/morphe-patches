@@ -1367,6 +1367,14 @@ internal object AppCompatibilities {
         ),
     )
 
+    val ONE_SEC = Compatibility(
+        name = "one sec",
+        packageName = "wtf.riedel.onesec",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf("2b775346be30d06dfd99abc150fbd1ceb15a506bd6ffb7040b50116382de1eda"),
+        targets = listOf(AppTarget(version = "3.0.1", versionCode = 20909, minSdk = 29)),
+    )
+
     val ONE_WEATHER = Compatibility(
         name = "1Weather",
         packageName = "com.handmark.expressweather",

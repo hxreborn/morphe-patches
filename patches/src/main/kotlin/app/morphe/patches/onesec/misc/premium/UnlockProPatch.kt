@@ -1,0 +1,25 @@
+/*
+ * Copyright (C) 2026 hxreborn
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+package app.morphe.patches.onesec.misc.premium
+
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.returnEarly
+import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+
+@Suppress("unused")
+val unlockProPatch = patch(
+    name = "Unlock Pro",
+    description = "Unlocks Pro features, including blocking more than one app.",
+) {
+    compatibleWith(AppCompatibilities.ONE_SEC)
+    dependsOn(removePairipProtectionPatch)
+
+    execute {
+        EntitlementModelFingerprint.match().classDef.methods.single {
+            it.returnType == "Z" && it.parameterTypes.isEmpty()
+        }.returnEarly(true)
+    }
+}

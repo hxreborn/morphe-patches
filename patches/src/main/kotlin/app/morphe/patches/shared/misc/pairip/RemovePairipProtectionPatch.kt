@@ -55,6 +55,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.MYSCRIPT_NOTES,
         AppCompatibilities.NEETPREP,
         AppCompatibilities.NOTEIN,
+        AppCompatibilities.ONE_SEC,
         AppCompatibilities.OPAL,
         AppCompatibilities.POE,
         AppCompatibilities.PRAYER_TIMES,
