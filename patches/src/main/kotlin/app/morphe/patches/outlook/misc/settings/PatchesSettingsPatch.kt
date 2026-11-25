@@ -16,10 +16,10 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
 import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.numberOfParameterRegisters
 import app.morphe.patches.shared.misc.addAppliedPatchMetadata
 import app.morphe.patches.shared.misc.extension.outlookSettingsExtensionPatch
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.patches.shared.misc.smali.parameterRegisterCount
 import app.morphe.patches.shared.misc.smali.registerWidth
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
@@ -83,7 +83,7 @@ private val REGISTER_MOVES = setOf(
 
 private fun constructorParametersByField(constructor: Method): Map<String, Int> {
     val implementation = checkNotNull(constructor.implementation) { "${descriptor(constructor)} has no body" }
-    var register = implementation.registerCount - constructor.parameterRegisterCount()
+    var register = implementation.registerCount - constructor.numberOfParameterRegisters
     val parameterOf = mutableMapOf<Int, Int>()
     constructor.parameterTypes.forEachIndexed { index, type ->
         parameterOf[++register] = index

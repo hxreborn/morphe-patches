@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patcher.util.p0Register
 import app.morphe.patches.shared.misc.smali.descriptor
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -39,7 +40,7 @@ private fun retryDeniedQuestionQueries() {
     val fieldPathType = parser.last().instruction.getReference<TypeReference>()!!.type
     val fieldPathFactory = descriptor(fieldPathFactoryFingerprint(fieldPathType).method)
 
-    val thisRegister = method.implementation!!.registerCount - method.parameterTypes.size - 1
+    val thisRegister = method.p0Register
     val failure = handler.getInstruction<OneRegisterInstruction>().registerA
     val resumeIndex = handler.index + 1
     val free = method.getFreeRegisterProvider(resumeIndex, 3, failure, thisRegister)
