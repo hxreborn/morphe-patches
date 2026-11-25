@@ -452,6 +452,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.12.0", versionCode = 260091200, minSdk = 26)),
     )
 
+    val CITRA = Compatibility(
+        name = "Citra",
+        packageName = "com.theemulator.citra",
+        apkFileType = ApkFileType.XAPK,
+        signatures = setOf("3bb551953a857144c326adb0f4be011a671e84ff7b12c2f1968a927cd00d8c35"),
+        targets = listOf(AppTarget(version = "b3105a4-googleplay", versionCode = 33510292, minSdk = 29)),
+    )
+
     val CLINK = Compatibility(
         name = "Clink",
         packageName = "ltd.anti.clink",
