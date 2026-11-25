@@ -93,8 +93,9 @@ public final class ExportActions {
     private static void export(ExportRow row) {
         final Context context = appContext;
         final File file = downloadedFile(row.music);
+        final byte[] cover = CoverArt.readAsJpeg(coverFile(context, musicCoverUrl(row.music)));
         final SongTags tags = new SongTags(musicId(row.music), musicTitle(row.music), musicArtist(row.music),
-                musicAlbum(row.music));
+                musicAlbum(row.music), cover);
         try {
             final SavedSong song = new SongExport(context).save(file, tags);
             if (row.share) {
@@ -143,6 +144,14 @@ public final class ExportActions {
     }
 
     static String musicAlbum(Object music) {
+        return null;
+    }
+
+    static String musicCoverUrl(Object music) {
+        return null;
+    }
+
+    static File coverFile(Context context, String url) {
         return null;
     }
 

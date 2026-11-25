@@ -54,6 +54,8 @@ final class Mp4Tags {
 
     private static final int UTF8_DATA_TYPE = 1;
 
+    private static final int JPEG_DATA_TYPE = 13;
+
     private static final int COPY_BUFFER_SIZE = 64 * 1024;
 
     private static final long UNSIGNED_INT_MASK = 0xFFFFFFFFL;
@@ -151,6 +153,9 @@ final class Mp4Tags {
         writeItem(items, "\u00A9nam", tags.title);
         writeItem(items, "\u00A9ART", tags.artist);
         writeItem(items, "\u00A9alb", tags.album);
+        if (tags.coverJpeg != null) {
+            writeItem(items, "covr", JPEG_DATA_TYPE, tags.coverJpeg);
+        }
         final byte[] handler = box("hdlr", METADATA_HANDLER);
         final byte[] list = box("ilst", items.toByteArray());
         return box(METADATA, concat(new byte[FULL_BOX_HEADER_SIZE], concat(handler, list)));
@@ -160,11 +165,16 @@ final class Mp4Tags {
         if (value.isEmpty()) {
             return;
         }
+        writeItem(items, name, UTF8_DATA_TYPE, value.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static void writeItem(ByteArrayOutputStream items, String name, int dataType, byte[] value)
+            throws IOException {
         final ByteArrayOutputStream data = new ByteArrayOutputStream();
         final DataOutputStream fields = new DataOutputStream(data);
-        fields.writeInt(UTF8_DATA_TYPE);
+        fields.writeInt(dataType);
         fields.writeInt(0);
-        fields.write(value.getBytes(StandardCharsets.UTF_8));
+        fields.write(value);
         items.write(box(name, box("data", data.toByteArray())));
     }
 

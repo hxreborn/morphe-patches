@@ -50,6 +50,12 @@ final class Id3Tags {
 
     private static final int UTF16_ENCODING = 1;
 
+    private static final int LATIN1_ENCODING = 0;
+
+    private static final int FRONT_COVER = 3;
+
+    private static final byte[] JPEG_MIME_TYPE = "image/jpeg".getBytes(StandardCharsets.US_ASCII);
+
     private static final byte[] UTF16_LITTLE_ENDIAN_MARK = { (byte) 0xFF, (byte) 0xFE };
 
     private static final int COPY_BUFFER_SIZE = 64 * 1024;
@@ -76,6 +82,9 @@ final class Id3Tags {
         writeFrame(frames, "TIT2", tags.title);
         writeFrame(frames, "TPE1", tags.artist);
         writeFrame(frames, "TALB", tags.album);
+        if (tags.coverJpeg != null) {
+            writeCoverFrame(frames, tags.coverJpeg);
+        }
         final ByteArrayOutputStream tag = new ByteArrayOutputStream();
         tag.write(MARKER);
         tag.write(VERSION_MAJOR);
@@ -121,6 +130,21 @@ final class Id3Tags {
         out.write(UTF16_ENCODING);
         out.write(UTF16_LITTLE_ENDIAN_MARK);
         out.write(text);
+    }
+
+    private static void writeCoverFrame(ByteArrayOutputStream frames, byte[] jpeg) throws IOException {
+        final ByteArrayOutputStream picture = new ByteArrayOutputStream();
+        picture.write(LATIN1_ENCODING);
+        picture.write(JPEG_MIME_TYPE);
+        picture.write(0);
+        picture.write(FRONT_COVER);
+        picture.write(0);
+        picture.write(jpeg);
+        final DataOutputStream out = new DataOutputStream(frames);
+        out.write("APIC".getBytes(StandardCharsets.US_ASCII));
+        out.writeInt(picture.size());
+        out.writeShort(0);
+        picture.writeTo(out);
     }
 
 }

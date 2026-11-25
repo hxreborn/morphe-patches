@@ -37,7 +37,15 @@ public final class Mp4TagsTest {
 
     private static final byte[] AUDIO = "audio-frames".getBytes(StandardCharsets.US_ASCII);
 
-    private static final SongTags TAGS = new SongTags("1", "Thanks and Praise", "Evang. John Okah", "Praise");
+    private static final SongTags TAGS = new SongTags("1", "Thanks and Praise", "Evang. John Okah", "Praise", null);
+
+    private static final byte[] COVER = { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF, 7, 8, 9 };
+
+    private static final int JPEG_DATA_TYPE = 13;
+
+    private static final int DATA_TYPE_AFTER_ITEM_TYPE = 12;
+
+    private static final int PAYLOAD_AFTER_ITEM_TYPE = 20;
 
     private static final int HEADER_SIZE = 8;
 
@@ -83,6 +91,25 @@ public final class Mp4TagsTest {
         Assert.assertTrue(tagged.contains("Thanks and Praise"));
         Assert.assertTrue(tagged.contains("Evang. John Okah"));
         Assert.assertTrue(tagged.contains("Praise"));
+    }
+
+    @Test
+    public void writesTheCoverAsAJpegItem() throws IOException {
+        // given
+        final File source = mp4(true);
+        final SongTags tags = new SongTags("1", "Thanks and Praise", "Evang. John Okah", "Praise", COVER);
+
+        // when
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Mp4Tags.write(source, out, tags);
+        final byte[] tagged = out.toByteArray();
+
+        // then
+        final int item = indexOf(tagged, "covr".getBytes(StandardCharsets.US_ASCII));
+        final ByteBuffer data = ByteBuffer.wrap(tagged);
+        Assert.assertEquals(JPEG_DATA_TYPE, data.getInt(item + DATA_TYPE_AFTER_ITEM_TYPE));
+        Assert.assertEquals(item + PAYLOAD_AFTER_ITEM_TYPE, indexOf(tagged, COVER));
+        Assert.assertEquals(indexOf(tagged, AUDIO), chunkOffset(tagged));
     }
 
     @Test
