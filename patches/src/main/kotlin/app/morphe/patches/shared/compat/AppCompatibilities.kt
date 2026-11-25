@@ -2207,6 +2207,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "5.9.1", versionCode = 882, minSdk = 24)),
     )
 
+    val ZARCHIVER = Compatibility(
+        name = "ZArchiver",
+        packageName = "ru.zdevs.zarchiver",
+        apkFileType = ApkFileType.APK,
+        signatures = setOf("7727f2807764c3499b9a2c3ff804505dd7468b117feb005804efc78659544db2"),
+        targets = listOf(AppTarget(version = "1.0.10", versionCode = 101035, minSdk = 14)),
+    )
+
     val USA_VPN = Compatibility(
         name = "USA VPN",
         packageName = "vpn.usa_tap2free",
