@@ -12,6 +12,7 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getReference
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
@@ -77,29 +78,8 @@ internal val xupmixReadbackPatch = patch {
             throw PatchException("Bluetooth write callback has no local register")
         }
         mutableClassDefBy(written.definingClass).apply {
-            interfaces.add(CALLBACKS_DESCRIPTOR)
-            addMethod(
-                "onReadbackWrite",
-                written.parameterTypes.map(CharSequence::toString),
-                "V",
-                AccessFlags.PUBLIC.value,
-                writtenParameterRegisters,
-                """
-                    invoke-virtual/range { p0 .. p${written.parameters.size} }, ${descriptor(written)}
-                    return-void
-                """,
-            )
-            addMethod(
-                "onReadbackReceived",
-                received.parameterTypes.map(CharSequence::toString),
-                "V",
-                AccessFlags.PUBLIC.value,
-                received.parameters.size + 1,
-                """
-                    invoke-virtual/range { p0 .. p${received.parameters.size} }, ${descriptor(received)}
-                    return-void
-                """,
-            )
+            addPatchInterface(CALLBACKS_DESCRIPTOR, "onReadbackWrite", written)
+            addPatchInterface(CALLBACKS_DESCRIPTOR, "onReadbackReceived", received)
         }
         written.addInstructions(
             0,
@@ -195,7 +175,7 @@ internal val xupmixReadbackPatch = patch {
         mutableClassDefBy(connection.definingClass).apply {
             val owner = fields.singleOrNull { it.type == plugin.type }
                 ?: throw PatchException("Expected one Bluetooth callback owner")
-            addMethod("onReadbackReconnect", listOf("Landroid/bluetooth/BluetoothGatt;"), "V", AccessFlags.PUBLIC.value, 3,
+            addPatchInterface(CALLBACKS_DESCRIPTOR, "onReadbackReconnect",
                 """
                     iget-object v0, p0, ${descriptor(owner)}
                     invoke-virtual { v0, p1 }, ${descriptor(reconnect)}
