@@ -166,7 +166,7 @@ public final class DashInterceptorTest {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
-        this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
+        this.server.put(RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
         String body = fetch(RESOURCE_LIST, true, Collections.emptySet());
@@ -178,10 +178,28 @@ public final class DashInterceptorTest {
     }
 
     @Test
-    public void requestsResourceListsFromTheV1Endpoint() throws JSONException, IOException {
+    public void requestsResourceListsFromTheV2Endpoint() throws IOException {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":1080,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
+        this.server.put(RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
+
+        // when
+        fetch(RESOURCE_LIST + "?subjectId=77&isVip=true", true, Collections.emptySet());
+
+        // then
+        Assertions.assertThat(this.server.hitsOn(RESOURCE_LIST)).isEqualTo(1);
+        Assertions.assertThat(this.server.hitsOn(V1_RESOURCE_LIST)).isZero();
+    }
+
+    @Test
+    public void requestsTheV1ResourceListWhenV2CarriesTheUpgradeNotice() throws JSONException, IOException {
+        // given
+        String notice = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":1080,"
+                + "\"resourceLink\":\"https:\\/\\/macdn.aoneroom.com\\/other\\/notice.mp4\",\"size\":\"824720\"}]}}";
+        String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":1080,"
+                + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
+        this.server.put(RESOURCE_LIST, notice.getBytes(StandardCharsets.UTF_8));
         this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
@@ -191,7 +209,7 @@ public final class DashInterceptorTest {
         JSONObject item = new JSONObject(body).getJSONObject("data").getJSONArray("list").getJSONObject(0);
         Assertions.assertThat(item.getString("resourceLink"))
             .isEqualTo(DashServer.buildUrl("77", 1, 2, 1080, "https://origin.example.com/a.mp4", 0, null));
-        Assertions.assertThat(this.server.hitsOn(RESOURCE_LIST)).isZero();
+        Assertions.assertThat(this.server.hitsOn(V1_RESOURCE_LIST)).isEqualTo(1);
     }
 
     @Test
@@ -199,7 +217,7 @@ public final class DashInterceptorTest {
         // given
         String list = "{\"data\":{\"subjectId\":\"77\",\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,"
                 + "\"resourceLink\":\"https://origin.example.com/a.mp4\"}]}}";
-        this.server.put(V1_RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
+        this.server.put(RESOURCE_LIST, list.getBytes(StandardCharsets.UTF_8));
 
         // when
         String body = fetch(RESOURCE_LIST, false, Collections.emptySet());

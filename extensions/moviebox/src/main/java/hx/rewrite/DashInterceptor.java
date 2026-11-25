@@ -63,7 +63,7 @@ public final class DashInterceptor extends ChainInterceptor {
     protected Object intercept(Object chain) throws ReflectiveOperationException {
         Object request = request(chain);
         String url = String.valueOf(Reflect.call(request, "url"));
-        Object response = proceed(chain, withV1ResourceList(request, url));
+        Object response = proceed(chain, request);
         Endpoint endpoint = classify(url);
         if (endpoint == Endpoint.OTHER) {
             return response;
@@ -73,16 +73,22 @@ public final class DashInterceptor extends ChainInterceptor {
             return response;
         }
         byte[] bytes = (byte[]) Reflect.call(body, "bytes");
+        String listing = (endpoint == Endpoint.RESOURCE_LIST) ? ResourceListRequest.listingUrl(url) : null;
+        if (listing != null && Endpoints.carriesUpgradeNotice(new String(bytes, StandardCharsets.UTF_8))) {
+            Log.w(Logs.TAG, "resource list v2 carries the upgrade notice, requesting v1");
+            response = proceed(chain, withUrl(request, listing));
+            body = Reflect.call(response, "body");
+            if (body == null) {
+                return response;
+            }
+            bytes = (byte[]) Reflect.call(body, "bytes");
+        }
         return withBody(response, body, rewriteOrKeep(endpoint, url, response, bytes));
     }
 
-    private static Object withV1ResourceList(Object request, String url) throws ReflectiveOperationException {
-        String listing = ResourceListRequest.listingUrl(url);
-        if (listing == null) {
-            return request;
-        }
+    private static Object withUrl(Object request, String url) throws ReflectiveOperationException {
         Object builder = Reflect.call(request, "newBuilder");
-        Reflect.call(builder, "url", new Class<?>[] { String.class }, listing);
+        Reflect.call(builder, "url", new Class<?>[] { String.class }, url);
         return Reflect.call(builder, "build");
     }
 

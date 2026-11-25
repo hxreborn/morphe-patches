@@ -214,7 +214,12 @@ final class DirectFiles {
             throws IOException, JSONException {
         String query = "?subjectId=" + subjectId + "&page=1&perPage=8&all=0&startPosition=1&endPosition=1"
                 + "&pagerMode=2&resolution=" + resolution + "&se=" + season + "&epFrom=" + episode + "&epTo=" + episode;
-        return new JSONObject(this.api.get(this.api.url(Endpoints.RESOURCE_LIST + query))).getJSONObject("data");
+        String listing = this.api.get(this.api.url(Endpoints.RESOURCE_LIST_V2 + query));
+        if (Endpoints.carriesUpgradeNotice(listing)) {
+            Log.w(Logs.TAG, "resource list v2 carries the upgrade notice, requesting v1");
+            listing = this.api.get(this.api.url(Endpoints.RESOURCE_LIST + query));
+        }
+        return new JSONObject(listing).getJSONObject("data");
     }
 
     private static void addEpisodeRows(List<JSONObject> rows, JSONArray list, int season, int episode, int resolution)

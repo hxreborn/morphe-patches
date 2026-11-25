@@ -46,9 +46,17 @@ public final class Endpoints {
 
     static final String RESOURCE_LIST = "wefeed-mobile-bff/subject-api/resource";
 
+    static final String RESOURCE_LIST_V2 = "wefeed-mobile-bff/subject-api/resource/v2";
+
     static final String UPGRADE_NOTICE_PATH = "aoneroom.com/other/";
 
+    private static final String ESCAPED_UPGRADE_NOTICE_PATH = "aoneroom.com\\/other\\/";
+
     private Endpoints() {
+    }
+
+    public static boolean carriesUpgradeNotice(String body) {
+        return body.contains(UPGRADE_NOTICE_PATH) || body.contains(ESCAPED_UPGRADE_NOTICE_PATH);
     }
 
 }
