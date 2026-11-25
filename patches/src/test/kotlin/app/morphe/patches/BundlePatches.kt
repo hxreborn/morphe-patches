@@ -48,7 +48,12 @@ internal object BundlePatches {
         @Suppress("UNCHECKED_CAST")
         val providers = extensionStreamProviders.get(patch) as List<Supplier<out Iterable<Supplier<InputStream>>>>
         return providers.flatMap { provider -> provider.get() }
-            .mapNotNull { stream -> payloadByDigest[digest(stream.get().use { it.readBytes() })] }
+            .map { stream ->
+                val sha256 = digest(stream.get().use { it.readBytes() })
+                checkNotNull(payloadByDigest[sha256]) {
+                    "Unmapped extension stream in ${patch.name} (SHA-256 $sha256)"
+                }
+            }
             .toSet()
     }
 

@@ -20,15 +20,21 @@ internal object ExtensionPayloads {
         }.toURI(),
     )
 
+    val separatelyBuiltResources = setOf("moviebox/dashhook.dex")
+
     val resourceNames: List<String> by lazy {
         directory.walkTopDown()
             .filter { it.isFile && it.extension == "mpe" }
             .map { "extensions/" + it.relativeTo(directory).invariantSeparatorsPath }
+            .plus(separatelyBuiltResources.asSequence())
             .sorted()
             .toList()
     }
 
-    fun bytes(resourceName: String): ByteArray = directory.resolve(resourceName.removePrefix("extensions/")).readBytes()
+    fun bytes(resourceName: String): ByteArray =
+        checkNotNull(ExtensionPayloads::class.java.getResourceAsStream("/$resourceName")) {
+            "Missing DEX payload $resourceName"
+        }.use { it.readBytes() }
 
     fun classes(resourceName: String): List<ClassDef> =
         DexBackedDexFile(Opcodes.getDefault(), ByteBuffer.wrap(bytes(resourceName))).classes.toList()
