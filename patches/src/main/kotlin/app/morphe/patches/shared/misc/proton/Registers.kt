@@ -8,10 +8,11 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.util.indexOfFirstInstructionReversed
+import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 
-internal fun MutableMethod.indexOfLastWriteOrNull(register: Int, before: Int) =
+internal fun Method.indexOfLastWriteOrNull(register: Int, before: Int) =
     indexOfFirstInstructionReversed(before - 1) { this is OneRegisterInstruction && registerA == register }
         .takeIf { it >= 0 }
 
