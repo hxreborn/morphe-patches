@@ -41,7 +41,7 @@ val disableTrackingPatch = patch(
     )
 
     execute {
-        AnalyticsTrackerFingerprint.matchAll().forEach { it.method.returnEarly() }
+        AnalyticsTrackerFingerprint.matchAll(18..18).forEach { it.method.returnEarly() }
         FacebookActivateAppFingerprint.method.returnEarly()
     }
 }
