@@ -90,7 +90,6 @@ val dictionaryWordColorsPatch = patch(
             stub.addColorSetter(
                 prefs,
                 DICTIONARY_WORD_COLOR_KEY,
-                registers = 6,
                 """
                     iget-object v0, p0, ${stub.targetField}
                     if-eqz v0, :create

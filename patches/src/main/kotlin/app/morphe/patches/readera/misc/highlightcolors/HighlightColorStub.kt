@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
@@ -135,7 +136,6 @@ internal fun fillHighlightColorStub(
     val targetField = stub.addField("target", targetType)
     val selectionField = stub.addField("selection", selectionType)
 
-    stub.interfaces.add(HOST_INTERFACE)
     val constructor = stub.methods.single { it.name == "<init>" }
     stub.methods.remove(constructor)
     stub.methods.add(
@@ -208,12 +208,9 @@ internal fun fillHighlightColorStub(
             return-void
         """,
     )
-    stub.addMethod(
+    stub.addPatchInterface(
+        HOST_INTERFACE,
         "getHighlightColor",
-        listOf(),
-        "I",
-        AccessFlags.PUBLIC.value,
-        registers = 2,
         """
             iget-object v0, p0, $targetField
             if-eqz v0, :fallback
@@ -226,12 +223,9 @@ internal fun fillHighlightColorStub(
             return v0
         """,
     )
-    stub.addMethod(
+    stub.addPatchInterface(
+        HOST_INTERFACE,
         "getHighlightColorFilter",
-        listOf("I"),
-        "Landroid/graphics/ColorFilter;",
-        AccessFlags.PUBLIC.value,
-        registers = 2,
         """
             invoke-static { p1 }, ${prefs.paletteFilter}
             move-result-object v0
@@ -242,13 +236,10 @@ internal fun fillHighlightColorStub(
     return HighlightColorStub(stub, activityField, targetField, selectionField)
 }
 
-internal fun HighlightColorStub.addColorSetter(prefs: HighlightColorPrefs, key: String, registers: Int, body: String) =
-    type.addMethod(
+internal fun HighlightColorStub.addColorSetter(prefs: HighlightColorPrefs, key: String, body: String) =
+    type.addPatchInterface(
+        HOST_INTERFACE,
         "setHighlightColor",
-        listOf("I"),
-        "V",
-        AccessFlags.PUBLIC.value,
-        registers,
         """
             invoke-static { }, ${prefs.store}
             move-result-object v0

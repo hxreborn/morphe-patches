@@ -112,7 +112,6 @@ val coloredQuotesPatch = patch(
             stub.addColorSetter(
                 prefs,
                 CITATION_COLOR_KEY,
-                registers = 5,
                 """
                     iget-object v0, p0, ${stub.targetField}
                     if-eqz v0, :create
