@@ -7,8 +7,8 @@ package app.morphe.patches.shared.misc.proton
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getReference
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceStub
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -130,12 +130,11 @@ internal fun installNavigationBarBackdrop(modifierType: String) {
     val host = invocation.instruction.getReference<MethodReference>()!!
     check(callback.method.instructions.elementAtOrNull(invocation.index + 1)?.opcode !in setOf(Opcode.MOVE_RESULT_OBJECT, Opcode.MOVE_RESULT, Opcode.MOVE_RESULT_WIDE))
     val target = mutableClassDefBy("${NAVIGATION_BAR_BACKDROP_CLASS.dropLast(1)}\$DrawCallback;")
-    target.interfaces.add(host.definingClass)
-    target.addMethod(host.name, listOf("Ljava/lang/Object;"), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 2, """
+    target.addPatchInterface(host.definingClass, host.name, """
         invoke-virtual { p0, p1 }, ${target.type}->accept(Ljava/lang/Object;)V
         const/4 p1, 0x0
         return-object p1
-    """)
+    """, host.parameterTypes.map(CharSequence::toString))
     val element = backdropElementFingerprint(callback.method.definingClass).match().originalClassDef
     val constructor = element.methods.single { it.name == "<init>" && it.parameterTypes == listOf(host.definingClass) }
     mutableClassDefBy(element.type).apply { accessFlags = accessFlags or AccessFlags.PUBLIC.value }
