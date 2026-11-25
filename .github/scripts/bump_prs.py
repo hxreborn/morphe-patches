@@ -36,13 +36,21 @@ def format_target(version, version_code, min_sdk):
     return f"AppTarget({', '.join(fields)})"
 
 
-def add_target(source, package, version, version_code, min_sdk):
+def add_target(source, package, version, version_code, min_sdk, form_factor=None):
     if not SAFE_VERSION.fullmatch(version):
         raise ValueError(f"version {version!r} has characters a Kotlin string or subject cannot carry as is")
     if any(value is not None and type(value) is not int for value in (version_code, min_sdk)):
         raise ValueError(f"version code {version_code!r} or min SDK {min_sdk!r} is not a number")
     lines = source.split("\n")
     declared = [i for i, line in enumerate(lines) if line == f'        packageName = "{package}",']
+    if form_factor is not None:
+        def declaration_factor(index):
+            start = next((i for i in range(index, -1, -1) if lines[i].endswith(" = Compatibility(")), 0)
+            end = next((i for i in range(index, len(lines)) if lines[i] == "    )"), len(lines))
+            declaration = "\n".join(lines[start:end])
+            match = re.search(r"^        formFactor = FormFactor\.(\w+),$", declaration, re.MULTILINE)
+            return match.group(1) if match else "MOBILE"
+        declared = [i for i in declared if declaration_factor(i) == form_factor]
     if len(declared) != 1:
         raise ValueError(f"{len(declared)} declarations of {package}")
     end = next((i for i in range(declared[0], len(lines)) if lines[i] == "    )"), len(lines))
@@ -125,11 +133,14 @@ def sync_bump_prs(records):
             continue
         name = record["name"]
         try:
-            text = add_target(source, record["package"], apk["version"], apk.get("version_code"), apk.get("min_sdk"))
+            text = add_target(source, record["package"], apk["version"], apk.get("version_code"), apk.get("min_sdk"),
+                              record.get("form_factor"))
         except ValueError as error:
             print(f"{name}: no bump PR, {error}", file=sys.stderr)
             continue
         branch = f"app-update/{record['package']}"
+        if record.get("form_factor", "MOBILE") != "MOBILE":
+            branch += f"-{record['form_factor'].lower()}"
         subject = f"bump({name}): add support for `{apk['version']}`"
         tracker_title = f"{APP_UPDATE_TITLE_PREFIX}{name} {record['candidate']}"
         tracker = next((i["number"] for i in issues if i["title"] == tracker_title), None)

@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from versions import APK_DOWNLOAD_WARNING, APK_VERSION_URLS
+from versions import APK_DOWNLOAD_WARNING, APK_VERSION_URLS, form_factor
 
 REPO = os.environ.get("GITHUB_REPOSITORY") or os.environ.get("REPO") or "hxreborn/morphe-patches"
 NEW_ISSUE = f"https://github.com/{REPO}/issues/new?template="
@@ -51,11 +51,13 @@ def code_list(versions):
     return " and ".join([", ".join(items[:-1]), items[-1]]) if len(items) > 1 else "".join(items)
 
 
-def supported_downloads(patches_list, app):
+def supported_downloads(patches_list, app, variant=None):
     links = {}
     for patch in patches_list["patches"]:
         for package in patch.get("compatiblePackages") or []:
             if package.get("name") != app:
+                continue
+            if variant and (package["packageName"], form_factor(package)) != variant:
                 continue
             for target in package.get("targets") or []:
                 version = target.get("version")

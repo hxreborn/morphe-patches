@@ -53,11 +53,11 @@ issues = [{"number": 1, "state": "OPEN", "title": "[App Update]: Cx File Explore
           {"number": 12, "state": "OPEN", "title": "[App Update]: Audible 26.38.08",
            "body": "### Patching this version\n\nTried but patching failed\n"}]
 app_updates.gh = lambda *args, **kw: calls.append(args) or (json.dumps(issues) if args[:2] == ("issue", "list") else "")
-apps = {p: {"package": p, "name": n, "current": c, "current_version_codes": []} for p, n, c in [
+apps = {(p, "MOBILE"): {"package": p, "name": n, "current": c, "current_version_codes": []} for p, n, c in [
     ("cx", "Cx File Explorer", "2.7.8"), ("showly", "Showly", "3.70.0"), ("audible", "Audible", "26.38.08"),
     ("new", "Newcomer", "1.0"), ("moviebox", "MovieBox", "4.0.03.0918.03"), ("tv", "MovieBox TV", "1.2.0.0923"),
     ("held", "Held", "1.0"), ("tagged", "Tagged", "6.0_arm64")]}
-record = {"status": "update", "reported_by": ["play"], "confirmed_by": ["play"], "readiness": "ready"}
+record = {"form_factor": "MOBILE", "status": "update", "reported_by": ["play"], "confirmed_by": ["play"], "readiness": "ready"}
 app_updates.sync_issues(apps, [{**record, "package": "cx", "candidate": "2.7.9"},
                                {**record, "package": "showly", "candidate": "3.72.0"},
                                {**record, "package": "audible", "candidate": None, "status": "current"},
@@ -162,8 +162,8 @@ crash_body = app_updates.issue_body(bereal_app, {"candidate": "3.99.1", "verific
 assert "### Failure\n\n<details open>" in crash_body and "| Patch | Error |" not in crash_body and "fails to apply" not in crash_body, crash_body
 sent = []
 app_updates.gh = lambda *args, **kw: sent.append(kw.get("input")) or ("[]" if args[:2] == ("issue", "list") else "")
-app_updates.sync_issues({"com.bereal.ft": {k: v for k, v in bereal_app.items() if k != "sources"}},
-                        [{**bereal_app, **bereal_record, "status": "update", "reported_by": ["play", "apkpure"], "readiness": "needs work: 1 failed"}], "1.38.0")
+app_updates.sync_issues({("com.bereal.ft", "MOBILE"): {k: v for k, v in bereal_app.items() if k != "sources"}},
+                        [{**bereal_app, **bereal_record, "form_factor": "MOBILE", "status": "update", "reported_by": ["play", "apkpure"], "readiness": "needs work: 1 failed"}], "1.38.0")
 assert [text for text in sent if text] == [body], sent
 print("issue body passes")
 print("issue sync passes")
