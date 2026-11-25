@@ -8,6 +8,8 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.InstructionLocation.MatchAfterImmediately
+import app.morphe.patcher.InstructionLocation.MatchBeforeAnywhere
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.methodCall
 import app.morphe.patcher.opcode
 import com.android.tools.smali.dexlib2.Opcode
@@ -49,6 +51,7 @@ internal object AutoDeleteBannerTextFingerprint : Fingerprint(
             ResourceType.STRING,
             "mailbox_action_auto_delete_on_clear_trash_spam_banner_text",
         ),
+        fieldAccess(opcode = Opcode.IGET_BOOLEAN, location = MatchBeforeAnywhere()),
     ),
 )
 
