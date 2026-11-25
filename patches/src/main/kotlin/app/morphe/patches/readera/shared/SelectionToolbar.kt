@@ -7,13 +7,12 @@ package app.morphe.patches.readera.shared
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.util.addInstructionsAtControlFlowLabel
 import app.morphe.util.findInstructionIndicesReversedOrThrow
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
@@ -47,8 +46,7 @@ internal val selectionToolbarPatch = patch {
         val selection = classDefBy(state.type).fields.single { it.type == selectionType }
 
         mutableClassDefBy(toolbarType).apply {
-            interfaces.add(SELECTION_TOOLBAR)
-            addMethod("selectionText", listOf("Z"), "Ljava/lang/String;", AccessFlags.PUBLIC.value, 3, """
+            addPatchInterface(SELECTION_TOOLBAR, "selectionText", """
                 invoke-direct {p0}, ${descriptor(hasSelection)}
                 move-result v0
                 if-eqz v0, :missing
@@ -60,7 +58,7 @@ internal val selectionToolbarPatch = patch {
                 const-string v0, ""
                 return-object v0
             """)
-            addMethod("selectionPosition", emptyList(), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 3, """
+            addPatchInterface(SELECTION_TOOLBAR, "selectionPosition", """
                 invoke-direct {p0}, ${descriptor(hasSelection)}
                 move-result v0
                 if-eqz v0, :missing
@@ -78,16 +76,13 @@ internal val selectionToolbarPatch = patch {
                 const/4 v0, 0x0
                 return-object v0
             """)
-            addMethod("closeSelection", emptyList(), "V", AccessFlags.PUBLIC.value, 2, """
+            addPatchInterface(SELECTION_TOOLBAR, "closeSelection", """
                 invoke-virtual {p0}, ${descriptor(hide)}
                 iget-object v0, p0, ${descriptor(activity)}
                 invoke-virtual {v0}, ${descriptor(clear)}
                 return-void
             """)
-            addMethod("selectionActivity", emptyList(), "Landroid/app/Activity;", AccessFlags.PUBLIC.value, 2, """
-                iget-object v0, p0, ${descriptor(activity)}
-                return-object v0
-            """)
+            addPatchInterface(SELECTION_TOOLBAR, "selectionActivity", activity)
         }
     }
 }
