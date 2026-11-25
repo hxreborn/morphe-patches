@@ -481,9 +481,9 @@ SHAS = {"known": [UNRELEASED_SHA, RELEASED_SHA, PRERELEASED_SHA],
 
 
 def run_reply(body, state="closed", closing=(), bot_comments=(), labels=("app request",), closed_at="2026-10-18T22:14:42Z",
-              commented_at="2026-10-19T12:37:46Z", **extra):
+              commented_at="2026-10-19T12:37:46Z", author="reporter", **extra):
     event = {
-        "issue": {"number": 7, "state": state, "title": "[App Request]: Something", "created_at": "2026-10-01T00:00:00Z",
+        "issue": {"number": 7, "state": state, "title": "[App Request]: Something", "created_at": "2026-10-01T00:00:00Z", "user": {"login": author},
                   "closed_at": closed_at, "labels": [{"name": label} for label in labels]},
         "comment": {"user": {"login": "asker", "type": "User"}, "author_association": "NONE", "body": body, "created_at": commented_at},
     }
@@ -535,6 +535,9 @@ REPLY_CASES = [
     ("an update demand on a bug closed by a released fix gets the redirect", dict(body="please update patches to 6.83.0", **FIXED_BUG), 0, CLOSED_MARKER),
     ("a crash report on a bug closed without a commit gets the redirect", dict(body=CRASHING, closing=["-"], labels=("bug",)), 0, CLOSED_MARKER),
     ("a crash report on a closed request gets the redirect", dict(body=CRASHING, closing=[RELEASED_SHA]), 0, CLOSED_MARKER),
+    ("a reporter closing their own issue with a comment gets no reply", dict(body=CRASHING, author="asker", closing=["-"], closed_at="2026-11-25T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, None),
+    ("a reporter commenting on their own issue a day after closing gets the redirect", dict(body=CRASHING, author="asker", closing=["-"], closed_at="2026-11-24T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, CLOSED_MARKER),
+    ("another user commenting as the issue closes gets the redirect", dict(body=CRASHING, closing=["-"], closed_at="2026-11-25T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, CLOSED_MARKER),
     ("a failing timeline lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], timeline_fails=True), 1, None),
     ("a failing tag lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], tag_fails=True), 128, None),
 ]
