@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.removeInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.validate
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -51,6 +52,8 @@ val unlockPlatinumPatch = patch(
                 removeInstruction(invalidateCacheIndex)
             }
         }
+
+        if (validate) StoredPlanDefaultFingerprint.matchAll(3..3)
 
         StoredPlanDefaultFingerprint.matchAllMethodIndicesForEach { defaultIndex ->
             val register = getInstruction<OneRegisterInstruction>(defaultIndex).registerA
