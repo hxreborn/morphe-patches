@@ -5,7 +5,10 @@
 package app.morphe.patches.catzy.misc.limits
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchBeforeAnywhere
 import app.morphe.patcher.literal
+import app.morphe.patcher.opcode
+import com.android.tools.smali.dexlib2.Opcode
 
 private const val TRAVEL_REDUCTION_MINUTES = 357L
 private const val FULL_TRAVEL_DURATION_MILLISECONDS = 21_600_000L
@@ -21,6 +24,7 @@ internal object TravelDurationFingerprint : Fingerprint(
     parameters = listOf("Ljava/lang/Object;"),
     filters = listOf(
         literal(TRAVEL_REDUCTION_MINUTES),
+        opcode(Opcode.IF_EQZ, MatchBeforeAnywhere()),
         literal(FULL_TRAVEL_DURATION_MILLISECONDS),
     ),
 )
