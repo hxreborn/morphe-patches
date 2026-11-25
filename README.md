@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.89.0-dev.3](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.3)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.89.0-dev.4](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.4)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -48,7 +48,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps
 
 <table align="center">
 <tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#moviebox-comcommunityoneroom"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>3&nbsp;new&nbsp;patches<br>17&nbsp;fixed<br>1&nbsp;removed<br>1&nbsp;new&nbsp;version</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#moviebox-comcommunityoneroom"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>3&nbsp;new&nbsp;patches<br>18&nbsp;fixed<br>1&nbsp;removed<br>1&nbsp;new&nbsp;version</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>7&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>6&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>14&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>5&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
 </tr>

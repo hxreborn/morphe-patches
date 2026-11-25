@@ -1,3 +1,9 @@
+## [1.89.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.3...v1.89.0-dev.4) (2026-11-25)
+
+### Bug Fixes
+
+* **MovieBox - Unlock premium:** restore 720p and 1080p downloads ([2048db6](https://github.com/hxreborn/morphe-patches/commit/2048db6d3bdb56e153a75ab1195370605f87a65f)), closes [#1086](https://github.com/hxreborn/morphe-patches/issues/1086)
+
 ## [1.89.0-dev.3](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.2...v1.89.0-dev.3) (2026-11-25)
 
 ### New Features

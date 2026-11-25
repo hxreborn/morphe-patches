@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0-dev.3** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.4** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
