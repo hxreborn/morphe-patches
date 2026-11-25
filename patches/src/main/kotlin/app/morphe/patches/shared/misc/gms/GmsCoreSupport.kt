@@ -10,22 +10,19 @@
  */
 package app.morphe.patches.shared.misc.gms
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.replaceStrings
 import app.morphe.patcher.string
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patches.shared.misc.signature.replaceString
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.patches.shared.misc.smali.toJavaClassName
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import org.w3c.dom.Element
 import java.security.MessageDigest
@@ -75,10 +72,7 @@ internal fun bindGmsCoreSignInTypes() {
 }
 
 internal fun redirectGmsPackageToGmsCore() {
-    string(GMS_PACKAGE_NAME).matchAllMethodIndicesForEach(requireMatches = false) { index ->
-        val register = getInstruction<OneRegisterInstruction>(index).registerA
-        replaceInstruction(index, "const-string v$register, \"$GMS_CORE_PACKAGE_NAME\"")
-    }
+    replaceStrings(string(GMS_PACKAGE_NAME) to GMS_CORE_PACKAGE_NAME)
 }
 
 private fun Instruction.isString(value: String) =

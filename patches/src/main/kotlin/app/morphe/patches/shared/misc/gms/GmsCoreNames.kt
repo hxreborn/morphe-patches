@@ -10,24 +10,16 @@
  */
 package app.morphe.patches.shared.misc.gms
 
-import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.StringComparisonType
 import app.morphe.patcher.patch.Compatibility
 import app.morphe.patcher.patch.InstallerType
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.PatchAvailability
-import app.morphe.patcher.patch.classDefForEach
-import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.replaceStrings
 import app.morphe.patcher.patch.resourceFile
+import app.morphe.patcher.string
 import app.morphe.patcher.util.returnEarly
-import app.morphe.util.findInstructionIndicesReversed
-import app.morphe.util.findMutableMethodOf
-import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.instruction.Instruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
 private const val GOOGLE_VENDOR_GROUP_ID = "com.google"
 
@@ -310,34 +302,13 @@ internal fun renameGmsReferencesToGmsCore() {
         ?: GooglePlayServicesPackageSignaturesFingerprint.method)
         .returnEarly(0)
 
-    replaceStringConstants(::gmsCoreName)
+    val filters = GMS_CORE_NAMES.keys.map { string(it) } +
+        AUTHORITIES.map { string("content://$it", StringComparisonType.STARTS_WITH) }
+    replaceStrings(filters) { _, _, value -> gmsCoreName(value) }
 }
 
 internal fun renameCloudMessagingToGmsCore() {
-    replaceStringConstants(CLOUD_MESSAGING_NAMES::get)
-}
-
-private fun replaceStringConstants(replacement: (String) -> String?) {
-    fun Instruction.replacementString() = stringConstant()?.let(replacement)
-
-    classDefForEach { classDef ->
-        classDef.methods.forEach { method ->
-            val instructions = method.implementation?.instructions ?: return@forEach
-            if (instructions.none { it.replacementString() != null }) return@forEach
-
-            val mutableMethod = mutableClassDefBy(classDef).findMutableMethodOf(method)
-            mutableMethod.findInstructionIndicesReversed { replacementString() != null }.forEach { index ->
-                val instruction = mutableMethod.getInstruction(index)
-                val register = (instruction as OneRegisterInstruction).registerA
-                mutableMethod.replaceInstruction(index, "const-string v$register, \"${instruction.replacementString()}\"")
-            }
-        }
-    }
-}
-
-private fun Instruction.stringConstant(): String? {
-    if (opcode != Opcode.CONST_STRING && opcode != Opcode.CONST_STRING_JUMBO) return null
-    return ((this as? ReferenceInstruction)?.reference as? StringReference)?.string
+    replaceStrings(CLOUD_MESSAGING_NAMES.map { (old, new) -> string(old) to new })
 }
 
 internal val gmsCoreManifestPatch = patch {
