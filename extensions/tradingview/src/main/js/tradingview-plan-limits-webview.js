@@ -2,7 +2,7 @@
   if (window.hxPlanLimits) return;
   window.hxPlanLimits = true;
   var CHART_HOST = 'widgetdata.tradingview.com';
-  var REPLAY_HOST = 'data.tradingview.com';
+  var REPLAY_HOST = 'history-data.tradingview.com';
   var REPLAY_CREATE_PREFIX = '{"m":"replay_create_session"';
   var REPLAY_DELETE_PREFIX = '{"m":"replay_delete_session"';
   var SERVER_LIMITED_FEATURES = [
