@@ -1,3 +1,14 @@
+## [1.89.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.88.0...v1.89.0-dev.1) (2026-11-25)
+
+### Bug Fixes
+
+* **MovieBox:** adapt to 25/11/2026 backend changes ([081f528](https://github.com/hxreborn/morphe-patches/commit/081f52829a29f1c6ea4979dba9d7bea0c7b46009))
+* **TradingView - Unlock chart features:** restore bar replay ([8894610](https://github.com/hxreborn/morphe-patches/commit/8894610fa3417815638547e694ee0e629bade985)), closes [#1077](https://github.com/hxreborn/morphe-patches/issues/1077)
+
+### New Features
+
+* **Audiomack - Export downloaded songs:** add cover art to saved songs ([49fc8de](https://github.com/hxreborn/morphe-patches/commit/49fc8de7df77e57afe24bd21950a34b12a6b2aeb)), closes [#1078](https://github.com/hxreborn/morphe-patches/issues/1078)
+
 ## [1.88.0](https://github.com/hxreborn/morphe-patches/compare/v1.87.0...v1.88.0) (2026-11-25)
 
 ### Bug Fixes

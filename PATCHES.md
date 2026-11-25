@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.88.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**619 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**619 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -333,7 +333,7 @@
 
 | Patch | Details |
 |---|---|
-| <a id="audiomack-export-downloaded-songs"></a>[**Export downloaded songs**](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/downloads/ExportDownloadedSongsPatch.kt) | Adds Save to device and Share file to the menu of downloaded songs. Saved songs go to Music/Audiomack, named by artist and title and tagged with title, artist and album. Requires Android 10 or later. |
+| <a id="audiomack-export-downloaded-songs"></a>[**Export downloaded songs**](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/downloads/ExportDownloadedSongsPatch.kt) | Adds Save to device and Share file to the menu of downloaded songs. Saves songs to Music/Audiomack as Artist - Title, with their tags and cover art. Requires Android 10 or later. |
 | <a id="audiomack-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="audiomack-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/audiomack/misc/premium/UnlockPremiumPatch.kt) | Unlocks Plus features. Region-limited songs are still restricted. |
 
@@ -2959,7 +2959,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="tradingview-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/tradingview/ads/HideAdsPatch.kt) | Hides the ads and upgrade cards in the Ideas and Community feeds. |
 | <a id="tradingview-hide-upgrade-promotions"></a>[**Hide upgrade promotions**](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/upselling/HideUpgradePromotionsPatch.kt) | Hides the Upgrade button, plan banners, subscription card and paywalls. Extra indicators, watchlists, flag colors, alerts, second and tick intervals, and intraday replay are not unlocked. |
 | <a id="tradingview-skip-sign-up-screen"></a>[**Skip sign-up screen**](patches/src/main/kotlin/app/morphe/patches/tradingview/misc/onboarding/SkipSignUpPatch.kt) | Opens the app without signing in. Sign in later from the menu. |
-| <a id="tradingview-unlock-chart-features"></a>[**Unlock chart features**](patches/src/main/kotlin/app/morphe/patches/tradingview/chart/UnlockChartFeaturesPatch.kt) | Unlocks layouts with up to 8 charts, more than 3 indicators per chart and the Renko, Kagi, Point &amp; Figure, Line break, Range, Volume candles and HLC area chart types. Alerts, watchlists, profile indicators and second or tick intervals follow your plan. |
+| <a id="tradingview-unlock-chart-features"></a>[**Unlock chart features**](patches/src/main/kotlin/app/morphe/patches/tradingview/chart/UnlockChartFeaturesPatch.kt) | Unlocks layouts with up to 8 charts, more than 3 indicators per chart and the Renko, Kagi, Point &amp; Figure, Line break, Range, Volume candles and HLC area chart types. Bar replay, alerts, watchlists, profile indicators and second or tick intervals follow your plan. |
 
 ---
 
