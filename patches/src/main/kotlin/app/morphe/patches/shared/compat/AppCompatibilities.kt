@@ -1998,7 +1998,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "12704504f5711f22d78ee436f38baeb90557c2fa72c4dfb281c766f59800461d",
         ),
-        targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
+        targets = listOf(AppTarget(version = "4.3.5", versionCode = 435, minSdk = 24)),
     )
 
     val ULTIMEA = Compatibility(
