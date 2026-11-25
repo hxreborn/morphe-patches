@@ -11,6 +11,7 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.misc.materialcontrols.MATERIAL_RADIO_BUTTON_TAG
@@ -145,9 +146,8 @@ val speechPitchSliderPatch = patch(
         val voice = voiceCall.instruction.getReference<MethodReference>()!!
         val selectedVoice = selectedVoiceFingerprint(voice.returnType).matchAll(1..1).single().method
         view.classDef.apply {
-            interfaces.add(EXTENSION_TARGET_DESCRIPTOR)
-            addMethod(
-                "speechPitchVoice", emptyList(), "Landroid/speech/tts/Voice;", AccessFlags.PUBLIC.value, 2,
+            addPatchInterface(
+                EXTENSION_TARGET_DESCRIPTOR, "speechPitchVoice",
                 """
                     invoke-virtual {p0}, $language
                     move-result-object v0
