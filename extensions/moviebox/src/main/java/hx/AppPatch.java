@@ -30,6 +30,7 @@ import android.os.Looper;
 import android.util.Log;
 import hx.gateway.BuildTag;
 import hx.gateway.BuildTagInterceptor;
+import hx.gateway.ClientAddressInterceptor;
 import hx.gateway.CloudFrontPlayInfoClient;
 import hx.gateway.SharedHeaders;
 import hx.loopback.DashServer;
@@ -90,7 +91,9 @@ public final class AppPatch {
             boolean premiumUnlocked) throws ReflectiveOperationException {
         AppNetwork network = AppNetwork.locate(manager);
         Object taggedClient = withBuildTagInterceptor(network.loader, network.client, tagger);
-        MovieBoxSource source = new MovieBoxSource(new ApiClient(network.loader, taggedClient, network.apiBase),
+        Object gatewayClient = ClientInterceptors.addBeforeTerminal(taggedClient,
+                ClientInterceptors.proxy(network.loader, new ClientAddressInterceptor(premiumUnlocked)));
+        MovieBoxSource source = new MovieBoxSource(new ApiClient(network.loader, gatewayClient, network.apiBase),
                 new CloudFrontPlayInfoClient(buildTag));
         DashServer server = bindServer(source);
         boolean routeDownloads = !isMainProcess() || server != null;
@@ -101,7 +104,7 @@ public final class AppPatch {
             DashInterceptor dash = new DashInterceptor(network.loader, source, routeDownloads, HomeTabs.readHidden(),
                     premiumUnlocked);
             Object dashProxy = ClientInterceptors.proxy(network.loader, dash);
-            network.useClient(ClientInterceptors.addFirst(taggedClient, dashProxy));
+            network.useClient(ClientInterceptors.addFirst(gatewayClient, dashProxy));
         } catch (ReflectiveOperationException | RuntimeException ex) {
             if (server != null) {
                 server.close();

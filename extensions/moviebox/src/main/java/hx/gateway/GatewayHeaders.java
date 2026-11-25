@@ -26,8 +26,6 @@ import java.util.Map;
 
 final class GatewayHeaders {
 
-    private static final String WITHHELD_CLIENT_ADDRESS = "unknown";
-
     private final String clientInfo;
 
     private final BuildTag buildTag;
@@ -50,7 +48,7 @@ final class GatewayHeaders {
         if (tag != null) {
             headers.put(BuildTag.HEADER, tag);
         }
-        headers.put("x-forwarded-for", WITHHELD_CLIENT_ADDRESS);
+        headers.put(ClientAddressInterceptor.FORWARDED_FOR_HEADER, ClientAddressInterceptor.WITHHELD_ADDRESS);
         if (token != null) {
             headers.put("Authorization", "Bearer " + token);
         }
