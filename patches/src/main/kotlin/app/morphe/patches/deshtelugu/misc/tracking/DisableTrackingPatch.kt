@@ -42,7 +42,7 @@ val disableTrackingPatch = patch(
         val enqueue = fullSentenceEnqueue.getInstruction<ReferenceInstruction>().reference as MethodReference
         fullSentenceSender.method.removeInstruction(fullSentenceEnqueue.index)
 
-        EventBatchSenderFingerprint.matchAll().forEach { it.removeRequestEnqueue(enqueue) }
+        EventBatchSenderFingerprint.matchAll(2..2).forEach { it.removeRequestEnqueue(enqueue) }
         listOf(
             InstallSenderFingerprint,
             KeyboardActiveSenderFingerprint,
