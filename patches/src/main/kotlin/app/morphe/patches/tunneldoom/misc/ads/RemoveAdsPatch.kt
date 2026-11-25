@@ -27,7 +27,9 @@ val removeAdsPatch = patch(
     dependsOn(removePairipProtectionPatch, failAdMobLoadsPatch, removeMobileAdsInitProviderPatch)
 
     execute {
-        (RewardedAdLoadFingerprint.matchAll() + RewardedInterstitialAdLoadFingerprint.matchAll()).forEach { match ->
+        val rewardedAds = RewardedAdLoadFingerprint.matchAll(2..2)
+        val rewardedInterstitials = RewardedInterstitialAdLoadFingerprint.matchAll(2..2)
+        (rewardedAds + rewardedInterstitials).forEach { match ->
             match.method.addInstructions(
                 0,
                 "invoke-static { p${match.method.parameters.size - 1} }, $REPORT_LOAD_FAILURE\n" +
