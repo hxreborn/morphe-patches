@@ -762,6 +762,16 @@ internal object AppCompatibilities {
         ),
     )
 
+    val GSMARENA = Compatibility(
+        name = "GSMArena",
+        packageName = "com.gsmarena.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf(
+            "65eba25fac89e8895cf74a1e6607934dbb485f87c698540a51dd620b26fe0526",
+        ),
+        targets = listOf(AppTarget(version = "1.9.1", versionCode = 191, minSdk = 21)),
+    )
+
     val GLASS_WIDGETS = Compatibility(
         name = "Glass Widgets",
         packageName = "com.jndapp.glass.widgets",
