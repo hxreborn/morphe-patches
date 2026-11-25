@@ -1,3 +1,9 @@
+## [1.88.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.5...v1.88.0-dev.6) (2026-11-25)
+
+### New Features
+
+* **Infinite Painter - Unlock premium:** use masks and patterns ([6d2ce01](https://github.com/hxreborn/morphe-patches/commit/6d2ce013b87c75aab3cbe09af8f67e6d970fcce7))
+
 ## [1.88.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.88.0-dev.4...v1.88.0-dev.5) (2026-11-24)
 
 ### Bug Fixes

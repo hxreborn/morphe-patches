@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.88.0-dev.5** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**618 patches** across **194 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.88.0-dev.6** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**619 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -1279,6 +1279,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="imo-show-invisible-friends-in-contacts"></a>[**Show invisible friends in contacts**](patches/src/main/kotlin/app/morphe/patches/imo/misc/invisiblefriends/ShowInvisibleFriendsInContactsPatch.kt) | Adds the Invisible Friends entry to the contacts list. Requires at least one invisible friend. |
 | <a id="imo-spoof-signature"></a>[**Spoof signature**](patches/src/main/kotlin/app/morphe/patches/imo/misc/signin/SpoofSignaturePatch.kt) | Restores phone verification by call when signing in and lets the app get its push token. |
 | <a id="imo-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/imo/misc/premium/UnlockPremiumPatch.kt) | Unlocks imo Premium. |
+
+---
+
+## Infinite Painter (com.brakefield.painter)
+
+<img src="https://publicmetadata.co.uk/com.brakefield.painter" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 7.2.12 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="infinite-painter-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/infinitepainter/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features and removes upgrade prompts. |
 
 ---
 
