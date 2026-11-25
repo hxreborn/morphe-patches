@@ -4,6 +4,9 @@
  */
 package app.morphe.patches.terabox.misc.clone
 
+import app.morphe.patcher.Patcher
+import app.morphe.patcher.PatcherConfig
+import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -24,9 +27,14 @@ import com.android.tools.smali.dexlib2.immutable.value.ImmutableStringEncodedVal
 import com.android.tools.smali.dexlib2.writer.io.MemoryDataStore
 import com.android.tools.smali.dexlib2.writer.pool.DexPool
 import java.nio.ByteBuffer
+import java.nio.file.Files
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 internal class CloneAppStringsTest {
     private val originalPackageName = "com.dubox.drive"
@@ -35,7 +43,7 @@ internal class CloneAppStringsTest {
     private val renames = mapOf(originalPackageName to clonePackageName, originalAuthority to "$clonePackageName.cloudimage")
     private val classDescriptor = "Lexample/Constants;"
 
-    private fun classWithStrings(vararg values: String, methodString: String? = null): ClassDef = ImmutableClassDef(
+    private fun classWithStrings(vararg values: String, methodStrings: List<String> = emptyList()): ClassDef = ImmutableClassDef(
         classDescriptor,
         AccessFlags.PUBLIC.value,
         "Ljava/lang/Object;",
@@ -53,7 +61,7 @@ internal class CloneAppStringsTest {
                 emptySet(),
             )
         },
-        methodString?.let { value ->
+        methodStrings.takeIf { it.isNotEmpty() }?.let { strings ->
             listOf(
                 ImmutableMethod(
                     classDescriptor,
@@ -65,10 +73,8 @@ internal class CloneAppStringsTest {
                     emptySet(),
                     ImmutableMethodImplementation(
                         1,
-                        listOf(
-                            ImmutableInstruction21c(Opcode.CONST_STRING, 0, ImmutableStringReference(value)),
+                        strings.map { ImmutableInstruction21c(Opcode.CONST_STRING, 0, ImmutableStringReference(it)) } +
                             ImmutableInstruction10x(Opcode.RETURN_VOID),
-                        ),
                         emptyList(),
                         emptyList(),
                     ),
@@ -77,11 +83,10 @@ internal class CloneAppStringsTest {
         }.orEmpty(),
     )
 
-    private fun ClassDef.roundTrip(): ClassDef {
+    private fun ClassDef.dexBytes(): ByteArray {
         val pool = DexPool(Opcodes.getDefault())
         pool.internClass(this)
-        val bytes = MemoryDataStore().also(pool::writeTo).data
-        return DexBackedDexFile(Opcodes.getDefault(), ByteBuffer.wrap(bytes)).classes.single()
+        return MemoryDataStore().also(pool::writeTo).data
     }
 
     @Test
@@ -89,9 +94,10 @@ internal class CloneAppStringsTest {
         val source = classWithStrings(originalPackageName, originalAuthority, "content://$originalAuthority/local", "$originalPackageName.ui.MainActivity")
         val mutable = MutableClass(source)
 
-        source.renameCloneStrings(renames) { mutable }
+        source.renameCloneStaticStrings(renames) { mutable }
 
-        val values = mutable.roundTrip().staticFields.associate { it.name to (it.initialValue as StringEncodedValue).value }
+        val result = DexBackedDexFile(Opcodes.getDefault(), ByteBuffer.wrap(mutable.dexBytes())).classes.single()
+        val values = result.staticFields.associate { it.name to (it.initialValue as StringEncodedValue).value }
         assertEquals(
             mapOf(
                 "value0" to clonePackageName,
@@ -106,15 +112,36 @@ internal class CloneAppStringsTest {
 
     @Test
     fun `rewrite encoded fields alongside method strings`() {
-        val source = classWithStrings(originalPackageName, methodString = originalAuthority)
-        val mutable = MutableClass(source)
-
-        source.renameCloneStrings(renames) { mutable }
-
-        val result = mutable.roundTrip()
-        assertEquals(clonePackageName, (result.staticFields.single().initialValue as StringEncodedValue).value)
-        val instruction = result.methods.single().implementation!!.instructions.first()
-        assertEquals("$clonePackageName.cloudimage", instruction.getReference<StringReference>()!!.string)
+        val unrelatedUri = "content://$originalAuthority.other/local"
+        val source = classWithStrings(
+            originalPackageName,
+            methodStrings = listOf(originalAuthority, "content://$originalAuthority/local", unrelatedUri),
+        )
+        val directory = Files.createTempDirectory("clone-app-strings").toFile()
+        try {
+            val apk = directory.resolve("fixture.apk")
+            ZipOutputStream(apk.outputStream()).use { zip ->
+                zip.putNextEntry(ZipEntry("AndroidManifest.xml"))
+                checkNotNull(javaClass.getResourceAsStream("/metadata/AndroidManifest.axml")).use { it.copyTo(zip) }
+                zip.putNextEntry(ZipEntry("classes.dex"))
+                zip.write(source.dexBytes())
+            }
+            Patcher(PatcherConfig(apk, directory.resolve("work"))).use { patcher ->
+                patcher += setOf(patch(name = "Rewrite fixture strings") { finalize { renameCloneDexStrings(renames) } })
+                runBlocking { patcher().collect { assertNull(it.exception) } }
+                val result = patcher.get().dexFiles.flatMap { dex ->
+                    dex.stream.use { DexBackedDexFile.fromInputStream(Opcodes.getDefault(), it.buffered()).classes }
+                }.single()
+                val instructions = result.methods.single().implementation!!.instructions
+                assertEquals(clonePackageName, (result.staticFields.single().initialValue as StringEncodedValue).value)
+                assertEquals(
+                    listOf("$clonePackageName.cloudimage", "content://$clonePackageName.cloudimage/local", unrelatedUri),
+                    instructions.mapNotNull { it.getReference<StringReference>()?.string },
+                )
+            }
+        } finally {
+            directory.deleteRecursively()
+        }
     }
 
     @Test
@@ -122,7 +149,7 @@ internal class CloneAppStringsTest {
         val source = classWithStrings("content://other.provider/local", "$originalPackageName.ui.MainActivity")
         var requestedMutableClass = false
 
-        source.renameCloneStrings(renames) {
+        source.renameCloneStaticStrings(renames) {
             requestedMutableClass = true
             MutableClass(source)
         }
