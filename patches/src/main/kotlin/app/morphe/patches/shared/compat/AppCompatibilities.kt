@@ -474,7 +474,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2c7507b2c986a1e3750c0d4876d6b1e8035b873a5d221149c167293b3e5449ca",
         ),
-        targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 33)),
+        targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 31)),
     )
 
     val CLONE_APP = Compatibility(
