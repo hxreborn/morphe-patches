@@ -9,6 +9,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getFreeRegisterProvider
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.shared.disableSignatureChecksPatch
@@ -16,9 +17,7 @@ import app.morphe.patches.readera.shared.patchesSettingsPatch
 import app.morphe.patches.readera.shared.registerReadEraPatch
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.requireArm64
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.util.indexOfFirstInstructionReversed
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -49,13 +48,9 @@ val speechRateSliderPatch = patch(
             .getReference<FieldReference>()!!
 
         ApplySpeechRateFingerprint.classDef.apply {
-            interfaces.add(EXTENSION_TARGET_DESCRIPTOR)
-            addMethod(
+            addPatchInterface(
+                EXTENSION_TARGET_DESCRIPTOR,
                 "applySpeechRate",
-                listOf("F"),
-                "V",
-                AccessFlags.PUBLIC.value,
-                3,
                 """
                     iput p1, p0, $rateField
                     const/4 v0, 0x0
