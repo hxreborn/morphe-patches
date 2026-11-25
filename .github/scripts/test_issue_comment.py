@@ -44,6 +44,7 @@ NOT_REQUESTS = [
     "Great. Thank you very much.",
     "Completed in hxreborn patches 1.47.0",
     "Yeah thanks , Updated and working perfectly now .",
+    "Update: I patched the app again using the link below, and for some reason, everything is now working as expected.\n\nHere's the link I used, along with my patch notes.",
     "No problem. Thanks for the work you and other devs are doing here in your spare time.",
     "> This is included in [v1.34.0](https://github.com/x/releases/tag/v1.34.0). Update the bundle in Morphe Manager and repatch.\n\nThis is actually crazy automation bro.",
     "> Thanks for the request! This is in v1.31.0. Update the bundle and repatch, and comment below if something is missing.\n\nnice",

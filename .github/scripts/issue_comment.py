@@ -41,7 +41,7 @@ UPDATE_DEMAND = re.compile(
     r"|\b(?:support|add)\s+(?:for\s+)?(?:the\s+)?(?:latest|newest|newer|new)\s+(?:app\s+)?version\b",
     re.I,
 )
-RESOLVED = re.compile(r"\b(work(s|ing)? (fine|perfectly|great|now)|now (it )?works|it works|fixed now|solved)\b", re.I)
+RESOLVED = re.compile(r"\b(work(s|ing)? (fine|perfectly|great|now|as expected)|now (it )?works|it works|fixed now|solved)\b", re.I)
 QUOTED = re.compile(r"^[ \t]*>.*$", re.M)
 MENTION = re.compile(r"@[\w-]+")
 OWNER_MENTION = re.compile(rf"@{re.escape(REPO.split('/')[0])}\b", re.I)
