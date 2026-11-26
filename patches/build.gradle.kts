@@ -17,7 +17,7 @@ group = "app.hxreborn"
 patches {
     about {
         name = "hxreborn’s patches"
-        description = "Unlocks premium features and removes ads and tracking in 100+ Android apps"
+        description = "Unlocks premium features and removes ads and tracking in 200+ Android apps"
         source = "git@github.com:hxreborn/morphe-patches.git"
         author = "hxreborn"
         contact = "https://github.com/hxreborn/morphe-patches/issues"

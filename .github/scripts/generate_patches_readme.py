@@ -19,7 +19,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage
 from fields import field, normalize, parse_fields
 
 INCLUDE_APP_ICONS = True
-HOT_WINDOW_DAYS = 30
+HOT_WINDOW_DAYS = 7
+TAPE_WINDOW_DAYS = 30
 HOT_WINDOW_MAX_DAYS = 120
 
 if len(sys.argv) < 3:
@@ -572,7 +573,7 @@ def tape_items():
     if git_lines("rev-parse", "--is-shallow-repository") != ["false"]:
         sys.stderr.write("⚠️  Full Git history needed, release tape left out\n")
         return []
-    since = datetime.now(timezone.utc) - timedelta(days=HOT_WINDOW_DAYS)
+    since = datetime.now(timezone.utc) - timedelta(days=TAPE_WINDOW_DAYS)
     names_before = patch_names_before(since)
     if names_before is None:
         sys.stderr.write(f"⚠️  No patches-list.json from before {since:%Y-%m-%d}, release tape left out\n")

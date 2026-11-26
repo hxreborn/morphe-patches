@@ -10,7 +10,7 @@
   <img alt="Add to Morphe" src="https://img.shields.io/badge/Morphe-Add%20this%20source-00A8FF?style=for-the-badge" height="32"/>
 </a>
 
-AMOLED themes, ad and tracking removal and settings tweaks for 100+ Android apps.
+AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps.
 
 <!-- INDEX_START -->
 <p align="center">
