@@ -6,6 +6,8 @@ package app.morphe.patches.musclewiki.misc.premium
 
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.dart.dartAotLibrary
+import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
 import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
@@ -20,7 +22,12 @@ val unlockPremiumPatch = patch(
 ) {
     dependsOn(sharedRevenuecatExtensionPatch)
     compatibleWith(AppCompatibilities.MUSCLEWIKI)
+    availability(requireArm64)
     execute {
         grantRevenueCatEntitlements(ENTITLEMENT to PRODUCT)
+        val library = dartAotLibrary()
+        val bytes = library.readBytes()
+        bytes.forceProfilePremium()
+        library.writeBytes(bytes)
     }
 }
