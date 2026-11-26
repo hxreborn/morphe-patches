@@ -550,6 +550,9 @@ INDEX_END = "<!-- INDEX_END -->"
 GRAPHICS_PATH = ".github/readme"
 ASSETS_REF = "origin/assets"
 INDEX_BUTTON_WIDTH = "42%"
+INDEX_BUTTON_WIDE_MEDIA = "(min-width: 768px)"
+INDEX_BUTTON_WIDE_WIDTH = 298
+INDEX_BUTTON_WIDE_HEIGHT = 79
 INDEX_BUTTONS = [
     ("install", "Install", "Add the source", "installing", "#-installing"),
     ("patches", "Patches", None, "full-list", "#-patches-list"),
@@ -630,7 +633,9 @@ def build_index():
     except ValueError as error:
         sys.stderr.write(f"⚠️  {error}. Nothing written.\n")
         sys.exit(1)
-    links = [f'<a href="{anchor}"><img src="{GRAPHICS_PATH}/{key}.svg" width="{INDEX_BUTTON_WIDTH}" alt="{label}"></a>' for key, label, _, _, anchor in buttons]
+    links = [f'<a href="{anchor}"><picture><source media="{INDEX_BUTTON_WIDE_MEDIA}" srcset="{GRAPHICS_PATH}/{key}.svg" '
+             f'width="{INDEX_BUTTON_WIDE_WIDTH}" height="{INDEX_BUTTON_WIDE_HEIGHT}">'
+             f'<img src="{GRAPHICS_PATH}/{key}.svg" width="{INDEX_BUTTON_WIDTH}" alt="{label}"></picture></a>' for key, label, _, _, anchor in buttons]
     lines = ['<p align="center">', "<br>\n".join("&nbsp;".join(links[row:row + 2]) for row in range(0, len(links), 2)), "</p>"]
     tape = tape_items()
     for theme in TAPE_THEMES:
