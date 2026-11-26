@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-11-26T12:57:24",
-  "description": "## [1.89.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.5...v1.89.0-dev.6) (2026-11-26)\n\n### New Features\n\n* **Citra - Remove ads:** remove ads from games ([b387374](https://github.com/hxreborn/morphe-patches/commit/b3873748cec4a1655ab5595b5152a3fdd610ea40))\n* **MuscleWiki - Clone routines:** add Duplicate to routine menus ([b0a25be](https://github.com/hxreborn/morphe-patches/commit/b0a25be0fe8dd9332ff8324c2822142de0165f0d)), closes [#1064](https://github.com/hxreborn/morphe-patches/issues/1064)",
-  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.89.0-dev.6/patches-1.89.0-dev.6.mpp",
+  "created_at": "2026-11-26T18:10:08",
+  "description": "## [1.89.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.6...v1.89.0-dev.7) (2026-11-26)\n\n### Bug Fixes\n\n* **MuscleWiki - Unlock premium:** open Strength Level tool ([186521a](https://github.com/hxreborn/morphe-patches/commit/186521a0d12df5fd973e15ad2d00ccf913721a4f))\n* **VLLO:** remove 13.9.0, 13.9.6 and 13.9.18 app targets ([f48fa17](https://github.com/hxreborn/morphe-patches/commit/f48fa17caaccdf4dca42338116751a553a87e0b5))\n\n### New Features\n\n* **Viber - Ignore accents in contact search:** match plain spellings ([3e6a277](https://github.com/hxreborn/morphe-patches/commit/3e6a27776bcb37601e4990b295f7b8fddc0d0cbb)), closes [#1091](https://github.com/hxreborn/morphe-patches/issues/1091)\n* **VLLO:** support 14.0.2 ([a0c274b](https://github.com/hxreborn/morphe-patches/commit/a0c274bca81f373e70f5c8ab84800495a1fad05c)), closes [#855](https://github.com/hxreborn/morphe-patches/issues/855)",
+  "download_url": "https://github.com/hxreborn/morphe-patches/releases/download/v1.89.0-dev.7/patches-1.89.0-dev.7.mpp",
   "signature_download_url": "",
-  "version": "1.89.0-dev.6"
+  "version": "1.89.0-dev.7"
 }
