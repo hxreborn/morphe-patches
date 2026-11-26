@@ -6,7 +6,6 @@ package app.morphe.patches.vllo.misc.pairip
 
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.mutableClassDefBy
-import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
@@ -21,35 +20,19 @@ import java.util.function.Supplier
 private const val APPLICATION = "Lcom/darinsoft/vimo/VLLOApplication;"
 private const val ACTIVITY = "Lcom/darinsoft/vimo/VLLOMainActivity;"
 private const val RESTORED = "LVlloRestored;"
-private const val VERSION_CODE = "140002"
-private var needsRestoration = false
-
-private val selectRestorationPatch = patch {
-    compatibleWith(AppCompatibilities.VLLO)
-
-    execute {
-        needsRestoration = packageMetadata.versionCode == VERSION_CODE
-    }
-}
 
 internal val restoreStartupPatch = patch {
     compatibleWith(AppCompatibilities.VLLO)
-    dependsOn(removePairipVirtualizationPatch, selectRestorationPatch)
+    dependsOn(removePairipVirtualizationPatch)
 
     extendWithAll {
-        if (!needsRestoration) {
-            emptyList()
-        } else {
-            val source = inputStreamFromBundledResource("vllo/restored", "VlloRestored.smali")!!.use {
-                it.readBytes().decodeToString()
-            }
-            listOf(Supplier { ByteArrayInputStream(assembleDex(listOf(source))) })
+        val source = inputStreamFromBundledResource("vllo/restored", "VlloRestored.smali")!!.use {
+            it.readBytes().decodeToString()
         }
+        listOf(Supplier { ByteArrayInputStream(assembleDex(listOf(source))) })
     }
 
     execute {
-        if (!needsRestoration) return@execute
-
         fun restore(type: String, name: String, registers: Int, body: String) {
             mutableClassDefBy(type).replaceVirtualizedMethod(name, registers, body)
         }
