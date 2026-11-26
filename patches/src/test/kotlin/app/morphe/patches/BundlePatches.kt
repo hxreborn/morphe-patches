@@ -6,6 +6,7 @@ package app.morphe.patches
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patches.devcheck.misc.pairip.restoreVirtualizedMethodsPatch
+import app.morphe.patches.vllo.misc.pairip.restoreStartupPatch
 import java.io.File
 import java.io.InputStream
 import java.lang.reflect.Modifier
@@ -41,7 +42,7 @@ internal object BundlePatches {
     private val extensionStreamProviders = Patch::class.java.getDeclaredField("extensionStreamProviders")
         .apply { isAccessible = true }
 
-    private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch>(restoreVirtualizedMethodsPatch)
+    private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch>(restoreVirtualizedMethodsPatch, restoreStartupPatch)
 
     fun payloadsLoadedDirectlyBy(patch: Patch): Set<String> {
         if (patch in patchesAssemblingTheirDexAtPatchTime) return emptySet()

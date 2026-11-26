@@ -9,8 +9,8 @@ import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.analytics.disableAnalyticsCollectionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
-import app.morphe.patches.shared.misc.pairip.removePairipVirtualizationPatch
 import app.morphe.patches.shared.misc.requireArm64
+import app.morphe.patches.vllo.misc.pairip.restoreStartupPatch
 
 @Suppress("unused")
 val disableTrackingPatch = patch(
@@ -20,7 +20,7 @@ val disableTrackingPatch = patch(
     compatibleWith(AppCompatibilities.VLLO)
 
     dependsOn(
-        removePairipVirtualizationPatch,
+        restoreStartupPatch,
         removePairipProtectionPatch,
         disableAnalyticsCollectionPatch,
     )
