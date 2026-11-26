@@ -11,6 +11,8 @@ body:
         - Hobby project. Upvotes show demand. They don't set the order, and nothing is promised.
         - Features that depend on the app's servers (AI, cloud sync, streaming quality) may not be patchable.
           It varies by app, so ask if you're not sure.
+        - Requests for movie and series apps and exam preparation apps aren't being taken for now and are closed.
+        - Android TV apps, Android Auto apps and region unlocks are unlikely to be taken on.
   - type: input
     id: app_name
     attributes:
@@ -23,10 +25,53 @@ body:
     id: package_name
     attributes:
       label: Package name
-      description: The Android package name, if you know it.
+      description: The Android package name. It's the text after id= in the app's Play Store link.
       placeholder: com.duolingo
     validations:
-      required: false
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Where the app runs
+      description: Pick the device the app is built for.
+      options:
+        - Phone or tablet
+        - Android TV
+        - Android Auto
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: App category
+      description: Pick the closest match.
+      options:
+        - Movies and series streaming
+        - Exam preparation
+        - Music and audio
+        - Video, photo and design
+        - Social and messaging
+        - Games
+        - Productivity and tools
+        - Health and fitness
+        - Language learning and education
+        - Maps, travel and transport
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: wants
+    attributes:
+      label: What you want
+      description: Pick everything that applies.
+      multiple: true
+      options:
+        - Premium features
+        - Remove ads
+        - Region restriction
+        - Something else
+    validations:
+      required: true
   - type: textarea
     id: features
     attributes:
@@ -55,6 +100,4 @@ body:
         - label: I haven't requested this app from another patch bundle.
           required: true
         - label: I understand that features depending on the app's servers (AI, cloud sync, streaming quality) may not be patchable.
-          required: true
-        - label: This isn't about a region lock. A VPN handles that, a patch doesn't.
           required: true

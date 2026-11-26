@@ -1528,6 +1528,105 @@ ok = [u["verdict"] for u in under] == ["pass"] * 3
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} two other open requests, an exempt author and another person's request are not limited")
 
+def classified(platform="Phone or tablet", category="Other", wants="Premium features", package="com.example.reader",
+               association=None):
+    body = (f"### App\n\nExample Reader\n\n### Package name\n\n{package}\n\n### Where the app runs\n\n{platform}\n\n"
+            f"### App category\n\n{category}\n\n### What you want\n\n{wants}\n\n"
+            f"### Requested features\n\nUnlock premium\n\n{ACKNOWLEDGED}")
+    this = {"number": 7, "title": "Example Reader", "body": body, "state": "OPEN", "comments": [],
+            "association": association}
+    return decide(7, body, [this], SUPPORTED, None, this["title"], NOW)
+
+
+plain = classified()
+ok = (plain["verdict"], plain["labels"], plain["comment"]) == ("pass", [], "")
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a phone request in an ordinary category with premium features passes silently")
+
+for category, phrase in (("Movies and series streaming", "movie and series apps"),
+                         ("Exam preparation", "exam preparation apps")):
+    closed = classified(category=category)
+    expected = f"Requests for {phrase} aren't being taken for now. This discussion is now closed and locked."
+    ok = ((closed["verdict"], closed["reason"], closed["labels"]) == ("close", "not planned", [])
+          and closed["comment"].endswith("\n" + expected))
+    record(ok)
+    print(f"{'ok  ' if ok else 'FAIL'} {category} closes as not planned with its own reply")
+
+for category in ("Music and audio", "Video, photo and design", "Language learning and education", "Games"):
+    ok = classified(category=category)["verdict"] == "pass"
+    record(ok)
+    print(f"{'ok  ' if ok else 'FAIL'} the {category} category is kept open")
+
+declined_with_tv = classified(platform="Android TV", category="Exam preparation", wants="Region restriction")
+ok = (declined_with_tv["verdict"], declined_with_tv["labels"]) == ("close", []) \
+    and "unlikely" not in declined_with_tv["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a declined category closes without the unlikely note or labels")
+
+owner_declined = classified(category="Exam preparation", association="OWNER")
+ok = owner_declined["verdict"] == "pass"
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} the owner's own request in a declined category is not closed")
+
+for platform, wants, labels, phrase in (
+        ("Android TV", "Premium features", ["tv-app"], "Android TV apps"),
+        ("Android Auto", "Remove ads", ["android-auto"], "Android Auto apps"),
+        ("Phone or tablet", "Region restriction", ["region"], "region unlocks"),
+        ("Android TV", "Premium features, Region restriction", ["tv-app", "region"], "Android TV apps and region unlocks"),
+        ("Android Auto", "Remove ads, Region restriction, Something else", ["android-auto", "region"],
+         "Android Auto apps and region unlocks")):
+    kept = classified(platform=platform, wants=wants)
+    note = f"Requests for {phrase} are unlikely to be taken on. This request is kept open."
+    ok = ((kept["verdict"], kept["labels"], kept["reason"]) == ("flag", labels, "") and kept["comment"].endswith("\n" + note))
+    record(ok)
+    print(f"{'ok  ' if ok else 'FAIL'} {platform} with {wants} stays open with labels {labels}")
+
+multi = classified(wants="Premium features, Remove ads, Something else")
+ok = (multi["verdict"], multi["labels"]) == ("pass", [])
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a multi-select without region restriction is not labeled")
+
+lowercase = classified(platform="android tv", wants="region restriction")
+ok = lowercase["labels"] == ["tv-app", "region"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} option matching ignores case")
+
+ok = classified(platform="Android TV")["facts"] != classified(platform="Phone or tablet")["facts"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} dropping the TV choice changes the facts so the labels get removed")
+
+for package in ("", "idk", "_No response_", "example.com"):
+    missing = classified(package=package)
+    ok = (missing["verdict"], missing["labels"]) == ("flag", ["needs info"]) \
+        and "No valid Android package name was found" in missing["comment"] \
+        and "closes after 1 day without a reply" in missing["comment"]
+    record(ok)
+    print(f"{'ok  ' if ok else 'FAIL'} new form with package {package!r} asks for the package name")
+
+store_only = ("### App\n\nhttps://play.google.com/store/apps/details?id=com.example.reader\n\n### Package name\n\nidk\n\n"
+              "### Where the app runs\n\nPhone or tablet\n\n### App category\n\nOther\n\n"
+              f"### What you want\n\nRemove ads\n\n### Requested features\n\nNo ads\n\n{ACKNOWLEDGED}")
+linked = decide(7, store_only, [{"number": 7, "body": store_only, "state": "OPEN", "comments": []}], SUPPORTED, None, "x", NOW)
+ok = (linked["verdict"], linked["package"]) == ("pass", "com.example.reader")
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} a Play Store link satisfies the package requirement on the new form")
+
+supported_tv = classified(platform="Android TV", package="com.atlogis.atlomaps")
+ok = (supported_tv["verdict"], supported_tv["labels"]) == ("close", []) and "already supported" in supported_tv["comment"]
+record(ok)
+print(f"{'ok  ' if ok else 'FAIL'} an already supported app still closes as supported before the TV note")
+
+old_bodies = {
+    "old body with a missing package": request(5, "Moviebox.ph", ""),
+    "old body for a TV app name": request(5, "Android TV Launcher", "com.example.launcher"),
+    "old body for a region app name": request(5, "Region Player", "com.example.region"),
+}
+for name, old in old_bodies.items():
+    result = app_verdict(5, [old])
+    ok = (result["verdict"], result["labels"], result["comment"]) == ("pass", [], "")
+    record(ok)
+    print(f"{'ok  ' if ok else 'FAIL'} {name} behaves as before")
+
 for name, (expected, body) in CASES.items():
     actual = verdict_for(*body) if isinstance(body, tuple) else verdict_for(body)
     ok = actual == expected
