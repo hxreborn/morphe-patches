@@ -1,3 +1,10 @@
+## [1.89.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.5...v1.89.0-dev.6) (2026-11-26)
+
+### New Features
+
+* **Citra - Remove ads:** remove ads from games ([b387374](https://github.com/hxreborn/morphe-patches/commit/b3873748cec4a1655ab5595b5152a3fdd610ea40))
+* **MuscleWiki - Clone routines:** add Duplicate to routine menus ([b0a25be](https://github.com/hxreborn/morphe-patches/commit/b0a25be0fe8dd9332ff8324c2822142de0165f0d)), closes [#1064](https://github.com/hxreborn/morphe-patches/issues/1064)
+
 ## [1.89.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.4...v1.89.0-dev.5) (2026-11-26)
 
 ### Bug Fixes

@@ -120,6 +120,8 @@ body:
         - "Chess Scanner 1.8.33"
         - "Chess Scanner 1.8.36"
         - "Chess Scanner (another version, type it below)"
+        - "Citra b3105a4-googleplay"
+        - "Citra (another version, type it below)"
         - "ClassDojo 9.12.0"
         - "ClassDojo (another version, type it below)"
         - "Clink 1.9.2"
@@ -528,11 +530,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.89.0-dev.6"
         - "1.89.0-dev.5"
         - "1.89.0-dev.4"
         - "1.89.0-dev.3"
         - "1.89.0-dev.2"
-        - "1.89.0-dev.1"
         - "1.88.0"
         - "Older than these"
         # /generated
@@ -726,6 +728,7 @@ body:
         - "Catzy \u00b7 Unlimited cat coins"
         - "Catzy \u00b7 Unlock premium"
         - "Chess Scanner \u00b7 Unlock premium"
+        - "Citra \u00b7 Remove ads"
         - "ClassDojo \u00b7 Unlock progress reports"
         - "Clink \u00b7 Unlock Pro"
         - "Clip Studio Paint \u00b7 Lower Android requirement"
@@ -903,6 +906,7 @@ body:
         - "MovieBox \u00b7 Hide permanent notification"
         - "MovieBox \u00b7 Remove ads"
         - "MovieBox \u00b7 Unlock premium"
+        - "MuscleWiki \u00b7 Clone routines"
         - "MuscleWiki \u00b7 GmsCore support"
         - "MuscleWiki \u00b7 Unlock premium"
         - "Musicolet \u00b7 Unlock premium"

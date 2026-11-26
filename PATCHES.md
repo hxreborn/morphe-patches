@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0-dev.5** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**636 patches** across **204 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.6** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**638 patches** across **205 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -695,6 +695,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="chess-scanner-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/chessscanner/misc/premium/UnlockPremiumPatch.kt) | Unlocks Chess Scanner Pro. |
+
+---
+
+## Citra (com.theemulator.citra)
+
+<img src="https://publicmetadata.co.uk/com.theemulator.citra" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| b3105a4-googleplay |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="citra-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/citra/ads/RemoveAdsPatch.kt) | Removes ads during onboarding, browsing, and game launch. Shows a one-time note about Azahar on first launch. |
 
 ---
 
@@ -1812,6 +1827,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
+| <a id="musclewiki-clone-routines"></a>[**Clone routines**](patches/src/main/kotlin/app/morphe/patches/musclewiki/misc/clone/CloneRoutinesPatch.kt) | Add Duplicate to the routine list and routine detail menus. |
 | <a id="musclewiki-gmscore-support"></a>**GmsCore support** | Signs in through GmsCore instead of Google Play Services. Requires GmsCore to be installed. |
 | <a id="musclewiki-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/musclewiki/misc/premium/UnlockPremiumPatch.kt) | Unlocks MuscleWiki Premium and removes ads. Requires a signed-in account. |
 
