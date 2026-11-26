@@ -105,6 +105,7 @@ internal val patchesSettingsPatch = patch {
                 "unlock_viber_plus" to "premium",
                 "unfiled_chats" to "folder_off",
                 "filter_business_chats" to "business_messages",
+                "ignore_accents_in_contact_search" to "search",
                 "select_business_chats" to "checklist",
                 "remove_online_status_limit" to "timer_off",
                 "hide_promotions" to "promotions",

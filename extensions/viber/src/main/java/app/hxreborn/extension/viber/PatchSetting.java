@@ -30,9 +30,11 @@ enum PatchSetting {
     REMOVE_TYPING_PRIVACY_BANNER("Chats", "removeTypingPrivacyBanner", true),
     REMOVE_LIST_GAPS("Chats", "removeListGaps", true), DISABLE_AI_FEATURES("Chats", "Disable AI features", true),
     SAVE_DISAPPEARING_MEDIA("Chats", "saveDisappearingMedia", false),
-    FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", true), UNFILED_CHATS("Folders", "unfiledChats", true),
-    START_FOLDER("Folders", "startFolder", true, true), RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", false),
-    HIDE_ADS("Ads", "Hide ads", false), HIDE_PROMOTIONS("Ads", "hidePromotions", true),
+    FILTER_BUSINESS_CHATS("Chats", "filterBusinessChats", true),
+    IGNORE_ACCENTS_IN_CONTACT_SEARCH("Chats", "ignoreAccentsInContactSearch", false),
+    UNFILED_CHATS("Folders", "unfiledChats", true), START_FOLDER("Folders", "startFolder", true, true),
+    RAISE_FOLDER_LIMIT("Folders", "raiseFolderLimit", false), HIDE_ADS("Ads", "Hide ads", false),
+    HIDE_PROMOTIONS("Ads", "hidePromotions", true),
     HIDE_NAVIGATION_BUTTONS("Navigation", "Hide navigation buttons", true),
     HIDE_MORE_ITEMS("Navigation", "Hide More screen items", false),
     REMOVE_ONLINE_STATUS_LIMIT("Privacy", "removeOnlineStatusLimit", false),
@@ -77,6 +79,7 @@ enum PatchSetting {
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItemsName();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtonsName();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsName();
+            case IGNORE_ACCENTS_IN_CONTACT_SEARCH -> AppliedPatches.ignoreAccentsInContactSearchName();
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimitName();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalyticsName();
             case LINK_AS_SECONDARY_DEVICE -> AppliedPatches.linkAsSecondaryDeviceName();
@@ -100,6 +103,7 @@ enum PatchSetting {
             }
             case SAVE_DISAPPEARING_MEDIA -> AppliedPatches.saveDisappearingMediaDescription();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChatsDescription();
+            case IGNORE_ACCENTS_IN_CONTACT_SEARCH -> AppliedPatches.ignoreAccentsInContactSearchDescription();
             case START_FOLDER -> AppliedPatches.startFolderDescription();
             case UNFILED_CHATS -> AppliedPatches.unfiledChatsDescription();
             case RAISE_FOLDER_LIMIT -> AppliedPatches.raiseFolderLimitDescription();
@@ -132,6 +136,7 @@ enum PatchSetting {
             case HIDE_MORE_ITEMS -> AppliedPatches.hideMoreItems();
             case HIDE_NAVIGATION_BUTTONS -> AppliedPatches.hideNavigationButtons();
             case FILTER_BUSINESS_CHATS -> AppliedPatches.filterBusinessChats();
+            case IGNORE_ACCENTS_IN_CONTACT_SEARCH -> AppliedPatches.ignoreAccentsInContactSearch();
             case REMOVE_ONLINE_STATUS_LIMIT -> AppliedPatches.removeOnlineStatusLimit();
             case DISABLE_ANALYTICS -> AppliedPatches.disableAnalytics();
             case LINK_AS_SECONDARY_DEVICE -> AppliedPatches.linkAsSecondaryDevice();

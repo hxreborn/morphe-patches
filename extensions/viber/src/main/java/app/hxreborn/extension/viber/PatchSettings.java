@@ -135,6 +135,11 @@ public final class PatchSettings {
         return original || unlockViberPlus();
     }
 
+    public static boolean ignoreAccentsInContactSearch() {
+        return AppliedPatches.ignoreAccentsInContactSearch()
+                && isEnabled(PatchSetting.IGNORE_ACCENTS_IN_CONTACT_SEARCH.key);
+    }
+
     public static boolean removeOnlineStatusLimit() {
         return AppliedPatches.removeOnlineStatusLimit() && isEnabled(PatchSetting.REMOVE_ONLINE_STATUS_LIMIT.key);
     }
