@@ -23,6 +23,9 @@ inputs:
   preview-issue:
     description: Read one bug or feature issue and summarize triage with a read-only token.
     default: ""
+  openrouter-key:
+    description: Key for the wording check on bug and feature issues. Without it the check does nothing.
+    default: ""
 
 runs:
   using: composite
@@ -354,6 +357,70 @@ runs:
                 printf '<!-- related-issues-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" related issues="$related")" > comment.md
                 change_issue comment --body-file comment.md
               fi
+            fi
+            ;;
+        esac
+
+    - name: Check the issue wording
+      if: >-
+        inputs.preview-issue == '' && github.event_name == 'issues' &&
+        (contains(github.event.issue.labels.*.name, 'bug') || contains(github.event.issue.labels.*.name, 'enhancement')) &&
+        !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
+        github.event.issue.user.type != 'Bot' &&
+        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association) &&
+        github.event.issue.state == 'open' &&
+        (github.event.action == 'opened' ||
+        (github.event.action == 'edited' && toJSON(github.event.changes.body) != 'null'))
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-key }}
+        ISSUE: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        PATCHES_LIST: ${{ inputs.patches-list }}
+        CATEGORY: ${{ inputs.requests-category }}
+      run: |
+        list="$PWD/$PATCHES_LIST"
+        cd "$RUNNER_TEMP"
+        event=$GITHUB_EVENT_PATH
+        jq -r '.issue.body // ""' "$event" > wording-body.md
+        if jq -e '.issue.labels | any(.name == "bug")' "$event" >/dev/null; then
+          kind=bug
+          cp verdict.json wording-verdict.json
+        else
+          kind=feature
+          python3 "${{ github.action_path }}/feature_request.py" wording-body.md "$list" "$CATEGORY" > wording-verdict.json
+        fi
+        ISSUE_TITLE=$(jq -r '.issue.title // ""' "$event") \
+          python3 "${{ github.action_path }}/wording_check.py" "$kind" wording-body.md wording-verdict.json "$list" > wording.json
+        state=$(jq -r .state wording.json)
+        echo "#$ISSUE: wording $state"
+        [ "$state" != none ] || exit 0
+        jq -j .comment wording.json > comment.md
+
+        previous=$(gh api "repos/$REPO/issues/$ISSUE/comments" --paginate \
+          --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- field-check-bot -->"))) | .body | @json' |
+          tail -n 1 | jq -r '. // empty')
+
+        title=$(jq -r .title wording.json)
+        if [ -n "$title" ]; then
+          renamed_by=$(gh api "repos/$REPO/issues/$ISSUE/timeline" --paginate \
+            --jq '.[] | select(.event == "renamed" and .actor.login != "github-actions[bot]") | .actor.login')
+          [ -n "$renamed_by" ] || gh issue edit "$ISSUE" --repo "$REPO" --title "$title"
+        fi
+
+        case "$state" in
+          needs_info)
+            if [ "$(cat comment.md)" != "$previous" ]; then
+              gh issue edit "$ISSUE" --repo "$REPO" --add-label "$(jq -r '.labels | join(",")' wording.json)"
+              gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
+            fi
+            ;;
+          complete)
+            if [ -n "$previous" ] && [ "$(cat comment.md)" != "$previous" ]; then
+              mapfile -t outdated < <(jq -r '.issue.labels[].name | select(. == "needs info")' "$event")
+              bash -eo pipefail "${{ github.action_path }}/remove_bot_labels.sh" "$ISSUE" "${outdated[@]}"
+              gh issue comment "$ISSUE" --repo "$REPO" --body-file comment.md
             fi
             ;;
         esac

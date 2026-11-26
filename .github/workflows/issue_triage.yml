@@ -66,6 +66,14 @@ jobs:
        contains(github.event.issue.labels.*.name, 'enhancement') &&
        github.event.issue.user.type != 'Bot' &&
        !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) ||
+      (github.event_name == 'issues' && github.event.action == 'edited' &&
+       github.event.issue.state == 'open' &&
+       toJSON(github.event.changes.body) != 'null' &&
+       contains(github.event.issue.labels.*.name, 'enhancement') &&
+       contains(github.event.issue.labels.*.name, 'needs info') &&
+       !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
+       github.event.issue.user.type != 'Bot' &&
+       !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) ||
       (github.event_name == 'issues' &&
        contains(github.event.issue.labels.*.name, 'bug') &&
        !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
@@ -91,3 +99,4 @@ jobs:
         with:
           token: ${{ github.token }}
           dry-run: ${{ inputs.dry-run || false }}
+          openrouter-key: ${{ secrets.OPENROUTER_API_KEY }}
