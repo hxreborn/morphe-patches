@@ -443,9 +443,11 @@ if args[:1] == ["api"]:
     if re.fullmatch(r"repos/[\w.-]+/[\w.-]+/issues/\d+/timeline", path):
         if state.get("timeline_fails"):
             finish(1)
+        if "actor.login" in expression:
+            finish(0, "".join(f"{login}\n" for login in state.get("closers", [])))
         finish(0, "".join(f"{commit}\n" for commit in state["closing"]))
     if re.fullmatch(r"repos/[\w.-]+/[\w.-]+/issues/\d+/comments", path):
-        marker = re.search(r'contains\("(<!--.*?-->)"\)', expression)
+        marker = re.search(r'(?:contains|startswith)\("(<!--.*?)"\)', expression)
         if not marker or "github-actions[bot]" not in expression:
             finish(1)
         finish(0, "".join(f"{i}\n" for i, body in enumerate(state["bot_comments"], 1) if marker.group(1) in body))
@@ -507,6 +509,8 @@ CRASHING = "> 18\\. Proceed anyway ! 🤌🏻\n\napp is crashing on launch"
 FIXED_BUG = dict(closing=[RELEASED_SHA], labels=("bug",))
 ETA = "when is this getting released? A new release hasn't been built yet with your commit."
 UNRELEASED_SENT = UNRELEASED_MARKER + "\nx"
+REVIEW_CLOSED = "<!-- issue-triage:closed rechecks=0 -->\nThis issue was closed automatically."
+BOT_LOGIN = "github-actions[bot]"
 REPLY_CASES = [
     ("an ETA question on an unreleased closed issue gets the unreleased line", dict(body=ETA, closing=[UNRELEASED_SHA]), 0, UNRELEASED_MARKER),
     ("an ETA question once the commit is tagged gets the redirect", dict(body=ETA, closing=[RELEASED_SHA]), 0, CLOSED_MARKER),
@@ -538,6 +542,9 @@ REPLY_CASES = [
     ("a reporter closing their own issue with a comment gets no reply", dict(body=CRASHING, author="asker", closing=["-"], closed_at="2026-11-25T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, None),
     ("a reporter commenting on their own issue a day after closing gets the redirect", dict(body=CRASHING, author="asker", closing=["-"], closed_at="2026-11-24T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, CLOSED_MARKER),
     ("another user commenting as the issue closes gets the redirect", dict(body=CRASHING, closing=["-"], closed_at="2026-11-25T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, CLOSED_MARKER),
+    ("a reply on an issue the review closed gets no reply", dict(body=CRASHING, closing=["-"], closers=[BOT_LOGIN], bot_comments=[REVIEW_CLOSED], labels=("bug",)), 0, None),
+    ("a reply on a review-closed issue a person closed later gets the redirect", dict(body=CRASHING, closing=["-"], closers=[BOT_LOGIN, "maintainer"], bot_comments=[REVIEW_CLOSED], labels=("bug",)), 0, CLOSED_MARKER),
+    ("a reply on an issue the bot closed without a review comment gets the redirect", dict(body=CRASHING, closing=["-"], closers=[BOT_LOGIN], labels=("bug",)), 0, CLOSED_MARKER),
     ("a failing timeline lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], timeline_fails=True), 1, None),
     ("a failing tag lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], tag_fails=True), 128, None),
 ]

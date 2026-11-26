@@ -19,6 +19,7 @@ SAME_MEANING = {
 }
 ERROR_CODE = re.compile(r"\b(?:INSTALL_FAILED_[A-Z0-9_]+|[A-Z][A-Za-z]+(?:Exception|Error))\b")
 MAX_RESULTS = 3
+TITLE_PREFIX = re.compile(r"^(?:\[[^\]]*\]|(?:bug|feat|question)(?:\([^()]*\))?):\s*", re.I)
 
 
 def words(text):
@@ -31,7 +32,7 @@ def meaning(word):
 
 def suggestions(issue, app, label, repo):
     fields = parse_fields(issue["body"] or "")
-    title = issue["title"].split("]: ", 1)[-1]
+    title = TITLE_PREFIX.sub("", issue["title"])
     patch = field(fields, "Patch that breaks it").partition("\u00b7")[2].strip()
     error = ERROR_CODE.search(field(fields, "Error logs", "Debug log"))
     subject = field(fields, "Feature description") if label == "enhancement" else field(fields, "Actual behaviour")

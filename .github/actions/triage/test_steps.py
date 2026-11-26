@@ -8,6 +8,9 @@ import sys
 import tempfile
 from pathlib import Path
 
+import related_issues
+from related_issues import TITLE_PREFIX
+
 HERE = Path(__file__).resolve().parent
 BOT = "github-actions[bot]"
 PERSON = "hxreborn"
@@ -152,39 +155,6 @@ while [ $# -gt 0 ]; do [ "$1" = -o ] && cp "$FAKE_REGISTRY" "$2"; shift; done
 '''
 
 
-FAKE_MODEL_ENDPOINT = r'''import os
-import urllib.error
-import urllib.request
-
-
-class Reply:
-    def __init__(self, body):
-        self.body = body
-
-    def read(self, size=-1):
-        return self.body
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *exc):
-        return False
-
-
-def urlopen(request, timeout=None):
-    with open(os.environ["FAKE_REVIEW_LOG"], "a") as log:
-        log.write(request.full_url + "\n")
-    status = int(os.environ["FAKE_REVIEW_STATUS"])
-    if status != 200:
-        raise urllib.error.HTTPError(request.full_url, status, "error", {}, None)
-    return Reply(os.environ["FAKE_REVIEW_REPLY"].encode())
-
-
-if "FAKE_REVIEW_LOG" in os.environ:
-    urllib.request.urlopen = urlopen
-'''
-
-
 def step(name):
     lines = (HERE / "action.yml").read_text().splitlines()
     start = lines.index(f"    - name: {name}")
@@ -216,13 +186,10 @@ def opened(repo, number, title):
 
 
 def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=None, action="edited", events=None,
-        association="NONE", tagged_lists=None, preview=False, key="", reply=None, reply_status=200):
-    global review_requests
+        association="NONE", tagged_lists=None, preview=False):
     with tempfile.TemporaryDirectory() as temp:
         temp = Path(temp)
         (temp / "bin").mkdir()
-        (temp / "python").mkdir()
-        (temp / "python" / "sitecustomize.py").write_text(FAKE_MODEL_ENDPOINT)
         (temp / "runner").mkdir()
         for name, text in (("gh", FAKE_GH), ("curl", FAKE_CURL)):
             (temp / "bin" / name).write_text(text)
@@ -251,9 +218,7 @@ def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=N
             "DRY_RUN": "false", "RUNNER_TEMP": str(temp / "runner"), "GITHUB_EVENT_PATH": str(temp / "event.json"),
             "ACTION": action, "ASSOCIATION": association, "CLOSED": str(event_issue.get("state") == "closed").lower(),
             "PREVIEW_ISSUE": str(issue_number) if preview else "", "GITHUB_STEP_SUMMARY": str(temp / "summary.md"),
-            "GITHUB_OUTPUT": str(temp / "output.txt"), "OPENROUTER_API_KEY": key, "PYTHONPATH": str(temp / "python"),
-            "FAKE_REVIEW_LOG": str(temp / "review.log"), "FAKE_REVIEW_STATUS": str(reply_status),
-            "FAKE_REVIEW_REPLY": json.dumps({"choices": [{"message": {"content": json.dumps(reply)}}]}),
+            "GITHUB_OUTPUT": str(temp / "output.txt"),
         }
         status = 0
         for name in steps:
@@ -262,8 +227,6 @@ def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=N
             if status:
                 break
         state = json.loads((temp / "state.json").read_text())
-        review_log = temp / "review.log"
-        review_requests = len(review_log.read_text().splitlines()) if review_log.exists() else 0
         mutations = [" ".join(c[:3]) for c in state["calls"] if c[0] == "issue" and c[1] in ("comment", "close", "reopen", "edit")]
         if preview:
             summary, output = temp / "summary.md", temp / "output.txt"
@@ -272,11 +235,9 @@ def run(issues, steps, issue_number="", registry=True, fail_on="", event_issue=N
         return status, state["issues"], mutations + state["mutations"]
 
 
-review_requests = 0
 SWEEP = ["Triage app requests"]
 UPDATE = ["Triage app update requests"]
 BUG = ["Check the report", "Act on the verdict"]
-WORDING = ["Check the issue wording"]
 failures = 0
 checks = 0
 
@@ -636,6 +597,37 @@ check(status == 0 and mutations == ["issue comment 20"] and issues["20"]["state"
       and "[#19](https://redirect.github.com/hxreborn/morphe-patches/issues/19)" in issues["20"]["comments"][0]["body"],
       "a complete new report links an earlier report that names the same problem in other words")
 
+conventional_title = "bug(Supported): Restore from Google drive not working"
+conventional_report = issue(conventional_title, runtime_body, labels=("bug",))
+conventional_earlier = issue("bug(Supported): Backup fails without GmsCore support", runtime_body, labels=("bug",))
+status, issues, mutations = run({"19": conventional_earlier, "20": conventional_report}, BUG,
+                                issue_number=20, event_issue={**runtime_payload, "title": conventional_title}, action="opened")
+check(status == 0 and mutations == ["issue comment 20"]
+      and "[#19](https://redirect.github.com/hxreborn/morphe-patches/issues/19)" in issues["20"]["comments"][0]["body"],
+      "a renamed report with a conventional title links an earlier report with one")
+
+for title, rest in (("[Bug]: Restore fails", "Restore fails"), ("[Not working]: Supported: restore", "Supported: restore"),
+                    ("bug: Restore fails", "Restore fails"), ("feat(Supported): Dark theme", "Dark theme"),
+                    ("question: How to restore", "How to restore"), ("Restore fails", "Restore fails"),
+                    ("bugfix: Restore fails", "bugfix: Restore fails")):
+    check(TITLE_PREFIX.sub("", title) == rest, f"the related report search drops the prefix of {title!r}")
+
+searched = []
+
+
+def record_search(command, **options):
+    searched.append(command[-1])
+    return subprocess.CompletedProcess(command, 0, stdout="[]")
+
+
+real_run = related_issues.subprocess.run
+related_issues.subprocess.run = record_search
+related_issues.suggestions({"number": 20, "title": "feat(Supported): Restore from Google drive", "body": ""},
+                           "Supported", "bug", "hxreborn/morphe-patches")
+related_issues.subprocess.run = real_run
+check(searched and not any(word in query.split() for query in searched for word in ("feat", "bug", "question")),
+      "the related report search never queries the title prefix")
+
 earlier_crash = issue("[Not working]: Supported crashes on launch", runtime_body, labels=("bug",))
 status, issues, mutations = run({"19": earlier_crash, "20": restore_report}, BUG,
                                 issue_number=20, event_issue=restore_payload, action="opened")
@@ -736,158 +728,6 @@ check(status == 0 and mutations == [] and output == "kind=feature\n"
 
 status, mutations, summary, output = run(preview_issues, PREVIEW, issue_number="0", preview=True)
 check(status != 0 and mutations == [] and summary == "", "preview rejects nonpositive issue numbers")
-
-WORDING_MARKER = "<!-- field-check-bot -->"
-wording_payload = {"number": 20, "state": "open", "title": "[Bug]: x", "body": bug_body, "labels": ["bug"]}
-complete_reply = {"title": "Supported patching stops with an error dialog", "verdict": "complete", "missing": []}
-needs_reply = {"title": "Supported patching stops with an error dialog", "verdict": "needs_info",
-               "missing": ["steps", "actual", "banana"]}
-
-
-def wording(reply, timeline=(), comments=(), labels=("bug",), key="k", status=200, body=bug_body, payload=None, steps=BUG + WORDING):
-    return run({"20": issue("[Bug]: x", body, labels=labels, timeline=timeline, comments=comments)}, steps,
-               issue_number=20, event_issue={**(payload or wording_payload), "body": body, "labels": list(labels)},
-               action="opened", key=key, reply=reply, reply_status=status)
-
-
-# when
-status, issues, mutations = wording(complete_reply)
-
-# then
-check(status == 0 and issues["20"]["title"] == "[Bug]: Supported patching stops with an error dialog"
-      and mutations == ["issue edit 20"] and review_requests == 1,
-      "a complete report gets a clearer title and no comment")
-
-# when
-status, issues, mutations = wording(complete_reply, timeline=[event("renamed", PERSON)])
-
-# then
-check(status == 0 and issues["20"]["title"] == "[Bug]: x" and mutations == [],
-      "a title a person changed is not renamed")
-
-# when
-status, issues, mutations = wording(complete_reply, timeline=[event("renamed", BOT)])
-
-# then
-check(status == 0 and issues["20"]["title"] == "[Bug]: Supported patching stops with an error dialog",
-      "a title only the bot changed before is renamed")
-
-# when
-status, issues, mutations = wording({**complete_reply, "title": "Supported stops, see https://evil.example"})
-
-# then
-check(status == 0 and issues["20"]["title"] == "[Bug]: x" and mutations == [],
-      "a suggested title with a link is not applied")
-
-# when
-status, issues, mutations = wording(needs_reply)
-comment = issues["20"]["comments"][-1]["body"]
-
-# then
-check(status == 0 and "needs info" in issues["20"]["labels"] and mutations == ["issue edit 20", "issue edit 20", "issue comment 20"]
-      and comment.startswith(WORDING_MARKER) and "- The steps don't say how to reproduce the problem." in comment
-      and "- The actual behaviour isn't described." in comment and "banana" not in comment
-      and "AI" not in comment and "model" not in comment.lower(),
-      "a needs_info answer renames, labels and posts the canned lines for the named fields")
-
-# when
-status, again, mutations = wording(needs_reply, labels=("bug", "needs info"), comments=(comment,),
-                                   timeline=[labeled("needs info", BOT), event("renamed", BOT)])
-
-# then
-check(status == 0 and mutations == ["issue edit 20"] and len(again["20"]["comments"]) == 1,
-      "an unchanged needs_info answer posts no second comment")
-
-# when
-status, issues, mutations = wording({**needs_reply, "verdict": "junk"}, labels=("bug",))
-
-# then
-check(status == 0 and issues["20"]["state"] == "OPEN" and "issue close 20" not in mutations
-      and issues["20"]["title"] == "[Bug]: x" and "needs info" in issues["20"]["labels"],
-      "a junk answer never closes and asks for information instead")
-
-# when
-status, issues, mutations = wording(complete_reply, labels=("bug", "needs info"), comments=(comment,),
-                                    timeline=[labeled("needs info", BOT)])
-
-# then
-check(status == 0 and issues["20"]["labels"] == ["bug"] and issues["20"]["comments"][-1]["body"].startswith(WORDING_MARKER)
-      and "no longer applies" in issues["20"]["comments"][-1]["body"],
-      "a report completed after a wording note loses the bot's label and gets one update reply")
-
-# given
-short_payload = {**wording_payload, "body": short_body}
-
-# when
-status, issues, mutations = wording(complete_reply, body=short_body)
-_, flagged_only, flagged_mutations = run({"20": issue("[Bug]: x", short_body, labels=("bug",))}, BUG,
-                                         issue_number=20, event_issue=short_payload, action="opened")
-
-# then
-check(status == 0 and review_requests == 0 and issues == flagged_only and mutations == flagged_mutations
-      and issues["20"]["title"] == "[Bug]: x",
-      "a report the deterministic checks flag is not sent for review and keeps their result")
-
-# when
-status, issues, mutations = wording(complete_reply, key="")
-
-# then
-check(status == 0 and review_requests == 0 and mutations == [] and issues["20"]["title"] == "[Bug]: x",
-      "without a key the step changes nothing")
-
-# when
-status, issues, mutations = wording(complete_reply, status=429)
-
-# then
-check(status == 0 and mutations == [] and issues["20"]["title"] == "[Bug]: x" and review_requests > 0,
-      "a rate-limited answer leaves the issue untouched and the step succeeds")
-
-# when
-status, issues, mutations = wording({"title": "x", "verdict": "banana", "missing": []})
-
-# then
-check(status == 0 and mutations == [], "a schema-invalid answer leaves the issue untouched and the step succeeds")
-
-feature_body = "### App\n\nSupported\n\n### Feature description\n\nAdd a dark theme to the settings screen.\n"
-feature_payload = {"number": 20, "state": "open", "title": "[Feature]: x", "body": feature_body, "labels": ["enhancement"]}
-feature_reply = {"title": "Supported lacks a dark settings theme", "verdict": "needs_info", "missing": ["motivation", "steps"]}
-
-
-def feature(reply, body=feature_body, labels=("enhancement",), comments=(), key="k", action="opened", steps=WORDING):
-    return run({"20": issue("[Feature]: x", body, labels=labels, comments=comments)}, steps, issue_number=20,
-               event_issue={**feature_payload, "body": body, "labels": list(labels)}, action=action, key=key, reply=reply)
-
-
-# when
-status, issues, mutations = feature(feature_reply)
-comment = issues["20"]["comments"][-1]["body"]
-
-# then
-check(status == 0 and issues["20"]["title"] == "[Feature]: Supported lacks a dark settings theme"
-      and "needs info" in issues["20"]["labels"] and comment.startswith(WORDING_MARKER)
-      and "- The motivation doesn't say why the feature is needed." in comment and "reproduce" not in comment,
-      "a feature request is renamed and asked for the motivation with the feature field names")
-
-# when
-status, issues, mutations = feature(feature_reply, action="edited", labels=("enhancement", "needs info"), comments=(comment,))
-
-# then
-check(status == 0 and mutations == ["issue edit 20"] and len(issues["20"]["comments"]) == 1,
-      "an edited feature request with an unchanged answer posts no second comment")
-
-# when
-unsupported_feature = "### App\n\nUnknown Reader\n\n### Feature description\n\nAdd collection folders.\n"
-status, issues, mutations = feature(feature_reply, body=unsupported_feature)
-
-# then
-check(status == 0 and review_requests == 0 and mutations == [],
-      "a feature request the deterministic checks close is not sent for review")
-
-# when
-status, issues, mutations = feature(feature_reply, key="")
-
-# then
-check(status == 0 and mutations == [] and review_requests == 0, "a feature request without a key changes nothing")
 
 print(f"\n{checks - failures}/{checks} passed")
 sys.exit(1 if failures else 0)

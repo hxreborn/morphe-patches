@@ -86,28 +86,6 @@ def closed(lines, footer):
     return "\n\n".join(["This issue is now closed:", "\n".join(f"- {line}" for line in lines), footer])
 
 
-FIELD_QUESTIONS = {
-    "bug": {
-        "description": "The description doesn't say what goes wrong.",
-        "steps": "The steps don't say how to reproduce the problem.",
-        "expected": "The expected behaviour isn't described.",
-        "actual": "The actual behaviour isn't described.",
-        "logs": "The logs don't show the error.",
-        "device": "The device and Android version aren't clear.",
-        "version": "The app version isn't clear.",
-    },
-    "feature": {
-        "description": "The description doesn't say what the feature should do.",
-        "motivation": "The motivation doesn't say why the feature is needed.",
-    },
-}
-
-
-def unclear_fields(kind, fields):
-    asked = fields.split(",")
-    return missing([line for name, line in FIELD_QUESTIONS[kind].items() if name in asked])
-
-
 REPLIES = {
     "releases": lambda: RELEASES,
     "request-passes": lambda: updated("request", ", and the request is open for votes"),
@@ -121,7 +99,6 @@ REPLIES = {
                                    f"If it still happens, please open a new issue:\n\n{ALL_FORMS}"),
     "issue-needs-info-closed": lambda: ("This issue is now closed because the missing information wasn't added within 3 days. "
                                         f"Feel free to open a new issue with it:\n\n{ALL_FORMS}"),
-    "unclear-fields": unclear_fields,
     "related": lambda issues: ("These issues may be about the same problem:\n\n"
                                f"{issues}\n\nIf one of them matches, please comment there and close this one. Thanks!"),
     "shipped": lambda app, tag: (f"{app} has been added in {release_link(tag)}. This discussion is now closed. "
