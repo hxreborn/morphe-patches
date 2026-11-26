@@ -1422,6 +1422,18 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "126.46.0.14", versionCode = 246014, minSdk = 26)),
     )
 
+    val PCAPDROID = Compatibility(
+        name = "PCAPdroid",
+        packageName = "com.emanuelef.remote_capture",
+        apkFileType = ApkFileType.APKM,
+        appIconColor = 0x4527A0,
+        signatures = setOf(
+            "ac701125e653189b2bbaa78fba60c1136b88b8780078db0dc4257f019c81c9fe",
+            "ca59622be5fed99a072a4b03e9a1aa05ac26354d3ffb1a2c7208cdd755463456",
+        ),
+        targets = listOf(AppTarget(version = "2.0.5", versionCode = 98, minSdk = 23)),
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",
