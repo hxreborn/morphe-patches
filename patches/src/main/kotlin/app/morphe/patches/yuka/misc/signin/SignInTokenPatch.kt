@@ -35,7 +35,7 @@ private val EXPIRY_CLAIM = Regex("\"exp\"\\s*:\\s*(\\d+)")
 val signInTokenPatch = patch(
     name = "Sign-in token",
     description = "Signs in with an App Check token. " +
-        "Requires a token copied from Yuka installed from Google Play on a rooted phone. " +
+        "Get one from the token bot, or copy it from Yuka installed from Google Play on a rooted phone. " +
         "Steps are in the Yuka section of PATCHES.md.",
     default = false,
 ) {
@@ -49,7 +49,7 @@ val signInTokenPatch = patch(
     val appCheckToken by stringOption(
         key = "appCheckToken",
         title = "App Check token",
-        description = "Copy it from Yuka installed from Google Play on a rooted phone. Steps: $STEPS_URL",
+        description = "Get it from the token bot, or copy it from Yuka installed from Google Play on a rooted phone. Steps: $STEPS_URL",
         required = true,
     ) {
         it != null && APP_CHECK_TOKEN_FORMAT.matches(it.trim())
