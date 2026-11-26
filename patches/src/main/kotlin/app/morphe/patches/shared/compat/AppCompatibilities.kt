@@ -2346,4 +2346,13 @@ internal object AppCompatibilities {
             AppTarget(version = "5.39.2", versionCode = 1254760, minSdk = 26),
         ),
     )
+
+    val MAGIC_POSER = Compatibility(
+        name = "Magic Poser",
+        packageName = "com.magicposernew",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x9AE2FF,
+        signatures = setOf("1e101132b6b3882107bfe0c58477162afb87ea0c60553a4daabb29720c2377b0"),
+        targets = listOf(AppTarget(version = "3.1", versionCode = 623, minSdk = 28)),
+    )
 }
