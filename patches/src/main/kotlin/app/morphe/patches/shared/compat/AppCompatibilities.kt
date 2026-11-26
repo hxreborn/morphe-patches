@@ -2155,6 +2155,15 @@ internal object AppCompatibilities {
         ),
     )
 
+    val VOCAT = Compatibility(
+        name = "VoCat - My Own Vocabulary",
+        packageName = "kr.co.devstory.vocat",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x2D363F,
+        signatures = setOf("a0e89e1d2a45c1897186beccee98a7e6a9a1aaae335e20d97b80ad3f208b2820"),
+        targets = listOf(AppTarget(version = "5.2.1", versionCode = 336, minSdk = 24)),
+    )
+
     val VPNIFY = Compatibility(
         name = "vpnify",
         packageName = "com.vpn.free.hotspot.secure.vpnify",
