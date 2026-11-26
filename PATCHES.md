@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0-dev.7** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**639 patches** across **205 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.8** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**640 patches** across **205 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -2557,6 +2557,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-f-droid-amoled-dark-theme"></a>**AMOLED dark theme** | Replaces the dark theme background with pure black and can dim menus, bars and buttons. |
 | <a id="proton-vpn-f-droid-custom-accent-color"></a>**Custom accent color** | Changes the accent color. Choose a color in the patches menu. |
 | <a id="proton-vpn-f-droid-disable-telemetry"></a>**Disable telemetry** | Stops sending usage statistics and diagnostics to Proton. |
+| <a id="proton-vpn-f-droid-enable-guest-mode"></a>[**Enable guest mode**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/guest/EnableGuestModePatch.kt) | Adds Continue as guest to the welcome screen. |
 | <a id="proton-vpn-f-droid-floating-navigation-bar"></a>**Floating navigation bar** | Adds optional floating navigation with adjustable blur and glass. |
 | <a id="proton-vpn-f-droid-hide-upgrade-promotions"></a>**Hide upgrade promotions** | Hides settings that need a paid plan, upgrade banners, the Discover VPN Plus carousel and special offers. |
 | <a id="proton-vpn-f-droid-material-3-switches"></a>**Material 3 switches** | Adds check and close icons to switches. |

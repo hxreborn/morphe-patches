@@ -528,11 +528,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.89.0-dev.8"
         - "1.89.0-dev.7"
         - "1.89.0-dev.6"
         - "1.89.0-dev.5"
         - "1.89.0-dev.4"
-        - "1.89.0-dev.3"
         - "1.88.0"
         - "Older than these"
         # /generated
@@ -1046,6 +1046,7 @@ body:
         - "Proton VPN (F-Droid) \u00b7 AMOLED dark theme"
         - "Proton VPN (F-Droid) \u00b7 Custom accent color"
         - "Proton VPN (F-Droid) \u00b7 Disable telemetry"
+        - "Proton VPN (F-Droid) \u00b7 Enable guest mode"
         - "Proton VPN (F-Droid) \u00b7 Floating navigation bar"
         - "Proton VPN (F-Droid) \u00b7 Hide upgrade promotions"
         - "Proton VPN (F-Droid) \u00b7 Material 3 switches"

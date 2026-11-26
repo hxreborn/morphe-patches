@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.89.0-dev.7",
+  "version": "1.89.0-dev.8",
   "patches": [
     {
       "name": "AMOLED dark theme",
@@ -5497,6 +5497,40 @@
               },
               "isExperimental": false,
               "minSdk": 29,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable guest mode",
+      "description": "Adds Continue as guest to the welcome screen.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "ch.protonvpn.android.reproducible",
+          "name": "Proton VPN (F-Droid)",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#6D4AFF",
+          "signatures": [
+            "dcc9439ec1a6c6a8d0203f3423ee42bcc8b970628e53cb73a0393f398dd5b853"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "5.21.57.0",
+              "versionCodes": {
+                "ARM64_V8A": 605215700,
+                "ARMEABI_V7A": 605215700,
+                "X86_64": 605215700,
+                "X86": 605215700
+              },
+              "isExperimental": false,
+              "minSdk": 26,
               "description": null
             }
           ]

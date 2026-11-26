@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.89.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.7)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**639 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.89.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.8)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**640 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -213,7 +213,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 | 145 | <img src="https://publicmetadata.co.uk/proton.android.pass" width="24" height="24" align="top" alt=""> [**Proton Pass**](PATCHES.md#proton-pass-protonandroidpass) | 10 | `1.40.3`, `1.41.2`&nbsp;+3 | [`proton.android.pass`](https://play.google.com/store/apps/details?id=proton.android.pass) |
 | 146 | <img src="https://publicmetadata.co.uk/proton.android.pass.fdroid" width="24" height="24" align="top" alt=""> [**Proton Pass…**](PATCHES.md#proton-pass-f-droid-protonandroidpassfdroid "Proton Pass (F-Droid)") | 10 | `1.41.5` | [`proton.android.pass.fdr…`](https://play.google.com/store/apps/details?id=proton.android.pass.fdroid "proton.android.pass.fdroid") |
 | 147 | <img src="https://publicmetadata.co.uk/ch.protonvpn.android" width="24" height="24" align="top" alt=""> [**Proton VPN**](PATCHES.md#proton-vpn-chprotonvpnandroid) | 14 | `5.21.57.0` | [`ch.protonvpn.android`](https://play.google.com/store/apps/details?id=ch.protonvpn.android) |
-| 148 | <img src="https://publicmetadata.co.uk/ch.protonvpn.android.reproducible" width="24" height="24" align="top" alt=""> [**Proton VPN (F-Droid)**](PATCHES.md#proton-vpn-f-droid-chprotonvpnandroidreproducible) | 14 | `5.21.57.0` | [`ch.protonvpn.android.re…`](https://play.google.com/store/apps/details?id=ch.protonvpn.android.reproducible "ch.protonvpn.android.reproducible") |
+| 148 | <img src="https://publicmetadata.co.uk/ch.protonvpn.android.reproducible" width="24" height="24" align="top" alt=""> [**Proton VPN (F-Droid)**](PATCHES.md#proton-vpn-f-droid-chprotonvpnandroidreproducible) | 15 | `5.21.57.0` | [`ch.protonvpn.android.re…`](https://play.google.com/store/apps/details?id=ch.protonvpn.android.reproducible "ch.protonvpn.android.reproducible") |
 | 149 | <img src="https://publicmetadata.co.uk/com.psiphon3.subscription" width="24" height="24" align="top" alt=""> [**Psiphon**](PATCHES.md#psiphon-compsiphon3subscription) | 1 | `2.5.13` | [`com.psiphon3.subscripti…`](https://play.google.com/store/apps/details?id=com.psiphon3.subscription "com.psiphon3.subscription") |
 | 150 | <img src="https://publicmetadata.co.uk/com.cardfeed.video_public" width="24" height="24" align="top" alt=""> [**Public**](PATCHES.md#public-comcardfeedvideo_public) | 11 | `3.4.2` | [`com.cardfeed.video_publ…`](https://play.google.com/store/apps/details?id=com.cardfeed.video_public "com.cardfeed.video_public") |
 | 151 | <img src="https://publicmetadata.co.uk/ru.iiec.pydroid3" width="24" height="24" align="top" alt=""> [**Pydroid 3**](PATCHES.md#pydroid-3-ruiiecpydroid3) | 3 | `8.6_arm64` | [`ru.iiec.pydroid3`](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3) |
