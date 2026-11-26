@@ -15,7 +15,7 @@ import app.morphe.patches.shared.indexOfMasked
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.writeInt
-import app.morphe.patches.ultimea.misc.settings.appendNativeCode
+import app.morphe.patches.shared.misc.dart.appendNativeCode
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
 import app.morphe.patches.ultimea.misc.settings.replaceWithPlatformMethod
 import app.morphe.patches.ultimea.misc.settings.patchesSettingsPatch

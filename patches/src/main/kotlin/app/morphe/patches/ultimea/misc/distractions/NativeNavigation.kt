@@ -7,7 +7,7 @@ package app.morphe.patches.ultimea.misc.distractions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patches.shared.readInt
 import app.morphe.patches.shared.writeInt
-import app.morphe.patches.ultimea.misc.settings.appendNativeCode
+import app.morphe.patches.shared.misc.dart.appendNativeCode
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
 
 private const val INSTRUCTION_BYTES = 4
