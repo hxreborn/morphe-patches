@@ -1,4 +1,5 @@
 import json
+import sys
 import tempfile
 import zipfile
 from pathlib import Path
@@ -78,6 +79,24 @@ calls.clear()
 app_updates.sync_issues(apps, [{**record, "package": "new", "candidate": "1.2", "readiness": "untested"},
                                {**record, "package": "tagged", "candidate": "6.3_arm64", "readiness": "untested"}], "1.38.0")
 assert [c[1:3] for c in calls if c[0] == "issue" and c[1] != "list"] == [], calls
+sys.path.insert(0, str(Path(".github/actions/triage").resolve()))
+from app_update import form_options
+from test_real_reports import DUOLINGO_UPDATE_1048
+
+RESULT_CHOICES = {"Not tried": True, "Patching fails": False, "Patching works, the app misbehaves": False,
+                  "Patching works and so does the app": True}
+assert set(form_options("Patching this version", Path(".github/ISSUE_TEMPLATE/app_update.yml"))) == set(RESULT_CHOICES)
+calls.clear()
+choice_issues = [{"number": 100 + n, "state": "OPEN", "title": "[App Update]: Duolingo 6.106.6",
+                  "body": DUOLINGO_UPDATE_1048.replace("Patching fails", choice)}
+                 for n, choice in enumerate(RESULT_CHOICES)]
+app_updates.gh = lambda *args, **kw: calls.append(args) or (json.dumps(choice_issues) if args[:2] == ("issue", "list") else "")
+app_updates.sync_issues({("com.duolingo", "MOBILE"): {"package": "com.duolingo", "name": "Duolingo", "current": "6.106.6",
+                                                      "current_version_codes": []}},
+                        [{**record, "package": "com.duolingo", "candidate": None, "status": "current"}], "1.89.0")
+closed_numbers = {c[2] for c in calls if c[:2] == ("issue", "close")}
+assert closed_numbers == {str(100 + n) for n, closes in enumerate(RESULT_CHOICES.values()) if closes}, closed_numbers
+print("Scheduled sync keeps a supported-version failure open for every failure choice")
 BEREAL_LOG = """INFO: Filtering patches for com.bereal.ft v3.99.1...
 INFO: Skipping disabled: Override certificate pinning (default)
 INFO: Skipping disabled: Remove Friends of Friends tab (default)

@@ -89,8 +89,8 @@ def branches(seed):
             branch('patch has no effect on stock comparison', bug_case(), [
                 bug_case({'Does the unpatched app do the same thing': value}) for value in (
                     'I have not tried the unpatched app', 'The unpatched app fails the same way', '')]),
-            branch('unrelated required answers', bug_case(), [bug_case({key: '.'}, 'close') for key in (
-                'Steps to reproduce', 'Actual behaviour', 'Screenshots')]),
+            branch('placeholder secondary answers', bug_case(), [bug_case({key: '.'}) for key in (
+                'Steps to reproduce', 'Actual behaviour', 'Expected behaviour')]),
             branch('regression with stock control', bug_case({'What does not work': 'Something else the app used to do stopped working'}), [
                 bug_case({'What does not work': 'Something else the app used to do stopped working',
                           'Does the unpatched app do the same thing': value}, 'flag', ('needs info',)) for value in (
@@ -189,8 +189,9 @@ def branches(seed):
                 update('PATCHING WORKS, THE APP MISBEHAVES'),
                 update('Patching works, the app misbehaves', logs='```shell\nBackup does not restore data.\n```'),
                 update('Patching works, the app misbehaves', logs='https://github.com/user-attachments/files/1/trace.txt')]),
-            branch('patching failure on supported version', update('Tried but patching failed'), [
-                update('Tried but patching failed', version=version) for version in ('v1.0', '1.0 (100)', '1.0.0')]),
+            branch('patching failure on supported version', update('Patching fails'), [
+                update('Tried but patching failed'), update('Patching fails', version='v1.0'),
+                update('Patching fails', version='1.0 (100)')]),
             branch('ordinary already supported update', update('Not tried', expected='close'), [
                 update(answer, expected='close') for answer in ('Patching works', '', '_No response_')]),
             branch('failure on new untargeted version', update('Tried but patching failed', version='2.0', expected='pass'), [

@@ -77,10 +77,23 @@ class CompleteReports(unittest.TestCase):
         self.assertEqual('flag', result['verdict'])
         self.assertIn('The Error logs field has no log', result['comment'])
 
-    def test_keep_checks_for_other_required_answers(self):
+    def test_pass_placeholder_secondary_answers_when_the_description_is_clear(self):
         for field in ('steps', 'expected', 'actual', 'screenshots'):
             with self.subTest(field=field):
-                self.assertEqual('close', verdict(report(**{field: '.'}))['verdict'])
+                self.assertEqual('pass', verdict(report(**{field: '.'}))['verdict'])
+
+    def test_flag_placeholder_secondary_answers_when_nothing_describes_the_problem(self):
+        result = verdict(report(steps='.', expected='works', actual='broken'))
+        self.assertEqual('flag', result['verdict'])
+        self.assertEqual(['needs info'], result['labels'])
+        self.assertIn('The Steps to reproduce field says', result['comment'])
+
+    def test_keep_placeholder_checks_for_device_and_source(self):
+        for field in ('Device and Android version', 'APK source'):
+            with self.subTest(field=field):
+                body = report().replace(f'### {field}\n\n' + ('Android 16' if field.startswith('Device') else 'https://example.com/app.apk'),
+                                        f'### {field}\n\n.')
+                self.assertEqual('close', verdict(body)['verdict'])
 
     def test_keep_log_validation_for_unknown_failure_choices(self):
         for failure in ('', 'The app crashes on startup', 'Other', '_No response_'):
@@ -105,7 +118,6 @@ class CompleteReports(unittest.TestCase):
 
     def test_log_signal_does_not_leak_from_other_fields(self):
         for field, value in (('source', 'https://gist.github.com/example/log'),
-                             ('screenshots', 'https://github.com/user-attachments/files/123/log.txt'),
                              ('steps', 'Open the app. FATAL EXCEPTION: main is shown on screen.')):
             with self.subTest(field=field):
                 options = {'failure': 'The app opens, then crashes', 'logs': ''}

@@ -99,6 +99,8 @@ def main(event_path, manifest_path, label, verdict_path=None, output="summary"):
         return
     candidates, search_failed = suggestions(issue, app, label, repo)
     if output == "comment":
+        if search_failed and not candidates:
+            sys.exit(1)
         comment_lines(candidates, repo)
         return
     if search_failed:

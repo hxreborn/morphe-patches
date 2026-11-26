@@ -1357,9 +1357,9 @@ body:
     id: screenshots
     attributes:
       label: Screenshots
-      description: Please add the app's entry in Morphe Manager with its selected patches, and the problem on screen.
+      description: Optional. The app's entry in Morphe Manager with its selected patches, and the problem on screen when you can see it.
     validations:
-      required: true
+      required: false
   - type: textarea
     id: error-logs
     attributes:

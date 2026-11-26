@@ -62,6 +62,8 @@ def field(fields, *names):
 MIN_ANSWER_LETTERS = 8
 MIN_ANSWER_WORDS = 2
 IMAGE = re.compile(r"user-attachments/|!\[|<img\b|https?://\S+", re.I)
+MEDIA = re.compile(r"user-attachments/assets/|!\[|<img\b|<video\b|\.(?:png|jpe?g|gif|webp|mp4|mov|webm)\b", re.I)
+WORD = re.compile(r"[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]|[^\W_]+")
 FEATURE_ASK = re.compile(
     r"\b(?:please|pls|plz|can you|could you|would you|kindly)\s+(?:also\s+)?add\b|\bwould be (?:nice|great|cool|awesome)\b"
     r"|\bfeature request\b|\badd (?:an? )?(?:option|feature|patch|toggle|setting)\b|\bi(?: would)? (?:want|like|wish)\b",
@@ -107,6 +109,14 @@ def thin_answers(fields, *names):
 
 def has_image(value):
     return bool(IMAGE.search(value))
+
+
+def has_media(value):
+    return bool(MEDIA.search(value))
+
+
+def word_count(text):
+    return len(WORD.findall(unicodedata.normalize("NFKC", text)))
 
 
 def asks_for_feature(text):

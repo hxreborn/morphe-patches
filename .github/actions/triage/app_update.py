@@ -19,6 +19,10 @@ MARKER = "<!-- app-update-bot -->"
 VERSION_CODE = re.compile(r"\s*\(([\w.+-]*)\)\s*$")
 VERSION = re.compile(r"[A-Za-z0-9._+-]+(?: [A-Za-z0-9._+-]+)?")
 MAX_VERSION = 64
+RESULT_LABEL = "Patching this version"
+RESULT_FORM = Path(__file__).parents[2] / "ISSUE_TEMPLATE" / "app_update.yml"
+LEGACY_FAILURES = ("Tried but patching failed", "Patching works, the app misbehaves")
+NON_FAILURE_MARKERS = ("nottried", "andsodoes")
 
 
 def is_version(text):
@@ -47,10 +51,33 @@ def open_tracker(app, version, number, issues, apps):
                key=lambda iv: version_key(iv[1]), default=(None, ""))
 
 
+def form_options(label, form=RESULT_FORM):
+    try:
+        lines = form.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return []
+    start = next((i for i, line in enumerate(lines) if re.fullmatch(rf"\s*label:\s*{re.escape(label)}\s*", line)), None)
+    if start is None:
+        return []
+    options = []
+    collecting = False
+    for line in lines[start + 1:]:
+        if re.fullmatch(r"\s*options:\s*", line):
+            collecting = True
+        elif collecting and (item := re.fullmatch(r"\s*-\s+(.+?)\s*", line)):
+            options.append(item.group(1).strip("\"'"))
+        elif collecting or re.match(r"\s*- type:", line):
+            break
+    return options
+
+
+def failure_choices(form=RESULT_FORM):
+    choices = [*form_options(RESULT_LABEL, form), *LEGACY_FAILURES]
+    return {normalize(choice) for choice in choices if not any(marker in normalize(choice) for marker in NON_FAILURE_MARKERS)}
+
+
 def reports_failure(body):
-    return normalize(field(parse_fields(body), "Patching this version")) in {
-        "triedbutpatchingfailed", "patchingworkstheappmisbehaves",
-    }
+    return normalize(field(parse_fields(body), RESULT_LABEL)) in failure_choices()
 
 
 def decide(number, body, issues, patches_list, issue_title=""):

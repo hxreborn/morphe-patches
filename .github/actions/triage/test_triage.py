@@ -1321,7 +1321,7 @@ record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} an app named by the title and the APK source but not picked closes the report")
 
 spared = [triage(report("Showly 3.70.0"), title="[Not working]: Showly crashes like Proton Mail did"),
-          triage(report("MovieBox TV 1.2.0.0923.web_socialmedia"), title="[Not working]: MovieBox black screen"),
+          triage(report("MovieBox TV 1.2.0.0923.web_socialmedia"), title="[Not working]: MovieBox keeps buffering"),
           triage(report("Showly 3.70.0"), title="[Not working]: Proton Mail and Etsy crash")]
 ok = [r["verdict"] for r in spared] == ["pass"] * 3
 record(ok)
@@ -1333,42 +1333,45 @@ ok = nested["verdict"] == "close" and "names MovieBox TV." in nested["comment"]
 record(ok)
 print(f"{'ok  ' if ok else 'FAIL'} the longer of two nested app names is the one the title names")
 
+def terse(steps):
+    return report("Showly 3.70.0", steps=steps).replace("The premium screen opens unlocked", "Works").replace(
+        "The paywall shows", "Broken")
+
+
 placeholder = triage(report("Showly 3.70.0", steps="0"))
 blank = triage(report("Showly 3.70.0", steps="."))
-ok = placeholder["verdict"] == blank["verdict"] == "close" \
-    and "- The Steps to reproduce field says `0`, which isn't an answer." in placeholder["comment"] \
-    and "- The Steps to reproduce field says `.`, which isn't an answer." in blank["comment"]
+ok = placeholder["verdict"] == blank["verdict"] == "pass" and placeholder["comment"] == blank["comment"] == ""
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce closes the report")
+print(f"{'ok  ' if ok else 'FAIL'} a placeholder in Steps to reproduce passes when the rest describes the problem")
 
 digit = triage(report("Showly 3.70.0").replace("The paywall shows", "1"))
-letter = triage(report("Showly 3.70.0", steps="a"))
-ok = digit["verdict"] == letter["verdict"] == "close" \
-    and "- The Actual behaviour field says `1`, which isn't an answer." in digit["comment"] \
-    and "- The Steps to reproduce field says `a`, which isn't an answer." in letter["comment"]
+letter = triage(terse("a"))
+ok = digit["verdict"] == "pass" and letter["verdict"] == "flag" and letter["labels"] == ["needs info"] \
+    and "- The Steps to reproduce field says `a`, which isn't an answer." in letter["comment"] \
+    and "closes automatically after 3 days" in letter["comment"]
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} a lone digit or letter in an answer field closes the report")
+print(f"{'ok  ' if ok else 'FAIL'} a lone digit passes in Actual behaviour and a lone letter in Steps flags with needs info, got "
+      f"{digit['verdict']} and {letter['verdict']}")
 
-filler = triage(report("Showly 3.70.0", steps="No idea."))
-ok = filler["verdict"] == "close" \
+filler = triage(terse("No idea."))
+ok = filler["verdict"] == "flag" and filler["labels"] == ["needs info"] \
     and "- The Steps to reproduce field says `No idea.`, which isn't an answer." in filler["comment"]
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} a filler phrase in an answer field closes the report")
+print(f"{'ok  ' if ok else 'FAIL'} a filler phrase in Steps flags with needs info when nothing else describes the problem")
 
-thin = triage(report("Showly 3.70.0", steps="open app"))
-repeated = triage(report("Showly 3.70.0", steps="crash crash crash"))
-ok = thin["verdict"] == repeated["verdict"] == "close" \
+thin = triage(terse("open app"))
+repeated = triage(terse("crash crash crash"))
+ok = thin["verdict"] == repeated["verdict"] == "flag" \
     and "- The Steps to reproduce field says `open app`, which doesn't describe anything." in thin["comment"] \
     and "- The Steps to reproduce field says `crash crash crash`, which doesn't describe anything." in repeated["comment"]
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} steps with too few letters or one repeated word close the report")
+print(f"{'ok  ' if ok else 'FAIL'} steps with too few letters or one repeated word flag when nothing else describes the problem")
 
 no_image = triage(report("Showly 3.70.0") + "\n### Screenshots\n\nAttached: the paywall on the home screen\n")
 with_image = triage(report("Showly 3.70.0") + "\n### Screenshots\n\n![paywall](https://github.com/user-attachments/assets/1)\n")
-ok = no_image["verdict"] == "close" and with_image["verdict"] == "pass" \
-    and "- The Screenshots field has no image. Please drag the screenshots into it." in no_image["comment"]
+ok = no_image["verdict"] == "pass" and with_image["verdict"] == "pass"
 record(ok)
-print(f"{'ok  ' if ok else 'FAIL'} a Screenshots field without an image closes the report, got "
+print(f"{'ok  ' if ok else 'FAIL'} a Screenshots field without an image never closes or flags the report, got "
       f"{no_image['verdict']} and {with_image['verdict']}")
 
 no_version = triage(report("Showly 3.70.0") + "\n### Device and Android version\n\nSamsung Galaxy\n")
