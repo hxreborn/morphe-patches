@@ -5,8 +5,12 @@
 package app.morphe.patches.yuka.misc.signin
 
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.InstructionLocation.MatchAfterWithin
+import app.morphe.patcher.methodCall
 import app.morphe.patcher.string
 import com.android.tools.smali.dexlib2.AccessFlags
+
+private const val ANDROID_PACKAGE_HEADER_WINDOW = 4
 
 internal object CertificateSha1Fingerprint : Fingerprint(
     accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
@@ -25,4 +29,16 @@ internal object FirebaseInitProviderOnCreateFingerprint : Fingerprint(
 internal object AppCheckTokenFingerprint : Fingerprint(
     definingClass = TOKEN_SEED_CLASS,
     name = "token",
+)
+
+internal object AndroidPackageHeaderFingerprint : Fingerprint(
+    filters = listOf(
+        string("X-Android-Package"),
+        methodCall(
+            definingClass = "Ljava/net/URLConnection;",
+            parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;"),
+            returnType = "V",
+            location = MatchAfterWithin(ANDROID_PACKAGE_HEADER_WINDOW),
+        ),
+    ),
 )
