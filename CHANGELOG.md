@@ -1,3 +1,15 @@
+## [1.89.0-dev.7](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.6...v1.89.0-dev.7) (2026-11-26)
+
+### Bug Fixes
+
+* **MuscleWiki - Unlock premium:** open Strength Level tool ([186521a](https://github.com/hxreborn/morphe-patches/commit/186521a0d12df5fd973e15ad2d00ccf913721a4f))
+* **VLLO:** remove 13.9.0, 13.9.6 and 13.9.18 app targets ([f48fa17](https://github.com/hxreborn/morphe-patches/commit/f48fa17caaccdf4dca42338116751a553a87e0b5))
+
+### New Features
+
+* **Viber - Ignore accents in contact search:** match plain spellings ([3e6a277](https://github.com/hxreborn/morphe-patches/commit/3e6a27776bcb37601e4990b295f7b8fddc0d0cbb)), closes [#1091](https://github.com/hxreborn/morphe-patches/issues/1091)
+* **VLLO:** support 14.0.2 ([a0c274b](https://github.com/hxreborn/morphe-patches/commit/a0c274bca81f373e70f5c8ab84800495a1fad05c)), closes [#855](https://github.com/hxreborn/morphe-patches/issues/855)
+
 ## [1.89.0-dev.6](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.5...v1.89.0-dev.6) (2026-11-26)
 
 ### New Features

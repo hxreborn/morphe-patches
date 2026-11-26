@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0-dev.6** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**638 patches** across **205 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.7** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**639 patches** across **205 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -3247,6 +3247,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="viber-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/viber/ads/HideAdsPatch.kt) | Hides ads in the chat list, the More screen, Explore, search and after calls. |
 | <a id="viber-hide-image-remix"></a>[**Hide image remix**](patches/src/main/kotlin/app/morphe/patches/viber/layout/remix/HideImageRemixPatch.kt) | Hides Remix actions and the Remix introduction popup on images. |
 | <a id="viber-hide-navigation-buttons"></a>[**Hide navigation buttons**](patches/src/main/kotlin/app/morphe/patches/viber/layout/navigation/HideNavigationButtonsPatch.kt) | Hides the selected tabs from the bottom navigation bar.<br><sub>Options: Hide Calls, Hide ChatGPT, Hide Explore, +3 more</sub> |
+| <a id="viber-ignore-accents-in-contact-search"></a>[**Ignore accents in contact search**](patches/src/main/kotlin/app/morphe/patches/viber/misc/contactsearch/IgnoreAccentsInContactSearchPatch.kt) | Matches accented contact names when the search has no accents. |
 | <a id="viber-link-as-secondary-device"></a>[**Link as secondary device**](patches/src/main/kotlin/app/morphe/patches/viber/misc/secondary/LinkAsSecondaryDevicePatch.kt) | Links to your main Viber phone. |
 | <a id="viber-raise-folder-limit"></a>[**Raise folder limit**](patches/src/main/kotlin/app/morphe/patches/viber/layout/folders/RaiseFolderLimitPatch.kt) | Allows up to 10 chat folders. |
 | <a id="viber-remove-caller-id-prompts"></a>[**Remove Caller ID prompts**](patches/src/main/kotlin/app/morphe/patches/viber/layout/callerid/RemoveCallerIdPromptsPatch.kt) | Removes Caller ID introduction sheets and the Calls tab banner. |
@@ -3300,8 +3301,8 @@ Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hx
 
 **Supported versions:**
 
-| 13.9.0 | 13.9.6 | 13.9.18 |
-| :---: | :---: | :---: |
+| 14.0.2 |
+| :---: |
 
 | Patch | Details |
 |---|---|

@@ -14,9 +14,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 
 <!-- INDEX_START -->
 <p align="center">
-<a href="#-installing"><img src=".github/readme/install.svg" width="42%" alt="Install"></a>&nbsp;<a href="#-patches-list"><img src=".github/readme/patches.svg" width="42%" alt="Patches"></a><br>
-<a href="#-requests"><img src=".github/readme/request.svg" width="42%" alt="Request"></a>&nbsp;<a href="#-building"><img src=".github/readme/build.svg" width="42%" alt="Build"></a><br>
-<a href="#-disclaimer"><img src=".github/readme/disclaimer.svg" width="42%" alt="Disclaimer"></a>&nbsp;<a href="#-license"><img src=".github/readme/license.svg" width="42%" alt="License"></a>
+<a href="#-installing"><picture><source media="(min-width: 768px)" srcset=".github/readme/install.svg" width="298" height="79"><img src=".github/readme/install.svg" width="42%" alt="Install"></picture></a>&nbsp;<a href="#-patches-list"><picture><source media="(min-width: 768px)" srcset=".github/readme/patches.svg" width="298" height="79"><img src=".github/readme/patches.svg" width="42%" alt="Patches"></picture></a><br>
+<a href="#-requests"><picture><source media="(min-width: 768px)" srcset=".github/readme/request.svg" width="298" height="79"><img src=".github/readme/request.svg" width="42%" alt="Request"></picture></a>&nbsp;<a href="#-building"><picture><source media="(min-width: 768px)" srcset=".github/readme/build.svg" width="298" height="79"><img src=".github/readme/build.svg" width="42%" alt="Build"></picture></a><br>
+<a href="#-disclaimer"><picture><source media="(min-width: 768px)" srcset=".github/readme/disclaimer.svg" width="298" height="79"><img src=".github/readme/disclaimer.svg" width="42%" alt="Disclaimer"></picture></a>&nbsp;<a href="#-license"><picture><source media="(min-width: 768px)" srcset=".github/readme/license.svg" width="298" height="79"><img src=".github/readme/license.svg" width="42%" alt="License"></picture></a>
 </p>
 
 <p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/dev/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/dev/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.89.0-dev.6](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.6)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**638 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.89.0-dev.7](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.7)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**639 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 
@@ -40,7 +40,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 <tr>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#outlook-commicrosoftofficeoutlook"><img src="https://publicmetadata.co.uk/com.microsoft.office.outlook" width="40" height="40" align="top" alt=""><br>Outlook</a><br><sub>10&nbsp;patches</sub></td>
 <td align="center" valign="top" width="100"><a href="PATCHES.md#bereal-comberealft"><img src="https://publicmetadata.co.uk/com.bereal.ft" width="40" height="40" align="top" alt=""><br>BeReal</a><br><sub>22&nbsp;patches</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#viber-comvibervoip"><img src="https://publicmetadata.co.uk/com.viber.voip" width="40" height="40" align="top" alt=""><br>Viber</a><br><sub>26&nbsp;patches</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#viber-comvibervoip"><img src="https://publicmetadata.co.uk/com.viber.voip" width="40" height="40" align="top" alt=""><br>Viber</a><br><sub>27&nbsp;patches</sub></td>
 </tr>
 </table>
 
@@ -48,14 +48,14 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 
 <table align="center">
 <tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#moviebox-comcommunityoneroom"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>3&nbsp;new&nbsp;patches<br>18&nbsp;fixed<br>1&nbsp;removed<br>1&nbsp;new&nbsp;version</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>7&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>6&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>14&nbsp;new&nbsp;patches<br>3&nbsp;improved<br>5&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#moviebox-comcommunityoneroom"><img src="https://publicmetadata.co.uk/com.community.oneroom" width="40" height="40" align="top" alt=""><br>MovieBox</a><br><sub>3&nbsp;new&nbsp;patches<br>2&nbsp;fixed<br>1&nbsp;removed</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#terabox-comduboxdrive"><img src="https://publicmetadata.co.uk/com.dubox.drive" width="40" height="40" align="top" alt=""><br>TeraBox</a><br><sub>3&nbsp;new&nbsp;patches<br>2&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#readera-orgreadera"><img src="https://publicmetadata.co.uk/org.readera" width="40" height="40" align="top" alt=""><br>ReadEra</a><br><sub>4&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
 </tr>
 <tr>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#imo-comimoandroidimoim"><img src="https://publicmetadata.co.uk/com.imo.android.imoim" width="40" height="40" align="top" alt=""><br>imo</a><br><sub>14&nbsp;new&nbsp;patches<br>1&nbsp;improved<br>5&nbsp;fixed<br>2&nbsp;new&nbsp;versions</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#aliexpress-comalibabaaliexpresshd"><img src="https://publicmetadata.co.uk/com.alibaba.aliexpresshd" width="40" height="40" align="top" alt=""><br>AliExpress</a><br><sub>9&nbsp;new&nbsp;patches<br>5&nbsp;fixed</sub></td>
-<td align="center" valign="top" width="100"><a href="PATCHES.md#patreon-compatreonandroid"><img src="https://publicmetadata.co.uk/com.patreon.android" width="40" height="40" align="top" alt=""><br>Patreon</a><br><sub>8&nbsp;new&nbsp;patches<br>3&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#blossom-blast-saga-comkingblossomblast"><img src="https://publicmetadata.co.uk/com.king.blossomblast" width="40" height="40" align="top" alt=""><br>Blossom Blast Saga</a><br><sub>5&nbsp;new&nbsp;patches</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#duolingo-comduolingo"><img src="https://publicmetadata.co.uk/com.duolingo" width="40" height="40" align="top" alt=""><br>Duolingo</a><br><sub>1&nbsp;fixed<br>1&nbsp;new&nbsp;version</sub></td>
+<td align="center" valign="top" width="100"><a href="PATCHES.md#network-analyzer-nettechetnetanalyzerlitean"><img src="https://publicmetadata.co.uk/net.techet.netanalyzerlite.an" width="40" height="40" align="top" alt=""><br>Network Analyzer</a><br><sub>3&nbsp;fixed</sub></td>
 </tr>
 </table>
 
@@ -251,9 +251,9 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 | 183 | <img src="https://publicmetadata.co.uk/com.dynanic.ultimea" width="24" height="24" align="top" alt=""> [**ULTIMEA**](PATCHES.md#ultimea-comdynanicultimea) | 9 | `1.4.4` | [`com.dynanic.ultimea`](https://play.google.com/store/apps/details?id=com.dynanic.ultimea) |
 | 184 | <img src="https://publicmetadata.co.uk/com.ufoneselfcare" width="24" height="24" align="top" alt=""> [**UPTCL**](PATCHES.md#uptcl-comufoneselfcare) | 5 | `11.0.41` | [`com.ufoneselfcare`](https://play.google.com/store/apps/details?id=com.ufoneselfcare) |
 | 185 | <img src="https://publicmetadata.co.uk/vpn.usa_tap2free" width="24" height="24" align="top" alt=""> [**USA VPN**](PATCHES.md#usa-vpn-vpnusa_tap2free) | 1 | `1.171` | [`vpn.usa_tap2free`](https://play.google.com/store/apps/details?id=vpn.usa_tap2free) |
-| 186 | <img src="https://publicmetadata.co.uk/com.viber.voip" width="24" height="24" align="top" alt=""> [**Viber**](PATCHES.md#viber-comvibervoip) | 26 | `29.3.1.0` | [`com.viber.voip`](https://play.google.com/store/apps/details?id=com.viber.voip) |
+| 186 | <img src="https://publicmetadata.co.uk/com.viber.voip" width="24" height="24" align="top" alt=""> [**Viber**](PATCHES.md#viber-comvibervoip) | 27 | `29.3.1.0` | [`com.viber.voip`](https://play.google.com/store/apps/details?id=com.viber.voip) |
 | 187 | <img src="https://publicmetadata.co.uk/videoeditor.videomaker.videoeditorforyoutube" width="24" height="24" align="top" alt=""> [**Video Editor**](PATCHES.md#video-editor-videoeditorvideomakervideoeditorforyoutube) | 1 | `1.631.200.I` | [`videoeditor.videomaker.…`](https://play.google.com/store/apps/details?id=videoeditor.videomaker.videoeditorforyoutube "videoeditor.videomaker.videoeditorforyoutube") |
-| 188 | <img src="https://publicmetadata.co.uk/com.darinsoft.vimo" width="24" height="24" align="top" alt=""> [**VLLO**](PATCHES.md#vllo-comdarinsoftvimo) | 2 | `13.9.0`, `13.9.6`&nbsp;+1 | [`com.darinsoft.vimo`](https://play.google.com/store/apps/details?id=com.darinsoft.vimo) |
+| 188 | <img src="https://publicmetadata.co.uk/com.darinsoft.vimo" width="24" height="24" align="top" alt=""> [**VLLO**](PATCHES.md#vllo-comdarinsoftvimo) | 2 | `14.0.2` | [`com.darinsoft.vimo`](https://play.google.com/store/apps/details?id=com.darinsoft.vimo) |
 | 189 | <img src="https://publicmetadata.co.uk/kr.co.devstory.vocat" width="24" height="24" align="top" alt=""> [**VoCat - My Own…**](PATCHES.md#vocat---my-own-vocabulary-krcodevstoryvocat "VoCat - My Own Vocabulary") | 1 | `5.2.1` | [`kr.co.devstory.vocat`](https://play.google.com/store/apps/details?id=kr.co.devstory.vocat) |
 | 190 | <img src="https://publicmetadata.co.uk/india.vpn_tap2free" width="24" height="24" align="top" alt=""> [**VPN India**](PATCHES.md#vpn-india-indiavpn_tap2free) | 1 | `1.175` | [`india.vpn_tap2free`](https://play.google.com/store/apps/details?id=india.vpn_tap2free) |
 | 191 | <img src="https://publicmetadata.co.uk/com.free.vpn.super.hotspot.open" width="24" height="24" align="top" alt=""> [**VPN Super Unlimited…**](PATCHES.md#vpn-super-unlimited-proxy-comfreevpnsuperhotspotopen "VPN Super Unlimited Proxy") | 2 | `2.36.0` | [`com.free.vpn.super.hots…`](https://play.google.com/store/apps/details?id=com.free.vpn.super.hotspot.open "com.free.vpn.super.hotspot.open") |

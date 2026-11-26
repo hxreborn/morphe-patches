@@ -475,9 +475,7 @@ body:
         - "Viber (another version, type it below)"
         - "Video Editor 1.631.200.I"
         - "Video Editor (another version, type it below)"
-        - "VLLO 13.9.0"
-        - "VLLO 13.9.18"
-        - "VLLO 13.9.6"
+        - "VLLO 14.0.2"
         - "VLLO (another version, type it below)"
         - "VoCat - My Own Vocabulary 5.2.1"
         - "VoCat - My Own Vocabulary (another version, type it below)"
@@ -530,11 +528,11 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.89.0-dev.7"
         - "1.89.0-dev.6"
         - "1.89.0-dev.5"
         - "1.89.0-dev.4"
         - "1.89.0-dev.3"
-        - "1.89.0-dev.2"
         - "1.88.0"
         - "Older than these"
         # /generated
@@ -1218,6 +1216,7 @@ body:
         - "Viber \u00b7 Hide More screen items"
         - "Viber \u00b7 Hide navigation buttons"
         - "Viber \u00b7 Hide Viber Out and channel promotions"
+        - "Viber \u00b7 Ignore accents in contact search"
         - "Viber \u00b7 Link as secondary device"
         - "Viber \u00b7 Raise folder limit"
         - "Viber \u00b7 Remove Caller ID prompts"
