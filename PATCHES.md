@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0-dev.4** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**620 patches** across **195 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.89.0-dev.5** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**636 patches** across **204 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -977,6 +977,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## ExifTool for photo and video (com.exiftool.free)
+
+<img src="https://publicmetadata.co.uk/com.exiftool.free" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.1.1-gms |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="exiftool-for-photo-and-video-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/exiftool/misc/ads/RemoveAdsPatch.kt) | Removes ads. |
+| <a id="exiftool-for-photo-and-video-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/exiftool/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium editing and watermark features. |
+
+---
+
 ## Fast STL Viewer (com.performance.meshview)
 
 <img src="https://publicmetadata.co.uk/com.performance.meshview" width="48" height="48" align="top" alt="">
@@ -1004,6 +1020,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="fddb-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/fddb/misc/premium/UnlockPremiumPatch.kt) | Unlocks the weekly report, intermittent fasting, the calorie and nutrient planners, and custom nutrient targets. |
+
+---
+
+## Film(ish) (com.filmish.android)
+
+<img src="https://publicmetadata.co.uk/com.filmish.android" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.1.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="film-ish-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/filmish/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro filters and tools, and exports without a watermark. |
 
 ---
 
@@ -1172,6 +1203,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## GSMArena (com.gsmarena.android)
+
+<img src="https://publicmetadata.co.uk/com.gsmarena.android" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.9.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="gsmarena-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/gsmarena/ads/RemoveAdsPatch.kt) | Removes banner and interstitial ads and the sponsor image in the side menu. |
+
+---
+
 ## Habitify (co.unstatic.habitify)
 
 <img src="https://publicmetadata.co.uk/co.unstatic.habitify" width="48" height="48" align="top" alt="">
@@ -1201,6 +1247,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="hindu-calendar-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/hinducalendar/tracking/DisableTrackingPatch.kt) | Stops Firebase Analytics from collecting usage data. |
 | <a id="hindu-calendar-hide-ads"></a>[**Hide ads**](patches/src/main/kotlin/app/morphe/patches/hinducalendar/ads/HideAdsPatch.kt) | Removes banner and interstitial ads and the Remove Ads menu item. |
+
+---
+
+## Hourly Chime: Talking Clock (com.caynax.hourlychime)
+
+<img src="https://publicmetadata.co.uk/com.caynax.hourlychime" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 16.3.1 | 16.5.2 |
+| :---: | :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="hourly-chime-talking-clock-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/hourlychime/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium chime settings and removes ads. |
 
 ---
 
@@ -1552,6 +1613,22 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Magic Poser (com.magicposernew)
+
+<img src="https://publicmetadata.co.uk/com.magicposernew" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 3.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="magic-poser-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/magicposer/misc/tracking/DisableTrackingPatch.kt) | Stops analytics events, sessions and crash reports from being sent. |
+| <a id="magic-poser-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/magicposer/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro and Master features. The server enforces cloud storage limits. |
+
+---
+
 ## MangaTime (net.mangatime.app)
 
 <img src="https://publicmetadata.co.uk/net.mangatime.app" width="48" height="48" align="top" alt="">
@@ -1862,6 +1939,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 |---|---|
 | <a id="nara-baby-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/narababy/misc/tracking/DisableTrackingPatch.kt) | Stops Google Analytics, Crashlytics, Facebook App Events, Kochava and Klaviyo from collecting usage data. |
 | <a id="nara-baby-remove-forced-update"></a>[**Remove forced update**](patches/src/main/kotlin/app/morphe/patches/narababy/misc/update/RemoveForcedUpdatePatch.kt) | Removes the update screen that blocks the app when a newer build is published. |
+| <a id="nara-baby-remove-rating-prompts"></a>[**Remove rating prompts**](patches/src/main/kotlin/app/morphe/patches/narababy/misc/rate/RemoveRatingPromptsPatch.kt) | Removes the prompts asking for a rating. |
 | <a id="nara-baby-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/narababy/misc/premium/UnlockPremiumPatch.kt) | Unlocks Nara Lifetime for every family the account belongs to. |
 
 ---
@@ -1968,8 +2046,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| v2.1.37.0 | v2.1.49.0 |
-| :---: | :---: |
+| v2.1.37.0 | v2.1.49.0 | v2.1.56.0 |
+| :---: | :---: | :---: |
 
 | Patch | Details |
 |---|---|
@@ -2005,6 +2083,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="ok-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/okru/ads/RemoveAdsPatch.kt) | Removes sponsored posts, video and clip ads, and ads in messages, notifications, discussions, games, music and Dzen. |
+
+---
+
+## one sec (wtf.riedel.onesec)
+
+<img src="https://publicmetadata.co.uk/wtf.riedel.onesec" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 3.0.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="one-sec-unlock-pro"></a>[**Unlock Pro**](patches/src/main/kotlin/app/morphe/patches/onesec/misc/premium/UnlockProPatch.kt) | Unlocks Pro features, including blocking more than one app. |
 
 ---
 
@@ -2078,10 +2171,25 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="patreon-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/patreon/misc/tracking/DisableTrackingPatch.kt) | Disables Amplitude, AppsFlyer, Sentry, Sift and Mux data collection. |
 | <a id="patreon-hide-home-tab"></a>[**Hide Home tab**](patches/src/main/kotlin/app/morphe/patches/patreon/layout/launcher/HideHomeTabPatch.kt) | Removes the Home tab and starts on Memberships. Accounts without memberships keep the tab. |
 | <a id="patreon-hide-navigation-buttons"></a>[**Hide navigation buttons**](patches/src/main/kotlin/app/morphe/patches/patreon/layout/navigation/HideNavigationButtonsPatch.kt) | Removes chosen tabs from the bottom bar.<br><sub>Options: Hide Feed, Hide Library, Hide Quip, +2 more</sub> |
-| <a id="patreon-hide-recommended-creators"></a>[**Hide recommended creators**](patches/src/main/kotlin/app/morphe/patches/patreon/layout/home/HideRecommendedCreatorsPatch.kt) | Limits Home to creators you're a member of. |
+| <a id="patreon-hide-recommended-creators"></a>[**Hide recommended creators**](patches/src/main/kotlin/app/morphe/patches/patreon/layout/home/HideRecommendedCreatorsPatch.kt) | Limits Home and the posts under a post to creators you're a member of. |
 | <a id="patreon-hide-search-suggestions"></a>[**Hide search suggestions**](patches/src/main/kotlin/app/morphe/patches/patreon/layout/search/HideSearchSuggestionsPatch.kt) | Removes suggested creators and topics from Explore. |
 | <a id="patreon-hide-upgrade-promotions"></a>[**Hide upgrade promotions**](patches/src/main/kotlin/app/morphe/patches/patreon/layout/promotions/HideUpgradePromotionsPatch.kt) | Removes upgrade, rejoin and gift banners, upsell sheets, social proof and the in-feed survey. |
 | <a id="patreon-remove-app-prompts"></a>[**Remove app prompts**](patches/src/main/kotlin/app/morphe/patches/patreon/misc/prompts/RemoveAppPromptsPatch.kt) | Removes the rating prompt and the in-app update prompt. |
+
+---
+
+## PCAPdroid (com.emanuelef.remote_capture)
+
+<img src="https://publicmetadata.co.uk/com.emanuelef.remote_capture" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 2.0.5 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="pcapdroid-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/pcapdroid/misc/premium/UnlockPremiumPatch.kt) | Unlocks the firewall, malware detection and Pcapng format. Hides paid feature and donation links. |
 
 ---
 
@@ -3001,7 +3109,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 4.3.0 |
+| 4.3.5 |
 | :---: |
 
 | Patch | Details |
@@ -3183,6 +3291,21 @@ Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hx
 |---|---|
 | <a id="vllo-disable-tracking"></a>[**Disable tracking**](patches/src/main/kotlin/app/morphe/patches/vllo/misc/tracking/DisableTrackingPatch.kt) | Stops AppsFlyer, Firebase Analytics, and Facebook from collecting usage data. |
 | <a id="vllo-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/vllo/misc/premium/UnlockPremiumPatch.kt) | Unlocks premium editing features, removes ads and the export watermark, and skips the ad before importing audio. Hides the store button. The AI tools are not included. |
+
+---
+
+## VoCat - My Own Vocabulary (kr.co.devstory.vocat)
+
+<img src="https://publicmetadata.co.uk/kr.co.devstory.vocat" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.2.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="vocat-my-own-vocabulary-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/vocat/misc/premium/UnlockPremiumPatch.kt) | Unlocks FSRS review, review sorting, FSRS statistics and widgets, and removes banner ads. |
 
 ---
 
@@ -3402,12 +3525,17 @@ Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hx
 
 | Patch | Details |
 |---|---|
-| <a id="yuka-sign-in-token"></a>[**Sign-in token**](patches/src/main/kotlin/app/morphe/patches/yuka/misc/signin/SignInTokenPatch.kt) | Signs in with an App Check token. Requires a token copied from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of PATCHES.md.<br><sub>Options: App Check token</sub> |
+| <a id="yuka-hide-search-tab"></a>[**Hide Search tab**](patches/src/main/kotlin/app/morphe/patches/yuka/layout/navigation/HideSearchTabPatch.kt) | Hides the Search tab from the bottom bar. |
+| <a id="yuka-sign-in-token"></a>[**Sign-in token**](patches/src/main/kotlin/app/morphe/patches/yuka/misc/signin/SignInTokenPatch.kt) | Signs in with an App Check token. Get one from the token bot, or copy it from Yuka installed from Google Play on a rooted phone. Steps are in the Yuka section of PATCHES.md.<br><sub>Options: App Check token</sub> |
 | <a id="yuka-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/yuka/misc/premium/UnlockPremiumPatch.kt) | Unlocks food preferences, diet alerts and the full history. Search and offline downloads don't work. Signing in needs Sign-in token, except on a root mount install. |
 
 **Sign-in token** needs an App Check token from Yuka installed from Google Play on a rooted phone. Yuka uses
 the token only to sign in. You need a new one only if you sign out or clear Yuka's data. A root mount install
 signs in without a token.
+
+If you don't have a rooted phone, a rooted friend, or any friend at all, you can try my experimental Telegram bot [@hxreborn_yukatoken_bot](https://t.me/hxreborn_yukatoken_bot): send it `/token` and paste what it sends into the **App Check token** option. Use it at your own risk.
+
+To make your own on a rooted phone:
 
 1. On the rooted phone, open Yuka, go to the sign-in screen, enter any email address and tap **Continue**. You
    don't need to enter a password.
@@ -3425,6 +3553,24 @@ signs in without a token.
 
 3. Paste the line into the **App Check token** option in Morphe Manager, then patch, install and sign in on
    the same day.
+
+---
+
+## ZArchiver (ru.zdevs.zarchiver)
+
+<img src="https://publicmetadata.co.uk/ru.zdevs.zarchiver" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.0.10 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="zarchiver-archive-image-thumbnails"></a>[**Archive image thumbnails**](patches/src/main/kotlin/app/morphe/patches/zarchiver/archives/ArchiveImageThumbnailsPatch.kt) | Enables the option to show image thumbnails inside archives. |
+| <a id="zarchiver-edit-files-in-archives"></a>[**Edit files in archives**](patches/src/main/kotlin/app/morphe/patches/zarchiver/archives/EditArchiveFilesPatch.kt) | Saves changes to files in local ZIP, 7z, and TAR archives. Requires Android 6.0 or later. |
+| <a id="zarchiver-saved-passwords"></a>[**Saved passwords**](patches/src/main/kotlin/app/morphe/patches/zarchiver/passwords/SavedPasswordsPatch.kt) | Saves and reuses archive passwords. Requires Android 6.0 or later. |
+| <a id="zarchiver-unlock-themes"></a>[**Unlock themes**](patches/src/main/kotlin/app/morphe/patches/zarchiver/theme/UnlockThemesPatch.kt) | Enables six color themes in settings. |
 
 ---
 

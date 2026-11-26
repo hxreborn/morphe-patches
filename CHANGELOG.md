@@ -1,3 +1,36 @@
+## [1.89.0-dev.5](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.4...v1.89.0-dev.5) (2026-11-26)
+
+### Bug Fixes
+
+* **Nara Baby - Unlock premium:** remove lifetime sale banner ([5097182](https://github.com/hxreborn/morphe-patches/commit/5097182eb5b1014b1bb186d77d4c8184115b46fa))
+* **Proton VPN:** resolve resource IDs for each APK ([f8fb226](https://github.com/hxreborn/morphe-patches/commit/f8fb226e47b25131cd21d5b7c38b172c28a159a4))
+* **Yuka - Sign-in token:** allow sign-in in cloned installs ([e63defa](https://github.com/hxreborn/morphe-patches/commit/e63defa03dbfdb6709f0d155579e14594822e095))
+
+### New Features
+
+* **ExifTool - Remove ads:** hide banner, interstitial and app-open ads ([9bd6eac](https://github.com/hxreborn/morphe-patches/commit/9bd6eac7f497e6f9502c77fd0303c9f42eebc4cb))
+* **ExifTool - Unlock premium:** unlock editing, watermarks and map pins ([f9e9024](https://github.com/hxreborn/morphe-patches/commit/f9e9024bbb68c62fcaec357e20d92faab1b2caed))
+* **Filmish - Unlock premium:** unlock Pro tools, remove watermark ([d8461c5](https://github.com/hxreborn/morphe-patches/commit/d8461c5daeaaf57ef075cb89be500d35714c0aff))
+* **GSMArena - Remove ads:** hide banner, interstitial and sponsor ads ([4419189](https://github.com/hxreborn/morphe-patches/commit/441918963838da28b43cfcd69bf893ad470c2cc0))
+* **Hourly Chime - Unlock premium:** unlock chime options and remove ads ([4e5583f](https://github.com/hxreborn/morphe-patches/commit/4e5583fc036cccb8ddb2efd2eda1494cf9282745))
+* **Magic Poser - Disable tracking:** stop analytics events ([2788528](https://github.com/hxreborn/morphe-patches/commit/2788528158804764da796eb5ca903a06992d6857))
+* **Magic Poser - Unlock premium:** unlock Pro and Master features ([90c9c1a](https://github.com/hxreborn/morphe-patches/commit/90c9c1a6d8892523b449798b7b99d6c9fa646c1c))
+* **Nara Baby - Remove rating prompts:** hide Play Store rating bar ([84bd8ba](https://github.com/hxreborn/morphe-patches/commit/84bd8ba2bceb30951174df41aa5167c7880f676e))
+* **one sec - Unlock Pro:** block unlimited apps and in-app distractions ([467ce36](https://github.com/hxreborn/morphe-patches/commit/467ce36e4374e7177a28a3c32322ea845df9ba17))
+* **Patreon - Hide recommended creators:** filter posts below a post ([a5fd792](https://github.com/hxreborn/morphe-patches/commit/a5fd792067a86075c80a11da69f35503449c0592)), closes [#1079](https://github.com/hxreborn/morphe-patches/issues/1079)
+* **PCAPdroid - Unlock premium:** unlock firewall, malware scans, Pcapng ([6402483](https://github.com/hxreborn/morphe-patches/commit/6402483cdbb382b019475066691634b089b6060d))
+* **VoCat - Unlock premium:** unlock FSRS and widget, remove ads ([6b866ca](https://github.com/hxreborn/morphe-patches/commit/6b866caf298edd96ccea08874642386491cd599d))
+* **Yuka - Hide Search tab:** remove locked search from bottom bar ([ef5cf7a](https://github.com/hxreborn/morphe-patches/commit/ef5cf7a7986f44ede33eb12ae0f94941732ea5e6))
+* **ZArchiver - Archive image thumbnails:** show previews in file list ([527dc0c](https://github.com/hxreborn/morphe-patches/commit/527dc0ce8aca13a272529bb3716dbbb7adbaf6c1))
+* **ZArchiver - Edit files in archives:** save changes inside archives ([e6a3a60](https://github.com/hxreborn/morphe-patches/commit/e6a3a6047cea3f8980d45411b306e20b0c172acd))
+* **ZArchiver - Saved passwords:** fill archive password prompts ([24a9380](https://github.com/hxreborn/morphe-patches/commit/24a9380834b88bb85ba398a5c9cbe27a6f046842))
+* **ZArchiver - Unlock themes:** offer six options under Interface ([4550803](https://github.com/hxreborn/morphe-patches/commit/4550803244db7ce60adebee845bb50a265af08b1))
+
+### Updated App Support
+
+* **Notein:** add support for `v2.1.56.0` ([763deb2](https://github.com/hxreborn/morphe-patches/commit/763deb2a312155da5fb556e7452d3634f8dd626d)), closes [#951](https://github.com/hxreborn/morphe-patches/issues/951)
+* **TunnelDOOM VPN:** add support for `4.3.5` ([1e47ab1](https://github.com/hxreborn/morphe-patches/commit/1e47ab16542177cb9c78246587b77d6e003b44c8)), closes [#1026](https://github.com/hxreborn/morphe-patches/issues/1026)
+
 ## [1.89.0-dev.4](https://github.com/hxreborn/morphe-patches/compare/v1.89.0-dev.3...v1.89.0-dev.4) (2026-11-25)
 
 ### Bug Fixes
