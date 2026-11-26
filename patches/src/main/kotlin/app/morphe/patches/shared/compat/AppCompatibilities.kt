@@ -808,6 +808,22 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.4.0", versionCode = 177, minSdk = 28)),
     )
 
+    val HOURLY_CHIME = Compatibility(
+        name = "Hourly Chime: Talking Clock",
+        packageName = "com.caynax.hourlychime",
+        apkFileType = ApkFileType.APKS,
+        signatures = setOf(
+            "06de85390a864eebed6d18969090901f6d23015ddb595cbd2dd643562eb7f966",
+            "52ef458b45d97fceef2260db561de8e9feef920286bbf4d2416f8ffcc49af857",
+            "5cb811ee80db8155505fec75f7bacfa6a7968dfa6ab6ad2ae802ec3517509756",
+            "66d7d3bc2fdf615680dabd2aea58b0bdf675697fd9f72114bc1546dc9a7e8d8c",
+        ),
+        targets = listOf(
+            AppTarget(version = "16.3.1", versionCode = 160301, minSdk = 29),
+            AppTarget(version = "16.5.2", versionCode = 160502, minSdk = 29),
+        ),
+    )
+
     val HYPIC = Compatibility(
         name = "Hypic",
         packageName = "com.xt.retouchoversea",
