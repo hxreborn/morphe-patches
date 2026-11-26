@@ -672,6 +672,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val FILMISH = Compatibility(
+        name = "Film(ish)",
+        packageName = "com.filmish.android",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "8c4796b83da37c13eb88c9ca7f1703afbdba5ed65929c3bacae7ddc4597b843a",
+            "978fffa2caaebc8f8cdf0e1423bbd2558e1a2e7716b45a50b7bb538a533b9fd4",
+        ),
+        targets = listOf(AppTarget(version = "1.1.1", versionCode = 16, minSdk = 26)),
+    )
+
     val FLIPACLIP = Compatibility(
         name = "FlipaClip",
         packageName = "com.vblast.flipaclip",
