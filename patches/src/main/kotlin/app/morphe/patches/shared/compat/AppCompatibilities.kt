@@ -645,6 +645,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "8.3.0", versionCode = 80300148, minSdk = 29)),
     )
 
+    val EXIFTOOL = Compatibility(
+        name = "ExifTool for photo and video",
+        packageName = "com.exiftool.free",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf("583d9482b1cf2601f1b80f1efd822d37b78b70c885d147acfb795d0be86847ae"),
+        targets = listOf(AppTarget(version = "5.1.1-gms", versionCode = 88, minSdk = 24)),
+    )
+
     val FAST_STL_VIEWER = Compatibility(
         name = "Fast STL Viewer",
         packageName = "com.performance.meshview",

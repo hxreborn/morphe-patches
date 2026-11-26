@@ -32,6 +32,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.DEPTHPIX,
         AppCompatibilities.ECHO_EQUALIZER,
         AppCompatibilities.ECHOGRAM,
+        AppCompatibilities.EXIFTOOL,
         AppCompatibilities.FILMISH,
         AppCompatibilities.FLIPACLIP,
         AppCompatibilities.FLIGHTS25,
