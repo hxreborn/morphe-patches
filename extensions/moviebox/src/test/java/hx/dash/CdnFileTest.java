@@ -44,6 +44,10 @@ public final class CdnFileTest {
 
     private static final byte[] BODY = Mp4Fixtures.bytes(300_000, 7);
 
+    private static final long STALLED_CHUNK_START = 2 * 48 * 1024;
+
+    private static final long STALLED_WRITE_LIMIT_MS = 15_000L;
+
     private static final CdnCookies FIXED_COOKIES = new CdnCookies() {
         @Override
         public String current() {
@@ -101,6 +105,24 @@ public final class CdnFileTest {
 
         // then
         Assertions.assertThat(this.cdn.peakConcurrentRanges()).isGreaterThan(1);
+    }
+
+    @Test
+    public void retriesAChunkReadThatStalls() throws IOException {
+        // given
+        this.cdn.stallRangeOnce(STALLED_CHUNK_START);
+        long startedMs = System.currentTimeMillis();
+
+        // when
+        CdnFile file = CdnFile.open(this.cdn.url(SEGMENT), 0, FIXED_COOKIES);
+        byte[] written = write(file, file.length - 1);
+
+        // then
+        Assertions.assertThat(written).isEqualTo(BODY);
+        Assertions.assertThat(System.currentTimeMillis() - startedMs).isLessThan(STALLED_WRITE_LIMIT_MS);
+        Assertions.assertThat(this.cdn.rangesOn(SEGMENT))
+            .filteredOn((range) -> range.startsWith(STALLED_CHUNK_START + "-"))
+            .hasSize(2);
     }
 
     private static byte[] write(CdnFile file, long end) throws IOException {

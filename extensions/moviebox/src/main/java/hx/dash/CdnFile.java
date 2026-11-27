@@ -33,6 +33,8 @@ import hx.util.Tasks;
 
 public final class CdnFile {
 
+    private static final int CHUNK_READ_TIMEOUT_MS = 5000;
+
     public final long length;
 
     private final String url;
@@ -54,7 +56,8 @@ public final class CdnFile {
     public static CdnFile open(String url, long start, CdnCookies cookies) throws IOException {
         long end = start + DashFile.PACED_READ_CHUNK_BYTES - 1;
         return CdnClient.withRetries(() -> {
-            HttpURLConnection connection = CdnClient.connect(url, "bytes=" + start + "-" + end, cookies, null);
+            HttpURLConnection connection = CdnClient.connect(url, "bytes=" + start + "-" + end, cookies, null,
+                    CHUNK_READ_TIMEOUT_MS);
             try (InputStream in = connection.getInputStream()) {
                 long length = totalLength(connection, url);
                 byte[] firstChunk = new byte[(int) (Math.min(end, length - 1) - start + 1)];
@@ -91,7 +94,8 @@ public final class CdnFile {
     }
 
     private byte[] read(long from, long to, ReadGroup reads) throws IOException {
-        HttpURLConnection connection = CdnClient.connect(this.url, "bytes=" + from + "-" + to, this.cookies, reads);
+        HttpURLConnection connection = CdnClient.connect(this.url, "bytes=" + from + "-" + to, this.cookies, reads,
+                CHUNK_READ_TIMEOUT_MS);
         try (InputStream in = connection.getInputStream()) {
             DashFile.requireContentRange(connection, this.url, from, to);
             byte[] bytes = new byte[(int) (to - from + 1)];
