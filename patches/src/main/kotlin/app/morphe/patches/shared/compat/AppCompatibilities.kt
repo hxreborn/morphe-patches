@@ -1087,6 +1087,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val MEDAL = Compatibility(
+        name = "Medal",
+        packageName = "tv.medal.recorder",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0xFFFFFF,
+        signatures = setOf(
+            "3d8af320f40dd64ccda47de3e5df39569440627c2ea1d4e3ce288e2790f8d5ab",
+        ),
+        targets = listOf(AppTarget(version = "7.6.1", versionCode = 838, minSdk = 29)),
+    )
+
     val MEDICNEET = Compatibility(
         name = "MedicNEET",
         packageName = "com.halalfire.medicneet",
