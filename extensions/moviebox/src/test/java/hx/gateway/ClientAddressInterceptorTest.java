@@ -63,6 +63,13 @@ public final class ClientAddressInterceptorTest {
             + "\"resourceLink\":\"https://bcdn.example.com/360.mp4\"},{\"resolution\":720,\"resourceLink\":\"\"},"
             + "{\"resolution\":1080,\"resourceLink\":\"\"}]}}";
 
+    private static final String HOME_FEED = "https://api.example.com/wefeed-mobile-bff/tab-operating-page?tabCode=Trending";
+
+    private static final String REGION_BLOCK = "{\"code\":403,\"reason\":\"FORBIDDEN\",\"message\":\""
+            + ClientAddressInterceptor.REGION_BLOCK_MESSAGE + "\",\"metadata\":{}}";
+
+    private static final String FEED = "{\"code\":0,\"message\":\"ok\",\"data\":{\"items\":[]}}";
+
     private static final String NO_LINK_WARNING = "2 of 3 rows have no link with the client address withheld";
 
     private final ClassLoader loader = getClass().getClassLoader();
@@ -148,6 +155,41 @@ public final class ClientAddressInterceptorTest {
     }
 
     @Test
+    public void resendsARegionBlockedRequestWithTheAddressWithheld() throws IOException {
+        // when
+        Response response = send(HOME_FEED, false, blockingTheAppAddress());
+
+        // then
+        Assertions.assertThat(response.body().string()).isEqualTo(FEED);
+        Assertions.assertThat(this.addressesSent)
+            .containsExactly(APP_ADDRESS, ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void withholdsTheAddressFromEveryRequestAfterARegionBlock() throws IOException {
+        // given
+        Interceptor interceptor = proxy(false);
+        send(HOME_FEED, interceptor, blockingTheAppAddress());
+        this.addressesSent.clear();
+
+        // when
+        send(PLAY_INFO, interceptor, blockingTheAppAddress());
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void passesOnAForbiddenAnswerThatIsNoRegionBlock() throws IOException {
+        // when
+        Response response = send(HOME_FEED, false, answering(403, "{}"));
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(403);
+        Assertions.assertThat(this.addressesSent).containsExactly(APP_ADDRESS);
+    }
+
+    @Test
     public void warnsWhenRowsStillHaveNoLinkWithTheAddressWithheld() throws IOException {
         // when
         Response response = send(RESOURCE_LIST, true, answering(200, ROWS_WITHOUT_HD_LINKS));
@@ -167,6 +209,10 @@ public final class ClientAddressInterceptorTest {
     }
 
     private Response send(String url, boolean premiumUnlocked, Interceptor server) throws IOException {
+        return send(url, proxy(premiumUnlocked), server);
+    }
+
+    private Response send(String url, Interceptor interceptor, Interceptor server) throws IOException {
         Interceptor appAddress = (chain) -> chain.proceed(chain.request()
             .newBuilder()
             .header(ClientAddressInterceptor.FORWARDED_FOR_HEADER, APP_ADDRESS)
@@ -176,7 +222,7 @@ public final class ClientAddressInterceptorTest {
             return server.intercept(chain);
         };
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(appAddress)
-            .addInterceptor(proxy(premiumUnlocked))
+            .addInterceptor(interceptor)
             .addInterceptor(recorder)
             .build();
         return client.newCall(new Request.Builder().url(url).build()).execute();
@@ -185,6 +231,14 @@ public final class ClientAddressInterceptorTest {
     private Interceptor proxy(boolean premiumUnlocked) {
         return (Interceptor) Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
                 new ClientAddressInterceptor(premiumUnlocked));
+    }
+
+    private static Interceptor blockingTheAppAddress() {
+        return (chain) -> {
+            boolean withheld = ClientAddressInterceptor.WITHHELD_ADDRESS
+                .equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
+            return withheld ? response(chain.request(), 200, FEED) : response(chain.request(), 403, REGION_BLOCK);
+        };
     }
 
     private static Interceptor answering(int code, String body) {

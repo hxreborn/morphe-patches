@@ -35,9 +35,17 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
 
     static final String WITHHELD_ADDRESS = "unknown";
 
+    static final String REGION_BLOCK_MESSAGE = "Service not available in current region";
+
+    private static final int FORBIDDEN = 403;
+
     private static final long PEEKED_BYTES = 4L * 1024 * 1024;
 
+    private static final long REGION_BLOCK_PEEKED_BYTES = 1024;
+
     private final boolean premiumUnlocked;
+
+    private volatile boolean regionBlocked;
 
     public ClientAddressInterceptor(boolean premiumUnlocked) {
         super("MovieBoxClientAddressInterceptor", "MovieBox client address override failed");
@@ -49,17 +57,39 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
         Object request = request(chain);
         String path = (String) Reflect.call(Reflect.call(request, "url"), "encodedPath");
         if (!this.premiumUnlocked || !Endpoints.listsResourceLinks(path)) {
-            return proceed(chain, request);
+            return proceedWithinRegion(chain, request, path);
         }
         Object response = proceed(chain, withWithheldAddress(request));
         if (!((Boolean) Reflect.call(response, "isSuccessful"))) {
             Log.w(Logs.TAG, path + " answered HTTP " + Reflect.call(response, "code")
                     + " with the client address withheld, resending the app's request");
             Reflect.call(response, "close");
-            return proceed(chain, request);
+            return proceedWithinRegion(chain, request, path);
         }
         warnAboutRowsWithoutLinks(path, response);
         return response;
+    }
+
+    private Object proceedWithinRegion(Object chain, Object request, String path) throws ReflectiveOperationException {
+        if (this.regionBlocked) {
+            return proceed(chain, withWithheldAddress(request));
+        }
+        Object response = proceed(chain, request);
+        if (!isRegionBlock(response)) {
+            return response;
+        }
+        Log.w(Logs.TAG, path + " is blocked in this region, withholding the client address from now on");
+        this.regionBlocked = true;
+        Reflect.call(response, "close");
+        return proceed(chain, withWithheldAddress(request));
+    }
+
+    private static boolean isRegionBlock(Object response) throws ReflectiveOperationException {
+        if ((Integer) Reflect.call(response, "code") != FORBIDDEN || Reflect.call(response, "body") == null) {
+            return false;
+        }
+        Object peeked = Reflect.call(response, "peekBody", new Class<?>[] { long.class }, REGION_BLOCK_PEEKED_BYTES);
+        return ((String) Reflect.call(peeked, "string")).contains(REGION_BLOCK_MESSAGE);
     }
 
     private static Object withWithheldAddress(Object request) throws ReflectiveOperationException {
