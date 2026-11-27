@@ -44,6 +44,9 @@ final class LoopbackRequest {
 
     private static final Pattern PATH = Pattern.compile("^/dash/(\\d{1,19})/(\\d{1,9})/(\\d{1,9})/(\\d{1,9})\\.mp4$");
 
+    private static final Pattern CDN_PATH = Pattern
+        .compile("^/cdn/(\\d{1,19})/(\\d{1,9})/(\\d{1,9})/([A-Za-z0-9_-]{1,64}\\.(?:mpd|m4s))$");
+
     private static final char DEL = 0x7F;
 
     final boolean headOnly;
@@ -57,6 +60,8 @@ final class LoopbackRequest {
     final int episode;
 
     final int height;
+
+    final String cdnFileName;
 
     final String origin;
 
@@ -73,7 +78,8 @@ final class LoopbackRequest {
         this.subjectId = path.group(1);
         this.season = Integer.parseInt(path.group(2));
         this.episode = Integer.parseInt(path.group(3));
-        this.height = Integer.parseInt(path.group(4));
+        this.cdnFileName = (path.pattern() == CDN_PATH) ? path.group(4) : null;
+        this.height = (this.cdnFileName == null) ? Integer.parseInt(path.group(4)) : 0;
         this.origin = validOrigin(uri.getQueryParameter(ORIGIN_PARAMETER));
         this.originSize = parseSize(uri.getQueryParameter(ORIGIN_SIZE_PARAMETER));
         this.resourceId = uri.getQueryParameter(RESOURCE_ID_PARAMETER);
@@ -104,8 +110,15 @@ final class LoopbackRequest {
         }
         boolean headOnly = "HEAD".equals(request[0]);
         Uri uri = Uri.parse("http://127.0.0.1" + request[1]);
-        Matcher path = (uri.getPath() != null) ? PATH.matcher(uri.getPath()) : null;
-        if (path == null || !path.matches() || !(headOnly || "GET".equals(request[0]))) {
+        String requestPath = uri.getPath();
+        if (requestPath == null || !(headOnly || "GET".equals(request[0]))) {
+            return null;
+        }
+        Matcher path = CDN_PATH.matcher(requestPath);
+        if (!path.matches()) {
+            path = PATH.matcher(requestPath);
+        }
+        if (!path.matches()) {
             return null;
         }
         return new LoopbackRequest(headOnly, request[1], path, uri, RangeHeader.parse(findRange(lines)));

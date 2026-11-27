@@ -22,11 +22,14 @@ package hx.loopback;
 
 import java.io.IOException;
 
+import hx.dash.CdnFile;
 import hx.dash.DashFile;
 
 public interface DashFileSource {
 
     DashFile open(String subjectId, int season, int episode, int height, String origin, long originSize,
             String resourceId, boolean fromStart) throws IOException;
+
+    CdnFile openCdnFile(String subjectId, int season, int episode, String fileName, long start) throws IOException;
 
 }

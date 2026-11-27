@@ -43,15 +43,15 @@ import hx.util.Tasks;
 
 public final class DashFile {
 
+    static final int PACED_PARALLEL_READS = 16;
+
+    static final int PACED_READ_CHUNK_BYTES = 48 * 1024;
+
     private static final String UNPACED_CDN_HOST = "sacdn.hakunaymatata.com";
 
     private static final int UNPACED_PARALLEL_READS = 8;
 
-    private static final int PACED_PARALLEL_READS = 16;
-
     private static final int UNPACED_READ_CHUNK_BYTES = 256 * 1024;
-
-    private static final int PACED_READ_CHUNK_BYTES = 48 * 1024;
 
     private static final int READ_AHEAD_BYTES = 3 * 1024 * 1024;
 
@@ -188,8 +188,7 @@ public final class DashFile {
         return bytes;
     }
 
-    private static void requireContentRange(HttpURLConnection connection, String url, long start, long end)
-            throws IOException {
+    static void requireContentRange(HttpURLConnection connection, String url, long start, long end) throws IOException {
         String contentRange = connection.getHeaderField("Content-Range");
         if (connection.getResponseCode() != HttpURLConnection.HTTP_PARTIAL || contentRange == null
                 || !contentRange.startsWith("bytes " + start + "-" + end + "/")) {
@@ -197,7 +196,7 @@ public final class DashFile {
         }
     }
 
-    private static void readFully(InputStream in, byte[] bytes, String url) throws IOException {
+    static void readFully(InputStream in, byte[] bytes, String url) throws IOException {
         for (int got = 0; got < bytes.length;) {
             int count = in.read(bytes, got, bytes.length - got);
             if (count < 0) {

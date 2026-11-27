@@ -129,6 +129,41 @@ public final class LoopbackRequestTest {
     }
 
     @Test
+    public void readsTheCdnFileFromTheBuiltUrl() {
+        // given
+        String url = DashServer.buildCdnUrl("77", 1, 3, "chunk-stream0-00042.m4s");
+
+        // when
+        LoopbackRequest request = LoopbackRequest.parse(get(url.substring("http://127.0.0.1:47291".length())));
+
+        // then
+        Assertions.assertThat(request.subjectId).isEqualTo("77");
+        Assertions.assertThat(request.season).isEqualTo(1);
+        Assertions.assertThat(request.episode).isEqualTo(3);
+        Assertions.assertThat(request.cdnFileName).isEqualTo("chunk-stream0-00042.m4s");
+    }
+
+    @Test
+    public void leavesTheCdnFileNameOutOfADashRequest() {
+        // when
+        LoopbackRequest request = LoopbackRequest.parse(get("/dash/77/0/0/720.mp4"));
+
+        // then
+        Assertions.assertThat(request.cdnFileName).isNull();
+    }
+
+    @Test
+    public void refusesACdnFileOutsideManifestsAndSegments() {
+        // when
+        LoopbackRequest traversal = LoopbackRequest.parse(get("/cdn/77/0/0/../index.mpd"));
+        LoopbackRequest otherType = LoopbackRequest.parse(get("/cdn/77/0/0/notes.txt"));
+
+        // then
+        Assertions.assertThat(traversal).isNull();
+        Assertions.assertThat(otherType).isNull();
+    }
+
+    @Test
     public void refusesARequestLineWithoutATarget() {
         // when
         LoopbackRequest request = LoopbackRequest.parse("GET");

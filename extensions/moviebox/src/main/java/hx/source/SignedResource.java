@@ -79,7 +79,7 @@ public final class SignedResource {
         }
     }
 
-    boolean isEdgeCache() {
+    public boolean isEdgeCache() {
         return this.cookie.contains(EDGE_KEY);
     }
 

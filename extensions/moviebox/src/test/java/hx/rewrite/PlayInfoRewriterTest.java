@@ -52,6 +52,34 @@ public final class PlayInfoRewriterTest {
     }
 
     @Test
+    public void pointsEdgeCacheStreamsAtTheLoopbackManifest() throws JSONException {
+        // given
+        String body = PlayInfoFixtures
+            .playInfo(PlayInfoFixtures.edgeCacheCookie("https://sbcdn7.example.com/dash/77_1_2/"));
+
+        // when
+        String rewritten = PlayInfoRewriter.rewrite(body, "77", 1, 2);
+
+        // then
+        JSONObject stream = new JSONObject(rewritten).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        Assertions.assertThat(stream.getString("url")).isEqualTo(DashServer.buildCdnUrl("77", 1, 2, "index.mpd"));
+    }
+
+    @Test
+    public void pointsEdgeCacheStreamsAtTheCdnManifestWithoutAnEpisode() throws JSONException {
+        // given
+        String body = PlayInfoFixtures
+            .playInfo(PlayInfoFixtures.edgeCacheCookie("https://sbcdn7.example.com/dash/77_1_2/"));
+
+        // when
+        String rewritten = PlayInfoRewriter.pointAtManifests(body);
+
+        // then
+        JSONObject stream = new JSONObject(rewritten).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        Assertions.assertThat(stream.getString("url")).isEqualTo("https://sbcdn7.example.com/dash/77_1_2/index.mpd");
+    }
+
+    @Test
     public void routesUnsignedStreamsThroughTheLoopbackAtTheirHighestResolution() throws JSONException {
         // given
         String body = "{\"data\":{\"streams\":[{\"url\":\"https://origin.example.com/f.mp4\",\"signCookie\":\"\","
