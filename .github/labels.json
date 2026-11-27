@@ -5,7 +5,7 @@
     "P2": {"color": "FBCA04", "description": "Requested feature or app version support, assigned during developer review"},
     "P3": {"color": "8C959F", "description": "Optional change or deferred update notice, assigned during developer review"},
     "bug": {"color": "D73A4A", "description": "Patching, installation or app behavior fails"},
-    "enhancement": {"color": "A2EEEF", "description": "New feature for a supported app"},
+    "feature": {"color": "1D761C", "description": "New feature for a supported app"},
     "app request": {"color": "8957E5", "description": "Request to support a new app"},
     "app-update": {"color": "FBCA04", "description": "New app version to assess for support"},
     "regression": {"color": "D93F0B", "description": "Previously worked with an older patches release on the same app version"},

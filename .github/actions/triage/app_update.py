@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import app_packages, contradicting_app, field, normalize, parse_fields
-from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, form_factor, same_variant, targets, tracked_version,
+from versions import (update_title, build_tags, compare, form_factor, same_variant, targets, tracked_version,
                       variant_labels, variant_targets, version_key)
 from replies import BROKEN_FORMS, NEW_ISSUE, bundle, supported_downloads
 
@@ -131,14 +131,14 @@ def decide(number, body, issues, patches_list, issue_title=""):
         elif tracker:
             verdict, reason, duplicate_of = "close", "duplicate", tracker["number"]
             if compare(version, tracked) > 0:
-                retitle = {"number": tracker["number"], "title": f"{APP_UPDATE_TITLE_PREFIX}{app} {version}"}
+                retitle = {"number": tracker["number"], "title": update_title(app, version)}
                 lines.append(f"Thanks! #{tracker['number']} now tracks {app} `{version}`, so this issue is now closed as a duplicate. "
                              f"Please follow #{tracker['number']} for updates.")
             else:
                 lines.append(f"#{tracker['number']} already tracks {app} `{tracked}`, so this issue is now closed as a duplicate. "
                              f"Please follow #{tracker['number']} for updates.")
         else:
-            title = f"{APP_UPDATE_TITLE_PREFIX}{app} {version}"
+            title = update_title(app, version)
 
         if downloads := supported_downloads(patches_list, base_name, variant):
             lines.append(downloads)

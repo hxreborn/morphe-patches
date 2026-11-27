@@ -1,11 +1,13 @@
 name: 🔌 Patched app broken
 description: The app patched fine, but it will not open, crashes, or the patch changed nothing.
-title: "[Not working]: "
+title: "bug(App): "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
+        Write a short summary after the colon. Triage fills in the app name from your report.
+
         Before you file:
 
         - 🚨 Patching won't start, stops with an error or the APK won't install: use

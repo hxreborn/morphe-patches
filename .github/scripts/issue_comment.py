@@ -151,7 +151,7 @@ def is_fix_follow_up(issue, comment):
     own = CODE.sub("", QUOTED.sub("", comment["body"] or ""))
     closed_at = issue.get("closed_at")
     return (
-        bool(labels & {"bug", "enhancement"})
+        bool(labels & {"bug", "feature", "enhancement"})
         and bool(closed_at)
         and timedelta(0) <= timestamp(comment["created_at"]) - timestamp(closed_at) <= LOCK_DELAY
         and bool(PROBLEM.search(own))

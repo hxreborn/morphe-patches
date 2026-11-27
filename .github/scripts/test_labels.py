@@ -75,6 +75,8 @@ def fake_api(repo, path, *args, paginated=False):
         assert paginated
         return existing
     calls.append((path, args))
+    if path == "labels/enhancement":
+        return {**existing[0], "name": "feature"}
     return None
 
 
@@ -88,6 +90,10 @@ existing[:] = [{"name": name, **definition} for name, definition in catalog["lab
 calls.clear()
 labels.sync_labels("example/repo", catalog)
 assert calls == []
+existing[:] = [{"name": "enhancement", "color": "123456", "description": "Feature"}]
+labels.sync_labels("example/repo", {"labels": {"feature": {"color": "123456", "description": "Feature"}}, "retired": []})
+assert calls == [("labels/enhancement", ("--method", "PATCH", "-f", "new_name=feature"))]
+calls.clear()
 print("Label synchronization and idempotence pass")
 
 

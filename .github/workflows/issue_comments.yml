@@ -55,7 +55,7 @@ jobs:
       !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
       (github.event.issue.state == 'closed' ||
       contains(github.event.issue.labels.*.name, 'app-update') ||
-      contains(github.event.issue.labels.*.name, 'enhancement'))
+      (contains(github.event.issue.labels.*.name, 'feature') || contains(github.event.issue.labels.*.name, 'enhancement')))
     permissions:
       issues: write
     runs-on: ubuntu-latest

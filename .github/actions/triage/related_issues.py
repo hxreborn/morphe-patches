@@ -35,7 +35,7 @@ def suggestions(issue, app, label, repo):
     title = TITLE_PREFIX.sub("", issue["title"])
     patch = field(fields, "Patch that breaks it").partition("\u00b7")[2].strip()
     error = ERROR_CODE.search(field(fields, "Error logs", "Debug log"))
-    subject = field(fields, "Feature description") if label == "enhancement" else field(fields, "Actual behaviour")
+    subject = field(fields, "Feature description") if label in {"feature", "enhancement"} else field(fields, "Actual behaviour")
     app_words = words(app)
     patch_words = words(patch)
     excluded = GENERIC_WORDS | set(app_words) | set(patch_words)
