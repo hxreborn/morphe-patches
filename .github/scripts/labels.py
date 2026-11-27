@@ -84,6 +84,8 @@ def api(repo, path, *args, paginated=False):
 
 def sync_labels(repo, catalog):
     existing = {label["name"]: label for label in api(repo, "labels?per_page=100", paginated=True)}
+    if "enhancement" in existing and "feature" not in existing and "feature" in catalog["labels"]:
+        existing["feature"] = api(repo, "labels/enhancement", "--method", "PATCH", "-f", "new_name=feature")
     for name, definition in catalog["labels"].items():
         current = existing.get(name)
         if (current and current["color"].lower() == definition["color"].lower()

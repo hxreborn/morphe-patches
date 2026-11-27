@@ -1,8 +1,6 @@
 name: Issue review
 
 on:
-  issues:
-    types: [opened, edited]
   issue_comment:
     types: [created]
   workflow_dispatch:
@@ -25,12 +23,9 @@ jobs:
       !contains(github.event.issue.labels.*.name, 'incomplete') &&
       !contains(github.event.issue.labels.*.name, 'needs info') &&
       !contains(github.event.issue.labels.*.name, 'untargeted version') &&
-      ((github.event_name == 'issues' && github.event.action == 'opened' &&
-      !contains(github.event.issue.labels.*.name, 'bug') &&
-      !contains(github.event.issue.labels.*.name, 'enhancement')) ||
-      (github.event.issue.state == 'closed' &&
+      github.event.issue.state == 'closed' &&
       github.event.issue.state_reason == 'not_planned' &&
-      github.event.sender.login == github.event.issue.user.login)))
+      github.event.sender.login == github.event.issue.user.login)
     concurrency:
       group: issue-triage-${{ github.event.issue.number || inputs.issue_number }}
     runs-on: ubuntu-latest
@@ -42,7 +37,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          sparse-checkout: .github/scripts/issue-triage
+          sparse-checkout: |
+            .github/scripts/issue-triage
+            patches-list.json
           sparse-checkout-cone-mode: false
 
       - name: Triage issue

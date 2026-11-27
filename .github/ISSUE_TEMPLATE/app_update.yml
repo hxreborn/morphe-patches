@@ -1,11 +1,13 @@
 name: 🔄 App update
 description: A supported app has a version newer than the ones this bundle targets.
-title: "[App Update]: "
+title: "update(App): "
 labels: ["app-update"]
 body:
   - type: markdown
     attributes:
       value: |
+        Write a short summary after the colon. Triage fills in the app name from your report.
+
         One request per app version.
 
         - The README lists the supported versions under each app. A version listed there needs no request.
