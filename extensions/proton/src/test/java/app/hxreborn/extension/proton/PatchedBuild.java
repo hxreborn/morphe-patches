@@ -303,6 +303,16 @@ public final class PatchedBuild {
         }
 
         @Implementation
+        public static boolean splitTunnelingRules() {
+            return true;
+        }
+
+        @Implementation
+        public static String splitTunnelingRulesName() {
+            return "Split tunneling rules";
+        }
+
+        @Implementation
         public static boolean unlockLanConnections() {
             return true;
         }

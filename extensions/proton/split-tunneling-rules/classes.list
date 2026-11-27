@@ -1,0 +1,12 @@
+app/hxreborn/extension/protonvpn/SplitTunnelingApp
+app/hxreborn/extension/protonvpn/SplitTunnelingAppAdapter
+app/hxreborn/extension/protonvpn/SplitTunnelingAppList
+app/hxreborn/extension/protonvpn/SplitTunnelingAppRow
+app/hxreborn/extension/protonvpn/SplitTunnelingCategory
+app/hxreborn/extension/protonvpn/SplitTunnelingRuleEditor
+app/hxreborn/extension/protonvpn/SplitTunnelingRuleEditor$1
+app/hxreborn/extension/protonvpn/SplitTunnelingRuleMatcher
+app/hxreborn/extension/protonvpn/SplitTunnelingRuleRows
+app/hxreborn/extension/protonvpn/SplitTunnelingRuleSettings
+app/hxreborn/extension/protonvpn/SplitTunnelingRules
+app/hxreborn/extension/protonvpn/SplitTunnelingRulesRowClick

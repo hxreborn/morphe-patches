@@ -138,3 +138,8 @@ internal val protonVpnSettingsExtensionPatch = patch {
     dependsOn(protonSettingsExtensionPatch)
     extendWith("extensions/hxreborn/proton-vpn-settings.mpe")
 }
+
+internal val protonSplitTunnelingRulesExtensionPatch = patch {
+    dependsOn(protonSettingsExtensionPatch, protonVpnSettingsExtensionPatch)
+    extendWith("extensions/hxreborn/proton-split-tunneling-rules.mpe")
+}

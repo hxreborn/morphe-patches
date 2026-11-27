@@ -31,11 +31,17 @@ import app.hxreborn.extension.proton.SettingsScreen;
 @SuppressWarnings("unused")
 public final class VpnSettings implements AppSettings {
 
+    static final String LOG_TAG = "hxProtonVpn";
+
     public static boolean removeServerChangeDelay() {
         return false;
     }
 
     public static boolean unlockSplitTunneling() {
+        return false;
+    }
+
+    public static boolean splitTunnelingRules() {
         return false;
     }
 
@@ -75,6 +81,10 @@ public final class VpnSettings implements AppSettings {
         return null;
     }
 
+    public static String splitTunnelingRulesName() {
+        return null;
+    }
+
     public static String unlockLanConnectionsName() {
         return null;
     }
@@ -109,6 +119,10 @@ public final class VpnSettings implements AppSettings {
 
     @Override
     public void generalRows(SettingsScreen screen, List<View> rows) {
+        addSplitTunnelingRuleRows(screen, rows);
+    }
+
+    public static void addSplitTunnelingRuleRows(SettingsScreen screen, List<View> rows) {
     }
 
     @Override
@@ -128,6 +142,9 @@ public final class VpnSettings implements AppSettings {
         }
         if (unlockSplitTunneling()) {
             names.add(unlockSplitTunnelingName());
+        }
+        if (splitTunnelingRules()) {
+            names.add(splitTunnelingRulesName());
         }
         if (unlockLanConnections()) {
             names.add(unlockLanConnectionsName());

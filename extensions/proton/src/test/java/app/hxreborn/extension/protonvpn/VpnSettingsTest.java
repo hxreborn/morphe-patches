@@ -46,9 +46,10 @@ public final class VpnSettingsTest {
     @Test
     @Config(shadows = { PatchedBuild.Vpn.class })
     public void patchedBuildListsTheVpnPatchesInDisplayOrder() {
-        assertEquals(Arrays.asList("Remove server change delay", "Unlock split tunneling", "Unlock LAN connections",
-                "Unlock custom DNS", "Unlock NetShield", "Unlock connection preferences", "Unlock profiles",
-                "Show free server locations", "Disable telemetry"), new VpnSettings().appliedPatchNames());
+        assertEquals(Arrays.asList("Remove server change delay", "Unlock split tunneling", "Split tunneling rules",
+                "Unlock LAN connections", "Unlock custom DNS", "Unlock NetShield", "Unlock connection preferences",
+                "Unlock profiles", "Show free server locations", "Disable telemetry"),
+                new VpnSettings().appliedPatchNames());
     }
 
     @Test
