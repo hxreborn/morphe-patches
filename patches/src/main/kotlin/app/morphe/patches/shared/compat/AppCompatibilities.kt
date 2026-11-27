@@ -1592,7 +1592,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "f6355bdd54f8cedd64f9f6e9813bb0b55a2ac24b82b461e99f86db336ee64255",
         ),
-        targets = listOf(AppTarget(version = "build-1035-bundle-play", versionCode = 1035009, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "build-1033-bundle-play", versionCode = 1033004, minSdk = 28, isExperimental = true),
+            AppTarget(version = "build-1035-bundle-play", versionCode = 1035009, minSdk = 28),
+        ),
     )
 
     val PRAYER_TIMES = Compatibility(
