@@ -2287,6 +2287,17 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.78.2", versionCode = 1515278200, minSdk = 24)),
     )
 
+    val WHAT3WORDS = Compatibility(
+        name = "what3words",
+        packageName = "com.what3words.android",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x0A3049,
+        signatures = setOf(
+            "5a18dc1e9dc2d3f3c752555fe5ec840ee11d7ac236cfe2b4c8b24669caa63412",
+        ),
+        targets = listOf(AppTarget(version = "5.11", versionCode = 30662, minSdk = 25)),
+    )
+
     val WRITE_IT = Compatibility(
         name = "Write It! - Learn Languages",
         packageName = "com.jernung.writeit.android",
