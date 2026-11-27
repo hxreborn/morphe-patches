@@ -13,6 +13,7 @@ from urllib.parse import parse_qs, urlparse
 sys.path.insert(0, str(Path(__file__).parent))
 from fields import code_span, field, normalize, parse_fields
 from replies import ALL_FORMS
+from discussion_ai import review as review_discussion
 
 MARKER = "<!-- app-request-bot facts={} -->"
 REPO = os.environ.get("GITHUB_REPOSITORY", "")
@@ -196,9 +197,17 @@ def feature_words(text):
 
 
 def requested_features(body):
-    items = (" ".join(item.split()) for item in FEATURE_SEPARATOR.split(field(parse_fields(body), "Requested features")))
-    return [item for item in items
-            if feature_words(item) and len(item.split()) <= MAX_FEATURE_WORDS and not item.endswith(":")]
+    lines = field(parse_fields(body), "Requested features").splitlines()
+    candidates = []
+    for line in lines:
+        if re.search(r"<img\b|<video\b|!\[|https?://", line, re.I):
+            continue
+        if len(line.split()) > MAX_FEATURE_WORDS:
+            continue
+        candidates.append(line)
+    items = (" ".join(item.split()) for line in candidates for item in FEATURE_SEPARATOR.split(line))
+    return [item for item in items if feature_words(item) and len(item.split()) <= MAX_FEATURE_WORDS
+            and not item.endswith(":") and not re.search(r"[<>]", item)]
 
 
 def bundle_patch_names(registry, bundle, package):
@@ -261,7 +270,7 @@ def open_requests_at_limit(this, requests):
 
 
 def decide(number, body, requests, patches_list, registry=None, title="", now=None, elsewhere=(), previous="",
-           enforce_limit=False):
+           enforce_limit=False, ai_review=None, ai_marker=""):
     package = find_package(body)
     name = app_name(body, title)
     supported = supported_apps(patches_list)
@@ -375,11 +384,31 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             if verdict == "pass":
                 verdict = "flag"
             checks_features = not previous or KEPT_OPEN_FOR_LACKING in previous
-            lacking = features_no_bundle_has(body, registry, bundles, package) if checks_features else []
-            wanted = ("other bundle",) if lacking else ("needs info", "other bundle")
+            patched_names = [name for bundle in bundles for name in bundle_patch_names(registry, bundle, package)]
+            lacking = [item for item in ai_review["uncovered"]
+                       if not any(feature_words(item) <= feature_words(name) for name in patched_names)] if ai_review else \
+                (features_no_bundle_has(body, registry, bundles, package) if checks_features else [])
+            reported_broken = bool(ai_review and ai_review["reported_broken"])
+            wanted = ("other bundle",) if lacking or reported_broken else ("needs info", "other bundle")
             labels += [label for label in wanted if label not in labels]
             lacking_rows = "\n".join(f"- {code_span(item, 60)}" for item in lacking)
-            if len(bundles) == 1 and lacking:
+            if reported_broken:
+                features = ai_review["features"]
+                reported = ", ".join(code_span(item, 60) for item in features)
+                lines.append(
+                    f"These bundles list patches for `{package}`:\n\n" + "\n".join(rows)
+                    + "\n\nThe requester reports that existing patches fail"
+                    + (f" for {reported}" if reported else "")
+                    + " on the app version they tested. This request is kept open for that reported failure."
+                    + (f"\n\nTheir patch lists also do not name coverage for:\n\n{lacking_rows}" if lacking else "")
+                )
+            elif ai_review and lacking:
+                lines.append(
+                    f"These bundles list patches for `{package}`:\n\n" + "\n".join(rows)
+                    + f"\n\nTheir patch lists do not name coverage for:\n\n{lacking_rows}\n\n"
+                    "This request is kept open for those features."
+                )
+            elif len(bundles) == 1 and lacking:
                 lines.append(
                     f"{rows[0][2:]} already patches `{package}`, but it has no patch for:\n\n{lacking_rows}\n\n"
                     f"{KEPT_OPEN_FOR_LACKING} If that bundle doesn't support your app version or a patch "
@@ -430,7 +459,8 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
 
     facts = hashlib.sha256(json.dumps([
         package, verdict, reason, duplicate_of, sorted(labels), [b["repo"] for b in bundles], posts,
-        *([lacking] if lacking else []),
+        *([lacking] if lacking else []), ai_review["reported_broken"] if ai_review else False,
+        ai_review["features"] if ai_review else [], ai_marker,
         [r["number"] for r in open_by_author], [line.split("\n")[0] for line in lines if line.startswith("This looks like")],
     ]).encode()).hexdigest()[:12]
     return {
@@ -443,7 +473,7 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
         "matches": [b["repo"] for b in bundles],
         "cross_posts": [f"{repo}#{number}" for repo, number in posts],
         "title": canonical_title(title, body),
-        "comment": MARKER.format(facts) + "\n" + "\n\n".join(lines) if lines else "",
+        "comment": MARKER.format(facts) + ("\n" + ai_marker if ai_marker else "") + "\n" + "\n\n".join(lines) if lines else "",
     }
 
 
@@ -469,5 +499,17 @@ if __name__ == "__main__":
         elsewhere = [json.loads(line) for line in posted.read_text(encoding="utf-8").splitlines() if line.strip()]
     previous = Path(sys.argv[7]).read_text(encoding="utf-8") if len(sys.argv) > 7 else ""
     enforce_limit = os.environ.get("ACTION") == "created" and os.environ.get("ASSOCIATION") not in EXEMPT_ASSOCIATIONS
+    package = find_package(body)
+    ai_review, ai_marker = None, ""
+    if registry and package and package.lower() not in supported_apps(patches_list):
+        bundles = listed_bundles(registry, package)
+        if bundles:
+            patch_names = [name for bundle in bundles for name in bundle_patch_names(registry, bundle, package)]
+            ai_review, ai_marker = review_discussion(body, this, patch_names, previous)
+            if os.environ.get("OPENROUTER_API_KEY") and ai_review is None \
+                    and field(parse_fields(body), "Requested features") and this.get("commentsComplete", True):
+                print(json.dumps({"verdict": "hold"}))
+                sys.exit(0)
     print(json.dumps(decide(number, body, requests, patches_list, registry, this.get("title", ""),
-                            elsewhere=elsewhere, previous=previous, enforce_limit=enforce_limit)))
+                            elsewhere=elsewhere, previous=previous, enforce_limit=enforce_limit,
+                            ai_review=ai_review, ai_marker=ai_marker)))

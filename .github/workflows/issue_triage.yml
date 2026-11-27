@@ -91,6 +91,8 @@ jobs:
         with:
           token: ${{ github.token }}
           dry-run: ${{ inputs.dry-run || false }}
+          openrouter-key: ${{ secrets.OPENROUTER_API_KEY }}
+          openrouter-model: ${{ vars.OPENROUTER_MODEL }}
 
   titles:
     needs: triage
