@@ -19,7 +19,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 <a href="#-disclaimer"><picture><source media="(min-width: 768px)" srcset=".github/readme/disclaimer.svg" width="298" height="79"><img src=".github/readme/disclaimer.svg" width="42%" alt="Disclaimer"></picture></a>&nbsp;<a href="#-license"><picture><source media="(min-width: 768px)" srcset=".github/readme/license.svg" width="298" height="79"><img src=".github/readme/license.svg" width="42%" alt="License"></picture></a>
 </p>
 
-<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/dev/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/dev/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
+<p align="center"><a href="https://github.com/hxreborn/morphe-patches/releases"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-dark.svg"><img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/main/.github/readme/tape-light.svg" width="600" alt="Latest changes"></picture></a></p>
 <!-- INDEX_END -->
 
 </div>
@@ -27,7 +27,7 @@ AMOLED themes, ad and tracking removal and settings tweaks for 200+ Android apps
 ## <img src="https://raw.githubusercontent.com/hxreborn/morphe-patches/assets/aqua/icons/patches.png" height="48" align="absmiddle" alt="Patches"> Patches list
 
 <!-- PATCHES_START -->
-> **[v1.89.0-dev.8](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0-dev.8)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**640 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.89.0](https://github.com/hxreborn/morphe-patches/releases/tag/v1.89.0)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`main`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**640 patches**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 ### Featured apps
 

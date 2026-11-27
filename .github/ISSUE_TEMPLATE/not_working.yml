@@ -528,12 +528,12 @@ body:
       description: Newest first.
       options:
         # generated:versions
+        - "1.89.0"
         - "1.89.0-dev.8"
         - "1.89.0-dev.7"
         - "1.89.0-dev.6"
         - "1.89.0-dev.5"
         - "1.89.0-dev.4"
-        - "1.88.0"
         - "Older than these"
         # /generated
     validations:
