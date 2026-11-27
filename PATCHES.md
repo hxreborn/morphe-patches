@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.89.0** (`main`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**640 patches** across **205 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.90.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**642 patches** across **206 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -652,13 +652,14 @@
 
 **Supported versions:**
 
-| [1.1.5](https://download.sxwon.com/CastleTV_v1.1.5_0929_19_30_official.apk "Download stock APK") |
-| :---: |
+| [1.1.5](https://download.sxwon.com/CastleTV_v1.1.5_0929_19_30_official.apk "Download stock APK") | 1.1.6 |
+| :---: | :---: |
 
 Always verify the downloaded APK's SHA-256 against a trusted checksum before patching.
 
 | Patch | Details |
 |---|---|
+| <a id="castle-for-tv-disable-update-prompt"></a>[**Disable update prompt**](patches/src/main/kotlin/app/morphe/patches/castletv/misc/update/DisableUpdatePromptPatch.kt) | Disables the new version dialog. |
 | <a id="castle-for-tv-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/castletv/ads/RemoveAdsPatch.kt) | Removes the pre-roll and mid-roll ads from playback. |
 | <a id="castle-for-tv-spoof-signature"></a>[**Spoof signature**](patches/src/main/kotlin/app/morphe/patches/castletv/misc/fix/signature/SpoofSignaturePatch.kt) | Removes the modified app warning that stops video playback. |
 | <a id="castle-for-tv-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/castletv/misc/premium/UnlockPremiumPatch.kt) | Unlocks member-only titles and shows the account as Premium. Requires a signed-in account. |
@@ -785,12 +786,12 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| 2.3.0 |
+| 2.3.8 |
 | :---: |
 
 | Patch | Details |
 |---|---|
-| <a id="coddy-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/coddy/misc/premium/UnlockPremiumPatch.kt) | Unlocks Coddy Plus with unlimited energy and no ads, and removes the daily AI tutor limit and the free project limit. |
+| <a id="coddy-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/coddy/misc/premium/UnlockPremiumPatch.kt) | Unlocks Coddy Plus with unlimited energy and no ads, and removes the free project limit. |
 
 ---
 
@@ -2365,8 +2366,8 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 **Supported versions:**
 
-| build-1035-bundle-play |
-| :---: |
+| 🧪&nbsp;build-1033-bundle-play | build-1035-bundle-play |
+| :---: | :---: |
 
 | Patch | Details |
 |---|---|
@@ -3293,6 +3294,21 @@ Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hx
 | Patch | Details |
 |---|---|
 | <a id="video-editor-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/videoeditor/misc/premium/UnlockPremiumPatch.kt) | Unlocks Pro features. |
+
+---
+
+## Video MP3 Converter (com.fundevs.app.mediaconverter)
+
+<img src="https://publicmetadata.co.uk/com.fundevs.app.mediaconverter" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 2.8.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="video-mp3-converter-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/videomp3converter/ads/RemoveAdsPatch.kt) | Removes ads. |
 
 ---
 

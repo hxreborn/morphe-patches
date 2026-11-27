@@ -1,3 +1,22 @@
+## [1.90.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.89.0...v1.90.0-dev.1) (2026-11-27)
+
+### Bug Fixes
+
+* **MovieBox:** speed up slow video loading for some regions ([58bb7e8](https://github.com/hxreborn/morphe-patches/commit/58bb7e84b19d1318691cf525bfc2504214419617))
+* **MovieBox:** stop playback stalls on stuck video connections ([2b8b6e2](https://github.com/hxreborn/morphe-patches/commit/2b8b6e2aa37e6dbaa3825cd2d55a6ba36a7c34a5))
+* **Poweramp Equalizer - Unlock premium:** remove trial label in About ([2fdc51b](https://github.com/hxreborn/morphe-patches/commit/2fdc51b35d84d273870535d53671f24702f8bf67))
+
+### New Features
+
+* **Castle for TV - Disable update prompt:** remove new version dialog ([8d52ece](https://github.com/hxreborn/morphe-patches/commit/8d52ecec887596db3a2df15b073febd5fc4d98cc))
+* **Video MP3 Converter - Remove ads:** stop ad loads and clear ad space ([a26869c](https://github.com/hxreborn/morphe-patches/commit/a26869cb6cd1b67980e17a45d5b0b5208d7d318b))
+
+### Updated App Support
+
+* **Castle for TV:** add support for `1.1.6` ([bdaec74](https://github.com/hxreborn/morphe-patches/commit/bdaec7414cb922570c9be200f37a2226f6f906f3)), closes [#1097](https://github.com/hxreborn/morphe-patches/issues/1097)
+* **Coddy:** add support for `2.3.8` ([21c2fb6](https://github.com/hxreborn/morphe-patches/commit/21c2fb6426dffb0ad7e983f4c32019942e4c639c)), closes [#1089](https://github.com/hxreborn/morphe-patches/issues/1089)
+* **Poweramp Equalizer:** add support for `build-1033-bundle-play` ([4260815](https://github.com/hxreborn/morphe-patches/commit/42608153be474c7431f5d14cc8cdcfcc38245a3f))
+
 ## [1.89.0](https://github.com/hxreborn/morphe-patches/compare/v1.88.0...v1.89.0) (2026-11-27)
 
 ### Bug Fixes
