@@ -2278,6 +2278,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.78.2", versionCode = 1515278200, minSdk = 24)),
     )
 
+    val WRITE_IT = Compatibility(
+        name = "Write It! - Learn Languages",
+        packageName = "com.jernung.writeit.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x42A5F5,
+        signatures = setOf("6e0b1e86b7fccf5923919e2be9a58f25b29566f8daf224b8f75997b2d8e1f64b"),
+        targets = listOf(AppTarget(version = "2026.11.6", versionCode = 20261106, minSdk = 24)),
+    )
+
     val XPLORE = Compatibility(
         name = "X-plore File Manager",
         packageName = "com.lonelycatgames.Xplore",

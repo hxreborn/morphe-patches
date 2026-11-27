@@ -75,6 +75,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.VLLO,
         AppCompatibilities.VPN_INDIA,
         AppCompatibilities.WALP,
+        AppCompatibilities.WRITE_IT,
         AppCompatibilities.YUKA,
     )
 
