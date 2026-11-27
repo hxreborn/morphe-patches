@@ -2221,6 +2221,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "10.2.6", versionCode = 174, minSdk = 32)),
     )
 
+    val WALPY = Compatibility(
+        name = "Walpy - Wallpapers",
+        packageName = "com.feresr.walpy",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf("7803f0ba465a6a9ec88aa23a28b6bde7b900f714546708739ba06474364eb05a"),
+        targets = listOf(AppTarget(version = "3.1.7", versionCode = 317, minSdk = 24)),
+    )
+
     val WATCH_IT = Compatibility(
         name = "WATCH IT",
         packageName = "com.watchit.vod",
