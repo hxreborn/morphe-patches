@@ -26,6 +26,7 @@ def package(name, package_name, *versions):
 
 
 PATCHES = {"version": "1.89.0-dev.5", "patches": [{"compatiblePackages": [
+    package("MovieBox TV", "com.community.mbox.tv", "1.2.3.1113.03"),
     package("MovieBox", "com.community.oneroom", "4.0.03.1020.03"),
     package("Ground News", "com.checkitt", "5.1.0"),
     package("VPN Super Unlimited Proxy", "com.free.vpn.super.hotspot.open", "2.36.0"),
@@ -669,6 +670,11 @@ class RealReports(unittest.TestCase):
                 result = self.triage(body)
                 self.assertNotEqual("close", result["verdict"])
                 self.assertNotIn("Screenshots", result["comment"])
+
+    def test_match_moviebox_rather_than_moviebox_tv_on_a_moviebox_report(self):
+        result = self.triage(MOVIEBOX_15_MINUTES_1074)
+        self.assertEqual("MovieBox", result["app"])
+        self.assertNotIn("untargeted version", result["labels"])
 
     def test_flag_only_the_untried_stock_app_on_a_report_without_screenshot(self):
         result = self.triage(MOVIEBOX_15_MINUTES_1074)
