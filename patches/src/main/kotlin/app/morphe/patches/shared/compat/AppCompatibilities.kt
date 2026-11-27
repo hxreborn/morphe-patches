@@ -1973,6 +1973,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.4.7", versionCode = 84, minSdk = 26)),
     )
 
+    val SPIKE_STATS = Compatibility(
+        name = "Spike Stats - Valorant Tracker",
+        packageName = "crocusgames.com.spikestats",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0xAE4B54,
+        signatures = setOf("baace0920be433094133183417b0773e30147b34555d68e94b45c727a29ed149"),
+        targets = listOf(AppTarget(version = "1.0.554", versionCode = 54, minSdk = 24)),
+    )
+
     val SQCOM = Compatibility(
         name = "SQCOM",
         packageName = "com.sqcom.shangqing",
