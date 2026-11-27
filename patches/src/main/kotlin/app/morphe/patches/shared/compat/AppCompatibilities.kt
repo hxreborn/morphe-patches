@@ -454,6 +454,16 @@ internal object AppCompatibilities {
         ),
     )
 
+    val CHOLLOMETRO = Compatibility(
+        name = "Chollometro",
+        packageName = "com.chollometro",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "75b2ee12df7f528ca9aa9f327ee5f86c862387c6c4ba421130029cda4c532769",
+        ),
+        targets = listOf(AppTarget(version = "8.22.04", versionCode = 82204, minSdk = 26)),
+    )
+
     val CLASSDOJO = Compatibility(
         name = "ClassDojo",
         packageName = "com.classdojo.android",
