@@ -45,7 +45,7 @@ runs:
              (.author_association | IN("OWNER", "MEMBER", "COLLABORATOR")) or
              ($labels | any(. == "bot-wrong" or . == "app-update")) then "skip"
           elif ($labels | index("bug")) then "bug"
-          elif ($labels | index("enhancement")) then "feature"
+          elif ($labels | any(. == "feature" or . == "enhancement")) then "feature"
           else "skip" end
         ' "$RUNNER_TEMP/preview-event.json")
         printf 'kind=%s\n' "$kind" >> "$GITHUB_OUTPUT"
@@ -187,7 +187,7 @@ runs:
       if: >-
         steps.preview.outputs.kind == 'feature' ||
         (github.event_name == 'issues' && github.event.action == 'opened' &&
-        contains(github.event.issue.labels.*.name, 'enhancement') &&
+        (contains(github.event.issue.labels.*.name, 'feature') || contains(github.event.issue.labels.*.name, 'enhancement')) &&
         github.event.issue.user.type != 'Bot' &&
         !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association))
       shell: bash
@@ -210,7 +210,7 @@ runs:
         echo "#$ISSUE: $verdict"
         if [ -n "${PREVIEW_ISSUE:-}" ]; then
           printf '\nCheck result: %s\n' "$verdict" >> "$GITHUB_STEP_SUMMARY"
-          python3 "${{ github.action_path }}/related_issues.py" "$event" "$list" enhancement >> "$GITHUB_STEP_SUMMARY"
+          python3 "${{ github.action_path }}/related_issues.py" "$event" "$list" feature >> "$GITHUB_STEP_SUMMARY"
           if [ "$(jq -r .issue.state "$event")" != open ]; then
             printf '\nFeature triage applies when the issue opens.\n' >> "$GITHUB_STEP_SUMMARY"
             exit 0

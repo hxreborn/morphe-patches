@@ -8,6 +8,8 @@
 // The issue text is written by anyone, so the AI reply is treated as untrusted.
 // Every field is validated, and comments are built only from the fixed text in this file.
 
+const { loadApps, titleParts, validTitle } = require('./titles');
+
 // Tried in order, until one returns a usable reply.
 // The repository variable OPENROUTER_MODEL replaces this list. Separate multiple models with commas.
 const DEFAULT_MODELS = [
@@ -41,7 +43,7 @@ const CLOSED_MARKER_PATTERN = /^<!-- issue-triage:closed rechecks=(\d+) -->/;
 const TITLE_PREFIXES = { bug: 'bug', feature: 'feat', question: 'question' };
 
 // bug: Summary, feat(App name): Summary, question: Summary
-const TITLE_PATTERN = /^(?:bug|feat|question)(\([^()\n]{1,40}\))?: (\S.{2,110})$/;
+const TITLE_PATTERN = /^(?:bug|feat|question)(\([^\r\n]{1,85}\)): (\S.{2,110})$/;
 
 const MISSING_INFO_TEXT = {
   description: 'A clear description of the problem: what you expected to happen, and what happened instead',
@@ -68,16 +70,13 @@ type: decide from the content, not from the current title or the form that was u
 - feature: asks for new behavior or a change to existing behavior, including support for another app
 - question: clearly not a bug report or feature request, such as asking how to do something or asking for help
 
-title: "bug: <Summary>", "feat: <Summary>" or "question: <Summary>", matching the type.
-- If the body clearly names the app, you may use "bug(<App>): <Summary>" or "feat(<App>): <Summary>".
-- Summary: one short and specific phrase that says what is broken, wanted or asked.
-  Use sentence case and always start with a capital letter, such as "bug: Search button does nothing".
-- Write the title in English. At most 100 characters.
-- No version numbers, device names, emoji, all caps words, "please", "help", "urgent" or ending punctuation.
-- Describe only what the body states. Do not add details, and do not guess a cause.
-- If the current title already has the correct prefix and accurately describes the body, return it exactly
-  as it is, even if you could word it differently or add an app name.
-- If the body says too little to write a better title, return the current title unchanged.
+title: Use "bug(App): Summary", "feat(App): Summary" or "question(App): Summary".
+- Name the affected app from the report. Preserve the form's selected app and device variant.
+- Use Bundle for an explicitly bundle-wide request. Never guess an app name.
+- Write one short English sentence-case summary of what breaks or what is requested.
+- Omit the app name from the summary unless it names a separate integration.
+- Preserve an accurate scoped title. Do not guess causes or add device or version details.
+- Return an empty title when there is too little information.
 
 close: true only when the issue is clearly impossible to act on, so that a developer would not know where to start.
 - Close: a bug report that only says something does not work or crashes, without saying which feature,
@@ -368,7 +367,7 @@ async function findTask({ github, context, core, owner, repo, issue, includeMain
   return { task: 'recheck', closedComment, rechecks, comments };
 }
 
-async function run({ github, context, core, fetchImpl, retryDelayMs }) {
+async function run({ github, context, core, fetchImpl, retryDelayMs, formatIssue = false, triageFailed = false }) {
   const { owner, repo } = context.repo;
   const issueNumber = Number(context.payload.issue?.number ?? context.payload.inputs?.issue_number);
   if (!Number.isInteger(issueNumber) || issueNumber <= 0) throw new Error('No valid issue number');
@@ -377,19 +376,48 @@ async function run({ github, context, core, fetchImpl, retryDelayMs }) {
   const includeMaintainers = process.env.INCLUDE_MAINTAINERS === 'true';
 
   const { data: issue } = await github.rest.issues.get({ owner, repo, issue_number: issueNumber });
-  const { task, closedBefore, closedComment, rechecks, comments } = await findTask({
-    github,
-    context,
-    core,
-    owner,
-    repo,
-    issue,
-    includeMaintainers,
-  });
+  if (issue.pull_request) return;
+  const apps = loadApps();
+  const fields = parseForm(issue.body);
+  const fallback = titleParts(issue, fields, apps);
+  const labels = new Set(issue.labels.map(label => label.name));
+  const excluded = ['app-update', 'bot-wrong', 'incomplete', 'needs info', 'untargeted version']
+    .some(label => labels.has(label));
+  const authorRecheck = issue.state === 'closed' && issue.state_reason === 'not_planned' &&
+    context.payload.sender?.login === issue.user?.login && context.payload.action === 'edited';
+  const reviewEligible = !formatIssue || (!triageFailed && !excluded &&
+    ((issue.state === 'open' && context.payload.action === 'opened') || authorRecheck));
+  const review = reviewEligible ? await findTask({ github, context, core, owner, repo, issue, includeMaintainers }) : {};
+  const { closedBefore, closedComment, rechecks, comments } = review;
+  const task = review.task || (formatIssue ? 'title' : null);
+  async function rename(title) {
+    if (!title) {
+      core.warning(`#${issueNumber}: the report needs an identifiable app and summary before it can be renamed`);
+      return;
+    }
+    if (title === issue.title) return;
+    core.info(`#${issueNumber}: ${title}`);
+    if (dryRun) return;
+    const args = {owner, repo, issue_number: issueNumber};
+    const {data: latest} = await github.rest.issues.get(args);
+    if (latest.title === issue.title && latest.body === issue.body) {
+      await github.rest.issues.update({...args, title});
+    }
+  }
+  const editorIsMaintainer = context.payload.sender?.login !== issue.user?.login ||
+    MAINTAINER_ASSOCIATIONS.includes(issue.author_association);
+  if (task === 'title' && editorIsMaintainer && context.payload.changes?.title &&
+      !context.payload.changes.body && validTitle(issue.title)) return;
+  if (task === 'title' &&
+      (fallback === issue.title || labels.has('app-update') || issue.user?.type === 'Bot')) {
+    await rename(fallback);
+    return;
+  }
   if (!task) return;
 
   const apiKey = (process.env.OPENROUTER_API_KEY || '').trim();
   if (!apiKey) {
+    await rename(fallback);
     const message =
       'AI issue triage is not set up: the repository secret OPENROUTER_API_KEY is missing. ' +
       'Either add an OpenRouter API key, or turn off this GitHub Action ' +
@@ -404,14 +432,27 @@ async function run({ github, context, core, fetchImpl, retryDelayMs }) {
       ? comments.filter((comment) => comment.user?.id === issue.user.id).map((comment) => comment.body || '')
       : [];
 
-  const { decision, model } = await askModels({
-    models: parseModels(process.env.OPENROUTER_MODEL),
-    messages: buildMessages({ title: issue.title, body: issue.body, authorComments }),
-    apiKey,
-    core,
-    fetchImpl,
-    retryDelayMs,
-  });
+  let result;
+  try {
+    result = await askModels({
+      models: parseModels(process.env.OPENROUTER_MODEL),
+      messages: buildMessages({ title: issue.title, body: issue.body, authorComments }),
+      apiKey,
+      core,
+      fetchImpl,
+      retryDelayMs,
+    });
+  } catch (error) {
+    await rename(fallback);
+    throw error;
+  }
+  const { decision, model } = result;
+  const proposed = validateTitle(decision.title, decision.type);
+  const title = titleParts(issue, fields, apps, {...decision, title: proposed});
+  if (task === 'title') {
+    await rename(title || fallback);
+    return;
+  }
 
   const evidence = hasEvidence(issue.body) || authorComments.some(hasEvidence);
   const close = decision.close && !evidence;
@@ -419,10 +460,8 @@ async function run({ github, context, core, fetchImpl, retryDelayMs }) {
   const comment = (body) => github.rest.issues.createComment({ owner, repo, issue_number: issueNumber, body });
   const actions = [];
 
-  const title = validateTitle(decision.title, decision.type);
-  if (decision.title && !title) core.warning(`Ignoring an invalid title: ${JSON.stringify(decision.title)}`);
   if (title && title !== issue.title) {
-    actions.push({ description: `Rename to: ${title}`, run: () => update({ title }) });
+    actions.push({ description: `Rename to: ${title}`, run: () => rename(title) });
   }
 
   if (task === 'recheck') {
@@ -478,6 +517,7 @@ Object.assign(module.exports, {
   buildMessages,
   hasEvidence,
   parseDecision,
+  parseForm,
   parseModels,
   validateTitle,
 });

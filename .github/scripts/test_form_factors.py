@@ -39,11 +39,11 @@ def body(app, version):
 
 
 def issue(number, app, version):
-    return {"number": number, "state": "OPEN", "title": f"[App Update]: {app} {version}"}
+    return {"number": number, "state": "OPEN", "title": f"update({app}): Support {version}"}
 
 
 result = decide(1, body(WEAR, "1.3.3"), [issue(2, MOBILE, "3.8.4")], metadata)
-assert result["verdict"] == "pass" and result["title"] == f"[App Update]: {WEAR} 1.3.3", result
+assert result["verdict"] == "pass" and result["title"] == f"update({WEAR}): Support 1.3.3", result
 assert decide(1, body(NAME, "1.3.3"), [], metadata)["verdict"] == "flag"
 assert decide(1, body(WEAR, "1.3.3"), [issue(2, WEAR, "1.3.3")], metadata)["duplicate_of"] == 2
 assert decide(1, body(WEAR, "1.3.2"), [], metadata)["reason"] == "completed"

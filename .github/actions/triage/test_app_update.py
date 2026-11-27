@@ -31,9 +31,9 @@ def tracker(number, app, version, state="OPEN"):
 
 CASES = {
     "newer version with no tracker gets the canonical title": (
-        body("Proton VPN", "5.20.60.0"), [], ("pass", "", 0, "[App Update]: Proton VPN 5.20.60.0", None)),
+        body("Proton VPN", "5.20.60.0"), [], ("pass", "", 0, "update(Proton VPN): Support 5.20.60.0", None)),
     "version code in parentheses is dropped": (
-        body("Proton VPN", "v5.20.60.0 (605206000)"), [], ("pass", "", 0, "[App Update]: Proton VPN 5.20.60.0", None)),
+        body("Proton VPN", "v5.20.60.0 (605206000)"), [], ("pass", "", 0, "update(Proton VPN): Support 5.20.60.0", None)),
     "version already targeted closes as completed": (
         body("Proton VPN", "5.20.57.0"), [], ("close", "completed", 0, "", None)),
     "older version closes as completed": (
@@ -44,15 +44,15 @@ CASES = {
         body("Showly", "3.72.5"), [tracker(7, "Showly", "3.73.0")], ("close", "duplicate", 7, "", None)),
     "newer than the open tracker retitles it": (
         body("Showly", "3.74.0"), [tracker(7, "Showly", "3.73.0")],
-        ("close", "duplicate", 7, "", {"number": 7, "title": "[App Update]: Showly 3.74.0"})),
+        ("close", "duplicate", 7, "", {"number": 7, "title": "update(Showly): Support 3.74.0"})),
     "closed tracker for the same version is not a duplicate target": (
         body("Showly", "3.73.0"), [tracker(7, "Showly", "3.73.0", "CLOSED")],
-        ("pass", "", 0, "[App Update]: Showly 3.73.0", None)),
+        ("pass", "", 0, "update(Showly): Support 3.73.0", None)),
     "another app's tracker is ignored": (
         body("Showly", "3.73.0"), [tracker(7, "Proton VPN", "5.20.60.0")],
-        ("pass", "", 0, "[App Update]: Showly 3.73.0", None)),
+        ("pass", "", 0, "update(Showly): Support 3.73.0", None)),
     "the issue itself is not its own tracker": (
-        body("Showly", "3.73.0"), [tracker(9, "Showly", "3.73.0")], ("pass", "", 0, "[App Update]: Showly 3.73.0", None)),
+        body("Showly", "3.73.0"), [tracker(9, "Showly", "3.73.0")], ("pass", "", 0, "update(Showly): Support 3.73.0", None)),
     "unknown app asks for info": (
         body("Nope", "1.0"), [], ("flag", "", 0, "", None)),
     "missing version asks for info": (
@@ -62,10 +62,10 @@ CASES = {
         ("flag", "", 0, "", None)),
     "a longer app's tracker is not this app's tracker": (
         body("MovieBox", "4.0.04.0930.03"), [tracker(7, "MovieBox TV", "1.2.0.0924")],
-        ("pass", "", 0, "[App Update]: MovieBox 4.0.04.0930.03", None)),
+        ("pass", "", 0, "update(MovieBox): Support 4.0.04.0930.03", None)),
     "a tracker whose title holds no version is ignored": (
         body("Showly", "3.73.0"), [{"number": 7, "title": "[App Update]: Showly 3.80 @octocat [x](y)", "state": "OPEN"}],
-        ("pass", "", 0, "[App Update]: Showly 3.73.0", None)),
+        ("pass", "", 0, "update(Showly): Support 3.73.0", None)),
     "a version without the build tag matches the tagged target": (
         body("Cxxdroid", "6.0"), [], ("close", "completed", 0, "", None)),
     "a device ABI on a universal target is already supported": (
@@ -73,33 +73,33 @@ CASES = {
     "a parenthesised ABI on a universal target is already supported": (
         body("Proton VPN", "5.20.57.0 (arm64-v8a)"), [], ("close", "completed", 0, "", None)),
     "a TV build of a targeted phone version is a new request": (
-        body("Showly", "3.72.0 TV"), [], ("pass", "", 0, "[App Update]: Showly 3.72.0 TV", None)),
+        body("Showly", "3.72.0 TV"), [], ("pass", "", 0, "update(Showly): Support 3.72.0 TV", None)),
     "a bare version code asks for info": (
         body("Showly", "11782"), [tracker(7, "Showly", "3.73.0")], ("flag", "", 0, "", None)),
     "a flagged issue is not the tracker": (
         body("Showly", "3.74.0"), [{**tracker(7, "Showly", "3.73.0"), "labels": [{"name": "needs info"}]}],
-        ("pass", "", 0, "[App Update]: Showly 3.74.0", None)),
+        ("pass", "", 0, "update(Showly): Support 3.74.0", None)),
     "a bot-wrong tracker is left alone": (
         body("Showly", "3.74.0"), [{**tracker(7, "Showly", "3.73.0"), "labels": [{"name": "bot-wrong"}]}],
-        ("pass", "", 0, "[App Update]: Showly 3.74.0", None)),
+        ("pass", "", 0, "update(Showly): Support 3.74.0", None)),
     "a title naming the app without a version is not a tracker": (
         body("MovieBox", "4.0.04.0930.03"), [{"number": 7, "title": "[App Update]: MovieBox TV", "state": "OPEN"}],
-        ("pass", "", 0, "[App Update]: MovieBox 4.0.04.0930.03", None)),
+        ("pass", "", 0, "update(MovieBox): Support 4.0.04.0930.03", None)),
     "fullwidth digits are read as the version": (
-        body("Showly", "\uff13.\uff17\uff13.\uff10"), [], ("pass", "", 0, "[App Update]: Showly 3.73.0", None)),
+        body("Showly", "\uff13.\uff17\uff13.\uff10"), [], ("pass", "", 0, "update(Showly): Support 3.73.0", None)),
     "an older version of an untargeted ABI is not closed as older": (
-        body("Cxxdroid", "5.7_armv7"), [], ("pass", "", 0, "[App Update]: Cxxdroid 5.7_armv7", None)),
+        body("Cxxdroid", "5.7_armv7"), [], ("pass", "", 0, "update(Cxxdroid): Support 5.7_armv7", None)),
     "a tracker for another ABI is not this version's tracker": (
         body("Cxxdroid", "6.1_arm64"), [tracker(7, "Cxxdroid", "6.0.5_x86_64")],
-        ("pass", "", 0, "[App Update]: Cxxdroid 6.1_arm64", None)),
+        ("pass", "", 0, "update(Cxxdroid): Support 6.1_arm64", None)),
     "the release of a prerelease target is a new request": (
-        body("Demo", "2.0"), [], ("pass", "", 0, "[App Update]: Demo 2.0", None)),
+        body("Demo", "2.0"), [], ("pass", "", 0, "update(Demo): Support 2.0", None)),
     "a parenthesised ABI of an untargeted build is a new request": (
-        body("Cxxdroid", "6.0 (x86_64)"), [], ("pass", "", 0, "[App Update]: Cxxdroid 6.0 x86_64", None)),
+        body("Cxxdroid", "6.0 (x86_64)"), [], ("pass", "", 0, "update(Cxxdroid): Support 6.0 x86_64", None)),
     "two version numbers ask for info": (
         body("Showly", "3.74.0 3.75.0"), [tracker(7, "Showly", "3.73.0")], ("flag", "", 0, "", None)),
     "another ABI of a targeted version is not already supported": (
-        body("Cxxdroid", "6.0_x86_64"), [], ("pass", "", 0, "[App Update]: Cxxdroid 6.0_x86_64", None)),
+        body("Cxxdroid", "6.0_x86_64"), [], ("pass", "", 0, "update(Cxxdroid): Support 6.0_x86_64", None)),
 }
 
 failures = 0

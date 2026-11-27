@@ -104,7 +104,7 @@ class RelatedReports(unittest.TestCase):
         source = json.loads('{' + line + '}')['successComment']
         code = source[source.index('<%') + 2:source.index('%>')]
         script = "const body = new Function('issue', 'commits', 'nextRelease', 'branch', process.argv[1]);" \
-                 "process.stdout.write(body({number:7,title:'Example',labels:[{name:'enhancement'}]}," \
+                 "process.stdout.write(body({number:7,title:'Example',labels:[{name:'feature'}]}," \
                  "[],{version:'2.0.0'},{prerelease:false}));"
         result = subprocess.run(['node', '-e', script, code + '\nreturn body;'],
                                 cwd=HERE.parents[2], capture_output=True, text=True, check=True,

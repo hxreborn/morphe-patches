@@ -2,7 +2,6 @@ import re
 
 ABIS = {"arm64", "armeabi", "armv7", "x86", "x86_64"}
 PRERELEASE = {"alpha", "beta", "rc", "pre", "preview", "dev", "canary", "snapshot"}
-APP_UPDATE_TITLE_PREFIX = "[App Update]: "
 APK_DOWNLOAD_WARNING = "Always verify the downloaded APK's SHA-256 against a trusted checksum before patching."
 APK_VERSION_URLS = {
     ("com.community.mbox.tv", "1.2.3.1113.03"): (
@@ -70,10 +69,18 @@ def same_variant(version, target):
     return not ours or ours == theirs or (not theirs and set(ours) <= ABIS)
 
 
+def update_title(app, version):
+    return f"update({app}): Support {version}"
+
+
 def tracked_version(title, app, app_names):
-    prefix = f"{APP_UPDATE_TITLE_PREFIX}{app} "
+    canonical = update_title(app, "")
+    if title.startswith(canonical):
+        version = title[len(canonical):]
+        return version if re.search(r"\d", version) else None
+    prefix = f"[App Update]: {app} "
     if not title.startswith(prefix) or any(
-        len(other) > len(app) and title.startswith(f"{APP_UPDATE_TITLE_PREFIX}{other} ") for other in app_names
+        len(other) > len(app) and title.startswith(f"[App Update]: {other} ") for other in app_names
     ):
         return None
     version = title[len(prefix):]

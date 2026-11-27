@@ -1,11 +1,13 @@
 name: 🐞 Patching failed
 description: Patching would not start, stopped with an error, or the patched APK would not install.
-title: "[Bug]: "
+title: "bug(App): "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
+        Write a short summary after the colon. Triage fills in the app name from your report.
+
         Use this one when patching wouldn't start, stopped with an error, or the APK it produced wouldn't install.
 
         - 🚨 Patching finished and the app misbehaves: use

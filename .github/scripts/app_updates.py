@@ -20,7 +20,7 @@ from urllib.parse import unquote
 
 import requests
 from update_report import issue_body
-from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare, form_factor, tracked_version, variant_labels, version_key
+from versions import update_title, build_tags, compare, form_factor, tracked_version, variant_labels, version_key
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
 from replies import BROKEN_FORMS, bundle
@@ -654,16 +654,18 @@ def sync_issues(apps, results, bundle_version):
        "--description", label["description"])
     issues = json.loads(gh("issue", "list", "--label", ISSUE_LABEL, "--state", "all", "--limit", "1000",
                            "--json", "number,title,state,author,labels,body"))
-    by_title = {issue["title"]: issue for issue in issues}
     names = [app["name"] for app in apps.values()]
     for record in results:
         app = apps[record["package"], record["form_factor"]]
-        prefix = f"{APP_UPDATE_TITLE_PREFIX}{app['name']} "
         candidate = record["candidate"] if record["status"] == "update" and record.get("readiness") != "untested" else None
+        title = update_title(app["name"], candidate) if candidate else None
+        already_reported = False
         open_same = None
         open_newer = False
         for issue in issues:
             version = tracked_version(issue["title"], app["name"], names)
+            if candidate and version == candidate:
+                already_reported = True
             excluded = {"needs info", "bot-wrong"} & {label["name"] for label in issue.get("labels") or []}
             if issue["state"] != "OPEN" or version is None or excluded:
                 continue
@@ -680,12 +682,12 @@ def sync_issues(apps, results, bundle_version):
         if not candidate:
             continue
         if open_same and (open_same.get("author") or {}).get("is_bot"):
-            gh("issue", "edit", str(open_same["number"]), "--title", prefix + candidate, "--body-file", "-",
+            gh("issue", "edit", str(open_same["number"]), "--title", title, "--body-file", "-",
                input=issue_body({**app, **record}, record))
-        elif open_same and open_same["title"] != prefix + candidate:
-            gh("issue", "edit", str(open_same["number"]), "--title", prefix + candidate)
-        elif not open_newer and prefix + candidate not in by_title:
-            gh("issue", "create", "--title", prefix + candidate, "--label", ISSUE_LABEL, "--body-file", "-",
+        elif open_same and open_same["title"] != title:
+            gh("issue", "edit", str(open_same["number"]), "--title", title)
+        elif not open_newer and not already_reported:
+            gh("issue", "create", "--title", title, "--label", ISSUE_LABEL, "--body-file", "-",
                input=issue_body({**app, **record}, record))
 
 
