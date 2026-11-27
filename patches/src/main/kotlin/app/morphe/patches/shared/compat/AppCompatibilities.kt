@@ -25,6 +25,16 @@ internal object AppCompatibilities {
         ),
     )
 
+    val AIR_EXPLORER = Compatibility(
+        name = "Air Explorer",
+        packageName = "com.mobile.airexplorer",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "8a2b0a2601662629983aa6562a8a4dac8ddfe0266885f61e9e4d99c07bdedec5",
+        ),
+        targets = listOf(AppTarget(version = "1.6.0", versionCode = 21, minSdk = 24)),
+    )
+
     val ALBO = Compatibility(
         name = "Albo",
         packageName = "com.thesortdapp.sortd",

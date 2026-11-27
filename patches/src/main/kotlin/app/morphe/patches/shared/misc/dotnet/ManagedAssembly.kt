@@ -145,6 +145,8 @@ internal class ManagedAssembly(val image: ByteArray) {
         code.copyInto(image, body + 1)
     }
 
+    fun methodTokenIndex(namespace: String, type: String, method: String) = methodRow(namespace, type, method) - 1
+
     fun fieldReferenceToken(namespace: String, type: String, field: String): Int {
         val rows = (1..rowCounts[MEMBER_REF]).filter { row ->
             val parent = readColumn(MEMBER_REF, row, memberRefParentColumn, memberRefParentIndex)

@@ -21,6 +21,12 @@ private const val SECTION_SIZE = 0x20
 private const val SECTION_LINK = 0x28
 private const val SECTION_ENTRY_SIZE = 0x38
 private const val SECTION_TYPE_DYNSYM = 11
+private const val SECTION_TYPE_RELA = 4
+
+private const val RELA_OFFSET = 0x00
+private const val RELA_INFO = 0x08
+private const val RELA_ADDEND = 0x10
+private const val AARCH64_RELATIVE_RELOCATION = 0x403L
 
 private const val SYMBOL_NAME = 0x00
 private const val SYMBOL_VALUE = 0x08
@@ -55,6 +61,29 @@ internal class Arm64ElfReader(private val bytes: ByteArray) {
             }
         }
         throw PatchException("Symbol $name is missing")
+    }
+
+    fun relativeRelocationAddend(address: Long): Long {
+        val sectionHeaders = buffer.getLong(SECTION_HEADER_OFFSET).toInt()
+        val sectionHeaderSize = buffer.getShort(SECTION_HEADER_SIZE).toInt()
+        val addends = mutableListOf<Long>()
+        for (sectionIndex in 0 until buffer.getShort(SECTION_HEADER_COUNT).toInt()) {
+            val section = sectionHeaders + sectionIndex * sectionHeaderSize
+            if (buffer.getInt(section + SECTION_TYPE) != SECTION_TYPE_RELA) continue
+            val tableOffset = buffer.getLong(section + SECTION_OFFSET).toInt()
+            val tableSize = buffer.getLong(section + SECTION_SIZE).toInt()
+            val entrySize = buffer.getLong(section + SECTION_ENTRY_SIZE).toInt()
+            for (entryOffset in tableOffset until tableOffset + tableSize step entrySize) {
+                if (buffer.getLong(entryOffset + RELA_OFFSET) != address) continue
+                if (buffer.getLong(entryOffset + RELA_INFO) != AARCH64_RELATIVE_RELOCATION) {
+                    throw PatchException("Address 0x${address.toString(16)} has a non-relative relocation")
+                }
+                addends += buffer.getLong(entryOffset + RELA_ADDEND)
+            }
+        }
+        return addends.singleOrNull() ?: throw PatchException(
+            "Expected one relative relocation for address 0x${address.toString(16)}, found ${addends.size}",
+        )
     }
 
     fun pageRelativeLoads(function: Long): List<Long> {
