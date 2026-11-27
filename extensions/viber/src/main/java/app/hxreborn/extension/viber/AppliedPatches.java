@@ -166,6 +166,18 @@ public final class AppliedPatches {
         return description("disableAnalytics");
     }
 
+    public static boolean ignoreAccentsInContactSearch() {
+        return isApplied("ignoreAccentsInContactSearch");
+    }
+
+    public static String ignoreAccentsInContactSearchName() {
+        return name("ignoreAccentsInContactSearch");
+    }
+
+    public static String ignoreAccentsInContactSearchDescription() {
+        return description("ignoreAccentsInContactSearch");
+    }
+
     public static boolean removeOnlineStatusLimit() {
         return isApplied("removeOnlineStatusLimit");
     }
@@ -354,6 +366,8 @@ public final class AppliedPatches {
         add(applied, disappearingMediaPrivacy(), disappearingMediaPrivacyName(), disappearingMediaPrivacyDescription());
         add(applied, saveDisappearingMedia(), saveDisappearingMediaName(), saveDisappearingMediaDescription());
         add(applied, filterBusinessChats(), filterBusinessChatsName(), filterBusinessChatsDescription());
+        add(applied, ignoreAccentsInContactSearch(), ignoreAccentsInContactSearchName(),
+                ignoreAccentsInContactSearchDescription());
         add(applied, removeOnlineStatusLimit(), removeOnlineStatusLimitName(), removeOnlineStatusLimitDescription());
         add(applied, disableAnalytics(), disableAnalyticsName(), disableAnalyticsDescription());
         add(applied, disableUpdatePrompts(), disableUpdatePromptsName(), disableUpdatePromptsDescription());

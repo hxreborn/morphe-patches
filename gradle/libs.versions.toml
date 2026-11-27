@@ -9,6 +9,7 @@ gson = "2.15.0"
 pngj = "2.1.0"
 kotlinx-coroutines = "1.11.0"
 asm = "9.11.1"
+arsclib = "50418a07a8"
 spring-javaformat = "0.0.48"
 junit = "4.13.2"
 assertj = "3.27.7"
@@ -26,6 +27,7 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 pngj = { module = "ar.com.hjg:pngj", version.ref = "pngj" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
+arsclib = { module = "com.github.MorpheApp:ARSCLib", version.ref = "arsclib" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 spring-javaformat-checkstyle = { module = "io.spring.javaformat:spring-javaformat-checkstyle", version.ref = "spring-javaformat" }
 morphe-patches-library = { module = "app.morphe:morphe-patches-library", version.ref = "morphe-patches-library" }

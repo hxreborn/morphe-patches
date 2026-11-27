@@ -34,13 +34,16 @@ final class SongTags {
 
     final String album;
 
+    final byte[] coverJpeg;
+
     private final String id;
 
-    SongTags(String id, String title, String artist, String album) {
+    SongTags(String id, String title, String artist, String album, byte[] coverJpeg) {
         this.id = id;
         this.title = trimmed(title);
         this.artist = trimmed(artist);
         this.album = trimmed(album);
+        this.coverJpeg = coverJpeg;
     }
 
     String fileName() {

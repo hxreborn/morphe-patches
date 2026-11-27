@@ -91,11 +91,11 @@ public final class PatchesSettingsActivityTest {
 
         Assert.assertEquals(Arrays.asList("Remove chat payment actions", "Remove deleted message notices",
                 "Hide image remix", "Remove typing privacy banner", "Remove list gaps", "Disable AI features",
-                "Injected disappearing media title", "Injected business name", "Injected folder title",
-                "Injected start folder title", "Injected folder limit title", "Hide ads", "Injected promotions title",
-                "Hide navigation buttons", "Hide More screen items", "Injected online status title",
-                "Injected media privacy title", "Disable analytics", "Injected secondary device title", PLUS_TITLE),
-                titles);
+                "Injected disappearing media title", "Injected business name", "Ignore accents in contact search",
+                "Injected folder title", "Injected start folder title", "Injected folder limit title", "Hide ads",
+                "Injected promotions title", "Hide navigation buttons", "Hide More screen items",
+                "Injected online status title", "Injected media privacy title", "Disable analytics",
+                "Injected secondary device title", PLUS_TITLE), titles);
     }
 
     @Test
@@ -566,6 +566,21 @@ public final class PatchesSettingsActivityTest {
         @Implementation
         protected static String filterBusinessChatsDescription() {
             return "Injected filterBusinessChats description.";
+        }
+
+        @Implementation
+        protected static boolean ignoreAccentsInContactSearch() {
+            return true;
+        }
+
+        @Implementation
+        protected static String ignoreAccentsInContactSearchName() {
+            return "Ignore accents in contact search";
+        }
+
+        @Implementation
+        protected static String ignoreAccentsInContactSearchDescription() {
+            return "Injected ignoreAccentsInContactSearch description.";
         }
 
         @Implementation

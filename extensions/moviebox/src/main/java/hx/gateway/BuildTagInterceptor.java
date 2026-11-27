@@ -24,6 +24,7 @@ import java.util.Map;
 
 import android.util.Log;
 import hx.okhttp.ChainInterceptor;
+import hx.source.Endpoints;
 import hx.util.Logs;
 import hx.util.Reflect;
 import org.json.JSONException;
@@ -38,8 +39,6 @@ public final class BuildTagInterceptor extends ChainInterceptor {
     private static final String RESOURCE_LIST_PATH = "/subject-api/resource";
 
     private static final String RESOURCE_LIST_V2_PATH = "/subject-api/resource/v2";
-
-    private static final String RESOURCE_POSITION_PATH = "/subject-api/resource-position";
 
     private static final String CARRIER_FIELD = "sp_code";
 
@@ -123,7 +122,7 @@ public final class BuildTagInterceptor extends ChainInterceptor {
 
     private static boolean isDirectFileLookup(Object request) throws ReflectiveOperationException {
         String path = (String) Reflect.call(Reflect.call(request, "url"), "encodedPath");
-        return path.contains(RESOURCE_POSITION_PATH);
+        return path.contains(Endpoints.RESOURCE_POSITION);
     }
 
     private static String withDirectFileCarrier(String clientInfo) {

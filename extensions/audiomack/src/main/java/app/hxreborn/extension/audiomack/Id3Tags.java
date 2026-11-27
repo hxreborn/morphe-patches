@@ -50,6 +50,12 @@ final class Id3Tags {
 
     private static final int UTF16_ENCODING = 1;
 
+    private static final int LATIN1_ENCODING = 0;
+
+    private static final int FRONT_COVER = 3;
+
+    private static final byte[] JPEG_MIME_TYPE = "image/jpeg".getBytes(StandardCharsets.US_ASCII);
+
     private static final byte[] UTF16_LITTLE_ENDIAN_MARK = { (byte) 0xFF, (byte) 0xFE };
 
     private static final int COPY_BUFFER_SIZE = 64 * 1024;
@@ -73,9 +79,12 @@ final class Id3Tags {
 
     static byte[] tag(SongTags tags) throws IOException {
         final ByteArrayOutputStream frames = new ByteArrayOutputStream();
-        writeFrame(frames, "TIT2", tags.title);
-        writeFrame(frames, "TPE1", tags.artist);
-        writeFrame(frames, "TALB", tags.album);
+        writeTextFrame(frames, "TIT2", tags.title);
+        writeTextFrame(frames, "TPE1", tags.artist);
+        writeTextFrame(frames, "TALB", tags.album);
+        if (tags.coverJpeg != null) {
+            writeCoverFrame(frames, tags.coverJpeg);
+        }
         final ByteArrayOutputStream tag = new ByteArrayOutputStream();
         tag.write(MARKER);
         tag.write(VERSION_MAJOR);
@@ -109,18 +118,35 @@ final class Id3Tags {
         return Math.min(in.length(), HEADER_SIZE + size + (footer ? FOOTER_SIZE : 0));
     }
 
-    private static void writeFrame(ByteArrayOutputStream frames, String id, String value) throws IOException {
+    private static void writeTextFrame(ByteArrayOutputStream frames, String id, String value) throws IOException {
         if (value.isEmpty()) {
             return;
         }
-        final byte[] text = value.getBytes(StandardCharsets.UTF_16LE);
+        final ByteArrayOutputStream text = new ByteArrayOutputStream();
+        text.write(UTF16_ENCODING);
+        text.write(UTF16_LITTLE_ENDIAN_MARK);
+        text.write(value.getBytes(StandardCharsets.UTF_16LE));
+        writeFrame(frames, id, text);
+    }
+
+    private static void writeCoverFrame(ByteArrayOutputStream frames, byte[] jpeg) throws IOException {
+        final ByteArrayOutputStream picture = new ByteArrayOutputStream();
+        picture.write(LATIN1_ENCODING);
+        picture.write(JPEG_MIME_TYPE);
+        picture.write(0);
+        picture.write(FRONT_COVER);
+        picture.write(0);
+        picture.write(jpeg);
+        writeFrame(frames, "APIC", picture);
+    }
+
+    private static void writeFrame(ByteArrayOutputStream frames, String id, ByteArrayOutputStream body)
+            throws IOException {
         final DataOutputStream out = new DataOutputStream(frames);
         out.write(id.getBytes(StandardCharsets.US_ASCII));
-        out.writeInt(1 + UTF16_LITTLE_ENDIAN_MARK.length + text.length);
+        out.writeInt(body.size());
         out.writeShort(0);
-        out.write(UTF16_ENCODING);
-        out.write(UTF16_LITTLE_ENDIAN_MARK);
-        out.write(text);
+        body.writeTo(out);
     }
 
 }

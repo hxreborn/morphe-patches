@@ -30,7 +30,7 @@ import org.junit.Test;
 public final class FreeAccountTest {
 
     @SuppressWarnings("unused")
-    static final class UserInfo {
+    static final class UserInfo implements FreeAccountUserInfo {
 
         private final Object vpnUser;
 
@@ -38,13 +38,14 @@ public final class FreeAccountTest {
             this.vpnUser = vpnUser;
         }
 
-        public Object getVpnUser() {
+        @Override
+        public Object vpnUser() {
             return this.vpnUser;
         }
 
     }
 
-    static final class VpnUser {
+    static final class VpnUser implements FreeAccountVpnUser {
 
         private final boolean free;
 
@@ -52,6 +53,7 @@ public final class FreeAccountTest {
             this.free = free;
         }
 
+        @Override
         public boolean isFreeUser() {
             return this.free;
         }

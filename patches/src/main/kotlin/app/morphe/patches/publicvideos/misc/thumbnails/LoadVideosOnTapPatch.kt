@@ -12,10 +12,10 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.patcher.util.numberOfParameterRegisters
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.smali.addStaticMethod
 import app.morphe.patches.shared.misc.smali.descriptor
-import app.morphe.patches.shared.misc.smali.parameterRegisterCount
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 
@@ -45,7 +45,7 @@ val loadVideosOnTapPatch = patch(
     execute {
         val load = PlayerLoadFingerprint.match()
         val loadImplementation = checkNotNull(load.method.implementation) { "${descriptor(load.method)} has no body" }
-        if (loadImplementation.registerCount - load.method.parameterRegisterCount() < 1) {
+        if (loadImplementation.registerCount - load.method.numberOfParameterRegisters < 1) {
             throw PatchException("${descriptor(load.method)} has no local register for the injected result")
         }
         val togglePlayback = PlayerTogglePlaybackFingerprint.method

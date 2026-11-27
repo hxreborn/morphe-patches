@@ -95,7 +95,9 @@ internal class ExtensionPayloadsTest {
             BundlePatches.payloadsLoadedDirectlyBy(entry.patch).map { it to entry.patch }
         }
         val dependedOn = declared.flatMap { entry -> entry.patch.dependencies }.toSet()
-        val orphans = loaders.filter { (resource, patch) -> patch !in dependedOn && resource !in nestedReads }.map { it.first }
+        val orphans = loaders.filter { (resource, patch) ->
+            patch.name == null && patch !in dependedOn && resource !in nestedReads
+        }.map { it.first }
 
         assertEquals(emptyList(), orphans)
     }
@@ -126,7 +128,7 @@ internal class ExtensionPayloadsTest {
         val modulesByResource = moduleResources.entries.groupBy({ it.value }, { it.key })
 
         assertEquals(emptyMap(), modulesByResource.filterValues { it.size > 1 })
-        assertEquals(modulesByResource.keys.sorted(), ExtensionPayloads.resourceNames.sorted())
+        assertEquals(modulesByResource.keys, ExtensionPayloads.resourceNames.toSet() - ExtensionPayloads.separatelyBuiltResources)
     }
 
     @Test

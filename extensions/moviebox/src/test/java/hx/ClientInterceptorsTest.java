@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import hx.gateway.ClientAddressInterceptor;
 import hx.okhttp.ChainInterceptor;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -44,9 +45,15 @@ public final class ClientInterceptorsTest {
 
     private static final String REWRITTEN = "rewritten-tag";
 
+    private static final String FORWARDED_FOR_HEADER = "x-forwarded-for";
+
+    private static final String RESOURCE_LIST = "https://api.example.com/wefeed-mobile-bff/subject-api/resource/v2";
+
     private final ClassLoader loader = getClass().getClassLoader();
 
     private final List<String> seenByTerminal = new ArrayList<>();
+
+    private final List<String> addressesSeenByTerminal = new ArrayList<>();
 
     @Test
     public void tagsTheBuildHeaderAfterTheAppAddedItAndBeforeTheTerminalInterceptor()
@@ -74,6 +81,29 @@ public final class ClientInterceptorsTest {
         Assertions.assertThat(client.interceptors().size()).isEqualTo(1);
     }
 
+    @Test
+    public void withholdsTheClientAddressAfterTheAppSetItWhenWiredLikeThePatch()
+            throws IOException, ReflectiveOperationException {
+        // given
+        OkHttpClient app = new OkHttpClient.Builder().addInterceptor(this::addAppClientAddress)
+            .addInterceptor(this::answerWithoutNetwork)
+            .build();
+        Object withAddress = ClientInterceptors.addBeforeTerminal(app,
+                ClientInterceptors.proxy(this.loader, new ClientAddressInterceptor(true)));
+        OkHttpClient client = (OkHttpClient) ClientInterceptors.addFirst(withAddress,
+                ClientInterceptors.proxy(this.loader, new RewritingInterceptor()));
+
+        // when
+        client.newCall(new Request.Builder().url(RESOURCE_LIST).build()).execute().close();
+
+        // then
+        Assertions.assertThat(this.addressesSeenByTerminal).containsExactly("unknown");
+    }
+
+    private Response addAppClientAddress(Interceptor.Chain chain) throws IOException {
+        return chain.proceed(chain.request().newBuilder().header(FORWARDED_FOR_HEADER, "103.145.50.154").build());
+    }
+
     private OkHttpClient givenClientWithTagInterceptor() throws ReflectiveOperationException {
         OkHttpClient app = new OkHttpClient.Builder().addInterceptor(this::addStockBuildHeader)
             .addInterceptor(this::answerWithoutNetwork)
@@ -88,6 +118,7 @@ public final class ClientInterceptorsTest {
 
     private Response answerWithoutNetwork(Interceptor.Chain chain) {
         this.seenByTerminal.add(chain.request().header(BUILD_HEADER));
+        this.addressesSeenByTerminal.add(chain.request().header(FORWARDED_FOR_HEADER));
         return new Response.Builder().request(chain.request())
             .protocol(Protocol.HTTP_1_1)
             .code(200)

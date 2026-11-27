@@ -20,8 +20,6 @@ import app.morphe.patches.shared.misc.extension.protonScheduledDeletionRowsExten
 import app.morphe.patches.shared.misc.proton.MAIL_SETTINGS_CLASS
 import app.morphe.patches.shared.misc.proton.forwardStub
 import app.morphe.patches.shared.misc.proton.markPatchApplied
-import app.morphe.util.indexOfFirstInstructionReversedOrThrow
-import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 
@@ -70,11 +68,9 @@ val scheduledDeletionPatch: Patch = patch(
         answerAutoDeleteBannerCheck("isScheduled", "$BANNER_CLASS->isScheduled()Z")
 
         AutoDeleteBannerTextFingerprint.match().let { match ->
-            val bannerTextIndex = match.instructionMatches.single().index
-            val enabledIndex = match.method.indexOfFirstInstructionReversedOrThrow(
-                bannerTextIndex,
-                Opcode.IGET_BOOLEAN,
-            )
+            val (bannerText, enabledRead) = match.instructionMatches
+            val bannerTextIndex = bannerText.index
+            val enabledIndex = enabledRead.index
             val enabledRegister = match.method
                 .getInstruction<OneRegisterInstruction>(enabledIndex).registerA
 

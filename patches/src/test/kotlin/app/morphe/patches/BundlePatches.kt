@@ -6,6 +6,7 @@ package app.morphe.patches
 
 import app.morphe.patcher.patch.Patch
 import app.morphe.patches.devcheck.misc.pairip.restoreVirtualizedMethodsPatch
+import app.morphe.patches.vllo.misc.pairip.restoreStartupPatch
 import java.io.File
 import java.io.InputStream
 import java.lang.reflect.Modifier
@@ -41,14 +42,19 @@ internal object BundlePatches {
     private val extensionStreamProviders = Patch::class.java.getDeclaredField("extensionStreamProviders")
         .apply { isAccessible = true }
 
-    private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch>(restoreVirtualizedMethodsPatch)
+    private val patchesAssemblingTheirDexAtPatchTime = setOf<Patch>(restoreVirtualizedMethodsPatch, restoreStartupPatch)
 
     fun payloadsLoadedDirectlyBy(patch: Patch): Set<String> {
         if (patch in patchesAssemblingTheirDexAtPatchTime) return emptySet()
         @Suppress("UNCHECKED_CAST")
         val providers = extensionStreamProviders.get(patch) as List<Supplier<out Iterable<Supplier<InputStream>>>>
         return providers.flatMap { provider -> provider.get() }
-            .mapNotNull { stream -> payloadByDigest[digest(stream.get().use { it.readBytes() })] }
+            .map { stream ->
+                val sha256 = digest(stream.get().use { it.readBytes() })
+                checkNotNull(payloadByDigest[sha256]) {
+                    "Unmapped extension stream in ${patch.name} (SHA-256 $sha256)"
+                }
+            }
             .toSet()
     }
 

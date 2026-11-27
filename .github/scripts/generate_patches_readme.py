@@ -19,7 +19,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage
 from fields import field, normalize, parse_fields
 
 INCLUDE_APP_ICONS = True
-HOT_WINDOW_DAYS = 30
+HOT_WINDOW_DAYS = 7
+TAPE_WINDOW_DAYS = 30
 HOT_WINDOW_MAX_DAYS = 120
 
 if len(sys.argv) < 3:
@@ -549,6 +550,9 @@ INDEX_END = "<!-- INDEX_END -->"
 GRAPHICS_PATH = ".github/readme"
 ASSETS_REF = "origin/assets"
 INDEX_BUTTON_WIDTH = "42%"
+INDEX_BUTTON_WIDE_MEDIA = "(min-width: 768px)"
+INDEX_BUTTON_WIDE_WIDTH = 298
+INDEX_BUTTON_WIDE_HEIGHT = 79
 INDEX_BUTTONS = [
     ("install", "Install", "Add the source", "installing", "#-installing"),
     ("patches", "Patches", None, "full-list", "#-patches-list"),
@@ -572,7 +576,7 @@ def tape_items():
     if git_lines("rev-parse", "--is-shallow-repository") != ["false"]:
         sys.stderr.write("⚠️  Full Git history needed, release tape left out\n")
         return []
-    since = datetime.now(timezone.utc) - timedelta(days=HOT_WINDOW_DAYS)
+    since = datetime.now(timezone.utc) - timedelta(days=TAPE_WINDOW_DAYS)
     names_before = patch_names_before(since)
     if names_before is None:
         sys.stderr.write(f"⚠️  No patches-list.json from before {since:%Y-%m-%d}, release tape left out\n")
@@ -629,7 +633,9 @@ def build_index():
     except ValueError as error:
         sys.stderr.write(f"⚠️  {error}. Nothing written.\n")
         sys.exit(1)
-    links = [f'<a href="{anchor}"><img src="{GRAPHICS_PATH}/{key}.svg" width="{INDEX_BUTTON_WIDTH}" alt="{label}"></a>' for key, label, _, _, anchor in buttons]
+    links = [f'<a href="{anchor}"><picture><source media="{INDEX_BUTTON_WIDE_MEDIA}" srcset="{GRAPHICS_PATH}/{key}.svg" '
+             f'width="{INDEX_BUTTON_WIDE_WIDTH}" height="{INDEX_BUTTON_WIDE_HEIGHT}">'
+             f'<img src="{GRAPHICS_PATH}/{key}.svg" width="{INDEX_BUTTON_WIDTH}" alt="{label}"></picture></a>' for key, label, _, _, anchor in buttons]
     lines = ['<p align="center">', "<br>\n".join("&nbsp;".join(links[row:row + 2]) for row in range(0, len(links), 2)), "</p>"]
     tape = tape_items()
     for theme in TAPE_THEMES:

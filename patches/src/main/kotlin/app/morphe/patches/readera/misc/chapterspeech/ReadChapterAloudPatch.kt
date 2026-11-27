@@ -13,8 +13,8 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.resourceId
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getReference
-import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.readera.shared.CHAPTER_READER
 import app.morphe.patches.readera.shared.ReadAloudFromCurrentPositionFingerprint
@@ -245,62 +245,56 @@ val readChapterAloudPatch = patch(
         }
 
         mutableClassDefBy(positionType).apply {
-            interfaces.add(READING_POSITION)
-            addReader("readingPage", page)
-            addReader("readingPagesCount", pagesCount)
-            addReader("readingType", positionKind)
-            addReader("readingLayoutHash", layoutHash)
-            addReader("readingRatio", ratio)
+            addPatchInterface(READING_POSITION, "readingPage", page)
+            addPatchInterface(READING_POSITION, "readingPagesCount", pagesCount)
+            addPatchInterface(READING_POSITION, "readingType", positionKind)
+            addPatchInterface(READING_POSITION, "readingLayoutHash", layoutHash)
+            addPatchInterface(READING_POSITION, "readingRatio", ratio)
         }
         mutableClassDefBy(entryType).apply {
-            interfaces.add(CONTENTS_ENTRY)
-            addReader("contentsLevel", level)
-            addReader("contentsTitle", title)
-            addReader("contentsLink", link)
+            addPatchInterface(CONTENTS_ENTRY, "contentsLevel", level)
+            addPatchInterface(CONTENTS_ENTRY, "contentsTitle", title)
+            addPatchInterface(CONTENTS_ENTRY, "contentsLink", link)
         }
         mutableClassDefBy(trackType).apply {
-            interfaces.add(SPEECH_TRACK)
-            addReader("speechGeneration", trackGeneration)
-            addReader("spokenPosition", spokenPosition)
+            addPatchInterface(SPEECH_TRACK, "speechGeneration", trackGeneration)
+            addPatchInterface(SPEECH_TRACK, "spokenPosition", spokenPosition)
         }
         mutableClassDefBy(holderType).apply {
-            interfaces.add(CONTENTS_ROW)
-            addMethod("contentsEntry", emptyList(), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 2, """
+            addPatchInterface(CONTENTS_ROW, "contentsEntry", """
                 iget-object v0, p0, ${descriptor(nodeField)}
                 invoke-virtual {v0}, ${descriptor(payload)}
                 move-result-object v0
                 return-object v0
             """)
-            addMethod("openContentsEntry", listOf("Landroid/view/View;"), "V", AccessFlags.PUBLIC.value, 2, """
+            addPatchInterface(CONTENTS_ROW, "openContentsEntry", """
                 invoke-static {p0, p1}, ${descriptor(click.originalMethod)}
                 return-void
             """)
-            addMethod("contentsPanel", emptyList(), CONTENTS_PANEL, AccessFlags.PUBLIC.value, 2, """
+            addPatchInterface(CONTENTS_ROW, "contentsPanel", """
                 iget-object v0, p0, ${descriptor(holderField)}
                 iget-object v0, v0, ${descriptor(panelField)}
                 return-object v0
             """)
         }
         mutableClassDefBy(panelField.type).apply {
-            interfaces.add(CONTENTS_PANEL)
-            addMethod("contentsReader", emptyList(), CHAPTER_READER, AccessFlags.PUBLIC.value, 2, """
+            addPatchInterface(CONTENTS_PANEL, "contentsReader", """
                 iget-object v0, p0, ${descriptor(activityField)}
                 return-object v0
             """)
-            addMethod("closeContents", emptyList(), "V", AccessFlags.PUBLIC.value, 1, """
+            addPatchInterface(CONTENTS_PANEL, "closeContents", """
                 invoke-virtual {p0}, ${descriptor(close)}
                 return-void
             """)
         }
         val task = mutableClassDefBy(start.originalMethod.definingClass)
-        task.interfaces.add(BOUNDARY_RESOLVER)
-        task.addMethod("contents", emptyList(), "Ljava/util/List;", AccessFlags.PUBLIC.value, 2, """
+        task.addPatchInterface(BOUNDARY_RESOLVER, "contents", """
             iget-object v0, p0, ${descriptor(codec)}
             invoke-interface {v0}, $contentsGetter
             move-result-object v0
             return-object v0
         """)
-        task.addMethod("speechStart", listOf("Ljava/lang/Object;"), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 5, """
+        task.addPatchInterface(BOUNDARY_RESOLVER, "speechStart", """
             check-cast p1, $positionType
             new-instance v0, $positionType
             invoke-direct {v0, p1}, ${descriptor(copy)}
@@ -314,7 +308,7 @@ val readChapterAloudPatch = patch(
             move-result-object v0
             return-object v0
         """)
-        task.addMethod("pageSpeech", listOf("I"), "Ljava/util/List;", AccessFlags.PUBLIC.value, 4, """
+        task.addPatchInterface(BOUNDARY_RESOLVER, "pageSpeech", """
             iget-object v0, p0, ${descriptor(pagesRead.instruction.getReference<FieldReference>()!!)}
             iget v1, v0, ${descriptor(pagesCountRead.instruction.getReference<FieldReference>()!!)}
             if-ltz p1, :missing
@@ -409,15 +403,4 @@ private fun Method.parameterField(index: Int): FieldReference {
     return implementation!!.instructions.single {
         it.opcode in listOf(Opcode.IPUT, Opcode.IPUT_OBJECT) && (it as TwoRegisterInstruction).registerA == register
     }.getReference<FieldReference>()!!
-}
-
-private fun MutableClass.addReader(name: String, field: FieldReference) {
-    val wide = field.type == "D"
-    val objectType = field.type.startsWith("L")
-    val read = if (wide) "iget-wide" else if (objectType) "iget-object" else "iget"
-    val returnOpcode = if (wide) "return-wide" else if (objectType) "return-object" else "return"
-    addMethod(name, emptyList(), field.type, AccessFlags.PUBLIC.value, if (wide) 3 else 2, """
-        $read v0, p0, ${descriptor(field)}
-        $returnOpcode v0
-    """)
 }

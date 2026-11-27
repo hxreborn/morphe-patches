@@ -13,10 +13,13 @@ import app.morphe.patcher.opcode
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resourceLiteral
 import app.morphe.patcher.string
+import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 
 internal const val MUSIC_CLASS = "Lcom/audiomack/model/music/Music;"
+
+private const val RESULT_ITEM_CLASS = "Lcom/audiomack/model/AMResultItem;"
 
 private const val METADATA_KEY_PREFIX = "android.media.metadata."
 
@@ -67,6 +70,26 @@ internal fun mediaMetadataTitleFingerprint(metadataMethod: Method) = Fingerprint
         musicStringRead(),
         metadataKey("TITLE"),
     ),
+)
+
+internal object OriginalImageSetterFingerprint : Fingerprint(
+    filters = listOf(
+        fieldAccess(definingClass = RESULT_ITEM_CLASS, name = "originalImage", opcode = Opcode.IPUT_OBJECT),
+    ),
+)
+
+internal object OriginalImageCopyFingerprint : Fingerprint(
+    filters = listOf(
+        musicStringRead(),
+        methodCall(reference = { OriginalImageSetterFingerprint.method }, location = MatchAfterImmediately()),
+    ),
+)
+
+internal object CoverFileFingerprint : Fingerprint(
+    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC),
+    returnType = "Ljava/io/File;",
+    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "Z"),
+    filters = listOf(string("artworks")),
 )
 
 internal object DownloadFolderFingerprint : Fingerprint(

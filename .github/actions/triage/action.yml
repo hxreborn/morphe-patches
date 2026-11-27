@@ -287,12 +287,35 @@ runs:
         fi
 
         app=$(jq -r .app verdict.json)
+        same_app_reports() {
+          gh search issues "$app" --repo "$REPO" --label bug --match title --limit 4 --json number,title --jq \
+            "map(select(.number != $ISSUE)) | .[0:3] | map(\"- [#\(.number)](https://redirect.github.com/$REPO/issues/\(.number)) \`\(.title | gsub(\"\`\"; \"'\") | gsub(\"\\\\s+\"; \" \"))\`\") | join(\"\n\")"
+        }
+        dupes=""
         if [ -z "${PREVIEW_ISSUE:-}" ] && [ -n "$app" ] && [ "$verdict" != "pass" ] && [ "$ACTION" = "opened" ]; then
-          dupes=$(gh search issues "$app" --repo "$REPO" --label bug --match title --limit 4 --json number,title --jq \
-            "map(select(.number != $ISSUE)) | .[0:3] | map(\"- [#\(.number)](https://redirect.github.com/$REPO/issues/\(.number)) \`\(.title | gsub(\"\`\"; \"'\") | gsub(\"\\\\s+\"; \" \"))\`\") | join(\"\n\")") ||
+          dupes=$(same_app_reports) ||
             { echo "::warning::Searching for issues about $app failed"; dupes=""; }
           if [ -n "$dupes" ]; then
             printf '\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" related issues="$dupes")" >> comment.md
+          fi
+        fi
+        flagged_possible_duplicate=$(jq -r '.issue.labels | any(.name == "possible duplicate")' "$event")
+        mark_possible_duplicate() {
+          [ "$flagged_possible_duplicate" = true ] || change_issue edit --add-label "possible duplicate"
+          flagged_possible_duplicate=true
+        }
+        related_reports() {
+          if gh api "repos/$REPO/issues/$ISSUE/comments" --paginate \
+            --jq 'any(.[]; .user.login == "github-actions[bot]" and (.body | startswith("<!-- related-issues-bot -->")))' |
+            grep -qx true; then
+            python3 "${{ github.action_path }}/related_issues.py" "$event" "$list" bug verdict.json comment
+          else
+            same_app_reports
+          fi
+        }
+        if [ "$flagged_possible_duplicate" = true ] && [ -z "${PREVIEW_ISSUE:-}" ]; then
+          if still_related=$(related_reports) && [ -z "$still_related" ]; then
+            remove_bot_labels "possible duplicate"
           fi
         fi
 
@@ -319,6 +342,7 @@ runs:
               exit 0
             fi
             post_comment
+            [ -z "$dupes" ] || mark_possible_duplicate
             if [ "$CLOSED" != "true" ]; then
               remove_bot_labels stale
               change_issue edit --add-label incomplete
@@ -330,6 +354,7 @@ runs:
               labels=$(jq -r '.labels | join(",")' verdict.json)
               [ -z "$labels" ] || change_issue edit --add-label "$labels"
               change_issue comment --body-file comment.md
+              [ -z "$dupes" ] || mark_possible_duplicate
             fi
             [ -z "$previous" ] || remove_bot_labels "needs info,untargeted version"
             if [ "$CLOSED_BY_TRIAGE" = "true" ]; then
@@ -353,6 +378,7 @@ runs:
               if [ -n "$related" ]; then
                 printf '<!-- related-issues-bot -->\n%s\n' "$(python3 "${{ github.action_path }}/replies.py" related issues="$related")" > comment.md
                 change_issue comment --body-file comment.md
+                mark_possible_duplicate
               fi
             fi
             ;;

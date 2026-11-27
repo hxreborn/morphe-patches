@@ -27,22 +27,22 @@ public final class SongTagsTest {
 
     @Test
     public void namesTheFileArtistThenTitle() {
-        Assert.assertEquals("Rema - Corny", new SongTags("5967145", "Corny", "Rema", null).fileName());
+        Assert.assertEquals("Rema - Corny", new SongTags("5967145", "Corny", "Rema", null, null).fileName());
     }
 
     @Test
     public void replacesCharactersFileSystemsReject() {
-        Assert.assertEquals("AC_DC - What_ Why_", new SongTags("1", "What? Why/", "AC/DC", null).fileName());
+        Assert.assertEquals("AC_DC - What_ Why_", new SongTags("1", "What? Why/", "AC/DC", null, null).fileName());
     }
 
     @Test
     public void namesTheFileByTitleWhenTheArtistIsMissing() {
-        Assert.assertEquals("Corny", new SongTags("5967145", "Corny", " ", null).fileName());
+        Assert.assertEquals("Corny", new SongTags("5967145", "Corny", " ", null, null).fileName());
     }
 
     @Test
     public void namesTheFileByIdWhenTheTitleIsMissing() {
-        Assert.assertEquals("5967145", new SongTags("5967145", null, "Rema", null).fileName());
+        Assert.assertEquals("5967145", new SongTags("5967145", null, "Rema", null, null).fileName());
     }
 
 }

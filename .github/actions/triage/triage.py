@@ -11,12 +11,13 @@ from urllib.parse import urlparse
 
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
-from fields import (asks_for_additional_feature, asks_for_feature, code_span, contradicting_app, field, has_any, has_image, is_placeholder, normalize,
-                    normalize_version, parse_fields, placeholder_answers, thin_answers)
+from fields import (asks_for_additional_feature, asks_for_feature, code_span, contradicting_app, field, has_any, has_image, has_media,
+                    is_placeholder, normalize, normalize_version, parse_fields, placeholder_answers, thin_answers, word_count)
 from versions import prerelease_words, same_variant
 from replies import APK_SOURCES, BROKEN_FORMS, CLOSED_FOOTER, bundle, closed, code_list, missing, supported_downloads
 
-MIN_CHARS = 60
+MIN_WORDS = 3
+CLEAR_WORDS = 8
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "")
 NEW_ISSUE = f"https://github.com/{REPO}/issues/new"
@@ -26,7 +27,7 @@ APP_VERSION_FIELDS = ("Other version", "App version", "Broken app version", "App
                       "App and version")
 DESCRIPTION_FIELDS = ("Bug description", "What happens", "Describe the bug", "Summary")
 STEP_FIELDS = ("Steps to reproduce", "Expected behaviour", "Actual behaviour")
-ANSWER_FIELDS = ("Bug description", *STEP_FIELDS, "Screenshots", "Device and Android version", "APK source")
+ANSWER_FIELDS = ("Bug description", "Device and Android version", "APK source")
 LOG_FIELDS = ("Debug log", "Error logs", "Morphe logs", "Logs")
 SOURCE_FIELDS = ("APK source", "APK source and type", "APK source and architecture")
 BUNDLE_VERSION = r"\d+\.\d+\.\d+(?:-dev\.\d+)?"
@@ -43,8 +44,22 @@ REPORT = re.compile(
     r"|https?://(?:www\.)?(?:pastebin\.com|gist\.github\.com|paste\.ee|hastebin\.com|dpaste\.org|rentry\.co)/\S+", re.I | re.M
 )
 
+STRONG_REPORT = re.compile(
+    r"INSTALL_FAILED|\b[A-Za-z][\w.$]*(?:Exception|Error)\b|Failed to match|^[ \t]*(?:Manager|Patcher|Failed patch):[ \t]*\S"
+    r"|^[ \t]*Source:[ \t]*hxreborn|^[ \t]+at [\w$.<>]+\(|Fatal signal|SIG(?:SEGV|ABRT|BUS|ILL)|backtrace:"
+    r"|user-attachments/files/"
+    r"|https?://(?:www\.)?(?:pastebin\.com|gist\.github\.com|paste\.ee|hastebin\.com|dpaste\.org|rentry\.co)/\S+", re.M
+)
+GLUED_LOG_HEADING = re.compile(rf"^(###[ \t]+(?:{'|'.join(map(re.escape, LOG_FIELDS))}))(?=[A-Z])", re.M)
+NOT_EVIDENCE_FIELDS = {normalize(name) for name in ("APK source", "APK source and type", "APK source and architecture",
+                                                     "Device and Android version", "Acknowledgements")}
+VISUAL_PROBLEM = re.compile(
+    r"\b(?:layout|overlap\w*|cut ?off|clipped|truncated|misaligned|stretched|glitch\w*|flicker\w*|blurr?y|colou?rs?|theme|"
+    r"dark mode|icons?|fonts?|invisible|unreadable|(?:blank|black|white|green) (?:screen|page))\b", re.I)
+
 OPTIONS_INSTALL_FAILED = ("patchingworkedinstallfailed", "patchingfinishedtheapkwouldnotinstall")
 OPTIONS_PATCHING_FAILED = ("patchingfailed", "patchingstartedandstoppedwithanerror")
+OPTIONS_CRASH = ("theappwillnotopenatall", "theappopensthencrashes")
 OPTION_DID_NOT_START = "patchingdidnotstart"
 OPTION_STOCK_FAILS_TOO = "theunpatchedappfailsthesameway"
 OPTION_NOT_TRIED = "ihavenottried"
@@ -111,7 +126,7 @@ def report_manifest(fields, path):
     current = json.loads(path.read_text(encoding="utf-8"))
     form_version = field(fields, "Patches version")
     form_match = re.fullmatch(rf"v?({BUNDLE_VERSION})", form_version, re.I)
-    versions = {version.lower() for name in LOG_FIELDS for version in BUNDLE_SOURCE.findall(field(fields, name))}
+    versions = {version.lower() for value in fields.values() for version in BUNDLE_SOURCE.findall(value)}
     if form_match:
         versions.add(form_match[1].lower())
     if len(versions) > 1:
@@ -134,13 +149,17 @@ def report_manifest(fields, path):
     return current, "unverified", f"App support could not be checked against patches `{version}`."
 
 
-fields = parse_fields(body_path.read_text(encoding="utf-8"))
+issue_body = GLUED_LOG_HEADING.sub(r"\1\n", body_path.read_text(encoding="utf-8"))
+fields = parse_fields(issue_body)
 data, manifest_source, manifest_note = report_manifest(fields, list_path)
 apps = supported_apps(data)
 
-description = field(fields, *DESCRIPTION_FIELDS) or "\n".join(filter(None, (field(fields, n) for n in STEP_FIELDS)))
+described = field(fields, *DESCRIPTION_FIELDS)
+description = "\n".join(part for part in (
+    [described] if described else [field(fields, n) for n in STEP_FIELDS]) if part and not is_placeholder(part))
 if not has_any(fields, *DESCRIPTION_FIELDS, *STEP_FIELDS):
     description = max(fields.values(), key=len, default="")
+description_words = word_count(description)
 
 app_name = field(fields, *APP_NAME_FIELDS)
 reported_versions = [v for v in (field(fields, n) for n in APP_VERSION_FIELDS) if v]
@@ -162,7 +181,8 @@ repackager_host = repackager_in(" ".join(source_hosts)) if all(map(repackager_in
 repackager_named = repackager_in(apk_source)
 title = os.environ.get("ISSUE_TITLE", "")
 debug_log = field(fields, *LOG_FIELDS)
-report_attached = bool(REPORT.search(debug_log))
+evidence_text = "\n".join(value for key, value in fields.items() if normalize(key) not in NOT_EVIDENCE_FIELDS)
+report_attached = bool(REPORT.search(debug_log)) or bool(STRONG_REPORT.search(evidence_text))
 
 
 def target_forms(version):
@@ -186,12 +206,14 @@ logs_required = bool(what_happened) or not failure.startswith(OPTIONS_RUNTIME_WI
 answer_fields = list(ANSWER_FIELDS)
 if logs_required and not normalize(what_happened).startswith(OPTION_DID_NOT_START):
     answer_fields.append("Error logs")
+if report_attached and "Error logs" in answer_fields:
+    answer_fields.remove("Error logs")
 blockers += placeholder_answers(fields, *answer_fields)
-blockers += thin_answers(fields, "Steps to reproduce")
 
-screenshots = field(fields, "Screenshots")
-if screenshots and not is_placeholder(screenshots) and not has_image(screenshots):
-    blockers.append("The Screenshots field has no image. Please drag the screenshots into it.")
+step_answers = placeholder_answers(fields, *STEP_FIELDS) + thin_answers(fields, "Steps to reproduce")
+if step_answers and description_words < CLEAR_WORDS:
+    flags += step_answers
+    labels.append("needs info")
 
 device = field(fields, "Device and Android version")
 if device and not is_placeholder(device) and not re.search(r"\d", device):
@@ -214,11 +236,23 @@ if asks_for_feature(feature_text) and (not described_runtime_failure or asks_for
         f"This reads as a feature request. Please open it with the [feature request form]({NEW_ISSUE}?template=feature_request.yml)."
     )
 
-if fields and not report_attached and len(description) < MIN_CHARS:
+shows_media = has_media(evidence_text)
+if fields and not report_attached and (
+    description_words < MIN_WORDS or (description_words < CLEAR_WORDS and not shows_media)
+):
     flags.append(
-        f"The description has {len(description)} characters. It needs at least {MIN_CHARS}."
+        f"The description has {description_words} {'word' if description_words == 1 else 'words'}, "
+        "which doesn't show what happens. Please say what happens and where."
     )
     labels.append("needs info")
+
+visual_description = "\n".join(filter(None, (description, title)))
+if (fields and not shows_media and VISUAL_PROBLEM.search(visual_description)
+        and not failure.startswith(OPTIONS_CRASH)):
+    notes.append(
+        "The report describes a problem on screen but has no screenshot or screen recording. "
+        "Please add one."
+    )
 
 matched = None
 best = (0, 0)

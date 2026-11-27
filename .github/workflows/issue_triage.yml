@@ -91,3 +91,32 @@ jobs:
         with:
           token: ${{ github.token }}
           dry-run: ${{ inputs.dry-run || false }}
+
+      - name: Read the issue after triage
+        id: outcome
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          reviewable=$(gh api "repos/$REPO/issues/$ISSUE" --jq '
+            .state == "open" and
+            ([.labels[].name] | any(. == "app-update" or . == "bot-wrong" or . == "incomplete" or . == "needs info" or . == "untargeted version") | not)')
+          echo "#$ISSUE: reviewable=$reviewable"
+          echo "reviewable=$reviewable" >> "$GITHUB_OUTPUT"
+
+      - name: Review issue
+        if: steps.outcome.outputs.reviewable == 'true'
+        continue-on-error: true
+        uses: actions/github-script@v9
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
+          TRIAGE_MODE: ${{ vars.ISSUE_TRIAGE_MODE }}
+          INCLUDE_MAINTAINERS: ${{ vars.ISSUE_TRIAGE_INCLUDE_MAINTAINERS }}
+        with:
+          script: |
+            const run = require('./.github/scripts/issue-triage/triage.js');
+            await run({ github, context, core });

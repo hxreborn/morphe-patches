@@ -45,7 +45,9 @@ public final class DirectFilesTest {
 
     private static final String POSITION_V2 = "/wefeed-mobile-bff/subject-api/resource-position/v2";
 
-    private static final String LISTING = "/wefeed-mobile-bff/subject-api/resource";
+    private static final String LISTING = "/wefeed-mobile-bff/subject-api/resource/v2";
+
+    private static final String V1_LISTING = "/wefeed-mobile-bff/subject-api/resource";
 
     private static final String ORIGIN = "https://origin.example.com/o.mp4";
 
@@ -230,6 +232,25 @@ public final class DirectFilesTest {
         Assertions.assertThat(streams.getJSONObject(0).getString("resolutions")).isEqualTo("720");
         Assertions.assertThat(streams.getJSONObject(0).getString("signCookie")).isEqualTo("");
         Assertions.assertThat(data.getString("displayResolutions")).isEqualTo("720");
+    }
+
+    @Test
+    public void readsTheV1ListingWhenV2CarriesTheUpgradeNotice() throws JSONException {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
+        this.server.put(LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
+                + "\"resourceLink\":\"https:\\/\\/macdn.aoneroom.com\\/other\\/notice.mp4\",\"size\":\"824720\"}]}}")
+            .getBytes(StandardCharsets.UTF_8));
+        this.server.put(V1_LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
+                + "\"resourceLink\":\"" + ORIGIN + "\",\"size\":\"2048\"}]}}")
+            .getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String playInfo = this.directFiles.playInfoFor("{\"data\":{\"streams\":[]}}", "77", 1, 2);
+
+        // then
+        JSONObject stream = new JSONObject(playInfo).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        Assertions.assertThat(stream.getString("size")).isEqualTo("2048");
     }
 
     @Test

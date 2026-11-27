@@ -6,9 +6,9 @@ package app.morphe.patches.rubberbands.misc.premium
 
 import app.morphe.patcher.patch.patch
 import app.morphe.patches.shared.compat.AppCompatibilities
+import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
 import app.morphe.patches.shared.misc.revenuecat.grantRevenueCatEntitlements
-import app.morphe.patches.shared.misc.extension.sharedRevenuecatExtensionPatch
 
 private const val ENTITLEMENT = "unlock"
 private const val PRODUCT = "rb_unlocked"

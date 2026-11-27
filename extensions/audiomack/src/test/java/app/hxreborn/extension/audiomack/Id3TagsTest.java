@@ -38,7 +38,11 @@ public final class Id3TagsTest {
 
     private static final byte[] OLD_TAG = { 'I', 'D', '3', 3, 0, 0, 0, 0, 0, 2, 'x', 'y' };
 
-    private static final SongTags TAGS = new SongTags("1", "Corny", "Rema", "");
+    private static final SongTags TAGS = new SongTags("1", "Corny", "Rema", "", null);
+
+    private static final int MIME_TYPE_AFTER_FRAME_ID = 11;
+
+    private static final byte[] COVER = { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF, 7, 8, 9 };
 
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
@@ -71,6 +75,22 @@ public final class Id3TagsTest {
         Assert.assertTrue(tag.contains("TIT2"));
         Assert.assertTrue(tag.contains("TPE1"));
         Assert.assertFalse(tag.contains("TALB"));
+    }
+
+    @Test
+    public void writesTheCoverAsAFrontCoverPicture() throws IOException {
+        // given
+        final SongTags tags = new SongTags("1", "Corny", "Rema", "", COVER);
+
+        // when
+        final byte[] tag = Id3Tags.tag(tags);
+
+        // then
+        final String text = new String(tag, StandardCharsets.ISO_8859_1);
+        final int frame = text.indexOf("APIC");
+        final String header = "image/jpeg" + (char) 0 + (char) 3 + (char) 0;
+        Assert.assertEquals(frame + MIME_TYPE_AFTER_FRAME_ID, text.indexOf(header));
+        Assert.assertArrayEquals(COVER, Arrays.copyOfRange(tag, tag.length - COVER.length, tag.length));
     }
 
     private static byte[] tagged(File source) throws IOException {

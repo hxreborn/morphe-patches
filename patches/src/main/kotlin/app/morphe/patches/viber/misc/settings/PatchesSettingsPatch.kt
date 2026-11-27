@@ -14,18 +14,17 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
 import app.morphe.patcher.resource.ResourceType
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.addFreeRegisters
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.misc.hostedcomponents.ComponentHost
 import app.morphe.patches.shared.misc.hostedcomponents.HostedComponents
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
 import app.morphe.patches.shared.misc.smali.replaceResourceIdStubs
 import app.morphe.patches.shared.misc.smali.replaceStub
 import app.morphe.patches.viber.shared.VIBER_SETTINGS_CLASS
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -106,6 +105,7 @@ internal val patchesSettingsPatch = patch {
                 "unlock_viber_plus" to "premium",
                 "unfiled_chats" to "folder_off",
                 "filter_business_chats" to "business_messages",
+                "ignore_accents_in_contact_search" to "search",
                 "select_business_chats" to "checklist",
                 "remove_online_status_limit" to "timer_off",
                 "hide_promotions" to "promotions",
@@ -186,7 +186,6 @@ private fun addMoreEntry() {
     val icon = iconCall.instruction.getReference<MethodReference>()!!
     val item = itemCall.instruction.getReference<MethodReference>()!!
     val menu = mutableClassDefBy(PATCHES_MENU)
-    menu.interfaces.add("Lcom/viber/voip/user/more/listitems/creators/PreferenceItemCreator;")
     menu.replaceStub("buildItem", 6, """
         new-instance v0, ${builder.definingClass}
         const/4 v1, 0x0
@@ -197,12 +196,8 @@ private fun addMoreEntry() {
         invoke-direct {v1, v0}, ${descriptor(item)}
         return-object v1
     """)
-    menu.addMethod("create", emptyList(), item.definingClass, AccessFlags.PUBLIC.value, 1, """
-        invoke-virtual {p0}, $PATCHES_MENU->createItem()Ljava/lang/Object;
-        move-result-object p0
-        check-cast p0, ${item.definingClass}
-        return-object p0
-    """)
+    val createItem = menu.methods.single { it.name == "createItem" && it.parameterTypes.isEmpty() }
+    menu.addPatchInterface("Lcom/viber/voip/user/more/listitems/creators/PreferenceItemCreator;", "create", createItem)
     val creators = MoreCreatorsFingerprint.match()
     val (_, addCall, nextRead) = creators.instructionMatches
     val add = addCall.instruction as FiveRegisterInstruction

@@ -9,6 +9,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.getReference
+import app.morphe.patcher.util.p0Register
 import app.morphe.patches.netanalyzer.shared.FEATURES_CLASS
 import app.morphe.patches.netanalyzer.shared.MaterialIcons
 import app.morphe.patches.netanalyzer.shared.MenuSection
@@ -28,7 +29,6 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
-import com.android.tools.smali.dexlib2.util.MethodUtil
 import app.morphe.patches.shared.misc.extension.netanalyzerHistoryRowsExtensionPatch
 import app.morphe.patches.shared.misc.extension.netanalyzerToolsHistoryExtensionPatch
 
@@ -70,7 +70,7 @@ val toolsHistoryPatch = patch(
             throw PatchException("${navigate.originalMethod} does not navigate its own class $navigatorType")
         }
         val constructor = navigate.classDef.methods.single { it.name == CONSTRUCTOR }
-        val thisRegister = constructor.implementation!!.registerCount - MethodUtil.getParameterRegisterCount(constructor)
+        val thisRegister = constructor.p0Register
         val superCall = constructor.indexOfFirstInstructionOrThrow {
             opcode == Opcode.INVOKE_DIRECT && getReference<MethodReference>()?.name == CONSTRUCTOR &&
                 (this as FiveRegisterInstruction).registerC == thisRegister

@@ -13,7 +13,6 @@ import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patches.catzy.catzyPatch
 import app.morphe.util.indexOfFirstInstructionOrThrow
-import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
@@ -55,12 +54,10 @@ val removeUsageLimitsPatch = catzyPatch(
     )
 
     TravelDurationFingerprint.match().let { match ->
-        val (travelReductionMinutes) = match.instructionMatches
-        match.method.removeInstruction(
-            match.method.indexOfFirstInstructionReversedOrThrow(
-                travelReductionMinutes.index,
-                Opcode.IF_EQZ,
-            ),
-        )
+        val (travelReductionMinutes, premiumBranch, fullDuration) = match.instructionMatches
+        check(fullDuration.index > travelReductionMinutes.index) {
+            "Expected full travel duration after the reduction in ${match.method}"
+        }
+        match.method.removeInstruction(premiumBranch.index)
     }
 }

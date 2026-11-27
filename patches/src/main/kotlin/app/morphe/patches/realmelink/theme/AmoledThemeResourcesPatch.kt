@@ -10,6 +10,7 @@ import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
+import app.morphe.patcher.patch.resourceXml
 import app.morphe.patcher.util.Document
 import app.morphe.patcher.resource.ResourceType
 import app.morphe.patcher.resource.hasResourceId
@@ -395,56 +396,50 @@ private fun Document.setColors(colors: Map<String, String>) {
     }
 }
 
-private class ResourcePackage(val name: String, val directory: File)
+private class ResourcePackage(val name: String) {
+    val imageDirectory: File by lazy {
+        val packageDirectory = resourceFile("res").parentFile.parentFile.listFiles()
+            ?.firstOrNull {
+                it.resolve(PACKAGE_METADATA_FILE).takeIf(File::exists)?.readText()?.contains("\"$name\"") == true
+            } ?: throw PatchException("Could not find the resources of $name")
+        packageDirectory.resolve("res")
+    }
+}
 
 private const val PACKAGE_METADATA_FILE = "package.json"
 
 private fun resourcePackage(name: String): ResourcePackage {
     decode("res/**", packageName = name)
-    val packageDirectory = resourceFile("res").parentFile.parentFile.listFiles()
-        ?.firstOrNull {
-            it.resolve(PACKAGE_METADATA_FILE).takeIf(File::exists)?.readText()?.contains("\"$name\"") == true
-        } ?: throw PatchException("Could not find the resources of $name")
-
-    return ResourcePackage(name, packageDirectory.resolve("res"))
+    return ResourcePackage(name)
 }
 
-private fun ResourcePackage.resourceFiles(
-    extension: String,
-    directoryFilter: (String) -> Boolean,
-): List<File> =
-    directory.listFiles()
-        ?.filter { it.isDirectory && directoryFilter(it.name) }
-        ?.flatMap { directory -> directory.listFiles()?.asList().orEmpty() }
-        ?.filter { it.extension == extension }
-        .orEmpty()
-
-private fun ResourcePackage.dayResourceFiles(
+private fun ResourcePackage.dayResourcePaths(
     directoryPrefix: String,
     excludedFileNames: Set<String> = emptySet(),
     fileNamePrefix: String = "",
-): List<File> =
-    resourceFiles("xml") { it.startsWith(directoryPrefix) && !it.contains("night") }
-        .filter { it.name.startsWith(fileNamePrefix) && it.name !in excludedFileNames }
+): List<String> =
+    decode("res/$directoryPrefix*/*.xml", packageName = name).filter { path ->
+        val directory = path.substringAfter("res/").substringBefore('/')
+        val fileName = path.substringAfterLast('/')
+        directory.startsWith(directoryPrefix) && "night" !in directory &&
+            fileName.startsWith(fileNamePrefix) && fileName !in excludedFileNames
+    }
 
-private fun ResourcePackage.dayStyleFiles(): List<File> =
-    dayResourceFiles("values").filter { it.name == "styles.xml" }
+private fun ResourcePackage.dayStylePaths(): List<String> =
+    dayResourcePaths("values").filter { it.substringAfterLast('/') == "styles.xml" }
 
 private fun ResourcePackage.iconImageFiles(): List<File> =
-    resourceFiles("png") { it.startsWith("mipmap") || it.startsWith("drawable") }
-        .filterNot { it.name.endsWith(NINE_PATCH_SUFFIX) }
-
-private val File.resourcePath: String
-    get() = "res/${parentFile.name}/$name"
+    imageDirectory.listFiles()
+        ?.filter { it.isDirectory && (it.name.startsWith("mipmap") || it.name.startsWith("drawable")) }
+        ?.flatMap { directory -> directory.listFiles()?.asList().orEmpty() }
+        ?.filter { it.extension == "png" && !it.name.endsWith(NINE_PATCH_SUFFIX) }
+        .orEmpty()
 
 private fun editDocuments(
     pkg: ResourcePackage,
-    files: List<File>,
+    paths: List<String>,
     edit: Document.() -> Int,
-): Int = files.sumOf { file -> document(file.resourcePath, pkg.name).use { it.edit() } }
-
-private fun File.declaresAnyOf(attributes: List<String>): Boolean =
-    readText().let { text -> attributes.any { text.contains("$it=\"") } }
+): Int = paths.sumOf { path -> document(path, pkg.name).use { it.edit() } }
 
 private fun replaceAttributes(
     pkg: ResourcePackage,
@@ -456,7 +451,11 @@ private fun replaceAttributes(
     fileNamePrefix: String = "",
 ): Int = editDocuments(
     pkg,
-    pkg.dayResourceFiles(directoryPrefix, excludedFileNames, fileNamePrefix).filter { it.declaresAnyOf(attributes) },
+    pkg.dayResourcePaths(directoryPrefix, excludedFileNames, fileNamePrefix).filter { path ->
+        resourceXml(path, packageName = pkg.name).use { xml ->
+            xml.elements().any { element -> attributes.any(element::hasAttribute) }
+        }
+    },
 ) {
     var replaced = 0
 
@@ -537,10 +536,12 @@ private fun Document.invertIfMonochrome(onSurface: String): Int {
 }
 
 private fun invertMonochromeVectors(pkg: ResourcePackage, onSurface: String): Int {
-    val blackVectors = pkg.dayResourceFiles("drawable").filter { file ->
-        val text = file.readText()
-
-        text.contains("<vector") && BLACK_VALUES.any { text.contains("\"$it\"") }
+    val blackVectors = pkg.dayResourcePaths("drawable").filter { path ->
+        resourceXml(path, packageName = pkg.name).use { xml ->
+            xml.elements("vector").any() && xml.elements().any { element ->
+                element.attributeNames.any { element.attribute(it) in BLACK_VALUES }
+            }
+        }
     }
 
     return editDocuments(pkg, blackVectors) { invertIfMonochrome(onSurface) }
@@ -551,7 +552,7 @@ private fun replaceStyleItems(
     attributes: Set<String>,
     replacements: Map<String, String>,
     unlisted: (String, String) -> String? = { _, _ -> null },
-): Int = editDocuments(pkg, pkg.dayStyleFiles()) {
+): Int = editDocuments(pkg, pkg.dayStylePaths()) {
     var replaced = 0
 
     documentElement.doRecursively { node ->
@@ -686,7 +687,7 @@ internal val amoledThemeResourcesPatch = patch {
             declared
         }
 
-        val themes = editDocuments(app, app.dayStyleFiles()) { useDayNightThemes() } +
+        val themes = editDocuments(app, app.dayStylePaths()) { useDayNightThemes() } +
             document("res/values/styles.xml", HEADSET_PACKAGE).use { it.useDayNightThemes() }
 
         val appPalettes = mapOf(COLOR_REFERENCE to palette)

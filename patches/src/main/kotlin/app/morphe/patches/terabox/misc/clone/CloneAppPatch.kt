@@ -4,14 +4,15 @@
  */
 package app.morphe.patches.terabox.misc.clone
 
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
+import app.morphe.patcher.StringComparisonType
+import app.morphe.patcher.string
 import app.morphe.patcher.patch.Patch
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.replaceStrings
 import app.morphe.patcher.patch.stringOption
-import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
 import app.morphe.patcher.util.proxy.mutableTypes.encodedValue.MutableStringEncodedValue
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,49 +20,43 @@ import app.morphe.patches.shared.misc.requireStandardInstall
 import app.morphe.patches.terabox.misc.settings.markPatchApplied
 import app.morphe.patches.terabox.misc.settings.patchesSettingsPatch
 import app.morphe.util.asSequence
-import app.morphe.util.findMutableMethodOf
 import app.morphe.util.getNode
 import com.android.tools.smali.dexlib2.iface.ClassDef
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.iface.value.StringEncodedValue
 import org.w3c.dom.Element
 
+private const val CONTENT_URI_PREFIX = "content://"
 private const val ACCOUNT_TYPE = "com.dubox.drive.jkeng.account_type"
 
 private val ACCOUNT_XML_FILES = listOf("res/xml/authenticator.xml", "res/xml/sync_adapter.xml")
 
 private val APP_LABELS = setOf("TeraBox", "@string/app_name")
 
-internal fun ClassDef.renameCloneStrings(renames: Map<String, String>, resolveMutableClass: () -> MutableClass) {
-    fun cloneString(string: String): String? {
-        renames[string]?.let { return it }
-        if (!string.startsWith("content://")) return null
+private fun cloneString(string: String, renames: Map<String, String>): String? {
+    renames[string]?.let { return it }
+    if (!string.startsWith(CONTENT_URI_PREFIX)) return null
 
-        val authority = string.removePrefix("content://").substringBefore('/')
-        return renames[authority]?.let { string.replaceFirst(authority, it) }
-    }
+    val authority = string.removePrefix(CONTENT_URI_PREFIX).substringBefore('/')
+    return renames[authority]?.let { string.replaceFirst(authority, it) }
+}
 
+internal fun ClassDef.renameCloneStaticStrings(renames: Map<String, String>, resolveMutableClass: () -> MutableClass) {
     val mutableClass by lazy(resolveMutableClass)
 
     staticFields.forEach { field ->
         val string = (field.initialValue as? StringEncodedValue)?.value ?: return@forEach
-        val clone = cloneString(string) ?: return@forEach
+        val clone = cloneString(string, renames) ?: return@forEach
         val mutableField = mutableClass.staticFields.single { it.name == field.name && it.type == field.type }
         (mutableField.initialValue as MutableStringEncodedValue).setValue(clone)
     }
+}
 
-    methods.forEach { method ->
-        val mutableMethod by lazy { mutableClass.findMutableMethodOf(method) }
-
-        method.implementation?.instructions?.forEachIndexed { index, instruction ->
-            val string = instruction.getReference<StringReference>()?.string ?: return@forEachIndexed
-            val clone = cloneString(string) ?: return@forEachIndexed
-            val register = (instruction as OneRegisterInstruction).registerA
-
-            mutableMethod.replaceInstruction(index, "const-string v$register, \"$clone\"")
-        }
+internal fun renameCloneDexStrings(renames: Map<String, String>) {
+    classDefForEach { classDef ->
+        classDef.renameCloneStaticStrings(renames) { mutableClassDefBy(classDef) }
     }
+    val filters = renames.keys.map { string(it) } + string(CONTENT_URI_PREFIX, StringComparisonType.STARTS_WITH)
+    replaceStrings(filters) { _, _, value -> cloneString(value, renames) }
 }
 
 @Suppress("unused")
@@ -110,6 +105,7 @@ val cloneAppPatch: Patch = patch(
                         "${clonePackageName}_$name"
                     }
 
+                renames.clear()
                 renames[originalPackageName] = clonePackageName
                 renames[ACCOUNT_TYPE] = cloneName(ACCOUNT_TYPE)
 
@@ -158,8 +154,6 @@ val cloneAppPatch: Patch = patch(
     }
 
     finalize {
-        classDefForEach { classDef ->
-            classDef.renameCloneStrings(renames) { mutableClassDefBy(classDef) }
-        }
+        renameCloneDexStrings(renames)
     }
 }

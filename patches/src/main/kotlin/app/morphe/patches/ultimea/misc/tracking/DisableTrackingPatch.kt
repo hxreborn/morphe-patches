@@ -16,6 +16,7 @@ import app.morphe.patches.shared.misc.analytics.disableFirebaseSessionsPatch
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.readInt
+import app.morphe.patches.ultimea.misc.settings.asyncBodyStart
 import app.morphe.patches.shared.writeInt
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
 import app.morphe.patches.ultimea.misc.settings.nativeMethods

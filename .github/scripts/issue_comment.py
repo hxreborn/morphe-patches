@@ -20,6 +20,7 @@ UNRELEASED_MARKER = "<!-- unreleased-issue-bot -->"
 NO_REPLY = 3
 PING_WINDOW = timedelta(days=30)
 LOCK_DELAY = timedelta(days=8)
+CLOSE_WITH_COMMENT_WINDOW = timedelta(seconds=30)
 COLLABORATORS = {"OWNER", "MEMBER", "COLLABORATOR"}
 SUPPORT_NOTES = f"https://github.com/{REPO}/blob/main/.github/SUPPORT.md#good-to-know"
 
@@ -41,7 +42,7 @@ UPDATE_DEMAND = re.compile(
     r"|\b(?:support|add)\s+(?:for\s+)?(?:the\s+)?(?:latest|newest|newer|new)\s+(?:app\s+)?version\b",
     re.I,
 )
-RESOLVED = re.compile(r"\b(work(s|ing)? (fine|perfectly|great|now)|now (it )?works|it works|fixed now|solved)\b", re.I)
+RESOLVED = re.compile(r"\b(work(s|ing)? (fine|perfectly|great|now|as expected)|now (it )?works|it works|fixed now|solved)\b", re.I)
 QUOTED = re.compile(r"^[ \t]*>.*$", re.M)
 MENTION = re.compile(r"@[\w-]+")
 OWNER_MENTION = re.compile(rf"@{re.escape(REPO.split('/')[0])}\b", re.I)
@@ -134,6 +135,15 @@ def reported_app(title, body, patches_list):
 def is_request(comment):
     own = CODE.sub("", QUOTED.sub("", comment))
     return bool(REQUEST.search(own)) and not RESOLVED.search(own)
+
+
+def is_closing_comment(issue, comment):
+    closed_at = issue.get("closed_at")
+    return (
+        bool(closed_at)
+        and (issue.get("user") or {}).get("login") == (comment.get("user") or {}).get("login")
+        and abs(timestamp(comment["created_at"]) - timestamp(closed_at)) <= CLOSE_WITH_COMMENT_WINDOW
+    )
 
 
 def is_fix_follow_up(issue, comment):
@@ -281,7 +291,8 @@ if __name__ == "__main__":
             sys.exit(NO_REPLY)
         print(unreleased_reply(), end="")
     else:
-        if not is_request(body) or ("--fixed" in flags and is_fix_follow_up(issue, comment)):
+        if (is_closing_comment(issue, comment) or not is_request(body)
+                or ("--fixed" in flags and is_fix_follow_up(issue, comment))):
             sys.exit(NO_REPLY)
         patches_list = json.loads(Path(args[1]).read_text(encoding="utf-8")) if len(args) > 1 else None
         labels = {label["name"] for label in issue.get("labels") or []}

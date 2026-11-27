@@ -6,6 +6,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from versions import variant_targets
 
 list_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("patches-list.json")
 forms = [Path(".github/ISSUE_TEMPLATE/bug_report.yml"), Path(".github/ISSUE_TEMPLATE/not_working.yml"),
@@ -15,10 +16,9 @@ ABI_NAMES = {"ARM64_V8A": "arm64-v8a", "ARMEABI_V7A": "armeabi-v7a", "X86_64": "
 RECENT_RELEASES = 6
 
 data = json.loads(list_path.read_text(encoding="utf-8"))
-apps, patches, abis, targets = set(), set(), set(), {}
+patches, abis, targets = set(), set(), {}
 for patch in data["patches"]:
     for package in patch.get("compatiblePackages") or []:
-        apps.add(package["name"])
         patches.add(f'{package["name"]} · {patch["name"]}')
         versions = targets.setdefault(package["name"], set())
         for target in package.get("targets") or []:
@@ -39,7 +39,7 @@ if stable and stable not in recent:
     recent[-1] = stable
 
 sets = {
-    "apps": sorted(apps, key=str.lower),
+    "apps": sorted(variant_targets(data), key=str.lower),
     "targets": app_versions,
     "patches": sorted(patches, key=str.lower) + ["Not narrowed down yet"],
     "abis": [ABI_NAMES.get(a, a.lower()) for a in sorted(abis)] + ["All of them (universal)", "Don't know"],

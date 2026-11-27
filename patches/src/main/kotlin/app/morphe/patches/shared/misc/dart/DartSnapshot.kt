@@ -11,8 +11,9 @@ import app.morphe.patches.shared.readShort
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-private const val SNAPSHOT_SYMBOL = "_kDartIsolateSnapshotData"
+private val SNAPSHOT_SYMBOLS = setOf("_kDartIsolateSnapshotData", "_kDartSnapshotData")
 private const val SNAPSHOT_VERSION = "97ff04a728735e6b6b098bdf983faaba"
+private const val COMBINED_SNAPSHOT_VERSION = "0451907c2eaa8467e848c0067bfe8ed4"
 private const val SNAPSHOT_HEADER_BYTES = 20
 private const val SNAPSHOT_VERSION_BYTES = 32
 private const val SNAPSHOT_LENGTH = 4
@@ -32,6 +33,8 @@ private const val CODE_CLASS = 18
 private const val INTEGER_CLASS = 61
 private const val INSTANCE_CLASS = 45
 private const val TYPE_ARGUMENTS_CLASS = 47
+private const val LOCAL_VARIABLE_DESCRIPTORS_CLASS = 27
+private const val CLOSURE_CLASS = 57
 private const val FIRST_FFI_CLASS = 96
 private const val LAST_FFI_CLASS = 110
 private const val FIRST_TYPED_DATA_CLASS = 112
@@ -53,6 +56,7 @@ private const val DATA_BITS = 7
 private const val BYTE_TERMINATOR = 128
 private const val SIGNED_TERMINATOR = 192
 private const val MAX_INTEGER_SHIFT = 63
+private const val STRING_FILL_WINDOW = 2048
 private const val ELF_SECTION_TABLE = 40
 private const val ELF_SECTION_ENTRY_SIZE = 58
 private const val ELF_SECTION_COUNT = 60
@@ -76,6 +80,8 @@ private const val ELF_SEGMENT_SIZE = 32
 internal class DartSnapshot(private val bytes: ByteArray) {
     private val buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
     private val snapshot = findSnapshot()
+    private val version = String(bytes, snapshot + SNAPSHOT_HEADER_BYTES, SNAPSHOT_VERSION_BYTES, Charsets.US_ASCII)
+    private val combinedSnapshot = version == COMBINED_SNAPSHOT_VERSION
     private val limit = snapshot + buffer.getLong(snapshot + SNAPSHOT_LENGTH).toInt() + Int.SIZE_BYTES
     private val start = bytes.indexOf(0.toByte(), snapshot + SNAPSHOT_HEADER_BYTES + SNAPSHOT_VERSION_BYTES) + 1
     private val header = Cursor(start).run { List(5) { unsigned().toInt() } }
@@ -110,16 +116,32 @@ internal class DartSnapshot(private val bytes: ByteArray) {
         if (bytes.readInt(snapshot) != SNAPSHOT_MAGIC || limit > bytes.size || start <= snapshot) {
             throw PatchException("Invalid Dart snapshot header")
         }
-        val version = String(bytes, snapshot + SNAPSHOT_HEADER_BYTES, SNAPSHOT_VERSION_BYTES, Charsets.US_ASCII)
-        if (version != SNAPSHOT_VERSION) throw PatchException("Unsupported Dart snapshot version $version")
+        if (version != SNAPSHOT_VERSION && !combinedSnapshot) throw PatchException("Unsupported Dart snapshot version $version")
         val features = String(bytes, snapshot + SNAPSHOT_HEADER_BYTES + SNAPSHOT_VERSION_BYTES,
             start - snapshot - SNAPSHOT_HEADER_BYTES - SNAPSHOT_VERSION_BYTES - 1, Charsets.US_ASCII)
         if ("compressed-pointers" !in features.split(' ')) throw PatchException("Dart snapshot requires compressed pointers")
         val allocationCursor = Cursor(start).apply { repeat(header.size) { unsigned() } }
         allocations = readAllocations(allocationCursor)
-        val strings = allocations.first()
+        val strings = if (combinedSnapshot) allocations.singleOrNull { it.cid == STRING_CLASS && it.canonical }
+            ?: throw PatchException("Expected one canonical Dart string cluster") else allocations.first()
         if (strings.cid != STRING_CLASS || !strings.canonical || strings.lengths == null) {
             throw PatchException("Expected leading canonical Dart string cluster")
+        }
+        if (combinedSnapshot) {
+            val starts = positions(encoded(strings.lengths.first()), allocationCursor.position,
+                minOf(limit, allocationCursor.position + STRING_FILL_WINDOW)).filter { offset ->
+                parseCandidate {
+                    val cursor = Cursor(offset)
+                    strings.lengths.all { length ->
+                        if (cursor.unsigned().toInt() != length) false else {
+                            cursor.advance(stringBytes(length))
+                            true
+                        }
+                    }
+                } == true
+            }
+            allocationCursor.position = starts.singleOrNull()
+                ?: throw PatchException("Expected one canonical Dart string fill")
         }
         stringsById = strings.lengths.mapIndexed { index, length ->
             if (allocationCursor.unsigned().toInt() != length) {
@@ -134,7 +156,7 @@ internal class DartSnapshot(private val bytes: ByteArray) {
         }.toMap()
         stringFillEnd = allocationCursor.position
         nonReferenceRanges += snapshot until stringFillEnd
-        val pool = allocations.singleOrNull { it.cid == OBJECT_POOL_CLASS && it.count == 1 }
+        val pool = allocations.singleOrNull { it.cid == OBJECT_POOL_CLASS && it.count == 1 && it.lengths?.singleOrNull() != 0 }
             ?: throw PatchException("Expected one Dart global object pool allocation")
         val poolLength = pool.lengths?.single() ?: throw PatchException("Missing Dart object pool length")
         val needle = encoded(poolLength)
@@ -152,6 +174,7 @@ internal class DartSnapshot(private val bytes: ByteArray) {
 
     private fun readAllocations(cursor: Cursor): List<Allocation> {
         var nextId = header.first() + 1
+        val classIdShift = if (combinedSnapshot) 1 else 0
         val result = List(header[2]) {
             val tags = cursor.signed().toInt()
             val cid = tags ushr CLASS_SHIFT
@@ -162,14 +185,15 @@ internal class DartSnapshot(private val bytes: ByteArray) {
             var lengths: IntArray? = null
             var lengthPositions: IntArray? = null
             when {
-                cid >= PREDEFINED_CLASSES || cid == INSTANCE_CLASS || cid in FIRST_FFI_CLASS..LAST_FFI_CLASS -> {
+                cid >= PREDEFINED_CLASSES + classIdShift || cid == INSTANCE_CLASS ||
+                    cid in (FIRST_FFI_CLASS + classIdShift)..(LAST_FFI_CLASS + classIdShift) -> {
                     fields = cursor.signed().toInt() - OBJECT_HEADER_WORDS
                     val size = cursor.signed().toInt()
                     if (fields < 0 || size < fields + OBJECT_HEADER_WORDS) {
                         throw PatchException("Invalid Dart instance allocation layout")
                     }
                 }
-                cid == CLASS_CLASS -> {
+                cid == CLASS_CLASS && !combinedSnapshot -> {
                     repeat(count) { cursor.signed() }
                     count += cursor.unsigned().toInt()
                 }
@@ -180,8 +204,9 @@ internal class DartSnapshot(private val bytes: ByteArray) {
                     count += deferred
                 }
                 cid == INTEGER_CLASS -> repeat(count) { cursor.signed() }
-                cid in LENGTH_CLASSES || cid in FIRST_TYPED_DATA_CLASS..LAST_TYPED_DATA_CLASS &&
-                    (cid - FIRST_TYPED_DATA_CLASS) % TYPED_DATA_CLASS_STRIDE == 0 -> {
+                cid in LENGTH_CLASSES || combinedSnapshot && cid in setOf(LOCAL_VARIABLE_DESCRIPTORS_CLASS, CLOSURE_CLASS) ||
+                    cid in (FIRST_TYPED_DATA_CLASS + classIdShift)..(LAST_TYPED_DATA_CLASS + classIdShift) &&
+                    (cid - FIRST_TYPED_DATA_CLASS - classIdShift) % TYPED_DATA_CLASS_STRIDE == 0 -> {
                     lengthPositions = IntArray(count)
                     lengths = IntArray(count) { index ->
                         lengthPositions[index] = cursor.position
@@ -202,6 +227,19 @@ internal class DartSnapshot(private val bytes: ByteArray) {
     }
 
     fun objectPoolOffsets(name: String): List<Int> = namesByPoolOffset.filterValues { it == name }.keys.toList()
+
+    fun arrayPoolOffsetsContaining(value: String): Set<Int> = poolReferences.filterValues { id ->
+        canonicalObjects.arrays[id]?.elements?.any { stringsById[it] == value } == true
+    }.keys
+
+    fun instancePoolOffsetsContaining(value: String): Set<Int> = poolReferences.filterValues { id ->
+        value in canonicalObjects.instanceStrings[id].orEmpty()
+    }.keys
+
+    fun typeArgumentPoolOffsets(): Set<Int> {
+        val ranges = allocations.filter { it.cid == TYPE_ARGUMENTS_CLASS }.map { it.firstId until it.firstId + it.count }
+        return poolReferences.filterValues { id -> ranges.any { id in it } }.keys
+    }
 
     fun widgetArrayPoolOffsets(): Set<Int> = poolReferences.filterValues { id ->
         val elements = canonicalObjects.arrays[id]?.elements
@@ -269,6 +307,7 @@ internal class DartSnapshot(private val bytes: ByteArray) {
             cluster.firstId + index to SnapshotArray(lengthPosition, referencesStart, cursor.position, typeArguments, elements)
         }.toMap()
         val names = mutableMapOf<Int, String>()
+        val instanceStrings = mutableMapOf<Int, MutableSet<String>>()
         for (allocation in allocations.drop(clusterIndex + 1).takeWhile { it.canonical }) {
             if (allocation.fields < 0) throw PatchException("Expected canonical Dart instance layout")
             val bitmapStart = cursor.position
@@ -284,12 +323,15 @@ internal class DartSnapshot(private val bytes: ByteArray) {
                     } else {
                         val id = cursor.checkedReference()
                         if (field == 0) stringsById[id]?.let { names[allocation.firstId + index] = it }
+                        stringsById[id]?.let { value ->
+                            instanceStrings.getOrPut(allocation.firstId + index) { mutableSetOf() }.add(value)
+                        }
                     }
                 }
             }
         }
         if (cursor.position > poolFill) throw PatchException("Dart canonical instances overlap object pool")
-        return CanonicalObjects(arrays, names)
+        return CanonicalObjects(arrays, names, instanceStrings)
     }
 
     private fun referenceBytes(value: Int): ByteArray {
@@ -345,7 +387,7 @@ internal class DartSnapshot(private val bytes: ByteArray) {
         val symbolCount = (buffer.getLong(symbols + ELF_SECTION_SIZE) / symbolSize).toInt()
         val symbol = (0 until symbolCount).map { symbolsStart + it * symbolSize }.single { entry ->
             val name = names + bytes.readInt(entry)
-            String(bytes, name, bytes.indexOf(0.toByte(), name) - name, Charsets.US_ASCII) == SNAPSHOT_SYMBOL
+            String(bytes, name, bytes.indexOf(0.toByte(), name) - name, Charsets.US_ASCII) in SNAPSHOT_SYMBOLS
         }
         val address = buffer.getLong(symbol + ELF_SYMBOL_VALUE)
         val programs = buffer.getLong(ELF_PROGRAM_TABLE).toInt()
@@ -444,7 +486,11 @@ internal class DartSnapshot(private val bytes: ByteArray) {
 
     private class PoolFill(val references: Map<Int, Int>, val nonReferenceRanges: List<IntRange>)
 
-    private class CanonicalObjects(val arrays: Map<Int, SnapshotArray>, val names: Map<Int, String>)
+    private class CanonicalObjects(
+        val arrays: Map<Int, SnapshotArray>,
+        val names: Map<Int, String>,
+        val instanceStrings: Map<Int, Set<String>>,
+    )
 
     private class Allocation(
         val cid: Int,

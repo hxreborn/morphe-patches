@@ -229,7 +229,7 @@ with tempfile.TemporaryDirectory() as temp:
     issue_reports = generator["issue_reports"]
     generator["issue_reports"] = lambda since, keys: windows.append(since) or {}
     generator["git_lines"] = fake_git(baseline=baseline)
-    assert generator["hot_apps"]() == [] and len(windows) == 3
+    assert generator["hot_apps"]() == [] and len(windows) == 6
 
     generator["git_lines"] = fake_git(log=["fix(1Weather): fix the radar crash"])
     assert generator["patch_names_before"](since) is None

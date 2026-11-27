@@ -1,0 +1,58 @@
+name: Issue review
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to triage
+        required: true
+        type: number
+
+permissions: {}
+
+jobs:
+  triage:
+    name: Triage issue
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (!github.event.issue.pull_request &&
+      !contains(github.event.issue.labels.*.name, 'app-update') &&
+      !contains(github.event.issue.labels.*.name, 'bot-wrong') &&
+      !contains(github.event.issue.labels.*.name, 'incomplete') &&
+      !contains(github.event.issue.labels.*.name, 'needs info') &&
+      !contains(github.event.issue.labels.*.name, 'untargeted version') &&
+      ((github.event_name == 'issues' && github.event.action == 'opened' &&
+      !contains(github.event.issue.labels.*.name, 'bug') &&
+      !contains(github.event.issue.labels.*.name, 'enhancement')) ||
+      (github.event.issue.state == 'closed' &&
+      github.event.issue.state_reason == 'not_planned' &&
+      github.event.sender.login == github.event.issue.user.login)))
+    concurrency:
+      group: issue-triage-${{ github.event.issue.number || inputs.issue_number }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: .github/scripts/issue-triage
+          sparse-checkout-cone-mode: false
+
+      - name: Triage issue
+        uses: actions/github-script@v9
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
+          TRIAGE_MODE: ${{ vars.ISSUE_TRIAGE_MODE }}
+          INCLUDE_MAINTAINERS: ${{ vars.ISSUE_TRIAGE_INCLUDE_MAINTAINERS }}
+        with:
+          script: |
+            const run = require('./.github/scripts/issue-triage/triage.js');
+            await run({ github, context, core });

@@ -11,6 +11,7 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patcher.util.p0Register
 import app.morphe.patches.protonvpn.misc.anchors.findPropertyField
 import app.morphe.util.findInstructionIndicesReversedOrThrow
 import com.android.tools.smali.dexlib2.Opcode
@@ -35,7 +36,7 @@ internal fun MutableMethod.filterReturnValue(filter: String) {
 }
 
 private val MutableMethod.thisRegister
-    get() = implementation!!.registerCount - parameterTypes.sumOf { if (it == "J" || it == "D") 2 else 1 } - 1
+    get() = p0Register
 
 private fun MutableMethod.fieldAssignment(field: FieldReference): TwoRegisterInstruction? =
     implementation!!.instructions.filterIsInstance<TwoRegisterInstruction>().singleOrNull {

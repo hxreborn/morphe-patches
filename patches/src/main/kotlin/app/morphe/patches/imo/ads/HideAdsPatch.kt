@@ -16,7 +16,7 @@ val hideAdsPatch = patch(
     compatibleWith(AppCompatibilities.IMO)
 
     execute {
-        ShouldShowAdFingerprint.matchAll().forEach { it.method.returnEarly(false) }
+        ShouldShowAdFingerprint.matchAll(2..2).forEach { it.method.returnEarly(false) }
         ConsentSdkAvailabilityFingerprint.method.returnEarly(false)
     }
 }

@@ -11,6 +11,7 @@ import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.dart.dartAotLibrary
 import app.morphe.patches.shared.misc.requireArm64
 import app.morphe.patches.shared.readInt
+import app.morphe.patches.ultimea.misc.settings.asyncBodyStart
 import app.morphe.patches.ultimea.misc.settings.markPatchApplied
 import app.morphe.patches.ultimea.misc.settings.nativeMethods
 import app.morphe.patches.ultimea.misc.settings.patchesSettingsPatch

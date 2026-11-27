@@ -56,7 +56,7 @@ private val exportRowLabelsPatch = patch {
 val exportDownloadedSongsPatch: Patch = patch(
     name = "Export downloaded songs",
     description = "Adds Save to device and Share file to the menu of downloaded songs. " +
-        "Saved songs go to Music/Audiomack, named by artist and title and tagged with title, artist and album. " +
+        "Saves songs to Music/Audiomack as Artist - Title, with their tags and cover art. " +
         "Requires Android 10 or later.",
 ) {
     compatibleWith(AppCompatibilities.AUDIOMACK)
@@ -73,6 +73,8 @@ val exportDownloadedSongsPatch: Patch = patch(
         val (albumRead, _, albumFallbackRead) =
             mediaMetadataAlbumFingerprint(artistMatch.method).match().instructionMatches
         val (titleRead) = mediaMetadataTitleFingerprint(artistMatch.method).match().instructionMatches
+        val (coverUrlRead) = OriginalImageCopyFingerprint.match().instructionMatches
+        val coverFileMethod = CoverFileFingerprint.method
         val downloadFolder = DownloadFolderFingerprint.matchAll(DOWNLOAD_FOLDER_SITES).map { match ->
             val (_, _, folderNameRead) = match.instructionMatches
             folderNameRead.getInstruction<ReferenceInstruction>().getReference<StringReference>()!!.string
@@ -83,6 +85,7 @@ val exportDownloadedSongsPatch: Patch = patch(
                 "musicId" to idRead.fieldReference,
                 "musicTitle" to titleRead.fieldReference,
                 "musicArtist" to artistRead.fieldReference,
+                "musicCoverUrl" to coverUrlRead.fieldReference,
             ).forEach { (stub, field) ->
                 replaceStub(
                     stub,
@@ -103,6 +106,20 @@ val exportDownloadedSongsPatch: Patch = patch(
                     if-nez v0, :album
                     iget-object v0, p0, ${descriptor(albumFallbackRead.fieldReference)}
                     :album
+                    return-object v0
+                """,
+            )
+            replaceStub(
+                "coverFile",
+                3,
+                """
+                    if-eqz p1, :no_cover_url
+                    const/4 v0, 0x0
+                    invoke-static {p0, p1, v0}, ${descriptor(coverFileMethod)}
+                    move-result-object v0
+                    return-object v0
+                    :no_cover_url
+                    const/4 v0, 0x0
                     return-object v0
                 """,
             )

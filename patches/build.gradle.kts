@@ -17,7 +17,7 @@ group = "app.hxreborn"
 patches {
     about {
         name = "hxreborn’s patches"
-        description = "Unlocks premium features and removes ads and tracking in 100+ Android apps"
+        description = "Unlocks premium features and removes ads and tracking in 200+ Android apps"
         source = "git@github.com:hxreborn/morphe-patches.git"
         author = "hxreborn"
         contact = "https://github.com/hxreborn/morphe-patches/issues"
@@ -44,6 +44,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.asm)
+    testImplementation(libs.arsclib)
     testImplementation("app.morphe:morphe-patcher:${libs.versions.morphe.patcher.get()}")
 
     signature(libs.android.api.signature) { artifact { type = "signature" } }

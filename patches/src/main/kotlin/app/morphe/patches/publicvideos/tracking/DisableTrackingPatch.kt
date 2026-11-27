@@ -21,7 +21,7 @@ val disableTrackingPatch = patch(
 
     execute {
         AppsFlyerInitFingerprint.method.addInstruction(0, "return-object p0")
-        AppsFlyerStartFingerprint.matchAll().forEach { it.method.returnEarly() }
+        AppsFlyerStartFingerprint.matchAll(2..2).forEach { it.method.returnEarly() }
         FlurrySupportedFingerprint.method.returnEarly(false)
         FlurryContentProviderCreateFingerprint.method.returnEarly(true)
         ComScoreStartFingerprint.method.returnEarly()

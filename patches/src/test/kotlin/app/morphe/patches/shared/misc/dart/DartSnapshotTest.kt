@@ -5,6 +5,7 @@
 package app.morphe.patches.shared.misc.dart
 
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patches.ultimea.misc.settings.asyncBodyStart
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -361,6 +362,23 @@ class DartSnapshotTest {
     }
 
     @Test
+    fun selectEqualBranchAfterComparison() {
+        val bytes = poolLoadLibrary(0x6b16001f, 0x54000060, 0x94000004.toInt())
+        ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).putInt(2072, 0xd65f03c0.toInt())
+        val methods = NativeMethods(bytes)
+        assertEquals(listOf(2056), methods.instructionsBeforeControlFlowAfter(2052, 2076))
+        assertEquals(2072, methods.equalBranchTargetAfter(2052, 2076))
+    }
+
+    @Test
+    fun rejectNonEqualBranchAfterComparison() {
+        val bytes = poolLoadLibrary(0x6b16001f, 0x54000061, 0x94000004.toInt())
+        ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).putInt(2072, 0xd65f03c0.toInt())
+        val methods = NativeMethods(bytes)
+        assertFailsWith<PatchException> { methods.equalBranchTargetAfter(2052, 2076) }
+    }
+
+    @Test
     fun retainCalledFunctionBoundaryWhenTailBranchAlsoReachesIt() {
         val bytes = poolLoadLibrary(0x94000006.toInt(), 0x14000005, 0xd503201f.toInt())
         val code = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN)
@@ -406,6 +424,79 @@ class DartSnapshotTest {
         val snapshot = DartSnapshot(library(widgetElements = false))
         assertTrue(snapshot.widgetArrayPoolOffsets().isEmpty())
         assertFailsWith<PatchException> { snapshot.removeFirstArrayElement(24) }
+    }
+
+    @Test
+    fun readStringsAfterLeadingClustersInCombinedSnapshot() {
+        val snapshot = DartSnapshot(combinedSnapshotLibrary())
+        assertEquals("alpha", snapshot.stringsByPoolOffset[16])
+        assertEquals("beta", snapshot.stringsByPoolOffset[24])
+        assertEquals(snapshot.stringsByPoolOffset, snapshot.namesByPoolOffset)
+    }
+
+    private fun combinedSnapshotLibrary(): ByteArray {
+        val strings = listOf("alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta")
+        val poolLength = 131
+        val stream = ByteArrayOutputStream()
+        fun unsigned(value: Int, marker: Int = 128) {
+            var rest = value
+            while (rest >= if (marker == 192) 64 else 128) {
+                stream.write(rest and 127)
+                rest = rest ushr 7
+            }
+            stream.write(rest + marker)
+        }
+        fun reference(value: Int) {
+            val groups = mutableListOf((value and 127) or 128)
+            var rest = value ushr 7
+            while (rest > 0) {
+                groups += rest and 127
+                rest = rest ushr 7
+            }
+            groups.reversed().forEach(stream::write)
+        }
+        fun cluster(cid: Int, count: Int, canonical: Boolean = false) {
+            unsigned((cid shl 12) or if (canonical) 2 else 0, 192)
+            unsigned(count)
+        }
+        listOf(128, 128 + strings.size + 3, 4, 0, 0).forEach { unsigned(it) }
+        cluster(91, 1, true)
+        unsigned(0)
+        cluster(23, 1)
+        unsigned(0)
+        cluster(93, strings.size, true)
+        strings.forEach { unsigned(it.length shl 1) }
+        unsigned(1)
+        unsigned(strings.size)
+        cluster(23, 1)
+        unsigned(poolLength)
+        unsigned(0)
+        reference(1)
+        unsigned(0)
+        strings.forEach {
+            unsigned(it.length shl 1)
+            stream.write(it.toByteArray(Charsets.ISO_8859_1))
+        }
+        unsigned(poolLength)
+        repeat(2) {
+            stream.write(1)
+            reference(131 + it)
+        }
+        repeat(poolLength - 2) {
+            stream.write(0)
+            unsigned(0, 192)
+        }
+        val result = library()
+        result.fill(0, SNAPSHOT_OFFSET, 2048)
+        "\u0000_kDartSnapshotData\u0000".toByteArray().copyInto(result, 304)
+        val features = "compressed-pointers\u0000".toByteArray()
+        val payload = stream.toByteArray()
+        ByteBuffer.wrap(result).order(ByteOrder.LITTLE_ENDIAN).putInt(SNAPSHOT_OFFSET, 0xdcdcf5f5.toInt())
+            .putLong(SNAPSHOT_OFFSET + 4, (52 + features.size + payload.size - 4).toLong())
+        "0451907c2eaa8467e848c0067bfe8ed4".toByteArray().copyInto(result, SNAPSHOT_OFFSET + 20)
+        features.copyInto(result, SNAPSHOT_OFFSET + 52)
+        payload.copyInto(result, SNAPSHOT_OFFSET + 52 + features.size)
+        return result
     }
 
     private fun library(sharedArray: Boolean = false, widgetElements: Boolean = true, literal: String = "widget", unboxed: Boolean = false, poolImmediate: Boolean = false): ByteArray {

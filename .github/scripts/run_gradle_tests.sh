@@ -10,10 +10,10 @@ for attempt in $(seq 1 "$attempts"); do
   if [ "$status" -eq 0 ]; then
     exit 0
   fi
-  if ! grep -q 'MavenArtifactFetcher' "$log"; then
+  if ! grep -qE 'MavenArtifactFetcher|Received status code (429|5[0-9][0-9])' "$log"; then
     exit "$status"
   fi
-  echo "::warning::Robolectric could not download an Android runtime jar (attempt $attempt of $attempts)"
+  echo "::warning::A dependency download failed (attempt $attempt of $attempts)"
   sleep 30
 done
 exit "$status"

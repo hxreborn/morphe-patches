@@ -4,6 +4,7 @@
  */
 package app.morphe.patches.yuka.misc.signin
 
+import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.OptionException
 import app.morphe.patcher.patch.PatchException
@@ -16,6 +17,7 @@ import app.morphe.patches.shared.misc.requireArm64StandardInstall
 import app.morphe.patches.shared.misc.signature.replaceString
 import app.morphe.patches.shared.misc.signature.stockSigningCertificate
 import app.morphe.patches.yuka.misc.pairip.guardVirtualizedTasksPatch
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import java.security.MessageDigest
 import java.time.Instant
 import java.util.Base64
@@ -33,7 +35,7 @@ private val EXPIRY_CLAIM = Regex("\"exp\"\\s*:\\s*(\\d+)")
 val signInTokenPatch = patch(
     name = "Sign-in token",
     description = "Signs in with an App Check token. " +
-        "Requires a token copied from Yuka installed from Google Play on a rooted phone. " +
+        "Get one from the token bot, or copy it from Yuka installed from Google Play on a rooted phone. " +
         "Steps are in the Yuka section of PATCHES.md.",
     default = false,
 ) {
@@ -47,7 +49,7 @@ val signInTokenPatch = patch(
     val appCheckToken by stringOption(
         key = "appCheckToken",
         title = "App Check token",
-        description = "Copy it from Yuka installed from Google Play on a rooted phone. Steps: $STEPS_URL",
+        description = "Get it from the token bot, or copy it from Yuka installed from Google Play on a rooted phone. Steps: $STEPS_URL",
         required = true,
     ) {
         it != null && APP_CHECK_TOKEN_FORMAT.matches(it.trim())
@@ -80,6 +82,15 @@ val signInTokenPatch = patch(
                 invoke-static { v0 }, $TOKEN_SEED_CLASS->seed(Landroid/content/Context;)V
             """,
         )
+
+        AndroidPackageHeaderFingerprint.matchAll().forEach { match ->
+            val headerSetCall = match.instructionMatches.last()
+            val packageRegister = headerSetCall.getInstruction<FiveRegisterInstruction>().registerE
+            match.method.addInstruction(
+                headerSetCall.index,
+                "const-string v$packageRegister, \"${packageMetadata.packageName}\"",
+            )
+        }
 
         val certificateSha1 = Base64.getEncoder().encodeToString(
             MessageDigest.getInstance("SHA-1").digest(packageMetadata.stockSigningCertificate().encoded),

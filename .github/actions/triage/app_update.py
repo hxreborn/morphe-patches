@@ -11,14 +11,18 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 sys.path.insert(0, str(Path(__file__).parents[2] / "scripts"))
 from fields import app_packages, contradicting_app, field, normalize, parse_fields
-from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, same_variant, targets, tracked_version,
-                      version_key)
+from versions import (APP_UPDATE_TITLE_PREFIX, build_tags, compare, form_factor, same_variant, targets, tracked_version,
+                      variant_labels, variant_targets, version_key)
 from replies import BROKEN_FORMS, NEW_ISSUE, bundle, supported_downloads
 
 MARKER = "<!-- app-update-bot -->"
 VERSION_CODE = re.compile(r"\s*\(([\w.+-]*)\)\s*$")
 VERSION = re.compile(r"[A-Za-z0-9._+-]+(?: [A-Za-z0-9._+-]+)?")
 MAX_VERSION = 64
+RESULT_LABEL = "Patching this version"
+RESULT_FORM = Path(__file__).parents[2] / "ISSUE_TEMPLATE" / "app_update.yml"
+LEGACY_FAILURES = ("Tried but patching failed", "Patching works, the app misbehaves")
+NON_FAILURE_MARKERS = ("nottried", "andsodoes")
 
 
 def is_version(text):
@@ -47,21 +51,56 @@ def open_tracker(app, version, number, issues, apps):
                key=lambda iv: version_key(iv[1]), default=(None, ""))
 
 
+def form_options(label, form=RESULT_FORM):
+    try:
+        lines = form.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return []
+    start = next((i for i, line in enumerate(lines) if re.fullmatch(rf"\s*label:\s*{re.escape(label)}\s*", line)), None)
+    if start is None:
+        return []
+    options = []
+    collecting = False
+    for line in lines[start + 1:]:
+        if re.fullmatch(r"\s*options:\s*", line):
+            collecting = True
+        elif collecting and (item := re.fullmatch(r"\s*-\s+(.+?)\s*", line)):
+            options.append(item.group(1).strip("\"'"))
+        elif collecting or re.match(r"\s*- type:", line):
+            break
+    return options
+
+
+def failure_choices(form=RESULT_FORM):
+    choices = [*form_options(RESULT_LABEL, form), *LEGACY_FAILURES]
+    return {normalize(choice) for choice in choices if not any(marker in normalize(choice) for marker in NON_FAILURE_MARKERS)}
+
+
 def reports_failure(body):
-    return normalize(field(parse_fields(body), "Patching this version")) in {
-        "triedbutpatchingfailed", "patchingworkstheappmisbehaves",
-    }
+    return normalize(field(parse_fields(body), RESULT_LABEL)) in failure_choices()
 
 
 def decide(number, body, issues, patches_list, issue_title=""):
-    apps = targets(patches_list)
+    apps = variant_targets(patches_list)
     app = requested_app(body, apps)
     version = requested_version(body)
     source = field(parse_fields(body), "APK source")
-    contradicted = contradicting_app(app, f"{issue_title}\n{source}", app_packages(patches_list))
+    ambiguous = not app and bool(requested_app(body, targets(patches_list)))
+    variants = [key for key, label in variant_labels(patches_list).items() if label == app]
+    variant = variants[0] if len(variants) == 1 else None
+    base_name = next(
+        (package.get("name") or package["packageName"]
+         for patch in patches_list["patches"] for package in patch.get("compatiblePackages") or []
+         if (package["packageName"], form_factor(package)) == variant),
+        app,
+    )
+    contradicted = contradicting_app(base_name, f"{issue_title}\n{source}", app_packages(patches_list))
     verdict, reason, duplicate_of, labels, title, retitle, lines = "pass", "", 0, [], "", None, []
 
-    if not app:
+    if ambiguous:
+        verdict, labels = "flag", ["needs info"]
+        lines.append("Please edit the App field and select the device variant from the list.")
+    elif not app:
         verdict, labels = "flag", ["needs info"]
         lines.append("The App field doesn't match an app this bundle supports. Please edit the issue and pick it from the list.")
     elif contradicted:
@@ -101,7 +140,7 @@ def decide(number, body, issues, patches_list, issue_title=""):
         else:
             title = f"{APP_UPDATE_TITLE_PREFIX}{app} {version}"
 
-        if downloads := supported_downloads(patches_list, app):
+        if downloads := supported_downloads(patches_list, base_name, variant):
             lines.append(downloads)
 
     return {

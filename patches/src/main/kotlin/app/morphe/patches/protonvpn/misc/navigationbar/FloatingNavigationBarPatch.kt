@@ -12,6 +12,7 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patches.protonvpn.misc.settings.patchesSettingsPatch
@@ -197,7 +198,6 @@ private fun installFloatingContentPadding(navType: String, modifierType: String)
             method.implementation?.instructions?.any { it.getReference<FieldReference>() == bottomField } == true
     }
     val extension = mutableClassDefBy(FLOATING_NAVIGATION_BAR_CLASS)
-    extension.interfaces.add(paddingType)
     val original = ImmutableField(extension.type, "originalPadding", paddingType, AccessFlags.PRIVATE.value or AccessFlags.FINAL.value, null, null, null)
     extension.fields.add(original.toMutable())
     val reserve = ImmutableField(extension.type, "reservePadding", "Z", AccessFlags.PRIVATE.value or AccessFlags.FINAL.value, null, null, null)
@@ -248,7 +248,7 @@ private fun installFloatingContentPadding(navType: String, modifierType: String)
                 move-result v0
             """
         }
-        extension.addMethod(method.name, parameters, "F", AccessFlags.PUBLIC.value, parameters.size + 3, "$body\nreturn v0")
+        extension.addPatchInterface(paddingType, method.name, "$body\nreturn v0", parameters)
     }
     val wrapper = extension.addStaticMethod(
         "floatingContentPadding", listOf(paddingType), paddingType, 3,

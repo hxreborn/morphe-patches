@@ -69,7 +69,8 @@ if [ -s comment.md ] && [ "$unchanged" != true ]; then
 fi
 if [ -n "$previous" ]; then
   mapfile -t outdated < <(jq -r --argjson n "$n" --slurpfile verdict verdict.json \
-    '.[] | select(.number == $n) | .labels[].name | select(. == "needs info" or . == "duplicate" or . == "other bundle")
+    '.[] | select(.number == $n) | .labels[].name | select(. == "needs info" or . == "duplicate" or . == "other bundle"
+       or . == "tv-app" or . == "android-auto" or . == "region")
      | select(. as $label | $verdict[0].labels | index($label) | not)' requests.json)
   [ "${#outdated[@]}" -eq 0 ] || discussion remove-labels "$n" "${outdated[@]}"
 fi

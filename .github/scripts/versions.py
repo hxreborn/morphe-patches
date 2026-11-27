@@ -87,3 +87,34 @@ def targets(patches_list):
             versions = apps.setdefault(package["name"], set())
             versions.update(t["version"] for t in package.get("targets") or [] if t.get("version"))
     return apps
+
+
+def form_factor(package):
+    return package.get("formFactor") or "MOBILE"
+
+
+def variant_labels(patches_list):
+    factors = {}
+    for patch in patches_list["patches"]:
+        for package in patch.get("compatiblePackages") or []:
+            factors.setdefault(package["packageName"], set()).add(form_factor(package))
+    labels = {}
+    for patch in patches_list["patches"]:
+        for package in patch.get("compatiblePackages") or []:
+            package_name = package["packageName"]
+            factor = form_factor(package)
+            name = package.get("name") or package_name
+            suffix = {"MOBILE": "Mobile", "WEARABLE": "Wear OS"}.get(factor, factor.title())
+            labels[package_name, factor] = f"{name} ({suffix})" if len(factors[package_name]) > 1 else name
+    return labels
+
+
+def variant_targets(patches_list):
+    labels = variant_labels(patches_list)
+    apps = {}
+    for patch in patches_list["patches"]:
+        for package in patch.get("compatiblePackages") or []:
+            key = (package["packageName"], form_factor(package))
+            versions = apps.setdefault(labels[key], set())
+            versions.update(t["version"] for t in package.get("targets") or [] if t.get("version"))
+    return apps

@@ -31,7 +31,7 @@ val loadingIndicatorPatch: Patch = patch(
 
     execute {
         markPatchMetadata("loadingIndicator", loadingIndicatorPatch, withDescription = true)
-        val progressReads = PullRefreshProgressFingerprint.matchAll().map { match ->
+        val progressReads = PullRefreshProgressFingerprint.matchAll(2..2).map { match ->
             val instructions = match.instructionMatches.map { it.instruction }
             Triple(
                 descriptor(instructions.first().getReference<MethodReference>()!!),

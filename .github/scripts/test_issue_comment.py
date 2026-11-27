@@ -44,6 +44,7 @@ NOT_REQUESTS = [
     "Great. Thank you very much.",
     "Completed in hxreborn patches 1.47.0",
     "Yeah thanks , Updated and working perfectly now .",
+    "Update: I patched the app again using the link below, and for some reason, everything is now working as expected.\n\nHere's the link I used, along with my patch notes.",
     "No problem. Thanks for the work you and other devs are doing here in your spare time.",
     "> This is included in [v1.34.0](https://github.com/x/releases/tag/v1.34.0). Update the bundle in Morphe Manager and repatch.\n\nThis is actually crazy automation bro.",
     "> Thanks for the request! This is in v1.31.0. Update the bundle and repatch, and comment below if something is missing.\n\nnice",
@@ -442,9 +443,11 @@ if args[:1] == ["api"]:
     if re.fullmatch(r"repos/[\w.-]+/[\w.-]+/issues/\d+/timeline", path):
         if state.get("timeline_fails"):
             finish(1)
+        if "actor.login" in expression:
+            finish(0, "".join(f"{login}\n" for login in state.get("closers", [])))
         finish(0, "".join(f"{commit}\n" for commit in state["closing"]))
     if re.fullmatch(r"repos/[\w.-]+/[\w.-]+/issues/\d+/comments", path):
-        marker = re.search(r'contains\("(<!--.*?-->)"\)', expression)
+        marker = re.search(r'(?:contains|startswith)\("(<!--.*?)"\)', expression)
         if not marker or "github-actions[bot]" not in expression:
             finish(1)
         finish(0, "".join(f"{i}\n" for i, body in enumerate(state["bot_comments"], 1) if marker.group(1) in body))
@@ -480,9 +483,9 @@ SHAS = {"known": [UNRELEASED_SHA, RELEASED_SHA, PRERELEASED_SHA],
 
 
 def run_reply(body, state="closed", closing=(), bot_comments=(), labels=("app request",), closed_at="2026-10-18T22:14:42Z",
-              commented_at="2026-10-19T12:37:46Z", **extra):
+              commented_at="2026-10-19T12:37:46Z", author="reporter", **extra):
     event = {
-        "issue": {"number": 7, "state": state, "title": "[App Request]: Something", "created_at": "2026-10-01T00:00:00Z",
+        "issue": {"number": 7, "state": state, "title": "[App Request]: Something", "created_at": "2026-10-01T00:00:00Z", "user": {"login": author},
                   "closed_at": closed_at, "labels": [{"name": label} for label in labels]},
         "comment": {"user": {"login": "asker", "type": "User"}, "author_association": "NONE", "body": body, "created_at": commented_at},
     }
@@ -506,6 +509,8 @@ CRASHING = "> 18\\. Proceed anyway ! 🤌🏻\n\napp is crashing on launch"
 FIXED_BUG = dict(closing=[RELEASED_SHA], labels=("bug",))
 ETA = "when is this getting released? A new release hasn't been built yet with your commit."
 UNRELEASED_SENT = UNRELEASED_MARKER + "\nx"
+REVIEW_CLOSED = "<!-- issue-triage:closed rechecks=0 -->\nThis issue was closed automatically."
+BOT_LOGIN = "github-actions[bot]"
 REPLY_CASES = [
     ("an ETA question on an unreleased closed issue gets the unreleased line", dict(body=ETA, closing=[UNRELEASED_SHA]), 0, UNRELEASED_MARKER),
     ("an ETA question once the commit is tagged gets the redirect", dict(body=ETA, closing=[RELEASED_SHA]), 0, CLOSED_MARKER),
@@ -534,6 +539,12 @@ REPLY_CASES = [
     ("an update demand on a bug closed by a released fix gets the redirect", dict(body="please update patches to 6.83.0", **FIXED_BUG), 0, CLOSED_MARKER),
     ("a crash report on a bug closed without a commit gets the redirect", dict(body=CRASHING, closing=["-"], labels=("bug",)), 0, CLOSED_MARKER),
     ("a crash report on a closed request gets the redirect", dict(body=CRASHING, closing=[RELEASED_SHA]), 0, CLOSED_MARKER),
+    ("a reporter closing their own issue with a comment gets no reply", dict(body=CRASHING, author="asker", closing=["-"], closed_at="2026-11-25T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, None),
+    ("a reporter commenting on their own issue a day after closing gets the redirect", dict(body=CRASHING, author="asker", closing=["-"], closed_at="2026-11-24T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, CLOSED_MARKER),
+    ("another user commenting as the issue closes gets the redirect", dict(body=CRASHING, closing=["-"], closed_at="2026-11-25T13:47:13Z", commented_at="2026-11-25T13:47:12Z"), 0, CLOSED_MARKER),
+    ("a reply on an issue the review closed gets no reply", dict(body=CRASHING, closing=["-"], closers=[BOT_LOGIN], bot_comments=[REVIEW_CLOSED], labels=("bug",)), 0, None),
+    ("a reply on a review-closed issue a person closed later gets the redirect", dict(body=CRASHING, closing=["-"], closers=[BOT_LOGIN, "maintainer"], bot_comments=[REVIEW_CLOSED], labels=("bug",)), 0, CLOSED_MARKER),
+    ("a reply on an issue the bot closed without a review comment gets the redirect", dict(body=CRASHING, closing=["-"], closers=[BOT_LOGIN], labels=("bug",)), 0, CLOSED_MARKER),
     ("a failing timeline lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], timeline_fails=True), 1, None),
     ("a failing tag lookup fails the job", dict(body=ETA, closing=[UNRELEASED_SHA], tag_fails=True), 128, None),
 ]

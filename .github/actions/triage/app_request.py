@@ -50,6 +50,18 @@ FEATURE_SYNONYMS = {"analytic": "tracking", "telemetry": "tracking", "tracker": 
                     "advertisement": "ad"}
 MAX_FEATURE_WORDS = 6
 KEPT_OPEN_FOR_LACKING = "This request is kept open for those."
+PLATFORM_FIELD = "Where the app runs"
+CATEGORY_FIELD = "App category"
+WANTS_FIELD = "What you want"
+DECLINED_CATEGORIES = {
+    normalize("Movies and series streaming"): "movie and series apps",
+    normalize("Exam preparation"): "exam preparation apps",
+}
+UNLIKELY_OPTIONS = (
+    (PLATFORM_FIELD, normalize("Android TV"), "tv-app", "Android TV apps"),
+    (PLATFORM_FIELD, normalize("Android Auto"), "android-auto", "Android Auto apps"),
+    (WANTS_FIELD, normalize("Region restriction"), "region", "region unlocks"),
+)
 
 
 def is_package(text):
@@ -222,6 +234,26 @@ def missing_form_parts(body):
     return missing
 
 
+def chosen_options(fields, name):
+    return {normalize(option) for option in field(fields, name).split(",") if normalize(option)}
+
+
+def has_new_form_fields(fields):
+    return any(field(fields, name) for name in (PLATFORM_FIELD, CATEGORY_FIELD, WANTS_FIELD))
+
+
+def declined_category(fields):
+    return next((phrase for key, phrase in DECLINED_CATEGORIES.items() if key in chosen_options(fields, CATEGORY_FIELD)), "")
+
+
+def unlikely_options(fields):
+    return [(label, phrase) for name, key, label, phrase in UNLIKELY_OPTIONS if key in chosen_options(fields, name)]
+
+
+def joined_with_and(items):
+    return f"{', '.join(items[:-1])} and {items[-1]}" if len(items) > 1 else items[0]
+
+
 def open_requests_at_limit(this, requests):
     login = author(this)
     others = [r for r in requests if login and r is not this and r["state"] == "OPEN" and author(r) == login]
@@ -268,6 +300,30 @@ def decide(number, body, requests, patches_list, registry=None, title="", now=No
             f"This request didn't use the app request form, so it's missing {parts}. "
             "This discussion is now closed and locked. Please open a new request with the form:\n\n"
             f"https://github.com/{REPO}/discussions/new?category=app-requests"
+        )
+
+    fields = parse_fields(body)
+    declined = declined_category(fields)
+    if declined and verdict != "close" and this.get("association") not in EXEMPT_ASSOCIATIONS:
+        verdict, reason, duplicate_of, labels = "close", "not planned", 0, []
+        lines = [f"Requests for {declined} aren't being taken for now. This discussion is now closed and locked."]
+
+    unlikely = unlikely_options(fields)
+    if unlikely and verdict != "close":
+        verdict = "flag"
+        labels += [label for label, _ in unlikely if label not in labels]
+        lines.append(
+            f"Requests for {joined_with_and([phrase for _, phrase in unlikely])} are unlikely to be taken on. "
+            "This request is kept open."
+        )
+
+    if not package and has_new_form_fields(fields) and verdict != "close":
+        verdict = "flag"
+        if "needs info" not in labels:
+            labels.append("needs info")
+        lines.append(
+            "No valid Android package name was found in the package name field or the app link. "
+            "It's the text after `id=` in the Play Store link, such as `com.example.app`."
         )
 
     if verdict == "close" and discussed_recently(this, now or datetime.now(timezone.utc)):

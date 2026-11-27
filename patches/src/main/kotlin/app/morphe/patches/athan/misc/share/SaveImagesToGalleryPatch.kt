@@ -54,7 +54,7 @@ val saveImagesToGalleryPatch = patch(
         val extensionChooser = "L${SAVE_IMAGE_ACTIVITY.replace('.', '/')};->createChooser" +
             "(Landroid/content/Intent;Ljava/lang/CharSequence;)Landroid/content/Intent;"
 
-        CreateChooserFingerprint.matchAll().forEach { match ->
+        CreateChooserFingerprint.matchAll(8..8).forEach { match ->
             val method = match.method
             method.instructions.withIndex()
                 .filter { (_, instruction) ->

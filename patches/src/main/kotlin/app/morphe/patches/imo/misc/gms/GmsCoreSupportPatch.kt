@@ -7,6 +7,7 @@ package app.morphe.patches.imo.misc.gms
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.validate
 import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.morphe.patches.imo.misc.signin.spoofSignaturePatch
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -19,6 +20,8 @@ private const val EXTENSION_CLASS = "Lapp/hxreborn/extension/imo/AccountChooser;
 private val accountChooserPatch = patch {
     dependsOn(imoGmsCoreSupportExtensionPatch)
     execute {
+        if (validate) AddAccountCallFingerprint.matchAll(2..2)
+
         AddAccountCallFingerprint.matchAllMethodIndicesForEach { index ->
             val call = getInstruction<RegisterRangeInstruction>(index)
             val lastRegister = call.startRegister + call.registerCount - 1

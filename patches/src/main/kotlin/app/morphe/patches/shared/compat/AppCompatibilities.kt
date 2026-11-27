@@ -452,6 +452,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "9.12.0", versionCode = 260091200, minSdk = 26)),
     )
 
+    val CITRA = Compatibility(
+        name = "Citra",
+        packageName = "com.theemulator.citra",
+        apkFileType = ApkFileType.XAPK,
+        signatures = setOf("3bb551953a857144c326adb0f4be011a671e84ff7b12c2f1968a927cd00d8c35"),
+        targets = listOf(AppTarget(version = "b3105a4-googleplay", versionCode = 33510292, minSdk = 29)),
+    )
+
     val CLINK = Compatibility(
         name = "Clink",
         packageName = "ltd.anti.clink",
@@ -474,7 +482,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "2c7507b2c986a1e3750c0d4876d6b1e8035b873a5d221149c167293b3e5449ca",
         ),
-        targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 33)),
+        targets = listOf(AppTarget(version = "5.1.4", versionCode = 260903140, minSdk = 31)),
     )
 
     val CLONE_APP = Compatibility(
@@ -645,6 +653,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "8.3.0", versionCode = 80300148, minSdk = 29)),
     )
 
+    val EXIFTOOL = Compatibility(
+        name = "ExifTool for photo and video",
+        packageName = "com.exiftool.free",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf("583d9482b1cf2601f1b80f1efd822d37b78b70c885d147acfb795d0be86847ae"),
+        targets = listOf(AppTarget(version = "5.1.1-gms", versionCode = 88, minSdk = 24)),
+    )
+
     val FAST_STL_VIEWER = Compatibility(
         name = "Fast STL Viewer",
         packageName = "com.performance.meshview",
@@ -670,6 +686,17 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "v7.8.7-Build-1-gms-release", versionCode = 7080701, minSdk = 26),
         ),
+    )
+
+    val FILMISH = Compatibility(
+        name = "Film(ish)",
+        packageName = "com.filmish.android",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "8c4796b83da37c13eb88c9ca7f1703afbdba5ed65929c3bacae7ddc4597b843a",
+            "978fffa2caaebc8f8cdf0e1423bbd2558e1a2e7716b45a50b7bb538a533b9fd4",
+        ),
+        targets = listOf(AppTarget(version = "1.1.1", versionCode = 16, minSdk = 26)),
     )
 
     val FLIPACLIP = Compatibility(
@@ -762,6 +789,16 @@ internal object AppCompatibilities {
         ),
     )
 
+    val GSMARENA = Compatibility(
+        name = "GSMArena",
+        packageName = "com.gsmarena.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf(
+            "65eba25fac89e8895cf74a1e6607934dbb485f87c698540a51dd620b26fe0526",
+        ),
+        targets = listOf(AppTarget(version = "1.9.1", versionCode = 191, minSdk = 21)),
+    )
+
     val GLASS_WIDGETS = Compatibility(
         name = "Glass Widgets",
         packageName = "com.jndapp.glass.widgets",
@@ -796,6 +833,22 @@ internal object AppCompatibilities {
             "1dc3da6664982c69c3c7326282beaf0c6f153daa7da36bd7ec4cd4313e664651",
         ),
         targets = listOf(AppTarget(version = "9.4.0", versionCode = 177, minSdk = 28)),
+    )
+
+    val HOURLY_CHIME = Compatibility(
+        name = "Hourly Chime: Talking Clock",
+        packageName = "com.caynax.hourlychime",
+        apkFileType = ApkFileType.APKS,
+        signatures = setOf(
+            "06de85390a864eebed6d18969090901f6d23015ddb595cbd2dd643562eb7f966",
+            "52ef458b45d97fceef2260db561de8e9feef920286bbf4d2416f8ffcc49af857",
+            "5cb811ee80db8155505fec75f7bacfa6a7968dfa6ab6ad2ae802ec3517509756",
+            "66d7d3bc2fdf615680dabd2aea58b0bdf675697fd9f72114bc1546dc9a7e8d8c",
+        ),
+        targets = listOf(
+            AppTarget(version = "16.3.1", versionCode = 160301, minSdk = 29),
+            AppTarget(version = "16.5.2", versionCode = 160502, minSdk = 29),
+        ),
     )
 
     val HYPIC = Compatibility(
@@ -1316,6 +1369,7 @@ internal object AppCompatibilities {
         targets = listOf(
             AppTarget(version = "v2.1.37.0", versionCode = 409, minSdk = 26),
             AppTarget(version = "v2.1.49.0", versionCode = 413, minSdk = 26),
+            AppTarget(version = "v2.1.56.0", versionCode = 414, minSdk = 26),
         ),
     )
 
@@ -1354,6 +1408,14 @@ internal object AppCompatibilities {
             AppTarget(version = "0.5.145", versionCode = 457, minSdk = 29),
             AppTarget(version = "0.5.190", versionCode = 502, minSdk = 32),
         ),
+    )
+
+    val ONE_SEC = Compatibility(
+        name = "one sec",
+        packageName = "wtf.riedel.onesec",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        signatures = setOf("2b775346be30d06dfd99abc150fbd1ceb15a506bd6ffb7040b50116382de1eda"),
+        targets = listOf(AppTarget(version = "3.0.1", versionCode = 20909, minSdk = 29)),
     )
 
     val ONE_WEATHER = Compatibility(
@@ -1401,6 +1463,18 @@ internal object AppCompatibilities {
             "58474964025470a3b95e2a1e319079a787180878af8915f81a2d1e77683ae23a",
         ),
         targets = listOf(AppTarget(version = "126.46.0.14", versionCode = 246014, minSdk = 26)),
+    )
+
+    val PCAPDROID = Compatibility(
+        name = "PCAPdroid",
+        packageName = "com.emanuelef.remote_capture",
+        apkFileType = ApkFileType.APKM,
+        appIconColor = 0x4527A0,
+        signatures = setOf(
+            "ac701125e653189b2bbaa78fba60c1136b88b8780078db0dc4257f019c81c9fe",
+            "ca59622be5fed99a072a4b03e9a1aa05ac26354d3ffb1a2c7208cdd755463456",
+        ),
+        targets = listOf(AppTarget(version = "2.0.5", versionCode = 98, minSdk = 23)),
     )
 
     val PERPLEXITY = Compatibility(
@@ -1997,7 +2071,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "12704504f5711f22d78ee436f38baeb90557c2fa72c4dfb281c766f59800461d",
         ),
-        targets = listOf(AppTarget(version = "4.3.0", versionCode = 430, minSdk = 24)),
+        targets = listOf(AppTarget(version = "4.3.5", versionCode = 435, minSdk = 24)),
     )
 
     val ULTIMEA = Compatibility(
@@ -2083,10 +2157,17 @@ internal object AppCompatibilities {
         apkFileType = ApkFileType.APKS_REQUIRED,
         appIconColor = 0xF02050,
         targets = listOf(
-            AppTarget(version = "13.9.0", versionCode = 130900, minSdk = 27),
-            AppTarget(version = "13.9.6", versionCode = 130906, minSdk = 26),
-            AppTarget(version = "13.9.18", versionCode = 130918, minSdk = 29),
+            AppTarget(version = "14.0.2", versionCode = 140002, minSdk = 29),
         ),
+    )
+
+    val VOCAT = Compatibility(
+        name = "VoCat - My Own Vocabulary",
+        packageName = "kr.co.devstory.vocat",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x2D363F,
+        signatures = setOf("a0e89e1d2a45c1897186beccee98a7e6a9a1aaae335e20d97b80ad3f208b2820"),
+        targets = listOf(AppTarget(version = "5.2.1", versionCode = 336, minSdk = 24)),
     )
 
     val VPNIFY = Compatibility(
@@ -2206,6 +2287,14 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "5.9.1", versionCode = 882, minSdk = 24)),
     )
 
+    val ZARCHIVER = Compatibility(
+        name = "ZArchiver",
+        packageName = "ru.zdevs.zarchiver",
+        apkFileType = ApkFileType.APK,
+        signatures = setOf("7727f2807764c3499b9a2c3ff804505dd7468b117feb005804efc78659544db2"),
+        targets = listOf(AppTarget(version = "1.0.10", versionCode = 101035, minSdk = 14)),
+    )
+
     val USA_VPN = Compatibility(
         name = "USA VPN",
         packageName = "vpn.usa_tap2free",
@@ -2262,5 +2351,14 @@ internal object AppCompatibilities {
             AppTarget(version = "5.38.1", versionCode = 1254609, minSdk = 26),
             AppTarget(version = "5.39.2", versionCode = 1254760, minSdk = 26),
         ),
+    )
+
+    val MAGIC_POSER = Compatibility(
+        name = "Magic Poser",
+        packageName = "com.magicposernew",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x9AE2FF,
+        signatures = setOf("1e101132b6b3882107bfe0c58477162afb87ea0c60553a4daabb29720c2377b0"),
+        targets = listOf(AppTarget(version = "3.1", versionCode = 623, minSdk = 28)),
     )
 }

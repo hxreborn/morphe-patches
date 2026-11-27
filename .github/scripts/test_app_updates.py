@@ -1,4 +1,5 @@
 import json
+import sys
 import tempfile
 import zipfile
 from pathlib import Path
@@ -53,11 +54,11 @@ issues = [{"number": 1, "state": "OPEN", "title": "[App Update]: Cx File Explore
           {"number": 12, "state": "OPEN", "title": "[App Update]: Audible 26.38.08",
            "body": "### Patching this version\n\nTried but patching failed\n"}]
 app_updates.gh = lambda *args, **kw: calls.append(args) or (json.dumps(issues) if args[:2] == ("issue", "list") else "")
-apps = {p: {"package": p, "name": n, "current": c, "current_version_codes": []} for p, n, c in [
+apps = {(p, "MOBILE"): {"package": p, "name": n, "current": c, "current_version_codes": []} for p, n, c in [
     ("cx", "Cx File Explorer", "2.7.8"), ("showly", "Showly", "3.70.0"), ("audible", "Audible", "26.38.08"),
     ("new", "Newcomer", "1.0"), ("moviebox", "MovieBox", "4.0.03.0918.03"), ("tv", "MovieBox TV", "1.2.0.0923"),
     ("held", "Held", "1.0"), ("tagged", "Tagged", "6.0_arm64")]}
-record = {"status": "update", "reported_by": ["play"], "confirmed_by": ["play"], "readiness": "ready"}
+record = {"form_factor": "MOBILE", "status": "update", "reported_by": ["play"], "confirmed_by": ["play"], "readiness": "ready"}
 app_updates.sync_issues(apps, [{**record, "package": "cx", "candidate": "2.7.9"},
                                {**record, "package": "showly", "candidate": "3.72.0"},
                                {**record, "package": "audible", "candidate": None, "status": "current"},
@@ -78,6 +79,24 @@ calls.clear()
 app_updates.sync_issues(apps, [{**record, "package": "new", "candidate": "1.2", "readiness": "untested"},
                                {**record, "package": "tagged", "candidate": "6.3_arm64", "readiness": "untested"}], "1.38.0")
 assert [c[1:3] for c in calls if c[0] == "issue" and c[1] != "list"] == [], calls
+sys.path.insert(0, str(Path(".github/actions/triage").resolve()))
+from app_update import form_options
+from test_real_reports import DUOLINGO_UPDATE_1048
+
+RESULT_CHOICES = {"Not tried": True, "Patching fails": False, "Patching works, the app misbehaves": False,
+                  "Patching works and so does the app": True}
+assert set(form_options("Patching this version", Path(".github/ISSUE_TEMPLATE/app_update.yml"))) == set(RESULT_CHOICES)
+calls.clear()
+choice_issues = [{"number": 100 + n, "state": "OPEN", "title": "[App Update]: Duolingo 6.106.6",
+                  "body": DUOLINGO_UPDATE_1048.replace("Patching fails", choice)}
+                 for n, choice in enumerate(RESULT_CHOICES)]
+app_updates.gh = lambda *args, **kw: calls.append(args) or (json.dumps(choice_issues) if args[:2] == ("issue", "list") else "")
+app_updates.sync_issues({("com.duolingo", "MOBILE"): {"package": "com.duolingo", "name": "Duolingo", "current": "6.106.6",
+                                                      "current_version_codes": []}},
+                        [{**record, "package": "com.duolingo", "candidate": None, "status": "current"}], "1.89.0")
+closed_numbers = {c[2] for c in calls if c[:2] == ("issue", "close")}
+assert closed_numbers == {str(100 + n) for n, closes in enumerate(RESULT_CHOICES.values()) if closes}, closed_numbers
+print("Scheduled sync keeps a supported-version failure open for every failure choice")
 BEREAL_LOG = """INFO: Filtering patches for com.bereal.ft v3.99.1...
 INFO: Skipping disabled: Override certificate pinning (default)
 INFO: Skipping disabled: Remove Friends of Friends tab (default)
@@ -162,8 +181,8 @@ crash_body = app_updates.issue_body(bereal_app, {"candidate": "3.99.1", "verific
 assert "### Failure\n\n<details open>" in crash_body and "| Patch | Error |" not in crash_body and "fails to apply" not in crash_body, crash_body
 sent = []
 app_updates.gh = lambda *args, **kw: sent.append(kw.get("input")) or ("[]" if args[:2] == ("issue", "list") else "")
-app_updates.sync_issues({"com.bereal.ft": {k: v for k, v in bereal_app.items() if k != "sources"}},
-                        [{**bereal_app, **bereal_record, "status": "update", "reported_by": ["play", "apkpure"], "readiness": "needs work: 1 failed"}], "1.38.0")
+app_updates.sync_issues({("com.bereal.ft", "MOBILE"): {k: v for k, v in bereal_app.items() if k != "sources"}},
+                        [{**bereal_app, **bereal_record, "form_factor": "MOBILE", "status": "update", "reported_by": ["play", "apkpure"], "readiness": "needs work: 1 failed"}], "1.38.0")
 assert [text for text in sent if text] == [body], sent
 print("issue body passes")
 print("issue sync passes")

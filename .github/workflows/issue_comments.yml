@@ -81,6 +81,11 @@ jobs:
           unreleased=
           fixed=
           if [ "$STATE" = closed ]; then
+            closer=$(gh api "repos/$REPO/issues/$ISSUE/timeline" --paginate \
+              --jq '.[] | select(.event == "closed") | .actor.login' | tail -n 1)
+            reviewed=$(gh api "repos/$REPO/issues/$ISSUE/comments" --paginate \
+              --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- issue-triage:closed"))) | .id')
+            if [ "$closer" = "github-actions[bot]" ] && [ -n "$reviewed" ]; then exit 0; fi
             closing=$(gh api "repos/$REPO/issues/$ISSUE/timeline" --paginate \
               --jq '.[] | select(.event == "closed") | (.commit_id // "-")')
             commit=$(printf '%s\n' "$closing" | tail -n 1)

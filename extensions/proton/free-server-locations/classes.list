@@ -1,2 +1,4 @@
 app/hxreborn/extension/protonvpn/FreeAccount
+app/hxreborn/extension/protonvpn/FreeAccountUserInfo
+app/hxreborn/extension/protonvpn/FreeAccountVpnUser
 app/hxreborn/extension/protonvpn/FreeServerLocations

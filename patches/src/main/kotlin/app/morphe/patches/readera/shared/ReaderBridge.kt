@@ -6,11 +6,10 @@ package app.morphe.patches.readera.shared
 
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.util.addPatchInterface
 import app.morphe.patcher.util.getReference
 import app.morphe.patches.readera.misc.highlightcolors.READ_ACTIVITY_CLASS
-import app.morphe.patches.shared.misc.smali.addMethod
 import app.morphe.patches.shared.misc.smali.descriptor
-import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import app.morphe.patches.shared.misc.extension.readeraChapterReaderExtensionPatch
@@ -33,8 +32,7 @@ internal val chapterReaderPatch = patch {
         }
 
         mutableClassDefBy(READ_ACTIVITY_CLASS).apply {
-            interfaces.add(CHAPTER_READER)
-            addMethod("currentReadingPosition", emptyList(), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 3, """
+            addPatchInterface(CHAPTER_READER, "currentReadingPosition", """
                 iget-object v0, p0, ${descriptor(document)}
                 if-eqz v0, :missing
                 iget-object v0, v0, ${descriptor(visiblePosition)}
@@ -46,13 +44,13 @@ internal val chapterReaderPatch = patch {
                 const/4 v0, 0x0
                 return-object v0
             """)
-            addMethod("copyReadingPosition", listOf("Ljava/lang/Object;"), "Ljava/lang/Object;", AccessFlags.PUBLIC.value, 3, """
+            addPatchInterface(CHAPTER_READER, "copyReadingPosition", """
                 check-cast p1, $positionType
                 new-instance v0, $positionType
                 invoke-direct {v0, p1}, ${descriptor(copy)}
                 return-object v0
             """)
-            addMethod("readAloudFrom", listOf("Ljava/lang/Object;"), "V", AccessFlags.PUBLIC.value, 3, """
+            addPatchInterface(CHAPTER_READER, "readAloudFrom", """
                 check-cast p1, $positionType
                 const/4 v0, 0x1
                 invoke-virtual {p0, p1, v0}, ${descriptor(readAloud)}

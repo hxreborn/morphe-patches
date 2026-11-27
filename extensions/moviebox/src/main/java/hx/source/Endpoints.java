@@ -28,6 +28,8 @@ public final class Endpoints {
 
     public static final String RESOURCE_LIST_V2_SEGMENT = "/subject-api/resource/v2";
 
+    public static final String RESOURCE_POSITION = "wefeed-mobile-bff/subject-api/resource-position";
+
     public static final String USER_PROFILE = "wefeed-mobile-bff/user-api/profile";
 
     public static final String MEMBER_DETAIL = "wefeed-mobile-bff/vip/member/detail";
@@ -40,15 +42,25 @@ public final class Endpoints {
 
     static final String PLAY_INFO = "wefeed-mobile-bff/subject-api/play-info/v2";
 
-    static final String RESOURCE_POSITION = "wefeed-mobile-bff/subject-api/resource-position";
-
     static final String RESOURCE_POSITION_V2 = "wefeed-mobile-bff/subject-api/resource-position/v2";
 
     static final String RESOURCE_LIST = "wefeed-mobile-bff/subject-api/resource";
 
+    static final String RESOURCE_LIST_V2 = "wefeed-mobile-bff/subject-api/resource/v2";
+
     static final String UPGRADE_NOTICE_PATH = "aoneroom.com/other/";
 
+    private static final String ESCAPED_UPGRADE_NOTICE_PATH = "aoneroom.com\\/other\\/";
+
     private Endpoints() {
+    }
+
+    public static boolean listsResourceLinks(String path) {
+        return path.endsWith(RESOURCE_LIST) || path.endsWith(RESOURCE_LIST_V2) || path.contains(RESOURCE_POSITION);
+    }
+
+    public static boolean carriesUpgradeNotice(String body) {
+        return body.contains(UPGRADE_NOTICE_PATH) || body.contains(ESCAPED_UPGRADE_NOTICE_PATH);
     }
 
 }

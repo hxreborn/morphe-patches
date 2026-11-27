@@ -45,3 +45,8 @@ internal val viberUnfiledChatsExtensionPatch = patch {
     dependsOn(viberSettingsExtensionPatch)
     extendWith("extensions/hxreborn/viber-unfiled-chats.mpe")
 }
+
+internal val viberIgnoreAccentsInContactSearchExtensionPatch = patch {
+    dependsOn(viberSettingsExtensionPatch)
+    extendWith("extensions/hxreborn/viber-ignore-accents-in-contact-search.mpe")
+}

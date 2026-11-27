@@ -1,4 +1,5 @@
 app/hxreborn/extension/audiomack/AudioFormat
+app/hxreborn/extension/audiomack/CoverArt
 app/hxreborn/extension/audiomack/ExportActions
 app/hxreborn/extension/audiomack/ExportRow
 app/hxreborn/extension/audiomack/Id3Tags

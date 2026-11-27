@@ -15,8 +15,10 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.util.getReference
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.util.indexOfFirstInstruction
 import app.morphe.util.indexOfFirstLiteralInstructionOrThrow
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -33,10 +35,17 @@ internal object BalticSeaPaletteFingerprint : Fingerprint(
     filters = listOf(literal(ProtonPalette.BALTIC_SEA)),
 )
 
-internal object CoreColorsBuilderFingerprint : Fingerprint(
-    parameters = listOf("J", "J", "J", "J", "J"),
-    filters = listOf(methodCall(name = "<init>", opcode = Opcode.INVOKE_DIRECT_RANGE)),
-)
+private fun coreDarkColorsBuilderFingerprint(balticSea: FieldReference): Fingerprint {
+    val constructorCall = methodCall(name = "<init>", opcode = Opcode.INVOKE_DIRECT_RANGE)
+    return Fingerprint(
+        parameters = listOf("J", "J", "J", "J", "J"),
+        filters = listOf(constructorCall),
+        custom = { method, _ ->
+            val constructorIndex = method.indexOfFirstInstruction(constructorCall)
+            constructorIndex >= 0 && method.shadeReads(constructorIndex, SHADE_10_ARGUMENT, balticSea)
+        },
+    )
+}
 
 private fun RegisterRangeInstruction.shadeRegister(argument: Int) =
     startRegister + FIRST_SHADE_REGISTER_OFFSET + argument * LONG_REGISTER_COUNT
@@ -52,21 +61,19 @@ private fun returnsStaticField(getter: MethodReference, field: FieldReference) =
             ?.singleOrNull { it.name == getter.name && it.parameterTypes.isEmpty() }
             ?.implementation?.instructions?.any { it.readsStaticField(field) } == true
 
-private fun readsPaletteField(method: MutableMethod, index: Int, field: FieldReference): Boolean {
-    val write = method.getInstruction(index)
+private fun Method.readsPaletteField(index: Int, field: FieldReference): Boolean {
+    val write = getInstruction(index)
     if (write.readsStaticField(field)) return true
     if (write.opcode != Opcode.MOVE_RESULT_WIDE || index == 0) return false
 
-    val getter = method.getInstruction(index - 1).getReference<MethodReference>() ?: return false
+    val getter = getInstruction(index - 1).getReference<MethodReference>() ?: return false
     return returnsStaticField(getter, field)
 }
 
-private fun shadeReads(match: Match, argument: Int, field: FieldReference): Boolean {
-    val constructorCall = match.instructionMatches.first()
-    val arguments = constructorCall.getInstruction<RegisterRangeInstruction>()
-    val shadeWrite = match.method.indexOfLastWriteOrNull(arguments.shadeRegister(argument), constructorCall.index)
-        ?: return false
-    return readsPaletteField(match.method, shadeWrite, field)
+private fun Method.shadeReads(constructorIndex: Int, argument: Int, field: FieldReference): Boolean {
+    val arguments = getInstruction<RegisterRangeInstruction>(constructorIndex)
+    val shadeWrite = indexOfLastWriteOrNull(arguments.shadeRegister(argument), constructorIndex) ?: return false
+    return readsPaletteField(shadeWrite, field)
 }
 
 internal fun MutableMethod.paletteFieldAssignedFrom(literal: Long): FieldReference {
@@ -96,14 +103,14 @@ internal fun transformCoreDarkBackgrounds() {
         "$AMOLED_THEME_CLASS->transformBackground(J)J",
     )
 
-    val darkBuilders = CoreColorsBuilderFingerprint.matchAll().filter { shadeReads(it, SHADE_10_ARGUMENT, balticSea) }
-    val darkBuilder = darkBuilders.singleOrNull()
-        ?: throw PatchException("Expected one Core dark colors builder reading $balticSea, found ${darkBuilders.map { it.method }}")
-    if (!shadeReads(darkBuilder, SHADE_15_ARGUMENT, bastille)) {
-        throw PatchException("Core dark colors builder ${darkBuilder.method} does not read $bastille as shade15")
+    val darkBuilder = coreDarkColorsBuilderFingerprint(balticSea).matchAll(1..1).single()
+    val constructorCall = darkBuilder.instructionMatches.single()
+    if (!darkBuilder.originalMethod.shadeReads(constructorCall.index, SHADE_15_ARGUMENT, bastille)) {
+        throw PatchException("Core dark colors builder ${darkBuilder.originalMethod} does not read $bastille as shade15")
     }
 
-    val constructorCall = darkBuilder.instructionMatches.first()
-    darkBuilder.method.transformShade(constructorCall, SHADE_15_ARGUMENT, "transformPackedRaisedSurface")
-    darkBuilder.method.transformShade(constructorCall, SHADE_0_ARGUMENT, "transformPackedBackground")
+    darkBuilder.method.apply {
+        transformShade(constructorCall, SHADE_15_ARGUMENT, "transformPackedRaisedSurface")
+        transformShade(constructorCall, SHADE_0_ARGUMENT, "transformPackedBackground")
+    }
 }

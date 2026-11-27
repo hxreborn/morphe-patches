@@ -20,7 +20,7 @@ from urllib.parse import unquote
 
 import requests
 from update_report import issue_body
-from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare, tracked_version, version_key
+from versions import APP_UPDATE_TITLE_PREFIX, build_tags, compare, form_factor, tracked_version, variant_labels, version_key
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "actions" / "triage"))
 from replies import BROKEN_FORMS, bundle
@@ -49,11 +49,20 @@ UNCHECKED_PACKAGES = {
 
 def load_inventory(path):
     apps = {}
-    for patch in json.loads(Path(path).read_text())["patches"]:
+    data = json.loads(Path(path).read_text())
+    labels = variant_labels(data)
+    factors = {}
+    for package, factor in labels:
+        factors.setdefault(package, set()).add(factor)
+    for patch in data["patches"]:
         for compat in patch.get("compatiblePackages") or []:
-            app = apps.setdefault(compat["packageName"], {
-                "package": compat["packageName"],
-                "name": compat.get("name") or compat["packageName"],
+            package = compat["packageName"]
+            factor = form_factor(compat)
+            app = apps.setdefault((package, factor), {
+                "package": package,
+                "name": labels[(package, factor)],
+                "form_factor": factor,
+                "shared_package": len(factors[package]) > 1,
                 "apk_file_type": compat.get("apkFileType"),
                 "signatures": compat.get("signatures") or [],
                 "targets": [],
@@ -73,6 +82,10 @@ def load_inventory(path):
         current = next((t for t in app["targets"] if t["version"] == app["current"]), None)
         app["current_version_codes"] = current["version_codes"] if current else []
     return dict(sorted(apps.items(), key=lambda kv: kv[1]["name"].lower()))
+
+
+def should_check_sources(app):
+    return app["package"] not in UNCHECKED_PACKAGES and not app["shared_package"]
 
 
 def checkout_tracker(path):
@@ -644,7 +657,7 @@ def sync_issues(apps, results, bundle_version):
     by_title = {issue["title"]: issue for issue in issues}
     names = [app["name"] for app in apps.values()]
     for record in results:
-        app = apps[record["package"]]
+        app = apps[record["package"], record["form_factor"]]
         prefix = f"{APP_UPDATE_TITLE_PREFIX}{app['name']} "
         candidate = record["candidate"] if record["status"] == "update" and record.get("readiness") != "untested" else None
         open_same = None
@@ -694,19 +707,20 @@ def main():
     apps = load_inventory(args.patches_list)
     if args.only:
         wanted = set(args.only.split(","))
-        apps = {k: v for k, v in apps.items() if k in wanted}
+        apps = {k: v for k, v in apps.items() if v["package"] in wanted}
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     tracker = checkout_tracker(args.tracker_dir)
     ctx = {"tracker": tracker, "cli": args.cli, "mpp": args.mpp,
            "apkeep": shutil.which("apkeep"), "lock": threading.Lock(), "play": {},
            "workdir": Path(tempfile.mkdtemp(prefix="app-updates-", dir=args.workdir))}
-    checked = [package for package in apps if package not in UNCHECKED_PACKAGES]
+    checked = sorted({app["package"] for app in apps.values() if should_check_sources(app)})
     ctx["urls"] = discover_urls(checked, Path(args.url_cache), load_discovery(tracker))
 
     def check(app):
-        if app["package"] in UNCHECKED_PACKAGES:
-            record = {"status": "unchecked", "candidate": None, "sources": {}, "notes": [], "readiness": None}
+        if not should_check_sources(app):
+            notes = ["source lookups do not identify the form factor"] if app["shared_package"] else []
+            record = {"status": "unchecked", "candidate": None, "sources": {}, "notes": notes, "readiness": None}
         else:
             record = classify(app, query_sources(app, ctx), ctx)
             record["readiness"] = readiness(app, record)
@@ -714,7 +728,7 @@ def main():
             if play.get("path"):
                 shutil.rmtree(Path(play.pop("path")).parent, ignore_errors=True)
         print(f"{app['name']}: {record['status']} {record.get('candidate') or ''}", file=sys.stderr, flush=True)
-        return {**{k: app[k] for k in ("name", "package", "apk_file_type", "signatures", "targets",
+        return {**{k: app[k] for k in ("name", "package", "form_factor", "apk_file_type", "signatures", "targets",
                                        "current", "current_version_codes", "patches")}, **record}
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:

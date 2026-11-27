@@ -2,6 +2,10 @@
 the token only to sign in. You need a new one only if you sign out or clear Yuka's data. A root mount install
 signs in without a token.
 
+If you don't have a rooted phone, a rooted friend, or any friend at all, you can try my experimental Telegram bot [@hxreborn_yukatoken_bot](https://t.me/hxreborn_yukatoken_bot): send it `/token` and paste what it sends into the **App Check token** option. Use it at your own risk.
+
+To make your own on a rooted phone:
+
 1. On the rooted phone, open Yuka, go to the sign-in screen, enter any email address and tap **Continue**. You
    don't need to enter a password.
 2. In [Termux](https://f-droid.org/packages/com.termux), run this command and allow root. It prints one long

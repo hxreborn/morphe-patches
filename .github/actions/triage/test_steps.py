@@ -8,6 +8,9 @@ import sys
 import tempfile
 from pathlib import Path
 
+import related_issues
+from related_issues import TITLE_PREFIX
+
 HERE = Path(__file__).resolve().parent
 BOT = "github-actions[bot]"
 PERSON = "hxreborn"
@@ -121,10 +124,12 @@ elif args[0] == "api":
         emit({**i, "number": int(number), "state": i["state"].lower(),
               "labels": [{"name": label} for label in i["labels"]]})
 elif args[:2] == ["search", "issues"]:
-    if opt("--match") != "title" or opt("--json") != "number,title,state" or args[-2] != "--":
+    fields = (opt("--json") or "").split(",")
+    if opt("--match") != "title" or fields not in (["number", "title", "state"], ["number", "title"]) \
+            or (args[-2] != "--" and not opt("--jq")):
         sys.exit(1)
-    query = args[-1].lower().split()
-    emit([{"number": int(n), "title": i["title"], "state": i["state"].lower()}
+    query = args[-1 if args[-2] == "--" else 2].lower().split()
+    emit([{key: {"number": int(n), "title": i["title"], "state": i["state"].lower()}[key] for key in fields}
           for n, i in issues.items() if opt("--label") in i["labels"]
           and all(word in i["title"].lower() for word in query)])
 elif args[:2] == ["issue", "view"]:
@@ -589,19 +594,77 @@ restore_report = issue(restore_title, runtime_body, labels=("bug",))
 earlier_backup = issue("[Not working]: Supported backup fails without GmsCore support", runtime_body, labels=("bug",))
 status, issues, mutations = run({"19": earlier_backup, "20": restore_report}, BUG,
                                 issue_number=20, event_issue=restore_payload, action="opened")
-check(status == 0 and mutations == ["issue comment 20"] and issues["20"]["state"] == "OPEN"
+check(status == 0 and mutations == ["issue comment 20", "issue edit 20"] and issues["20"]["state"] == "OPEN"
       and issues["20"]["comments"][0]["body"].startswith("<!-- related-issues-bot -->")
+      and "[#19](https://redirect.github.com/hxreborn/morphe-patches/issues/19)" in issues["20"]["comments"][0]["body"]
+      and issues["20"]["labels"] == ["bug", "possible duplicate"],
+      "a complete new report links an earlier report that names the same problem in other words and gets possible duplicate")
+
+conventional_title = "bug(Supported): Restore from Google drive not working"
+conventional_report = issue(conventional_title, runtime_body, labels=("bug",))
+conventional_earlier = issue("bug(Supported): Backup fails without GmsCore support", runtime_body, labels=("bug",))
+status, issues, mutations = run({"19": conventional_earlier, "20": conventional_report}, BUG,
+                                issue_number=20, event_issue={**runtime_payload, "title": conventional_title}, action="opened")
+check(status == 0 and mutations == ["issue comment 20", "issue edit 20"]
       and "[#19](https://redirect.github.com/hxreborn/morphe-patches/issues/19)" in issues["20"]["comments"][0]["body"],
-      "a complete new report links an earlier report that names the same problem in other words")
+      "a renamed report with a conventional title links an earlier report with one")
+
+for title, rest in (("[Bug]: Restore fails", "Restore fails"), ("[Not working]: Supported: restore", "Supported: restore"),
+                    ("bug: Restore fails", "Restore fails"), ("feat(Supported): Dark theme", "Dark theme"),
+                    ("question: How to restore", "How to restore"), ("Restore fails", "Restore fails"),
+                    ("bugfix: Restore fails", "bugfix: Restore fails")):
+    check(TITLE_PREFIX.sub("", title) == rest, f"the related report search drops the prefix of {title!r}")
+
+searched = []
+
+
+def record_search(command, **options):
+    searched.append(command[-1])
+    return subprocess.CompletedProcess(command, 0, stdout="[]")
+
+
+real_run = related_issues.subprocess.run
+related_issues.subprocess.run = record_search
+related_issues.suggestions({"number": 20, "title": "feat(Supported): Restore from Google drive", "body": ""},
+                           "Supported", "bug", "hxreborn/morphe-patches")
+related_issues.subprocess.run = real_run
+check(searched and not any(word in query.split() for query in searched for word in ("feat", "bug", "question")),
+      "the related report search never queries the title prefix")
 
 earlier_crash = issue("[Not working]: Supported crashes on launch", runtime_body, labels=("bug",))
 status, issues, mutations = run({"19": earlier_crash, "20": restore_report}, BUG,
                                 issue_number=20, event_issue=restore_payload, action="opened")
-check(status == 0 and mutations == [], "a complete new report gets no comment when no earlier report matches")
+check(status == 0 and mutations == [] and issues["20"]["labels"] == ["bug"],
+      "a complete new report gets no comment and no possible duplicate label when no earlier report matches")
 
 status, issues, mutations = run({"19": earlier_backup, "20": restore_report}, BUG,
                                 issue_number=20, event_issue=restore_payload)
 check(status == 0 and mutations == [], "an edited complete report gets no related reports comment")
+
+flagged_title = "[Not working]: Supported broken"
+flagged_report = issue(flagged_title, short_body, labels=("bug",))
+flagged_payload = {"number": 20, "state": "open", "title": flagged_title, "body": short_body, "labels": ["bug"]}
+status, issues, mutations = run({"19": issue("[Not working]: Supported crashes on launch", runtime_body, labels=("bug",)),
+                                 "20": flagged_report}, BUG, issue_number=20, event_issue=flagged_payload, action="opened")
+check(status == 0 and issues["20"]["labels"] == ["bug", "needs info", "possible duplicate"]
+      and "These issues may be about the same problem:" in issues["20"]["comments"][0]["body"],
+      "a flagged new report that gets the related reports list is labeled possible duplicate")
+
+status, issues, mutations = run({"20": flagged_report}, BUG, issue_number=20, event_issue=flagged_payload, action="opened")
+check(status == 0 and issues["20"]["labels"] == ["bug", "needs info"],
+      "a flagged new report with no related reports is not labeled possible duplicate")
+
+stale_label = {**restore_payload, "labels": ["bug", "possible duplicate"]}
+related_comment = "<!-- related-issues-bot -->\nThese issues may be about the same problem:\n\n- [#19](https://x)"
+for actor, earlier, expected in ((BOT, {}, ["bug"]), (PERSON, {}, ["bug", "possible duplicate"]),
+                                 (BOT, {"19": earlier_backup}, ["bug", "possible duplicate"])):
+    status, issues, mutations = run(
+        {**earlier, "20": issue(restore_title, runtime_body, labels=("bug", "possible duplicate"), comments=(related_comment,),
+                                timeline=[labeled("possible duplicate", actor)])},
+        BUG, issue_number=20, event_issue=stale_label)
+    check(status == 0 and issues["20"]["labels"] == expected,
+          f"possible duplicate is removed only when the bot added it and no related report is left, "
+          f"label actor={actor}, earlier reports={len(earlier)}")
 
 answered_report = {**restore_report, "comments": [{"user": {"login": PERSON}, "body": "was GmsCore support enabled?"}]}
 status, issues, mutations = run({"19": earlier_backup, "20": answered_report}, BUG,

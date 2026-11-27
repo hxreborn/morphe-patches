@@ -11,7 +11,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
-import app.morphe.patches.shared.misc.smali.parameterRegisterCount
+import app.morphe.patcher.util.numberOfParameterRegisters
 import app.morphe.patches.shared.misc.smali.replaceMethod
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
@@ -70,7 +70,7 @@ internal fun addAppliedPatchMetadata(
         } == true
     }
     if (!keyIsRead) throw PatchException("$extensionClass never reads applied patch key $key")
-    val parameterRegisters = lookup.parameterRegisterCount()
+    val parameterRegisters = lookup.numberOfParameterRegisters
     val method = if (lookup.implementation!!.registerCount == parameterRegisters) {
         appliedPatches.replaceMethod(lookupMethod, parameterRegisters + 1, "const/4 v0, 0x0\nreturn-object v0")
         appliedPatches.methods.single { it.name == lookupMethod }
