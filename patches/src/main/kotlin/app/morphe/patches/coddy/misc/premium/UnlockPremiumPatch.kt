@@ -173,8 +173,7 @@ private fun ByteArray.unlockPremiumArm64() {
 @Suppress("unused")
 val unlockPremiumPatch = patch(
     name = "Unlock premium",
-    description = "Unlocks Coddy Plus with unlimited energy and no ads, and removes the daily AI tutor " +
-        "limit and the free project limit.",
+    description = "Unlocks Coddy Plus with unlimited energy and no ads, and removes the free project limit.",
 ) {
     compatibleWith(AppCompatibilities.CODDY)
     availability(requireArm)
