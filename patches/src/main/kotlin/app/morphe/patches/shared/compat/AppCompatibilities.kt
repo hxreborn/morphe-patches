@@ -2124,6 +2124,16 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.631.200.I", versionCode = 200, minSdk = 26)),
     )
 
+    val VIDEO_MP3_CONVERTER = Compatibility(
+        name = "Video MP3 Converter",
+        packageName = "com.fundevs.app.mediaconverter",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "f487cb84eefaf8dbd507bf5d31827969901608319c8790d670144f8bab6b9802",
+        ),
+        targets = listOf(AppTarget(version = "2.8.1", versionCode = 321, minSdk = 21)),
+    )
+
     val U_DICTIONARY = Compatibility(
         name = "U Dictionary",
         packageName = "com.youdao.hindict",
