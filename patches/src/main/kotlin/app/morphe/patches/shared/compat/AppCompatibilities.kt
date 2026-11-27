@@ -510,7 +510,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728",
         ),
-        targets = listOf(AppTarget(version = "2.3.0", versionCode = 153, minSdk = 30)),
+        targets = listOf(AppTarget(version = "2.3.8", versionCode = 161, minSdk = 30)),
     )
 
     val CONNECTED2 = Compatibility(
