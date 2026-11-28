@@ -163,6 +163,12 @@ public final class DashInterceptor extends ChainInterceptor {
                 return direct;
             }
         }
+        if (this.premiumUnlocked) {
+            String fullLength = this.source.directFilePlayInfoLongerThanPreview(playInfo, subjectId, season, episode);
+            if (fullLength != null) {
+                return fullLength;
+            }
+        }
         Object sent = Reflect.call(response, "request");
         String apiHost = Uri.parse(String.valueOf(Reflect.call(sent, "url"))).getHost();
         this.source.observePlayInfo(url, playInfo, apiHost);

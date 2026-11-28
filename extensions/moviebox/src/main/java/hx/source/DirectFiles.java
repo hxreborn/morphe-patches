@@ -47,6 +47,10 @@ final class DirectFiles {
 
     private static final long SIZE_LOOKUP_TIMEOUT_MS = 5000L;
 
+    private static final String PREVIEW_PATH_PREFIX = "/preview/";
+
+    private static final int ANY_DURATION = 0;
+
     private final ApiClient api;
 
     private final Map<String, String> urls = new LruMap<>(RETENTION);
@@ -94,8 +98,22 @@ final class DirectFiles {
         return url;
     }
 
-    @SuppressWarnings("ComparatorCombinators")
     String playInfoFor(String playInfo, String subjectId, int season, int episode) {
+        return playInfoFor(playInfo, subjectId, season, episode, ANY_DURATION);
+    }
+
+    String playInfoLongerThanPreview(String playInfo, String subjectId, int season, int episode) {
+        int previewSeconds = previewSeconds(playInfo);
+        if (previewSeconds <= 0) {
+            return null;
+        }
+        Log.i(Logs.TAG, "play-info " + subjectId + "/" + season + "/" + episode + ": " + previewSeconds
+                + " s preview, looking for a longer direct file");
+        return playInfoFor(playInfo, subjectId, season, episode, previewSeconds);
+    }
+
+    @SuppressWarnings("ComparatorCombinators")
+    private String playInfoFor(String playInfo, String subjectId, int season, int episode, int longerThanSeconds) {
         if (subjectId == null || season < 0 || episode < 0) {
             return null;
         }
@@ -103,7 +121,8 @@ final class DirectFiles {
         try {
             JSONObject root = new JSONObject(playInfo);
             JSONObject data = root.getJSONObject("data");
-            List<JSONObject> streams = directStreams(subjectId, fetchEpisodeRows(subjectId, season, episode), key);
+            List<JSONObject> rows = rowsLongerThan(fetchEpisodeRows(subjectId, season, episode), longerThanSeconds);
+            List<JSONObject> streams = directStreams(subjectId, rows, key);
             if (streams.isEmpty()) {
                 Log.w(Logs.TAG, "play-info " + key + ": no direct file");
                 return null;
@@ -139,6 +158,36 @@ final class DirectFiles {
             Log.w(Logs.TAG, "resource list sizes not read: " + ex.getMessage());
             return resourceList;
         }
+    }
+
+    private static int previewSeconds(String playInfo) {
+        try {
+            JSONArray streams = new JSONObject(playInfo).getJSONObject("data").getJSONArray("streams");
+            for (int i = 0; i < streams.length(); i++) {
+                JSONObject stream = streams.optJSONObject(i);
+                if (stream != null && isPreview(stream.optString("url"))) {
+                    return stream.optInt("duration");
+                }
+            }
+            return 0;
+        } catch (JSONException ex) {
+            return 0;
+        }
+    }
+
+    private static boolean isPreview(String url) {
+        String path = Uri.parse(url).getPath();
+        return path != null && path.startsWith(PREVIEW_PATH_PREFIX);
+    }
+
+    private static List<JSONObject> rowsLongerThan(List<JSONObject> rows, int seconds) {
+        List<JSONObject> longer = new ArrayList<>();
+        for (JSONObject row : rows) {
+            if (seconds == ANY_DURATION || row.optInt("duration") > seconds) {
+                longer.add(row);
+            }
+        }
+        return longer;
     }
 
     private List<JSONObject> directStreams(String subjectId, List<JSONObject> rows, String key) {

@@ -138,6 +138,10 @@ public final class MovieBoxSource implements DashFileSource {
         return this.directFiles.playInfoFor(playInfo, subjectId, season, episode);
     }
 
+    public String directFilePlayInfoLongerThanPreview(String playInfo, String subjectId, int season, int episode) {
+        return this.directFiles.playInfoLongerThanPreview(playInfo, subjectId, season, episode);
+    }
+
     public String withDirectFileSizes(String resourceList) {
         return this.directFiles.withSizes(resourceList);
     }

@@ -41,6 +41,12 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
 
     static final String WITHHELD_ADDRESS = "unknown";
 
+    static final String CLIENT_INFO_HEADER = "X-Client-Info";
+
+    static final String CARRIER_FIELD = "sp_code";
+
+    static final String WITHHELD_CARRIER = "";
+
     static final String REGION_BLOCK_MESSAGE = "Service not available in current region";
 
     private static final int FORBIDDEN = 403;
@@ -72,17 +78,16 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
         Object request = request(chain);
         String path = (String) Reflect.call(Reflect.call(request, "url"), "encodedPath");
         String country = chosenCountryWithAddress();
-        if (!this.premiumUnlocked || !Endpoints.listsResourceLinks(path)) {
+        if (!this.premiumUnlocked || !Endpoints.limitsStreamsByLocation(path)) {
             return proceedWithCountryAddress(chain, request, country, path);
         }
-        Object response = proceed(chain, withForwardedFor(request, WITHHELD_ADDRESS));
-        if (!((Boolean) Reflect.call(response, "isSuccessful"))) {
-            Log.w(Logs.TAG, path + " answered HTTP " + Reflect.call(response, "code")
-                    + " with the client address withheld, resending the app's request");
-            Reflect.call(response, "close");
-            return proceedWithCountryAddress(chain, request, country, path);
+        Object response = proceed(chain, withLocationWithheld(request, path));
+        if (!isSuccessful(response)) {
+            return resendAppRequest(chain, request, response, path);
         }
-        warnAboutRowsWithoutLinks(path, response);
+        if (Endpoints.listsResourceLinks(path)) {
+            warnAboutRowsWithoutLinks(path, response);
+        }
         return response;
     }
 
@@ -106,7 +111,7 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
         Object response = proceedWithinRegion(chain, withForwardedFor(request, CountryAddresses.addressIn(country)),
                 country, path);
         int code = (Integer) Reflect.call(response, "code");
-        if (code != FORBIDDEN && code != TOO_MANY_REQUESTS) {
+        if (!isRefusal(code)) {
             return response;
         }
         Log.w(Logs.TAG, path + " answered HTTP " + code + " to the address in " + country
@@ -118,17 +123,41 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
     private Object proceedWithinRegion(Object chain, Object request, String country, String path)
             throws ReflectiveOperationException {
         if (this.regionBlockedCountries.contains(country)) {
-            return proceed(chain, withForwardedFor(request, WITHHELD_ADDRESS));
+            Object response = proceed(chain, withLocationWithheld(request, path));
+            return (country.equals(DEVICE_COUNTRY) && isSafeMethod(request)
+                    && isRefusal((Integer) Reflect.call(response, "code")))
+                            ? resendAppRequest(chain, request, response, path) : response;
         }
         Object response = proceed(chain, request);
         if (!isRegionBlock(response)) {
             return response;
         }
         Log.w(Logs.TAG, path + " is blocked in " + (country.equals(DEVICE_COUNTRY) ? "this region" : country)
-                + ", withholding the client address from now on");
+                + ", withholding the client location from now on");
         this.regionBlockedCountries.add(country);
         Reflect.call(response, "close");
-        return proceed(chain, withForwardedFor(request, WITHHELD_ADDRESS));
+        return proceed(chain, withLocationWithheld(request, path));
+    }
+
+    private Object resendAppRequest(Object chain, Object request, Object refused, String path)
+            throws ReflectiveOperationException {
+        Log.w(Logs.TAG, path + " answered HTTP " + Reflect.call(refused, "code")
+                + " with the client location withheld, resending the app's request");
+        Reflect.call(refused, "close");
+        return proceed(chain, request);
+    }
+
+    private static boolean isRefusal(int code) {
+        return code == FORBIDDEN || code == TOO_MANY_REQUESTS;
+    }
+
+    private static boolean isSafeMethod(Object request) throws ReflectiveOperationException {
+        String method = (String) Reflect.call(request, "method");
+        return "GET".equals(method) || "HEAD".equals(method);
+    }
+
+    private static boolean isSuccessful(Object response) throws ReflectiveOperationException {
+        return (Boolean) Reflect.call(response, "isSuccessful");
     }
 
     private static boolean isRegionBlock(Object response) throws ReflectiveOperationException {
@@ -141,8 +170,32 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
 
     private static Object withForwardedFor(Object request, String address) throws ReflectiveOperationException {
         Object builder = Reflect.call(request, "newBuilder");
-        Reflect.call(builder, "header", new Class<?>[] { String.class, String.class }, FORWARDED_FOR_HEADER, address);
+        setHeader(builder, FORWARDED_FOR_HEADER, address);
         return Reflect.call(builder, "build");
+    }
+
+    private static Object withLocationWithheld(Object request, String path) throws ReflectiveOperationException {
+        Object builder = Reflect.call(request, "newBuilder");
+        setHeader(builder, FORWARDED_FOR_HEADER, WITHHELD_ADDRESS);
+        String clientInfo = (String) Reflect.call(request, "header", new Class<?>[] { String.class },
+                CLIENT_INFO_HEADER);
+        if (clientInfo != null && !path.contains(Endpoints.RESOURCE_POSITION)) {
+            setHeader(builder, CLIENT_INFO_HEADER, withCarrierWithheld(clientInfo));
+        }
+        return Reflect.call(builder, "build");
+    }
+
+    private static void setHeader(Object builder, String name, String value) throws ReflectiveOperationException {
+        Reflect.call(builder, "header", new Class<?>[] { String.class, String.class }, name, value);
+    }
+
+    private static String withCarrierWithheld(String clientInfo) {
+        try {
+            return new JSONObject(clientInfo).put(CARRIER_FIELD, WITHHELD_CARRIER).toString();
+        } catch (JSONException ex) {
+            Log.w(Logs.TAG, "cannot withhold the carrier, the client info is not a JSON object");
+            return clientInfo;
+        }
     }
 
     private static void warnAboutRowsWithoutLinks(String path, Object response) throws ReflectiveOperationException {

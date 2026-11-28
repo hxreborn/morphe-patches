@@ -30,9 +30,12 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -72,13 +75,23 @@ public final class ClientAddressInterceptorTest {
 
     private static final String FEED = "{\"code\":0,\"message\":\"ok\",\"data\":{\"items\":[]}}";
 
+    private static final String INDIAN_CARRIER_INFO = "{\"sp_code\":\"405840\",\"region\":\"IN\"}";
+
+    private static final String DIRECT_FILE_CARRIER_INFO = "{\"sp_code\":\"21403\"}";
+
+    private static final String UNREADABLE_CLIENT_INFO = "sp_code=405840";
+
     private static final String NO_LINK_WARNING = "2 of 3 rows have no link with the client address withheld";
 
     private final ClassLoader loader = getClass().getClassLoader();
 
     private final List<String> addressesSent = new ArrayList<>();
 
+    private final List<String> clientInfosSent = new ArrayList<>();
+
     private String laboratoryCountry = "";
+
+    private String appClientInfo;
 
     @Test
     public void withholdsTheClientAddressFromResourceListRequests() throws IOException {
@@ -108,12 +121,114 @@ public final class ClientAddressInterceptorTest {
     }
 
     @Test
+    public void withholdsTheClientAddressFromPlayInfoRequests() throws IOException {
+        // when
+        send(PLAY_INFO, true, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
     public void keepsTheClientAddressOnOtherRequests() throws IOException {
         // when
-        send(PLAY_INFO, true, answering(200, LINKED_ROWS));
+        send(HOME_FEED, true, answering(200, FEED));
 
         // then
         Assertions.assertThat(this.addressesSent).containsExactly(APP_ADDRESS);
+    }
+
+    @Test
+    public void withholdsTheCarrierFromPlayInfoRequests() throws IOException, JSONException {
+        // given
+        this.appClientInfo = INDIAN_CARRIER_INFO;
+
+        // when
+        send(PLAY_INFO, true, answering(200, FEED));
+
+        // then
+        JSONObject sent = new JSONObject(this.clientInfosSent.get(0));
+        Assertions.assertThat(sent.getString(ClientAddressInterceptor.CARRIER_FIELD))
+            .isEqualTo(ClientAddressInterceptor.WITHHELD_CARRIER);
+        Assertions.assertThat(sent.getString("region")).isEqualTo("IN");
+    }
+
+    @Test
+    public void withholdsTheCarrierFromResourceListRequests() throws IOException, JSONException {
+        // given
+        this.appClientInfo = INDIAN_CARRIER_INFO;
+
+        // when
+        send(RESOURCE_LIST, true, answering(200, LINKED_ROWS));
+
+        // then
+        Assertions
+            .assertThat(new JSONObject(this.clientInfosSent.get(0)).getString(ClientAddressInterceptor.CARRIER_FIELD))
+            .isEqualTo(ClientAddressInterceptor.WITHHELD_CARRIER);
+    }
+
+    @Test
+    public void keepsTheCarrierOfResourcePositionRequests() throws IOException {
+        // given
+        this.appClientInfo = DIRECT_FILE_CARRIER_INFO;
+
+        // when
+        send(RESOURCE_POSITION, true, answering(200, LINKED_ROWS));
+
+        // then
+        Assertions.assertThat(this.clientInfosSent).containsExactly(DIRECT_FILE_CARRIER_INFO);
+    }
+
+    @Test
+    public void keepsTheCarrierOnOtherRequests() throws IOException {
+        // given
+        this.appClientInfo = INDIAN_CARRIER_INFO;
+
+        // when
+        send(HOME_FEED, true, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.clientInfosSent).containsExactly(INDIAN_CARRIER_INFO);
+    }
+
+    @Test
+    public void keepsTheCarrierWithoutPremium() throws IOException {
+        // given
+        this.appClientInfo = INDIAN_CARRIER_INFO;
+
+        // when
+        send(PLAY_INFO, false, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.clientInfosSent).containsExactly(INDIAN_CARRIER_INFO);
+    }
+
+    @Test
+    public void sendsUnreadableClientInfoUnchanged() throws IOException {
+        // given
+        this.appClientInfo = UNREADABLE_CLIENT_INFO;
+
+        // when
+        send(PLAY_INFO, true, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.clientInfosSent).containsExactly(UNREADABLE_CLIENT_INFO);
+        Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void withholdsTheCarrierFromARegionBlockedRequest() throws IOException, JSONException {
+        // given
+        this.appClientInfo = INDIAN_CARRIER_INFO;
+
+        // when
+        send(HOME_FEED, false, blockingTheAppAddress());
+
+        // then
+        Assertions.assertThat(this.clientInfosSent.get(0)).isEqualTo(INDIAN_CARRIER_INFO);
+        Assertions
+            .assertThat(new JSONObject(this.clientInfosSent.get(1)).getString(ClientAddressInterceptor.CARRIER_FIELD))
+            .isEqualTo(ClientAddressInterceptor.WITHHELD_CARRIER);
     }
 
     @Test
@@ -127,15 +242,8 @@ public final class ClientAddressInterceptorTest {
 
     @Test
     public void resendsTheAppRequestWhenTheWithheldAddressIsRefused() throws IOException {
-        // given
-        Interceptor refusingWithheldAddress = (chain) -> {
-            boolean withheld = ClientAddressInterceptor.WITHHELD_ADDRESS
-                .equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
-            return withheld ? response(chain.request(), 403, "{}") : response(chain.request(), 200, LINKED_ROWS);
-        };
-
         // when
-        Response response = send(RESOURCE_LIST, true, refusingWithheldAddress);
+        Response response = send(RESOURCE_LIST, true, refusingTheWithheldAddress());
 
         // then
         Assertions.assertThat(response.code()).isEqualTo(200);
@@ -170,7 +278,7 @@ public final class ClientAddressInterceptorTest {
     }
 
     @Test
-    public void withholdsTheAddressFromEveryRequestAfterARegionBlock() throws IOException {
+    public void withholdsTheAddressFromEveryFirstAttemptAfterARegionBlock() throws IOException {
         // given
         Interceptor interceptor = proxy(false);
         send(HOME_FEED, interceptor, blockingTheAppAddress());
@@ -181,6 +289,86 @@ public final class ClientAddressInterceptorTest {
 
         // then
         Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void resendsTheAppRequestOnceWhenTheWithheldAddressIsRefusedAfterARegionBlock() throws IOException {
+        // given
+        Interceptor interceptor = proxy(true);
+        send(HOME_FEED, interceptor, blockingTheAppAddress());
+        this.addressesSent.clear();
+
+        // when
+        Response response = send(RESOURCE_LIST, interceptor, refusingTheWithheldAddress());
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(200);
+        Assertions.assertThat(this.addressesSent)
+            .containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS, APP_ADDRESS);
+    }
+
+    @Test
+    public void resendsTheAppRequestOnceWhenTheWithheldAddressIsRefusedAfterAHomeFeedRegionBlock() throws IOException {
+        // given
+        Interceptor interceptor = proxy(false);
+        send(HOME_FEED, interceptor, blockingTheAppAddress());
+        this.addressesSent.clear();
+
+        // when
+        Response response = send(HOME_FEED, interceptor, refusingTheWithheldAddress());
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(200);
+        Assertions.assertThat(this.addressesSent)
+            .containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS, APP_ADDRESS);
+    }
+
+    @Test
+    public void sendsAPostOnceWhenItFailsAfterARegionBlock() throws IOException {
+        // given
+        Interceptor interceptor = proxy(false);
+        send(HOME_FEED, interceptor, blockingTheAppAddress());
+        this.addressesSent.clear();
+
+        // when
+        Response response = send(post(HOME_FEED), interceptor, answering(500, "{}"));
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(500);
+        Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void sendsAGetOnceWhenItFailsWithAServerErrorAfterARegionBlock() throws IOException {
+        // given
+        Interceptor interceptor = proxy(false);
+        send(HOME_FEED, interceptor, blockingTheAppAddress());
+        this.addressesSent.clear();
+
+        // when
+        Response response = send(HOME_FEED, interceptor, answering(500, "{}"));
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(500);
+        Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void sendsTheDeviceAddressWithoutResendingTheBlockedLaboratoryCountryAddress() throws IOException {
+        // given
+        Interceptor interceptor = proxy(false);
+        this.laboratoryCountry = "us";
+        send(HOME_FEED, interceptor, blocking(CountryAddresses.addressIn("US")));
+        this.addressesSent.clear();
+
+        // when
+        Response response = send(HOME_FEED, interceptor,
+                refusingTheWithheldAddressAndBlocking(CountryAddresses.addressIn("US")));
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(200);
+        Assertions.assertThat(this.addressesSent)
+            .containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS, APP_ADDRESS);
     }
 
     @Test
@@ -338,19 +526,29 @@ public final class ClientAddressInterceptorTest {
     }
 
     private Response send(String url, Interceptor interceptor, Interceptor server) throws IOException {
-        Interceptor appAddress = (chain) -> chain.proceed(chain.request()
-            .newBuilder()
-            .header(ClientAddressInterceptor.FORWARDED_FOR_HEADER, APP_ADDRESS)
-            .build());
+        return send(new Request.Builder().url(url).build(), interceptor, server);
+    }
+
+    private Response send(Request app, Interceptor interceptor, Interceptor server) throws IOException {
+        Interceptor appAddress = (chain) -> {
+            Request.Builder request = chain.request()
+                .newBuilder()
+                .header(ClientAddressInterceptor.FORWARDED_FOR_HEADER, APP_ADDRESS);
+            if (this.appClientInfo != null) {
+                request.header(ClientAddressInterceptor.CLIENT_INFO_HEADER, this.appClientInfo);
+            }
+            return chain.proceed(request.build());
+        };
         Interceptor recorder = (chain) -> {
             this.addressesSent.add(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
+            this.clientInfosSent.add(chain.request().header(ClientAddressInterceptor.CLIENT_INFO_HEADER));
             return server.intercept(chain);
         };
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(appAddress)
             .addInterceptor(interceptor)
             .addInterceptor(recorder)
             .build();
-        return client.newCall(new Request.Builder().url(url).build()).execute();
+        return client.newCall(app).execute();
     }
 
     private Interceptor proxy(boolean premiumUnlocked) {
@@ -364,6 +562,29 @@ public final class ClientAddressInterceptorTest {
                 .equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
             return withheld ? response(chain.request(), 200, FEED) : response(chain.request(), 403, REGION_BLOCK);
         };
+    }
+
+    private static Interceptor refusingTheWithheldAddress() {
+        return (chain) -> {
+            boolean withheld = ClientAddressInterceptor.WITHHELD_ADDRESS
+                .equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
+            return withheld ? response(chain.request(), 403, "{}") : response(chain.request(), 200, LINKED_ROWS);
+        };
+    }
+
+    private static Interceptor refusingTheWithheldAddressAndBlocking(String address) {
+        return (chain) -> {
+            String sent = chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER);
+            if (ClientAddressInterceptor.WITHHELD_ADDRESS.equals(sent)) {
+                return response(chain.request(), 403, "{}");
+            }
+            return address.equals(sent) ? response(chain.request(), 403, REGION_BLOCK)
+                    : response(chain.request(), 200, FEED);
+        };
+    }
+
+    private static Request post(String url) {
+        return new Request.Builder().url(url).post(RequestBody.create("{}", MediaType.get("application/json"))).build();
     }
 
     private static Interceptor blocking(String address) {

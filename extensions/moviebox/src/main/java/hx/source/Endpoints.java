@@ -57,6 +57,10 @@ public final class Endpoints {
     private Endpoints() {
     }
 
+    public static boolean limitsStreamsByLocation(String path) {
+        return path.contains(PLAY_INFO_SEGMENT) || listsResourceLinks(path);
+    }
+
     public static boolean listsResourceLinks(String path) {
         return path.endsWith(RESOURCE_LIST) || path.endsWith(RESOURCE_LIST_V2) || path.contains(RESOURCE_POSITION);
     }
