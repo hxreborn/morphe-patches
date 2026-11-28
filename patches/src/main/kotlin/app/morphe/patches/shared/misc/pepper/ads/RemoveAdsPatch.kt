@@ -8,17 +8,22 @@ import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.classDefBy
+import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.p0Register
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
 import app.morphe.patches.shared.misc.ads.failAdMobLoadsPatch
+import app.morphe.patches.shared.misc.extension.sharedSignatureExtensionPatch
+import app.morphe.patches.shared.misc.pairip.removePairipProtectionPatch
+import app.morphe.patches.shared.misc.signature.spoofSignature
 import app.morphe.patches.shared.misc.smali.parameterRegister
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
+private const val APPLICATION_CLASS = "Lcom/pepper/apps/android/app/PepperApplication;"
 private const val DETAIL_PRIMARY_AD_PARAMETER = 17
 private const val DETAIL_SECONDARY_AD_PARAMETER = 18
 private const val CURRENT_LIST_MOVE_WINDOW = 4
@@ -46,9 +51,13 @@ val removeAdsPatch = patch(
 ) {
     compatibleWith(AppCompatibilities.CHOLLOMETRO)
 
-    dependsOn(failAdMobLoadsPatch)
+    dependsOn(failAdMobLoadsPatch, removePairipProtectionPatch, sharedSignatureExtensionPatch)
 
     execute {
+        if (packageMetadata.packageName == AppCompatibilities.CHOLLOMETRO.packageName) {
+            spoofSignature(APPLICATION_CLASS)
+        }
+
         val initializerType = GoogleMobileAdsInitFingerprint.match().classDef.type
         GoogleMobileAdsInitFingerprint.method.returnEarly()
         returnUnitEarly(aatKitInitFingerprint(initializerType).match().method)
