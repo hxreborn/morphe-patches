@@ -62,6 +62,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.NOTEIN,
         AppCompatibilities.ONE_SEC,
         AppCompatibilities.OPAL,
+        AppCompatibilities.PEPPER,
         AppCompatibilities.POE,
         AppCompatibilities.PRAYER_TIMES,
         AppCompatibilities.PRAYER_TIMES_WEAR,

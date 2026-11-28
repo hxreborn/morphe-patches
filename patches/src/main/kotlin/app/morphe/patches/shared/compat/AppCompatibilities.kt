@@ -1511,6 +1511,16 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.0.5", versionCode = 98, minSdk = 23)),
     )
 
+    val PEPPER = Compatibility(
+        name = "Pepper",
+        packageName = "com.pepperdeals",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "92f1703507d8f73a6057fe1539abc30e30eb8fbcba42f8fc75a963164399e139",
+        ),
+        targets = listOf(AppTarget(version = "8.22.05", versionCode = 82205, minSdk = 29)),
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",

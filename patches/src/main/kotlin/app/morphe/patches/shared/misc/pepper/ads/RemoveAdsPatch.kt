@@ -49,7 +49,7 @@ val removeAdsPatch = patch(
     name = "Remove ads",
     description = "Removes ad placements and sponsored deals.",
 ) {
-    compatibleWith(AppCompatibilities.CHOLLOMETRO)
+    compatibleWith(AppCompatibilities.CHOLLOMETRO, AppCompatibilities.PEPPER)
 
     dependsOn(failAdMobLoadsPatch, removePairipProtectionPatch, sharedSignatureExtensionPatch)
 
