@@ -111,8 +111,8 @@ internal object AatKitBannerPrefetchFingerprint : Fingerprint(
     ),
 )
 
-internal fun aatKitInitFingerprint(initializerType: String) = Fingerprint(
-    definingClass = initializerType,
+internal fun aatKitInitFingerprint(adInitializerType: String) = Fingerprint(
+    definingClass = adInitializerType,
     returnType = "Ljava/lang/Object;",
     parameters = listOf("L"),
     filters = listOf(
@@ -125,8 +125,8 @@ internal fun aatKitInitFingerprint(initializerType: String) = Fingerprint(
     ),
 )
 
-internal fun adMediationInitFingerprint(initializerType: String) = Fingerprint(
-    definingClass = initializerType,
+internal fun adMediationInitFingerprint(adInitializerType: String) = Fingerprint(
+    definingClass = adInitializerType,
     returnType = "Ljava/lang/Object;",
     parameters = listOf("Z", "L"),
 )
@@ -155,9 +155,9 @@ internal fun adItemFactoryFingerprint(adItemTypes: List<String>) = Fingerprint(
             name = "<init>",
             opcode = Opcode.INVOKE_DIRECT_RANGE,
         ),
-    ) + adItemTypes.drop(1).map { type ->
+    ) + adItemTypes.drop(1).map { adItemType ->
         methodCall(
-            definingClass = type,
+            definingClass = adItemType,
             name = "<init>",
             opcode = Opcode.INVOKE_DIRECT_RANGE,
             location = MatchAfterWithin(AD_ITEM_CONSTRUCTOR_WINDOW),
@@ -165,9 +165,9 @@ internal fun adItemFactoryFingerprint(adItemTypes: List<String>) = Fingerprint(
     },
 )
 
-internal fun detailAdSlotsFingerprint(adItemFactory: MethodReference) = Fingerprint(
+internal fun detailAdSlotsFingerprint(adItemFactoryMethod: MethodReference) = Fingerprint(
     filters = listOf(
-        methodCall(reference = adItemFactory),
-        methodCall(reference = adItemFactory, location = MatchAfterWithin(DETAIL_AD_CALL_WINDOW)),
+        methodCall(reference = adItemFactoryMethod),
+        methodCall(reference = adItemFactoryMethod, location = MatchAfterWithin(DETAIL_AD_CALL_WINDOW)),
     ),
 )

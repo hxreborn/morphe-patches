@@ -11,6 +11,7 @@ import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.p0Register
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.returnEarly
 import app.morphe.patcher.util.smali.ExternalLabel
 import app.morphe.patches.shared.compat.AppCompatibilities
@@ -24,16 +25,18 @@ import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 
 private const val APPLICATION_CLASS = "Lcom/pepper/apps/android/app/PepperApplication;"
-private const val DETAIL_PRIMARY_AD_PARAMETER = 17
-private const val DETAIL_SECONDARY_AD_PARAMETER = 18
-private const val CURRENT_LIST_MOVE_WINDOW = 4
+private const val DETAIL_PRIMARY_AD_PARAMETER_INDEX = 17
+private const val DETAIL_SECONDARY_AD_PARAMETER_INDEX = 18
+private const val SOURCE_LIST_MOVE_WINDOW = 4
 private const val BYTE_REGISTER_LIMIT = 256
 
 private const val KOTLIN_UNIT = "Lkotlin/Unit;"
 
-private fun returnUnitEarly(method: app.morphe.patcher.util.proxy.mutableTypes.MutableMethod) {
+private fun returnUnitEarly(method: MutableMethod) {
     val returnRegister = method.p0Register
-    check(returnRegister < BYTE_REGISTER_LIMIT) { "Unit return register exceeds the 8-bit encoding" }
+    check(returnRegister < BYTE_REGISTER_LIMIT) {
+        "Unit return register out of range: expected 0..${BYTE_REGISTER_LIMIT - 1}, got $returnRegister"
+    }
     val unitInstance = classDefBy(KOTLIN_UNIT).staticFields.single { it.type == KOTLIN_UNIT }.name
     method.addInstructions(
         0,
@@ -58,10 +61,10 @@ val removeAdsPatch = patch(
             spoofSignature(APPLICATION_CLASS)
         }
 
-        val initializerType = GoogleMobileAdsInitFingerprint.match().classDef.type
+        val adInitializerType = GoogleMobileAdsInitFingerprint.match().classDef.type
         GoogleMobileAdsInitFingerprint.method.returnEarly()
-        returnUnitEarly(aatKitInitFingerprint(initializerType).match().method)
-        returnUnitEarly(adMediationInitFingerprint(initializerType).match().method)
+        returnUnitEarly(aatKitInitFingerprint(adInitializerType).match().method)
+        returnUnitEarly(adMediationInitFingerprint(adInitializerType).match().method)
         returnUnitEarly(SponsoredThreadAdLoadFingerprint.match().method)
         OpenWrapBannerLoadFingerprint.method.returnEarly(null)
         AatKitBannerLoadFingerprint.method.returnEarly(null)
@@ -69,36 +72,44 @@ val removeAdsPatch = patch(
 
         val sponsoredItemType = ExplorationSponsoredItemFingerprint.match().classDef.type
         val adItemType = ExplorationAdItemFingerprint.match().classDef.type
-        val mapper = explorationItemMapperFingerprint(sponsoredItemType, adItemType).match()
-        val (sponsoredCheckMatch, adCheckMatch, listAddMatch) = mapper.instructionMatches
-        val method = mapper.method
-        val sponsoredCheck = method.getInstruction<TwoRegisterInstruction>(sponsoredCheckMatch.index)
-        val adCheck = method.getInstruction<TwoRegisterInstruction>(adCheckMatch.index)
-        val listAdd = method.getInstruction<FiveRegisterInstruction>(listAddMatch.index)
-        val currentListMoveIndex = (sponsoredCheckMatch.index - 1 downTo
-            sponsoredCheckMatch.index - CURRENT_LIST_MOVE_WINDOW).first {
-            method.getInstruction(it).opcode == Opcode.MOVE_OBJECT_FROM16
+        val mapperMatch = explorationItemMapperFingerprint(sponsoredItemType, adItemType).match()
+        val (sponsoredTypeCheckMatch, adTypeCheckMatch, listAddMatch) = mapperMatch.instructionMatches
+        val mapperMethod = mapperMatch.method
+        val sponsoredTypeCheck =
+            mapperMethod.getInstruction<TwoRegisterInstruction>(sponsoredTypeCheckMatch.index)
+        val adTypeCheck = mapperMethod.getInstruction<TwoRegisterInstruction>(adTypeCheckMatch.index)
+        val listAddCall = mapperMethod.getInstruction<FiveRegisterInstruction>(listAddMatch.index)
+        val sourceListMoveIndex = (sponsoredTypeCheckMatch.index - 1 downTo
+            sponsoredTypeCheckMatch.index - SOURCE_LIST_MOVE_WINDOW).first {
+            mapperMethod.getInstruction(it).opcode == Opcode.MOVE_OBJECT_FROM16
         }
-        val currentListMove = method.getInstruction<TwoRegisterInstruction>(currentListMoveIndex)
-        val currentListRegister = currentListMove.registerA
-        val finalListRegister = listAdd.registerC
-        check(sponsoredCheck.registerB == adCheck.registerB && sponsoredCheck.registerB == listAdd.registerD) {
-            "Exploration item checks do not feed the list add"
+        val sourceListMove = mapperMethod.getInstruction<TwoRegisterInstruction>(sourceListMoveIndex)
+        val sourceListRegister = sourceListMove.registerA
+        val destinationListRegister = listAddCall.registerC
+        check(
+            sponsoredTypeCheck.registerB == adTypeCheck.registerB &&
+                sponsoredTypeCheck.registerB == listAddCall.registerD,
+        ) {
+            "Exploration item register mismatch: sponsored check v${sponsoredTypeCheck.registerB}, " +
+                "ad check v${adTypeCheck.registerB}, list add v${listAddCall.registerD}"
         }
-        check(currentListRegister != finalListRegister) { "Current and final list registers overlap" }
-        val continueWithoutItem = method.getInstruction(listAddMatch.index + 1)
-        listOf("ad" to adCheckMatch, "sponsored" to sponsoredCheckMatch).forEach { (name, match) ->
-            val check = method.getInstruction<TwoRegisterInstruction>(match.index)
-            val keepItem = method.getInstruction(match.index + 1)
-            method.addInstructionsWithLabels(
-                match.index + 1,
+        check(sourceListRegister != destinationListRegister) {
+            "Exploration list register overlap: source and destination both use v$sourceListRegister"
+        }
+        val continueAfterListAdd = mapperMethod.getInstruction(listAddMatch.index + 1)
+        listOf("ad" to adTypeCheckMatch, "sponsored" to sponsoredTypeCheckMatch).forEach {
+            (itemKind, typeCheckMatch) ->
+            val typeCheck = mapperMethod.getInstruction<TwoRegisterInstruction>(typeCheckMatch.index)
+            val keepItemInstruction = mapperMethod.getInstruction(typeCheckMatch.index + 1)
+            mapperMethod.addInstructionsWithLabels(
+                typeCheckMatch.index + 1,
                 """
-                    if-eqz v${check.registerA}, :keep_$name
-                    move-object/from16 v$finalListRegister, v$currentListRegister
-                    goto :continue_without_$name
+                    if-eqz v${typeCheck.registerA}, :keep_$itemKind
+                    move-object/from16 v$destinationListRegister, v$sourceListRegister
+                    goto :continue_without_$itemKind
                 """,
-                ExternalLabel("keep_$name", keepItem),
-                ExternalLabel("continue_without_$name", continueWithoutItem),
+                ExternalLabel("keep_$itemKind", keepItemInstruction),
+                ExternalLabel("continue_without_$itemKind", continueAfterListAdd),
             )
         }
 
@@ -108,19 +119,25 @@ val removeAdsPatch = patch(
             MediumAdItemFingerprint.match().classDef.type,
             SmallAdItemFingerprint.match().classDef.type,
         )
-        val adItemFactory = adItemFactoryFingerprint(adItemTypes).match().method
-        val detailAds = detailAdSlotsFingerprint(adItemFactory).match().method
-        val adPlacementType = adItemFactory.parameterTypes.first()
-        val detailAdSlotType = detailAds.parameterTypes[DETAIL_PRIMARY_AD_PARAMETER].toString()
-        check(
-            detailAds.parameterTypes[DETAIL_SECONDARY_AD_PARAMETER] == detailAdSlotType &&
-                classDefBy(detailAdSlotType).superclass == adPlacementType,
-        ) { "Detail ad slot parameters do not use the ad placement type" }
-        detailAds.addInstructions(
+        val adItemFactoryMethod = adItemFactoryFingerprint(adItemTypes).match().method
+        val detailAdSlotsMethod = detailAdSlotsFingerprint(adItemFactoryMethod).match().method
+        val adPlacementType = adItemFactoryMethod.parameterTypes.first()
+        val primaryDetailAdSlotType =
+            detailAdSlotsMethod.parameterTypes[DETAIL_PRIMARY_AD_PARAMETER_INDEX].toString()
+        val secondaryDetailAdSlotType =
+            detailAdSlotsMethod.parameterTypes[DETAIL_SECONDARY_AD_PARAMETER_INDEX].toString()
+        check(secondaryDetailAdSlotType == primaryDetailAdSlotType) {
+            "Detail ad slot type mismatch: expected $primaryDetailAdSlotType, got $secondaryDetailAdSlotType"
+        }
+        val detailAdSlotSuperclass = classDefBy(primaryDetailAdSlotType).superclass
+        check(detailAdSlotSuperclass == adPlacementType) {
+            "Detail ad slot superclass mismatch: expected $adPlacementType, got $detailAdSlotSuperclass"
+        }
+        detailAdSlotsMethod.addInstructions(
             0,
             """
-                const/16 ${detailAds.parameterRegister(DETAIL_PRIMARY_AD_PARAMETER)}, 0x0
-                const/16 ${detailAds.parameterRegister(DETAIL_SECONDARY_AD_PARAMETER)}, 0x0
+                const/16 ${detailAdSlotsMethod.parameterRegister(DETAIL_PRIMARY_AD_PARAMETER_INDEX)}, 0x0
+                const/16 ${detailAdSlotsMethod.parameterRegister(DETAIL_SECONDARY_AD_PARAMETER_INDEX)}, 0x0
             """,
         )
     }
