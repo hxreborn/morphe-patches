@@ -15,6 +15,7 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 
 private const val APPLICATION_CLASS = "Lcom/maxmpz/app/base/BaseApplication;"
 private const val BUS_MESSAGE_HANDLER = "onBusMsg"
+private const val SYNC_CLASS = "Lcom/maxmpz/audioplayer/Sync;"
 
 internal object LicenseResultFingerprint : Fingerprint(
     definingClass = APPLICATION_CLASS,
@@ -49,5 +50,13 @@ internal fun licenseStateInitFingerprint(licenseState: FieldReference) = Fingerp
             opcode = Opcode.SPUT_OBJECT,
         ),
         opcode(Opcode.RETURN_VOID),
+    ),
+)
+
+internal object LicenseStatusTitleFingerprint : Fingerprint(
+    definingClass = "Lcom/maxmpz/audioplayer/preference/LicenseStatusPref;",
+    filters = listOf(
+        methodCall(definingClass = SYNC_CLASS, name = "native_lock"),
+        methodCall(definingClass = "Landroid/preference/Preference;", name = "setTitle"),
     ),
 )

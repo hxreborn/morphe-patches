@@ -67,6 +67,8 @@ public final class DashInterceptorTest {
     private static final String MEMBER = "{\"data\":{\"daysLeft\":3,\"memberType\":\"FREE\","
             + "\"expiryDate\":\"2026-01-01\"}}";
 
+    private static final String DIRECT_FILE_POSITION = "/wefeed-mobile-bff/subject-api/resource-position/v2";
+
     private static final String UNSIGNED_PLAY_INFO = "{\"data\":{\"streams\":[{\"url\":"
             + "\"https://origin.example.com/a.mp4\",\"resolutions\":\"720\",\"size\":100,\"signCookie\":\"\"}]}}";
 
@@ -133,6 +135,33 @@ public final class DashInterceptorTest {
         JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
         Assertions.assertThat(stream.getString("url")).isEqualTo("https://sacdn.example.com/abc/index.mpd");
         Assertions.assertThat(stream.getString("format")).isEqualTo("DASH");
+    }
+
+    @Test
+    public void replacesAPreviewWithTheLongerDirectFile() throws JSONException, IOException {
+        // given
+        putPreviewWithALongerDirectFile();
+
+        // when
+        String body = fetch(PLAY_INFO + "?subjectId=77&se=0&ep=0", true, Collections.emptySet());
+
+        // then
+        JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        Assertions.assertThat(stream.getString("url")).isEqualTo(this.server.url("/full.mp4"));
+        Assertions.assertThat(stream.getInt("duration")).isEqualTo(6261);
+    }
+
+    @Test
+    public void keepsAPreviewWithoutPremium() throws JSONException, IOException {
+        // given
+        putPreviewWithALongerDirectFile();
+
+        // when
+        String body = fetchWithoutPremium(PLAY_INFO + "?subjectId=77&se=0&ep=0");
+
+        // then
+        JSONObject stream = new JSONObject(body).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        Assertions.assertThat(stream.getInt("duration")).isEqualTo(900);
     }
 
     @Test
@@ -307,6 +336,20 @@ public final class DashInterceptorTest {
 
         // then
         Assertions.assertThat(body).isEqualTo(promotion);
+    }
+
+    private void putPreviewWithALongerDirectFile() {
+        String cookie = PlayInfoFixtures.edgeCacheCookie("https://cdn.example.com/preview/20684872/v1/116943/");
+        String preview = "{\"data\":{\"streams\":[{\"url\":\"https://cdn.example.com/preview/20684872/v1/116943/index.mpd\","
+                + "\"duration\":900,\"signCookie\":\"" + cookie + "\"}]}}";
+        this.server.put(PLAY_INFO, preview.getBytes(StandardCharsets.UTF_8));
+        this.server
+            .put(RESOURCE_LIST, ("{\"data\":{\"list\":[{\"se\":0,\"ep\":0,\"resolution\":720,\"resourceId\":\"r1\","
+                    + "\"resourceLink\":\"https://origin.example.com/a.mp4\",\"size\":\"2048\",\"duration\":6261}]}}")
+                .getBytes(StandardCharsets.UTF_8));
+        this.server.put(DIRECT_FILE_POSITION,
+                ("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/full.mp4") + "\",\"size\":2048}]}}")
+                    .getBytes(StandardCharsets.UTF_8));
     }
 
     private String fetch(String pathAndQuery, boolean routeDownloads, Set<String> hiddenTabs) throws IOException {

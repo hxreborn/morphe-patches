@@ -60,6 +60,18 @@ private fun MutableMethod.addResponseObserver() {
     addInstruction(createResponseBody.index, "invoke-static { v$json }, $DEVICE_GUID_CLASS->observeResponse($STRING_CLASS)V")
 }
 
+private fun MutableMethod.registersLiveAtHandlersCovering(index: Int): List<Int> {
+    val addresses = instructions.runningFold(0) { address, instruction -> address + instruction.codeUnits }
+    val registerCount = implementation!!.registerCount
+    return implementation!!.tryBlocks
+        .filter { addresses[index] in it.startCodeAddress until it.startCodeAddress + it.codeUnitCount }
+        .flatMap { it.exceptionHandlers }
+        .map { addresses.indexOf(it.handlerCodeAddress) }
+        .distinct()
+        .flatMap { getFreeRegisterProvider(it, registerCount).getUsedAndUnAvailableRegisters() }
+        .distinct()
+}
+
 private fun MutableMethod.addSignedRequestRetry() {
     val signingLogIndex = indexOfFirstStringInstructionOrThrow(REQUEST_SIGNING_LOG)
     val caseStarts = switchCaseStartIndices()
@@ -81,9 +93,13 @@ private fun MutableMethod.addSignedRequestRetry() {
             throw PatchException("Proceed call at $index in $definingClass->$name has no move-result-object")
         }
         val response = getInstruction<OneRegisterInstruction>(index + 1).registerA
-        val registers = getFreeRegisterProvider(index, 2, response, call.registerC, call.registerD)
-        val chain = registers.getFreeRegister4Bit()
-        val signer = registers.getFreeRegister4Bit()
+        val registers = getFreeRegisterProvider(index, 3, listOf(response, call.registerC, call.registerD) + registersLiveAtHandlersCovering(index))
+        val free = generateSequence { if (registers.hasFreeRegisters()) registers.getFreeRegister() else null }.toList()
+        val signer = free.firstOrNull { it + 1 in free }
+            ?: throw PatchException("No consecutive free registers in $definingClass->$name at $index: $free")
+        val chain = signer + 1
+        val savedChain = free.firstOrNull { it != signer && it != chain }
+            ?: throw PatchException("No third free register in $definingClass->$name at $index: $free")
         addInstructionsWithLabels(
             index + 2,
             """
@@ -92,15 +108,16 @@ private fun MutableMethod.addSignedRequestRetry() {
                 if-eqz v$signer, :signed_once_$index
                 invoke-interface { v$response }, Ljava/io/Closeable;->close()V
                 new-instance v$signer, $definingClass
-                const v$response, $signerKey
-                invoke-direct { v$signer, v$response }, $definingClass-><init>(I)V
-                invoke-virtual { v$signer, v$chain }, $definingClass->$name($chainType)$returnType
+                const v$chain, $signerKey
+                invoke-direct/range { v$signer .. v$chain }, $definingClass-><init>(I)V
+                move-object/from16 v$chain, v$savedChain
+                invoke-virtual/range { v$signer .. v$chain }, $definingClass->$name($chainType)$returnType
                 move-result-object v$response
                 :signed_once_$index
                 nop
             """,
         )
-        addInstruction(index, "move-object/from16 v$chain, v${call.registerC}")
+        addInstruction(index, "move-object/from16 v$savedChain, v${call.registerC}")
     }
 }
 

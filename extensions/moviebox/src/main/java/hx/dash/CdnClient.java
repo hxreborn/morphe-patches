@@ -66,14 +66,19 @@ final class CdnClient {
     }
 
     static HttpURLConnection connect(String url, String range, CdnCookies cookies, ReadGroup reads) throws IOException {
+        return connect(url, range, cookies, reads, READ_TIMEOUT_MS);
+    }
+
+    static HttpURLConnection connect(String url, String range, CdnCookies cookies, ReadGroup reads, int readTimeoutMs)
+            throws IOException {
         String cookie = cookies.current();
-        HttpURLConnection connection = request(url, range, cookie, reads);
+        HttpURLConnection connection = request(url, range, cookie, reads, readTimeoutMs);
         if (connection.getResponseCode() == HttpURLConnection.HTTP_FORBIDDEN) {
             connection.disconnect();
             if (reads != null) {
                 reads.remove(connection);
             }
-            connection = request(url, range, cookies.refresh(cookie), reads);
+            connection = request(url, range, cookies.refresh(cookie), reads, readTimeoutMs);
         }
         int code = connection.getResponseCode();
         if (code != HttpURLConnection.HTTP_OK && code != HttpURLConnection.HTTP_PARTIAL) {
@@ -96,11 +101,11 @@ final class CdnClient {
         }
     }
 
-    private static HttpURLConnection request(String url, String range, String cookie, ReadGroup reads)
-            throws IOException {
+    private static HttpURLConnection request(String url, String range, String cookie, ReadGroup reads,
+            int readTimeoutMs) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
-        connection.setReadTimeout(READ_TIMEOUT_MS);
+        connection.setReadTimeout(readTimeoutMs);
         connection.setRequestProperty("Cookie", cookie);
         if (range != null) {
             connection.setRequestProperty("Range", range);

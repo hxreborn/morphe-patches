@@ -33,7 +33,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import android.net.Uri;
+import android.os.SystemClock;
 import android.util.Log;
+import hx.dash.CdnFile;
 import hx.dash.DashFile;
 import hx.util.Logs;
 
@@ -77,6 +79,10 @@ public final class DashServer implements Runnable {
                 + "?" + LoopbackRequest.ORIGIN_PARAMETER + "=" + Uri.encode(origin) + "&"
                 + LoopbackRequest.ORIGIN_SIZE_PARAMETER + "=" + originSize + ((resourceId != null)
                         ? "&" + LoopbackRequest.RESOURCE_ID_PARAMETER + "=" + Uri.encode(resourceId) : "");
+    }
+
+    public static String buildCdnUrl(String subjectId, int season, int episode, String fileName) {
+        return "http://127.0.0.1:" + PORT + "/cdn/" + subjectId + "/" + season + "/" + episode + "/" + fileName;
     }
 
     public synchronized void start() {
@@ -149,6 +155,10 @@ public final class DashServer implements Runnable {
             LoopbackResponse.writeNotFound(out);
             return;
         }
+        if (request.cdnFileName != null) {
+            writeCdnFile(request, out);
+            return;
+        }
         DashFile file;
         try {
             file = this.source.open(request.subjectId, request.season, request.episode, request.height, request.origin,
@@ -176,6 +186,27 @@ public final class DashServer implements Runnable {
             return;
         }
         writeFile(request, file, out);
+    }
+
+    private void writeCdnFile(LoopbackRequest request, OutputStream out) throws IOException {
+        long started = SystemClock.elapsedRealtime();
+        long start = (request.range != null) ? request.range.first : 0;
+        CdnFile file;
+        try {
+            file = this.source.openCdnFile(request.subjectId, request.season, request.episode, request.cdnFileName,
+                    start);
+        } catch (IOException ex) {
+            Log.e(Logs.TAG, "cannot open " + request.target, ex);
+            LoopbackResponse.writeUnavailable(out);
+            return;
+        }
+        ByteRange range = request.rangeWithin(file.length);
+        LoopbackResponse.writeHeaders(out, range, file.length, request.isPartial());
+        if (!request.headOnly) {
+            file.write(out, range.end);
+        }
+        Log.i(Logs.TAG, "CDN file " + request.cdnFileName + ": " + range.size() + " bytes in "
+                + (SystemClock.elapsedRealtime() - started) + " ms");
     }
 
     private static boolean isSizedForAnotherFile(LoopbackRequest request, DashFile file) {

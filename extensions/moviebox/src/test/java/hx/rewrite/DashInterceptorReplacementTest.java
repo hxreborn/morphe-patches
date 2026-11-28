@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import hx.gateway.PlayInfoLookup;
+import hx.loopback.DashServer;
 import hx.okhttp.ApiClient;
 import hx.source.MovieBoxSource;
 import hx.testing.PlayInfoFixtures;
@@ -50,7 +51,7 @@ public final class DashInterceptorReplacementTest {
     private static final String PLAY_INFO_PATH_AND_QUERY = "/wefeed-mobile-bff/subject-api/play-info/v2"
             + "?subjectId=77&se=1&ep=2&isVip=true";
 
-    private static final String EDGE_MANIFEST = "https://edge.example.com/video/index.mpd";
+    private static final String EDGE_MANIFEST_THROUGH_LOOPBACK = DashServer.buildCdnUrl("77", 1, 2, "index.mpd");
 
     private static final String UNPACED_MANIFEST = "https://sacdn.hakunaymatata.com/abc/index.mpd";
 
@@ -97,7 +98,7 @@ public final class DashInterceptorReplacementTest {
         String body = intercept(interceptor, true);
 
         // then
-        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(EDGE_MANIFEST);
+        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(EDGE_MANIFEST_THROUGH_LOOPBACK);
     }
 
     @Test
@@ -111,7 +112,7 @@ public final class DashInterceptorReplacementTest {
         String body = intercept(interceptor, true);
 
         // then
-        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(EDGE_MANIFEST);
+        Assertions.assertThat(firstStreamUrl(body)).isEqualTo(EDGE_MANIFEST_THROUGH_LOOPBACK);
     }
 
     @Test

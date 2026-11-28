@@ -25,6 +25,16 @@ internal object AppCompatibilities {
         ),
     )
 
+    val AIR_EXPLORER = Compatibility(
+        name = "Air Explorer",
+        packageName = "com.mobile.airexplorer",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "8a2b0a2601662629983aa6562a8a4dac8ddfe0266885f61e9e4d99c07bdedec5",
+        ),
+        targets = listOf(AppTarget(version = "1.6.0", versionCode = 21, minSdk = 24)),
+    )
+
     val ALBO = Compatibility(
         name = "Albo",
         packageName = "com.thesortdapp.sortd",
@@ -411,7 +421,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "17c6e44afc6b4c627fecdd30c27db7ad97cda41f728b74160ad55377dc4c7078",
         ),
-        targets = listOf(AppTarget(version = "1.1.5", versionCode = 33, minSdk = 21)),
+        targets = listOf(
+            AppTarget(version = "1.1.5", versionCode = 33, minSdk = 21),
+            AppTarget(version = "1.1.6", versionCode = 38, minSdk = 21),
+        ),
     )
 
     val CATZY = Compatibility(
@@ -439,6 +452,16 @@ internal object AppCompatibilities {
             AppTarget(version = "1.8.33", versionCode = 81, minSdk = 26),
             AppTarget(version = "1.8.36", versionCode = 84, minSdk = 26),
         ),
+    )
+
+    val CHOLLOMETRO = Compatibility(
+        name = "Chollometro",
+        packageName = "com.chollometro",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "75b2ee12df7f528ca9aa9f327ee5f86c862387c6c4ba421130029cda4c532769",
+        ),
+        targets = listOf(AppTarget(version = "8.22.04", versionCode = 82204, minSdk = 26)),
     )
 
     val CLASSDOJO = Compatibility(
@@ -507,7 +530,7 @@ internal object AppCompatibilities {
         signatures = setOf(
             "70442accd302f59833b6193984fcdb50bbae68ba6c1e07f88dbb97ca1d8d6728",
         ),
-        targets = listOf(AppTarget(version = "2.3.0", versionCode = 153, minSdk = 30)),
+        targets = listOf(AppTarget(version = "2.3.8", versionCode = 161, minSdk = 30)),
     )
 
     val CONNECTED2 = Compatibility(
@@ -1084,6 +1107,17 @@ internal object AppCompatibilities {
         ),
     )
 
+    val MEDAL = Compatibility(
+        name = "Medal",
+        packageName = "tv.medal.recorder",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0xFFFFFF,
+        signatures = setOf(
+            "3d8af320f40dd64ccda47de3e5df39569440627c2ea1d4e3ce288e2790f8d5ab",
+        ),
+        targets = listOf(AppTarget(version = "7.6.1", versionCode = 838, minSdk = 29)),
+    )
+
     val MEDICNEET = Compatibility(
         name = "MedicNEET",
         packageName = "com.halalfire.medicneet",
@@ -1477,6 +1511,16 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "2.0.5", versionCode = 98, minSdk = 23)),
     )
 
+    val PEPPER = Compatibility(
+        name = "Pepper",
+        packageName = "com.pepperdeals",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "92f1703507d8f73a6057fe1539abc30e30eb8fbcba42f8fc75a963164399e139",
+        ),
+        targets = listOf(AppTarget(version = "8.22.05", versionCode = 82205, minSdk = 29)),
+    )
+
     val PERPLEXITY = Compatibility(
         name = "Perplexity",
         packageName = "ai.perplexity.app.android",
@@ -1589,7 +1633,10 @@ internal object AppCompatibilities {
         signatures = setOf(
             "f6355bdd54f8cedd64f9f6e9813bb0b55a2ac24b82b461e99f86db336ee64255",
         ),
-        targets = listOf(AppTarget(version = "build-1035-bundle-play", versionCode = 1035009, minSdk = 28)),
+        targets = listOf(
+            AppTarget(version = "build-1033-bundle-play", versionCode = 1033004, minSdk = 28, isExperimental = true),
+            AppTarget(version = "build-1035-bundle-play", versionCode = 1035009, minSdk = 28),
+        ),
     )
 
     val PRAYER_TIMES = Compatibility(
@@ -1946,6 +1993,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "3.4.7", versionCode = 84, minSdk = 26)),
     )
 
+    val SPIKE_STATS = Compatibility(
+        name = "Spike Stats - Valorant Tracker",
+        packageName = "crocusgames.com.spikestats",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0xAE4B54,
+        signatures = setOf("baace0920be433094133183417b0773e30147b34555d68e94b45c727a29ed149"),
+        targets = listOf(AppTarget(version = "1.0.554", versionCode = 54, minSdk = 24)),
+    )
+
     val SQCOM = Compatibility(
         name = "SQCOM",
         packageName = "com.sqcom.shangqing",
@@ -2118,6 +2174,16 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "1.631.200.I", versionCode = 200, minSdk = 26)),
     )
 
+    val VIDEO_MP3_CONVERTER = Compatibility(
+        name = "Video MP3 Converter",
+        packageName = "com.fundevs.app.mediaconverter",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        signatures = setOf(
+            "f487cb84eefaf8dbd507bf5d31827969901608319c8790d670144f8bab6b9802",
+        ),
+        targets = listOf(AppTarget(version = "2.8.1", versionCode = 321, minSdk = 21)),
+    )
+
     val U_DICTIONARY = Compatibility(
         name = "U Dictionary",
         packageName = "com.youdao.hindict",
@@ -2205,6 +2271,15 @@ internal object AppCompatibilities {
         targets = listOf(AppTarget(version = "10.2.6", versionCode = 174, minSdk = 32)),
     )
 
+    val WALPY = Compatibility(
+        name = "Walpy - Wallpapers",
+        packageName = "com.feresr.walpy",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x000000,
+        signatures = setOf("7803f0ba465a6a9ec88aa23a28b6bde7b900f714546708739ba06474364eb05a"),
+        targets = listOf(AppTarget(version = "3.1.7", versionCode = 317, minSdk = 24)),
+    )
+
     val WATCH_IT = Compatibility(
         name = "WATCH IT",
         packageName = "com.watchit.vod",
@@ -2230,6 +2305,26 @@ internal object AppCompatibilities {
         appIconColor = 0xFBBF31,
         signatures = setOf("0d4facb5aedccec85e26512473ca51d63d8b415059d4ce8b0a387e0ba8b32f04"),
         targets = listOf(AppTarget(version = "2.78.2", versionCode = 1515278200, minSdk = 24)),
+    )
+
+    val WHAT3WORDS = Compatibility(
+        name = "what3words",
+        packageName = "com.what3words.android",
+        apkFileType = ApkFileType.XAPK_REQUIRED,
+        appIconColor = 0x0A3049,
+        signatures = setOf(
+            "5a18dc1e9dc2d3f3c752555fe5ec840ee11d7ac236cfe2b4c8b24669caa63412",
+        ),
+        targets = listOf(AppTarget(version = "5.11", versionCode = 30662, minSdk = 25)),
+    )
+
+    val WRITE_IT = Compatibility(
+        name = "Write It! - Learn Languages",
+        packageName = "com.jernung.writeit.android",
+        apkFileType = ApkFileType.APKS_REQUIRED,
+        appIconColor = 0x42A5F5,
+        signatures = setOf("6e0b1e86b7fccf5923919e2be9a58f25b29566f8daf224b8f75997b2d8e1f64b"),
+        targets = listOf(AppTarget(version = "2026.11.6", versionCode = 20261106, minSdk = 24)),
     )
 
     val XPLORE = Compatibility(

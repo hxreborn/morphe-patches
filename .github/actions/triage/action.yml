@@ -11,6 +11,12 @@ inputs:
   token:
     description: Token used to comment, label and close. Needs issues:write.
     required: true
+  openrouter-key:
+    description: Key used to review requested features against other bundles.
+    default: ""
+  openrouter-model:
+    description: Model used to review requested features.
+    default: ""
   patches-list:
     description: Path to the bundle's patches-list.json in the checked-out repo.
     default: patches-list.json
@@ -70,6 +76,9 @@ runs:
         CATEGORY: ${{ inputs.requests-category }}
         PATCHES_LIST: ${{ inputs.patches-list }}
         DRY_RUN: ${{ inputs.dry-run }}
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-key }}
+        OPENROUTER_MODEL: ${{ inputs.openrouter-model }}
+        DISCUSSION_AI_FAILURE_FILE: ${{ runner.temp }}/discussion-ai-failed
       run: |
         list="$PWD/$PATCHES_LIST"
         cd "$RUNNER_TEMP"

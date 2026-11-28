@@ -42,7 +42,8 @@ final class PlayInfoRewriter {
     static String rewrite(String body, String subjectId, int season, int episode) {
         try {
             JSONObject root = new JSONObject(body);
-            boolean changed = JsonTree.rewriteObjects(root, PlayInfoRewriter::pointAtManifest);
+            boolean changed = JsonTree.rewriteObjects(root,
+                    (node) -> pointAtManifest(node, subjectId, season, episode));
             changed |= routeProgressiveStreams(root, subjectId, season, episode);
             return changed ? root.toString() : body;
         } catch (JSONException ex) {
@@ -51,15 +52,17 @@ final class PlayInfoRewriter {
         }
     }
 
-    private static boolean pointAtManifest(JSONObject node) throws JSONException {
+    private static boolean pointAtManifest(JSONObject node, String subjectId, int season, int episode)
+            throws JSONException {
         SignedResource resource = SignedResource.fromCookie(node.optString("signCookie", ""));
         if (resource == null) {
             return false;
         }
+        String manifestUrl = manifestUrl(resource, subjectId, season, episode);
         boolean changed = false;
         for (String field : URL_FIELDS) {
             if (node.has(field)) {
-                node.put(field, resource.manifestUrl);
+                node.put(field, manifestUrl);
                 changed = true;
             }
         }
@@ -67,6 +70,14 @@ final class PlayInfoRewriter {
             node.put("format", "DASH");
         }
         return changed;
+    }
+
+    private static String manifestUrl(SignedResource resource, String subjectId, int season, int episode) {
+        if (subjectId == null || season < 0 || episode < 0 || !resource.isEdgeCache()) {
+            return resource.manifestUrl;
+        }
+        String fileName = resource.manifestUrl.substring(resource.manifestUrl.lastIndexOf('/') + 1);
+        return DashServer.buildCdnUrl(subjectId, season, episode, fileName);
     }
 
     private static boolean routeProgressiveStreams(JSONObject root, String subjectId, int season, int episode)

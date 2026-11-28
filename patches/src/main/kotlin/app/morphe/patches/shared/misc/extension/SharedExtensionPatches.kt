@@ -35,6 +35,10 @@ internal val sharedInstalledCertificateExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-installed-certificate.mpe")
 }
 
+internal val sharedGlassNavigationExtensionPatch = patch {
+    extendWith("extensions/hxreborn/shared-glass-navigation.mpe")
+}
+
 internal val sharedHostedComponentsExtensionPatch = patch {
     extendWith("extensions/hxreborn/shared-hosted-components.mpe")
 }

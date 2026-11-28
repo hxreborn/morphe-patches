@@ -169,6 +169,7 @@ public final class CloudFrontPlayInfoClient implements PlayInfoLookup {
                 return body;
             }
             Log.i(Logs.TAG, "play-info from " + host + " not used, " + elapsedMs + " ms");
+            coolDown(host);
             return null;
         } catch (Throwable ex) {
             if (token != null) {

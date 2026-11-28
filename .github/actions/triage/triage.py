@@ -261,7 +261,7 @@ for (name, package), versions in apps.items():
     words = [normalize(word) for word in name.split() if len(word) > 3]
     signals = [normalize(name), normalize(package)] + words
     score = max((len(sig) for sig in signals if sig and sig in normalized_app), default=0)
-    rank = (score, -sum(word not in normalized_app for word in words))
+    rank = (score, normalize(name) in normalized_app, -sum(word not in normalized_app for word in words))
     if score and rank > best:
         best, matched = rank, (name, versions)
 

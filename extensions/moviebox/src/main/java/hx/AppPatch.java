@@ -91,8 +91,10 @@ public final class AppPatch {
             boolean premiumUnlocked) throws ReflectiveOperationException {
         AppNetwork network = AppNetwork.locate(manager);
         Object taggedClient = withBuildTagInterceptor(network.loader, network.client, tagger);
+        ClientAddressInterceptor addressInterceptor = new ClientAddressInterceptor(premiumUnlocked,
+                new LaboratoryCountry(network.loader));
         Object gatewayClient = ClientInterceptors.addBeforeTerminal(taggedClient,
-                ClientInterceptors.proxy(network.loader, new ClientAddressInterceptor(premiumUnlocked)));
+                ClientInterceptors.proxy(network.loader, addressInterceptor));
         MovieBoxSource source = new MovieBoxSource(new ApiClient(network.loader, gatewayClient, network.apiBase),
                 new CloudFrontPlayInfoClient(buildTag));
         DashServer server = bindServer(source);

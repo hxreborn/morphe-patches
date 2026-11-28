@@ -51,6 +51,12 @@ public final class DirectFilesTest {
 
     private static final String ORIGIN = "https://origin.example.com/o.mp4";
 
+    private static final String PREVIEW_PLAY_INFO = "{\"data\":{\"streams\":[{\"url\":"
+            + "\"https://cdn.example.com/preview/20684872/v1/116943/index.mpd\",\"duration\":900}]}}";
+
+    private static final String FULL_PLAY_INFO = "{\"data\":{\"streams\":[{\"url\":"
+            + "\"https://cdn.example.com/dash/77_0_0_360_h265_977/index_web.mpd\",\"duration\":6261}]}}";
+
     private LocalCdn server;
 
     private DirectFiles directFiles;
@@ -235,15 +241,68 @@ public final class DirectFilesTest {
     }
 
     @Test
+    public void replacesAPreviewWithTheLongerDirectFile() throws JSONException {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
+        this.server.put(LISTING, episodeListing(6261).getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String playInfo = this.directFiles.playInfoLongerThanPreview(PREVIEW_PLAY_INFO, "77", 1, 2);
+
+        // then
+        JSONObject stream = new JSONObject(playInfo).getJSONObject("data").getJSONArray("streams").getJSONObject(0);
+        Assertions.assertThat(stream.getString("url")).isEqualTo(this.server.url("/f.mp4"));
+        Assertions.assertThat(stream.getInt("duration")).isEqualTo(6261);
+    }
+
+    @Test
+    public void keepsAPreviewWhenNoDirectFileIsLonger() {
+        // given
+        putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
+        this.server.put(LISTING, episodeListing(900).getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String playInfo = this.directFiles.playInfoLongerThanPreview(PREVIEW_PLAY_INFO, "77", 1, 2);
+
+        // then
+        Assertions.assertThat(playInfo).isNull();
+        Assertions.assertThat(this.server.hitsOn(POSITION_V2)).isZero();
+    }
+
+    @Test
+    public void asksForNoDirectFileWhenTheStreamIsNoPreview() {
+        // given
+        this.server.put(LISTING, episodeListing(6261).getBytes(StandardCharsets.UTF_8));
+
+        // when
+        String playInfo = this.directFiles.playInfoLongerThanPreview(FULL_PLAY_INFO, "77", 1, 2);
+
+        // then
+        Assertions.assertThat(playInfo).isNull();
+        Assertions.assertThat(this.server.hitsOn(LISTING)).isZero();
+    }
+
+    @Test
+    public void asksForNoDirectFileWhenThePlayInfoIsUnreadable() {
+        // when
+        String playInfo = this.directFiles.playInfoLongerThanPreview("<html>", "77", 1, 2);
+
+        // then
+        Assertions.assertThat(playInfo).isNull();
+        Assertions.assertThat(this.server.hitsOn(LISTING)).isZero();
+    }
+
+    @Test
     public void readsTheV1ListingWhenV2CarriesTheUpgradeNotice() throws JSONException {
         // given
         putPosition("{\"data\":{\"list\":[{\"resourceLink\":\"" + this.server.url("/f.mp4") + "\",\"size\":2048}]}}");
         this.server.put(LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
                 + "\"resourceLink\":\"https:\\/\\/macdn.aoneroom.com\\/other\\/notice.mp4\",\"size\":\"824720\"}]}}")
             .getBytes(StandardCharsets.UTF_8));
-        this.server.put(V1_LISTING, ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
-                + "\"resourceLink\":\"" + ORIGIN + "\",\"size\":\"2048\"}]}}")
-            .getBytes(StandardCharsets.UTF_8));
+        this.server.put(V1_LISTING,
+                ("{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
+                        + "\"resourceLink\":\"" + ORIGIN + "\",\"size\":\"2048\"}]}}")
+                    .getBytes(StandardCharsets.UTF_8));
 
         // when
         String playInfo = this.directFiles.playInfoFor("{\"data\":{\"streams\":[]}}", "77", 1, 2);
@@ -294,6 +353,11 @@ public final class DirectFilesTest {
 
         // then
         Assertions.assertThat(playInfo).isNull();
+    }
+
+    private static String episodeListing(int durationSeconds) {
+        return "{\"data\":{\"list\":[{\"se\":1,\"ep\":2,\"resolution\":720,\"resourceId\":\"r1\","
+                + "\"resourceLink\":\"" + ORIGIN + "\",\"size\":\"2048\",\"duration\":" + durationSeconds + "}]}}";
     }
 
     private static String resourceList(int from, int to) {

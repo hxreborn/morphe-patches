@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
 import hx.dash.CdnCookies;
+import hx.dash.CdnFile;
 import hx.dash.DashFile;
 import hx.gateway.PlayInfoLookup;
 import hx.loopback.DashFileSource;
@@ -103,6 +104,14 @@ public final class MovieBoxSource implements DashFileSource {
         return getOrCreateFile(subjectId, season, episode, height);
     }
 
+    @Override
+    public CdnFile openCdnFile(String subjectId, int season, int episode, String fileName, long start)
+            throws IOException {
+        SignedResource signed = resource(subjectId, season, episode, null);
+        String directory = signed.manifestUrl.substring(0, signed.manifestUrl.lastIndexOf('/') + 1);
+        return CdnFile.open(directory + fileName, start, new PinnedCookies(signed, subjectId, season, episode));
+    }
+
     public SignedResource observePlayInfo(String requestUrl, String body, String apiHost) {
         String key = SignedResource.key(Uri.parse(requestUrl));
         SignedResource resource = SignedResource.fromPlayInfo(body);
@@ -127,6 +136,10 @@ public final class MovieBoxSource implements DashFileSource {
 
     public String directFilePlayInfo(String playInfo, String subjectId, int season, int episode) {
         return this.directFiles.playInfoFor(playInfo, subjectId, season, episode);
+    }
+
+    public String directFilePlayInfoLongerThanPreview(String playInfo, String subjectId, int season, int episode) {
+        return this.directFiles.playInfoLongerThanPreview(playInfo, subjectId, season, episode);
     }
 
     public String withDirectFileSizes(String resourceList) {

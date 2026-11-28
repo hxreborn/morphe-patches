@@ -1,3 +1,46 @@
+## [1.90.0-dev.2](https://github.com/hxreborn/morphe-patches/compare/v1.90.0-dev.1...v1.90.0-dev.2) (2026-11-28)
+
+### Bug Fixes
+
+* **Chollometro - Remove ads:** restore push notifications ([243eaa7](https://github.com/hxreborn/morphe-patches/commit/243eaa71f9ead8ae49663879f9214628395b40cd))
+* **MovieBox - Unlock premium:** play full movies past 15 minutes ([49c416a](https://github.com/hxreborn/morphe-patches/commit/49c416afe24dbb46079ae49158130e1b33b61b57)), closes [#1074](https://github.com/hxreborn/morphe-patches/issues/1074)
+* **MovieBox - Unlock premium:** show titles for the Laboratory country ([da25634](https://github.com/hxreborn/morphe-patches/commit/da2563418766a107eaf228bd6621069bfef6b999))
+* **MovieBox:** stop connection error on home screen ([f714edf](https://github.com/hxreborn/morphe-patches/commit/f714edfbc5621e8e978ed9828b2da82792217990)), closes [#1111](https://github.com/hxreborn/morphe-patches/issues/1111)
+
+### New Features
+
+* **Air Explorer - Remove Pro promotion:** clear file browser ad space ([0ce7632](https://github.com/hxreborn/morphe-patches/commit/0ce76329d3cf9a973c498d5efbf0818da7559cf3))
+* **Chollometro - Remove ads:** remove sponsored deals and feed ad gaps ([37e4a83](https://github.com/hxreborn/morphe-patches/commit/37e4a834e37997a63dcc64e7c830b155769e91a8))
+* **Medal - Remove feed promotion:** remove Premium offer in clips feed ([1264fa5](https://github.com/hxreborn/morphe-patches/commit/1264fa530784db953d19a192c3746d4e1a1cab26))
+* **Pepper - Remove ads:** remove sponsored deals and feed ad gaps ([957b190](https://github.com/hxreborn/morphe-patches/commit/957b190511dcbac365e90785688ddccece7b03bb))
+* **Proton Lumo - Fix input spacing:** remove black bar above input ([7840ca6](https://github.com/hxreborn/morphe-patches/commit/7840ca66ab86ea1ff5da0eed64422666e812882e)), closes [#1112](https://github.com/hxreborn/morphe-patches/issues/1112)
+* **Proton VPN - Split tunneling rules:** pick apps by category or name ([526e78c](https://github.com/hxreborn/morphe-patches/commit/526e78cf5524a94b25a2ccec1a072b529e45710a)), closes [#1106](https://github.com/hxreborn/morphe-patches/issues/1106)
+* **Showly - Glass navigation bar:** blur content behind navigation ([55e90c6](https://github.com/hxreborn/morphe-patches/commit/55e90c6aa06ea026e0572d78d287daa7d4f32bfd)), closes [#710](https://github.com/hxreborn/morphe-patches/issues/710)
+* **Spike Stats - Remove banner ads:** remove match ad space ([4ed80e1](https://github.com/hxreborn/morphe-patches/commit/4ed80e1e90f3af9fa3afa264e8040d7225601508))
+* **Walpy - Unlock premium:** open topics, filters and history ([307a747](https://github.com/hxreborn/morphe-patches/commit/307a74794a86058bcba92d4c940427283fd832b1))
+* **what3words - Unlock premium:** open Live Scan, import and navigation ([e6fd146](https://github.com/hxreborn/morphe-patches/commit/e6fd14637444a91017eb205803ff997674505817))
+* **what3words - Use Mapbox map:** show map tiles on patched installs ([d41b25e](https://github.com/hxreborn/morphe-patches/commit/d41b25e598189919cd55714e4ca4339b1df7232c))
+* **Write It! - Unlock premium:** add Pro access and remove ads ([0fa2c15](https://github.com/hxreborn/morphe-patches/commit/0fa2c15fa62b010279fe5647d4c20f8acc73b90e))
+
+## [1.90.0-dev.1](https://github.com/hxreborn/morphe-patches/compare/v1.89.0...v1.90.0-dev.1) (2026-11-27)
+
+### Bug Fixes
+
+* **MovieBox:** speed up slow video loading for some regions ([58bb7e8](https://github.com/hxreborn/morphe-patches/commit/58bb7e84b19d1318691cf525bfc2504214419617))
+* **MovieBox:** stop playback stalls on stuck video connections ([2b8b6e2](https://github.com/hxreborn/morphe-patches/commit/2b8b6e2aa37e6dbaa3825cd2d55a6ba36a7c34a5))
+* **Poweramp Equalizer - Unlock premium:** remove trial label in About ([2fdc51b](https://github.com/hxreborn/morphe-patches/commit/2fdc51b35d84d273870535d53671f24702f8bf67))
+
+### New Features
+
+* **Castle for TV - Disable update prompt:** remove new version dialog ([8d52ece](https://github.com/hxreborn/morphe-patches/commit/8d52ecec887596db3a2df15b073febd5fc4d98cc))
+* **Video MP3 Converter - Remove ads:** stop ad loads and clear ad space ([a26869c](https://github.com/hxreborn/morphe-patches/commit/a26869cb6cd1b67980e17a45d5b0b5208d7d318b))
+
+### Updated App Support
+
+* **Castle for TV:** add support for `1.1.6` ([bdaec74](https://github.com/hxreborn/morphe-patches/commit/bdaec7414cb922570c9be200f37a2226f6f906f3)), closes [#1097](https://github.com/hxreborn/morphe-patches/issues/1097)
+* **Coddy:** add support for `2.3.8` ([21c2fb6](https://github.com/hxreborn/morphe-patches/commit/21c2fb6426dffb0ad7e983f4c32019942e4c639c)), closes [#1089](https://github.com/hxreborn/morphe-patches/issues/1089)
+* **Poweramp Equalizer:** add support for `build-1033-bundle-play` ([4260815](https://github.com/hxreborn/morphe-patches/commit/42608153be474c7431f5d14cc8cdcfcc38245a3f))
+
 ## [1.89.0](https://github.com/hxreborn/morphe-patches/compare/v1.88.0...v1.89.0) (2026-11-27)
 
 ### Bug Fixes

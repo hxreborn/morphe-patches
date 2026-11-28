@@ -26,6 +26,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.BLURWALL,
         AppCompatibilities.CATZY,
         AppCompatibilities.CHESS_SCANNER,
+        AppCompatibilities.CHOLLOMETRO,
         AppCompatibilities.CITRA,
         AppCompatibilities.CLINK,
         AppCompatibilities.CODDY,
@@ -61,6 +62,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.NOTEIN,
         AppCompatibilities.ONE_SEC,
         AppCompatibilities.OPAL,
+        AppCompatibilities.PEPPER,
         AppCompatibilities.POE,
         AppCompatibilities.PRAYER_TIMES,
         AppCompatibilities.PRAYER_TIMES_WEAR,
@@ -75,6 +77,7 @@ val removePairipProtectionPatch: Patch = patch {
         AppCompatibilities.VLLO,
         AppCompatibilities.VPN_INDIA,
         AppCompatibilities.WALP,
+        AppCompatibilities.WRITE_IT,
         AppCompatibilities.YUKA,
     )
 

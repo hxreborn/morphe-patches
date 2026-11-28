@@ -38,6 +38,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +46,8 @@ import android.annotation.SuppressLint;
 
 @SuppressLint("NewApi")
 public final class LocalCdn implements AutoCloseable {
+
+    private static final long STALL_MS = 60_000L;
 
     private static final Pattern RANGE = Pattern.compile("bytes=(\\d+)-(\\d+)");
 
@@ -67,6 +70,8 @@ public final class LocalCdn implements AutoCloseable {
     private volatile long rangeDelayMs;
 
     private volatile boolean rangesIgnored;
+
+    private final AtomicLong stalledRangeStart = new AtomicLong(-1);
 
     public LocalCdn(String requiredCookie) throws IOException {
         this.requiredCookie = requiredCookie;
@@ -93,6 +98,10 @@ public final class LocalCdn implements AutoCloseable {
 
     public void delayRanges(long delayMs) {
         this.rangeDelayMs = delayMs;
+    }
+
+    public void stallRangeOnce(long start) {
+        this.stalledRangeStart.set(start);
     }
 
     public List<String> rangesOn(String path) {
@@ -179,11 +188,23 @@ public final class LocalCdn implements AutoCloseable {
         int inFlight = this.active.incrementAndGet();
         this.peakActive.accumulateAndGet(inFlight, Math::max);
         try {
+            if (this.stalledRangeStart.compareAndSet(start, -1)) {
+                holdUntilClosed();
+                return;
+            }
             pauseBeforeAnswering();
             respond(out, "206 Partial Content", Arrays.copyOfRange(body, start, end + 1),
                     "bytes " + start + "-" + end + "/" + body.length);
         } finally {
             this.active.decrementAndGet();
+        }
+    }
+
+    private static void holdUntilClosed() {
+        try {
+            Thread.sleep(STALL_MS);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
     }
 
