@@ -65,6 +65,8 @@ public final class ClientAddressInterceptorTest {
 
     private static final String HOME_FEED = "https://api.example.com/wefeed-mobile-bff/tab-operating-page?tabCode=Trending";
 
+    private static final String AD_DISTRIBUTION = "https://ads.example.com/distribute/candidate";
+
     private static final String REGION_BLOCK = "{\"code\":403,\"reason\":\"FORBIDDEN\",\"message\":\""
             + ClientAddressInterceptor.REGION_BLOCK_MESSAGE + "\",\"metadata\":{}}";
 
@@ -75,6 +77,8 @@ public final class ClientAddressInterceptorTest {
     private final ClassLoader loader = getClass().getClassLoader();
 
     private final List<String> addressesSent = new ArrayList<>();
+
+    private String laboratoryCountry = "";
 
     @Test
     public void withholdsTheClientAddressFromResourceListRequests() throws IOException {
@@ -190,6 +194,127 @@ public final class ClientAddressInterceptorTest {
     }
 
     @Test
+    public void sendsAnAddressInTheLaboratoryCountry() throws IOException {
+        // given
+        this.laboratoryCountry = "nl";
+
+        // when
+        send(HOME_FEED, true, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(CountryAddresses.addressIn("NL"));
+    }
+
+    @Test
+    public void followsAChangedLaboratoryCountry() throws IOException {
+        // given
+        Interceptor interceptor = proxy(true);
+        this.laboratoryCountry = "nl";
+        send(HOME_FEED, interceptor, answering(200, FEED));
+        this.laboratoryCountry = "";
+
+        // when
+        send(HOME_FEED, interceptor, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(CountryAddresses.addressIn("NL"), APP_ADDRESS);
+    }
+
+    @Test
+    public void keepsWithholdingTheAddressFromResourceListsWithALaboratoryCountry() throws IOException {
+        // given
+        this.laboratoryCountry = "in";
+
+        // when
+        send(RESOURCE_LIST, true, answering(200, LINKED_ROWS));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void keepsTheClientAddressForACountryWithoutAnAddress() throws IOException {
+        // given
+        this.laboratoryCountry = "n/a";
+
+        // when
+        send(HOME_FEED, true, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(APP_ADDRESS);
+    }
+
+    @Test
+    public void withholdsTheAddressWhenTheLaboratoryCountryIsRegionBlocked() throws IOException {
+        // given
+        this.laboratoryCountry = "us";
+
+        // when
+        Response response = send(HOME_FEED, true, blocking(CountryAddresses.addressIn("US")));
+
+        // then
+        Assertions.assertThat(response.body().string()).isEqualTo(FEED);
+        Assertions.assertThat(this.addressesSent)
+            .containsExactly(CountryAddresses.addressIn("US"), ClientAddressInterceptor.WITHHELD_ADDRESS);
+    }
+
+    @Test
+    public void keepsTheClientAddressAfterABlockedLaboratoryCountryIsCleared() throws IOException {
+        // given
+        Interceptor interceptor = proxy(true);
+        this.laboratoryCountry = "us";
+        send(HOME_FEED, interceptor, blocking(CountryAddresses.addressIn("US")));
+        this.addressesSent.clear();
+        this.laboratoryCountry = "";
+
+        // when
+        send(HOME_FEED, interceptor, blocking(CountryAddresses.addressIn("US")));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(APP_ADDRESS);
+    }
+
+    @Test
+    public void resendsWithTheClientAddressWhenTheCountryAddressIsRefused() throws IOException {
+        // given
+        this.laboratoryCountry = "nl";
+
+        // when
+        Response response = send(HOME_FEED, true, refusing(CountryAddresses.addressIn("NL")));
+
+        // then
+        Assertions.assertThat(response.code()).isEqualTo(200);
+        Assertions.assertThat(this.addressesSent).containsExactly(CountryAddresses.addressIn("NL"), APP_ADDRESS);
+    }
+
+    @Test
+    public void triesTheCountryAddressAgainAfterARefusal() throws IOException {
+        // given
+        Interceptor interceptor = proxy(true);
+        this.laboratoryCountry = "nl";
+        send(HOME_FEED, interceptor, refusing(CountryAddresses.addressIn("NL")));
+        this.addressesSent.clear();
+
+        // when
+        send(HOME_FEED, interceptor, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(CountryAddresses.addressIn("NL"));
+    }
+
+    @Test
+    public void keepsTheClientAddressOutsideTheApi() throws IOException {
+        // given
+        this.laboratoryCountry = "nl";
+
+        // when
+        send(AD_DISTRIBUTION, true, answering(200, FEED));
+
+        // then
+        Assertions.assertThat(this.addressesSent).containsExactly(APP_ADDRESS);
+    }
+
+    @Test
     public void warnsWhenRowsStillHaveNoLinkWithTheAddressWithheld() throws IOException {
         // when
         Response response = send(RESOURCE_LIST, true, answering(200, ROWS_WITHOUT_HD_LINKS));
@@ -230,7 +355,7 @@ public final class ClientAddressInterceptorTest {
 
     private Interceptor proxy(boolean premiumUnlocked) {
         return (Interceptor) Proxy.newProxyInstance(this.loader, new Class<?>[] { Interceptor.class },
-                new ClientAddressInterceptor(premiumUnlocked));
+                new ClientAddressInterceptor(premiumUnlocked, () -> this.laboratoryCountry));
     }
 
     private static Interceptor blockingTheAppAddress() {
@@ -238,6 +363,20 @@ public final class ClientAddressInterceptorTest {
             boolean withheld = ClientAddressInterceptor.WITHHELD_ADDRESS
                 .equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
             return withheld ? response(chain.request(), 200, FEED) : response(chain.request(), 403, REGION_BLOCK);
+        };
+    }
+
+    private static Interceptor blocking(String address) {
+        return (chain) -> {
+            boolean blocked = address.equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
+            return blocked ? response(chain.request(), 403, REGION_BLOCK) : response(chain.request(), 200, FEED);
+        };
+    }
+
+    private static Interceptor refusing(String address) {
+        return (chain) -> {
+            boolean refused = address.equals(chain.request().header(ClientAddressInterceptor.FORWARDED_FOR_HEADER));
+            return refused ? response(chain.request(), 429, "{}") : response(chain.request(), 200, FEED);
         };
     }
 

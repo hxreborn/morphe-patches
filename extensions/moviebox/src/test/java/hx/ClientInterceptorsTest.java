@@ -89,7 +89,7 @@ public final class ClientInterceptorsTest {
             .addInterceptor(this::answerWithoutNetwork)
             .build();
         Object withAddress = ClientInterceptors.addBeforeTerminal(app,
-                ClientInterceptors.proxy(this.loader, new ClientAddressInterceptor(true)));
+                ClientInterceptors.proxy(this.loader, new ClientAddressInterceptor(true, () -> "")));
         OkHttpClient client = (OkHttpClient) ClientInterceptors.addFirst(withAddress,
                 ClientInterceptors.proxy(this.loader, new RewritingInterceptor()));
 

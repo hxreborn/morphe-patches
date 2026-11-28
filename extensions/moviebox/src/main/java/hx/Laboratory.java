@@ -38,20 +38,23 @@ final class Laboratory {
     private Laboratory() {
     }
 
-    @SuppressWarnings("DataFlowIssue")
     static void unlock(ClassLoader loader) {
         try {
-            Class<?> mmkvClass = Class.forName(MMKV_CLASS, false, loader);
-            Method mmkvWithId = findFactory(mmkvClass);
-            if (mmkvWithId == null) {
-                throw new IllegalStateException("no mmkvWithID(String) on " + MMKV_CLASS);
-            }
-            SharedPreferences.Editor store = (SharedPreferences.Editor) mmkvWithId.invoke(null, MMKV_APP_ID);
+            SharedPreferences.Editor store = (SharedPreferences.Editor) openStore(loader, MMKV_APP_ID);
             store.putLong(PASSWORD_TIME_KEY, Long.MAX_VALUE);
             Log.i(Logs.TAG, "Laboratory unlocked");
         } catch (Exception ex) {
             Log.e(Logs.TAG, "cannot unlock Laboratory", ex);
         }
+    }
+
+    static SharedPreferences openStore(ClassLoader loader, String mmkvId) throws ReflectiveOperationException {
+        Class<?> mmkvClass = Class.forName(MMKV_CLASS, false, loader);
+        Method mmkvWithId = findFactory(mmkvClass);
+        if (mmkvWithId == null) {
+            throw new IllegalStateException("no mmkvWithID(String) on " + MMKV_CLASS);
+        }
+        return (SharedPreferences) mmkvWithId.invoke(null, mmkvId);
     }
 
     private static Method findFactory(Class<?> mmkvClass) {

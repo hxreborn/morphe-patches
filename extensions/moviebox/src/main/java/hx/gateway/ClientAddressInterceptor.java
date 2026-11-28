@@ -20,6 +20,12 @@
  */
 package hx.gateway;
 
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+
 import android.util.Log;
 import hx.okhttp.ChainInterceptor;
 import hx.source.Endpoints;
@@ -39,49 +45,90 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
 
     private static final int FORBIDDEN = 403;
 
+    private static final int TOO_MANY_REQUESTS = 429;
+
     private static final long PEEKED_BYTES = 4L * 1024 * 1024;
 
     private static final long REGION_BLOCK_PEEKED_BYTES = 1024;
 
+    private static final String DEVICE_COUNTRY = "";
+
     private final boolean premiumUnlocked;
 
-    private volatile boolean regionBlocked;
+    private final ChosenCountry chosenCountry;
 
-    public ClientAddressInterceptor(boolean premiumUnlocked) {
+    private final Set<String> regionBlockedCountries = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    private final AtomicReference<String> loggedCountry = new AtomicReference<>(DEVICE_COUNTRY);
+
+    public ClientAddressInterceptor(boolean premiumUnlocked, ChosenCountry chosenCountry) {
         super("MovieBoxClientAddressInterceptor", "MovieBox client address override failed");
         this.premiumUnlocked = premiumUnlocked;
+        this.chosenCountry = chosenCountry;
     }
 
     @Override
     protected Object intercept(Object chain) throws ReflectiveOperationException {
         Object request = request(chain);
         String path = (String) Reflect.call(Reflect.call(request, "url"), "encodedPath");
+        String country = chosenCountryWithAddress();
         if (!this.premiumUnlocked || !Endpoints.listsResourceLinks(path)) {
-            return proceedWithinRegion(chain, request, path);
+            return proceedWithCountryAddress(chain, request, country, path);
         }
-        Object response = proceed(chain, withWithheldAddress(request));
+        Object response = proceed(chain, withForwardedFor(request, WITHHELD_ADDRESS));
         if (!((Boolean) Reflect.call(response, "isSuccessful"))) {
             Log.w(Logs.TAG, path + " answered HTTP " + Reflect.call(response, "code")
                     + " with the client address withheld, resending the app's request");
             Reflect.call(response, "close");
-            return proceedWithinRegion(chain, request, path);
+            return proceedWithCountryAddress(chain, request, country, path);
         }
         warnAboutRowsWithoutLinks(path, response);
         return response;
     }
 
-    private Object proceedWithinRegion(Object chain, Object request, String path) throws ReflectiveOperationException {
-        if (this.regionBlocked) {
-            return proceed(chain, withWithheldAddress(request));
+    private String chosenCountryWithAddress() {
+        String country = this.chosenCountry.isoCode().toUpperCase(Locale.ROOT);
+        if (CountryAddresses.addressIn(country) == null) {
+            country = DEVICE_COUNTRY;
+        }
+        if (!country.equals(this.loggedCountry.getAndSet(country))) {
+            Log.i(Logs.TAG, country.equals(DEVICE_COUNTRY) ? "API requests use the device address"
+                    : "API requests use an address in " + country + ", chosen in the Laboratory");
+        }
+        return country;
+    }
+
+    private Object proceedWithCountryAddress(Object chain, Object request, String country, String path)
+            throws ReflectiveOperationException {
+        if (country.equals(DEVICE_COUNTRY) || !path.startsWith(Endpoints.API_PATH_PREFIX)) {
+            return proceedWithinRegion(chain, request, DEVICE_COUNTRY, path);
+        }
+        Object response = proceedWithinRegion(chain, withForwardedFor(request, CountryAddresses.addressIn(country)),
+                country, path);
+        int code = (Integer) Reflect.call(response, "code");
+        if (code != FORBIDDEN && code != TOO_MANY_REQUESTS) {
+            return response;
+        }
+        Log.w(Logs.TAG, path + " answered HTTP " + code + " to the address in " + country
+                + ", resending with the device address");
+        Reflect.call(response, "close");
+        return proceedWithinRegion(chain, request, DEVICE_COUNTRY, path);
+    }
+
+    private Object proceedWithinRegion(Object chain, Object request, String country, String path)
+            throws ReflectiveOperationException {
+        if (this.regionBlockedCountries.contains(country)) {
+            return proceed(chain, withForwardedFor(request, WITHHELD_ADDRESS));
         }
         Object response = proceed(chain, request);
         if (!isRegionBlock(response)) {
             return response;
         }
-        Log.w(Logs.TAG, path + " is blocked in this region, withholding the client address from now on");
-        this.regionBlocked = true;
+        Log.w(Logs.TAG, path + " is blocked in " + (country.equals(DEVICE_COUNTRY) ? "this region" : country)
+                + ", withholding the client address from now on");
+        this.regionBlockedCountries.add(country);
         Reflect.call(response, "close");
-        return proceed(chain, withWithheldAddress(request));
+        return proceed(chain, withForwardedFor(request, WITHHELD_ADDRESS));
     }
 
     private static boolean isRegionBlock(Object response) throws ReflectiveOperationException {
@@ -92,10 +139,9 @@ public final class ClientAddressInterceptor extends ChainInterceptor {
         return ((String) Reflect.call(peeked, "string")).contains(REGION_BLOCK_MESSAGE);
     }
 
-    private static Object withWithheldAddress(Object request) throws ReflectiveOperationException {
+    private static Object withForwardedFor(Object request, String address) throws ReflectiveOperationException {
         Object builder = Reflect.call(request, "newBuilder");
-        Reflect.call(builder, "header", new Class<?>[] { String.class, String.class }, FORWARDED_FOR_HEADER,
-                WITHHELD_ADDRESS);
+        Reflect.call(builder, "header", new Class<?>[] { String.class, String.class }, FORWARDED_FOR_HEADER, address);
         return Reflect.call(builder, "build");
     }
 

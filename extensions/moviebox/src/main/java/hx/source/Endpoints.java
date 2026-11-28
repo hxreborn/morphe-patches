@@ -28,6 +28,8 @@ public final class Endpoints {
 
     public static final String RESOURCE_LIST_V2_SEGMENT = "/subject-api/resource/v2";
 
+    public static final String API_PATH_PREFIX = "/wefeed-mobile-bff/";
+
     public static final String RESOURCE_POSITION = "wefeed-mobile-bff/subject-api/resource-position";
 
     public static final String USER_PROFILE = "wefeed-mobile-bff/user-api/profile";
