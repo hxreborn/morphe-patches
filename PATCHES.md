@@ -1,6 +1,6 @@
 # Patches
 
-> Generated from `patches-list.json` for **v1.90.0-dev.1** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**642 patches** across **206 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
+> Generated from `patches-list.json` for **v1.90.0-dev.2** (`dev`)&nbsp;&nbsp;&middot;&nbsp;&nbsp;**653 patches** across **214 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;back to [README](README.md)
 
 ---
 
@@ -49,6 +49,21 @@
 | Patch | Details |
 |---|---|
 | <a id="acalendar-unlock-acalendar"></a>[**Unlock aCalendar+**](patches/src/main/kotlin/app/morphe/patches/acalendar/misc/premium/UnlockPlusPatch.kt) | Unlocks public holidays, color schemes, business features and tasks, and removes ads. |
+
+---
+
+## Air Explorer (com.mobile.airexplorer)
+
+<img src="https://publicmetadata.co.uk/com.mobile.airexplorer" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.6.0 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="air-explorer-remove-pro-promotion"></a>[**Remove Pro promotion**](patches/src/main/kotlin/app/morphe/patches/airexplorer/misc/ads/RemoveProPromotionPatch.kt) | Removes the Pro promotion from the file browser. |
 
 ---
 
@@ -696,6 +711,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="chess-scanner-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/chessscanner/misc/premium/UnlockPremiumPatch.kt) | Unlocks Chess Scanner Pro. |
+
+---
+
+## Chollometro (com.chollometro)
+
+<img src="https://publicmetadata.co.uk/com.chollometro" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 8.22.04 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="chollometro-remove-ads"></a>[**Remove ads**](patches/src/main/kotlin/app/morphe/patches/shared/misc/pepper/ads/RemoveAdsPatch.kt) | Removes ad placements and sponsored deals. |
 
 ---
 
@@ -1696,6 +1726,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Medal (tv.medal.recorder)
+
+<img src="https://publicmetadata.co.uk/tv.medal.recorder" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 7.6.1 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="medal-remove-feed-promotion"></a>[**Remove feed promotion**](patches/src/main/kotlin/app/morphe/patches/medal/ads/RemoveFeedPromotionPatch.kt) | Removes the Premium promotion from the clips feed. |
+
+---
+
 ## MedicNEET (com.halalfire.medicneet)
 
 <img src="https://publicmetadata.co.uk/com.halalfire.medicneet" width="48" height="48" align="top" alt="">
@@ -2210,6 +2255,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 ---
 
+## Pepper (com.pepperdeals)
+
+<img src="https://publicmetadata.co.uk/com.pepperdeals" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 8.22.05 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="pepper-remove-ads"></a>**Remove ads** | Removes ad placements and sponsored deals. |
+
+---
+
 ## Period Tracker and Calendar (com.lbrc.PeriodCalendar)
 
 <img src="https://publicmetadata.co.uk/com.lbrc.PeriodCalendar" width="48" height="48" align="top" alt="">
@@ -2436,6 +2496,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 
 | Patch | Details |
 |---|---|
+| <a id="proton-lumo-fix-input-spacing"></a>[**Fix input spacing**](patches/src/main/kotlin/app/morphe/patches/lumo/misc/inputspacing/FixInputSpacingPatch.kt) | Removes excess space above the text input. |
 | <a id="proton-lumo-material-3-switches"></a>[**Material 3 switches**](patches/src/main/kotlin/app/morphe/patches/lumo/misc/materialswitch/MaterialSwitchesPatch.kt) | Shows switches in the Material 3 style with check and close icons. |
 | <a id="proton-lumo-remove-tap-highlight"></a>[**Remove tap highlight**](patches/src/main/kotlin/app/morphe/patches/lumo/misc/taphighlight/RemoveWebTapHighlightPatch.kt) | Removes the highlight flash on tapped buttons and links. |
 | <a id="proton-lumo-store-encryption-key-in-tee"></a>[**Store encryption key in TEE**](patches/src/main/kotlin/app/morphe/patches/lumo/misc/strongbox/StoreKeyInTeePatch.kt) | Stores the local encryption key in the TEE instead of StrongBox. Prevents the Encryption error on devices whose StrongBox rejects the key. |
@@ -2535,6 +2596,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-material-3-switches"></a>[**Material 3 switches**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/theme/MaterialSwitchesPatch.kt) | Adds check and close icons to switches. |
 | <a id="proton-vpn-remove-server-change-delay"></a>[**Remove server change delay**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/delay/RemoveServerChangeDelayPatch.kt) | Removes the wait between server changes on free plans. |
 | <a id="proton-vpn-show-free-server-locations"></a>[**Show free server locations**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/freeservers/ShowFreeServerLocationsPatch.kt) | Lists free server locations in Countries and Search and connects to the one you pick. Applies only to free plans. |
+| <a id="proton-vpn-split-tunneling-rules"></a>[**Split tunneling rules**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/splittunneling/SplitTunnelingRulesPatch.kt) | Adds category and keyword rules that include or exclude matching apps in split tunneling, new installs included. Reconnect to apply a change. |
 | <a id="proton-vpn-unlock-lan-connections"></a>[**Unlock LAN connections**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/lan/UnlockLanConnectionsPatch.kt) | Unlocks LAN connections on free plans. |
 | <a id="proton-vpn-unlock-netshield"></a>[**Unlock NetShield**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/netshield/UnlockNetShieldPatch.kt) | Unlocks NetShield ad and tracker blocking on free plans. |
 | <a id="proton-vpn-unlock-connection-preferences"></a>[**Unlock connection preferences**](patches/src/main/kotlin/app/morphe/patches/protonvpn/misc/connectionpreferences/UnlockConnectionPreferencesPatch.kt) | Unlocks the default connection, recent connections and excluded locations on free plans. |
@@ -2564,6 +2626,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | <a id="proton-vpn-f-droid-material-3-switches"></a>**Material 3 switches** | Adds check and close icons to switches. |
 | <a id="proton-vpn-f-droid-remove-server-change-delay"></a>**Remove server change delay** | Removes the wait between server changes on free plans. |
 | <a id="proton-vpn-f-droid-show-free-server-locations"></a>**Show free server locations** | Lists free server locations in Countries and Search and connects to the one you pick. Applies only to free plans. |
+| <a id="proton-vpn-f-droid-split-tunneling-rules"></a>**Split tunneling rules** | Adds category and keyword rules that include or exclude matching apps in split tunneling, new installs included. Reconnect to apply a change. |
 | <a id="proton-vpn-f-droid-unlock-lan-connections"></a>**Unlock LAN connections** | Unlocks LAN connections on free plans. |
 | <a id="proton-vpn-f-droid-unlock-netshield"></a>**Unlock NetShield** | Unlocks NetShield ad and tracker blocking on free plans. |
 | <a id="proton-vpn-f-droid-unlock-connection-preferences"></a>**Unlock connection preferences** | Unlocks the default connection, recent connections and excluded locations on free plans. |
@@ -2938,6 +3001,7 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="showly-amoled-dark-theme"></a>[**AMOLED dark theme**](patches/src/main/kotlin/app/morphe/patches/showly/misc/theme/AmoledThemePatch.kt) | Replaces the dark theme background with pure black. |
+| <a id="showly-glass-navigation-bar"></a>[**Glass navigation bar**](patches/src/main/kotlin/app/morphe/patches/showly/layout/glass/GlassNavigationBarPatch.kt) | Adds a translucent blurred navigation bar. Uses translucency on Android 11 and earlier. |
 | <a id="showly-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/showly/misc/premium/UnlockPremiumPatch.kt) | Unlocks ad removal, light theme, custom images, list view types, quick ratings, transparent widgets, and the News feed. |
 
 ---
@@ -2954,6 +3018,21 @@ Always verify the downloaded APK's SHA-256 against a trusted checksum before pat
 | Patch | Details |
 |---|---|
 | <a id="shttps-marketless-unlock-plus"></a>[**Unlock PLUS**](patches/src/main/kotlin/app/morphe/patches/shttps/misc/premium/UnlockPlusPatch.kt) | Unlocks remote screen control, control from external apps and auto-shutdown timeouts over 6 hours or off. |
+
+---
+
+## Spike Stats - Valorant Tracker (crocusgames.com.spikestats)
+
+<img src="https://publicmetadata.co.uk/crocusgames.com.spikestats" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 1.0.554 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="spike-stats-valorant-tracker-remove-banner-ads"></a>[**Remove banner ads**](patches/src/main/kotlin/app/morphe/patches/spikestats/ads/RemoveBannerAdsPatch.kt) | Removes banner ads from match summaries and details. |
 
 ---
 
@@ -3421,6 +3500,21 @@ Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hx
 
 ---
 
+## Walpy - Wallpapers (com.feresr.walpy)
+
+<img src="https://publicmetadata.co.uk/com.feresr.walpy" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 3.1.7 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="walpy-wallpapers-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/walpy/premium/UnlockPremiumPatch.kt) | Unlocks unlimited favorites, featured topics, filters and history. |
+
+---
+
 ## WATCH IT (com.watchit.vod)
 
 <img src="https://publicmetadata.co.uk/com.watchit.vod" width="48" height="48" align="top" alt="">
@@ -3466,6 +3560,37 @@ Questions about Drive backup and restore go to [Q&A #1052](https://github.com/hx
 | Patch | Details |
 |---|---|
 | <a id="weather24-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/weather24/misc/premium/UnlockPremiumPatch.kt) | Removes banner, interstitial and video ads and unlocks the premium weather icons. |
+
+---
+
+## what3words (com.what3words.android)
+
+<img src="https://publicmetadata.co.uk/com.what3words.android" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 5.11 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="what3words-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/what3words/misc/premium/UnlockPremiumPatch.kt) | Unlocks Live Scan, photo import and navigation. Chat and Voice AI are not included. |
+| <a id="what3words-use-mapbox-map"></a>[**Use Mapbox map**](patches/src/main/kotlin/app/morphe/patches/what3words/misc/map/UseMapboxMapPatch.kt) | Draws the map with Mapbox instead of Google Maps. |
+
+---
+
+## Write It! - Learn Languages (com.jernung.writeit.android)
+
+<img src="https://publicmetadata.co.uk/com.jernung.writeit.android" width="48" height="48" align="top" alt="">
+
+**Supported versions:**
+
+| 2026.11.6 |
+| :---: |
+
+| Patch | Details |
+|---|---|
+| <a id="write-it-learn-languages-unlock-premium"></a>[**Unlock premium**](patches/src/main/kotlin/app/morphe/patches/writeit/misc/premium/UnlockPremiumPatch.kt) | Unlocks every deck and language, custom reviews, entry notes and word status controls, and removes ads. |
 
 ---
 
